@@ -14,6 +14,8 @@ gem "sass-rails"
 gem "uglifier"
 gem "gds-api-adapters"
 gem "govuk_sidekiq"
+gem "addressable"
+gem "govuk-content-schema-test-helpers"
 group :development, :test do
   gem "poltergeist"
   gem "capybara"

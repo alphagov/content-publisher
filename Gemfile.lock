@@ -101,6 +101,8 @@ GEM
       warden-oauth2 (~> 0.0.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    govuk-content-schema-test-helpers (1.6.1)
+      json-schema (~> 2.8.0)
     govuk-lint (3.8.0)
       rubocop (~> 0.52.0)
       rubocop-rspec (~> 1.19.0)
@@ -124,6 +126,8 @@ GEM
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
     json (2.1.0)
+    json-schema (2.8.0)
+      addressable (>= 2.4)
     jwt (1.5.6)
     kgio (2.11.2)
     link_header (0.0.8)
@@ -346,6 +350,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   bootsnap
   byebug
   capybara
@@ -354,6 +359,7 @@ DEPENDENCIES
   factory_bot_rails
   gds-api-adapters
   gds-sso
+  govuk-content-schema-test-helpers
   govuk-lint
   govuk_app_config
   govuk_sidekiq
