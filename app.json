@@ -6,6 +6,9 @@
   "env": {
     "GDS_SSO_STRATEGY": {
       "required": true
+    },
+    "GOVUK_APP_DOMAIN": {
+      "required": true
     }
   },
   "addons": [
