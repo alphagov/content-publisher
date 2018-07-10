@@ -4,6 +4,10 @@ gem "rails", "5.2.0"
 gem "bootsnap"
 
 group :development, :test do
+  gem "factory_bot_rails"
+  gem "timecop"
+  gem "webmock", require: false
+  gem "rspec-rails"
   gem "byebug" # Comes standard with Rails
 end
 
