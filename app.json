@@ -1,0 +1,19 @@
+{
+  "name": "publish_data_beta",
+  "scripts": {
+    "postdeploy": "rake db:setup"
+  },
+  "env": {
+    "GDS_SSO_STRATEGY": {
+      "required": true
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+}
