@@ -38,7 +38,7 @@ RSpec.configure do |config|
     GDS::SSO.test_user = nil
   end
 
-  [:controller, :request].each do |spec_type|
+  %i(controller request).each do |spec_type|
     config.before :each, type: spec_type do
       login_as_stub_user
     end
