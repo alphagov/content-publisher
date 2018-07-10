@@ -13,6 +13,7 @@ gem "govuk_app_config"
 gem "sass-rails"
 gem "uglifier"
 gem "gds-api-adapters"
+gem "govuk_sidekiq"
 group :development, :test do
   gem "poltergeist"
   gem "capybara"
