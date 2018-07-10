@@ -51,6 +51,7 @@ GEM
       msgpack (~> 1.0)
     builder (3.2.3)
     byebug (10.0.2)
+    coderay (1.1.2)
     concurrent-ruby (1.0.5)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -143,6 +144,9 @@ GEM
       ast (~> 2.4.0)
     plek (2.1.1)
     powerpack (0.1.2)
+    pry (0.11.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
     public_suffix (3.0.2)
     rack (2.0.5)
     rack-test (1.0.0)
@@ -274,6 +278,7 @@ DEPENDENCIES
   govuk_app_config
   listen
   plek
+  pry
   rails (= 5.2.0)
   rspec-rails
   simplecov

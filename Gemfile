@@ -11,6 +11,7 @@ gem "gds-sso"
 gem "plek"
 gem "govuk_app_config"
 group :development, :test do
+  gem "pry"
   gem "simplecov-rcov", require: false
   gem "simplecov", require: false
   gem "govuk-lint"
