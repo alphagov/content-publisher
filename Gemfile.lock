@@ -181,6 +181,7 @@ GEM
     parallel (1.12.1)
     parser (2.5.1.1)
       ast (~> 2.4.0)
+    pg (1.0.0)
     plek (2.1.1)
     poltergeist (1.18.1)
       capybara (>= 2.1, < 4)
@@ -352,6 +353,7 @@ DEPENDENCIES
   govuk_app_config
   govuk_sidekiq
   listen
+  pg
   plek
   poltergeist
   pry
