@@ -13,6 +13,8 @@ gem "govuk_app_config"
 gem "sass-rails"
 gem "uglifier"
 group :development, :test do
+  gem "poltergeist"
+  gem "capybara"
   gem "pry"
   gem "simplecov-rcov", require: false
   gem "simplecov", require: false
