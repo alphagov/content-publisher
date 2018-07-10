@@ -1,5 +1,5 @@
-  require "pry"
-  require "byebug"
+require "pry"
+require "byebug"
 require "webmock"
 require "timecop"
 require "simplecov"
