@@ -5,7 +5,10 @@ gem "bootsnap"
 
 gem "database_cleaner"
 gem "deprecated_columns"
+gem "gds-sso"
+gem "plek"
 group :development, :test do
+  gem "govuk-lint"
   gem "sqlite3" # Remove this when you choose a production database
   gem "factory_bot_rails"
   gem "timecop"
