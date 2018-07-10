@@ -2,37 +2,29 @@ ruby File.read(".ruby-version").strip
 
 source "https://rubygems.org"
 
-gem "rails", "5.2.0"
+gem "addressable"
 gem "bootsnap"
-
-gem "database_cleaner"
-gem "deprecated_columns"
+gem "gds-api-adapters"
 gem "gds-sso"
-gem "plek"
 gem "govuk_app_config"
+gem "govuk_sidekiq"
+gem "listen"
+gem "plek"
+gem "rails", "5.2.0"
 gem "sass-rails"
 gem "uglifier"
-gem "gds-api-adapters"
-gem "govuk_sidekiq"
-gem "addressable"
-gem "govuk-content-schema-test-helpers"
+
 group :development, :test do
-  gem "poltergeist"
+  gem "byebug" # Comes standard with Rails
   gem "capybara"
-  gem "pry"
-  gem "simplecov-rcov", require: false
-  gem "simplecov", require: false
-  gem "govuk-lint"
-  gem "sqlite3" # Remove this when you choose a production database
+  gem "database_cleaner"
   gem "factory_bot_rails"
+  gem "govuk-content-schema-test-helpers"
+  gem "govuk-lint"
+  gem "poltergeist"
+  gem "pry"
+  gem "rspec-rails"
+  gem "simplecov", require: false
   gem "timecop"
   gem "webmock", require: false
-  gem "rspec-rails"
-  gem "byebug" # Comes standard with Rails
-end
-
-group :development do
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem "web-console"
-  gem "listen"
 end
