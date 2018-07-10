@@ -1,24 +1,50 @@
-# README
+# Content-publisher
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+One paragraph description and purpose.
 
-Things you may want to cover:
+## Screenshots (if there's a client-facing aspect of it)
 
-* Ruby version
+## Live examples (if available)
 
-* System dependencies
+- [gov.uk/thing](https://www.gov.uk/thing)
 
-* Configuration
+## Nomenclature
 
-* Database creation
+- **Word**: definition of word, and how it's used in the code
 
-* Database initialization
+## Technical documentation
 
-* How to run the test suite
+Write a single paragraph including a general technical overview of the app.
+Example:
 
-* Services (job queues, cache servers, search engines, etc.)
+This is a Ruby on Rails application that maps RESTful URLs onto a persistence
+layer. It's only presented as an internal API and doesn't face public users.
 
-* Deployment instructions
+### Dependencies
 
-* ...
+- [alphagov/other-repo]() - provides some downstream service
+- [redis]() - provides a backing service for work queues
+
+### Running the application
+
+`./startup.sh`
+
+Documentation for where the app will appear (default port, vhost, URL etc).
+
+### Running the test suite
+
+`bundle exec rake`
+
+Include any other edge cases, e.g parallel test runner in Whitehall
+
+### Any deviations from idiomatic Rails/Go etc. (optional)
+
+### Example API output (optional)
+
+`one-line-curl-command with JSON response after`
+
+Keep this section limited to core endpoints - if the app is complex link out to `/docs`.
+
+## Licence
+
+[MIT License](LICENCE)
