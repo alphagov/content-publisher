@@ -11,8 +11,6 @@ gem "pg", "~> 1"
 gem "plek", "~> 2"
 
 group :development do
-  gem "byebug"
-  gem "govuk-lint"
   gem "listen"
 end
 
@@ -21,5 +19,7 @@ group :test do
 end
 
 group :development, :test do
+  gem "byebug"
   gem "rspec-rails"
+  gem "govuk-lint"
 end
