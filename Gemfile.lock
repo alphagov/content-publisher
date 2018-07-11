@@ -237,19 +237,19 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (~> 1)
-  byebug
+  byebug (~> 10)
   gds-sso (~> 13)
-  govuk-lint
+  govuk-lint (~> 3)
   govuk_app_config (~> 1)
-  listen
+  listen (~> 3)
   pg (~> 1)
   plek (~> 2)
   rails (~> 5.2)
-  rspec-rails
-  simplecov
+  rspec-rails (~> 3)
+  simplecov (~> 0.16)
 
 RUBY VERSION
-   ruby 2.5.0p0
+   ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
