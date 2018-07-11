@@ -4,10 +4,15 @@ AllCops:
     - bin/**/*
     - config.ru
     - db/schema.rb
-    - vendor/**/*
+    - tmp/**/*
 
 Metrics/BlockLength:
   Exclude:
     - 'config/routes.rb'
     - 'lib/tasks/**/*.rake'
     - 'spec/**/*.rb'
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  Exclude:
+    - config/**/*
