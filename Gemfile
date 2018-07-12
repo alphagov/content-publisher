@@ -13,6 +13,7 @@ gem "govuk_app_config", "~> 1"
 gem "govuk_publishing_components", "9.5.0"
 gem "pg", "~> 1"
 gem "plek", "~> 2"
+gem "uglifier"
 
 group :development do
   gem "listen", "~> 3"
