@@ -7,8 +7,10 @@ source "https://rubygems.org"
 gem "rails", "~> 5.2"
 
 gem "bootsnap", "~> 1"
+gem "gds-api-adapters"
 gem "gds-sso", "~> 13"
 gem "govuk_app_config", "~> 1"
+gem "govuk_publishing_components", "9.5.0"
 gem "pg", "~> 1"
 gem "plek", "~> 2"
 

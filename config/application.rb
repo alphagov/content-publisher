@@ -26,5 +26,10 @@ module ContentPublisher
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # The "Slimmer" gem is loaded by the publishing components and will automatically
+    # attempt to intercept requests and provide a layout. We don't use that
+    # functionality here, so we have to tell slimmer to not do it.
+    config.middleware.delete Slimmer::App
   end
 end
