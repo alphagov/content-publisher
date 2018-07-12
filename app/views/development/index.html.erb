@@ -1,0 +1,14 @@
+<%= content_for :title, "Hello there!" %>
+
+<%= render "govuk_publishing_components/components/govspeak" do %>
+  <p>
+    Hi! This is the first shiny page of content publisher, the future of user
+    centric content publishing on GOV.UK!
+  </p>
+
+  <p>
+    It uses styles
+    from the <%= link_to "GOV.UK Publishing Components gem", "https://govuk-publishing-components.herokuapp.com/component-guide" %>,
+    which in turn uses the <%= link_to "GOV.UK Design System", "https://design-system.service.gov.uk/" %>.
+  </p>
+<% end %>
