@@ -1,14 +1,19 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>ContentPublisher</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<%= render 'govuk_publishing_components/components/layout_for_admin', browser_title: yield(:title) + " - GOV.UK" do %>
+  <%= render "govuk_publishing_components/components/skip_link" %>
+  <%= render "govuk_publishing_components/components/layout_header", {
+    environment: ENV["ERRBIT_ENVIRONMENT_NAME"] || "development",
+    navigation_items: [
+      { text: current_user.name },
+      { text: "Log out", href: gds_sign_out_path }
+    ]
+  }%>
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-  </head>
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+      <%= render "govuk_publishing_components/components/title", title: yield(:title) %>
+      <%= yield %>
+    </main>
+  </div>
 
-  <body>
-    <%= yield %>
-  </body>
-</html>
+  <%= render "govuk_publishing_components/components/layout_footer" %>
+<% end %>
