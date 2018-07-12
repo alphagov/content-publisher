@@ -1,7 +1,7 @@
 {
-  "name": "publish_data_beta",
+  "name": "content-publisher",
   "scripts": {
-    "postdeploy": "rake db:setup"
+    "postdeploy": "rake db:migrate db:seed"
   },
   "env": {
     "GDS_SSO_STRATEGY": {
