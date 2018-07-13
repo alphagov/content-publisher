@@ -3,7 +3,7 @@
   <%= render "govuk_publishing_components/components/layout_header", {
     environment: ENV["ERRBIT_ENVIRONMENT_NAME"] || "development",
     navigation_items: [
-      { text: current_user.name },
+      { text: current_user.name, href: Plek.new.external_url_for("signon") },
       { text: "Log out", href: gds_sign_out_path }
     ]
   }%>
