@@ -9,7 +9,14 @@
     },
     "GOVUK_APP_DOMAIN": {
       "required": true
-    }
+    },
+    "BASIC_AUTH_USERNAME": {
+      "required": true
+    },
+    "BASIC_AUTH_PASSWORD": {
+      "required": true
+    },
+    "REQUIRE_BASIC_AUTH": "true"
   },
   "addons": [
     "heroku-postgresql"
