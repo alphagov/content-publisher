@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2016_06_22_154200) do
+ActiveRecord::Schema.define(version: 2018_07_16_161306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "documents", force: :cascade do |t|
+    t.string "content_id", null: false
+    t.string "locale", null: false
+    t.string "document_type"
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_id", "locale"], name: "index_documents_on_content_id_and_locale", unique: true
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
