@@ -25,6 +25,7 @@ end
 
 group :development, :test do
   gem "byebug", "~> 10"
+  gem "capybara"
   gem "govuk-lint", "~> 3"
   gem "rspec-rails", "~> 3"
 end
