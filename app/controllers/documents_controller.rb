@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ContentController < ApplicationController
+class DocumentsController < ApplicationController
   def index
     @documents = Document.all
   end
