@@ -1,0 +1,13 @@
+<%= link_to "New document", new_document_path %>
+
+<h3>Documents</h3>
+
+<table>
+<% @documents.each do |document| %>
+  <tr>
+    <td><%= document.title || "No title" %></td>
+    <td><%= document.updated_at %></td>
+    <td><%= link_to "Edit", edit_document_path(document) %></td>
+  </tr>
+<% end %>
+</table>
