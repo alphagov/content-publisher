@@ -14,6 +14,7 @@ gem "govuk_publishing_components", "~> 9.5"
 gem "pg", "~> 1"
 gem "plek", "~> 2"
 gem "uglifier", "~> 4"
+gem "paper_trail", "~> 9.2"
 
 group :development do
   gem "listen", "~> 3"

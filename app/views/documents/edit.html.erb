@@ -1,9 +1,14 @@
-<%= form_for @document do |f| %>
-  Title:
-  <%= f.text_field :title %>
+<%= content_for :title, @document.title %>
 
+<%= render 'nav' %>
+
+<%= form_for @document do |f| %>
+  <%= f.label :title, class: "govuk-label" %>
+  <%= f.text_field :title, class: "govuk-input" %>
   <br/>
   <br/>
-  <br/>
-  <%= f.submit "Save" %>
+  <%= f.label :description, class: "govuk-label" %>
+  <%= f.text_area :description, class: "govuk-textarea" %>
+
+  <%= f.submit "Save", class: "govuk-button" %>
 <% end %>
