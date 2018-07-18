@@ -1,0 +1,50 @@
+<%= content_for :title, @document.title %>
+
+<%= render 'nav' %>
+
+<h2 class='govuk-heading-l'>States</h2>
+
+<p>
+<% if @document.publication_state == "unpublished-edits" %>
+  <% if @document.previewable_in_current_state? %>
+    This document has changes that haven't been published to GOV.UK yet.
+    <br/>
+    <br/>
+    All the fields required for preview have been filled in, so you can <a href='#'>preview this document</a> or publish it.
+    <br/>
+    <br/>
+    <%= button_to "Publish this document", publish_document_path(@document), class: "govuk-button" %>
+  <% else %>
+    This document has changes that haven't been published to GOV.UK yet.
+    <br/>
+    <br/>
+    You currently can't preview or publish this document, because it
+    <%= link_to "needs a title and description", edit_document_path(@document) %>.
+  <% end %>
+<% else %>
+  This document has been published and is <a href='#'>viewable on GOV.UK</a>.
+<% end %>
+</p>
+
+<hr/>
+<br/>
+
+<p>
+  Publication state:
+  <% %w[unpublished-edits published-to-live].each do |state| %>
+    <% if state == @document.publication_state %>
+      <strong><%= state %></strong>
+    <% else %>
+      <%= state %>
+    <% end %>
+  <% end %>
+</p>
+
+<p>
+  Validation state:
+    <% if @document.previewable_in_current_state? %>
+      Not enough info for publishing | <strong>OK to publish/preview</strong>
+    <% else %>
+      <strong>not enough info for publishing</strong> | OK to publish/preview
+    <% end %>
+</p>

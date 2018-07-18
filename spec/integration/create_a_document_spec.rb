@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Create a document", type: :feature do
+RSpec.describe "Create a document", type: :feature, skip: true do
   scenario "User creates a document" do
     when_i_click_on_create_a_document
     and_i_choose_news_article
