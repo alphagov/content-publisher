@@ -31,5 +31,9 @@ module ContentPublisher
     # attempt to intercept requests and provide a layout. We don't use that
     # functionality here, so we have to tell slimmer to not do it.
     config.middleware.delete Slimmer::App
+
+    # The "acceptance environment" we're in - not the same as Rails env.
+    # Can be production, staging, integration, or development
+    config.govuk_environment = ENV["ERRBIT_ENVIRONMENT_NAME"] || "development"
   end
 end
