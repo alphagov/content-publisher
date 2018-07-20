@@ -5,8 +5,6 @@ class DocumentsController < ApplicationController
     @documents = Document.all
   end
 
-  def choose_format; end
-
   def create
     document = Document.create!(
       content_id: SecureRandom.uuid,

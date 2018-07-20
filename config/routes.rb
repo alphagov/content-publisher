@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   root to: redirect('/documents')
   get '/dev' => 'development#index'
 
+  get '/documents/new' => 'new_document#choose_supertype', as: :new_document
+  post '/documents/new' => 'new_document#choose_document_type'
+
   get '/documents' => 'documents#index'
-  get '/documents/new' => 'documents#choose_format', as: :new_document
   post '/documents/create' => 'documents#create', as: :create_document
   get '/documents/:id/edit' => 'documents#edit', as: :edit_document
   patch '/documents/:id' => 'documents#update', as: :document
