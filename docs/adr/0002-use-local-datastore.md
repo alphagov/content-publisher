@@ -25,13 +25,13 @@ In this option we continue with the platform architecture goals.
 #### Cons
 - Effectively building an Active Resource layer (object-relational mapper for REST)
 - Harder to resolve performance problems
-- Current workflow is opinionated and may not match needs of content
-- Validation can be difficult to explain to user
+- Current workflow is opinionated and may not meet needs of content
+- Testing against an API is hard, it requires a lot of stubbing or running a version of the API as part of the test suite
 
 ### Option 2: Use a local datastore
 #### Pros
 + It’s standard Rails so quick to build and easy to understand
-+ Easy to test, testing over an API is not easy and slow
++ Easy to test, testing with a local datastore is very straightforward
 + Easy to iterate workflow, changing the API workflow is much harder
 + Only final state of content can be put into publishing-api - some formats will need interim data which isn’t needed for publishing
 + No new features needed for meta data - notes, and other publisher info
