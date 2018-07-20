@@ -1,3 +1,9 @@
+<% content_for :title, @document.title || "Untitled document" %>
+
+Document type: <%= @document.document_type %>.
+
+<br/><br/>
+
 <%= form_for @document do |f| %>
   Title:
   <%= f.text_field :title %>
