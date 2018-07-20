@@ -13,4 +13,8 @@ Rails.application.routes.draw do
   patch '/documents/:id' => 'documents#update', as: :document
 
   get "/healthcheck", to: proc { [200, {}, ["OK"]] }
+
+  if Rails.env.test?
+    get "/government/admin/consultations/new", to: proc { [200, {}, ["You've been redirected"]] }
+  end
 end

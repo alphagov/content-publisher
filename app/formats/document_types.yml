@@ -20,5 +20,6 @@
   supertype: guidance
 
 - document_type: consultation
-  name: Consultation
+  name: Consultation (managed elsewhere)
   supertype: consultations
+  managed_elsewhere: https://whitehall-admin.publishing.service.gov.uk/government/admin/consultations/new
