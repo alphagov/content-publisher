@@ -43,7 +43,7 @@ In this option we continue with the platform architecture goals.
 - Expanded Links
 - Combination of local and publisher API workflows
 - Hard to feedback to use on asynchronous API updates
-- Content-Schema may not matching Rails validations causing unhelpful error messages
+- Content-Schema may not match Rails validations causing unhelpful error messages
 
 ## Decision
 We will use a local datastore which syncs to the publishing api.
