@@ -9,9 +9,9 @@ One of the goals of the migration effort from 2016 was to for all publishing app
 
 [goals]: https://docs.google.com/document/d/1Oft4akc6dZfhhOjosNPbFpcLUOUjz7YG7QPcVZi8hww/edit#heading=h.5uytjxbfoe58
 
-Since writing these goals we have built the specialist-publisher application using this pattern. The practicalities of using the pattern 
+Since writing these goals we have built the specialist-publisher application using this pattern. The difficulties of building Rails application this way have led us to reconsider this approach.
 
-We are about to build another publishing-api client and we should now use the learnings we have from building specialist-publisher to ensure that the not using a local datastore is the best decision.
+We are about to build another publishing-api client and we should now use the learnings we have to ensure that not using a local datastore is the best decision.
 
 ### Option 1: No local datastore
 In this option we continue with the platform architecture goals.
@@ -49,7 +49,6 @@ In this option we continue with the platform architecture goals.
 We will use a local datastore which syncs to the publishing api.
 
 ## Status
-
 Accepted
 
 ## Consequences
