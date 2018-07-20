@@ -23,11 +23,10 @@ In this option we continue with the platform architecture goals.
 + Single abstraction layer
 
 #### Cons
-- Effectively building an Active Resource layer
+- Effectively building an Active Resource layer (object-relational mapper for REST)
 - Harder to resolve performance problems
 - Current workflow is opinionated and may not match needs of content
 - Validation can be difficult to explain to user
-- Hard to deploy
 
 ### Option 2: Use a local datastore
 #### Pros
