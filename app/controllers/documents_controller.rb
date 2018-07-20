@@ -5,16 +5,6 @@ class DocumentsController < ApplicationController
     @documents = Document.all
   end
 
-  def create
-    document = Document.create!(
-      content_id: SecureRandom.uuid,
-      locale: "en",
-      document_type: params[:document_type],
-    )
-
-    redirect_to edit_document_path(document)
-  end
-
   def edit
     @document = Document.find(params[:id])
   end
