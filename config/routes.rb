@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   post '/documents/new' => 'new_document#choose_document_type'
   post '/documents/create' => 'new_document#create', as: :create_document
 
+  post '/documents/:id/publish' => 'publish_document#publish', as: :publish_document
+
   get '/documents' => 'documents#index'
   get '/documents/:id/edit' => 'documents#edit', as: :edit_document
   patch '/documents/:id' => 'documents#update', as: :document

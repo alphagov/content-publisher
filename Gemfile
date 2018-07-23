@@ -30,4 +30,5 @@ group :development, :test do
   gem "govuk-lint", "~> 3"
   gem "govuk_schemas", "~> 3.2"
   gem "rspec-rails", "~> 3"
+  gem "webmock", "~> 3"
 end
