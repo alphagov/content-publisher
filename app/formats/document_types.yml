@@ -11,11 +11,7 @@
   name: Statistical data set
   supertype: transparancy
 
-- document_type: publication
-  name: Publication
-  supertype: news
-
-- document_type: detailed_guides
+- document_type: detailed_guide
   name: Detailed guides
   supertype: guidance
 
