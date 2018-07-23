@@ -19,8 +19,3 @@
   label: Consultations
   description: To request users views or evidence on an issue and to build collective
     agreement.
-
-- id: not-sure
-  label: I'm not sure this should be on GOV.UK
-  description: To request users views or evidence on an issue and to build collective
-    agreement.
