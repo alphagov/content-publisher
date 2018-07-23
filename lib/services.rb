@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gds_api/publishing_api_v2'
 
 module Services

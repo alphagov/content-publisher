@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe "Publishing a document", type: :feature do
@@ -18,7 +20,7 @@ RSpec.describe "Publishing a document", type: :feature do
   end
 
   def and_i_click_on_the_publish_button
-    @request = stub_publishing_api_publish(@document.content_id, { })
+    @request = stub_publishing_api_publish(@document.content_id, {})
     click_on "publish"
   end
 
@@ -30,4 +32,3 @@ RSpec.describe "Publishing a document", type: :feature do
     assert_requested @request
   end
 end
-
