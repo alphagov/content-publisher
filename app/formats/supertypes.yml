@@ -1,0 +1,26 @@
+---
+- id: news
+  label: News
+  description: To tell users about something that government has done or will do.
+
+- id: transparancy
+  label: Transparancy
+  description: To provide information that helps users hold government to account.
+
+- id: guidance
+  label: Guidance
+  description: To help users do something or understand what they need to do.
+
+- id: policy
+  label: Policy
+  description: To explain the government's position on something.
+
+- id: consultations
+  label: Consultations
+  description: To request users views or evidence on an issue and to build collective
+    agreement.
+
+- id: not-sure
+  label: I'm not sure this should be on GOV.UK
+  description: To request users views or evidence on an issue and to build collective
+    agreement.

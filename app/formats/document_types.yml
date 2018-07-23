@@ -1,0 +1,25 @@
+---
+- document_type: press_release
+  name: Press release
+  supertype: news
+
+- document_type: news_article
+  name: News article
+  supertype: news
+
+- document_type: statistical_data_set
+  name: Statistical data set
+  supertype: transparancy
+
+- document_type: publication
+  name: Publication
+  supertype: news
+
+- document_type: detailed_guides
+  name: Detailed guides
+  supertype: guidance
+
+- document_type: consultation
+  name: Consultation (managed elsewhere)
+  supertype: consultations
+  managed_elsewhere: https://whitehall-admin.publishing.service.gov.uk/government/admin/consultations/new

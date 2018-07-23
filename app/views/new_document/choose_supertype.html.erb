@@ -1,0 +1,19 @@
+<% content_for :back_link, root_path %>
+<% content_for :title, "Content type" %>
+
+<%= form_tag do %>
+  <%= render "govuk_publishing_components/components/radio", {
+    name: "supertype",
+    items: @supertypes.map { |supertype|
+      {
+        value: supertype["id"],
+        text: supertype["label"],
+        hint_text: supertype["description"],
+        bold: true,
+      }
+    }
+  } %>
+  <br/>
+  <br/>
+  <%= render "govuk_publishing_components/components/button", text: "Continue" %>
+<% end %>

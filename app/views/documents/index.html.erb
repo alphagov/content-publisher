@@ -7,6 +7,7 @@
   <tr>
     <td><%= document.title || "No title" %></td>
     <td><%= document.updated_at %></td>
+    <td><%= document.document_type %></td>
     <td><%= link_to "Edit", edit_document_path(document) %></td>
   </tr>
 <% end %>
