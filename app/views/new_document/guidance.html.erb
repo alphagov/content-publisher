@@ -1,0 +1,6 @@
+<% content_for :back_link, new_document_path %>
+<% content_for :title, "What to publish on GOV.UK" %>
+
+<%= render "govuk_publishing_components/components/govspeak" do %>
+  <%= raw Govspeak::Document.new(File.read("app/views/new_document/guidance.govspeak.md")).to_html %>
+<% end %>
