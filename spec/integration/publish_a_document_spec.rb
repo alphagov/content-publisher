@@ -18,9 +18,6 @@ RSpec.describe "Publishing a document", type: :feature do
   end
 
   def and_i_click_on_the_publish_button
-    # TODO: Remove this when we publish drafts separately
-    stub_any_publishing_api_put_content
-
     @request = stub_publishing_api_publish(@document.content_id, { })
     click_on "publish"
   end
