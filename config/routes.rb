@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/documents' => 'documents#index'
   get '/documents/:id/edit' => 'documents#edit', as: :edit_document
   patch '/documents/:id' => 'documents#update', as: :document
+  get '/documents/:id' => 'documents#show'
 
   get "/healthcheck", to: proc { [200, {}, ["OK"]] }
 

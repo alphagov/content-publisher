@@ -272,7 +272,7 @@ GEM
       rubocop (>= 0.51.0)
     ruby-progressbar (1.9.0)
     ruby_dep (1.5.0)
-    sanitize (4.6.5)
+    sanitize (4.6.6)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4)
@@ -324,7 +324,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.5)
     unicode-display_width (1.4.0)
-    unicorn (5.4.0)
+    unicorn (5.4.1)
       kgio (~> 2.6)
       raindrops (~> 0.7)
     warden (1.2.7)
@@ -344,7 +344,7 @@ DEPENDENCIES
   bootsnap (~> 1)
   byebug (~> 10)
   capybara
-  factory_bot_rails
+  factory_bot_rails (~> 4.0)
   gds-api-adapters (~> 52)
   gds-sso (~> 13)
   govuk-lint (~> 3)

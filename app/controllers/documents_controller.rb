@@ -9,6 +9,10 @@ class DocumentsController < ApplicationController
     @document = Document.find(params[:id])
   end
 
+  def show
+    @document = Document.find(params[:id])
+  end
+
   def update
     document = Document.find(params[:id])
     allowed_field_names_in_contents = document.document_type_schema.fields.map(&:id)
