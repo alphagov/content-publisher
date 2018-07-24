@@ -2,6 +2,7 @@
 
 require "byebug"
 require "simplecov"
+require "database_cleaner"
 
 ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
@@ -16,5 +17,13 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     User.create!(permissions: ["signin"])
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
   end
 end

@@ -20,6 +20,7 @@ group :development do
 end
 
 group :test do
+  gem "database_cleaner"
   gem "simplecov", "~> 0.16"
 end
 
