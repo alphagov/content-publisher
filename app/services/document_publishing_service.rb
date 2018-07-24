@@ -7,7 +7,7 @@ class DocumentPublishingService
     publishing_api.put_content(document.content_id, payload(document))
   end
 
-  def publish_live(document)
+  def publish(document)
     publishing_api.publish(document.content_id, "major")
   end
 

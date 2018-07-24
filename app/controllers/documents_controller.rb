@@ -19,7 +19,9 @@ class DocumentsController < ApplicationController
     document_update_params = params.require(:document).permit(:title, contents: allowed_field_names_in_contents)
     document.update_attributes(document_update_params)
     DocumentPublishingService.new.publish_draft(document)
-    redirect_to edit_document_path(document)
+    redirect_to edit_document_path(document), notice: "Preview creation successful"
+  rescue GdsApi::HTTPUnavailable
+    redirect_to edit_document_path(document), alert: "Error creating preview"
   end
 
 private

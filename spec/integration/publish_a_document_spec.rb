@@ -7,8 +7,7 @@ RSpec.describe "Publishing a document", type: :feature do
     given_there_is_a_document
     when_i_visit_the_document_page
     and_i_click_on_the_publish_button
-    then_i_see_the_document_has_been_published
-    and_the_document_has_been_published
+    then_i_see_the_publish_succeeded
   end
 
   def given_there_is_a_document
@@ -24,11 +23,8 @@ RSpec.describe "Publishing a document", type: :feature do
     click_on "publish"
   end
 
-  def then_i_see_the_document_has_been_published
-    expect(page).to have_content "Publish successful"
-  end
-
-  def and_the_document_has_been_published
+  def then_i_see_the_publish_succeeded
     assert_requested @request
+    expect(page).to have_content "Publish successful"
   end
 end

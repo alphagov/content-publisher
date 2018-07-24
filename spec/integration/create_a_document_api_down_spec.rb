@@ -2,37 +2,35 @@
 
 require "spec_helper"
 
-RSpec.describe "Create a document", type: :feature do
-  scenario "User creates a document" do
-    when_i_click_on_create_a_document
-    and_i_choose_news
-    and_i_choose_a_press_release
-    and_i_fill_in_a_title
+RSpec.describe "Create a document when the API is down", type: :feature do
+  scenario "User creates a document without publishing" do
+    given_i_start_to_create_a_document
+    and_the_publishing_api_is_down
+    when_i_submit_the_form
     then_i_see_the_document_exists
-    and_the_preview_creation_succeeded
+    and_the_preview_creation_failed
   end
 
-  def when_i_click_on_create_a_document
+  def given_i_start_to_create_a_document
     visit "/"
     click_on "New document"
-  end
 
-  def and_i_choose_news
     choose "News"
     click_on "Continue"
-  end
 
-  def and_i_choose_a_press_release
     choose "Press release"
     click_on "Continue"
   end
 
-  def and_i_fill_in_a_title
-    fill_in "document[title]", with: "A great title"
-
+  def and_the_publishing_api_is_down
     @request = stub_publishing_api_put_content(Document.last.content_id,
                                                hash_including(title: "A great title"))
 
+    publishing_api_isnt_available
+  end
+
+  def when_i_submit_the_form
+    fill_in "document[title]", with: "A great title"
     click_on "Save"
   end
 
@@ -42,8 +40,8 @@ RSpec.describe "Create a document", type: :feature do
     expect(page).to have_content "A great title"
   end
 
-  def and_the_preview_creation_succeeded
+  def and_the_preview_creation_failed
     assert_requested @request
-    expect(page).to have_content "Preview creation successful"
+    expect(page).to have_content "Error creating preview"
   end
 end

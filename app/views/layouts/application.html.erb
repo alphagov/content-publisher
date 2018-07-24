@@ -23,6 +23,12 @@
       </p>
     <% end %>
 
+    <% if flash[:alert] %>
+      <p>
+        <%= flash[:alert] %>
+      </p>
+    <% end %>
+
     <main class="govuk-main-wrapper " id="main-content" role="main">
       <%= render "govuk_publishing_components/components/title", title: yield(:title) %>
       <%= yield %>
