@@ -21,14 +21,11 @@ private
       document_type: document.document_type,
       publishing_app: "content-publisher",
       rendering_app: "government-frontend",
-      details: {
-        body: "Hello!",
-        first_public_at: Time.now.iso8601,
-        government: {
-          title: "Hey", slug: "what", current: true,
-        },
-        political: false,
-      },
+      details: document.contents.merge(first_public_at: Time.now.iso8601,
+                                       government: {
+                                         title: "Hey", slug: "what", current: true,
+                                       },
+                                       political: false),
       routes: [
         { path: "/test/government/foo", type: "exact" },
       ]
