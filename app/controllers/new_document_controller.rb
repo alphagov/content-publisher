@@ -11,7 +11,8 @@ class NewDocumentController < ApplicationController
       return
     end
 
-    @document_types = YAML.load_file("app/formats/document_types.yml").select { |s| s["supertype"] == params[:supertype] }
+    supertype_schema = SupertypeSchema.find(params[:supertype])
+    @document_types = supertype_schema.document_types
   end
 
   def create
@@ -48,11 +49,11 @@ class NewDocumentController < ApplicationController
   private
 
     def supertype_options
-      YAML.load_file("app/formats/supertypes.yml").map do |supertype|
+      SupertypeSchema.all.map do |supertype|
         {
-          value: supertype["id"],
-          text: supertype["label"],
-          hint_text: supertype["description"],
+          value: supertype.id,
+          text: supertype.label,
+          hint_text: supertype.description,
           bold: true,
         }
       end
