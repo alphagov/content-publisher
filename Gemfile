@@ -20,7 +20,6 @@ group :development do
 end
 
 group :test do
-  gem "govuk-content-schema-test-helpers"
   gem "simplecov", "~> 0.16"
 end
 

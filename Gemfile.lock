@@ -106,8 +106,6 @@ GEM
       money (~> 6.7)
       nokogiri (~> 1.5)
       sanitize (~> 4.6)
-    govuk-content-schema-test-helpers (1.6.1)
-      json-schema (~> 2.8.0)
     govuk-lint (3.8.0)
       rubocop (~> 0.52.0)
       rubocop-rspec (~> 1.19.0)
@@ -357,7 +355,6 @@ DEPENDENCIES
   factory_bot_rails (~> 4.0)
   gds-api-adapters (~> 52)
   gds-sso (~> 13)
-  govuk-content-schema-test-helpers
   govuk-lint (~> 3)
   govuk_app_config (~> 1)
   govuk_publishing_components (~> 9.6)
