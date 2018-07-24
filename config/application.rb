@@ -34,6 +34,12 @@ module ContentPublisher
 
     # The "acceptance environment" we're in - not the same as Rails env.
     # Can be production, staging, integration, or development
-    config.govuk_environment = ENV["ERRBIT_ENVIRONMENT_NAME"] || "development"
+    govuk_environments = {
+      "production" => "production",
+      "staging" => "staging",
+      "integration-blue-aws" => "integration",
+    }
+
+    config.govuk_environment = govuk_environments.fetch(ENV["ERRBIT_ENVIRONMENT_NAME"], "development")
   end
 end
