@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 class SupertypeSchema
-  include ActiveModel::Model
-  attr_accessor :id, :label, :description
+  attr_reader :id, :label, :description
+
+  def initialize(params = {})
+    @id = params["id"]
+    @label = params["label"]
+    @description = params["description"]
+  end
 
   def self.all
     @all ||= begin
