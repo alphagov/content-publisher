@@ -4,26 +4,18 @@ require "spec_helper"
 
 RSpec.describe "Edit a document", type: :feature do
   scenario "User edits a document" do
-    when_i_click_on_create_a_document
-    and_i_choose_news
-    and_i_choose_a_press_release
+    given_there_is_a_document
+    when_i_go_to_edit_the_document
     and_i_fill_in_a_body_text
     then_the_document_is_saved
   end
 
-  def when_i_click_on_create_a_document
-    visit "/"
-    click_on "New document"
+  def given_there_is_a_document
+    create :document, document_type: "press_release"
   end
 
-  def and_i_choose_news
-    choose "News"
-    click_on "Continue"
-  end
-
-  def and_i_choose_a_press_release
-    choose "Press release"
-    click_on "Continue"
+  def when_i_go_to_edit_the_document
+    visit edit_document_path(Document.last)
   end
 
   def and_i_fill_in_a_body_text
