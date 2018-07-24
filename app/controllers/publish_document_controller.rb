@@ -3,7 +3,7 @@
 class PublishDocumentController < ApplicationController
   def publish
     document = Document.find(params[:id])
-    Services.publishing_api.publish(document.content_id, "major")
+    DocumentPublishingService.new.publish_live(document)
     redirect_to document, notice: "Publish successful"
   end
 end
