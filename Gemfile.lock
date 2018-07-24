@@ -68,6 +68,11 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     erubi (1.7.1)
     execjs (2.7.0)
+    factory_bot (4.10.0)
+      activesupport (>= 3.0.0)
+    factory_bot_rails (4.10.0)
+      factory_bot (~> 4.10.0)
+      railties (>= 3.0.0)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
@@ -339,6 +344,7 @@ DEPENDENCIES
   bootsnap (~> 1)
   byebug (~> 10)
   capybara
+  factory_bot_rails
   gds-api-adapters (~> 52)
   gds-sso (~> 13)
   govuk-lint (~> 3)
