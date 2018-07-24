@@ -45,5 +45,9 @@ RSpec.describe "Create a document", type: :feature do
   def and_the_preview_creation_succeeded
     expect(@request).to have_been_requested
     expect(page).to have_content "Preview creation successful"
+
+    expect(a_request(:put, /content/).with { |req|
+      expect(req.body).to be_valid_against_schema("news_article")
+    }).to have_been_requested
   end
 end
