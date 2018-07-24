@@ -5,7 +5,7 @@ class PublishDocumentController < ApplicationController
     document = Document.find(params[:id])
     DocumentPublishingService.new.publish(document)
     redirect_to document, notice: "Publish successful"
-  rescue GdsApi::HTTPUnavailable
+  rescue StandardError
     redirect_to document, alert: "Error publishing"
   end
 end

@@ -20,7 +20,7 @@ class DocumentsController < ApplicationController
     document.update_attributes(document_update_params)
     DocumentPublishingService.new.publish_draft(document)
     redirect_to edit_document_path(document), notice: "Preview creation successful"
-  rescue GdsApi::HTTPUnavailable
+  rescue StandardError
     redirect_to edit_document_path(document), alert: "Error creating preview"
   end
 
