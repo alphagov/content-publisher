@@ -8,6 +8,10 @@ Document type: <%= @document.document_type %>.
   Title:
   <%= f.text_field :title %>
 
+  <% @document.document_type_schema.fields.each do |field| %>
+    <%= render "documents/input_types/#{field.type}", name: field.id, label: field.label, document: @document %>
+  <% end %>
+
   <br/>
   <br/>
   <br/>

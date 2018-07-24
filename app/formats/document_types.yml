@@ -2,6 +2,10 @@
 - document_type: press_release
   name: Press release
   supertype: news
+  fields:
+    - id: body
+      label: Body text for the press release
+      type: govspeak
 
 - document_type: news_article
   name: News article
