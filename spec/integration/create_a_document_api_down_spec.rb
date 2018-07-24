@@ -41,7 +41,7 @@ RSpec.describe "Create a document when the API is down", type: :feature do
   end
 
   def and_the_preview_creation_failed
-    assert_requested @request
+    expect(@request).to have_been_requested
     expect(page).to have_content "Error creating preview"
   end
 end

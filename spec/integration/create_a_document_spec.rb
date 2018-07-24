@@ -43,7 +43,7 @@ RSpec.describe "Create a document", type: :feature do
   end
 
   def and_the_preview_creation_succeeded
-    assert_requested @request
+    expect(@request).to have_been_requested
     expect(page).to have_content "Preview creation successful"
   end
 end

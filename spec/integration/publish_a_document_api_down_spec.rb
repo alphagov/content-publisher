@@ -25,7 +25,7 @@ RSpec.describe "Publishing a document when the API is down", type: :feature do
   end
 
   def then_i_see_the_publish_failed
-    assert_requested @request
+    expect(@request).to have_been_requested
     expect(page).to have_content "Error publishing"
   end
 end

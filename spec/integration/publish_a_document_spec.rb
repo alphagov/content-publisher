@@ -24,7 +24,7 @@ RSpec.describe "Publishing a document", type: :feature do
   end
 
   def then_i_see_the_publish_succeeded
-    assert_requested @request
+    expect(@request).to have_been_requested
     expect(page).to have_content "Publish successful"
   end
 end
