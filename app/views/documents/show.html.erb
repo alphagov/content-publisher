@@ -1,0 +1,4 @@
+<% content_for :back_link, documents_path %>
+<% content_for :title, @document.title || "No title" %>
+
+<%= button_to :publish, publish_document_path(@document) %>

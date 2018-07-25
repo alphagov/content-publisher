@@ -9,11 +9,25 @@ class DocumentsController < ApplicationController
     @document = Document.find(params[:id])
   end
 
+  def show
+    @document = Document.find(params[:id])
+  end
+
   def update
     document = Document.find(params[:id])
     allowed_field_names_in_contents = document.document_type_schema.fields.map(&:id)
     document_update_params = params.require(:document).permit(:title, contents: allowed_field_names_in_contents)
     document.update_attributes(document_update_params)
-    redirect_to edit_document_path(document)
+    DocumentPublishingService.new.publish_draft(document)
+    redirect_to edit_document_path(document), notice: "Preview creation successful"
+  rescue GdsApi::HTTPErrorResponse, SocketError => e
+    Rails.logger.error(e)
+    redirect_to edit_document_path(document), alert: "Error creating preview"
+  end
+
+private
+
+  def document_update_params
+    params.require(:document).permit(:title)
   end
 end

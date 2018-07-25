@@ -17,6 +17,18 @@
       <%= render "govuk_publishing_components/components/back_link", href: yield(:back_link) %>
     <% end %>
 
+    <% if flash[:notice] %>
+      <p>
+        <%= flash[:notice] %>
+      </p>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <p>
+        <%= flash[:alert] %>
+      </p>
+    <% end %>
+
     <main class="govuk-main-wrapper " id="main-content" role="main">
       <%= render "govuk_publishing_components/components/title", title: yield(:title) %>
       <%= yield %>
