@@ -7,7 +7,7 @@ RSpec.describe "Create a document", type: :feature do
     when_i_click_on_create_a_document
     and_i_choose_news
     and_i_choose_a_press_release
-    and_i_fill_in_a_title
+    and_i_fill_in_the_form_fields
     then_i_see_the_document_exists
     and_the_preview_creation_succeeded
   end
@@ -27,11 +27,13 @@ RSpec.describe "Create a document", type: :feature do
     click_on "Continue"
   end
 
-  def and_i_fill_in_a_title
+  def and_i_fill_in_the_form_fields
     fill_in "document[title]", with: "A great title"
+    fill_in "document[base_path]", with: "/government/foo"
 
     @request = stub_publishing_api_put_content(Document.last.content_id,
-                                               hash_including(title: "A great title"))
+                                               hash_including(title: "A great title",
+                                                              base_path: "/government/foo"))
 
     click_on "Save"
   end
@@ -40,6 +42,7 @@ RSpec.describe "Create a document", type: :feature do
     expect(Document.last.title).to eq "A great title"
     expect(page).to have_content "press_release"
     expect(page).to have_content "A great title"
+    expect(page).to have_content "/government/foo"
   end
 
   def and_the_preview_creation_succeeded
