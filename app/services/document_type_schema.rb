@@ -14,7 +14,8 @@ class DocumentTypeSchema
   end
 
   def self.find(document_type)
-    all.find { |schema| schema.document_type == document_type }
+    item = all.find { |schema| schema.document_type == document_type }
+    item || (raise RuntimeError, "Document type #{document_type} not found")
   end
 
   def self.all
