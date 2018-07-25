@@ -3,6 +3,8 @@
 require 'gds_api/publishing_api_v2'
 
 class DocumentPublishingService
+  PUBLISHING_APP = "content-publisher"
+
   def publish_draft(document)
     publishing_api.put_content(document.content_id, payload(document))
   end
@@ -17,10 +19,10 @@ private
     {
       base_path: "/test/government/foo",
       title: document.title,
-      schema_name: "news_article",
+      schema_name: document.document_type_schema.schema_name,
       document_type: document.document_type,
-      publishing_app: "content-publisher",
-      rendering_app: "government-frontend",
+      publishing_app: PUBLISHING_APP,
+      rendering_app: document.document_type_schema.rendering_app,
       details: document.contents.merge(first_public_at: Time.now.iso8601,
                                        government: {
                                          title: "Hey", slug: "what", current: true,

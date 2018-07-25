@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DocumentTypeSchema
-  attr_reader :fields, :document_type, :name, :supertype, :managed_elsewhere
+  attr_reader :fields, :document_type, :name, :supertype, :managed_elsewhere, :schema_name, :rendering_app
 
   def initialize(params = {})
     @document_type = params["document_type"]
@@ -9,6 +9,8 @@ class DocumentTypeSchema
     @supertype = params["supertype"]
     @managed_elsewhere = params["managed_elsewhere"]
     @fields = params["fields"].to_a.map { |field| Field.new(field) }
+    @schema_name = params["schema_name"]
+    @rendering_app = params["rendering_app"]
   end
 
   def self.find(document_type)
