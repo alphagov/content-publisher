@@ -351,8 +351,8 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (~> 1)
   byebug (~> 10)
-  capybara
-  factory_bot_rails (~> 4.0)
+  capybara (~> 3)
+  factory_bot_rails (~> 4)
   gds-api-adapters (~> 52)
   gds-sso (~> 13)
   govuk-lint (~> 3)

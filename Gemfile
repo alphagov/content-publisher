@@ -25,8 +25,8 @@ end
 
 group :development, :test do
   gem "byebug", "~> 10"
-  gem "capybara"
-  gem "factory_bot_rails", "~> 4.0"
+  gem "capybara", "~> 3"
+  gem "factory_bot_rails", "~> 4"
   gem "govuk-lint", "~> 3"
   gem "govuk_schemas", "~> 3.2"
   gem "rspec-rails", "~> 3"
