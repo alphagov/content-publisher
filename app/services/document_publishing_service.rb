@@ -10,7 +10,7 @@ class DocumentPublishingService
   end
 
   def publish(document)
-    publishing_api.publish(document.content_id, "major")
+    publishing_api.publish(document.content_id, "major", locale: document.locale)
   end
 
 private
@@ -19,6 +19,7 @@ private
     {
       base_path: document.base_path,
       title: document.title,
+      locale: document.locale,
       schema_name: document.document_type_schema.schema_name,
       document_type: document.document_type,
       publishing_app: PUBLISHING_APP,
