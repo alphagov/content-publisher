@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
   get "/healthcheck", to: proc { [200, {}, ["OK"]] }
 
+  mount GovukPublishingComponents::Engine, at: "/component-guide"
+
   if Rails.env.test?
     get "/government/admin/consultations/new", to: proc { [200, {}, ["You've been redirected"]] }
   end
