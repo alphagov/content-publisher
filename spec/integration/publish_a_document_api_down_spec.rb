@@ -11,7 +11,7 @@ RSpec.describe "Publishing a document when the API is down", type: :feature do
   end
 
   def given_there_is_a_document
-    @document = FactoryBot.create :document, title: "Title"
+    @document = create :document, :press_release
   end
 
   def and_the_publishing_api_is_down

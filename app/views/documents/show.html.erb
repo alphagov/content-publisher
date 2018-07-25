@@ -1,4 +1,10 @@
 <% content_for :back_link, documents_path %>
 <% content_for :title, @document.title || "No title" %>
 
+<%= @document.document_type %>
+
+<% @document.document_type_schema.fields.each do |field| %>
+  <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, document: @document %>
+<% end %>
+
 <%= button_to :publish, publish_document_path(@document) %>
