@@ -1,5 +1,7 @@
 ---
 - document_type: press_release
+  schema_name: news_article
+  rendering_app: government-frontend
   name: Press release
   supertype: news
   fields:
@@ -8,14 +10,20 @@
       type: govspeak
 
 - document_type: news_article
+  schema_name: news_article
+  rendering_app: government-frontend
   name: News article
   supertype: news
 
 - document_type: statistical_data_set
+  schema_name: statistical_data_set
+  rendering_app: government-frontend
   name: Statistical data set
   supertype: transparancy
 
 - document_type: detailed_guide
+  schema_name: detailed_guide
+  rendering_app: government-frontend
   name: Detailed guides
   supertype: guidance
 
