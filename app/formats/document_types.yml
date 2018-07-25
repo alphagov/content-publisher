@@ -9,10 +9,10 @@
       label: Body text for the press release
       type: govspeak
 
-- document_type: news_article
+- document_type: news_story
   schema_name: news_article
   rendering_app: government-frontend
-  name: News article
+  name: News story
   supertype: news
 
 - document_type: statistical_data_set
