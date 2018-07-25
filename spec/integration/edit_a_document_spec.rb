@@ -16,7 +16,8 @@ RSpec.describe "Edit a document", type: :feature do
   end
 
   def when_i_go_to_edit_the_document
-    visit edit_document_path(Document.last)
+    visit document_path(Document.last)
+    click_on "edit"
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
   end
 
