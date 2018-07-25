@@ -1,7 +1,13 @@
 <% content_for :back_link, documents_path %>
 <% content_for :title, @document.title || "No title" %>
 
-<%= @document.document_type %>
+<p>
+  Base path: <%= @document.base_path %>
+</p>
+
+<p>
+  Document type: <%= @document.document_type %>
+</p>
 
 <% @document.document_type_schema.fields.each do |field| %>
   <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, document: @document %>

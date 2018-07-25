@@ -5,8 +5,13 @@ Document type: <%= @document.document_type %>.
 <br/><br/>
 
 <%= form_for @document do |f| %>
-  Title:
-  <%= f.text_field :title %>
+  <p>
+    Title: <%= f.text_field :title %>
+  </p>
+
+  <p>
+    Base path: <%= f.text_field :base_path %>
+  </p>
 
   <% @document.document_type_schema.fields.each do |field| %>
     <%= render "documents/fields/#{field.type}_input", name: field.id, label: field.label, document: @document %>

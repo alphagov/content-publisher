@@ -15,7 +15,7 @@ private
 
   def payload(document)
     {
-      base_path: "/test/government/foo",
+      base_path: document.base_path,
       title: document.title,
       schema_name: "news_article",
       document_type: document.document_type,
@@ -27,7 +27,7 @@ private
                                        },
                                        political: false),
       routes: [
-        { path: "/test/government/foo", type: "exact" },
+        { path: document.base_path, type: "exact" },
       ]
     }
   end
