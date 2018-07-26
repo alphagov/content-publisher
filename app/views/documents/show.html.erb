@@ -2,7 +2,7 @@
 <% content_for :title, @document.title || "No title" %>
 
 <%= render "govuk_publishing_components/components/lead_paragraph", {
-  text: @document.summary
+  text: @document.summary&.html_safe
 } %>
 
 <p>
