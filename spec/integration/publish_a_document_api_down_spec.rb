@@ -21,7 +21,7 @@ RSpec.describe "Publishing a document when the API is down", type: :feature do
 
   def when_i_try_to_publish_the_document
     visit document_path(@document)
-    click_on "publish"
+    click_on "Publish"
   end
 
   def then_i_see_the_publish_failed

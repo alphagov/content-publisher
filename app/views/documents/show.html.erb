@@ -1,17 +1,41 @@
 <% content_for :back_link, documents_path %>
 <% content_for :title, @document.title || "No title" %>
 
+<%= render "govuk_publishing_components/components/lead_paragraph", {
+  text: @document.summary
+} %>
+
 <p>
-  Base path: <%= @document.base_path %>
+  <%= render "govuk_publishing_components/components/label", {
+    bold: true,
+    text: "Base path",
+    html_for: "",
+    hint_id: "",
+    hint_text: @document.base_path
+  } %>
 </p>
 
 <p>
-  Document type: <%= @document.document_type %>
+  <%= render "govuk_publishing_components/components/label", {
+    bold: true,
+    text: "Document type",
+    html_for: "",
+    hint_id: "",
+    hint_text: @document.document_type
+  } %>
 </p>
 
 <% @document.document_type_schema.fields.each do |field| %>
   <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, document: @document %>
 <% end %>
 
-<%= button_to :publish, publish_document_path(@document) %>
-<%= button_to :edit, edit_document_path(@document), method: :get %>
+<%= form_tag publish_document_path(@document) do %>
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Publish", href: '#publish'
+  } %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Edit", href: edit_document_path(@document)
+  } %>
+<% end %>
+

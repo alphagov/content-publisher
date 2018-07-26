@@ -2,35 +2,51 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    Document type: <%= @document.document_type %>.
+    <p>
+      <%= render "govuk_publishing_components/components/label", {
+        bold: true,
+        text: "Document type",
+        html_for: "",
+        hint_id: "",
+        hint_text: @document.document_type
+      } %>
+    </p>
 
     <br/><br/>
 
     <%= form_for @document do |f| %>
-      <p>
-        Title:
-        <%= f.text_field :title %>
-      </p>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: "Title"
+        },
+        name: "document[title]",
+        value: @document.title
+      } %>
 
-      <p>
-        Summary:<br/>
-        <%= f.text_field :summary %>
-      </p>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: "Summary"
+        },
+        name: "document[summary]",
+        value: @document.summary
+      } %>
 
-      <p>
-        Base path: <%= f.text_field :base_path %>
-      </p>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: "Base path"
+        },
+        name: "document[base_path]",
+        value: @document.base_path
+      } %>
 
       <% @document.document_type_schema.fields.each do |field| %>
         <%= render "documents/fields/#{field.type}_input", name: field.id, label: field.label, document: @document %>
       <% end %>
 
-      <br/>
-      <br/>
-      <br/>
-
-      <%= f.submit "Save" %>
-
-    <% end %>
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Save",
+    class: "govuk-button"
+  } %>
+<% end %>
   </div>
 </div>
