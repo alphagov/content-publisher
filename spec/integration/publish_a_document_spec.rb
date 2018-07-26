@@ -20,7 +20,7 @@ RSpec.describe "Publishing a document", type: :feature do
 
   def and_i_click_on_the_publish_button
     @request = stub_publishing_api_publish(@document.content_id, update_type: "major", locale: @document.locale)
-    click_on "Publish"
+    click_on "publish"
   end
 
   def then_i_see_the_publish_succeeded

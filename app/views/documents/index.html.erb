@@ -1,24 +1,14 @@
-<% content_for :title, "Documents" %>
+<%= link_to "New document", new_document_path %>
 
-<p>
-  <%= render "govuk_publishing_components/components/button", {
-    text: "New document", href: new_document_path
-  } %>
-</p>
+<h3>Documents</h3>
 
-<%= render "govuk_publishing_components/components/document_list", {
-  items: @documents.map do |document|
-    {
-      link: {
-        text: document.title || "No title",
-        path: document_path(document),
-        description: document.summary,
-        context: document.locale
-      },
-      metadata: {
-        public_updated_at: document.updated_at,
-        document_type: document.document_type
-      }
-    }
-  end
-} %>
+<table>
+<% @documents.each do |document| %>
+  <tr>
+    <td><%= link_to document.title || "No title", document %></td>
+    <td><%= document.updated_at %></td>
+    <td><%= document.document_type %></td>
+    <td><%= link_to "Edit", edit_document_path(document) %></td>
+  </tr>
+<% end %>
+</table>
