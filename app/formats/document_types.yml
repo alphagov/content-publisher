@@ -6,7 +6,7 @@
   supertype: news
   fields:
     - id: body
-      label: Body text for the press release
+      label: Body
       type: govspeak
 
 - document_type: news_story
@@ -14,12 +14,20 @@
   rendering_app: government-frontend
   name: News story
   supertype: news
+  fields:
+    - id: body
+      label: Body
+      type: govspeak
 
 - document_type: statistical_data_set
   schema_name: statistical_data_set
   rendering_app: government-frontend
   name: Statistical data set
   supertype: transparancy
+  fields:
+    - id: body
+      label: Body
+      type: govspeak
 
 - document_type: detailed_guide
   schema_name: detailed_guide
