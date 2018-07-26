@@ -6,7 +6,13 @@ Document type: <%= @document.document_type %>.
 
 <%= form_for @document do |f| %>
   <p>
-    Title: <%= f.text_field :title %>
+    Title:
+    <%= f.text_field :title %>
+  </p>
+
+  <p>
+    Summary:<br/>
+    <%= f.text_field :summary %>
   </p>
 
   <p>

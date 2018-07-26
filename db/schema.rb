@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_095923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "contents", default: {}
+    t.text "summary"
     t.string "base_path"
     t.index ["content_id", "locale"], name: "index_documents_on_content_id_and_locale", unique: true
   end
