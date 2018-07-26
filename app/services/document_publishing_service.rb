@@ -25,10 +25,13 @@ private
       document_type: document.document_type,
       publishing_app: PUBLISHING_APP,
       rendering_app: document.document_type_schema.rendering_app,
-      change_note: "To support email alerts",
       details: document.contents.merge(government: {
                                          title: "Hey", slug: "what", current: true,
                                        },
+                                       change_history: [{
+                                         public_timestamp: Time.now.iso8601,
+                                         note: "To support email alerts"
+                                       }],
                                        political: false),
       routes: [
         { path: document.base_path, type: "exact" },
