@@ -24,8 +24,7 @@ private
       document_type: document.document_type,
       publishing_app: PUBLISHING_APP,
       rendering_app: document.document_type_schema.rendering_app,
-      details: document.contents.merge(first_public_at: Time.now.iso8601,
-                                       government: {
+      details: document.contents.merge(government: {
                                          title: "Hey", slug: "what", current: true,
                                        },
                                        political: false),
