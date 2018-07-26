@@ -25,6 +25,7 @@ private
       document_type: document.document_type,
       publishing_app: PUBLISHING_APP,
       rendering_app: document.document_type_schema.rendering_app,
+      change_note: "To support email alerts",
       details: document.contents.merge(government: {
                                          title: "Hey", slug: "what", current: true,
                                        },
