@@ -20,6 +20,7 @@ private
       base_path: document.base_path,
       title: document.title,
       locale: document.locale,
+      description: document.summary,
       schema_name: document.document_type_schema.schema_name,
       document_type: document.document_type,
       publishing_app: PUBLISHING_APP,
