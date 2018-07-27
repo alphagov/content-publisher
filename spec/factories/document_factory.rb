@@ -5,9 +5,6 @@ FactoryBot.define do
     content_id { SecureRandom.uuid }
     locale { I18n.available_locales.sample }
     base_path { "/#{SecureRandom.alphanumeric(8)}" }
-
-    trait :press_release do
-      document_type "press_release"
-    end
+    document_type { DocumentTypeSchema.all.reject(&:managed_elsewhere?).sample.document_type }
   end
 end
