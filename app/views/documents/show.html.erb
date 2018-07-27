@@ -13,10 +13,9 @@
   <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, document: @document %>
 <% end %>
 
-<%= form_tag publish_document_path(@document) do %>
-  <%= render "govuk_publishing_components/components/button", {
-    text: "Publish"
-  } %>
-<% end %>
+<%= render "govuk_publishing_components/components/button", {
+  text: "Publish",
+  href: publish_document_path(@document),
+} %>
 
 <%= link_to "Edit document", edit_document_path(@document) %>
