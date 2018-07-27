@@ -3,54 +3,45 @@
 require "spec_helper"
 
 RSpec.describe "Create a document", type: :feature do
-  scenario "User creates a document" do
-    when_i_click_on_create_a_document
-    and_i_choose_news
-    and_i_choose_a_press_release
-    and_i_fill_in_the_form_fields
-    then_i_see_the_document_exists
-    and_the_preview_creation_succeeded
-  end
+  DocumentTypeSchema.all.reject(&:managed_elsewhere?).each do |schema|
+    scenario "User creates #{schema.name}" do
+      @schema = schema
 
-  def when_i_click_on_create_a_document
-    visit "/"
-    click_on "New document"
-  end
+      when_i_click_on_create_a_document
+      and_i_choose_a_supertype
+      and_i_choose_a_document_type
+      and_i_fill_in_the_form_fields
+      then_i_see_the_document_exists
+    end
 
-  def and_i_choose_news
-    choose "News"
-    click_on "Continue"
-  end
+    def when_i_click_on_create_a_document
+      visit "/"
+      click_on "New document"
+    end
 
-  def and_i_choose_a_press_release
-    choose "Press release"
-    click_on "Continue"
-  end
+    def and_i_choose_a_supertype
+      choose SupertypeSchema.find(@schema.supertype).label
+      click_on "Continue"
+    end
 
-  def and_i_fill_in_the_form_fields
-    fill_in "document[title]", with: "A great title"
-    fill_in "document[base_path]", with: "/government/foo"
+    def and_i_choose_a_document_type
+      choose @schema.name
+      click_on "Continue"
+    end
 
-    @request = stub_publishing_api_put_content(Document.last.content_id,
-                                               hash_including(title: "A great title",
-                                                              base_path: "/government/foo"))
+    def and_i_fill_in_the_form_fields
+      # Clicking save will make a request, but we don't care about the
+      # particulars, which are tested in the feature test of the "edit" flow
+      stub_any_publishing_api_put_content
 
-    click_on "Save"
-  end
+      fill_in "document[title]", with: "A great title"
+      click_on "Save"
+    end
 
-  def then_i_see_the_document_exists
-    expect(Document.last.title).to eq "A great title"
-    expect(page).to have_content "press_release"
-    expect(page).to have_content "A great title"
-    expect(page).to have_content "/government/foo"
-  end
-
-  def and_the_preview_creation_succeeded
-    expect(@request).to have_been_requested
-    expect(page).to have_content "Preview creation successful"
-
-    expect(a_request(:put, /content/).with { |req|
-      expect(req.body).to be_valid_against_schema("news_article")
-    }).to have_been_requested
+    def then_i_see_the_document_exists
+      expect(Document.last.title).to eq "A great title"
+      expect(page).to have_content @schema.document_type
+      expect(page).to have_content "A great title"
+    end
   end
 end

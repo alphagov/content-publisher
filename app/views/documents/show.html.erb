@@ -9,6 +9,10 @@
   Document type: <%= @document.document_type %>
 </p>
 
+<p>
+  Summary: <%= @document.summary %>
+</p>
+
 <% @document.document_type_schema.fields.each do |field| %>
   <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, document: @document %>
 <% end %>

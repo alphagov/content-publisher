@@ -22,6 +22,6 @@ Rails.application.routes.draw do
   mount GovukPublishingComponents::Engine, at: "/component-guide"
 
   if Rails.env.test?
-    get "/government/admin/consultations/new", to: proc { [200, {}, ["You've been redirected"]] }
+    get "/government/*all", to: proc { [200, {}, ["You've been redirected"]] }
   end
 end
