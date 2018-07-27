@@ -19,7 +19,7 @@ In this option we continue with the platform architecture goals.
 #### Pros
 + Single source of truth - all data is in the Publishing API
 + Multiple apps can edit the same content
-+ Single implementation of scheduling and publishing logic
++ Single implementation of scheduling
 + Single abstraction layer
 
 #### Cons
@@ -39,10 +39,20 @@ In this option we continue with the platform architecture goals.
 #### Cons
 - Syncing between local and Publishing API
 - Local data is hard to query by other applications
-- Expanded Links
 - Combination of local and Publishing API workflows
 - Hard to feedback to use on asynchronous API updates
 - Content-Schema may not match Rails validations causing unhelpful error messages
+
+In addition to the above there are a few pragmatic problems which have influenced our decision:
+
+- We want to store content prior to it being available as a draft on Publishing API. Doing this with no local datastore would have the complexity of a holding place for this data.
+- We want to model the full edit history of documents, which Publishing API doesn't support.
+- We want to support migrating of Whitehall documents with their histories - Moving this data to a new publishing application is arguably simpler than having to resume the Publishing API migration work and completing full history migration.
+- We want to support features the Publishing API doesn't have such as reviews, scheduling and storing additional user level metadata.
+
+All of these can be done with a commitment to developing the Publishing API but it would much slower, would mean resuming the migration programme and have potential impacts on every client of the Publishing API. It also isn't clear that the Publishing API should have all of this functionality.
+
+To achieve the aims of rapidly building a new publishing application to be ready for beta we're able to do this faster and more effectively by modelling these concepts in a local datastore.
 
 ## Decision
 We will use a local datastore which syncs to the Publishing API.
