@@ -13,5 +13,10 @@
   <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, document: @document %>
 <% end %>
 
-<%= button_to :publish, publish_document_path(@document) %>
-<%= button_to :edit, edit_document_path(@document), method: :get %>
+<%= form_tag publish_document_path(@document) do %>
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Publish"
+  } %>
+<% end %>
+
+<%= link_to "Edit document", edit_document_path(@document) %>

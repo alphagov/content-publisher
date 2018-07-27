@@ -1,36 +1,39 @@
+<%= content_for :back_link, document_path(@document) %>
 <% content_for :title, @document.title || "Untitled document" %>
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-
-    Document type: <%= @document.document_type %>.
-
-    <br/><br/>
-
     <%= form_for @document do |f| %>
-      <p>
-        Title:
-        <%= f.text_field :title %>
-      </p>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: "Title"
+        },
+        name: "document[title]",
+        value: @document.title
+      } %>
 
-      <p>
-        Summary:<br/>
-        <%= f.text_field :summary %>
-      </p>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: "Base path"
+        },
+        name: "document[base_path]",
+        value: @document.base_path
+      } %>
 
-      <p>
-        Base path: <%= f.text_field :base_path %>
-      </p>
+      <%= render "govuk_publishing_components/components/label", {
+        text: "Summary",
+        html_for: "document[summary]"
+      } %>
+
+      <%= tag.textarea @document.summary, rows: 4, class: "govuk-textarea", name: "document[summary]" %>
 
       <% @document.document_type_schema.fields.each do |field| %>
         <%= render "documents/fields/#{field.type}_input", name: field.id, label: field.label, document: @document %>
       <% end %>
 
-      <br/>
-      <br/>
-      <br/>
-
-      <%= f.submit "Save" %>
-
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save"
+      } %>
     <% end %>
   </div>
 </div>
