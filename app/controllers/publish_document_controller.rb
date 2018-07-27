@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class PublishDocumentController < ApplicationController
+  def confirmation
+    @document = Document.find(params[:id])
+  end
+
   def publish
     document = Document.find(params[:id])
     DocumentPublishingService.new.publish(document)
