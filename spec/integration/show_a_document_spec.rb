@@ -10,7 +10,7 @@ RSpec.describe "Showing a document summary", type: :feature do
   end
 
   def given_there_is_a_document
-    @document = create :document, :press_release, title: "Title"
+    @document = create :document, title: "Title"
   end
 
   def when_i_visit_the_document_page
