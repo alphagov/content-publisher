@@ -1,5 +1,8 @@
 <p>
-  <%= label %><br/>
+  <%= render "govuk_publishing_components/components/heading", {
+    text: name
+  } %>
+
   <%= render "govuk_publishing_components/components/govspeak", {} do %>
     <%= raw Govspeak::Document.new(@document.contents[name]).to_html %>
   <% end %>
