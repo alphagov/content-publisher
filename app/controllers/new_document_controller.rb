@@ -18,8 +18,8 @@ class NewDocumentController < ApplicationController
   def create
     document_type_schema = DocumentTypeSchema.find(params[:document_type])
 
-    if document_type_schema.managed_elsewhere
-      redirect_to document_type_schema.managed_elsewhere
+    if document_type_schema.managed_elsewhere?
+      redirect_to document_type_schema.managed_elsewhere_url
       return
     end
 

@@ -21,4 +21,17 @@ RSpec.describe DocumentTypeSchema do
       expect(schema.fields).to eql([])
     end
   end
+
+  describe '#managed_elsewhere_url' do
+    it 'returns a full URL' do
+      schema = DocumentTypeSchema.new(
+        "managed_elsewhere" => {
+          "hostname" => "whitehall-admin",
+          "path" => "/some/new/document",
+        }
+      )
+
+      expect(schema.managed_elsewhere_url).to eql("https://whitehall-admin.test.gov.uk/some/new/document")
+    end
+  end
 end

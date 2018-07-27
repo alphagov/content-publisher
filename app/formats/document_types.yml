@@ -34,8 +34,13 @@
   rendering_app: government-frontend
   name: Detailed guides
   supertype: guidance
+  managed_elsewhere:
+    hostname: whitehall-admin
+    path: /government/admin/detailed-guides/new
 
 - document_type: consultation
   name: Consultation (managed elsewhere)
   supertype: consultations
-  managed_elsewhere: https://whitehall-admin.publishing.service.gov.uk/government/admin/consultations/new
+  managed_elsewhere:
+    hostname: whitehall-admin
+    path: /government/admin/consultations/new

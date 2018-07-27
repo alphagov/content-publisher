@@ -25,6 +25,14 @@ class DocumentTypeSchema
     end
   end
 
+  def managed_elsewhere?
+    managed_elsewhere
+  end
+
+  def managed_elsewhere_url
+    Plek.find(managed_elsewhere.fetch('hostname')) + managed_elsewhere.fetch('path')
+  end
+
   class Field
     include ActiveModel::Model
     attr_accessor :id, :label, :type
