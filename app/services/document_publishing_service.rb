@@ -3,10 +3,8 @@
 require 'gds_api/publishing_api_v2'
 
 class DocumentPublishingService
-  PUBLISHING_APP = "content-publisher"
-
   def publish_draft(document)
-    publishing_api.put_content(document.content_id, payload(document))
+    publishing_api.put_content(document.content_id, PublishingApiPayload.new(document).payload)
   end
 
   def publish(document)
@@ -14,30 +12,6 @@ class DocumentPublishingService
   end
 
 private
-
-  def payload(document)
-    {
-      base_path: document.base_path,
-      title: document.title,
-      locale: document.locale,
-      description: document.summary,
-      schema_name: document.document_type_schema.schema_name,
-      document_type: document.document_type,
-      publishing_app: PUBLISHING_APP,
-      rendering_app: document.document_type_schema.rendering_app,
-      details: document.contents.merge(government: {
-                                         title: "Hey", slug: "what", current: true,
-                                       },
-                                       change_history: [{
-                                         public_timestamp: Time.now.iso8601,
-                                         note: "To support email alerts"
-                                       }],
-                                       political: false),
-      routes: [
-        { path: document.base_path, type: "exact" },
-      ]
-    }
-  end
 
   def publishing_api
     GdsApi::PublishingApiV2.new(
