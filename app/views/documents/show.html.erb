@@ -13,6 +13,12 @@
   Summary: <%= @document.summary %>
 </p>
 
+<ul>
+<% ContentValidator.new(@document).validation_messages.each do |message| %>
+  <li><%= message %></li>
+<% end %>
+</ul>
+
 <% @document.document_type_schema.fields.each do |field| %>
   <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, document: @document %>
 <% end %>

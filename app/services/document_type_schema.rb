@@ -35,6 +35,6 @@ class DocumentTypeSchema
 
   class Field
     include ActiveModel::Model
-    attr_accessor :id, :label, :type
+    attr_accessor :id, :label, :type, :validations
   end
 end
