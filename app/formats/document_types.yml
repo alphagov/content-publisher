@@ -8,6 +8,8 @@
     - id: body
       label: Body
       type: govspeak
+      validations:
+        min_length: 10
 
 - document_type: news_story
   schema_name: news_article
@@ -18,6 +20,8 @@
     - id: body
       label: Body
       type: govspeak
+      validations:
+        min_length: 10
 
 - document_type: statistical_data_set
   schema_name: statistical_data_set
@@ -28,6 +32,8 @@
     - id: body
       label: Body
       type: govspeak
+      validations:
+        min_length: 10
 
 - document_type: detailed_guide
   schema_name: detailed_guide
