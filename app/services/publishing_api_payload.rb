@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PublishingApiPayload
   PUBLISHING_APP = "content-publisher"
 
@@ -15,14 +17,7 @@ class PublishingApiPayload
       document_type: document.document_type,
       publishing_app: PUBLISHING_APP,
       rendering_app: document.document_type_schema.rendering_app,
-      details: document.contents.merge(government: {
-                                         title: "Hey", slug: "what", current: true,
-                                       },
-                                       change_history: [{
-                                         public_timestamp: Time.now.iso8601,
-                                         note: "To support email alerts"
-                                       }],
-                                       political: false),
+      details: details,
       routes: [
         { path: document.base_path, type: "exact" },
       ]
@@ -32,4 +27,23 @@ class PublishingApiPayload
 private
 
   attr_reader :document
+
+  def details
+    document.contents.merge(temporary_defaults_in_details)
+  end
+
+  def temporary_defaults_in_details
+    {
+      government: {
+        title: "Hey", slug: "what", current: true,
+      },
+      change_history: [
+        {
+          public_timestamp: Time.now.iso8601,
+          note: "To support email alerts"
+        }
+      ],
+      political: false
+    }
+  end
 end
