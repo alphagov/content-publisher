@@ -32,7 +32,7 @@ private
     details_hash = temporary_defaults_in_details
 
     document.document_type_schema.fields.each do |field|
-      details_hash[field.id] = document.contents[field.id]
+      details_hash[field.id] = perform_input_type_specific_transformations(field)
     end
 
     details_hash
@@ -51,5 +51,15 @@ private
       ],
       political: false
     }
+  end
+
+  # Note: once this grows to a sufficient size, move it over into a new class
+  # or class system.
+  def perform_input_type_specific_transformations(field)
+    if field.type == "govspeak"
+      Govspeak::Document.new(document.contents[field.id]).to_html
+    else
+      document.contents[field.id]
+    end
   end
 end
