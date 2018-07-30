@@ -29,7 +29,13 @@ private
   attr_reader :document
 
   def details
-    document.contents.merge(temporary_defaults_in_details)
+    details_hash = temporary_defaults_in_details
+
+    document.document_type_schema.fields.each do |field|
+      details_hash[field.id] = document.contents[field.id]
+    end
+
+    details_hash
   end
 
   def temporary_defaults_in_details
