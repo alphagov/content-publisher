@@ -16,14 +16,16 @@ document.onreadystatechange = function () {
           'X-CSRF-Token': csrf
         },
         body: JSON.stringify({ title: documentTitle.value })
-      }).then(response => response.json().then(function (result) {
-        var basePath = document.getElementById('base-path-id')
-        if (result.reserved) {
-          basePath.innerHTML = 'www.gov.uk' + result.basePath
-        } else {
-          basePath.innerHTML = 'Path is taken, please edit the title.'
-        }
-      }))
+      }).then(function(response) {
+        response.json().then(function (result) {
+          var basePath = document.getElementById('base-path-id')
+          if (result.reserved) {
+            basePath.innerHTML = 'www.gov.uk' + result['base_path']
+          } else {
+            basePath.innerHTML = 'Path is taken, please edit the title.'
+          }
+        })
+      })
     }
   }
 }
