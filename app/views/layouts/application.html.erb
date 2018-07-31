@@ -29,8 +29,8 @@
       </p>
     <% end %>
 
-    <main class="govuk-main-wrapper " id="main-content" role="main">
-      <%= render "govuk_publishing_components/components/title", title: yield(:title) %>
+    <main class="govuk-main-wrapper<%= " govuk-main-wrapper--l" if yield(:back_link).blank?%>" id="main-content" role="main">
+      <h1 class="govuk-heading-xl"><%= yield(:title) %></h1>
       <%= yield %>
     </main>
   </div>
