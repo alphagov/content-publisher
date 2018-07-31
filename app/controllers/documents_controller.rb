@@ -16,8 +16,8 @@ class DocumentsController < ApplicationController
   def update
     document = Document.find(params[:id])
     document.update_attributes(document_update_params(document))
-    DocumentPublishingService.new.publish_draft(document)
     save_base_path!(document)
+    DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: "Preview creation successful"
   rescue GdsApi::HTTPErrorResponse, SocketError => e
     Rails.logger.error(e)
@@ -28,10 +28,10 @@ class DocumentsController < ApplicationController
     document = Document.find(params[:id])
     proposed_title = params[:title]
     base_path = generate_base_path(document, proposed_title)
-    if path_reserved?(base_path)
-      render json: { base_path: base_path, reserved: true }
+    if path_in_publishing_api?(base_path)
+      render json: { base_path: base_path, available: false }
     else
-      render json: { base_path: base_path, reserved: false }
+      render json: { base_path: base_path, available: true }
     end
   end
 
@@ -40,7 +40,7 @@ private
   def save_base_path!(document)
     base_path = generate_base_path(document, document.title)
     # TODO: Generate a base_path which isn't in use
-    return false unless path_reserved?(base_path)
+    return false if path_in_publishing_api?(base_path)
     document.base_path = base_path
     document.save!
   end
@@ -49,9 +49,9 @@ private
     DocumentPublishingService.new.generate_base_path(document, title)
   end
 
-  def path_reserved?(base_path)
+  def path_in_publishing_api?(base_path)
     publishing_service = DocumentPublishingService.new
-    publishing_service.reserve_path(base_path).code == 200
+    publishing_service.path_exists?(base_path)
   end
 
   def document_update_params(document)

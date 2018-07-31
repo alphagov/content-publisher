@@ -23,7 +23,7 @@ RSpec.feature "Edit a document" do
     def when_i_go_to_edit_the_document
       visit document_path(Document.last)
       click_on "Edit document"
-      stub_default_publishing_api_path_reservation
+      publishing_api_has_lookups(Document.last.title => Document.last.content_id)
       @request = stub_publishing_api_put_content(Document.last.content_id, {})
     end
 

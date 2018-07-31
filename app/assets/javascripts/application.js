@@ -23,7 +23,7 @@ document.onreadystatechange = function () {
         body: JSON.stringify({ title: documentTitle.value })
       }).then(function(response) {
         response.json().then(function (result) {
-          if (result.reserved) {
+          if (result.available) {
             basePath.innerHTML = 'www.gov.uk' + result['base_path']
           } else {
             basePath.innerHTML = 'Path is taken, please edit the title.'
