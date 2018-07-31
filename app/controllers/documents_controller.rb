@@ -15,8 +15,9 @@ class DocumentsController < ApplicationController
 
   def update
     document = Document.find(params[:id])
-    document.update_attributes(document_update_params(document))
-    save_base_path!(document)
+    document_attributes = document_update_params(document)
+    document_attributes[:base_path] = generate_base_path(document, document.title)
+    document.update_attributes(document_attributes)
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: "Preview creation successful"
   rescue GdsApi::HTTPErrorResponse, SocketError => e
@@ -37,16 +38,10 @@ class DocumentsController < ApplicationController
 
 private
 
-  def save_base_path!(document)
-    base_path = generate_base_path(document, document.title)
-    # TODO: Generate a base_path which isn't in use
-    return false if path_in_publishing_api?(base_path)
-    document.base_path = base_path
-    document.save!
-  end
-
   def generate_base_path(document, title)
-    DocumentPublishingService.new.generate_base_path(document, title)
+    base_path = DocumentPublishingService.new.generate_base_path(document, title)
+    raise "Duplicate path error" if path_in_publishing_api?(base_path)
+    base_path
   end
 
   def path_in_publishing_api?(base_path)
@@ -56,6 +51,6 @@ private
 
   def document_update_params(document)
     contents_params = document.document_type_schema.contents.map(&:id)
-    params.require(:document).permit(:title, :summary, :base_path, contents: contents_params)
+    params.require(:document).permit(:title, :summary, contents: contents_params)
   end
 end
