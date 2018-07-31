@@ -12,7 +12,7 @@ RSpec.describe "Publishing a document", type: :feature do
   end
 
   def given_there_is_a_document
-    @document = create :document
+    @document = create(:document)
   end
 
   def when_i_visit_the_document_page
