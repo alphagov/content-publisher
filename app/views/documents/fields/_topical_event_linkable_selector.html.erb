@@ -1,0 +1,14 @@
+<div>
+  <p><%= name %>:</p>
+
+  <% linkables = LinkablesService.new("topical_event") %>
+  <% if value&.any? %>
+    <ul>
+      <% value.map do |field| %>
+        <li><%= linkables.by_content_id(field)["title"] %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    None
+  <% end %>
+</div>

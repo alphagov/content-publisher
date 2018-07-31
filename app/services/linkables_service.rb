@@ -13,6 +13,10 @@ class LinkablesService
     linkables.map { |content| [content["title"], content["content_id"]] }
   end
 
+  def by_content_id(content_id)
+    linkables.find { |l| l["content_id"] == content_id }
+  end
+
   def linkables
     @linkables ||= publishing_api.get_linkables(document_type: document_type).to_hash
   end

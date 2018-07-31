@@ -4,7 +4,7 @@
     html_for: "associations[#{name}]"
   } %>
 
-  <%= tag.select associations[name],  name: "associations[#{name}]", class: "govuk-select", multiple: true, style: "height: 200px" do
-    options_for_select LinkablesService.new("topical_event").select_options
+  <%= tag.select name: "associations[#{name}][]", class: "govuk-select", multiple: true, style: "height: 200px", selected: associations[name] do
+    options_for_select LinkablesService.new("topical_event").select_options, associations[name]
   end %>
 </p>

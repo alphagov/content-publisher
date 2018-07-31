@@ -6,7 +6,7 @@
     <%= form_tag(document_associations_path(@document)) do %>
 
       <% @document.document_type_schema.associations.each do |field| %>
-        <%= render "document_associations/fields/#{field.type}_input", name: field.id, label: field.label, associations: @document["contents"]["associations"] || {} %>
+        <%= render "document_associations/fields/#{field.type}_input", name: field.id, label: field.label, associations: @document["associations"] %>
       <% end %>
 
       <%= render "govuk_publishing_components/components/button", {

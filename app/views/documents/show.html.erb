@@ -23,6 +23,15 @@
   <%= render "documents/fields/#{schema.type}", schema: schema, document: @document %>
 <% end %>
 
+<% if @document.document_type_schema.associations? %>
+  <h2>Associations</h2>
+
+  <% @document.document_type_schema.associations.each do |field| %>
+    <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, value: @document.associations[field.id] %>
+  <% end %>
+
+<% end %>
+
 <%= render "govuk_publishing_components/components/button", {
   text: "Publish",
   href: publish_document_path(@document),
