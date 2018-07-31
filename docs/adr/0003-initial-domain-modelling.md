@@ -2,10 +2,6 @@
 
 Date: 2018-07-23
 
-## Status
-
-Accepted
-
 ## Context
 
 Content Publisher is a new publishing application for GOV.UK that has the
@@ -104,6 +100,10 @@ We decided that:
 - We will store document type specific data within a particular Revision via
   schemaless data (JSON) rather than modelling each document type as a domain
   object
+
+## Status
+
+Accepted
 
 ## Consequences
 
