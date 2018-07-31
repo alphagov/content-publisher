@@ -16,7 +16,7 @@ class DocumentsController < ApplicationController
   def update
     document = Document.find(params[:id])
     document_attributes = document_update_params(document)
-    document_attributes[:base_path] = generate_base_path(document, document.title)
+    document_attributes[:base_path] = generate_base_path(document, document_attributes[:title])
     document.update_attributes(document_attributes)
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: "Preview creation successful"
@@ -39,14 +39,7 @@ class DocumentsController < ApplicationController
 private
 
   def generate_base_path(document, title)
-    base_path = DocumentPublishingService.new.generate_base_path(document, title)
-    raise "Duplicate path error" if path_in_publishing_api?(base_path)
-    base_path
-  end
-
-  def path_in_publishing_api?(base_path)
-    publishing_service = DocumentPublishingService.new
-    publishing_service.path_exists?(base_path)
+    PathGeneratorService.new.path(document, title)
   end
 
   def document_update_params(document)
