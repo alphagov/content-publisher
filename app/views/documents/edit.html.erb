@@ -15,7 +15,7 @@
 
       <% url_preview = capture do %>
         <p class="govuk-heading-s">The web address for this content will look like:</p>
-        <span id="base-path-id" class="govuk-body"><%= "www.gov.uk#{@document.base_path}" || "You haven’t entered a title yet." %></span>
+        <span id="base-path-id" class="govuk-body"><%= @document.base_path.nil? ? "You haven’t entered a title yet." : "www.gov.uk#{@document.base_path}" %></span>
       <% end %>
       <%= render "govuk_publishing_components/components/inset_text", {
         text: url_preview.html_safe
