@@ -27,10 +27,12 @@ RSpec.describe "Edit a document", type: :feature do
     end
 
     def and_i_fill_in_the_fields
-      @schema.fields do |field|
-        # TODO: this currently works because the only field type (body) accepts
-        # a string. Once there are other field types we'll need to expand on this.
-        fill_in "document[contents][#{field.id}]", with: SecureRandom.hex
+      @schema.fields.each do |field|
+        if field.type == "govspeak"
+          fill_in "document[contents][#{field.id}]", with: "Some govspeak text."
+        else
+          raise "You'll have to write some code here to fill in a #{field.type} field"
+        end
       end
 
       fill_in "document[summary]", with: "A summary of the release."
@@ -39,6 +41,14 @@ RSpec.describe "Edit a document", type: :feature do
 
     def then_i_see_the_document_is_saved
       expect(page).to have_content "A summary of the release."
+
+      @schema.fields.each do |field|
+        if field.type == "govspeak"
+          expect(page).to have_content "Some govspeak text."
+        else
+          raise "You'll have to write some code here to test a #{field.type} field"
+        end
+      end
     end
 
     def and_the_preview_creation_succeeded
