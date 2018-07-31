@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe ContentValidator do
   describe 'title validation' do
     it 'raises issue if the title is not set' do
-      document = create(:document, title: nil)
+      document = build(:document, title: nil)
 
       messages = ContentValidator.new(document).validation_messages
 
@@ -13,7 +13,7 @@ RSpec.describe ContentValidator do
     end
 
     it 'raises issue if the title is too short' do
-      document = create(:document, title: "Too short")
+      document = build(:document, title: "Too short")
 
       messages = ContentValidator.new(document).validation_messages
 
@@ -21,7 +21,7 @@ RSpec.describe ContentValidator do
     end
 
     it 'does not raise an issue if the title is fine' do
-      document = create(:document, title: "Just long enough to validate.")
+      document = build(:document, title: "Just long enough to validate.")
 
       messages = ContentValidator.new(document).validation_messages
 
@@ -31,7 +31,7 @@ RSpec.describe ContentValidator do
 
   describe 'summary validation' do
     it 'raises issue if the summary is not set' do
-      document = create(:document, summary: nil)
+      document = build(:document, summary: nil)
 
       messages = ContentValidator.new(document).validation_messages
 
@@ -39,7 +39,7 @@ RSpec.describe ContentValidator do
     end
 
     it 'raises issue if the summary is too short' do
-      document = create(:document, summary: "Too short")
+      document = build(:document, summary: "Too short")
 
       messages = ContentValidator.new(document).validation_messages
 
@@ -47,7 +47,7 @@ RSpec.describe ContentValidator do
     end
 
     it 'does not raise an issue if the summary is fine' do
-      document = create(:document, summary: "Just long enough to validate.")
+      document = build(:document, summary: "Just long enough to validate.")
 
       messages = ContentValidator.new(document).validation_messages
 
@@ -57,7 +57,7 @@ RSpec.describe ContentValidator do
 
   describe 'custom validation' do
     it 'raises issue if the summary is not set' do
-      document = create(:document, :with_body, contents: { body: "Too short" })
+      document = build(:document, :with_body, contents: { body: "Too short" })
 
       messages = ContentValidator.new(document).validation_messages
 
