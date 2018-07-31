@@ -12,6 +12,11 @@
       type: govspeak
       validations:
         min_length: 10
+  associations:
+    fields:
+      - id: topical_event
+        label: Topical event the press release relates to
+        type: topical_event_linkable_selector
 
 - id: news_story
   name: News story
