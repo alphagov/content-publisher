@@ -32,7 +32,7 @@ private
   def perform_format_specific_validations(messages)
     schema = document.document_type_schema
 
-    schema.fields.each do |field|
+    schema.contents.each do |field|
       # Validations come in pairs, like `min_length: 10`. They should use
       # a underscored version of JSON Schema's validation system. For example,
       # `max_length`, `one_of`.

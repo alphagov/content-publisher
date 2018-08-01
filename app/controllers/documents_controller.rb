@@ -26,7 +26,7 @@ class DocumentsController < ApplicationController
 private
 
   def document_update_params(document)
-    contents_params = document.document_type_schema.fields.map(&:id)
+    contents_params = document.document_type_schema.contents.map(&:id)
     params.require(:document).permit(:title, :summary, :base_path, contents: contents_params)
   end
 end

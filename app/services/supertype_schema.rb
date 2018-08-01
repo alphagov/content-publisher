@@ -16,11 +16,12 @@ class SupertypeSchema
     end
   end
 
-  def self.find(type_id)
-    all.find { |schema| schema.id == type_id }
+  def self.find(schema_id)
+    item = all.find { |schema| schema.id == schema_id }
+    item || (raise RuntimeError, "Supertype #{schema_id} not found")
   end
 
   def document_types
-    DocumentTypeSchema.all.select { |schema| schema.supertype == id }
+    DocumentTypeSchema.all.select { |schema| schema.supertype == self }
   end
 end

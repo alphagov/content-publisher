@@ -3,8 +3,12 @@
 class PublishingApiPayload
   PUBLISHING_APP = "content-publisher"
 
+  attr_reader :document, :document_type_schema, :publishing_metadata
+
   def initialize(document)
     @document = document
+    @document_type_schema = document.document_type_schema
+    @publishing_metadata = document_type_schema.publishing_metadata
   end
 
   def payload
@@ -13,10 +17,10 @@ class PublishingApiPayload
       title: document.title,
       locale: document.locale,
       description: document.summary,
-      schema_name: document.document_type_schema.schema_name,
+      schema_name: publishing_metadata.schema_name,
       document_type: document.document_type,
       publishing_app: PUBLISHING_APP,
-      rendering_app: document.document_type_schema.rendering_app,
+      rendering_app: publishing_metadata.rendering_app,
       details: details,
       routes: [
         { path: document.base_path, type: "exact" },
@@ -26,12 +30,10 @@ class PublishingApiPayload
 
 private
 
-  attr_reader :document
-
   def details
     details_hash = temporary_defaults_in_details
 
-    document.document_type_schema.fields.each do |field|
+    document_type_schema.contents.each do |field|
       details_hash[field.id] = perform_input_type_specific_transformations(field)
     end
 

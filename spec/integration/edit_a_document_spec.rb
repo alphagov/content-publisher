@@ -4,20 +4,20 @@ require "spec_helper"
 
 RSpec.describe "Edit a document", type: :feature do
   DocumentTypeSchema.all.each do |schema|
-    next if schema.managed_elsewhere?
+    next if schema.managed_elsewhere
 
     scenario "User edits #{schema.name}" do
       @schema = schema
 
       given_there_is_a_document
       when_i_go_to_edit_the_document
-      and_i_fill_in_the_fields
+      and_i_fill_in_the_content_fields
       then_i_see_the_document_is_saved
       and_the_preview_creation_succeeded
     end
 
     def given_there_is_a_document
-      create(:document, document_type: @schema.document_type)
+      create(:document, document_type: @schema.id)
     end
 
     def when_i_go_to_edit_the_document
@@ -26,8 +26,8 @@ RSpec.describe "Edit a document", type: :feature do
       @request = stub_publishing_api_put_content(Document.last.content_id, {})
     end
 
-    def and_i_fill_in_the_fields
-      @schema.fields.each do |field|
+    def and_i_fill_in_the_content_fields
+      @schema.contents.each do |field|
         if field.type == "govspeak"
           fill_in "document[contents][#{field.id}]", with: "Some govspeak text."
         else
@@ -42,7 +42,7 @@ RSpec.describe "Edit a document", type: :feature do
     def then_i_see_the_document_is_saved
       expect(page).to have_content "A summary of the release."
 
-      @schema.fields.each do |field|
+      @schema.contents.each do |field|
         if field.type == "govspeak"
           expect(page).to have_content "Some govspeak text."
         else
@@ -56,7 +56,7 @@ RSpec.describe "Edit a document", type: :feature do
       expect(page).to have_content "Preview creation successful"
 
       expect(a_request(:put, /content/).with { |req|
-        expect(req.body).to be_valid_against_schema(@schema.schema_name)
+        expect(req.body).to be_valid_against_schema(@schema.publishing_metadata.schema_name)
         expect(JSON.parse(req.body)["description"]).to eq "A summary of the release."
       }).to have_been_requested
     end
