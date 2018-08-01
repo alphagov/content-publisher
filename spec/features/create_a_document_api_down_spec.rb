@@ -35,9 +35,9 @@ RSpec.feature "Create a document when the API is down" do
   end
 
   def then_i_see_the_document_exists
-    expect(Document.last.title).to eq "A great title"
-    expect(page).to have_content "press_release"
     expect(page).to have_content "A great title"
+    expect(page).to have_content "press_release"
+    expect(Document.last.title).to eq "A great title"
   end
 
   def and_the_preview_creation_failed

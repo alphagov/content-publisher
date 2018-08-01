@@ -15,6 +15,12 @@ class DocumentsController < ApplicationController
 
   def update
     document = Document.find(params[:id])
+    base_path = DocumentPublishingService.new.generate_base_path(document, params[:document][:title])
+    if path_reserved?(base_path)
+      params[:document][:base_path] = base_path
+    else
+      redirect_to document, alert: "Path is taken, please edit the title."
+    end
     document.update_attributes(document_update_params(document))
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: "Preview creation successful"
@@ -24,10 +30,10 @@ class DocumentsController < ApplicationController
   end
 
   def generate_path
-    publishing_service = DocumentPublishingService.new
-    base_path = publishing_service.generate_base_path(params[:title])
-    reservation_response = publishing_service.reserve_path(base_path)
-    if path_reserved?(reservation_response)
+    document = Document.find(params[:id])
+    proposed_title = params[:title]
+    base_path = DocumentPublishingService.new.generate_base_path(document, proposed_title)
+    if path_reserved?(base_path)
       render json: { base_path: base_path, reserved: true }
     else
       render json: { base_path: base_path, reserved: false }
@@ -36,8 +42,9 @@ class DocumentsController < ApplicationController
 
 private
 
-  def path_reserved?(response)
-    response.status == 200
+  def path_reserved?(base_path)
+    publishing_service = DocumentPublishingService.new
+    publishing_service.reserve_path(base_path).code == 200
   end
 
   def document_update_params(document)

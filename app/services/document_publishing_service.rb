@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+require 'gds_api/publishing_api'
 require 'gds_api/publishing_api_v2'
 
 class DocumentPublishingService
   PUBLISHING_APP = "content-publisher"
 
-  def generate_base_path(title)
-    '/news/' + title.parameterize
+  def generate_base_path(document, proposed_title)
+    document.document_type_schema.prefix + '/' + proposed_title.parameterize
   end
 
   def reserve_path(base_path)

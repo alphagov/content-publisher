@@ -10,12 +10,15 @@
         },
         name: "document[title]",
         value: @document.title,
-        id: "document-title-id",
+        id: "document-title-id"
       } %>
 
+      <% url_preview = capture do %>
+        <p class="govuk-heading-s">The web address for this content will look like:</p>
+        <span id="base-path-id" class="govuk-body"><%= "www.gov.uk#{@document.base_path}" || "You haven’t entered a title yet." %></span>
+      <% end %>
       <%= render "govuk_publishing_components/components/inset_text", {
-        text: '<p class="govuk-heading-s">The web address for this content will look like:</p>
-        <span class="govuk-body">You haven’t entered a title yet.</span>'.html_safe
+        text: url_preview.html_safe
       } %>
 
       <%= render "govuk_publishing_components/components/textarea", {
