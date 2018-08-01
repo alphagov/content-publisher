@@ -17,6 +17,7 @@ SimpleCov.start
 GovukTest.configure
 WebMock.disable_net_connect!(allow_localhost: true)
 Capybara.automatic_label_click = true
+Capybara::Chromedriver::Logger.raise_js_errors = true
 
 RSpec.configure do |config|
   config.expose_dsl_globally = false
@@ -28,5 +29,9 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     User.create!(permissions: ["signin"])
+  end
+
+  config.after :each, type: :feature, js: true do
+    Capybara::Chromedriver::Logger::TestHooks.after_example!
   end
 end
