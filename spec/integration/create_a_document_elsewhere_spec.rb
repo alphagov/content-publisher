@@ -3,7 +3,9 @@
 require "spec_helper"
 
 RSpec.describe "Create a document that is managed elsewhere", type: :feature do
-  DocumentTypeSchema.all.select(&:managed_elsewhere?).each do |schema|
+  DocumentTypeSchema.all.each do |schema|
+    next unless schema.managed_elsewhere
+
     scenario "User creates a #{schema.name}" do
       @schema = schema
 
@@ -18,7 +20,7 @@ RSpec.describe "Create a document that is managed elsewhere", type: :feature do
     end
 
     def and_i_choose_a_document_that_is_not_managed_in_this_app
-      choose SupertypeSchema.find(@schema.supertype).label
+      choose @schema.supertype.label
       click_on "Continue"
 
       choose @schema.name

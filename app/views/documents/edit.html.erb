@@ -27,7 +27,7 @@
 
       <%= tag.textarea @document.summary, rows: 4, class: "govuk-textarea", name: "document[summary]" %>
 
-      <% @document.document_type_schema.fields.each do |field| %>
+      <% @document.document_type_schema.contents.each do |field| %>
         <%= render "documents/fields/#{field.type}_input", name: field.id, label: field.label, document: @document %>
       <% end %>
 

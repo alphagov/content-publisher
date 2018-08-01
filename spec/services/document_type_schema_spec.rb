@@ -14,24 +14,21 @@ RSpec.describe DocumentTypeSchema do
     end
   end
 
-  describe '#fields' do
-    it 'is an empty array by default' do
-      schema = DocumentTypeSchema.new
+  describe '#contents' do
+    it "returns an array of content fields" do
+      expect(DocumentTypeSchema.find("press_release").contents.first).to be_a(DocumentTypeSchema::Field)
+    end
 
-      expect(schema.fields).to eql([])
+    it 'is an empty array if there are not contents' do
+      expect(DocumentTypeSchema.find("consultation").contents).to be_empty
     end
   end
 
   describe '#managed_elsewhere_url' do
     it 'returns a full URL' do
-      schema = DocumentTypeSchema.new(
-        "managed_elsewhere" => {
-          "hostname" => "whitehall-admin",
-          "path" => "/some/new/document",
-        }
-      )
-
-      expect(schema.managed_elsewhere_url).to eql("https://whitehall-admin.test.gov.uk/some/new/document")
+      schema = DocumentTypeSchema.find("consultation")
+      path = "https://whitehall-admin.test.gov.uk/government/admin/consultations/new"
+      expect(schema.managed_elsewhere_url).to eq(path)
     end
   end
 end

@@ -19,7 +19,7 @@
 <% end %>
 </ul>
 
-<% @document.document_type_schema.fields.each do |field| %>
+<% @document.document_type_schema.contents.each do |field| %>
   <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, document: @document %>
 <% end %>
 
