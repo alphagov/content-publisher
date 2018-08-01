@@ -3,7 +3,9 @@
 require "spec_helper"
 
 RSpec.describe "Create a document", type: :feature do
-  DocumentTypeSchema.all.reject(&:managed_elsewhere?).each do |schema|
+  DocumentTypeSchema.all.each do |schema|
+    next if schema.managed_elsewhere
+
     scenario "User creates #{schema.name}" do
       pending("Alex to fix JS problems")
       @schema = schema
@@ -21,7 +23,7 @@ RSpec.describe "Create a document", type: :feature do
     end
 
     def and_i_choose_a_supertype
-      choose SupertypeSchema.find(@schema.supertype).label
+      choose @schema.supertype.label
       click_on "Continue"
     end
 
