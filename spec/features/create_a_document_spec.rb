@@ -34,13 +34,15 @@ RSpec.feature "Create a document" do
     def and_i_fill_in_the_form_fields
       # Clicking save will make a request, but we don't care about the
       # particulars, which are tested in the feature test of the "edit" flow
-      stub_any_publishing_api_put_content
-
+      @put_content_request = stub_any_publishing_api_put_content
+      @lookup_base_path_request = publishing_api_has_lookups("#{@schema.path_prefix}/a-great-title" => nil)
       fill_in "document[title]", with: "A great title"
       click_on "Save"
     end
 
     def then_i_see_the_document_exists
+      expect(@put_content_request).to have_been_requested
+      expect(@lookup_base_path_request).to have_been_requested
       expect(Document.last.title).to eq "A great title"
       expect(page).to have_content @schema.id
       expect(page).to have_content "A great title"
