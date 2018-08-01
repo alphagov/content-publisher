@@ -17,7 +17,7 @@ RSpec.describe "Edit a document", type: :feature do
     end
 
     def given_there_is_a_document
-      create :document, document_type: @schema.document_type
+      create(:document, document_type: @schema.document_type)
     end
 
     def when_i_go_to_edit_the_document

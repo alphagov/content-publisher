@@ -12,7 +12,7 @@ RSpec.describe "Publish validations", type: :feature do
   end
 
   def given_there_is_a_document_with_not_enough_info
-    @document = create :document, :with_body
+    @document = create(:document, :with_body)
   end
 
   def when_i_visit_the_document_page
