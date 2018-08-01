@@ -7,8 +7,6 @@ We're building a new publishing architecture and MVP workflow in private beta. W
 
 One of the goals of the migration effort from 2016 was to for all publishing applications to be clients of the [Publishing API] and this API would means that these applications would not need local datastores. This is written up in the [GOV.UK Platform Architecture Goals 2017-18+][goals]
 
-[goals]: https://docs.google.com/document/d/1Oft4akc6dZfhhOjosNPbFpcLUOUjz7YG7QPcVZi8hww/edit#heading=h.5uytjxbfoe58
-
 Since writing these goals we have built the [Specialist Publisher] application using this pattern. The difficulties of building Rails application this way have led us to reconsider this approach.
 
 We are about to build another [Publishing API] client and we should now use the learnings we have to ensure that not using a local datastore is the best decision.
@@ -65,5 +63,8 @@ The problems we found when building and maintaining [Specialist Publisher] have 
 
 There will be problems in keeping the local datastore and the publishing API in sync in addition to the user experience problems of updating users on the results of asynchronous updates. However the speed and ease of development improvements should outweigh this.
 
+In addition we will also need to review and update the [GOV.UK Platform Architecture Goals][goals] document to be consistent with this ADR.
+
 [Publishing API]: https://docs.publishing.service.gov.uk/apps/publishing-api.html
 [Specialist Publisher]: https://docs.publishing.service.gov.uk/apps/specialist-publisher.html
+[goals]: https://docs.google.com/document/d/1Oft4akc6dZfhhOjosNPbFpcLUOUjz7YG7QPcVZi8hww/edit#heading=h.5uytjxbfoe58
