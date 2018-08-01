@@ -23,7 +23,22 @@ class DocumentsController < ApplicationController
     redirect_to document, alert: "Error creating preview"
   end
 
+  def generate_path
+    publishing_service = DocumentPublishingService.new
+    base_path = publishing_service.generate_base_path(params[:title])
+    reservation_response = publishing_service.reserve_path(base_path)
+    if path_reserved?(reservation_response)
+      render json: { base_path: base_path, reserved: true }
+    else
+      render json: { base_path: base_path, reserved: false }
+    end
+  end
+
 private
+
+  def path_reserved?(response)
+    response.status == 200
+  end
 
   def document_update_params(document)
     contents_params = document.document_type_schema.contents.map(&:id)
