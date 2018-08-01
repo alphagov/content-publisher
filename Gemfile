@@ -25,10 +25,10 @@ end
 
 group :development, :test do
   gem "byebug", "~> 10"
-  gem "capybara", "~> 3"
   gem "factory_bot_rails", "~> 4"
   gem "govuk-lint", "~> 3"
   gem "govuk_schemas", "~> 3.2"
+  gem "govuk_test", "~> 0.1"
   gem "rspec-rails", "~> 3"
   gem "webmock", "~> 3"
 end
