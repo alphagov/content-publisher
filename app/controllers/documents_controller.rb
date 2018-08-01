@@ -29,11 +29,7 @@ class DocumentsController < ApplicationController
     document = Document.find(params[:id])
     proposed_title = params[:title]
     base_path = generate_base_path(document, proposed_title)
-    if path_in_publishing_api?(base_path)
-      render json: { base_path: base_path, available: false }
-    else
-      render json: { base_path: base_path, available: true }
-    end
+    render json: { base_path: base_path, available: true }
   end
 
 private
