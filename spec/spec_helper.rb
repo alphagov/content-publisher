@@ -11,6 +11,7 @@ require "govuk_schemas/rspec_matchers"
 require "simplecov"
 require "webmock/rspec"
 require "gds_api/test_helpers/publishing_api_v2"
+require "gds_api/test_helpers/publishing_api"
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 SimpleCov.start
@@ -25,6 +26,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.include FactoryBot::Syntax::Methods
   config.include GdsApi::TestHelpers::PublishingApiV2
+  config.include GdsApi::TestHelpers::PublishingApi
   config.include GovukSchemas::RSpecMatchers
 
   config.before(:suite) do
