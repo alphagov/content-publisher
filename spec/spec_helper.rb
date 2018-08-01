@@ -19,6 +19,7 @@ GovukTest.configure
 WebMock.disable_net_connect!(allow_localhost: true)
 Capybara.automatic_label_click = true
 Capybara::Chromedriver::Logger.raise_js_errors = true
+ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   config.expose_dsl_globally = false
