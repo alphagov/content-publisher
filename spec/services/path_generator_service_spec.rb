@@ -15,7 +15,7 @@ RSpec.describe PathGeneratorService do
       service = PathGeneratorService.new
       publishing_api_has_lookups("/news/a-title": "a-content-id")
       @document = create :document, :press_release
-      expect { service.path(@document, "A title") }.to raise_error(RuntimeError, "Duplicate path error")
+      expect(service.path(@document, "A title")).to be false
     end
   end
 end
