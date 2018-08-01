@@ -5,7 +5,7 @@
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
-  prefix: /news
+  path_prefix: /news
   contents:
     - id: body
       label: Body
@@ -19,7 +19,7 @@
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
-  prefix: /news
+  path_prefix: /news
   contents:
     - id: body
       label: Body
@@ -33,7 +33,7 @@
   publishing_metadata:
     schema_name: statistical_data_set
     rendering_app: government-frontend
-  prefix: /statistics
+  path_prefix: /statistics
   contents:
     - id: body
       label: Body

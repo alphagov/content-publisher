@@ -4,7 +4,7 @@ require 'gds_api/publishing_api_v2'
 
 class PathGeneratorService
   def path(document, proposed_title)
-    base_path = document.document_type_schema.prefix + '/' + proposed_title.parameterize
+    base_path = document.document_type_schema.path_prefix + '/' + proposed_title.parameterize
     raise RuntimeError, "Duplicate path error" if path_in_publishing_api?(base_path)
     base_path
   end

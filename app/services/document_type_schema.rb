@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DocumentTypeSchema
-  attr_reader :contents, :id, :name, :supertype, :managed_elsewhere, :publishing_metadata, :prefix
+  attr_reader :contents, :id, :name, :supertype, :managed_elsewhere, :publishing_metadata, :path_prefix
 
   def initialize(params = {})
     @id = params["id"]
@@ -10,7 +10,7 @@ class DocumentTypeSchema
     @managed_elsewhere = params["managed_elsewhere"]
     @contents = params["contents"].to_a.map { |field| Field.new(field) }
     @publishing_metadata = PublishingMetadata.new(params["publishing_metadata"])
-    @prefix = params["prefix"]
+    @path_prefix = params["path_prefix"]
   end
 
   def self.find(document_type_id)
