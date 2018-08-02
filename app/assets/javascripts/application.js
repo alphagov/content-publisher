@@ -1,8 +1,6 @@
 'use strict'
 
 document.onreadystatechange = function () {
-  var csrfElement = document.querySelector('meta[name="csrf-token"]')
-  var csrf = csrfElement ? csrfElement.content : ""
   if (document.readyState === 'interactive') {
     var editDocumentForm = document.querySelector('.edit_document')
     if (editDocumentForm==null) {return;} // only run on edit document page
@@ -25,7 +23,6 @@ document.onreadystatechange = function () {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json; charset=utf-8',
-          'X-CSRF-Token': csrf
         },
       }).then(function(response) {
         response.json().then(function (result) {
