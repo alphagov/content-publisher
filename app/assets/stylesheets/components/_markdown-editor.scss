@@ -1,0 +1,54 @@
+.app-c-markdown-editor__preview-toggle {
+  @include govuk-font($size: 19);
+
+  margin-bottom: -$govuk-border-width-form-element;
+  padding: govuk-spacing(1);
+  border: $govuk-border-width-form-element solid $govuk-input-border-colour;
+  border-bottom: $govuk-border-width-form-element solid $govuk-border-colour;
+  background-color: govuk-colour("grey-3");
+}
+
+.app-c-markdown-editor__edit-button {
+  display: none;
+}
+
+.app-c-markdown-editor__preview-button {
+  display: block;
+}
+
+.app-c-markdown-editor__input {
+  display: block;
+}
+
+.app-c-markdown-editor__preview {
+  display: none;
+  margin-top: 0;
+
+  p {
+    margin: 0;
+  }
+}
+
+markdown-toolbar {
+  @extend %govuk-list;
+
+  .govuk-link {
+    display: block;
+    color: $govuk-link-colour;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      color: $govuk-link-hover-colour;
+    }
+
+    &:active {
+      color: $govuk-link-active-colour;
+    }
+
+    @include govuk-media-query($from: tablet) {
+      margin-bottom: govuk-spacing(1);
+    }
+
+  }
+}

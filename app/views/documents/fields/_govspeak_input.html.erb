@@ -1,12 +1,42 @@
-<p>
-  <%= render "govuk_publishing_components/components/label",
-    text: schema.label,
-    html_for: "document[contents][#{schema.id}]"
-  %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/textarea", {
+      label: {
+        text: schema.label
+      },
+      data: {
+        "contextual-guidance": "document-contents-guidance"
+      },
+      id: "govspeak-editor",
+      name: "document[contents][#{schema.id}]",
+      value: document.contents[schema.id],
+      rows: 30,
+      spellcheck: "false"
+    } %>
+  </div>
+  <div class="govuk-grid-column-one-third">
+    <%= render "components/contextual-guidance", {
+      id: "document-contents-guidance"
+    } do %>
+      <h2 class="govuk-heading-s">Writing news</h2>
+      <p class="govuk-body">Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p>
 
-  <%= tag.textarea document.contents[schema.id],
-    rows: 15,
-    class: "govuk-textarea",
-    name: "document[contents][#{schema.id}]"
-  %>
-</p>
+      <h3 class="govuk-heading-s">Markdown</h3>
+      <p class="govuk-body">
+          <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link">Full Markdown guidance</a>
+      </p>
+      <markdown-toolbar for="govspeak-editor">
+        <md-header class="govuk-link">Heading</md-header>
+        <md-link class="govuk-link">Link</md-link>
+        <md-unordered-list class="govuk-link">Bullets</md-unordered-list>
+        <md-ordered-list class="govuk-link">Numbered list</md-ordered-list>
+
+        <md-link class="govuk-link">Call to action</md-link>
+        <md-acronyms class="govuk-link">Acronyms</md-acronyms>
+        <md-attachment class="govuk-link">Attachments</md-attachment>
+        <md-quote class="govuk-link">Blockquote</md-quote>
+        <md-email-link class="govuk-link">Email links</md-email-link>
+      </markdown-toolbar>
+    <% end %>
+  </div>
+</div>
