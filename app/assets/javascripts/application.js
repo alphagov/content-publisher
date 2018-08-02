@@ -1,10 +1,12 @@
 'use strict'
 
 document.onreadystatechange = function () {
-  var csrf = document.querySelector('meta[name="csrf-token"]').content
+  var csrfElement = document.querySelector('meta[name="csrf-token"]')
+  var csrf = csrfElement ? csrfElement.content : ""
   if (document.readyState === 'interactive') {
     var basePath = document.getElementById('base-path-id')
     var documentTitle = document.getElementById('document-title-id')
+    if (basePath==null || documentTitle==null) {return;}
     var pathArray = document.location.pathname.split('/')
     var documentId = pathArray[2]
     var url = new URL(document.location.origin + '/documents/' + documentId + '/generate-path')
