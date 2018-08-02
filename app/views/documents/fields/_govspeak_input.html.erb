@@ -5,6 +5,7 @@
         text: schema.label
       },
       data: {
+        "module": "markdown-editor",
         "contextual-guidance": "document-contents-guidance"
       },
       id: "govspeak-editor",
@@ -16,9 +17,9 @@
   </div>
   <div class="govuk-grid-column-one-third">
     <%= render "components/contextual-guidance", {
-      id: "document-contents-guidance"
+      id: "document-contents-guidance",
+      title: "Writing news"
     } do %>
-      <h2 class="govuk-heading-s">Writing news</h2>
       <p class="govuk-body">Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p>
 
       <h3 class="govuk-heading-s">Markdown</h3>
@@ -30,12 +31,7 @@
         <md-link class="govuk-link">Link</md-link>
         <md-unordered-list class="govuk-link">Bullets</md-unordered-list>
         <md-ordered-list class="govuk-link">Numbered list</md-ordered-list>
-
-        <md-link class="govuk-link">Call to action</md-link>
-        <md-acronyms class="govuk-link">Acronyms</md-acronyms>
-        <md-attachment class="govuk-link">Attachments</md-attachment>
         <md-quote class="govuk-link">Blockquote</md-quote>
-        <md-email-link class="govuk-link">Email links</md-email-link>
       </markdown-toolbar>
     <% end %>
   </div>
