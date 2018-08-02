@@ -29,8 +29,9 @@ class DocumentsController < ApplicationController
     document = Document.find(params[:id])
     proposed_title = params[:title]
     base_path = generate_base_path(document, proposed_title)
-    return render json: { base_path: base_path, available: true } if base_path.present?
-    render json: { base_path: base_path, available: false }
+    render json: { base_path: base_path, available: true } if base_path.present?
+  rescue PathGeneratorService::ErrorGeneratingPath
+    render json: { available: false }, status: 409
   end
 
 private

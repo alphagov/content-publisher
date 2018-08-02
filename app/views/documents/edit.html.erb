@@ -19,7 +19,7 @@
         <div id="url-preview-id" <%= 'class="app-hidden"' if @document.base_path.nil? %>>
             <span class="govuk-body">www.gov.uk</span><span id="base-path-id" class="govuk-body" ><%= "#{@document.base_path}" %></span>
         </div>
-        <span id="path-taken-id" class="app-hidden">Path is taken, please edit the title.</span>
+        <span id="error-generating-path-id" class="govuk-body app-hidden">Unable to preview address, please edit title and try again.</span>
       <% end %>
       <%= render "govuk_publishing_components/components/inset_text", {
         text: url_preview.html_safe

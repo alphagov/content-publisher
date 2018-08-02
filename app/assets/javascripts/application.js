@@ -8,14 +8,19 @@ document.onreadystatechange = function () {
     var basePath = document.getElementById('base-path-id')
     var documentTitle = document.getElementById('document-title-id')
     var noTitle = document.getElementById('no-title-id')
-    var pathTakenId = document.getElementById('path-taken-id')
+    var errorGeneratingPath = document.getElementById('error-generating-path-id')
     var documentId = editDocumentForm.getAttribute('data-documentid')
+    function showErrorMessage() {
+      urlPreview.setAttribute('class', 'app-hidden')
+      noTitle.setAttribute('class', 'app-hidden')
+      errorGeneratingPath.removeAttribute('class')
+    }
     documentTitle.onblur = function () {
       var url = new URL(document.location.origin + editDocumentForm.getAttribute('data-generate-path-path'))
       if (!documentTitle.value) {
         noTitle.removeAttribute('class')
         urlPreview.setAttribute('class', 'app-hidden')
-        pathTakenId.setAttribute('class', 'app-hidden')
+        errorGeneratingPath.setAttribute('class', 'app-hidden')
         return
       }
       url.searchParams.append('title', documentTitle.value)
@@ -25,19 +30,20 @@ document.onreadystatechange = function () {
           'Content-Type': 'application/json; charset=utf-8',
         },
       }).then(function(response) {
+        if (!response.ok) {
+          throw Error("Unable to generate response.")
+        }
         response.json().then(function (result) {
           if (result.available) {
             noTitle.setAttribute('class', 'app-hidden')
-            pathTakenId.setAttribute('class', 'app-hidden')
+            errorGeneratingPath.setAttribute('class', 'app-hidden')
             urlPreview.removeAttribute('class')
             basePath.innerHTML = result['base_path']
           } else {
-            urlPreview.setAttribute('class', 'app-hidden')
-            noTitle.setAttribute('class', 'app-hidden')
-            pathTakenId.removeAttribute('class')
+            showErrorMessage()
           }
         })
-      })
+      }).catch(showErrorMessage)
     }
     documentTitle.onblur()
   }
