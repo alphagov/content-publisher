@@ -4,7 +4,14 @@
 <%= form_tag do %>
   <%= render "govuk_publishing_components/components/radio", {
     name: "supertype",
-    items: @supertype_radio_options
+    items: @supertypes.map do |supertype|
+      {
+        value: supertype.id,
+        text: supertype.label,
+        hint_text: supertype.description,
+        bold: true,
+      }
+    end
   } %>
   <br/>
   <br/>

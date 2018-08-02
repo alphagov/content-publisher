@@ -17,5 +17,10 @@
 
 - id: consultations
   label: Consultations
-  description: To request users views or evidence on an issue and to build collective
-    agreement.
+  description: To request users views or evidence on an issue and to build collective agreement.
+
+- id: not-sure
+  label: I'm not sure this should be on GOV.UK
+  description: View this guide to see what should go on GOV.UK and where else you can publish content.
+  managed_elsewhere:
+    path: /documents/publishing-guidance
