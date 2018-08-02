@@ -3,11 +3,11 @@
 require "spec_helper"
 
 RSpec.describe "Add document associations", type: :feature do
-  scenario "A document has associations added" do
+  scenario "User adds associations to a document" do
     given_there_is_a_document_with_associations
     when_i_visit_the_document_page
-    then_i_can_navigate_to_associations
-    when_i_add_some_associations
+    and_i_navigate_to_associations
+    and_i_add_some_associations
     then_i_can_view_the_associations
   end
 
@@ -19,13 +19,13 @@ RSpec.describe "Add document associations", type: :feature do
     visit document_path(@document)
   end
 
-  def then_i_can_navigate_to_associations
+  def and_i_navigate_to_associations
     publishing_api_has_linkables(linkables, document_type: "topical_event")
 
     click_on "Document associations"
   end
 
-  def when_i_add_some_associations
+  def and_i_add_some_associations
     stub_any_publishing_api_put_content
 
     select "National Apprenticeship Week 2017", from: "associations[topical_event][]"
