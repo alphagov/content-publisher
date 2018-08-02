@@ -23,7 +23,7 @@ RSpec.describe "Add document associations", type: :feature do
   def and_i_navigate_to_associations
     publishing_api_has_linkables(linkables, document_type: "topical_event")
 
-    click_on "Document associations"
+    click_on "Edit associations"
   end
 
   def and_i_add_some_associations

@@ -40,5 +40,5 @@
 <%= link_to "Edit document", edit_document_path(@document), class: "govuk-link" %>
 
 <% if @document.document_type_schema.associations %>
-  <%= link_to "Document associations", document_associations_path(@document), class: "govuk-link" %>
+  <%= link_to "Edit associations", document_associations_path(@document), class: "govuk-link" %>
 <% end %>
