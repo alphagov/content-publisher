@@ -17,11 +17,11 @@ class LinkablesService
     linkables.find { |l| l["content_id"] == content_id }
   end
 
+private
+
   def linkables
     @linkables ||= publishing_api.get_linkables(document_type: document_type).to_hash
   end
-
-private
 
   def publishing_api
     GdsApi::PublishingApiV2.new(
