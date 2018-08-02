@@ -9,6 +9,7 @@ RSpec.describe "Add document associations", type: :feature do
     and_i_navigate_to_associations
     and_i_add_some_associations
     then_i_can_view_the_associations
+    and_the_preview_creation_succeeded
   end
 
   def given_there_is_a_document_with_associations
@@ -27,39 +28,36 @@ RSpec.describe "Add document associations", type: :feature do
 
   def and_i_add_some_associations
     stub_any_publishing_api_put_content
+    @request = stub_publishing_api_put_content(Document.last.content_id, {})
 
-    select "National Apprenticeship Week 2017", from: "associations[topical_event][]"
-    select "G8 Dementia Summit", from: "associations[topical_event][]"
+    select linkables[0]["title"], from: "associations[topical_events][]"
+    select linkables[1]["title"], from: "associations[topical_events][]"
     click_on "Save"
   end
 
   def then_i_can_view_the_associations
-    # @TODO these shouldn't be ids when feature is complete
-    expect(page).to have_content "National Apprenticeship Week 2017"
-    expect(page).not_to have_content "Autumn Statement 2016"
-    expect(page).to have_content "G8 Dementia Summit"
+    expect(page).to have_content linkables[0]["title"]
+    expect(page).to have_content linkables[1]["title"]
+    expect(page).not_to have_content linkables[2]["title"]
+  end
+
+  def and_the_preview_creation_succeeded
+    expect(@request).to have_been_requested
+    expect(page).to have_content "Preview creation successful"
+
+    expect(a_request(:put, /content/).with { |req|
+      expect(JSON.parse(req.body)["links"]).to eq(edition_links)
+    }).to have_been_requested
+  end
+
+  def edition_links
+    { "topical_events" => [linkables[0]["content_id"],
+                           linkables[1]["content_id"]] }
   end
 
   def linkables
-    [
-      {
-        "content_id" => "2a8ae727-e3bb-4b18-bce7-a19dc01ae5af",
-        "title" => "National Apprenticeship Week 2017"
-      },
-      {
-        "content_id" => "bbcb323e-242d-4012-96ca-be451d84587c",
-        "title" => "Autumn Statement 2016"
-      },
-      {
-        "content_id" => "97d2e88e-81c2-4da1-8002-69bc8f1afffa",
-        "title" => "G8 Dementia Summit"
-      }
-    ].map do |item|
-      item.merge(
-        "publication_state" => "published",
-        "base_path" => "/government/topical-events/#{item['title'].parameterize}",
-        "internal_name" => item["title"],
-      )
+    @linkables ||= 3.times.map do |i|
+      { "content_id" => SecureRandom.uuid, "title" => "Linkable #{i}" }
     end
   end
 end

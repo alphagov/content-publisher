@@ -24,7 +24,8 @@ class PublishingApiPayload
       details: details,
       routes: [
         { path: document.base_path, type: "exact" },
-      ]
+      ],
+      links: document.associations,
     }
   end
 

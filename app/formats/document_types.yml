@@ -13,9 +13,9 @@
       validations:
         min_length: 10
   associations:
-    - id: topical_event
+    - id: topical_events
       label: Topical events
-      type: topical_event_association
+      type: topical_events_association
 
 - id: news_story
   name: News story
