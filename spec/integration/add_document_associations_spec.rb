@@ -13,7 +13,7 @@ RSpec.describe "Add document associations", type: :feature do
   end
 
   def given_there_is_a_document_with_associations
-    @document = create :document, :with_associations
+    @document = create(:document, :with_associations_in_schema)
   end
 
   def when_i_visit_the_document_page

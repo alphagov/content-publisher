@@ -14,7 +14,7 @@ FactoryBot.define do
       end
     end
 
-    trait :with_associations do
+    trait :with_associations_in_schema do
       document_type do
         DocumentTypeSchema.all.select { |schema| schema.associations.any? }.sample.id
       end
