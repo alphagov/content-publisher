@@ -2,3 +2,4 @@
 //= require restrict
 //= require documents/edit
 //= require components/markdown-editor.js
+//= require components/contextual-guidance.js
