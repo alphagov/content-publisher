@@ -2,36 +2,38 @@
 
 require "spec_helper"
 
-RSpec.describe "Add document associations", type: :feature do
-  scenario "User adds associations to a document" do
+RSpec.describe "Edit document associations", type: :feature do
+  scenario "User edits associations to a document" do
     given_there_is_a_document_with_associations
     when_i_visit_the_document_page
-    and_i_navigate_to_associations
-    and_i_add_some_associations
+    and_i_click_on_edit_associations
+    and_i_edit_the_associations
     then_i_can_view_the_associations
     and_the_preview_creation_succeeded
   end
 
   def given_there_is_a_document_with_associations
-    @document = create(:document, :with_associations_in_schema)
+    publishing_api_has_linkables(linkables, document_type: "topical_event")
+
+    @document = create(:document, :with_associations_in_schema,
+                       associations: { topical_events: [linkables[2]["content_id"]] })
   end
 
   def when_i_visit_the_document_page
     visit document_path(@document)
   end
 
-  def and_i_navigate_to_associations
-    publishing_api_has_linkables(linkables, document_type: "topical_event")
-
+  def and_i_click_on_edit_associations
     click_on "Edit associations"
   end
 
-  def and_i_add_some_associations
+  def and_i_edit_the_associations
     stub_any_publishing_api_put_content
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
 
     select linkables[0]["title"], from: "associations[topical_events][]"
     select linkables[1]["title"], from: "associations[topical_events][]"
+    unselect linkables[2]["title"], from: "associations[topical_events][]"
     click_on "Save"
   end
 
