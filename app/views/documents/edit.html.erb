@@ -3,7 +3,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_for @document do |f| %>
+      <%= form_for(@document, html: {'data-generate-path-path': generate_path_path}) do |f| %>
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: "Title"
@@ -15,7 +15,11 @@
 
       <% url_preview = capture do %>
         <p class="govuk-heading-s">The web address for this content will look like:</p>
-        <span id="base-path-id" class="govuk-body"><%= @document.base_path.nil? ? "You haven’t entered a title yet." : "www.gov.uk#{@document.base_path}" %></span>
+        <span id="no-title-id" class="govuk-body <%= 'app-hidden' unless @document.base_path.nil? %>">You haven’t entered a title yet.</span>
+        <div id="url-preview-id" <%= 'class="app-hidden"' if @document.base_path.nil? %>>
+            <span class="govuk-body">www.gov.uk</span><span id="base-path-id" class="govuk-body" ><%= "#{@document.base_path}" %></span>
+        </div>
+        <span id="path-taken-id" class="app-hidden">Path is taken, please edit the title.</span>
       <% end %>
       <%= render "govuk_publishing_components/components/inset_text", {
         text: url_preview.html_safe
