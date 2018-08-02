@@ -4,8 +4,6 @@ class DocumentAssociationsController < ApplicationController
   attr_reader :document
   before_action :check_document_supports_associations
 
-  def edit;end
-
   def update
     # @TODO there might not actually be any changes to save here
     document.update_attribute(:associations, formatted_assocations)
