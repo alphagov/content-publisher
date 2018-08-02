@@ -15,7 +15,7 @@ class DocumentsController < ApplicationController
 
   def update
     document = Document.find(params[:id])
-    document.update(document_update_params(document))
+    document.update_attributes(update_params(document))
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: "Preview creation successful"
   rescue GdsApi::HTTPErrorResponse, SocketError => e
@@ -33,7 +33,7 @@ class DocumentsController < ApplicationController
 
 private
 
-  def document_update_params(document)
+  def update_params(document)
     contents_params = document.document_type_schema.contents.map(&:id)
     base_path = PathGeneratorService.new.path(document, params[:document][:title])
 
