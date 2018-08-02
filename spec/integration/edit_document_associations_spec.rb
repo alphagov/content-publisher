@@ -17,6 +17,8 @@ RSpec.describe "Edit document associations", type: :feature do
 
     @document = create(:document, :with_associations_in_schema,
                        associations: { topical_events: [linkables[2]["content_id"]] })
+
+    @associations = @document.document_type_schema.associations
   end
 
   def when_i_visit_the_document_page
@@ -31,16 +33,23 @@ RSpec.describe "Edit document associations", type: :feature do
     stub_any_publishing_api_put_content
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
 
-    select linkables[0]["title"], from: "associations[topical_events][]"
-    select linkables[1]["title"], from: "associations[topical_events][]"
-    unselect linkables[2]["title"], from: "associations[topical_events][]"
+    @associations.each do |association|
+      select linkables[0]["title"], from: "associations[#{association.id}][]"
+      select linkables[1]["title"], from: "associations[#{association.id}][]"
+      unselect linkables[2]["title"], from: "associations[#{association.id}][]"
+    end
+
     click_on "Save"
   end
 
   def then_i_can_view_the_associations
-    expect(page).to have_content linkables[0]["title"]
-    expect(page).to have_content linkables[1]["title"]
-    expect(page).not_to have_content linkables[2]["title"]
+    @associations.each do |association|
+      within("##{association.id}") do
+        expect(page).to have_content linkables[0]["title"]
+        expect(page).to have_content linkables[1]["title"]
+        expect(page).not_to have_content linkables[2]["title"]
+      end
+    end
   end
 
   def and_the_preview_creation_succeeded
@@ -53,8 +62,9 @@ RSpec.describe "Edit document associations", type: :feature do
   end
 
   def edition_links
-    { "topical_events" => [linkables[0]["content_id"],
-                           linkables[1]["content_id"]] }
+    Hash[@associations.map { |association|
+      [association.id, [linkables[0]["content_id"], linkables[1]["content_id"]]]
+    }]
   end
 
   def linkables
