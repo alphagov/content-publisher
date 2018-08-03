@@ -10,7 +10,7 @@ document.onreadystatechange = function () {
     var noTitle = document.getElementById('no-title-id')
     var errorGeneratingPath = document.getElementById('error-generating-path-id')
     var documentId = editDocumentForm.getAttribute('data-documentid')
-    function showErrorMessage() {
+    var showErrorMessage = function() {
       urlPreview.setAttribute('class', 'app-hidden')
       noTitle.setAttribute('class', 'app-hidden')
       errorGeneratingPath.removeAttribute('class')
