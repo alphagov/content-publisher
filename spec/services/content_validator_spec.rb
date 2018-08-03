@@ -57,7 +57,7 @@ RSpec.describe ContentValidator do
 
   describe 'custom validation' do
     it 'raises issue if the summary is not set' do
-      document = build(:document, :with_body, contents: { body: "Too short" })
+      document = build(:document, :with_body_in_schema, contents: { body: "Too short" })
 
       messages = ContentValidator.new(document).validation_messages
 
