@@ -5,8 +5,12 @@
 
   <% if values&.any? %>
     <ul>
-      <% values.map do |content_id| %>
-        <li><%= service.by_content_id(content_id)["internal_name"] %></li>
+      <% values.each do |content_id| %>
+        <% begin %>
+          <li><%= service.by_content_id(content_id)["internal_name"] %></li>
+        <% rescue GdsApi::HTTPErrorResponse, SocketError %>
+          This content isn't available right now.
+        <% end %>
       <% end %>
     </ul>
   <% else %>
