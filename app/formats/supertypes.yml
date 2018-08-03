@@ -3,8 +3,8 @@
   label: News
   description: To tell users about something that government has done or will do.
 
-- id: transparancy
-  label: Transparancy
+- id: transparency
+  label: Transparency
   description: To provide information that helps users hold government to account.
 
 - id: guidance

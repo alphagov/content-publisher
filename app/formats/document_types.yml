@@ -27,7 +27,7 @@
 
 - id: statistical_data_set
   name: Statistical data set
-  supertype: transparancy
+  supertype: transparency
   publishing_metadata:
     schema_name: statistical_data_set
     rendering_app: government-frontend
