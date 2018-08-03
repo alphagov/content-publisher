@@ -17,9 +17,11 @@ RSpec.describe "Edit document associations", type: :feature do
 
     def given_there_is_a_document_with_associations
       publishing_api_has_linkables(linkables, document_type: "topical_event")
+      publishing_api_has_linkables(linkables, document_type: "world_location")
 
       @document = create(:document, document_type: @schema.id,
-                         associations: { topical_events: [linkables[2]["content_id"]] })
+                         associations: { topical_events: [linkables[2]["content_id"]],
+                                         world_locations: [linkables[2]["content_id"]] })
 
       @associations = @document.document_type_schema.associations
     end

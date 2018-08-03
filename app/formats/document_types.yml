@@ -16,6 +16,9 @@
     - id: topical_events
       label: Topical events
       type: topical_events_association
+    - id: world_locations
+      label: World locations
+      type: world_locations_association
 
 - id: news_story
   name: News story

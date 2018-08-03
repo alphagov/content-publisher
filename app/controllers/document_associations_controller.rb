@@ -18,6 +18,7 @@ class DocumentAssociationsController < ApplicationController
 private
 
   def update_params
-    params.fetch(:associations, {}).permit(topical_events: [])
+    params.fetch(:associations, {}).permit(topical_events: [],
+                                           world_locations: [])
   end
 end
