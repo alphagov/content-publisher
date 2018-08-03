@@ -13,5 +13,10 @@ FactoryBot.define do
         DocumentTypeSchema.all.select { |schema| schema.contents.any? { |field| field.id == "body" } }.sample.id
       end
     end
+
+    trait :without_title do
+      title { nil }
+      base_path { nil }
+    end
   end
 end

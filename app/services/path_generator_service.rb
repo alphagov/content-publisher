@@ -8,18 +8,19 @@ class PathGeneratorService
 
   def path(document, proposed_title)
     base_path = document.document_type_schema.path_prefix + '/' + proposed_title.parameterize
-    return base_path unless path_in_publishing_api?(base_path)
+    return base_path unless path_in_publishing_api?(base_path, document)
     (1..5).each do |appended_count|
       base_path = "#{document.document_type_schema.path_prefix}/#{proposed_title.parameterize}-#{appended_count}"
-      return base_path unless path_in_publishing_api?(base_path)
+      return base_path unless path_in_publishing_api?(base_path, document)
     end
     raise(ErrorGeneratingPath, 'Already >5 paths with same title.')
   end
 
 private
 
-  def path_in_publishing_api?(base_path)
-    publishing_api.lookup_content_id(base_path: base_path)
+  def path_in_publishing_api?(base_path, document)
+    content_id = publishing_api.lookup_content_id(base_path: base_path)
+    content_id && content_id != document.content_id
   end
 
   def publishing_api

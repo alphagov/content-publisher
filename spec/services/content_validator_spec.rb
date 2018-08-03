@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe ContentValidator do
   describe 'title validation' do
     it 'raises issue if the title is not set' do
-      document = build(:document, title: nil)
+      document = build(:document, :without_title)
 
       messages = ContentValidator.new(document).validation_messages
 
