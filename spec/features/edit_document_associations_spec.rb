@@ -16,7 +16,7 @@ RSpec.describe "Edit document associations", type: :feature do
     end
 
     def given_there_is_a_document_with_associations
-      @document = create(:document, document_type: @schema.id)
+      @document = create(:document, title: "Title", document_type: @schema.id)
       @association_schemas = @document.document_type_schema.associations
 
       @association_schemas.each do |schema|
@@ -62,10 +62,13 @@ RSpec.describe "Edit document associations", type: :feature do
     end
 
     def and_the_preview_creation_succeeded
+      return if @schema.managed_elsewhere
+
       expect(@request).to have_been_requested
       expect(page).to have_content "Preview creation successful"
 
       expect(a_request(:put, /content/).with { |req|
+        expect(req.body).to be_valid_against_schema(@schema.publishing_metadata.schema_name)
         expect(JSON.parse(req.body)["links"]).to eq(edition_links)
       }).to have_been_requested
     end
