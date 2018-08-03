@@ -3,9 +3,7 @@
 require "spec_helper"
 
 RSpec.describe "Edit document associations", type: :feature do
-  DocumentTypeSchema.all do |schema|
-    next if schema.migrated_elsewhere
-
+  DocumentTypeSchema.all.each do |schema|
     scenario "User edits associations to a document" do
       @schema = schema
 
