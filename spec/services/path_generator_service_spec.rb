@@ -14,7 +14,7 @@ RSpec.describe PathGeneratorService do
 
     it "raises a 'Path unable to be generated' when many variations of that path are in use" do
       service = PathGeneratorService.new(5)
-      document = build(:document, :with_body)
+      document = build(:document)
       prefix = document.document_type_schema.path_prefix
       ["#{prefix}/a-title",
        "#{prefix}/a-title-1",
