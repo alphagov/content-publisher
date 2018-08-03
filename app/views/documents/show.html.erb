@@ -19,8 +19,8 @@
 <% end %>
 </ul>
 
-<% @document.document_type_schema.contents.each do |field| %>
-  <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, document: @document %>
+<% @document.document_type_schema.contents.each do |schema| %>
+  <%= render "documents/fields/#{schema.type}", schema: schema, document: @document %>
 <% end %>
 
 <%= render "govuk_publishing_components/components/button", {

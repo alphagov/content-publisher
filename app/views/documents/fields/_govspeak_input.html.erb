@@ -1,8 +1,12 @@
 <p>
-  <%= render "govuk_publishing_components/components/label", {
-    text: label,
-    html_for: "document[contents][#{name}]"
-  } %>
+  <%= render "govuk_publishing_components/components/label",
+    text: schema.label,
+    html_for: "document[contents][#{schema.id}]"
+  %>
 
-  <%= tag.textarea document.contents[name], rows: 15, class: "govuk-textarea", name: "document[contents][#{name}]" %>
+  <%= tag.textarea document.contents[schema.id],
+    rows: 15,
+    class: "govuk-textarea",
+    name: "document[contents][#{schema.id}]"
+  %>
 </p>

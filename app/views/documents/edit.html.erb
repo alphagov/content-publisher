@@ -26,8 +26,8 @@
         rows: 4
       } %>
 
-      <% @document.document_type_schema.contents.each do |field| %>
-        <%= render "documents/fields/#{field.type}_input", name: field.id, label: field.label, document: @document %>
+      <% @document.document_type_schema.contents.each do |schema| %>
+        <%= render "documents/fields/#{schema.type}_input", schema: schema, document: @document %>
       <% end %>
 
       <%= render "govuk_publishing_components/components/button", {
