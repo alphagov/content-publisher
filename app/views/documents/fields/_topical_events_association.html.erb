@@ -5,7 +5,7 @@
   <% if value&.any? %>
     <ul>
       <% value.map do |field| %>
-        <li><%= linkables.by_content_id(field)["title"] %></li>
+        <li><%= linkables.by_content_id(field)["internal_name"] %></li>
       <% end %>
     </ul>
   <% else %>

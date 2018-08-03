@@ -39,9 +39,9 @@ RSpec.describe "Edit document associations", type: :feature do
       @request = stub_publishing_api_put_content(Document.last.content_id, {})
 
       @associations.each do |association|
-        select linkables[0]["title"], from: "associations[#{association.id}][]"
-        select linkables[1]["title"], from: "associations[#{association.id}][]"
-        unselect linkables[2]["title"], from: "associations[#{association.id}][]"
+        select linkables[0]["internal_name"], from: "associations[#{association.id}][]"
+        select linkables[1]["internal_name"], from: "associations[#{association.id}][]"
+        unselect linkables[2]["internal_name"], from: "associations[#{association.id}][]"
       end
 
       click_on "Save"
@@ -50,9 +50,9 @@ RSpec.describe "Edit document associations", type: :feature do
     def then_i_can_view_the_associations
       @associations.each do |association|
         within("##{association.id}") do
-          expect(page).to have_content linkables[0]["title"]
-          expect(page).to have_content linkables[1]["title"]
-          expect(page).not_to have_content linkables[2]["title"]
+          expect(page).to have_content linkables[0]["internal_name"]
+          expect(page).to have_content linkables[1]["internal_name"]
+          expect(page).not_to have_content linkables[2]["internal_name"]
         end
       end
     end
@@ -74,7 +74,7 @@ RSpec.describe "Edit document associations", type: :feature do
 
     def linkables
       @linkables ||= 3.times.map do |i|
-        { "content_id" => SecureRandom.uuid, "title" => "Linkable #{i}" }
+        { "content_id" => SecureRandom.uuid, "internal_name" => "Linkable #{i}" }
       end
     end
   end

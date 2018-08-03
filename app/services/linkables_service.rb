@@ -10,7 +10,7 @@ class LinkablesService
   end
 
   def select_options
-    linkables.map { |content| [content["title"], content["content_id"]] }
+    linkables.map { |content| [content["internal_name"], content["content_id"]] }
   end
 
   def by_content_id(content_id)
