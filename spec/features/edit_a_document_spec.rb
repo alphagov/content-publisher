@@ -23,7 +23,6 @@ RSpec.feature "Edit a document" do
     def when_i_go_to_edit_the_document
       visit document_path(Document.last)
       click_on "Edit document"
-      @lookup_base_path_request = publishing_api_has_lookups(Document.last.title => Document.last.content_id)
       @put_content_request = stub_publishing_api_put_content(Document.last.content_id, {})
     end
 
@@ -53,7 +52,6 @@ RSpec.feature "Edit a document" do
     end
 
     def and_the_preview_creation_succeeded
-      expect(@lookup_base_path_request).to have_been_requested
       expect(@put_content_request).to have_been_requested
       expect(page).to have_content "Preview creation successful"
 

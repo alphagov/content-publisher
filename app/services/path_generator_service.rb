@@ -6,28 +6,34 @@ class PathGeneratorService
   class ErrorGeneratingPath < RuntimeError
   end
 
+  def initialize(max_repeated_titles = 1000)
+    @max_repeated_titles = max_repeated_titles
+  end
+
   def path(document, proposed_title)
-    base_path = document.document_type_schema.path_prefix + '/' + proposed_title.parameterize
-    return base_path unless path_in_publishing_api?(base_path, document)
-    (1..5).each do |appended_count|
-      base_path = "#{document.document_type_schema.path_prefix}/#{proposed_title.parameterize}-#{appended_count}"
-      return base_path unless path_in_publishing_api?(base_path, document)
+    prefix = document.document_type_schema.path_prefix
+    slug = proposed_title.parameterize
+    base_path = create_path(prefix, slug)
+    return base_path unless document_exists_with_path?(base_path, document)
+    (1..@max_repeated_titles).each do |appended_count|
+      base_path = create_path(prefix, slug, appended_count)
+      return base_path unless document_exists_with_path?(base_path, document)
     end
-    raise(ErrorGeneratingPath, 'Already >5 paths with same title.')
+    raise(ErrorGeneratingPath, "Already >#{@max_repeated_titles} paths with same title.")
   end
 
 private
 
-  def path_in_publishing_api?(base_path, document)
-    content_id = publishing_api.lookup_content_id(base_path: base_path)
-    content_id && content_id != document.content_id
+  def document_exists_with_path?(base_path, document)
+    doc = Document.where(base_path: base_path).first
+    doc && doc != document
   end
 
-  def publishing_api
-    GdsApi::PublishingApiV2.new(
-      Plek.new.find('publishing-api'),
-      disable_cache: true,
-      bearer_token: ENV['PUBLISHING_API_BEARER_TOKEN'] || 'example',
-    )
+  def create_path(prefix, slug, count = nil)
+    if count
+      "#{prefix}/#{slug}-#{count}"
+    else
+      "#{prefix}/#{slug}"
+    end
   end
 end
