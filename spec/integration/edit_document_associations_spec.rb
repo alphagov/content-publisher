@@ -16,14 +16,18 @@ RSpec.describe "Edit document associations", type: :feature do
     end
 
     def given_there_is_a_document_with_associations
-      publishing_api_has_linkables(linkables, document_type: "topical_event")
-      publishing_api_has_linkables(linkables, document_type: "world_location")
+      @document = create(:document, document_type: @schema.id)
+      @association_schemas = @document.document_type_schema.associations
 
-      @document = create(:document, document_type: @schema.id,
-                         associations: { topical_events: [linkables[2]["content_id"]],
-                                         world_locations: [linkables[2]["content_id"]] })
+      @association_schemas.each do |schema|
+        publishing_api_has_linkables(linkables, document_type: schema.document_type)
+      end
 
-      @associations = @document.document_type_schema.associations
+      initial_associations = @association_schemas.map do |schema|
+        [schema.id, [linkables[2]["content_id"]]]
+      end
+
+      @document.update(associations: Hash[initial_associations])
     end
 
     def when_i_visit_the_document_page
@@ -38,18 +42,18 @@ RSpec.describe "Edit document associations", type: :feature do
       stub_any_publishing_api_put_content
       @request = stub_publishing_api_put_content(Document.last.content_id, {})
 
-      @associations.each do |association|
-        select linkables[0]["internal_name"], from: "associations[#{association.id}][]"
-        select linkables[1]["internal_name"], from: "associations[#{association.id}][]"
-        unselect linkables[2]["internal_name"], from: "associations[#{association.id}][]"
+      @association_schemas.each do |schema|
+        select linkables[0]["internal_name"], from: "associations[#{schema.id}][]"
+        select linkables[1]["internal_name"], from: "associations[#{schema.id}][]"
+        unselect linkables[2]["internal_name"], from: "associations[#{schema.id}][]"
       end
 
       click_on "Save"
     end
 
     def then_i_can_view_the_associations
-      @associations.each do |association|
-        within("##{association.id}") do
+      @association_schemas.each do |schema|
+        within("##{schema.id}") do
           expect(page).to have_content linkables[0]["internal_name"]
           expect(page).to have_content linkables[1]["internal_name"]
           expect(page).not_to have_content linkables[2]["internal_name"]
@@ -67,8 +71,8 @@ RSpec.describe "Edit document associations", type: :feature do
     end
 
     def edition_links
-      Hash[@associations.map { |association|
-        [association.id, [linkables[0]["content_id"], linkables[1]["content_id"]]]
+      Hash[@association_schemas.map { |schema|
+        [schema.id, [linkables[0]["content_id"], linkables[1]["content_id"]]]
       }]
     end
 

@@ -21,6 +21,14 @@
       label: World locations
       type: multi_association
       document_type: topical_event
+    - id: organisations
+      label: Organisations
+      type: multi_association
+      document_type: organisation
+    - id: worldwide_organisations
+      label: Worldwide organisations
+      type: multi_association
+      document_type: worldwide_organisation
 
 - id: news_story
   name: News story
