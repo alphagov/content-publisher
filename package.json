@@ -1,0 +1,14 @@
+{
+  "name": "content-publisher",
+  "description": "Publishing application for GOV.UK",
+  "private": true,
+  "author": "Government Digital Service",
+  "license": "MIT",
+  "scripts": {
+    "lint": "standard app/assets/javascripts/**/*",
+    "lint:fix": "standard --fix app/assets/javascripts/**/*"
+  },
+  "dependencies": {
+    "standard": "^11.0.1"
+  }
+}
