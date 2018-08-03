@@ -5,8 +5,10 @@
   <div class="govuk-grid-column-two-thirds">
     <%= form_tag(document_associations_path(@document)) do %>
 
-      <% @document.document_type_schema.associations.each do |field| %>
-        <%= render "document_associations/fields/#{field.type}_input", name: field.id, label: field.label, associations: @document["associations"] %>
+      <% @document.document_type_schema.associations.each do |schema| %>
+        <%= render "document_associations/associations/#{schema.type}_input",
+          schema: schema,
+          associations: @document["associations"] %>
       <% end %>
 
       <%= render "govuk_publishing_components/components/button", {

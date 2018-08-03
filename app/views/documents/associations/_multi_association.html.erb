@@ -1,0 +1,15 @@
+<div id=<%= schema.id %>>
+  <p><%= schema.id %>:</p>
+
+  <% service = LinkablesService.new(schema.document_type) %>
+
+  <% if values&.any? %>
+    <ul>
+      <% values.map do |content_id| %>
+        <li><%= service.by_content_id(content_id)["internal_name"] %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    None
+  <% end %>
+</div>

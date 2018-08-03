@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe "Edit document associations", type: :feature do
   DocumentTypeSchema.all.each do |schema|
-    scenario "User edits associations to a document" do
+    scenario "User edits associations to a #{schema.name}" do
       @schema = schema
 
       given_there_is_a_document_with_associations

@@ -25,8 +25,10 @@
 
 <h2>Associations</h2>
 
-<% @document.document_type_schema.associations.each do |field| %>
-  <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, value: @document.associations[field.id] %>
+<% @document.document_type_schema.associations.each do |schema| %>
+  <%= render "documents/associations/#{schema.type}",
+    schema: schema,
+    values: @document.associations[schema.id] %>
 <% end %>
 
 <%= render "govuk_publishing_components/components/button", {

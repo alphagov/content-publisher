@@ -15,10 +15,12 @@
   associations:
     - id: topical_events
       label: Topical events
-      type: topical_events_association
+      type: multi_association
+      document_type: topical_event
     - id: world_locations
       label: World locations
-      type: world_locations_association
+      type: multi_association
+      document_type: topical_event
 
 - id: news_story
   name: News story
