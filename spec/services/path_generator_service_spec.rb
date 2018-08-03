@@ -13,18 +13,15 @@ RSpec.describe PathGeneratorService do
     end
 
     it "raises a 'Path unable to be generated' when many variations of that path are in use" do
-      service = PathGeneratorService.new(5)
+      service = PathGeneratorService.new(2)
       document = build(:document)
       prefix = document.document_type_schema.path_prefix
       ["#{prefix}/a-title",
        "#{prefix}/a-title-1",
-       "#{prefix}/a-title-2",
-       "#{prefix}/a-title-3",
-       "#{prefix}/a-title-4",
-       "#{prefix}/a-title-5"].each do |path|
+       "#{prefix}/a-title-2"].each do |path|
         create(:document, base_path: path)
       end
-      expect { service.path(document, "A title") }.to raise_error(PathGeneratorService::ErrorGeneratingPath, "Already >5 paths with same title.")
+      expect { service.path(document, "A title") }.to raise_error(PathGeneratorService::ErrorGeneratingPath, "Already >2 paths with same title.")
     end
   end
 end

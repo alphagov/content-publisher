@@ -15,9 +15,7 @@ class DocumentsController < ApplicationController
 
   def update
     document = Document.find(params[:id])
-    document_attributes = document_update_params(document)
-    document_attributes[:base_path] = generate_base_path(document, document_attributes[:title])
-    document.update_attributes(document_attributes)
+    document.update(document_update_params(document))
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: "Preview creation successful"
   rescue GdsApi::HTTPErrorResponse, SocketError => e
@@ -27,21 +25,19 @@ class DocumentsController < ApplicationController
 
   def generate_path
     document = Document.find(params[:id])
-    proposed_title = params[:title]
-    base_path = generate_base_path(document, proposed_title)
-    render json: { base_path: base_path, available: true } if base_path.present?
+    base_path = PathGeneratorService.new.path(document, params[:title])
+    render json: { base_path: base_path, available: true }
   rescue PathGeneratorService::ErrorGeneratingPath
     render json: { available: false }, status: 409
   end
 
 private
 
-  def generate_base_path(document, title)
-    PathGeneratorService.new.path(document, title)
-  end
-
   def document_update_params(document)
     contents_params = document.document_type_schema.contents.map(&:id)
+    base_path = PathGeneratorService.new.path(document, params[:document][:title])
+
     params.require(:document).permit(:title, :summary, contents: contents_params)
+      .merge(base_path: base_path)
   end
 end

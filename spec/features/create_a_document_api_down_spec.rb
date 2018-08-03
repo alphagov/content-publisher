@@ -23,7 +23,7 @@ RSpec.feature "Create a document when the API is down" do
   end
 
   def and_the_publishing_api_is_down
-    @put_content_request = stub_publishing_api_put_content(Document.last.content_id,
+    @request = stub_publishing_api_put_content(Document.last.content_id,
                                                            hash_including(title: "A great title"))
     publishing_api_isnt_available
   end
@@ -40,7 +40,7 @@ RSpec.feature "Create a document when the API is down" do
   end
 
   def and_the_preview_creation_failed
-    expect(@put_content_request).to have_been_requested
+    expect(@request).to have_been_requested
     expect(page).to have_content "Error creating preview"
   end
 end

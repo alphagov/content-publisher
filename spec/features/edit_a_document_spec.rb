@@ -23,7 +23,7 @@ RSpec.feature "Edit a document" do
     def when_i_go_to_edit_the_document
       visit document_path(Document.last)
       click_on "Edit document"
-      @put_content_request = stub_publishing_api_put_content(Document.last.content_id, {})
+      @request = stub_publishing_api_put_content(Document.last.content_id, {})
     end
 
     def and_i_fill_in_the_content_fields
@@ -52,7 +52,7 @@ RSpec.feature "Edit a document" do
     end
 
     def and_the_preview_creation_succeeded
-      expect(@put_content_request).to have_been_requested
+      expect(@request).to have_been_requested
       expect(page).to have_content "Preview creation successful"
 
       expect(a_request(:put, /content/).with { |req|

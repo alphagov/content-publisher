@@ -2,10 +2,12 @@
 
 require "spec_helper"
 
-RSpec.describe "Shows a preview of the URL", type: :feature, js: true do
+RSpec.feature "Shows a preview of the URL", js: true do
   scenario "when a user edits the title of a document" do
     given_there_is_a_document
     when_i_go_to_edit_the_document
+    and_i_delete_the_title
+    then_i_see_a_prompt_to_enter_a_title
     and_i_fill_in_the_title
     then_i_see_a_preview_of_the_url_on_govuk
   end
@@ -31,6 +33,15 @@ RSpec.describe "Shows a preview of the URL", type: :feature, js: true do
   def and_i_interact_with_the_title_but_leave_it_unedited
     page.find("#document-title-id").click
     page.find("body").click
+  end
+
+  def and_i_delete_the_title
+    fill_in("document[title]", with: "")
+    page.find("body").click
+  end
+
+  def then_i_see_a_prompt_to_enter_a_title
+    expect(page).to have_content "You haven’t entered a title yet."
   end
 
   def and_i_fill_in_the_title
