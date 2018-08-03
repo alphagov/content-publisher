@@ -4,11 +4,15 @@
     html_for: "associations[#{schema.id}]"
   } %>
 
-<%= tag.select name: "associations[#{schema.id}][]",
-  class: "govuk-select",
-  multiple: true,
-  style: "height: 200px",
-  selected: associations[schema.id] do
-    options_for_select LinkablesService.new(schema.document_type).select_options
-  end %>
-</p>
+<% begin %>
+  <%= tag.select name: "associations[#{schema.id}][]",
+    class: "govuk-select",
+    multiple: true,
+    style: "height: 200px",
+    selected: associations[schema.id] do
+      options_for_select LinkablesService.new(schema.document_type).select_options
+    end %>
+  </p>
+<% rescue GdsApi::HTTPErrorResponse, SocketError %>
+  This content can't be edited right now. We're having some trouble getting the data we need for you to make changes on this page.
+<% end %>
