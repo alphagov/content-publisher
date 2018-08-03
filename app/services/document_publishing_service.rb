@@ -3,8 +3,6 @@
 require 'gds_api/publishing_api_v2'
 
 class DocumentPublishingService
-  PUBLISHING_APP = "content-publisher"
-
   def publish_draft(document)
     publishing_api.put_content(document.content_id, PublishingApiPayload.new(document).payload)
   end
