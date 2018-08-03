@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Showing a document summary", type: :feature do
+RSpec.feature "Showing a document summary" do
   scenario "User view a document" do
     given_there_is_a_document
     when_i_visit_the_document_page

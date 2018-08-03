@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Publish validations", type: :feature do
+RSpec.feature "Publish validations" do
   scenario "A document is validated" do
     given_there_is_a_document_with_not_enough_info
     when_i_visit_the_document_page

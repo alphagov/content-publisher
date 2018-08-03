@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Edit a document", type: :feature do
+RSpec.feature "Edit a document" do
   DocumentTypeSchema.all.each do |schema|
     next if schema.managed_elsewhere
 

@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "User is not sure if the content belongs on GOV.UK", type: :feature do
+RSpec.feature "User is not sure if the content belongs on GOV.UK" do
   scenario "User selects 'I’m not sure this should be on GOV.UK'" do
     when_i_click_on_create_a_document
     and_i_choose_i_am_not_sure_if_it_belongs_on_govuk

@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Publishing a document when the API is down", type: :feature do
+RSpec.feature "Publishing a document when the API is down" do
   scenario "User publishes a document" do
     given_there_is_a_document
     and_the_publishing_api_is_down
