@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Create a document that is managed elsewhere", type: :feature do
+RSpec.feature "Create a document that is managed elsewhere" do
   DocumentTypeSchema.all.each do |schema|
     next unless schema.managed_elsewhere
 
