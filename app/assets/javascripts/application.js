@@ -3,14 +3,13 @@
 document.onreadystatechange = function () {
   if (document.readyState === 'interactive') {
     var editDocumentForm = document.querySelector('.edit_document')
-    if (editDocumentForm==null) {return;} // only run on edit document page
+    if (editDocumentForm == null) { return } // only run on edit document page
     var urlPreview = document.getElementById('url-preview-id')
     var basePath = document.getElementById('base-path-id')
     var documentTitle = document.getElementById('document-title-id')
     var noTitle = document.getElementById('no-title-id')
     var errorGeneratingPath = document.getElementById('error-generating-path-id')
-    var documentId = editDocumentForm.getAttribute('data-documentid')
-    var showErrorMessage = function() {
+    var showErrorMessage = function () {
       urlPreview.setAttribute('class', 'app-hidden')
       noTitle.setAttribute('class', 'app-hidden')
       errorGeneratingPath.removeAttribute('class')
@@ -27,11 +26,11 @@ document.onreadystatechange = function () {
       window.fetch(url, {
         credentials: 'include',
         headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-      }).then(function(response) {
+          'Content-Type': 'application/json; charset=utf-8'
+        }
+      }).then(function (response) {
         if (!response.ok) {
-          throw Error("Unable to generate response.")
+          throw Error('Unable to generate response.')
         }
         response.json().then(function (result) {
           if (result.available) {
