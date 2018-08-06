@@ -10,7 +10,8 @@ RSpec.feature "Edit document associations" do
       given_there_is_a_document_with_associations
       when_i_visit_the_document_page
       and_i_click_on_edit_associations
-      and_i_edit_the_associations
+      then_i_can_see_the_current_selections
+      when_i_edit_the_associations
       then_i_can_view_the_associations
       and_the_preview_creation_succeeded
     end
@@ -38,10 +39,17 @@ RSpec.feature "Edit document associations" do
       click_on "Edit associations"
     end
 
-    def and_i_edit_the_associations
+    def then_i_can_see_the_current_selections
       stub_any_publishing_api_put_content
       @request = stub_publishing_api_put_content(Document.last.content_id, {})
 
+      @association_schemas.each do |schema|
+        expect(page).to have_select("associations[#{schema.id}][]",
+                                    selected: linkables[2]["internal_name"])
+      end
+    end
+
+    def when_i_edit_the_associations
       @association_schemas.each do |schema|
         select linkables[0]["internal_name"], from: "associations[#{schema.id}][]"
         select linkables[1]["internal_name"], from: "associations[#{schema.id}][]"
