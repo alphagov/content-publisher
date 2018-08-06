@@ -4,10 +4,11 @@
     html_for: "associations[#{schema.id}]"
   } %>
 
-<%= tag.select name: "associations[#{schema.id}][]",
-  class: "govuk-select",
-  multiple: true,
-  style: "height: 200px",
-  selected: associations[schema.id] do
-    options_for_select LinkablesService.new(schema.document_type).select_options
-  end %>
+  <%= tag.select name: "associations[#{schema.id}][]",
+    class: "govuk-select",
+    multiple: true,
+    style: "height: 200px",
+    selected: associations[schema.id] do
+      options_for_select LinkablesService.new(schema.document_type).select_options
+    end %>
+</p>
