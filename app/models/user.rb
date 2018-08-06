@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class User < ApplicationRecord
+class User < ActiveRecord::Base
   include GDS::SSO::User
 
   serialize :permissions, Array
