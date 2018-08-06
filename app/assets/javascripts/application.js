@@ -36,7 +36,7 @@ document.onreadystatechange = function () {
       }
       url.searchParams.append('title', documentTitle.value)
       window.fetch(url, {
-        credentials: 'include'
+        credentials: 'include',
       }).then(function (response) {
         if (!response.ok) {
           throw Error('Unable to generate response.')

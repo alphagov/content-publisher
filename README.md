@@ -18,7 +18,6 @@ This is a Ruby on Rails application.
 ### Dependencies
 
 - [postgresql]() - provides a backing database
-- [npm]() - package manager for JavaScripts
 
 ### Running the application
 
@@ -29,7 +28,6 @@ bowl content-publisher
 ### Running the test suite
 
 ```
-npm install
 bundle exec rake
 ```
 
