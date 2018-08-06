@@ -1,0 +1,36 @@
+<% content_for :back_link, documents_path %>
+<% content_for :title, @document.title || "No title" %>
+
+<p>
+  Base path: <%= @document.base_path %>
+</p>
+
+<p>
+  Document type: <%= @document.document_type %>
+</p>
+
+<p>
+  Summary: <%= @document.summary %>
+</p>
+
+<ul>
+<% ContentValidator.new(@document).validation_messages.each do |message| %>
+  <li><%= message %></li>
+<% end %>
+</ul>
+
+<% @document.document_type_schema.contents.each do |field| %>
+  <%= render "documents/fields/#{field.type}", name: field.id, label: field.label, document: @document %>
+<% end %>
+
+<h2>Associations</h2>
+
+This content isn't available right now. We're having trouble getting the data we need to show you this content.
+
+<%= render "govuk_publishing_components/components/button", {
+  text: "Publish",
+  href: publish_document_path(@document),
+} %>
+
+<%= link_to "Edit document", edit_document_path(@document), class: "govuk-link" %>
+<%= link_to "Edit associations", document_associations_path(@document), class: "govuk-link" %>

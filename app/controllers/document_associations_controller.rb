@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class DocumentAssociationsController < ApplicationController
+  rescue_from GdsApi::HTTPErrorResponse, SocketError do
+    render 'edit_api_down', status: 503
+  end
+
   def edit
     @document = Document.find(params[:id])
   end

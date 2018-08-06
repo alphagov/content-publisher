@@ -22,7 +22,6 @@ RSpec.feature "Showing a document when the API is down" do
     end
 
     @document.update(associations: Hash[associations])
-
     publishing_api_isnt_available
   end
 
@@ -35,7 +34,6 @@ RSpec.feature "Showing a document when the API is down" do
   end
 
   def then_i_should_see_an_error_message
-    count = @document.document_type_schema.associations.count
-    expect(page).to have_content("This content isn't available right now.", count: count)
+    expect(page).to have_content("This content isn't available right now.")
   end
 end

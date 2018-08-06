@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class DocumentsController < ApplicationController
+  rescue_from GdsApi::HTTPErrorResponse, SocketError do
+    render 'show_api_down', status: 503
+  end
+
   def index
     @documents = Document.all
   end
