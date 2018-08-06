@@ -12,7 +12,7 @@ require "simplecov"
 require "webmock/rspec"
 require "gds_api/test_helpers/publishing_api_v2"
 
-Dir[Rails.root.join("spec", "support", "**", "*.rb")].each { |f| require f }
+Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 SimpleCov.start
 GovukTest.configure
 WebMock.disable_net_connect!(allow_localhost: true)
