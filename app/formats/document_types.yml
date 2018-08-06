@@ -20,7 +20,7 @@
     - id: world_locations
       label: World locations
       type: multi_association
-      document_type: topical_event
+      document_type: world_location
     - id: organisations
       label: Organisations
       type: multi_association
