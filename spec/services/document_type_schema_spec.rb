@@ -14,6 +14,16 @@ RSpec.describe DocumentTypeSchema do
     end
   end
 
+  describe '#contents' do
+    it "returns an array of content fields" do
+      expect(DocumentTypeSchema.find("press_release").contents.first).to be_a(DocumentTypeSchema::Field)
+    end
+
+    it 'is an empty array if there are not contents' do
+      expect(DocumentTypeSchema.find("consultation").contents).to be_empty
+    end
+  end
+
   describe '#managed_elsewhere_url' do
     it 'returns a full URL' do
       schema = DocumentTypeSchema.find("consultation")
