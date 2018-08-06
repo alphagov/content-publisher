@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DocumentsController < ApplicationController
-  rescue_from GdsApi::HTTPErrorResponse, SocketError do
+  rescue_from GdsApi::BaseError do
     render 'show_api_down', status: 503
   end
 
@@ -22,7 +22,7 @@ class DocumentsController < ApplicationController
     document.update(update_params(document))
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: "Preview creation successful"
-  rescue GdsApi::HTTPErrorResponse, SocketError => e
+  rescue GdsApi::BaseError => e
     Rails.logger.error(e)
     redirect_to document, alert: "Error creating preview"
   end
