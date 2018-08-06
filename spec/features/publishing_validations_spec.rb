@@ -29,7 +29,8 @@ RSpec.feature "Publish validations" do
     # Clicking save will make a request, but we don't care about the
     # particulars, which are tested in the feature test of the "edit" flow
     stub_any_publishing_api_put_content
-
+    base_path = "#{@document.document_type_schema.path_prefix}/a-nice-title-of-considerable-length"
+    publishing_api_has_lookups(base_path => nil)
     click_on "Edit document"
     fill_in "document[title]", with: "A nice title of considerable length"
     fill_in "document[contents][body]", with: "A very long body text."

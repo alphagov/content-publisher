@@ -4,7 +4,8 @@ FactoryBot.define do
   factory :document do
     content_id { SecureRandom.uuid }
     locale { I18n.available_locales.sample }
-    base_path { "/#{SecureRandom.alphanumeric(8)}" }
+    title { SecureRandom.alphanumeric(8) }
+    base_path { title ? "#{DocumentTypeSchema.find(document_type).path_prefix}/#{title.parameterize}" : nil }
     document_type { DocumentTypeSchema.all.reject(&:managed_elsewhere).sample.id }
 
     trait :with_body_in_schema do

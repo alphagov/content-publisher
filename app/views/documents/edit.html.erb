@@ -3,18 +3,26 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_for @document do |f| %>
+      <%= form_for(@document, html: {'data-generate-path-path': generate_path_path}) do |f| %>
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: "Title"
         },
         name: "document[title]",
-        value: @document.title
+        value: @document.title,
+        id: "document-title-id"
       } %>
 
+      <% url_preview = capture do %>
+        <p class="govuk-heading-s">The web address for this content will look like:</p>
+        <span id="no-title-id" class="govuk-body <%= 'app-hidden' unless @document.base_path.nil? %>">You haven’t entered a title yet.</span>
+        <div id="url-preview-id" <%= 'class="app-hidden"' if @document.base_path.nil? %>>
+            <span class="govuk-body">www.gov.uk</span><span id="base-path-id" class="govuk-body" ><%= "#{@document.base_path}" %></span>
+        </div>
+        <span id="error-generating-path-id" class="govuk-body app-hidden">Unable to preview address, please edit title and try again.</span>
+      <% end %>
       <%= render "govuk_publishing_components/components/inset_text", {
-        text: '<p class="govuk-heading-s">The web address for this content will look like:</p>
-        <span class="govuk-body">You haven’t entered a title yet.</span>'.html_safe
+        text: url_preview.html_safe
       } %>
 
       <%= render "govuk_publishing_components/components/textarea", {
