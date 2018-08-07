@@ -1,5 +1,7 @@
 'use strict'
 
+/* global restrict */
+
 restrict('edit-document-form', function (editDocumentForm) {
   var urlPreview = document.getElementById('url-preview-id')
   var basePath = document.getElementById('base-path-id')

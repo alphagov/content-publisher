@@ -4,6 +4,17 @@ library("govuk")
 
 node {
   govuk.buildProject(
-    brakeman: true
+    beforeTest: {
+      stage("Lint Javascript") {
+        sh("npm install")
+        sh("npm run lint --silent")
+      }
+    },
+    brakeman: true,
+    overrideTestTask: {
+      stage("Run tests") {
+        sh("bundle exec rake spec")
+      }
+    }
   )
 }
