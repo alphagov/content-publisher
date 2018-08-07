@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class DocumentsController < ApplicationController
-  rescue_from GdsApi::BaseError do
+  rescue_from GdsApi::BaseError do |e|
+    Rails.logger.error(e)
     render 'show_api_down', status: 503
   end
 
