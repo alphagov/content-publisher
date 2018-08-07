@@ -13,5 +13,11 @@ FactoryBot.define do
         DocumentTypeSchema.all.select { |schema| schema.contents.any? { |field| field.id == "body" } }.sample.id
       end
     end
+
+    trait :with_associations_in_schema do
+      document_type do
+        DocumentTypeSchema.all.select { |schema| schema.associations.any? }.sample.id
+      end
+    end
   end
 end

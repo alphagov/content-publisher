@@ -12,6 +12,23 @@
       type: govspeak
       validations:
         min_length: 10
+  associations:
+    - id: topical_events
+      label: Topical events
+      type: multi_association
+      document_type: topical_event
+    - id: world_locations
+      label: World locations
+      type: multi_association
+      document_type: world_location
+    - id: organisations
+      label: Organisations
+      type: multi_association
+      document_type: organisation
+    - id: worldwide_organisations
+      label: Worldwide organisations
+      type: multi_association
+      document_type: worldwide_organisation
 
 - id: news_story
   name: News story
@@ -26,6 +43,23 @@
       type: govspeak
       validations:
         min_length: 10
+  associations:
+    - id: topical_events
+      label: Topical events
+      type: multi_association
+      document_type: topical_event
+    - id: world_locations
+      label: World locations
+      type: multi_association
+      document_type: world_location
+    - id: organisations
+      label: Organisations
+      type: multi_association
+      document_type: organisation
+    - id: worldwide_organisations
+      label: Worldwide organisations
+      type: multi_association
+      document_type: worldwide_organisation
 
 - id: statistical_data_set
   name: Statistical data set

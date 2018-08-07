@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
 class DocumentTypeSchema
-  attr_reader :contents, :id, :name, :supertype, :managed_elsewhere, :publishing_metadata, :path_prefix
+  attr_reader :contents, :id, :name, :supertype, :managed_elsewhere, :publishing_metadata, :path_prefix, :associations
 
   def initialize(params = {})
     @id = params["id"]
     @name = params["name"]
     @supertype = SupertypeSchema.find(params["supertype"])
     @managed_elsewhere = params["managed_elsewhere"]
-    @contents = params["contents"].to_a.map { |field| Field.new(field) }
+    @contents = params["contents"].to_a.map(&Field.method(:new))
     @publishing_metadata = PublishingMetadata.new(params["publishing_metadata"])
     @path_prefix = params["path_prefix"]
+    @associations = params["associations"].to_a.map(&Association.method(:new))
   end
 
   def self.find(document_type_id)
@@ -27,6 +28,11 @@ class DocumentTypeSchema
 
   def managed_elsewhere_url
     Plek.find(managed_elsewhere.fetch('hostname')) + managed_elsewhere.fetch('path')
+  end
+
+  class Association
+    include ActiveModel::Model
+    attr_accessor :id, :label, :type, :document_type
   end
 
   class PublishingMetadata

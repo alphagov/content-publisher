@@ -1,0 +1,22 @@
+<%= content_for :back_link, document_path(@document) %>
+<% content_for :title, "Document associations" %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag(document_associations_path(@document)) do %>
+
+      <% @document.document_type_schema.associations.each do |schema| %>
+        <%= render "document_associations/associations/#{schema.type}_input",
+          schema: schema,
+          associations: @document["associations"] %>
+      <% end %>
+
+      <br/>
+      <br/>
+
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save"
+      } %>
+    <% end %>
+  </div>
+</div>

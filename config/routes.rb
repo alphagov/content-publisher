@@ -18,6 +18,9 @@ Rails.application.routes.draw do
   get '/documents/:id' => 'documents#show'
   get '/documents/:id/generate-path' => 'documents#generate_path', as: :generate_path
 
+  get '/documents/:id/associations' => 'document_associations#edit', as: :document_associations
+  post '/documents/:id/associations' => 'document_associations#update'
+
   get "/healthcheck", to: proc { [200, {}, ["OK"]] }
 
   mount GovukPublishingComponents::Engine, at: "/component-guide"
