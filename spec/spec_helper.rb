@@ -19,6 +19,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 Capybara.automatic_label_click = true
 ActiveRecord::Migration.maintain_test_schema!
 
+Capybara.server = :puma, { Silent: true }
 Capybara::Chromedriver::Logger.raise_js_errors = true
 Capybara::Chromedriver::Logger.filters = [
   /the server responded with a status of 409/i
