@@ -20,9 +20,6 @@
   },
   "homepage": "https://github.com/alphagov/content-publisher#readme",
   "dependencies": {
-    "@github/markdown-toolbar-element": "^0.1.0",
-    "@webcomponents/webcomponentsjs": "^2.0.4",
-    "nodelist-foreach-polyfill": "^1.2.0",
     "standard": "^11.0.1"
   }
 }
