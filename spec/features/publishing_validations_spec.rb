@@ -26,8 +26,6 @@ RSpec.feature "Publish validations" do
   end
 
   def when_i_fix_some_warnings
-    # Clicking save will make a request, but we don't care about the
-    # particulars, which are tested in the feature test of the "edit" flow
     stub_any_publishing_api_put_content
     base_path = "#{@document.document_type_schema.path_prefix}/a-nice-title-of-considerable-length"
     publishing_api_has_lookups(base_path => nil)
