@@ -1,4 +1,5 @@
 #!/bin/bash
 
+npm install
 bundle install
-bundle exec unicorn -p 3221 
+bundle exec unicorn -p 3221
