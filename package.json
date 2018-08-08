@@ -2,13 +2,27 @@
   "name": "content-publisher",
   "description": "Publishing application for GOV.UK",
   "private": true,
-  "author": "Government Digital Service",
-  "license": "MIT",
+  "engines": {
+    "node": "8.9.4"
+  },
   "scripts": {
     "lint": "standard app/assets/javascripts/**/*",
     "lint:fix": "standard --fix app/assets/javascripts/**/*"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alphagov/content-publisher.git"
+  },
+  "author": "Government Digital Service",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alphagov/content-publisher/issues"
+  },
+  "homepage": "https://github.com/alphagov/content-publisher#readme",
   "dependencies": {
+    "@github/markdown-toolbar-element": "^0.1.0",
+    "@webcomponents/webcomponentsjs": "^2.0.4",
+    "nodelist-foreach-polyfill": "^1.2.0",
     "standard": "^11.0.1"
   }
 }

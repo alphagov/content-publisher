@@ -1,3 +1,11 @@
+$govuk-image-url-function: "image-url";
+$govuk-font-url-function: "font-url";
+
+@import "../../../node_modules/govuk-frontend/all";
+
+@import "components/contextual-guidance";
+@import "components/markdown-editor";
+
 .app-hidden {
   display: none;
 }

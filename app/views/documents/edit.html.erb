@@ -1,16 +1,19 @@
 <%= content_for :back_link, document_path(@document) %>
 <% content_for :title, @document.title || "Create " + @document.document_type_schema.name %>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-      <%= form_for(@document, data: {'module': 'edit-document-form', 'generate-path-path': generate_path_path}) do |f| %>
+  <%= form_for(@document, data: {'module': 'edit-document-form', 'generate-path-path': generate_path_path}) do |f| %>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: "Title"
         },
+        id: "document-title-id",
         name: "document[title]",
         value: @document.title,
-        id: "document-title-id"
+        data: {
+          "contextual-guidance": "document-title-guidance"
+        }
       } %>
 
       <% url_preview = capture do %>
@@ -28,23 +31,46 @@
       <%= render "govuk_publishing_components/components/inset_text", {
         text: url_preview.html_safe
       } %>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual-guidance", {
+        id: "document-title-guidance",
+        title: "Writing a news title"
+      } do %>
+        <p class="govuk-body">The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.</p>
+      <% end %>
+    </div>
+  </div>
 
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/textarea", {
         label: {
           text: "Summary"
         },
         name: "document[summary]",
         value: @document.summary,
-        rows: 4
+        rows: 4,
+        data: {
+          "contextual-guidance": "document-summary-guidance"
+        }
       } %>
-
-      <% @document.document_type_schema.contents.each do |schema| %>
-        <%= render "documents/fields/#{schema.type}_input", schema: schema, document: @document %>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual-guidance", {
+        id: "document-summary-guidance",
+        title: "Writing a news summary"
+      } do %>
+        <p class="govuk-body">The summary should explain the main point of the story. It is the first line of the story so don’t repeat it below and end with a full stop.</p>
       <% end %>
-
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Save", margin_bottom: true
-      } %>
-    <% end %>
+    </div>
   </div>
-</div>
+
+  <% @document.document_type_schema.contents.each do |schema| %>
+    <%= render "documents/fields/#{schema.type}_input", schema: schema, document: @document %>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Save", margin_bottom: true
+  } %>
+<% end %>

@@ -1,0 +1,10 @@
+<%
+  id ||= "input-#{SecureRandom.hex(4)}"
+  title ||= nil
+%>
+<div id="<%= id %>" class="app-c-contextual-guidance-wrapper">
+  <div class="app-c-contextual-guidance">
+    <h2 class="govuk-heading-s"><%= title %></h2>
+    <%= yield %>
+  </div>
+</div>
