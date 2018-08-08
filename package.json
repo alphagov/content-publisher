@@ -10,5 +10,10 @@
   },
   "dependencies": {
     "standard": "^11.0.1"
+  },
+  "standard": {
+    "ignore": [
+      "/app/assets/javascripts/vendor/*.js"
+    ]
   }
 }
