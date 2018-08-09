@@ -26,6 +26,12 @@ class DocumentTypeSchema
     end
   end
 
+  def self.create(params)
+    schema = new(params)
+    all << schema
+    schema
+  end
+
   def managed_elsewhere_url
     Plek.find(managed_elsewhere.fetch('hostname')) + managed_elsewhere.fetch('path')
   end
