@@ -1,0 +1,17 @@
+<div class="app-c-markdown-editor" data-module="markdown-editor">
+  <%= render "govuk_publishing_components/components/label", {
+      text: textarea[:label][:text],
+      html_for: textarea[:id]
+  } %>
+  <% textarea[:label] = nil %>
+  <div class="app-c-markdown-editor__preview-toggle">
+    <button class="app-c-markdown-editor__button app-c-markdown-editor__button--edit js-edit-button">Edit markdown</button>
+    <button class="app-c-markdown-editor__button app-c-markdown-editor__button--preview js-preview-button">Preview markdown</button>
+  </div>
+  <div class="app-c-markdown-editor__input js-editor-input">
+    <%= render "govuk_publishing_components/components/textarea", textarea %>
+  </div>
+  <div class="app-c-markdown-editor__preview js-preview-body">
+    <div class="govuk-textarea">Nothing to preview</div>
+  </div>
+</div>
