@@ -22,6 +22,9 @@ MarkdownEditor.prototype.init = function () {
   // Handle events
   this.$previewButton.addEventListener('click', $module.boundPreviewButtonClick)
   this.$editButton.addEventListener('click', $module.boundEditButtonClick)
+
+  // Prevent toolbar item reveals to overlap with footer
+  this.setContextualGuidancePosition()
 }
 
 MarkdownEditor.prototype.handlePreviewButton = function (event) {
@@ -33,16 +36,26 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
   // Mirror textarea's height
   $preview.style.height = this.$input.offsetHeight + 'px'
 
-  // Render markdown
-  window.marked(text, function (err, content) {
-    if (err) {
-      $preview.innerHTML = 'Error previewing content'
-      throw err
-    } else {
-      $preview.innerHTML = content
-    }
-  })
-
+  if (text) {
+    // Render markdown
+    window.marked(
+      text,
+      {
+        gfm: true,
+        breaks: true,
+        tables: true,
+        sanitize: true
+      },
+      function (err, content) {
+        if (err) {
+          $preview.innerHTML = 'Error previewing content'
+          throw err
+        } else {
+          $preview.innerHTML = content
+        }
+      }
+    )
+  }
   this.toggleElements()
 }
 
@@ -65,6 +78,16 @@ MarkdownEditor.prototype.toggle = function (element) {
     element.style.display = 'block'
   } else {
     element.style.display = 'none'
+  }
+}
+
+MarkdownEditor.prototype.setContextualGuidancePosition = function () {
+  var guidanceId = this.$input.getAttribute('data-contextual-guidance')
+  if (guidanceId) {
+    var $guidance = document.querySelector('#' + guidanceId + ' .app-c-contextual-guidance')
+    if ($guidance) {
+      $guidance.style.position = 'relative'
+    }
   }
 }
 
