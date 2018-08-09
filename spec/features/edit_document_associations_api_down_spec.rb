@@ -4,19 +4,17 @@ require "spec_helper"
 
 RSpec.feature "Edit document associations when the API is down" do
   scenario "User tries to edit associations without API" do
-    given_there_is_a_document_with_associations
+    given_there_is_a_document
     and_the_publishing_api_is_down
     when_i_visit_the_document_page
     and_i_click_on_edit_associations
     then_i_should_see_an_error_message
   end
 
-  def given_there_is_a_document_with_associations
-    @document = create(:document, :with_associations_in_schema)
-
-    @document.document_type_schema.associations.each do |schema|
-      publishing_api_has_linkables([], document_type: schema.document_type)
-    end
+  def given_there_is_a_document
+    association_schema = attributes_for(:association)
+    publishing_api_has_linkables([], document_type: association_schema[:document_type])
+    @document = create(:document)
   end
 
   def and_the_publishing_api_is_down
