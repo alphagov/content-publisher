@@ -8,11 +8,21 @@
   background-color: govuk-colour("grey-3");
 }
 
-.app-c-markdown-editor__edit-button {
+.app-c-markdown-editor__button {
+  padding: 0;
+  border: 0;
+  color: $govuk-link-colour;
+  background: none;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.app-c-markdown-editor__button--edit {
   display: none;
 }
 
-.app-c-markdown-editor__preview-button {
+.app-c-markdown-editor__button--preview {
   display: block;
 }
 

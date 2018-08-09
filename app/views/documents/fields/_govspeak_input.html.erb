@@ -1,18 +1,19 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= render "govuk_publishing_components/components/textarea", {
-      label: {
-        text: schema.label
-      },
-      data: {
-        "module": "markdown-editor",
-        "contextual-guidance": "document-contents-guidance"
-      },
-      id: "govspeak-editor",
-      name: "document[contents][#{schema.id}]",
-      value: document.contents[schema.id],
-      rows: 30,
-      spellcheck: "false"
+    <%= render "components/markdown-editor", {
+      textarea: {
+        label: {
+          text: schema.label
+        },
+        data: {
+          "contextual-guidance": "document-contents-guidance"
+        },
+        id: "govspeak-editor",
+        name: "document[contents][#{schema.id}]",
+        value: document.contents[schema.id],
+        rows: 30,
+        spellcheck: "false"
+      }
     } %>
   </div>
   <div class="govuk-grid-column-one-third">

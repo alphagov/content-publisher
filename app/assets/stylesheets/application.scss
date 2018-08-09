@@ -1,5 +1,6 @@
 $govuk-image-url-function: "image-url";
 $govuk-font-url-function: "font-url";
+$govuk-global-styles: true;
 
 @import "../../../node_modules/govuk-frontend/all";
 

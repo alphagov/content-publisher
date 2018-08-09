@@ -1,0 +1,15 @@
+name: Markdown editor
+description: Allows editing and previewing markdown
+body: |
+  Optional markdown providing further detail about the component
+accessibility_criteria: |
+  The component must:
+
+  - accept focus
+  - be focusable with a keyboard
+  - be usable with a keyboard
+  - be usable with touch
+  - indicate when they have focus
+  - have correctly associated labels
+examples:
+  default: {}
