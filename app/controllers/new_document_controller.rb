@@ -6,17 +6,29 @@ class NewDocumentController < ApplicationController
   end
 
   def choose_document_type
-    supertype_schema = SupertypeSchema.find(params[:supertype])
-
-    if supertype_schema.managed_elsewhere
-      redirect_to supertype_schema.managed_elsewhere_url
+    unless params[:supertype]
+      redirect_to new_document_path, alert: "Please choose a supertype"
       return
     end
 
-    @document_types = supertype_schema.document_types
+    @supertype_schema = SupertypeSchema.find(params[:supertype])
+
+    if @supertype_schema.managed_elsewhere
+      redirect_to @supertype_schema.managed_elsewhere_url
+      return
+    end
+
+    @document_types = @supertype_schema.document_types
   end
 
   def create
+    unless params[:document_type]
+      redirect_to choose_document_type_path(supertype: params[:supertype]),
+        alert: "Please choose a document type"
+
+      return
+    end
+
     document_type_schema = DocumentTypeSchema.find(params[:document_type])
 
     if document_type_schema.managed_elsewhere
