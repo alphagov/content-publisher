@@ -4,7 +4,6 @@ require "spec_helper"
 
 RSpec.feature "Create a statistical data set" do
   scenario "User creates statistical data set" do
-    pending("Add organistaion as edition links to the schema")
     when_i_choose_this_document_type
     and_i_fill_in_the_form_fields
     and_i_add_some_associations
