@@ -13,11 +13,11 @@ RSpec.feature "Save document associations when the API is down" do
   end
 
   def given_there_is_a_document_with_associations
-    @document = create(:document, :with_associations_in_schema)
-
-    @document.document_type_schema.associations.each do |schema|
-      publishing_api_has_linkables([], document_type: schema.document_type)
-    end
+    association_schema = build(:association_schema, type: "multi_association")
+    document_type_schema = build(:document_type_schema, associations: [association_schema])
+    association = { association_schema["id"] => ["a-content-id"] }
+    publishing_api_has_linkables([], document_type: association_schema["document_type"])
+    @document = create(:document, document_type: document_type_schema.id, associations: association)
   end
 
   def and_i_am_editing_the_associations

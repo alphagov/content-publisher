@@ -74,6 +74,12 @@
       type: govspeak
       validations:
         min_length: 10
+  associations:
+    - id: organisations
+      label: Organisations
+      type: multi_association
+      document_type: organisation
+
 
 - id: policy_paper
   name: Policy paper

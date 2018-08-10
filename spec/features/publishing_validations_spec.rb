@@ -12,7 +12,9 @@ RSpec.feature "Publish validations" do
   end
 
   def given_there_is_a_document_with_not_enough_info
-    @document = create(:document, :with_body_in_schema)
+    body_field_schema = build(:field_schema, id: "body", type: "govspeak", label: "Body", validations: { "min_length" => 10 })
+    document_type_schema = build(:document_type_schema, contents: [body_field_schema])
+    @document = create(:document, title: "Too small", summary: "Too small", document_type: document_type_schema.id)
   end
 
   def when_i_visit_the_document_page
@@ -26,8 +28,6 @@ RSpec.feature "Publish validations" do
   end
 
   def when_i_fix_some_warnings
-    # Clicking save will make a request, but we don't care about the
-    # particulars, which are tested in the feature test of the "edit" flow
     stub_any_publishing_api_put_content
     base_path = "#{@document.document_type_schema.path_prefix}/a-nice-title-of-considerable-length"
     publishing_api_has_lookups(base_path => nil)
