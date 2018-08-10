@@ -10,6 +10,8 @@ node {
         sh("npm run lint --silent")
       }
     },
+    rubyLintDiff: false,
+    rubyLintRails: true,
     overrideTestTask: {
       stage("Run tests") {
         sh("bundle exec rake spec")

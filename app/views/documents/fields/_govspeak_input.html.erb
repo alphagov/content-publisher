@@ -11,7 +11,7 @@
         id: "govspeak-editor",
         name: "document[contents][#{schema.id}]",
         value: document.contents[schema.id],
-        rows: 30,
+        rows: 25,
         spellcheck: "false"
       }
     } %>
@@ -27,13 +27,10 @@
       <p class="govuk-body">
           <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link">Full Markdown guidance</a>
       </p>
-      <markdown-toolbar for="govspeak-editor">
-        <md-header class="govuk-link">Heading</md-header>
-        <md-link class="govuk-link">Link</md-link>
-        <md-unordered-list class="govuk-link">Bullets</md-unordered-list>
-        <md-ordered-list class="govuk-link">Numbered list</md-ordered-list>
-        <md-quote class="govuk-link">Blockquote</md-quote>
-      </markdown-toolbar>
+
+      <%= render "components/markdown-toolbar", {
+        html_for: "govspeak-editor"
+      } %>
     <% end %>
   </div>
 </div>

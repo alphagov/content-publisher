@@ -33,16 +33,20 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
   // Mirror textarea's height
   $preview.style.height = this.$input.offsetHeight + 'px'
 
-  // Render markdown
-  window.marked(text, function (err, content) {
-    if (err) {
-      $preview.innerHTML = 'Error previewing content'
-      throw err
-    } else {
-      $preview.innerHTML = content
-    }
-  })
-
+  if (text) {
+    // Render markdown
+    window.marked(
+      text,
+      function (err, content) {
+        if (err) {
+          $preview.innerHTML = 'Error previewing content'
+          throw err
+        } else {
+          $preview.innerHTML = content
+        }
+      }
+    )
+  }
   this.toggleElements()
 }
 

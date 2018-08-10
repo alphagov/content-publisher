@@ -3,7 +3,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag do %>
+    <%= form_tag(choose_document_type_path, method: :get, enforce_utf8: false) do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "supertype",
         items: @supertypes.map do |supertype|
@@ -15,6 +15,7 @@
           }
         end
       } %>
+
       <%= render "govuk_publishing_components/components/button", text: "Continue", margin_bottom: true %>
     <% end %>
   </div>

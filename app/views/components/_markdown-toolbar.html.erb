@@ -1,0 +1,57 @@
+<markdown-toolbar class="app-c-markdown-toolbar" for="<%= html_for %>">
+  <%= render "govuk_publishing_components/components/details", {
+      title: "Headings and sub-headings"
+  } do %>
+  <ul class="app-c-markdown-toolbar__list">
+    <li class="app-c-markdown-toolbar__item">
+      <md-header-2 class="app-c-markdown-toolbar__button">Heading 2</md-header-2>
+    </li>
+    <li class="app-c-markdown-toolbar__item">
+      <md-header-3 class="app-c-markdown-toolbar__button">Heading 3</md-header-3>
+    </li>
+    <li class="app-c-markdown-toolbar__item">
+      <md-header-4 class="app-c-markdown-toolbar__button">Heading 4</md-header-4>
+    </li>
+  </ul>
+  <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown#headings-and-sub-headings" class="govuk-link" target="_blank"> Guidance on headings</a>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/details", {
+      title: "Links"
+  } do %>
+  <ul class="app-c-markdown-toolbar__list">
+    <li class="app-c-markdown-toolbar__item">
+      <md-link class="app-c-markdown-toolbar__button">Link</md-link>
+    </li>
+    <li class="app-c-markdown-toolbar__item">
+      <md-link-email class="app-c-markdown-toolbar__button">Email link</md-link-email>
+    </li>
+  </ul>
+  <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown#links" class="govuk-link" target="_blank"> Guidance on links</a>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/details", {
+      title: "Bullets"
+  } do %>
+  <ul class="app-c-markdown-toolbar__list">
+    <li class="app-c-markdown-toolbar__item">
+      <md-unordered-list class="app-c-markdown-toolbar__button">Bullets</md-unordered-list>
+    </li>
+    <li class="app-c-markdown-toolbar__item">
+      <md-ordered-list class="app-c-markdown-toolbar__button">Numbered list</md-ordered-list>
+    </li>
+  </ul>
+  <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown#bullets" class="govuk-link" target="_blank"> Guidance on bullets</a>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/details", {
+      title: "Blockquotes"
+  } do %>
+  <ul class="app-c-markdown-toolbar__list">
+    <li class="app-c-markdown-toolbar__item">
+      <md-quote class="app-c-markdown-toolbar__button">Blockquotes</md-quote>
+    </li>
+  </ul>
+  <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown#blockquotes" class="govuk-link" target="_blank"> Guidance on blockquotes</a>
+  <% end %>
+</markdown-toolbar>
