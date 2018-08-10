@@ -6,6 +6,7 @@ $govuk-global-styles: true;
 
 @import "components/contextual-guidance";
 @import "components/markdown-editor";
+@import "components/markdown-toolbar";
 
 .app-hidden {
   display: none;

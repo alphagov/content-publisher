@@ -34,31 +34,7 @@
   display: none;
   margin-top: 0;
 
-  p {
-    margin: 0;
-  }
-}
-
-markdown-toolbar {
-  @extend %govuk-list;
-
-  .govuk-link {
-    display: block;
-    color: $govuk-link-colour;
-    text-decoration: underline;
-    cursor: pointer;
-
-    &:hover {
-      color: $govuk-link-hover-colour;
-    }
-
-    &:active {
-      color: $govuk-link-active-colour;
-    }
-
-    @include govuk-media-query($from: tablet) {
-      margin-bottom: govuk-spacing(1);
-    }
-
+  .govuk-textarea {
+    overflow: scroll;
   }
 }
