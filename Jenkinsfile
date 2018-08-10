@@ -12,7 +12,6 @@ node {
     },
     rubyLintDiff: false,
     rubyLintRails: true,
-    brakeman: true,
     overrideTestTask: {
       stage("Run tests") {
         sh("bundle exec rake spec")

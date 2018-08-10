@@ -16,6 +16,7 @@ gem "plek", "~> 2"
 gem "uglifier", "~> 4"
 
 group :development do
+  gem "brakeman", "~> 4"
   gem "listen", "~> 3"
 end
 
