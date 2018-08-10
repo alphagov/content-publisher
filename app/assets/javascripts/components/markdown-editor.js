@@ -22,9 +22,6 @@ MarkdownEditor.prototype.init = function () {
   // Handle events
   this.$previewButton.addEventListener('click', $module.boundPreviewButtonClick)
   this.$editButton.addEventListener('click', $module.boundEditButtonClick)
-
-  // Prevent toolbar item reveals to overlap with footer
-  this.setContextualGuidancePosition()
 }
 
 MarkdownEditor.prototype.handlePreviewButton = function (event) {
@@ -72,16 +69,6 @@ MarkdownEditor.prototype.toggle = function (element) {
     element.style.display = 'block'
   } else {
     element.style.display = 'none'
-  }
-}
-
-MarkdownEditor.prototype.setContextualGuidancePosition = function () {
-  var guidanceId = this.$input.getAttribute('data-contextual-guidance')
-  if (guidanceId) {
-    var $guidance = document.querySelector('#' + guidanceId + ' .app-c-contextual-guidance')
-    if ($guidance) {
-      $guidance.style.position = 'relative'
-    }
   }
 }
 
