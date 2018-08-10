@@ -1,40 +1,85 @@
 <% content_for :back_link, documents_path %>
 <% content_for :title, @document.title || "No title" %>
 
-<p>
-  Base path: <%= @document.base_path %>
-</p>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
 
-<p>
-  Document type: <%= @document.document_type %>
-</p>
+    <ul>
+      <% ContentValidator.new(@document).validation_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
 
-<p>
-  Summary: <%= @document.summary %>
-</p>
+    <%= render "components/summary", {
+      title: {
+        text: "Document type"
+      },
+      items: [
+        {
+          field: "Document type",
+          value: @document.document_type_schema.name
+        }
+      ]
+    } %>
 
-<ul>
-<% ContentValidator.new(@document).validation_messages.each do |message| %>
-  <li><%= message %></li>
-<% end %>
-</ul>
+    <% contents = @document.document_type_schema.contents.map { |schema|
+      {
+        field: schema.label,
+        value: capture do
+          render "documents/fields/#{schema.type}", schema: schema, document: @document
+        end
+      }
+    } %>
 
-<% @document.document_type_schema.contents.each do |schema| %>
-  <%= render "documents/fields/#{schema.type}", schema: schema, document: @document %>
-<% end %>
+    <%= render "components/summary", {
+      title: {
+        text: "Title, summary and body",
+        change_url: edit_document_path(@document)
+      },
+      items: [
+        {
+          field: "Title",
+          value: @document.title
+        },
+        {
+          field: "Base path",
+          value: @document.base_path
+        },
+        {
+          field: "Summary",
+          value: @document.summary
+        }
+      ] + contents
+    } %>
 
-<h2>Associations</h2>
+    <% associations = @document.document_type_schema.associations.map { |schema|
+      {
+        field: schema.label,
+        value: capture do
+          render "documents/associations/#{schema.type}", schema: schema, values: @document.associations[schema.id]
+        end
+      }
+    } %>
 
-<% @document.document_type_schema.associations.each do |schema| %>
-  <%= render "documents/associations/#{schema.type}",
-    schema: schema,
-    values: @document.associations[schema.id] %>
-<% end %>
+    <%= render "components/summary", {
+      title: {
+        text: "Associations",
+        change_url: document_associations_path(@document)
+      },
+      items: associations
+    } %>
 
-<%= render "govuk_publishing_components/components/button", {
-  text: "Publish",
-  href: publish_document_path(@document),
-} %>
-
-<%= link_to "Edit document", edit_document_path(@document), class: "govuk-link" %>
-<%= link_to "Edit associations", document_associations_path(@document), class: "govuk-link" %>
+  </div>
+  <div class="govuk-grid-column-one-third">
+    <ul class="govuk-list">
+      <li>
+        <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
+      </li>
+      <li>
+        <%= link_to "Edit document", edit_document_path(@document), class: "govuk-link" %>
+      </li>
+      <li>
+        <%= link_to "Edit associations", document_associations_path(@document), class: "govuk-link" %>
+      </li>
+  </div>
+</div>

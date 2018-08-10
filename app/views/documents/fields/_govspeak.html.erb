@@ -1,9 +1,3 @@
-<p>
-  <%= render "govuk_publishing_components/components/heading", {
-    text: schema.id
-  } %>
-
-  <%= render "govuk_publishing_components/components/govspeak", {} do %>
-    <%= raw Govspeak::Document.new(@document.contents[schema.id]).to_html %>
-  <% end %>
-</p>
+<%= render "govuk_publishing_components/components/govspeak", {} do %>
+  <%= raw Govspeak::Document.new(@document.contents[schema.id]).to_html %>
+<% end %>
