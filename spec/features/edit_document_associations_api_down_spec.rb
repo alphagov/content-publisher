@@ -12,9 +12,10 @@ RSpec.feature "Edit document associations when the API is down" do
   end
 
   def given_there_is_a_document
-    association_schema = attributes_for(:association)
-    publishing_api_has_linkables([], document_type: association_schema[:document_type])
-    @document = create(:document)
+    association = attributes_for(:association, type: "multi_association")
+    document_type_schema = build(:document_type_schema, associations: [association])
+    publishing_api_has_linkables([], document_type: association[:document_type])
+    @document = create(:document, document_type: document_type_schema.id)
   end
 
   def and_the_publishing_api_is_down
