@@ -10,7 +10,6 @@ node {
         sh("npm run lint --silent")
       }
     },
-    brakeman: true,
     overrideTestTask: {
       stage("Run tests") {
         sh("bundle exec rake spec")
