@@ -40,12 +40,6 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
     // Render markdown
     window.marked(
       text,
-      {
-        gfm: true,
-        breaks: true,
-        tables: true,
-        sanitize: true
-      },
       function (err, content) {
         if (err) {
           $preview.innerHTML = 'Error previewing content'
