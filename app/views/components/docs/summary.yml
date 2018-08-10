@@ -1,0 +1,39 @@
+name: Summary
+description: Let users check their input before proceeding forward
+body: |
+  This component was build based on [Check answers pattern](https://design-system.service.gov.uk/patterns/check-answers/)
+part_of_admin_layout: true
+shared_accessibility_criteria:
+- link
+accessibility_criteria: |
+  The change/edit link must:
+
+  * indicate which item or section refers to (e.g. Change title)
+examples:
+  default:
+    data:
+      title:
+        text: "Title, summary and body"
+        change_url: "#change-title-summary-body"
+      items:
+      - field: "Title"
+        value: "Ethical standards for public service providers"
+      - field: "Summary"
+        value: "Find out more about our reviews on the subject of ethical standards for public service providers, including our 2014 report, 2015 guidance and 2018 follow-up publication."
+      - field: "Body"
+        value: "After the government decided in 2013 to expand the remit of the Committee to include public service providers, the Committee on Standards in Public Life produced our first report on the issue: Ethical Standards for Providers of Public Services in 2014."
+
+  change-item:
+    data:
+      title:
+        text: "Title, summary and body"
+      items:
+      - field: "Title"
+        value: "Ethical standards for public service providers"
+        change_url: "#change-title"
+      - field: "Summary"
+        value: "Find out more about our reviews on the subject of ethical standards for public service providers, including our 2014 report, 2015 guidance and 2018 follow-up publication."
+        change_url: "#change-summary"
+      - field: "Body"
+        value: "After the government decided in 2013 to expand the remit of the Committee to include public service providers, the Committee on Standards in Public Life produced our first report on the issue: Ethical Standards for Providers of Public Services in 2014."
+        change_url: "#change-body"
