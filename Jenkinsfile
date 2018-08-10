@@ -10,6 +10,7 @@ node {
         sh("npm run lint --silent")
       }
     },
+    rubyLintDiff: false,
     brakeman: true,
     overrideTestTask: {
       stage("Run tests") {
