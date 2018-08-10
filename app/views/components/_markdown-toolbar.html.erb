@@ -26,9 +26,6 @@
     <li class="app-c-markdown-toolbar__item">
       <md-link-email class="app-c-markdown-toolbar__button">Email link</md-link-email>
     </li>
-    <li class="app-c-markdown-toolbar__item">
-      <md-link-cta class="app-c-markdown-toolbar__button">Call to action</md-link-cta>
-    </li>
   </ul>
   <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown#links" class="govuk-link" target="_blank"> Guidance on links</a>
   <% end %>
@@ -56,16 +53,5 @@
     </li>
   </ul>
   <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown#blockquotes" class="govuk-link" target="_blank"> Guidance on blockquotes</a>
-  <% end %>
-
-  <%= render "govuk_publishing_components/components/details", {
-      title: "Addresses"
-  } do %>
-  <ul class="app-c-markdown-toolbar__list">
-    <li class="app-c-markdown-toolbar__item">
-      <md-address class="app-c-markdown-toolbar__button">Addresses</md-address>
-    </li>
-  </ul>
-  <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown#markdown-addresses" class="govuk-link" target="_blank"> Guidance on addresses</a>
   <% end %>
 </markdown-toolbar>
