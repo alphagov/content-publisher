@@ -12,9 +12,9 @@ RSpec.feature "Publish validations" do
   end
 
   def given_there_is_a_document_with_not_enough_info
-    body_field = { id: "body", label: "Body", type: "govspeak", validations: { "min_length" => 10 } }
-    document_type_schema = build(:document_type_schema, contents: [body_field])
-    @document = create(:document, document_type: document_type_schema.id)
+    body_field_schema = build(:field_schema, id: "body", type: "govspeak", label: "Body", validations: { "min_length" => 10 })
+    document_type_schema = build(:document_type_schema, contents: [body_field_schema])
+    @document = create(:document, title: "Too small", summary: "Too small", document_type: document_type_schema.id)
   end
 
   def when_i_visit_the_document_page

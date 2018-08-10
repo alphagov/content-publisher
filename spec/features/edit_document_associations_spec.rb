@@ -8,7 +8,7 @@ RSpec.feature "Edit document associations" do
   let(:association_to_select_2) { { "content_id" => SecureRandom.uuid, "internal_name" => "Association to select 2" } }
 
   scenario "User edits associations to a document" do
-    given_there_is_a_document_with_associations
+    given_there_is_a_document
     when_i_visit_the_document_page
     and_i_click_on_edit_associations
     then_i_can_see_the_current_selections
@@ -17,12 +17,12 @@ RSpec.feature "Edit document associations" do
     and_the_preview_creation_succeeded
   end
 
-  def given_there_is_a_document_with_associations
-    association = attributes_for(:association, type: "multi_association", id: "association_id")
-    document_type_schema = build(:document_type_schema, associations: [association])
+  def given_there_is_a_document
+    association_schema = build(:association_schema, type: "multi_association", id: "association_id")
+    document_type_schema = build(:document_type_schema, associations: [association_schema])
     multi_association_linkables = [initial_association, association_to_select_1, association_to_select_2]
-    publishing_api_has_linkables(multi_association_linkables, document_type: association[:document_type])
-    initial_associations = { association[:id] => [initial_association["content_id"]] }
+    publishing_api_has_linkables(multi_association_linkables, document_type: association_schema["document_type"])
+    initial_associations = { association_schema["id"] => [initial_association["content_id"]] }
     @document = create(:document, document_type: document_type_schema.id, associations: initial_associations)
   end
 

@@ -11,10 +11,10 @@ RSpec.feature "Showing a document when the API is down" do
   end
 
   def given_there_is_a_document_with_associations
-    association_schema = attributes_for(:association, type: "multi_association")
+    association_schema = build(:association_schema, type: "multi_association")
     document_type_schema = build(:document_type_schema, associations: [association_schema])
-    association = { association_schema[:id] => ["a-content-id"] }
-    @document = create(:document, document_type: document_type_schema.id, associations: association)
+    associations = { association_schema["id"] => ["a-content-id"] }
+    @document = create(:document, document_type: document_type_schema.id, associations: associations)
   end
 
   def and_the_publishing_api_is_down
