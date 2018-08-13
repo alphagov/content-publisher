@@ -1,7 +1,6 @@
 name: Contextual guidance
 description: Provides a container with additional information when focusing an input field (e.g. input, textarea)
-body: |
-  Optional markdown providing further detail about the component
+part_of_admin_layout: true
 accessibility_criteria: |
   The component must:
 
@@ -9,4 +8,8 @@ accessibility_criteria: |
   * be visible when the associated input field if focused
   * stay visible until another input field with guidance is being focused
 examples:
-  default: {}
+  default:
+    data:
+      title: Writing a news title
+      block: |
+        The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.

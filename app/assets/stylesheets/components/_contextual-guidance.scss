@@ -1,4 +1,6 @@
 .app-c-contextual-guidance-wrapper {
+  @include govuk-font(19);
+
   @include govuk-responsive-margin(6, "bottom");
 
   @include govuk-media-query($from: tablet) {
