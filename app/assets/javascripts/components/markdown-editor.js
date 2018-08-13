@@ -4,12 +4,13 @@
 
 function MarkdownEditor ($module) {
   this.$module = $module
+  this.$toggleBar = $module.querySelector('.js-markdown-toggle-bar')
   this.$input = $module.querySelector('textarea')
-  this.$preview = $module.querySelector('.js-preview-body .govuk-textarea')
-  this.$previewButton = $module.querySelector('.js-preview-button')
-  this.$editButton = $module.querySelector('.js-edit-button')
-  this.$editorInput = $module.querySelector('.js-editor-input')
-  this.$previewBody = $module.querySelector('.js-preview-body')
+  this.$preview = $module.querySelector('.js-markdown-preview-body .govuk-textarea')
+  this.$previewButton = $module.querySelector('.js-markdown-preview-button')
+  this.$editButton = $module.querySelector('.js-markdown-edit-button')
+  this.$editorInput = $module.querySelector('.js-markdown-editor-input')
+  this.$previewBody = $module.querySelector('.js-markdown-preview-body')
 }
 
 MarkdownEditor.prototype.init = function () {
@@ -18,6 +19,9 @@ MarkdownEditor.prototype.init = function () {
   // Save bounded functions to use when removing event listeners during teardown
   $module.boundPreviewButtonClick = this.handlePreviewButton.bind(this)
   $module.boundEditButtonClick = this.handleEditButton.bind(this)
+
+  // Enable toggle bar
+  this.$toggleBar.style.display = 'block'
 
   // Handle events
   this.$previewButton.addEventListener('click', $module.boundPreviewButtonClick)
@@ -46,6 +50,8 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
         }
       }
     )
+  } else {
+    $preview.innerHTML = 'Nothing to preview'
   }
   this.toggleElements()
 }

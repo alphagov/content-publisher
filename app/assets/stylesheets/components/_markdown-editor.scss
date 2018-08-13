@@ -1,6 +1,7 @@
 .app-c-markdown-editor__preview-toggle {
   @include govuk-font($size: 19);
 
+  display: none;
   margin-bottom: -$govuk-border-width-form-element;
   padding: govuk-spacing(1);
   border: $govuk-border-width-form-element solid $govuk-input-border-colour;
