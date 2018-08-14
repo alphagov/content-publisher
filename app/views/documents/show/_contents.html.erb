@@ -1,0 +1,47 @@
+<ul>
+  <% ContentValidator.new(@document).validation_messages.each do |message| %>
+    <li><%= message %></li>
+  <% end %>
+</ul>
+
+<%= render "components/summary", {
+  title: {
+    text: "Document type"
+  },
+  items: [
+    {
+      field: "Document type",
+      value: @document.document_type_schema.name
+    }
+  ]
+} %>
+
+<% contents = @document.document_type_schema.contents.map { |schema|
+  {
+    field: schema.label,
+    value: capture do
+      render "documents/fields/#{schema.type}", schema: schema, document: @document
+    end
+  }
+} %>
+
+<%= render "components/summary", {
+  title: {
+    text: "Title, summary and body",
+    change_url: edit_document_path(@document)
+  },
+  items: [
+    {
+      field: "Title",
+      value: @document.title
+    },
+    {
+      field: "Base path",
+      value: @document.base_path
+    },
+    {
+      field: "Summary",
+      value: @document.summary
+    }
+  ] + contents
+} %>

@@ -1,38 +1,21 @@
 <% content_for :back_link, documents_path %>
 <% content_for :title, @document.title || "No title" %>
 
-<p>
-  Base path: <%= @document.base_path %>
-</p>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
 
-<p>
-  Document type: <%= @document.document_type %>
-</p>
+    <%= render "documents/show/contents" %>
 
-<p>
-  Summary: <%= @document.summary %>
-</p>
+    <h2 class="govuk-header-s">Associations</h2>
 
-<ul>
-<% ContentValidator.new(@document).validation_messages.each do |message| %>
-  <li><%= message %></li>
-<% end %>
-</ul>
+    <p class="govuk-body">
+      This content isn't available right now. We're having trouble getting the data we need to show you this content.
+    </p>
 
-<% @document.document_type_schema.contents.each do |schema| %>
-  <%= render "documents/fields/#{schema.type}", schema: schema, document: @document %>
-<% end %>
+  </div>
+  <div class="govuk-grid-column-one-third">
 
-<h2>Associations</h2>
+    <%= render "documents/show/actions" %>
 
-<p>
-  This content isn't available right now. We're having trouble getting the data we need to show you this content.
-</p>
-
-<%= render "govuk_publishing_components/components/button", {
-  text: "Publish",
-  href: publish_document_path(@document),
-} %>
-
-<%= link_to "Edit document", edit_document_path(@document), class: "govuk-link" %>
-<%= link_to "Edit associations", document_associations_path(@document), class: "govuk-link" %>
+  </div>
+</div>

@@ -4,53 +4,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    <ul>
-      <% ContentValidator.new(@document).validation_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-
-    <%= render "components/summary", {
-      title: {
-        text: "Document type"
-      },
-      items: [
-        {
-          field: "Document type",
-          value: @document.document_type_schema.name
-        }
-      ]
-    } %>
-
-    <% contents = @document.document_type_schema.contents.map { |schema|
-      {
-        field: schema.label,
-        value: capture do
-          render "documents/fields/#{schema.type}", schema: schema, document: @document
-        end
-      }
-    } %>
-
-    <%= render "components/summary", {
-      title: {
-        text: "Title, summary and body",
-        change_url: edit_document_path(@document)
-      },
-      items: [
-        {
-          field: "Title",
-          value: @document.title
-        },
-        {
-          field: "Base path",
-          value: @document.base_path
-        },
-        {
-          field: "Summary",
-          value: @document.summary
-        }
-      ] + contents
-    } %>
+    <%= render "documents/show/contents" %>
 
     <% associations = @document.document_type_schema.associations.map { |schema|
       {
@@ -71,15 +25,8 @@
 
   </div>
   <div class="govuk-grid-column-one-third">
-    <ul class="govuk-list">
-      <li>
-        <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
-      </li>
-      <li>
-        <%= link_to "Edit document", edit_document_path(@document), class: "govuk-link" %>
-      </li>
-      <li>
-        <%= link_to "Edit associations", document_associations_path(@document), class: "govuk-link" %>
-      </li>
+
+    <%= render "documents/show/actions" %>
+
   </div>
 </div>
