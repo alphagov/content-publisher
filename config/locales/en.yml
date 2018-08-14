@@ -51,7 +51,7 @@ en:
     publishing:
       name: Publishing
       description: We're currently publishing a new edition to GOV.UK.
-    published:
+    live_on_govuk:
       name: Published
       description: Your content has been published on GOV.UK.
     error_in_publishing:

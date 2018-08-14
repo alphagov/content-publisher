@@ -8,7 +8,7 @@ class PublicationState
     sent_to_draft
     error_sending_to_draft
     publishing
-    published
+    live_on_govuk
     error_in_publishing
   ].freeze
 end

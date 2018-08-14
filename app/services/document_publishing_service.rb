@@ -12,7 +12,7 @@ class DocumentPublishingService
   def publish(document)
     document.update!(publication_state: "publishing")
     publishing_api.publish(document.content_id, "major", locale: document.locale)
-    document.update!(publication_state: "published")
+    document.update!(publication_state: "live_on_govuk")
   end
 
 private

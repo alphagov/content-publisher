@@ -25,7 +25,7 @@ RSpec.describe DocumentPublishingService do
       DocumentPublishingService.new.publish(document)
 
       expect(document).to have_received(:update!).with(publication_state: "publishing")
-      expect(document).to have_received(:update!).with(publication_state: "published")
+      expect(document).to have_received(:update!).with(publication_state: "live_on_govuk")
     end
   end
 end
