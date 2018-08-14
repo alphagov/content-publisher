@@ -39,6 +39,10 @@
       label: Worldwide organisations
       type: multi_association
       document_type: worldwide_organisation
+    - id: primary_publishing_organisation
+      label: Primary publishing organisation
+      type: single_association
+      document_type: organisation
 
 - id: news_story
   label: News story

@@ -1,0 +1,10 @@
+<p>
+    <%= render "govuk_publishing_components/components/label", {
+        text: schema.label,
+        html_for: "associations[#{schema.id}]"
+    } %>
+
+    <% options = LinkablesService.new(schema.document_type).select_options %>
+
+    <%= select_tag "associations[#{schema.id}][]", options_for_select(options, associations[schema.id]), class: "govuk-select" %>
+</p>

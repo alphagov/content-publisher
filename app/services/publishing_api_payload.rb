@@ -25,7 +25,7 @@ class PublishingApiPayload
       routes: [
         { path: document.base_path, type: "exact" },
       ],
-      links: document.associations,
+      links: links,
       access_limited: {
         auth_bypass_ids: [DocumentUrl.new(document).auth_bypass_id],
       }
@@ -33,6 +33,15 @@ class PublishingApiPayload
   end
 
 private
+
+  def links
+    associations = document.associations
+    if associations.include?("primary_publishing_organisation") && !associations.include?("original_publishing_organisation")
+      associations["original_publishing_organisation"] = associations["primary_publishing_organisation"]
+      document.update(associations: associations)
+    end
+    associations
+  end
 
   def details
     details_hash = temporary_defaults_in_details
