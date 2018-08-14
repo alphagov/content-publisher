@@ -18,3 +18,7 @@
     <%= link_to "Shareable preview", DocumentUrl.new(@document).secret_preview_url, class: "govuk-link" %>
   </li>
 </ul>
+
+<div class='govuk-tag' title="<%= t "publication_state.#{@document.publication_state}.description" %>">
+  <%= t "publication_state.#{@document.publication_state}.name" %>
+</div>
