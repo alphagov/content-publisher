@@ -1,0 +1,41 @@
+<%
+  title||= nil
+  items||= []
+%>
+
+<div class="app-c-summary">
+
+<% if title %>
+  <h2 class="govuk-heading-m">
+    <%= title[:text] %>
+  </h2>
+  <% if title[:change_url] %>
+  <a class="app-c-summary__edit" href="<%= title[:change_url] %>">
+    Change<span class="govuk-visually-hidden"> <%= title[:text] %></span>
+  </a>
+  <% end %>
+<% end %>
+
+<% if items.any? %>
+  <dl class="app-c-summary__list app-c-summary__list--short">
+    <% items.each do |item| %>
+    <div class="app-c-summary__contents">
+      <dt class="app-c-summary__question">
+        <%= item[:field] %>
+      </dt>
+      <dd class="app-c-summary__answer">
+        <%= item[:value] %>
+      </dd>
+      <% if item[:change_url] %>
+      <dd class="app-c-summary__change">
+        <a href="<%= item[:change_url] %>">
+          Change<span class="govuk-visually-hidden"> <%= item[:field] %></span>
+        </a>
+      </dd>
+      <% end %>
+    </div>
+    <% end %>
+  </dl>
+<% end %>
+
+</div>
