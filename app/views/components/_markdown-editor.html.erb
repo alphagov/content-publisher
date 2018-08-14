@@ -1,17 +1,23 @@
+<%
+  textarea ||= {}
+  edit_button_text ||= 'Edit'
+  preview_button_text ||= 'Preview'
+%>
 <div class="app-c-markdown-editor" data-module="markdown-editor">
   <%= render "govuk_publishing_components/components/label", {
-      text: textarea[:label][:text],
+      text: label[:text],
       html_for: textarea[:id]
   } %>
-  <% textarea[:label] = nil %>
-  <div class="app-c-markdown-editor__preview-toggle">
-    <button class="app-c-markdown-editor__button app-c-markdown-editor__button--edit js-edit-button">Edit markdown</button>
-    <button class="app-c-markdown-editor__button app-c-markdown-editor__button--preview js-preview-button">Preview markdown</button>
+  <div class="app-c-markdown-editor__preview-toggle js-markdown-toggle-bar">
+    <button class="app-c-markdown-editor__button app-c-markdown-editor__button--edit js-markdown-edit-button"><%= edit_button_text %></button>
+    <button class="app-c-markdown-editor__button app-c-markdown-editor__button--preview js-markdown-preview-button"><%= preview_button_text %></button>
   </div>
-  <div class="app-c-markdown-editor__input js-editor-input">
+  <div class="app-c-markdown-editor__input js-markdown-editor-input">
     <%= render "govuk_publishing_components/components/textarea", textarea %>
   </div>
-  <div class="app-c-markdown-editor__preview js-preview-body">
-    <div class="govuk-textarea">Nothing to preview</div>
+  <div class="app-c-markdown-editor__preview js-markdown-preview-body">
+  <%= render "govuk_publishing_components/components/govspeak", { } do %>
+    <div class="govuk-textarea"></div>
+  <% end %>
   </div>
 </div>

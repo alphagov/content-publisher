@@ -1,7 +1,11 @@
 name: Markdown editor
 description: Allows editing and previewing markdown
 body: |
-  Optional markdown providing further detail about the component
+  If JavaScript is disabled this component falls back to a textarea component
+  without the preview functionality
+part_of_admin_layout: true
+shared_accessibility_criteria:
+  - link
 accessibility_criteria: |
   The component must:
 
@@ -12,4 +16,11 @@ accessibility_criteria: |
   - indicate when they have focus
   - have correctly associated labels
 examples:
-  default: {}
+  default:
+    data:
+      label:
+        text: Body
+      textarea:
+        name: markdown-editor
+        id: markdown-editor
+
