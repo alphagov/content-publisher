@@ -4,17 +4,19 @@
   <% end %>
 </ul>
 
-<%= render "components/summary", {
-  title: {
-    text: "Document type"
-  },
-  items: [
-    {
-      field: "Document type",
-      value: @document.document_type_schema.name
-    }
-  ]
-} %>
+<% if I18n.exists?("formats.document_types.#{@document.document_type}") %>
+  <%= render "components/summary", {
+    title: {
+      text: t("pages.documents.show.format.title")
+    },
+    items: [
+      {
+        field: t("pages.documents.show.format.items.document_type"),
+        value: t("formats.document_types.#{@document.document_type}.label")
+      }
+    ]
+  } %>
+<% end %>
 
 <% contents = @document.document_type_schema.contents.map { |schema|
   {
@@ -27,20 +29,20 @@
 
 <%= render "components/summary", {
   title: {
-    text: "Title, summary and body",
+    text: t("pages.documents.show.contents.title"),
     change_url: edit_document_path(@document)
   },
   items: [
     {
-      field: "Title",
+      field: t("pages.documents.show.contents.items.title"),
       value: @document.title
     },
     {
-      field: "Base path",
+      field: t("pages.documents.show.contents.items.base_path"),
       value: @document.base_path
     },
     {
-      field: "Summary",
+      field: t("pages.documents.show.contents.items.summary"),
       value: @document.summary
     }
   ] + contents

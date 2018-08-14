@@ -1,0 +1,65 @@
+en:
+  formats:
+    supertypes:
+      news:
+        label: News
+        description: To tell users about something that government has done or will do.
+      transparency:
+        label: Transparency
+        description: To provide information that helps users hold government to account.
+      guidance:
+        label: Guidance
+        description: To help users do something or understand what they need to do.
+      policy:
+        label: Policy
+        description: To explain the government's position on something.
+      consultations:
+        label: Consultations
+        description: To request users views or evidence on an issue and to build collective agreement.
+      not-sure:
+        label: I'm not sure this should be on GOV.UK
+        description: View this guide to see what should go on GOV.UK and where else you can publish content.
+
+    document_types:
+      press_release:
+        label: Press release
+        guidance:
+          title:
+            title: Create a news title
+            body: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
+          summary:
+            title: Writing a news summary
+            body: The summary should explain the main point of the content. It is the first line of the content so don’t repeat it below and end with a full stop.
+          body:
+            title: Writing news
+            body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p
+      news_story:
+        label: News story
+        guidance:
+          title:
+            title: Create a news title
+            body: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
+          summary:
+            title: Writing a news summary
+            body: The summary should explain the main point of the content. It is the first line of the content so don’t repeat it below and end with a full stop.
+          body:
+            title: Writing news
+            body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p>
+      statistical_data_set:
+        label: Statistical data set
+        guidance:
+          title:
+            title: Create a news title
+            body: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
+          summary:
+            title: Writing a news summary
+            body: The summary should explain the main point of the content. It is the first line of the content so don’t repeat it below and end with a full stop.
+          body:
+            title: Writing news
+            body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p>
+      policy_paper:
+        label: Policy paper
+      detailed_guide:
+        label: Detailed guide
+      consultation:
+        label: Consultation

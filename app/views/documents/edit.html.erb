@@ -1,12 +1,12 @@
 <%= content_for :back_link, document_path(@document) %>
-<% content_for :title, @document.title || "Create " + @document.document_type_schema.name %>
+<% content_for :title, @document.title || t("documents.edit.title") %>
 
   <%= form_for(@document, data: {'module': 'edit-document-form', 'generate-path-path': generate_path_path}) do |f| %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
         label: {
-          text: "Title"
+          text: t("pages.documents.edit.form_labels.title")
         },
         id: "document-title-id",
         name: "document[title]",
@@ -17,36 +17,39 @@
       } %>
 
       <% url_preview = capture do %>
-        <p class="govuk-heading-s">The web address for this content will look like:</p>
+        <p class="govuk-heading-s"><%= t("pages.documents.edit.url_preview.available") %></p>
 
-        <span id="no-title-id" class="govuk-body <%= 'app-hidden' unless @document.base_path.nil? %>">You haven’t entered a title yet.</span>
+        <span id="no-title-id" class="govuk-body <%= 'app-hidden' unless @document.base_path.nil? %>"><%= t("pages.documents.edit.url_preview.no_title") %></span>
 
-        <div id="url-preview-id" <%= 'class="app-hidden"' if @document.base_path.nil? %>>
-            <span class="govuk-body">www.gov.uk</span><span id="base-path-id" class="govuk-body" ><%= "#{@document.base_path}" %></span>
+        <div id="url-preview-id" <%= 'class="app-hidden"' if @document.base_path.nil? %>
+          <span class="govuk-body"><%= Plek.new.find("www") %></span><span id="base-path-id" class="govuk-body" ><%= "#{@document.base_path}" %></span>
         </div>
 
-        <span id="error-generating-path-id" class="govuk-body app-hidden">Unable to preview address, please edit title and try again.</span>
+        <span id="error-generating-path-id" class="govuk-body app-hidden"><%= t("pages.documents.edit.url_preview.error") %></span>
       <% end %>
 
       <%= render "govuk_publishing_components/components/inset_text", {
         text: url_preview.html_safe
       } %>
     </div>
-    <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual-guidance", {
-        id: "document-title-guidance",
-        title: "Writing a news title"
-      } do %>
-        <p class="govuk-body">The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.</p>
-      <% end %>
-    </div>
+
+    <% if I18n.exists?("formats.document_types.#{@document.document_type}.guidance.title") %>
+      <div class="govuk-grid-column-one-third">
+        <%= render "components/contextual-guidance", {
+          id: "document-title-guidance",
+          title: t("formats.document_types.#{@document.document_type}.guidance.title.title")
+        } do %>
+          <p class="govuk-body"><%= t("formats.document_types.#{@document.document_type}.guidance.title.body") %></p>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/textarea", {
         label: {
-          text: "Summary"
+          text: t("documents.edit.form_labels.summary")
         },
         name: "document[summary]",
         value: @document.summary,
@@ -56,14 +59,17 @@
         }
       } %>
     </div>
-    <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual-guidance", {
-        id: "document-summary-guidance",
-        title: "Writing a news summary"
-      } do %>
-        <p class="govuk-body">The summary should explain the main point of the story. It is the first line of the story so don’t repeat it below and end with a full stop.</p>
-      <% end %>
-    </div>
+
+    <% if I18n.exists?("formats.document_types.#{@document.document_type}.guidance.summary") %>
+      <div class="govuk-grid-column-one-third">
+        <%= render "components/contextual-guidance", {
+          id: "document-summary-guidance",
+          title: t("formats.document_types.#{@document.document_type}.guidance.summary.title")
+        } do %>
+          <p class="govuk-body"><%= t("formats.document_types.#{@document.document_type}.guidance.summary.body") %></p>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <% @document.document_type_schema.contents.each do |schema| %>
@@ -71,6 +77,6 @@
   <% end %>
 
   <%= render "govuk_publishing_components/components/button", {
-    text: "Save", margin_bottom: true
+    text: t("pages.documents.edit.actions.save"), margin_bottom: true
   } %>
 <% end %>

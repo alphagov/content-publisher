@@ -1,5 +1,5 @@
 <% content_for :back_link, root_path %>
-<% content_for :title, "Content type" %>
+<% content_for :title, t("pages.new_document.choose_supertype.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -9,14 +9,14 @@
         items: @supertypes.map do |supertype|
           {
             value: supertype.id,
-            text: supertype.label,
-            hint_text: supertype.description,
+            text: t("formats.supertypes.#{supertype.id}.label"),
+            hint_text: t("formats.supertypes.#{supertype.id}.description"),
             bold: true,
           }
         end
       } %>
 
-      <%= render "govuk_publishing_components/components/button", text: "Continue", margin_bottom: true %>
+      <%= render "govuk_publishing_components/components/button", text: t("pages.new_document.choose_supertype.actions.continue"), margin_bottom: true %>
     <% end %>
   </div>
 </div>

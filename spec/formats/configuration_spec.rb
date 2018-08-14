@@ -7,8 +7,6 @@ RSpec.describe "Format configuration" do
     describe "Supertype #{schema.id}" do
       it "has the required attributes for #{schema.id}" do
         expect(schema.id).to_not be_blank
-        expect(schema.label).to_not be_blank
-        expect(schema.description).to_not be_blank
       end
     end
   end
@@ -17,7 +15,6 @@ RSpec.describe "Format configuration" do
     describe "Document type #{schema.id}" do
       it "has the required attributes" do
         expect(schema.id).to_not be_blank
-        expect(schema.name).to_not be_blank
       end
 
       if schema.managed_elsewhere

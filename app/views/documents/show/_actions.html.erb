@@ -1,12 +1,12 @@
 <ul class="govuk-list">
   <li>
-    <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
+    <%= link_to t("pages.documents.show.actions.publish"), publish_document_path(@document), class: "govuk-link" %>
   </li>
   <li>
-    <%= link_to "Edit document", edit_document_path(@document), class: "govuk-link" %>
+    <%= link_to t("pages.documents.show.actions.edit"), edit_document_path(@document), class: "govuk-link" %>
   </li>
   <li>
-    <%= link_to "Edit associations", document_associations_path(@document), class: "govuk-link" %>
+    <%= link_to t("pages.documents.show.actions.edit_associations"), document_associations_path(@document), class: "govuk-link" %>
   </li>
   <li>
     <%= link_to "View on GOV.UK", DocumentUrl.new(@document).public_url, class: "govuk-link" %>

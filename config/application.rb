@@ -43,5 +43,8 @@ module ContentPublisher
     }
 
     config.govuk_environment = govuk_environments.fetch(ENV["ERRBIT_ENVIRONMENT_NAME"], "development")
+
+    config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.yml")]
+    config.action_view.raise_on_missing_translations = true
   end
 end

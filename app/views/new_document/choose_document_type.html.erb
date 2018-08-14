@@ -1,5 +1,5 @@
 <% content_for :back_link, new_document_path %>
-<% content_for :title, "Document type" %>
+<% content_for :title, t("pages.new_document.choose_document_type.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -9,13 +9,13 @@
         items: @document_types.map { |document_type|
           {
             value: document_type.id,
-            text: document_type.name,
+            text: t("formats.document_types.#{document_type.id}.label")
           }
         }
       } %>
 
       <%= hidden_field(nil, :supertype, value: @supertype_schema.id) %>
-      <%= render "govuk_publishing_components/components/button", text: "Continue", margin_bottom: true %>
+      <%= render "govuk_publishing_components/components/button", text: t("pages.new_document.choose_document_type.actions.continue"), margin_bottom: true %>
     <% end %>
   </div>
 </div>

@@ -1,6 +1,5 @@
 ---
 - id: press_release
-  name: Press release
   supertype: news
   publishing_metadata:
     schema_name: news_article
@@ -31,7 +30,6 @@
       document_type: worldwide_organisation
 
 - id: news_story
-  name: News story
   supertype: news
   publishing_metadata:
     schema_name: news_article
@@ -62,7 +60,6 @@
       document_type: worldwide_organisation
 
 - id: statistical_data_set
-  name: Statistical data set
   supertype: transparency
   publishing_metadata:
     schema_name: statistical_data_set
@@ -80,23 +77,19 @@
       type: multi_association
       document_type: organisation
 
-
 - id: policy_paper
-  name: Policy paper
   supertype: policy
   managed_elsewhere:
     hostname: whitehall-admin
     path: /government/admin/publications/new
 
 - id: detailed_guide
-  name: Detailed guide
   supertype: guidance
   managed_elsewhere:
     hostname: whitehall-admin
     path: /government/admin/detailed-guides/new
 
 - id: consultation
-  name: Consultation
   supertype: consultations
   managed_elsewhere:
     hostname: whitehall-admin

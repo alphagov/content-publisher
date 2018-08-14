@@ -1,16 +1,16 @@
-<% content_for :title, "Documents" %>
+<% content_for :title, t("pages.documents.index.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= render "govuk_publishing_components/components/button", {
-      text: "New document", href: new_document_path, margin_bottom: true
+      text: t("pages.documents.index.actions.new"), href: new_document_path, margin_bottom: true
     } %>
 
     <%= render "govuk_publishing_components/components/document_list", {
       items: @documents.map do |document|
         {
           link: {
-            text: document.title || "No title",
+            text: document.title || t("pages.documents.index.search_results.untitled"),
             path: document_path(document),
             description: document.summary,
             context: document.locale

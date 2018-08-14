@@ -1,0 +1,5 @@
+en:
+  layouts:
+    application:
+      actions:
+        log_out: Log out

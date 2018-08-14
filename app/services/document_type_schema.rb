@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DocumentTypeSchema
-  attr_reader :contents, :id, :name, :supertype, :managed_elsewhere, :publishing_metadata, :path_prefix, :associations
+  attr_reader :contents, :id, :supertype, :managed_elsewhere, :publishing_metadata, :path_prefix, :associations
 
   def initialize(params = {})
     @id = params["id"]

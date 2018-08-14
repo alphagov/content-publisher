@@ -1,21 +1,18 @@
 <% content_for :back_link, documents_path %>
-<% content_for :title, @document.title || "No title" %>
+<% content_for :title, @document.title || t("pages.documents.show.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-
     <%= render "documents/show/contents" %>
 
-    <h2 class="govuk-header-s">Associations</h2>
+    <h2 class="govuk-header-s"><%= t("pages.documents.show.associations.title") %></h2>
 
     <p class="govuk-body">
-      This content isn't available right now. We're having trouble getting the data we need to show you this content.
+      <%= t("pages.documents.show.associations.api_down") %>
     </p>
-
   </div>
+
   <div class="govuk-grid-column-one-third">
-
     <%= render "documents/show/actions" %>
-
   </div>
 </div>

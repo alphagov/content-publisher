@@ -1,34 +1,3 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   'true': 'foo'
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 en:
   hello: "Hello world"
 
@@ -54,3 +23,66 @@ en:
     error_sending_to_live:
       name: Error publishing
       description: We've encountered a problem during the publishing.
+  document_associations:
+    edit:
+      title: Document associations
+      api_down: This content can't be edited right now. We're having trouble getting the data we need for you to make changes on this page.
+      actions:
+        save: Save
+  documents:
+    show:
+      title: No title
+      associations:
+        title: Associations
+        api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
+      actions:
+        publish: Publish
+        edit_associations: Edit associations
+        edit: Edit document
+      flashes:
+        draft_success: Preview creation successful
+        draft_error: Error creating preview
+        publish_success: Publish successful
+        publish_error: Error publishing
+    index:
+      title: Documents
+      actions:
+        new: New document
+      search_results:
+        untitled: No title
+    edit:
+      title: "Create a %{schema}"
+      actions:
+        save: Save
+      form_labels:
+        title: Title
+        summary: Summary
+      url_preview:
+        available: "The web address for this content will look like:"
+        no_title: You haven't entered a title yet.
+        error: Unable to preview address, please edit title and try again.
+  layouts:
+    application:
+      actions:
+        log_out: Log out
+  new_document:
+    choose_document_type:
+      title: Document type
+      actions:
+        continue: Continue
+      flashes:
+        choose_error: Please choose a document type
+    choose_supertype:
+      title: Content type
+      actions:
+        continue: Continue
+      flashes:
+        choose_error: Please choose a supertype
+    guidance:
+      title: What to publish on GOV.UK
+  publish_document:
+    confirmation:
+      title: Do you really want to publish?
+      actions:
+        confirm: Confirm publish
+>>>>>>> Use translations instead of hard copy

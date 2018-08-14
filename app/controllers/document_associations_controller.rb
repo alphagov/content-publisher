@@ -14,10 +14,10 @@ class DocumentAssociationsController < ApplicationController
     document = Document.find(params[:id])
     document.update(associations: update_params(document))
     DocumentPublishingService.new.publish_draft(document)
-    redirect_to document, notice: "Preview creation successful"
+    redirect_to document, notice: t("documents.show.flashes.draft_success")
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
-    redirect_to document, alert: "Error creating preview"
+    redirect_to document, alert: t("documents.show.flashes.draft_error")
   end
 
 private
