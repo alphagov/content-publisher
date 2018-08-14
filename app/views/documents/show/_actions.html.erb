@@ -1,0 +1,11 @@
+<ul class="govuk-list">
+  <li>
+    <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
+  </li>
+  <li>
+    <%= link_to "Edit document", edit_document_path(@document), class: "govuk-link" %>
+  </li>
+  <li>
+    <%= link_to "Edit associations", document_associations_path(@document), class: "govuk-link" %>
+  </li>
+</ul>
