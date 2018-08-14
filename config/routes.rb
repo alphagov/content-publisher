@@ -2,7 +2,6 @@
 
 Rails.application.routes.draw do
   root to: redirect('/documents')
-  get '/dev' => 'development#index'
 
   get '/documents/publishing-guidance' => 'new_document#guidance', as: :guidance
   get '/documents/new' => 'new_document#choose_supertype', as: :new_document
