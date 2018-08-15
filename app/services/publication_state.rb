@@ -9,5 +9,6 @@ class PublicationState
     error_sending_to_draft
     publishing
     published
+    error_in_publishing
   ].freeze
 end
