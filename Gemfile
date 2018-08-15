@@ -18,6 +18,7 @@ gem "webpacker", "~> 3"
 
 group :development do
   gem "brakeman", "~> 4"
+  gem "foreman", "~> 0.85"
   gem "listen", "~> 3"
 end
 
