@@ -33,9 +33,6 @@ en:
   hello: "Hello world"
 
   publication_state:
-    newly_created:
-      name: New
-      description: You can't yet preview the current document.
     changes_not_sent_to_draft:
       name: Unsaved changes
       description: You have made changes that haven't been sent to our publishing platform in draft.
