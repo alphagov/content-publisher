@@ -6,7 +6,7 @@ class DocumentUrl
   end
 
   def public_url
-    Plek.new.website_root + document.base_path
+    Plek.new.find('www') + document.base_path
   end
 
   def preview_url
