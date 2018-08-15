@@ -10,7 +10,9 @@ class DocumentPublishingService
   end
 
   def publish(document)
+    document.update!(publication_state: "publishing")
     publishing_api.publish(document.content_id, "major", locale: document.locale)
+    document.update!(publication_state: "published")
   end
 
 private

@@ -7,5 +7,7 @@ class PublicationState
     sending_to_draft
     sent_to_draft
     error_sending_to_draft
+    publishing
+    published
   ].freeze
 end

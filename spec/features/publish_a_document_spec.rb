@@ -31,5 +31,6 @@ RSpec.feature "Publishing a document" do
   def then_i_see_the_publish_succeeded
     expect(@request).to have_been_requested
     expect(page).to have_content "Publish successful"
+    expect(@document.reload.publication_state).to eql("published")
   end
 end
