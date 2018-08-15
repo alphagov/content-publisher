@@ -9,11 +9,15 @@
     "lint:fix": "standard --fix app/assets/javascripts/**/*"
   },
   "dependencies": {
+    "@rails/webpacker": "3.5",
     "standard": "^11.0.1"
   },
   "standard": {
     "ignore": [
       "/app/assets/javascripts/vendor/*.js"
     ]
+  },
+  "devDependencies": {
+    "webpack-dev-server": "2.11.2"
   }
 }
