@@ -34,6 +34,7 @@ module Tasks
         document_type: edition["news_article_type"]["key"],
         locale: translation["locale"],
         title: translation["title"],
+        publication_state: "newly_created",
       )
     end
   end
