@@ -18,7 +18,7 @@
 
 <% contents = @document.document_type_schema.contents.map { |schema|
   {
-    field: schema.label,
+    field: t("formats.contents.#{schema.id}.label"),
     value: capture do
       render "documents/fields/#{schema.type}", schema: schema, document: @document
     end

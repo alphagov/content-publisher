@@ -1,6 +1,6 @@
 <p>
   <%= render "govuk_publishing_components/components/label", {
-    text: schema.label,
+    text: t("formats.associations.#{schema.id}.label"),
     html_for: "associations[#{schema.id}]"
   } %>
 

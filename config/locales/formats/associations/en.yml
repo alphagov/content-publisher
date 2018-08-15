@@ -1,0 +1,11 @@
+en:
+  formats:
+    associations:
+      topical_events:
+        label: Topical events
+      worldwide_organisations:
+        label: Worldwide organisations
+      world_locations:
+        label: World locations
+      organisations:
+        label: Organisations
