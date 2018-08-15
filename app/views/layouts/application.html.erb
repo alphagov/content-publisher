@@ -34,6 +34,7 @@
     <% end %>
 
     <main class="govuk-main-wrapper<%= " govuk-main-wrapper--l" if yield(:back_link).blank?%>" id="main-content" role="main">
+      <p class="app-title__context"><%= yield(:context) %></p>
       <h1 class="govuk-heading-xl"><%= yield(:title) %></h1>
       <%= yield %>
     </main>

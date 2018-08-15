@@ -12,3 +12,52 @@ $govuk-global-styles: true;
 .app-hidden {
   display: none;
 }
+
+.app-title__context {
+  @include govuk-font(24);
+  margin: 0;
+  color: $govuk-secondary-text-colour;
+}
+
+.app-side {
+  @include govuk-responsive-margin(6, "bottom");
+  @include govuk-clearfix;
+
+  padding: govuk-spacing(3);
+  background: govuk-colour("grey-4");
+
+  .gem-c-button {
+    width: 100%;
+    margin-bottom: govuk-spacing(3);
+  }
+}
+
+.app-side__actions {
+  @include govuk-responsive-margin(3, "bottom");
+}
+
+.app-metadata {
+  margin: govuk-spacing(3);
+}
+
+.app-metadata__title {
+  @include govuk-font(19);
+  font-weight: bold;
+}
+
+.app-metadata__description {
+  margin: 0;
+  margin-bottom: govuk-spacing(3);
+}
+
+.app-c-link--destructive {
+  color: $govuk-error-colour;
+
+  &:hover {
+    color: govuk-colour("bright-red");
+  }
+}
+
+.app-c-link--right {
+  float: right;
+}

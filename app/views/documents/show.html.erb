@@ -1,15 +1,11 @@
 <% content_for :back_link, documents_path %>
 <% content_for :title, @document.title || t("documents.show.title_default") %>
+<% content_for :context, @document.document_type_schema.label %>
+
+<% @edit_document_content = capture do %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <p>
-      Created at: <%= @document.created_at.strftime("%d %b %Y %H:%M") %>
-    </p>
-
-    <p>
-      Updated at: <%= @document.updated_at.strftime("%d %b %Y %H:%M") %>
-    </p>
 
     <%= render "documents/show/contents" %>
 
@@ -35,3 +31,22 @@
     <%= render "documents/show/actions" %>
   </div>
 </div>
+
+<% end %>
+
+<%= render "govuk_publishing_components/components/tabs", {
+  panel_border: false,
+  tabs: [
+    {
+      id: "edit-document",
+      label: "Edit document",
+      content: @edit_document_content
+    },
+    {
+      id: "document-history",
+      label: "Document history",
+      content: "Document history is not available right now"
+    }
+  ]
+} %>
+

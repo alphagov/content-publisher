@@ -1,24 +1,71 @@
-<ul class="govuk-list">
-  <li>
-    <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
-  </li>
-  <li>
-    <%= link_to "Edit document", edit_document_path(@document), class: "govuk-link" %>
-  </li>
-  <li>
-    <%= link_to "Edit associations", document_associations_path(@document), class: "govuk-link" %>
-  </li>
-  <li>
-    <%= link_to "View on GOV.UK", DocumentUrl.new(@document).public_url, class: "govuk-link" %>
-  </li>
-  <li>
-    <%= link_to "Preview", DocumentUrl.new(@document).preview_url, class: "govuk-link" %>
-  </li>
-  <li>
-    <%= link_to "Shareable preview", DocumentUrl.new(@document).secret_preview_url, class: "govuk-link" %>
-  </li>
-</ul>
+<%
+publish_button = { text: t("documents.show.actions.publish"), href: publish_document_path(@document) }
+view_live_button = { text: t("documents.show.actions.view_live"), href: DocumentUrl.new(@document).public_url }
+share_draft_button = { text: t("documents.show.actions.share_draft"), href: DocumentUrl.new(@document).secret_preview_url }
+preview_button = { text: t("documents.show.actions.view_draft"), href: DocumentUrl.new(@document).preview_url }
+create_draft_button = { text: t("documents.show.actions.create_draft"), href: edit_document_path(@document) }
+submit_2i_button = { text: t("documents.show.actions.submit_2i"), href: "submit_2i" }
+delete_draft_button = { text: t("documents.show.actions.delete_draft"), href: "delete" }
+withdraw_button = { text: t("documents.show.actions.withdraw"), href: "withdraw" }
+unpublish_button = { text: t("documents.show.actions.unpublish"), href: "unpublish" }
 
-<div class='govuk-tag' title="<%= t("publication_states.#{@document.publication_state}.description") %>">
-  <%= t("publication_states.#{@document.publication_state}.name") %>
+case @document.publication_state
+when "sent_to_draft" || "sending_to_live" || "error_sending_to_live" # Draft
+  primary_button = submit_2i_button
+  secondary_button = preview_button
+  ternary_button = publish_button
+  destructive_button = delete_draft_button
+when "sent_to_review" # Ready for review
+  primary_button = publish_button
+  secondary_button = preview_button
+  destructive_button = delete_draft_button
+when "sent_to_live" # Published
+  primary_button = create_draft_button
+  secondary_button = withdraw_button
+  ternary_button = view_live_button
+  destructive_button = unpublish_button
+end
+%>
+
+<% if primary_button || secondary_button %>
+<div class="app-side">
+  <div class="app-side__actions">
+    <% if primary_button %>
+      <%= render "govuk_publishing_components/components/button", primary_button %>
+    <% end %>
+
+    <% if secondary_button %>
+      <% secondary_button[:secondary] = true %>
+      <% secondary_button[:rel] = 'external' %>
+      <%= render "govuk_publishing_components/components/button", secondary_button %>
+    <% end %>
+  </div>
+
+  <% if ternary_button %>
+    <%= link_to ternary_button[:text], ternary_button[:href], class: "govuk-link" %>
+  <% end %>
+
+  <% if destructive_button %>
+    <%= link_to destructive_button[:text], destructive_button[:href], class: "app-link--destructive app-link--right" %>
+  <% end %>
+</div>
+<% end %>
+
+<div class="app-side">
+  <%= render "components/metadata", {
+    items: [
+      {
+        field: t("documents.show.metadata.status"),
+        value: t("publication_states.#{@document.publication_state}.name")
+      },
+      {
+        field: t("documents.show.metadata.updated_at"),
+        value: @document.updated_at.strftime("%l:%M%P on %d %B %Y")
+      },
+      {
+        field: t("documents.show.metadata.created_at"),
+        value: @document.created_at.strftime("%l:%M%P on %d %B %Y")
+      },
+    ]
+  } %>
 </div>
