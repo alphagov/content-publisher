@@ -9,8 +9,8 @@
         items: @supertypes.map do |supertype|
           {
             value: supertype.id,
-            text: t("formats.supertypes.#{supertype.id}.label"),
-            hint_text: t("formats.supertypes.#{supertype.id}.description"),
+            text: supertype.label,
+            hint_text: supertype.description,
             bold: true,
           }
         end

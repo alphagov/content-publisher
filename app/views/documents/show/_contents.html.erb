@@ -11,14 +11,14 @@
   items: [
     {
       field: t("pages.documents.show.format.items.document_type"),
-      value: t("formats.document_types.#{@document.document_type}.label")
+      value: @document.document_type_schema.label
     }
   ]
 } %>
 
 <% contents = @document.document_type_schema.contents.map { |schema|
   {
-    field: t("formats.contents.#{schema.id}.label"),
+    field: schema.label,
     value: capture do
       render "documents/fields/#{schema.type}", schema: schema, document: @document
     end

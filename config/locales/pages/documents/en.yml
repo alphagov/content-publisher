@@ -38,6 +38,10 @@ en:
         title: Untitled
         actions:
           save: Save
+        fields:
+          govspeak:
+            title: Markdown
+            guidance: Markdown guidance
         form_labels:
           title: Title
           summary: Summary

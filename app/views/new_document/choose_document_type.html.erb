@@ -9,7 +9,7 @@
         items: @document_types.map { |document_type|
           {
             value: document_type.id,
-            text: t("formats.document_types.#{document_type.id}.label")
+            text: document_type.label
           }
         }
       } %>

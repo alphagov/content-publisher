@@ -22,7 +22,7 @@
         <span id="no-title-id" class="govuk-body <%= 'app-hidden' unless @document.base_path.nil? %>"><%= t("pages.documents.edit.url_preview.no_title") %></span>
 
         <div id="url-preview-id" <%= 'class="app-hidden"' if @document.base_path.nil? %>
-          <span class="govuk-body"><%= Plek.new.external_url_for("www") %></span><span id="base-path-id" class="govuk-body" ><%= "#{@document.base_path}" %></span>
+          <span class="govuk-body"><%= Plek.new.website_root %></span><span id="base-path-id" class="govuk-body" ><%= "#{@document.base_path}" %></span>
         </div>
 
         <span id="error-generating-path-id" class="govuk-body app-hidden"><%= t("pages.documents.edit.url_preview.error") %></span>
@@ -33,14 +33,16 @@
       } %>
     </div>
 
-    <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual-guidance", {
-        id: "document-title-guidance",
-        title: t("formats.document_types.#{@document.document_type}.guidance.title.title")
-      } do %>
-        <p class="govuk-body"><%= t("formats.document_types.#{@document.document_type}.guidance.title.body") %></p>
-      <% end %>
-    </div>
+    <% if @document.document_type_schema.guidance_for("title") %>
+      <div class="govuk-grid-column-one-third">
+        <%= render "components/contextual-guidance", {
+          id: "document-title-guidance",
+          title: @document.document_type_schema.guidance_for("title").title
+        } do %>
+          <p class="govuk-body"><%= @document.document_type_schema.guidance_for("title").body %></p>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <div class="govuk-grid-row">
@@ -58,15 +60,17 @@
       } %>
     </div>
 
-    <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual-guidance", {
-        id: "document-summary-guidance",
-        title: t("formats.document_types.#{@document.document_type}.guidance.summary.title")
-      } do %>
-        <p class="govuk-body"><%= t("formats.document_types.#{@document.document_type}.guidance.summary.body") %></p>
-      <% end %>
+    <% if @document.document_type_schema.guidance_for("summary") %>
+      <div class="govuk-grid-column-one-third">
+        <%= render "components/contextual-guidance", {
+          id: "document-summary-guidance",
+          title: @document.document_type_schema.guidance_for("summary").title
+        } do %>
+          <p class="govuk-body"><%= @document.document_type_schema.guidance_for("summary").body %></p>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <% @document.document_type_schema.contents.each do |schema| %>
     <%= render "documents/fields/#{schema.type}_input", schema: schema, document: @document %>

@@ -12,7 +12,7 @@ RSpec.feature "Publish validations" do
   end
 
   def given_there_is_a_document_with_not_enough_info
-    body_field_schema = build(:field_schema, id: "body", type: "govspeak", validations: { "min_length" => 10 })
+    body_field_schema = build(:field_schema, id: "body", type: "govspeak", label: "Body", validations: { "min_length" => 10 })
     document_type_schema = build(:document_type_schema, contents: [body_field_schema])
     @document = create(:document, title: "Too small", summary: "Too small", document_type: document_type_schema.id)
   end
@@ -24,7 +24,7 @@ RSpec.feature "Publish validations" do
   def then_i_see_the_warnings
     expect(page).to have_content "The title needs to be at least 10 characters long"
     expect(page).to have_content "The summary needs to be at least 10 characters long"
-    expect(page).to have_content "body needs to be at least 10 characters long"
+    expect(page).to have_content "Body needs to be at least 10 characters long"
   end
 
   def when_i_fix_some_warnings
@@ -39,7 +39,8 @@ RSpec.feature "Publish validations" do
 
   def then_i_see_fewer_warnings
     expect(page).not_to have_content "The title needs to be at least 10 characters long"
-    expect(page).not_to have_content "body needs to be at least 10 characters long"
+    expect(page).not_to have_content "Body needs to be at least 10 characters long"
+
     expect(page).to have_content "The summary needs to be at least 10 characters long"
   end
 end

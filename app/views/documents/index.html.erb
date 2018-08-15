@@ -17,7 +17,7 @@
           },
           metadata: {
             public_updated_at: document.updated_at,
-            document_type: t("formats.document_types.#{document.document_type}.label")
+            document_type: document.document_type_schema.label
           }
         }
       end

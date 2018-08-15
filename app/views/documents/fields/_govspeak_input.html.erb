@@ -2,7 +2,7 @@
   <div class="govuk-grid-column-two-thirds">
     <%= render "components/markdown-editor", {
       label: {
-        text: t("formats.contents.#{schema.id}.label")
+        text: schema.label
       },
       textarea: {
         data: {
@@ -17,20 +17,23 @@
     } %>
   </div>
 
-  <div class="govuk-grid-column-one-third">
-    <%= render "components/contextual-guidance", {
-      id: "document-contents-guidance",
-      title: t("formats.document_types.#{document.document_type}.guidance.#{schema.id}.title")
-    } do %>
-      <p class="govuk-body"><%= t("formats.document_types.#{document.document_type}.guidance.#{schema.id}.body") %></p>
-      <h3 class="govuk-heading-s">Markdown</h3>
-      <p class="govuk-body">
-          <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link">Full Markdown guidance</a>
-      </p>
+  <% if document.document_type_schema.guidance_for(schema.id) %>
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual-guidance", {
+        id: "document-contents-guidance",
+        title: document.document_type_schema.guidance_for(schema.id).title
+      } do %>
+        <p class="govuk-body"><%= document.document_type_schema.guidance_for(schema.id).body %></p>
 
-      <%= render "components/markdown-toolbar", {
-        html_for: "govspeak-editor"
-      } %>
-    <% end %>
-  </div>
+        <h3 class="govuk-heading-s"><%= t("pages.documents.edit.fields.govspeak.title") %></h3>
+        <p class="govuk-body">
+          <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link"><%= t("pages.documents.edit.fields.govspeak.guidance") %></a>
+        </p>
+
+        <%= render "components/markdown-toolbar", {
+          html_for: "govspeak-editor"
+        } %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
