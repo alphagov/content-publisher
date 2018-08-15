@@ -1,0 +1,51 @@
+en:
+  documents:
+    show:
+      title: No title
+      format:
+        title: Document type
+        items:
+          document_type: Document type
+      publication_state:
+        changes_not_sent_to_draft:
+          name: Unsaved changes
+          description: You have made changes that haven't been sent to our publishing platform in draft.
+        sending_to_draft:
+          name: Saving draft
+          description: We're publishing your draft so that you can preview the document.
+        sent_to_draft:
+          name: Saved as draft
+          description: The page is now visible in draft.
+        error_sending_to_draft:
+          name: Error sending to draft
+          description: We've encountered a problem making your preview available.
+        sending_to_live:
+          name: Publishing
+          description: We're currently publishing a new edition to GOV.UK.
+        sent_to_live:
+          name: Published
+          description: Your content has been published on GOV.UK.
+        error_sending_to_live:
+          name: Error publishing
+          description: We've encountered a problem during the publishing.
+      associations:
+        title: Associations
+        api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
+      contents:
+        title: Title, summary and body
+        items:
+          title: Title
+          base_path: Base path
+          summary: summary
+      actions:
+        publish: Publish
+        edit_associations: Edit associations
+        edit: Edit document
+        view_live: View on GOV.UK
+        view_draft: Preview
+        share_draft: Shareable preview
+      flashes:
+        draft_success: Preview creation successful
+        draft_error: Error creating preview
+        publish_success: Publish successful
+        publish_error: Error publishing

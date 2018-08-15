@@ -1,0 +1,17 @@
+en:
+  documents:
+    edit:
+      title: Untitled
+      actions:
+        save: Save
+      fields:
+        govspeak:
+          title: Markdown
+          guidance: Markdown guidance
+      form_labels:
+        title: Title
+        summary: Summary
+      url_preview:
+        available: "The web address for this content will look like:"
+        no_title: You haven't entered a title yet.
+        error: Unable to preview address, please edit title and try again.
