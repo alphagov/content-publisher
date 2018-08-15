@@ -1,0 +1,6 @@
+en:
+  publish_document:
+    confirmation:
+      title: Do you really want to publish?
+      actions:
+        confirm: Confirm publish

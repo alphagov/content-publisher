@@ -17,7 +17,7 @@ RSpec.describe "Format configuration" do
     describe "Document type #{schema.id}" do
       it "has the required attributes" do
         expect(schema.id).to_not be_blank
-        expect(schema.name).to_not be_blank
+        expect(schema.label).to_not be_blank
       end
 
       if schema.managed_elsewhere

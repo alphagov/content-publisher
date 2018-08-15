@@ -22,7 +22,7 @@ RSpec.feature "Choosing a format" do
   end
 
   def when_i_choose_a_supertype
-    choose SupertypeSchema.all.reject(&:managed_elsewhere).map(&:label).sample
+    choose "News"
     click_on "Continue"
   end
 

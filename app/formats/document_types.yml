@@ -1,11 +1,21 @@
 ---
 - id: press_release
-  name: Press release
+  label: Press release
   supertype: news
+  path_prefix: /news
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
-  path_prefix: /news
+  guidance:
+    - id: title
+      title: Create a news title
+      body: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
+    - id: summary
+      title: Writing a news summary
+      body: The summary should explain the main point of the content. It is the first line of the content so don’t repeat it below and end with a full stop.
+    - id: body
+      title: Writing news
+      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p
   contents:
     - id: body
       label: Body
@@ -31,12 +41,22 @@
       document_type: worldwide_organisation
 
 - id: news_story
-  name: News story
+  label: News story
   supertype: news
+  path_prefix: /news
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
-  path_prefix: /news
+  guidance:
+    - id: title
+      title: Create a news title
+      body: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
+    - id: summary
+      title: Writing a news summary
+      body: The summary should explain the main point of the content. It is the first line of the content so don’t repeat it below and end with a full stop.
+    - id: body
+      title: Writing news
+      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p>
   contents:
     - id: body
       label: Body
@@ -62,12 +82,22 @@
       document_type: worldwide_organisation
 
 - id: statistical_data_set
-  name: Statistical data set
+  label: Statistical data set
   supertype: transparency
+  path_prefix: /statistics
   publishing_metadata:
     schema_name: statistical_data_set
     rendering_app: government-frontend
-  path_prefix: /statistics
+  guidance:
+    - id: title
+      title: Create a news title
+      body: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
+    - id: summary
+      title: Writing a news summary
+      body: The summary should explain the main point of the content. It is the first line of the content so don’t repeat it below and end with a full stop.
+    - id: body
+      title: Writing news
+      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p>
   contents:
     - id: body
       label: Body
@@ -80,23 +110,22 @@
       type: multi_association
       document_type: organisation
 
-
 - id: policy_paper
-  name: Policy paper
+  label: Policy paper
   supertype: policy
   managed_elsewhere:
     hostname: whitehall-admin
     path: /government/admin/publications/new
 
 - id: detailed_guide
-  name: Detailed guide
+  label: Detailed guide
   supertype: guidance
   managed_elsewhere:
     hostname: whitehall-admin
     path: /government/admin/detailed-guides/new
 
 - id: consultation
-  name: Consultation
+  label: Consultation
   supertype: consultations
   managed_elsewhere:
     hostname: whitehall-admin

@@ -1,0 +1,8 @@
+en:
+  new_document:
+    choose_document_type:
+      title: Document type
+      actions:
+        continue: Continue
+      flashes:
+        choose_error: Please choose a document type

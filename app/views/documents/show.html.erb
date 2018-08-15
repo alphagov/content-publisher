@@ -1,9 +1,8 @@
 <% content_for :back_link, documents_path %>
-<% content_for :title, @document.title || "No title" %>
+<% content_for :title, @document.title || t("documents.show.title_default") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-
     <%= render "documents/show/contents" %>
 
     <% associations = @document.document_type_schema.associations.map { |schema|
@@ -17,16 +16,14 @@
 
     <%= render "components/summary", {
       title: {
-        text: "Associations",
+        text: t("documents.show.associations.title"),
         change_url: document_associations_path(@document)
       },
       items: associations
     } %>
-
   </div>
+
   <div class="govuk-grid-column-one-third">
-
     <%= render "documents/show/actions" %>
-
   </div>
 </div>

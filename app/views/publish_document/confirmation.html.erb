@@ -1,8 +1,8 @@
 <% content_for :back_link, document_path(@document) %>
-<% content_for :title, "Do you really want to publish?" %>
+<% content_for :title, t("publish_document.confirmation.title") %>
 
 <%= form_tag publish_document_path(@document) do %>
   <%= render "govuk_publishing_components/components/button", {
-    text: "Confirm publish"
+    text: t("publish_document.confirmation.actions.confirm")
   } %>
 <% end %>

@@ -6,12 +6,12 @@
 
 <%= render "components/summary", {
   title: {
-    text: "Document type"
+    text: t("documents.show.format.title")
   },
   items: [
     {
-      field: "Document type",
-      value: @document.document_type_schema.name
+      field: t("documents.show.format.items.document_type"),
+      value: @document.document_type_schema.label
     }
   ]
 } %>
@@ -27,20 +27,20 @@
 
 <%= render "components/summary", {
   title: {
-    text: "Title, summary and body",
+    text: t("documents.show.contents.title"),
     change_url: edit_document_path(@document)
   },
   items: [
     {
-      field: "Title",
+      field: t("documents.show.contents.items.title"),
       value: @document.title
     },
     {
-      field: "Base path",
+      field: t("documents.show.contents.items.base_path"),
       value: @document.base_path
     },
     {
-      field: "Summary",
+      field: t("documents.show.contents.items.summary"),
       value: @document.summary
     }
   ] + contents
