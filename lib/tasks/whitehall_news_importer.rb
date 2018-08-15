@@ -34,6 +34,7 @@ module Tasks
         document_type: edition["news_article_type"]["key"],
         locale: translation["locale"],
         title: translation["title"],
+        publication_state: "changes_not_sent_to_draft",
       )
     end
   end

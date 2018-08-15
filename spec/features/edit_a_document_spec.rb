@@ -41,5 +41,7 @@ RSpec.feature "Edit a document" do
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"]["body"]).to eq "<p>Edited body.</p>\n"
     }).to have_been_requested
+
+    expect(Document.last.publication_state).to eql("sent_to_draft")
   end
 end

@@ -40,6 +40,7 @@ class NewDocumentController < ApplicationController
       content_id: SecureRandom.uuid,
       locale: "en",
       document_type: params[:document_type],
+      publication_state: "changes_not_sent_to_draft",
     )
 
     redirect_to edit_document_path(document)

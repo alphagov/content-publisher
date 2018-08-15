@@ -20,11 +20,12 @@ class DocumentsController < ApplicationController
 
   def update
     document = Document.find(params[:id])
-    document.update(update_params(document))
+    document.update!(update_params(document))
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: "Preview creation successful"
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
+    document.update!(publication_state: "error_sending_to_draft")
     redirect_to document, alert: "Error creating preview"
   end
 
@@ -43,6 +44,6 @@ private
     base_path = PathGeneratorService.new.path(document, params[:document][:title])
 
     params.require(:document).permit(:title, :summary, contents: contents_params)
-      .merge(base_path: base_path)
+      .merge(base_path: base_path, publication_state: "changes_not_sent_to_draft")
   end
 end
