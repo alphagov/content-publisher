@@ -1,5 +1,3 @@
 <% service = LinkablesService.new(schema.document_type) %>
-<div id=<%= schema.id %>>
-  <p><%= schema.id %>: <%= values ? service.by_content_id(values.first)["internal_name"] : "None" %>
-  </p>
-</div>
+<% content = values ? service.by_content_id(values.first) : nil %>
+<%= content ? content["internal_name"] : "None" %>

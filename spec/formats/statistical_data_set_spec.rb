@@ -29,7 +29,7 @@ RSpec.feature "Create a statistical data set" do
 
   def and_i_add_some_associations
     stub_any_publishing_api_put_content
-    expect(Document.last.document_type_schema.associations.count).to eq(1)
+    expect(Document.last.document_type_schema.associations.count).to eq(2)
     publishing_api_has_linkables([linkable], document_type: "organisation")
 
     click_on "Edit associations"
@@ -49,7 +49,9 @@ RSpec.feature "Create a statistical data set" do
   def content_body
     {
       "links" => {
-        "organisations" => [linkable["content_id"]]
+        "organisations" => [linkable["content_id"]],
+        "primary_publishing_organisation" => [linkable["content_id"]],
+        "original_primary_publishing_organisation" => [linkable["content_id"]],
       },
       "title" => "A great title",
       "document_type" => "statistical_data_set",

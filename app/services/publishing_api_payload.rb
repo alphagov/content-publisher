@@ -36,8 +36,8 @@ private
 
   def links
     associations = document.associations
-    if associations.include?("primary_publishing_organisation") && !associations.include?("original_publishing_organisation")
-      associations["original_publishing_organisation"] = associations["primary_publishing_organisation"]
+    if associations.include?("primary_publishing_organisation") && !associations.include?("original_primary_publishing_organisation")
+      associations["original_primary_publishing_organisation"] = associations["primary_publishing_organisation"]
       document.update(associations: associations)
     end
     associations

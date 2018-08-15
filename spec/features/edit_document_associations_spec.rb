@@ -80,7 +80,7 @@ RSpec.feature "Edit document associations" do
   def edition_links
     {
       "multi_association_id" => [association_to_select_1["content_id"], association_to_select_2["content_id"]],
-      "single_association_id" => other_association["content_id"]
+      "single_association_id" => [other_association["content_id"]]
     }
   end
 end
