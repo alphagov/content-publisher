@@ -20,6 +20,9 @@ en:
           publish: Publish
           edit_associations: Edit associations
           edit: Edit document
+          view_live: View on GOV.UK
+          view_draft: Preview
+          share_draft: Shareable preview
         flashes:
           draft_success: Preview creation successful
           draft_error: Error creating preview
