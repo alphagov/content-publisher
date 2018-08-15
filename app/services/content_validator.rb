@@ -43,7 +43,7 @@ private
         when "min_length"
           if document.contents[field.id].to_s.size < value
             # TODO: extract string into locale file
-            messages << "#{field.label} needs to be at least #{value} characters long"
+            messages << "#{field.id} needs to be at least #{value} characters long"
           end
         end
       end

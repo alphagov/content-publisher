@@ -7,7 +7,7 @@
 
     <% associations = @document.document_type_schema.associations.map { |schema|
       {
-        field: schema.label,
+        field: t("formats.associations.#{schema.id}.label"),
         value: capture do
           render "documents/associations/#{schema.type}", schema: schema, values: @document.associations[schema.id]
         end

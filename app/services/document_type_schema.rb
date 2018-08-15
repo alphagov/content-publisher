@@ -38,7 +38,7 @@ class DocumentTypeSchema
 
   class Association
     include ActiveModel::Model
-    attr_accessor :id, :label, :type, :document_type
+    attr_accessor :id, :type, :document_type
   end
 
   class PublishingMetadata
@@ -48,6 +48,6 @@ class DocumentTypeSchema
 
   class Field
     include ActiveModel::Model
-    attr_accessor :id, :label, :type, :validations
+    attr_accessor :id, :type, :validations
   end
 end
