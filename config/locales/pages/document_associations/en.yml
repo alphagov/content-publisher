@@ -1,8 +1,0 @@
-en:
-  pages:
-    document_associations:
-      edit:
-        title: Document associations
-        api_down: This content can't be edited right now. We're having trouble getting the data we need for you to make changes on this page.
-        actions:
-          save: Save

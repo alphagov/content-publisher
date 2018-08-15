@@ -1,14 +1,14 @@
 <% content_for :back_link, documents_path %>
-<% content_for :title, @document.title || t("pages.documents.show.title") %>
+<% content_for :title, @document.title || t("documents.show.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= render "documents/show/contents" %>
 
-    <h2 class="govuk-header-s"><%= t("pages.documents.show.associations.title") %></h2>
+    <h2 class="govuk-header-s"><%= t("documents.show.associations.title") %></h2>
 
     <p class="govuk-body">
-      <%= t("pages.documents.show.associations.api_down") %>
+      <%= t("documents.show.associations.api_down") %>
     </p>
   </div>
 

@@ -8,7 +8,7 @@ class NewDocumentController < ApplicationController
   def choose_document_type
     unless params[:supertype]
       redirect_to new_document_path,
-        alert: t("pages.new_document.choose_supertype.flashes.choose_error")
+        alert: t("new_document.choose_supertype.flashes.choose_error")
 
       return
     end
@@ -26,7 +26,7 @@ class NewDocumentController < ApplicationController
   def create
     unless params[:document_type]
       redirect_to choose_document_type_path(supertype: params[:supertype]),
-        alert: t("pages.new_document.choose_document_type.flashes.choose_error")
+        alert: t("new_document.choose_document_type.flashes.choose_error")
 
       return
     end

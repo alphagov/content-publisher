@@ -1,0 +1,50 @@
+en:
+  documents:
+    show:
+      title: No title
+      format:
+        title: Document type
+        items:
+          document_type: Document type
+      associations:
+        title: Associations
+        api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
+      contents:
+        title: Title, summary and body
+        items:
+          title: Title
+          base_path: Base path
+          summary: summary
+      actions:
+        publish: Publish
+        edit_associations: Edit associations
+        edit: Edit document
+        view_live: View on GOV.UK
+        view_draft: Preview
+        share_draft: Shareable preview
+      flashes:
+        draft_success: Preview creation successful
+        draft_error: Error creating preview
+        publish_success: Publish successful
+        publish_error: Error publishing
+    index:
+      title: Documents
+      actions:
+        new: New document
+      search_results:
+        untitled: No title
+    edit:
+      title: Untitled
+      actions:
+        save: Save
+      fields:
+        govspeak:
+          title: Markdown
+          guidance: Markdown guidance
+      form_labels:
+        title: Title
+        summary: Summary
+      url_preview:
+        available: "The web address for this content will look like:"
+        no_title: You haven't entered a title yet.
+        error: Unable to preview address, please edit title and try again.

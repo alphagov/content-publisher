@@ -1,5 +1,5 @@
 <% content_for :back_link, root_path %>
-<% content_for :title, t("pages.new_document.choose_supertype.title") %>
+<% content_for :title, t("new_document.choose_supertype.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -16,7 +16,7 @@
         end
       } %>
 
-      <%= render "govuk_publishing_components/components/button", text: t("pages.new_document.choose_supertype.actions.continue"), margin_bottom: true %>
+      <%= render "govuk_publishing_components/components/button", text: t("new_document.choose_supertype.actions.continue"), margin_bottom: true %>
     <% end %>
   </div>
 </div>

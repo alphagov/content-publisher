@@ -1,5 +1,5 @@
 <%= content_for :back_link, document_path(@document) %>
-<% content_for :title, t("pages.document_associations.edit.title") %>
+<% content_for :title, t("document_associations.edit.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -15,7 +15,7 @@
       <br/>
 
       <%= render "govuk_publishing_components/components/button", {
-        text: t("pages.document_associations.edit.actions.save")
+        text: t("document_associations.edit.actions.save")
       } %>
     <% end %>
   </div>

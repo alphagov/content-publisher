@@ -6,11 +6,11 @@
 
 <%= render "components/summary", {
   title: {
-    text: t("pages.documents.show.format.title")
+    text: t("documents.show.format.title")
   },
   items: [
     {
-      field: t("pages.documents.show.format.items.document_type"),
+      field: t("documents.show.format.items.document_type"),
       value: @document.document_type_schema.label
     }
   ]
@@ -27,20 +27,20 @@
 
 <%= render "components/summary", {
   title: {
-    text: t("pages.documents.show.contents.title"),
+    text: t("documents.show.contents.title"),
     change_url: edit_document_path(@document)
   },
   items: [
     {
-      field: t("pages.documents.show.contents.items.title"),
+      field: t("documents.show.contents.items.title"),
       value: @document.title
     },
     {
-      field: t("pages.documents.show.contents.items.base_path"),
+      field: t("documents.show.contents.items.base_path"),
       value: @document.base_path
     },
     {
-      field: t("pages.documents.show.contents.items.summary"),
+      field: t("documents.show.contents.items.summary"),
       value: @document.summary
     }
   ] + contents

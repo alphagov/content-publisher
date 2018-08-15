@@ -1,5 +1,5 @@
 <% content_for :back_link, documents_path %>
-<% content_for :title, @document.title || t("pages.documents.show.title") %>
+<% content_for :title, @document.title || t("documents.show.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -16,7 +16,7 @@
 
     <%= render "components/summary", {
       title: {
-        text: t("pages.documents.show.associations.title"),
+        text: t("documents.show.associations.title"),
         change_url: document_associations_path(@document)
       },
       items: associations

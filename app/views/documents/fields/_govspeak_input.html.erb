@@ -25,9 +25,9 @@
       } do %>
         <p class="govuk-body"><%= document.document_type_schema.guidance_for(schema.id).body %></p>
 
-        <h3 class="govuk-heading-s"><%= t("pages.documents.edit.fields.govspeak.title") %></h3>
+        <h3 class="govuk-heading-s"><%= t("documents.edit.fields.govspeak.title") %></h3>
         <p class="govuk-body">
-          <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link"><%= t("pages.documents.edit.fields.govspeak.guidance") %></a>
+          <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link"><%= t("documents.edit.fields.govspeak.guidance") %></a>
         </p>
 
         <%= render "components/markdown-toolbar", {
