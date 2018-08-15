@@ -9,7 +9,11 @@
     "lint:fix": "standard --fix app/assets/javascripts/**/*"
   },
   "dependencies": {
-    "@rails/webpacker": "3.5"
+    "@github/markdown-toolbar-element": "^0.1.0",
+    "@rails/webpacker": "3.5",
+    "@webcomponents/webcomponentsjs": "^2.0.4",
+    "marked": "^0.4.0",
+    "nodelist-foreach-polyfill": "^1.2.0"
   },
   "standard": {
     "ignore": [
