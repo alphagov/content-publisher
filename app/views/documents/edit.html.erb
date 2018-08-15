@@ -22,7 +22,7 @@
         <span id="no-title-id" class="govuk-body <%= 'app-hidden' unless @document.base_path.nil? %>"><%= t("pages.documents.edit.url_preview.no_title") %></span>
 
         <div id="url-preview-id" <%= 'class="app-hidden"' if @document.base_path.nil? %>
-          <span class="govuk-body"><%= Plek.new.find("www") %></span><span id="base-path-id" class="govuk-body" ><%= "#{@document.base_path}" %></span>
+          <span class="govuk-body"><%= Plek.new.external_url_for("www") %></span><span id="base-path-id" class="govuk-body" ><%= "#{@document.base_path}" %></span>
         </div>
 
         <span id="error-generating-path-id" class="govuk-body app-hidden"><%= t("pages.documents.edit.url_preview.error") %></span>
