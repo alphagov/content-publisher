@@ -5,16 +5,23 @@
   },
   "env": {
     "GDS_SSO_STRATEGY": {
-      "required": true
+      "required": true,
+      "value": "mock"
     },
     "GOVUK_APP_DOMAIN": {
-      "required": true
+      "required": true,
+      "value": "integration.publishing.service.gov.uk"
     },
     "GOVUK_WEBSITE_ROOT": {
-      "required": true
+      "required": true,
+      "value": "http://localhost"
     },
     "JWT_AUTH_SECRET": {
       "generator": "secret"
+    },
+    "PLEK_SERVICE_PUBLISHING_API_URI": {
+      "required": true,
+      "value": "http://localhost"
     }
   },
   "addons": [
