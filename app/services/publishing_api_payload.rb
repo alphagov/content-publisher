@@ -26,6 +26,9 @@ class PublishingApiPayload
         { path: document.base_path, type: "exact" },
       ],
       links: document.associations,
+      access_limited: {
+        auth_bypass_ids: [DocumentUrl.new(document).auth_bypass_id],
+      }
     }
   end
 
