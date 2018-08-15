@@ -1,5 +1,5 @@
 <%= content_for :back_link, document_path(@document) %>
-<% content_for :title, @document.title || t("documents.edit.title") %>
+<% content_for :title, @document.title || t("pages.documents.edit.title") %>
 
   <%= form_for(@document, data: {'module': 'edit-document-form', 'generate-path-path': generate_path_path}) do |f| %>
   <div class="govuk-grid-row">
@@ -47,7 +47,7 @@
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/textarea", {
         label: {
-          text: t("documents.edit.form_labels.summary")
+          text: t("pages.documents.edit.form_labels.summary")
         },
         name: "document[summary]",
         value: @document.summary,
