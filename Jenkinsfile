@@ -6,8 +6,8 @@ node {
   govuk.buildProject(
     beforeTest: {
       stage("Lint Javascript") {
-        sh("npm install")
-        sh("npm run lint --silent")
+        sh("yarn")
+        sh("yarn run lint")
       }
     },
     rubyLintDiff: false,
