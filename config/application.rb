@@ -27,6 +27,8 @@ module ContentPublisher
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    config.action_view.raise_on_missing_translations = true
+
     # The "Slimmer" gem is loaded by the publishing components and will automatically
     # attempt to intercept requests and provide a layout. We don't use that
     # functionality here, so we have to tell slimmer to not do it.

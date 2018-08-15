@@ -45,7 +45,7 @@ en:
     error_sending_to_draft:
       name: Error sending to draft
       description: We've encountered a problem making your preview available.
-    publishing:
+    sending_to_live:
       name: Publishing
       description: We're currently publishing a new edition to GOV.UK.
     sent_to_live:
