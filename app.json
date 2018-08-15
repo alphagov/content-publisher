@@ -10,6 +10,9 @@
     "GOVUK_APP_DOMAIN": {
       "required": true
     },
+    "GOVUK_WEBSITE_ROOT": {
+      "required": true
+    },
     "JWT_AUTH_SECRET": {
       "generator": "secret"
     }
