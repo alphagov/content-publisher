@@ -1,48 +1,54 @@
-<% content_for :title, "App documentation" %>
+<% content_for :title, t("documentation.index.title") %>
 
-<h2 class='govuk-heading-m'>Document types</h2>
+<h2 class='govuk-heading-m'><%= t("documentation.index.formats.title") %></h2>
 
 <table class='govuk-table'>
   <thead class='govuk-table__head'>
     <tr class='govuk-table__row'>
-      <th class='govuk-table__header' scope='col'>Name</th>
-      <th class='govuk-table__header' scope='col'>Type</th>
-      <th class='govuk-table__header' scope='col'>Supertype</th>
-      <th class='govuk-table__header' scope='col'>Non-beta?</th>
-      <th class='govuk-table__header' scope='col'>Link</th>
+      <th class='govuk-table__header' scope='col'><%= t("documentation.index.formats.table.name") %></th>
+      <th class='govuk-table__header' scope='col'><%= t("documentation.index.formats.table.type") %></th>
+      <th class='govuk-table__header' scope='col'><%= t("documentation.index.formats.table.supertype") %></th>
+      <th class='govuk-table__header' scope='col'><%= t("documentation.index.formats.table.not_in_beta") %></th>
+      <th class='govuk-table__header' scope='col'><%= t("documentation.index.formats.table.link") %></th>
     </tr>
   </thead>
 
   <body class='govuk-table__body'>
     <% DocumentTypeSchema.all.each do |schema| %>
       <tr class='govuk-table__row'>
-        <td class='govuk-table__header'><%= schema.name %></td>
+        <td class='govuk-table__header'><%= schema.label %></td>
         <td class='govuk-table__cell'><%= schema.id %></td>
         <td class='govuk-table__cell'><%= schema.supertype.label %></td>
-        <td class='govuk-table__cell'><%= schema.managed_elsewhere ? link_to('Other app', schema.managed_elsewhere_url) : '' %></td>
+
+        <% if schema.managed_elsewhere %>
+          <td class='govuk-table__cell'><%= link_to(t("documentation.index.formats.table.link_name"), schema.managed_elsewhere_url) %></td>
+        <% else %>
+          <td class='govuk-table__cell'></td>
+        <% end %>
+
         <td class='govuk-table__cell'><%= link_to 'Tech docs', "https://docs.publishing.service.gov.uk/document-types/#{schema.id}.html" %></td>
       </tr>
     <% end %>
   </body>
 </table>
 
-<h2 class='govuk-heading-m'>Publication states</h2>
+<h2 class='govuk-heading-m'><%= t("documentation.index.states.title") %></h2>
 
-<p>Whenever something changes in the document we update the "publication state".</p>
+<p><%= t("documentation.index.states.body") %></p>
 
 <table class='govuk-table'>
   <thead class='govuk-table__head'>
     <tr class='govuk-table__row'>
-      <th class='govuk-table__header' scope='col'>State</th>
-      <th class='govuk-table__header' scope='col'>Description</th>
+      <th class='govuk-table__header' scope='col'><%= t("documentation.index.states.table.state") %></th>
+      <th class='govuk-table__header' scope='col'><%= t("documentation.index.states.table.description") %></th>
     </tr>
   </thead>
 
   <body class='govuk-table__body'>
     <% Document::PUBLICATION_STATES.each do |state| %>
       <tr class='govuk-table__row'>
-        <td class='govuk-table__header'><%= t "publication_state.#{state}.name" %></td>
-        <td class='govuk-table__cell'><%= t "publication_state.#{state}.description" %></td>
+        <td class='govuk-table__header'><%= t "documents.show.publication_state.#{state}.name" %></td>
+        <td class='govuk-table__cell'><%= t "documents.show.publication_state.#{state}.description" %></td>
       </tr>
     <% end %>
   </body>
