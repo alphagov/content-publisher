@@ -1,0 +1,19 @@
+en:
+  documentation:
+    index:
+      title: App documentation
+      formats:
+        title: Document types
+        table:
+          name: Name
+          type: Type
+          supertype: Supertype
+          not_in_beta: Non-beta?
+          link: Link
+          link_name: Other app
+      states:
+        title: Publication states
+        body: Whenever something changes in the document we update the "publication state".
+        table:
+          state: State
+          description: Description
