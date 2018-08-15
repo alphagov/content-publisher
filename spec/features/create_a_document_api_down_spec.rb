@@ -42,5 +42,6 @@ RSpec.feature "Create a document when the API is down" do
   def and_the_preview_creation_failed
     expect(@request).to have_been_requested
     expect(page).to have_content "Error creating preview"
+    expect(Document.last.publication_state).to eq "error_sending_to_draft"
   end
 end

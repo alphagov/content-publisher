@@ -25,6 +25,7 @@ class DocumentsController < ApplicationController
     redirect_to document, notice: "Preview creation successful"
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
+    document.update!(publication_state: "error_sending_to_draft")
     redirect_to document, alert: "Error creating preview"
   end
 
