@@ -15,7 +15,7 @@ node {
     rubyLintDirs: "",
     overrideTestTask: {
       stage("Run tests") {
-        sh("bundle exec rake spec")
+        govuk.runTests("spec")
       }
     }
   )
