@@ -55,6 +55,4 @@ ContextualGuidance.prototype.init = function () {
   })
 }
 
-// Initialise guidance at document level
-var guidance = new ContextualGuidance()
-guidance.init(document)
+export default ContextualGuidance

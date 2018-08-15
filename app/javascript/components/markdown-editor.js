@@ -1,6 +1,6 @@
-//= require vendor/@webcomponents/webcomponentsjs/webcomponents-loader.js
-//= require vendor/@github/markdown-toolbar-element/dist/index.umd.js
-//= require vendor/marked/lib/marked.js
+import '@webcomponents/webcomponentsjs/webcomponents-loader'
+import '@github/markdown-toolbar-element'
+import marked from 'marked'
 
 function MarkdownEditor ($module) {
   this.$module = $module
@@ -39,7 +39,7 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
 
   if (text) {
     // Render markdown
-    window.marked(
+    marked(
       text,
       function (err, content) {
         if (err) {
@@ -78,8 +78,4 @@ MarkdownEditor.prototype.toggle = function (element) {
   }
 }
 
-// Initialise markdown editor
-var $govspeak = document.querySelector('[data-module="markdown-editor"]')
-if ($govspeak) {
-  new MarkdownEditor($govspeak).init()
-}
+export default MarkdownEditor

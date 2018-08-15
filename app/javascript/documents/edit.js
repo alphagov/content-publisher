@@ -1,8 +1,4 @@
-'use strict'
-
-/* global restrict */
-
-restrict('edit-document-form', function (editDocumentForm) {
+export default function (editDocumentForm) {
   var urlPreview = document.getElementById('url-preview-id')
   var basePath = document.getElementById('base-path-id')
   var documentTitle = document.getElementById('document-title-id')
@@ -52,4 +48,4 @@ restrict('edit-document-form', function (editDocumentForm) {
   }
 
   documentTitle.onblur()
-})
+}
