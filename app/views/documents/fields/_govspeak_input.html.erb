@@ -17,22 +17,20 @@
     } %>
   </div>
 
-  <% if I18n.exists?("formats.#{document.document_type}.guidance.#{schema.id}") %>
-    <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual-guidance", {
-        id: "document-contents-guidance",
-        title: t("formats.#{document.document_type}.guidance.#{schema.id}.title")
-      } do %>
-        <p class="govuk-body"><%= t("formats.#{document.document_type}.guidance.body.body") %></p>
-        <h3 class="govuk-heading-s">Markdown</h3>
-        <p class="govuk-body">
-            <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link">Full Markdown guidance</a>
-        </p>
+  <div class="govuk-grid-column-one-third">
+    <%= render "components/contextual-guidance", {
+      id: "document-contents-guidance",
+      title: t("formats.document_types.#{document.document_type}.guidance.#{schema.id}.title")
+    } do %>
+      <p class="govuk-body"><%= t("formats.document_types.#{document.document_type}.guidance.#{schema.id}.body") %></p>
+      <h3 class="govuk-heading-s">Markdown</h3>
+      <p class="govuk-body">
+          <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link">Full Markdown guidance</a>
+      </p>
 
-        <%= render "components/markdown-toolbar", {
-          html_for: "govspeak-editor"
-        } %>
-      <% end %>
-    </div>
-  <% end %>
+      <%= render "components/markdown-toolbar", {
+        html_for: "govspeak-editor"
+      } %>
+    <% end %>
+  </div>
 </div>

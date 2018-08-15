@@ -33,16 +33,14 @@
       } %>
     </div>
 
-    <% if I18n.exists?("formats.document_types.#{@document.document_type}.guidance.title") %>
-      <div class="govuk-grid-column-one-third">
-        <%= render "components/contextual-guidance", {
-          id: "document-title-guidance",
-          title: t("formats.document_types.#{@document.document_type}.guidance.title.title")
-        } do %>
-          <p class="govuk-body"><%= t("formats.document_types.#{@document.document_type}.guidance.title.body") %></p>
-        <% end %>
-      </div>
-    <% end %>
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual-guidance", {
+        id: "document-title-guidance",
+        title: t("formats.document_types.#{@document.document_type}.guidance.title.title")
+      } do %>
+        <p class="govuk-body"><%= t("formats.document_types.#{@document.document_type}.guidance.title.body") %></p>
+      <% end %>
+    </div>
   </div>
 
   <div class="govuk-grid-row">
@@ -60,16 +58,14 @@
       } %>
     </div>
 
-    <% if I18n.exists?("formats.document_types.#{@document.document_type}.guidance.summary") %>
-      <div class="govuk-grid-column-one-third">
-        <%= render "components/contextual-guidance", {
-          id: "document-summary-guidance",
-          title: t("formats.document_types.#{@document.document_type}.guidance.summary.title")
-        } do %>
-          <p class="govuk-body"><%= t("formats.document_types.#{@document.document_type}.guidance.summary.body") %></p>
-        <% end %>
-      </div>
-    <% end %>
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual-guidance", {
+        id: "document-summary-guidance",
+        title: t("formats.document_types.#{@document.document_type}.guidance.summary.title")
+      } do %>
+        <p class="govuk-body"><%= t("formats.document_types.#{@document.document_type}.guidance.summary.body") %></p>
+      <% end %>
+    </div>
   </div>
 
   <% @document.document_type_schema.contents.each do |schema| %>

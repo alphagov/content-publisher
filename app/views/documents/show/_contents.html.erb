@@ -4,19 +4,17 @@
   <% end %>
 </ul>
 
-<% if I18n.exists?("formats.document_types.#{@document.document_type}") %>
-  <%= render "components/summary", {
-    title: {
-      text: t("pages.documents.show.format.title")
-    },
-    items: [
-      {
-        field: t("pages.documents.show.format.items.document_type"),
-        value: t("formats.document_types.#{@document.document_type}.label")
-      }
-    ]
-  } %>
-<% end %>
+<%= render "components/summary", {
+  title: {
+    text: t("pages.documents.show.format.title")
+  },
+  items: [
+    {
+      field: t("pages.documents.show.format.items.document_type"),
+      value: t("formats.document_types.#{@document.document_type}.label")
+    }
+  ]
+} %>
 
 <% contents = @document.document_type_schema.contents.map { |schema|
   {
