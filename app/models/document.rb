@@ -7,9 +7,9 @@ class Document < ApplicationRecord
     sending_to_draft
     sent_to_draft
     error_sending_to_draft
-    publishing
-    live_on_govuk
-    error_in_publishing
+    sending_to_live
+    sent_to_live
+    error_sending_to_live
   ].freeze
 
   validates_inclusion_of :publication_state, in: PUBLICATION_STATES
