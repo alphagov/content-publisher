@@ -12,6 +12,7 @@ node {
     },
     rubyLintDiff: false,
     rubyLintRails: true,
+    rubyLintDirs: "",
     overrideTestTask: {
       stage("Run tests") {
         sh("bundle exec rake spec")
