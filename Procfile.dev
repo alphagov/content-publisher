@@ -1,2 +1,2 @@
 web: bundle exec unicorn -p 3221
-webpacker: ./bin/webpack-dev-server
+webpacker: WEBPACKER_DEV_SERVER_HOST=0.0.0.0 ./bin/webpack-dev-server
