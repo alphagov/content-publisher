@@ -1,7 +1,7 @@
 en:
   documents:
     show:
-      title: No title
+      title_default: No title
       format:
         title: Document type
         items:
