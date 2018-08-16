@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DocumentTypeSchema
-  attr_reader :contents, :id, :label, :supertype, :managed_elsewhere, :publishing_metadata, :path_prefix, :associations, :guidance
+  attr_reader :contents, :id, :label, :supertype, :managed_elsewhere, :publishing_metadata, :path_prefix, :associations, :guidance, :validations
 
   def initialize(params = {})
     @id = params["id"]
@@ -13,6 +13,7 @@ class DocumentTypeSchema
     @path_prefix = params["path_prefix"]
     @associations = params["associations"].to_a.map(&Association.method(:new))
     @guidance = params["guidance"].to_a.map(&Guidance.method(:new))
+    @validations = params["validations"].to_a.map(&ValidationSchema.method(:new))
   end
 
   def self.find(document_type_id)
@@ -59,5 +60,10 @@ class DocumentTypeSchema
   class Field
     include ActiveModel::Model
     attr_accessor :id, :label, :type, :validations
+  end
+
+  class ValidationSchema
+    include ActiveModel::Model
+    attr_accessor :id, :type, :message, :settings
   end
 end
