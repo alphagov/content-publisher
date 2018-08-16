@@ -10,7 +10,7 @@
       items: @documents.map do |document|
         {
           link: {
-            text: document.title || t("documents.index.search_results.untitled"),
+            text: document.title.presence || t("documents.index.search_results.untitled"),
             path: document_path(document),
             description: document.summary,
             context: document.locale
