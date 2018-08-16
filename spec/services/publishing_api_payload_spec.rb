@@ -44,7 +44,7 @@ RSpec.describe PublishingApiPayload do
       expect(payload).to match a_hash_including(payload_hash)
     end
 
-    it "only sends an organisation link once if a document is linked by organisations links and primary_publishing_organisation" do
+    it "ensures the organisation links are unique" do
       organisation_schema = build(:association_schema, type: "single_association", id: "primary_publishing_organisation")
       document_type_schema = build(:document_type_schema, associations: [organisation_schema])
       document = build(:document, document_type: document_type_schema.id, associations: {
