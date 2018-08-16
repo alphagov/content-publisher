@@ -1,5 +1,9 @@
+@import "../../../node_modules/govuk-frontend/helpers/all";
+@import "../../../node_modules/govuk-frontend/settings/all";
+@import "../../../node_modules/govuk-frontend/tools/all";
+
 .app-c-markdown-editor__preview-toggle {
-  @include govuk-font($size: 19);
+  @include govuk-font(19);
 
   display: none;
   margin-bottom: -$govuk-border-width-form-element;
@@ -10,6 +14,7 @@
 }
 
 .app-c-markdown-editor__button {
+  @include govuk-font(19);
   padding: 0;
   border: 0;
   color: $govuk-link-colour;
