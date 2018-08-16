@@ -27,10 +27,10 @@ RSpec.feature "Edit document associations when the API is down" do
   end
 
   def and_i_click_on_edit_associations
-    click_on "Edit associations"
+    click_on I18n.t("documents.show.actions.edit_associations")
   end
 
   def then_i_should_see_an_error_message
-    expect(page).to have_content("This content can't be edited right now.")
+    expect(page).to have_content(I18n.t("document_associations.edit.api_down"))
   end
 end

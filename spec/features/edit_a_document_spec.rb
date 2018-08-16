@@ -20,28 +20,28 @@ RSpec.feature "Edit a document" do
 
   def when_i_go_to_edit_the_document
     visit document_path(Document.last)
-    click_on "Edit document"
     expect(page).to have_content("Existing body")
+    click_on I18n.t("documents.show.actions.edit")
   end
 
   def and_i_fill_in_the_content_fields
     fill_in "document[contents][body]", with: "Edited body."
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
-    click_on "Save"
+    click_on I18n.t("documents.edit.actions.save")
   end
 
   def then_i_see_the_document_is_saved
-    expect(page).to have_content "Edited body."
+    expect(page).to have_content("Edited body.")
   end
 
   def and_the_preview_creation_succeeded
     expect(@request).to have_been_requested
-    expect(page).to have_content "Preview creation successful"
+    expect(page).to have_content(I18n.t("documents.show.flashes.draft_success"))
 
     expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"]["body"]).to eq "<p>Edited body.</p>\n"
+      expect(JSON.parse(req.body)["details"]["body"]).to eq("<p>Edited body.</p>\n")
     }).to have_been_requested
 
-    expect(Document.last.publication_state).to eql("sent_to_draft")
+    expect(Document.last.publication_state).to eq("sent_to_draft")
   end
 end

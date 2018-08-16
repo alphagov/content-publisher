@@ -20,17 +20,17 @@ RSpec.feature "Publishing a document" do
   end
 
   def and_i_click_on_the_publish_button
-    click_on "Publish"
+    click_on I18n.t("documents.show.actions.publish")
   end
 
   def and_i_confirm_the_publishing
     @request = stub_publishing_api_publish(@document.content_id, update_type: "major", locale: @document.locale)
-    click_on "Confirm publish"
+    click_on I18n.t("publish_document.confirmation.actions.confirm")
   end
 
   def then_i_see_the_publish_succeeded
     expect(@request).to have_been_requested
-    expect(page).to have_content "Publish successful"
-    expect(@document.reload.publication_state).to eql("sent_to_live")
+    expect(page).to have_content(I18n.t("documents.show.flashes.publish_success"))
+    expect(@document.reload.publication_state).to eq("sent_to_live")
   end
 end

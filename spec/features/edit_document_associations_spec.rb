@@ -31,7 +31,7 @@ RSpec.feature "Edit document associations" do
   end
 
   def and_i_click_on_edit_associations
-    click_on "Edit associations"
+    click_on I18n.t("documents.show.actions.edit_associations")
   end
 
   def then_i_can_see_the_current_selections
@@ -45,18 +45,18 @@ RSpec.feature "Edit document associations" do
     select "Association to select 2", from: "associations[association_id][]"
     unselect "Initial association", from: "associations[association_id][]"
 
-    click_on "Save"
+    click_on I18n.t("document_associations.edit.actions.save")
   end
 
   def then_i_can_view_the_associations
-    expect(page).to have_content "Association to select 1"
-    expect(page).to have_content "Association to select 2"
-    expect(page).not_to have_content "Initial association"
+    expect(page).to have_content("Association to select 1")
+    expect(page).to have_content("Association to select 2")
+    expect(page).not_to have_content("Initial association")
   end
 
   def and_the_preview_creation_succeeded
     expect(@request).to have_been_requested
-    expect(page).to have_content "Preview creation successful"
+    expect(page).to have_content(I18n.t("documents.show.flashes.draft_success"))
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["links"]).to eq(edition_links)

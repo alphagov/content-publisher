@@ -22,25 +22,24 @@ RSpec.feature "Publish validations" do
   end
 
   def then_i_see_the_warnings
-    expect(page).to have_content "The title needs to be at least 10 characters long"
-    expect(page).to have_content "The summary needs to be at least 10 characters long"
-    expect(page).to have_content "Body needs to be at least 10 characters long"
+    expect(page).to have_content("The title needs to be at least 10 characters long")
+    expect(page).to have_content("The summary needs to be at least 10 characters long")
+    expect(page).to have_content("Body needs to be at least 10 characters long")
   end
 
   def when_i_fix_some_warnings
     stub_any_publishing_api_put_content
     base_path = "#{@document.document_type_schema.path_prefix}/a-nice-title-of-considerable-length"
     publishing_api_has_lookups(base_path => nil)
-    click_on "Edit document"
+    click_on I18n.t("documents.show.actions.edit")
     fill_in "document[title]", with: "A nice title of considerable length"
     fill_in "document[contents][body]", with: "A very long body text."
-    click_on "Save"
+    click_on I18n.t("documents.edit.actions.save")
   end
 
   def then_i_see_fewer_warnings
-    expect(page).not_to have_content "The title needs to be at least 10 characters long"
-    expect(page).not_to have_content "Body needs to be at least 10 characters long"
-
-    expect(page).to have_content "The summary needs to be at least 10 characters long"
+    expect(page).not_to have_content("The title needs to be at least 10 characters long")
+    expect(page).not_to have_content("Body needs to be at least 10 characters long")
+    expect(page).to have_content("The summary needs to be at least 10 characters long")
   end
 end

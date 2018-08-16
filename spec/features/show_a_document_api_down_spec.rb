@@ -26,6 +26,6 @@ RSpec.feature "Showing a document when the API is down" do
   end
 
   def then_i_should_see_an_error_message
-    expect(page).to have_content("This content isn't available right now.")
+    expect(page).to have_content(I18n.t("documents.show.associations.api_down"))
   end
 end

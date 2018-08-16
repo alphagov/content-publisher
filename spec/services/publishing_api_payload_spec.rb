@@ -11,7 +11,7 @@ RSpec.describe PublishingApiPayload do
 
       payload = PublishingApiPayload.new(document).payload
 
-      expect(payload[:details]["body"]).to eql("<p>Hey <strong>buddy</strong>!</p>\n")
+      expect(payload[:details]["body"]).to eq("<p>Hey <strong>buddy</strong>!</p>\n")
     end
   end
 end

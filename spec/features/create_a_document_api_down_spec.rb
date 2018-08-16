@@ -12,36 +12,35 @@ RSpec.feature "Create a document when the API is down" do
   end
 
   def given_i_start_to_create_a_document
+    @schema = build(:document_type_schema, supertype: "news")
     visit "/"
-    click_on "New document"
-
-    choose "News"
-    click_on "Continue"
-
-    choose "Press release"
-    click_on "Continue"
+    click_on I18n.t("documents.index.actions.new")
+    choose @schema.supertype.label
+    click_on I18n.t("new_document.choose_supertype.actions.continue")
+    choose @schema.label
+    click_on I18n.t("new_document.choose_document_type.actions.continue")
   end
 
   def and_the_publishing_api_is_down
     @request = stub_publishing_api_put_content(Document.last.content_id,
-                                                           hash_including(title: "A great title"))
+                                               hash_including(title: "A great title"))
     publishing_api_isnt_available
   end
 
   def when_i_submit_the_form
     fill_in "document[title]", with: "A great title"
-    click_on "Save"
+    click_on I18n.t("documents.edit.actions.save")
   end
 
   def then_i_see_the_document_exists
-    expect(page).to have_content "A great title"
-    expect(page).to have_content "Press release"
-    expect(Document.last.title).to eq "A great title"
+    expect(page).to have_content("A great title")
+    expect(page).to have_content(@schema.label)
+    expect(Document.last.title).to eq("A great title")
   end
 
   def and_the_preview_creation_failed
     expect(@request).to have_been_requested
-    expect(page).to have_content "Error creating preview"
-    expect(Document.last.publication_state).to eq "error_sending_to_draft"
+    expect(page).to have_content(I18n.t("documents.show.flashes.draft_error"))
+    expect(Document.last.publication_state).to eq("error_sending_to_draft")
   end
 end

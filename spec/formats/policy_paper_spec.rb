@@ -10,17 +10,17 @@ RSpec.feature "Create a policy paper" do
 
   def when_i_choose_this_document_type
     visit "/"
-    click_on "New document"
+    click_on I18n.t("documents.index.actions.new")
 
-    choose "Policy"
-    click_on "Continue"
+    choose SupertypeSchema.find("policy").label
+    click_on I18n.t("new_document.choose_supertype.actions.continue")
 
-    choose "Policy paper"
-    click_on "Continue"
+    choose DocumentTypeSchema.find("policy_paper").label
+    click_on I18n.t("new_document.choose_document_type.actions.continue")
   end
 
   def then_i_am_redirected_to_another_app
-    expect(page.current_path).to eql '/government/admin/publications/new'
-    expect(page).to have_content "You've been redirected"
+    expect(page.current_path).to eq("/government/admin/publications/new")
+    expect(page).to have_content("You've been redirected")
   end
 end

@@ -12,31 +12,31 @@ RSpec.feature "Create a statistical data set" do
 
   def when_i_choose_this_document_type
     visit "/"
-    click_on "New document"
-    choose "Transparency"
-    click_on "Continue"
-    choose "Statistical data set"
-    click_on "Continue"
+    click_on I18n.t("documents.index.actions.new")
+    choose SupertypeSchema.find("transparency").label
+    click_on I18n.t("new_document.choose_supertype.actions.continue")
+    choose DocumentTypeSchema.find("statistical_data_set").label
+    click_on I18n.t("new_document.choose_document_type.actions.continue")
   end
 
   def and_i_fill_in_the_form_fields
     stub_any_publishing_api_put_content
     fill_in "document[title]", with: "A great title"
     fill_in "document[summary]", with: "A great summary"
-    click_on "Save"
+    click_on I18n.t("documents.edit.actions.save")
     WebMock.reset!
   end
 
   def and_i_add_some_associations
     stub_any_publishing_api_put_content
     expect(Document.last.document_type_schema.associations.count).to eq(1)
-    publishing_api_has_linkables([linkable], document_type: 'organisation')
+    publishing_api_has_linkables([linkable], document_type: "organisation")
 
-    click_on "Edit associations"
+    click_on I18n.t("documents.show.actions.edit_associations")
 
     select linkable["internal_name"], from: "associations[organisations][]"
 
-    click_on "Save"
+    click_on I18n.t("document_associations.edit.actions.save")
   end
 
   def then_i_can_publish_the_document
