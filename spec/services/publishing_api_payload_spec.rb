@@ -11,23 +11,23 @@ RSpec.describe PublishingApiPayload do
       payload = PublishingApiPayload.new(document).payload
 
       payload_hash = {
-        base_path: "/foo/bar/baz",
-        description: "document summary",
-        document_type: document_type_schema.id,
-        links: {},
-        locale: document.locale,
-        publishing_app: "content-publisher",
-        rendering_app: nil,
-        routes: [{ path: "/foo/bar/baz", type: "exact" }],
-        schema_name: nil,
-        title: "Some title",
+        "base_path" => "/foo/bar/baz",
+        "description" => "document summary",
+        "document_type" => document_type_schema.id,
+        "links" => { "organisations" => [] },
+        "locale" => document.locale,
+        "publishing_app" => "content-publisher",
+        "rendering_app" => nil,
+        "routes" => [{ "path" => "/foo/bar/baz", "type" => "exact" }],
+        "schema_name" => nil,
+        "title" => "Some title",
       }
       expect(payload).to match a_hash_including(payload_hash)
     end
 
     it "includes primary_publishing_organisation in organisations links" do
-      primary_publishing_org = build(:association_schema, type: "single_association", id: "primary_publishing_organisation")
-      document_type_schema = build(:document_type_schema, associations: [primary_publishing_org])
+      organisation_schema = build(:association_schema, type: "single_association", id: "primary_publishing_organisation")
+      document_type_schema = build(:document_type_schema, associations: [organisation_schema])
       document = build(:document, document_type: document_type_schema.id, associations: {
                          primary_publishing_organisation: ["my-org-id"],
                          organisations: ["other-org-id"],
@@ -36,9 +36,28 @@ RSpec.describe PublishingApiPayload do
       payload = PublishingApiPayload.new(document).payload
 
       payload_hash = {
-        links: {
+        "links" => {
           "primary_publishing_organisation" => ["my-org-id"],
           "organisations" => ["other-org-id", "my-org-id"],
+        },
+      }
+      expect(payload).to match a_hash_including(payload_hash)
+    end
+
+    it "only sends an organisation link once if a document is linked by organisations links and primary_publishing_organisation" do
+      organisation_schema = build(:association_schema, type: "single_association", id: "primary_publishing_organisation")
+      document_type_schema = build(:document_type_schema, associations: [organisation_schema])
+      document = build(:document, document_type: document_type_schema.id, associations: {
+                         primary_publishing_organisation: ["my-org-id"],
+                         organisations: ["my-org-id"],
+                       })
+
+      payload = PublishingApiPayload.new(document).payload
+
+      payload_hash = {
+        "links" => {
+          "primary_publishing_organisation" => ["my-org-id"],
+          "organisations" => ["my-org-id"],
         },
       }
       expect(payload).to match a_hash_including(payload_hash)
@@ -51,7 +70,7 @@ RSpec.describe PublishingApiPayload do
 
       payload = PublishingApiPayload.new(document).payload
 
-      expect(payload[:details]["body"]).to eq("<p>Hey <strong>buddy</strong>!</p>\n")
+      expect(payload["details"]["body"]).to eq("<p>Hey <strong>buddy</strong>!</p>\n")
     end
   end
 end

@@ -13,21 +13,21 @@ class PublishingApiPayload
 
   def payload
     {
-      base_path: document.base_path,
-      title: document.title,
-      locale: document.locale,
-      description: document.summary,
-      schema_name: publishing_metadata.schema_name,
-      document_type: document.document_type,
-      publishing_app: PUBLISHING_APP,
-      rendering_app: publishing_metadata.rendering_app,
-      details: details,
-      routes: [
-        { path: document.base_path, type: "exact" },
+      "base_path" => document.base_path,
+      "title" => document.title,
+      "locale" => document.locale,
+      "description" => document.summary,
+      "schema_name" => publishing_metadata.schema_name,
+      "document_type" => document.document_type,
+      "publishing_app" => PUBLISHING_APP,
+      "rendering_app" => publishing_metadata.rendering_app,
+      "details" => details,
+      "routes" => [
+        { "path" => document.base_path, "type" => "exact" },
       ],
-      links: links,
-      access_limited: {
-        auth_bypass_ids: [DocumentUrl.new(document).auth_bypass_id],
+      "links" => links,
+      "access_limited" => {
+        "auth_bypass_ids" => [DocumentUrl.new(document).auth_bypass_id],
       }
     }
   end
@@ -35,12 +35,11 @@ class PublishingApiPayload
 private
 
   def links
-    associations = document.associations
-    if associations["primary_publishing_organisation"]
-      organisations = associations["organisations"] || []
-      associations["organisations"] = organisations.to_set.merge(associations["primary_publishing_organisation"]).to_a
-    end
-    associations
+    document.associations.merge(
+      "organisations" => Set.new(
+        document.associations["organisations"].to_a + document.associations["primary_publishing_organisation"].to_a
+      ).to_a
+    )
   end
 
   def details
@@ -55,16 +54,16 @@ private
 
   def temporary_defaults_in_details
     {
-      government: {
-        title: "Hey", slug: "what", current: true,
+      "government" => {
+        "title" => "Hey", "slug" => "what", "current" => true,
       },
-      change_history: [
+      "change_history" => [
         {
-          public_timestamp: Time.now.iso8601,
-          note: "To support email alerts"
+          "public_timestamp" => Time.now.iso8601,
+          "note" => "To support email alerts"
         }
       ],
-      political: false
+      "political" => false
     }
   end
 

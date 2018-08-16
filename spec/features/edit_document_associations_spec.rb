@@ -67,7 +67,7 @@ RSpec.feature "Edit document associations" do
     expect(page).to have_content(I18n.t("documents.show.flashes.draft_success"))
 
     expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["links"]).to eq(edition_links)
+      expect(JSON.parse(req.body)["links"]).to include(edition_links)
     }).to have_been_requested
   end
 
