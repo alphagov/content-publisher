@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Format configuration" do
+RSpec.describe "Format configuration", format: true do
   SupertypeSchema.all.each do |schema|
     describe "Supertype #{schema.id}" do
       it "has the required attributes for #{schema.id}" do

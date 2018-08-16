@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.feature "Create a press release" do
+RSpec.feature "Create a press release", format: true do
   scenario "User creates press release" do
     when_i_choose_this_document_type
     and_i_fill_in_the_form_fields
@@ -60,7 +60,6 @@ RSpec.feature "Create a press release" do
         "world_locations" => [linkable["content_id"]],
         "organisations" => [linkable["content_id"]],
         "primary_publishing_organisation" => [linkable["content_id"]],
-        "original_primary_publishing_organisation" => [linkable["content_id"]],
       },
       "title" => "A great title",
       "document_type" => "press_release",

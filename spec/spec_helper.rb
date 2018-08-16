@@ -33,8 +33,8 @@ RSpec.configure do |config|
   config.include GdsApi::TestHelpers::PublishingApiV2
   config.include GovukSchemas::RSpecMatchers
 
-  config.before(:suite) do
-    User.create!(permissions: ["signin"])
+  config.before :each, format: true do
+    publishing_api_has_linkables([{ "content_id" => User.first.organisation_content_id, "internal_name" => "Linkable" }], document_type: 'organisation')
   end
 
   config.after :each, type: :feature, js: true do

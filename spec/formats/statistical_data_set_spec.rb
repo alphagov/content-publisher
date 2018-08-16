@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.feature "Create a statistical data set" do
+RSpec.feature "Create a statistical data set", format: true do
   scenario "User creates statistical data set" do
     when_i_choose_this_document_type
     and_i_fill_in_the_form_fields
@@ -51,7 +51,6 @@ RSpec.feature "Create a statistical data set" do
       "links" => {
         "organisations" => [linkable["content_id"]],
         "primary_publishing_organisation" => [linkable["content_id"]],
-        "original_primary_publishing_organisation" => [linkable["content_id"]],
       },
       "title" => "A great title",
       "document_type" => "statistical_data_set",
