@@ -47,8 +47,8 @@
   <body class='govuk-table__body'>
     <% Document::PUBLICATION_STATES.each do |state| %>
       <tr class='govuk-table__row'>
-        <td class='govuk-table__header'><%= t "documents.show.publication_state.#{state}.name" %></td>
-        <td class='govuk-table__cell'><%= t "documents.show.publication_state.#{state}.description" %></td>
+        <td class='govuk-table__header'><%= t "publication_states.#{state}.name" %></td>
+        <td class='govuk-table__cell'><%= t "publication_states.#{state}.description" %></td>
       </tr>
     <% end %>
   </body>
