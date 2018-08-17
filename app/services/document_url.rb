@@ -6,14 +6,17 @@ class DocumentUrl
   end
 
   def public_url
+    return unless document.base_path
     Plek.new.website_root + document.base_path
   end
 
   def preview_url
+    return unless document.base_path
     Plek.new.external_url_for('draft-origin') + document.base_path
   end
 
   def secret_preview_url
+    return unless document.base_path
     params = { token: secret_token_for_preview_url }.to_query
     preview_url + '?' + params
   end
