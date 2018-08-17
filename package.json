@@ -5,8 +5,8 @@
   "author": "Government Digital Service",
   "license": "MIT",
   "scripts": {
-    "lint": "standard app/javascript/**/*",
-    "lint:fix": "standard --fix app/javascript/**/*"
+    "lint": "standard app/javascript/{*,**/*}",
+    "lint:fix": "standard --fix app/javascript/{*,**/*}"
   },
   "dependencies": {
     "@github/markdown-toolbar-element": "^0.1.0",
