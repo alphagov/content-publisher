@@ -1,0 +1,5 @@
+en:
+  validations:
+    title: "The title should be at least %{min_length} characters long"
+    summary: "The summary should be at least %{min_length} characters long"
+    min_length: "%{field} should be at least %{min_length} characters long"

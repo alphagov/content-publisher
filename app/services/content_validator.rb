@@ -19,13 +19,11 @@ private
 
   def perform_validations_that_apply_to_all_formats(messages)
     if document.title.to_s.size < 10
-      # TODO: extract string into locale file
-      messages << "The title needs to be at least 10 characters long"
+      messages << I18n.t("validations.title", min_length: 10)
     end
 
     if document.summary.to_s.size < 10
-      # TODO: extract string into locale file
-      messages << "The summary needs to be at least 10 characters long"
+      messages << I18n.t("validations.summary", min_length: 10)
     end
   end
 
@@ -42,8 +40,7 @@ private
         case validation_name
         when "min_length"
           if document.contents[field.id].to_s.size < value
-            # TODO: extract string into locale file
-            messages << "#{field.label} needs to be at least #{value} characters long"
+            messages << I18n.t("validations.min_length", field: field.label, min_length: value)
           end
         end
       end
