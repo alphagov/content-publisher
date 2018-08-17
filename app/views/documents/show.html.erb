@@ -3,6 +3,14 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <p>
+      Created at: <%= @document.created_at.strftime("%d %b %Y %H:%M") %>
+    </p>
+
+    <p>
+      Updated at: <%= @document.updated_at.strftime("%d %b %Y %H:%M") %>
+    </p>
+
     <%= render "documents/show/contents" %>
 
     <% associations = @document.document_type_schema.associations.map { |schema|

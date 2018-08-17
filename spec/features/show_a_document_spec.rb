@@ -10,7 +10,7 @@ RSpec.feature "Showing a document summary" do
   end
 
   def given_there_is_a_document
-    @document = create(:document, title: "Title")
+    @document = create(:document, title: "Title", summary: "Summary", created_at: 1.month.ago)
   end
 
   def when_i_visit_the_document_page
@@ -19,5 +19,8 @@ RSpec.feature "Showing a document summary" do
 
   def then_i_see_the_document_summary
     expect(page).to have_content(@document.title)
+    expect(page).to have_content(@document.summary)
+    expect(page).to have_content(@document.created_at.strftime("%d %b %Y %H:%M"))
+    expect(page).to have_content(@document.updated_at.strftime("%d %b %Y %H:%M"))
   end
 end
