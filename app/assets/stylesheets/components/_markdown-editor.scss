@@ -1,6 +1,7 @@
 @import "../../../node_modules/govuk-frontend/helpers/all";
 @import "../../../node_modules/govuk-frontend/settings/all";
 @import "../../../node_modules/govuk-frontend/tools/all";
+@import "../../../node_modules/govuk-frontend/core/links";
 
 .app-c-markdown-editor__preview-toggle {
   @include govuk-font(19);
@@ -14,6 +15,7 @@
 }
 
 .app-c-markdown-editor__button {
+  @include govuk-link-common;
   @include govuk-font(19);
   padding: 0;
   border: 0;
