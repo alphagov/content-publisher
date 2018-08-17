@@ -38,7 +38,7 @@ RSpec.describe PublishingApiPayload do
       payload_hash = {
         "links" => {
           "primary_publishing_organisation" => ["my-org-id"],
-          "organisations" => ["other-org-id", "my-org-id"],
+          "organisations" => ["my-org-id", "other-org-id"],
         },
       }
       expect(payload).to match a_hash_including(payload_hash)

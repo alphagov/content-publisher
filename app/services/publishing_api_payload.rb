@@ -35,11 +35,9 @@ class PublishingApiPayload
 private
 
   def links
-    document.associations.merge(
-      "organisations" => Set.new(
-        document.associations["organisations"].to_a + document.associations["primary_publishing_organisation"].to_a
-      ).to_a
-    )
+    links = document.associations["primary_publishing_organisation"].to_a +
+      document.associations["organisations"].to_a
+    document.associations.merge("organisations" => links.uniq)
   end
 
   def details
