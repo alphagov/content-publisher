@@ -14,11 +14,11 @@ RSpec.feature "Create a document when the API is down" do
   def given_i_start_to_create_a_document
     @schema = build(:document_type_schema, supertype: "news")
     visit "/"
-    click_on I18n.t("documents.index.actions.new")
+    click_on "New document"
     choose @schema.supertype.label
-    click_on I18n.t("new_document.choose_supertype.actions.continue")
+    click_on "Continue"
     choose @schema.label
-    click_on I18n.t("new_document.choose_document_type.actions.continue")
+    click_on "Continue"
   end
 
   def and_the_publishing_api_is_down
@@ -29,7 +29,7 @@ RSpec.feature "Create a document when the API is down" do
 
   def when_i_submit_the_form
     fill_in "document[title]", with: "A great title"
-    click_on I18n.t("documents.edit.actions.save")
+    click_on "Save"
   end
 
   def then_i_see_the_document_exists

@@ -20,12 +20,12 @@ RSpec.feature "Publishing a document" do
   end
 
   def and_i_click_on_the_publish_button
-    click_on I18n.t("documents.show.actions.publish")
+    click_on "Publish"
   end
 
   def and_i_confirm_the_publishing
     @request = stub_publishing_api_publish(@document.content_id, update_type: "major", locale: @document.locale)
-    click_on I18n.t("publish_document.confirmation.actions.confirm")
+    click_on "Confirm publish"
   end
 
   def then_i_see_the_publish_succeeded

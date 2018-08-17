@@ -31,10 +31,10 @@ RSpec.feature "Publish validations" do
     stub_any_publishing_api_put_content
     base_path = "#{@document.document_type_schema.path_prefix}/a-nice-title-of-considerable-length"
     publishing_api_has_lookups(base_path => nil)
-    click_on I18n.t("documents.show.actions.edit")
+    click_on "Edit document"
     fill_in "document[title]", with: "A nice title of considerable length"
     fill_in "document[contents][body]", with: "A very long body text."
-    click_on I18n.t("documents.edit.actions.save")
+    click_on "Save"
   end
 
   def then_i_see_fewer_warnings

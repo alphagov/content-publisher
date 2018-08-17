@@ -10,13 +10,11 @@ RSpec.feature "Create a detailed guide" do
 
   def when_i_choose_this_document_type
     visit "/"
-    click_on I18n.t("documents.index.actions.new")
-
+    click_on "New document"
     choose SupertypeSchema.find("guidance").label
-    click_on I18n.t("new_document.choose_supertype.actions.continue")
-
+    click_on "Continue"
     choose DocumentTypeSchema.find("detailed_guide").label
-    click_on I18n.t("new_document.choose_document_type.actions.continue")
+    click_on "Continue"
   end
 
   def then_i_am_redirected_to_another_app

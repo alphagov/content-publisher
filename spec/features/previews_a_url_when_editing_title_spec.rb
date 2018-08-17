@@ -27,7 +27,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
 
   def when_i_go_to_edit_the_document
     visit document_path(@document)
-    click_on I18n.t("documents.show.actions.edit")
+    click_on "Edit document"
   end
 
   def and_i_interact_with_the_title_but_leave_it_unedited

@@ -12,7 +12,7 @@
     environment: Rails.application.config.govuk_environment,
     navigation_items: [
       { text: current_user.name, href: Plek.new.external_url_for("signon") },
-      { text: t("layouts.application.actions.log_out"), href: gds_sign_out_path }
+      { text: "Log out", href: gds_sign_out_path }
     ]
   }%>
 

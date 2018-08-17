@@ -21,13 +21,13 @@ RSpec.feature "Edit a document" do
   def when_i_go_to_edit_the_document
     visit document_path(Document.last)
     expect(page).to have_content("Existing body")
-    click_on I18n.t("documents.show.actions.edit")
+    click_on "Edit document"
   end
 
   def and_i_fill_in_the_content_fields
     fill_in "document[contents][body]", with: "Edited body."
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
-    click_on I18n.t("documents.edit.actions.save")
+    click_on "Save"
   end
 
   def then_i_see_the_document_is_saved

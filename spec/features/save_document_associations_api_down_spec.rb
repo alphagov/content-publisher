@@ -30,7 +30,7 @@ RSpec.feature "Save document associations when the API is down" do
   end
 
   def when_i_finish_editing_the_associations
-    click_on I18n.t("document_associations.edit.actions.save")
+    click_on "Save"
   end
 
   def then_i_see_the_document_page

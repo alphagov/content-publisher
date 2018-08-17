@@ -21,8 +21,8 @@ RSpec.feature "Publishing a document when the API is down" do
 
   def when_i_try_to_publish_the_document
     visit document_path(@document)
-    click_on I18n.t("documents.show.actions.publish")
-    click_on I18n.t("publish_document.confirmation.actions.confirm")
+    click_on "Publish"
+    click_on "Confirm publish"
   end
 
   def then_i_see_the_publish_failed

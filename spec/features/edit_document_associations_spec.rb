@@ -31,7 +31,7 @@ RSpec.feature "Edit document associations" do
   end
 
   def and_i_click_on_edit_associations
-    click_on I18n.t("documents.show.actions.edit_associations")
+    click_on "Edit associations"
   end
 
   def then_i_can_see_the_current_selections
@@ -45,7 +45,7 @@ RSpec.feature "Edit document associations" do
     select "Association to select 2", from: "associations[association_id][]"
     unselect "Initial association", from: "associations[association_id][]"
 
-    click_on I18n.t("document_associations.edit.actions.save")
+    click_on "Save"
   end
 
   def then_i_can_view_the_associations

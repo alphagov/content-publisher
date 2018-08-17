@@ -2,7 +2,5 @@ en:
   new_document:
     choose_supertype:
       title: Content type
-      actions:
-        continue: Continue
       flashes:
         choose_error: Please choose a supertype
