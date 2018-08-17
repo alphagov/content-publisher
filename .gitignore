@@ -21,3 +21,7 @@
 .byebug_history
 
 /coverage
+/public/packs
+/public/packs-test
+yarn-debug.log*
+.yarn-integrity

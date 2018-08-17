@@ -1,4 +1,4 @@
 #!/bin/bash
 
 bundle install
-bundle exec unicorn -p 3221 
+bundle exec foreman start -f Procfile.dev

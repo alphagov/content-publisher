@@ -14,9 +14,11 @@ gem "govuk_publishing_components", "~> 9.15"
 gem "pg", "~> 1"
 gem "plek", "~> 2"
 gem "uglifier", "~> 4"
+gem "webpacker", "~> 3"
 
 group :development do
   gem "brakeman", "~> 4"
+  gem "foreman", "~> 0.85"
   gem "listen", "~> 3"
 end
 

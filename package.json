@@ -5,15 +5,23 @@
   "author": "Government Digital Service",
   "license": "MIT",
   "scripts": {
-    "lint": "standard app/assets/javascripts/**/*",
-    "lint:fix": "standard --fix app/assets/javascripts/**/*"
+    "lint": "standard app/javascript/{*,**/*}",
+    "lint:fix": "standard --fix app/javascript/{*,**/*}"
   },
   "dependencies": {
-    "standard": "^11.0.1"
+    "@github/markdown-toolbar-element": "^0.1.0",
+    "@rails/webpacker": "3.5",
+    "@webcomponents/webcomponentsjs": "^2.0.4",
+    "marked": "^0.4.0",
+    "nodelist-foreach-polyfill": "^1.2.0"
   },
   "standard": {
     "ignore": [
       "/app/assets/javascripts/vendor/*.js"
     ]
+  },
+  "devDependencies": {
+    "standard": "^11.0.1",
+    "webpack-dev-server": "2.11.2"
   }
 }

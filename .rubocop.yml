@@ -5,6 +5,7 @@ AllCops:
     - config.ru
     - db/schema.rb
     - tmp/**/*
+    - node_modules/**/*
 
 Metrics/BlockLength:
   Exclude:
