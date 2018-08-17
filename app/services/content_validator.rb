@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Determines whether content should be published to the publishing-api
 class ContentValidator
   attr_reader :document
 
@@ -10,43 +9,31 @@ class ContentValidator
 
   def validation_messages
     messages = []
-    perform_validations_that_apply_to_all_formats(messages)
-    perform_format_specific_validations(messages)
+
+    document.document_type_schema.validations.each do |schema|
+      messages += send("validate_#{schema.type}", schema)
+    end
+
     messages
   end
 
 private
 
-  def perform_validations_that_apply_to_all_formats(messages)
-    if document.title.to_s.size < 10
-      # TODO: extract string into locale file
-      messages << "The title needs to be at least 10 characters long"
-    end
-
-    if document.summary.to_s.size < 10
-      # TODO: extract string into locale file
-      messages << "The summary needs to be at least 10 characters long"
-    end
+  def validate_min_length(schema)
+    size = document.contents[schema.id].to_s.size
+    return [] unless size < schema.settings["limit"]
+    [schema.message]
   end
 
-  def perform_format_specific_validations(messages)
-    schema = document.document_type_schema
+  def validate_title_min_length(schema)
+    size = document.title.to_s.size
+    return [] unless size < schema.settings["limit"]
+    [schema.message]
+  end
 
-    schema.contents.each do |field|
-      # Validations come in pairs, like `min_length: 10`. They should use
-      # a underscored version of JSON Schema's validation system. For example,
-      # `max_length`, `one_of`.
-      #
-      # http://json-schema.org/latest/json-schema-validation.html
-      field.validations.each do |validation_name, value|
-        case validation_name
-        when "min_length"
-          if document.contents[field.id].to_s.size < value
-            # TODO: extract string into locale file
-            messages << "#{field.label} needs to be at least #{value} characters long"
-          end
-        end
-      end
-    end
+  def validate_summary_min_length(schema)
+    size = document.title.to_s.size
+    return [] unless size < schema.settings["limit"]
+    [schema.message]
   end
 end

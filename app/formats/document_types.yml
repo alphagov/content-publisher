@@ -6,6 +6,22 @@
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
+  validations:
+    - id: title
+      type: title_min_length
+      settings:
+        limit: 10
+      message: The title needs to be at least 10 characters long
+    - id: summary
+      type: summary_min_length
+      settings:
+        limit: 10
+      message: The summary needs to be at least 10 characters long
+    - id: body
+      type: min_length
+      settings:
+        limit: 10
+      message: The body needs to be at least 10 characters long
   guidance:
     - id: title
       title: Create a news title
@@ -20,8 +36,6 @@
     - id: body
       label: Body
       type: govspeak
-      validations:
-        min_length: 10
   associations:
     - id: topical_events
       label: Topical events
@@ -47,6 +61,22 @@
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
+  validations:
+    - id: title
+      type: title_min_length
+      settings:
+        limit: 10
+      message: The title needs to be at least 10 characters long
+    - id: summary
+      type: summary_min_length
+      settings:
+        limit: 10
+      message: The summary needs to be at least 10 characters long
+    - id: body
+      type: min_length
+      settings:
+        limit: 10
+      message: The body needs to be at least 10 characters long
   guidance:
     - id: title
       title: Create a news title
@@ -88,6 +118,22 @@
   publishing_metadata:
     schema_name: statistical_data_set
     rendering_app: government-frontend
+  validations:
+    - id: title
+      type: title_min_length
+      settings:
+        limit: 10
+      message: The title needs to be at least 10 characters long
+    - id: summary
+      type: summary_min_length
+      settings:
+        limit: 10
+      message: The summary needs to be at least 10 characters long
+    - id: body
+      type: min_length
+      settings:
+        limit: 10
+      message: The body needs to be at least 10 characters long
   guidance:
     - id: title
       title: Create a news title
