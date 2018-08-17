@@ -15,7 +15,7 @@
       body: The summary should explain the main point of the content. It is the first line of the content so don’t repeat it below and end with a full stop.
     - id: body
       title: Writing news
-      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p
+      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
   contents:
     - id: body
       label: Body
@@ -56,7 +56,7 @@
       body: The summary should explain the main point of the content. It is the first line of the content so don’t repeat it below and end with a full stop.
     - id: body
       title: Writing news
-      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p>
+      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
   contents:
     - id: body
       label: Body
@@ -97,7 +97,7 @@
       body: The summary should explain the main point of the content. It is the first line of the content so don’t repeat it below and end with a full stop.
     - id: body
       title: Writing news
-      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.</p>
+      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
   contents:
     - id: body
       label: Body
