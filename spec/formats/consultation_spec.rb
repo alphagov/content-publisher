@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.feature "Create a detailed guide" do
+RSpec.feature "Create a detailed guide", format: true do
   scenario "User creates a detailed guide" do
     when_i_choose_this_document_type
     then_i_am_redirected_to_another_app

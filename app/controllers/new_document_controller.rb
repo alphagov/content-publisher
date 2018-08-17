@@ -43,8 +43,15 @@ class NewDocumentController < ApplicationController
       locale: "en",
       document_type: params[:document_type],
       publication_state: "changes_not_sent_to_draft",
+      associations: default_associations,
     )
 
     redirect_to edit_document_path(document)
+  end
+
+private
+
+  def default_associations
+    current_user.organisation_content_id ? { primary_publishing_organisation: [current_user.organisation_content_id] } : {}
   end
 end

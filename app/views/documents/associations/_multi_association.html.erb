@@ -3,9 +3,9 @@
 <% if values&.any? %>
   <ul class="govuk-list govuk-list--bullet">
     <% values.each do |content_id| %>
-      <li><%= content_id %><%= service.by_content_id(content_id)["internal_name"] %></li>
+      <li><%= service.by_content_id(content_id)["internal_name"] %></li>
     <% end %>
   </ul>
 <% else %>
-  None
+  <%= t("documents.show.associations.none") %>
 <% end %>
