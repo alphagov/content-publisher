@@ -1,0 +1,27 @@
+- id: changes_not_sent_to_draft
+  label: Unsaved changes
+  description: You have made changes that haven't been sent to our publishing platform in draft.
+
+- id: sending_to_draft
+  label: Saving draft
+  description: We're publishing your draft so that you can preview the document.
+
+- id: sent_to_draft
+  label: Saved as draft
+  description: The page is now visible in draft.
+
+- id: error_sending_to_draft
+  label: Error sending to draft
+  description: We've encountered a problem making your preview available.
+
+- id: sending_to_live
+  label: Publishing
+  description: We're currently publishing a new edition to GOV.UK.
+
+- id: sent_to_live
+  label: Published
+  description: Your content has been published on GOV.UK.
+
+- id: error_sending_to_live
+  label: Error publishing
+  description: We've encountered a problem during the publishing.
