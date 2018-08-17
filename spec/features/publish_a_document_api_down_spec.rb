@@ -27,7 +27,7 @@ RSpec.feature "Publishing a document when the API is down" do
 
   def then_i_see_the_publish_failed
     expect(@request).to have_been_requested
-    expect(page).to have_content "Error publishing"
-    expect(@document.reload.publication_state).to eql("error_sending_to_live")
+    expect(page).to have_content(I18n.t("documents.show.flashes.publish_error"))
+    expect(@document.reload.publication_state).to eq("error_sending_to_live")
   end
 end

@@ -2,8 +2,6 @@ en:
   documents:
     edit:
       title: Untitled
-      actions:
-        save: Save
       fields:
         govspeak:
           title: Markdown

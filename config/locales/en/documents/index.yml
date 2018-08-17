@@ -2,7 +2,5 @@ en:
   documents:
     index:
       title: Documents
-      actions:
-        new: New document
       search_results:
         untitled: No title

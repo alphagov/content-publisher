@@ -13,9 +13,9 @@ RSpec.feature "Create a press release" do
   def when_i_choose_this_document_type
     visit "/"
     click_on "New document"
-    choose "News"
+    choose SupertypeSchema.find("news").label
     click_on "Continue"
-    choose "Press release"
+    choose DocumentTypeSchema.find("press_release").label
     click_on "Continue"
   end
 
@@ -30,10 +30,10 @@ RSpec.feature "Create a press release" do
   def and_i_add_some_associations
     stub_any_publishing_api_put_content
     expect(Document.last.document_type_schema.associations.count).to eq(4)
-    publishing_api_has_linkables([linkable], document_type: 'topical_event')
-    publishing_api_has_linkables([linkable], document_type: 'worldwide_organisation')
-    publishing_api_has_linkables([linkable], document_type: 'world_location')
-    publishing_api_has_linkables([linkable], document_type: 'organisation')
+    publishing_api_has_linkables([linkable], document_type: "topical_event")
+    publishing_api_has_linkables([linkable], document_type: "worldwide_organisation")
+    publishing_api_has_linkables([linkable], document_type: "world_location")
+    publishing_api_has_linkables([linkable], document_type: "organisation")
 
     click_on "Edit associations"
 

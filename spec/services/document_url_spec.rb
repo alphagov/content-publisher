@@ -9,7 +9,7 @@ RSpec.describe DocumentUrl do
     it "returns the URL" do
       url = DocumentUrl.new(document).public_url
 
-      expect(url).to eql("https://www.test.gov.uk/foo")
+      expect(url).to eq("https://www.test.gov.uk/foo")
     end
   end
 
@@ -17,14 +17,14 @@ RSpec.describe DocumentUrl do
     it "returns the URL" do
       url = DocumentUrl.new(document).preview_url
 
-      expect(url).to eql("https://draft-origin.test.gov.uk/foo")
+      expect(url).to eq("https://draft-origin.test.gov.uk/foo")
     end
   end
 
   describe "#secret_preview_url" do
     it "returns the URL" do
       url = DocumentUrl.new(document).secret_preview_url
-      expect(url).to eql("https://draft-origin.test.gov.uk/foo?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzMxMzEzMS0zMzY1LTQ4MzgtYjk2My0zNDM3MzYzNTMxNjYifQ.nsYQ81gx2DKs2XQanFQIZzgkq_Ofw4C3Jys9II2RFoQ")
+      expect(url).to eq("https://draft-origin.test.gov.uk/foo?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzMxMzEzMS0zMzY1LTQ4MzgtYjk2My0zNDM3MzYzNTMxNjYifQ.nsYQ81gx2DKs2XQanFQIZzgkq_Ofw4C3Jys9II2RFoQ")
     end
   end
 end

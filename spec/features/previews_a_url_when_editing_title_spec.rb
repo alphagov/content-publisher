@@ -41,7 +41,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def then_i_see_a_prompt_to_enter_a_title
-    expect(page).to have_content "You haven't entered a title yet."
+    expect(page).to have_content(I18n.t("documents.edit.url_preview.no_title"))
   end
 
   def and_i_fill_in_the_title
@@ -50,11 +50,11 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def then_i_see_a_preview_of_the_url_on_govuk
-    expect(page).to have_content "www.test.gov.uk#{@document_path_prefix}/a-great-title"
+    expect(page).to have_content("www.test.gov.uk#{@document_path_prefix}/a-great-title")
   end
 
   def then_i_see_the_path_preview_unchanged
-    expect(page).to have_content "www.test.gov.uk#{@document_base_path}"
-    expect(page).to_not have_content "www.test.gov.uk#{@document_base_path}-1"
+    expect(page).to have_content("www.test.gov.uk#{@document_base_path}")
+    expect(page).to_not have_content("www.test.gov.uk#{@document_base_path}-1")
   end
 end

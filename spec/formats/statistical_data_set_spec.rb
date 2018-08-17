@@ -13,9 +13,9 @@ RSpec.feature "Create a statistical data set" do
   def when_i_choose_this_document_type
     visit "/"
     click_on "New document"
-    choose "Transparency"
+    choose SupertypeSchema.find("transparency").label
     click_on "Continue"
-    choose "Statistical data set"
+    choose DocumentTypeSchema.find("statistical_data_set").label
     click_on "Continue"
   end
 
@@ -30,7 +30,7 @@ RSpec.feature "Create a statistical data set" do
   def and_i_add_some_associations
     stub_any_publishing_api_put_content
     expect(Document.last.document_type_schema.associations.count).to eq(1)
-    publishing_api_has_linkables([linkable], document_type: 'organisation')
+    publishing_api_has_linkables([linkable], document_type: "organisation")
 
     click_on "Edit associations"
 

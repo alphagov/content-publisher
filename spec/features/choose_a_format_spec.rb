@@ -18,11 +18,11 @@ RSpec.feature "Choosing a format" do
   end
 
   def then_i_see_a_supertype_error
-    expect(page).to have_content "Please choose a supertype"
+    expect(page).to have_content(I18n.t("new_document.choose_supertype.flashes.choose_error"))
   end
 
   def when_i_choose_a_supertype
-    choose "News"
+    choose SupertypeSchema.all.first.label
     click_on "Continue"
   end
 
@@ -31,6 +31,6 @@ RSpec.feature "Choosing a format" do
   end
 
   def then_i_see_a_document_type_error
-    expect(page).to have_content "Please choose a document type"
+    expect(page).to have_content(I18n.t("new_document.choose_document_type.flashes.choose_error"))
   end
 end

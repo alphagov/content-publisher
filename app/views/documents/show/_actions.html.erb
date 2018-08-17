@@ -1,24 +1,24 @@
 <ul class="govuk-list">
   <li>
-    <%= link_to t("documents.show.actions.publish"), publish_document_path(@document), class: "govuk-link" %>
+    <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
   </li>
   <li>
-    <%= link_to t("documents.show.actions.edit"), edit_document_path(@document), class: "govuk-link" %>
+    <%= link_to "Edit document", edit_document_path(@document), class: "govuk-link" %>
   </li>
   <li>
-    <%= link_to t("documents.show.actions.edit_associations"), document_associations_path(@document), class: "govuk-link" %>
+    <%= link_to "Edit associations", document_associations_path(@document), class: "govuk-link" %>
   </li>
   <li>
-    <%= link_to t("documents.show.actions.view_live"), DocumentUrl.new(@document).public_url, class: "govuk-link" %>
+    <%= link_to "View on GOV.UK", DocumentUrl.new(@document).public_url, class: "govuk-link" %>
   </li>
   <li>
-    <%= link_to t("documents.show.actions.view_draft"), DocumentUrl.new(@document).preview_url, class: "govuk-link" %>
+    <%= link_to "Preview", DocumentUrl.new(@document).preview_url, class: "govuk-link" %>
   </li>
   <li>
-    <%= link_to t("documents.show.actions.share_draft"), DocumentUrl.new(@document).secret_preview_url, class: "govuk-link" %>
+    <%= link_to "Shareable preview", DocumentUrl.new(@document).secret_preview_url, class: "govuk-link" %>
   </li>
 </ul>
 
-<div class='govuk-tag' title="<%= t("documents.show.publication_state.#{@document.publication_state}.description") %>">
-  <%= t("documents.show.publication_state.#{@document.publication_state}.name") %>
+<div class='govuk-tag' title="<%= t("publication_states.#{@document.publication_state}.description") %>">
+  <%= t("publication_states.#{@document.publication_state}.name") %>
 </div>

@@ -34,11 +34,11 @@ RSpec.feature "Save document associations when the API is down" do
   end
 
   def then_i_see_the_document_page
-    expect(page).to have_content @document.title
+    expect(page).to have_content(@document.title)
   end
 
   def and_the_preview_creation_failed
     expect(@request).to have_been_requested
-    expect(page).to have_content "Error creating preview"
+    expect(page).to have_content(I18n.t("documents.show.flashes.draft_error"))
   end
 end
