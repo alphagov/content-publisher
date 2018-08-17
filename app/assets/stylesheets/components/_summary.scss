@@ -4,13 +4,20 @@
 @import "../../../node_modules/govuk-frontend/helpers/all";
 @import "../../../node_modules/govuk-frontend/settings/all";
 @import "../../../node_modules/govuk-frontend/tools/all";
+@import "../../../node_modules/govuk-frontend/core/links";
 
 .app-c-summary {
   @include govuk-font(19);
   position: relative;
 }
 
-.app-c-summary__edit {
+.app-c-summary__change-link {
+  @extend %govuk-link;
+}
+
+.app-c-summary__change-section-link {
+  @extend %govuk-link;
+
   position: absolute;
   top: 0;
   right: 0;
