@@ -37,7 +37,11 @@ private
   attr_reader :document
 
   def secret_token_for_preview_url
-    JWT.encode({ 'sub' => auth_bypass_id }, ENV.fetch('JWT_AUTH_SECRET'), 'HS256')
+    JWT.encode(
+      { 'sub' => auth_bypass_id },
+      Rails.application.secrets.jwt_auth_secret,
+      'HS256'
+    )
   end
 
   # Generate a deterministic UUID from a string.
