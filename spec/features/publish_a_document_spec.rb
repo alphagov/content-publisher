@@ -12,7 +12,7 @@ RSpec.feature "Publishing a document" do
   end
 
   def given_there_is_a_document
-    @document = create(:document)
+    @document = create(:document, publication_state: "sent_to_draft")
   end
 
   def when_i_visit_the_document_page

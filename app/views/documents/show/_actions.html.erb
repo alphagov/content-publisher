@@ -4,10 +4,10 @@ view_live_button = { text: t("documents.show.actions.view_live"), href: Document
 share_draft_button = { text: t("documents.show.actions.share_draft"), href: DocumentUrl.new(@document).secret_preview_url }
 preview_button = { text: t("documents.show.actions.view_draft"), href: DocumentUrl.new(@document).preview_url }
 create_draft_button = { text: t("documents.show.actions.create_draft"), href: edit_document_path(@document) }
-submit_2i_button = { text: t("documents.show.actions.submit_2i"), href: "submit_2i" }
-delete_draft_button = { text: t("documents.show.actions.delete_draft"), href: "delete" }
-withdraw_button = { text: t("documents.show.actions.withdraw"), href: "withdraw" }
-unpublish_button = { text: t("documents.show.actions.unpublish"), href: "unpublish" }
+submit_2i_button = { text: t("documents.show.actions.submit_2i"), href: "#" }
+delete_draft_button = { text: t("documents.show.actions.delete_draft"), href: "#" }
+withdraw_button = { text: t("documents.show.actions.withdraw"), href: "#" }
+unpublish_button = { text: t("documents.show.actions.unpublish"), href: "#" }
 
 case @document.publication_state
 when "sent_to_draft" || "sending_to_live" || "error_sending_to_live" # Draft

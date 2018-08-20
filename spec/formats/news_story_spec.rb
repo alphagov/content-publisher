@@ -35,7 +35,7 @@ RSpec.feature "Create a news story", format: true do
     publishing_api_has_linkables([linkable], document_type: "world_location")
     publishing_api_has_linkables([linkable], document_type: "organisation")
 
-    click_on "Edit associations"
+    click_on "Change Tags"
 
     select linkable["internal_name"], from: "associations[topical_events][]"
     select linkable["internal_name"], from: "associations[worldwide_organisations][]"
