@@ -11,6 +11,17 @@ import restrict from '../restrict'
 import editDocumentForm from '../documents/edit'
 import MarkdownEditor from '../components/markdown-editor'
 import ContextualGuidance from '../components/contextual-guidance'
+import Raven from 'raven-js'
+
+var $sentryDsn = document.querySelector('meta[name=sentry-dsn]')
+var $sentryCurrentEnv = document.querySelector('meta[name=sentry-current-env]')
+
+if ($sentryDsn && $sentryCurrentEnv) {
+  // set as global variable for console usage
+  window.Raven = Raven.config($sentryDsn.getAttribute('content'), {
+    environment: $sentryCurrentEnv.getAttribute('content')
+  }).install()
+}
 
 restrict('edit-document-form', editDocumentForm)
 restrict('markdown-editor', ($el) => new MarkdownEditor($el).init())
