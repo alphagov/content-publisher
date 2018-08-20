@@ -15,7 +15,7 @@ en:
         items:
           title: Title
           base_path: Base path
-          summary: summary
+          summary: Summary
       flashes:
         draft_success: Preview creation successful
         draft_error: Error creating preview
