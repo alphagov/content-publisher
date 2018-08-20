@@ -1,0 +1,24 @@
+@import "../../../node_modules/govuk-frontend/helpers/all";
+@import "../../../node_modules/govuk-frontend/settings/all";
+@import "../../../node_modules/govuk-frontend/tools/all";
+
+.app-c-metadata {
+  @include govuk-font(19);
+}
+
+.app-c-metadata__list {
+  margin: 0;
+}
+
+.app-c-metadata__title {
+  @include govuk-font($size: 19, $weight: bold);
+}
+
+.app-c-metadata__description {
+  margin: 0;
+  margin-bottom: govuk-spacing(3);
+
+  &:last-child {
+    margin: 0;
+  }
+}

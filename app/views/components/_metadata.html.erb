@@ -1,0 +1,15 @@
+<%
+  items||= []
+%>
+<div class="app-c-metadata">
+
+  <% if items.any? %>
+  <dl class="app-c-metadata__list">
+    <% items.each do |item| %>
+      <dt class="app-c-metadata__title"><%= item[:field] %>:</dt>
+      <dd class="app-c-metadata__description"><%= item[:value] %></dd>
+    <% end %>
+  </dl>
+  <% end %>
+
+</div>
