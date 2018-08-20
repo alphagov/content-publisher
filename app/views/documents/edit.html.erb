@@ -1,7 +1,7 @@
 <%= content_for :back_link, document_path(@document) %>
 <% content_for :title, @document.title || t("documents.edit.title") %>
 
-  <%= form_for(@document, data: {'module': 'edit-document-form', 'generate-path-path': generate_path_path}) do |f| %>
+  <%= form_for(@document, html: {'autocomplete': 'off'}, data: {'module': 'edit-document-form', 'generate-path-path': generate_path_path}) do |f| %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
