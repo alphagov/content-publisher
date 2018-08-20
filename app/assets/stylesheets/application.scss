@@ -2,62 +2,14 @@ $govuk-image-url-function: "image-url";
 $govuk-font-url-function: "font-url";
 $govuk-global-styles: true;
 
+@import "core/link";
+
+@import "objects/side";
+
 @import "components/contextual-guidance";
 @import "components/markdown-editor";
 @import "components/markdown-toolbar";
 @import "components/summary";
+@import "components/metadata";
 
-.app-hidden {
-  display: none;
-}
-
-.app-side {
-  @include govuk-responsive-margin(6, "bottom");
-  @include govuk-clearfix;
-
-  padding: govuk-spacing(3);
-  background: govuk-colour("grey-4");
-
-  .gem-c-button {
-    width: 100%;
-    margin-bottom: govuk-spacing(3);
-  }
-
-  .govuk-tag {
-    margin-bottom: govuk-spacing(3);
-  }
-}
-
-.app-side__actions {
-  @include govuk-responsive-margin(3, "bottom");
-}
-
-.app-metadata {
-  margin: 0;
-}
-
-.app-metadata__title {
-  @include govuk-font(19);
-  font-weight: bold;
-}
-
-.app-metadata__description {
-  margin: 0;
-  margin-bottom: govuk-spacing(3);
-
-  &:last-child {
-    margin: 0;
-  }
-}
-
-.app-c-link--destructive {
-  color: $govuk-error-colour;
-
-  &:hover {
-    color: govuk-colour("bright-red");
-  }
-}
-
-.app-c-link--right {
-  float: right;
-}
+@import "utilities/display";

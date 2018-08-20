@@ -1,0 +1,20 @@
+@import "../../../node_modules/govuk-frontend/helpers/all";
+@import "../../../node_modules/govuk-frontend/settings/all";
+@import "../../../node_modules/govuk-frontend/tools/all";
+
+.app-side {
+  @include govuk-responsive-margin(6, "bottom");
+  @include govuk-clearfix;
+
+  padding: govuk-spacing(3);
+  background: govuk-colour("grey-4");
+}
+
+.app-side__actions {
+  @include govuk-responsive-margin(3, "bottom");
+
+  .govuk-button {
+    width: 100%;
+    margin-bottom: govuk-spacing(3);
+  }
+}
