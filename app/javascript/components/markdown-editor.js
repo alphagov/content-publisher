@@ -11,6 +11,7 @@ function MarkdownEditor ($module) {
   this.$editButton = $module.querySelector('.js-markdown-edit-button')
   this.$editorInput = $module.querySelector('.js-markdown-editor-input')
   this.$previewBody = $module.querySelector('.js-markdown-preview-body')
+  this.$toolbar = document.querySelector('.app-c-markdown-toolbar')
 }
 
 MarkdownEditor.prototype.init = function () {
@@ -77,6 +78,9 @@ MarkdownEditor.prototype.toggleElements = function () {
   this.$previewButton.classList.toggle('app-c-markdown-editor__button--muted')
   this.toggle(this.$editorInput)
   this.toggle(this.$previewBody)
+  if (this.$toolbar) {
+    this.toggle(this.$toolbar)
+  }
 }
 
 MarkdownEditor.prototype.toggle = function (element) {
