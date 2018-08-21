@@ -37,5 +37,5 @@ bundle exec rake
 [MIT License](LICENCE)
 
 [content-schemas]: https://github.com/alphagov/govuk-content-schemas
-[postgres]: https://www.postgresql.org/
+[postgresql]: https://www.postgresql.org/
 [yarn]: https://yarnpkg.com/
