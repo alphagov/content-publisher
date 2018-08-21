@@ -1,5 +1,5 @@
 import '@webcomponents/webcomponentsjs/webcomponents-bundle'
-import '@github/markdown-toolbar-element'
+import 'components/markdown-toolbar'
 import marked from 'marked'
 
 function MarkdownEditor ($module) {

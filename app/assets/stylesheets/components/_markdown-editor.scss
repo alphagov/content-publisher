@@ -3,12 +3,23 @@
 @import "../../../node_modules/govuk-frontend/tools/all";
 @import "../../../node_modules/govuk-frontend/core/links";
 
+
+.app-c-markdown-editor {
+  .govuk-textarea {
+    padding-top: govuk-spacing(8);
+  }
+}
+
+.app-c-markdown-editor__container {
+  position: relative;
+}
+
 .app-c-markdown-editor__head {
   @include govuk-font(19);
-
-  display: none;
-  position: relative;
-  z-index: 20;
+  display: block;
+  position: absolute;
+  right: 0;
+  left: 0;
   margin-bottom: -$govuk-border-width-form-element;
   border: $govuk-border-width-form-element solid $govuk-input-border-colour;
   border-bottom: 0;
@@ -16,6 +27,7 @@
 }
 
 .app-c-markdown-editor__preview-toggle {
+  width: 100%;
   border-bottom: $govuk-border-width-form-element solid $govuk-border-colour;
 }
 
@@ -25,13 +37,16 @@
   display: inline-block;
   margin-bottom: -$govuk-border-width-form-element;
   padding: (govuk-spacing(1) + $govuk-border-width-form-element) govuk-spacing(4);
-  border: 0;
+  border: $govuk-border-width-form-element solid transparent;
+  border-top: 0;
+  border-bottom: 0;
   color: $govuk-link-colour;
   background-color: transparent;
   text-decoration: underline;
   cursor: pointer;
 
   &:focus {
+    border-color: transparent;
     background-color: transparent;
   }
 }
@@ -48,7 +63,7 @@
   }
 
   &:first-child {
-    border-left: 0;
+    border-left-color: transparent;
   }
 }
 
@@ -59,6 +74,7 @@
 .app-c-markdown-editor__preview {
   display: none;
   margin-top: 0;
+  color: $govuk-text-colour;
 
   .govuk-textarea {
     overflow: scroll;
