@@ -1,16 +1,17 @@
-import '@webcomponents/webcomponentsjs/webcomponents-loader'
-import '@github/markdown-toolbar-element'
+import '@webcomponents/webcomponentsjs/webcomponents-bundle'
+import 'components/markdown-toolbar'
 import marked from 'marked'
 
 function MarkdownEditor ($module) {
   this.$module = $module
-  this.$toggleBar = $module.querySelector('.js-markdown-toggle-bar')
+  this.$head = $module.querySelector('.js-markdown-editor__head')
   this.$input = $module.querySelector('textarea')
   this.$preview = $module.querySelector('.js-markdown-preview-body .govuk-textarea')
   this.$previewButton = $module.querySelector('.js-markdown-preview-button')
   this.$editButton = $module.querySelector('.js-markdown-edit-button')
   this.$editorInput = $module.querySelector('.js-markdown-editor-input')
   this.$previewBody = $module.querySelector('.js-markdown-preview-body')
+  this.$toolbar = document.querySelector('.app-c-markdown-toolbar')
 }
 
 MarkdownEditor.prototype.init = function () {
@@ -21,7 +22,7 @@ MarkdownEditor.prototype.init = function () {
   $module.boundEditButtonClick = this.handleEditButton.bind(this)
 
   // Enable toggle bar
-  this.$toggleBar.style.display = 'block'
+  this.$head.style.display = 'block'
 
   // Handle events
   this.$previewButton.addEventListener('click', $module.boundPreviewButtonClick)
@@ -30,6 +31,11 @@ MarkdownEditor.prototype.init = function () {
 
 MarkdownEditor.prototype.handlePreviewButton = function (event) {
   event.preventDefault()
+
+  // Disable action if muted
+  if (this.$previewButton.classList.contains('app-c-markdown-editor__button--muted')) {
+    return
+  }
 
   var $preview = this.$preview
   var text = this.$input.value
@@ -59,14 +65,22 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
 MarkdownEditor.prototype.handleEditButton = function (event) {
   event.preventDefault()
 
+  // Disable action if muted
+  if (this.$editButton.classList.contains('app-c-markdown-editor__button--muted')) {
+    return
+  }
+
   this.toggleElements()
 }
 
 MarkdownEditor.prototype.toggleElements = function () {
-  this.toggle(this.$editButton)
-  this.toggle(this.$previewButton)
+  this.$editButton.classList.toggle('app-c-markdown-editor__button--muted')
+  this.$previewButton.classList.toggle('app-c-markdown-editor__button--muted')
   this.toggle(this.$editorInput)
   this.toggle(this.$previewBody)
+  if (this.$toolbar) {
+    this.toggle(this.$toolbar)
+  }
 }
 
 MarkdownEditor.prototype.toggle = function (element) {

@@ -10,6 +10,6 @@ en:
         title: Title
         summary: Summary
       url_preview:
-        available: "The web address for this content will look like:"
+        available: Page address
         no_title: You haven't entered a title yet.
         error: Unable to preview address, please edit title and try again.

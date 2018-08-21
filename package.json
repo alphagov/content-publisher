@@ -9,7 +9,6 @@
     "lint:fix": "standard --fix app/javascript/{*,**/*}"
   },
   "dependencies": {
-    "@github/markdown-toolbar-element": "^0.1.0",
     "@rails/webpacker": "3.5",
     "@webcomponents/webcomponentsjs": "^2.0.4",
     "marked": "^0.4.0",
@@ -17,7 +16,7 @@
   },
   "standard": {
     "ignore": [
-      "/app/assets/javascripts/vendor/*.js"
+      "/app/javascript/components/markdown-toolbar.js"
     ]
   },
   "devDependencies": {
