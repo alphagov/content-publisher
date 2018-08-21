@@ -15,15 +15,21 @@ when "sent_to_draft" || "sending_to_live" || "error_sending_to_live" # Draft
   secondary_button = preview_button
   ternary_button = publish_button
   destructive_button = delete_draft_button
-when "sent_to_review" # Ready for review
-  primary_button = publish_button
-  secondary_button = preview_button
-  destructive_button = delete_draft_button
+
+# NOTE:
+# This state doesn't exist yet. The following lines should be uncommented when review states are defined
+#
+# when "sent_to_review" # Ready for review
+#  primary_button = publish_button
+#  secondary_button = preview_button
+#  destructive_button = delete_draft_button
+
 when "sent_to_live" # Published
   primary_button = create_draft_button
   secondary_button = withdraw_button
   ternary_button = view_live_button
   destructive_button = unpublish_button
+
 end
 %>
 
