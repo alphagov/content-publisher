@@ -3,35 +3,53 @@
 @import "../../../node_modules/govuk-frontend/tools/all";
 @import "../../../node_modules/govuk-frontend/core/links";
 
-.app-c-markdown-editor__preview-toggle {
+.app-c-markdown-editor__head {
   @include govuk-font(19);
 
   display: none;
+  position: relative;
+  z-index: 20;
   margin-bottom: -$govuk-border-width-form-element;
-  padding: govuk-spacing(1);
   border: $govuk-border-width-form-element solid $govuk-input-border-colour;
-  border-bottom: $govuk-border-width-form-element solid $govuk-border-colour;
+  border-bottom: 0;
   background-color: govuk-colour("grey-3");
+}
+
+.app-c-markdown-editor__preview-toggle {
+  border-bottom: $govuk-border-width-form-element solid $govuk-border-colour;
 }
 
 .app-c-markdown-editor__button {
   @include govuk-link-common;
   @include govuk-font(19);
-  padding: 0;
+  display: inline-block;
+  margin-bottom: -$govuk-border-width-form-element;
+  padding: (govuk-spacing(1) + $govuk-border-width-form-element) govuk-spacing(4);
   border: 0;
   color: $govuk-link-colour;
-  background: none;
-  font: inherit;
+  background-color: transparent;
   text-decoration: underline;
   cursor: pointer;
+
+  &:focus {
+    background-color: transparent;
+  }
 }
 
-.app-c-markdown-editor__button--edit {
-  display: none;
-}
+.app-c-markdown-editor__button--muted {
+  border-right: $govuk-border-width-form-element solid $govuk-border-colour;
+  border-left: $govuk-border-width-form-element solid $govuk-border-colour;
+  color: $govuk-secondary-text-colour;
+  background: govuk-colour("grey-4");
+  text-decoration: none;
 
-.app-c-markdown-editor__button--preview {
-  display: block;
+  &:focus {
+    background-color: govuk-colour("grey-4");
+  }
+
+  &:first-child {
+    border-left: 0;
+  }
 }
 
 .app-c-markdown-editor__input {

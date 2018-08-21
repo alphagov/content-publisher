@@ -8,9 +8,11 @@
       text: label[:text],
       html_for: textarea[:id]
   } %>
-  <div class="app-c-markdown-editor__preview-toggle js-markdown-toggle-bar">
-    <button type="button" class="app-c-markdown-editor__button app-c-markdown-editor__button--edit js-markdown-edit-button"><%= edit_button_text %></button>
-    <button type="button" class="app-c-markdown-editor__button app-c-markdown-editor__button--preview js-markdown-preview-button"><%= preview_button_text %></button>
+  <div class="app-c-markdown-editor__head js-markdown-editor__head">
+    <div class="app-c-markdown-editor__preview-toggle">
+      <button type="button" class="app-c-markdown-editor__button app-c-markdown-editor__button--muted js-markdown-edit-button"><%= edit_button_text %></button>
+      <button type="button" class="app-c-markdown-editor__button js-markdown-preview-button"><%= preview_button_text %></button>
+    </div>
   </div>
   <div class="app-c-markdown-editor__input js-markdown-editor-input">
     <%= render "govuk_publishing_components/components/textarea", textarea %>
