@@ -12,7 +12,8 @@
     "@rails/webpacker": "3.5",
     "@webcomponents/webcomponentsjs": "^2.0.4",
     "marked": "^0.4.0",
-    "nodelist-foreach-polyfill": "^1.2.0"
+    "nodelist-foreach-polyfill": "^1.2.0",
+    "raven-js": "^3.26.4"
   },
   "standard": {
     "ignore": [
