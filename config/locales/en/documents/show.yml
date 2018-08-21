@@ -7,15 +7,31 @@ en:
         items:
           document_type: Document type
       associations:
-        title: Associations
+        title: Tags
         api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
         none: None
       contents:
-        title: Title, summary and body
+        title: Content
         items:
           title: Title
           base_path: Base path
           summary: Summary
+      actions:
+        publish: Publish
+        edit_associations: Edit associations
+        edit: Edit document
+        view_live: View on GOV.UK
+        view_draft: Preview
+        share_draft: Shareable preview
+        create_draft: Create draft
+        submit_2i: Submit for 2i review
+        delete_draft: Delete draft
+        withdraw: Withdraw
+        unpublish: Unpublish
+      metadata:
+        status: Status
+        updated_at: Last updated
+        created_at: Created
       flashes:
         draft_success: Preview creation successful
         draft_error: Error creating preview

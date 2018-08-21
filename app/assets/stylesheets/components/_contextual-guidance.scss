@@ -1,3 +1,6 @@
+@import "../../../node_modules/govuk-frontend/settings/all";
+@import "../../../node_modules/govuk-frontend/helpers/all";
+
 .app-c-contextual-guidance-wrapper {
   @include govuk-font(19);
 

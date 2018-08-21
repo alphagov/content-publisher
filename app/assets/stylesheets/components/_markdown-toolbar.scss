@@ -1,4 +1,11 @@
+@import "../../../node_modules/govuk-frontend/helpers/all";
+@import "../../../node_modules/govuk-frontend/settings/all";
+@import "../../../node_modules/govuk-frontend/tools/all";
+@import "../../../node_modules/govuk-frontend/core/lists";
+
 .app-c-markdown-toolbar {
+  @include govuk-font(19);
+
   .govuk-details {
     margin: 0;
     padding-top: govuk-spacing(2);

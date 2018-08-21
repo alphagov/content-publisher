@@ -27,7 +27,7 @@ RSpec.feature "Edit document associations when the API is down" do
   end
 
   def and_i_click_on_edit_associations
-    click_on "Edit associations"
+    click_on "Change Tags"
   end
 
   def then_i_should_see_an_error_message

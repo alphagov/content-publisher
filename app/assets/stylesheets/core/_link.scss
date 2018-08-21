@@ -1,0 +1,17 @@
+@import "../../../node_modules/govuk-frontend/helpers/all";
+@import "../../../node_modules/govuk-frontend/settings/all";
+@import "../../../node_modules/govuk-frontend/tools/all";
+@import "../../../node_modules/govuk-frontend/core/links";
+
+.app-link--destructive {
+  @include govuk-link-common;
+  color: $govuk-error-colour;
+
+  &:hover {
+    color: govuk-colour("bright-red");
+  }
+}
+
+.app-link--right {
+  float: right;
+}

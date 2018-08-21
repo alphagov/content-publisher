@@ -2,13 +2,14 @@ $govuk-image-url-function: "image-url";
 $govuk-font-url-function: "font-url";
 $govuk-global-styles: true;
 
-@import "../../../node_modules/govuk-frontend/all";
+@import "core/link";
+
+@import "objects/side";
 
 @import "components/contextual-guidance";
 @import "components/markdown-editor";
 @import "components/markdown-toolbar";
 @import "components/summary";
+@import "components/metadata";
 
-.app-hidden {
-  display: none;
-}
+@import "utilities/display";

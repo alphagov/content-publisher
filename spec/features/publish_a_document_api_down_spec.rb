@@ -11,7 +11,7 @@ RSpec.feature "Publishing a document when the API is down" do
   end
 
   def given_there_is_a_document
-    @document = create(:document)
+    @document = create(:document, publication_state: "sent_to_draft")
   end
 
   def and_the_publishing_api_is_down

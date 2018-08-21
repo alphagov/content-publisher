@@ -20,7 +20,7 @@ RSpec.feature "Showing a document summary" do
   def then_i_see_the_document_summary
     expect(page).to have_content(@document.title)
     expect(page).to have_content(@document.summary)
-    expect(page).to have_content(@document.created_at.strftime("%d %b %Y %H:%M"))
-    expect(page).to have_content(@document.updated_at.strftime("%d %b %Y %H:%M"))
+    expect(page).to have_content(@document.created_at.strftime("%l:%M%P on %d %B %Y"))
+    expect(page).to have_content(@document.updated_at.strftime("%l:%M%P on %d %B %Y"))
   end
 end

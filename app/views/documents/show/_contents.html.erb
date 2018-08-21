@@ -4,18 +4,6 @@
   <% end %>
 </ul>
 
-<%= render "components/summary", {
-  title: {
-    text: t("documents.show.format.title")
-  },
-  items: [
-    {
-      field: t("documents.show.format.items.document_type"),
-      value: @document.document_type_schema.label
-    }
-  ]
-} %>
-
 <% contents = @document.document_type_schema.contents.map { |schema|
   {
     field: schema.label,

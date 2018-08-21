@@ -32,7 +32,7 @@ RSpec.feature "Create a statistical data set", format: true do
     expect(Document.last.document_type_schema.associations.count).to eq(2)
     publishing_api_has_linkables([linkable], document_type: "organisation")
 
-    click_on "Edit associations"
+    click_on "Change Tags"
 
     select linkable["internal_name"], from: "associations[organisations][]"
 

@@ -31,7 +31,7 @@ RSpec.feature "Publish validations" do
     stub_any_publishing_api_put_content
     base_path = "#{@document.document_type_schema.path_prefix}/a-nice-title-of-considerable-length"
     publishing_api_has_lookups(base_path => nil)
-    click_on "Edit document"
+    click_on "Change Content"
     fill_in "document[title]", with: "A nice title of considerable length"
     fill_in "document[summary]", with: "A nice summary of considerable length"
     fill_in "document[contents][body]", with: "A very long body text."
