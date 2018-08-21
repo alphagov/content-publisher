@@ -4,6 +4,10 @@
     "postdeploy": "rake db:migrate db:seed"
   },
   "env": {
+    "ACTIVE_STORAGE_SERVICE": {
+      "required": true,
+      "value": "local"
+    },
     "GDS_SSO_STRATEGY": {
       "required": true,
       "value": "mock"
