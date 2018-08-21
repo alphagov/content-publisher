@@ -6,6 +6,7 @@ source "https://rubygems.org"
 
 gem "rails", "~> 5.2"
 
+gem "aws-sdk-s3", "~> 1"
 gem "bootsnap", "~> 1"
 gem "gds-api-adapters", "~> 52"
 gem "gds-sso", "~> 13"
