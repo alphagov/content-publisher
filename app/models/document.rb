@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Document < ApplicationRecord
+  has_many_attached :images
+
   PUBLICATION_STATES = %w[
     changes_not_sent_to_draft
     sending_to_draft
