@@ -11,6 +11,7 @@ import restrict from '../restrict'
 import editDocumentForm from '../documents/edit'
 import MarkdownEditor from '../components/markdown-editor'
 import ContextualGuidance from '../components/contextual-guidance'
+import CharacterCount from '../components/character-count'
 import Raven from 'raven-js'
 
 var $sentryDsn = document.querySelector('meta[name=sentry-dsn]')
@@ -25,6 +26,7 @@ if ($sentryDsn && $sentryCurrentEnv) {
 
 restrict('edit-document-form', editDocumentForm)
 restrict('markdown-editor', ($el) => new MarkdownEditor($el).init())
+restrict('character-count', ($el) => new CharacterCount($el).init())
 
 // Initialise guidance at document level
 var guidance = new ContextualGuidance()
