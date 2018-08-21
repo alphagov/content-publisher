@@ -40,7 +40,7 @@
       type: multi_association
       document_type: worldwide_organisation
     - id: primary_publishing_organisation
-      label: Primary publishing organisation
+      label: Primary organisation
       type: single_association
       document_type: organisation
 
@@ -85,7 +85,7 @@
       type: multi_association
       document_type: worldwide_organisation
     - id: primary_publishing_organisation
-      label: Primary publishing organisation
+      label: Primary organisation
       type: single_association
       document_type: organisation
 
@@ -118,7 +118,7 @@
       type: multi_association
       document_type: organisation
     - id: primary_publishing_organisation
-      label: Primary publishing organisation
+      label: Primary organisation
       type: single_association
       document_type: organisation
 
