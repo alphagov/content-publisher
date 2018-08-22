@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
 require "tasks/whitehall_news_importer"
 
 RSpec.describe Tasks::WhitehallNewsImporter do
@@ -14,11 +13,11 @@ RSpec.describe Tasks::WhitehallNewsImporter do
             created_at: Time.zone.now,
             news_article_type: { key: "news_story" },
             translations: [
-              { locale: "en", title: "Title", summary: "Summary", body: "Body" }
-            ]
-          }
-        ]
-      }
+              { locale: "en", title: "Title", summary: "Summary", body: "Body" },
+            ],
+          },
+        ],
+      },
     ].to_json
 
     expect { Tasks::WhitehallNewsImporter.new(JSON.parse(import_json)).import }

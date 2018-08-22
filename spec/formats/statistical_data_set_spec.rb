@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Create a statistical data set", format: true do
   scenario "User creates statistical data set" do
     when_i_choose_this_document_type

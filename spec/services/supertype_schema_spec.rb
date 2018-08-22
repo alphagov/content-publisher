@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 RSpec.describe SupertypeSchema do
   describe ".find" do
     it "returns a SupertypeSchema when it's a known supertype" do

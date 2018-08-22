@@ -29,7 +29,7 @@ module Tasks
         base_path: "/government/news/#{document['slug']}",
         content_id: document["content_id"],
         contents: {
-          body: translation["body"]
+          body: translation["body"],
         },
         document_type: edition["news_article_type"]["key"],
         locale: translation["locale"],

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Create a press release", format: true do
   scenario "User creates press release" do
     when_i_choose_this_document_type

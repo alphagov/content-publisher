@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe DocumentPublishingService do
-  describe '#publish_draft' do
+  describe "#publish_draft" do
     it "keeps track of the publication state" do
       stub_any_publishing_api_put_content
       document = create(:document)
@@ -16,7 +16,7 @@ RSpec.describe DocumentPublishingService do
     end
   end
 
-  describe '#publish' do
+  describe "#publish" do
     it "keeps track of the publication state" do
       stub_any_publishing_api_publish
       document = create(:document)

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Shows a preview of the URL", js: true do
   scenario "when a user edits the title of a document" do
     given_there_is_a_document

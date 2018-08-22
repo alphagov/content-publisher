@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.describe "Format configuration", format: true do
   SupertypeSchema.all.each do |schema|
     describe "Supertype #{schema.id}" do

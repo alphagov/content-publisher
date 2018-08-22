@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 RSpec.describe LinkablesService do
   describe "#select_options" do
     it "returns an array of titles with content_ids" do

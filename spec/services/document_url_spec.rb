@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 RSpec.describe DocumentUrl do
   let(:document) { build(:document, base_path: "/foo", content_id: "d2547c42-8ed3-49f5-baeb-6112f98c2bf9") }
 

@@ -34,7 +34,7 @@ class DocumentTypeSchema
   end
 
   def managed_elsewhere_url
-    Plek.find(managed_elsewhere.fetch('hostname')) + managed_elsewhere.fetch('path')
+    Plek.find(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
   end
 
   def guidance_for(id)

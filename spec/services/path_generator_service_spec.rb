@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 RSpec.describe PathGeneratorService do
-  describe '.path' do
+  describe ".path" do
     it "generates a base path which is unique to our database" do
       service = PathGeneratorService.new
       original_document = create(:document)

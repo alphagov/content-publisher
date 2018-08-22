@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Edit a document" do
   scenario "User edits a document" do
     given_there_is_a_document

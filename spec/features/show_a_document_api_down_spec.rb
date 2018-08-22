@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Showing a document when the API is down" do
   scenario "User views a document without API" do
     given_there_is_a_document_with_associations

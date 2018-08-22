@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Edit document associations when the API is down" do
   scenario "User tries to edit associations without API" do
     given_there_is_a_document

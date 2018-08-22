@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 RSpec.describe PublishingApiPayload do
   describe "#payload" do
     it "generates a payload for the publishing API" do

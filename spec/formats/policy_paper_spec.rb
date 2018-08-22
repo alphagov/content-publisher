@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Create a policy paper", format: true do
   scenario "User creates a policy paper" do
     when_i_choose_this_document_type

@@ -22,7 +22,7 @@ ActiveRecord::Migration.maintain_test_schema!
 Capybara.server = :puma, { Silent: true }
 Capybara::Chromedriver::Logger.raise_js_errors = true
 Capybara::Chromedriver::Logger.filters = [
-  /the server responded with a status of 409/i
+  /the server responded with a status of 409/i,
 ]
 
 RSpec.configure do |config|
@@ -34,7 +34,7 @@ RSpec.configure do |config|
   config.include GovukSchemas::RSpecMatchers
 
   config.before :each, format: true do
-    publishing_api_has_linkables([{ "content_id" => User.first.organisation_content_id, "internal_name" => "Linkable" }], document_type: 'organisation')
+    publishing_api_has_linkables([{ "content_id" => User.first.organisation_content_id, "internal_name" => "Linkable" }], document_type: "organisation")
   end
 
   config.after :each, type: :feature, js: true do

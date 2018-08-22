@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 RSpec.describe Document do
   describe "PUBLICATION_STATES" do
     it "has correct translations for each state" do

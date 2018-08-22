@@ -17,3 +17,13 @@ Style/FrozenStringLiteralComment:
   Enabled: true
   Exclude:
     - config/**/*
+
+Style/StringLiterals:
+  Enabled: true
+
+Style/TrailingCommaInLiteral:
+  Enabled: true
+
+Style/TrailingCommaInArguments:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
