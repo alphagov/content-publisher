@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gds_api/publishing_api_v2'
+require "gds_api/publishing_api_v2"
 
 class DocumentPublishingService
   def publish_draft(document)
@@ -19,9 +19,9 @@ private
 
   def publishing_api
     GdsApi::PublishingApiV2.new(
-      Plek.new.find('publishing-api'),
+      Plek.new.find("publishing-api"),
       disable_cache: true,
-      bearer_token: ENV['PUBLISHING_API_BEARER_TOKEN'] || 'example',
+      bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example",
     )
   end
 end

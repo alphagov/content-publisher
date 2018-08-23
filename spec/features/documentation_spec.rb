@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Documentation" do
   scenario "GDS staff visits the docs page" do
     when_i_visit_the_documentation_page

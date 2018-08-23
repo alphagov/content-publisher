@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Publish validations" do
   scenario "A document is validated" do
     given_there_is_an_invalid_document

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Showing a document summary" do
   scenario "User view a document" do
     given_there_is_a_document

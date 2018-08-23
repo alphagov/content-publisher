@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "User is not sure about the supertype", format: true do
   scenario "User selects the not sure option" do
     when_i_click_on_create_a_document

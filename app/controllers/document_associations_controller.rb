@@ -3,7 +3,7 @@
 class DocumentAssociationsController < ApplicationController
   rescue_from GdsApi::BaseError do |e|
     Rails.logger.error(e)
-    render 'edit_api_down', status: 503
+    render "edit_api_down", status: 503
   end
 
   def edit

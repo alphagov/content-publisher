@@ -12,13 +12,13 @@ class DocumentUrl
 
   def preview_url
     return unless document.base_path
-    Plek.new.external_url_for('draft-origin') + document.base_path
+    Plek.new.external_url_for("draft-origin") + document.base_path
   end
 
   def secret_preview_url
     return unless document.base_path
     params = { token: secret_token_for_preview_url }.to_query
-    preview_url + '?' + params
+    preview_url + "?" + params
   end
 
   # Return a "auth_bypass_id" to send to the publishing-api. This token will
@@ -41,9 +41,9 @@ private
 
   def secret_token_for_preview_url
     JWT.encode(
-      { 'sub' => auth_bypass_id },
+      { "sub" => auth_bypass_id },
       Rails.application.secrets.jwt_auth_secret,
-      'HS256'
+      "HS256",
     )
   end
 
@@ -53,7 +53,7 @@ private
   #
   # See: http://ruby-doc.org/stdlib-1.9.3/libdoc/securerandom/rdoc/SecureRandom.html#uuid-method
   def generate_uuid_for_string(string)
-    ary = Digest::SHA256.hexdigest(string).unpack('NnnnnN')
+    ary = Digest::SHA256.hexdigest(string).unpack("NnnnnN")
     ary[2] = (ary[2] & 0x0fff) | 0x4000
     ary[3] = (ary[3] & 0x3fff) | 0x8000
     "%08x-%04x-%04x-%04x-%04x%08x" % ary

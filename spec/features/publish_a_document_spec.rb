@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Publishing a document" do
   scenario "User publishes a document" do
     given_there_is_a_document

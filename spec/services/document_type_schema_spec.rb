@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 RSpec.describe DocumentTypeSchema do
   describe ".find" do
     it "returns a DocumentTypeSchema when it's a known document_type" do
@@ -14,8 +12,8 @@ RSpec.describe DocumentTypeSchema do
     end
   end
 
-  describe '#managed_elsewhere_url' do
-    it 'returns a full URL' do
+  describe "#managed_elsewhere_url" do
+    it "returns a full URL" do
       schema = DocumentTypeSchema.find("consultation")
       path = "https://whitehall-admin.test.gov.uk/government/admin/consultations/new"
       expect(schema.managed_elsewhere_url).to eq(path)

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Edit document associations" do
   let(:initial_association) { { "content_id" => SecureRandom.uuid, "internal_name" => "Initial association" } }
   let(:association_to_select_1) { { "content_id" => SecureRandom.uuid, "internal_name" => "Association to select 1" } }
@@ -74,7 +72,7 @@ RSpec.feature "Edit document associations" do
   def edition_links
     {
       "multi_association_id" => [association_to_select_1["content_id"], association_to_select_2["content_id"]],
-      "single_association_id" => [association_to_select_1["content_id"]]
+      "single_association_id" => [association_to_select_1["content_id"]],
     }
   end
 end
