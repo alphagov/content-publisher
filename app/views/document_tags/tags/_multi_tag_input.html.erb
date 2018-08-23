@@ -6,9 +6,11 @@
 
   <% options = LinkablesService.new(schema.document_type).select_options %>
 
+  <% if options.any? %>
   <%= select_tag "tags[#{schema.id}][]",
     options_for_select(options, tags[schema.id]),
     class: "govuk-select",
-    multiple: true,
-    style: "height: 200px" %>
+    data: { module: "autocomplete-multiselect" }
+  %>
+  <% end %>
 </p>
