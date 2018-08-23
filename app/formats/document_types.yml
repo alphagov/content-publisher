@@ -23,14 +23,10 @@
       validations:
         min_length: 10
   associations:
-    - id: topical_events
-      label: Topical events
-      type: multi_association
-      document_type: topical_event
-    - id: world_locations
-      label: World locations
-      type: multi_association
-      document_type: world_location
+    - id: primary_publishing_organisation
+      label: Primary organisation
+      type: single_association
+      document_type: organisation
     - id: organisations
       label: Organisations
       type: multi_association
@@ -39,10 +35,14 @@
       label: Worldwide organisations
       type: multi_association
       document_type: worldwide_organisation
-    - id: primary_publishing_organisation
-      label: Primary organisation
-      type: single_association
-      document_type: organisation
+    - id: topical_events
+      label: Topical events
+      type: multi_association
+      document_type: topical_event
+    - id: world_locations
+      label: World locations
+      type: multi_association
+      document_type: world_location
 
 - id: news_story
   label: News story
@@ -68,14 +68,10 @@
       validations:
         min_length: 10
   associations:
-    - id: topical_events
-      label: Topical events
-      type: multi_association
-      document_type: topical_event
-    - id: world_locations
-      label: World locations
-      type: multi_association
-      document_type: world_location
+    - id: primary_publishing_organisation
+      label: Primary organisation
+      type: single_association
+      document_type: organisation
     - id: organisations
       label: Organisations
       type: multi_association
@@ -84,10 +80,14 @@
       label: Worldwide organisations
       type: multi_association
       document_type: worldwide_organisation
-    - id: primary_publishing_organisation
-      label: Primary organisation
-      type: single_association
-      document_type: organisation
+    - id: topical_events
+      label: Topical events
+      type: multi_association
+      document_type: topical_event
+    - id: world_locations
+      label: World locations
+      type: multi_association
+      document_type: world_location
 
 - id: statistical_data_set
   label: Statistical data set
@@ -113,13 +113,13 @@
       validations:
         min_length: 10
   associations:
-    - id: organisations
-      label: Organisations
-      type: multi_association
-      document_type: organisation
     - id: primary_publishing_organisation
       label: Primary organisation
       type: single_association
+      document_type: organisation
+    - id: organisations
+      label: Organisations
+      type: multi_association
       document_type: organisation
 
 - id: policy_paper
