@@ -18,4 +18,8 @@ class Document < ApplicationRecord
   def document_type_schema
     DocumentTypeSchema.find(document_type)
   end
+
+  def newly_created?
+    self.created_at == self.updated_at
+  end
 end
