@@ -26,15 +26,15 @@
     <% end %>
 
     <% if flash[:notice] %>
-      <p>
-        <%= flash[:notice] %>
-      </p>
+      <%= render "govuk_publishing_components/components/success_alert", {
+        message: flash[:notice]
+      } %>
     <% end %>
 
     <% if flash[:alert] %>
-      <p>
-        <%= flash[:alert] %>
-      </p>
+      <%= render "components/error_alert", {
+        message: flash[:alert]
+      } %>
     <% end %>
 
     <main class="govuk-main-wrapper<%= " govuk-main-wrapper--l" if yield(:back_link).blank?%>" id="main-content" role="main">
