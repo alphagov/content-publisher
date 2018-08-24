@@ -16,7 +16,7 @@ New content should not significantly repeat existing content.
 
 If you’re unsure [ask the GOV.UK team at the Government Digital Service](https://support.integration.publishing.service.gov.uk/).
 
-## What to publish elsewhere
+## Alternatives to GOV.UK
 
 ### Campaigns
 
