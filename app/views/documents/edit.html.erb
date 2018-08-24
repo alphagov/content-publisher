@@ -12,6 +12,8 @@
         name: "document[title]",
         value: @document.title,
         data: {
+          "module": "character-count",
+          "maxlength": "65",
           "contextual-guidance": "document-title-guidance"
         }
       } %>
@@ -55,6 +57,8 @@
         value: @document.summary,
         rows: 4,
         data: {
+          "module": "character-count",
+          "maxlength": "160",
           "contextual-guidance": "document-summary-guidance"
         }
       } %>

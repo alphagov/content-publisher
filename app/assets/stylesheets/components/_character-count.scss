@@ -1,0 +1,23 @@
+@import "../../../node_modules/govuk-frontend/settings/all";
+@import "../../../node_modules/govuk-frontend/helpers/all";
+@import "../../../node_modules/govuk-frontend/tools/all";
+
+.govuk-textarea[data-module="character-count"],
+.govuk-input[data-module="character-count"] {
+  display: block;
+  margin-bottom: govuk-spacing(1);
+}
+
+.govuk-textarea--error[data-module="character-count"],
+.govuk-input--error[data-module="character-count"] {
+  padding: govuk-spacing(1) - 2; // stop a "jump" when width of border changes
+}
+
+.govuk-character-count__message {
+  margin-top: govuk-spacing(1);
+  margin-bottom: 0;
+}
+
+.govuk-character-count__message--disabled {
+  visibility: hidden;
+}
