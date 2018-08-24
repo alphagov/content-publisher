@@ -1,6 +1,6 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= render "components/markdown-editor", {
+    <%= render "components/markdown_editor", {
       label: {
         text: schema.label
       },
@@ -19,7 +19,7 @@
 
   <% if document.document_type_schema.guidance_for(schema.id) %>
     <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual-guidance", {
+      <%= render "components/contextual_guidance", {
         id: "document-contents-guidance",
         title: document.document_type_schema.guidance_for(schema.id).title
       } do %>
@@ -30,7 +30,7 @@
           <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link"><%= t("documents.edit.fields.govspeak.guidance") %></a>
         </p>
 
-        <%= render "components/markdown-toolbar", {
+        <%= render "components/markdown_toolbar", {
           html_for: "govspeak-editor"
         } %>
       <% end %>

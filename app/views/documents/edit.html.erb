@@ -35,7 +35,7 @@
 
     <% if @document.document_type_schema.guidance_for("title") %>
       <div class="govuk-grid-column-one-third">
-        <%= render "components/contextual-guidance", {
+        <%= render "components/contextual_guidance", {
           id: "document-title-guidance",
           title: @document.document_type_schema.guidance_for("title").title
         } do %>
@@ -62,7 +62,7 @@
 
     <% if @document.document_type_schema.guidance_for("summary") %>
       <div class="govuk-grid-column-one-third">
-        <%= render "components/contextual-guidance", {
+        <%= render "components/contextual_guidance", {
           id: "document-summary-guidance",
           title: @document.document_type_schema.guidance_for("summary").title
         } do %>
