@@ -2,11 +2,6 @@ function CharacterCount ($module) {
   this.$module = $module
 }
 
-CharacterCount.prototype.defaults = {
-  characterCountAttribute: 'data-maxlength',
-  wordCountAttribute: 'data-maxwords'
-}
-
 // Initialize component
 CharacterCount.prototype.init = function (options) {
   // Check for module
@@ -19,12 +14,14 @@ CharacterCount.prototype.init = function (options) {
   var dataset = this.getDataset($module)
   this.options = this.merge(options || {}, dataset)
 
-  // Determine the limit attribute (characters or words)
-  var countAttribute = (this.options.maxwords) ? this.defaults.wordCountAttribute : this.defaults.characterCountAttribute
+  // Read the limit attribute
+  var countAttribute = 'data-maxlength'
 
   // Set the element limit
   if ($module.getAttribute) {
     this.maxLength = $module.getAttribute(countAttribute)
+  } else {
+    return
   }
 
   // Generate and reference message
@@ -71,18 +68,6 @@ CharacterCount.prototype.getDataset = function (element) {
     }
   }
   return dataset
-}
-
-// Counts characters or words in text
-CharacterCount.prototype.count = function (text, options) {
-  var length
-  if (options.maxwords) {
-    var tokens = text.match(/\S+/g) || [] // Matches consecutive non-whitespace chars
-    length = tokens.length
-  } else {
-    length = text.length
-  }
-  return length
 }
 
 // Generate count message and bind it to the input
@@ -132,16 +117,13 @@ CharacterCount.prototype.updateCountMessage = function () {
   var countMessage = this.countMessage
 
   // Determine the remaining number of characters/words
-  var currentLength = this.count(countElement.value, options)
+  var currentLength = countElement.value.length
   var maxLength = this.maxLength
   var remainingNumber = maxLength - currentLength
 
   // Set threshold if presented in options
-  var threshold = 0
-  if (options.threshold) {
-    threshold = options.threshold
-  }
-  var thresholdValue = maxLength * threshold / 100
+  var thresholdPercent = options.threshold ? options.threshold : 0
+  var thresholdValue = maxLength * thresholdPercent / 100
   if (thresholdValue > currentLength) {
     countMessage.classList.add('govuk-character-count__message--disabled')
   } else {
@@ -163,9 +145,6 @@ CharacterCount.prototype.updateCountMessage = function () {
   var charVerb = 'remaining'
   var charNoun = 'character'
   var displayNumber = remainingNumber
-  if (options.maxwords) {
-    charNoun = 'word'
-  }
   charNoun = charNoun + ((remainingNumber === -1 || remainingNumber === 1) ? '' : 's')
 
   charVerb = (remainingNumber < 0) ? 'too many' : 'remaining'
