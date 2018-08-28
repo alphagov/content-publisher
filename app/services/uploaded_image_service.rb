@@ -3,8 +3,6 @@
 require "mini_magick"
 
 class UploadedImageService
-  WIDTH = 960
-  HEIGHT = 640
   MAX_FILE_SIZE = 20.megabytes
 
   def initialize(upload)
@@ -18,7 +16,9 @@ class UploadedImageService
 
     image_normaliser.normalise
     dimensions = image_normaliser.dimensions
-    cropper = CentreCropper.new(dimensions[:width], dimensions[:height], WIDTH.to_f / HEIGHT)
+    cropper = CentreCropper.new(dimensions[:width],
+                                dimensions[:height],
+                                output_width.to_f / output_height)
 
     ValidImage.new(
       file: upload,
@@ -41,6 +41,14 @@ private
     @image_normaliser ||= ImageNormaliser.new(upload.path)
   end
 
+  def output_width
+    Image::WIDTH
+  end
+
+  def output_height
+    Image::HEIGHT
+  end
+
   def validate
     if %w(image/jpeg image/png image/gif).exclude?(mime_type)
       return ["Expected a jpg, png or gif image"]
@@ -54,8 +62,8 @@ private
 
     dimensions = image_normaliser.dimensions
 
-    if dimensions[:width] < WIDTH || dimensions[:height] < HEIGHT
-      errors << "Images must have dimensions of at least #{WIDTH} x #{HEIGHT} pixels"
+    if dimensions[:width] < output_width || dimensions[:height] < output_height
+      errors << "Images must have dimensions of at least #{output_width} x #{output_height} pixels"
     end
 
     errors
