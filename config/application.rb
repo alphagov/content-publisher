@@ -47,6 +47,8 @@ module ContentPublisher
     config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.yml")]
     config.action_view.raise_on_missing_translations = true
 
+    config.time_zone = "London"
+
     unless Rails.application.secrets.jwt_auth_secret
       raise "JWT auth secret is not configured. See config/secrets.yml"
     end
