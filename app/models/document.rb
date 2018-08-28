@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Document < ApplicationRecord
-  has_many_attached :images
+  has_many :images, dependent: :destroy
 
   PUBLICATION_STATES = %w[
     changes_not_sent_to_draft
