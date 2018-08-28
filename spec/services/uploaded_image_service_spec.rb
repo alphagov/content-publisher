@@ -43,7 +43,7 @@ RSpec.describe UploadedImageService do
         allow(uploaded_file).to receive(:size).and_return(30.megabytes)
         result = UploadedImageService.new(uploaded_file).process
         expect(result.errors)
-          .to include("Image uploads must be less than 20MB in filesize")
+          .to include("Image uploads must be less than 20 MB in filesize")
       end
     end
 

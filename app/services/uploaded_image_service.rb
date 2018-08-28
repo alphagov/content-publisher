@@ -3,6 +3,8 @@
 require "mini_magick"
 
 class UploadedImageService
+  include ActionView::Helpers::NumberHelper
+
   MAX_FILE_SIZE = 20.megabytes
 
   def initialize(upload)
@@ -51,19 +53,19 @@ private
 
   def validate
     if %w(image/jpeg image/png image/gif).exclude?(mime_type)
-      return ["Expected a jpg, png or gif image"]
+      return [I18n.t("validations.images.invalid_format")]
     end
 
     errors = []
 
     if upload.size >= MAX_FILE_SIZE
-      errors << "Image uploads must be less than 20MB in filesize"
+      errors << I18n.t("validations.images.max_size", max_size: number_to_human_size(MAX_FILE_SIZE))
     end
 
     dimensions = image_normaliser.dimensions
 
     if dimensions[:width] < output_width || dimensions[:height] < output_height
-      errors << "Images must have dimensions of at least #{output_width} x #{output_height} pixels"
+      errors << I18n.t("validations.images.min_dimensions", width: output_width, height: output_height)
     end
 
     errors
