@@ -56,6 +56,8 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
         }
       }
     )
+    // Open preview links in a new tab
+    this.setTargetBlank(this.$preview)
   } else {
     $preview.innerHTML = 'Nothing to preview'
   }
@@ -89,6 +91,16 @@ MarkdownEditor.prototype.toggle = function (element) {
     element.style.display = 'block'
   } else {
     element.style.display = 'none'
+  }
+}
+
+// Set target="_blank" to anchors inside the container
+MarkdownEditor.prototype.setTargetBlank = function (container) {
+  if (container) {
+    var anchors = container.querySelectorAll('a')
+    anchors.forEach(function (anchor) {
+      anchor.setAttribute('target', '_blank')
+    })
   }
 }
 
