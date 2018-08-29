@@ -1,0 +1,21 @@
+@import "../../../node_modules/govuk-frontend/settings/all";
+@import "../../../node_modules/govuk-frontend/helpers/all";
+
+.app-c-error-alert {
+  padding: govuk-spacing(4);
+  border: $govuk-border-width-mobile solid $govuk-error-colour;
+  color: $govuk-error-colour;
+
+  @include govuk-media-query($from: tablet) {
+    border: $govuk-border-width solid $govuk-error-colour;
+  }
+}
+
+.app-c-error-alert__message {
+  @include govuk-font($size: 19, $weight: "bold");
+  margin: 0;
+}
+
+.app-c-error-alert:focus {
+  outline: $govuk-focus-width solid $govuk-focus-colour;
+}
