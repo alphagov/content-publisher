@@ -54,4 +54,45 @@ RSpec.describe DocumentImagesController do
       end
     end
   end
+
+  describe "POST crop" do
+    context "when the crop is valid" do
+      it "returns the updated crop" do
+        image = create(:image, fixture: "1000x1000.jpg", width: 1000, height: 1000)
+
+        post :create, params: {
+          document_id: image.document.id,
+          id: image.id,
+          crop: { x: 10, y: 10, width: 960, Height: 640 },
+        }
+
+        expect(response.status).to eql(200)
+        expect(JSON.parse(response.body)).to match(
+          a_hash_including(
+            "crop" => hash_including(
+              "dimensions" => hash_including("width" => 960, "height" => 640),
+              "offset" => hash_including("x" => 0, "y" => 0),
+            ),
+          )
+        )
+      end
+    end
+
+    context "when the crop is invalid" do
+      it "returns the errors" do
+        image = create(:image, fixture: "1000x1000.jpg", width: 1000, height: 1000)
+
+        post :create, params: {
+          document_id: image.document.id,
+          id: image.id,
+          crop: { x: 10, y: 10, width: 960, Height: 100 },
+        }
+
+        expect(response.status).to eql(422)
+        json = JSON.parse(response.body)
+        expect(json).to match(a_hash_including("errors"))
+        expect(json["errors"].count).to be > 0
+      end
+    end
+  end
 end
