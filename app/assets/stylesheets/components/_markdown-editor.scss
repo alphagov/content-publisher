@@ -7,6 +7,7 @@
 .app-c-markdown-editor {
   .govuk-textarea {
     padding-top: govuk-spacing(8);
+    resize: vertical;
   }
 }
 
