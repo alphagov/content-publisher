@@ -14,7 +14,7 @@ RSpec.describe UploadedImageService::ImageNormaliser do
     end
 
     context "when given an image with orientation" do
-      it "returns the dimensions" do
+      it "returns the normalised dimensions" do
         path = file_fixture("640x960-rotated.jpg")
 
         normaliser = UploadedImageService::ImageNormaliser.new(path)

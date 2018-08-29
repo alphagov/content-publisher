@@ -18,6 +18,7 @@ This is a Ruby on Rails application.
 
 - [postgresql][] - provides a backing database
 - [yarn][] - package manager for JavaScripts
+- [imagemagick][] - image manipulation library
 
 ### Running the application
 
@@ -39,3 +40,4 @@ bundle exec rake
 [content-schemas]: https://github.com/alphagov/govuk-content-schemas
 [postgresql]: https://www.postgresql.org/
 [yarn]: https://yarnpkg.com/
+[imagemagick]: https://www.imagemagick.org/script/index.php
