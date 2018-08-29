@@ -60,10 +60,10 @@ RSpec.describe DocumentImagesController do
       it "returns the updated crop" do
         image = create(:image, fixture: "1000x1000.jpg", width: 1000, height: 1000)
 
-        post :create, params: {
+        post :crop, params: {
           document_id: image.document.id,
           id: image.id,
-          crop: { x: 10, y: 10, width: 960, Height: 640 },
+          crop: { x: 10, y: 10, width: 960, height: 640 },
         }
 
         expect(response.status).to eql(200)
@@ -71,10 +71,24 @@ RSpec.describe DocumentImagesController do
           a_hash_including(
             "crop" => hash_including(
               "dimensions" => hash_including("width" => 960, "height" => 640),
-              "offset" => hash_including("x" => 0, "y" => 0),
+              "offset" => hash_including("x" => 10, "y" => 10),
             ),
-          )
+          ),
         )
+      end
+
+      it "updates the image" do
+        image = create(:image, fixture: "1000x1000.jpg", width: 1000, height: 1000)
+
+        crop = -> do
+          post :crop, params: {
+            document_id: image.document.id,
+            id: image.id,
+            crop: { x: 10, y: 10, width: 960, height: 640 },
+          }
+        end
+
+        expect(crop).to change { image.reload.crop_x }.to(10)
       end
     end
 
@@ -82,16 +96,20 @@ RSpec.describe DocumentImagesController do
       it "returns the errors" do
         image = create(:image, fixture: "1000x1000.jpg", width: 1000, height: 1000)
 
-        post :create, params: {
+        post :crop, params: {
           document_id: image.document.id,
           id: image.id,
-          crop: { x: 10, y: 10, width: 960, Height: 100 },
+          crop: { x: 10, y: -10, width: 960, height: 640 },
         }
 
         expect(response.status).to eql(422)
+
         json = JSON.parse(response.body)
-        expect(json).to match(a_hash_including("errors"))
-        expect(json["errors"].count).to be > 0
+        expect(json).to match(
+          a_hash_including(
+            "errors" => hash_including("y"),
+          ),
+        )
       end
     end
   end

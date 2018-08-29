@@ -13,7 +13,23 @@ class DocumentImagesController < ApplicationController
     end
   end
 
+  def crop
+    image = Image.find_by!(id: params[:id], document_id: params[:document_id])
+    crop = UpdateImageCropService.new(image, crop_params)
+
+    if crop.valid?
+      crop.update_image
+      render json: ImageJsonPresenter.new(image).present, status: :ok
+    else
+      render json: { errors: crop.errors }, status: :unprocessable_entity
+    end
+  end
+
 private
+
+  def crop_params
+    params.require(:crop).permit(:x, :y, :width, :height)
+  end
 
   def create_image_from_upload(upload, document)
     blob = ActiveStorage::Blob.create_after_upload!(
