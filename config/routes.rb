@@ -26,6 +26,8 @@ Rails.application.routes.draw do
 
   get "/documentation" => "documentation#index"
 
+  get "/govspeak" => "govspeak#to_html"
+
   mount GovukPublishingComponents::Engine, at: "/component-guide"
 
   if Rails.env.test?
