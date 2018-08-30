@@ -22,5 +22,21 @@
         }
       end
     } %>
+
+    <% pages = { } %>
+
+    <% page_info = t("documents.index.search_results.page_info",
+                     page: @documents.current_page,
+                     pages: @documents.total_pages) %>
+
+    <% pages[:previous_page] = { url: documents_path(page: @documents.prev_page),
+                                 label: page_info,
+                                 title: "Previous page" } if @documents.prev_page %>
+
+    <% pages[:next_page] = { url: documents_path(page: @documents.next_page),
+                             label: page_info,
+                             title: "Next page" } if @documents.next_page %>
+
+    <%= render "govuk_publishing_components/components/previous_and_next_navigation", pages %>
   </div>
 </div>

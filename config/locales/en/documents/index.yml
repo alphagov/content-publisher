@@ -4,3 +4,4 @@ en:
       title: Documents
       search_results:
         untitled: No title
+        page_info: "%{page} of %{pages}"

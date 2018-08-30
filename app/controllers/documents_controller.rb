@@ -7,7 +7,7 @@ class DocumentsController < ApplicationController
   end
 
   def index
-    @documents = Document.all
+    @documents = Document.page(params[:page]).per(50)
   end
 
   def edit
