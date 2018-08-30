@@ -36,37 +36,36 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
     return
   }
 
-  var $preview = this.$preview
-  var $module = this.$module
-  var text = this.$input.value
-
   // Mirror textarea's height
-  $preview.style.height = this.$input.offsetHeight + 'px'
+  this.$preview.style.height = this.$input.offsetHeight + 'px'
 
-  if (!text) {
-    $preview.innerHTML = 'Nothing to preview'
+  // Clear previous preview
+  this.$preview.innerHTML = ''
+
+  if (!this.$input.value) {
+    this.$preview.innerHTML = 'Nothing to preview'
+    this.toggleElements()
     return
   }
 
-  var path = $module.getAttribute('data-govspeak-path')
-  var url = new URL(document.location.origin + path)
-  url.searchParams.append('govspeak', text)
+  this.fetchGovspeakPreview(this.$input.value)
+    .then((text) => { this.$preview.innerHTML = text })
+    .catch(() => { this.$preview.innerHTML = 'Error previewing content' })
 
-  // Render markdown
-  window.fetch(url, { credentials: 'include' })
-    .then(function (response) {
-      response.text().then(function (result) {
-        $preview.innerHTML = result
-      })
-    })
-    .catch(this.handlePreviewError.bind(this))
-
-  this.setTargetBlank($preview)
+  this.setTargetBlank(this.$preview)
   this.toggleElements()
 }
 
-MarkdownEditor.prototype.handlePreviewError = function () {
-  this.$preview.innerHTML = 'Error previewing content'
+MarkdownEditor.prototype.fetchGovspeakPreview = function (text) {
+  var path = this.$module.getAttribute('data-govspeak-path')
+  var url = new URL(document.location.origin + path)
+  url.searchParams.append('govspeak', text)
+
+  var controller = new AbortController()
+  var params = { credentials: 'include', signal: controller.signal }
+  setTimeout(() => controller.abort(), 5000)
+
+  return window.fetch(url, params).then((response) => response.text())
 }
 
 MarkdownEditor.prototype.handleEditButton = function (event) {
