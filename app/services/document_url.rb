@@ -32,7 +32,7 @@ class DocumentUrl
   #
   # For more info, see https://docs.publishing.service.gov.uk/manual/content-preview.html#authentication
   def auth_bypass_id
-    @_auth_bypass_id ||= generate_uuid_for_string(document.content_id)
+    @auth_bypass_id ||= generate_uuid_for_string(document.content_id)
   end
 
 private

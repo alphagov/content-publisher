@@ -21,7 +21,10 @@ Style/FrozenStringLiteralComment:
 Style/StringLiterals:
   Enabled: true
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInHashLiteral:
+  Enabled: true
+
+Style/TrailingCommaInArrayLiteral:
   Enabled: true
 
 Style/TrailingCommaInArguments:

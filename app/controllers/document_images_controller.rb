@@ -7,9 +7,9 @@ class DocumentImagesController < ApplicationController
 
     if upload.valid?
       image = create_image_from_upload(upload, document)
-      render json: ImageJsonPresenter.new(image).present, status: 201
+      render json: ImageJsonPresenter.new(image).present, status: :created
     else
-      render json: { errors: upload.errors }, status: 422
+      render json: { errors: upload.errors }, status: :unprocessable_entity
     end
   end
 

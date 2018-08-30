@@ -21,7 +21,7 @@ module Tasks
     attr_reader :to_import
 
     def most_recent_edition(document)
-      document["editions"].sort_by { |e| e["created_at"] }.last
+      document["editions"].max_by { |e| e["created_at"] }
     end
 
     def create_document(translation, edition, document)
