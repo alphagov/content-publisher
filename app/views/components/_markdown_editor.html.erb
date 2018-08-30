@@ -3,7 +3,7 @@
   edit_button_text ||= 'Edit'
   preview_button_text ||= 'Preview'
 %>
-<div class="app-c-markdown-editor" data-module="markdown-editor" data-govspeak-path="<%= govspeak_path %>">
+<div class="app-c-markdown-editor" data-module="markdown-editor" data-govspeak-path="<%= govspeak_preview_path %>">
   <%= render "govuk_publishing_components/components/label", {
       text: label[:text],
       html_for: textarea[:id]
