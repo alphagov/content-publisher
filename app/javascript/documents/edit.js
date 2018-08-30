@@ -29,7 +29,7 @@ export default function (editDocumentForm) {
     var url = new URL(document.location.origin + path)
     url.searchParams.append('title', documentTitle.value)
 
-    var controller = new AbortController()
+    var controller = new window.AbortController()
     var options = { credentials: 'include', signal: controller.signal }
     setTimeout(() => controller.abort(), 5000)
 

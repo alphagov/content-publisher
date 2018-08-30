@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
   get "/documentation" => "documentation#index"
 
-  get "/govspeak-preview" => "govspeak_preview#to_html"
+  post "/govspeak-preview" => "govspeak_preview#to_html"
 
   mount GovukPublishingComponents::Engine, at: "/component-guide"
 

@@ -7,6 +7,7 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import 'nodelist-foreach-polyfill'
+
 import restrict from '../restrict'
 import editDocumentForm from '../documents/edit'
 import MarkdownEditor from '../components/markdown-editor'

@@ -59,10 +59,9 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
 MarkdownEditor.prototype.fetchGovspeakPreview = function (text) {
   var path = this.$module.getAttribute('data-govspeak-path')
   var url = new URL(document.location.origin + path)
-  url.searchParams.append('govspeak', text)
 
-  var controller = new AbortController()
-  var options = { credentials: 'include', signal: controller.signal }
+  var controller = new window.AbortController()
+  var options = { credentials: 'include', signal: controller.signal, method: 'POST', body: text }
   setTimeout(() => controller.abort(), 5000)
 
   return window.fetch(url, options).then((response) => response.text())
