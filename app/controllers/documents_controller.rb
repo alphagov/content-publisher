@@ -3,7 +3,7 @@
 class DocumentsController < ApplicationController
   rescue_from GdsApi::BaseError do |e|
     Rails.logger.error(e)
-    render "show_api_down", status: 503
+    render "show_api_down", status: :service_unavailable
   end
 
   def index
@@ -34,7 +34,7 @@ class DocumentsController < ApplicationController
     base_path = PathGeneratorService.new.path(document, params[:title])
     render json: { base_path: base_path, available: true }
   rescue PathGeneratorService::ErrorGeneratingPath
-    render json: { available: false }, status: 409
+    render json: { available: false }, status: :conflict
   end
 
 private

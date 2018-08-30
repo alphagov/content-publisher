@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   post "/documents/:id/images" => "document_images#create", as: :create_document_image
 
-  get "/healthcheck", to: proc { [200, {}, ["OK"]] }
+  get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 
   get "/documentation" => "documentation#index"
 
