@@ -62,10 +62,10 @@ MarkdownEditor.prototype.fetchGovspeakPreview = function (text) {
   url.searchParams.append('govspeak', text)
 
   var controller = new AbortController()
-  var params = { credentials: 'include', signal: controller.signal }
+  var options = { credentials: 'include', signal: controller.signal }
   setTimeout(() => controller.abort(), 5000)
 
-  return window.fetch(url, params).then((response) => response.text())
+  return window.fetch(url, options).then((response) => response.text())
 }
 
 MarkdownEditor.prototype.handleEditButton = function (event) {
