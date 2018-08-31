@@ -1,11 +1,11 @@
 //= require vendor/jquery-1.12.4
 //= require govuk/modules
 //= require vendor/nodelist-foreach-polyfill/index.js
-//= require vendor/accessible-autocomplete/dist/accessible-autocomplete.min.js
 //= require documents/edit
 //= require components/markdown-editor.js
 //= require components/contextual-guidance.js
 //= require components/error-alert.js
+//= require components/autocomplete.js
 
 /* global Raven */
 

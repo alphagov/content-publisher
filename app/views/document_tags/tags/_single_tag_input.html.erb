@@ -1,4 +1,4 @@
-<p>
+<div class="govuk-form-group">
   <%= render "govuk_publishing_components/components/label", {
     text: schema.label,
     html_for: "tags[#{schema.id}]"
@@ -6,9 +6,16 @@
 
   <% options = LinkablesService.new(schema.document_type).select_options %>
 
-  <%= select_tag "tags[#{schema.id}][]",
-    options_for_select(options, tags[schema.id]),
-    class: "govuk-select",
-    data: { module: "autocomplete" }
-  %>
-</p>
+  <% if options.any? %>
+    <%= select_tag "tags[#{schema.id}][]",
+      options_for_select(options, tags[schema.id]),
+      class: "govuk-select",
+      data: {
+        module: "autocomplete",
+        "contextual-guidance": contextual_guidance_id
+      }
+    %>
+  <% else %>
+    <p class="govuk-hint"><%= t("document_tags.edit.no_options") %></p>
+  <% end %>
+</div>

@@ -3,20 +3,33 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag(document_tags_path(@document)) do %>
-
-      <% @document.document_type_schema.tags.each do |schema| %>
-        <%= render "document_tags/tags/#{schema.type}_input",
-          schema: schema,
-          tags: @document["tags"] %>
-      <% end %>
-
-      <br/>
-      <br/>
-
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Save"
-      } %>
-    <% end %>
+    <p class="govuk-body"><%= t("document_tags.edit.description") %></p>
   </div>
 </div>
+<%= form_tag(document_tags_path(@document)) do %>
+
+<% @document.document_type_schema.tags.each do |schema| %>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <%= render "document_tags/tags/#{schema.type}_input",
+        schema: schema,
+        tags: @document["tags"],
+        contextual_guidance_id: "#{schema.id}-guidance" %>
+    </div>
+    <% if @document.document_type_schema.guidance_for(schema.id) %>
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual_guidance", {
+        id: "#{schema.id}-guidance",
+        title: @document.document_type_schema.guidance_for(schema.id).title
+      } do %>
+        <p class="govuk-body"><%= @document.document_type_schema.guidance_for(schema.id).body %></p>
+      <% end %>
+    </div>
+    <% end %>
+  </div>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Save", margin_bottom: true
+  } %>
+<% end %>
