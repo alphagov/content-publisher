@@ -32,6 +32,7 @@ en:
         status: Status
         updated_at: Last updated
         created_at: Created
+        created_by: Document created by
       flashes:
         draft_success: Preview creation successful
         draft_error: Error creating preview

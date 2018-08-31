@@ -72,6 +72,10 @@ end
         field: t("documents.show.metadata.created_at"),
         value: @document.created_at.strftime("%l:%M%P on %d %B %Y")
       },
+      {
+        field: t("documents.show.metadata.created_by"),
+        value: @document.creator.name
+      },
     ]
   } %>
 </div>
