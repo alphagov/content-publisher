@@ -44,6 +44,7 @@ class NewDocumentController < ApplicationController
       document_type: params[:document_type],
       publication_state: "changes_not_sent_to_draft",
       associations: default_associations,
+      creator_id: current_user.id,
     )
 
     redirect_to edit_document_path(document)
