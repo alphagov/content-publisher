@@ -1,3 +1,4 @@
-<%= render "govuk_publishing_components/components/govspeak", {} do %>
-  <%= raw Govspeak::Document.new(@document.contents[schema.id]).to_html %>
-<% end %>
+<%= render "components/formatted_text", {
+  text: @document.contents[schema.id].to_s,
+  lines: 3
+} %>

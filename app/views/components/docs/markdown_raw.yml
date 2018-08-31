@@ -1,0 +1,9 @@
+name: Markdown raw
+description: Shows truncated markdown in raw form
+examples:
+  default:
+    text: |
+      \# Some
+
+      Markdown
+    lines: 3
