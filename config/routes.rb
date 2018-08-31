@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   get "/documents/:id/associations" => "document_associations#edit", as: :document_associations
   post "/documents/:id/associations" => "document_associations#update"
 
+  get "/documents/:id/preview" => "preview#show", as: :preview_document
+
   post "/documents/:id/images" => "document_images#create", as: :create_document_image
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
