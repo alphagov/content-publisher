@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(version: 2018_08_31_100426) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "contents", default: {}
-    t.string "base_path"
     t.text "summary"
+    t.string "base_path"
     t.json "associations", default: {}
     t.string "publication_state", null: false
     t.bigint "creator_id"
