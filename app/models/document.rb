@@ -2,6 +2,7 @@
 
 class Document < ApplicationRecord
   has_many :images, dependent: :destroy
+  belongs_to :creator, class_name: "User", optional: true, foreign_key: :creator_id, inverse_of: :documents
 
   PUBLICATION_STATES = %w[
     changes_not_sent_to_draft
