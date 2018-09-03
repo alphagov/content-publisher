@@ -1,3 +1,7 @@
+$google-link-colour: #1a0dab;
+$google-url-colour: #006621;
+$google-description-colour: #545454;
+
 .app-c-preview__mobile {
   background-image: image-url("components/preview-mobile.svg");
   background-repeat: no-repeat;
@@ -19,4 +23,32 @@
   width: 100%;
   height: 1000px;
   border: 0;
+}
+
+.app-c-preview__google {
+  width: 600px;
+  -webkit-font-smoothing: auto;
+}
+
+.app-c-preview__google-title {
+  font-family: arial,sans-serif;
+  color: $google-link-colour;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.app-c-preview__google-url {
+  font-family: arial,sans-serif;
+  color: $google-url-colour;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.app-c-preview__google-description {
+  font-family: arial,sans-serif;
+  line-height: 1.4;
+  font-size: 13px;
+  word-wrap: break-word;
+  color: $google-description-colour;
 }
