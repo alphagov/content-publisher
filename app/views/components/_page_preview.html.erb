@@ -5,6 +5,12 @@
 <% end %>
 
 <div class="app-c-preview">
+  <% mobile_preview = capture do %>
+    <%= tag.div class: "app-c-preview__mobile" do %>
+      <%= tag.iframe class: "app-c-preview__mobile-iframe", src: url, title: "Preview of the page on mobile" %>
+    <% end %>
+  <% end %>
+
   <% desktop_and_tablet = capture do %>
     <%= tag.iframe class: "app-c-preview__desktop-preview", src: url, title: "Preview of the page on desktop or tablet" %>
   <% end %>
@@ -12,14 +18,14 @@
   <%= render "govuk_publishing_components/components/tabs", {
     tabs: [
       {
+        id: "mobile",
+        label: "Mobile",
+        content: mobile_preview,
+      },
+      {
         id: "desktop",
         label: "Desktop and tablet",
         content: desktop_and_tablet,
-      },
-      {
-        id: "mobile",
-        label: "Mobile",
-        content: "Mobile preview coming soon",
       },
       {
         id: "search-engine",
