@@ -15,6 +15,14 @@
     <%= tag.iframe class: "app-c-preview__desktop-preview", src: url, title: "Preview of the page on desktop or tablet" %>
   <% end %>
 
+  <% snippet_preview = capture do %>
+    <%= tag.div class: "app-c-preview__google" do %>
+      <%= link_to "#{title} - GOV.UK", base_path, class: "app-c-preview__google-title" %>
+      <%= tag.div "https://www.gov.uk#{base_path}", class: "app-c-preview__google-url" %>
+      <%= tag.div truncate(description, length: 280), class: "app-c-preview__google-description" %>
+    <% end %>
+  <% end %>
+
   <%= render "govuk_publishing_components/components/tabs", {
     tabs: [
       {
@@ -30,7 +38,7 @@
       {
         id: "search-engine",
         label: "Search engine snippet",
-        content: "Search engine preview coming soon",
+        content: snippet_preview,
       },
     ]
   } %>

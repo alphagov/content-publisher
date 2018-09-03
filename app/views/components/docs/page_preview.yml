@@ -1,8 +1,12 @@
 name: Page preview
 description: Preview a page on mobile, desktop and Google
+part_of_admin_layout: true
 examples:
   default:
     data:
-      url: "https://draft-origin.publishing.service.gov.uk/bank-holidays"
+      title: "A carrot cake has been baked"
+      base_path: "/news/cake-baked"
+      description: A carrot cake was baked for the publishing workflow team's fika, the government announced today.
+      url: "https://www.gov.uk/browse"
 accessibility_criteria: |
   * Iframes must have a title

@@ -1,4 +1,9 @@
 <%= content_for :back_link, document_path(@document) %>
 <%= content_for :title, "Preview #{@document.title.inspect}" %>
 
-<%= render "components/page_preview", url: DocumentUrl.new(@document).secret_preview_url %>
+<%= render "components/page_preview",
+  title: @document.title,
+  base_path: @document.base_path,
+  description: @document.summary,
+  url: DocumentUrl.new(@document).secret_preview_url
+%>
