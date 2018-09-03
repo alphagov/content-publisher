@@ -20,6 +20,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
             },
           ],
           lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+          supporting_organisations: [SecureRandom.uuid, SecureRandom.uuid],
         },
       ],
     }.to_json
@@ -28,10 +29,21 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     parsed_json = JSON.parse(import_json)
 
     expect { importer.import(parsed_json) }.to change { Document.count }.by(1)
-    expect(Document.last.summary).to eq(
-      parsed_json["editions"][0]["translations"][0]["summary"]
+
+    imported_edition = JSON.parse(import_json)["editions"][0]
+    document_associations = Document.last.associations
+
+    expect(Document.last.summary)
+      .to eq(imported_edition["translations"][0]["summary"])
+    expect(document_associations["primary_publishing_organisation"])
+      .to eq([imported_edition["lead_organisations"][0]])
+    expect(document_associations["organisations"]).to include(
+      imported_edition["lead_organisations"][1],
+      imported_edition["supporting_organisations"][0],
+      imported_edition["supporting_organisations"][1],
     )
-    expect(Document.last.associations["primary_publishing_organisation"][0])
-      .to eq(parsed_json["editions"][0]["lead_organisations"][0])
+    expect(document_associations["organisations"]).not_to include(
+      imported_edition["lead_organisations"][0],
+    )
   end
 end
