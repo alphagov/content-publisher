@@ -7,13 +7,18 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     import_json = [
       {
         content_id: SecureRandom.uuid,
-        slug: "test-page",
         editions: [
           {
             created_at: Time.zone.now,
             news_article_type: { key: "news_story" },
             translations: [
-              { locale: "en", title: "Title", summary: "Summary", body: "Body" },
+              {
+                locale: "en",
+                title: "Title",
+                summary: "Summary",
+                body: "Body",
+                base_path: "/government/news/title",
+              },
             ],
           },
         ],
