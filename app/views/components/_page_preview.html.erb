@@ -1,0 +1,31 @@
+<%= render "govuk_publishing_components/components/details", title: "Share" do %>
+  <p>Copy and send this link to someone and they’ll be able to preview your draft on GOV.UK.</p>
+
+  <%= link_to url, url %>
+<% end %>
+
+<div class="app-c-preview">
+  <% desktop_and_tablet = capture do %>
+    <%= tag.iframe class: "app-c-preview__desktop-preview", src: url, title: "Preview of the page on desktop or tablet" %>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/tabs", {
+    tabs: [
+      {
+        id: "desktop",
+        label: "Desktop and tablet",
+        content: desktop_and_tablet,
+      },
+      {
+        id: "mobile",
+        label: "Mobile",
+        content: "Mobile preview coming soon",
+      },
+      {
+        id: "search-engine",
+        label: "Search engine snippet",
+        content: "Search engine preview coming soon",
+      },
+    ]
+  } %>
+</div>

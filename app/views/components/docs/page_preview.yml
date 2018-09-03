@@ -1,0 +1,8 @@
+name: Page preview
+description: Preview a page on mobile, desktop and Google
+examples:
+  default:
+    data:
+      url: "https://draft-origin.publishing.service.gov.uk/bank-holidays"
+accessibility_criteria: |
+  * Iframes must have a title

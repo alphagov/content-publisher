@@ -13,6 +13,7 @@ $govuk-global-styles: true;
 @import "components/markdown-toolbar";
 @import "components/metadata";
 @import "components/summary";
+@import "components/page_preview";
 
 @import "utilities/display";
 @import "utilities/overwrites";
