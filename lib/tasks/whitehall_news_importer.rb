@@ -30,9 +30,35 @@ module Tasks
         document_type: edition["news_article_type"]["key"],
         title: translation["title"],
         publication_state: "changes_not_sent_to_draft",
+        summary: translation["summary"],
+        associations: associations(edition),
       )
 
       doc.save!
+    end
+
+    def associations(edition)
+      associations = {}
+      associations["primary_publishing_organisation"] = primary_publishing_organisation(edition)
+      associations["organisations"] = organisations(edition)
+      associations["worldwide_organisations"] = edition["worldwide_organisations"]
+      associations["topical_events"] = edition["topical_events"]
+      associations["world_locations"] = edition["world_locations"]
+      associations
+    end
+
+    def primary_publishing_organisation(edition)
+      [lead_organisations(edition).shift]
+    end
+
+    def organisations(edition)
+      organisations = edition["supporting_organisations"]
+      organisations += lead_organisations(edition) if lead_organisations(edition).any?
+      organisations
+    end
+
+    def lead_organisations(edition)
+      @lead_organisations ||= edition["lead_organisations"]
     end
   end
 end
