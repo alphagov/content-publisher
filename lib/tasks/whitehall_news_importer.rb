@@ -42,6 +42,7 @@ module Tasks
       associations["primary_publishing_organisation"] = primary_publishing_organisation(edition)
       associations["organisations"] = organisations(edition)
       associations["worldwide_organisations"] = edition["worldwide_organisations"]
+      associations["topical_events"] = edition["topical_events"]
       associations
     end
 
