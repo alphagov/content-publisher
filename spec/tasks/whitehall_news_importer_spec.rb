@@ -21,6 +21,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
           ],
           lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
           supporting_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+          worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
         },
       ],
     }.to_json
@@ -45,5 +46,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     expect(document_associations["organisations"]).not_to include(
       imported_edition["lead_organisations"][0],
     )
+    expect(document_associations["worldwide_organisations"])
+      .to eq(imported_edition["worldwide_organisations"])
   end
 end
