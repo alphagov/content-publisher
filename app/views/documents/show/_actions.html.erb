@@ -2,7 +2,7 @@
 publish_button = { text: t("documents.show.actions.publish"), href: publish_document_path(@document) }
 view_live_button = { text: t("documents.show.actions.view_live"), href: DocumentUrl.new(@document).public_url }
 share_draft_button = { text: t("documents.show.actions.share_draft"), href: DocumentUrl.new(@document).secret_preview_url }
-preview_button = { text: t("documents.show.actions.view_draft"), href: DocumentUrl.new(@document).preview_url }
+preview_button = { text: t("documents.show.actions.view_draft"), href: preview_document_path(@document) }
 create_draft_button = { text: t("documents.show.actions.create_draft"), href: edit_document_path(@document) }
 submit_2i_button = { text: t("documents.show.actions.submit_2i"), href: "#" }
 delete_draft_button = { text: t("documents.show.actions.delete_draft"), href: "#" }
