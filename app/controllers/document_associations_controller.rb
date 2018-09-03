@@ -7,11 +7,11 @@ class DocumentAssociationsController < ApplicationController
   end
 
   def edit
-    @document = Document.find(params[:id])
+    @document = Document.find_by_param(params[:id])
   end
 
   def update
-    document = Document.find(params[:id])
+    document = Document.find_by_param(params[:id])
     document.update(associations: update_params(document))
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: t("documents.show.flashes.draft_success")

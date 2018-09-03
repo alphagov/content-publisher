@@ -30,3 +30,7 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInArguments:
   Enabled: true
   EnforcedStyleForMultiline: comma
+
+Rails/DynamicFindBy:
+  Whitelist:
+    - find_by_param

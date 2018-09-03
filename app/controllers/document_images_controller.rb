@@ -2,7 +2,7 @@
 
 class DocumentImagesController < ApplicationController
   def create
-    document = Document.find(params[:id])
+    document = Document.find_by_param(params[:id])
     upload = UploadedImageService.new(params.require(:image)).process
 
     if upload.valid?
