@@ -15,7 +15,7 @@ RSpec.feature "Preview a document" do
 
   def when_i_visit_the_preview_page
     visit document_path(@document)
-    click_on I18n.t("documents.show.actions.view_draft")
+    click_on "Preview"
   end
 
   def then_i_see_the_previews
