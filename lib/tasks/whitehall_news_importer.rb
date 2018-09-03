@@ -43,6 +43,7 @@ module Tasks
       associations["organisations"] = organisations(edition)
       associations["worldwide_organisations"] = edition["worldwide_organisations"]
       associations["topical_events"] = edition["topical_events"]
+      associations["world_locations"] = edition["world_locations"]
       associations
     end
 
