@@ -27,5 +27,8 @@ RSpec.describe Tasks::WhitehallNewsImporter do
 
     expect { importer.import(JSON.parse(import_json)) }
       .to change { Document.count }.by(1)
+    expect(Document.last.summary).to eq(
+      JSON.parse(import_json)["editions"][0]["translations"][0]["summary"]
+    )
   end
 end

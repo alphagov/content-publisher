@@ -30,6 +30,7 @@ module Tasks
         document_type: edition["news_article_type"]["key"],
         title: translation["title"],
         publication_state: "changes_not_sent_to_draft",
+        summary: translation["summary"],
       )
 
       doc.save!
