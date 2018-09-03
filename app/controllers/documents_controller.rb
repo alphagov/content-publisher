@@ -32,9 +32,9 @@ class DocumentsController < ApplicationController
   def generate_path
     document = Document.find(params[:id])
     base_path = PathGeneratorService.new.path(document, params[:title])
-    render json: { base_path: base_path, available: true }
+    render plain: base_path
   rescue PathGeneratorService::ErrorGeneratingPath
-    render json: { available: false }, status: :conflict
+    render status: :conflict
   end
 
 private

@@ -421,6 +421,7 @@ DEPENDENCIES
   foreman (~> 0.85)
   gds-api-adapters (~> 53)
   gds-sso (~> 13)
+  govspeak (~> 5)
   govuk-lint (~> 3)
   govuk_app_config (~> 1)
   govuk_publishing_components (~> 9.16)

@@ -1,6 +1,5 @@
 import '@webcomponents/webcomponentsjs/webcomponents-bundle'
 import 'components/markdown-toolbar'
-import marked from 'marked'
 
 function MarkdownEditor ($module) {
   this.$module = $module
@@ -37,31 +36,35 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
     return
   }
 
-  var $preview = this.$preview
-  var text = this.$input.value
-
   // Mirror textarea's height
-  $preview.style.height = this.$input.offsetHeight + 'px'
+  this.$preview.style.height = this.$input.offsetHeight + 'px'
 
-  if (text) {
-    // Render markdown
-    marked(
-      text,
-      function (err, content) {
-        if (err) {
-          $preview.innerHTML = 'Error previewing content'
-          throw err
-        } else {
-          $preview.innerHTML = content
-        }
-      }
-    )
-    // Open preview links in a new tab
-    this.setTargetBlank(this.$preview)
-  } else {
-    $preview.innerHTML = 'Nothing to preview'
+  // Clear previous preview
+  this.$preview.innerHTML = ''
+
+  if (!this.$input.value) {
+    this.$preview.innerHTML = 'Nothing to preview'
+    this.toggleElements()
+    return
   }
+
+  this.fetchGovspeakPreview(this.$input.value)
+    .then((text) => { this.$preview.innerHTML = text })
+    .catch(() => { this.$preview.innerHTML = 'Error previewing content' })
+
+  this.setTargetBlank(this.$preview)
   this.toggleElements()
+}
+
+MarkdownEditor.prototype.fetchGovspeakPreview = function (text) {
+  var path = this.$module.getAttribute('data-govspeak-path')
+  var url = new URL(document.location.origin + path)
+
+  var controller = new window.AbortController()
+  var options = { credentials: 'include', signal: controller.signal, method: 'POST', body: text }
+  setTimeout(() => controller.abort(), 5000)
+
+  return window.fetch(url, options).then((response) => response.text())
 }
 
 MarkdownEditor.prototype.handleEditButton = function (event) {

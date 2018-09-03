@@ -4,6 +4,7 @@ export default function (editDocumentForm) {
   var documentTitle = document.getElementById('document-title-id')
   var noTitle = document.getElementById('no-title-id')
   var errorGeneratingPath = document.getElementById('error-generating-path-id')
+  var path = editDocumentForm.getAttribute('data-generate-path-path')
 
   var showErrorMessage = function () {
     urlPreview.setAttribute('class', 'app-hidden')
@@ -24,27 +25,33 @@ export default function (editDocumentForm) {
     basePath.innerHTML = path
   }
 
-  documentTitle.onblur = function () {
-    var path = editDocumentForm.getAttribute('data-generate-path-path')
+  var fetchPathPreview = function () {
     var url = new URL(document.location.origin + path)
+    url.searchParams.append('title', documentTitle.value)
 
+    var controller = new window.AbortController()
+    var options = { credentials: 'include', signal: controller.signal }
+    setTimeout(() => controller.abort(), 5000)
+
+    return window.fetch(url, options)
+      .then(function (response) {
+        if (!response.ok) {
+          throw Error('Unable to generate response.')
+        }
+
+        return response.text()
+      })
+  }
+
+  documentTitle.onblur = function () {
     if (!documentTitle.value) {
       showNoTitleMessage()
       return
-    } else {
-      url.searchParams.append('title', documentTitle.value)
     }
 
-    window.fetch(url, {
-      credentials: 'include'
-    }).then(function (response) {
-      if (!response.ok) {
-        throw Error('Unable to generate response.')
-      }
-      response.json().then(function (result) {
-        showPathPreview(result['base_path'])
-      })
-    }).catch(showErrorMessage)
+    fetchPathPreview()
+      .then(showPathPreview)
+      .catch(showErrorMessage)
   }
 
   documentTitle.onblur()

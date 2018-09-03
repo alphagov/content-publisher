@@ -28,6 +28,8 @@ Rails.application.routes.draw do
 
   get "/documentation" => "documentation#index"
 
+  post "/govspeak-preview" => "govspeak_preview#to_html"
+
   mount GovukPublishingComponents::Engine, at: "/component-guide"
 
   if Rails.env.test?

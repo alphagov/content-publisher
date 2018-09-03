@@ -3,7 +3,7 @@
   edit_button_text ||= 'Edit'
   preview_button_text ||= 'Preview'
 %>
-<div class="app-c-markdown-editor" data-module="markdown-editor">
+<div class="app-c-markdown-editor" data-module="markdown-editor" data-govspeak-path="<%= govspeak_preview_path %>">
   <%= render "govuk_publishing_components/components/label", {
       text: label[:text],
       html_for: textarea[:id]
@@ -15,9 +15,11 @@
         <button type="button" class="app-c-markdown-editor__button js-markdown-preview-button"><%= preview_button_text %></button>
       </div>
     </div>
+
     <div class="app-c-markdown-editor__input js-markdown-editor-input">
       <%= render "govuk_publishing_components/components/textarea", textarea %>
     </div>
+
     <div class="app-c-markdown-editor__preview js-markdown-preview-body">
     <%= render "govuk_publishing_components/components/govspeak", { } do %>
       <div class="govuk-textarea"></div>
