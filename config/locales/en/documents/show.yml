@@ -16,18 +16,6 @@ en:
           title: Title
           base_path: Base path
           summary: Summary
-      actions:
-        publish: Publish
-        edit_associations: Edit associations
-        edit: Edit document
-        view_live: View on GOV.UK
-        view_draft: Preview
-        share_draft: Shareable preview
-        create_draft: Create draft
-        submit_2i: Submit for 2i review
-        delete_draft: Delete draft
-        withdraw: Withdraw
-        unpublish: Unpublish
       metadata:
         status: Status
         updated_at: Last updated
