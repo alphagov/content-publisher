@@ -2,20 +2,12 @@
 
 module Tasks
   class WhitehallNewsImporter
-    def initialize(to_import)
-      @to_import = to_import
-    end
+    def import(document)
+      edition = most_recent_edition(document)
 
-    def import
-      to_import.each do |document|
-        edition = most_recent_edition(document)
-
-        edition["translations"].each do |translation|
-          create_or_update_document(translation, edition, document)
-        end
+      edition["translations"].each do |translation|
+        create_or_update_document(translation, edition, document)
       end
-
-      to_import.count
     end
 
   private
