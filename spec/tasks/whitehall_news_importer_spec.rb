@@ -19,16 +19,19 @@ RSpec.describe Tasks::WhitehallNewsImporter do
               base_path: "/government/news/title",
             },
           ],
+          lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
         },
       ],
     }.to_json
 
     importer = Tasks::WhitehallNewsImporter.new
+    parsed_json = JSON.parse(import_json)
 
-    expect { importer.import(JSON.parse(import_json)) }
-      .to change { Document.count }.by(1)
+    expect { importer.import(parsed_json) }.to change { Document.count }.by(1)
     expect(Document.last.summary).to eq(
-      JSON.parse(import_json)["editions"][0]["translations"][0]["summary"]
+      parsed_json["editions"][0]["translations"][0]["summary"]
     )
+    expect(Document.last.associations["primary_publishing_organisation"][0])
+      .to eq(parsed_json["editions"][0]["lead_organisations"][0])
   end
 end

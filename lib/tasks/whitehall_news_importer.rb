@@ -31,9 +31,16 @@ module Tasks
         title: translation["title"],
         publication_state: "changes_not_sent_to_draft",
         summary: translation["summary"],
+        associations: associations(edition),
       )
 
       doc.save!
+    end
+
+    def associations(edition)
+      associations = {}
+      associations["primary_publishing_organisation"] = [edition["lead_organisations"].shift]
+      associations
     end
   end
 end
