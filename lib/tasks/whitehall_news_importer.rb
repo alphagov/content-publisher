@@ -9,10 +9,12 @@ module Tasks
     def import
       to_import.each do |document|
         edition = most_recent_edition(document)
+
         edition["translations"].each do |translation|
-          create_document(translation, edition, document)
+          create_or_update_document(translation, edition, document)
         end
       end
+
       to_import.count
     end
 
@@ -24,18 +26,21 @@ module Tasks
       document["editions"].max_by { |e| e["created_at"] }
     end
 
-    def create_document(translation, edition, document)
-      Document.create!(
-        base_path: "/government/news/#{document['slug']}",
-        content_id: document["content_id"],
+    def create_or_update_document(translation, edition, document)
+      doc = Document.find_or_initialize_by(content_id: document["content_id"],
+                                           locale: translation["locale"])
+
+      doc.assign_attributes(
+        base_path: translation["base_path"],
         contents: {
           body: translation["body"],
         },
         document_type: edition["news_article_type"]["key"],
-        locale: translation["locale"],
         title: translation["title"],
         publication_state: "changes_not_sent_to_draft",
       )
+
+      doc.save!
     end
   end
 end
