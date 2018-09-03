@@ -39,15 +39,23 @@ module Tasks
 
     def associations(edition)
       associations = {}
-      associations["primary_publishing_organisation"] = [edition["lead_organisations"].shift]
+      associations["primary_publishing_organisation"] = primary_publishing_organisation(edition)
       associations["organisations"] = organisations(edition)
       associations
     end
 
+    def primary_publishing_organisation(edition)
+      [lead_organisations(edition).shift]
+    end
+
     def organisations(edition)
       organisations = edition["supporting_organisations"]
-      organisations += edition["lead_organisations"] if edition["lead_organisations"].any?
+      organisations += lead_organisations(edition) if lead_organisations(edition).any?
       organisations
+    end
+
+    def lead_organisations(edition)
+      @lead_organisations ||= edition["lead_organisations"]
     end
   end
 end
