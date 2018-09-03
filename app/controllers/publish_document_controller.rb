@@ -2,11 +2,11 @@
 
 class PublishDocumentController < ApplicationController
   def confirmation
-    @document = Document.find(params[:id])
+    @document = Document.find_by_param(params[:id])
   end
 
   def publish
-    document = Document.find(params[:id])
+    document = Document.find_by_param(params[:id])
     DocumentPublishingService.new.publish(document)
     redirect_to document, notice: t("documents.show.flashes.publish_success")
   rescue GdsApi::BaseError => e

@@ -6,12 +6,12 @@ RSpec.describe DocumentImagesController do
       let(:upload) { fixture_file_upload("files/960x640.jpg", "image/jpeg") }
 
       it "has a 201 status code" do
-        post :create, params: { image: upload, id: create(:document).id }
+        post :create, params: { image: upload, id: create(:document).to_param }
         expect(response.status).to eql(201)
       end
 
       it "returns a JSON representation" do
-        post :create, params: { image: upload, id: create(:document).id }
+        post :create, params: { image: upload, id: create(:document).to_param }
         json = JSON.parse(response.body)
         expect(json).to match(
           a_hash_including(
@@ -32,7 +32,7 @@ RSpec.describe DocumentImagesController do
 
       it "creates an image" do
         create = -> do
-          post :create, params: { image: upload, id: create(:document).id }
+          post :create, params: { image: upload, id: create(:document).to_param }
         end
         expect(create).to change { Image.count }.by(1)
       end
@@ -42,12 +42,12 @@ RSpec.describe DocumentImagesController do
       let(:upload) { fixture_file_upload("files/text-file.txt", "text/plain") }
 
       it "has a 422 status code" do
-        post :create, params: { image: upload, id: create(:document).id }
+        post :create, params: { image: upload, id: create(:document).to_param }
         expect(response.status).to eql(422)
       end
 
       it "returns errors" do
-        post :create, params: { image: upload, id: create(:document).id }
+        post :create, params: { image: upload, id: create(:document).to_param }
         json = JSON.parse(response.body)
         expect(json).to match(a_hash_including("errors"))
         expect(json["errors"].count).to be > 0
