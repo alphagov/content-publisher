@@ -7,6 +7,7 @@ RSpec.feature "Edit a document" do
     and_i_fill_in_the_content_fields
     then_i_see_the_document_is_saved
     and_the_preview_creation_succeeded
+    and_the_content_is_now_not_reviewed
   end
 
   def given_there_is_a_document
@@ -41,5 +42,9 @@ RSpec.feature "Edit a document" do
     }).to have_been_requested
 
     expect(Document.last.publication_state).to eq("sent_to_draft")
+  end
+
+  def and_the_content_is_now_not_reviewed
+    expect(page).to have_button "Submit for 2i review"
   end
 end

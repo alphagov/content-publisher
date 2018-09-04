@@ -22,9 +22,9 @@ RSpec.describe DocumentPublishingService do
       document = create(:document)
       allow(document).to receive(:update!)
 
-      DocumentPublishingService.new.publish(document)
+      DocumentPublishingService.new.publish(document, "reviewed")
 
-      expect(document).to have_received(:update!).with(publication_state: "sending_to_live")
+      expect(document).to have_received(:update!).with(publication_state: "sending_to_live", review_state: "reviewed")
       expect(document).to have_received(:update!).with(publication_state: "sent_to_live")
     end
   end

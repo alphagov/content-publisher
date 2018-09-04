@@ -9,8 +9,8 @@ class DocumentPublishingService
     document.update!(publication_state: "sent_to_draft")
   end
 
-  def publish(document)
-    document.update!(publication_state: "sending_to_live")
+  def publish(document, review_state)
+    document.update!(publication_state: "sending_to_live", review_state: review_state)
     publishing_api.publish(document.content_id, "major", locale: document.locale)
     document.update!(publication_state: "sent_to_live")
   end
