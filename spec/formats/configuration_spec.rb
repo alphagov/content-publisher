@@ -29,11 +29,6 @@ RSpec.describe "Format configuration", format: true do
         end
       end
 
-      it "has a valid supertype" do
-        expect(schema.supertype).to be_a(SupertypeSchema)
-        expect(schema.supertype.managed_elsewhere).to be_falsey
-      end
-
       it "has a valid document type" do
         expect(schema.id).to be_in(GovukSchemas::DocumentTypes.valid_document_types)
       end
