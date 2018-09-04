@@ -13,7 +13,7 @@ RSpec.feature "Create a document when the API is down" do
     @schema = DocumentTypeSchema.find("news_story")
     visit "/"
     click_on "New document"
-    choose "News"
+    choose SupertypeSchema.find("news").label
     click_on "Continue"
     choose @schema.label
     click_on "Continue"
