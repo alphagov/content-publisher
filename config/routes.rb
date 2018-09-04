@@ -18,6 +18,9 @@ Rails.application.routes.draw do
   get "/documents/:id" => "documents#show"
   get "/documents/:id/generate-path" => "documents#generate_path", as: :generate_path
 
+  post "/documents/:id/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
+  post "/documents/:id/approve" => "review#approve", as: :approve_document
+
   get "/documents/:id/associations" => "document_associations#edit", as: :document_associations
   post "/documents/:id/associations" => "document_associations#update"
 

@@ -1,57 +1,33 @@
-<%
-publish_button = { text: "Publish", href: publish_document_path(@document) }
-view_live_button = { text: "View on GOV.UK", href: DocumentUrl.new(@document).public_url }
-preview_button = { text: "Preview", href: preview_document_path(@document) }
-create_draft_button = { text: "Create draft", href: edit_document_path(@document) }
-submit_2i_button = { text: "Submit for 2i review", href: "#" }
-delete_draft_button = { text: "Delete draft", href: "#" }
-withdraw_button = { text: "Withdraw", href: "#" }
-unpublish_button = { text: "Unpublish", href: "#" }
-
-case @document.publication_state
-when "sent_to_draft" || "sending_to_live" || "error_sending_to_live" # Draft
-  primary_button = submit_2i_button
-  secondary_button = preview_button
-  ternary_button = publish_button
-  destructive_button = delete_draft_button
-
-# NOTE:
-# This state doesn't exist yet. The following lines should be uncommented when review states are defined
-#
-# when "sent_to_review" # Ready for review
-#  primary_button = publish_button
-#  secondary_button = preview_button
-#  destructive_button = delete_draft_button
-
-when "sent_to_live" # Published
-  primary_button = create_draft_button
-  secondary_button = withdraw_button
-  ternary_button = view_live_button
-  destructive_button = unpublish_button
-
-end
-%>
-
-<% if primary_button || secondary_button %>
 <div class="app-side">
   <div class="app-side__actions">
-    <% if primary_button %>
-      <%= render "govuk_publishing_components/components/button", primary_button %>
-    <% end %>
+    <% if @document.review_state == "force_published" %>
+      <%= form_tag approve_document_path(@document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Approve" %>
+      <% end %>
 
-    <% if secondary_button %>
-      <% secondary_button[:secondary] = true %>
-      <% secondary_button[:rel] = 'external' %>
-      <%= render "govuk_publishing_components/components/button", secondary_button %>
+      <%= render "govuk_publishing_components/components/button", text: "Create new edition", href: edit_document_path(@document), secondary: true %>
+
+      <%= link_to "Retire", "#", class: "govuk-link" %>
+      <%= link_to "Remove", "#", class: "govuk-link app-link--right" %>
+    <% elsif @document.publication_state == "sent_to_live" || @document.publication_state == "error_sending_to_live" %>
+      <%= render "govuk_publishing_components/components/button", text: "Create new edition", href: edit_document_path(@document) %>
+
+      <%= link_to "Retire", "#", class: "govuk-link" %>
+      <%= link_to "Remove", "#", class: "govuk-link app-link--right" %>
+    <% elsif @document.review_state == "submitted_for_review" %>
+      <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
+      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
+
+      <%= link_to "Delete draft", '#' %>
+    <% elsif @document.publication_state == "sent_to_draft" %>
+      <%= form_tag submit_document_for_2i_path(@document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
+      <% end %>
+
+      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
+
+      <%= link_to "Publish", publish_document_path(@document) %>
+      <%= link_to "Delete draft", "#", class: "govuk-link app-link--right" %>
     <% end %>
   </div>
-
-  <% if ternary_button %>
-    <%= link_to ternary_button[:text], ternary_button[:href], class: "govuk-link" %>
-  <% end %>
-
-  <% if destructive_button %>
-    <%= link_to destructive_button[:text], destructive_button[:href], class: "app-link--destructive app-link--right" %>
-  <% end %>
 </div>
-<% end %>
