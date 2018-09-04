@@ -9,7 +9,13 @@
         items: @document_types.map { |document_type|
           {
             value: document_type.id,
-            text: document_type.label
+            text: document_type.label,
+            hint_text: document_type.description,
+            conditional: tag.div(document_type.html_hint.html_safe, class: "govuk-body"),
+            bold: true,
+
+            # Remove after https://github.com/alphagov/govuk_publishing_components/pull/496
+            "conditional" => true,
           }
         }
       } %>

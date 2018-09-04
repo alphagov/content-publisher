@@ -1,7 +1,10 @@
 ---
-- id: press_release
-  label: Press release
-  supertype: news
+- id: news_story
+  label: News story
+  description: "News written for GOV.UK which users need, can act on, and can’t get from other sources."
+  hint: |
+    Do not include advice in news stories. Do not use to promote other content.
+    Read the full [guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story).
   path_prefix: /news
   publishing_metadata:
     schema_name: news_article
@@ -44,9 +47,12 @@
       type: multi_association
       document_type: world_location
 
-- id: news_story
-  label: News story
-  supertype: news
+- id: press_release
+  label: Press release
+  description: "Unedited press releases as sent to the media, and official statements from the organisation."
+  hint: |
+    Do not use to promote other content. Statements to Parliament should use the Speech document type.
+    Read the full [guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release).
   path_prefix: /news
   publishing_metadata:
     schema_name: news_article
@@ -89,56 +95,79 @@
       type: multi_association
       document_type: world_location
 
-- id: statistical_data_set
-  label: Statistical data set
-  supertype: transparency
-  path_prefix: /statistics
-  publishing_metadata:
-    schema_name: statistical_data_set
-    rendering_app: government-frontend
-  guidance:
-    - id: title
-      title: Create a news title
-      body: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
-    - id: summary
-      title: Writing a news summary
-      body: The summary should explain the main point of the content. It's the first line of the content so don’t repeat it below and end with a full stop.
-    - id: body
-      title: Writing news
-      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
-  contents:
-    - id: body
-      label: Body
-      type: govspeak
-      validations:
-        min_length: 10
-  associations:
-    - id: primary_publishing_organisation
-      label: Primary organisation
-      type: single_association
-      document_type: organisation
-    - id: organisations
-      label: Organisations
-      type: multi_association
-      document_type: organisation
-
-- id: policy_paper
-  label: Policy paper
-  supertype: policy
+- id: fatality_notice
+  label: Fatality notice
+  description: Initial fatality notices and subsequent obituaries of forces and MOD personnel
   managed_elsewhere:
     hostname: whitehall-admin
-    path: /government/admin/publications/new
+    path: /government/admin/fatalities/new
+
+- id: speech
+  label: Speech
+  description: Public speeches, written statements, or authored articles
+  managed_elsewhere:
+    hostname: whitehall-admin
+    path: /government/admin/speeches/new
+
+- id: world_news_story
+  label: World news story
+  description: Announcements specific to one or more world location
+  managed_elsewhere:
+    hostname: whitehall-admin
+    path: /government/admin/news/new
 
 - id: detailed_guide
   label: Detailed guide
-  supertype: guidance
+  description: Detailed guidance for specialist users on the steps they need to take to complete a task
   managed_elsewhere:
     hostname: whitehall-admin
     path: /government/admin/detailed-guides/new
 
+- id: any-whitehall-publication
+  label: Publication
+  description: Standalone government documents that are issued and not usually updated
+  managed_elsewhere:
+    hostname: whitehall-admin
+    path: /government/admin/publications/new
+
+- id: manual
+  label: Manual
+  description: Long and complex guidance broken into chapters and sub-sections for reference
+  managed_elsewhere:
+    hostname: manuals-publisher
+    path: /
+
+- id: any-mainstream-publication
+  label: Mainstream guide
+  description: Guidance for the general public on how to do something. Contact GDS to request changes.
+  managed_elsewhere:
+    hostname: support
+    path: /content_change_request/new
+
+- id: travel_advice
+  label: Travel advice
+  description: Travel advice by country including entry requirements and safety information
+  managed_elsewhere:
+    hostname: travel-advice-publisher
+    path: /admin
+
+- id: statistics
+  label: Statistics
+  description:
+  managed_elsewhere:
+      hostname: whitehall-admin
+      path: /government/admin/case-studies/new
+
+- id: case_study
+  label: Case study
+  description: Case studies show someone’s experience of a government process or policy problem
+  managed_elsewhere:
+    hostname: whitehall-admin
+    path: /government/admin/case-studies/new
+
 - id: consultation
   label: Consultation
-  supertype: consultations
+  description: A request for views or evidence on an issue
   managed_elsewhere:
     hostname: whitehall-admin
     path: /government/admin/consultations/new
