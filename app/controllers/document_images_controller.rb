@@ -2,7 +2,7 @@
 
 class DocumentImagesController < ApplicationController
   def create
-    document = Document.find_by_param(params[:id])
+    document = Document.find_by_param(params[:document_id])
     upload = UploadedImageService.new(params.require(:image)).process
 
     if upload.valid?
@@ -13,7 +13,29 @@ class DocumentImagesController < ApplicationController
     end
   end
 
+  def update
+    document = Document.find_by_param(params[:document_id])
+    image = Image.find_by!(id: params[:id], document_id: document.id)
+    image.assign_attributes(image_params)
+
+    if image.valid?
+      image.save
+      render json: ImageJsonPresenter.new(image).present, status: :ok
+    else
+      render json: { errors: image.errors }, status: :unprocessable_entity
+    end
+  end
+
 private
+
+  def image_params
+    params.require(:image).permit(
+      :crop_x,
+      :crop_y,
+      :crop_width,
+      :crop_height,
+    )
+  end
 
   def create_image_from_upload(upload, document)
     blob = ActiveStorage::Blob.create_after_upload!(

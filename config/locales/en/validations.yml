@@ -7,3 +7,4 @@ en:
       invalid_format: "Expected a jpg, png or gif image"
       max_size: "Image uploads must be less than %{max_size} in filesize"
       min_dimensions: "Images must have dimensions of at least %{width} x %{height} pixels"
+      aspect_ratio:  "dimensions are not in the expected %{aspect_ratio} aspect ratio"

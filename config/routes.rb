@@ -22,7 +22,8 @@ Rails.application.routes.draw do
 
   get "/documents/:id/preview" => "preview#show", as: :preview_document
 
-  post "/documents/:id/images" => "document_images#create", as: :create_document_image
+  post "/documents/:document_id/images" => "document_images#create", as: :create_document_image
+  patch "/documents/:document_id/images/:id" => "document_images#update", as: :update_document_image
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 
