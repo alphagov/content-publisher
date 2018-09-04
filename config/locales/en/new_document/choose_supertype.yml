@@ -1,6 +1,6 @@
 en:
   new_document:
     choose_supertype:
-      title: Content type
+      title: "What is the content for?"
       flashes:
         choose_error: Please choose a supertype
