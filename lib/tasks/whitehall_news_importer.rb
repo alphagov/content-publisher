@@ -12,8 +12,6 @@ module Tasks
 
   private
 
-    attr_reader :to_import
-
     def most_recent_edition(document)
       document["editions"].max_by { |e| e["created_at"] }
     end
@@ -58,7 +56,7 @@ module Tasks
     end
 
     def lead_organisations(edition)
-      @lead_organisations ||= edition["lead_organisations"]
+      edition["lead_organisations"]
     end
   end
 end
