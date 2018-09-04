@@ -7,7 +7,6 @@
     <tr class='govuk-table__row'>
       <th class='govuk-table__header' scope='col'><%= t("documentation.index.formats.table.name") %></th>
       <th class='govuk-table__header' scope='col'><%= t("documentation.index.formats.table.type") %></th>
-      <th class='govuk-table__header' scope='col'><%= t("documentation.index.formats.table.supertype") %></th>
       <th class='govuk-table__header' scope='col'><%= t("documentation.index.formats.table.not_in_beta") %></th>
       <th class='govuk-table__header' scope='col'><%= t("documentation.index.formats.table.link") %></th>
     </tr>
@@ -18,7 +17,6 @@
       <tr class='govuk-table__row'>
         <td class='govuk-table__header'><%= schema.label %></td>
         <td class='govuk-table__cell'><%= schema.id %></td>
-        <td class='govuk-table__cell'><%= schema.supertype.label %></td>
 
         <% if schema.managed_elsewhere %>
           <td class='govuk-table__cell'><%= link_to(t("documentation.index.formats.table.link_name"), schema.managed_elsewhere_url) %></td>

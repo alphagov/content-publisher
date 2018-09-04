@@ -7,7 +7,6 @@ en:
         table:
           name: Name
           type: Type
-          supertype: Supertype
           not_in_beta: Non-beta?
           link: Link
           link_name: Other app
