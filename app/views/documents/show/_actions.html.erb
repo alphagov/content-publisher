@@ -55,26 +55,3 @@ end
   <% end %>
 </div>
 <% end %>
-
-<div class="app-side">
-  <%= render "components/metadata", {
-    items: [
-      {
-        field: t("documents.show.metadata.status"),
-        value: t("publication_states.#{@document.publication_state}.name")
-      },
-      {
-        field: t("documents.show.metadata.updated_at"),
-        value: @document.updated_at.strftime("%l:%M%P on %d %B %Y")
-      },
-      {
-        field: t("documents.show.metadata.created_at"),
-        value: @document.created_at.strftime("%l:%M%P on %d %B %Y")
-      },
-      {
-        field: t("documents.show.metadata.created_by"),
-        value: @document.creator&.name || I18n.t("documents.show.metadata.unknown_data")
-      },
-    ]
-  } %>
-</div>
