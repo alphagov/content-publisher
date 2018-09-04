@@ -3,7 +3,7 @@
 class DocumentTagsController < ApplicationController
   rescue_from GdsApi::BaseError do |e|
     Rails.logger.error(e)
-    render "edit_api_down", status: :service_unavailable
+    render "#{action_name}_api_down", status: :service_unavailable
   end
 
   def edit
