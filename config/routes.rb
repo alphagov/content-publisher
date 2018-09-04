@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   get "/documents/:id/publish" => "publish_document#confirmation", as: :publish_document
   post "/documents/:id/publish" => "publish_document#publish"
+  get "/documents/:id/published" => "publish_document#published", as: :document_published
 
   get "/documents" => "documents#index"
   get "/documents/:id/edit" => "documents#edit", as: :edit_document
