@@ -23,7 +23,11 @@ class SupertypeSchema
   end
 
   def managed_elsewhere_url
-    managed_elsewhere["path"]
+    if managed_elsewhere["hostname"]
+      Plek.find(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
+    else
+      managed_elsewhere["path"]
+    end
   end
 
   def document_types
