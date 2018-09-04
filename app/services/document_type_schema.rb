@@ -1,18 +1,20 @@
 # frozen_string_literal: true
 
 class DocumentTypeSchema
-  attr_reader :contents, :id, :label, :supertype, :managed_elsewhere, :publishing_metadata, :path_prefix, :associations, :guidance
+  attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
+    :path_prefix, :associations, :guidance, :description, :hint
 
   def initialize(params = {})
     @id = params["id"]
     @label = params["label"]
-    @supertype = SupertypeSchema.find(params["supertype"])
     @managed_elsewhere = params["managed_elsewhere"]
     @contents = params["contents"].to_a.map(&Field.method(:new))
     @publishing_metadata = PublishingMetadata.new(params["publishing_metadata"])
     @path_prefix = params["path_prefix"]
     @associations = params["associations"].to_a.map(&Association.method(:new))
     @guidance = params["guidance"].to_a.map(&Guidance.method(:new))
+    @description = params["description"]
+    @hint = params["hint"]
   end
 
   def self.find(document_type_id)
@@ -39,6 +41,10 @@ class DocumentTypeSchema
 
   def guidance_for(id)
     @guidance.find { |guidance| guidance.id == id }
+  end
+
+  def html_hint
+    Govspeak::Document.new(hint).to_html
   end
 
   class Association

@@ -1,26 +1,59 @@
 ---
 - id: news
   label: News
-  description: To tell users about something that government has done or will do.
-
-- id: transparency
-  label: Transparency
-  description: To provide information that helps users hold government to account.
+  description: To tell users about something government has done or will do
+  hint: For example, press releases, speeches, or statements
+  display_document_types:
+    - news_story
+    - press_release
+    - fatality_notice
+    - speech
+    - world_news_story
 
 - id: guidance
   label: Guidance
-  description: To help users do something or understand what they need to do.
+  description: To help the user do something or understand what they need to do
+  hint: For example, manuals, or statutory guidance
+  display_document_types:
+    - detailed_guide
+    - any-whitehall-publication
+    - manual
+    - any-mainstream-publication
+    - travel_advice
+
+- id: transparency
+  label: Transparency and statistics
+  description: To provide information that helps users hold government to account
+  hint: For example, statistics, FOI data, or reports
+  display_document_types:
+    - any-whitehall-publication
+    - statistics
 
 - id: policy
-  label: Policy
-  description: To explain the government's position on something.
+  label: Policy or consultation
+  description: To explain the government’s position or request views or evidence on an issue
+  hint: For example, policy papers, impact assessments, or case studies
+  display_document_types:
+    - case_study
+    - consultation
+    - any-whitehall-publication
 
-- id: consultations
-  label: Consultations
-  description: To request users views or evidence on an issue and to build collective agreement.
+- id: document-collection
+  label: Document collection
+  description: To create a list of related documents on a single page
+  managed_elsewhere:
+    hostname: whitehall-admin
+    path: /government/admin/collections/new
+
+- id: corporate-information
+  label: Corporate information
+  description: Information about your organisation
+  managed_elsewhere:
+    hostname: whitehall-admin
+    path: /government/admin/organisations/government-digital-service/corporate_information_pages
 
 - id: not-sure
-  label: I'm not sure this should be on GOV.UK
-  description: View this guide to see what should go on GOV.UK and where else you can publish content.
+  label: I’m not sure if this should be on GOV.UK
+  description: View this guide to see what should go on GOV.UK and where else you can publish content
   managed_elsewhere:
     path: /documents/publishing-guidance

@@ -1,5 +1,5 @@
 <% content_for :back_link, new_document_path %>
-<% content_for :title, t("new_document.choose_document_type.title") %>
+<% content_for :title, @supertype_schema.label %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -9,7 +9,13 @@
         items: @document_types.map { |document_type|
           {
             value: document_type.id,
-            text: document_type.label
+            text: document_type.label,
+            hint_text: document_type.description,
+            conditional: tag.div(document_type.html_hint.html_safe, class: "govuk-body"),
+            bold: true,
+
+            # Remove after https://github.com/alphagov/govuk_publishing_components/pull/496
+            "conditional" => true,
           }
         }
       } %>

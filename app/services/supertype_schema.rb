@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 class SupertypeSchema
-  attr_reader :id, :label, :description, :managed_elsewhere
+  attr_reader :id, :label, :description, :managed_elsewhere, :hint, :document_types
 
   def initialize(params = {})
     @id = params["id"]
     @label = params["label"]
     @description = params["description"]
     @managed_elsewhere = params["managed_elsewhere"]
+    @hint = params["hint"]
+    @document_types = params["display_document_types"].to_a.map { |type| DocumentTypeSchema.find(type) }
   end
 
   def self.all
@@ -23,10 +25,10 @@ class SupertypeSchema
   end
 
   def managed_elsewhere_url
-    managed_elsewhere["path"]
-  end
-
-  def document_types
-    DocumentTypeSchema.all.select { |schema| schema.supertype == self }
+    if managed_elsewhere["hostname"]
+      Plek.find(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
+    else
+      managed_elsewhere["path"]
+    end
   end
 end

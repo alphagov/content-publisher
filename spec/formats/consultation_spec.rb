@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.feature "Create a detailed guide", format: true do
-  scenario "User creates a detailed guide" do
+RSpec.feature "Create a consultation", format: true do
+  scenario "User creates a consultation" do
     when_i_choose_this_document_type
     then_i_am_redirected_to_another_app
   end
@@ -9,7 +9,7 @@ RSpec.feature "Create a detailed guide", format: true do
   def when_i_choose_this_document_type
     visit "/"
     click_on "New document"
-    choose SupertypeSchema.find("consultations").label
+    choose SupertypeSchema.find("policy").label
     click_on "Continue"
     choose DocumentTypeSchema.find("consultation").label
     click_on "Continue"
