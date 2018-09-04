@@ -14,7 +14,15 @@ class Document < ApplicationRecord
     error_sending_to_live
   ].freeze
 
+  REVIEW_STATES = %w[
+    unreviewed
+    submitted_for_review
+    force_published
+    reviewed
+  ].freeze
+
   validates_inclusion_of :publication_state, in: PUBLICATION_STATES
+  validates_inclusion_of :review_state, in: REVIEW_STATES
 
   def document_type_schema
     DocumentTypeSchema.find(document_type)
