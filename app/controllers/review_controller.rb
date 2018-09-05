@@ -10,6 +10,6 @@ class ReviewController < ApplicationController
   def approve
     document = Document.find_by_param(params[:id])
     document.update!(review_state: "reviewed")
-    redirect_to document, notice: "Content has been reviewed and approved"
+    redirect_to document, notice: t("documents.show.flashes.approved")
   end
 end

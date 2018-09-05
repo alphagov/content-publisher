@@ -26,3 +26,4 @@ en:
         draft_success: Preview creation successful
         draft_error: Error creating preview
         publish_error: Error publishing
+        approved: Content has been reviewed and approved

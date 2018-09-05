@@ -47,6 +47,6 @@ RSpec.feature "Force publishing" do
   end
 
   def then_i_see_that_its_reviewed
-    expect(page).to have_content "Content has been reviewed and approved"
+    expect(page).to have_content I18n.t("documents.show.flashes.approved")
   end
 end
