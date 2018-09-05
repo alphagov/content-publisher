@@ -33,7 +33,7 @@ function editDocumentForm (form) {
 
     var controller = new window.AbortController()
     var options = { credentials: 'include', signal: controller.signal }
-    setTimeout(() => controller.abort(), 5000)
+    setTimeout(function () { controller.abort() }, 5000)
 
     return window.fetch(url, options)
       .then(function (response) {
