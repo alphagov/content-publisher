@@ -21,7 +21,7 @@ RSpec.feature "Shows a preview of Govspeak", js: true do
   end
 
   def and_i_enter_some_govspeak
-    fill_in "document[contents][body]", with: "$C contact $C"
+    fill_in "document[contents][body]", with: "$C “contact” $C"
   end
 
   def and_i_view_the_govspeak_preview
