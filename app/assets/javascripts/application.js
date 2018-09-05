@@ -1,3 +1,4 @@
+//= require govuk/modules
 //= require vendor/nodelist-foreach-polyfill/index.js
 //= require documents/edit
 //= require components/markdown-editor.js
