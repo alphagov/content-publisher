@@ -1,3 +1,3 @@
 <% service = LinkablesService.new(schema.document_type) %>
 <% content = values ? service.by_content_id(values.first) : nil %>
-<%= content ? content["internal_name"] : t("documents.show.associations.none") %>
+<%= content ? content["internal_name"] : t("documents.show.tags.none") %>

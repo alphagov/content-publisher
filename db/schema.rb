@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_04_124348) do
+ActiveRecord::Schema.define(version: 2018_09_05_134625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2018_09_04_124348) do
     t.json "contents", default: {}
     t.text "summary"
     t.string "base_path"
-    t.json "associations", default: {}
+    t.json "tags", default: {}
     t.string "publication_state", null: false
     t.bigint "creator_id"
     t.string "review_state", null: false

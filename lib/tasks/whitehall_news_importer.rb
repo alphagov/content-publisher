@@ -30,20 +30,20 @@ module Tasks
         publication_state: "changes_not_sent_to_draft",
         review_state: "unreviewed",
         summary: translation["summary"],
-        associations: associations(edition),
+        tags: tags(edition),
       )
 
       doc.save!
     end
 
-    def associations(edition)
-      associations = {}
-      associations["primary_publishing_organisation"] = primary_publishing_organisation(edition)
-      associations["organisations"] = organisations(edition)
-      associations["worldwide_organisations"] = edition["worldwide_organisations"]
-      associations["topical_events"] = edition["topical_events"]
-      associations["world_locations"] = edition["world_locations"]
-      associations
+    def tags(edition)
+      tags = {}
+      tags["primary_publishing_organisation"] = primary_publishing_organisation(edition)
+      tags["organisations"] = organisations(edition)
+      tags["worldwide_organisations"] = edition["worldwide_organisations"]
+      tags["topical_events"] = edition["topical_events"]
+      tags["world_locations"] = edition["world_locations"]
+      tags
     end
 
     def primary_publishing_organisation(edition)

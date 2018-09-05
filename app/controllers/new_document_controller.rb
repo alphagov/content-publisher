@@ -44,7 +44,7 @@ class NewDocumentController < ApplicationController
       document_type: params[:document_type],
       publication_state: "changes_not_sent_to_draft",
       review_state: "unreviewed",
-      associations: default_associations,
+      tags: default_tags,
       creator_id: current_user.id,
     )
 
@@ -53,7 +53,7 @@ class NewDocumentController < ApplicationController
 
 private
 
-  def default_associations
+  def default_tags
     current_user.organisation_content_id ? { primary_publishing_organisation: [current_user.organisation_content_id] } : {}
   end
 end

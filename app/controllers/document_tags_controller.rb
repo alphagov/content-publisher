@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DocumentAssociationsController < ApplicationController
+class DocumentTagsController < ApplicationController
   rescue_from GdsApi::BaseError do |e|
     Rails.logger.error(e)
     render "edit_api_down", status: :service_unavailable
@@ -12,7 +12,7 @@ class DocumentAssociationsController < ApplicationController
 
   def update
     document = Document.find_by_param(params[:id])
-    document.update(associations: update_params(document))
+    document.update(tags: update_params(document))
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: t("documents.show.flashes.draft_success")
   rescue GdsApi::BaseError => e
@@ -23,10 +23,10 @@ class DocumentAssociationsController < ApplicationController
 private
 
   def update_params(document)
-    permits = document.document_type_schema.associations.map do |schema|
+    permits = document.document_type_schema.tags.map do |schema|
       [schema.id, []]
     end
 
-    params.fetch(:associations, {}).permit(Hash[permits])
+    params.fetch(:tags, {}).permit(Hash[permits])
   end
 end

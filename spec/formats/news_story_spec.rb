@@ -4,7 +4,7 @@ RSpec.feature "Create a news story", format: true do
   scenario "User creates news story" do
     when_i_choose_this_document_type
     and_i_fill_in_the_form_fields
-    and_i_add_some_associations
+    and_i_add_some_tags
     then_i_can_publish_the_document
   end
 
@@ -25,9 +25,9 @@ RSpec.feature "Create a news story", format: true do
     WebMock.reset!
   end
 
-  def and_i_add_some_associations
+  def and_i_add_some_tags
     stub_any_publishing_api_put_content
-    expect(Document.last.document_type_schema.associations.count).to eq(5)
+    expect(Document.last.document_type_schema.tags.count).to eq(5)
     publishing_api_has_linkables([linkable], document_type: "topical_event")
     publishing_api_has_linkables([linkable], document_type: "worldwide_organisation")
     publishing_api_has_linkables([linkable], document_type: "world_location")
@@ -35,10 +35,10 @@ RSpec.feature "Create a news story", format: true do
 
     click_on "Change Tags"
 
-    select linkable["internal_name"], from: "associations[topical_events][]"
-    select linkable["internal_name"], from: "associations[worldwide_organisations][]"
-    select linkable["internal_name"], from: "associations[world_locations][]"
-    select linkable["internal_name"], from: "associations[organisations][]"
+    select linkable["internal_name"], from: "tags[topical_events][]"
+    select linkable["internal_name"], from: "tags[worldwide_organisations][]"
+    select linkable["internal_name"], from: "tags[world_locations][]"
+    select linkable["internal_name"], from: "tags[organisations][]"
 
     click_on "Save"
   end

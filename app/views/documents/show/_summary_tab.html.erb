@@ -3,19 +3,19 @@
 
     <%= render "documents/show/contents" %>
 
-    <% associations = @document.document_type_schema.associations.map { |schema|
+    <% tags = @document.document_type_schema.tags.map { |schema|
       {
         field: schema.label,
-        value: render("documents/associations/#{schema.type}", schema: schema, values: @document.associations[schema.id]),
+        value: render("documents/tags/#{schema.type}", schema: schema, values: @document.tags[schema.id]),
       }
     } %>
 
     <%= render "components/summary", {
       title: {
-        text: t("documents.show.associations.title"),
-        change_url: document_associations_path(@document)
+        text: t("documents.show.tags.title"),
+        change_url: document_tags_path(@document)
       },
-      items: associations
+      items: tags
     } %>
   </div>
 
