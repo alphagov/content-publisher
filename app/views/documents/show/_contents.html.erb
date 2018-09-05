@@ -7,9 +7,7 @@
 <% contents = @document.document_type_schema.contents.map { |schema|
   {
     field: schema.label,
-    value: capture do
-      render "documents/fields/#{schema.type}", schema: schema, document: @document
-    end
+    value: render("documents/fields/#{schema.type}", schema: schema, document: @document)
   }
 } %>
 
