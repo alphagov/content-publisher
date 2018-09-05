@@ -4,5 +4,3 @@ en:
       title: Tags
       description: Add tags which describe what the content is about. Content will appear in lists on GOV.UK based on each tag.
       api_down: This content can't be edited right now. We're having trouble getting the data we need for you to make changes on this page.
-      no_options: No options available
-      multiselect_instructions: To select multiple items in a list, hold down Ctrl (PC) or Command (Mac) key.

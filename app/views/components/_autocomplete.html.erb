@@ -1,0 +1,33 @@
+<%
+  id ||= "autocomplete-#{SecureRandom.hex(4)}"
+  options ||= []
+  selected_options ||= []
+  multiple ||= nil
+  size ||= nil
+  data ||= nil
+%>
+
+<div class="app-c-autocomplete govuk-form-group">
+  <%= render "govuk_publishing_components/components/label", {
+    text: label,
+    html_for: id
+  } %>
+
+  <% if options.any? %>
+    <% if multiple %>
+      <span class="govuk-hint app-c-autocomplete__multiselect-instructions">To select multiple items in a list, hold down Ctrl (PC) or Command (Mac) key.</span>
+    <% end %>
+
+    <%= select_tag name,
+      options_for_select(options, selected_options),
+      id: id,
+      class: "govuk-select",
+      data: data,
+      size: size,
+      multiple: multiple
+    %>
+
+  <% else %>
+    <p class="govuk-hint">No options available</p>
+  <% end %>
+</div>
