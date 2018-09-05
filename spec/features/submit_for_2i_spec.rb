@@ -5,7 +5,7 @@ RSpec.feature "2i" do
     given_there_is_a_document_in_draft
     when_i_visit_the_document
     and_i_click_submit_for_2i
-    then_i_see_that_the_page_has_been_submitted
+    then_i_see_that_the_content_has_been_submitted
   end
 
   def given_there_is_a_document_in_draft
@@ -20,7 +20,7 @@ RSpec.feature "2i" do
     click_on "Submit for 2i review"
   end
 
-  def then_i_see_that_the_page_has_been_submitted
+  def then_i_see_that_the_content_has_been_submitted
     expect(page).to have_content "Content has been submitted for 2i review"
   end
 end
