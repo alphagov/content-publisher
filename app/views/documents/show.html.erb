@@ -2,49 +2,18 @@
 <% content_for :title, @document.title || t("documents.show.title_default") %>
 <% content_for :context, @document.document_type_schema.label %>
 
-<% @edit_document_content = capture do %>
-
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-
-    <%= render "documents/show/contents" %>
-
-    <% associations = @document.document_type_schema.associations.map { |schema|
-      {
-        field: schema.label,
-        value: render("documents/associations/#{schema.type}", schema: schema, values: @document.associations[schema.id]),
-      }
-    } %>
-
-    <%= render "components/summary", {
-      title: {
-        text: t("documents.show.associations.title"),
-        change_url: document_associations_path(@document)
-      },
-      items: associations
-    } %>
-  </div>
-
-  <div class="govuk-grid-column-one-third">
-    <%= render "documents/show/actions" %>
-    <%= render "documents/show/document_metadata" %>
-  </div>
-</div>
-
-<% end %>
-
 <%= render "govuk_publishing_components/components/tabs", {
   panel_border: false,
   tabs: [
     {
       id: "edit-document",
       label: "Edit document",
-      content: @edit_document_content
+      content: render("documents/show/summary_tab"),
     },
     {
       id: "document-history",
       label: "Document history",
-      content: "Document history is not available right now"
+      content: render("documents/show/history_tab"),
     }
   ]
 } %>
