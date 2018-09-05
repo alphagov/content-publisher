@@ -27,7 +27,7 @@ RSpec.feature "Force publishing" do
   end
 
   def and_i_say_that_the_document_has_not_been_reviewed
-    choose "This content needs to be published urgently but should be reviewed as soon as possible"
+    choose I18n.t("publish_document.confirmation.should_be_reviewed")
   end
 
   def and_i_confirm_the_publishing
@@ -39,7 +39,7 @@ RSpec.feature "Force publishing" do
   end
 
   def then_i_see_that_the_document_was_published_without_review
-    expect(page).to have_content("Content has been published but still needs 2i review")
+    expect(page).to have_content(I18n.t("publish_document.published_document.published_without_review.title"))
   end
 
   def and_i_click_the_approval_button

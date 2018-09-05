@@ -24,7 +24,7 @@ RSpec.feature "Publishing a document" do
   end
 
   def and_i_say_that_the_document_has_been_reviewed
-    choose "This content has been reviewed and approved for publication"
+    choose I18n.t("publish_document.confirmation.has_been_reviewed")
   end
 
   def and_i_confirm_the_publishing
