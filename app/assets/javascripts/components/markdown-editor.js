@@ -41,6 +41,7 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
 
   // Clear previous preview
   this.$preview.innerHTML = ''
+  this.$preview.classList.remove('app-c-markdown-editor__govspeak--rendered')
 
   if (!this.$input.value) {
     this.$preview.innerHTML = 'Nothing to preview'
@@ -56,6 +57,9 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
     })
     .catch(function () {
       $preview.innerHTML = 'Error previewing content'
+    })
+    .finally(function () {
+      $preview.classList.add('app-c-markdown-editor__govspeak--rendered')
     })
 
   this.setTargetBlank(this.$preview)

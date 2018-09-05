@@ -29,6 +29,7 @@ RSpec.feature "Shows a preview of Govspeak", js: true do
   end
 
   def then_i_see_the_rendered_govspeak
-    expect(find(".govuk-govspeak")["innerHTML"]).to include('<div class="contact">')
+    expect(find(".app-c-markdown-editor__govspeak--rendered")["innerHTML"])
+      .to include('<div class="contact">')
   end
 end
