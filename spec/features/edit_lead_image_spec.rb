@@ -34,16 +34,16 @@ RSpec.feature "Edit a lead image" do
   end
 
   def and_i_fill_in_the_metadata
-    fill_in "lead_image[alt_text]", with: "Some alt text"
-    fill_in "lead_image[caption]", with: "Image caption"
-    fill_in "lead_image[credit]", with: "Image credit"
-    click "Save and choose"
+    fill_in "alt_text", with: "Some alt text"
+    fill_in "caption", with: "Image caption"
+    fill_in "credit", with: "Image credit"
+    click_on "Save and choose"
   end
 
   def then_i_should_be_able_to_see_the_image
-    expect(find("#lead-image")["href"]).to include("960x640.jpg")
-    expect(find("#lead-image")["alt"]).to eq("Some alt text")
     expect(page).to have_content("Image caption")
     expect(page).to have_content("Image credit")
+    expect(find("#lead-image")["href"]).to include("960x640.jpg")
+    expect(find("#lead-image")["alt"]).to eq("Some alt text")
   end
 end

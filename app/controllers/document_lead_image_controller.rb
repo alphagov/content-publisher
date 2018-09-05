@@ -20,7 +20,19 @@ class DocumentLeadImageController < ApplicationController
     @image = Image.find_by(id: params[:image_id])
   end
 
+  def update
+    document = Document.find_by_param(params[:document_id])
+    image = Image.find_by(id: params[:image_id])
+    image.update(update_params)
+    document.update(lead_image_id: image.id)
+    redirect_to document_path(document)
+  end
+
 private
+
+  def update_params
+    params.permit(:caption, :alt_text, :credit)
+  end
 
   def create_image_from_upload(upload, document)
     blob = ActiveStorage::Blob.create_after_upload!(

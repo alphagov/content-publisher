@@ -1,0 +1,40 @@
+<%= content_for :back_link, document_path(@document) %>
+<% content_for :title, t("document_lead_image.edit.title") %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <% if flash[:errors].present? %>
+      <ul>
+        <% flash[:errors].each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <%= form_tag(update_document_lead_image_path(@document, @image), method: :patch) do %>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: t("document_lead_image.edit.form_labels.caption")
+        },
+        name: "caption",
+        value: @image.caption,
+      } %>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: t("document_lead_image.edit.form_labels.alt_text")
+        },
+        name: "alt_text",
+        value: @image.alt_text,
+      } %>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: t("document_lead_image.edit.form_labels.credit")
+        },
+        name: "credit",
+        value: @image.credit,
+      } %>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save and choose"
+      } %>
+    <% end %>
+  </div>
+</div>

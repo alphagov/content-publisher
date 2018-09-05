@@ -1,12 +1,35 @@
-<%= render "components/summary", {
-  title: {
-    text: t("documents.show.lead_image.title"),
-    change_url: document_lead_image_path(@document)
-  },
-  items: [
-    {
-      field: t("documents.show.lead_image.field_name"),
-      value: t("documents.show.lead_image.no_lead_image")
+<% if @document.lead_image %>
+  <%= render "components/summary", {
+    title: {
+      text: t("documents.show.lead_image.title"),
+      change_url: document_lead_image_path(@document)
     },
-  ]
-} %>
+    items: [
+      {
+        field: t("documents.show.lead_image.fields.alt_text"),
+        value: @document.lead_image.alt_text
+      },
+      {
+        field: t("documents.show.lead_image.fields.caption"),
+        value: @document.lead_image.caption
+      },
+      {
+        field: t("documents.show.lead_image.fields.credit"),
+        value: @document.lead_image.credit
+      },
+    ]
+  } %>
+<% else %>
+  <%= render "components/summary", {
+    title: {
+      text: t("documents.show.lead_image.title"),
+      change_url: document_lead_image_path(@document)
+    },
+    items: [
+      {
+        field: t("documents.show.lead_image.fields.image"),
+        value: t("documents.show.lead_image.no_lead_image")
+      },
+    ]
+  } %>
+<% end %>
