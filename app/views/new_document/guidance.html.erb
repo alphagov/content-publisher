@@ -4,7 +4,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= render "govuk_publishing_components/components/govspeak" do %>
-      <%= raw Govspeak::Document.new(File.read("app/views/new_document/guidance.govspeak.md")).to_html %>
+      <%= govspeak_to_html File.read("app/views/new_document/guidance.govspeak.md") %>
     <% end %>
   </div>
 </div>
