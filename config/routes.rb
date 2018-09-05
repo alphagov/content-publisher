@@ -30,6 +30,8 @@ Rails.application.routes.draw do
   post "/documents/:document_id/images" => "document_images#create", as: :create_document_image
   patch "/documents/:document_id/images/:id" => "document_images#update", as: :update_document_image
 
+  get "/documents/:document_id/lead-image" => "document_lead_image#index", as: :document_lead_image
+
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 
   get "/documentation" => "documentation#index"

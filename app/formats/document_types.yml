@@ -6,6 +6,7 @@
     Do not include advice in news stories. Do not use to promote other content.
     Read the full [guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story).
   path_prefix: /news
+  lead_image: true
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend

@@ -20,16 +20,16 @@ RSpec.feature "Edit a lead image" do
   end
 
   def then_i_see_there_is_no_lead_image
-    expect(page).to have_content(I18n.t("documents.show.no_lead_image"))
+    expect(page).to have_content(I18n.t("documents.show.lead_image.no_lead_image"))
   end
 
   def when_i_visit_the_lead_images_page
-    click "Change lead image"
+    click_on "Change Lead image"
   end
 
   def and_i_upload_a_new_image
     find('form input[type="file"]').set(file_fixture("960x640.jpg"))
-    click "Upload"
+    click_on "Upload"
   end
 
   def and_i_fill_in_the_metadata

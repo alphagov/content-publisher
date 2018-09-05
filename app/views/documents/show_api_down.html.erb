@@ -5,6 +5,10 @@
   <div class="govuk-grid-column-two-thirds">
     <%= render "documents/show/contents" %>
 
+    <% if @document.document_type_schema.lead_image %>
+      <%= render "documents/show/lead_image" %>
+    <% end %>
+
     <h2 class="govuk-header-s"><%= t("documents.show.tags.title") %></h2>
 
     <p class="govuk-body">

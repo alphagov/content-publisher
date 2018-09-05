@@ -1,0 +1,12 @@
+<%= render "components/summary", {
+  title: {
+    text: t("documents.show.lead_image.title"),
+    change_url: document_lead_image_path(@document)
+  },
+  items: [
+    {
+      field: t("documents.show.lead_image.field_name"),
+      value: t("documents.show.lead_image.no_lead_image")
+    },
+  ]
+} %>

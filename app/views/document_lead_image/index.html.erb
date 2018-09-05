@@ -1,0 +1,31 @@
+<%= content_for :back_link, document_path(@document) %>
+<% content_for :title, t("document_lead_image.index.title") %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <% if flash[:errors].present? %>
+      <ul>
+        <% flash[:errors].each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+    <% end %>
+    <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
+      <%= file_field_tag "document[image]" %>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Upload"
+      } %>
+    <% end %>
+    <%= render "govuk_publishing_components/components/heading", {
+      text: t("document_lead_image.index.existing_image")
+    } %>
+    <% @document.images.order(blob_id: :desc).each do |image| %>
+      <% if image.metadata["crop"] %>
+        <% crop = image.metadata["crop"] %>
+        <% argument = "#{crop['width']}x#{crop['height']}+#{crop['x']}+#{crop['y']}" %>
+        <img src="<%= url_for(image.variant(crop: argument, resize: "960x640")) %> alt="">
+      <% else %>
+        <img src="<%= url_for(image.variant(resize: "960x640")) %> alt="">
+      <% end %>
+    <% end %>
+  </div>
+</div>
