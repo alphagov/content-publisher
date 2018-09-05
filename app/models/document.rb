@@ -40,4 +40,8 @@ class Document < ApplicationRecord
     content_id, locale = content_id_and_locale.split(":")
     Document.find_by(content_id: content_id, locale: locale)
   end
+
+  def user_facing_state
+    UserFacingState.new(self).to_s
+  end
 end
