@@ -5,22 +5,16 @@
   "author": "Government Digital Service",
   "license": "MIT",
   "scripts": {
-    "lint": "standard app/javascript/{*,**/*}",
-    "lint:fix": "standard --fix app/javascript/{*,**/*}"
-  },
-  "dependencies": {
-    "@rails/webpacker": "3.5",
-    "@webcomponents/webcomponentsjs": "^2.0.4",
-    "nodelist-foreach-polyfill": "^1.2.0",
-    "raven-js": "^3.26.4"
+    "lint": "standard app/assets/javascripts/{*,**/*}",
+    "lint:fix": "standard --fix app/javascripts/{*,**/*}"
   },
   "standard": {
     "ignore": [
-      "/app/javascript/components/markdown-toolbar.js"
+      "/app/assets/javascripts/components/markdown-toolbar.js",
+      "/app/assets/javascripts/vendor/"
     ]
   },
   "devDependencies": {
-    "standard": "^11.0.1",
-    "webpack-dev-server": "2.11.2"
+    "standard": "^11.0.1"
   }
 }

@@ -1,5 +1,5 @@
-import '@webcomponents/webcomponentsjs/webcomponents-bundle'
-import 'components/markdown-toolbar'
+//= require vendor/@webcomponents/webcomponentsjs/webcomponents-loader.js
+//= require components/markdown-toolbar
 
 function MarkdownEditor ($module) {
   this.$module = $module
@@ -48,9 +48,15 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
     return
   }
 
+  var $preview = this.$preview
+
   this.fetchGovspeakPreview(this.$input.value)
-    .then((text) => { this.$preview.innerHTML = text })
-    .catch(() => { this.$preview.innerHTML = 'Error previewing content' })
+    .then(function (text) {
+      $preview.innerHTML = text
+    })
+    .catch(function () {
+      $preview.innerHTML = 'Error previewing content'
+    })
 
   this.setTargetBlank(this.$preview)
   this.toggleElements()
@@ -65,9 +71,9 @@ MarkdownEditor.prototype.fetchGovspeakPreview = function (text) {
 
   var controller = new window.AbortController()
   var options = { credentials: 'include', signal: controller.signal, method: 'POST', body: formData }
-  setTimeout(() => controller.abort(), 5000)
+  setTimeout(function () { controller.abort() }, 5000)
 
-  return window.fetch(url, options).then((response) => response.text())
+  return window.fetch(url, options).then(function (response) { return response.text() })
 }
 
 MarkdownEditor.prototype.handleEditButton = function (event) {
@@ -110,4 +116,7 @@ MarkdownEditor.prototype.setTargetBlank = function (container) {
   }
 }
 
-export default MarkdownEditor
+var $govspeak = document.querySelector('[data-module="markdown-editor"]')
+if ($govspeak) {
+  new MarkdownEditor($govspeak).init()
+}

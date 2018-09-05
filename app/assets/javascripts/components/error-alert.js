@@ -12,4 +12,7 @@ ErrorAlert.prototype.init = function () {
   })
 }
 
-export default ErrorAlert
+var $errorAlert = document.querySelector('[data-module="error-alert"]')
+if ($errorAlert) {
+  new ErrorAlert($errorAlert).init()
+}

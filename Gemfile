@@ -18,7 +18,6 @@ gem "kaminari", "~> 1"
 gem "pg", "~> 1"
 gem "plek", "~> 2"
 gem "uglifier", "~> 4"
-gem "webpacker", "~> 3"
 
 group :development do
   gem "brakeman", "~> 4"
