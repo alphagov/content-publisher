@@ -43,10 +43,6 @@ class DocumentTypeSchema
     @guidance.find { |guidance| guidance.id == id }
   end
 
-  def html_hint
-    Govspeak::Document.new(hint).to_html
-  end
-
   class Association
     include ActiveModel::Model
     attr_accessor :id, :label, :type, :document_type

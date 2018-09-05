@@ -8,6 +8,7 @@ FactoryBot.define do
     base_path { title ? "/prefix/#{title.parameterize}" : nil }
     document_type { build(:document_type_schema, path_prefix: "/prefix").id }
     publication_state { "changes_not_sent_to_draft" }
+    review_state { "unreviewed" }
     creator_id { User.last.id }
   end
 end

@@ -1,0 +1,21 @@
+en:
+  publish_document:
+    published_document:
+      reviewed:
+        title: Content has been published
+        body: |
+          ‘%{title}’ has been published on GOV.UK.
+
+          It may take 5 minutes to appear live.
+
+      published_without_review:
+        title: Content has been published but still needs 2i review
+        body: |
+          ‘%{title}’ has been published on GOV.UK.
+
+          It may take 5 minutes to appear live.
+
+          ## What to do next
+
+          Send this document to another publisher for them to review. You or they
+          can then approve it or create a new edition to make changes.

@@ -14,7 +14,15 @@ class Document < ApplicationRecord
     error_sending_to_live
   ].freeze
 
+  REVIEW_STATES = %w[
+    unreviewed
+    submitted_for_review
+    published_without_review
+    reviewed
+  ].freeze
+
   validates_inclusion_of :publication_state, in: PUBLICATION_STATES
+  validates_inclusion_of :review_state, in: REVIEW_STATES
 
   def document_type_schema
     DocumentTypeSchema.find(document_type)
@@ -31,5 +39,9 @@ class Document < ApplicationRecord
   def self.find_by_param(content_id_and_locale)
     content_id, locale = content_id_and_locale.split(":")
     Document.find_by(content_id: content_id, locale: locale)
+  end
+
+  def user_facing_state
+    UserFacingState.new(self).to_s
   end
 end

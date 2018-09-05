@@ -11,7 +11,7 @@
             value: document_type.id,
             text: document_type.label,
             hint_text: document_type.description,
-            conditional: tag.div(document_type.html_hint.html_safe, class: "govuk-body"),
+            conditional: tag.div(govspeak_to_html(document_type.hint), class: "govuk-body"),
             bold: true,
 
             # Remove after https://github.com/alphagov/govuk_publishing_components/pull/496

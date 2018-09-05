@@ -1,4 +1,6 @@
 en:
   publish_document:
     confirmation:
-      title: Do you really want to publish?
+      title: Publish
+      has_been_reviewed: "This content has been reviewed and approved for publication"
+      should_be_reviewed: "This content needs to be published urgently but should be reviewed as soon as possible"

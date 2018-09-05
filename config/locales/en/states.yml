@@ -1,4 +1,14 @@
 en:
+  user_facing_states:
+    draft:
+      name: Draft
+    submitted_for_review:
+      name: Submitted for 2i review
+    published_but_needs_2i:
+      name: Published but needs 2i review
+    published:
+      name: Published
+
   publication_states:
     changes_not_sent_to_draft:
       name: Unsaved changes

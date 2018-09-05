@@ -25,5 +25,4 @@ en:
       flashes:
         draft_success: Preview creation successful
         draft_error: Error creating preview
-        publish_success: Publish successful
         publish_error: Error publishing

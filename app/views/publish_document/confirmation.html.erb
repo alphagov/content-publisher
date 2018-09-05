@@ -1,8 +1,26 @@
 <% content_for :back_link, document_path(@document) %>
 <% content_for :title, t("publish_document.confirmation.title") %>
 
-<%= form_tag publish_document_path(@document) do %>
-  <%= render "govuk_publishing_components/components/button", {
-    text: "Confirm publish"
-  } %>
-<% end %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag publish_document_path(@document) do %>
+      <%= render "govuk_publishing_components/components/radio", {
+        name: "self_declared_review_state",
+        items: [
+          {
+            value: "has-been-reviewed",
+            text: t("publish_document.confirmation.has_been_reviewed")
+          },
+          {
+            value: "should-be-reviewed",
+            text: t("publish_document.confirmation.should_be_reviewed")
+          },
+        ]
+      } %>
+
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Confirm publish"
+      } %>
+    <% end %>
+  </div>
+</div>

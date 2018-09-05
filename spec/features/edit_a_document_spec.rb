@@ -5,8 +5,11 @@ RSpec.feature "Edit a document" do
     given_there_is_a_document
     when_i_go_to_edit_the_document
     and_i_fill_in_the_content_fields
+
     then_i_see_the_document_is_saved
-    and_the_preview_creation_succeeded
+    and_the_content_is_available_for_preview
+    and_the_content_needs_review
+    and_i_see_the_content_is_in_draft_state
   end
 
   def given_there_is_a_document
@@ -32,14 +35,20 @@ RSpec.feature "Edit a document" do
     expect(page).to have_content("Edited body.")
   end
 
-  def and_the_preview_creation_succeeded
+  def and_the_content_is_available_for_preview
     expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t("documents.show.flashes.draft_success"))
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"]["body"]).to eq("<p>Edited body.</p>\n")
     }).to have_been_requested
+  end
 
-    expect(Document.last.publication_state).to eq("sent_to_draft")
+  def and_the_content_needs_review
+    expect(page).to have_button "Submit for 2i review"
+  end
+
+  def and_i_see_the_content_is_in_draft_state
+    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
   end
 end

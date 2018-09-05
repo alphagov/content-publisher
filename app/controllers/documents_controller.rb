@@ -44,6 +44,6 @@ private
     base_path = PathGeneratorService.new.path(document, params[:document][:title])
 
     params.require(:document).permit(:title, :summary, contents: contents_params)
-      .merge(base_path: base_path, publication_state: "changes_not_sent_to_draft")
+      .merge(base_path: base_path, publication_state: "changes_not_sent_to_draft", review_state: "unreviewed")
   end
 end

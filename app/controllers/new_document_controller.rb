@@ -43,6 +43,7 @@ class NewDocumentController < ApplicationController
       locale: "en",
       document_type: params[:document_type],
       publication_state: "changes_not_sent_to_draft",
+      review_state: "unreviewed",
       associations: default_associations,
       creator_id: current_user.id,
     )

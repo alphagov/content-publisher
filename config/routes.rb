@@ -10,12 +10,16 @@ Rails.application.routes.draw do
 
   get "/documents/:id/publish" => "publish_document#confirmation", as: :publish_document
   post "/documents/:id/publish" => "publish_document#publish"
+  get "/documents/:id/published" => "publish_document#published", as: :document_published
 
   get "/documents" => "documents#index"
   get "/documents/:id/edit" => "documents#edit", as: :edit_document
   patch "/documents/:id" => "documents#update", as: :document
   get "/documents/:id" => "documents#show"
   get "/documents/:id/generate-path" => "documents#generate_path", as: :generate_path
+
+  post "/documents/:id/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
+  post "/documents/:id/approve" => "review#approve", as: :approve_document
 
   get "/documents/:id/associations" => "document_associations#edit", as: :document_associations
   post "/documents/:id/associations" => "document_associations#update"
