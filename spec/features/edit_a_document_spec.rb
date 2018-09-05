@@ -8,6 +8,7 @@ RSpec.feature "Edit a document" do
     then_i_see_the_document_is_saved
     and_the_preview_creation_succeeded
     and_the_content_is_now_not_reviewed
+    and_the_content_is_in_draft_state
   end
 
   def given_there_is_a_document
@@ -40,11 +41,13 @@ RSpec.feature "Edit a document" do
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"]["body"]).to eq("<p>Edited body.</p>\n")
     }).to have_been_requested
-
-    expect(Document.last.publication_state).to eq("sent_to_draft")
   end
 
   def and_the_content_is_now_not_reviewed
     expect(page).to have_button "Submit for 2i review"
+  end
+
+  def and_the_content_is_in_draft_state
+    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
   end
 end

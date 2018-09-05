@@ -8,6 +8,7 @@ RSpec.feature "Publishing a document" do
     and_i_say_that_the_document_has_been_reviewed
     and_i_confirm_the_publishing
     then_i_see_the_publish_succeeded
+    and_the_content_is_published
   end
 
   def given_there_is_a_document
@@ -34,6 +35,10 @@ RSpec.feature "Publishing a document" do
   def then_i_see_the_publish_succeeded
     expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t("publish_document.published_document.reviewed.title"))
-    expect(@document.reload.publication_state).to eq("sent_to_live")
+  end
+
+  def and_the_content_is_published
+    visit document_path(@document)
+    expect(page).to have_content(I18n.t("user_facing_states.published.name"))
   end
 end
