@@ -1,6 +1,6 @@
 <div class="app-side">
   <div class="app-side__actions">
-    <% if @document.review_state == "force_published" %>
+    <% if @document.review_state == "published_without_review" %>
       <%= form_tag approve_document_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Approve" %>
       <% end %>

@@ -7,7 +7,7 @@ class PublishDocumentController < ApplicationController
 
   def publish
     document = Document.find_by_param(params[:id])
-    review_state = params[:self_declared_review_state] == "has-been-reviewed" ? "reviewed" : "force_published"
+    review_state = params[:self_declared_review_state] == "has-been-reviewed" ? "reviewed" : "published_without_review"
     DocumentPublishingService.new.publish(document, review_state)
     redirect_to document_published_path(document)
   rescue GdsApi::BaseError => e

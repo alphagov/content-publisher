@@ -7,7 +7,7 @@ RSpec.feature "Force publishing" do
     and_i_click_on_the_publish_button
     and_i_say_that_the_document_has_not_been_reviewed
     and_i_confirm_the_publishing
-    then_i_see_that_the_document_was_force_published
+    then_i_see_that_the_document_was_published_without_review
 
     when_i_visit_the_document_page
     and_i_click_the_approval_button
@@ -38,7 +38,7 @@ RSpec.feature "Force publishing" do
     click_on "Confirm publish"
   end
 
-  def then_i_see_that_the_document_was_force_published
+  def then_i_see_that_the_document_was_published_without_review
     expect(page).to have_content("Content has been published but still needs 2i review")
   end
 

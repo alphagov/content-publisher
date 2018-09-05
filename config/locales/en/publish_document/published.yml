@@ -8,7 +8,7 @@ en:
 
           It may take 5 minutes to appear live.
 
-      force_published:
+      published_without_review:
         title: Content has been published but still needs 2i review
         body: |
           ‘%{title}’ has been published on GOV.UK.

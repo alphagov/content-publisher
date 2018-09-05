@@ -17,7 +17,7 @@ class Document < ApplicationRecord
   REVIEW_STATES = %w[
     unreviewed
     submitted_for_review
-    force_published
+    published_without_review
     reviewed
   ].freeze
 
