@@ -57,5 +57,6 @@
   </div>
 
   <%= render "govuk_publishing_components/components/layout_footer" %>
-  <%= javascript_pack_tag "application" %>
+  <script src="https://cdn.ravenjs.com/3.26.4/raven.min.js" crossorigin="anonymous"></script>
+  <%= javascript_include_tag "application" %>
 <% end %>

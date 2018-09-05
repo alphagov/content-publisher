@@ -1,10 +1,12 @@
-export default function (editDocumentForm) {
+'use strict'
+
+function editDocumentForm (form) {
   var urlPreview = document.getElementById('url-preview-id')
   var basePath = document.getElementById('base-path-id')
   var documentTitle = document.getElementById('document-title-id')
   var noTitle = document.getElementById('no-title-id')
   var errorGeneratingPath = document.getElementById('error-generating-path-id')
-  var path = editDocumentForm.getAttribute('data-generate-path-path')
+  var path = form.getAttribute('data-generate-path-path')
 
   var showErrorMessage = function () {
     urlPreview.setAttribute('class', 'app-hidden')
@@ -55,4 +57,9 @@ export default function (editDocumentForm) {
   }
 
   documentTitle.onblur()
+}
+
+var $form = document.querySelector('[data-module="edit-document-form"]')
+if ($form) {
+  editDocumentForm($form)
 }

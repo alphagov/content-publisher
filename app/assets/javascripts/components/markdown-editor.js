@@ -1,5 +1,5 @@
-import '@webcomponents/webcomponentsjs/webcomponents-bundle'
-import 'components/markdown-toolbar'
+//= require vendor/@webcomponents/webcomponentsjs/webcomponents-loader.js
+//= require components/markdown-toolbar
 
 function MarkdownEditor ($module) {
   this.$module = $module
@@ -110,4 +110,7 @@ MarkdownEditor.prototype.setTargetBlank = function (container) {
   }
 }
 
-export default MarkdownEditor
+var $govspeak = document.querySelector('[data-module="markdown-editor"]')
+if ($govspeak) {
+  new MarkdownEditor($govspeak).init()
+}
