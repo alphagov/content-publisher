@@ -2,7 +2,7 @@
 
 RSpec.feature "Publishing a document" do
   scenario "User publishes a document" do
-    given_there_is_a_document
+    given_there_is_a_document_in_draft
     when_i_visit_the_document_page
     and_i_click_on_the_publish_button
     and_i_say_that_the_document_has_been_reviewed
@@ -11,7 +11,7 @@ RSpec.feature "Publishing a document" do
     and_i_see_the_content_is_in_published_state
   end
 
-  def given_there_is_a_document
+  def given_there_is_a_document_in_draft
     @document = create(:document, publication_state: "sent_to_draft")
   end
 
