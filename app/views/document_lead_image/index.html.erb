@@ -10,7 +10,7 @@
         <% end %>
     <% end %>
     <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
-      <%= file_field_tag "document[image]" %>
+      <%= file_field_tag "image" %>
       <%= render "govuk_publishing_components/components/button", {
         text: "Upload"
       } %>

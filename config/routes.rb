@@ -31,6 +31,9 @@ Rails.application.routes.draw do
   patch "/documents/:document_id/images/:id" => "document_images#update", as: :update_document_image
 
   get "/documents/:document_id/lead-image" => "document_lead_image#index", as: :document_lead_image
+  post "/documents/:document_id/lead-image" => "document_lead_image#create"
+  get "/documents/:document_id/lead-image/:image_id/edit" => "document_lead_image#edit", as: :edit_document_lead_image
+  patch "/documents/:document_id/lead-image/:image_id/edit" => "document_lead_image#update"
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 
