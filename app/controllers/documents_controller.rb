@@ -7,7 +7,31 @@ class DocumentsController < ApplicationController
   end
 
   def index
-    @documents = Document.page(params[:page]).per(50)
+    @document_type_select = SupertypeSchema.all.inject([]) do |memo, supertype|
+      document_options = supertype
+        .document_types
+        .reject { |d| d.managed_elsewhere }
+        .map { |d| [d.label, d.id] }
+
+      memo << [supertype.label, document_options] if document_options.any?
+      memo
+    end
+
+    scope = Document.all
+
+    if params[:title_or_url]
+      scope = scope.where(
+        "title ILIKE ? OR base_path ILIKE ?",
+        params[:title_or_url],
+        params[:title_or_url]
+      )
+    end
+
+    if params[:document_type]
+      scope = scope.where(document_type: params[:document_type])
+    end
+
+    @documents = scope.page(params[:page]).per(50)
   end
 
   def edit

@@ -1,11 +1,39 @@
 <% content_for :title, t("documents.index.title") %>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <%= render "govuk_publishing_components/components/button", {
-      text: "New document", href: new_document_path, margin_bottom: true
-    } %>
+<%= render "govuk_publishing_components/components/button", {
+  text: "New document", href: new_document_path, margin_bottom: true
+} %>
 
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+    <%= form_tag({}, method: :get) do %>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: t("documents.index.filter.title_or_url")
+        },
+        name: "title_or_url",
+        value: params[:title_or_url]
+      } %>
+
+      <%= render "govuk_publishing_components/components/label", {
+        text: t("documents.index.filter.document_type"),
+        html_for: "document_type"
+      } %>
+
+      <%= select_tag "document_type",
+        grouped_options_for_select(@document_type_select, params[:document_type]),
+        class: "govuk-select",
+        include_blank: true
+      %>
+
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Filter", margin_bottom: true
+      } %>
+
+      <a href="<%=documents_path %>">Clear filter</a>
+    <% end %>
+  </div>
+  <div class="govuk-grid-column-two-thirds">
     <%= render "govuk_publishing_components/components/document_list", {
       items: @documents.map do |document|
         {
