@@ -72,6 +72,9 @@ ActiveRecord::Schema.define(version: 2018_09_07_121447) do
     t.integer "crop_height", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "caption"
+    t.string "alt_text"
+    t.string "credit"
     t.index ["blob_id"], name: "index_images_on_blob_id"
     t.index ["document_id"], name: "index_images_on_document_id"
   end
