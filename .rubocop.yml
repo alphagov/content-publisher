@@ -13,6 +13,9 @@ Metrics/BlockLength:
     - 'lib/tasks/**/*.rake'
     - 'spec/**/*.rb'
 
+Rails:
+  Enabled: true
+
 Style/FrozenStringLiteralComment:
   Enabled: true
   Exclude:
