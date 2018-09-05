@@ -1,6 +1,6 @@
 <div class="app-side">
   <div class="app-side__actions">
-    <% if @document.review_state == "published_without_review" %>
+    <% if @document.user_facing_state == "published_but_needs_2i" %>
       <%= form_tag approve_document_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Approve" %>
       <% end %>
@@ -9,17 +9,17 @@
 
       <%= link_to "Retire", "#", class: "govuk-link" %>
       <%= link_to "Remove", "#", class: "govuk-link app-link--right" %>
-    <% elsif @document.publication_state == "sent_to_live" || @document.publication_state == "error_sending_to_live" %>
+    <% elsif @document.user_facing_state == "published" %>
       <%= render "govuk_publishing_components/components/button", text: "Create new edition", href: edit_document_path(@document) %>
 
       <%= link_to "Retire", "#", class: "govuk-link" %>
       <%= link_to "Remove", "#", class: "govuk-link app-link--right" %>
-    <% elsif @document.review_state == "submitted_for_review" %>
+    <% elsif @document.user_facing_state == "submitted_for_review" %>
       <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
 
       <%= link_to "Delete draft", '#' %>
-    <% elsif @document.publication_state == "sent_to_draft" %>
+    <% elsif @document.user_facing_state == "draft" %>
       <%= form_tag submit_document_for_2i_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
       <% end %>
