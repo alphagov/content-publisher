@@ -35,9 +35,10 @@ class PublishingApiPayload
 private
 
   def links
-    links = document.associations["primary_publishing_organisation"].to_a +
-      document.associations["organisations"].to_a
-    document.associations.merge("organisations" => links.uniq)
+    links = document.tags["primary_publishing_organisation"].to_a +
+      document.tags["organisations"].to_a
+
+    document.tags.merge("organisations" => links.uniq)
   end
 
   def details

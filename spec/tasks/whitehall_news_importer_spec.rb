@@ -34,25 +34,25 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     expect { importer.import(parsed_json) }.to change { Document.count }.by(1)
 
     imported_edition = JSON.parse(import_json)["editions"][0]
-    document_associations = Document.last.associations
+    document_tags = Document.last.tags
 
     expect(Document.last.summary)
       .to eq(imported_edition["translations"][0]["summary"])
-    expect(document_associations["primary_publishing_organisation"])
+    expect(document_tags["primary_publishing_organisation"])
       .to eq([imported_edition["lead_organisations"][0]])
-    expect(document_associations["organisations"]).to include(
+    expect(document_tags["organisations"]).to include(
       imported_edition["lead_organisations"][1],
       imported_edition["supporting_organisations"][0],
       imported_edition["supporting_organisations"][1],
     )
-    expect(document_associations["organisations"]).not_to include(
+    expect(document_tags["organisations"]).not_to include(
       imported_edition["lead_organisations"][0],
     )
-    expect(document_associations["worldwide_organisations"])
+    expect(document_tags["worldwide_organisations"])
       .to eq(imported_edition["worldwide_organisations"])
-    expect(document_associations["topical_events"])
+    expect(document_tags["topical_events"])
       .to eq(imported_edition["topical_events"])
-    expect(document_associations["world_locations"])
+    expect(document_tags["world_locations"])
       .to eq(imported_edition["world_locations"])
   end
 end

@@ -6,7 +6,7 @@ en:
         title: Document type
         items:
           document_type: Document type
-      associations:
+      tags:
         title: Tags
         api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
         none: None

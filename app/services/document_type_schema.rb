@@ -2,7 +2,7 @@
 
 class DocumentTypeSchema
   attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
-    :path_prefix, :associations, :guidance, :description, :hint
+    :path_prefix, :tags, :guidance, :description, :hint
 
   def initialize(params = {})
     @id = params["id"]
@@ -11,7 +11,7 @@ class DocumentTypeSchema
     @contents = params["contents"].to_a.map(&Field.method(:new))
     @publishing_metadata = PublishingMetadata.new(params["publishing_metadata"])
     @path_prefix = params["path_prefix"]
-    @associations = params["associations"].to_a.map(&Association.method(:new))
+    @tags = params["tags"].to_a.map(&Tag.method(:new))
     @guidance = params["guidance"].to_a.map(&Guidance.method(:new))
     @description = params["description"]
     @hint = params["hint"]
@@ -43,7 +43,7 @@ class DocumentTypeSchema
     @guidance.find { |guidance| guidance.id == id }
   end
 
-  class Association
+  class Tag
     include ActiveModel::Model
     attr_accessor :id, :label, :type, :document_type
   end

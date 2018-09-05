@@ -24,9 +24,9 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "includes primary_publishing_organisation in organisations links" do
-      organisation_schema = build(:association_schema, type: "single_association", id: "primary_publishing_organisation")
-      document_type_schema = build(:document_type_schema, associations: [organisation_schema])
-      document = build(:document, document_type: document_type_schema.id, associations: {
+      organisation_schema = build(:tag_schema, type: "single_tag", id: "primary_publishing_organisation")
+      document_type_schema = build(:document_type_schema, tags: [organisation_schema])
+      document = build(:document, document_type: document_type_schema.id, tags: {
                          primary_publishing_organisation: ["my-org-id"],
                          organisations: ["other-org-id"],
                        })
@@ -43,9 +43,9 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "ensures the organisation links are unique" do
-      organisation_schema = build(:association_schema, type: "single_association", id: "primary_publishing_organisation")
-      document_type_schema = build(:document_type_schema, associations: [organisation_schema])
-      document = build(:document, document_type: document_type_schema.id, associations: {
+      organisation_schema = build(:tag_schema, type: "single_tag", id: "primary_publishing_organisation")
+      document_type_schema = build(:document_type_schema, tags: [organisation_schema])
+      document = build(:document, document_type: document_type_schema.id, tags: {
                          primary_publishing_organisation: ["my-org-id"],
                          organisations: ["my-org-id"],
                        })
