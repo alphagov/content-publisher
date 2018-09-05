@@ -15,7 +15,7 @@ class UserFacingState
       "draft"
     elsif review_state == "published_without_review"
       "published_but_needs_2i"
-    elsif publication_state == "sent_to_live"
+    elsif publication_state.in?(%w[sent_to_live error_sending_to_live])
       "published"
     else
       raise "Encountered an unknown user facing state. review_state: #{review_state}, publication_state: #{publication_state}"
