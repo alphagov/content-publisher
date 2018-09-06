@@ -3,14 +3,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <% if flash[:errors].present? %>
-      <ul>
-        <% flash[:errors].each do |error| %>
-          <li><%= error %></li>
-        <% end %>
-      </ul>
-    <% end %>
-    <%= image_tag(url_for(@image.blob.variant(resize: "300x195"))) %>
+    <%= image_tag(url_for(@image.blob.variant(resize: "300x195")), id: "selected-image") %>
     <%= form_tag(update_document_lead_image_path(@document, @image), method: :patch) do %>
       <%= render "govuk_publishing_components/components/input", {
         label: {

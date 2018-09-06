@@ -3,12 +3,6 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <% if flash[:errors].present? %>
-      <ul>
-        <% flash[:errors].each do |error| %>
-          <li><%= error %></li>
-        <% end %>
-    <% end %>
     <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
       <%= file_field_tag "image" %>
       <p>

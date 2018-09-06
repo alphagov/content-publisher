@@ -40,9 +40,16 @@
     <% end %>
 
     <% if flash[:alert] %>
-      <%= render "components/error_alert", {
-        message: flash[:alert]
-      } %>
+      <% if flash[:alert].is_a? Enumerable %>
+        <%= render "govuk_publishing_components/components/error_summary", {
+          title: "TODO: Update gem to not require title",
+          items: flash[:alert].map { |alert| {text: alert} }
+        } %>
+      <% else %>
+        <%= render "components/error_alert", {
+          message: flash[:alert]
+        } %>
+      <% end %>
     <% end %>
 
     <main class="govuk-main-wrapper<%= " govuk-main-wrapper--l" if yield(:back_link).blank?%>" id="main-content" role="main">
