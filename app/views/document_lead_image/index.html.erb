@@ -11,6 +11,7 @@
     <% end %>
     <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
       <%= file_field_tag "image" %>
+      <p>
       <%= render "govuk_publishing_components/components/button", {
         text: "Upload"
       } %>
@@ -20,6 +21,22 @@
       <%= render "govuk_publishing_components/components/heading", {
         text: t("document_lead_image.index.existing_image")
       } %>
+      <table>
+        <% @document.images.each_with_index do |image, i| %>
+          <tr>
+            <td>
+              <%= image_tag(url_for(image.blob.variant(resize: "300x195")), id: "image-#{i}") %>
+            </td>
+            <div>
+              <td valign="top" class="govuk-body">
+                <strong><%= image.filename %></strong>
+                <p>
+                Last updated: <%= image.updated_at.strftime("%l:%M%P on %d %B %Y") %>
+              </td>
+            </div>
+          </tr>
+        <% end %>
+      </table>
     <% else %>
       <%= render "govuk_publishing_components/components/heading", {
         text: t("document_lead_image.index.no_existing_image")
