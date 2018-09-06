@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.feature "User filters a list of documents" do
-  scenario "User filters a list of documents" do
+RSpec.feature "User filters documents" do
+  scenario "User filters documents" do
     given_there_are_some_documents
     when_i_visit_the_index_page
     and_i_filter_by_title
