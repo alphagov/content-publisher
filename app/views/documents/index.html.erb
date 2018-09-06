@@ -5,8 +5,8 @@
 } %>
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-one-third">
-    <%= form_tag({}, method: :get) do %>
+  <%= form_tag({}, method: :get) do %>
+    <div class="govuk-grid-column-one-third">
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: t("documents.index.filter.title_or_url")
@@ -43,52 +43,59 @@
       } %>
 
       <a href="<%=documents_path %>">Clear filter</a>
-    <% end %>
-  </div>
+    </div>
 
-  <div class="govuk-grid-column-two-thirds">
-    <%= raw t("documents.index.search_results.summary", count: @documents.count) %>
+    <div class="govuk-grid-column-two-thirds">
+      <%= raw t("documents.index.search_results.summary", count: @documents.count) %>
 
-    <% if @documents.none? %>
-      <%= govspeak_to_html t("documents.index.search_results.guidance") %>
-    <% else %>
-      <table class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th class="govuk-table__header" scope="col"><%= t("documents.index.search_results.headings.title") %></th>
-            <th class="govuk-table__header" scope="col"><%= t("documents.index.search_results.headings.last_updated") %></th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          <% @documents.map do |document| %>
-            <tr class="govuk-table__row document">
-              <th class="govuk-table__header" scope="row">
-                <%= link_to document.title, document %>
+      <% if @documents.none? %>
+        <%= govspeak_to_html t("documents.index.search_results.guidance") %>
+      <% else %>
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header" scope="col">
+                <%= t("documents.index.search_results.headings.title") %>
               </th>
 
-              <td class="govuk-table__cell ">
-                <%= document.updated_at.strftime("%d %b %Y") %>
-              </td>
+              <th class="govuk-table__header" scope="col">
+                <%= t("documents.index.search_results.headings.last_updated") %>
+                <label for="sort"><%= t("documents.index.search_results.headings.last_updated_asc") %></label>
+                <input name="sort" value="-updated_at" type="submit"/>
+              </th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% end %>
+          </thead>
+          <tbody class="govuk-table__body">
+            <% @documents.map do |document| %>
+              <tr class="govuk-table__row document">
+                <th class="govuk-table__header" scope="row">
+                  <%= link_to document.title, document %>
+                </th>
 
-    <% pages = { } %>
+                <td class="govuk-table__cell ">
+                  <%= document.updated_at.strftime("%d %b %Y") %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
 
-    <% page_info = t("documents.index.search_results.page_info",
-                     page: @documents.current_page,
-                     pages: @documents.total_pages) %>
+      <% pages = { } %>
 
-    <% pages[:previous_page] = { url: documents_path(page: @documents.prev_page),
-                                 label: page_info,
-                                 title: "Previous page" } if @documents.prev_page %>
+      <% page_info = t("documents.index.search_results.page_info",
+                       page: @documents.current_page,
+                       pages: @documents.total_pages) %>
 
-    <% pages[:next_page] = { url: documents_path(page: @documents.next_page),
-                             label: page_info,
-                             title: "Next page" } if @documents.next_page %>
+      <% pages[:previous_page] = { url: documents_path(page: @documents.prev_page),
+                                   label: page_info,
+                                   title: "Previous page" } if @documents.prev_page %>
 
-    <%= render "govuk_publishing_components/components/previous_and_next_navigation", pages %>
-  </div>
+      <% pages[:next_page] = { url: documents_path(page: @documents.next_page),
+                               label: page_info,
+                               title: "Next page" } if @documents.next_page %>
+
+      <%= render "govuk_publishing_components/components/previous_and_next_navigation", pages %>
+    </div>
+  <% end %>
 </div>

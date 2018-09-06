@@ -6,6 +6,7 @@ en:
         headings:
           title: Document title
           last_updated: Last updated
+          last_updated_asc: Sort by lasting updated asc
         summary:
           one: "<strong>1</strong> document"
           other: "<strong>%{count}</strong> documents"
