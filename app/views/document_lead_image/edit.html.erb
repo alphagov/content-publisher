@@ -10,6 +10,7 @@
         <% end %>
       </ul>
     <% end %>
+    <%= image_tag(url_for(@image.blob.variant(resize: "300x195"))) %>
     <%= form_tag(update_document_lead_image_path(@document, @image), method: :patch) do %>
       <%= render "govuk_publishing_components/components/input", {
         label: {
