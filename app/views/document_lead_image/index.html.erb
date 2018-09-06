@@ -36,7 +36,9 @@
                   <strong><%= t("document_lead_image.index.credit") %></strong>: <%= image.credit %> <br \>
                 </p>
                 <p>
-                  <%= link_to "Choose image", update_document_lead_image_path(@document, image),  class: "app-c-summary__change-link" %>
+                  <%= form_tag update_document_lead_image_path(@document, image), method: :patch do %>
+                    <button>Choose image</button>
+                  <% end %>
                 </p>
               </td>
             </div>

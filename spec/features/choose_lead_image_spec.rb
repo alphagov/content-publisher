@@ -44,7 +44,6 @@ RSpec.feature "Choose a lead image" do
     within("td#image-1-metadata") do
       click_on "Choose image"
     end
-    click_on "Save and choose"
   end
 
   def then_i_should_see_the_new_lead_image_on_the_summary_page
