@@ -13,9 +13,6 @@
             hint_text: document_type.description,
             conditional: tag.div(govspeak_to_html(document_type.hint), class: "govuk-body"),
             bold: true,
-
-            # Remove after https://github.com/alphagov/govuk_publishing_components/pull/496
-            "conditional" => true,
           }
         }
       } %>
