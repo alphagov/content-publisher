@@ -16,7 +16,7 @@
       <%= link_to "Remove", "#", class: "govuk-link app-link--right" %>
     <% elsif @document.user_facing_state == "submitted_for_review" %>
       <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
-      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
+      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
 
       <%= link_to "Delete draft", '#' %>
     <% elsif @document.user_facing_state == "draft" %>
@@ -24,7 +24,7 @@
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
       <% end %>
 
-      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
+      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
 
       <%= link_to "Publish", publish_document_path(@document) %>
       <%= link_to "Delete draft", "#", class: "govuk-link app-link--right" %>
