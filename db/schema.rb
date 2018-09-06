@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_05_134625) do
+ActiveRecord::Schema.define(version: 2018_09_06_111857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,46 @@ ActiveRecord::Schema.define(version: 2018_09_05_134625) do
     t.index ["creator_id"], name: "index_documents_on_creator_id"
   end
 
+  create_table "event_document_approveds", force: :cascade do |t|
+    t.bigint "document_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_event_document_approveds_on_document_id"
+    t.index ["user_id"], name: "index_event_document_approveds_on_user_id"
+  end
+
+  create_table "event_document_publisheds", force: :cascade do |t|
+    t.bigint "document_id"
+    t.bigint "user_id"
+    t.string "review_state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_event_document_publisheds_on_document_id"
+    t.index ["user_id"], name: "index_event_document_publisheds_on_user_id"
+  end
+
+  create_table "event_document_submitteds", force: :cascade do |t|
+    t.bigint "document_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_event_document_submitteds_on_document_id"
+    t.index ["user_id"], name: "index_event_document_submitteds_on_user_id"
+  end
+
+  create_table "event_document_updateds", force: :cascade do |t|
+    t.bigint "document_id"
+    t.bigint "user_id"
+    t.json "before", default: {}
+    t.json "after", default: {}
+    t.json "changeset", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_event_document_updateds_on_document_id"
+    t.index ["user_id"], name: "index_event_document_updateds_on_user_id"
+  end
+
   create_table "images", force: :cascade do |t|
     t.bigint "document_id", null: false
     t.bigint "blob_id", null: false
@@ -86,6 +126,14 @@ ActiveRecord::Schema.define(version: 2018_09_05_134625) do
   end
 
   add_foreign_key "documents", "users", column: "creator_id"
+  add_foreign_key "event_document_approveds", "documents"
+  add_foreign_key "event_document_approveds", "users"
+  add_foreign_key "event_document_publisheds", "documents"
+  add_foreign_key "event_document_publisheds", "users"
+  add_foreign_key "event_document_submitteds", "documents"
+  add_foreign_key "event_document_submitteds", "users"
+  add_foreign_key "event_document_updateds", "documents"
+  add_foreign_key "event_document_updateds", "users"
   add_foreign_key "images", "active_storage_blobs", column: "blob_id", on_delete: :cascade
   add_foreign_key "images", "documents", on_delete: :cascade
 end

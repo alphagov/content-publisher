@@ -4,6 +4,7 @@ class DocumentImagesController < ApplicationController
   def create
     document = Document.find_by_param(params[:document_id])
     upload = UploadedImageService.new(params.require(:image)).process
+    Event::DocumentUpdated.create!(document: document, user: current_user)
 
     if upload.valid?
       image = create_image_from_upload(upload, document)
@@ -17,6 +18,7 @@ class DocumentImagesController < ApplicationController
     document = Document.find_by_param(params[:document_id])
     image = Image.find_by!(id: params[:id], document_id: document.id)
     image.assign_attributes(image_params)
+    Event::DocumentUpdated.create!(document: document, user: current_user)
 
     if image.valid?
       image.save

@@ -1,1 +1,6 @@
-Document history is not available right now.
+<% @document.events.each do |e| %>
+  <p>
+    <%= render "events/#{e.class.name.demodulize.underscore}", e: e %>
+    <%= e.user.name %> at <%= e.created_at.strftime("%l:%M%P on %d %B %Y") %>
+  </p>
+<% end %>

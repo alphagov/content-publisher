@@ -20,7 +20,16 @@ class DocumentsController < ApplicationController
 
   def update
     document = Document.find_by_param(params[:id])
+    before = document.as_json
     document.update!(update_params(document))
+    after = document.as_json
+    Event::DocumentUpdated.create!(
+      document: document,
+      user: current_user,
+      before: before,
+      after: after,
+    )
+
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: t("documents.show.flashes.draft_success")
   rescue GdsApi::BaseError => e
