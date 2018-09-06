@@ -26,7 +26,7 @@ class SupertypeSchema
 
   def managed_elsewhere_url
     if managed_elsewhere["hostname"]
-      Plek.find(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
+      Plek.new.external_url_for(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
     else
       managed_elsewhere["path"]
     end
