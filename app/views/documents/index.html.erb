@@ -20,8 +20,20 @@
         html_for: "document_type"
       } %>
 
+
+      <% document_type_select = SupertypeSchema.all.inject([]) do |memo, supertype|
+          document_options = supertype
+            .document_types
+            .reject { |d| d.managed_elsewhere }
+            .map { |d| [d.label, d.id] }
+
+          memo << [supertype.label, document_options] if document_options.any?
+          memo
+        end
+      %>
+
       <%= select_tag "document_type",
-        grouped_options_for_select(@document_type_select, params[:document_type]),
+        grouped_options_for_select(document_type_select, params[:document_type]),
         class: "govuk-select",
         include_blank: true
       %>

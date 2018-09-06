@@ -7,17 +7,7 @@ class DocumentsController < ApplicationController
   end
 
   def index
-    @document_type_select = SupertypeSchema.all.inject([]) do |memo, supertype|
-      document_options = supertype
-        .document_types
-        .reject { |d| d.managed_elsewhere }
-        .map { |d| [d.label, d.id] }
-
-      memo << [supertype.label, document_options] if document_options.any?
-      memo
-    end
-
-    scope = Document.all
+    scope = Document
 
     if params[:title_or_url]
       scope = scope.where(
