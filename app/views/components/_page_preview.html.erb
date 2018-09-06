@@ -1,5 +1,8 @@
 <%= render "govuk_publishing_components/components/details", title: "Share" do %>
-  <p>Copy and send this link to someone and they’ll be able to preview your draft on GOV.UK.</p>
+  <%= render "govuk_publishing_components/components/copy_to_clipboard",
+    label: "Copy and send this link to someone and they’ll be able to preview your draft on GOV.UK.",
+    copyable_content: url,
+    button_text: "Copy link" %>
 
   <%= link_to url, url %>
 <% end %>
