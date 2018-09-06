@@ -4,12 +4,13 @@ class ReviewController < ApplicationController
   def submit_for_2i
     document = Document.find_by_param(params[:id])
     document.update!(review_state: "submitted_for_review")
-    redirect_to document, notice: "Content has been submitted for 2i review"
+    flash[:submitted_for_review] = true
+    redirect_to document
   end
 
   def approve
     document = Document.find_by_param(params[:id])
     document.update!(review_state: "reviewed")
-    redirect_to document, notice: "Content has been reviewed and approved"
+    redirect_to document, notice: t("documents.show.flashes.approved")
   end
 end

@@ -1,0 +1,10 @@
+<% copy_to_clipboard = render(
+  "govuk_publishing_components/components/copy_to_clipboard",
+    label: t("documents.show.flashes.submitted_for_review.label"),
+    copyable_content: DocumentUrl.new(@document).public_url,
+    button_text: "Copy link"
+) %>
+
+<%= render "govuk_publishing_components/components/success_alert",
+  message: t("documents.show.flashes.submitted_for_review.title"),
+  description: copy_to_clipboard %>
