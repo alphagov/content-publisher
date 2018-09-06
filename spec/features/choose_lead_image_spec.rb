@@ -7,6 +7,7 @@ RSpec.feature "Choose a lead image" do
     and_i_visit_the_lead_images_page
     then_i_should_be_able_to_see_a_list_of_existing_images
     when_i_select_an_image_to_be_the_lead_image
+    then_i_should_see_the_new_lead_image_on_the_summary_page
   end
 
   def given_there_is_a_document_with_existing_images
@@ -40,6 +41,13 @@ RSpec.feature "Choose a lead image" do
   end
 
   def when_i_select_an_image_to_be_the_lead_image
-    click_on()
+    within("td#image-1-metadata") do
+      click_on "Choose image"
+    end
+    click_on "Save and choose"
+  end
+
+  def then_i_should_see_the_new_lead_image_on_the_summary_page
+    expect(find("#lead-image")["src"]).to include("image-2.jpg")
   end
 end
