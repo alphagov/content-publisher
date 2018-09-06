@@ -17,6 +17,10 @@
         field: t("documents.show.lead_image.fields.credit"),
         value: @document.lead_image.credit
       },
+      {
+        field: t("documents.show.lead_image.fields.image"),
+        value: image_tag(url_for(@document.lead_image_thumbnail), alt: @document.lead_image.alt_text, id: "lead-image")
+      },
     ]
   } %>
 <% else %>

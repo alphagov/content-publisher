@@ -43,7 +43,7 @@ RSpec.feature "Edit a lead image" do
   def then_i_should_be_able_to_see_the_image
     expect(page).to have_content("Image caption")
     expect(page).to have_content("Image credit")
-    expect(find("#lead-image")["href"]).to include("960x640.jpg")
+    expect(find("#lead-image")["src"]).to include("960x640.jpg")
     expect(find("#lead-image")["alt"]).to eq("Some alt text")
   end
 end
