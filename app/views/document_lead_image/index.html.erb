@@ -28,10 +28,13 @@
               <%= image_tag(url_for(image.blob.variant(resize: "300x195")), id: "image-#{i}") %>
             </td>
             <div>
-              <td valign="top" class="govuk-body">
-                <strong><%= image.filename %></strong>
+              <td valign="top" class="govuk-body" id=<%= "image-#{i}-metadata" %>>
+                <% if image == @document.lead_image %><strong>Lead image</strong><% end %>
                 <p>
-                Last updated: <%= image.updated_at.strftime("%l:%M%P on %d %B %Y") %>
+                  <strong><%= t("document_lead_image.index.alt_text") %></strong>: <%= image.alt_text %> <br \>
+                  <strong><%= t("document_lead_image.index.caption") %></strong>: <%= image.caption %> <br \>
+                  <strong><%= t("document_lead_image.index.credit") %></strong>: <%= image.credit %> <br \>
+                </p>
               </td>
             </div>
           </tr>

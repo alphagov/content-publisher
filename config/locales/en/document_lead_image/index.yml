@@ -4,3 +4,6 @@ en:
       title: Lead image
       existing_image: Choose existing image
       no_existing_image: No images available
+      alt_text: Alt text
+      caption: Image caption
+      credit: Image credit
