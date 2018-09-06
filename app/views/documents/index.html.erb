@@ -52,22 +52,27 @@
     <% if @documents.none? %>
       <%= govspeak_to_html t("documents.index.search_results.guidance") %>
     <% else %>
-      <%= render "govuk_publishing_components/components/document_list", {
-        items: @documents.map do |document|
-          {
-            link: {
-              text: document.title.presence || t("documents.index.search_results.untitled"),
-              path: document_path(document),
-              description: document.summary,
-              context: document.locale
-            },
-            metadata: {
-              public_updated_at: document.updated_at,
-              document_type: document.document_type_schema.label
-            }
-          }
-        end
-      } %>
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header" scope="col"><%= t("documents.index.search_results.headings.title") %></th>
+            <th class="govuk-table__header" scope="col"><%= t("documents.index.search_results.headings.last_updated") %></th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          <% @documents.map do |document| %>
+            <tr class="govuk-table__row document">
+              <th class="govuk-table__header" scope="row">
+                <%= link_to document.title, document %>
+              </th>
+
+              <td class="govuk-table__cell ">
+                <%= document.updated_at.strftime("%d %b %Y") %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     <% end %>
 
     <% pages = { } %>

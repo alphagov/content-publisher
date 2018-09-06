@@ -3,6 +3,9 @@ en:
     index:
       title: Documents
       search_results:
+        headings:
+          title: Document title
+          last_updated: Last updated
         summary:
           one: "<strong>1</strong> document"
           other: "<strong>%{count}</strong> documents"
