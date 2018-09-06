@@ -22,7 +22,9 @@ RSpec.feature "User orders documents" do
     most_recent_index = page.body.index(@most_recent.title)
     least_recent_index = page.body.index(@least_recent.title)
     expect(most_recent_index < least_recent_index)
-    expect(page).to have_content("Sort by last updated asc")
+
+    asc_updated_title = I18n.t('documents.index.search_results.headings.last_updated_asc')
+    expect(page).to have_selector("[title='#{asc_updated_title}']")
   end
 
   def when_i_toggle_the_last_updated_sort_order
@@ -33,6 +35,8 @@ RSpec.feature "User orders documents" do
     most_recent_index = page.body.index(@most_recent.title)
     least_recent_index = page.body.index(@least_recent.title)
     expect(most_recent_index > least_recent_index)
-    expect(page).to have_content("Sort by last updated desc")
+
+    desc_updated_title = I18n.t('documents.index.search_results.headings.last_updated_desc')
+    expect(page).to have_selector("[title='#{desc_updated_title}']")
   end
 end

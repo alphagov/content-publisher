@@ -5,8 +5,8 @@
 } %>
 
 <div class="govuk-grid-row">
-  <%= form_tag({}, method: :get) do %>
-    <div class="govuk-grid-column-one-third">
+  <div class="govuk-grid-column-one-third">
+    <%= form_tag({}, method: :get) do %>
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: t("documents.index.filter.title_or_url")
@@ -19,7 +19,6 @@
         text: t("documents.index.filter.document_type"),
         html_for: "document_type"
       } %>
-
 
       <% document_type_select = SupertypeSchema.all.inject([]) do |memo, supertype|
           document_options = supertype
@@ -42,60 +41,70 @@
         text: "Filter", margin_bottom: true
       } %>
 
-      <a href="<%=documents_path %>">Clear filter</a>
-    </div>
+      <%= link_to "Clear filter", documents_path %>
+    <% end %>
+  </div>
 
-    <div class="govuk-grid-column-two-thirds">
-      <%= raw t("documents.index.search_results.summary", count: @documents.count) %>
+  <div class="govuk-grid-column-two-thirds">
+    <%= t("documents.index.search_results.summary_html", count: @documents.total_count) %>
 
-      <% if @documents.none? %>
-        <%= govspeak_to_html t("documents.index.search_results.guidance") %>
-      <% else %>
-        <table class="govuk-table">
-          <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-              <th class="govuk-table__header" scope="col">
-                <%= t("documents.index.search_results.headings.title") %>
+    <% if @documents.none? %>
+      <%= govspeak_to_html t("documents.index.search_results.guidance") %>
+    <% else %>
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header" scope="col">
+              <%= t("documents.index.search_results.headings.title") %>
+            </th>
+
+            <th class="govuk-table__header" scope="col">
+              <%
+                active = @sort.delete_prefix("-") == "updated_at"
+                link_to_asc = active && @sort[0] == "-"
+                classes = []
+                classes << "active" if active
+                classes << "desc" if active && link_to_asc
+              %>
+              <%= link_to(
+                t("documents.index.search_results.headings.last_updated"),
+                documents_path(@filter_params.merge(sort: "#{link_to_asc ? '' : '-'}updated_at", page: nil)),
+                title: t("documents.index.search_results.headings.last_updated_#{link_to_asc ? 'asc' : 'desc'}"),
+                class: classes
+              ) %>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          <% @documents.map do |document| %>
+            <tr class="govuk-table__row document">
+              <th class="govuk-table__header" scope="row">
+                <%= link_to document.title, document %>
               </th>
 
-              <th class="govuk-table__header" scope="col">
-                <%= t("documents.index.search_results.headings.last_updated") %>
-                <label for="sort"><%= t("documents.index.search_results.headings.last_updated_asc") %></label>
-                <input name="sort" value="-updated_at" type="submit"/>
-              </th>
+              <td class="govuk-table__cell ">
+                <%= document.updated_at.strftime("%d %b %Y") %>
+              </td>
             </tr>
-          </thead>
-          <tbody class="govuk-table__body">
-            <% @documents.map do |document| %>
-              <tr class="govuk-table__row document">
-                <th class="govuk-table__header" scope="row">
-                  <%= link_to document.title, document %>
-                </th>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
 
-                <td class="govuk-table__cell ">
-                  <%= document.updated_at.strftime("%d %b %Y") %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      <% end %>
+    <% pages = { } %>
 
-      <% pages = { } %>
+    <% page_info = t("documents.index.search_results.page_info",
+                     page: @documents.current_page,
+                     pages: @documents.total_pages) %>
 
-      <% page_info = t("documents.index.search_results.page_info",
-                       page: @documents.current_page,
-                       pages: @documents.total_pages) %>
+    <% pages[:previous_page] = { url: documents_path(@filter_params.merge(page: @documents.prev_page)),
+                                 label: page_info,
+                                 title: "Previous page" } if @documents.prev_page %>
 
-      <% pages[:previous_page] = { url: documents_path(page: @documents.prev_page),
-                                   label: page_info,
-                                   title: "Previous page" } if @documents.prev_page %>
+    <% pages[:next_page] = { url: documents_path(@filter_params.merge(page: @documents.next_page)),
+                             label: page_info,
+                             title: "Next page" } if @documents.next_page %>
 
-      <% pages[:next_page] = { url: documents_path(page: @documents.next_page),
-                               label: page_info,
-                               title: "Next page" } if @documents.next_page %>
-
-      <%= render "govuk_publishing_components/components/previous_and_next_navigation", pages %>
-    </div>
-  <% end %>
+    <%= render "govuk_publishing_components/components/previous_and_next_navigation", pages %>
+  </div>
 </div>

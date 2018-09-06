@@ -6,8 +6,9 @@ en:
         headings:
           title: Document title
           last_updated: Last updated
-          last_updated_asc: Sort by lasting updated asc
-        summary:
+          last_updated_asc: Sort by last updated ascending
+          last_updated_desc: Sort by last updated descending
+        summary_html:
           one: "<strong>1</strong> document"
           other: "<strong>%{count}</strong> documents"
         untitled: No title
