@@ -27,3 +27,6 @@ en:
         draft_error: Error creating preview
         publish_error: Error publishing
         approved: Content has been reviewed and approved
+        submitted_for_review:
+          title: Content has been submitted for 2i review
+          label: Send this document to another publisher for them to review. When content is ready you or they can publish it.
