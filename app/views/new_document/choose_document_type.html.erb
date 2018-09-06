@@ -11,7 +11,7 @@
             value: document_type.id,
             text: document_type.label,
             hint_text: document_type.description,
-            conditional: tag.div(govspeak_to_html(document_type.hint), class: "govuk-body"),
+            conditional: document_type.hint ? tag.div(govspeak_to_html(document_type.hint), class: "govuk-body") : nil,
             bold: true,
           }
         }

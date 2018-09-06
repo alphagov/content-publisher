@@ -12,7 +12,7 @@
             text: supertype.label,
             hint_text: supertype.description,
             bold: true,
-            conditional: tag.p(supertype.hint, class: "govuk-body"),
+            conditional: supertype.hint ? tag.p(supertype.hint, class: "govuk-body") : nil,
           }
         end
       } %>
