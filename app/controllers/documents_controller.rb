@@ -9,15 +9,15 @@ class DocumentsController < ApplicationController
   def index
     scope = Document
 
-    if params[:title_or_url]
+    if params[:title_or_url].present?
       scope = scope.where(
         "title ILIKE ? OR base_path ILIKE ?",
-        params[:title_or_url],
-        params[:title_or_url]
+        "%#{params[:title_or_url]}%",
+        "%#{params[:title_or_url]}%",
       )
     end
 
-    if params[:document_type]
+    if params[:document_type].present?
       scope = scope.where(document_type: params[:document_type])
     end
 

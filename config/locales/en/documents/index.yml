@@ -3,6 +3,9 @@ en:
     index:
       title: Documents
       search_results:
+        summary:
+          one: "<strong>1</strong> document"
+          other: "<strong>%{count}</strong> documents"
         untitled: No title
         page_info: "%{page} of %{pages}"
       filter:

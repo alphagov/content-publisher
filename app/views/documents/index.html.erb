@@ -45,7 +45,10 @@
       <a href="<%=documents_path %>">Clear filter</a>
     <% end %>
   </div>
+
   <div class="govuk-grid-column-two-thirds">
+    <%= raw t("documents.index.search_results.summary", count: @documents.count) %>
+
     <%= render "govuk_publishing_components/components/document_list", {
       items: @documents.map do |document|
         {
