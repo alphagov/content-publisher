@@ -7,6 +7,8 @@ RSpec.feature "User orders documents" do
     then_i_see_the_most_recently_updated_first
     when_i_toggle_the_last_updated_sort_order
     then_i_see_the_least_recently_updated_first
+    when_i_apply_a_filter
+    then_i_see_the_least_recently_ordering_is_maintained
   end
 
   def given_there_are_some_documents
@@ -38,5 +40,14 @@ RSpec.feature "User orders documents" do
 
     desc_updated_title = I18n.t('documents.index.search_results.headings.last_updated_desc')
     expect(page).to have_selector("[title='#{desc_updated_title}']")
+  end
+
+  def when_i_apply_a_filter
+    fill_in "title", with: "recent"
+    click_on "Filter"
+  end
+
+  def then_i_see_the_least_recently_ordering_is_maintained
+    then_i_see_the_least_recently_updated_first
   end
 end

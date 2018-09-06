@@ -37,6 +37,8 @@
         include_blank: true
       %>
 
+      <%= hidden_field_tag "sort", @sort %>
+
       <%= render "govuk_publishing_components/components/button", {
         text: "Filter", margin_bottom: true
       } %>
