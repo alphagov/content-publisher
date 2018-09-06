@@ -17,7 +17,7 @@
         <%= render "govuk_publishing_components/components/copy_to_clipboard",
           label: nil,
           copyable_content: DocumentUrl.new(@document).public_url,
-          button_text: t("global.copy_to_clipboard_button") %>
+          button_text: "Copy link" %>
       <% end %>
     <% else %>
       <!-- this will use the panel component -->
@@ -33,7 +33,7 @@
         <%= render "govuk_publishing_components/components/copy_to_clipboard",
           label: t("publish_document.published_document.published_without_review.send_label"),
           copyable_content: DocumentUrl.new(@document).public_url,
-          button_text: t("global.copy_to_clipboard_button") %>
+          button_text: "Copy link" %>
       <% end %>
     <% end %>
   </div>
