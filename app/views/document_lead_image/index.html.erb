@@ -15,8 +15,15 @@
         text: "Upload"
       } %>
     <% end %>
-    <%= render "govuk_publishing_components/components/heading", {
-      text: t("document_lead_image.index.existing_image")
-    } %>
+
+    <% if @document.images.any? %>
+      <%= render "govuk_publishing_components/components/heading", {
+        text: t("document_lead_image.index.existing_image")
+      } %>
+    <% else %>
+      <%= render "govuk_publishing_components/components/heading", {
+        text: t("document_lead_image.index.no_existing_image")
+      } %>
+    <% end %>
   </div>
 </div>

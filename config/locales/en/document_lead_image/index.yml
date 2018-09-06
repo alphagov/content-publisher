@@ -3,3 +3,4 @@ en:
     index:
       title: Lead image
       existing_image: Choose existing image
+      no_existing_image: No images available

@@ -6,6 +6,7 @@ RSpec.feature "Edit a lead image" do
     when_i_visit_the_summary_page
     then_i_see_there_is_no_lead_image
     when_i_visit_the_lead_images_page
+    then_i_should_see_no_images_available
     and_i_upload_a_new_image
     and_i_fill_in_the_metadata
     then_i_should_be_able_to_see_the_image
@@ -26,6 +27,10 @@ RSpec.feature "Edit a lead image" do
 
   def when_i_visit_the_lead_images_page
     click_on "Change Lead image"
+  end
+
+  def then_i_should_see_no_images_available
+    expect(page).to have_content(I18n.t("document_lead_image.index.no_existing_image"))
   end
 
   def and_i_upload_a_new_image
