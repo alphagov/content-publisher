@@ -10,6 +10,8 @@ RSpec.feature "User filters a list of documents" do
     then_i_see_all_the_documents
     when_i_filter_by_document_type
     then_i_see_just_the_ones_that_match
+    when_i_filter_too_much
+    then_i_see_there_are_no_results
   end
 
   def given_there_are_some_documents
@@ -49,5 +51,14 @@ RSpec.feature "User filters a list of documents" do
   def when_i_filter_by_document_type
     select @relevant_document.document_type_schema.label, from: "document_type"
     click_on "Filter"
+  end
+
+  def when_i_filter_too_much
+    fill_in "title", with: SecureRandom.uuid
+    click_on "Filter"
+  end
+
+  def then_i_see_there_are_no_results
+    expect(page).to have_content("0 documents")
   end
 end

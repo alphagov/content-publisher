@@ -8,6 +8,12 @@ en:
           other: "<strong>%{count}</strong> documents"
         untitled: No title
         page_info: "%{page} of %{pages}"
+        guidance: |
+          Improve your search results:
+
+            * removing filters
+            * searching for something less specific
+            * double-checking your spelling
       filter:
         title_or_url: Search for a title or URL slug
         document_type: Document type

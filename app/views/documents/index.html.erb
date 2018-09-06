@@ -49,22 +49,26 @@
   <div class="govuk-grid-column-two-thirds">
     <%= raw t("documents.index.search_results.summary", count: @documents.count) %>
 
-    <%= render "govuk_publishing_components/components/document_list", {
-      items: @documents.map do |document|
-        {
-          link: {
-            text: document.title.presence || t("documents.index.search_results.untitled"),
-            path: document_path(document),
-            description: document.summary,
-            context: document.locale
-          },
-          metadata: {
-            public_updated_at: document.updated_at,
-            document_type: document.document_type_schema.label
+    <% if @documents.none? %>
+      <%= govspeak_to_html t("documents.index.search_results.guidance") %>
+    <% else %>
+      <%= render "govuk_publishing_components/components/document_list", {
+        items: @documents.map do |document|
+          {
+            link: {
+              text: document.title.presence || t("documents.index.search_results.untitled"),
+              path: document_path(document),
+              description: document.summary,
+              context: document.locale
+            },
+            metadata: {
+              public_updated_at: document.updated_at,
+              document_type: document.document_type_schema.label
+            }
           }
-        }
-      end
-    } %>
+        end
+      } %>
+    <% end %>
 
     <% pages = { } %>
 
