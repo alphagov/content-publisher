@@ -11,6 +11,22 @@
   }
 } %>
 
+
+<% update_types = if @document.update_type
+  [
+    {
+      field: t("documents.show.contents.items.update_type"),
+      value: t("documents.edit.update_type.#{@document.update_type}_name"),
+    },
+    {
+      field: t("documents.show.contents.items.change_note"),
+      value: @document.change_note,
+    }
+  ]
+else
+  []
+end %>
+
 <%= render "components/summary", {
   title: {
     text: t("documents.show.contents.title"),
@@ -29,5 +45,5 @@
       field: t("documents.show.contents.items.summary"),
       value: @document.summary
     }
-  ] + contents
+  ] + contents + update_types
 } %>

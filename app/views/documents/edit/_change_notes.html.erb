@@ -1,0 +1,41 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/textarea", {
+      label: {
+        text: t("documents.edit.change_note.title"),
+        bold: true,
+      },
+      hint: t("documents.edit.change_note.hint"),
+      name: "document[change_note]",
+      value: @document.change_note,
+      rows: 4
+    } %>
+
+    <%= render "govuk_publishing_components/components/govspeak" do %>
+      <%= govspeak_to_html t("documents.edit.change_note.guidance") %>
+    <% end %>
+
+    <% legend_text = tag.p(t("documents.edit.update_type.title"), class: "govuk-!-margin-bottom-3") %>
+
+    <%= render "govuk_publishing_components/components/fieldset", legend_text: legend_text do %>
+      <%= render "govuk_publishing_components/components/radio", {
+        name: "document[update_type]",
+        id: "update-type",
+        items: [
+          {
+            value: "minor",
+            text: t("documents.edit.update_type.minor_name"),
+            conditional: tag.p(t("documents.edit.update_type.minor_hint"), class: "govuk-body"),
+            checked: @document.update_type == "minor",
+          },
+          {
+            value: "major",
+            text: t("documents.edit.update_type.major_name"),
+            conditional: tag.p(t("documents.edit.update_type.major_hint"), class: "govuk-body"),
+            checked: @document.update_type == "major",
+          }
+        ]
+      } %>
+    <% end %>
+  </div>
+</div>

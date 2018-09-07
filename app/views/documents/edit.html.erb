@@ -76,6 +76,10 @@
     <%= render "documents/fields/#{schema.type}_input", schema: schema, document: @document %>
   <% end %>
 
+  <% if @document.has_live_version_on_govuk %>
+    <%= render "documents/edit/change_notes" %>
+  <% end %>
+
   <%= render "govuk_publishing_components/components/button", {
     text: "Save", margin_bottom: true
   } %>

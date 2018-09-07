@@ -25,7 +25,7 @@ RSpec.describe DocumentPublishingService do
       DocumentPublishingService.new.publish(document, "reviewed")
 
       expect(document).to have_received(:update!).with(publication_state: "sending_to_live", review_state: "reviewed")
-      expect(document).to have_received(:update!).with(publication_state: "sent_to_live")
+      expect(document).to have_received(:update!).with(publication_state: "sent_to_live", has_live_version_on_govuk: true, change_note: nil, update_type: "major")
     end
   end
 end
