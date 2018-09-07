@@ -1,14 +1,13 @@
-<p>
-  <%= render "govuk_publishing_components/components/label", {
-    text: schema.label,
-    html_for: "tags[#{schema.id}]"
-  } %>
-
-  <% options = LinkablesService.new(schema.document_type).select_options %>
-
-  <%= select_tag "tags[#{schema.id}][]",
-    options_for_select(options, tags[schema.id]),
-    class: "govuk-select",
-    multiple: true,
-    style: "height: 200px" %>
-</p>
+<%= render "components/autocomplete", {
+  id: schema.id,
+  name: "tags[#{schema.id}][]",
+  label: schema.label,
+  options: LinkablesService.new(schema.document_type).select_options,
+  selected_options: tags[schema.id],
+  multiple: true,
+  size: 10,
+  data: {
+    module: "autocomplete-multiselect",
+    "contextual-guidance": contextual_guidance_id
+  }
+} %>

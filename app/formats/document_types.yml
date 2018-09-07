@@ -19,6 +19,12 @@
     - id: body
       title: Writing news
       body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+    - id: primary_publishing_organisation
+      title: Primary organisation
+      body: The organisation responsible for publishing and maintaining this content.
+    - id: organisations
+      title: Organisations
+      body: Any organisations who share responsibility for this content.
   contents:
     - id: body
       label: Body
@@ -34,10 +40,6 @@
       label: Organisations
       type: multi_tag
       document_type: organisation
-    - id: worldwide_organisations
-      label: Worldwide organisations
-      type: multi_tag
-      document_type: worldwide_organisation
     - id: topical_events
       label: Topical events
       type: multi_tag
@@ -46,6 +48,10 @@
       label: World locations
       type: multi_tag
       document_type: world_location
+    - id: worldwide_organisations
+      label: Worldwide organisations
+      type: multi_tag
+      document_type: worldwide_organisation
 
 - id: press_release
   label: Press release
@@ -67,6 +73,12 @@
     - id: body
       title: Writing a news story
       body: Put the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+    - id: primary_publishing_organisation
+      title: Primary organisation
+      body: The organisation responsible for publishing and maintaining this content.
+    - id: organisations
+      title: Organisations
+      body: Any organisations who share responsibility for this content.
   contents:
     - id: body
       label: Body
@@ -82,10 +94,6 @@
       label: Organisations
       type: multi_tag
       document_type: organisation
-    - id: worldwide_organisations
-      label: Worldwide organisations
-      type: multi_tag
-      document_type: worldwide_organisation
     - id: topical_events
       label: Topical events
       type: multi_tag
@@ -94,6 +102,10 @@
       label: World locations
       type: multi_tag
       document_type: world_location
+    - id: worldwide_organisations
+      label: Worldwide organisations
+      type: multi_tag
+      document_type: worldwide_organisation
 
 - id: fatality_notice
   label: Fatality notice

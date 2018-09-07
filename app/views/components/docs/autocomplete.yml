@@ -1,0 +1,78 @@
+name: Autocomplete
+description: An autocomplete component, built to be accessible
+body: |
+  This component is build using [Accessible Autocomplete](https://github.com/alphagov/accessible-autocomplete)
+part_of_admin_layout: true
+accessibility_criteria: |
+  [Accessibility acceptance criteria](https://github.com/alphagov/accessible-autocomplete/blob/master/accessibility-criteria.md)
+examples:
+  default:
+    data:
+      id: autocomplete
+      name: autocomplete
+      label: Select your country
+      options:
+        -
+          - France
+          - fr
+        -
+          - Germany
+          - de
+        -
+          - United Kingdom
+          - uk
+
+  with_selected_value:
+    data:
+      id: autocomplete-selected
+      name: autocomplete-selected
+      label: Select your country
+      options:
+        -
+          - France
+          - fr
+        -
+          - Germany
+          - de
+        -
+          - United Kingdom
+          - uk
+      selected_options:
+          - fr
+
+  multiselect:
+    data:
+      id: autocomplete-multiselect
+      name: autocomplete-multiselect
+      label: Select your country
+      multiple: true
+      options:
+        -
+          - France
+          - fr
+        -
+          - Germany
+          - de
+        -
+          - United Kingdom
+          - uk
+
+  multiselect_with_selected_values:
+    data:
+      id: autocomplete-multiselect-selected
+      name: autocomplete-multiselect-selected
+      label: Select your country
+      multiple: true
+      options:
+        -
+          - France
+          - fr
+        -
+          - Germany
+          - de
+        -
+          - United Kingdom
+          - uk
+      selected_options:
+          - fr
+          - de

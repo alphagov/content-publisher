@@ -1,0 +1,11 @@
+@import "vendor/accessible-autocomplete/dist/accessible-autocomplete.min";
+
+.autocomplete__option {
+  @include govuk-font(19);
+}
+
+.js-enabled {
+  .app-c-autocomplete__multiselect-instructions {
+    display: none;
+  }
+}
