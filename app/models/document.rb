@@ -46,8 +46,4 @@ class Document < ApplicationRecord
   def user_facing_state
     UserFacingState.new(self).to_s
   end
-
-  def lead_image_thumbnail
-    self.lead_image.blob.variant(resize: "300x195")
-  end
 end

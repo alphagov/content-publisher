@@ -3,7 +3,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= image_tag(url_for(@image.blob.variant(resize: "300x195")), id: "selected-image") %>
+    <%= image_tag(url_for(@image.thumbnail), id: "selected-image") %>
     <%= form_tag(update_document_lead_image_path(@document, @image), method: :patch) do %>
       <%= render "govuk_publishing_components/components/input", {
         label: {

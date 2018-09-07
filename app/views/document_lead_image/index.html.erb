@@ -19,7 +19,7 @@
         <% @document.images.each_with_index do |image, i| %>
           <tr>
             <td>
-              <%= image_tag(url_for(image.blob.variant(resize: "300x195")), id: "image-#{i}") %>
+              <%= image_tag(url_for(image.thumbnail), id: "image-#{i}") %>
             </td>
             <div>
               <td valign="top" class="govuk-body" id=<%= "image-#{i}-metadata" %>>
