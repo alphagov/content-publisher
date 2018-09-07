@@ -6,7 +6,7 @@ class DocumentFilter
 
   attr_reader :filters, :sort, :page, :per_page
 
-  def initialize(filters:, sort:, page: nil, per_page:)
+  def initialize(filters: {}, sort: nil, page: nil, per_page: nil)
     @filters = filters.symbolize_keys
     @sort = allowed_sort?(sort) ? sort : DEFAULT_SORT
     @page = page
@@ -35,11 +35,14 @@ private
   def filtered_scope(scope)
     filters.inject(scope) do |memo, (field, value)|
       next memo if value.blank?
+
       case field
       when :title_or_url
         memo.where("title ILIKE ? OR base_path ILIKE ?", "%#{value}%", "%#{value}%")
       when :document_type
         memo.where(document_type: value)
+      else
+        memo
       end
     end
   end
