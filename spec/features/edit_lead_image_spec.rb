@@ -39,7 +39,7 @@ RSpec.feature "Edit a lead image" do
   end
 
   def and_i_fill_in_the_metadata
-    expect(find(:img)["src"]).to include("960x640.jpg")
+    expect(find("#selected-image")["src"]).to include("960x640.jpg")
     fill_in "alt_text", with: "Some alt text"
     fill_in "caption", with: "Image caption"
     fill_in "credit", with: "Image credit"
