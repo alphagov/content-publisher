@@ -48,6 +48,8 @@ class NewDocumentController < ApplicationController
       creator_id: current_user.id,
     )
 
+    Event::DocumentUpdated.create!(document: document, user: current_user)
+
     redirect_to edit_document_path(document)
   end
 

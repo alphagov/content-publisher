@@ -1,0 +1,26 @@
+<h3 class="govuk-heading-m"><%= e.class.name.demodulize.underscore.humanize %></h3>
+
+<%= render "govuk_publishing_components/components/details", title: "Changes" do %>
+  <table style="width:100%">
+    <tr>
+      <td>
+        Before
+      </td>
+      <td>
+        After
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= render "components/summary", {
+          items: e.before.slice("title", "summary").map { |k, v| { field: k, value: v } }
+        } %>
+      </td>
+      <td>
+        <%= render "components/summary", {
+          items: e.after.slice("title", "summary").map { |k, v| { field: k, value: v } }
+        } %>
+      </td>
+    </tr>
+  </table>
+<% end %>

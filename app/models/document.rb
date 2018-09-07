@@ -24,6 +24,15 @@ class Document < ApplicationRecord
   validates_inclusion_of :publication_state, in: PUBLICATION_STATES
   validates_inclusion_of :review_state, in: REVIEW_STATES
 
+  def events
+    @events ||= [
+      Event::DocumentApproved.where(document: self),
+      Event::DocumentPublished.where(document: self),
+      Event::DocumentSubmitted.where(document: self),
+      Event::DocumentUpdated.where(document: self),
+    ].flat_map(&:all).sort_by(&:created_at).reverse
+  end
+
   def document_type_schema
     DocumentTypeSchema.find(document_type)
   end
