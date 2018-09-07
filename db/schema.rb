@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_05_134625) do
+ActiveRecord::Schema.define(version: 2018_09_07_121447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,9 @@ ActiveRecord::Schema.define(version: 2018_09_05_134625) do
     t.string "publication_state", null: false
     t.bigint "creator_id"
     t.string "review_state", null: false
+    t.text "change_note"
+    t.string "update_type"
+    t.boolean "has_live_version_on_govuk", default: false, null: false
     t.index ["base_path"], name: "index_documents_on_base_path", unique: true
     t.index ["content_id", "locale"], name: "index_documents_on_content_id_and_locale", unique: true
     t.index ["creator_id"], name: "index_documents_on_creator_id"

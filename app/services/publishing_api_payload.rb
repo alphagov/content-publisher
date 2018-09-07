@@ -21,6 +21,8 @@ class PublishingApiPayload
       "document_type" => document.document_type,
       "publishing_app" => PUBLISHING_APP,
       "rendering_app" => publishing_metadata.rendering_app,
+      "update_type" => document.update_type,
+      "change_note" => document.change_note,
       "details" => details,
       "routes" => [
         { "path" => document.base_path, "type" => "exact" },

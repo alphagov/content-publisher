@@ -46,6 +46,8 @@ class NewDocumentController < ApplicationController
       review_state: "unreviewed",
       tags: default_tags,
       creator_id: current_user.id,
+      update_type: "major",
+      change_note: "First published.",
     )
 
     redirect_to edit_document_path(document)

@@ -16,6 +16,8 @@ en:
           title: Title
           base_path: Base path
           summary: Summary
+          update_type: Update type
+          change_note: Change note
       metadata:
         status: Status
         updated_at: Last updated
