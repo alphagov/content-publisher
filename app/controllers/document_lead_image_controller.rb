@@ -27,6 +27,10 @@ class DocumentLeadImageController < ApplicationController
     image = Image.find_by(id: params[:image_id])
     image.update(update_params)
     document.update(lead_image_id: image.id)
+    if params[:next] == "lead-image"
+      redirect_to document_lead_image_path(document)
+      return
+    end
     redirect_to document_path(document)
   end
 

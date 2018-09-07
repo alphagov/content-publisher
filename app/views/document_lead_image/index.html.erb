@@ -33,6 +33,7 @@
                   <%= form_tag update_document_lead_image_path(@document, image), method: :patch do %>
                     <button>Choose image</button>
                   <% end %>
+                  <%= link_to("Edit details", edit_document_lead_image_path(@document, image, next: "lead-image")) %>
                 </p>
               </td>
             </div>
