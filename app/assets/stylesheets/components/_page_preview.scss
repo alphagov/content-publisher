@@ -1,54 +1,58 @@
 $google-link-colour: #1a0dab;
 $google-url-colour: #006621;
 $google-description-colour: #545454;
+$mobile-frame-width: 320px;
+$mobile-frame-height: 585px;
+$mobile-border-width: 17px;
+$mobile-border-bottom-width: 68px;
 
 .app-c-preview__mobile {
+  display: block;
+  width: $mobile-frame-width + 2 * $mobile-border-width;
+  height: $mobile-frame-height + $mobile-border-width + $mobile-border-bottom-width;
   background-image: image-url("components/preview-mobile.svg");
   background-repeat: no-repeat;
-  height: 674px;
-
-  // 356px width causes the screen portion of the SGV to match the
-  // iPhone's 320px logical screen width
-  width: 356px;
 }
 
 .app-c-preview__mobile-iframe {
-  margin: 18px;
+  width: $mobile-frame-width;
+  height: $mobile-frame-height;
+  margin: $mobile-border-width;
+  margin-bottom: $mobile-border-bottom-width;
   border: 0;
-  width: 320px;
-  height: 587px;
 }
 
 .app-c-preview__desktop-preview {
+  display: block;
   width: 100%;
   height: 1000px;
   border: 0;
 }
 
 .app-c-preview__google {
-  width: 600px;
+  max-width: 600px;
   -webkit-font-smoothing: auto;
 }
 
 .app-c-preview__google-title {
-  font-family: arial,sans-serif;
   color: $google-link-colour;
-  text-decoration: none;
+  font-family: arial, sans-serif;
   font-size: 18px;
+  text-decoration: none;
 }
 
 .app-c-preview__google-url {
-  font-family: arial,sans-serif;
   color: $google-url-colour;
+  font-family: arial, sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
 }
 
 .app-c-preview__google-description {
-  font-family: arial,sans-serif;
-  line-height: 1.4;
-  font-size: 13px;
-  word-wrap: break-word;
   color: $google-description-colour;
+  font-family: arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  word-wrap: break-word;
 }

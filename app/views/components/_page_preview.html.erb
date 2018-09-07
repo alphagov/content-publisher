@@ -1,11 +1,13 @@
-<%= render "govuk_publishing_components/components/details", title: "Share" do %>
-  <%= render "govuk_publishing_components/components/copy_to_clipboard",
-    label: "Copy and send this link to someone and they’ll be able to preview your draft on GOV.UK.",
-    copyable_content: url,
-    button_text: "Copy link" %>
-
-  <%= link_to url, url %>
-<% end %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/details", title: "Share" do %>
+      <%= render "govuk_publishing_components/components/copy_to_clipboard",
+        label: "Copy and send this link to someone and they’ll be able to preview your draft on GOV.UK.",
+        copyable_content: url,
+        button_text: "Copy link" %>
+    <% end %>
+  </div>
+</div>
 
 <div class="app-c-preview">
   <% mobile_preview = capture do %>
