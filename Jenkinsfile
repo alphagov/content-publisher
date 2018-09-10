@@ -13,6 +13,7 @@ node {
         sh("yarn run lint")
       }
     },
+    brakeman: true,
     rubyLintDiff: false,
     rubyLintDirs: "",
     overrideTestTask: {
