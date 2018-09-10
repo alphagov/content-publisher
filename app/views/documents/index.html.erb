@@ -39,15 +39,14 @@
 
       <%= hidden_field_tag "sort", @sort %>
 
-      <p>
-        <%= render "govuk_publishing_components/components/button", {
-          text: "Filter", margin_top: true
-        } %>
-      </p>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Filter", margin_top: true
+      } %>
 
-      <p>
-        <%= link_to "Clear filter", documents_path, class: "govuk-link" %>
-      </p>
+      <br/>
+      <br/>
+
+      <%= link_to "Clear filter", documents_path, class: "govuk-link" %>
     <% end %>
   </div>
 
