@@ -20,7 +20,10 @@
 
   <%= render "components/autocomplete", {
     name: "document_type",
-    label: t("documents.index.filter.document_type"),
+    label: {
+      text: t("documents.index.filter.document_type"),
+      bold: true
+    },
     # TODO: implement allow_blank so we don't have to add a blank option
     options: document_type_select + ["",""],
     selected_options: [params[:document_type]],
