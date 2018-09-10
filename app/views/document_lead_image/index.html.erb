@@ -3,6 +3,9 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/heading", {
+      text: t("document_lead_image.index.upload_image")
+    } %>
     <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
       <%= file_field_tag "image" %>
       <p>

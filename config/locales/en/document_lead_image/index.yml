@@ -2,6 +2,7 @@ en:
   document_lead_image:
     index:
       title: Lead image
+      upload_image: Upload existing image
       existing_image: Choose existing image
       no_existing_image: No images available
       alt_text: Alt text
