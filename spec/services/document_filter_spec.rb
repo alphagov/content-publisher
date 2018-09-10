@@ -28,6 +28,9 @@ RSpec.describe DocumentFilter do
 
       documents = DocumentFilter.new(filters: { title_or_url: "_1" }).documents
       expect(documents).to eq([document1])
+
+      documents = DocumentFilter.new(filters: { title_or_url: "%" }).documents
+      expect(documents).to be_empty
     end
 
     it "filters the documents by type" do

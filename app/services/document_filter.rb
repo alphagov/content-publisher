@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DocumentFilter
+  include ActiveRecord::Sanitization::ClassMethods
+
   SORT_KEYS = %w[updated_at].freeze
   DEFAULT_SORT = "-updated_at"
 
@@ -38,7 +40,9 @@ private
 
       case field
       when :title_or_url
-        memo.where("title ILIKE ? OR base_path ILIKE ?", "%#{value}%", "%#{value}%")
+        memo.where("title ILIKE ? OR base_path ILIKE ?",
+                   "%#{sanitize_sql_like(value)}%",
+                   "%#{sanitize_sql_like(value)}%")
       when :document_type
         memo.where(document_type: value)
       else
