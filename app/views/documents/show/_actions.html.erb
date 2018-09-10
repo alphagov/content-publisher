@@ -8,17 +8,17 @@
       <%= render "govuk_publishing_components/components/button", text: "Create new edition", href: edit_document_path(@document), secondary: true %>
 
       <%= link_to "Retire", "#", class: "govuk-link" %>
-      <%= link_to "Remove", "#", class: "govuk-link app-link--right" %>
+      <%= link_to "Remove", "#", class: "app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "published" %>
       <%= render "govuk_publishing_components/components/button", text: "Create new edition", href: edit_document_path(@document) %>
 
       <%= link_to "Retire", "#", class: "govuk-link" %>
-      <%= link_to "Remove", "#", class: "govuk-link app-link--right" %>
+      <%= link_to "Remove", "#", class: "app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "submitted_for_review" %>
       <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
 
-      <%= link_to "Delete draft", '#' %>
+      <%= link_to "Delete draft", '#', class: "app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "draft" %>
       <%= form_tag submit_document_for_2i_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
@@ -26,8 +26,8 @@
 
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
 
-      <%= link_to "Publish", publish_document_path(@document) %>
-      <%= link_to "Delete draft", "#", class: "govuk-link app-link--right" %>
+      <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
+      <%= link_to "Delete draft", "#", class: "app-link--destructive app-link--right" %>
     <% end %>
   </div>
 </div>
