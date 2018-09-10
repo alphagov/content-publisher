@@ -6,11 +6,11 @@ class DocumentFilter
 
   attr_reader :filters, :sort, :page, :per_page
 
-  def initialize(filters: {}, sort: nil, page: nil, per_page: nil)
-    @filters = filters.symbolize_keys
-    @sort = allowed_sort?(sort) ? sort : DEFAULT_SORT
-    @page = page
-    @per_page = per_page
+  def initialize(params)
+    @filters = params[:filters].to_h.symbolize_keys
+    @sort = allowed_sort?(params[:sort]) ? params[:sort] : DEFAULT_SORT
+    @page = params[:page]
+    @per_page = params[:per_page]
   end
 
   def documents
