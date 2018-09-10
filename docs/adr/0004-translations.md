@@ -28,13 +28,13 @@ Rails translations have a few special behaviours, such as pluralization, raw HTM
 
 ## Testing
 
-We considered a few approaches for how to extract the strings in our tests. As we started to extract more strings, we had to consider the affect on the readability of the tests and how we could achieve a good readability/consistency/flexibility.
+We considered a few approaches for how to extract the strings in our tests. As we started to extract more strings, we had to consider the affect on the readability of the tests and how we could maintain readability/consistency/flexibility.
 
    * Extract all of the strings in the application and tests. This is consistent and give maximum flexibility for people making changes, but would make the tests hard to read due to the volume of calls to the translation/model APIs.
-   * Extract all of the strings in the application but use a mixture in the tests. This would be inconsistent for developers to implement and for anyone trying to make a change, as it it's unclear if the tests would need to be fixed. It has the upside that we could select which translations to use in the tests to maintain readability.
-   * Extract a subset of strings in the application and extract the same subset in the tests. This is consistent and flexible, provided it's clear what the subset is clear and that it covers all the strings that people want to change.
+   * Extract all of the strings in the application but leave some in the tests. This would be inconsistent for developers to implement and for anyone trying to make a change, as it it's unclear if the tests would need to be fixed. It has the upside that we could select which translations to use in the tests to maintain readability.
+   * Extract a subset of strings in the application and extract the same subset in the tests. This is consistent and flexible, provided the subset is clear and covers all/most of the strings that people want to change.
 
-   * Extract
+After trying the first option, we found that extracting links and button labels had the greatest impact on readability; we also think these kinds of strings are unlikely to change. As the original intention behind this work was to enable non-developers to seamlessly edit content, we adopted the third option, which appears to be working well for people making changes, but has caused some confusion among the developers as the subset of strings to extract wasn't specified as it is below.
 
 ## Decision
 
