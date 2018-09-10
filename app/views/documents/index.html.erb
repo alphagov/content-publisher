@@ -85,9 +85,13 @@
         <tbody class="govuk-table__body">
           <% @documents.map do |document| %>
             <tr class="govuk-table__row document">
-              <th class="govuk-table__header" scope="row">
+              <td class="govuk-table__cell" scope="row">
                 <%= link_to document.title, document %>
-              </th>
+                <br/>
+                <%= document.document_type_schema.label %>
+                <br/>
+                <%= t "documents.index.search_results.headings.creator", creator: document.creator.name %>
+              </td>
 
               <td class="govuk-table__cell ">
                 <%= document.updated_at.strftime("%d %b %Y") %>
