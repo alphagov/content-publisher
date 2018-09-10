@@ -34,6 +34,12 @@ class DocumentLeadImageController < ApplicationController
     redirect_to document_path(document)
   end
 
+  def destroy
+    document = Document.find_by_param(params[:document_id])
+    document.update(lead_image_id: nil)
+    redirect_to document_path(document)
+  end
+
 private
 
   def update_params

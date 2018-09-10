@@ -41,7 +41,7 @@ RSpec.feature "Choose a lead image" do
   end
 
   def when_i_select_an_image_to_be_the_lead_image
-    within("td#image-1-metadata") do
+    within("td#image-1-choose-action") do
       click_on "Choose image"
     end
   end

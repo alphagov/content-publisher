@@ -23,7 +23,12 @@
             </td>
             <div>
               <td valign="top" class="govuk-body" id=<%= "image-#{i}-metadata" %>>
-                <% if image == @document.lead_image %><strong>Lead image</strong><% end %>
+                <% if image == @document.lead_image %>
+                  <%= form_tag remove_document_lead_image_path(@document), method: :delete do %>
+                    <strong>Lead image</strong>
+                    <button>Remove</button>
+                  <% end %>
+                <% end %>
                 <p>
                   <strong><%= t("document_lead_image.index.alt_text") %></strong>: <%= image.alt_text %> <br \>
                   <strong><%= t("document_lead_image.index.caption") %></strong>: <%= image.caption %> <br \>
