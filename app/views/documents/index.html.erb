@@ -7,6 +7,17 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
     <%= render "documents/index/filters" %>
+
+    <br/>
+    <hr/>
+    <br/>
+
+    <div class="govuk-body">
+      <strong> <%= t("documents.index.guidance.title") %></strong>
+      <br/>
+      <%= link_to "Planning, writing and managing content",
+        "https://www.gov.uk/topic/government-digital-guidance/content-publishing", class: "govuk-link" %>
+    </div>
   </div>
 
   <div class="govuk-grid-column-two-thirds">
