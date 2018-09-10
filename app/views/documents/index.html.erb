@@ -57,7 +57,7 @@
           <% @documents.each do |document| %>
             <tr class="govuk-table__row document">
               <td class="govuk-table__cell" scope="row">
-                <%= link_to document.title, document, class: "govuk-link" %>
+                <%= link_to document.title.presence || t("documents.index.search_results.untitled"), document, class: "govuk-link" %>
                 <br/>
                 <%= document.document_type_schema.label %>
                 <br/>
