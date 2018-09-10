@@ -59,10 +59,6 @@ class DocumentsController < ApplicationController
 
 private
 
-  def index_params
-    params.permit(:title_or_url, :document_type, :sort, :page)
-  end
-
   def update_params(document)
     contents_params = document.document_type_schema.contents.map(&:id)
     base_path = PathGeneratorService.new.path(document, params[:document][:title])
