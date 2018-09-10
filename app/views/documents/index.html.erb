@@ -28,7 +28,7 @@
               <%
                 active = @sort.delete_prefix("-") == "updated_at"
                 link_to_asc = active && @sort[0] == "-"
-                classes = []
+                classes = ["govuk-link"]
                 classes << "active" if active
                 classes << "desc" if active && link_to_asc
               %>
@@ -46,7 +46,7 @@
           <% @documents.each do |document| %>
             <tr class="govuk-table__row document">
               <td class="govuk-table__cell" scope="row">
-                <%= link_to document.title, document %>
+                <%= link_to document.title, document, class: "govuk-link" %>
                 <br/>
                 <%= document.document_type_schema.label %>
                 <br/>
