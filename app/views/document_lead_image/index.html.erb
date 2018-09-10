@@ -18,36 +18,7 @@
       <%= render "govuk_publishing_components/components/heading", {
         text: t("document_lead_image.index.existing_image")
       } %>
-      <table>
-        <% @document.images.each_with_index do |image, i| %>
-          <tr>
-            <td>
-              <%= image_tag(url_for(image.thumbnail), id: "image-#{i}") %>
-            </td>
-            <div>
-              <td valign="top" class="govuk-body" id=<%= "image-#{i}-metadata" %>>
-                <% if image == @document.lead_image %>
-                  <%= form_tag remove_document_lead_image_path(@document), method: :delete do %>
-                    <strong>Lead image</strong>
-                    <button>Remove</button>
-                  <% end %>
-                <% end %>
-                <p>
-                  <strong><%= t("document_lead_image.index.alt_text") %></strong>: <%= image.alt_text %> <br \>
-                  <strong><%= t("document_lead_image.index.caption") %></strong>: <%= image.caption %> <br \>
-                  <strong><%= t("document_lead_image.index.credit") %></strong>: <%= image.credit %> <br \>
-                </p>
-                <p>
-                  <%= form_tag update_document_lead_image_path(@document, image), method: :patch do %>
-                    <button>Choose image</button>
-                  <% end %>
-                  <%= link_to("Edit details", edit_document_lead_image_path(@document, image, next: "lead-image")) %>
-                </p>
-              </td>
-            </div>
-          </tr>
-        <% end %>
-      </table>
+      <%= render "image_list" %>
     <% else %>
       <%= render "govuk_publishing_components/components/heading", {
         text: t("document_lead_image.index.no_existing_image")

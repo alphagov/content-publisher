@@ -1,0 +1,38 @@
+<table>
+  <% @document.images.each_with_index do |image, i| %>
+    <tr>
+      <td class="image-list">
+        <%= image_tag(url_for(image.thumbnail), id: "image-#{i}") %>
+      </td>
+      <td class="image-list" id=<%= "image-#{i}-metadata" %>>
+        <div class="image-list__metadata">
+          <strong><%= t("document_lead_image.index.alt_text") %></strong>: <%= image.alt_text %> <br \>
+          <strong><%= t("document_lead_image.index.caption") %></strong>: <%= image.caption %> <br \>
+          <strong><%= t("document_lead_image.index.credit") %></strong>: <%= image.credit %> <br \>
+          <div class="image-list__lead-image-flag">
+            <% if image == @document.lead_image %>
+              <div class="image-list__lead-image-label">Lead image</div>
+              <div class="image-list__remove-button">
+                <%= form_tag remove_document_lead_image_path(@document), method: :delete do %>
+                <button>Remove</button>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="image-list" id=<%= "image-#{i}-choose-action" %>>
+        <div class="image-list__choose-image">
+          <%= form_tag update_document_lead_image_path(@document, image), method: :patch do %>
+            <button>Choose image</button>
+          <% end %>
+        </div>
+        <div class="image-list__edit-image">
+          <%= link_to("Edit details", edit_document_lead_image_path(@document, image, next: "lead-image"), class: "govuk-link") %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+</table>
