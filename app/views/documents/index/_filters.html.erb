@@ -1,7 +1,8 @@
 <%= form_tag({}, method: :get) do %>
   <%= render "govuk_publishing_components/components/input", {
     label: {
-      text: t("documents.index.filter.title_or_url")
+      text: t("documents.index.filter.title_or_url"),
+      bold: true
     },
     name: "title_or_url",
     value: params[:title_or_url],
