@@ -9,9 +9,8 @@
 
 <div class="app-c-autocomplete govuk-form-group">
   <%= render "govuk_publishing_components/components/label", {
-    text: label,
     html_for: id
-  } %>
+  }.merge(label) %>
 
   <% if options.any? %>
     <% if multiple %>
