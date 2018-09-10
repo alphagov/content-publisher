@@ -84,7 +84,7 @@
           </tr>
         </thead>
         <tbody class="govuk-table__body">
-          <% @documents.map do |document| %>
+          <% @documents.each do |document| %>
             <tr class="govuk-table__row document">
               <td class="govuk-table__cell" scope="row">
                 <%= link_to document.title, document %>
