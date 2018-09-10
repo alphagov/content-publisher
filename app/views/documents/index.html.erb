@@ -6,49 +6,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
-    <%= form_tag({}, method: :get) do %>
-      <%= render "govuk_publishing_components/components/input", {
-        label: {
-          text: t("documents.index.filter.title_or_url")
-        },
-        name: "title_or_url",
-        value: params[:title_or_url],
-        type: "search"
-      } %>
-
-      <% document_type_select = SupertypeSchema.all.inject([]) do |memo, supertype|
-          document_options = supertype
-            .document_types
-            .reject { |d| d.managed_elsewhere }
-            .map { |d| [d.label, d.id] }
-
-          memo + document_options
-        end
-      %>
-
-      <%= render "components/autocomplete", {
-        name: "document_type",
-        label: t("documents.index.filter.document_type"),
-        # TODO: implement allow_blank so we don't have to add a blank option
-        options: document_type_select + ["",""],
-        selected_options: [params[:document_type]],
-        size: 10,
-        data: {
-          module: "autocomplete"
-        }
-      } %>
-
-      <%= hidden_field_tag "sort", @sort %>
-
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Filter", margin_top: true
-      } %>
-
-      <br/>
-      <br/>
-
-      <%= link_to "Clear filter", documents_path, class: "govuk-link" %>
-    <% end %>
+    <%= render "documents/index/filters" %>
   </div>
 
   <div class="govuk-grid-column-two-thirds">
@@ -83,6 +41,7 @@
             </th>
           </tr>
         </thead>
+
         <tbody class="govuk-table__body">
           <% @documents.each do |document| %>
             <tr class="govuk-table__row document">
