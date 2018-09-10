@@ -34,7 +34,7 @@ RSpec.feature "Publishing a document" do
 
   def then_i_see_the_publish_succeeded
     expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t("publish_document.published_document.reviewed.title"))
+    expect(page).to have_content(I18n.t("publish_document.published.reviewed.title"))
   end
 
   def and_i_see_the_content_is_in_published_state
