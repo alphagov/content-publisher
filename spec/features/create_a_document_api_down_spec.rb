@@ -7,6 +7,9 @@ RSpec.feature "Create a document when the API is down" do
     when_i_submit_the_form
     then_i_see_the_document_exists
     and_the_preview_creation_failed
+
+    when_the_api_is_up_again_and_i_click_the_retry_button
+    then_the_document_is_saved_again
   end
 
   def given_i_start_to_create_a_document
@@ -39,6 +42,16 @@ RSpec.feature "Create a document when the API is down" do
   def and_the_preview_creation_failed
     expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t("documents.show.flashes.draft_error"))
-    expect(Document.last.publication_state).to eq("error_sending_to_draft")
+  end
+
+  def when_the_api_is_up_again_and_i_click_the_retry_button
+    @request = stub_publishing_api_put_content(Document.last.content_id,
+                                               hash_including(title: "A great title"))
+    click_on "Try again"
+  end
+
+  def then_the_document_is_saved_again
+    expect(@request).to have_been_requested.twice
+    expect(page).to have_content(I18n.t("documents.show.flashes.draft_success"))
   end
 end
