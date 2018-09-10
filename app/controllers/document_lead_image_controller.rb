@@ -18,7 +18,10 @@ class DocumentLeadImageController < ApplicationController
       image = create_image_from_upload(upload, document)
       redirect_to edit_document_lead_image_path(params[:document_id], image.id)
     else
-      redirect_to document_lead_image_path, alert: upload.errors
+      redirect_to document_lead_image_path, alert: {
+        "alerts" => upload.errors,
+        "title" => t("document_lead_image.index.error_summary_title"),
+      }
     end
   end
 
