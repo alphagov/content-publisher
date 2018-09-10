@@ -12,7 +12,8 @@
           text: t("documents.index.filter.title_or_url")
         },
         name: "title_or_url",
-        value: params[:title_or_url]
+        value: params[:title_or_url],
+        type: "search"
       } %>
 
       <% document_type_select = SupertypeSchema.all.inject([]) do |memo, supertype|
