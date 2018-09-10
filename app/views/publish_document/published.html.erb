@@ -4,12 +4,9 @@
   <div class="govuk-grid-column-two-thirds">
 
     <% if @document.review_state == "reviewed" %>
-      <!-- this will use the panel component -->
-      <div class="govuk-panel govuk-panel--confirmation">
-        <h1 class="govuk-panel__title">
-          <%= t "publish_document.published_document.reviewed.title" %>
-        </h1>
-      </div>
+      <%= render "govuk_publishing_components/components/panel", {
+        title: t("publish_document.published_document.reviewed.title")
+      } %>
 
       <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html t("publish_document.published_document.reviewed.body", title: @document.title) %>
@@ -20,12 +17,9 @@
           button_text: "Copy link" %>
       <% end %>
     <% else %>
-      <!-- this will use the panel component -->
-      <div class="govuk-panel govuk-panel--confirmation">
-        <h1 class="govuk-panel__title">
-          <%= t("publish_document.published_document.published_without_review.title") %>
-        </h1>
-      </div>
+      <%= render "govuk_publishing_components/components/panel", {
+        title: t("publish_document.published_document.published_without_review.title")
+      } %>
 
       <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html t("publish_document.published_document.published_without_review.body", title: @document.title) %>
