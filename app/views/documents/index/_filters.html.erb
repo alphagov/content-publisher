@@ -8,14 +8,9 @@
     type: "search"
   } %>
 
-  <% document_type_select = SupertypeSchema.all.inject([]) do |memo, supertype|
-      document_options = supertype
-        .document_types
-        .reject { |d| d.managed_elsewhere }
-        .map { |d| [d.label, d.id] }
-
-      memo + document_options
-    end
+  <% document_type_select = DocumentTypeSchema.all
+    .reject(&:managed_elsewhere)
+    .map { |d| [d.label, d.id] }
   %>
 
   <%= render "components/autocomplete", {
