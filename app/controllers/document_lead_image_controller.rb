@@ -7,6 +7,11 @@ class DocumentLeadImageController < ApplicationController
 
   def create
     document = Document.find_by_param(params[:document_id])
+    unless params[:image]
+      redirect_to document_lead_image_path, alert: t("document_lead_image.index.no_file_selected")
+      return
+    end
+
     upload = UploadedImageService.new(params.require(:image)).process
 
     if upload.valid?
