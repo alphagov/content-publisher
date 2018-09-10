@@ -4,13 +4,15 @@
   <%= form_for(@document, html: {'autocomplete': 'off'}, data: {'module': 'edit-document-form', 'generate-path-path': generate_path_path}) do |f| %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <%= render "govuk_publishing_components/components/input", {
+      <%= render "govuk_publishing_components/components/textarea", {
         label: {
-          text: t("documents.edit.form_labels.title")
+          text: t("documents.edit.form_labels.title"),
+          bold: true
         },
         id: "document-title-id",
         name: "document[title]",
         value: @document.title,
+        rows: 2,
         data: {
           "contextual-guidance": "document-title-guidance"
         }
@@ -49,7 +51,8 @@
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/textarea", {
         label: {
-          text: t("documents.edit.form_labels.summary")
+          text: t("documents.edit.form_labels.summary"),
+          bold: true
         },
         name: "document[summary]",
         value: @document.summary,

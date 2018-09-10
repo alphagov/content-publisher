@@ -7,7 +7,7 @@
   <%= render "govuk_publishing_components/components/label", {
       text: label[:text],
       html_for: textarea[:id]
-  } %>
+  }.merge(label) %>
   <div class="app-c-markdown-editor__container">
     <div class="app-c-markdown-editor__head js-markdown-editor__head">
       <div class="app-c-markdown-editor__preview-toggle">
