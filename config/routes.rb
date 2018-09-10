@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   get "/documents" => "documents#index"
   get "/documents/:id/edit" => "documents#edit", as: :edit_document
+  post "/documents/:id/retry-draft" => "documents#retry_draft_save", as: :retry_draft_save
   patch "/documents/:id" => "documents#update", as: :document
   get "/documents/:id" => "documents#show"
   get "/documents/:id/generate-path" => "documents#generate_path", as: :generate_path
