@@ -15,8 +15,11 @@ en:
         error: Unable to preview address, please edit title and try again.
       change_note:
         title: Change note
-        hint: Describe the change. Include any new or updated information where possible, or summarise and refer to specific sections if it cannot be included.
-        guidance: "[Full guidance on change notes](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#change-notes)"
+        guidance_title: Writing change notes
+        guidance: |
+          Describe the change. Include any new or updated information where possible, or summarise and refer to specific sections if it cannot be included.
+
+          [Full guidance on change notes](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#change-notes)
       update_type:
         title: "Is the change significant to users?"
         minor_name: There’s no change to the published information. For example, spelling corrections.

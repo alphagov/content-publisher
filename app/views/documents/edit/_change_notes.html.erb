@@ -3,17 +3,14 @@
     <%= render "govuk_publishing_components/components/textarea", {
       label: {
         text: t("documents.edit.change_note.title"),
-        bold: true,
       },
-      hint: t("documents.edit.change_note.hint"),
       name: "document[change_note]",
       value: @document.change_note,
-      rows: 4
+      rows: 4,
+      data: {
+        "contextual-guidance": "change-note-guidance"
+      }
     } %>
-
-    <%= render "govuk_publishing_components/components/govspeak" do %>
-      <%= govspeak_to_html t("documents.edit.change_note.guidance") %>
-    <% end %>
 
     <% legend_text = tag.p(t("documents.edit.update_type.title"), class: "govuk-!-margin-bottom-3") %>
 
@@ -36,6 +33,17 @@
           }
         ]
       } %>
+    <% end %>
+  </div>
+
+  <div class="govuk-grid-column-one-third">
+    <%= render "components/contextual_guidance", {
+      id: "change-note-guidance",
+      title: t("documents.edit.change_note.guidance_title"),
+    } do %>
+      <%= render "govuk_publishing_components/components/govspeak" do %>
+        <%= govspeak_to_html t("documents.edit.change_note.guidance") %>
+      <% end %>
     <% end %>
   </div>
 </div>
