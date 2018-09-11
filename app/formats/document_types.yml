@@ -108,6 +108,110 @@
       type: multi_tag
       document_type: worldwide_organisation
 
+- id: government_response
+  label: Government response
+  edit_only: true
+  lead_image: true
+  path_prefix: /news
+  publishing_metadata:
+    schema_name: news_article
+    rendering_app: government-frontend
+  guidance:
+    - id: title
+      title: Create a news title
+      body: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
+    - id: summary
+      title: Writing a news summary
+      body: The summary should explain the main point of the content. It's the first line of the content so don’t repeat it below and end with a full stop.
+    - id: body
+      title: Writing news
+      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+    - id: primary_publishing_organisation
+      title: Primary organisation
+      body: The organisation responsible for publishing and maintaining this content.
+    - id: organisations
+      title: Organisations
+      body: Any organisations who share responsibility for this content.
+  contents:
+    - id: body
+      label: Body
+      type: govspeak
+      validations:
+        min_length: 10
+  tags:
+    - id: primary_publishing_organisation
+      label: Primary organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      label: Organisations
+      type: multi_tag
+      document_type: organisation
+    - id: topical_events
+      label: Topical events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      label: World locations
+      type: multi_tag
+      document_type: world_location
+    - id: worldwide_organisations
+      label: Worldwide organisations
+      type: multi_tag
+      document_type: worldwide_organisation
+
+- id: world_news_story
+  label: World news story
+  edit_only: true
+  lead_image: true
+  path_prefix: /news
+  publishing_metadata:
+    schema_name: news_article
+    rendering_app: government-frontend
+  guidance:
+    - id: title
+      title: Create a news title
+      body: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
+    - id: summary
+      title: Writing a news summary
+      body: The summary should explain the main point of the content. It's the first line of the content so don’t repeat it below and end with a full stop.
+    - id: body
+      title: Writing news
+      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+    - id: primary_publishing_organisation
+      title: Primary organisation
+      body: The organisation responsible for publishing and maintaining this content.
+    - id: organisations
+      title: Organisations
+      body: Any organisations who share responsibility for this content.
+  contents:
+    - id: body
+      label: Body
+      type: govspeak
+      validations:
+        min_length: 10
+  tags:
+    - id: primary_publishing_organisation
+      label: Primary organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      label: Organisations
+      type: multi_tag
+      document_type: organisation
+    - id: topical_events
+      label: Topical events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      label: World locations
+      type: multi_tag
+      document_type: world_location
+    - id: worldwide_organisations
+      label: Worldwide organisations
+      type: multi_tag
+      document_type: worldwide_organisation
+
 - id: fatality_notice
   label: Fatality notice
   description: Initial fatality notices and subsequent obituaries of forces and MOD personnel
@@ -121,13 +225,6 @@
   managed_elsewhere:
     hostname: whitehall-admin
     path: /government/admin/speeches/new
-
-- id: world_news_story
-  label: World news story
-  description: Announcements specific to one or more world location
-  managed_elsewhere:
-    hostname: whitehall-admin
-    path: /government/admin/news/new
 
 - id: detailed_guide
   label: Detailed guide
