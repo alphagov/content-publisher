@@ -1,8 +1,55 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.describe UserFacingState do
+  describe ".scope" do
+    it "finds draft documents when they are not sent to review" do
+      draft = create(:document,
+                     publication_state: "sent_to_draft",
+                     review_state: "unreviewed")
+      create(:document, publication_state: "sent_to_draft", review_state: "submitted_for_review")
+
+      expect(UserFacingState.scope(Document, "draft")).to match([draft])
+    end
+
+    it "finds submitted_for_review documents when they are sent to review" do
+      create(:document, publication_state: "sent_to_draft", review_state: "reviewed")
+      for_review = create(:document,
+                          publication_state: "sent_to_draft",
+                          review_state: "submitted_for_review")
+
+      expect(UserFacingState.scope(Document, "submitted_for_review"))
+        .to match([for_review])
+    end
+
+    it "finds published items including those marked as published_without_review" do
+      create(:document, publication_state: "sent_to_draft", review_state: "unreviewed")
+      published = create(:document,
+                         publication_state: "sent_to_live",
+                         review_state: "reviewed")
+      published_but_needs_2i = create(:document,
+                                      publication_state: "sent_to_live",
+                                      review_state: "published_without_review")
+
+      expect(UserFacingState.scope(Document, "published"))
+        .to match([published, published_but_needs_2i])
+    end
+
+    it "can find published_but_needs_2i items" do
+      create(:document, publication_state: "sent_to_live", review_state: "reviewed")
+      published_but_needs_2i = create(:document,
+                                      publication_state: "sent_to_live",
+                                      review_state: "published_without_review")
+
+      expect(UserFacingState.scope(Document, "published_but_needs_2i"))
+        .to match([published_but_needs_2i])
+    end
+
+    it "raises an error for an unknown state" do
+      expect { UserFacingState.scope(Document, "surprise") }
+        .to raise_error "Unknown user_facing_state: surprise"
+    end
+  end
+
   describe "#to_s" do
     it "is draft if it has unpublished changes" do
       document = build(:document, publication_state: "changes_not_sent_to_draft", review_state: "unreviewed")
