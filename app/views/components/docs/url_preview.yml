@@ -1,0 +1,14 @@
+name: URL preview
+description: Generates URL from an input value and validates it with a server endpoint
+body: |
+  This component uses an text input field to get the input value, sends the value to
+  a server endpoint and returns the appropriate response
+examples:
+  default:
+    data:
+      title: Page address
+      default_message: You haven't entered a title yet
+      error_message: Unable to generate URL
+      website_root: http://www.gov.uk
+      base_path: /news/
+

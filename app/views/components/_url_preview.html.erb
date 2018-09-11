@@ -1,0 +1,17 @@
+<div class="app-c-url-preview" data-module="url-preview">
+  <% url_preview = capture do %>
+    <p class="app-c-url-preview__title"><%= title %></p>
+
+    <p class="app-c-url-preview__default-message js-url-preview-default-message <%= 'app-c-url-preview__default-message--hidden' unless base_path.nil? %>"><%= default_message %></p>
+    <p class="app-c-url-preview__error-message app-c-url-preview__error-message--hidden js-url-preview-error-message"><%= error_message %></p>
+
+    <p class="app-c-url-preview__url js-url-preview-url <%= 'app-c-url-preview__url--hidden' if base_path.nil? %>">
+      <span><%= website_root %></span><span class="app-c-url-preview__path js-url-preview-path"><%= base_path %></span>
+    </p>
+
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/inset_text", {
+    text: url_preview
+  } %>
+</div>
