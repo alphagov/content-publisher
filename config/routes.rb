@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   post "/documents/:document_id/lead-image" => "document_lead_image#create"
   get "/documents/:document_id/lead-image/:image_id/edit" => "document_lead_image#edit", as: :edit_document_lead_image
   patch "/documents/:document_id/lead-image/:image_id/edit" => "document_lead_image#update", as: :update_document_lead_image
+  post "/documents/:document_id/lead-image/:image_id/choose" => "document_lead_image#choose_image", as: :choose_document_lead_image
   delete "/documents/:document_id/lead-image" => "document_lead_image#destroy", as: :remove_document_lead_image
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }

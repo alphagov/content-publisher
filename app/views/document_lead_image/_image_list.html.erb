@@ -25,12 +25,12 @@
     <tr>
       <td class="image-list" id=<%= "image-#{i}-choose-action" %>>
         <div class="image-list__choose-image">
-          <%= form_tag update_document_lead_image_path(@document, image), method: :patch do %>
+          <%= form_tag choose_document_lead_image_path(@document, image) do %>
             <button>Choose image</button>
           <% end %>
         </div>
         <div class="image-list__edit-image">
-          <%= link_to("Edit details", edit_document_lead_image_path(@document, image, next: "lead-image"), class: "govuk-link") %>
+          <%= link_to("Edit details", edit_document_lead_image_path(@document, image, next_screen: "lead-image"), class: "govuk-link") %>
         </div>
       </td>
     </tr>
