@@ -44,6 +44,20 @@ RSpec.describe DocumentFilter do
       expect(documents).to eq([document1])
     end
 
+    it "filters the documents by state" do
+      document1 = create(:document, publication_state: "sent_to_draft")
+      document2 = create(:document, publication_state: "sent_to_live")
+
+      documents = DocumentFilter.new(filters: { state: " " }).documents
+      expect(documents).to match_array([document1, document2])
+
+      documents = DocumentFilter.new(filters: { state: "non-existant" }).documents
+      expect(documents).to be_empty
+
+      documents = DocumentFilter.new(filters: { state: "draft" }).documents
+      expect(documents).to eq([document1])
+    end
+
     it "ignores other kinds of filter" do
       document1 = create(:document)
 

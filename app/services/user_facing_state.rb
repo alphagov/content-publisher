@@ -22,7 +22,7 @@ class UserFacingState
       # quirk we've inherited.
       query.where(publication_state: %w[sending_to_live sent_to_live])
     else
-      raise "Unknown user_facing_state: #{state}"
+      query.none
     end
   end
 

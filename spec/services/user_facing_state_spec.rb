@@ -44,9 +44,8 @@ RSpec.describe UserFacingState do
         .to match([published_but_needs_2i])
     end
 
-    it "raises an error for an unknown state" do
-      expect { UserFacingState.scope(Document, "surprise") }
-        .to raise_error "Unknown user_facing_state: surprise"
+    it "finds nothing for an unknown state" do
+      expect(UserFacingState.scope(Document, "surprise")).to be_empty
     end
   end
 
