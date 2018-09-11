@@ -11,8 +11,8 @@ RSpec.feature "Choosing a format" do
 
   def when_i_dont_choose_a_supertype
     visit "/"
-    click_on "New document"
-    click_on "Continue"
+    click_new_document_button
+    click_continue
   end
 
   def then_i_see_a_supertype_error
@@ -21,11 +21,11 @@ RSpec.feature "Choosing a format" do
 
   def when_i_choose_a_supertype
     choose SupertypeSchema.all.first.label
-    click_on "Continue"
+    click_continue
   end
 
   def and_i_dont_choose_a_document_type
-    click_on "Continue"
+    click_continue
   end
 
   def then_i_see_a_document_type_error

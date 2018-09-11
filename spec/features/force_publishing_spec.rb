@@ -23,7 +23,7 @@ RSpec.feature "Force publishing" do
   end
 
   def and_i_click_on_the_publish_button
-    click_on "Publish"
+    click_publish_button
   end
 
   def and_i_say_that_the_document_has_not_been_reviewed
@@ -35,7 +35,7 @@ RSpec.feature "Force publishing" do
     # the main publishing feature test
     stub_any_publishing_api_publish
 
-    click_on "Confirm publish"
+    click_confirm_publish_button
   end
 
   def then_i_see_that_the_document_was_published_without_review

@@ -28,7 +28,7 @@ RSpec.feature "Change notes" do
     fill_in "document[change_note]", with: "Updated banana pricing"
     choose I18n.t("documents.edit.update_type.minor_name")
 
-    click_on "Save"
+    click_save
   end
 
   def then_the_summary_page_displays_change_note_and_update_type
@@ -57,7 +57,7 @@ RSpec.feature "Change notes" do
     # the document editing feature test.
     stub_any_publishing_api_publish
 
-    click_on "Confirm publish"
+    click_confirm_publish_button
   end
 
   def then_the_change_note_and_update_type_should_be_cleared_for_the_next_edition

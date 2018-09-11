@@ -30,7 +30,7 @@ RSpec.feature "Save document tags when the API is down" do
   end
 
   def when_i_finish_editing_the_tags
-    click_on "Save"
+    click_save
   end
 
   def then_i_see_the_document_page

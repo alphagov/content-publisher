@@ -15,11 +15,11 @@ RSpec.feature "Create a document" do
 
     schema = DocumentTypeSchema.find("news_story")
     visit "/"
-    click_on "New document"
+    click_new_document_button
     choose SupertypeSchema.find("news").label
-    click_on "Continue"
+    click_continue
     choose schema.label
-    click_on "Continue"
+    click_continue
   end
 
   def then_i_wont_be_able_to_choose_an_update_type_or_change_note

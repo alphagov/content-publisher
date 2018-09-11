@@ -33,7 +33,7 @@ RSpec.feature "Publish validations" do
     fill_in "document[title]", with: "A nice title of considerable length"
     fill_in "document[summary]", with: "A nice summary of considerable length"
     fill_in "document[contents][body]", with: "A very long body text."
-    click_on "Save"
+    click_save
   end
 
   def then_i_see_no_validation_warnings

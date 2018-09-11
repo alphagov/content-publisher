@@ -32,6 +32,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include GdsApi::TestHelpers::PublishingApiV2
   config.include GovukSchemas::RSpecMatchers
+  config.include ReadableButtonsHelper
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
