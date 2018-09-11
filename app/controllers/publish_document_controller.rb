@@ -10,9 +10,7 @@ class PublishDocumentController < ApplicationController
     review_state = params[:self_declared_review_state] == "has-been-reviewed" ? "reviewed" : "published_without_review"
     DocumentPublishingService.new.publish(document, review_state)
     redirect_to document_published_path(document)
-  rescue GdsApi::BaseError => e
-    document.update!(publication_state: "error_sending_to_live")
-    Rails.logger.error(e)
+  rescue GdsApi::BaseError
     redirect_to document, alert: t("documents.show.flashes.publish_error")
   end
 
