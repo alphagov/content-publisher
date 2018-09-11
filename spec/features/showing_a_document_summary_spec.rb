@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Showing a document summary" do
-  scenario "User view a document" do
+  scenario "User views a document" do
     given_there_is_a_document
     when_i_visit_the_document_page
     then_i_see_the_document_summary
@@ -22,7 +22,6 @@ RSpec.feature "Showing a document summary" do
     within("div.app-c-metadata") do
       expect(page).to have_content(@document.created_at.strftime("%l:%M%P on %d %B %Y"))
       expect(page).to have_content(@document.updated_at.strftime("%l:%M%P on %d %B %Y"))
-      expect(page).to have_content(@document.creator.name)
     end
   end
 end
