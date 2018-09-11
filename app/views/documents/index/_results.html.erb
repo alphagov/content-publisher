@@ -31,7 +31,9 @@
           <br/>
           <%= document.document_type_schema.label %>
           <br/>
-          <%= t "documents.index.search_results.headings.creator", creator: document.creator.name %>
+          <%= t "documents.index.search_results.headings.creator",
+            creator: document.creator&.name || I18n.t("documents.index.search_results.unknown_creator")
+          %>
         </td>
 
         <td class="govuk-table__cell ">
