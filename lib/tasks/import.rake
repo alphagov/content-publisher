@@ -11,6 +11,9 @@ namespace :import do
     input = ENV["INPUT"] ? File.open(ENV["INPUT"]) : STDIN
 
     input.each_line do |line|
+      next if line.include?("government_response")
+      next if line.include?("world_news_story")
+
       importer.import(JSON.parse(line))
       imported += 1
     end
