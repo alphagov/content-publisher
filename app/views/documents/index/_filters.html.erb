@@ -21,7 +21,7 @@
       bold: true
     },
     # TODO: implement allow_blank so we don't have to add a blank option
-    options: document_type_select + ["",""],
+    options: [["", ""]] + document_type_select,
     selected_options: [params[:document_type]],
     size: 10,
     data: {
@@ -40,7 +40,7 @@
       bold: true
     },
     # TODO: implement allow_blank so we don't have to add a blank option
-    options: state_select + ["",""],
+    options: [["", ""]] + state_select,
     selected_options: [params[:state]],
     size: 10,
     data: {
