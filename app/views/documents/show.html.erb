@@ -1,5 +1,5 @@
 <% content_for :back_link, documents_path %>
-<% content_for :title, @document.title || t("documents.show.title_default") %>
+<% content_for :title, @document.title_or_fallback %>
 <% content_for :context, @document.document_type_schema.label %>
 
 <%= render "govuk_publishing_components/components/tabs", {

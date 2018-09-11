@@ -1,7 +1,8 @@
 en:
   documents:
     edit:
-      title: Untitled
+      title: "Edit ‘%{title}’"
+      title_new: "New %{document_type}"
       fields:
         govspeak:
           title: Markdown

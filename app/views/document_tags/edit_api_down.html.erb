@@ -1,5 +1,5 @@
-<%= content_for :back_link, document_path(@document) %>
-<% content_for :title, t("document_tags.edit.title") %>
+<% content_for :back_link, document_path(@document) %>
+<% content_for :title, t("document_tags.edit.title", title: @document.title_or_fallback) %>
 
 <p class="govuk-body">
   <%= t("document_tags.edit.api_down") %>
