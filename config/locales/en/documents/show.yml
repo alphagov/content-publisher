@@ -19,7 +19,7 @@ en:
           update_type: Update type
           change_note: Change note
       sidebar:
-        error_publishing: |
+        error_publishing_draft: |
           Something went wrong when saving your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
       lead_image:
         title: Lead image
