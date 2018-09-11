@@ -1,0 +1,42 @@
+<%= form_tag({}, method: :get) do %>
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: t("documents.index.filter.title_or_url"),
+      bold: true
+    },
+    name: "title_or_url",
+    value: params[:title_or_url],
+    type: "search"
+  } %>
+
+  <% document_type_select = DocumentTypeSchema.all
+    .reject(&:managed_elsewhere)
+    .map { |d| [d.label, d.id] }
+  %>
+
+  <%= render "components/autocomplete", {
+    name: "document_type",
+    label: {
+      text: t("documents.index.filter.document_type"),
+      bold: true
+    },
+    # TODO: implement allow_blank so we don't have to add a blank option
+    options: document_type_select + ["",""],
+    selected_options: [params[:document_type]],
+    size: 10,
+    data: {
+      module: "autocomplete"
+    }
+  } %>
+
+  <%= hidden_field_tag "sort", @sort %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Filter", margin_top: true
+  } %>
+
+  <br/>
+  <br/>
+
+  <%= link_to "Clear filter", documents_path, class: "govuk-link" %>
+<% end %>

@@ -7,7 +7,10 @@ class DocumentsController < ApplicationController
   end
 
   def index
-    @documents = Document.page(params[:page]).per(50)
+    filter = DocumentFilter.new(filter_params)
+    @documents = filter.documents
+    @filter_params = filter.filter_params
+    @sort = filter.sort
   end
 
   def edit
@@ -49,6 +52,15 @@ class DocumentsController < ApplicationController
   end
 
 private
+
+  def filter_params
+    {
+      filters: params.permit(:title_or_url, :document_type).to_hash,
+      sort: params[:sort],
+      page: params[:page],
+      per_page: 50,
+    }
+  end
 
   def update_params(document)
     contents_params = document.document_type_schema.contents.map(&:id)

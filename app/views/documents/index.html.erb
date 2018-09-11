@@ -1,27 +1,35 @@
 <% content_for :title, t("documents.index.title") %>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <%= render "govuk_publishing_components/components/button", {
-      text: "New document", href: new_document_path, margin_bottom: true
-    } %>
+<%= render "govuk_publishing_components/components/button", {
+  text: "New document", href: new_document_path, margin_bottom: true
+} %>
 
-    <%= render "govuk_publishing_components/components/document_list", {
-      items: @documents.map do |document|
-        {
-          link: {
-            text: document.title.presence || t("documents.index.search_results.untitled"),
-            path: document_path(document),
-            description: document.summary,
-            context: document.locale
-          },
-          metadata: {
-            public_updated_at: document.updated_at,
-            document_type: document.document_type_schema.label
-          }
-        }
-      end
-    } %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+    <%= render "documents/index/filters" %>
+
+    <br/>
+    <hr/>
+    <br/>
+
+    <div class="govuk-body">
+      <strong> <%= t("documents.index.guidance.title") %></strong>
+      <br/>
+      <%= link_to "Planning, writing and managing content",
+        "https://www.gov.uk/topic/government-digital-guidance/content-publishing", class: "govuk-link" %>
+    </div>
+  </div>
+
+  <div class="govuk-grid-column-two-thirds">
+    <p class="govuk-body">
+      <%= t("documents.index.search_results.summary_html", count: @documents.total_count) %>
+    </p>
+
+    <% if @documents.none? %>
+      <%= govspeak_to_html t("documents.index.search_results.guidance") %>
+    <% else %>
+      <%= render "documents/index/results" %>
+    <% end %>
 
     <% pages = { } %>
 
@@ -29,11 +37,11 @@
                      page: @documents.current_page,
                      pages: @documents.total_pages) %>
 
-    <% pages[:previous_page] = { url: documents_path(page: @documents.prev_page),
+    <% pages[:previous_page] = { url: documents_path(@filter_params.merge(page: @documents.prev_page)),
                                  label: page_info,
                                  title: "Previous page" } if @documents.prev_page %>
 
-    <% pages[:next_page] = { url: documents_path(page: @documents.next_page),
+    <% pages[:next_page] = { url: documents_path(@filter_params.merge(page: @documents.next_page)),
                              label: page_info,
                              title: "Next page" } if @documents.next_page %>
 

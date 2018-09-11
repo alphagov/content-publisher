@@ -1,0 +1,43 @@
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th class="govuk-table__header" scope="col">
+        <%= t("documents.index.search_results.headings.title") %>
+      </th>
+
+      <th class="govuk-table__header" scope="col">
+        <%
+          active = @sort.delete_prefix("-") == "updated_at"
+          link_to_asc = active && @sort[0] == "-"
+          classes = ["govuk-link"]
+          classes << "active" if active
+          classes << "desc" if active && link_to_asc
+        %>
+        <%= link_to(
+          t("documents.index.search_results.headings.last_updated"),
+          documents_path(@filter_params.merge(sort: "#{link_to_asc ? '' : '-'}updated_at", page: nil)),
+          title: t("documents.index.search_results.headings.last_updated_#{link_to_asc ? 'asc' : 'desc'}"),
+          class: classes
+        ) %>
+      </th>
+    </tr>
+  </thead>
+
+  <tbody class="govuk-table__body">
+    <% @documents.each do |document| %>
+      <tr class="govuk-table__row document">
+        <td class="govuk-table__cell" scope="row">
+          <%= link_to document.title.presence || t("documents.index.search_results.untitled"), document, class: "govuk-link" %>
+          <br/>
+          <%= document.document_type_schema.label %>
+          <br/>
+          <%= t "documents.index.search_results.headings.creator", creator: document.creator.name %>
+        </td>
+
+        <td class="govuk-table__cell ">
+          <%= document.updated_at.strftime("%d %b %Y") %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

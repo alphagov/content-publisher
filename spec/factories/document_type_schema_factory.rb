@@ -5,6 +5,11 @@ FactoryBot.define do
     id { SecureRandom.hex(4) }
     label { SecureRandom.alphanumeric(8) }
     document_type { SecureRandom.alphanumeric(8) }
-    initialize_with { DocumentTypeSchema.create(attributes.stringify_keys) }
+
+    initialize_with do
+      schema = DocumentTypeSchema.create(attributes.stringify_keys)
+      SupertypeSchema.all.first.document_types << schema
+      schema
+    end
   end
 end
