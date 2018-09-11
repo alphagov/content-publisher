@@ -18,7 +18,7 @@ RSpec.feature "Showing a document summary" do
   def the_document_creator_is_shown_as_unknown
     within("div.app-c-metadata") do
       expect(page).to have_content(I18n.t("documents.show.metadata.created_by") +
-        ": " + I18n.t("documents.show.metadata.unknown_data"))
+        ": " + I18n.t("documents.show.metadata.unknown_creator"))
     end
   end
 end
