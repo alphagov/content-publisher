@@ -11,8 +11,6 @@ class PublishDocumentController < ApplicationController
     DocumentPublishingService.new.publish(document, review_state)
     redirect_to document_published_path(document)
   rescue GdsApi::BaseError => e
-    document.update!(publication_state: "error_sending_to_live")
-    Rails.logger.error(e)
     redirect_to document, alert: t("documents.show.flashes.publish_error")
   end
 

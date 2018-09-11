@@ -24,19 +24,14 @@ class DocumentsController < ApplicationController
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: t("documents.show.flashes.draft_success")
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
-    document.update!(publication_state: "error_sending_to_draft")
     redirect_to document, alert: t("documents.show.flashes.draft_error")
   end
 
-  # TODO: Refactor to reduce duplication with #update
   def retry_draft_save
     document = Document.find_by_param(params[:id])
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: t("documents.show.flashes.draft_success")
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
-    document.update!(publication_state: "error_sending_to_draft")
     redirect_to document, alert: t("documents.show.flashes.draft_error")
   end
 
