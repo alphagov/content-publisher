@@ -1,7 +1,7 @@
 <%= content_for :back_link, document_path(@document) %>
 <% content_for :title, "#{@document.newly_created? ? 'Create' : 'Edit'} #{@document.document_type_schema.label.downcase}" %>
 
-  <%= form_for(@document, html: {'autocomplete': 'off'}, data: {'module': 'edit-document-form', 'generate-path-path': generate_path_path}) do |f| %>
+  <%= form_for(@document, html: {'autocomplete': 'off'}, data: {'module': 'edit-document-form', 'url-preview-path': generate_path_path}) do |f| %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/textarea", {
@@ -14,25 +14,20 @@
         value: @document.title,
         rows: 2,
         data: {
+          "url-preview": "input",
           "contextual-guidance": "document-title-guidance"
         }
       } %>
 
-      <% url_preview = capture do %>
-        <p class="govuk-heading-s"><%= t("documents.edit.url_preview.available") %></p>
-
-        <span id="no-title-id" class="govuk-body <%= 'app-hidden' unless @document.base_path.nil? %>"><%= t("documents.edit.url_preview.no_title") %></span>
-
-        <div id="url-preview-id" <%= 'class="app-hidden"' if @document.base_path.nil? %>
-          <span class="govuk-body"><%= Plek.new.website_root %></span><span id="base-path-id" class="govuk-body" ><%= "#{@document.base_path}" %></span>
-        </div>
-
-        <span id="error-generating-path-id" class="govuk-body app-hidden"><%= t("documents.edit.url_preview.error") %></span>
+      <%= render "components/url_preview", {
+        title: t("documents.edit.url_preview.available"),
+        default_message: t("documents.edit.url_preview.no_title"),
+        error_message: t("documents.edit.url_preview.error"),
+        website_root: Plek.new.website_root,
+        base_path: @document.base_path
+      } do %>
       <% end %>
 
-      <%= render "govuk_publishing_components/components/inset_text", {
-        text: url_preview.html_safe
-      } %>
     </div>
 
     <% if @document.document_type_schema.guidance_for("title") %>

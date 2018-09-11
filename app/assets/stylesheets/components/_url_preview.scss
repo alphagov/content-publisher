@@ -1,0 +1,25 @@
+@import "../../../node_modules/govuk-frontend/settings/all";
+@import "../../../node_modules/govuk-frontend/helpers/all";
+
+.app-c-url-preview {
+  @include govuk-font(19);
+
+  @include govuk-responsive-margin(6, "bottom");
+}
+
+.app-c-url-preview__title {
+  @include govuk-font($size: 19, $weight: bold);
+  margin: 0;
+}
+
+.app-c-url-preview__default-message,
+.app-c-url-preview__error-message,
+.app-c-url-preview__url {
+  margin: 0;
+}
+
+.app-c-url-preview__default-message--hidden,
+.app-c-url-preview__error-message--hidden,
+.app-c-url-preview__url--hidden {
+  display: none;
+}

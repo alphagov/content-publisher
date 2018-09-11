@@ -15,6 +15,7 @@ $govuk-global-styles: true;
 @import "components/summary";
 @import "components/page_preview";
 @import "components/autocomplete";
+@import "components/url_preview";
 
 @import "utilities/display";
 @import "utilities/overwrites";
