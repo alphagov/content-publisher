@@ -8,7 +8,7 @@ class DocumentPublishingService
     publishing_api.put_content(document.content_id, PublishingApiPayload.new(document).payload)
     document.update!(publication_state: "sent_to_draft")
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
+    GovukError.notify(e)
     document.update!(publication_state: "error_sending_to_draft")
     raise
   end
@@ -18,7 +18,7 @@ class DocumentPublishingService
     publishing_api.publish(document.content_id, nil, locale: document.locale)
     document.update!(publication_state: "sent_to_live", change_note: nil, update_type: "major", has_live_version_on_govuk: true)
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
+    GovukError.notify(e)
     document.update!(publication_state: "error_sending_to_live")
     raise
   end

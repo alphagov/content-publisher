@@ -2,7 +2,7 @@
 
 class DocumentTagsController < ApplicationController
   rescue_from GdsApi::BaseError do |e|
-    Rails.logger.error(e)
+    GovukError.notify(e)
     render "#{action_name}_api_down", status: :service_unavailable
   end
 
@@ -15,7 +15,7 @@ class DocumentTagsController < ApplicationController
     document.update!(tags: update_params(document))
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document, notice: t("documents.show.flashes.draft_success")
-  rescue GdsApi::BaseError => e
+  rescue GdsApi::BaseError
     redirect_to document, alert: t("documents.show.flashes.draft_error")
   end
 
