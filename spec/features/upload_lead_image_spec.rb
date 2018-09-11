@@ -43,7 +43,7 @@ RSpec.feature "Upload a lead image" do
     fill_in "alt_text", with: "Some alt text"
     fill_in "caption", with: "Image caption"
     fill_in "credit", with: "Image credit"
-    click_on "Save image"
+    click_on "Save and choose"
   end
 
   def then_i_should_be_able_to_see_the_lead_image_on_the_summary_page
