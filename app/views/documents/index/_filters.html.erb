@@ -29,6 +29,25 @@
     }
   } %>
 
+  <% state_select = UserFacingState::STATES
+    .map { |state| [t("user_facing_states.#{state}.name"), state] }
+  %>
+
+  <%= render "components/autocomplete", {
+    name: "state",
+    label: {
+      text: t("documents.index.filter.state"),
+      bold: true
+    },
+    # TODO: implement allow_blank so we don't have to add a blank option
+    options: state_select + ["",""],
+    selected_options: [params[:state]],
+    size: 10,
+    data: {
+      module: "autocomplete"
+    }
+  } %>
+
   <%= hidden_field_tag "sort", @sort %>
 
   <%= render "govuk_publishing_components/components/button", {

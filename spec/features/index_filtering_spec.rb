@@ -6,10 +6,17 @@ RSpec.feature "User filters documents" do
     when_i_visit_the_index_page
     and_i_filter_by_title
     then_i_see_just_the_ones_that_match
+
     when_i_clear_the_filters
     then_i_see_all_the_documents
+
     when_i_filter_by_document_type
     then_i_see_just_the_ones_that_match
+
+    when_i_clear_the_filters
+    and_filter_by_state
+    then_i_see_just_the_ones_that_match
+
     when_i_filter_too_much
     then_i_see_there_are_no_results
   end
@@ -18,12 +25,14 @@ RSpec.feature "User filters documents" do
     relevant_schema = build(:document_type_schema)
     @relevant_document = create(:document,
                                 title: "Super relevant",
-                                document_type: relevant_schema.id)
+                                document_type: relevant_schema.id,
+                                publication_state: "sent_to_draft")
 
     irrelevant_schema = build(:document_type_schema)
     create(:document,
            title: "Totally irrelevant",
-           document_type: irrelevant_schema.id)
+           document_type: irrelevant_schema.id,
+           publication_state: "sent_to_live")
   end
 
   def when_i_visit_the_index_page
@@ -50,6 +59,11 @@ RSpec.feature "User filters documents" do
 
   def when_i_filter_by_document_type
     select @relevant_document.document_type_schema.label, from: "document_type"
+    click_on "Filter"
+  end
+
+  def and_filter_by_state
+    select I18n.t("user_facing_states.draft.name"), from: "state"
     click_on "Filter"
   end
 
