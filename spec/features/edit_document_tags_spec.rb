@@ -51,7 +51,7 @@ RSpec.feature "Edit document tags" do
     unselect "Initial tag", from: "tags[multi_tag_id][]"
 
     select "Tag to select 1", from: "tags[single_tag_id][]"
-    click_on "Save"
+    click_save
   end
 
   def then_i_can_view_the_tags

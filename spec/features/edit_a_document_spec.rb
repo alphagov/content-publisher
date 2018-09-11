@@ -28,7 +28,7 @@ RSpec.feature "Edit a document" do
   def and_i_fill_in_the_content_fields
     fill_in "document[contents][body]", with: "Edited body."
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
-    click_on "Save"
+    click_save
   end
 
   def then_i_see_the_document_is_saved

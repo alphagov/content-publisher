@@ -20,7 +20,7 @@ RSpec.feature "Publishing a document" do
   end
 
   def and_i_click_on_the_publish_button
-    click_on "Publish"
+    click_publish_button
   end
 
   def and_i_say_that_the_document_has_been_reviewed
@@ -29,7 +29,7 @@ RSpec.feature "Publishing a document" do
 
   def and_i_confirm_the_publishing
     @request = stub_publishing_api_publish(@document.content_id, update_type: nil, locale: @document.locale)
-    click_on "Confirm publish"
+    click_confirm_publish_button
   end
 
   def then_i_see_the_publish_succeeded
