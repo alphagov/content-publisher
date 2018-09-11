@@ -1,0 +1,12 @@
+en:
+  document_lead_image:
+    index:
+      title: Lead image
+      upload_image: Upload existing image
+      existing_image: Choose existing image
+      no_existing_image: No images available
+      alt_text: Alt text
+      caption: Image caption
+      credit: Image credit
+      no_file_selected: You must select a file
+      error_summary_title: You need to

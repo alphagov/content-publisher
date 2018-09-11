@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(version: 2018_09_07_121447) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "contents", default: {}
-    t.text "summary"
     t.string "base_path"
+    t.text "summary"
     t.json "tags", default: {}
     t.string "publication_state", null: false
     t.bigint "creator_id"
@@ -53,9 +53,11 @@ ActiveRecord::Schema.define(version: 2018_09_07_121447) do
     t.text "change_note"
     t.string "update_type"
     t.boolean "has_live_version_on_govuk", default: false, null: false
+    t.bigint "lead_image_id"
     t.index ["base_path"], name: "index_documents_on_base_path", unique: true
     t.index ["content_id", "locale"], name: "index_documents_on_content_id_and_locale", unique: true
     t.index ["creator_id"], name: "index_documents_on_creator_id"
+    t.index ["lead_image_id"], name: "index_documents_on_lead_image_id"
   end
 
   create_table "images", force: :cascade do |t|
@@ -70,6 +72,9 @@ ActiveRecord::Schema.define(version: 2018_09_07_121447) do
     t.integer "crop_height", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "caption"
+    t.string "alt_text"
+    t.string "credit"
     t.index ["blob_id"], name: "index_images_on_blob_id"
     t.index ["document_id"], name: "index_images_on_document_id"
   end
@@ -88,6 +93,7 @@ ActiveRecord::Schema.define(version: 2018_09_07_121447) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "documents", "images", column: "lead_image_id"
   add_foreign_key "documents", "users", column: "creator_id"
   add_foreign_key "images", "active_storage_blobs", column: "blob_id", on_delete: :cascade
   add_foreign_key "images", "documents", on_delete: :cascade

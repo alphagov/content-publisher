@@ -6,6 +6,10 @@
 
     <%= render "documents/show/contents" %>
 
+    <% if @document.document_type_schema.lead_image %>
+      <%= render "documents/show/lead_image" %>
+    <% end %>
+
     <% tags = @document.document_type_schema.tags.map { |schema|
       {
         field: schema.label,

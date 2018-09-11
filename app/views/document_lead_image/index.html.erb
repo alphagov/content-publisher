@@ -1,0 +1,28 @@
+<%= content_for :back_link, document_path(@document) %>
+<% content_for :title, t("document_lead_image.index.title") %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/heading", {
+      text: t("document_lead_image.index.upload_image")
+    } %>
+    <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
+      <%= file_field_tag "image" %>
+      <p>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Upload"
+      } %>
+    <% end %>
+
+    <% if @document.images.any? %>
+      <%= render "govuk_publishing_components/components/heading", {
+        text: t("document_lead_image.index.existing_image")
+      } %>
+      <%= render "image_list" %>
+    <% else %>
+      <%= render "govuk_publishing_components/components/heading", {
+        text: t("document_lead_image.index.no_existing_image")
+      } %>
+    <% end %>
+  </div>
+</div>

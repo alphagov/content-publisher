@@ -2,7 +2,7 @@
 
 class DocumentTypeSchema
   attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
-    :path_prefix, :tags, :guidance, :description, :hint
+    :path_prefix, :tags, :guidance, :description, :hint, :lead_image
 
   def initialize(params = {})
     @id = params["id"]
@@ -15,6 +15,7 @@ class DocumentTypeSchema
     @guidance = params["guidance"].to_a.map(&Guidance.method(:new))
     @description = params["description"]
     @hint = params["hint"]
+    @lead_image = params["lead_image"]
   end
 
   def self.find(document_type_id)

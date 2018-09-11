@@ -1,0 +1,36 @@
+.image-list {
+  padding-bottom: govuk-spacing(4);
+  @include govuk-font(19);
+  vertical-align: top;
+}
+
+.image-list__metadata {
+  padding-left: govuk-spacing(4);
+  align: top;
+  padding-top: 0;
+}
+
+.image-list__lead-image-flag {
+  position: absolute;
+  margin-top: govuk-spacing(4);
+}
+
+.image-list__lead-image-label {
+  float: left;
+  margin-right: govuk-spacing(4);
+}
+
+.image-list__remove-button {
+  float: left;
+}
+
+.image-list__edit-image {
+  float: left;
+  margin-bottom: govuk-spacing(2);
+}
+
+.image-list__choose-image {
+  float: left;
+  margin-right: govuk-spacing(4);
+  margin-bottom: govuk-spacing(2);
+}
