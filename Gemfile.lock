@@ -174,6 +174,12 @@ GEM
       ruby-vips (>= 2.0.11, < 3)
     io-like (0.3.0)
     jaro_winkler (1.5.1)
+    jasmine (2.99.0)
+      jasmine-core (>= 2.99.0, < 3.0.0)
+      phantomjs
+      rack (>= 1.2.1)
+      rake
+    jasmine-core (2.99.2)
     jmespath (1.4.0)
     json (2.1.0)
     json-schema (2.8.0)
@@ -251,6 +257,7 @@ GEM
     parser (2.5.1.2)
       ast (~> 2.4.0)
     pg (1.1.3)
+    phantomjs (2.1.1.0)
     plek (2.1.1)
     powerpack (0.1.2)
     public_suffix (3.0.3)
@@ -422,6 +429,7 @@ DEPENDENCIES
   govuk_schemas (~> 3.2)
   govuk_test (~> 0.2)
   image_processing (~> 1)
+  jasmine (~> 2.4)
   kaminari (~> 1)
   listen (~> 3)
   pg (~> 1)

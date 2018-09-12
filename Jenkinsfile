@@ -17,7 +17,7 @@ node {
     rubyLintDirs: "",
     overrideTestTask: {
       stage("Run tests") {
-        govuk.runTests("spec")
+        govuk.runTests("spec jasmine:ci")
       }
     }
   )
