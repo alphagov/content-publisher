@@ -12,15 +12,19 @@ class DocumentUpdateParams
   end
 
   def update_params(params)
-    path_title = params[:document][:title].squish[0...TITLE_SLUG_MAX_LENGTH]
-    base_path = PathGeneratorService.new.path(document, path_title)
-
-    title = params[:document][:title].squish[0...TITLE_MAX_LENGTH]
-    summary = params[:document][:summary].squish[0...SUMMARY_MAX_LENGTH]
-
     contents_params = document.document_type_schema.contents.map(&:id)
 
-    params.require(:document).permit(:update_type, :change_note, contents: contents_params)
-      .merge(base_path: base_path, title: title, summary: summary)
+    document_params = params.require(:document).permit(:update_type,
+                                                       :change_note,
+                                                       :title,
+                                                       :summary,
+                                                       contents: contents_params)
+
+    path_title = document_params[:title].squish[0...TITLE_SLUG_MAX_LENGTH]
+
+    document_params[:base_path] = PathGeneratorService.new.path(document, path_title)
+    document_params[:title] = document_params[:title].squish[0...TITLE_MAX_LENGTH]
+    document_params[:summary] = document_params[:summary].squish[0...SUMMARY_MAX_LENGTH]
+    document_params
   end
 end
