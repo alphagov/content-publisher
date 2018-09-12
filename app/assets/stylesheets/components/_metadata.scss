@@ -1,6 +1,7 @@
 @import "../../../node_modules/govuk-frontend/helpers/all";
 @import "../../../node_modules/govuk-frontend/settings/all";
 @import "../../../node_modules/govuk-frontend/tools/all";
+@import "../../../node_modules/govuk-frontend/utilities/clearfix";
 
 .app-c-metadata {
   @include govuk-font(19);
@@ -8,6 +9,13 @@
 
 .app-c-metadata__list {
   margin: 0;
+}
+
+.app-c-metadata__list--inline {
+  .app-c-metadata__title,
+  .app-c-metadata__description {
+    display: inline;
+  }
 }
 
 .app-c-metadata__title {
@@ -21,4 +29,6 @@
   &:last-child {
     margin: 0;
   }
+
+  @include govuk-clearfix;
 }
