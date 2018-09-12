@@ -28,8 +28,8 @@ RSpec.describe DocumentUpdateParams do
   end
 
   describe "#attributes" do
-    let(:bad_title) { SecureRandom.hex(150) + "\r\n" + SecureRandom.hex(250) }
-    let(:bad_summary) { SecureRandom.hex(450) + "\r\n" + SecureRandom.hex(250) }
+    let(:bad_title) { "a" * 150 + "\r\n" + "b" * 250 }
+    let(:bad_summary) { "a" * 450 + "\r\n" + "b" * 250 }
 
     it "extracts the simple attributes of the document" do
       attributes = subject.update_params(params)

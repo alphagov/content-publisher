@@ -12,11 +12,11 @@ class DocumentUpdateParams
   end
 
   def update_params(params)
-    path_title = params[:document][:title].chomp[0...TITLE_SLUG_MAX_LENGTH]
+    path_title = params[:document][:title].squish[0...TITLE_SLUG_MAX_LENGTH]
     base_path = PathGeneratorService.new.path(document, path_title)
 
-    title = params[:document][:title].chomp[0...TITLE_MAX_LENGTH]
-    summary = params[:document][:summary].chomp[0...SUMMARY_MAX_LENGTH]
+    title = params[:document][:title].squish[0...TITLE_MAX_LENGTH]
+    summary = params[:document][:summary].squish[0...SUMMARY_MAX_LENGTH]
 
     contents_params = document.document_type_schema.contents.map(&:id)
 
