@@ -1,5 +1,10 @@
-<%= content_for :back_link, document_path(@document) %>
-<% content_for :title, "#{@document.newly_created? ? 'Create' : 'Edit'} #{@document.document_type_schema.label.downcase}" %>
+<% content_for :back_link, document_path(@document) %>
+
+<% if @document.newly_created? %>
+  <% content_for :title, t("documents.edit.title_new", document_type: @document.document_type_schema.label.downcase) %>
+<% else %>
+  <% content_for :title, t("documents.edit.title", title: @document.title_or_fallback) %>
+<% end %>
 
   <%= form_for(@document, html: {'autocomplete': 'off'}, data: {'module': 'edit-document-form', 'url-preview-path': generate_path_path}) do |f| %>
   <div class="govuk-grid-row">

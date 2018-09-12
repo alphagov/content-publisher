@@ -46,4 +46,8 @@ class Document < ApplicationRecord
   def user_facing_state
     UserFacingState.new(self).to_s
   end
+
+  def title_or_fallback
+    title.presence || I18n.t!("documents.untitled_document")
+  end
 end

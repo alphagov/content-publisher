@@ -1,7 +1,7 @@
 en:
   document_lead_image:
     edit:
-      title: Edit lead image
+      title: "Edit lead image for ‘%{title}’"
       form_labels:
         caption: Caption
         alt_text: Alt text
