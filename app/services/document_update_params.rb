@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DocumentAttributes
+class DocumentUpdateParams
   TITLE_SLUG_MAX_LENGTH = 150
   TITLE_MAX_LENGTH = 300
   SUMMARY_MAX_LENGTH = 600
@@ -11,7 +11,7 @@ class DocumentAttributes
     @document = document
   end
 
-  def attributes(params)
+  def update_params(params)
     path_title = params[:document][:title].chomp[0...TITLE_SLUG_MAX_LENGTH]
     base_path = PathGeneratorService.new.path(document, path_title)
 

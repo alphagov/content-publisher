@@ -58,7 +58,7 @@ private
   end
 
   def update_params(document)
-    DocumentAttributes.new(document).attributes(params)
+    DocumentUpdateParams.new(document).update_params(params)
       .merge(publication_state: "changes_not_sent_to_draft", review_state: "unreviewed")
   end
 end
