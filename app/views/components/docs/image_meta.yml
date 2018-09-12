@@ -1,0 +1,19 @@
+name: Image meta
+description: Displays an image with the associated metadata and possible actions
+body: |
+  Metadata contains alt text, image caption and image credit. Actions can be choose, edit and remove.
+  The component is dependent on the govuk-frontend grid system.
+accessibility_criteria: |
+  Markdown listing what this component must do to be accessible. For example:
+
+  The image must:
+
+  * have alt text
+examples:
+  default:
+    data:
+      src: https://assets.publishing.service.gov.uk/government/assets/history/buildings/larry-the-cat-a47549e08bdbc6cd0e3e042eea943f65b7a4590d95642586e51acb44bb2dcea2.jpg
+      alt_text: Larry the cat
+      caption: Larry, Chief Mouser to the Cabinet Office
+      credit: Her Majesty's Government
+
