@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe PathGeneratorService do
-  describe ".path" do
+  describe "#path" do
     it "generates a base path which is unique to our database" do
       service = PathGeneratorService.new
       original_document = create(:document)
@@ -13,13 +13,13 @@ RSpec.describe PathGeneratorService do
     it "raises a 'Path unable to be generated' when many variations of that path are in use" do
       service = PathGeneratorService.new(2)
       document = build(:document)
+
       prefix = document.document_type_schema.path_prefix
-      ["#{prefix}/a-title",
-       "#{prefix}/a-title-1",
-       "#{prefix}/a-title-2"].each do |path|
-        create(:document, base_path: path)
-      end
-      expect { service.path(document, "A title") }.to raise_error(PathGeneratorService::ErrorGeneratingPath, "Already >2 paths with same title.")
+      existing_paths = ["#{prefix}/a-title", "#{prefix}/a-title-1", "#{prefix}/a-title-2"]
+      existing_paths.each { |path| create(:document, base_path: path) }
+
+      expect { service.path(document, "A title") }
+        .to raise_error(PathGeneratorService::ErrorGeneratingPath, "Already >2 paths with same title.")
     end
   end
 end
