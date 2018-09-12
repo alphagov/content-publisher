@@ -25,7 +25,7 @@ class DocumentsController < ApplicationController
     document = Document.find_by_param(params[:id])
     document.update!(update_params(document))
     DocumentPublishingService.new.publish_draft(document)
-    redirect_to document, notice: t("documents.show.flashes.draft_success")
+    redirect_to document
   rescue GdsApi::BaseError
     redirect_to document, alert: t("documents.show.flashes.draft_error")
   end
@@ -33,7 +33,7 @@ class DocumentsController < ApplicationController
   def retry_draft_save
     document = Document.find_by_param(params[:id])
     DocumentPublishingService.new.publish_draft(document)
-    redirect_to document, notice: t("documents.show.flashes.draft_success")
+    redirect_to document
   rescue GdsApi::BaseError
     redirect_to document, alert: t("documents.show.flashes.draft_error")
   end

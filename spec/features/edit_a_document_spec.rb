@@ -37,7 +37,7 @@ RSpec.feature "Edit a document" do
 
   def and_the_content_is_available_for_preview
     expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t("documents.show.flashes.draft_success"))
+    expect(page).to have_link("Preview")
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"]["body"]).to eq("<p>Edited body.</p>\n")

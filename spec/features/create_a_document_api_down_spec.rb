@@ -52,6 +52,5 @@ RSpec.feature "Create a document when the API is down" do
 
   def then_the_document_is_saved_again
     expect(@request).to have_been_requested.twice
-    expect(page).to have_content(I18n.t("documents.show.flashes.draft_success"))
   end
 end
