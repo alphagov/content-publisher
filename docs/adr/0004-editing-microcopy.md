@@ -1,4 +1,4 @@
-# 3. Translations
+# 3. Editing Microcopy
 
 Date: 2018-09-11
 
