@@ -2,7 +2,7 @@
 
 class DocumentTypeSchema
   attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
-    :path_prefix, :tags, :guidance, :description, :hint, :lead_image
+    :path_prefix, :tags, :guidance, :description, :hint, :lead_image, :edit_only
 
   def initialize(params = {})
     @id = params["id"]
@@ -16,6 +16,7 @@ class DocumentTypeSchema
     @description = params["description"]
     @hint = params["hint"]
     @lead_image = params["lead_image"]
+    @edit_only = params["edit_only"]
   end
 
   def self.find(document_type_id)

@@ -6,9 +6,10 @@
   display_document_types:
     - news_story
     - press_release
+    - world_news_story
+    - government_response
     - fatality_notice
     - speech
-    - world_news_story
 
 - id: guidance
   label: Guidance
