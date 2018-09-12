@@ -30,7 +30,7 @@ class DocumentTypeSchema
     end
   end
 
-  def self.create(params)
+  def self.add_schema(params)
     schema = new(params)
     all << schema
     schema

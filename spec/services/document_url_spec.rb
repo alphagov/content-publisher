@@ -10,7 +10,7 @@ RSpec.describe DocumentUrl do
     end
 
     it "returns nil without a base_path" do
-      document.update(base_path: nil)
+      document.update!(base_path: nil)
       url = DocumentUrl.new(document).public_url
       expect(url).to be_nil
     end
@@ -23,7 +23,7 @@ RSpec.describe DocumentUrl do
     end
 
     it "returns nil without a base_path" do
-      document.update(base_path: nil)
+      document.update!(base_path: nil)
       url = DocumentUrl.new(document).preview_url
       expect(url).to be_nil
     end
@@ -36,7 +36,7 @@ RSpec.describe DocumentUrl do
     end
 
     it "returns nil without a base_path" do
-      document.update(base_path: nil)
+      document.update!(base_path: nil)
       url = DocumentUrl.new(document).secret_preview_url
       expect(url).to be_nil
     end
