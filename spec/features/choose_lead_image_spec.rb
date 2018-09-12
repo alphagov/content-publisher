@@ -29,24 +29,27 @@ RSpec.feature "Choose a lead image" do
   end
 
   def then_i_should_be_able_to_see_a_list_of_existing_images
-    expect(find("#image-0")["src"]).to include("image-1.jpg")
-    within("td#image-0-metadata") do
+    expect(find("#image-0 .app-c-image-meta__image")["src"]).to include("image-1.jpg")
+    within("#image-0 .app-c-metadata") do
       expect(page).to have_content(@image1.alt_text)
       expect(page).to have_content(@image1.caption)
       expect(page).to have_content(@image1.credit)
+    end
+
+    within("#image-0 .app-c-image-meta__lead-image-section") do
       expect(page).to have_content("Lead image")
     end
 
-    expect(find("#image-1")["src"]).to include("image-2.jpg")
+    expect(find("#image-1 .app-c-image-meta__image")["src"]).to include("image-2.jpg")
   end
 
   def when_i_select_an_image_to_be_the_lead_image
-    within("td#image-1-choose-action") do
+    within("#image-1") do
       click_on "Choose image"
     end
   end
 
   def then_i_should_see_the_new_lead_image_on_the_summary_page
-    expect(find("#lead-image")["src"]).to include("image-2.jpg")
+    expect(find("#lead-image .app-c-image-meta__image")["src"]).to include("image-2.jpg")
   end
 end
