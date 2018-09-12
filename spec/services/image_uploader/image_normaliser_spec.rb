@@ -2,13 +2,13 @@
 
 require "mini_magick"
 
-RSpec.describe UploadedImageService::ImageNormaliser do
+RSpec.describe ImageUploader::ImageNormaliser do
   describe "#dimensions" do
     context "when given an image without an orientation" do
       it "returns the dimensions" do
         path = file_fixture("960x640.jpg")
 
-        normaliser = UploadedImageService::ImageNormaliser.new(path)
+        normaliser = ImageUploader::ImageNormaliser.new(path)
         expect(normaliser.dimensions).to eql(width: 960, height: 640)
       end
     end
@@ -17,7 +17,7 @@ RSpec.describe UploadedImageService::ImageNormaliser do
       it "returns the normalised dimensions" do
         path = file_fixture("640x960-rotated.jpg")
 
-        normaliser = UploadedImageService::ImageNormaliser.new(path)
+        normaliser = ImageUploader::ImageNormaliser.new(path)
         expect(normaliser.dimensions).to eql(width: 960, height: 640)
       end
     end
@@ -28,7 +28,7 @@ RSpec.describe UploadedImageService::ImageNormaliser do
       temp = Tempfile.new
       temp.write(file_fixture("960x640.jpg").read)
 
-      normaliser = UploadedImageService::ImageNormaliser.new(temp.path)
+      normaliser = ImageUploader::ImageNormaliser.new(temp.path)
       expect(normaliser.normalise).to be_a(MiniMagick::Image)
     end
 
@@ -41,7 +41,7 @@ RSpec.describe UploadedImageService::ImageNormaliser do
       # orientation 6 means rotated 90 degrees clockwise
       expect(source_image.exif).to match(hash_including("Orientation" => "6"))
 
-      normaliser = UploadedImageService::ImageNormaliser.new(temp.path)
+      normaliser = ImageUploader::ImageNormaliser.new(temp.path)
       image = normaliser.normalise
       expect(image.width).to eql(960)
       expect(image.height).to eql(640)

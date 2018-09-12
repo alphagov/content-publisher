@@ -2,7 +2,7 @@
 
 require "mini_magick"
 
-class UploadedImageService::ImageNormaliser
+class ImageUploader::ImageNormaliser
   attr_reader :image
 
   def initialize(image_path)
