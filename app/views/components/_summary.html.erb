@@ -1,5 +1,6 @@
 <%
   title||= nil
+  block||= nil
   items||= []
 %>
 
@@ -36,6 +37,12 @@
     </div>
     <% end %>
   </dl>
+<% end %>
+
+<% if block %>
+  <div class="app-c-summary__block">
+    <%= block %>
+  </div>
 <% end %>
 
 </div>

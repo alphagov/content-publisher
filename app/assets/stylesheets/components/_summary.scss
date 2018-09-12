@@ -23,6 +23,10 @@
   right: 0;
 }
 
+.app-c-summary__block {
+  @include govuk-responsive-margin(9, "bottom");
+}
+
 .app-c-summary__list {
   @include govuk-font(19);
 
@@ -93,6 +97,7 @@
 .app-c-summary__question {
   margin: govuk-em(12, 19) 4em govuk-em(4, 19) 0;
   font-weight: bold;
+  vertical-align: top;
   // using margin instead of padding because of easier absolutely positioning of .app-c-summary__change
 }
 
