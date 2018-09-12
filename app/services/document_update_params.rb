@@ -20,11 +20,17 @@ class DocumentUpdateParams
                                                        :summary,
                                                        contents: contents_params)
 
-    path_title = document_params[:title].squish[0...TITLE_SLUG_MAX_LENGTH]
+    path_title = cleanup(document_params[:title], TITLE_SLUG_MAX_LENGTH)
 
     document_params[:base_path] = PathGeneratorService.new.path(document, path_title)
-    document_params[:title] = document_params[:title].squish[0...TITLE_MAX_LENGTH]
-    document_params[:summary] = document_params[:summary].squish[0...SUMMARY_MAX_LENGTH]
+    document_params[:title] = cleanup(document_params[:title], TITLE_MAX_LENGTH)
+    document_params[:summary] = cleanup(document_params[:summary], SUMMARY_MAX_LENGTH)
     document_params
+  end
+
+private
+
+  def cleanup(string, max_length)
+    string.to_s.squish[0...max_length]
   end
 end

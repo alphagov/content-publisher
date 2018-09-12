@@ -47,6 +47,12 @@ RSpec.describe DocumentUpdateParams do
       expect(attributes[:title].lines.count).to eq 1
     end
 
+    it "copes if the title or summary is nil" do
+      params[:document][:title] = nil
+      params[:document][:summary] = nil
+      expect { subject.update_params(params) }.to_not raise_error
+    end
+
     it "cleans and truncates the summary so it's short" do
       params[:document][:summary] = bad_summary
       attributes = subject.update_params(params)
