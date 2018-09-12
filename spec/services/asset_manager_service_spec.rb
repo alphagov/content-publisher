@@ -9,7 +9,7 @@ RSpec.describe AssetManagerService do
       asset_manager_file_url = "http://asset-manager.test.gov.uk/#{image.filename}"
       asset_manager_receives_an_asset(asset_manager_file_url)
 
-      response = AssetManagerService.new(image.crop_variant).upload
+      response = AssetManagerService.new.upload(image.crop_variant)
       expect(response["file_url"]).to eq(asset_manager_file_url)
       expect(response.code).to eq(200)
     end

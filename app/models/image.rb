@@ -35,4 +35,32 @@ class Image < ApplicationRecord
       resize: resize,
     )
   end
+
+  def cropped_file
+    io = StringIO.new(thumbnail.service.download(thumbnail.key))
+    AssetManagerFile.new(io, filename, blob.content_type)
+  end
+
+  # Used as a stand-in for a File / Rack::Multipart::UploadedFile object when
+  # passed to GdsApi::AssetManager#create_asset. The interface is required for
+  # uploading a file using the restclient we used in the backend.
+  #
+  # https://github.com/rest-client/rest-client/blob/master/lib/restclient/payload.rb#L181-L194
+  #
+  # This is done by delegating to 'io' which should implement the IO interface
+  # (e.g. StringIO) and adds methods to return filename, content_type and path.
+  class AssetManagerFile < SimpleDelegator
+    attr_reader :filename, :content_type
+
+    def initialize(io, filename, content_type)
+      super(io)
+      @filename = filename
+      @content_type = content_type
+    end
+
+    def path
+      filename
+    end
+  end
+
 end
