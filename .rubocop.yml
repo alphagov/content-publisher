@@ -37,3 +37,6 @@ Style/TrailingCommaInArguments:
 Rails/DynamicFindBy:
   Whitelist:
     - find_by_param
+
+Rails/SaveBang:
+  Enabled: true
