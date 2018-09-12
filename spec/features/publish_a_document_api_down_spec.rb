@@ -41,6 +41,6 @@ RSpec.feature "Publishing a document when the API is down" do
 
   def then_i_see_the_publish_succeeded
     expect(@request).to have_been_requested.twice
-    expect(page).to have_content(I18n.t("publish_document.published_document.reviewed.title"))
+    expect(page).to have_content(I18n.t("publish_document.published.reviewed.title"))
   end
 end
