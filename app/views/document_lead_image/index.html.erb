@@ -1,27 +1,30 @@
 <% content_for :title, t("document_lead_image.index.title", title: @document.title_or_fallback) %>
+<% content_for :back_link, document_path(@document) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= render "govuk_publishing_components/components/heading", {
-      text: t("document_lead_image.index.upload_image")
-    } %>
+    <h2 class="govuk-heading-m">
+      <%= t("document_lead_image.index.upload_image") %>
+    </h2>
+    <p class="govuk-body"><%= t("document_lead_image.index.description") %></p>
     <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
       <%= file_field_tag "image" %>
       <p>
       <%= render "govuk_publishing_components/components/button", {
         text: "Upload"
       } %>
+      </p>
     <% end %>
 
     <% if @document.images.any? %>
-      <%= render "govuk_publishing_components/components/heading", {
-        text: t("document_lead_image.index.existing_image")
-      } %>
+      <h2 class="govuk-heading-m">
+        <%= t("document_lead_image.index.existing_image") %>
+      </h2>
       <%= render "image_list" %>
     <% else %>
-      <%= render "govuk_publishing_components/components/heading", {
-        text: t("document_lead_image.index.no_existing_image")
-      } %>
+      <h2 class="govuk-heading-m">
+        <%= t("document_lead_image.index.no_existing_image") %>
+      </h2>
     <% end %>
   </div>
 </div>
