@@ -48,6 +48,23 @@
     }
   } %>
 
+  <% organisation_select = LinkablesService.new("organisation").select_options  %>
+
+  <%= render "components/autocomplete", {
+    name: "organisation",
+    label: {
+      text: t("documents.index.filter.organisation"),
+      bold: true
+    },
+    # TODO: implement allow_blank so we don't have to add a blank option
+    options: [["", ""]] + organisation_select,
+    selected_options: [params[:organisation]],
+    size: 10,
+    data: {
+      module: "autocomplete"
+    }
+  } %>
+
   <%= hidden_field_tag "sort", @sort %>
 
   <%= render "govuk_publishing_components/components/button", {

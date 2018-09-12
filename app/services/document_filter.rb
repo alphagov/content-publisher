@@ -47,6 +47,10 @@ private
         memo.where(document_type: value)
       when :state
         UserFacingState.scope(memo, value)
+      when :organisation
+        memo.where("(tags->'primary_publishing_organisation')::jsonb ? :value OR
+                    (tags->'organisations')::jsonb ? :value",
+                    value: value)
       else
         memo
       end
