@@ -7,7 +7,7 @@ FactoryBot.define do
     document_type { SecureRandom.alphanumeric(8) }
 
     initialize_with do
-      schema = DocumentTypeSchema.create(attributes.stringify_keys)
+      schema = DocumentTypeSchema.add_schema(attributes.stringify_keys)
       SupertypeSchema.all.first.document_types << schema
       schema
     end

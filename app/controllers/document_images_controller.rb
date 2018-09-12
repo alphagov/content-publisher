@@ -19,7 +19,7 @@ class DocumentImagesController < ApplicationController
     image.assign_attributes(image_params)
 
     if image.valid?
-      image.save
+      image.save!
       render json: ImageJsonPresenter.new(image).present, status: :ok
     else
       render json: { errors: image.errors }, status: :unprocessable_entity

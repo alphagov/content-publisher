@@ -33,8 +33,8 @@ class DocumentLeadImageController < ApplicationController
   def update
     document = Document.find_by_param(params[:document_id])
     image = Image.find_by(id: params[:image_id])
-    image.update(update_params)
-    document.update(lead_image_id: image.id)
+    image.update!(update_params)
+    document.update!(lead_image_id: image.id)
     if params[:next_screen] == "lead-image"
       redirect_to document_lead_image_path(document)
       return
@@ -44,13 +44,13 @@ class DocumentLeadImageController < ApplicationController
 
   def choose_image
     document = Document.find_by_param(params[:document_id])
-    document.update(lead_image_id: params[:image_id])
+    document.update!(lead_image_id: params[:image_id])
     redirect_to document_path(document)
   end
 
   def destroy
     document = Document.find_by_param(params[:document_id])
-    document.update(lead_image_id: nil)
+    document.update!(lead_image_id: nil)
     redirect_to document_path(document)
   end
 
