@@ -1,6 +1,6 @@
 en:
   publish_document:
-    published_document:
+    published:
       reviewed:
         title: Content has been published
         body: |

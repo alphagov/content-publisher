@@ -5,11 +5,11 @@
 
     <% if @document.review_state == "reviewed" %>
       <%= render "govuk_publishing_components/components/panel", {
-        title: t("publish_document.published_document.reviewed.title")
+        title: t("publish_document.published.reviewed.title")
       } %>
 
       <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("publish_document.published_document.reviewed.body", title: @document.title) %>
+        <%= govspeak_to_html t("publish_document.published.reviewed.body", title: @document.title) %>
 
         <%= render "govuk_publishing_components/components/copy_to_clipboard",
           label: nil,
@@ -18,14 +18,14 @@
       <% end %>
     <% else %>
       <%= render "govuk_publishing_components/components/panel", {
-        title: t("publish_document.published_document.published_without_review.title")
+        title: t("publish_document.published.published_without_review.title")
       } %>
 
       <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("publish_document.published_document.published_without_review.body", title: @document.title) %>
+        <%= govspeak_to_html t("publish_document.published.published_without_review.body", title: @document.title) %>
 
         <%= render "govuk_publishing_components/components/copy_to_clipboard",
-          label: t("publish_document.published_document.published_without_review.send_label"),
+          label: t("publish_document.published.published_without_review.send_label"),
           copyable_content: DocumentUrl.new(@document).public_url,
           button_text: "Copy link" %>
       <% end %>

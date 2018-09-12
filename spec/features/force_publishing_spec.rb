@@ -39,7 +39,7 @@ RSpec.feature "Force publishing" do
   end
 
   def then_i_see_that_the_document_was_published_without_review
-    expect(page).to have_content(I18n.t("publish_document.published_document.published_without_review.title"))
+    expect(page).to have_content(I18n.t("publish_document.published.published_without_review.title"))
   end
 
   def and_i_click_the_approval_button
