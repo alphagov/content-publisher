@@ -20,11 +20,11 @@ class ImageUploader
   end
 
   def upload(document)
-    image_normaliser.normalise
-
-    blob = ActiveStorage::Blob.create_after_upload!(io: file,
-                                                    filename: filename,
-                                                    content_type: mime_type)
+    blob = ActiveStorage::Blob.create_after_upload!(
+      io: image_normaliser.normalised_file,
+      filename: filename,
+      content_type: mime_type,
+    )
 
     image_attributes = { document: document,
                          blob: blob,
