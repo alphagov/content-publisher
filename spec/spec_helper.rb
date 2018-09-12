@@ -39,10 +39,6 @@ RSpec.configure do |config|
     Rails.application.load_seed
   end
 
-  config.before :each, format: true do
-    publishing_api_has_linkables([{ "content_id" => User.first.organisation_content_id, "internal_name" => "Linkable" }], document_type: "organisation")
-  end
-
   config.after :each, type: :feature, js: true do
     Capybara::Chromedriver::Logger::TestHooks.after_example!
   end
