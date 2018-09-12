@@ -16,7 +16,7 @@ class DocumentTagsController < ApplicationController
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document
   rescue GdsApi::BaseError
-    redirect_to document, alert: t("documents.show.flashes.draft_error")
+    redirect_to document, alert_with_description: t("documents.show.flashes.draft_error")
   end
 
 private
