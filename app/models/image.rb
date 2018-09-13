@@ -39,7 +39,7 @@ class Image < ApplicationRecord
   def cropped_file
     image = thumbnail.processed
     io = StringIO.new(image.service.download(image.key))
-    AssetManagerFile.new(io, filename, blob.content_type)
+    AssetManagerFile.new(io, filename, blob.content_type, asset_manager_file_url)
   end
 
   # Used as a stand-in for a File / Rack::Multipart::UploadedFile object when
@@ -51,12 +51,13 @@ class Image < ApplicationRecord
   # This is done by delegating to 'io' which should implement the IO interface
   # (e.g. StringIO) and adds methods to return filename, content_type and path.
   class AssetManagerFile < SimpleDelegator
-    attr_reader :filename, :content_type
+    attr_reader :filename, :content_type, :url
 
-    def initialize(io, filename, content_type)
+    def initialize(io, filename, content_type, url)
       super(io)
       @filename = filename
       @content_type = content_type
+      @url = url
     end
 
     def path
