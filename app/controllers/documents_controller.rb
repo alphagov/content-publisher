@@ -58,10 +58,7 @@ private
   end
 
   def update_params(document)
-    contents_params = document.document_type_schema.contents.map(&:id)
-    base_path = PathGeneratorService.new.path(document, params[:document][:title])
-
-    params.require(:document).permit(:title, :summary, :update_type, :change_note, contents: contents_params)
-      .merge(base_path: base_path, publication_state: "changes_not_sent_to_draft", review_state: "unreviewed")
+    DocumentUpdateParams.new(document).update_params(params)
+      .merge(publication_state: "changes_not_sent_to_draft", review_state: "unreviewed")
   end
 end
