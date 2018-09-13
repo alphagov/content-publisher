@@ -14,7 +14,15 @@ RSpec.feature "User filters documents" do
     then_i_see_just_the_ones_that_match
 
     when_i_clear_the_filters
-    and_filter_by_state
+    and_i_filter_by_state
+    then_i_see_just_the_ones_that_match
+
+    when_i_clear_the_filters
+    and_i_filter_by_primary_organisation
+    then_i_see_just_the_ones_that_match
+
+    when_i_clear_the_filters
+    and_i_filter_by_organisation
     then_i_see_just_the_ones_that_match
 
     when_i_filter_too_much
@@ -22,20 +30,23 @@ RSpec.feature "User filters documents" do
   end
 
   def given_there_are_some_documents
-    relevant_schema = build(:document_type_schema)
+    create(:document, title: "Totally irrelevant", publication_state: "sent_to_live")
+    @primary_organisation = { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 1" }
+    @organisation = { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 2" }
+
     @relevant_document = create(:document,
                                 title: "Super relevant",
-                                document_type: relevant_schema.id,
-                                publication_state: "sent_to_draft")
-
-    irrelevant_schema = build(:document_type_schema)
-    create(:document,
-           title: "Totally irrelevant",
-           document_type: irrelevant_schema.id,
-           publication_state: "sent_to_live")
+                                publication_state: "sent_to_draft",
+                                tags: {
+                                  primary_publishing_organisation: [@primary_organisation["content_id"]],
+                                  organisations: [@organisation["content_id"]],
+                                })
   end
 
   def when_i_visit_the_index_page
+    publishing_api_has_linkables([@primary_organisation, @organisation],
+                                 document_type: "organisation")
+
     visit documents_path
   end
 
@@ -62,8 +73,18 @@ RSpec.feature "User filters documents" do
     click_on "Filter"
   end
 
-  def and_filter_by_state
+  def and_i_filter_by_state
     select I18n.t("user_facing_states.draft.name"), from: "state"
+    click_on "Filter"
+  end
+
+  def and_i_filter_by_primary_organisation
+    select @primary_organisation["internal_name"], from: "organisation"
+    click_on "Filter"
+  end
+
+  def and_i_filter_by_organisation
+    select @organisation["internal_name"], from: "organisation"
     click_on "Filter"
   end
 

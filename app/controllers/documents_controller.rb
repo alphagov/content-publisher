@@ -50,7 +50,7 @@ private
 
   def filter_params
     {
-      filters: params.permit(:title_or_url, :document_type, :state).to_hash,
+      filters: params.permit(:title_or_url, :document_type, :state, :organisation).to_hash,
       sort: params[:sort],
       page: params[:page],
       per_page: 50,
