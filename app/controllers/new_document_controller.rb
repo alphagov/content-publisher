@@ -48,6 +48,7 @@ class NewDocumentController < ApplicationController
       creator_id: current_user.id,
       update_type: "major",
       change_note: "First published.",
+      edition_number: 1,
     )
 
     redirect_to edit_document_path(document)

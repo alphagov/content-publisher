@@ -31,6 +31,7 @@ module Tasks
         review_state: "unreviewed",
         summary: translation["summary"],
         tags: tags(edition),
+        edition_number: edition["published_major_version"] + 1,
       )
 
       doc.save!
