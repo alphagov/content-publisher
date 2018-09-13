@@ -2,11 +2,10 @@
 
 require "mini_magick"
 
-class UploadedImageService::ImageNormaliser
-  attr_reader :image
-
+class ImageUploader::ImageNormaliser
   def initialize(image_path)
-    @image = MiniMagick::Image.new(image_path)
+    @image = MiniMagick::Image.open(image_path)
+    @output = Tempfile.new
   end
 
   def dimensions
@@ -17,7 +16,18 @@ class UploadedImageService::ImageNormaliser
     end
   end
 
-  def normalise
+  def normalised_file
+    @normalised_file ||= output.tap do |file|
+      normalise_image
+      image.write(file.path)
+    end
+  end
+
+private
+
+  attr_reader :image, :output
+
+  def normalise_image
     image.combine_options do |file|
       # apply any orientation specified as exif data
       file.auto_orient

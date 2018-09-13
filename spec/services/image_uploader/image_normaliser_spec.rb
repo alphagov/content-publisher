@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require "mini_magick"
+require "digest"
 
-RSpec.describe UploadedImageService::ImageNormaliser do
+RSpec.describe ImageUploader::ImageNormaliser do
   describe "#dimensions" do
     context "when given an image without an orientation" do
       it "returns the dimensions" do
         path = file_fixture("960x640.jpg")
 
-        normaliser = UploadedImageService::ImageNormaliser.new(path)
+        normaliser = ImageUploader::ImageNormaliser.new(path)
         expect(normaliser.dimensions).to eql(width: 960, height: 640)
       end
     end
@@ -17,32 +18,34 @@ RSpec.describe UploadedImageService::ImageNormaliser do
       it "returns the normalised dimensions" do
         path = file_fixture("640x960-rotated.jpg")
 
-        normaliser = UploadedImageService::ImageNormaliser.new(path)
+        normaliser = ImageUploader::ImageNormaliser.new(path)
         expect(normaliser.dimensions).to eql(width: 960, height: 640)
       end
     end
   end
 
-  describe "#normalise" do
-    it "returns the image file" do
-      temp = Tempfile.new
-      temp.write(file_fixture("960x640.jpg").read)
+  describe "#normalised_file" do
+    it "returns a tempfile" do
+      normaliser = ImageUploader::ImageNormaliser.new(file_fixture("960x640.jpg"))
+      expect(normaliser.normalised_file).to be_a(Tempfile)
+    end
 
-      normaliser = UploadedImageService::ImageNormaliser.new(temp.path)
-      expect(normaliser.normalise).to be_a(MiniMagick::Image)
+    it "does not modify the source file" do
+      path = file_fixture("640x960-rotated.jpg")
+      normaliser = ImageUploader::ImageNormaliser.new(path)
+      expect { normaliser.normalised_file }
+        .not_to(change { Digest::SHA256.file(path).hexdigest })
     end
 
     it "fixes orientation and strips exif data" do
       source_path = file_fixture("640x960-rotated.jpg")
-      temp = Tempfile.new
-      temp.write(source_path.read)
-
-      source_image = MiniMagick::Image.new(source_path)
+      source_image = MiniMagick::Image.open(source_path)
       # orientation 6 means rotated 90 degrees clockwise
       expect(source_image.exif).to match(hash_including("Orientation" => "6"))
 
-      normaliser = UploadedImageService::ImageNormaliser.new(temp.path)
-      image = normaliser.normalise
+      normaliser = ImageUploader::ImageNormaliser.new(source_path)
+      image = MiniMagick::Image.open(normaliser.normalised_file.path)
+
       expect(image.width).to eql(960)
       expect(image.height).to eql(640)
       expect(image.exif).to be_empty

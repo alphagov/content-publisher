@@ -12,14 +12,14 @@ class DocumentLeadImageController < ApplicationController
       return
     end
 
-    upload = UploadedImageService.new(params.require(:image)).process
+    image_uploader = ImageUploader.new(params.require(:image))
 
-    if upload.valid?
-      image = create_image_from_upload(upload, document)
+    if image_uploader.valid?
+      image = image_uploader.upload(document)
       redirect_to edit_document_lead_image_path(params[:document_id], image.id)
     else
       redirect_to document_lead_image_path, alert: {
-        "alerts" => upload.errors,
+        "alerts" => image_uploader.errors,
         "title" => t("document_lead_image.index.error_summary_title"),
       }
     end
@@ -58,25 +58,5 @@ private
 
   def update_params
     params.permit(:caption, :alt_text, :credit)
-  end
-
-  def create_image_from_upload(upload, document)
-    blob = ActiveStorage::Blob.create_after_upload!(
-      io: upload.file,
-      filename: upload.filename,
-      content_type: upload.mime_type,
-    )
-
-    Image.create!(
-      document: document,
-      blob: blob,
-      filename: blob.filename,
-      width: upload.dimensions[:width],
-      height: upload.dimensions[:height],
-      crop_x: upload.crop_dimensions[:x],
-      crop_y: upload.crop_dimensions[:y],
-      crop_width: upload.crop_dimensions[:width],
-      crop_height: upload.crop_dimensions[:height],
-    )
   end
 end
