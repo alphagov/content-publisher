@@ -39,6 +39,13 @@
       } %>
     <% end %>
 
+    <% if flash["alert_with_description"] %>
+      <%= render "govuk_publishing_components/components/error_alert", {
+        message: flash["alert_with_description"].fetch("title"),
+        description: govspeak_to_html(flash["alert_with_description"].fetch("description")),
+      } %>
+    <% end %>
+
     <% if flash["alert"] %>
       <% if flash["alert"].is_a? Hash %>
         <%= render "govuk_publishing_components/components/error_summary", {

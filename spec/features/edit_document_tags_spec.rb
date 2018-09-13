@@ -62,7 +62,7 @@ RSpec.feature "Edit document tags" do
 
   def and_the_preview_creation_succeeded
     expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t("documents.show.flashes.draft_success"))
+    expect(page).to have_link("Preview")
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["links"]).to include(edition_links)

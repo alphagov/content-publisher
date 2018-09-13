@@ -38,9 +38,12 @@ en:
         created_by: Document created by
         unknown_creator: Unknown
       flashes:
-        draft_success: Preview creation successful
-        draft_error: Error creating preview
-        publish_error: Error publishing
+        draft_error:
+          title: Something has gone wrong
+          description: Something went wrong when saving your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+        publish_error:
+          title: Something has gone wrong
+          description: Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         approved: Content has been reviewed and approved
         submitted_for_review:
           title: Content has been submitted for 2i review

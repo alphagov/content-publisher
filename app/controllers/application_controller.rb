@@ -4,4 +4,6 @@ class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
 
   before_action :authenticate_user!
+
+  add_flash_types :alert_with_description
 end

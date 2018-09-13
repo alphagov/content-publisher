@@ -11,7 +11,7 @@ class PublishDocumentController < ApplicationController
     DocumentPublishingService.new.publish(document, review_state)
     redirect_to document_published_path(document)
   rescue GdsApi::BaseError
-    redirect_to document, alert: t("documents.show.flashes.publish_error")
+    redirect_to document, alert_with_description: t("documents.show.flashes.publish_error")
   end
 
   def published
