@@ -23,17 +23,20 @@ RSpec.feature "Remove a lead image" do
   end
 
   def then_i_should_be_able_to_see_the_lead_image
-    expect(find("#image-0")["src"]).to include("image-1.jpg")
-    within("td#image-0-metadata") do
+    expect(find("#image-0 .app-c-image-meta__image")["src"]).to include("image-1.jpg")
+    within("#image-0 .app-c-metadata") do
       expect(page).to have_content(@image.alt_text)
       expect(page).to have_content(@image.caption)
       expect(page).to have_content(@image.credit)
+    end
+
+    within("#image-0 .app-c-image-meta__lead-image-section") do
       expect(page).to have_content("Lead image")
     end
   end
 
   def when_i_remove_the_lead_image
-    within("td#image-0-metadata") do
+    within("#image-0") do
       click_on "Remove"
     end
   end

@@ -1,0 +1,57 @@
+<%
+  id ||= "image-meta-#{SecureRandom.hex(4)}"
+  alt_text ||= nil
+  caption ||= nil
+  credit ||= nil
+  actions ||= []
+  lead_image ||= false
+%>
+<div class="app-c-image-meta" id="<%= id %>">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+
+      <%= tag.img class: "app-c-image-meta__image",
+        src: src,
+        alt: alt_text
+      %>
+
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+
+      <%= render "components/metadata", {
+        inline: true,
+        items: [
+          {
+            field: t("documents.show.lead_image.fields.alt_text"),
+            value: alt_text
+          },
+          {
+            field: t("documents.show.lead_image.fields.caption"),
+            value: caption
+          },
+          {
+            field: t("documents.show.lead_image.fields.credit"),
+            value: credit
+          }
+        ]
+      } %>
+
+      <% if lead_image %>
+        <div class="app-c-image-meta__lead-image-section">
+          <div class="app-c-image-meta__lead-image-tag">Lead image</div>
+          <div class="app-c-image-meta__remove-button"><%= actions[:remove_button] %></div>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+
+  <% if actions.any? %>
+    <ul class="app-c-image-meta__actions">
+      <% if actions[:choose_button] %>
+        <li class="app-c-image-meta__choose-image"><%= actions[:choose_button] %></li>
+      <% end %>
+      <li><%= link_to("Edit details", actions[:edit_link], class: "govuk-link") %></li>
+    <ul>
+  <% end %>
+</div>

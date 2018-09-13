@@ -1,0 +1,49 @@
+@import "../../../node_modules/govuk-frontend/settings/all";
+@import "../../../node_modules/govuk-frontend/helpers/all";
+@import "../../../node_modules/govuk-frontend/objects/grid";
+
+.app-c-image-meta {
+  @include govuk-font(19);
+
+  margin-bottom: govuk-spacing(4);
+  padding-bottom: govuk-spacing(3);
+  border-bottom: 1px solid $govuk-border-colour;
+
+  .app-c-metadata {
+    margin-bottom: govuk-spacing(3);
+  }
+}
+
+.app-c-image-meta__image {
+  display: block;
+  max-width: 100%;
+  margin-bottom: govuk-spacing(3);
+}
+
+.app-c-image-meta__actions {
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: inline;
+    margin-right: govuk-spacing(3);
+  }
+}
+
+.app-c-image-meta__lead-image-section {
+  margin-bottom: govuk-spacing(3);
+  @include govuk-clearfix;
+}
+
+.app-c-image-meta__lead-image-tag {
+  float: left;
+}
+
+.app-c-image-meta__remove-button {
+  margin-left: govuk-spacing(3);
+  float: left;
+}
+
+.app-c-image-meta__choose-image {
+  float: left;
+}
