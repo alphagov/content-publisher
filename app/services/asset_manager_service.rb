@@ -4,9 +4,8 @@ require "gds_api/asset_manager"
 
 class AssetManagerService
   def upload(file)
-    asset_manager.create_asset(file: file, draft: true)
-  rescue GdsApi::BaseError => e
-    false
+    upload = asset_manager.create_asset(file: file, draft: true)
+    upload["file_url"]
   end
 
 private

@@ -34,6 +34,7 @@ RSpec.feature "Upload a lead image" do
   end
 
   def when_i_upload_a_new_image
+    asset_manager_receives_an_asset("a-url")
     find('form input[type="file"]').set(file_fixture("960x640.jpg"))
     click_on "Upload"
   end

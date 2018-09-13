@@ -16,6 +16,8 @@ class DocumentLeadImageController < ApplicationController
 
     if image_uploader.valid?
       image = image_uploader.upload(document)
+      image.asset_manager_file_url = upload_image_to_asset_manager(image)
+      image.save!
       redirect_to edit_document_lead_image_path(params[:document_id], image.id)
     else
       redirect_to document_lead_image_path, alert: {
@@ -58,5 +60,9 @@ private
 
   def update_params
     params.permit(:caption, :alt_text, :credit)
+  end
+
+  def upload_image_to_asset_manager(image)
+    AssetManagerService.new.upload(image.cropped_file)
   end
 end

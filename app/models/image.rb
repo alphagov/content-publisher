@@ -37,7 +37,8 @@ class Image < ApplicationRecord
   end
 
   def cropped_file
-    io = StringIO.new(thumbnail.service.download(thumbnail.key))
+    image = thumbnail.processed
+    io = StringIO.new(image.service.download(image.key))
     AssetManagerFile.new(io, filename, blob.content_type)
   end
 
@@ -62,5 +63,4 @@ class Image < ApplicationRecord
       filename
     end
   end
-
 end
