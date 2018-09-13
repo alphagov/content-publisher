@@ -39,6 +39,11 @@ RSpec.configure do |config|
     Rails.application.load_seed
   end
 
+  config.before :each, type: :feature do
+    # This is required by lots of specs when visiting the index page
+    publishing_api_has_linkables([], document_type: "organisation")
+  end
+
   config.after :each, type: :feature, js: true do
     Capybara::Chromedriver::Logger::TestHooks.after_example!
   end

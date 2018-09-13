@@ -59,9 +59,9 @@ RSpec.describe DocumentFilter do
     end
 
     it "filters the documents by organisation" do
-      document1 = create(:document, tags: { primary_publishing_organisation: ["org1"] })
-      document2 = create(:document, tags: { organisations: ["org1"] })
-      document3 = create(:document, tags: { organisations: ["org11"] })
+      document1 = create(:document, tags: { primary_publishing_organisation: %w[org1] })
+      document2 = create(:document, tags: { organisations: %w[org1] })
+      document3 = create(:document, tags: { organisations: %w[org11] })
 
       documents = DocumentFilter.new(filters: { organisation: " " }).documents
       expect(documents).to match_array([document1, document2, document3])
