@@ -37,6 +37,7 @@ class DocumentLeadImageController < ApplicationController
     image = Image.find_by(id: params[:image_id])
     image.update!(update_params)
     document.update!(lead_image_id: image.id)
+    DocumentPublishingService.new.publish_draft(document)
     if params[:next_screen] == "lead-image"
       redirect_to document_lead_image_path(document)
       return
@@ -47,12 +48,14 @@ class DocumentLeadImageController < ApplicationController
   def choose_image
     document = Document.find_by_param(params[:document_id])
     document.update!(lead_image_id: params[:image_id])
+    DocumentPublishingService.new.publish_draft(document)
     redirect_to document_path(document)
   end
 
   def destroy
     document = Document.find_by_param(params[:document_id])
     document.update!(lead_image_id: nil)
+    DocumentPublishingService.new.publish_draft(document)
     redirect_to document_path(document)
   end
 

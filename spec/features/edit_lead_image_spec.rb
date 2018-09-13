@@ -26,6 +26,7 @@ RSpec.feature "Edit an existing lead image" do
   end
 
   def then_i_edit_the_image_metadata
+    @request = stub_publishing_api_put_content(Document.last.content_id, {})
     fill_in "alt_text", with: "Some alt text"
     fill_in "caption", with: "Image caption"
     fill_in "credit", with: "Image credit"
@@ -33,6 +34,7 @@ RSpec.feature "Edit an existing lead image" do
   end
 
   def then_i_am_redirected_to_the_lead_images_page
+    expect(@request).to have_been_requested
     expect(page).to have_current_path(document_lead_image_path(Document.last))
   end
 

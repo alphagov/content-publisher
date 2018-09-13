@@ -40,6 +40,7 @@ RSpec.feature "Upload a lead image" do
   end
 
   def and_i_fill_in_the_metadata
+    @request = stub_publishing_api_put_content(Document.last.content_id, {})
     expect(find(".app-c-image-meta__image")["src"]).to include("960x640.jpg")
     fill_in "alt_text", with: "Some alt text"
     fill_in "caption", with: "Image caption"
@@ -48,6 +49,7 @@ RSpec.feature "Upload a lead image" do
   end
 
   def then_i_should_be_able_to_see_the_lead_image_on_the_summary_page
+    expect(@request).to have_been_requested
     expect(page).to have_content("Image caption")
     expect(page).to have_content("Image credit")
     expect(find("#lead-image .app-c-image-meta__image")["src"]).to include("960x640.jpg")
