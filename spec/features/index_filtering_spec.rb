@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.feature "User filters documents" do
-  let(:primary_organisation) { { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 1" } }
-  let(:organisation) { { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 2" } }
-
   scenario "User filters documents" do
     given_there_are_some_documents
     when_i_visit_the_index_page
@@ -33,30 +30,23 @@ RSpec.feature "User filters documents" do
   end
 
   def given_there_are_some_documents
-    relevant_schema = build(:document_type_schema)
-    irrelevant_schema = build(:document_type_schema)
-
-    create(:document,
-           title: "Totally irrelevant",
-           document_type: irrelevant_schema.id,
-           publication_state: "sent_to_live")
-
-    @relevant_tags = {
-      primary_publishing_organisation: [primary_organisation["content_id"]],
-      organisations: [organisation["content_id"]],
-    }
-
-    publishing_api_has_linkables([primary_organisation, organisation],
-                                 document_type: "organisation")
+    create(:document, title: "Totally irrelevant", publication_state: "sent_to_live")
+    @primary_organisation = { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 1" }
+    @organisation = { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 2" }
 
     @relevant_document = create(:document,
                                 title: "Super relevant",
-                                document_type: relevant_schema.id,
                                 publication_state: "sent_to_draft",
-                                tags: @relevant_tags)
+                                tags: {
+                                  primary_publishing_organisation: [@primary_organisation["content_id"]],
+                                  organisations: [@organisation["content_id"]],
+                                })
   end
 
   def when_i_visit_the_index_page
+    publishing_api_has_linkables([@primary_organisation, @organisation],
+                                 document_type: "organisation")
+
     visit documents_path
   end
 
@@ -89,12 +79,12 @@ RSpec.feature "User filters documents" do
   end
 
   def and_i_filter_by_primary_organisation
-    select primary_organisation["internal_name"], from: "organisation"
+    select @primary_organisation["internal_name"], from: "organisation"
     click_on "Filter"
   end
 
   def and_i_filter_by_organisation
-    select organisation["internal_name"], from: "organisation"
+    select @organisation["internal_name"], from: "organisation"
     click_on "Filter"
   end
 
