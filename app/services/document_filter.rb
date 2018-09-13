@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class DocumentFilter
+  TAG_CONTAINS_QUERY = "exists(select 1 from json_array_elements(tags->'%<tag>s')
+                        where array_to_json(array[value])->>0 = :value)"
+
   include ActiveRecord::Sanitization::ClassMethods
 
   SORT_KEYS = %w[updated_at].freeze
@@ -48,9 +51,9 @@ private
       when :state
         UserFacingState.scope(memo, value)
       when :organisation
-        memo.where("(tags->'primary_publishing_organisation')::jsonb ? :value OR
-                    (tags->'organisations')::jsonb ? :value",
-                    value: value)
+        memo.where(TAG_CONTAINS_QUERY % { tag: "organisations" } + " OR " +
+                   TAG_CONTAINS_QUERY % { tag: "primary_publishing_organisation" },
+                   value: value)
       else
         memo
       end
