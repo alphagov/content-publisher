@@ -70,5 +70,21 @@ RSpec.describe PublishingApiPayload do
 
       expect(payload["details"]["body"]).to eq("<p>Hey <strong>buddy</strong>!</p>\n")
     end
+
+    it "includes a lead image if present" do
+      image = build(:image, alt_text: "image alt text", caption: "image caption", asset_manager_file_url: "http:://assets-manager.gov.uk/image.jpg")
+      document_type_schema = build(:document_type_schema, lead_image: true)
+      document = build(:document, document_type: document_type_schema.id, lead_image: image)
+
+      payload = PublishingApiPayload.new(document).payload
+
+      payload_hash = {
+        "url" => "http:://assets-manager.gov.uk/image.jpg",
+        "alt_text" => "image alt text",
+        "caption" => "image caption",
+      }
+
+      expect(payload["details"]["image"]).to match a_hash_including(payload_hash)
+    end
   end
 end
