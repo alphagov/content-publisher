@@ -3,9 +3,11 @@
     <%= render "components/image_meta", {
       id: "lead-image",
       src: url_for(@document.lead_image.thumbnail),
-      alt_text: @document.lead_image.alt_text,
-      caption: @document.lead_image.caption,
-      credit: @document.lead_image.credit
+      meta: {
+        alt_text: @document.lead_image.alt_text,
+        caption: @document.lead_image.caption,
+        credit: @document.lead_image.credit
+      }
     } %>
   <% end %>
 
@@ -17,11 +19,16 @@
     block: lead_image_block
   } %>
 <% else %>
+  <% no_lead_image_block = capture do %>
+    <%= t("documents.show.lead_image.no_lead_image") %>
+    <%= link_to t("documents.show.lead_image.upload_image"), document_lead_image_path(@document), class: "govuk-link" %>
+  <% end %>
+
   <%= render "components/summary", {
     title: {
       text: t("documents.show.lead_image.title"),
       change_url: document_lead_image_path(@document)
     },
-    block: t("documents.show.lead_image.no_lead_image")
+    block: no_lead_image_block
   } %>
 <% end %>
