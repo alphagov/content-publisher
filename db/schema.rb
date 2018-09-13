@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_07_121447) do
+ActiveRecord::Schema.define(version: 2018_09_13_105125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,10 +50,10 @@ ActiveRecord::Schema.define(version: 2018_09_07_121447) do
     t.string "publication_state", null: false
     t.bigint "creator_id"
     t.string "review_state", null: false
+    t.bigint "lead_image_id"
+    t.boolean "has_live_version_on_govuk", default: false, null: false
     t.text "change_note"
     t.string "update_type"
-    t.boolean "has_live_version_on_govuk", default: false, null: false
-    t.bigint "lead_image_id"
     t.index ["base_path"], name: "index_documents_on_base_path", unique: true
     t.index ["content_id", "locale"], name: "index_documents_on_content_id_and_locale", unique: true
     t.index ["creator_id"], name: "index_documents_on_creator_id"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2018_09_07_121447) do
     t.string "caption"
     t.string "alt_text"
     t.string "credit"
+    t.string "asset_manager_file_url"
     t.index ["blob_id"], name: "index_images_on_blob_id"
     t.index ["document_id"], name: "index_images_on_document_id"
   end
