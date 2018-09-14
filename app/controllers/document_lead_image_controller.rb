@@ -41,6 +41,11 @@ class DocumentLeadImageController < ApplicationController
     @image = @document.images.find(params[:image_id])
   end
 
+  def crop
+    @document = Document.find_by_param(params[:document_id])
+    @image = Image.find_by(id: params[:image_id])
+  end
+
   def update
     document = Document.find_by_param(params[:document_id])
     image = document.images.find(params[:image_id])
