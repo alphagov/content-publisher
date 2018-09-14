@@ -3,13 +3,13 @@
 
   <% remove_lead_image_button = capture do %>
     <%= form_tag remove_document_lead_image_path(@document), method: :delete do %>
-      <button>Remove</button>
+      <button class="govuk-link">Remove</button>
     <% end %>
   <% end %>
 
   <% choose_lead_image_button = capture do %>
     <%= form_tag choose_document_lead_image_path(@document, image) do %>
-      <button>Choose image</button>
+      <button class="govuk-link">Choose image</button>
     <% end %>
   <% end %>
 
