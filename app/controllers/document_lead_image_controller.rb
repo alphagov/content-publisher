@@ -14,17 +14,26 @@ class DocumentLeadImageController < ApplicationController
 
     image_uploader = ImageUploader.new(params.require(:image))
 
-    if image_uploader.valid?
-      image = image_uploader.upload(document)
-      image.asset_manager_file_url = upload_image_to_asset_manager(image)
-      image.save!
-      redirect_to edit_document_lead_image_path(params[:document_id], image.id)
-    else
+    unless image_uploader.valid?
       redirect_to document_lead_image_path, alert: {
         "alerts" => image_uploader.errors,
         "title" => t("document_lead_image.index.error_summary_title"),
       }
+      return
     end
+
+    begin
+      image = image_uploader.upload(document)
+      image.asset_manager_file_url = upload_image_to_asset_manager(image)
+    rescue GdsApi::BaseError
+      redirect_to document_lead_image_path, alert_with_description: {
+        "title" => t("document_lead_image.index.flashes.asset_manager_error.title"),
+        "description" => t("document_lead_image.index.flashes.asset_manager_error.description"),
+      }
+      return
+    end
+    image.save!
+    redirect_to edit_document_lead_image_path(params[:document_id], image.id)
   end
 
   def edit
