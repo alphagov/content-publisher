@@ -6,14 +6,22 @@
     <h2 class="govuk-heading-m">
       <%= t("document_lead_image.index.upload_image") %>
     </h2>
-    <p class="govuk-body"><%= t("document_lead_image.index.description") %></p>
+    <%= render "govuk_publishing_components/components/govspeak" do %>
+      <%= govspeak_to_html t("document_lead_image.index.description") %>
+    <% end %>
+
     <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
-      <%= file_field_tag "image" %>
-      <p>
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Upload"
+      <%= render "govuk_publishing_components/components/file_upload", {
+        label: {
+          text: "Upload an image",
+        },
+        name: "image"
       } %>
-      </p>
+
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Upload",
+        margin_bottom: true
+      } %>
     <% end %>
 
     <% if @document.images.any? %>
