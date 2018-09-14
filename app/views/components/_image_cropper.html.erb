@@ -1,0 +1,10 @@
+<%
+  id ||= "image-meta-#{SecureRandom.hex(4)}"
+  alt_text ||= nil
+%>
+<div class="app-c-image-cropper" id="<%= id %>" data-module="image-cropper">
+  <%= tag.img class: "app-c-image-cropper__image",
+    src: src,
+    alt: alt_text
+  %>
+</div>

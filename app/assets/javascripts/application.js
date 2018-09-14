@@ -5,6 +5,7 @@
 //= require components/markdown-editor.js
 //= require components/error-alert.js
 //= require components/autocomplete.js
+//= require components/image_cropper.js
 
 /**
  * contextual guidance need to be initialised after the rest of the components
