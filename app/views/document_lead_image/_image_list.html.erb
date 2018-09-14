@@ -16,10 +16,12 @@
   <%= render "components/image_meta", {
     id: "image-#{i}",
     src: url_for(image.thumbnail),
-    alt_text: image.alt_text,
-    caption: image.caption,
-    credit: image.credit,
     lead_image: image == @document.lead_image,
+    meta: {
+      alt_text: image.alt_text,
+      caption: image.caption,
+      credit: image.credit,
+    },
     actions: {
       edit_link: edit_document_lead_image_path(@document, image, next_screen: "lead-image"),
       remove_button: remove_lead_image_button,

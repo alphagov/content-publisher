@@ -1,34 +1,97 @@
-<% content_for :back_link, document_lead_image_path(@document) %>
 <% content_for :title, t("document_lead_image.edit.title", title: @document.title_or_fallback) %>
+<% content_for :back_link, document_lead_image_path(@document) %>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <%= image_tag(url_for(@image.thumbnail), id: "selected-image") %>
-    <%= form_tag(update_document_lead_image_path(@document, @image, next_screen: params[:next_screen]), method: :patch) do %>
+<%= render "components/image_meta", {
+  id: "selected-image",
+  src: url_for(@image.thumbnail),
+  alt_text: @image.alt_text,
+  no_border: true
+} %>
+
+<%= form_tag(update_document_lead_image_path(@document, @image, next_screen: params[:next_screen]), method: :patch) do %>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
         label: {
-          text: t("document_lead_image.edit.form_labels.caption")
-        },
-        name: "caption",
-        value: @image.caption,
-      } %>
-      <%= render "govuk_publishing_components/components/input", {
-        label: {
-          text: t("document_lead_image.edit.form_labels.alt_text")
+          text: t("document_lead_image.edit.form_labels.alt_text"),
+          bold: true
         },
         name: "alt_text",
         value: @image.alt_text,
+        data: {
+          "contextual-guidance": "alt-text-guidance"
+        }
       } %>
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual_guidance", {
+        id: "alt-text-guidance",
+        title: t("document_lead_image.edit.form_labels.alt_text"),
+      } do %>
+        <%= render "govuk_publishing_components/components/govspeak" do %>
+          <%= govspeak_to_html t("document_lead_image.edit.guidance.alt_text") %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
         label: {
-          text: t("document_lead_image.edit.form_labels.credit")
+          text: t("document_lead_image.edit.form_labels.caption"),
+          bold: true
+        },
+        name: "caption",
+        value: @image.caption,
+        data: {
+          "contextual-guidance": "caption-guidance"
+        }
+      } %>
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual_guidance", {
+        id: "caption-guidance",
+        title: t("document_lead_image.edit.form_labels.caption"),
+      } do %>
+        <%= render "govuk_publishing_components/components/govspeak" do %>
+          <%= govspeak_to_html t("document_lead_image.edit.guidance.caption") %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: t("document_lead_image.edit.form_labels.credit"),
+          bold: true
         },
         name: "credit",
         value: @image.credit,
+        data: {
+          "contextual-guidance": "credit-guidance"
+        }
       } %>
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Save and choose"
-      } %>
-    <% end %>
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual_guidance", {
+        id: "credit-guidance",
+        title: t("document_lead_image.edit.form_labels.credit"),
+      } do %>
+        <%= render "govuk_publishing_components/components/govspeak" do %>
+          <%= govspeak_to_html t("document_lead_image.edit.guidance.credit") %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Save and choose",
+    margin_bottom: true
+  } %>
+<% end %>

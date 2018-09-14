@@ -1,12 +1,16 @@
 <%
   id ||= "image-meta-#{SecureRandom.hex(4)}"
   alt_text ||= nil
-  caption ||= nil
-  credit ||= nil
   actions ||= []
+  meta ||= {}
   lead_image ||= false
+  no_border ||= false
+
+  if meta.key?(:alt_text)
+    alt_text = meta[:alt_text]
+  end
 %>
-<div class="app-c-image-meta" id="<%= id %>">
+<div class="app-c-image-meta <%= 'app-c-image-meta--no-border' if no_border %>" id="<%= id %>">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
 
@@ -18,23 +22,25 @@
     </div>
     <div class="govuk-grid-column-two-thirds">
 
-      <%= render "components/metadata", {
-        inline: true,
-        items: [
-          {
-            field: t("documents.show.lead_image.fields.alt_text"),
-            value: alt_text
-          },
-          {
-            field: t("documents.show.lead_image.fields.caption"),
-            value: caption
-          },
-          {
-            field: t("documents.show.lead_image.fields.credit"),
-            value: credit
-          }
-        ]
-      } %>
+      <% if meta.any? %>
+        <%= render "components/metadata", {
+          inline: true,
+          items: [
+            {
+              field: t("documents.show.lead_image.fields.alt_text"),
+              value: meta[:alt_text]
+            },
+            {
+              field: t("documents.show.lead_image.fields.caption"),
+              value: meta[:caption]
+            },
+            {
+              field: t("documents.show.lead_image.fields.credit"),
+              value: meta[:credit]
+            }
+          ]
+        } %>
+      <% end %>
 
       <% if lead_image %>
         <div class="app-c-image-meta__lead-image-section">
@@ -52,6 +58,6 @@
         <li class="app-c-image-meta__choose-image"><%= actions[:choose_button] %></li>
       <% end %>
       <li><%= link_to("Edit details", actions[:edit_link], class: "govuk-link") %></li>
-    <ul>
+    </ul>
   <% end %>
 </div>

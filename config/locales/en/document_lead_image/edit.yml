@@ -3,6 +3,10 @@ en:
     edit:
       title: "Edit lead image for ‘%{title}’"
       form_labels:
-        caption: Caption
         alt_text: Alt text
-        credit: Credit
+        caption: Image caption
+        credit: Image credit
+      guidance:
+        alt_text: A simple and specific description of what the image shows. This helps screen-readers and search engines.
+        caption: This text appears on the page under the image.
+        credit: You must have the rights to use this image. Images should be credited to their source. For example, Getty Images. Open Government Licence (OGL) images do not need to be credited.
