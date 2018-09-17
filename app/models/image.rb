@@ -37,9 +37,9 @@ class Image < ApplicationRecord
   end
 
   def cropped_file
-    image = thumbnail.processed
-    io = StringIO.new(image.service.download(image.key))
-    AssetManagerFile.new(io, filename, blob.content_type, asset_manager_file_url)
+    processed_image = thumbnail.processed
+    image_bytes = processed_image.service.download(processed_image.key)
+    AssetManagerFile.from_bytes(image_bytes, filename, blob.content_type, asset_manager_file_url)
   end
 
   # Used as a stand-in for a File / Rack::Multipart::UploadedFile object when
@@ -58,6 +58,10 @@ class Image < ApplicationRecord
       @filename = filename
       @content_type = content_type
       @url = url
+    end
+
+    def self.from_bytes(content, filename, content_type, url)
+      new(StringIO.new(content), filename, content_type, url)
     end
 
     def path
