@@ -29,7 +29,7 @@ class ImageUploader
     image_attributes = { document: document,
                          blob: blob,
                          filename: filename }.merge(dimension_attributes)
-    Image.create!(image_attributes)
+    Image.new(image_attributes)
   end
 
 private
