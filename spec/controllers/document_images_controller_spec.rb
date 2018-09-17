@@ -5,6 +5,11 @@ RSpec.describe DocumentImagesController do
     context "when a request doesn't have errors" do
       let(:upload) { fixture_file_upload("files/960x640.jpg", "image/jpeg") }
 
+      before do
+        asset_manager_file_url = "http://asset-manager.test.gov.uk/#{upload.original_filename}"
+        asset_manager_receives_an_asset(asset_manager_file_url)
+      end
+
       it "has a 201 status code" do
         post :create, params: { image: upload, document_id: create(:document).to_param }
         expect(response.status).to eql(201)

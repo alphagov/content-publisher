@@ -5,12 +5,20 @@ class DocumentImagesController < ApplicationController
     document = Document.find_by_param(params[:document_id])
     image_uploader = ImageUploader.new(params.require(:image))
 
-    if image_uploader.valid?
-      image = image_uploader.upload(document)
-      render json: ImageJsonPresenter.new(image).present, status: :created
-    else
+    unless image_uploader.valid?
       render json: { errors: image_uploader.errors }, status: :unprocessable_entity
+      return
     end
+
+    begin
+      image = image_uploader.upload(document)
+      image.asset_manager_file_url = upload_image_to_asset_manager(image)
+    rescue GdsApi::BaseError
+      render json: { errors: "Asset manager upload error" }, status: :unprocessable_entity
+      return
+    end
+    image.save!
+    render json: ImageJsonPresenter.new(image).present, status: :created
   end
 
   def update
@@ -35,5 +43,9 @@ private
       :crop_width,
       :crop_height,
     )
+  end
+
+  def upload_image_to_asset_manager(image)
+    AssetManagerService.new.upload(image.cropped_file)
   end
 end
