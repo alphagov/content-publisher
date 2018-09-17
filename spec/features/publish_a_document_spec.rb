@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Publishing a document" do
-  scenario "User publishes a document with a lead image" do
+  scenario "User publishes a document" do
     given_there_is_a_document_in_draft
     when_i_visit_the_document_page
     and_i_click_on_the_publish_button
@@ -14,8 +14,6 @@ RSpec.feature "Publishing a document" do
   def given_there_is_a_document_in_draft
     @document = create(:document, publication_state: "sent_to_draft")
     @asset_id = SecureRandom.uuid
-    image = create(:image, asset_manager_file_url: "http://asset-manager.gov.uk/media/#{@asset_id}/image1.jpg", document: @document)
-    @document.update(lead_image: image)
   end
 
   def when_i_visit_the_document_page
