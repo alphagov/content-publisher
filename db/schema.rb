@@ -79,6 +79,16 @@ ActiveRecord::Schema.define(version: 2018_09_07_121447) do
     t.index ["document_id"], name: "index_images_on_document_id"
   end
 
+  create_table "timeline_entries", force: :cascade do |t|
+    t.string "entry_type", null: false
+    t.bigint "document_id", null: false
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_timeline_entries_on_document_id"
+    t.index ["user_id"], name: "index_timeline_entries_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -97,4 +107,6 @@ ActiveRecord::Schema.define(version: 2018_09_07_121447) do
   add_foreign_key "documents", "users", column: "creator_id"
   add_foreign_key "images", "active_storage_blobs", column: "blob_id", on_delete: :cascade
   add_foreign_key "images", "documents", on_delete: :cascade
+  add_foreign_key "timeline_entries", "documents", on_delete: :cascade
+  add_foreign_key "timeline_entries", "users", on_delete: :restrict
 end
