@@ -1,0 +1,10 @@
+en:
+  documents:
+    history:
+      entry_types:
+        created: "First created"
+        submitted: "Submitted for review"
+        updated_content: "Document updated"
+        published_without_review: "Published without review"
+        approved: "Approved for publication"
+        updated_tags: "Tags updated"

@@ -1,1 +1,11 @@
-Document history is not available right now.
+<% @document.timeline_entries.includes(:user).order(created_at: :desc).each do |entry| %>
+  <div class="timeline-entry govuk-!-margin-bottom-6">
+    <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
+      <%= t "documents.history.entry_types.#{entry.entry_type}" %>
+    </h4>
+
+    <div class="govuk-body">
+      <%= entry.created_at.strftime("%l:%M%P on %d %B %Y") %> by <%= entry.username_or_unknown %>
+    </div>
+  </div>
+<% end %>

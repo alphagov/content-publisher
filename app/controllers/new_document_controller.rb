@@ -50,6 +50,8 @@ class NewDocumentController < ApplicationController
       change_note: "First published.",
     )
 
+    TimelineEntry.create!(document: document, user: current_user, entry_type: "created")
+
     redirect_to edit_document_path(document)
   end
 
