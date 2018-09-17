@@ -44,12 +44,14 @@ RSpec.feature "Choose a lead image" do
   end
 
   def when_i_select_an_image_to_be_the_lead_image
+    @request = stub_publishing_api_put_content(Document.last.content_id, {})
     within("#image-1") do
       click_on "Choose image"
     end
   end
 
   def then_i_should_see_the_new_lead_image_on_the_summary_page
+    expect(@request).to have_been_requested
     expect(find("#lead-image .app-c-image-meta__image")["src"]).to include("image-2.jpg")
   end
 end

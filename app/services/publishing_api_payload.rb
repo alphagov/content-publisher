@@ -43,11 +43,23 @@ private
     document.tags.merge("organisations" => links.uniq)
   end
 
+  def image
+    {
+      "url" => document.lead_image.asset_manager_file_url,
+      "alt_text" => document.lead_image.alt_text,
+      "caption" => document.lead_image.caption,
+    }
+  end
+
   def details
     details_hash = temporary_defaults_in_details
 
     document_type_schema.contents.each do |field|
       details_hash[field.id] = perform_input_type_specific_transformations(field)
+    end
+
+    if document_type_schema.lead_image && document.lead_image.present?
+      details_hash["image"] = image
     end
 
     details_hash

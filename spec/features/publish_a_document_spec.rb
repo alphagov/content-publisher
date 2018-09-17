@@ -13,6 +13,7 @@ RSpec.feature "Publishing a document" do
 
   def given_there_is_a_document_in_draft
     @document = create(:document, publication_state: "sent_to_draft")
+    @asset_id = SecureRandom.uuid
   end
 
   def when_i_visit_the_document_page
@@ -29,6 +30,7 @@ RSpec.feature "Publishing a document" do
 
   def and_i_confirm_the_publishing
     @request = stub_publishing_api_publish(@document.content_id, update_type: nil, locale: @document.locale)
+    stub_asset_manager_update_request(@asset_id)
     click_on "Confirm publish"
   end
 
@@ -40,5 +42,9 @@ RSpec.feature "Publishing a document" do
   def and_i_see_the_content_is_in_published_state
     visit document_path(@document)
     expect(page).to have_content(I18n.t("user_facing_states.published.name"))
+  end
+
+  def stub_asset_manager_update_request(asset_id)
+    stub_request(:put, "https://asset-manager.test.gov.uk/assets/#{asset_id}")
   end
 end

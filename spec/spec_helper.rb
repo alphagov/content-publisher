@@ -11,6 +11,7 @@ require "govuk_schemas/rspec_matchers"
 require "simplecov"
 require "webmock/rspec"
 require "gds_api/test_helpers/publishing_api_v2"
+require "gds_api/test_helpers/asset_manager"
 
 Dir[Rails.root.join("spec", "support", "**", "*.rb")].each { |f| require f }
 SimpleCov.start
@@ -31,6 +32,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.include FactoryBot::Syntax::Methods
   config.include GdsApi::TestHelpers::PublishingApiV2
+  config.include GdsApi::TestHelpers::AssetManager
   config.include GovukSchemas::RSpecMatchers
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

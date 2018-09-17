@@ -47,9 +47,7 @@ RSpec.describe ImageUploader do
       uploaded_file = fixture_file_upload("files/960x640.jpg", "image/jpeg")
       document = create(:document)
       uploader = ImageUploader.new(uploaded_file)
-      expect { uploader.upload(document) }
-        .to change { document.reload.images.count }
-        .by(1)
+      expect(uploader.upload(document)).to be_an_instance_of(Image)
     end
 
     it "sets the filename on the image" do

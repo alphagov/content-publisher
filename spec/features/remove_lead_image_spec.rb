@@ -36,12 +36,14 @@ RSpec.feature "Remove a lead image" do
   end
 
   def when_i_remove_the_lead_image
+    @request = stub_publishing_api_put_content(Document.last.content_id, {})
     within("#image-0") do
       click_on "Remove"
     end
   end
 
   def then_i_should_not_see_a_lead_image_on_the_summary_page
+    expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t("documents.show.lead_image.no_lead_image"))
   end
 end
