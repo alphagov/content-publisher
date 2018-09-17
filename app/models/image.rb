@@ -51,21 +51,21 @@ class Image < ApplicationRecord
   # This is done by delegating to 'io' which should implement the IO interface
   # (e.g. StringIO) and adds methods to return filename, content_type and path.
   class AssetManagerFile < SimpleDelegator
-    attr_reader :filename, :content_type, :url
+    attr_reader :original_filename, :content_type, :url
 
-    def initialize(io, filename, content_type, url)
+    def initialize(io, original_filename, content_type, url)
       super(io)
-      @filename = filename
+      @original_filename = original_filename
       @content_type = content_type
       @url = url
     end
 
-    def self.from_bytes(content, filename, content_type, url)
-      new(StringIO.new(content), filename, content_type, url)
+    def self.from_bytes(content, original_filename, content_type, url)
+      new(StringIO.new(content), original_filename, content_type, url)
     end
 
     def path
-      filename
+      original_filename
     end
   end
 end
