@@ -48,9 +48,15 @@
     }
   } %>
 
-  <% organisation_select = LinkablesService.new("organisation").select_options  %>
+  <% organisation_select = begin
+    LinkablesService.new("organisation").select_options
+  rescue GdsApi::BaseError => e
+    GovukError.notify(e)
+    []
+  end %>
 
   <%= render "components/autocomplete", {
+    id: "organisation",
     name: "organisation",
     label: {
       text: t("documents.index.filter.organisation"),
