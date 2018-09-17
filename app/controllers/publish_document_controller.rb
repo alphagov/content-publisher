@@ -8,7 +8,6 @@ class PublishDocumentController < ApplicationController
   def publish
     document = Document.find_by_param(params[:id])
     review_state = params[:self_declared_review_state] == "has-been-reviewed" ? "reviewed" : "published_without_review"
-    publish_images(document.images)
     DocumentPublishingService.new.publish(document, review_state)
     redirect_to document_published_path(document)
   rescue GdsApi::BaseError
@@ -17,10 +16,5 @@ class PublishDocumentController < ApplicationController
 
   def published
     @document = Document.find_by_param(params[:id])
-  end
-
-  def publish_images(images)
-    asset_manager = AssetManagerService.new
-    images.each { |image| asset_manager.publish(image.cropped_file) }
   end
 end
