@@ -15,3 +15,6 @@ en:
         asset_manager_error:
           title: Something has gone wrong
           description: Something went wrong when uploading your file. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+        publishing_api_error:
+          title: Something has gone wrong
+          description: Something went wrong when choosing your lead image. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).

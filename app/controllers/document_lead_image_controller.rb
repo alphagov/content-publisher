@@ -46,7 +46,12 @@ class DocumentLeadImageController < ApplicationController
     image = Image.find_by(id: params[:image_id])
     image.update!(update_params)
     document.update!(lead_image_id: image.id)
-    DocumentPublishingService.new.publish_draft(document)
+    begin
+      DocumentPublishingService.new.publish_draft(document)
+    rescue GdsApi::BaseError
+      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.publishing_api_error")
+      return
+    end
     if params[:next_screen] == "lead-image"
       redirect_to document_lead_image_path(document)
       return
