@@ -28,7 +28,7 @@
       <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
 
-      <%= link_to "Delete draft", '#', class: "app-link--destructive app-link--right" %>
+      <%= link_to "Delete draft", delete_draft_path(@document), class: "app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "draft" %>
       <%= form_tag submit_document_for_2i_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
@@ -37,7 +37,7 @@
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
 
       <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
-      <%= link_to "Delete draft", "#", class: "app-link--destructive app-link--right" %>
+      <%= link_to "Delete draft", delete_draft_path(@document), class: "app-link--destructive app-link--right" %>
     <% end %>
 
     <% if @document.has_live_version_on_govuk? %>

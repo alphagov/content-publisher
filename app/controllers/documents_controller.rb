@@ -21,6 +21,16 @@ class DocumentsController < ApplicationController
     @document = Document.find_by_param(params[:id])
   end
 
+  def confirm_delete_draft
+    document = Document.find_by_param(params[:id])
+    redirect_to document_path(document), confirmation: "documents/show/delete_draft"
+  end
+
+  def destroy
+    Document.find_by_param(params[:id]).destroy!
+    redirect_to documents_path
+  end
+
   def update
     document = Document.find_by_param(params[:id])
 
