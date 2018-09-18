@@ -3,20 +3,23 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <h2 class="govuk-heading-m">
-      <%= t("document_lead_image.index.upload_image") %>
-    </h2>
-    <%= render "govuk_publishing_components/components/govspeak" do %>
-      <%= govspeak_to_html t("document_lead_image.index.description") %>
+    <% upload_image_heading = capture do %>
+      <h2 class="govuk-heading-m">
+        <%= t("document_lead_image.index.upload_image") %>
+      </h2>
     <% end %>
 
     <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
       <%= render "govuk_publishing_components/components/file_upload", {
         label: {
-          text: "Upload an image",
+          text: upload_image_heading,
         },
         name: "image"
       } %>
+
+      <%= render "govuk_publishing_components/components/govspeak" do %>
+        <%= govspeak_to_html t("document_lead_image.index.description") %>
+      <% end %>
 
       <%= render "govuk_publishing_components/components/button", {
         text: "Upload",
