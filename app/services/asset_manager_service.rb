@@ -16,7 +16,10 @@ class AssetManagerService
 private
 
   def asset_manager
-    @asset_manager ||= GdsApi::AssetManager.new(Plek.new.find("asset-manager"))
+    @asset_manager ||= GdsApi::AssetManager.new(
+      Plek.new.find("asset-manager"),
+      bearer_token: ENV.fetch("ASSET_MANAGER_BEARER_TOKEN", "example"),
+    )
   end
 
   def asset_id(file_url)
