@@ -6,9 +6,21 @@ var $imageCroppers = document.querySelectorAll('[data-module="image-cropper"]')
 if ($imageCroppers) {
   $imageCroppers.forEach(function ($imageCropper) {
     var $image = $imageCropper.querySelector('.app-c-image-cropper__image')
-    var width = $image.clientWidth;
-    var height = $image.clientHeight;
-    console.log(width + 'x' + height)
+
+    var width = $image.clientWidth
+    var height = $image.clientHeight
+    var naturalWidth  = $image.naturalWidth
+    var naturalHeight  = $image.naturalHeight
+    var resizeRatio = 1
+    var minCropBoxWidth = 960
+    var minCropBoxHeight = 640
+
+    if (width < naturalWidth || height < naturalHeight) {
+      var resizeRatio = width/naturalWidth
+      var minCropBoxWidth = minCropBoxWidth * resizeRatio
+      var minCropBoxHeight = minCropBoxHeight * resizeRatio
+    }
+
     if ($image){
       new Cropper($image,{
         viewMode: 2,
@@ -18,8 +30,8 @@ if ($imageCroppers) {
         guides: false,
         zoomable: false,
         highlight: false,
-        minCropBoxWidth: 300,
-        minCropBoxHeight: 200
+        minCropBoxWidth: minCropBoxWidth,
+        minCropBoxHeight: minCropBoxHeight
       })
     }
   })
