@@ -9,7 +9,11 @@
   <%= render "/components/image_cropper", {
     id: "cropp-image",
     src: url_for(@image.blob),
-    alt_text: @image.alt_text
+    alt_text: @image.alt_text,
+    crop_x: @image.crop_x,
+    crop_y: @image.crop_y,
+    crop_width: @image.crop_width,
+    crop_height: @image.crop_height
   } %>
 
   <%= render "govuk_publishing_components/components/button", {

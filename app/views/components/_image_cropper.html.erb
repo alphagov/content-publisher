@@ -7,4 +7,9 @@
     src: src,
     alt: alt_text
   %>
+
+  <%= hidden_field_tag 'crop_x', crop_x, class: "js-image-cropper-x" %>
+  <%= hidden_field_tag 'crop_y', crop_y, class: "js-image-cropper-y" %>
+  <%= hidden_field_tag 'crop_width', crop_width, class: "js-image-cropper-width" %>
+  <%= hidden_field_tag 'crop_height', crop_height, class: "js-image-cropper-height" %>
 </div>
