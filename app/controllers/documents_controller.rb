@@ -27,8 +27,12 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    Document.find_by_param(params[:id]).destroy!
+    document = Document.find_by_param(params[:id])
+    DocumentPublishingService.new.discard_draft(document)
+    document.destroy!
     redirect_to documents_path
+  rescue GdsApi::BaseError
+    redirect_to document, alert_with_description: t("documents.show.flashes.delete_draft_error")
   end
 
   def update

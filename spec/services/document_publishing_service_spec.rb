@@ -28,4 +28,16 @@ RSpec.describe DocumentPublishingService do
       expect(document).to have_received(:update!).with(publication_state: "sent_to_live", has_live_version_on_govuk: true, change_note: nil, update_type: "major")
     end
   end
+
+  describe "#discard_draft" do
+    it "keeps track of the publication state" do
+      document = create(:document)
+      stub_publishing_api_discard_draft(document.content_id)
+      allow(document).to receive(:update!)
+
+      DocumentPublishingService.new.discard_draft(document)
+
+      expect(document).to have_received(:update!).with(publication_state: "changes_not_sent_to_draft")
+    end
+  end
 end

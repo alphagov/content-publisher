@@ -14,6 +14,7 @@ class Document < ApplicationRecord
     sending_to_live
     sent_to_live
     error_sending_to_live
+    error_deleting_draft
   ].freeze
 
   REVIEW_STATES = %w[

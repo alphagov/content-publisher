@@ -6,6 +6,12 @@
       <%= form_tag retry_draft_save_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Try again" %>
       <% end %>
+    <% elsif @document.publication_state == "error_deleting_draft" %>
+      <%= govspeak_to_html t("documents.show.sidebar.error_deleting_draft") %>
+
+      <%= form_tag document_path(@document), method: :delete do %>
+        <%= render "govuk_publishing_components/components/button", text: "Try again" %>
+      <% end %>
     <% elsif @document.publication_state == "error_sending_to_live" %>
       <%= govspeak_to_html t("documents.show.sidebar.error_publishing_live") %>
 

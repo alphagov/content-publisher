@@ -24,6 +24,15 @@ class DocumentPublishingService
     raise
   end
 
+  def discard_draft(document)
+    publishing_api.discard_draft(document.content_id)
+    document.update!(publication_state: "changes_not_sent_to_draft")
+  rescue GdsApi::BaseError => e
+    GovukError.notify(e)
+    document.update!(publication_state: "error_deleting_draft")
+    raise
+  end
+
 private
 
   def publishing_api

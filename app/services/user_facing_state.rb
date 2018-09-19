@@ -10,7 +10,7 @@ class UserFacingState
     case state.to_sym
     when :draft
       query
-        .where(publication_state: %w[changes_not_sent_to_draft sent_to_draft sending_to_draft error_sending_to_draft error_sending_to_live])
+        .where(publication_state: %w[changes_not_sent_to_draft sent_to_draft sending_to_draft error_sending_to_draft error_sending_to_live error_deleting_draft])
         .where.not(review_state: "submitted_for_review")
     when :submitted_for_review
       query.where(review_state: "submitted_for_review")
@@ -33,7 +33,7 @@ class UserFacingState
   def to_s
     if review_state == "submitted_for_review"
       "submitted_for_review"
-    elsif publication_state.in?(%w[changes_not_sent_to_draft sent_to_draft sending_to_draft error_sending_to_draft error_sending_to_live])
+    elsif publication_state.in?(%w[changes_not_sent_to_draft sent_to_draft sending_to_draft error_sending_to_draft error_sending_to_live error_deleting_draft])
       "draft"
     elsif review_state == "published_without_review"
       "published_but_needs_2i"
