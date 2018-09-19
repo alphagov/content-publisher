@@ -18,8 +18,7 @@ RSpec.feature "Publishing a document when Asset Manager is down" do
   end
 
   def and_asset_manager_is_down
-    #TODO: Add stub to gds-api-adapters test helpers
-    stub_request(:put, "https://asset-manager.test.gov.uk/assets/#{@image.asset_manager_id}").to_return(status: 500)
+    asset_manager_update_failure(@image.asset_manager_id)
     stub_any_publishing_api_publish
   end
 
@@ -34,7 +33,7 @@ RSpec.feature "Publishing a document when Asset Manager is down" do
   end
 
   def given_the_api_is_up_again_and_i_try_to_publish_the_document
-    @request = stub_request(:put, "https://asset-manager.test.gov.uk/assets/#{@image.asset_manager_id}")
+    @request = asset_manager_update_asset(@image.asset_manager_id)
     visit document_path(Document.last)
     click_on "Retry publishing"
     click_on "Confirm publish"
