@@ -20,6 +20,7 @@ RSpec.feature "Upload a lead image when Publishing API is down" do
     visit document_lead_image_path(Document.last)
     find('form input[type="file"]').set(file_fixture("960x640.jpg"))
     click_on "Upload"
+    click_on "Crop image"
     fill_in "alt_text", with: "Some alt text"
     click_on "Save and choose"
   end

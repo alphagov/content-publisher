@@ -14,10 +14,7 @@ class DocumentLeadImageController < ApplicationController
 
     image_uploader = ImageUploader.new(params.require(:image))
 
-    if image_uploader.valid?
-      image = image_uploader.upload(document)
-      redirect_to crop_document_lead_image_path(params[:document_id], image.id)
-    else
+    unless image_uploader.valid?
       redirect_to document_lead_image_path, alert: {
         "alerts" => image_uploader.errors,
         "title" => t("document_lead_image.index.error_summary_title"),
@@ -36,7 +33,7 @@ class DocumentLeadImageController < ApplicationController
       return
     end
     image.save!
-    redirect_to edit_document_lead_image_path(params[:document_id], image.id)
+    redirect_to crop_document_lead_image_path(params[:document_id], image.id)
   end
 
   def crop
