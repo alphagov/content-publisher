@@ -6,6 +6,12 @@
       <%= form_tag retry_draft_save_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Try again" %>
       <% end %>
+    <% elsif @document.publication_state == "error_deleting_draft" %>
+      <%= govspeak_to_html t("documents.show.sidebar.error_deleting_draft") %>
+
+      <%= form_tag document_path(@document), method: :delete do %>
+        <%= render "govuk_publishing_components/components/button", text: "Try again" %>
+      <% end %>
     <% elsif @document.publication_state == "error_sending_to_live" %>
       <%= govspeak_to_html t("documents.show.sidebar.error_publishing_live") %>
 
@@ -28,7 +34,9 @@
       <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
 
-      <%= link_to "Delete draft", '#', class: "app-link--destructive app-link--right" %>
+      <% unless @document.has_live_version_on_govuk %>
+        <%= link_to "Delete draft", delete_draft_path(@document), class: "app-link--destructive app-link--right" %>
+      <% end %>
     <% elsif @document.user_facing_state == "draft" %>
       <%= form_tag submit_document_for_2i_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
@@ -37,7 +45,10 @@
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
 
       <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
-      <%= link_to "Delete draft", "#", class: "app-link--destructive app-link--right" %>
+
+      <% unless @document.has_live_version_on_govuk %>
+        <%= link_to "Delete draft", delete_draft_path(@document), class: "app-link--destructive app-link--right" %>
+      <% end %>
     <% end %>
 
     <% if @document.has_live_version_on_govuk? %>

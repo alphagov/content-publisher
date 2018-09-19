@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   patch "/documents/:id" => "documents#update", as: :document
   get "/documents/:id" => "documents#show"
   get "/documents/:id/generate-path" => "documents#generate_path", as: :generate_path
+  get "/documents/:id/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
+  delete "/documents/:id" => "documents#destroy"
 
   post "/documents/:id/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
   post "/documents/:id/approve" => "review#approve", as: :approve_document

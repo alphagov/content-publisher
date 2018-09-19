@@ -39,6 +39,10 @@
       } %>
     <% end %>
 
+    <% if flash["confirmation"] %>
+      <%= render flash["confirmation"] %>
+    <% end %>
+
     <% if flash["alert_with_description"] %>
       <%= render "govuk_publishing_components/components/error_alert", {
         message: flash["alert_with_description"].fetch("title"),

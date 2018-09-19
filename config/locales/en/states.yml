@@ -31,3 +31,6 @@ en:
     error_sending_to_live:
       name: Error publishing
       description: We've encountered a problem during the publishing.
+    error_deleting_draft:
+      name: Error deleting draft
+      description: We've encountered a problem when deleting the draft.

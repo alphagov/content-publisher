@@ -90,6 +90,14 @@ RSpec.describe UserFacingState do
       expect(state).to eql("draft")
     end
 
+    it "is draft if in draft and we can't delete the draft" do
+      document = build(:document, publication_state: "error_deleting_draft")
+
+      state = UserFacingState.new(document).to_s
+
+      expect(state).to eql("draft")
+    end
+
     it "is published_but_needs_2i if it has unreviewed changes sent to live" do
       document = build(:document, publication_state: "sent_to_live", review_state: "published_without_review")
 
