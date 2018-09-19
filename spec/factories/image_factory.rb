@@ -23,5 +23,9 @@ FactoryBot.define do
         filename: image.filename,
       )
     end
+
+    trait :in_asset_manager do
+      asset_manager_file_url { "https://asset-manager.test.gov.uk/media/asset-id-123/#{filename}" }
+    end
   end
 end

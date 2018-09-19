@@ -36,6 +36,6 @@ private
 
   def publish_images(images)
     asset_manager = AssetManagerService.new
-    images.each { |image| asset_manager.publish(image.cropped_file) }
+    images.each { |image| asset_manager.publish(image) }
   end
 end

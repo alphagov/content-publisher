@@ -6,6 +6,8 @@ class Image < ApplicationRecord
   THUMBNAIL_WIDTH = 300
   THUMBNAIL_HEIGHT = 200
 
+  after_destroy { blob.delete }
+
   belongs_to :document
   belongs_to :blob, class_name: "ActiveStorage::Blob"
 
@@ -36,36 +38,14 @@ class Image < ApplicationRecord
     )
   end
 
-  def cropped_file
-    processed_image = thumbnail.processed
-    image_bytes = processed_image.service.download(processed_image.key)
-    AssetManagerFile.from_bytes(image_bytes, filename, blob.content_type, asset_manager_file_url)
+  def asset_manager_id
+    url_array = asset_manager_file_url.split("/")
+    # https://github.com/alphagov/asset-manager#create-an-asset
+    url_array[url_array.length - 2]
   end
 
-  # Used as a stand-in for a File / Rack::Multipart::UploadedFile object when
-  # passed to GdsApi::AssetManager#create_asset. The interface is required for
-  # uploading a file using the restclient we used in the backend.
-  #
-  # https://github.com/rest-client/rest-client/blob/master/lib/restclient/payload.rb#L181-L194
-  #
-  # This is done by delegating to 'io' which should implement the IO interface
-  # (e.g. StringIO) and adds methods to return filename, content_type and path.
-  class AssetManagerFile < SimpleDelegator
-    attr_reader :original_filename, :content_type, :url
-
-    def initialize(io, original_filename, content_type, url)
-      super(io)
-      @original_filename = original_filename
-      @content_type = content_type
-      @url = url
-    end
-
-    def self.from_bytes(content, original_filename, content_type, url)
-      new(StringIO.new(content), original_filename, content_type, url)
-    end
-
-    def path
-      original_filename
-    end
+  def cropped_bytes
+    processed_image = thumbnail.processed
+    processed_image.service.download(processed_image.key)
   end
 end
