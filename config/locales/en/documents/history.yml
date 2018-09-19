@@ -1,6 +1,7 @@
 en:
   documents:
     history:
+      edition_header: "%{number} edition"
       entry_types:
         created: "First created"
         submitted: "Submitted for review"

@@ -10,4 +10,9 @@ class TimelineEntry < ApplicationRecord
   def username_or_unknown
     user ? user.name : "Unknown user"
   end
+
+  def self.create!(params)
+    edition_number = params[:document].current_edition_number
+    super(params.merge(edition_number: edition_number))
+  end
 end

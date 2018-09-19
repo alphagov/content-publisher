@@ -16,6 +16,9 @@ RSpec.feature "Document timeline" do
 
     when_i_approve_the_document
     the_timeline_has_a_approval_entry
+
+    when_i_update_the_document
+    the_timeline_shows_a_new_version_number
   end
 
   def when_i_start_to_create_a_document
@@ -85,5 +88,12 @@ RSpec.feature "Document timeline" do
     within find(".timeline-entry:first") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.approved")
     end
+  end
+
+  def the_timeline_shows_a_new_version_number
+    visit document_path(@document)
+
+    expect(page).to have_content "1st edition"
+    expect(page).to have_content "2nd edition"
   end
 end

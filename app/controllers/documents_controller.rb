@@ -23,6 +23,11 @@ class DocumentsController < ApplicationController
 
   def update
     document = Document.find_by_param(params[:id])
+
+    if document.publication_state == "sent_to_live"
+      document.current_edition_number += 1
+    end
+
     document.update!(update_params(document))
     TimelineEntry.create!(document: document, user: current_user, entry_type: "updated_content")
     DocumentPublishingService.new.publish_draft(document)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_13_105125) do
+ActiveRecord::Schema.define(version: 2018_09_19_150956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2018_09_13_105125) do
     t.boolean "has_live_version_on_govuk", default: false, null: false
     t.text "change_note"
     t.string "update_type"
+    t.integer "current_edition_number", null: false
     t.index ["base_path"], name: "index_documents_on_base_path", unique: true
     t.index ["content_id", "locale"], name: "index_documents_on_content_id_and_locale", unique: true
     t.index ["creator_id"], name: "index_documents_on_creator_id"
@@ -86,6 +87,7 @@ ActiveRecord::Schema.define(version: 2018_09_13_105125) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "edition_number", null: false
     t.index ["document_id"], name: "index_timeline_entries_on_document_id"
     t.index ["user_id"], name: "index_timeline_entries_on_user_id"
   end

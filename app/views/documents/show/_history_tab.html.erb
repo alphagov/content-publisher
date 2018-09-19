@@ -1,5 +1,12 @@
+<% displayed_edition_number = nil %>
+
 <% @document.timeline_entries.includes(:user).order(created_at: :desc).each do |entry| %>
   <div class="timeline-entry govuk-!-margin-bottom-6">
+    <% if displayed_edition_number != entry.edition_number %>
+      <h3 class="govuk-heading-m"><%= t "documents.history.edition_header", number: entry.edition_number.ordinalize %></h3>
+      <% displayed_edition_number = entry.edition_number %>
+    <% end %>
+
     <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
       <%= t "documents.history.entry_types.#{entry.entry_type}" %>
     </h4>
