@@ -64,16 +64,12 @@ RSpec.feature "Upload a lead image" do
     click_on "Publish"
     choose I18n.t("publish_document.confirmation.has_been_reviewed")
     stub_publishing_api_publish(Document.last.content_id, update_type: nil, locale: Document.last.locale)
-    stub_asset_manager_update_request(@asset_id)
+    asset_manager_update_asset(@asset_id)
     click_on "Confirm publish"
   end
 
   def then_i_see_the_content_is_in_published_state
     visit document_path(Document.last)
     expect(page).to have_content(I18n.t("user_facing_states.published.name"))
-  end
-
-  def stub_asset_manager_update_request(asset_id)
-    stub_request(:put, "https://asset-manager.test.gov.uk/assets/#{asset_id}")
   end
 end

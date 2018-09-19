@@ -17,10 +17,8 @@ RSpec.describe AssetManagerService do
     it "updates an asset's draft status to false in Asset Manager" do
       image = create(:image, :in_asset_manager)
 
-      # TODO: add this to gds-api-adapters test helpers
       body = { "draft" => false }
-      stub_request(:put, "https://asset-manager.test.gov.uk/assets/#{image.asset_manager_id}")
-        .to_return(body: body.to_json, status: 200)
+      asset_manager_update_asset(image.asset_manager_id, body)
 
       response = AssetManagerService.new.publish(image)
       expect(response["draft"]).to be false
@@ -31,9 +29,7 @@ RSpec.describe AssetManagerService do
     it "deletes an asset from Asset Manager" do
       image = create(:image, :in_asset_manager)
 
-      # TODO: add this to gds-api-adapters test helpers
-      stub_request(:delete, "https://asset-manager.test.gov.uk/assets/#{image.asset_manager_id}")
-        .to_return(body: "", status: 200)
+      asset_manager_delete_asset(image.asset_manager_id)
 
       response = AssetManagerService.new.delete(image)
       expect(response.code).to eq 200
