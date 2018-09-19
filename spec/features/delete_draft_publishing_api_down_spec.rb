@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.feature "Delete draft with API down" do
-  scenario "Delete draft with API down" do
+RSpec.feature "Delete draft with Publishing API down" do
+  scenario "Delete draft with Publishing API down" do
     given_there_is_a_document
     when_i_visit_the_document_page
     and_the_publishing_api_is_down
