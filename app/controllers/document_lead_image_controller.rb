@@ -44,7 +44,12 @@ class DocumentLeadImageController < ApplicationController
   def update_crop
     document = Document.find_by_param(params[:document_id])
     image = Image.find_by(id: params[:image_id])
-    image.update!(update_crop_params)
+    Image.transaction do
+      image.update!(update_crop_params)
+      delete_image_from_asset_manager(image)
+      image.asset_manager_file_url = upload_image_to_asset_manager(image)
+      image.save!
+    end
     if params[:next_screen] == "lead-image"
       redirect_to document_lead_image_path(document)
       return
@@ -114,6 +119,10 @@ private
 
   def upload_image_to_asset_manager(image)
     AssetManagerService.new.upload_bytes(image, image.cropped_bytes)
+  end
+
+  def delete_image_from_asset_manager(image)
+    AssetManagerService.new.delete(image)
   end
 
   def update_crop_params

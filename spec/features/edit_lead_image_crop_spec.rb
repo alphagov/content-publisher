@@ -13,7 +13,7 @@ RSpec.feature "Edit an existing lead image's crop dimensions", js: true do
   def given_there_is_a_document_with_existing_images
     document_type_schema = build(:document_type_schema, lead_image: true)
     document = create(:document, document_type: document_type_schema.id)
-    create(:image, document: document)
+    create(:image, :in_asset_manager, document: document)
   end
 
   def when_i_visit_the_lead_images_page
