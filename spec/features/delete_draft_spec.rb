@@ -33,6 +33,7 @@ RSpec.feature "Delete draft" do
   end
 
   def and_the_draft_is_discarded
+    expect(ActiveStorage::Blob.service.exist?(@image.blob.key)).to be_falsey
     expect(@content_request).to have_been_requested
     expect(@image_request).to have_been_requested
   end
