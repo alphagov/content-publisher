@@ -38,12 +38,12 @@ class DocumentLeadImageController < ApplicationController
 
   def edit
     @document = Document.find_by_param(params[:document_id])
-    @image = Image.find_by(id: params[:image_id])
+    @image = @document.images.find(params[:image_id])
   end
 
   def update
     document = Document.find_by_param(params[:document_id])
-    image = Image.find_by(id: params[:image_id])
+    image = document.images.find(params[:image_id])
     image.update!(update_params)
     document.update!(lead_image_id: image.id)
     begin
