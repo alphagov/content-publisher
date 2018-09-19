@@ -15,7 +15,7 @@ class DocumentPublishingService
 
   def publish(document, review_state)
     document.update!(publication_state: "sending_to_live", review_state: review_state)
-    publish_images(document.images)
+    publish_assets(document.images)
     publishing_api.publish(document.content_id, nil, locale: document.locale)
     document.update!(publication_state: "sent_to_live", change_note: nil, update_type: "major", has_live_version_on_govuk: true)
   rescue GdsApi::BaseError => e
@@ -25,6 +25,7 @@ class DocumentPublishingService
   end
 
   def discard_draft(document)
+    delete_assets(document.images)
     publishing_api.discard_draft(document.content_id)
     document.update!(publication_state: "changes_not_sent_to_draft")
   rescue GdsApi::BaseError => e
@@ -43,8 +44,13 @@ private
     )
   end
 
-  def publish_images(images)
+  def publish_assets(assets)
     asset_manager = AssetManagerService.new
-    images.each { |image| asset_manager.publish(image) }
+    assets.each { |asset| asset_manager.publish(asset) }
+  end
+
+  def delete_assets(assets)
+    asset_manager = AssetManagerService.new
+    assets.each { |asset| asset_manager.delete(asset) }
   end
 end
