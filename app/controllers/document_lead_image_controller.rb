@@ -80,6 +80,6 @@ private
   end
 
   def upload_image_to_asset_manager(image)
-    AssetManagerService.new.upload(image.cropped_file)
+    AssetManagerService.new.upload_bytes(image, image.cropped_bytes)
   end
 end
