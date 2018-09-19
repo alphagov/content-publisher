@@ -9,10 +9,11 @@ RSpec.feature "Publishing a document" do
     and_i_confirm_the_publishing
     then_i_see_the_publish_succeeded
     and_i_see_the_content_is_in_published_state
+    and_i_see_the_view_on_govuk_link
   end
 
   def given_there_is_a_document_in_draft
-    @document = create(:document, publication_state: "sent_to_draft")
+    @document = create(:document, publication_state: "sent_to_draft", base_path: "/news/banana-pricing-updates")
     @asset_id = SecureRandom.uuid
   end
 
@@ -42,6 +43,10 @@ RSpec.feature "Publishing a document" do
   def and_i_see_the_content_is_in_published_state
     visit document_path(@document)
     expect(page).to have_content(I18n.t("user_facing_states.published.name"))
+  end
+
+  def and_i_see_the_view_on_govuk_link
+    expect(page).to have_link("View published edition on GOV.UK", href: "https://www.test.gov.uk/news/banana-pricing-updates")
   end
 
   def stub_asset_manager_update_request(asset_id)

@@ -39,5 +39,10 @@
       <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
       <%= link_to "Delete draft", "#", class: "app-link--destructive app-link--right" %>
     <% end %>
+
+    <% if @document.has_live_version_on_govuk? %>
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+      <%= link_to "View published edition on GOV.UK", DocumentUrl.new(@document).public_url, class: "govuk-link" %>
+    <% end %>
   </div>
 </div>
