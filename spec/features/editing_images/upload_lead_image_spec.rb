@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Upload a lead image", js: true do
+RSpec.feature "Upload a lead image" do
   scenario "User uploads a lead image" do
     given_there_is_a_document
     when_i_visit_the_summary_page
@@ -46,13 +46,7 @@ RSpec.feature "Upload a lead image", js: true do
 
   def and_i_crop_the_image
     expect(page).to have_content(I18n.t("document_lead_image.crop.description"))
-    crop_box = find(".cropper-crop-box")
-    # drag towards the top of the page where the page heading is located
-    target = find(".govuk-heading-l")
-    crop_box.drag_to(target)
     click_on "Crop image"
-
-    expect(Image.last.crop_y).to eq(0)
   end
 
   def and_i_fill_in_the_metadata

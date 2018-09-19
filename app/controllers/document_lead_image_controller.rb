@@ -48,6 +48,10 @@ class DocumentLeadImageController < ApplicationController
     document = Document.find_by_param(params[:document_id])
     image = Image.find_by(id: params[:image_id])
     image.update!(update_crop_params)
+    if params[:next_screen] == "lead-image"
+      redirect_to document_lead_image_path(document)
+      return
+    end
     redirect_to edit_document_lead_image_path(document, image)
   end
 

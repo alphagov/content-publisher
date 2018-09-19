@@ -57,6 +57,7 @@
       <% if actions[:choose_button] %>
         <li class="app-c-image-meta__choose-image"><%= actions[:choose_button] %></li>
       <% end %>
+      <li><%= link_to("Edit crop", actions[:crop_link], class: "govuk-link") %></li>
       <li><%= link_to("Edit details", actions[:edit_link], class: "govuk-link") %></li>
     </ul>
   <% end %>
