@@ -5,7 +5,7 @@
   <%= t("document_lead_image.crop.description") %>
 </p>
 
-<%= form_tag(update_document_lead_image_path(@document, @image, next_screen: params[:next_screen]), method: :patch) do %>
+<%= form_tag(crop_document_lead_image_path(@document, @image), method: :patch) do %>
   <%= render "/components/image_cropper", {
     id: "cropp-image",
     src: url_for(@image.blob),

@@ -14,7 +14,10 @@ class DocumentLeadImageController < ApplicationController
 
     image_uploader = ImageUploader.new(params.require(:image))
 
-    unless image_uploader.valid?
+    if image_uploader.valid?
+      image = image_uploader.upload(document)
+      redirect_to crop_document_lead_image_path(params[:document_id], image.id)
+    else
       redirect_to document_lead_image_path, alert: {
         "alerts" => image_uploader.errors,
         "title" => t("document_lead_image.index.error_summary_title"),
@@ -36,12 +39,19 @@ class DocumentLeadImageController < ApplicationController
     redirect_to edit_document_lead_image_path(params[:document_id], image.id)
   end
 
-  def edit
+  def crop
     @document = Document.find_by_param(params[:document_id])
     @image = @document.images.find(params[:image_id])
   end
 
-  def crop
+  def update_crop
+    document = Document.find_by_param(params[:document_id])
+    image = Image.find_by(id: params[:image_id])
+    image.update!(update_crop_params)
+    redirect_to edit_document_lead_image_path(document, image)
+  end
+
+  def edit
     @document = Document.find_by_param(params[:document_id])
     @image = Image.find_by(id: params[:image_id])
   end
@@ -103,5 +113,9 @@ private
 
   def upload_image_to_asset_manager(image)
     AssetManagerService.new.upload_bytes(image, image.cropped_bytes)
+  end
+
+  def update_crop_params
+    params.permit(:crop_x, :crop_y, :crop_width, :crop_height)
   end
 end
