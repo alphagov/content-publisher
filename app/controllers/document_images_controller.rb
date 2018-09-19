@@ -23,7 +23,7 @@ class DocumentImagesController < ApplicationController
 
   def update
     document = Document.find_by_param(params[:document_id])
-    image = Image.find_by!(id: params[:id], document_id: document.id)
+    image = document.images.find(params[:id])
     image.assign_attributes(image_params)
 
     if image.valid?
