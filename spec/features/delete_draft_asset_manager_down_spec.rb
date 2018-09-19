@@ -21,14 +21,12 @@ RSpec.feature "Delete draft with Asset Manager down" do
   end
 
   def when_asset_manager_is_up_and_i_try_again
-    # TODO: add this to gds-api-adapters test helpers
-    stub_request(:delete, %r{https://asset-manager.test.gov.uk/assets})
+    asset_manager_delete_asset(@image.asset_manager_id)
     click_on "Try again"
   end
 
   def and_asset_manager_is_down
-    # TODO: add this to gds-api-adapters test helpers
-    stub_request(:delete, %r{https://asset-manager.test.gov.uk/assets}).to_return(status: 500)
+    asset_manager_delete_asset_failure(@image.asset_manager_id)
   end
 
   def and_i_delete_the_draft

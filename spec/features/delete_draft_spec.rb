@@ -20,8 +20,7 @@ RSpec.feature "Delete draft" do
 
   def and_i_delete_the_draft
     @content_request = stub_publishing_api_discard_draft(@document.content_id)
-    # TODO: add this to gds-api-adapters test helpers
-    @image_request = stub_request(:delete, "https://asset-manager.test.gov.uk/assets/#{@image.asset_manager_id}")
+    @image_request = asset_manager_delete_asset(@image.asset_manager_id)
 
     click_on "Delete draft"
     click_on "Yes, delete draft"
