@@ -64,12 +64,14 @@ module Tasks
     def publication_state(edition)
       return "sent_to_draft" if edition["state"] == "draft"
       return "sent_to_live" if edition["state"] == "published"
+      return "sent_to_draft" if edition["state"] == "rejected"
     end
 
     def review_state(edition)
       return "published_without_review" if edition["force_published"]
       return "unreviewed" if edition["state"] == "draft"
       return "reviewed" if edition["state"] == "published"
+      return "submitted_for_review" if edition["state"] == "rejected"
     end
   end
 end
