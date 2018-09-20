@@ -70,6 +70,7 @@ class DocumentsController < ApplicationController
 
   def debug
     @document = Document.find_by_param(params[:id])
+    @papertrail_users = User.where(id: @document.versions.pluck(:whodunnit))
   end
 
 private

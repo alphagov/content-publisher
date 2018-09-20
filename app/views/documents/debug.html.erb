@@ -4,3 +4,20 @@
 <%= render "components/summary", {
   items: @document.as_json.map { |k, v| { field: k, value: v } }
 } %>
+
+<h2 class="govuk-heading-m">Audit log</h3>
+
+<% @document.versions.reverse.each do |version| %>
+  <div>
+    <h3 class="govuk-heading-s">
+      <%= version.event.humanize %> by <%= @papertrail_users.find { |u| u.id == version.whodunnit.to_i }&.name %> @ <%= version.created_at %>
+    </h3>
+
+    <%= render "components/summary", {
+      items: version.changeset.as_json.map { |k, v|
+        next if k.in?(%w[updated_at])
+        { field: k, value: v.map(&:inspect).join(" ➡ ") }
+      }.compact
+    } %>
+  </div>
+<% end %>
