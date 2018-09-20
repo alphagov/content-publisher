@@ -40,13 +40,13 @@ class DocumentsController < ApplicationController
   def update
     document = Document.find_by_param(params[:id])
 
-    if document.publication_state == "sent_to_live"
-      document.current_edition_number += 1
-    end
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "updated_content",
+      attributes_to_update: update_params(document),
+    )
 
-    document.update!(update_params(document))
-    TimelineEntry.create!(document: document, user: current_user, entry_type: "updated_content")
-    DocumentPublishingService.new.publish_draft(document)
     redirect_to document
   rescue GdsApi::BaseError
     redirect_to document, alert_with_description: t("documents.show.flashes.draft_error")
@@ -81,6 +81,5 @@ private
 
   def update_params(document)
     DocumentUpdateParams.new(document).update_params(params)
-      .merge(publication_state: "changes_not_sent_to_draft", review_state: "unreviewed")
   end
 end
