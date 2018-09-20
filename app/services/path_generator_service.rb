@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "gds_api/publishing_api_v2"
-
 class PathGeneratorService
   class ErrorGeneratingPath < RuntimeError
   end
