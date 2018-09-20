@@ -31,6 +31,10 @@ RSpec.feature "Edit an existing lead image's crop dimensions", js: true do
     # drag towards the top of the page where the page heading is located
     target = find(".govuk-heading-l")
     crop_box.drag_to(target)
+    @new_asset_id = SecureRandom.uuid
+    asset_url = "https://asset-manager.test.gov.uk/media/#{@new_asset_id}/1000x1000.jpg"
+    @upload_request = asset_manager_receives_an_asset(asset_url)
+    @delete_request = asset_manager_delete_asset(Image.last.asset_manager_id)
     click_on "Crop image"
   end
 
@@ -39,6 +43,8 @@ RSpec.feature "Edit an existing lead image's crop dimensions", js: true do
   end
 
   def and_the_image_has_been_cropped
+    expect(@upload_request).to have_been_requested
+    expect(@delete_request).to have_been_requested
     expect(Image.last.crop_y).to eq(0)
   end
 end

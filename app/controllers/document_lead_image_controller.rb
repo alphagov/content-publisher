@@ -46,8 +46,9 @@ class DocumentLeadImageController < ApplicationController
     image = Image.find_by(id: params[:image_id])
     Image.transaction do
       image.update!(update_crop_params)
+      asset_manager_file_url = upload_image_to_asset_manager(image)
       delete_image_from_asset_manager(image)
-      image.asset_manager_file_url = upload_image_to_asset_manager(image)
+      image.asset_manager_file_url = asset_manager_file_url
       image.save!
     end
     if params[:next_screen] == "lead-image"
