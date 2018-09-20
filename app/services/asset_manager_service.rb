@@ -5,26 +5,19 @@ require "gds_api/asset_manager"
 class AssetManagerService
   def upload_bytes(asset, content)
     file = AssetManagerFile.from_bytes(asset, content)
-    upload = asset_manager.create_asset(file: file, draft: true)
+    upload = Services.asset_manager.create_asset(file: file, draft: true)
     upload["file_url"]
   end
 
   def publish(asset)
-    asset_manager.update_asset(asset.asset_manager_id, file: asset, draft: false)
+    Services.asset_manager.update_asset(asset.asset_manager_id, file: asset, draft: false)
   end
 
   def delete(asset)
-    asset_manager.delete_asset(asset.asset_manager_id)
+    Services.asset_manager.delete_asset(asset.asset_manager_id)
   end
 
 private
-
-  def asset_manager
-    @asset_manager ||= GdsApi::AssetManager.new(
-      Plek.new.find("asset-manager"),
-      bearer_token: ENV.fetch("ASSET_MANAGER_BEARER_TOKEN", "example"),
-    )
-  end
 
   # Used as a stand-in for a File / Rack::Multipart::UploadedFile object when
   # passed to GdsApi::AssetManager#create_asset. The interface is required for
