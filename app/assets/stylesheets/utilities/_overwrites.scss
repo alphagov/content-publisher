@@ -24,3 +24,27 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.govuk-table {
+  .gem-c-document-list__item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .gem-c-document-list__item-title {
+    @extend %govuk-link;
+    font-weight: normal;
+  }
+
+  .gem-c-document-list__attribute {
+    font-size: 16px;
+  }
+}
+
+.govuk-table--sortable {
+  .govuk-table__header--active {
+    .app-table__sort-link {
+      white-space: nowrap;
+    }
+  }
+}

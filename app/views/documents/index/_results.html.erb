@@ -1,53 +1,52 @@
-<table class="govuk-table">
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th class="govuk-table__header" scope="col">
-        <%= t("documents.index.search_results.headings.title") %>
-      </th>
+<%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Documents list", { sortable: true, caption_classes: "govuk-visually-hidden" }) do |t| %>
 
-      <th class="govuk-table__header" scope="col">
-        <%
-          active = @sort.delete_prefix("-") == "updated_at"
-          link_to_asc = active && @sort[0] == "-"
-          classes = ["govuk-link"]
-          classes << "active" if active
-          classes << "desc" if active && link_to_asc
-        %>
-        <%= link_to(
-          t("documents.index.search_results.headings.last_updated"),
-          documents_path(@filter_params.merge(sort: "#{link_to_asc ? '' : '-'}updated_at", page: nil)),
-          title: t("documents.index.search_results.headings.last_updated_#{link_to_asc ? 'asc' : 'desc'}"),
-          class: classes
-        ) %>
-      </th>
-    </tr>
-  </thead>
+  <%
+    active = @sort.delete_prefix("-") == "updated_at"
+    link_to_asc = active && @sort[0] == "-"
+    classes = ["govuk-link"]
+    classes << "active" if active
+    classes << "desc" if active && link_to_asc
 
-  <tbody class="govuk-table__body">
+    sort_direction = "descending" if active && link_to_asc
+  %>
+
+  <%= t.head do %>
+    <%= t.header t("documents.index.search_results.headings.title") %>
+    <%= t.header t("documents.index.search_results.headings.state"), {
+        href: documents_path(@filter_params.merge(sort: "#{link_to_asc ? '' : '-'}state", page: nil)),
+      } %>
+    <%= t.header t("documents.index.search_results.headings.last_updated"), {
+        href: documents_path(@filter_params.merge(sort: "#{link_to_asc ? '' : '-'}updated_at", page: nil)),
+        sort_direction: sort_direction,
+      } %>
+  <% end %>
+
+  <%= t.body do %>
     <% @documents.each do |document| %>
-      <tr class="govuk-table__row document">
-        <td class="govuk-table__cell" scope="row">
-          <%= link_to document.title.presence || t("documents.index.search_results.untitled"), document, class: "govuk-link" %>
-          <br/>
-          <%= document.document_type_schema.label %>
-          <br/>
-          <%= t "documents.index.search_results.creator",
-            creator: document.creator&.name || I18n.t("documents.index.search_results.unknown_user")
-          %>
-          <br/>
-          <%= t "documents.index.search_results.state",
-            state: t("user_facing_states.#{document.user_facing_state}.name")
-          %>
-          <br/>
-          <%= t "documents.index.search_results.last_edited_by",
-            user: document.last_editor&.name || I18n.t("documents.index.search_results.unknown_user")
-          %>
-        </td>
 
-        <td class="govuk-table__cell ">
-          <%= document.updated_at.strftime("%d %b %Y") %>
-        </td>
-      </tr>
+      <% document_item = capture do %>
+      <%= render "govuk_publishing_components/components/document_list", {
+        items: [
+          {
+            link: {
+              text: document.title.presence || t("documents.index.search_results.untitled"),
+              path: document
+            },
+            metadata: {
+              document_type: document.document_type_schema.label,
+              document_create: t("documents.index.search_results.headings.creator", creator: document.creator&.name || I18n.t("documents.index.search_results.unknown_creator"))
+              user: t("documents.index.search_results.last_edited_by", user: document.last_editor&.name || I18n.t("documents.index.search_results.unknown_user"))
+            }
+          }
+        ]
+      } %>
+      <% end %>
+
+      <%= t.row do %>
+        <%= t.cell document_item %>
+        <%= t.cell t("user_facing_states.#{document.user_facing_state}.name") %>
+        <%= t.cell document.updated_at.strftime("%d %b %Y") %>
+      <% end %>
     <% end %>
-  </tbody>
-</table>
+  <% end %>
+<% end %>
