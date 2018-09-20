@@ -8,6 +8,7 @@ RSpec.feature "Edit an existing lead image" do
     then_i_edit_the_image_metadata
     then_i_am_redirected_to_the_lead_images_page
     and_i_should_be_able_to_see_the_edited_metadata
+    and_there_is_a_history_entry
   end
 
   def given_there_is_a_document_with_existing_images
@@ -42,5 +43,13 @@ RSpec.feature "Edit an existing lead image" do
     expect(page).to have_content("Some alt text")
     expect(page).to have_content("Image caption")
     expect(page).to have_content("Image credit")
+  end
+
+  def and_there_is_a_history_entry
+    visit document_path(Document.last)
+
+    within find(".timeline-entry:first") do
+      expect(page).to have_content I18n.t!("documents.history.entry_types.lead_image_updated")
+    end
   end
 end

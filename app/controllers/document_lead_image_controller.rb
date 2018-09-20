@@ -45,9 +45,14 @@ class DocumentLeadImageController < ApplicationController
     document = Document.find_by_param(params[:document_id])
     image = document.images.find(params[:image_id])
     image.update!(update_params)
-    document.update!(lead_image_id: image.id)
+
     begin
-      DocumentPublishingService.new.publish_draft(document)
+      DocumentUpdateService.update!(
+        document: document,
+        user: current_user,
+        type: "lead_image_updated",
+        attributes_to_update: { lead_image_id: image.id },
+      )
     rescue GdsApi::BaseError
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.publishing_api_error")
       return
@@ -61,15 +66,27 @@ class DocumentLeadImageController < ApplicationController
 
   def choose_image
     document = Document.find_by_param(params[:document_id])
-    document.update!(lead_image_id: params[:image_id])
-    DocumentPublishingService.new.publish_draft(document)
+
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "lead_image_updated",
+      attributes_to_update: { lead_image_id: params[:image_id] },
+    )
+
     redirect_to document_path(document)
   end
 
   def destroy
     document = Document.find_by_param(params[:document_id])
-    document.update!(lead_image_id: nil)
-    DocumentPublishingService.new.publish_draft(document)
+
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "lead_image_removed",
+      attributes_to_update: { lead_image_id: nil },
+    )
+
     redirect_to document_path(document)
   end
 
