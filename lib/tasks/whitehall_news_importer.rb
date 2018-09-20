@@ -2,10 +2,13 @@
 
 module Tasks
   class WhitehallNewsImporter
+    SUPPORTED_WHITEHALL_STATES = %w(draft published rejected submitted).freeze
+
     def import(document)
       edition = most_recent_edition(document)
 
       edition["translations"].each do |translation|
+        next unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
         create_or_update_document(translation, edition, document)
       end
     end

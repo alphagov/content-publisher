@@ -101,4 +101,11 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     expect(Document.last.publication_state).to eq("sent_to_draft")
     expect(Document.last.review_state).to eq("submitted_for_review")
   end
+
+  it "skips importing documents with Whitheall states that are not supported" do
+    import_data[:editions][0][:state] = "not_supported"
+    parsed_json = JSON.parse(import_data.to_json)
+    importer = Tasks::WhitehallNewsImporter.new
+    expect { importer.import(parsed_json) }.not_to(change { Document.count })
+  end
 end
