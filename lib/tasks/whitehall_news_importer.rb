@@ -67,8 +67,9 @@ module Tasks
     end
 
     def review_state(edition)
+      return "published_without_review" if edition["force_published"]
       return "unreviewed" if edition["state"] == "draft"
-      return "reviewed" if edition["state"] == "published" && !edition["force_published"]
+      return "reviewed" if edition["state"] == "published"
     end
   end
 end

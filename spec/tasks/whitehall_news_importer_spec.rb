@@ -25,7 +25,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
           topical_events: [SecureRandom.uuid, SecureRandom.uuid],
           world_locations: [SecureRandom.uuid, SecureRandom.uuid],
           state: "draft",
-          force_published: false
+          force_published: false,
         },
       ],
     }
@@ -72,5 +72,15 @@ RSpec.describe Tasks::WhitehallNewsImporter do
 
     expect(Document.last.publication_state).to eq("sent_to_live")
     expect(Document.last.review_state).to eq("reviewed")
+  end
+
+  it "sets the correct publication state and review state when Whitehall document is force published" do
+    import_data[:editions][0][:state] = "published"
+    import_data[:editions][0][:force_published] = true
+    parsed_json = JSON.parse(import_data.to_json)
+    Tasks::WhitehallNewsImporter.new.import(parsed_json)
+
+    expect(Document.last.publication_state).to eq("sent_to_live")
+    expect(Document.last.review_state).to eq("published_without_review")
   end
 end
