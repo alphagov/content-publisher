@@ -12,9 +12,14 @@ class DocumentTagsController < ApplicationController
 
   def update
     document = Document.find_by_param(params[:id])
-    document.update!(tags: update_params(document))
-    TimelineEntry.create!(document: document, user: current_user, entry_type: "updated_tags")
-    DocumentPublishingService.new.publish_draft(document)
+
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "updated_tags",
+      attributes_to_update: { tags: update_params(document) },
+    )
+
     redirect_to document
   rescue GdsApi::BaseError
     redirect_to document, alert_with_description: t("documents.show.flashes.draft_error")
