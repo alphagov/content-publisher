@@ -9,3 +9,5 @@ en:
         published_without_review: "Published without review"
         approved: "Approved for publication"
         updated_tags: "Tags updated"
+        lead_image_updated: "Updated lead image"
+        lead_image_removed: "Removed lead image"
