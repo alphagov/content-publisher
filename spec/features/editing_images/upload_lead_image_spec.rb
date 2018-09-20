@@ -46,6 +46,7 @@ RSpec.feature "Upload a lead image" do
 
   def and_i_crop_the_image
     expect(page).to have_content(I18n.t("document_lead_image.crop.description"))
+    asset_manager_delete_asset(@asset_id)
     click_on "Crop image"
   end
 
