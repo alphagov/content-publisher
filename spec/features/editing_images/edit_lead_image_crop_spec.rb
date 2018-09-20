@@ -8,12 +8,15 @@ RSpec.feature "Edit an existing lead image's crop dimensions", js: true do
     and_i_crop_the_image
     then_i_am_redirected_to_the_lead_images_page
     and_the_image_has_been_cropped
+    when_i_visit_the_document_summary
+    then_i_see_an_image_was_updated
   end
 
   def given_there_is_a_document_with_existing_images
     document_type_schema = build(:document_type_schema, lead_image: true)
     document = create(:document, document_type: document_type_schema.id)
-    create(:image, :in_asset_manager, document: document)
+    image = create(:image, :in_asset_manager, document: document)
+    document.update(lead_image: image)
   end
 
   def when_i_visit_the_lead_images_page
@@ -35,6 +38,7 @@ RSpec.feature "Edit an existing lead image's crop dimensions", js: true do
     asset_url = "https://asset-manager.test.gov.uk/media/#{@new_asset_id}/1000x1000.jpg"
     @upload_request = asset_manager_receives_an_asset(asset_url)
     @delete_request = asset_manager_delete_asset(Image.last.asset_manager_id)
+    @publishing_api_request = stub_any_publishing_api_put_content
     click_on "Crop image"
   end
 
@@ -45,6 +49,16 @@ RSpec.feature "Edit an existing lead image's crop dimensions", js: true do
   def and_the_image_has_been_cropped
     expect(@upload_request).to have_been_requested
     expect(@delete_request).to have_been_requested
+    expect(@publishing_api_request).to have_been_requested
     expect(Image.last.crop_y).to eq(0)
+  end
+
+  def when_i_visit_the_document_summary
+    visit document_path(Document.last)
+  end
+
+  def then_i_see_an_image_was_updated
+    click_on "Document history"
+    expect(page).to have_content I18n.t!("documents.history.entry_types.image_updated")
   end
 end

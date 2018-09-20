@@ -51,6 +51,19 @@ class DocumentLeadImageController < ApplicationController
       image.asset_manager_file_url = asset_manager_file_url
       image.save!
     end
+    begin
+      if image.id == document.lead_image_id
+        DocumentUpdateService.update!(
+          document: document,
+          user: current_user,
+          type: "image_updated",
+          attributes_to_update: {},
+        )
+      end
+    rescue GdsApi::BaseError
+      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.publishing_api_error")
+      return
+    end
     if params[:next_screen] == "lead-image"
       redirect_to document_lead_image_path(document)
       return
