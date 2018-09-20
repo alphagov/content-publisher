@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(version: 2018_09_19_150956) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "contents", default: {}
-    t.string "base_path"
     t.text "summary"
+    t.string "base_path"
     t.json "tags", default: {}
     t.string "publication_state", null: false
     t.bigint "creator_id"
@@ -104,6 +104,17 @@ ActiveRecord::Schema.define(version: 2018_09_19_150956) do
     t.boolean "disabled", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.text "object_changes"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
   add_foreign_key "documents", "images", column: "lead_image_id"

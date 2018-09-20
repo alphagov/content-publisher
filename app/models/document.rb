@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Document < ApplicationRecord
+  has_paper_trail
+
   has_many :images, dependent: :destroy
   has_many :timeline_entries, dependent: :destroy
   belongs_to :lead_image, class_name: "Image", optional: true, foreign_key: :lead_image_id, inverse_of: :document
