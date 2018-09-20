@@ -1,0 +1,6 @@
+<% content_for :back_link, document_path(@document) %>
+<% content_for :title, "Internal metadata for ‘#{@document.title_or_fallback}’" %>
+
+<%= render "components/summary", {
+  items: @document.as_json.map { |k, v| { field: k, value: v } }
+} %>

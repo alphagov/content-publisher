@@ -1,5 +1,0 @@
-<%= render "govuk_publishing_components/components/details", title: "Internal metadata (not shown to publishers)" do %>
-  <%= render "components/summary", {
-    items: @document.as_json.map { |k, v| { field: k, value: v } }
-  } %>
-<% end %>

@@ -68,6 +68,10 @@ class DocumentsController < ApplicationController
     render status: :conflict
   end
 
+  def debug
+    @document = Document.find_by_param(params[:id])
+  end
+
 private
 
   def filter_params
