@@ -9,7 +9,6 @@ RSpec.describe Tasks::WhitehallNewsImporter do
       editions: [
         {
           created_at: Time.zone.now,
-          published_major_version: 12,
           news_article_type: { key: "news_story" },
           translations: [
             {
@@ -56,6 +55,6 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     expect(document_tags["world_locations"])
       .to eq(imported_edition["world_locations"])
 
-    expect(Document.last.current_edition_number).to eql(13)
+    expect(Document.last.current_edition_number).to eql(1)
   end
 end
