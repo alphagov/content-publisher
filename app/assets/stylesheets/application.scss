@@ -5,6 +5,7 @@ $govuk-global-styles: true;
 @import "core/link";
 
 @import "objects/side";
+@import "objects/history";
 
 @import "components/contextual-guidance";
 @import "components/error-alert";
