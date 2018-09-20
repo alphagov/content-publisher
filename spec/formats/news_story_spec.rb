@@ -27,7 +27,7 @@ RSpec.feature "Create a news story", format: true do
 
   def and_i_add_some_tags
     stub_any_publishing_api_put_content
-    expect(Document.last.document_type_schema.tags.count).to eq(5)
+    expect(Document.last.document_type_schema.tags.count).to eq(6)
     publishing_api_has_linkables([linkable], document_type: "topical_event")
     publishing_api_has_linkables([linkable], document_type: "worldwide_organisation")
     publishing_api_has_linkables([linkable], document_type: "world_location")

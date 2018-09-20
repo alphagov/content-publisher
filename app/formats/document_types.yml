@@ -41,6 +41,10 @@
       label: Organisations
       type: multi_tag
       document_type: organisation
+    - id: role_appointments
+      label: Ministers and government appointments
+      type: multi_tag
+      document_type: role_appointment
     - id: topical_events
       label: Topical events
       type: multi_tag
@@ -96,6 +100,10 @@
       label: Organisations
       type: multi_tag
       document_type: organisation
+    - id: role_appointments
+      label: Ministers and government appointments
+      type: multi_tag
+      document_type: role_appointment
     - id: topical_events
       label: Topical events
       type: multi_tag

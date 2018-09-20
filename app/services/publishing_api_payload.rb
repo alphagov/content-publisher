@@ -40,7 +40,9 @@ private
     links = document.tags["primary_publishing_organisation"].to_a +
       document.tags["organisations"].to_a
 
-    document.tags.merge("organisations" => links.uniq)
+    document.tags
+      .except("role_appointments")
+      .merge("organisations" => links.uniq)
   end
 
   def image
