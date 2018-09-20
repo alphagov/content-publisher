@@ -48,7 +48,7 @@ RSpec.feature "Edit an existing lead image" do
   def and_there_is_a_history_entry
     visit document_path(Document.last)
 
-    within find(".timeline-entry:first") do
+    within find(".app-timeline-entry:first") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.lead_image_updated")
     end
   end

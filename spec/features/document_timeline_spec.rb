@@ -36,7 +36,7 @@ RSpec.feature "Document timeline" do
   def the_timeline_has_a_create_entry
     visit document_path(@document)
 
-    within find(".timeline-entry:first") do
+    within find(".app-timeline-entry:first") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.created")
     end
   end
@@ -50,7 +50,7 @@ RSpec.feature "Document timeline" do
   end
 
   def the_timeline_has_a_update_entry
-    within find(".timeline-entry:first") do
+    within find(".app-timeline-entry:first") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
     end
   end
@@ -60,7 +60,7 @@ RSpec.feature "Document timeline" do
   end
 
   def the_timeline_has_a_submit_entry
-    within find(".timeline-entry:first") do
+    within find(".app-timeline-entry:first") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.submitted")
     end
   end
@@ -75,7 +75,7 @@ RSpec.feature "Document timeline" do
   def the_timeline_has_a_publish_without_review_entry
     visit document_path(@document)
 
-    within find(".timeline-entry:first") do
+    within find(".app-timeline-entry:first") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.published_without_review")
     end
   end
@@ -85,7 +85,7 @@ RSpec.feature "Document timeline" do
   end
 
   def the_timeline_has_a_approval_entry
-    within find(".timeline-entry:first") do
+    within find(".app-timeline-entry:first") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.approved")
     end
   end
