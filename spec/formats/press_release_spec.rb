@@ -32,6 +32,7 @@ RSpec.feature "Create a press release", format: true do
     publishing_api_has_linkables([linkable], document_type: "worldwide_organisation")
     publishing_api_has_linkables([linkable], document_type: "world_location")
     publishing_api_has_linkables([linkable], document_type: "organisation")
+    publishing_api_has_linkables([linkable], document_type: "role_appointment")
 
     click_on "Change Tags"
 
@@ -39,6 +40,7 @@ RSpec.feature "Create a press release", format: true do
     select linkable["internal_name"], from: "tags[worldwide_organisations][]"
     select linkable["internal_name"], from: "tags[world_locations][]"
     select linkable["internal_name"], from: "tags[organisations][]"
+    select linkable["internal_name"], from: "tags[role_appointments][]"
 
     click_on "Save"
   end
