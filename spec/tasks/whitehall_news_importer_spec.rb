@@ -24,6 +24,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
           worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
           topical_events: [SecureRandom.uuid, SecureRandom.uuid],
           world_locations: [SecureRandom.uuid, SecureRandom.uuid],
+          state: "draft",
         },
       ],
     }.to_json
@@ -56,5 +57,8 @@ RSpec.describe Tasks::WhitehallNewsImporter do
       .to eq(imported_edition["world_locations"])
 
     expect(Document.last.current_edition_number).to eql(1)
+
+    expect(Document.last.publication_state).to eq("sent_to_draft")
+    expect(Document.last.review_state).to eq("unreviewed")
   end
 end
