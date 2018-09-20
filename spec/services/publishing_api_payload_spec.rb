@@ -61,6 +61,29 @@ RSpec.describe PublishingApiPayload do
       expect(payload).to match a_hash_including(payload_hash)
     end
 
+    it "converts role appointment links to role and person links" do
+      role_appointment_id = SecureRandom.uuid
+      role_appointments_schema = build(:tag_schema, type: "multi_tag", id: "role_appointments")
+      document_type_schema = build(:document_type_schema, tags: [role_appointments_schema])
+      document = build(:document, document_type: document_type_schema.id, tags: {
+                         role_appointments: [role_appointment_id],
+                       })
+
+      person_id = SecureRandom.uuid
+      role_id = SecureRandom.uuid
+      publishing_api_has_links({
+        "content_id" => role_appointment_id,
+        "links" => { "person" => [person_id], "role" => [role_id] },
+      })
+
+      payload = PublishingApiPayload.new(document).payload
+
+      expect(payload["links"]).to match a_hash_including(
+        "roles" => [role_id],
+        "people" => [person_id],
+      )
+    end
+
     it "transforms Govspeak before sending it to the publishing-api" do
       body_field_schema = build(:field_schema, type: "govspeak", id: "body")
       document_type_schema = build(:document_type_schema, contents: [body_field_schema])
