@@ -92,4 +92,13 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     expect(Document.last.publication_state).to eq("sent_to_draft")
     expect(Document.last.review_state).to eq("submitted_for_review")
   end
+
+  it "sets the correct publication state and review state when Whitehall document state is 'submitted'" do
+    import_data[:editions][0][:state] = "submitted"
+    parsed_json = JSON.parse(import_data.to_json)
+    Tasks::WhitehallNewsImporter.new.import(parsed_json)
+
+    expect(Document.last.publication_state).to eq("sent_to_draft")
+    expect(Document.last.review_state).to eq("submitted_for_review")
+  end
 end
