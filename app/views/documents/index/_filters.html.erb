@@ -74,11 +74,8 @@
   <%= hidden_field_tag "sort", @sort %>
 
   <%= render "govuk_publishing_components/components/button", {
-    text: "Filter", margin_top: true
+    text: "Filter"
   } %>
 
-  <br/>
-  <br/>
-
-  <%= link_to "Clear filter", documents_path, class: "govuk-link" %>
+  <p><%= link_to "Clear filter", documents_path, class: "govuk-link" %></p>
 <% end %>
