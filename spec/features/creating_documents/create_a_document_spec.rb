@@ -7,7 +7,7 @@ RSpec.feature "Create a document" do
 
     when_i_visit_the_summary_page
     then_i_see_the_document_is_in_draft
-    and_the_update_type_is_major
+    and_the_summary_page_does_not_display_change_note_and_update_type
   end
 
   def when_i_choose_a_format
@@ -36,7 +36,7 @@ RSpec.feature "Create a document" do
     expect(page).to have_content("Draft")
   end
 
-  def and_the_update_type_is_major
-    expect(page).to have_content(I18n.t("documents.edit.update_type.major_name"))
+  def and_the_summary_page_does_not_display_change_note_and_update_type
+    expect(page).not_to have_content I18n.t("documents.show.contents.items.update_type")
   end
 end
