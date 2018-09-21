@@ -1,0 +1,5 @@
+en:
+  publishing_requirements:
+    title: "Document needs a title before publishing (at least 10 characters)"
+    summary: "Document needs a summary before publishing (at least 10 characters)"
+    min_length: "The %{field} needs to be at least %{min_length} characters long"

@@ -1,8 +1,6 @@
-<ul>
-  <% ContentValidator.new(@document).validation_messages.each do |message| %>
-    <li><%= message %></li>
-  <% end %>
-</ul>
+<% unless PublishingRequirements.new(@document).ready_for_publishing? %>
+  <%= render "documents/show/publishing_requirements" %>
+<% end %>
 
 <% contents = @document.document_type_schema.contents.map { |schema|
   {
@@ -28,6 +26,7 @@ else
 end %>
 
 <%= render "components/summary", {
+  id: "content",
   title: {
     text: t("documents.show.contents.title"),
     change_url: edit_document_path(@document)

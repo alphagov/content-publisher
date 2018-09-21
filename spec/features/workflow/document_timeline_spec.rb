@@ -46,6 +46,8 @@ RSpec.feature "Document timeline" do
 
     visit edit_document_path(@document)
     fill_in "Title", with: "This is a new title"
+    fill_in "Summary", with: "This is a summary"
+    fill_in "Body", with: "This is a body"
     click_on "Save"
   end
 
