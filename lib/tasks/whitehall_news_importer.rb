@@ -2,10 +2,13 @@
 
 module Tasks
   class WhitehallNewsImporter
+    SUPPORTED_WHITEHALL_STATES = %w(draft published rejected submitted).freeze
+
     def import(document)
       edition = most_recent_edition(document)
 
       edition["translations"].each do |translation|
+        next unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
         create_or_update_document(translation, edition, document)
       end
     end
@@ -27,8 +30,8 @@ module Tasks
         },
         document_type: edition["news_article_type"]["key"],
         title: translation["title"],
-        publication_state: "changes_not_sent_to_draft",
-        review_state: "unreviewed",
+        publication_state: publication_state(edition),
+        review_state: review_state(edition),
         summary: translation["summary"],
         tags: tags(edition),
         current_edition_number: document["editions"].count,
@@ -59,6 +62,17 @@ module Tasks
 
     def lead_organisations(edition)
       edition["lead_organisations"]
+    end
+
+    def publication_state(edition)
+      edition["state"] == "published" ? "sent_to_live" : "sent_to_draft"
+    end
+
+    def review_state(edition)
+      return "published_without_review" if edition["force_published"]
+      return "unreviewed" if edition["state"] == "draft"
+      return "reviewed" if edition["state"] == "published"
+      "submitted_for_review"
     end
   end
 end

@@ -3,8 +3,8 @@
 require "tasks/whitehall_news_importer"
 
 RSpec.describe Tasks::WhitehallNewsImporter do
-  it "can import JSON data from Whitehall" do
-    import_json = {
+  let(:import_data) do
+    {
       content_id: SecureRandom.uuid,
       editions: [
         {
@@ -24,16 +24,20 @@ RSpec.describe Tasks::WhitehallNewsImporter do
           worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
           topical_events: [SecureRandom.uuid, SecureRandom.uuid],
           world_locations: [SecureRandom.uuid, SecureRandom.uuid],
+          state: "draft",
+          force_published: false,
         },
       ],
-    }.to_json
+    }
+  end
 
+  it "can import JSON data from Whitehall" do
     importer = Tasks::WhitehallNewsImporter.new
-    parsed_json = JSON.parse(import_json)
+    parsed_json = JSON.parse(import_data.to_json)
 
     expect { importer.import(parsed_json) }.to change { Document.count }.by(1)
 
-    imported_edition = JSON.parse(import_json)["editions"][0]
+    imported_edition = JSON.parse(import_data.to_json)["editions"][0]
     document_tags = Document.last.tags
 
     expect(Document.last.summary)
@@ -56,5 +60,52 @@ RSpec.describe Tasks::WhitehallNewsImporter do
       .to eq(imported_edition["world_locations"])
 
     expect(Document.last.current_edition_number).to eql(1)
+
+    expect(Document.last.publication_state).to eq("sent_to_draft")
+    expect(Document.last.review_state).to eq("unreviewed")
+  end
+
+  it "sets the correct publication state and review state when Whitehall document state is 'published'" do
+    import_data[:editions][0][:state] = "published"
+    parsed_json = JSON.parse(import_data.to_json)
+    Tasks::WhitehallNewsImporter.new.import(parsed_json)
+
+    expect(Document.last.publication_state).to eq("sent_to_live")
+    expect(Document.last.review_state).to eq("reviewed")
+  end
+
+  it "sets the correct publication state and review state when Whitehall document is force published" do
+    import_data[:editions][0][:state] = "published"
+    import_data[:editions][0][:force_published] = true
+    parsed_json = JSON.parse(import_data.to_json)
+    Tasks::WhitehallNewsImporter.new.import(parsed_json)
+
+    expect(Document.last.publication_state).to eq("sent_to_live")
+    expect(Document.last.review_state).to eq("published_without_review")
+  end
+
+  it "sets the correct publication state and review state when Whitehall document state is 'rejected'" do
+    import_data[:editions][0][:state] = "rejected"
+    parsed_json = JSON.parse(import_data.to_json)
+    Tasks::WhitehallNewsImporter.new.import(parsed_json)
+
+    expect(Document.last.publication_state).to eq("sent_to_draft")
+    expect(Document.last.review_state).to eq("submitted_for_review")
+  end
+
+  it "sets the correct publication state and review state when Whitehall document state is 'submitted'" do
+    import_data[:editions][0][:state] = "submitted"
+    parsed_json = JSON.parse(import_data.to_json)
+    Tasks::WhitehallNewsImporter.new.import(parsed_json)
+
+    expect(Document.last.publication_state).to eq("sent_to_draft")
+    expect(Document.last.review_state).to eq("submitted_for_review")
+  end
+
+  it "skips importing documents with Whitheall states that are not supported" do
+    import_data[:editions][0][:state] = "not_supported"
+    parsed_json = JSON.parse(import_data.to_json)
+    importer = Tasks::WhitehallNewsImporter.new
+    expect { importer.import(parsed_json) }.not_to(change { Document.count })
   end
 end
