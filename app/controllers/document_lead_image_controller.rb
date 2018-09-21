@@ -43,7 +43,7 @@ class DocumentLeadImageController < ApplicationController
 
   def update_crop
     document = Document.find_by_param(params[:document_id])
-    image = Image.find_by(id: params[:image_id])
+    image = Image.find(params[:image_id])
     Image.transaction do
       image.update!(update_crop_params)
       asset_manager_file_url = upload_image_to_asset_manager(image)
