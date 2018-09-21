@@ -117,7 +117,7 @@ ActiveRecord::Schema.define(version: 2018_09_19_150956) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  add_foreign_key "documents", "images", column: "lead_image_id"
+  add_foreign_key "documents", "images", column: "lead_image_id", on_delete: :nullify
   add_foreign_key "documents", "users", column: "creator_id"
   add_foreign_key "images", "active_storage_blobs", column: "blob_id", on_delete: :cascade
   add_foreign_key "images", "documents", on_delete: :cascade

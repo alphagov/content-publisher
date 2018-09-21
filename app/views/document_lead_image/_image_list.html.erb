@@ -23,6 +23,7 @@
       credit: image.credit,
     },
     actions: {
+      crop_link: crop_document_lead_image_path(@document, image, next_screen: "lead-image"),
       edit_link: edit_document_lead_image_path(@document, image, next_screen: "lead-image"),
       remove_button: remove_lead_image_button,
       choose_button: choose_lead_image_button

@@ -8,6 +8,7 @@ RSpec.feature "Upload a lead image" do
     when_i_visit_the_lead_images_page
     then_i_should_see_no_images_available
     when_i_upload_a_new_image
+    and_i_crop_the_image
     and_i_fill_in_the_metadata
     then_i_should_be_able_to_see_the_lead_image_on_the_summary_page
     when_i_publish_the_document
@@ -37,15 +38,21 @@ RSpec.feature "Upload a lead image" do
 
   def when_i_upload_a_new_image
     @asset_id = SecureRandom.uuid
-    asset_url = "https://asset-manager.test.gov.uk/media/#{@asset_id}/960x640.jpg"
+    asset_url = "https://asset-manager.test.gov.uk/media/#{@asset_id}/1000x1000.jpg"
     asset_manager_receives_an_asset(asset_url)
-    find('form input[type="file"]').set(file_fixture("960x640.jpg"))
+    find('form input[type="file"]').set(Rails.root.join(file_fixture("1000x1000.jpg")))
     click_on "Upload"
+  end
+
+  def and_i_crop_the_image
+    expect(page).to have_content(I18n.t("document_lead_image.crop.description"))
+    asset_manager_delete_asset(@asset_id)
+    click_on "Crop image"
   end
 
   def and_i_fill_in_the_metadata
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
-    expect(find(".app-c-image-meta__image")["src"]).to include("960x640.jpg")
+    expect(find(".app-c-image-meta__image")["src"]).to include("1000x1000.jpg")
     fill_in "alt_text", with: "Some alt text"
     fill_in "caption", with: "Image caption"
     fill_in "credit", with: "Image credit"
@@ -56,7 +63,7 @@ RSpec.feature "Upload a lead image" do
     expect(@request).to have_been_requested
     expect(page).to have_content("Image caption")
     expect(page).to have_content("Image credit")
-    expect(find("#lead-image .app-c-image-meta__image")["src"]).to include("960x640.jpg")
+    expect(find("#lead-image .app-c-image-meta__image")["src"]).to include("1000x1000.jpg")
     expect(find("#lead-image .app-c-image-meta__image")["alt"]).to eq("Some alt text")
   end
 
