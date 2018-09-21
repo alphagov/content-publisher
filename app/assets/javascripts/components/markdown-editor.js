@@ -1,4 +1,3 @@
-//= require vendor/@webcomponents/webcomponentsjs/webcomponents-loader.js
 //= require components/markdown-toolbar
 
 function MarkdownEditor ($module) {
