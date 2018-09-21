@@ -68,6 +68,11 @@ class DocumentsController < ApplicationController
     render status: :conflict
   end
 
+  def debug
+    @document = Document.find_by_param(params[:id])
+    @papertrail_users = User.where(id: @document.versions.pluck(:whodunnit))
+  end
+
 private
 
   def filter_params

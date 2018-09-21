@@ -37,6 +37,6 @@ RSpec.feature "Create a document" do
   end
 
   def and_the_update_type_is_major
-    expect(page).to have_content("major")
+    expect(page).to have_content(I18n.t("documents.edit.update_type.major_name"))
   end
 end

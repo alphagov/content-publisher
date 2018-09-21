@@ -36,4 +36,11 @@ Rails.application.configure do
 
   # Immediately discard cache in tests
   config.cache_store = :null_store
+
+  # Turn off papertrail in test so it can't be used to build features.
+  #
+  # Papertrail should only be used as an audit log, and absolutely nothing
+  # else. This will make it easy for us to throw away the data and have a
+  # functioning application.
+  config.paper_trail.enabled = false
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Image < ApplicationRecord
+  has_paper_trail
+
   WIDTH = 960
   HEIGHT = 640
   THUMBNAIL_WIDTH = 300
