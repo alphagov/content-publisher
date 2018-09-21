@@ -61,6 +61,7 @@
     Do not use to promote other content. Statements to Parliament should use the Speech document type.
     Read the full [guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release).
   path_prefix: /news
+  lead_image: true
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
