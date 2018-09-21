@@ -3,6 +3,11 @@
 class PublishDocumentController < ApplicationController
   def confirmation
     @document = Document.find_by_param(params[:id])
+
+    unless PublishingRequirements.new(@document).ready_for_publishing?
+      redirect_to document_path(@document), tried_to_publish: true
+      return
+    end
   end
 
   def publish

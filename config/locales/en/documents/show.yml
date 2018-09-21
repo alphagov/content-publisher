@@ -9,6 +9,9 @@ en:
         title: Tags
         api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
         none: None
+      publishing_requirements:
+        before_publishing_attempt: "Please meet these requirements before publishing"
+        after_publishing_attempt: "You can't publish before these requirements are met"
       contents:
         title: Content
         items:
