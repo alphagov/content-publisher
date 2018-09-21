@@ -30,9 +30,6 @@ Rails.application.routes.draw do
 
   get "/documents/:id/preview" => "preview#show", as: :preview_document
 
-  post "/documents/:document_id/images" => "document_images#create", as: :create_document_image
-  patch "/documents/:document_id/images/:id" => "document_images#update", as: :update_document_image
-
   get "/documents/:document_id/lead-image" => "document_lead_image#index", as: :document_lead_image
   post "/documents/:document_id/lead-image" => "document_lead_image#create"
   get "/documents/:document_id/lead-image/:image_id/edit" => "document_lead_image#edit", as: :edit_document_lead_image
