@@ -60,6 +60,8 @@ if ($imageCroppers) {
           highlight: false,
           minCropBoxWidth: minCropBoxWidth,
           minCropBoxHeight: minCropBoxHeight,
+          rotatable: false,
+          scalable: false,
           ready: function () {
             // Get canvas data
             var canvasData = this.cropper.getCanvasData()
