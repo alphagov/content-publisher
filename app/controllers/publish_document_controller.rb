@@ -15,7 +15,7 @@ class PublishDocumentController < ApplicationController
     review_state = params[:self_declared_review_state] == "has-been-reviewed" ? "reviewed" : "published_without_review"
     DocumentPublishingService.new.publish(document, review_state)
 
-    if review_state == "has-been-reviewed"
+    if review_state == "reviewed"
       TimelineEntry.create!(document: document, user: current_user, entry_type: "published")
     else
       TimelineEntry.create!(document: document, user: current_user, entry_type: "published_without_review")

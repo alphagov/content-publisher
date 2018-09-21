@@ -10,6 +10,7 @@ RSpec.feature "Publishing a document" do
     then_i_see_the_publish_succeeded
     and_i_see_the_content_is_in_published_state
     and_i_see_the_view_on_govuk_link
+    and_there_is_a_history_entry
   end
 
   def given_there_is_a_document_in_draft
@@ -46,5 +47,10 @@ RSpec.feature "Publishing a document" do
 
   def and_i_see_the_view_on_govuk_link
     expect(page).to have_link("View published edition on GOV.UK", href: "https://www.test.gov.uk/news/banana-pricing-updates")
+  end
+
+  def and_there_is_a_history_entry
+    visit document_path(@document)
+    expect(page).to have_content(I18n.t("documents.history.entry_types.published"))
   end
 end
