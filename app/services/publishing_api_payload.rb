@@ -70,12 +70,6 @@ private
       "government" => {
         "title" => "Hey", "slug" => "what", "current" => true
       },
-      "change_history" => [
-        {
-          "public_timestamp" => Time.now.iso8601,
-          "note" => "To support email alerts",
-        },
-      ],
       "political" => false,
     }
   end
