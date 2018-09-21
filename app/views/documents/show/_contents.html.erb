@@ -10,7 +10,7 @@
 } %>
 
 
-<% update_types = if @document.update_type
+<% update_types = if @document.has_live_version_on_govuk?
   [
     {
       field: t("documents.show.contents.items.update_type"),
