@@ -15,7 +15,7 @@ RSpec.feature "Change notes" do
   end
 
   def given_there_is_a_previously_published_document
-    @document = create(:document, has_live_version_on_govuk: true)
+    @document = create(:document, :with_required_content_for_publishing, has_live_version_on_govuk: true)
   end
 
   def when_i_go_to_edit_the_document

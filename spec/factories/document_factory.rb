@@ -10,5 +10,9 @@ FactoryBot.define do
     publication_state { "changes_not_sent_to_draft" }
     review_state { "unreviewed" }
     current_edition_number { (rand * 100).to_i }
+
+    trait :with_required_content_for_publishing do
+      summary { SecureRandom.alphanumeric(10) }
+    end
   end
 end

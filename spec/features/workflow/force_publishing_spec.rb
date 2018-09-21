@@ -15,7 +15,7 @@ RSpec.feature "Force publishing" do
   end
 
   def given_there_is_a_document
-    @document = create(:document, publication_state: "sent_to_draft")
+    @document = create(:document, :with_required_content_for_publishing, publication_state: "sent_to_draft")
   end
 
   def when_i_visit_the_document_page
