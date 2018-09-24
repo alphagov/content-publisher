@@ -10,6 +10,7 @@ RSpec.feature "Edit a document" do
     and_the_content_is_available_for_preview
     and_the_content_needs_review
     and_i_see_the_content_is_in_draft_state
+    and_i_see_the_document_was_last_edited_by_me
   end
 
   def given_there_is_a_document
@@ -50,5 +51,11 @@ RSpec.feature "Edit a document" do
 
   def and_i_see_the_content_is_in_draft_state
     expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
+  end
+
+  def and_i_see_the_document_was_last_edited_by_me
+    within("div.app-c-metadata") do
+      expect(page).to have_content(I18n.t("documents.show.metadata.last_edited_by") + ": #{User.last.name}")
+    end
   end
 end

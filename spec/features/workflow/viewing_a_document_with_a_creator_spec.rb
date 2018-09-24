@@ -31,5 +31,8 @@ RSpec.feature "Viewing a document with a creator" do
     expect(page).to have_content(
       I18n.t("documents.show.metadata.created_by") + ": " + @user.name,
     )
+    expect(page).to have_content(
+      I18n.t("documents.show.metadata.last_edited_by") + ": " + @user.name,
+    )
   end
 end
