@@ -11,6 +11,8 @@ RSpec.feature "Edit a document" do
     and_the_content_needs_review
     and_i_see_the_content_is_in_draft_state
     and_i_see_the_document_was_last_edited_by_me
+
+    and_on_the_index_page_i_see_the_document_was_last_edited_by_me
   end
 
   def given_there_is_a_document
@@ -57,5 +59,10 @@ RSpec.feature "Edit a document" do
     within("div.app-c-metadata") do
       expect(page).to have_content(I18n.t("documents.show.metadata.last_edited_by") + ": #{User.last.name}")
     end
+  end
+
+  def and_on_the_index_page_i_see_the_document_was_last_edited_by_me
+    visit documents_path
+    expect(page).to have_content(I18n.t("documents.index.search_results.last_edited_by", user: User.last.name))
   end
 end
