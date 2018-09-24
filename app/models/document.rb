@@ -54,4 +54,12 @@ class Document < ApplicationRecord
   def title_or_fallback
     title.presence || I18n.t!("documents.untitled_document")
   end
+
+  def last_edited_by
+    entries = self.timeline_entries
+      .where(entry_type: %w(updated_content updated_tags))
+      .order(:created_at)
+
+    entries.last.user if entries.any?
+  end
 end
