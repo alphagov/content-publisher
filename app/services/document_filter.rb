@@ -6,7 +6,7 @@ class DocumentFilter
 
   include ActiveRecord::Sanitization::ClassMethods
 
-  SORT_KEYS = %w[updated_at publication_state].freeze
+  SORT_KEYS = %w[updated_at].freeze
   DEFAULT_SORT = "-updated_at"
 
   attr_reader :filters, :sort, :page, :per_page
