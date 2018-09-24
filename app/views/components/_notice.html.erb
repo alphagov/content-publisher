@@ -1,0 +1,31 @@
+<%
+  title ||= false
+  description ||= false
+  items ||= []
+  id ||= "app-c-notice-#{SecureRandom.hex(4)}"
+%>
+
+<div class="app-c-notice" id="<%= id %>">
+  <h2 class="app-c-notice__title">
+    <%= t("documents.show.publishing_requirements.before_publishing_attempt") %>
+  </h2>
+
+  <div class="app-c-notice__body">
+    <% if description %>
+      <%= description %>
+    <% end %>
+
+    <% if items.any? %>
+    <ul class="govuk-list app-c-notice__list">
+      <% items.each_with_index do |item, index| %>
+          <% if item[:href] %>
+            <li><%= link_to item[:text], item[:href], class: "govuk-link" %></li>
+          <% else %>
+            <li><%= item[:text] %></li>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+    <% end %>
+  </div>
+</div>

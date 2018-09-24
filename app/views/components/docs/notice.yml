@@ -1,0 +1,17 @@
+name: Notice
+description: A notice to convey and highlight information
+body: |
+  Optional markdown providing further detail about the component
+examples:
+  default:
+    data:
+      title: Please meet these requirements before publishing
+      description: Document needs a summary before publishing (at least 10 characters)
+  with_items:
+    data:
+      title: Message to alert the user to a problem goes here
+      items:
+      - text: Document needs a title before publishing (at least 10 characters)
+        href: '#content'
+      - text: Document needs a summary before publishing (at least 10 characters)
+        href: '#content'
