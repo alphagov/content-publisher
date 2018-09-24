@@ -6,7 +6,6 @@ $govuk-global-styles: true;
 
 @import "objects/side";
 @import "objects/history";
-@import "objects/publishing_requirements";
 
 @import "components/contextual-guidance";
 @import "components/error-alert";
@@ -14,6 +13,7 @@ $govuk-global-styles: true;
 @import "components/markdown-editor";
 @import "components/markdown-toolbar";
 @import "components/metadata";
+@import "components/notice";
 @import "components/summary";
 @import "components/page_preview";
 @import "components/autocomplete";

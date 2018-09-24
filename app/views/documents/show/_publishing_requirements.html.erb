@@ -6,15 +6,8 @@
     } %>
   </div>
 <% else %>
-  <div class="app-publishing-requirements govuk-!-margin-bottom-4">
-    <h3 class="govuk-heading-m">
-      <%= t("documents.show.publishing_requirements.before_publishing_attempt") %>
-    </h3>
-
-    <ul class="govuk-list">
-      <% PublishingRequirements.new(@document).unfulfilled_publishing_requirements.each do |message, anchor| %>
-        <li><%= link_to message, anchor, class: "govuk-link" %></li>
-      <% end %>
-    </ul>
-  </div>
+  <%= render "/components/notice", {
+    title: t("documents.show.publishing_requirements.after_publishing_attempt"),
+    items: PublishingRequirements.new(@document).unfulfilled_publishing_requirements.map { |m, a| { text: m, href: a } }
+  } %>
 <% end %>
