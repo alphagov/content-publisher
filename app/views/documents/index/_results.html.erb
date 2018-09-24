@@ -1,23 +1,29 @@
 <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Documents list", { sortable: true, caption_classes: "govuk-visually-hidden" }) do |t| %>
 
   <%
-    active = @sort.delete_prefix("-") == "updated_at"
-    link_to_asc = active && @sort[0] == "-"
-    classes = ["govuk-link"]
-    classes << "active" if active
-    classes << "desc" if active && link_to_asc
+    updated_active = @sort.delete_prefix("-") == "updated_at"
+    updated_link_to_asc = updated_active && @sort[0] == "-"
 
-    sort_direction = "descending" if active && link_to_asc
+    updated_sort_direction = "descending" if updated_active && updated_link_to_asc
+    updated_sort_direction = "ascending" if updated_active && !updated_link_to_asc
+
+
+    state_active = @sort.delete_prefix("-") == "publication_state"
+    state_link_to_asc = state_active && @sort[0] == "-"
+
+    state_sort_direction = "descending" if state_active && state_link_to_asc
+    state_sort_direction = "ascending" if state_active && !state_link_to_asc
   %>
 
   <%= t.head do %>
     <%= t.header t("documents.index.search_results.headings.title") %>
     <%= t.header t("documents.index.search_results.headings.state"), {
-        href: documents_path(@filter_params.merge(sort: "#{link_to_asc ? '' : '-'}state", page: nil)),
+        href: documents_path(@filter_params.merge(sort: "#{state_link_to_asc ? '' : '-'}publication_state", page: nil)),
+        sort_direction: state_sort_direction
       } %>
     <%= t.header t("documents.index.search_results.headings.last_updated"), {
-        href: documents_path(@filter_params.merge(sort: "#{link_to_asc ? '' : '-'}updated_at", page: nil)),
-        sort_direction: sort_direction,
+        href: documents_path(@filter_params.merge(sort: "#{updated_link_to_asc ? '' : '-'}updated_at", page: nil)),
+        sort_direction: updated_sort_direction
       } %>
   <% end %>
 
