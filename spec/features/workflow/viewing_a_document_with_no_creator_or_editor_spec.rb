@@ -22,14 +22,14 @@ RSpec.feature "Viewing a document with no creator or editor" do
   def then_i_see_we_dont_know_who_created_the_document
     expect(page).to have_content(@document.title)
     expect(page).to have_content(
-      I18n.t("documents.index.search_results.unknown_creator"),
+      I18n.t("documents.index.search_results.unknown_user"),
     )
   end
 
   def and_i_see_the_document_has_no_last_editor
     expect(page).to have_content(
       I18n.t("documents.index.search_results.last_edited_by",
-        user: I18n.t("documents.index.search_results.unknown_creator")),
+        user: I18n.t("documents.index.search_results.unknown_user")),
     )
   end
 
@@ -40,14 +40,14 @@ RSpec.feature "Viewing a document with no creator or editor" do
   def then_i_again_see_we_dont_know_who_created_the_document
     expect(page).to have_content(
       I18n.t("documents.show.metadata.created_by") + ": " +
-      I18n.t("documents.show.metadata.unknown_creator"),
+      I18n.t("documents.show.metadata.unknown_user"),
     )
   end
 
   def and_i_again_see_the_document_has_no_last_editor
     expect(page).to have_content(
       I18n.t("documents.show.metadata.last_edited_by") + ": " +
-      I18n.t("documents.show.metadata.unknown_creator"),
+      I18n.t("documents.show.metadata.unknown_user"),
     )
   end
 end
