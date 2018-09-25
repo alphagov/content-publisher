@@ -30,6 +30,9 @@ Rails.application.routes.draw do
 
   get "/documents/:id/preview" => "preview#show", as: :preview_document
 
+  get "/documents/:id/retire" => "retire_document#retire", as: :retire_document
+  get "/documents/:id/remove" => "remove_document#remove", as: :remove_document
+
   get "/documents/:document_id/lead-image" => "document_lead_image#index", as: :document_lead_image
   post "/documents/:document_id/lead-image" => "document_lead_image#create"
   get "/documents/:document_id/lead-image/:image_id/crop" => "document_lead_image#crop", as: :crop_document_lead_image
