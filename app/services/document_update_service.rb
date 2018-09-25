@@ -8,6 +8,7 @@ class DocumentUpdateService
 
     document.publication_state = "changes_not_sent_to_draft"
     document.review_state = "unreviewed"
+    document.last_editor = user if document_edited?(type)
 
     document.assign_attributes(attributes_to_update)
 
@@ -17,5 +18,9 @@ class DocumentUpdateService
     end
 
     DocumentPublishingService.new.publish_draft(document)
+  end
+
+  def self.document_edited?(type)
+    %w(updated_content updated_tags).include?(type)
   end
 end

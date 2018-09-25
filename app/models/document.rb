@@ -7,6 +7,7 @@ class Document < ApplicationRecord
   has_many :timeline_entries, dependent: :destroy
   belongs_to :lead_image, class_name: "Image", optional: true, foreign_key: :lead_image_id, inverse_of: :document
   belongs_to :creator, class_name: "User", optional: true, foreign_key: :creator_id, inverse_of: :documents
+  belongs_to :last_editor, class_name: "User", optional: true, foreign_key: :last_editor_id, inverse_of: :documents
 
   PUBLICATION_STATES = %w[
     changes_not_sent_to_draft

@@ -49,6 +49,7 @@ class NewDocumentController < ApplicationController
       update_type: "major",
       change_note: "First published.",
       current_edition_number: 1,
+      last_editor_id: current_user.id,
     )
 
     TimelineEntry.create!(document: document, user: current_user, entry_type: "created")

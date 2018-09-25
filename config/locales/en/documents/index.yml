@@ -12,6 +12,7 @@ en:
           last_updated_desc: Sort by last updated descending
         creator: "Creator: %{creator}"
         state: "State: %{state}"
+        last_edited_by: "Last edited by: %{user}"
         summary_html:
           one: "<strong>1</strong> document"
           other: "<strong>%{count}</strong> documents"
@@ -23,7 +24,7 @@ en:
             * removing filters
             * searching for something less specific
             * double-checking your spelling
-        unknown_creator: Unknown
+        unknown_user: Unknown
       filter:
         title_or_url: Search for a title or URL slug
         document_type: Document type

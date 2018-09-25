@@ -41,7 +41,8 @@ en:
         updated_at: Last updated
         created_at: Created
         created_by: Document created by
-        unknown_creator: Unknown
+        unknown_user: Unknown
+        last_edited_by: Last edited by
       flashes:
         draft_error:
           title: Something has gone wrong
