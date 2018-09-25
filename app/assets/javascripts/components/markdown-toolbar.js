@@ -589,7 +589,7 @@
       } catch (error) {
         canInsertText = false;
       }
-      textarea.contentEditable = 'false';
+      textarea.removeAttribute('contenteditable')
     }
 
     if (canInsertText && !textarea.value.slice(0, textarea.selectionStart).endsWith(text)) {
