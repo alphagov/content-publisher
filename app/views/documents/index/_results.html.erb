@@ -38,6 +38,10 @@
           <%= t "documents.index.search_results.state",
             state: t("user_facing_states.#{document.user_facing_state}.name")
           %>
+          <br/>
+          <%= t "documents.index.search_results.last_edited_by",
+            user: document.last_edited_by&.name || document.creator&.name || I18n.t("documents.index.search_results.unknown_creator")
+          %>
         </td>
 
         <td class="govuk-table__cell ">

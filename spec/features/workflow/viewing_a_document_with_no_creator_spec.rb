@@ -33,5 +33,10 @@ RSpec.feature "Viewing a document with no creator" do
       I18n.t("documents.show.metadata.created_by") + ": " +
       I18n.t("documents.show.metadata.unknown_creator"),
     )
+
+    expect(page).to have_content(
+      I18n.t("documents.show.metadata.last_edited_by") + ": " +
+      I18n.t("documents.show.metadata.unknown_creator"),
+    )
   end
 end
