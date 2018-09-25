@@ -13,6 +13,7 @@ class LinkablesService
 
   def select_options
     linkables.map { |content| [content["internal_name"], content["content_id"]] }
+      .sort_by { |option| option[0].downcase }
   end
 
   def by_content_id(content_id)
