@@ -7,7 +7,6 @@ en:
       search_results:
         headings:
           title: Document title
-          state: State
           last_updated: Last updated
           last_updated_asc: Sort by last updated ascending
           last_updated_desc: Sort by last updated descending
