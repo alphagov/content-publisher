@@ -3,8 +3,9 @@
 @import "../../../node_modules/govuk-frontend/tools/all";
 @import "../../../node_modules/govuk-frontend/core/links";
 
-.app-link--destructive {
-  @include govuk-link-common;
+
+// TODO: support this modifier in govuk-frontend
+.govuk-link.app-link--destructive {
   color: $govuk-error-colour;
 
   &:hover {

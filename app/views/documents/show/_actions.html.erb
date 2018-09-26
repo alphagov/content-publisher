@@ -24,18 +24,18 @@
       <%= render "govuk_publishing_components/components/button", text: "Create new edition", href: edit_document_path(@document), secondary: true %>
 
       <%= link_to "Retire", retire_document_path(@document), class: "govuk-link" %>
-      <%= link_to "Remove", remove_document_path(@document), class: "app-link--destructive app-link--right" %>
+      <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "published" %>
       <%= render "govuk_publishing_components/components/button", text: "Create new edition", href: edit_document_path(@document) %>
 
       <%= link_to "Retire", retire_document_path(@document), class: "govuk-link" %>
-      <%= link_to "Remove", remove_document_path(@document), class: "app-link--destructive app-link--right" %>
+      <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "submitted_for_review" %>
       <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
 
       <% unless @document.has_live_version_on_govuk %>
-        <%= link_to "Delete draft", delete_draft_path(@document), class: "app-link--destructive app-link--right" %>
+        <%= link_to "Delete draft", delete_draft_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
       <% end %>
     <% elsif @document.user_facing_state == "draft" %>
       <%= form_tag submit_document_for_2i_path(@document) do %>
@@ -47,7 +47,7 @@
       <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
 
       <% unless @document.has_live_version_on_govuk %>
-        <%= link_to "Delete draft", delete_draft_path(@document), class: "app-link--destructive app-link--right" %>
+        <%= link_to "Delete draft", delete_draft_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
       <% end %>
     <% end %>
 
