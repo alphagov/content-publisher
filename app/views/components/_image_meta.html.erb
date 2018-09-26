@@ -5,6 +5,8 @@
   meta ||= {}
   lead_image ||= false
   no_border ||= false
+  primary_action ||= nil
+  secondary_actions ||= []
 
   if meta.key?(:alt_text)
     alt_text = meta[:alt_text]
@@ -42,23 +44,30 @@
         } %>
       <% end %>
 
-      <% if lead_image %>
-        <div class="app-c-image-meta__lead-image-section">
-          <div class="app-c-image-meta__lead-image-tag">Lead image</div>
-          <div class="app-c-image-meta__remove-button"><%= actions[:remove_button] %></div>
+      <% if primary_action %>
+        <div class="app-c-image-meta__primary-action-section">
+          <% if primary_action[:tag] %>
+            <span class="app-c-image-meta__primary-action-tag">
+              <%= primary_action[:tag] %>
+            </span>
+          <% end %>
+
+          <%= primary_action[:action] %>
         </div>
       <% end %>
 
+      <% if lead_image %>
+          <div><%= primary_action %></div>
+        </div>
+      <% end %>
     </div>
   </div>
 
-  <% if actions.any? %>
+  <% if secondary_actions.any? %>
     <ul class="app-c-image-meta__actions">
-      <% if actions[:choose_button] %>
-        <li class="app-c-image-meta__choose-image"><%= actions[:choose_button] %></li>
+      <% secondary_actions.each do |action| %>
+        <li><%= action %></li>
       <% end %>
-      <li><%= link_to("Edit crop", actions[:crop_link], class: "govuk-link") %></li>
-      <li><%= link_to("Edit details", actions[:edit_link], class: "govuk-link") %></li>
     </ul>
   <% end %>
 </div>

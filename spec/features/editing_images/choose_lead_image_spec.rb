@@ -1,23 +1,18 @@
 # frozen_string_literal: true
 
 RSpec.feature "Choose a lead image" do
-  scenario "User chooses an existing image as lead image" do
-    given_there_is_a_document_with_existing_images
+  scenario "Choose a lead image" do
+    given_there_is_a_document_with_images
     when_i_visit_the_summary_page
     and_i_visit_the_lead_images_page
-    then_i_should_be_able_to_see_a_list_of_existing_images
-    when_i_select_an_image_to_be_the_lead_image
-    then_i_should_see_the_new_lead_image_on_the_summary_page
+    and_i_choose_one_of_the_images
+    then_the_document_has_a_lead_image
   end
 
-  def given_there_is_a_document_with_existing_images
+  def given_there_is_a_document_with_images
     document_type_schema = build(:document_type_schema, lead_image: true)
     document = create(:document, document_type: document_type_schema.id)
-    @image1 = create(:image, document: document, filename: "image-1.jpg",
-                              alt_text: "image 1 alt text", caption: "image 1 caption",
-                              credit: "image 1 credit")
-    create(:image, document: document, filename: "image-2.jpg")
-    document.update(lead_image: @image1)
+    @image = create(:image, :in_asset_manager, document: document)
   end
 
   def when_i_visit_the_summary_page
@@ -28,30 +23,21 @@ RSpec.feature "Choose a lead image" do
     click_on "Change Lead image"
   end
 
-  def then_i_should_be_able_to_see_a_list_of_existing_images
-    expect(find("#image-0 .app-c-image-meta__image")["src"]).to include("image-1.jpg")
-    within("#image-0 .app-c-metadata") do
-      expect(page).to have_content(@image1.alt_text)
-      expect(page).to have_content(@image1.caption)
-      expect(page).to have_content(@image1.credit)
-    end
-
-    within("#image-0 .app-c-image-meta__lead-image-section") do
-      expect(page).to have_content("Lead image")
-    end
-
-    expect(find("#image-1 .app-c-image-meta__image")["src"]).to include("image-2.jpg")
-  end
-
-  def when_i_select_an_image_to_be_the_lead_image
+  def and_i_choose_one_of_the_images
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
-    within("#image-1") do
+
+    within("#image-#{@image.id}") do
       click_on "Choose image"
     end
   end
 
-  def then_i_should_see_the_new_lead_image_on_the_summary_page
+  def then_the_document_has_a_lead_image
+    expect(page).to have_content(I18n.t("document_lead_image.index.lead_image"))
     expect(@request).to have_been_requested
-    expect(find("#lead-image .app-c-image-meta__image")["src"]).to include("image-2.jpg")
+    expect(page).to have_link("Preview")
+
+    expect(a_request(:put, /content/).with { |req|
+      expect(JSON.parse(req.body)["details"]["image"]["url"]).to eq @image.asset_manager_file_url
+    }).to have_been_requested
   end
 end

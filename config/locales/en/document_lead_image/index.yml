@@ -11,6 +11,7 @@ en:
       credit: Image credit
       no_file_selected: You must select a file
       error_summary_title: You need to
+      lead_image: Lead image
       flashes:
         asset_manager_error:
           title: Something has gone wrong

@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :image do
     document
-    filename { "my-image.jpg" }
+    filename { SecureRandom.hex(8) }
     width { 1000 }
     height { 1000 }
     crop_x { 0 }
@@ -13,6 +13,7 @@ FactoryBot.define do
 
     transient do
       fixture { "1000x1000.jpg" }
+      asset_id { SecureRandom.hex(8) }
     end
 
     after(:build) do |image, evaluator|
@@ -25,7 +26,7 @@ FactoryBot.define do
     end
 
     trait :in_asset_manager do
-      asset_manager_file_url { "https://asset-manager.test.gov.uk/media/asset-id-123/#{filename}" }
+      asset_manager_file_url { "https://asset-manager.test.gov.uk/media/asset-id#{asset_id}/#{filename}" }
     end
   end
 end
