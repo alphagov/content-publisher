@@ -1,7 +1,9 @@
 //= require vendor/jquery-1.12.4
 //= require govuk/modules
 //= require vendor/nodelist-foreach-polyfill/index.js
-//= require vendor/@webcomponents/webcomponentsjs/webcomponents-bundle.js
+//= require vendor/fetch-polyfill/fetch.js
+//= require vendor/abortcontroller-polyfill/abortcontroller-polyfill.js
+//= require vendor/@webcomponents/custom-elements/custom-elements.js
 //= require components/url_preview.js
 //= require components/markdown-editor.js
 //= require components/error-alert.js

@@ -1,3 +1,5 @@
+//= require vendor/harmony-reflect/reflect.js
+
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
     define(['exports'], factory);
@@ -587,7 +589,7 @@
       } catch (error) {
         canInsertText = false;
       }
-      textarea.contentEditable = 'false';
+      textarea.removeAttribute('contenteditable')
     }
 
     if (canInsertText && !textarea.value.slice(0, textarea.selectionStart).endsWith(text)) {
