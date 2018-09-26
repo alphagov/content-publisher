@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   patch "/documents/:document_id/lead-image/:image_id/edit" => "document_lead_image#update", as: :update_document_lead_image
   post "/documents/:document_id/lead-image/:image_id/choose" => "document_lead_image#choose_image", as: :choose_document_lead_image
   delete "/documents/:document_id/lead-image" => "document_lead_image#destroy", as: :remove_document_lead_image
+  delete "/documents/:document_id/lead-image/:image_id" => "document_lead_image#delete_image", as: :delete_document_lead_image
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 

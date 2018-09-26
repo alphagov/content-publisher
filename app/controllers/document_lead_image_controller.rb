@@ -117,6 +117,30 @@ class DocumentLeadImageController < ApplicationController
     redirect_to document_path(document)
   end
 
+  def delete_image
+    document = Document.find_by_param(params[:document_id])
+    image = document.images.find(params[:image_id])
+
+    begin
+      if image.id == document.lead_image_id
+        DocumentUpdateService.update!(
+          document: document,
+          user: current_user,
+          type: "lead_image_removed",
+          attributes_to_update: { lead_image_id: nil },
+        )
+      end
+
+      AssetManagerService.new.delete(image)
+      image.destroy
+    rescue GdsApi::BaseError
+      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
+      return
+    end
+
+    redirect_to document_lead_image_path(document), notice: t("document_lead_image.index.flashes.image_deleted")
+  end
+
   def destroy
     document = Document.find_by_param(params[:document_id])
 
