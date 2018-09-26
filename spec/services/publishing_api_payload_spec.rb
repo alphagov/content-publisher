@@ -71,10 +71,10 @@ RSpec.describe PublishingApiPayload do
 
       person_id = SecureRandom.uuid
       role_id = SecureRandom.uuid
-      publishing_api_has_links({
+      publishing_api_has_links(
         "content_id" => role_appointment_id,
         "links" => { "person" => [person_id], "role" => [role_id] },
-      })
+      )
 
       payload = PublishingApiPayload.new(document).payload
 
