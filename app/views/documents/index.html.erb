@@ -1,32 +1,28 @@
 <% content_for :title, t("documents.index.title") %>
 
-<%= render "govuk_publishing_components/components/button", {
+<% content_for :title_side, render("govuk_publishing_components/components/button", {
   text: "New document", href: new_document_path, margin_bottom: true
-} %>
+}) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
     <%= render "documents/index/filters" %>
 
-    <br/>
-    <hr/>
-    <br/>
+    <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--l">
 
-    <div class="govuk-body">
-      <strong> <%= t("documents.index.guidance.title") %></strong>
-      <br/>
-      <%= link_to "Planning, writing and managing content",
-        "https://www.gov.uk/topic/government-digital-guidance/content-publishing", class: "govuk-link" %>
-    </div>
+    <p class="govuk-heading-s"> <%= t("documents.index.guidance.title") %></p>
+    <p class="govuk-body"><%= link_to "Planning, writing and managing content", "https://www.gov.uk/topic/government-digital-guidance/content-publishing", class: "govuk-link", target: "blank" %></p>
   </div>
 
   <div class="govuk-grid-column-two-thirds">
-    <p class="govuk-body">
+    <p class="govuk-body govuk-!-margin-bottom-1">
       <%= t("documents.index.search_results.summary_html", count: @documents.total_count) %>
     </p>
 
     <% if @documents.none? %>
-      <%= govspeak_to_html t("documents.index.search_results.guidance") %>
+      <div class="govuk-body">
+        <%= govspeak_to_html t("documents.index.search_results.guidance") %>
+      </div>
     <% else %>
       <%= render "documents/index/results" %>
     <% end %>
