@@ -7,6 +7,7 @@ class DocumentLeadImageController < ApplicationController
 
   def create
     document = Document.find_by_param(params[:document_id])
+
     unless params[:image]
       redirect_to document_lead_image_path, alert: t("document_lead_image.index.no_file_selected")
       return
@@ -26,12 +27,10 @@ class DocumentLeadImageController < ApplicationController
       image = image_uploader.upload(document)
       image.asset_manager_file_url = upload_image_to_asset_manager(image)
     rescue GdsApi::BaseError
-      redirect_to document_lead_image_path, alert_with_description: {
-        "title" => t("document_lead_image.index.flashes.asset_manager_error.title"),
-        "description" => t("document_lead_image.index.flashes.asset_manager_error.description"),
-      }
+      redirect_to document_lead_image_path, alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
+
     image.save!
     redirect_to crop_document_lead_image_path(params[:document_id], image.id)
   end
@@ -44,6 +43,7 @@ class DocumentLeadImageController < ApplicationController
   def update_crop
     document = Document.find_by_param(params[:document_id])
     image = Image.find(params[:image_id])
+
     Image.transaction do
       image.update!(update_crop_params)
       asset_manager_file_url = upload_image_to_asset_manager(image)
@@ -51,6 +51,7 @@ class DocumentLeadImageController < ApplicationController
       image.asset_manager_file_url = asset_manager_file_url
       image.save!
     end
+
     begin
       if image.id == document.lead_image_id
         DocumentUpdateService.update!(
@@ -61,13 +62,15 @@ class DocumentLeadImageController < ApplicationController
         )
       end
     rescue GdsApi::BaseError
-      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.publishing_api_error")
+      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
+
     if params[:next_screen] == "lead-image"
       redirect_to document_lead_image_path(document)
       return
     end
+
     redirect_to edit_document_lead_image_path(document, image)
   end
 
@@ -89,13 +92,15 @@ class DocumentLeadImageController < ApplicationController
         attributes_to_update: { lead_image_id: image.id },
       )
     rescue GdsApi::BaseError
-      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.publishing_api_error")
+      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
+
     if params[:next_screen] == "lead-image"
       redirect_to document_lead_image_path(document)
       return
     end
+
     redirect_to document_path(document)
   end
 
