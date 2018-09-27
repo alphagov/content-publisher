@@ -27,11 +27,15 @@ RSpec.feature "Create a news story", format: true do
 
   def and_i_add_some_tags
     stub_any_publishing_api_put_content
-    expect(Document.last.document_type_schema.tags.count).to eq(5)
+
+    publishing_api_has_links(role_appointment_links)
+
+    expect(Document.last.document_type_schema.tags.count).to eq(6)
     publishing_api_has_linkables([linkable], document_type: "topical_event")
     publishing_api_has_linkables([linkable], document_type: "worldwide_organisation")
     publishing_api_has_linkables([linkable], document_type: "world_location")
     publishing_api_has_linkables([linkable], document_type: "organisation")
+    publishing_api_has_linkables([linkable], document_type: "role_appointment")
 
     click_on "Change Tags"
 
@@ -39,6 +43,7 @@ RSpec.feature "Create a news story", format: true do
     select linkable["internal_name"], from: "tags[worldwide_organisations][]"
     select linkable["internal_name"], from: "tags[world_locations][]"
     select linkable["internal_name"], from: "tags[organisations][]"
+    select linkable["internal_name"], from: "tags[role_appointments][]"
 
     click_on "Save"
   end
@@ -58,10 +63,22 @@ RSpec.feature "Create a news story", format: true do
         "world_locations" => [linkable["content_id"]],
         "organisations" => [linkable["content_id"]],
         "primary_publishing_organisation" => [linkable["content_id"]],
+        "roles" => role_appointment_links["links"]["role"],
+        "people" => role_appointment_links["links"]["person"],
       },
       "title" => "A great title",
       "document_type" => "news_story",
       "description" => "A great summary",
+    }
+  end
+
+  def role_appointment_links
+    @role_appointment_links ||= {
+      "content_id" => linkable["content_id"],
+      "links" => {
+        "person" => [SecureRandom.uuid],
+        "role" => [SecureRandom.uuid],
+      },
     }
   end
 
