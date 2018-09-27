@@ -34,20 +34,11 @@
   }
 }
 
-.app-c-image-meta__lead-image-section {
+.app-c-image-meta__primary-action-section {
   margin-bottom: govuk-spacing(3);
   @include govuk-clearfix;
 }
 
-.app-c-image-meta__lead-image-tag {
-  float: left;
-}
-
-.app-c-image-meta__remove-button {
-  margin-left: govuk-spacing(3);
-  float: left;
-}
-
-.app-c-image-meta__choose-image {
-  float: left;
+.app-c-image-meta__primary-action-tag {
+  margin-right: govuk-spacing(3);
 }

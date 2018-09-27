@@ -1,32 +1,38 @@
-
-<% @document.images.each_with_index do |image, i| %>
+<% @document.images.each_with_index do |image| %>
 
   <% remove_lead_image_button = capture do %>
-    <%= form_tag remove_document_lead_image_path(@document), method: :delete do %>
+    <%= form_tag remove_document_lead_image_path(@document), method: :delete, class: "app-inline-block" do %>
       <button class="govuk-link">Remove</button>
     <% end %>
   <% end %>
 
-  <% choose_lead_image_button = capture do %>
-    <%= form_tag choose_document_lead_image_path(@document, image) do %>
+  <% choose_image_button = capture do %>
+    <%= form_tag choose_document_lead_image_path(@document, image), class: "app-inline-block" do %>
       <button class="govuk-link">Choose image</button>
     <% end %>
   <% end %>
 
+  <% delete_image_button = capture do %>
+    <%= form_tag delete_document_lead_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
+      <button class="govuk-link app-link--destructive">Delete image</button>
+    <% end %>
+  <% end %>
+
   <%= render "components/image_meta", {
-    id: "image-#{i}",
+    id: "image-#{image.id}",
     src: url_for(image.thumbnail),
-    lead_image: image == @document.lead_image,
     meta: {
       alt_text: image.alt_text,
       caption: image.caption,
-      credit: image.credit,
+      credit: image.credit
     },
-    actions: {
-      crop_link: crop_document_lead_image_path(@document, image, next_screen: "lead-image"),
-      edit_link: edit_document_lead_image_path(@document, image, next_screen: "lead-image"),
-      remove_button: remove_lead_image_button,
-      choose_button: choose_lead_image_button
-    }
+    primary_action: image.id == @document.lead_image_id ?
+      { tag: t("document_lead_image.index.lead_image"), action: remove_lead_image_button } :
+      { action: choose_image_button },
+    secondary_actions: [
+      link_to("Edit crop", crop_document_lead_image_path(@document, image, next_screen: "lead-image"), class: "govuk-link"),
+      link_to("Edit details", edit_document_lead_image_path(@document, image, next_screen: "lead-image"), class: "govuk-link"),
+      delete_image_button
+    ]
   } %>
 <% end %>
