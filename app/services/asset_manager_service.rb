@@ -17,15 +17,6 @@ class AssetManagerService
     asset_manager.delete_asset(asset.asset_manager_id)
   end
 
-private
-
-  def asset_manager
-    @asset_manager ||= GdsApi::AssetManager.new(
-      Plek.new.find("asset-manager"),
-      bearer_token: ENV.fetch("ASSET_MANAGER_BEARER_TOKEN", "example"),
-    )
-  end
-
   # Used as a stand-in for a File / Rack::Multipart::UploadedFile object when
   # passed to GdsApi::AssetManager#create_asset. The interface is required for
   # uploading a file using the restclient we used in the backend.
@@ -50,8 +41,25 @@ private
       asset.asset_manager_id
     end
 
+    def content_type
+      asset.content_type
+    end
+
     def path
       asset.filename
     end
+
+    def filename
+      File.basename(asset.filename)
+    end
+  end
+
+private
+
+  def asset_manager
+    @asset_manager ||= GdsApi::AssetManager.new(
+      Plek.new.find("asset-manager"),
+      bearer_token: ENV.fetch("ASSET_MANAGER_BEARER_TOKEN", "example"),
+    )
   end
 end

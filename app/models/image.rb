@@ -46,6 +46,10 @@ class Image < ApplicationRecord
     url_array[url_array.length - 2]
   end
 
+  def content_type
+    blob.content_type
+  end
+
   def cropped_bytes
     processed_image = thumbnail.processed
     processed_image.service.download(processed_image.key)
