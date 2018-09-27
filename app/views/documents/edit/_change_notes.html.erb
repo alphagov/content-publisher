@@ -3,6 +3,7 @@
     <%= render "govuk_publishing_components/components/textarea", {
       label: {
         text: t("documents.edit.change_note.title"),
+        bold: true
       },
       name: "document[change_note]",
       value: @document.change_note,
@@ -12,7 +13,10 @@
       }
     } %>
 
-    <% legend_text = tag.p(t("documents.edit.update_type.title"), class: "govuk-!-margin-bottom-3") %>
+    <% legend_text = tag.p(
+      tag.strong(t("documents.edit.update_type.title")),
+      class: "govuk-!-margin-bottom-3")
+    %>
 
     <%= render "govuk_publishing_components/components/fieldset", legend_text: legend_text do %>
       <%= render "govuk_publishing_components/components/radio", {
