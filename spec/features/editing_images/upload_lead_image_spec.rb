@@ -4,8 +4,7 @@ RSpec.feature "Upload a lead image" do
   scenario do
     given_there_is_a_document
     when_i_visit_the_summary_page
-    then_i_see_there_is_no_lead_image
-    when_i_visit_the_lead_images_page
+    and_i_visit_the_lead_images_page
     and_i_upload_a_new_image
     and_i_crop_the_image
     and_i_fill_in_the_metadata
@@ -15,18 +14,14 @@ RSpec.feature "Upload a lead image" do
 
   def given_there_is_a_document
     document_type_schema = build(:document_type_schema, lead_image: true)
-    create(:document, :with_required_content_for_publishing, document_type: document_type_schema.id)
+    create(:document, document_type: document_type_schema.id)
   end
 
   def when_i_visit_the_summary_page
     visit document_path(Document.last)
   end
 
-  def then_i_see_there_is_no_lead_image
-    expect(page).to have_content(I18n.t("documents.show.lead_image.no_lead_image"))
-  end
-
-  def when_i_visit_the_lead_images_page
+  def and_i_visit_the_lead_images_page
     click_on "Change Lead image"
   end
 
@@ -59,11 +54,12 @@ RSpec.feature "Upload a lead image" do
     expect(find("#lead-image img")["src"]).to include("1000x1000.jpg")
     expect(find("#lead-image img")["alt"]).to eq("Some alt text")
     expect(page).to have_content(I18n.t("documents.history.entry_types.lead_image_updated"))
+    expect(page).to have_content(I18n.t("documents.history.entry_types.image_updated"))
   end
 
   def and_the_preview_creation_succeeded
     expect(@request).to have_been_requested
-    expect(page).to have_link("Preview")
+    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"]["image"]["url"]).to eq @asset_url
