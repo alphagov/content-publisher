@@ -5,7 +5,7 @@ RSpec.feature "Edit document tags" do
   let(:tag_to_select_1) { { "content_id" => SecureRandom.uuid, "internal_name" => "Tag to select 1" } }
   let(:tag_to_select_2) { { "content_id" => SecureRandom.uuid, "internal_name" => "Tag to select 2" } }
 
-  scenario "User edits tags to a document" do
+  scenario do
     given_there_is_a_document
     when_i_visit_the_document_page
     and_i_click_on_edit_tags

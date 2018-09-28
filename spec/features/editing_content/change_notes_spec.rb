@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Change notes" do
-  scenario "User updates change notes and update type" do
+  scenario do
     given_there_is_a_previously_published_document
     when_i_go_to_edit_the_document
     and_i_fill_in_the_change_note_and_update_type

@@ -3,7 +3,7 @@
 require "spec_helper"
 
 RSpec.feature "Save document tags when the API is down" do
-  scenario "User tries to save tags without API" do
+  scenario do
     given_there_is_a_document_with_tags
     and_i_am_editing_the_tags
     and_the_publishing_api_is_down

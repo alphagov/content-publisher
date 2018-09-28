@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Upload a lead image when Asset Manager is down" do
-  scenario "User uploads a lead image and Asset Manager is down" do
+  scenario do
     given_there_is_a_document
     when_i_visit_the_lead_images_page
     and_asset_manager_is_down

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "User pages through a list of documents" do
-  scenario "User pages through a list of documents" do
+  scenario do
     given_there_are_lots_of_documents
     when_i_visit_the_index_page
     then_i_should_see_the_first_results

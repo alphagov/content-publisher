@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Users views document results on index page" do
-  scenario "User views document information on index page" do
+  scenario do
     given_there_is_a_document
     when_i_visit_the_index_page
     then_i_can_see_the_document_title

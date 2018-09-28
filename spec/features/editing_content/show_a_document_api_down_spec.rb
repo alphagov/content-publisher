@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Showing a document when the API is down" do
-  scenario "User views a document without API" do
+  scenario do
     given_there_is_a_document_with_tags
     and_the_publishing_api_is_down
     when_i_visit_the_document_page

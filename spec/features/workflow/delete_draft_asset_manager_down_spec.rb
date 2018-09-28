@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Delete draft with Asset Manager down" do
-  scenario "Delete draft with Asset Manager down" do
+  scenario do
     given_there_is_a_document
     when_i_visit_the_document_page
     and_asset_manager_is_down

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "2i" do
-  scenario "User submits document for 2i" do
+  scenario do
     given_there_is_a_document_in_draft
     when_i_visit_the_document
     and_i_click_submit_for_2i

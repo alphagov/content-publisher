@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Choosing a format" do
-  scenario "User forgets to choose a format" do
+  scenario do
     when_i_dont_choose_a_supertype
     then_i_see_a_supertype_error
     when_i_choose_a_supertype

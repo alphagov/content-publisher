@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Edit an existing lead image" do
-  scenario "User edits lead image" do
+  scenario do
     given_there_is_a_document_with_existing_images
     when_i_visit_the_lead_images_page
     and_i_click_edit_details

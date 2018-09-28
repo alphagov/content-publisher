@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Document timeline" do
-  scenario "User edits the document and looks at timeline" do
+  scenario do
     when_i_start_to_create_a_document
     the_timeline_has_a_create_entry
 

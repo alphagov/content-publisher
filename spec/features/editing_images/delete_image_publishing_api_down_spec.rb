@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Delete an image with Publishing API down" do
-  scenario "Delete an image with Publishing API down" do
+  scenario do
     given_there_is_a_document_with_images
     when_i_visit_the_lead_images_page
     and_the_publishing_api_is_down
