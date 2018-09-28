@@ -39,16 +39,17 @@ RSpec.feature "Upload a lead image" do
   end
 
   def and_i_crop_the_image
-    expect(page).to have_content(I18n.t("document_lead_image.crop.description"))
     asset_manager_delete_asset(@asset_id)
+    stub_publishing_api_put_content(Document.last.content_id, {})
     click_on "Crop image"
+    WebMock.reset!
   end
 
   def and_i_fill_in_the_metadata
-    @request = stub_publishing_api_put_content(Document.last.content_id, {})
     fill_in "alt_text", with: "Some alt text"
     fill_in "caption", with: "A caption"
     fill_in "credit", with: "A credit"
+    @request = stub_publishing_api_put_content(Document.last.content_id, {})
     click_on "Save and choose"
   end
 

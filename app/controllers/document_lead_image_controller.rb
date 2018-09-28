@@ -44,23 +44,22 @@ class DocumentLeadImageController < ApplicationController
     document = Document.find_by_param(params[:document_id])
     image = Image.find(params[:image_id])
 
-    Image.transaction do
-      image.update!(update_crop_params)
-      asset_manager_file_url = upload_image_to_asset_manager(image)
-      delete_image_from_asset_manager(image)
-      image.asset_manager_file_url = asset_manager_file_url
-      image.save!
-    end
 
     begin
-      if image.id == document.lead_image_id
-        DocumentUpdateService.update!(
-          document: document,
-          user: current_user,
-          type: "image_updated",
-          attributes_to_update: {},
-        )
+      Image.transaction do
+        image.update!(update_crop_params)
+        asset_manager_file_url = upload_image_to_asset_manager(image)
+        delete_image_from_asset_manager(image)
+        image.asset_manager_file_url = asset_manager_file_url
+        image.save!
       end
+
+      DocumentUpdateService.update!(
+        document: document,
+        user: current_user,
+        type: "image_updated",
+        attributes_to_update: {},
+      )
     rescue GdsApi::BaseError
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
