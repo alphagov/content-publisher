@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Create a press release", format: true do
-  scenario "User creates press release" do
+  scenario do
     when_i_choose_this_document_type
     and_i_fill_in_the_form_fields
     and_i_add_some_tags
