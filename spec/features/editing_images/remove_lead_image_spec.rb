@@ -33,5 +33,6 @@ RSpec.feature "Remove a lead image" do
     }).to have_been_requested
 
     expect(page).to have_content(I18n.t("documents.show.lead_image.no_lead_image"))
+    expect(page).to have_content(I18n.t("documents.history.entry_types.lead_image_removed"))
   end
 end
