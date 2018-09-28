@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
-RSpec.feature "Choose a lead image" do
-  scenario do
+RSpec.feature "Choose a lead image when the Publishing API is down" do
+  scenario "Choose a lead image when the Publishing API is down" do
     given_there_is_a_document_with_images
     when_i_visit_the_summary_page
     and_i_visit_the_lead_images_page
+    and_the_publishing_api_is_down
     and_i_choose_one_of_the_images
-    then_the_document_has_a_lead_image
-    and_the_preview_creation_succeeded
+    then_i_see_the_document_has_a_lead_image
+    and_the_preview_creation_failed
   end
 
   def given_there_is_a_document_with_images
@@ -24,24 +25,23 @@ RSpec.feature "Choose a lead image" do
     click_on "Change Lead image"
   end
 
-  def and_i_choose_one_of_the_images
-    @request = stub_publishing_api_put_content(Document.last.content_id, {})
+  def and_the_publishing_api_is_down
+    publishing_api_isnt_available
+  end
 
+  def and_i_choose_one_of_the_images
     within("#image-#{@image.id}") do
       click_on "Choose image"
     end
   end
 
-  def then_the_document_has_a_lead_image
-    expect(find("#lead-image img")["src"]).to include(@image.filename)
+  def then_i_see_the_document_has_a_lead_image
+    within("#image-#{@image.id}") do
+      expect(page).to have_content(I18n.t("document_lead_image.index.lead_image"))
+    end
   end
 
-  def and_the_preview_creation_succeeded
-    expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
-
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"]["image"]["url"]).to eq @image.asset_manager_file_url
-    }).to have_been_requested
+  def and_the_preview_creation_failed
+    expect(page).to have_content(I18n.t("document_lead_image.index.flashes.api_error.title"))
   end
 end

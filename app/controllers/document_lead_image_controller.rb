@@ -107,12 +107,17 @@ class DocumentLeadImageController < ApplicationController
   def choose_image
     document = Document.find_by_param(params[:document_id])
 
-    DocumentUpdateService.update!(
-      document: document,
-      user: current_user,
-      type: "lead_image_updated",
-      attributes_to_update: { lead_image_id: params[:image_id] },
-    )
+    begin
+      DocumentUpdateService.update!(
+        document: document,
+        user: current_user,
+        type: "lead_image_updated",
+        attributes_to_update: { lead_image_id: params[:image_id] },
+      )
+    rescue GdsApi::BaseError
+      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
+      return
+    end
 
     redirect_to document_path(document)
   end
