@@ -19,7 +19,8 @@ class DocumentFilter
   end
 
   def documents
-    scope = filtered_scope(Document)
+    scope = Document.includes(:creator, :last_editor)
+    scope = filtered_scope(scope)
     scope = ordered_scope(scope)
     scope.page(page).per(per_page)
   end
