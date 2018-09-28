@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Edit a document" do
-  scenario "User edits a document" do
+  scenario do
     given_there_is_a_document
     when_i_go_to_edit_the_document
     and_i_fill_in_the_content_fields

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Publishing a document" do
-  scenario "User publishes a document" do
+  scenario do
     given_there_is_a_document_in_draft
     when_i_visit_the_document_page
     and_i_click_on_the_publish_button

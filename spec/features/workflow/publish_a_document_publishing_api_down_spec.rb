@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Publishing a document when the Publishing API is down" do
-  scenario "User publishes a document" do
+  scenario do
     given_there_is_a_document
     and_the_publishing_api_is_down
     when_i_try_to_publish_the_document

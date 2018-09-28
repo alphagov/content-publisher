@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Publishing requirements" do
-  scenario "A users works on an incomplete document" do
+  scenario do
     given_there_is_a_document_that_has_unfulfilled_requirements
     when_i_visit_the_document_page
     then_i_see_the_unfulfilled_publishing_requirements

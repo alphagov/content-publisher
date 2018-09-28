@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Showing a document summary" do
-  scenario "User views a document" do
+  scenario do
     given_there_is_a_document
     when_i_visit_the_document_page
     then_i_see_the_document_summary

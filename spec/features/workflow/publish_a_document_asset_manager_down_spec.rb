@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Publishing a document when Asset Manager is down" do
-  scenario "User publishes a document with a lead image" do
+  scenario do
     given_there_is_a_document_with_a_lead_image
     and_asset_manager_is_down
     when_i_try_to_publish_the_document

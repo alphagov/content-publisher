@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Choose a lead image" do
-  scenario "Choose a lead image" do
+  scenario do
     given_there_is_a_document_with_images
     when_i_visit_the_summary_page
     and_i_visit_the_lead_images_page

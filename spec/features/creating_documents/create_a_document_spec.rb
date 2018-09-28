@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Create a document" do
-  scenario "User creates a document" do
+  scenario do
     when_i_choose_a_format
     then_i_wont_be_able_to_choose_an_update_type_or_change_note
 

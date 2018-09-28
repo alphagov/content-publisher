@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Shows a preview of Govspeak", js: true do
-  scenario "when a user previews some Govspeak" do
+  scenario do
     given_there_is_a_document
     when_i_go_to_edit_the_document
     and_i_enter_some_govspeak

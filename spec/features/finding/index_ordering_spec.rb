@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "User orders documents" do
-  scenario "User orders documents" do
+  scenario do
     given_there_are_some_documents
     when_i_visit_the_index_page
     then_i_see_the_most_recently_updated_first

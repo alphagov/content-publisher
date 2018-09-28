@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.feature "Documentation" do
-  scenario "GDS staff visits the docs page" do
+RSpec.feature "GDS Documentation" do
+  scenario do
     when_i_visit_the_documentation_page
     then_i_see_the_documentation_page
   end

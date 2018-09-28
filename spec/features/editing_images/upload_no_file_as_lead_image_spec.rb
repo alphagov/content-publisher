@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Upload no file as a lead image" do
-  scenario "User uploads no file" do
+  scenario do
     given_there_is_a_document
     when_i_visit_the_lead_images_page
     when_i_upload_no_file

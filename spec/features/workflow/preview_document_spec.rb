@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Preview a document" do
-  scenario "User previews a document" do
+  scenario do
     given_there_is_a_document_in_draft
     when_i_visit_the_preview_page
     then_i_see_the_previews

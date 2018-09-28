@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Delete an image" do
-  scenario "Delete an image" do
+  scenario do
     given_there_is_a_document_with_images
     when_i_visit_the_lead_images_page
     and_i_delete_the_non_lead_image
