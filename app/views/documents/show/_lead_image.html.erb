@@ -14,20 +14,20 @@
   <%= render "components/summary", {
     title: {
       text: t("documents.show.lead_image.title"),
-      change_url: document_lead_image_path(@document)
+      change_url: document_images_path(@document)
     },
     block: lead_image_block
   } %>
 <% else %>
   <% no_lead_image_block = capture do %>
     <%= t("documents.show.lead_image.no_lead_image") %>
-    <%= link_to t("documents.show.lead_image.upload_image"), document_lead_image_path(@document), class: "govuk-link" %>
+    <%= link_to t("documents.show.lead_image.upload_image"), document_images_path(@document), class: "govuk-link" %>
   <% end %>
 
   <%= render "components/summary", {
     title: {
       text: t("documents.show.lead_image.title"),
-      change_url: document_lead_image_path(@document)
+      change_url: document_images_path(@document)
     },
     block: no_lead_image_block
   } %>

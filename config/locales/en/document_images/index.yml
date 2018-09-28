@@ -1,7 +1,7 @@
 en:
-  document_lead_image:
+  document_images:
     index:
-      title: "Lead image for ‘%{title}’"
+      title: "Images for ‘%{title}’"
       description: Images can be jpg, png, gif, or svg files. [Full guidance on images](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/images-and-videos)
       upload_image: Upload an image
       existing_image: Choose existing image

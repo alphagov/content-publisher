@@ -3,7 +3,7 @@
 RSpec.feature "Edit image metadata when the Publishing API is down" do
   scenario do
     given_there_is_a_document_with_images
-    when_i_visit_the_lead_images_page
+    when_i_visit_the_images_page
     and_the_publishing_api_is_down
     and_i_edit_the_image_metadata
     then_i_see_the_image_is_updated
@@ -16,9 +16,8 @@ RSpec.feature "Edit image metadata when the Publishing API is down" do
     create(:image, document: document)
   end
 
-  def when_i_visit_the_lead_images_page
-    visit document_path(Document.last)
-    click_on "Change Lead image"
+  def when_i_visit_the_images_page
+    visit document_images_path(Document.last)
   end
 
   def and_the_publishing_api_is_down
@@ -40,6 +39,6 @@ RSpec.feature "Edit image metadata when the Publishing API is down" do
   end
 
   def and_the_preview_creation_failed
-    expect(page).to have_content(I18n.t("document_lead_image.index.flashes.api_error.title"))
+    expect(page).to have_content(I18n.t("document_images.index.flashes.api_error.title"))
   end
 end

@@ -1,15 +1,15 @@
-<% content_for :title, t("document_lead_image.index.title", title: @document.title_or_fallback) %>
+<% content_for :title, t("document_images.index.title", title: @document.title_or_fallback) %>
 <% content_for :back_link, document_path(@document) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <% upload_image_heading = capture do %>
       <h2 class="govuk-heading-m">
-        <%= t("document_lead_image.index.upload_image") %>
+        <%= t("document_images.index.upload_image") %>
       </h2>
     <% end %>
 
-    <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
+    <%= form_tag(create_document_image_path(@document), multipart: true) do %>
       <%= hidden_field_tag :wizard, "lead_image" %>
 
       <%= render "govuk_publishing_components/components/file_upload", {
@@ -20,7 +20,7 @@
       } %>
 
       <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("document_lead_image.index.description") %>
+        <%= govspeak_to_html t("document_images.index.description") %>
       <% end %>
 
       <%= render "govuk_publishing_components/components/button", {
@@ -31,12 +31,12 @@
 
     <% if @document.images.any? %>
       <h2 class="govuk-heading-m">
-        <%= t("document_lead_image.index.existing_image") %>
+        <%= t("document_images.index.existing_image") %>
       </h2>
       <%= render "image_list" %>
     <% else %>
       <h2 class="govuk-heading-m">
-        <%= t("document_lead_image.index.no_existing_image") %>
+        <%= t("document_images.index.no_existing_image") %>
       </h2>
     <% end %>
   </div>

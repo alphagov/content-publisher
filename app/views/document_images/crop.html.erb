@@ -1,15 +1,15 @@
-<% content_for :back_link, document_lead_image_path(@document) %>
-<% content_for :title, t("document_lead_image.crop.title", title: @document.title_or_fallback) %>
+<% content_for :back_link, document_images_path(@document) %>
+<% content_for :title, t("document_images.crop.title", title: @document.title_or_fallback) %>
 
 <p class="govuk-body">
-  <%= t("document_lead_image.crop.description") %>
+  <%= t("document_images.crop.description") %>
 </p>
 
-<%= form_tag(crop_document_lead_image_path(@document, @image), method: :patch) do %>
+<%= form_tag(crop_document_image_path(@document, @image), method: :patch) do %>
   <%= hidden_field_tag :wizard, params[:wizard] %>
 
   <%= render "/components/image_cropper", {
-    id: "cropp-image",
+    id: "crop-image",
     src: url_for(@image.blob),
     alt_text: @image.alt_text,
     crop_x: @image.crop_x,

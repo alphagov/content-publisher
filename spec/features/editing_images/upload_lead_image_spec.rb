@@ -3,8 +3,7 @@
 RSpec.feature "Upload a lead image" do
   scenario do
     given_there_is_a_document
-    when_i_visit_the_summary_page
-    and_i_visit_the_lead_images_page
+    when_i_visit_the_images_page
     and_i_upload_a_new_image
     and_i_crop_the_image
     and_i_fill_in_the_metadata
@@ -17,12 +16,8 @@ RSpec.feature "Upload a lead image" do
     create(:document, document_type: document_type_schema.id)
   end
 
-  def when_i_visit_the_summary_page
-    visit document_path(Document.last)
-  end
-
-  def and_i_visit_the_lead_images_page
-    click_on "Change Lead image"
+  def when_i_visit_the_images_page
+    visit document_images_path(Document.last)
   end
 
   def and_i_upload_a_new_image

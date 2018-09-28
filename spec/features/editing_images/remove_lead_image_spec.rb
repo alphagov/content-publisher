@@ -3,7 +3,7 @@
 RSpec.feature "Remove a lead image" do
   scenario do
     given_there_is_a_document_with_a_lead_image
-    when_i_visit_the_lead_images_page
+    when_i_visit_the_images_page
     and_i_remove_the_lead_image
     then_the_document_has_no_lead_image
   end
@@ -15,8 +15,8 @@ RSpec.feature "Remove a lead image" do
     document.update(lead_image: @image)
   end
 
-  def when_i_visit_the_lead_images_page
-    visit document_lead_image_path(Document.last)
+  def when_i_visit_the_images_page
+    visit document_images_path(Document.last)
   end
 
   def and_i_remove_the_lead_image

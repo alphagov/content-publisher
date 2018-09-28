@@ -3,7 +3,7 @@
 RSpec.feature "Remove a lead image when Publishing API is down" do
   scenario do
     given_there_is_a_document_with_a_lead_image
-    when_i_visit_the_lead_images_page
+    when_i_visit_the_images_page
     and_the_publishing_api_is_down
     and_i_remove_the_lead_image
     then_i_see_the_document_has_no_lead_image
@@ -16,8 +16,8 @@ RSpec.feature "Remove a lead image when Publishing API is down" do
     document.update(lead_image: @image)
   end
 
-  def when_i_visit_the_lead_images_page
-    visit document_lead_image_path(Document.last)
+  def when_i_visit_the_images_page
+    visit document_images_path(Document.last)
   end
 
   def and_the_publishing_api_is_down
@@ -30,11 +30,11 @@ RSpec.feature "Remove a lead image when Publishing API is down" do
 
   def then_i_see_the_document_has_no_lead_image
     within("#image-#{@image.id}") do
-      expect(page).to_not have_content(I18n.t("document_lead_image.index.lead_image"))
+      expect(page).to_not have_content(I18n.t("document_images.index.lead_image"))
     end
   end
 
   def and_the_preview_creation_failed
-    expect(page).to have_content(I18n.t("document_lead_image.index.flashes.api_error.title"))
+    expect(page).to have_content(I18n.t("document_images.index.flashes.api_error.title"))
   end
 end

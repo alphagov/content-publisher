@@ -1,5 +1,5 @@
 en:
-  document_lead_image:
+  document_images:
     crop:
       title: "Crop lead image for ‘%{title}’"
       description: "Select the part of the image to use. Images on GOV.UK are a fixed shape."
