@@ -10,6 +10,8 @@
     <% end %>
 
     <%= form_tag(document_lead_image_path(@document), multipart: true) do %>
+      <%= hidden_field_tag :wizard, "lead_image" %>
+
       <%= render "govuk_publishing_components/components/file_upload", {
         label: {
           text: upload_image_heading,

@@ -32,7 +32,7 @@ class DocumentLeadImageController < ApplicationController
     end
 
     image.save!
-    redirect_to crop_document_lead_image_path(params[:document_id], image.id)
+    redirect_to crop_document_lead_image_path(params[:document_id], image.id, wizard: params[:wizard])
   end
 
   def crop
@@ -65,12 +65,12 @@ class DocumentLeadImageController < ApplicationController
       return
     end
 
-    if params[:next_screen] == "lead-image"
-      redirect_to document_lead_image_path(document)
+    if params[:wizard].present?
+      redirect_to edit_document_lead_image_path(document, image, params.permit(:wizard))
       return
     end
 
-    redirect_to edit_document_lead_image_path(document, image)
+    redirect_to document_lead_image_path(document)
   end
 
   def edit
@@ -87,16 +87,31 @@ class DocumentLeadImageController < ApplicationController
       DocumentUpdateService.update!(
         document: document,
         user: current_user,
-        type: "lead_image_updated",
-        attributes_to_update: { lead_image_id: image.id },
+        type: "image_updated",
+        attributes_to_update: {},
       )
     rescue GdsApi::BaseError
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
 
-    if params[:next_screen] == "lead-image"
-      redirect_to document_lead_image_path(document)
+    redirect_to document_lead_image_path(document)
+  end
+
+  def update_and_choose_image
+    document = Document.find_by_param(params[:document_id])
+    image = document.images.find(params[:image_id])
+    image.update!(update_params)
+
+    begin
+      DocumentUpdateService.update!(
+        document: document,
+        user: current_user,
+        type: "lead_image_updated",
+        attributes_to_update: { lead_image_id: params[:image_id] },
+      )
+    rescue GdsApi::BaseError
+      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
 

@@ -30,8 +30,8 @@
       { tag: t("document_lead_image.index.lead_image"), action: remove_lead_image_button } :
       { action: choose_image_button },
     secondary_actions: [
-      link_to("Edit crop", crop_document_lead_image_path(@document, image, next_screen: "lead-image"), class: "govuk-link"),
-      link_to("Edit details", edit_document_lead_image_path(@document, image, next_screen: "lead-image"), class: "govuk-link"),
+      link_to("Edit crop", crop_document_lead_image_path(@document, image), class: "govuk-link"),
+      link_to("Edit details", edit_document_lead_image_path(@document, image), class: "govuk-link"),
       delete_image_button
     ]
   } %>
