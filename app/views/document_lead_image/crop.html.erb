@@ -5,7 +5,7 @@
   <%= t("document_lead_image.crop.description") %>
 </p>
 
-<%= form_tag(crop_document_lead_image_path(@document, @image, wizard: params[:wizard]), method: :patch) do %>
+<%= form_tag(crop_document_lead_image_path(@document, @image), method: :patch) do %>
   <%= hidden_field_tag :wizard, params[:wizard] %>
 
   <%= render "/components/image_cropper", {
