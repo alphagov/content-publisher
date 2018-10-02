@@ -70,14 +70,12 @@ class DocumentLeadImageController < ApplicationController
     raise "Trying to delete image for a live document" if document.has_live_version_on_govuk
 
     begin
-      if image.id == document.lead_image_id
-        DocumentUpdateService.update!(
-          document: document,
-          user: current_user,
-          type: "lead_image_removed",
-          attributes_to_update: { lead_image_id: nil },
-        )
-      end
+      DocumentUpdateService.update!(
+        document: document,
+        user: current_user,
+        type: "lead_image_removed",
+        attributes_to_update: { lead_image_id: nil },
+      )
 
       AssetManagerService.new.delete(image)
       image.destroy
