@@ -8,10 +8,9 @@
   no_border: true
 } %>
 
-<% submit_path = case params[:wizard]
-                 when "lead_image" then update_and_choose_document_lead_image_path(@document, @image)
-                 else update_document_lead_image_path(@document, @image)
-                 end %>
+<% submit_path = params[:wizard] == "lead_image" ?
+    update_and_choose_document_lead_image_path(@document, @image) :
+    update_document_lead_image_path(@document, @image) %>
 
 <%= form_tag(submit_path, method: :patch) do %>
   <div class="govuk-grid-row">
@@ -97,9 +96,6 @@
 
   <%= render "govuk_publishing_components/components/button", {
     margin_bottom: true,
-    text: case params[:wizard]
-          when "lead_image" then "Save and choose"
-          else "Save details"
-          end
+    text: params[:wizard] == "lead_image" ? "Save and choose" : "Save details"
   } %>
 <% end %>
