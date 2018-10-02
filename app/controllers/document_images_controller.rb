@@ -45,7 +45,6 @@ class DocumentImagesController < ApplicationController
     document = Document.find_by_param(params[:document_id])
     image = Image.find(params[:image_id])
 
-
     begin
       Image.transaction do
         image.update!(update_crop_params)
