@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class DocumentImagesController < ApplicationController
+  rescue_from GdsApi::BaseError do |e|
+    Rails.logger.error(e)
+    redirect_to document_images_path, alert_with_description: t("document_images.index.flashes.api_error")
+  end
+
   def index
     @document = Document.find_by_param(params[:document_id])
   end
@@ -23,14 +28,8 @@ class DocumentImagesController < ApplicationController
       return
     end
 
-    begin
-      image = image_uploader.upload(document)
-      image.asset_manager_file_url = upload_image_to_asset_manager(image)
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_images_path, alert_with_description: t("document_images.index.flashes.api_error")
-      return
-    end
+    image = image_uploader.upload(document)
+    image.asset_manager_file_url = upload_image_to_asset_manager(image)
 
     image.save!
     redirect_to crop_document_image_path(params[:document_id], image.id, wizard: params[:wizard])
@@ -45,26 +44,20 @@ class DocumentImagesController < ApplicationController
     document = Document.find_by_param(params[:document_id])
     image = Image.find(params[:image_id])
 
-    begin
-      Image.transaction do
-        image.update!(update_crop_params)
-        asset_manager_file_url = upload_image_to_asset_manager(image)
-        delete_image_from_asset_manager(image)
-        image.asset_manager_file_url = asset_manager_file_url
-        image.save!
-      end
-
-      DocumentUpdateService.update!(
-        document: document,
-        user: current_user,
-        type: "image_updated",
-        attributes_to_update: {},
-      )
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_images_path(document), alert_with_description: t("document_images.index.flashes.api_error")
-      return
+    Image.transaction do
+      image.update!(update_crop_params)
+      asset_manager_file_url = upload_image_to_asset_manager(image)
+      delete_image_from_asset_manager(image)
+      image.asset_manager_file_url = asset_manager_file_url
+      image.save!
     end
+
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "image_updated",
+      attributes_to_update: {},
+    )
 
     if params[:wizard].present?
       redirect_to edit_document_image_path(document, image, params.permit(:wizard))
@@ -84,18 +77,12 @@ class DocumentImagesController < ApplicationController
     image = document.images.find(params[:image_id])
     image.update!(update_params)
 
-    begin
-      DocumentUpdateService.update!(
-        document: document,
-        user: current_user,
-        type: "image_updated",
-        attributes_to_update: {},
-      )
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_images_path(document), alert_with_description: t("document_images.index.flashes.api_error")
-      return
-    end
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "image_updated",
+      attributes_to_update: {},
+    )
 
     redirect_to document_images_path(document)
   end
@@ -105,22 +92,15 @@ class DocumentImagesController < ApplicationController
     image = document.images.find(params[:image_id])
     raise "Trying to delete image for a live document" if document.has_live_version_on_govuk
 
-    begin
-      DocumentUpdateService.update!(
-        document: document,
-        user: current_user,
-        type: "image_removed",
-        attributes_to_update: {},
-      )
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "image_removed",
+      attributes_to_update: {},
+    )
 
-      AssetManagerService.new.delete(image)
-      image.destroy
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_images_path(document), alert_with_description: t("document_images.index.flashes.api_error")
-      return
-    end
-
+    AssetManagerService.new.delete(image)
+    image.destroy!
     redirect_to document_images_path(document), notice: t("document_images.index.flashes.image_deleted")
   end
 
