@@ -1,5 +1,8 @@
-<% @document.images.each_with_index do |image| %>
+<% images = @document.images.sort_by do |image|
+  image.id == @document.lead_image_id ? 0 : 1
+end %>
 
+<% images.each do |image| %>
   <% remove_lead_image_button = capture do %>
     <%= form_tag remove_document_lead_image_path(@document), method: :delete, class: "app-inline-block" do %>
       <button class="govuk-link">Remove</button>
@@ -30,8 +33,8 @@
       { tag: t("document_lead_image.index.lead_image"), action: remove_lead_image_button } :
       { action: choose_image_button },
     secondary_actions: [
-      link_to("Edit crop", crop_document_lead_image_path(@document, image, next_screen: "lead-image"), class: "govuk-link"),
-      link_to("Edit details", edit_document_lead_image_path(@document, image, next_screen: "lead-image"), class: "govuk-link"),
+      link_to("Edit crop", crop_document_lead_image_path(@document, image), class: "govuk-link"),
+      link_to("Edit details", edit_document_lead_image_path(@document, image), class: "govuk-link"),
       delete_image_button
     ]
   } %>

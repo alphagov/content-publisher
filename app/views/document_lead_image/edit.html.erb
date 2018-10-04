@@ -8,7 +8,11 @@
   no_border: true
 } %>
 
-<%= form_tag(update_document_lead_image_path(@document, @image, next_screen: params[:next_screen]), method: :patch) do %>
+<% submit_path = params[:wizard] == "lead_image" ?
+    update_and_choose_document_lead_image_path(@document, @image) :
+    update_document_lead_image_path(@document, @image) %>
+
+<%= form_tag(submit_path, method: :patch) do %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
@@ -91,7 +95,7 @@
   </div>
 
   <%= render "govuk_publishing_components/components/button", {
-    text: "Save and choose",
-    margin_bottom: true
+    margin_bottom: true,
+    text: params[:wizard] == "lead_image" ? "Save and choose" : "Save details"
   } %>
 <% end %>

@@ -6,8 +6,8 @@ RSpec.feature "Delete an image with Asset Manager down" do
     when_i_visit_the_lead_images_page
     and_asset_manager_is_down
     and_i_delete_the_lead_image
-    then_i_see_the_operation_failed
-    and_the_document_has_no_lead_image
+    then_i_see_the_document_has_no_lead_image
+    and_the_api_operation_failed
   end
 
   def given_there_is_a_document_with_images
@@ -31,13 +31,13 @@ RSpec.feature "Delete an image with Asset Manager down" do
     click_on "Delete image"
   end
 
-  def then_i_see_the_operation_failed
-    expect(page).to have_content(I18n.t("document_lead_image.index.flashes.api_error.title"))
-  end
-
-  def and_the_document_has_no_lead_image
+  def then_i_see_the_document_has_no_lead_image
     within("#image-#{@image.id}") do
       expect(page).to_not have_content(I18n.t("document_lead_image.index.lead_image"))
     end
+  end
+
+  def and_the_api_operation_failed
+    expect(page).to have_content(I18n.t("document_lead_image.index.flashes.api_error.title"))
   end
 end

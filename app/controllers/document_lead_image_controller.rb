@@ -32,7 +32,7 @@ class DocumentLeadImageController < ApplicationController
     end
 
     image.save!
-    redirect_to crop_document_lead_image_path(params[:document_id], image.id)
+    redirect_to crop_document_lead_image_path(params[:document_id], image.id, wizard: params[:wizard])
   end
 
   def crop
@@ -44,34 +44,33 @@ class DocumentLeadImageController < ApplicationController
     document = Document.find_by_param(params[:document_id])
     image = Image.find(params[:image_id])
 
-    Image.transaction do
-      image.update!(update_crop_params)
-      asset_manager_file_url = upload_image_to_asset_manager(image)
-      delete_image_from_asset_manager(image)
-      image.asset_manager_file_url = asset_manager_file_url
-      image.save!
-    end
 
     begin
-      if image.id == document.lead_image_id
-        DocumentUpdateService.update!(
-          document: document,
-          user: current_user,
-          type: "image_updated",
-          attributes_to_update: {},
-        )
+      Image.transaction do
+        image.update!(update_crop_params)
+        asset_manager_file_url = upload_image_to_asset_manager(image)
+        delete_image_from_asset_manager(image)
+        image.asset_manager_file_url = asset_manager_file_url
+        image.save!
       end
+
+      DocumentUpdateService.update!(
+        document: document,
+        user: current_user,
+        type: "image_updated",
+        attributes_to_update: {},
+      )
     rescue GdsApi::BaseError
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
 
-    if params[:next_screen] == "lead-image"
-      redirect_to document_lead_image_path(document)
+    if params[:wizard].present?
+      redirect_to edit_document_lead_image_path(document, image, params.permit(:wizard))
       return
     end
 
-    redirect_to edit_document_lead_image_path(document, image)
+    redirect_to document_lead_image_path(document)
   end
 
   def edit
@@ -88,16 +87,31 @@ class DocumentLeadImageController < ApplicationController
       DocumentUpdateService.update!(
         document: document,
         user: current_user,
-        type: "lead_image_updated",
-        attributes_to_update: { lead_image_id: image.id },
+        type: "image_updated",
+        attributes_to_update: {},
       )
     rescue GdsApi::BaseError
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
 
-    if params[:next_screen] == "lead-image"
-      redirect_to document_lead_image_path(document)
+    redirect_to document_lead_image_path(document)
+  end
+
+  def update_and_choose_image
+    document = Document.find_by_param(params[:document_id])
+    image = document.images.find(params[:image_id])
+    image.update!(update_params)
+
+    begin
+      DocumentUpdateService.update!(
+        document: document,
+        user: current_user,
+        type: "lead_image_updated",
+        attributes_to_update: { lead_image_id: params[:image_id] },
+      )
+    rescue GdsApi::BaseError
+      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
 
@@ -107,12 +121,17 @@ class DocumentLeadImageController < ApplicationController
   def choose_image
     document = Document.find_by_param(params[:document_id])
 
-    DocumentUpdateService.update!(
-      document: document,
-      user: current_user,
-      type: "lead_image_updated",
-      attributes_to_update: { lead_image_id: params[:image_id] },
-    )
+    begin
+      DocumentUpdateService.update!(
+        document: document,
+        user: current_user,
+        type: "lead_image_updated",
+        attributes_to_update: { lead_image_id: params[:image_id] },
+      )
+    rescue GdsApi::BaseError
+      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
+      return
+    end
 
     redirect_to document_path(document)
   end
@@ -144,12 +163,17 @@ class DocumentLeadImageController < ApplicationController
   def destroy
     document = Document.find_by_param(params[:document_id])
 
-    DocumentUpdateService.update!(
-      document: document,
-      user: current_user,
-      type: "lead_image_removed",
-      attributes_to_update: { lead_image_id: nil },
-    )
+    begin
+      DocumentUpdateService.update!(
+        document: document,
+        user: current_user,
+        type: "lead_image_removed",
+        attributes_to_update: { lead_image_id: nil },
+      )
+    rescue GdsApi::BaseError
+      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
+      return
+    end
 
     redirect_to document_path(document)
   end
