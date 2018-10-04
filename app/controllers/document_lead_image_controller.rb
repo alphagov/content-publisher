@@ -162,6 +162,7 @@ class DocumentLeadImageController < ApplicationController
 
   def destroy
     document = Document.find_by_param(params[:document_id])
+    raise "Trying to delete image for a live document" if document.has_live_version_on_govuk
 
     begin
       DocumentUpdateService.update!(
