@@ -2,7 +2,7 @@
 
 class DocumentsController < ApplicationController
   rescue_from GdsApi::BaseError do |e|
-    GovukError.notify(e)
+    Rails.logger.error(e)
     render "#{action_name}_api_down", status: :service_unavailable
   end
 
@@ -33,7 +33,8 @@ class DocumentsController < ApplicationController
     DocumentPublishingService.new.discard_draft(document)
     document.destroy!
     redirect_to documents_path
-  rescue GdsApi::BaseError
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
     redirect_to document, alert_with_description: t("documents.show.flashes.delete_draft_error")
   end
 
@@ -48,7 +49,8 @@ class DocumentsController < ApplicationController
     )
 
     redirect_to document
-  rescue GdsApi::BaseError
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
     redirect_to document, alert_with_description: t("documents.show.flashes.draft_error")
   end
 
@@ -56,7 +58,8 @@ class DocumentsController < ApplicationController
     document = Document.find_by_param(params[:id])
     DocumentPublishingService.new.publish_draft(document)
     redirect_to document
-  rescue GdsApi::BaseError
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
     redirect_to document, alert_with_description: t("documents.show.flashes.draft_error")
   end
 
@@ -64,8 +67,6 @@ class DocumentsController < ApplicationController
     document = Document.find_by_param(params[:id])
     base_path = PathGeneratorService.new.path(document, params[:title])
     render plain: base_path
-  rescue PathGeneratorService::ErrorGeneratingPath
-    render status: :conflict
   end
 
   def debug
