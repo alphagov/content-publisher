@@ -29,11 +29,6 @@ module ContentPublisher
 
     config.action_view.raise_on_missing_translations = true
 
-    # The "Slimmer" gem is loaded by the publishing components and will automatically
-    # attempt to intercept requests and provide a layout. We don't use that
-    # functionality here, so we have to tell slimmer to not do it.
-    config.middleware.delete Slimmer::App
-
     # The "acceptance environment" we're in - not the same as Rails env.
     # Can be production, staging, integration, or development
     govuk_environments = {
