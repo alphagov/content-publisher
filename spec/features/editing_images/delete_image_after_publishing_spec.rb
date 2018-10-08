@@ -3,8 +3,9 @@
 RSpec.feature "Delete an image after publishing" do
   scenario "Delete an image after publishing" do
     given_there_is_a_document_with_images
-    and_the_document_is_live_on_govuk
-    when_i_visit_the_lead_images_page
+    when_i_visit_the_document_images_page
+    then_i_can_choose_to_delete_the_images
+    when_i_publish_the_document_on_govuk
     then_i_cannot_delete_any_of_the_images
   end
 
@@ -12,17 +13,26 @@ RSpec.feature "Delete an image after publishing" do
     document_type_schema = build(:document_type_schema, lead_image: true)
     document = create(:document, document_type: document_type_schema.id)
     create(:image, :in_asset_manager, document: document)
+    lead_image = create(:image, :in_asset_manager, document: document)
+    document.update(lead_image_id: lead_image.id)
   end
 
-  def and_the_document_is_live_on_govuk
-    Document.last.update(has_live_version_on_govuk: true)
+  def then_i_can_choose_to_delete_the_images
+    expect(page).to have_content("Delete image")
+    expect(page).to have_content("Delete lead image")
   end
 
-  def when_i_visit_the_lead_images_page
-    visit document_lead_image_path(Document.last)
+  def when_i_publish_the_document_on_govuk
+    Document.last.update!(has_live_version_on_govuk: true)
+    visit document_images_path(Document.last)
+  end
+
+  def when_i_visit_the_document_images_page
+    visit document_images_path(Document.last)
   end
 
   def then_i_cannot_delete_any_of_the_images
     expect(page).to_not have_content("Delete image")
+    expect(page).to_not have_content("Delete lead image")
   end
 end

@@ -15,18 +15,21 @@ end %>
     <% end %>
   <% end %>
 
-  <% delete_image_button = capture do %>
-  <% end %>
-
   <% secondary_actions = [
-    link_to("Edit crop", crop_document_lead_image_path(@document, image), class: "govuk-link"),
-    link_to("Edit details", edit_document_lead_image_path(@document, image), class: "govuk-link")
+    link_to("Edit crop", crop_document_image_path(@document, image), class: "govuk-link"),
+    link_to("Edit details", edit_document_image_path(@document, image), class: "govuk-link"),
   ] %>
 
   <% unless @document.has_live_version_on_govuk %>
     <% secondary_actions << capture do %>
-      <%= form_tag delete_document_lead_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
-        <button class="govuk-link app-link--destructive">Delete image</button>
+      <% if image.id == @document.lead_image_id %>
+        <%= form_tag destroy_document_lead_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
+          <button class="govuk-link app-link--destructive">Delete lead image</button>
+        <% end %>
+      <% else %>
+        <%= form_tag destroy_document_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
+          <button class="govuk-link app-link--destructive">Delete image</button>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
@@ -40,7 +43,7 @@ end %>
       credit: image.credit
     },
     primary_action: image.id == @document.lead_image_id ?
-      { tag: t("document_lead_image.index.lead_image"), action: remove_lead_image_button } :
+      { tag: t("document_images.index.lead_image"), action: remove_lead_image_button } :
       { action: choose_image_button },
     secondary_actions: secondary_actions
   } %>

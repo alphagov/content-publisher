@@ -3,7 +3,7 @@
 RSpec.feature "Upload a lead image when Asset Manager is down" do
   scenario do
     given_there_is_a_document
-    when_i_visit_the_lead_images_page
+    when_i_visit_the_images_page
     and_asset_manager_is_down
     and_i_upload_an_image
     then_i_should_see_an_error
@@ -15,8 +15,8 @@ RSpec.feature "Upload a lead image when Asset Manager is down" do
     create(:document, document_type: document_type_schema.id)
   end
 
-  def when_i_visit_the_lead_images_page
-    visit document_lead_image_path(Document.last)
+  def when_i_visit_the_images_page
+    visit document_images_path(Document.last)
   end
 
   def and_asset_manager_is_down
@@ -29,10 +29,10 @@ RSpec.feature "Upload a lead image when Asset Manager is down" do
   end
 
   def then_i_should_see_an_error
-    expect(page).to have_content(I18n.t("document_lead_image.index.flashes.api_error.title"))
+    expect(page).to have_content(I18n.t("document_images.index.flashes.api_error.title"))
   end
 
   def and_the_image_does_not_exist
-    expect(page).to have_content(I18n.t("document_lead_image.index.no_existing_image"))
+    expect(page).to have_content(I18n.t("document_images.index.no_existing_image"))
   end
 end

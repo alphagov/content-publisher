@@ -3,9 +3,7 @@
 RSpec.feature "Upload a lead image when Publishing API is down" do
   scenario do
     given_there_is_a_document
-    when_i_visit_the_summary_page
-    then_i_see_there_is_no_lead_image
-    when_i_visit_the_lead_images_page
+    when_i_visit_the_images_page
     and_i_upload_a_new_image
     and_i_crop_the_image
     and_the_publishing_api_is_down
@@ -19,16 +17,8 @@ RSpec.feature "Upload a lead image when Publishing API is down" do
     create(:document, document_type: document_type_schema.id)
   end
 
-  def when_i_visit_the_summary_page
-    visit document_path(Document.last)
-  end
-
-  def then_i_see_there_is_no_lead_image
-    expect(page).to have_content(I18n.t("documents.show.lead_image.no_lead_image"))
-  end
-
-  def when_i_visit_the_lead_images_page
-    click_on "Change Lead image"
+  def when_i_visit_the_images_page
+    visit document_images_path(Document.last)
   end
 
   def and_i_upload_a_new_image
@@ -56,11 +46,11 @@ RSpec.feature "Upload a lead image when Publishing API is down" do
 
   def then_i_see_the_new_lead_image
     within("#image-#{Image.last.id}") do
-      expect(page).to have_content(I18n.t("document_lead_image.index.lead_image"))
+      expect(page).to have_content(I18n.t("document_images.index.lead_image"))
     end
   end
 
   def and_the_preview_creation_failed
-    expect(page).to have_content(I18n.t("document_lead_image.index.flashes.api_error.title"))
+    expect(page).to have_content(I18n.t("document_images.index.flashes.api_error.title"))
   end
 end

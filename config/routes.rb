@@ -33,16 +33,18 @@ Rails.application.routes.draw do
   get "/documents/:id/retire" => "retire_document#retire", as: :retire_document
   get "/documents/:id/remove" => "remove_document#remove", as: :remove_document
 
-  get "/documents/:document_id/lead-image" => "document_lead_image#index", as: :document_lead_image
-  post "/documents/:document_id/lead-image" => "document_lead_image#create"
-  get "/documents/:document_id/lead-image/:image_id/crop" => "document_lead_image#crop", as: :crop_document_lead_image
-  patch "/documents/:document_id/lead-image/:image_id/crop" => "document_lead_image#update_crop"
-  get "/documents/:document_id/lead-image/:image_id/edit" => "document_lead_image#edit", as: :edit_document_lead_image
-  patch "/documents/:document_id/lead-image/:image_id/edit" => "document_lead_image#update", as: :update_document_lead_image
-  post "/documents/:document_id/lead-image/:image_id/choose" => "document_lead_image#choose_image", as: :choose_document_lead_image
-  patch "/documents/:document_id/lead-image/:image_id/choose" => "document_lead_image#update_and_choose_image", as: :update_and_choose_document_lead_image
-  delete "/documents/:document_id/lead-image" => "document_lead_image#destroy", as: :remove_document_lead_image
-  delete "/documents/:document_id/lead-image/:image_id" => "document_lead_image#delete_image", as: :delete_document_lead_image
+  get "/documents/:document_id/images" => "document_images#index", as: :document_images
+  post "/documents/:document_id/images" => "document_images#create", as: :create_document_image
+  get "/documents/:document_id/images/:image_id/crop" => "document_images#crop", as: :crop_document_image
+  patch "/documents/:document_id/images/:image_id/crop" => "document_images#update_crop"
+  get "/documents/:document_id/images/:image_id/edit" => "document_images#edit", as: :edit_document_image
+  patch "/documents/:document_id/images/:image_id/edit" => "document_images#update", as: :update_document_image
+  delete "/documents/:document_id/images/:image_id" => "document_images#destroy", as: :destroy_document_image
+
+  post "/documents/:document_id/lead-image/:image_id" => "document_lead_image#choose", as: :choose_document_lead_image
+  patch "/documents/:document_id/lead-image/:image_id" => "document_lead_image#update", as: :update_document_lead_image
+  delete "/documents/:document_id/lead-image/:image_id" => "document_lead_image#destroy", as: :destroy_document_lead_image
+  delete "/documents/:document_id/lead-image" => "document_lead_image#remove", as: :remove_document_lead_image
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 

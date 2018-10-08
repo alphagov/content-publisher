@@ -3,7 +3,7 @@
 RSpec.feature "Upload no file as a lead image" do
   scenario do
     given_there_is_a_document
-    when_i_visit_the_lead_images_page
+    when_i_visit_the_images_page
     when_i_upload_no_file
     then_i_should_see_an_error
   end
@@ -13,8 +13,8 @@ RSpec.feature "Upload no file as a lead image" do
     create(:document, document_type: document_type_schema.id)
   end
 
-  def when_i_visit_the_lead_images_page
-    visit document_lead_image_path(Document.last)
+  def when_i_visit_the_images_page
+    visit document_images_path(Document.last)
   end
 
   def when_i_upload_no_file
@@ -22,6 +22,6 @@ RSpec.feature "Upload no file as a lead image" do
   end
 
   def then_i_should_see_an_error
-    expect(page).to have_content(I18n.t("document_lead_image.index.no_file_selected"))
+    expect(page).to have_content(I18n.t("document_images.index.no_file_selected"))
   end
 end

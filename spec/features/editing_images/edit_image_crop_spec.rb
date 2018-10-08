@@ -3,7 +3,7 @@
 RSpec.feature "Edit image crop", js: true do
   scenario do
     given_there_is_a_document_with_images
-    when_i_visit_the_lead_images_page
+    when_i_visit_the_images_page
     and_i_edit_the_image_crop
     then_the_image_crop_is_updated
     and_the_preview_creation_succeeded
@@ -23,9 +23,8 @@ RSpec.feature "Edit image crop", js: true do
            fixture: "1000x1000.jpg")
   end
 
-  def when_i_visit_the_lead_images_page
-    visit document_path(Document.last)
-    click_on "Change Lead image"
+  def when_i_visit_the_images_page
+    visit document_images_path(Document.last)
   end
 
   def and_i_edit_the_image_crop

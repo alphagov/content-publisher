@@ -1,5 +1,5 @@
-<% content_for :title, t("document_lead_image.edit.title", title: @document.title_or_fallback) %>
-<% content_for :back_link, document_lead_image_path(@document) %>
+<% content_for :title, t("document_images.edit.title", title: @document.title_or_fallback) %>
+<% content_for :back_link, document_images_path(@document) %>
 
 <%= render "components/image_meta", {
   id: "selected-image",
@@ -9,15 +9,15 @@
 } %>
 
 <% submit_path = params[:wizard] == "lead_image" ?
-    update_and_choose_document_lead_image_path(@document, @image) :
-    update_document_lead_image_path(@document, @image) %>
+    choose_document_lead_image_path(@document, @image) :
+    update_document_image_path(@document, @image) %>
 
 <%= form_tag(submit_path, method: :patch) do %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
         label: {
-          text: t("document_lead_image.edit.form_labels.alt_text"),
+          text: t("document_images.edit.form_labels.alt_text"),
           bold: true
         },
         name: "alt_text",
@@ -31,10 +31,10 @@
     <div class="govuk-grid-column-one-third">
       <%= render "components/contextual_guidance", {
         id: "alt-text-guidance",
-        title: t("document_lead_image.edit.form_labels.alt_text"),
+        title: t("document_images.edit.form_labels.alt_text"),
       } do %>
         <%= render "govuk_publishing_components/components/govspeak" do %>
-          <%= govspeak_to_html t("document_lead_image.edit.guidance.alt_text") %>
+          <%= govspeak_to_html t("document_images.edit.guidance.alt_text") %>
         <% end %>
       <% end %>
     </div>
@@ -44,7 +44,7 @@
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
         label: {
-          text: t("document_lead_image.edit.form_labels.caption"),
+          text: t("document_images.edit.form_labels.caption"),
           bold: true
         },
         name: "caption",
@@ -58,10 +58,10 @@
     <div class="govuk-grid-column-one-third">
       <%= render "components/contextual_guidance", {
         id: "caption-guidance",
-        title: t("document_lead_image.edit.form_labels.caption"),
+        title: t("document_images.edit.form_labels.caption"),
       } do %>
         <%= render "govuk_publishing_components/components/govspeak" do %>
-          <%= govspeak_to_html t("document_lead_image.edit.guidance.caption") %>
+          <%= govspeak_to_html t("document_images.edit.guidance.caption") %>
         <% end %>
       <% end %>
     </div>
@@ -71,7 +71,7 @@
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
         label: {
-          text: t("document_lead_image.edit.form_labels.credit"),
+          text: t("document_images.edit.form_labels.credit"),
           bold: true
         },
         name: "credit",
@@ -85,10 +85,10 @@
     <div class="govuk-grid-column-one-third">
       <%= render "components/contextual_guidance", {
         id: "credit-guidance",
-        title: t("document_lead_image.edit.form_labels.credit"),
+        title: t("document_images.edit.form_labels.credit"),
       } do %>
         <%= render "govuk_publishing_components/components/govspeak" do %>
-          <%= govspeak_to_html t("document_lead_image.edit.guidance.credit") %>
+          <%= govspeak_to_html t("document_images.edit.guidance.credit") %>
         <% end %>
       <% end %>
     </div>

@@ -1,83 +1,13 @@
 # frozen_string_literal: true
 
 class DocumentLeadImageController < ApplicationController
+  rescue_from GdsApi::BaseError do |e|
+    Rails.logger.error(e)
+    redirect_to document_images_path, alert_with_description: t("document_images.index.flashes.api_error")
+  end
+
   def index
     @document = Document.find_by_param(params[:document_id])
-  end
-
-  def create
-    document = Document.find_by_param(params[:document_id])
-
-    unless params[:image]
-      redirect_to document_lead_image_path, alert: t("document_lead_image.index.no_file_selected")
-      return
-    end
-
-    image_uploader = ImageUploader.new(params.require(:image))
-
-    unless image_uploader.valid?
-      redirect_to document_lead_image_path, alert: {
-        "alerts" => image_uploader.errors,
-        "title" => t("document_lead_image.index.error_summary_title"),
-      }
-      return
-    end
-
-    begin
-      image = image_uploader.upload(document)
-      image.asset_manager_file_url = upload_image_to_asset_manager(image)
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_lead_image_path, alert_with_description: t("document_lead_image.index.flashes.api_error")
-      return
-    end
-
-    image.save!
-    redirect_to crop_document_lead_image_path(params[:document_id], image.id, wizard: params[:wizard])
-  end
-
-  def crop
-    @document = Document.find_by_param(params[:document_id])
-    @image = @document.images.find(params[:image_id])
-  end
-
-  def update_crop
-    document = Document.find_by_param(params[:document_id])
-    image = Image.find(params[:image_id])
-
-
-    begin
-      Image.transaction do
-        image.update!(update_crop_params)
-        asset_manager_file_url = upload_image_to_asset_manager(image)
-        delete_image_from_asset_manager(image)
-        image.asset_manager_file_url = asset_manager_file_url
-        image.save!
-      end
-
-      DocumentUpdateService.update!(
-        document: document,
-        user: current_user,
-        type: "image_updated",
-        attributes_to_update: {},
-      )
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
-      return
-    end
-
-    if params[:wizard].present?
-      redirect_to edit_document_lead_image_path(document, image, params.permit(:wizard))
-      return
-    end
-
-    redirect_to document_lead_image_path(document)
-  end
-
-  def edit
-    @document = Document.find_by_param(params[:document_id])
-    @image = Image.find_by(id: params[:image_id])
   end
 
   def update
@@ -85,104 +15,56 @@ class DocumentLeadImageController < ApplicationController
     image = document.images.find(params[:image_id])
     image.update!(update_params)
 
-    begin
-      DocumentUpdateService.update!(
-        document: document,
-        user: current_user,
-        type: "image_updated",
-        attributes_to_update: {},
-      )
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
-      return
-    end
-
-    redirect_to document_lead_image_path(document)
-  end
-
-  def update_and_choose_image
-    document = Document.find_by_param(params[:document_id])
-    image = document.images.find(params[:image_id])
-    image.update!(update_params)
-
-    begin
-      DocumentUpdateService.update!(
-        document: document,
-        user: current_user,
-        type: "lead_image_updated",
-        attributes_to_update: { lead_image_id: params[:image_id] },
-      )
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
-      return
-    end
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "lead_image_updated",
+      attributes_to_update: { lead_image_id: image.id },
+    )
 
     redirect_to document_path(document)
   end
 
-  def choose_image
+  def choose
     document = Document.find_by_param(params[:document_id])
 
-    begin
-      DocumentUpdateService.update!(
-        document: document,
-        user: current_user,
-        type: "lead_image_updated",
-        attributes_to_update: { lead_image_id: params[:image_id] },
-      )
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
-      return
-    end
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "lead_image_updated",
+      attributes_to_update: { lead_image_id: params[:image_id] },
+    )
 
     redirect_to document_path(document)
   end
 
-  def delete_image
+  def remove
     document = Document.find_by_param(params[:document_id])
-    image = document.images.find(params[:image_id])
 
-    begin
-      if image.id == document.lead_image_id
-        DocumentUpdateService.update!(
-          document: document,
-          user: current_user,
-          type: "lead_image_removed",
-          attributes_to_update: { lead_image_id: nil },
-        )
-      end
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "lead_image_removed",
+      attributes_to_update: { lead_image_id: nil },
+    )
 
-      AssetManagerService.new.delete(image)
-      image.destroy
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
-      return
-    end
-
-    redirect_to document_lead_image_path(document), notice: t("document_lead_image.index.flashes.image_deleted")
+    redirect_to document_path(document)
   end
 
   def destroy
     document = Document.find_by_param(params[:document_id])
+    image = document.images.find(params[:image_id])
     raise "Trying to delete image for a live document" if document.has_live_version_on_govuk
 
-    begin
-      DocumentUpdateService.update!(
-        document: document,
-        user: current_user,
-        type: "lead_image_removed",
-        attributes_to_update: { lead_image_id: nil },
-      )
-    rescue GdsApi::BaseError => e
-      Rails.logger.error(e)
-      redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
-      return
-    end
+    DocumentUpdateService.update!(
+      document: document,
+      user: current_user,
+      type: "lead_image_removed",
+      attributes_to_update: { lead_image_id: nil },
+    )
 
+    AssetManagerService.new.delete(image)
+    image.destroy!
     redirect_to document_path(document)
   end
 
