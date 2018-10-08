@@ -77,6 +77,17 @@
     </main>
   </div>
 
+  <%
+    internal_metadata = {}
+
+    if @document && debug_document_path(@document)
+      internal_metadata = {
+        href: debug_document_path(@document),
+        text: "Internal metadata (not shown to publishers)"
+      }
+    end
+  %>
+
   <%= render "govuk_publishing_components/components/layout_footer", {
     navigation: [
       {
@@ -90,7 +101,7 @@
             href: "https://www.gov.uk/government/content-publishing",
             text: "How to write, publish, and improve content"
           }
-        ]
+        ].push(internal_metadata)
       }
     ]
   } %>
