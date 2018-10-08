@@ -10,7 +10,7 @@ class AssetManagerService
   end
 
   def publish(asset)
-    asset_manager.update_asset(asset.asset_manager_id, file: asset, draft: false)
+    asset_manager.update_asset(asset.asset_manager_id, draft: false)
   end
 
   def delete(asset)
