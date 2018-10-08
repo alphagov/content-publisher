@@ -22,7 +22,8 @@ class PublishDocumentController < ApplicationController
     end
 
     redirect_to document_published_path(document)
-  rescue GdsApi::BaseError
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
     redirect_to document, alert_with_description: t("documents.show.flashes.publish_error")
   end
 

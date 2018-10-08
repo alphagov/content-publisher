@@ -26,7 +26,8 @@ class DocumentLeadImageController < ApplicationController
     begin
       image = image_uploader.upload(document)
       image.asset_manager_file_url = upload_image_to_asset_manager(image)
-    rescue GdsApi::BaseError
+    rescue GdsApi::BaseError => e
+      Rails.logger.error(e)
       redirect_to document_lead_image_path, alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
@@ -60,7 +61,8 @@ class DocumentLeadImageController < ApplicationController
         type: "image_updated",
         attributes_to_update: {},
       )
-    rescue GdsApi::BaseError
+    rescue GdsApi::BaseError => e
+      Rails.logger.error(e)
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
@@ -90,7 +92,8 @@ class DocumentLeadImageController < ApplicationController
         type: "image_updated",
         attributes_to_update: {},
       )
-    rescue GdsApi::BaseError
+    rescue GdsApi::BaseError => e
+      Rails.logger.error(e)
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
@@ -110,7 +113,8 @@ class DocumentLeadImageController < ApplicationController
         type: "lead_image_updated",
         attributes_to_update: { lead_image_id: params[:image_id] },
       )
-    rescue GdsApi::BaseError
+    rescue GdsApi::BaseError => e
+      Rails.logger.error(e)
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
@@ -128,7 +132,8 @@ class DocumentLeadImageController < ApplicationController
         type: "lead_image_updated",
         attributes_to_update: { lead_image_id: params[:image_id] },
       )
-    rescue GdsApi::BaseError
+    rescue GdsApi::BaseError => e
+      Rails.logger.error(e)
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
@@ -152,7 +157,8 @@ class DocumentLeadImageController < ApplicationController
 
       AssetManagerService.new.delete(image)
       image.destroy
-    rescue GdsApi::BaseError
+    rescue GdsApi::BaseError => e
+      Rails.logger.error(e)
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
@@ -171,7 +177,8 @@ class DocumentLeadImageController < ApplicationController
         type: "lead_image_removed",
         attributes_to_update: { lead_image_id: nil },
       )
-    rescue GdsApi::BaseError
+    rescue GdsApi::BaseError => e
+      Rails.logger.error(e)
       redirect_to document_lead_image_path(document), alert_with_description: t("document_lead_image.index.flashes.api_error")
       return
     end
