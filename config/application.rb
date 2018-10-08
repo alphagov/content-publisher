@@ -29,16 +29,6 @@ module ContentPublisher
 
     config.action_view.raise_on_missing_translations = true
 
-    # The "acceptance environment" we're in - not the same as Rails env.
-    # Can be production, staging, integration, or development
-    govuk_environments = {
-      "production" => "production",
-      "staging" => "staging",
-      "integration-blue-aws" => "integration",
-    }
-
-    config.govuk_environment = govuk_environments.fetch(ENV["ERRBIT_ENVIRONMENT_NAME"], "development")
-
     config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.yml")]
     config.action_view.raise_on_missing_translations = true
 
