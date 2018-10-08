@@ -4,6 +4,9 @@
     "postdeploy": "rake db:migrate db:seed"
   },
   "env": {
+    "HEROKU": {
+      "value": "true"
+    },
     "ACTIVE_STORAGE_SERVICE": {
       "required": true,
       "value": "local"
