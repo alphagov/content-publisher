@@ -6,12 +6,16 @@
   @include govuk-font(19);
 
   margin-bottom: govuk-spacing(4);
-  padding-bottom: govuk-spacing(3);
+  padding-bottom: govuk-spacing(4);
   border-bottom: 1px solid $govuk-border-colour;
 
   .app-c-metadata {
     margin-bottom: govuk-spacing(3);
   }
+}
+
+.app-c-image-meta:last-child {
+  border-bottom: none;
 }
 
 .app-c-image-meta--no-border {
