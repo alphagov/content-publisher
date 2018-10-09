@@ -119,6 +119,8 @@ private
   end
 
   def update_crop_params
-    params.permit(:crop_x, :crop_y, :crop_width, :crop_height)
+    image_aspect_ratio = Image::HEIGHT.to_f / Image::WIDTH
+    crop_height = params[:crop_width].to_i * image_aspect_ratio
+    params.permit(:crop_x, :crop_y, :crop_width).merge(crop_height: crop_height.to_i)
   end
 end
