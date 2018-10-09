@@ -2,7 +2,7 @@
   image.id == @document.lead_image_id ? 0 : 1
 end %>
 
-<% images.each do |image| %>
+<% images.each_with_index do |image, i| %>
   <% remove_lead_image_button = capture do %>
     <%= form_tag remove_document_lead_image_path(@document), method: :delete, class: "app-inline-block" do %>
       <button class="govuk-link">Remove</button>
@@ -37,6 +37,7 @@ end %>
   <%= render "components/image_meta", {
     id: "image-#{image.id}",
     src: url_for(image.thumbnail),
+    no_border: i == images.length - 1,
     meta: {
       alt_text: image.alt_text,
       caption: image.caption,
