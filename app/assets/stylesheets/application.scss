@@ -1,6 +1,4 @@
-$govuk-image-url-function: "image-url";
-$govuk-font-url-function: "font-url";
-$govuk-global-styles: true;
+@import "govuk_publishing_components/all_components";
 
 @import "core/link";
 
