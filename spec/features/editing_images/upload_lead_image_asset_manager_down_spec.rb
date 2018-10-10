@@ -33,6 +33,6 @@ RSpec.feature "Upload a lead image when Asset Manager is down" do
   end
 
   def and_the_image_does_not_exist
-    expect(page).to have_content(I18n.t("document_images.index.no_existing_image"))
+    expect(page).to_not have_content(I18n.t("document_images.index.existing_image"))
   end
 end
