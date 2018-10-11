@@ -1,6 +1,10 @@
 @import "../../../node_modules/govuk-frontend/settings/all";
 @import "../../../node_modules/govuk-frontend/helpers/all";
 
+.govuk-visually-hidden {
+  @include govuk-visually-hidden;
+}
+
 .app-c-contextual-guidance-wrapper {
   @include govuk-font(19);
 
