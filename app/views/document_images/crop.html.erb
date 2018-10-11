@@ -7,18 +7,20 @@
   <%= render "/components/image_cropper", {
     id: "crop-image",
     description: t("document_images.crop.description"),
-    no_js_description: t("document_images.crop.no_js_description"),
     src: url_for(@image.blob),
+    no_js_description: t("document_images.crop.no_js_description"),
     no_js_src: url_for(@image.crop_variant('960x640')),
+    exact_dimensions: @image.at_exact_dimensions?,
+    exact_dimensions_description: t("document_images.crop.exact_dimensions_description"),
     alt_text: @image.alt_text,
     crop_x: @image.crop_x,
     crop_y: @image.crop_y,
     crop_width: @image.crop_width,
-    crop_height: @image.crop_height
+    crop_height: @image.crop_height,
   } %>
 
   <%= render "govuk_publishing_components/components/button", {
-    text: "Crop image",
+    text: (@image.at_exact_dimensions?) ? "Continue" : "Crop image",
     margin_bottom: true
   } %>
 <% end %>

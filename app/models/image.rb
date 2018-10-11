@@ -39,4 +39,8 @@ class Image < ApplicationRecord
     processed_image = thumbnail.processed
     processed_image.service.download(processed_image.key)
   end
+
+  def at_exact_dimensions?
+    width == WIDTH && height == HEIGHT
+  end
 end
