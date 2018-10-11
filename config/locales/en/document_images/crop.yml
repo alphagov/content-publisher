@@ -3,3 +3,4 @@ en:
     crop:
       title: "Crop lead image for ‘%{title}’"
       description: "Select the part of the image to use. Images on GOV.UK are a fixed shape."
+      no_js_description: "The image you selected has been automatically resized to fit on GOV.UK. If you have JavaScript enabled in your browser you will be able to manually crop and resize the image."

@@ -3,6 +3,7 @@
 $cropper-point-size: 10px;
 
 .app-c-image-cropper {
+  @include govuk-font($size: 19);
   @include govuk-responsive-margin(6, "bottom");
 
   .cropper-view-box {
@@ -61,14 +62,34 @@ $cropper-point-size: 10px;
     top: -$cropper-point-size / 2;
     left: -$cropper-point-size / 2;
   }
-
 }
 
 .app-c-image-cropper__image {
-  display: block;
+  display: none;
   max-width: 100%;
   max-height: 640px;
   margin-right: auto;
   margin-left: auto;
 }
 
+.app-c-image-cropper__description {
+  display: none;
+  margin-top: 0;
+}
+
+.app-c-image-cropper__no-js-description {
+  margin-top: 0;
+}
+
+.js-enabled {
+  .app-c-image-cropper__no-js-description,
+  .app-c-image-cropper__no-js-image {
+    display: none;
+  }
+
+  .app-c-image-cropper__description,
+  .app-c-image-cropper__image {
+    display: block;
+  }
+
+}
