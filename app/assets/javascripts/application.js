@@ -1,5 +1,5 @@
-//= require vendor/jquery-1.12.4
-//= require govuk/modules
+//= require govuk_publishing_components/dependencies
+//= require govuk_publishing_components/all_components
 //= require vendor/nodelist-foreach-polyfill/index.js
 //= require vendor/fetch-polyfill/fetch.js
 //= require vendor/abortcontroller-polyfill/abortcontroller-polyfill.js
