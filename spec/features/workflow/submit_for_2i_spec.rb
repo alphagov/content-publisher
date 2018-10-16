@@ -5,7 +5,9 @@ RSpec.feature "2i" do
     given_there_is_a_document_in_draft
     when_i_visit_the_document
     and_i_click_submit_for_2i
-    then_i_see_that_the_content_has_been_submitted
+    then_i_see_the_document_is_submitted
+    when_i_edit_the_document
+    then_i_see_the_document_is_in_review
   end
 
   def given_there_is_a_document_in_draft
@@ -20,7 +22,19 @@ RSpec.feature "2i" do
     click_on "Submit for 2i review"
   end
 
-  def then_i_see_that_the_content_has_been_submitted
-    expect(page).to have_content "Content has been submitted for 2i review"
+  def then_i_see_the_document_is_submitted
+    expect(page).to have_content I18n.t("documents.show.flashes.submitted_for_review.title")
+    expect(page).to have_content I18n.t("user_facing_states.submitted_for_review.name")
+  end
+
+  def then_i_see_the_document_is_in_review
+    expect(page).to have_content I18n.t("user_facing_states.submitted_for_review.name")
+  end
+
+  def when_i_edit_the_document
+    stub_any_publishing_api_put_content
+    click_on "Change Content"
+    fill_in "document[title]", with: "a new title"
+    click_on "Save"
   end
 end

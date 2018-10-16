@@ -7,9 +7,8 @@ class DocumentUpdateService
     end
 
     document.publication_state = "changes_not_sent_to_draft"
-    document.review_state = "unreviewed"
     document.last_editor = user if document_edited?(type)
-
+    document.review_state = "unreviewed" unless in_review?(document)
     document.assign_attributes(attributes_to_update)
 
     Document.transaction do
@@ -22,5 +21,9 @@ class DocumentUpdateService
 
   def self.document_edited?(type)
     %w(updated_content updated_tags).include?(type)
+  end
+
+  def self.in_review?(document)
+    document.review_state == "submitted_for_review"
   end
 end
