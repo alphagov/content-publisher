@@ -1,5 +1,10 @@
 <% content_for :title, t("document_images.edit.title", title: @document.title_or_fallback) %>
-<% content_for :back_link, document_images_path(@document) %>
+
+<% if params[:wizard] == "lead_image" %>
+  <% content_for :back_link, crop_document_image_path(@document, @image, wizard: params[:wizard]) %>
+<% else %>
+  <% content_for :back_link, document_images_path(@document) %>
+<% end %>
 
 <%= render "components/image_meta", {
   id: "selected-image",
