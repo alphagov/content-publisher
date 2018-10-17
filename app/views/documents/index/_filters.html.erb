@@ -9,67 +9,66 @@
     type: "search"
   } %>
 
-  <% document_type_select = DocumentTypeSchema.all
-    .reject(&:managed_elsewhere)
-    .map { |d| [d.label, d.id] }
-  %>
+  <div class="govuk-form-group">
+    <% document_type_select = DocumentTypeSchema.all
+      .reject(&:managed_elsewhere)
+      .map { |d| [d.label, d.id] }
+    %>
 
-  <%= render "components/autocomplete", {
-    name: "document_type",
-    label: {
+    <%= render "govuk_publishing_components/components/label", {
       text: t("documents.index.filter.document_type"),
+      html_for: "document-type-filter",
       bold: true
-    },
-    # TODO: implement allow_blank so we don't have to add a blank option
-    options: [["", ""]] + document_type_select,
-    selected_options: [params[:document_type]],
-    size: 10,
-    data: {
-      module: "autocomplete"
-    }
-  } %>
+    } %>
 
-  <% state_select = UserFacingState::STATES
-    .map { |state| [t("user_facing_states.#{state}.name"), state] }
-  %>
+    <%= select_tag "document_type",
+      options_for_select(document_type_select, [params[:document_type]]),
+      include_blank: true,
+      id: "document-type-filter",
+      class: "govuk-select"
+    %>
+  </div>
 
-  <%= render "components/autocomplete", {
-    name: "state",
-    label: {
+  <div class="govuk-form-group">
+    <% state_select = UserFacingState::STATES
+      .map { |state| [t("user_facing_states.#{state}.name"), state] }
+    %>
+
+    <%= render "govuk_publishing_components/components/label", {
       text: t("documents.index.filter.state"),
+      html_for: "document-state-filter",
       bold: true
-    },
-    # TODO: implement allow_blank so we don't have to add a blank option
-    options: [["", ""]] + state_select,
-    selected_options: [params[:state]],
-    size: 10,
-    data: {
-      module: "autocomplete"
-    }
-  } %>
+    } %>
 
-  <% organisation_select = begin
-    LinkablesService.new("organisation").select_options
-  rescue GdsApi::BaseError => e
-    GovukError.notify(e)
-    []
-  end %>
+    <%= select_tag "state",
+      options_for_select(state_select, [params[:state]]),
+      include_blank: true,
+      id: "document-state-filter",
+      class: "govuk-select"
+    %>
+  </div>
 
-  <%= render "components/autocomplete", {
-    id: "organisation",
-    name: "organisation",
-    label: {
+  <div class="govuk-form-group">
+    <% organisation_select = begin
+      LinkablesService.new("organisation").select_options
+    rescue GdsApi::BaseError => e
+      GovukError.notify(e)
+      []
+    end %>
+
+    <%= render "govuk_publishing_components/components/label", {
       text: t("documents.index.filter.organisation"),
+      html_for: "document-organisation-filter",
       bold: true
-    },
-    # TODO: implement allow_blank so we don't have to add a blank option
-    options: [["", ""]] + organisation_select,
-    selected_options: [params[:organisation]],
-    size: 10,
-    data: {
-      module: "autocomplete"
-    }
-  } %>
+    } %>
+
+    <%= select_tag "organisation",
+      options_for_select(organisation_select, [params[:organisation]]),
+      include_blank: true,
+      id: "document-organisation-filter",
+      class: "govuk-select"
+    %>
+  </div>
 
   <%= hidden_field_tag "sort", @sort %>
 

@@ -52,3 +52,7 @@
 .govuk-footer__heading {
   @include govuk-visually-hidden;
 }
+
+.govuk-select {
+  width: 100%;
+}
