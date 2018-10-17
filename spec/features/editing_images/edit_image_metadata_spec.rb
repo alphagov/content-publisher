@@ -30,6 +30,7 @@ RSpec.feature "Edit image metadata" do
 
   def then_i_see_the_image_is_updated
     expect(@request).to have_been_requested
+    expect(page).to have_content(I18n.t("document_images.index.flashes.details_edited", filename: Image.last.filename))
     expect(page).to have_content("Some alt text")
     expect(page).to have_content("A caption")
     expect(page).to have_content("A credit")
