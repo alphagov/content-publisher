@@ -21,6 +21,6 @@ RSpec.feature "User filters documents without Publishing API" do
   end
 
   def then_i_cannot_filter_by_organisation
-    expect(all("#organisation option").count).to eq 1
+    expect(all("#document-organisation-filter option").count).to eq 1
   end
 end
