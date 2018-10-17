@@ -16,8 +16,18 @@
     crop_height: @image.crop_height,
   } %>
 
-  <%= render "govuk_publishing_components/components/button", {
-    text: (@image.at_exact_dimensions?) ? "Continue" : "Crop image",
-    margin_bottom: true
-  } %>
+  <div class="app-js-only">
+    <%= render "govuk_publishing_components/components/button", {
+      text: (@image.at_exact_dimensions?) ? "Continue" : "Crop image",
+      margin_bottom: true
+    } %>
+  </div>
+
+  <div class="app-no-js">
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Continue",
+      margin_bottom: true
+    } %>
+  </div>
+
 <% end %>

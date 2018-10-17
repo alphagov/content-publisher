@@ -5,3 +5,17 @@
 .app-inline-block {
   display: inline-block;
 }
+
+.app-js-only {
+  display: none;
+}
+
+.js-enabled {
+  .app-no-js {
+    display: none;
+  }
+
+  .app-js-only {
+    display: block;
+  }
+}
