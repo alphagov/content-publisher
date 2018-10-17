@@ -1,8 +1,6 @@
-@import "../../../node_modules/govuk-frontend/helpers/all";
-@import "../../../node_modules/govuk-frontend/settings/all";
-@import "../../../node_modules/govuk-frontend/tools/all";
-@import "../../../node_modules/govuk-frontend/core/links";
-
+@import "govuk-frontend/helpers/all";
+@import "govuk-frontend/settings/all";
+@import "govuk-frontend/core/links";
 
 .app-c-markdown-editor {
   .govuk-textarea {

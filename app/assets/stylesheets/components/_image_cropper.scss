@@ -1,3 +1,5 @@
+@import "govuk-frontend/settings/all";
+@import "govuk-frontend/helpers/all";
 @import "vendor/cropperjs/dist/cropper";
 
 $cropper-point-size: 10px;

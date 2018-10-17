@@ -1,6 +1,7 @@
-@import "../../../node_modules/govuk-frontend/helpers/all";
-@import "../../../node_modules/govuk-frontend/settings/all";
-@import "../../../node_modules/govuk-frontend/tools/all";
+@import "govuk-frontend/helpers/all";
+@import "govuk-frontend/settings/all";
+@import "govuk-frontend/tools/all";
+@import "govuk-frontend/utilities/clearfix";
 
 .app-side {
   @include govuk-responsive-margin(6, "bottom");
