@@ -1,12 +1,36 @@
 <%
   id ||= "image-meta-#{SecureRandom.hex(4)}"
   alt_text ||= nil
+  exact_dimensions ||= false
 %>
-<div class="app-c-image-cropper" id="<%= id %>" data-module="image-cropper">
-  <%= tag.img class: "app-c-image-cropper__image",
-    src: src,
+
+<div class="app-c-image-cropper" id="<%= id %>" <%= "data-module=image-cropper" unless exact_dimensions %>>
+
+  <%= tag.p class: "app-c-image-cropper__no-js-description" do %>
+    The image you selected has been automatically resized to fit on GOV.UK. If you have JavaScript enabled in your browser you will be able to manually crop and resize the image.
+  <% end %>
+
+  <%= tag.img class: "app-c-image-cropper__no-js-image",
+    src: no_js_src,
     alt: alt_text
   %>
+
+  <% if exact_dimensions %>
+    <%= tag.p class: "app-c-image-cropper__description" do %>
+      The image you selected has exactly the required dimensions so it can not be cropped or resized.
+    <% end %>
+  <% else %>
+    <%= tag.p class: "app-c-image-cropper__description" do %>
+      Select the part of the image to use. Images on GOV.UK are a fixed shape.
+    <% end %>
+  <% end %>
+
+  <div class="app-c-image-cropper__container">
+    <%= tag.img class: "app-c-image-cropper__image",
+      src: src,
+      alt: alt_text
+    %>
+  </div>
 
   <%= hidden_field_tag 'crop_x', crop_x, class: "js-image-cropper-x" %>
   <%= hidden_field_tag 'crop_y', crop_y, class: "js-image-cropper-y" %>
