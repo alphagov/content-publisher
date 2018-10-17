@@ -25,6 +25,7 @@ RSpec.feature "Remove a lead image" do
   end
 
   def then_the_document_has_no_lead_image
+    expect(page).to have_content(I18n.t("documents.show.flashes.lead_image.removed"))
     expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
 
