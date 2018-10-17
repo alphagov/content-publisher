@@ -1,0 +1,14 @@
+<% tags = @document.document_type_schema.tags.map { |schema|
+  {
+    field: schema.label,
+    value: render("documents/tags/#{schema.type}", schema: schema, values: @document.tags[schema.id]),
+  }
+} %>
+
+<%= render "components/summary", {
+  title: {
+    text: t("documents.show.tags.title"),
+    change_url: document_tags_path(@document)
+  },
+  items: tags
+} %>

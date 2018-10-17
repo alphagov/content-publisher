@@ -44,6 +44,8 @@ Rails.application.routes.draw do
   post "/documents/:document_id/lead-image/:image_id" => "document_lead_image#choose", as: :choose_document_lead_image
   delete "/documents/:document_id/lead-image" => "document_lead_image#remove", as: :remove_document_lead_image
 
+  get "/documents/:document_id/topics" => "document_topics#edit", as: :document_topics
+
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 
   get "/documentation" => "documentation#index"
