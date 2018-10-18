@@ -4,7 +4,7 @@
 
 .app-c-markdown-editor {
   .govuk-textarea {
-    padding-top: govuk-spacing(8);
+    padding-top: (govuk-spacing(8) + 50px);
     resize: vertical;
   }
 }
@@ -22,7 +22,7 @@
   margin-bottom: -$govuk-border-width-form-element;
   border: $govuk-border-width-form-element solid $govuk-input-border-colour;
   border-bottom: 0;
-  background-color: govuk-colour("grey-3");
+  background-color: govuk-colour("white");
 }
 
 .app-c-markdown-editor__preview-toggle {
@@ -53,7 +53,7 @@
 .app-c-markdown-editor__button--muted {
   border-right: $govuk-border-width-form-element solid $govuk-border-colour;
   border-left: $govuk-border-width-form-element solid $govuk-border-colour;
-  color: $govuk-secondary-text-colour;
+  color: $govuk-text-colour;
   background: govuk-colour("grey-4");
   text-decoration: none;
 
@@ -77,5 +77,52 @@
 
   .govuk-textarea {
     overflow: scroll;
+    padding-top: govuk-spacing(8);
   }
+}
+
+.app-c-markdown-editor__toolbar {
+  background-color: govuk-colour("grey-4");
+  padding-left: 7px;
+  padding-top: 7px;
+}
+
+.app-c-markdown-editor-toolbar__button {
+  @include govuk-focusable;
+  display: inline-block;
+
+  &:hover {
+    cursor: pointer;
+    background-color: govuk-colour("white");
+  }
+}
+
+.app-c-markdown-editor-toolbar__icon {
+  display: block;
+  width: 35px;
+  height: 35px;
+}
+
+.app-c-markdown-editor-toolbar__icon--heading-2 {
+  background-image: image-url("components/markdown-editor/headline_two.svg");
+}
+
+.app-c-markdown-editor-toolbar__icon--heading-3 {
+  background-image: image-url("components/markdown-editor/headline_three.svg");
+}
+
+.app-c-markdown-editor-toolbar__icon--link {
+  background-image: image-url("components/markdown-editor/link.svg");
+}
+
+.app-c-markdown-editor-toolbar__icon--blockquote {
+  background-image: image-url("components/markdown-editor/blockquote.svg");
+}
+
+.app-c-markdown-editor-toolbar__icon--numbered-list {
+  background-image: image-url("components/markdown-editor/number_list.svg");
+}
+
+.app-c-markdown-editor-toolbar__icon--bullets {
+  background-image: image-url("components/markdown-editor/bullet_point.svg");
 }
