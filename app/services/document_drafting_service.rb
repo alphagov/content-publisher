@@ -2,7 +2,7 @@
 
 class DocumentDraftingService
   def self.update!(document:, user:, type:)
-    if document.publication_state_was == "sent_to_live"
+    if document.publication_state == "sent_to_live"
       document.current_edition_number += 1
     end
 
