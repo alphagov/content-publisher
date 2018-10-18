@@ -1,7 +1,5 @@
-@import "../../../node_modules/govuk-frontend/helpers/all";
-@import "../../../node_modules/govuk-frontend/settings/all";
-@import "../../../node_modules/govuk-frontend/tools/all";
-@import "../../../node_modules/govuk-frontend/utilities/clearfix";
+@import "govuk-frontend/helpers/all";
+@import "govuk-frontend/utilities/clearfix";
 
 .app-c-metadata {
   @include govuk-font(19);

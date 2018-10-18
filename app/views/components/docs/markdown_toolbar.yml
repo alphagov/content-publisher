@@ -7,4 +7,6 @@ accessibility_criteria: |
 
   * be keyboard focusable
 examples:
-  default: {}
+  default:
+    data:
+      html_for: "markdown-textarea"
