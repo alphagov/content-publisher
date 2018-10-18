@@ -6,7 +6,7 @@
   <% content_for :title, t("documents.edit.title", title: @document.title_or_fallback) %>
 <% end %>
 
-  <%= form_for(@document, html: {'autocomplete': 'off'}, data: {'module': 'edit-document-form', 'url-preview-path': generate_path_path}) do |f| %>
+<%= form_for(@document, html: {'autocomplete': 'off'}, data: {'module': 'edit-document-form', 'url-preview-path': generate_path_path}) do |f| %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/character_count", {
@@ -17,13 +17,14 @@
           },
           name: "document[title]",
           value: @document.title,
+          error_message: @errors&.fetch("title", nil)&.join("<br/>"),
           rows: 2,
           data: {
             "url-preview": "input",
             "contextual-guidance": "document-title-guidance"
           }
         },
-        maxlength: 150
+        maxlength: DraftingRequirements::TITLE_MAX_LENGTH
       } %>
 
       <%= render "components/url_preview", {
