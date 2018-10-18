@@ -12,7 +12,9 @@ en:
       error_summary_title: You need to
       lead_image: Lead image
       flashes:
-        image_deleted: Image deleted
+        cropped: "Cropped image for ‘%{filename}’"
+        details_edited: "Image details have been edited for ‘%{filename}’"
+        deleted: Image deleted
         api_error:
           title: Something has gone wrong
           description: Something went wrong when uploading your file. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).

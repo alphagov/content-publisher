@@ -64,7 +64,7 @@ class DocumentImagesController < ApplicationController
       return
     end
 
-    redirect_to document_images_path(document)
+    redirect_to document_images_path(document), notice: t("document_images.index.flashes.cropped", filename: image.filename)
   end
 
   def edit
@@ -84,7 +84,7 @@ class DocumentImagesController < ApplicationController
       attributes_to_update: {},
     )
 
-    redirect_to document_images_path(document)
+    redirect_to document_images_path(document), notice: t("document_images.index.flashes.details_edited", filename: image.filename)
   end
 
   def destroy
@@ -101,7 +101,7 @@ class DocumentImagesController < ApplicationController
 
     AssetManagerService.new.delete(image)
     image.destroy!
-    redirect_to document_images_path(document), notice: t("document_images.index.flashes.image_deleted")
+    redirect_to document_images_path(document), notice: t("document_images.index.flashes.deleted")
   end
 
 private
