@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit a document when the API is down" do
+RSpec.feature "Edit a document when the Publishing API is down" do
   scenario do
     given_there_is_a_document
     and_the_publishing_api_is_down

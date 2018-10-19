@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "User filters documents without Publishing API" do
+RSpec.feature "User filters documents when the Publishing API is down" do
   scenario do
     given_there_are_some_documents
     and_the_publishing_api_is_down
