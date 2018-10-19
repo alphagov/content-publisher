@@ -27,3 +27,9 @@ en:
         minor_hint: "The ‘last updated’ date will not change, the change note will not be public, and subscribers will not be emailed."
         major_name: There’s a change to the published information.
         major_hint: "The ‘last updated’ date will change, the change note will be published on the page and emailed to subscribers."
+      flashes:
+        drafting_requirements:
+          title: "Drafting requirements"
+          missing: "Document needs a %{field}"
+          max_length: "%{field} length should be less than %{max_length} characters"
+          multiple_lines: "%{field} can't be made up of multiple lines"

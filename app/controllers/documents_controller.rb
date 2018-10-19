@@ -39,19 +39,27 @@ class DocumentsController < ApplicationController
   end
 
   def update
-    document = Document.find_by_param(params[:id])
+    @document = Document.find_by_param(params[:id])
+    @document.assign_attributes(update_params(@document))
+    @errors = DraftingRequirements.new(@document).errors
 
-    DocumentUpdateService.update!(
-      document: document,
+    if @errors.any?
+      flash.now["alert"] = { "title" => I18n.t("documents.edit.flashes.drafting_requirements.title"),
+                             "alerts" => @errors.values.flatten }
+      render :edit
+      return
+    end
+
+    DocumentDraftingService.update!(
+      document: @document,
       user: current_user,
       type: "updated_content",
-      attributes_to_update: update_params(document),
     )
 
-    redirect_to document
+    redirect_to @document
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
-    redirect_to document, alert_with_description: t("documents.show.flashes.draft_error")
+    redirect_to @document, alert_with_description: t("documents.show.flashes.draft_error")
   end
 
   def retry_draft_save
