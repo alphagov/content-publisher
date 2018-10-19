@@ -5,8 +5,8 @@ en:
       title_new: "New %{document_type}"
       fields:
         govspeak:
-          title: Markdown
-          guidance: Markdown guidance
+          title: Formatting
+          guidance: Full markdown guidance
       form_labels:
         title: Title
         summary: Summary

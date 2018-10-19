@@ -1,0 +1,88 @@
+<div class="app-c-markdown-guidance">
+  <%= render "govuk_publishing_components/components/details", {
+        title: "Acronyms"
+  } do %>
+    <p>Definitions for acronyms that will appear if the user hovers the mouse over it.</p>
+    <p>Add each definition in its own paragraph at the end of the body copy.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+    *[TLA]:Three-letter acronym
+    </pre>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/details", {
+        title: "Addresses"
+  } do %>
+    <p>Add $A before and after an address to inset it.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+    $A
+    Address
+    Here
+    $A
+    </pre>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/details", {
+        title: "Call to action"
+  } do %>
+    <p>Add $CTA before and after a paragraph to highlight an action for the user.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+    $CTA
+    You must do this
+    $CTA
+    </pre>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/details", {
+        title: "Email links"
+  } do %>
+    <p>Add < and > brackets around email addresses to make them a link.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+    &lt;example@gov.uk&gt;
+    </pre>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/details", {
+        title: "Tables"
+  } do %>
+    <p>Add | to separate data into columns and put each row on a new line.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+    Name | Colour | Number
+    -|-|-
+    Apple | Green | 3
+    Banana | Yellow | 7
+    </pre>
+    <p>Add - | - after the first row to mark it as column headers.</p>
+    <p>You can right align a column by putting : in the header marker.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+    Name | Number
+    -|-:
+    Apple | 0.3
+    Banana | 0.7
+    </pre>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/details", {
+        title: "Bar charts"
+  } do %>
+    <p>Add {barchart} at the end of numeric tables to display a simple bar chart.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+    Name | Number | Number 
+    -|-|-
+    Thing | 120 | 445
+    Thing | 154 | 228
+    {barchart}
+    </pre>
+    <p>If you include negative values, you must use {barchart negative}.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+    {barchart negative}
+    </pre>
+    <p>Use {barchart compact} to save space by shrinking the chart.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+    {barchart compact}
+    </pre>
+    <p>Use {barchart stacked} for stacked bars. The final column is used to display the total.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+    {barchart stacked}
+    </pre>
+  <% end %>
+</div>

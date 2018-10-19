@@ -31,9 +31,7 @@
           <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link"><%= t("documents.edit.fields.govspeak.guidance") %></a>
         </p>
 
-        <%= render "components/markdown_toolbar", {
-          html_for: "govspeak-editor"
-        } %>
+        <%= render "components/markdown_guidance" %>
       <% end %>
     </div>
   <% end %>
