@@ -29,7 +29,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def and_i_interact_with_the_title_but_leave_it_unedited
-    page.find("#document-title-id").click
+    page.find("textarea[name='document[title]']").click
     page.find("body").click
   end
 
