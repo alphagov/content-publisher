@@ -48,11 +48,10 @@ class DocumentImagesController < ApplicationController
       image.save!
     end
 
-    DocumentUpdateService.update!(
+    DocumentDraftingService.update!(
       document: document,
       user: current_user,
       type: "image_updated",
-      attributes_to_update: {},
     )
 
     if params[:wizard].present?
@@ -84,11 +83,10 @@ class DocumentImagesController < ApplicationController
 
     @image.save!
 
-    DocumentUpdateService.update!(
+    DocumentDraftingService.update!(
       document: @document,
       user: current_user,
       type: "image_updated",
-      attributes_to_update: {},
     )
 
     redirect_to document_images_path(@document), notice: t("document_images.index.flashes.details_edited", file: @image.filename)
@@ -99,11 +97,10 @@ class DocumentImagesController < ApplicationController
     image = document.images.find(params[:image_id])
     raise "Trying to delete image for a live document" if document.has_live_version_on_govuk
 
-    DocumentUpdateService.update!(
+    DocumentDraftingService.update!(
       document: document,
       user: current_user,
       type: "image_removed",
-      attributes_to_update: {},
     )
 
     AssetManagerService.new.delete(image)

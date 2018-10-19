@@ -15,11 +15,12 @@ class DocumentLeadImageController < ApplicationController
     image = document.images.find(params[:image_id])
     image.update!(update_params)
 
-    DocumentUpdateService.update!(
+    document.assign_attributes(lead_image_id: image.id)
+
+    DocumentDraftingService.update!(
       document: document,
       user: current_user,
       type: "lead_image_updated",
-      attributes_to_update: { lead_image_id: image.id },
     )
 
     redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.added", file: image.filename)
@@ -29,11 +30,12 @@ class DocumentLeadImageController < ApplicationController
     document = Document.find_by_param(params[:document_id])
     image = Image.find(params[:image_id])
 
-    DocumentUpdateService.update!(
+    document.assign_attributes(lead_image_id: params[:image_id])
+
+    DocumentDraftingService.update!(
       document: document,
       user: current_user,
       type: "lead_image_updated",
-      attributes_to_update: { lead_image_id: params[:image_id] },
     )
 
     redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.chosen", file: image.filename)
@@ -42,12 +44,12 @@ class DocumentLeadImageController < ApplicationController
   def remove
     document = Document.find_by_param(params[:document_id])
     image = document.lead_image
+    document.assign_attributes(lead_image_id: nil)
 
-    DocumentUpdateService.update!(
+    DocumentDraftingService.update!(
       document: document,
       user: current_user,
       type: "lead_image_removed",
-      attributes_to_update: { lead_image_id: nil },
     )
 
     redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.removed", file: image.filename)
@@ -58,11 +60,12 @@ class DocumentLeadImageController < ApplicationController
     image = document.images.find(params[:image_id])
     raise "Trying to delete image for a live document" if document.has_live_version_on_govuk
 
-    DocumentUpdateService.update!(
+    document.assign_attributes(lead_image_id: nil)
+
+    DocumentDraftingService.update!(
       document: document,
       user: current_user,
       type: "lead_image_removed",
-      attributes_to_update: { lead_image_id: nil },
     )
 
     AssetManagerService.new.delete(image)
