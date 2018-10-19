@@ -51,20 +51,17 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <%= render "govuk_publishing_components/components/character_count", {
-        textarea: {
-          label: {
-            text: t("documents.edit.form_labels.summary"),
-            bold: true
-          },
-          name: "document[summary]",
-          value: @document.summary,
-          rows: 4,
-          data: {
-            "contextual-guidance": "document-summary-guidance"
-          }
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: t("documents.edit.form_labels.summary"),
+          bold: true
         },
-        maxlength: 600
+        name: "document[summary]",
+        value: @document.summary,
+        rows: 4,
+        data: {
+          "contextual-guidance": "document-summary-guidance"
+        }
       } %>
     </div>
 
