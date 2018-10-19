@@ -27,6 +27,7 @@
         },
         name: "alt_text",
         value: @image.alt_text,
+        error_message: @errors&.fetch("alt_text", nil)&.join("<br/>"),
         data: {
           "contextual-guidance": "alt-text-guidance"
         }
@@ -54,6 +55,7 @@
         },
         name: "caption",
         value: @image.caption,
+        error_message: @errors&.fetch("caption", nil)&.join("<br/>"),
         data: {
           "contextual-guidance": "caption-guidance"
         }

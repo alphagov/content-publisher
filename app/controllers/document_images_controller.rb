@@ -73,18 +73,29 @@ class DocumentImagesController < ApplicationController
   end
 
   def update
-    document = Document.find_by_param(params[:document_id])
-    image = document.images.find(params[:image_id])
-    image.update!(update_params)
+    @document = Document.find_by_param(params[:document_id])
+    @image = @document.images.find(params[:image_id])
+    @image.assign_attributes(update_params)
+    @errors = ImageDraftingRequirements.new(@image).errors
+
+    if @errors.any?
+      flash.now["alert"] = { "title" => I18n.t("document_images.edit.flashes.drafting_requirements.title"),
+                             "alerts" => @errors.values.flatten }
+
+      render :edit
+      return
+    end
+
+    @image.save!
 
     DocumentUpdateService.update!(
-      document: document,
+      document: @document,
       user: current_user,
       type: "image_updated",
       attributes_to_update: {},
     )
 
-    redirect_to document_images_path(document), notice: t("document_images.index.flashes.details_edited", filename: image.filename)
+    redirect_to document_images_path(@document), notice: t("document_images.index.flashes.details_edited", filename: @image.filename)
   end
 
   def destroy
