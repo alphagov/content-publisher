@@ -1,0 +1,6 @@
+<% content_for :back_link, document_path(@document) %>
+<% content_for :title, t("document_topics.edit.title", title: @document.title_or_fallback) %>
+
+<p class="govuk-body">
+  <%= t("document_topics.edit.api_down") %>
+</p>
