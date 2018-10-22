@@ -22,7 +22,7 @@ class DocumentImagesController < ApplicationController
 
     unless image_uploader.valid?
       redirect_to document_images_path, alert: {
-        "alerts" => image_uploader.errors,
+        "items" => image_uploader.errors.map { |error| { text: error } },
         "title" => t("document_images.index.error_summary_title"),
       }
       return
@@ -80,7 +80,7 @@ class DocumentImagesController < ApplicationController
 
     if @errors.any?
       flash.now["alert"] = { "title" => I18n.t("document_images.edit.flashes.drafting_requirements.title"),
-                             "alerts" => @errors.values.flatten }
+                             "items" => @errors.values.flatten.map { |error| { text: error } } }
 
       render :edit
       return

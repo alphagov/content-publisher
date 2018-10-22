@@ -52,11 +52,12 @@
       } %>
     <% end %>
 
+
     <% if flash["alert"] %>
       <% if flash["alert"].is_a? Hash %>
         <%= render "govuk_publishing_components/components/error_summary", {
           title: flash["alert"]["title"],
-          items: flash["alert"]["alerts"].map { |alert| {text: alert} }
+          items: flash["alert"]["items"].map(&:symbolize_keys)
         } %>
       <% else %>
         <%= render "components/error_alert", {

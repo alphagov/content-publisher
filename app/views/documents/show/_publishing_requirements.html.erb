@@ -1,13 +1,17 @@
-<% if flash[:tried_to_publish] %>
-  <div class="govuk-!-margin-bottom-4">
-    <%= render "govuk_publishing_components/components/error_summary", {
-      title: t("documents.show.publishing_requirements.after_publishing_attempt"),
-      items: PublishingRequirements.new(@document).unfulfilled_publishing_requirements.map { |m, a| { text: m, href: a } }
+<% errors = PublishingRequirements.new(@document).errors.values.flatten %>
+
+<% if errors.any? %>
+  <% if flash[:tried_to_publish] %>
+    <div class="govuk-!-margin-bottom-4">
+      <%= render "govuk_publishing_components/components/error_summary", {
+        title: t("documents.show.flashes.after_publishing_attempt"),
+        items: errors
+      } %>
+    </div>
+  <% else %>
+    <%= render "/components/notice", {
+      title: t("documents.show.flashes.before_publishing_attempt"),
+      items: errors
     } %>
-  </div>
-<% else %>
-  <%= render "/components/notice", {
-    title: t("documents.show.publishing_requirements.after_publishing_attempt"),
-    items: PublishingRequirements.new(@document).unfulfilled_publishing_requirements.map { |m, a| { text: m, href: a } }
-  } %>
+  <% end %>
 <% end %>

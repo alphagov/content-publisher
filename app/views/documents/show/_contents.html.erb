@@ -1,6 +1,4 @@
-<% unless PublishingRequirements.new(@document).ready_for_publishing? %>
-  <%= render "documents/show/publishing_requirements" %>
-<% end %>
+<%= render "documents/show/publishing_requirements" %>
 
 <% contents = @document.document_type_schema.contents.map { |schema|
   {
