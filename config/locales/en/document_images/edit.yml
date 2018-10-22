@@ -9,8 +9,9 @@ en:
       flashes:
         drafting_requirements:
           title: You need to
-          presence: "Enter %{field}"
-          max_length: "%{field} must be less than %{max_length} characters"
+          alt_text_presence: Enter alt text
+          alt_text_max_length: "Enter alt text that is fewer than %{max_length} characters long"
+          caption_max_length: "Enter an image caption that is fewer than %{max_length} characters long"
       guidance:
         alt_text: A simple and specific description of what the image shows. This helps screen-readers and search engines.
         caption: This text appears on the page under the image.
