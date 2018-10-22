@@ -13,7 +13,7 @@ class DraftingRequirements
   def errors
     messages = Hash.new { |hsh, key| hsh[key] = [] }
 
-    if document.title.empty?
+    if document.title.blank?
       messages["title"] << I18n.t("documents.edit.flashes.drafting_requirements.title_missing",
                                   field: "title")
     end
