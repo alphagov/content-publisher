@@ -11,24 +11,20 @@ class DocumentImagesController < ApplicationController
   end
 
   def create
-    document = Document.find_by_param(params[:document_id])
+    @document = Document.find_by_param(params[:document_id])
+    @errors = ImageUploadRequirements.new(params[:image]).errors
 
-    unless params[:image]
-      redirect_to document_images_path, alert: t("document_images.index.no_file_selected")
-      return
-    end
-
-    image_uploader = ImageUploader.new(params.require(:image))
-
-    unless image_uploader.valid?
-      redirect_to document_images_path, alert: {
-        "items" => image_uploader.errors.map { |error| { text: error } },
-        "title" => t("document_images.index.error_summary_title"),
+    if @errors.any?
+      flash.now["alert"] = {
+        "title" => I18n.t("document_images.index.flashes.upload_requirements.title"),
+        "items" => @errors.map { |error| { text: error } },
       }
+
+      render :index
       return
     end
 
-    image = image_uploader.upload(document)
+    image = ImageUploader.new(params[:image]).upload(@document)
     image.asset_manager_file_url = upload_image_to_asset_manager(image)
 
     image.save!
@@ -64,7 +60,7 @@ class DocumentImagesController < ApplicationController
       return
     end
 
-    redirect_to document_images_path(document), notice: t("document_images.index.flashes.cropped", filename: image.filename)
+    redirect_to document_images_path(document), notice: t("document_images.index.flashes.cropped", file: image.filename)
   end
 
   def edit
@@ -95,7 +91,7 @@ class DocumentImagesController < ApplicationController
       attributes_to_update: {},
     )
 
-    redirect_to document_images_path(@document), notice: t("document_images.index.flashes.details_edited", filename: @image.filename)
+    redirect_to document_images_path(@document), notice: t("document_images.index.flashes.details_edited", file: @image.filename)
   end
 
   def destroy
@@ -112,7 +108,7 @@ class DocumentImagesController < ApplicationController
 
     AssetManagerService.new.delete(image)
     image.destroy!
-    redirect_to document_images_path(document), notice: t("document_images.index.flashes.deleted")
+    redirect_to document_images_path(document), notice: t("document_images.index.flashes.deleted", file: image.filename)
   end
 
 private

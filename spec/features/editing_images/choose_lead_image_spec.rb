@@ -37,7 +37,7 @@ RSpec.feature "Choose a lead image" do
   end
 
   def and_the_preview_creation_succeeded
-    expect(page).to have_content(I18n.t("documents.show.flashes.lead_image.chosen", filename: Image.last.filename))
+    expect(page).to have_content(I18n.t("documents.show.flashes.lead_image.chosen", file: @image.filename))
     expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
 

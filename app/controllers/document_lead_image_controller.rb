@@ -22,7 +22,7 @@ class DocumentLeadImageController < ApplicationController
       attributes_to_update: { lead_image_id: image.id },
     )
 
-    redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.added", filename: image.filename)
+    redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.added", file: image.filename)
   end
 
   def choose
@@ -36,11 +36,12 @@ class DocumentLeadImageController < ApplicationController
       attributes_to_update: { lead_image_id: params[:image_id] },
     )
 
-    redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.chosen", filename: image.filename)
+    redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.chosen", file: image.filename)
   end
 
   def remove
     document = Document.find_by_param(params[:document_id])
+    image = document.lead_image
 
     DocumentUpdateService.update!(
       document: document,
@@ -49,7 +50,7 @@ class DocumentLeadImageController < ApplicationController
       attributes_to_update: { lead_image_id: nil },
     )
 
-    redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.removed")
+    redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.removed", file: image.filename)
   end
 
   def destroy
@@ -66,7 +67,7 @@ class DocumentLeadImageController < ApplicationController
 
     AssetManagerService.new.delete(image)
     image.destroy!
-    redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.deleted")
+    redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.deleted", file: image.filename)
   end
 
 private
