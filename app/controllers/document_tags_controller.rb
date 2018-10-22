@@ -12,12 +12,12 @@ class DocumentTagsController < ApplicationController
 
   def update
     document = Document.find_by_param(params[:id])
+    document.assign_attributes(tags: update_params(document))
 
-    DocumentUpdateService.update!(
+    DocumentDraftingService.update!(
       document: document,
       user: current_user,
       type: "updated_tags",
-      attributes_to_update: { tags: update_params(document) },
     )
 
     redirect_to document

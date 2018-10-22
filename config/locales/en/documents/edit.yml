@@ -22,8 +22,14 @@ en:
 
           [Full guidance on change notes](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#change-notes)
       update_type:
-        title: "Is the change significant to users?"
+        title: Is the change significant to users?
         minor_name: There’s no change to the published information. For example, spelling corrections.
-        minor_hint: "The ‘last updated’ date will not change, the change note will not be public, and subscribers will not be emailed."
+        minor_hint: The ‘last updated’ date will not change, the change note will not be public, and subscribers will not be emailed.
         major_name: There’s a change to the published information.
-        major_hint: "The ‘last updated’ date will change, the change note will be published on the page and emailed to subscribers."
+        major_hint: The ‘last updated’ date will change, the change note will be published on the page and emailed to subscribers.
+      flashes:
+        drafting_requirements:
+          title: You need to
+          title_missing: Enter a title
+          title_max_length: "Enter a title that is fewer than %{max_length} characters long"
+          title_multiple_lines: Remove any line breaks from the title
