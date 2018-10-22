@@ -44,8 +44,11 @@ class DocumentsController < ApplicationController
     @errors = DraftingRequirements.new(@document).errors
 
     if @errors.any?
-      flash.now["alert"] = { "title" => I18n.t("documents.edit.flashes.drafting_requirements.title"),
-                             "alerts" => @errors.values.flatten }
+      flash.now["alert"] = {
+        "title" => I18n.t("documents.edit.flashes.drafting_requirements.title"),
+        "items" => @errors.values.flatten.map { |error| { text: error } },
+      }
+
       render :edit
       return
     end

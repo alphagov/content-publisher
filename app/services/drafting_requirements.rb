@@ -14,19 +14,18 @@ class DraftingRequirements
     messages = Hash.new { |hsh, key| hsh[key] = [] }
 
     if document.title.empty?
-      messages["title"] << I18n.t("documents.edit.flashes.drafting_requirements.missing",
-                                   field: "title")
+      messages["title"] << I18n.t("documents.edit.flashes.drafting_requirements.title_missing",
+                                  field: "title")
     end
 
     if document.title.size > TITLE_MAX_LENGTH
-      messages["title"] << I18n.t("documents.edit.flashes.drafting_requirements.max_length",
-                                  field: "Title",
+      messages["title"] << I18n.t("documents.edit.flashes.drafting_requirements.title_max_length",
                                   max_length: TITLE_MAX_LENGTH)
     end
 
     if document.title.lines.count > 1
-      messages["title"] << I18n.t("documents.edit.flashes.drafting_requirements.multiple_lines",
-                                   field: "title")
+      messages["title"] << I18n.t("documents.edit.flashes.drafting_requirements.title_multiple_lines",
+                                  field: "title")
     end
 
     messages

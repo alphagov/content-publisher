@@ -7,13 +7,13 @@ RSpec.feature "Drafting requirements" do
     and_save_without_inputting_anything
     then_i_should_see_an_error_message_regarding_a_missing_title
 
-#    when_i_visit_the_edit_document_page
-#    and_save_a_title_which_exceeds_the_max_length
-#    then_i_should_see_error_messages_regarding_max_length
-#
-#    when_i_visit_the_edit_document_page
-#    and_save_a_title_which_has_multiple_lines
-#    then_i_should_see_error_messages_regarding_multiple_lines
+    when_i_visit_the_edit_document_page
+    and_save_a_title_which_exceeds_the_max_length
+    then_i_should_see_error_messages_regarding_max_length
+
+    when_i_visit_the_edit_document_page
+    and_save_a_title_which_has_multiple_lines
+    then_i_should_see_error_messages_regarding_multiple_lines
   end
 
   def given_there_is_a_document_with_no_content
@@ -31,22 +31,7 @@ RSpec.feature "Drafting requirements" do
   end
 
   def then_i_should_see_an_error_message_regarding_a_missing_title
-    within find(".gem-c-error-summary") do
-      expect(page).to have_content(
-        I18n.t(
-          "documents.edit.flashes.drafting_requirements.missing",
-          field: "title",
-        ),
-      )
-    end
-    within find(".govuk-form-group--error") do
-      expect(page).to have_content(
-        I18n.t(
-          "documents.edit.flashes.drafting_requirements.missing",
-          field: "title",
-        ),
-      )
-    end
+    expect(page).to have_content(I18n.t("documents.edit.flashes.drafting_requirements.title_missing"))
   end
 
   def and_save_a_title_which_has_multiple_lines
@@ -55,22 +40,7 @@ RSpec.feature "Drafting requirements" do
   end
 
   def then_i_should_see_error_messages_regarding_multiple_lines
-    within find(".gem-c-error-summary") do
-      expect(page).to have_content(
-        I18n.t(
-          "documents.edit.flashes.drafting_requirements.multiple_lines",
-          field: "title",
-        ),
-      )
-    end
-    within find(".govuk-form-group--error") do
-      expect(page).to have_content(
-        I18n.t(
-          "documents.edit.flashes.drafting_requirements.multiple_lines",
-          field: "title",
-        ),
-      )
-    end
+    expect(page).to have_content(I18n.t("documents.edit.flashes.drafting_requirements.title_multiple_lines"))
   end
 
   def and_save_a_title_which_exceeds_the_max_length
@@ -79,23 +49,7 @@ RSpec.feature "Drafting requirements" do
   end
 
   def then_i_should_see_error_messages_regarding_max_length
-    within find(".gem-c-error-summary") do
-      expect(page).to have_content(
-        I18n.t(
-          "documents.edit.flashes.drafting_requirements.max_length",
-          field: "title",
-          max_length: DraftingRequirements::TITLE_MAX_LENGTH,
-        ),
-      )
-    end
-    within find(".govuk-form-group--error") do
-      expect(page).to have_content(
-        I18n.t(
-          "documents.edit.flashes.drafting_requirements.max_length",
-          field: "title",
-          max_length: DraftingRequirements::TITLE_MAX_LENGTH,
-        ),
-      )
-    end
+    expect(page).to have_content(I18n.t("documents.edit.flashes.drafting_requirements.title_max_length",
+                                        max_length: DraftingRequirements::TITLE_MAX_LENGTH))
   end
 end
