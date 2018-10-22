@@ -11,7 +11,7 @@ en:
           last_updated_asc: Sort by last updated ascending
           last_updated_desc: Sort by last updated descending
         creator: "Creator: %{creator}"
-        state: "State: %{state}"
+        state: "Status: %{state}"
         last_edited_by: "Last edited by: %{user}"
         summary_html:
           one: "<strong>1</strong> document"
