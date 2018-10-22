@@ -1,5 +1,4 @@
 <% content_for :head do %>
-  <%= stylesheet_link_tag "application" %>
   <% if ENV["SENTRY_DSN"] && ENV["SENTRY_CURRENT_ENV"] %>
     <meta name="sentry-dsn" content="<%= ENV["SENTRY_DSN"] %>">
     <meta name="sentry-current-env" content="<%= ENV["SENTRY_CURRENT_ENV"] %>">
@@ -107,5 +106,4 @@
   } %>
   <script src="https://cdn.ravenjs.com/3.26.4/raven.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-  <%= javascript_include_tag "application" %>
 <% end %>
