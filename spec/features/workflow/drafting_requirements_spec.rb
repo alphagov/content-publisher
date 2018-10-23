@@ -27,6 +27,7 @@ RSpec.feature "Drafting requirements" do
   end
 
   def and_save_without_inputting_anything
+    fill_in "document[title]", with: " "
     click_on "Save"
   end
 
