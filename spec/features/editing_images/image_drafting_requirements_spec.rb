@@ -49,7 +49,6 @@ RSpec.feature "Image drafting requirements" do
     expect(find_field("alt_text").value).to eq(@alt_text)
 
     expect(page).to have_content(I18n.t("document_images.edit.flashes.drafting_requirements.alt_text_max_length",
-                                        field: "Alt text",
                                         max_length: ImageDraftingRequirements::ALT_TEXT_MAX_LENGTH))
   end
 
@@ -63,7 +62,6 @@ RSpec.feature "Image drafting requirements" do
     expect(find_field("caption").value).to eq(@caption)
 
     expect(page).to have_content(I18n.t("document_images.edit.flashes.drafting_requirements.caption_max_length",
-                                        field: "Caption",
                                         max_length: ImageDraftingRequirements::CAPTION_MAX_LENGTH))
   end
 end
