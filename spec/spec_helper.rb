@@ -54,12 +54,4 @@ RSpec.configure do |config|
   config.after :each, type: :feature, js: true do
     Capybara::Chromedriver::Logger::TestHooks.after_example!
   end
-
-  config.before :each, type: :controller do
-    request.env["warden"] = double(
-      authenticate!: true,
-      authenticated?: true,
-      user: User.first,
-    )
-  end
 end
