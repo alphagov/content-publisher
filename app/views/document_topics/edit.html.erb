@@ -6,11 +6,13 @@
     <li>
       <%= topic[:title] %>
 
-      <ul>
-        <% topic[:children].each do |child_topic| %>
-          <%= unroll(child_topic) %>
-        <% end %>
-      </ul>
+      <% if topic[:children].any? %>
+        <ul>
+          <% topic[:children].each do |child_topic| %>
+            <%= unroll(child_topic) %>
+          <% end %>
+        </ul>
+      <% end %>
     </li>
   <% end %>
 <% end %>
