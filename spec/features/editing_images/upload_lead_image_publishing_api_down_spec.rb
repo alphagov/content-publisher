@@ -41,6 +41,7 @@ RSpec.feature "Upload a lead image when Publishing API is down" do
   end
 
   def and_i_fill_in_the_metadata
+    fill_in "alt_text", with: "Some alt text"
     click_on "Save and choose"
   end
 

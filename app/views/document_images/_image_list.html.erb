@@ -23,7 +23,8 @@ end %>
   <% unless @document.has_live_version_on_govuk %>
     <% secondary_actions << capture do %>
       <% if image.id == @document.lead_image_id %>
-        <%= form_tag destroy_document_lead_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
+        <%= form_tag destroy_document_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
+          <%= hidden_field_tag :wizard, "lead_image" %>
           <button class="govuk-link app-link--destructive">Delete lead image</button>
         <% end %>
       <% else %>

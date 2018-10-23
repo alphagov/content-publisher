@@ -13,11 +13,9 @@
   no_border: true
 } %>
 
-<% submit_path = params[:wizard] == "lead_image" ?
-    choose_document_lead_image_path(@document, @image) :
-    update_document_image_path(@document, @image) %>
+<%= form_tag(update_document_image_path(@document, @image), method: :patch) do %>
+  <%= hidden_field_tag :wizard, params[:wizard] %>
 
-<%= form_tag(submit_path, method: :patch) do %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
@@ -27,6 +25,7 @@
         },
         name: "alt_text",
         value: @image.alt_text,
+        error_message: @errors&.fetch("alt_text", nil)&.join("<br/>"),
         data: {
           "contextual-guidance": "alt-text-guidance"
         }
@@ -54,6 +53,7 @@
         },
         name: "caption",
         value: @image.caption,
+        error_message: @errors&.fetch("caption", nil)&.join("<br/>"),
         data: {
           "contextual-guidance": "caption-guidance"
         }

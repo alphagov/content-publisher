@@ -11,24 +11,20 @@ class DocumentImagesController < ApplicationController
   end
 
   def create
-    document = Document.find_by_param(params[:document_id])
+    @document = Document.find_by_param(params[:document_id])
+    @errors = ImageUploadRequirements.new(params[:image]).errors
 
-    unless params[:image]
-      redirect_to document_images_path, alert: t("document_images.index.no_file_selected")
-      return
-    end
-
-    image_uploader = ImageUploader.new(params.require(:image))
-
-    unless image_uploader.valid?
-      redirect_to document_images_path, alert: {
-        "alerts" => image_uploader.errors,
-        "title" => t("document_images.index.error_summary_title"),
+    if @errors.any?
+      flash.now["alert"] = {
+        "title" => I18n.t("document_images.index.flashes.upload_requirements.title"),
+        "items" => @errors.map { |error| { text: error } },
       }
+
+      render :index
       return
     end
 
-    image = image_uploader.upload(document)
+    image = ImageUploader.new(params[:image]).upload(@document)
     image.asset_manager_file_url = upload_image_to_asset_manager(image)
 
     image.save!
@@ -52,11 +48,10 @@ class DocumentImagesController < ApplicationController
       image.save!
     end
 
-    DocumentUpdateService.update!(
+    DocumentDraftingService.update!(
       document: document,
       user: current_user,
       type: "image_updated",
-      attributes_to_update: {},
     )
 
     if params[:wizard].present?
@@ -64,7 +59,7 @@ class DocumentImagesController < ApplicationController
       return
     end
 
-    redirect_to document_images_path(document)
+    redirect_to document_images_path(document), notice: t("document_images.index.flashes.cropped", file: image.filename)
   end
 
   def edit
@@ -73,18 +68,42 @@ class DocumentImagesController < ApplicationController
   end
 
   def update
-    document = Document.find_by_param(params[:document_id])
-    image = document.images.find(params[:image_id])
-    image.update!(update_params)
+    @document = Document.find_by_param(params[:document_id])
+    @image = @document.images.find(params[:image_id])
+    @image.assign_attributes(update_params)
+    @errors = ImageDraftingRequirements.new(@image).errors
 
-    DocumentUpdateService.update!(
-      document: document,
-      user: current_user,
-      type: "image_updated",
-      attributes_to_update: {},
-    )
+    if @errors.any?
+      flash.now["alert"] = {
+        "title" => I18n.t("document_images.edit.flashes.drafting_requirements.title"),
+        "items" => @errors.values.flatten.map { |error| { text: error } },
+      }
 
-    redirect_to document_images_path(document)
+      render :edit
+      return
+    end
+
+    @image.save!
+
+    if params[:wizard] == "lead_image"
+      @document.assign_attributes(lead_image_id: @image.id)
+
+      DocumentDraftingService.update!(
+        document: @document,
+        user: current_user,
+        type: "lead_image_updated",
+      )
+
+      redirect_to document_path(@document), notice: t("documents.show.flashes.lead_image.added", file: @image.filename)
+    else
+      DocumentDraftingService.update!(
+        document: @document,
+        user: current_user,
+        type: "image_updated",
+      )
+
+      redirect_to document_images_path(@document), notice: t("document_images.index.flashes.details_edited", file: @image.filename)
+    end
   end
 
   def destroy
@@ -92,16 +111,30 @@ class DocumentImagesController < ApplicationController
     image = document.images.find(params[:image_id])
     raise "Trying to delete image for a live document" if document.has_live_version_on_govuk
 
-    DocumentUpdateService.update!(
-      document: document,
-      user: current_user,
-      type: "image_removed",
-      attributes_to_update: {},
-    )
+    if params[:wizard] == "lead_image"
+      document.assign_attributes(lead_image_id: nil)
+
+      DocumentDraftingService.update!(
+        document: document,
+        user: current_user,
+        type: "lead_image_removed",
+      )
+    else
+      DocumentDraftingService.update!(
+        document: document,
+        user: current_user,
+        type: "image_removed",
+      )
+    end
 
     AssetManagerService.new.delete(image)
     image.destroy!
-    redirect_to document_images_path(document), notice: t("document_images.index.flashes.image_deleted")
+
+    if params[:wizard] == "lead_image"
+      redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.deleted", file: image.filename)
+    else
+      redirect_to document_images_path(document), notice: t("document_images.index.flashes.deleted", file: image.filename)
+    end
   end
 
 private

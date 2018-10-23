@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class DocumentUpdateService
-  def self.update!(document:, user:, type:, attributes_to_update:)
+class DocumentDraftingService
+  def self.update!(document:, user:, type:)
     if document.publication_state == "sent_to_live"
       document.current_edition_number += 1
     end
@@ -9,7 +9,6 @@ class DocumentUpdateService
     document.publication_state = "changes_not_sent_to_draft"
     document.last_editor = user if document_edited?(type)
     document.review_state = "unreviewed" unless in_review?(document)
-    document.assign_attributes(attributes_to_update)
 
     Document.transaction do
       document.save!

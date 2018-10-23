@@ -1,9 +1,8 @@
-@import "../../../node_modules/govuk-frontend/helpers/all";
-@import "../../../node_modules/govuk-frontend/settings/all";
-@import "../../../node_modules/govuk-frontend/tools/all";
-@import "../../../node_modules/govuk-frontend/core/lists";
+@import "govuk-frontend/helpers/all";
+@import "govuk-frontend/settings/all";
+@import "govuk-frontend/core/lists";
 
-.app-c-markdown-toolbar {
+.app-c-markdown-guidance {
   @include govuk-font(19);
 
   .govuk-details {
@@ -33,11 +32,11 @@
   }
 }
 
-.app-c-markdown-toolbar__list {
+.app-c-markdown-guidance__list {
   @extend %govuk-list;
 }
 
-.app-c-markdown-toolbar__item {
+.app-c-markdown-guidance__item {
   list-style: none;
 
   &:before {
@@ -49,7 +48,13 @@
   }
 }
 
-.app-c-markdown-toolbar__button {
+.app-c-markdown-guidance__button {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.app-c-markdown-guidance__code-snippet {
+  white-space: pre-line;
+  background-color: govuk-colour('grey-3');
+  padding: 10px;
 }

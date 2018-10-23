@@ -1,0 +1,31 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 38">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #010101;
+      }
+    </style>
+  </defs>
+  <title>bullet_point</title>
+  <g>
+    <rect class="cls-1" width="38" height="38"/>
+    <g>
+      <path class="cls-2" d="M17,20.1v-2l10,0v2Z"/>
+      <path class="cls-2" d="M17,15.1v-2l10,0v2Z"/>
+      <path class="cls-2" d="M17,25.1v-2l10,0v2Z"/>
+      <circle class="cls-2" cx="12.49" cy="14.11" r="1.5" transform="matrix(1, 0, 0, 1, -0.03, 0.03)"/>
+      <circle class="cls-2" cx="12.5" cy="19.11" r="1.5" transform="translate(-0.05 0.03) rotate(-0.14)"/>
+      <circle class="cls-2" cx="12.51" cy="24.11" r="1.5" transform="matrix(1, 0, 0, 1, -0.06, 0.03)"/>
+      <path class="cls-2" d="M17,20.1v-2l10,0v2Z"/>
+      <path class="cls-2" d="M17,15.1v-2l10,0v2Z"/>
+      <path class="cls-2" d="M17,25.1v-2l10,0v2Z"/>
+      <circle class="cls-2" cx="12.49" cy="14.11" r="1.5" transform="matrix(1, 0, 0, 1, -0.03, 0.03)"/>
+      <circle class="cls-2" cx="12.5" cy="19.11" r="1.5" transform="translate(-0.05 0.03) rotate(-0.14)"/>
+      <circle class="cls-2" cx="12.51" cy="24.11" r="1.5" transform="matrix(1, 0, 0, 1, -0.06, 0.03)"/>
+    </g>
+  </g>
+</svg>

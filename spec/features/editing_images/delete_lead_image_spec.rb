@@ -27,6 +27,7 @@ RSpec.feature "Delete an image" do
   end
 
   def then_i_see_the_document_has_no_lead_image
+    expect(page).to have_content(I18n.t("documents.show.flashes.lead_image.deleted", file: @image.filename))
     expect(page).to have_content(I18n.t("documents.show.lead_image.no_lead_image"))
     expect(page).to have_content(I18n.t("documents.history.entry_types.lead_image_removed"))
     expect(@image_request).to have_been_requested

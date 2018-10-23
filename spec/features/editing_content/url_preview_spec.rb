@@ -29,13 +29,13 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def and_i_interact_with_the_title_but_leave_it_unedited
-    page.find("#document-title-id").click
-    page.find("body").click
+    find("textarea[name='document[title]']").click
+    find("body").click
   end
 
   def and_i_delete_the_title
     fill_in("document[title]", with: "")
-    page.find("body").click
+    find("body").click
   end
 
   def then_i_see_a_prompt_to_enter_a_title
@@ -44,7 +44,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
 
   def and_i_fill_in_the_title
     fill_in("document[title]", with: "A great title")
-    page.find("body").click
+    find("body").click
   end
 
   def then_i_see_a_preview_of_the_url_on_govuk

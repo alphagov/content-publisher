@@ -1,3 +1,6 @@
+@import "govuk-frontend/helpers/all";
+@import "govuk-frontend/settings/all";
+
 $govuk-notice-border-color: govuk-colour("grey-1");
 $govuk-notice-background-color: govuk-colour("grey-4");
 
@@ -53,4 +56,3 @@ $govuk-notice-background-color: govuk-colour("grey-4");
     text-decoration: underline;
   }
 }
-

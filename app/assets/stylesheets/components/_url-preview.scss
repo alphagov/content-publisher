@@ -1,5 +1,5 @@
-@import "../../../node_modules/govuk-frontend/settings/all";
-@import "../../../node_modules/govuk-frontend/helpers/all";
+@import "govuk-frontend/settings/all";
+@import "govuk-frontend/helpers/all";
 
 .app-c-url-preview {
   @include govuk-font(19);

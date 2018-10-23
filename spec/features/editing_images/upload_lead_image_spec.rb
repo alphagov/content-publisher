@@ -44,6 +44,7 @@ RSpec.feature "Upload a lead image" do
   end
 
   def then_i_see_the_new_lead_image
+    expect(page).to have_content(I18n.t("documents.show.flashes.lead_image.added", file: Image.last.filename))
     expect(page).to have_content("A caption")
     expect(page).to have_content("A credit")
     expect(find("#lead-image img")["src"]).to include("1000x1000.jpg")

@@ -17,4 +17,40 @@ examples:
         alt_text: Larry the cat
         caption: Larry, Chief Mouser to the Cabinet Office
         credit: Her Majesty's Government
-
+  no_border:
+    data:
+      src: https://assets.publishing.service.gov.uk/government/assets/history/buildings/larry-the-cat-a47549e08bdbc6cd0e3e042eea943f65b7a4590d95642586e51acb44bb2dcea2.jpg
+      meta:
+        alt_text: Larry the cat
+        caption: Larry, Chief Mouser to the Cabinet Office
+        credit: Her Majesty's Government
+        no_border: true
+  without_border:
+    data:
+      src: https://assets.publishing.service.gov.uk/government/assets/history/buildings/larry-the-cat-a47549e08bdbc6cd0e3e042eea943f65b7a4590d95642586e51acb44bb2dcea2.jpg
+      meta:
+        alt_text: Larry the cat
+        caption: Larry, Chief Mouser to the Cabinet Office
+        credit: Her Majesty's Government
+      no_border: true
+  with_primary_action:
+    data:
+      src: https://assets.publishing.service.gov.uk/government/assets/history/buildings/larry-the-cat-a47549e08bdbc6cd0e3e042eea943f65b7a4590d95642586e51acb44bb2dcea2.jpg
+      meta:
+        alt_text: Larry the cat
+        caption: Larry, Chief Mouser to the Cabinet Office
+        credit: Her Majesty's Government
+        lead_image: true
+      primary_action:
+        tag: Lead image
+        action: <a class="govuk-link" href="#">Remove</a>
+  with_secondary_actions:
+    data:
+      src: https://assets.publishing.service.gov.uk/government/assets/history/buildings/larry-the-cat-a47549e08bdbc6cd0e3e042eea943f65b7a4590d95642586e51acb44bb2dcea2.jpg
+      meta:
+        alt_text: Larry the cat
+        caption: Larry, Chief Mouser to the Cabinet Office
+        credit: Her Majesty's Government
+      secondary_actions:
+        - <a class="govuk-link" href="#">Edit image</a>
+        - <a class="govuk-link" href="#">Delete image</a>

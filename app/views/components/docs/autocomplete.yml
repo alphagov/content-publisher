@@ -10,7 +10,8 @@ examples:
     data:
       id: autocomplete
       name: autocomplete
-      label: Select your country
+      label:
+        text: Select your country
       options:
         -
           - France
@@ -26,7 +27,8 @@ examples:
     data:
       id: autocomplete-selected
       name: autocomplete-selected
-      label: Select your country
+      label:
+        text: Select your country
       options:
         -
           - France
@@ -44,7 +46,8 @@ examples:
     data:
       id: autocomplete-multiselect
       name: autocomplete-multiselect
-      label: Select your country
+      label:
+        text: Select your country
       multiple: true
       options:
         -
@@ -61,7 +64,8 @@ examples:
     data:
       id: autocomplete-multiselect-selected
       name: autocomplete-multiselect-selected
-      label: Select your country
+      label:
+        text: Select your country
       multiple: true
       options:
         -

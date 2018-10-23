@@ -1,14 +1,16 @@
 //= require govuk_publishing_components/dependencies
 //= require govuk_publishing_components/all_components
-//= require vendor/nodelist-foreach-polyfill/index.js
-//= require vendor/fetch-polyfill/fetch.js
-//= require vendor/abortcontroller-polyfill/abortcontroller-polyfill.js
+
 //= require vendor/@webcomponents/custom-elements/custom-elements.js
-//= require components/url_preview.js
-//= require components/markdown-editor.js
-//= require components/error-alert.js
+//= require vendor/abortcontroller-polyfill/abortcontroller-polyfill.js
+//= require vendor/fetch-polyfill/fetch.js
+//= require vendor/nodelist-foreach-polyfill/index.js
+
 //= require components/autocomplete.js
-//= require components/image_cropper.js
+//= require components/error-alert.js
+//= require components/image-cropper.js
+//= require components/markdown-editor.js
+//= require components/url-preview.js
 
 /**
  * contextual guidance need to be initialised after the rest of the components
@@ -17,7 +19,6 @@
 //= require components/contextual-guidance.js
 
 /* global Raven */
-
 var $sentryDsn = document.querySelector('meta[name=sentry-dsn]')
 var $sentryCurrentEnv = document.querySelector('meta[name=sentry-current-env]')
 

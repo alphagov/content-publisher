@@ -5,13 +5,13 @@ en:
         title: Document type
         items:
           document_type: Document type
+      tabs:
+        summary: Document summary
+        history: Document history
       tags:
         title: Tags
         api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
         none: None
-      publishing_requirements:
-        before_publishing_attempt: "Please meet these requirements before publishing"
-        after_publishing_attempt: "You can't publish before these requirements are met"
       contents:
         title: Content
         items:
@@ -44,7 +44,8 @@ en:
         unknown_user: Unknown
         last_edited_by: Last edited by
       flashes:
-        image_deleted: Image deleted
+        before_publishing_attempt: To publish this document you need to
+        after_publishing_attempt: Before you can publish this document you need to
         draft_error:
           title: Something has gone wrong
           description: Something went wrong when saving your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
@@ -53,9 +54,14 @@ en:
           description: Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         approved: Content has been reviewed and approved
         submitted_for_review:
-          title: Content has been submitted for 2i review
+          title: Content has been marked as ready for 2i review
           label: Send this document to another publisher for them to review. When content is ready you or they can publish it.
         delete_draft: Are you sure you want to delete this draft
         delete_draft_error:
           title: Something has gone wrong
           description: Something went wrong when deleting your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+        lead_image:
+          added: "Image “%{file}” has been uploaded and selected as the lead image"
+          chosen: "Image “%{file}” has been selected as the lead image"
+          removed: "Image “%{file}” has been deselected. Document will now use the default lead image"
+          deleted: "Image “%{file}” has been deleted. Document wil now use the default lead image"

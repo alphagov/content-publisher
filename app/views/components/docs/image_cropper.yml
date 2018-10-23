@@ -13,7 +13,11 @@ examples:
   default:
     data:
       src: https://assets.publishing.service.gov.uk/government/assets/history/buildings/larry-the-cat-a47549e08bdbc6cd0e3e042eea943f65b7a4590d95642586e51acb44bb2dcea2.jpg
+      no_js_src: https://assets.publishing.service.gov.uk/government/assets/history/buildings/larry-the-cat-a47549e08bdbc6cd0e3e042eea943f65b7a4590d95642586e51acb44bb2dcea2.jpg
       alt_text: Larry the cat
       caption: Larry, Chief Mouser to the Cabinet Office
       credit: Her Majesty's Government
-
+      crop_x: 0
+      crop_y: 0
+      crop_width: 400
+      crop_height: 300

@@ -10,15 +10,15 @@
 @import "components/error-alert";
 @import "components/formatted-text";
 @import "components/markdown-editor";
-@import "components/markdown-toolbar";
+@import "components/markdown-guidance";
 @import "components/metadata";
 @import "components/notice";
 @import "components/summary";
-@import "components/page_preview";
+@import "components/page-preview";
 @import "components/autocomplete";
-@import "components/url_preview";
-@import "components/image_meta";
-@import "components/image_cropper";
+@import "components/url-preview";
+@import "components/image-meta";
+@import "components/image-cropper";
 
 @import "utilities/display";
 @import "utilities/overwrites";

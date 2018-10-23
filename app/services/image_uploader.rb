@@ -3,20 +3,8 @@
 require "mini_magick"
 
 class ImageUploader
-  include ActionView::Helpers::NumberHelper
-
-  MAX_FILE_SIZE = 20.megabytes
-
   def initialize(file)
     @file = file
-  end
-
-  def valid?
-    errors.empty?
-  end
-
-  def errors
-    @errors ||= validate
   end
 
   def upload(document)
@@ -61,28 +49,5 @@ private
       crop_width: cropper.dimensions[:width],
       crop_height: cropper.dimensions[:height],
     }
-  end
-
-  def validate
-    if %w(image/jpeg image/png image/gif).exclude?(mime_type)
-      return [I18n.t("validations.images.invalid_format")]
-    end
-
-    errors = []
-
-    if file.size >= MAX_FILE_SIZE
-      errors << I18n.t("validations.images.max_size",
-                       max_size: number_to_human_size(MAX_FILE_SIZE))
-    end
-
-    dimensions = image_normaliser.dimensions
-
-    if dimensions[:width] < Image::WIDTH || dimensions[:height] < Image::HEIGHT
-      errors << I18n.t("validations.images.min_dimensions",
-                       width: Image::WIDTH,
-                       height: Image::HEIGHT)
-    end
-
-    errors
   end
 end

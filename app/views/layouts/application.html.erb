@@ -1,11 +1,13 @@
 <% content_for :head do %>
-  <%= stylesheet_link_tag "application" %>
   <% if ENV["SENTRY_DSN"] && ENV["SENTRY_CURRENT_ENV"] %>
     <meta name="sentry-dsn" content="<%= ENV["SENTRY_DSN"] %>">
     <meta name="sentry-current-env" content="<%= ENV["SENTRY_CURRENT_ENV"] %>">
   <% end %>
 
   <% if ENV["GOOGLE_TAG_MANAGER_ID"] %>
+    <script>
+      dataLayer = [{ 'dimension1': <%= current_user.organisation_slug %> }];
+    </script>
     <%= render "govuk_publishing_components/components/google_tag_manager_script", {
       gtm_id: ENV["GOOGLE_TAG_MANAGER_ID"],
       gtm_auth: ENV["GOOGLE_TAG_MANAGER_AUTH"],
@@ -50,11 +52,12 @@
       } %>
     <% end %>
 
+
     <% if flash["alert"] %>
       <% if flash["alert"].is_a? Hash %>
         <%= render "govuk_publishing_components/components/error_summary", {
           title: flash["alert"]["title"],
-          items: flash["alert"]["alerts"].map { |alert| {text: alert} }
+          items: flash["alert"]["items"].map(&:symbolize_keys)
         } %>
       <% else %>
         <%= render "components/error_alert", {
@@ -107,5 +110,4 @@
   } %>
   <script src="https://cdn.ravenjs.com/3.26.4/raven.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-  <%= javascript_include_tag "application" %>
 <% end %>

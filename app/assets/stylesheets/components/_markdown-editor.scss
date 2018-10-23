@@ -1,12 +1,10 @@
-@import "../../../node_modules/govuk-frontend/helpers/all";
-@import "../../../node_modules/govuk-frontend/settings/all";
-@import "../../../node_modules/govuk-frontend/tools/all";
-@import "../../../node_modules/govuk-frontend/core/links";
-
+@import "govuk-frontend/helpers/all";
+@import "govuk-frontend/settings/all";
+@import "govuk-frontend/core/links";
 
 .app-c-markdown-editor {
   .govuk-textarea {
-    padding-top: govuk-spacing(8);
+    padding-top: (govuk-spacing(9) + govuk-spacing(6));
     resize: vertical;
   }
 }
@@ -24,7 +22,7 @@
   margin-bottom: -$govuk-border-width-form-element;
   border: $govuk-border-width-form-element solid $govuk-input-border-colour;
   border-bottom: 0;
-  background-color: govuk-colour("grey-3");
+  background-color: govuk-colour("white");
 }
 
 .app-c-markdown-editor__preview-toggle {
@@ -37,13 +35,12 @@
   @include govuk-font(19);
   display: inline-block;
   margin-bottom: -$govuk-border-width-form-element;
-  padding: (govuk-spacing(1) + $govuk-border-width-form-element) govuk-spacing(4);
+  padding: (govuk-spacing(1) + $govuk-border-width-form-element);
   border: $govuk-border-width-form-element solid transparent;
   border-top: 0;
   border-bottom: 0;
   color: $govuk-link-colour;
   background-color: transparent;
-  text-decoration: underline;
   cursor: pointer;
 
   &:focus {
@@ -55,7 +52,7 @@
 .app-c-markdown-editor__button--muted {
   border-right: $govuk-border-width-form-element solid $govuk-border-colour;
   border-left: $govuk-border-width-form-element solid $govuk-border-colour;
-  color: $govuk-secondary-text-colour;
+  color: $govuk-text-colour;
   background: govuk-colour("grey-4");
   text-decoration: none;
 
@@ -79,5 +76,60 @@
 
   .govuk-textarea {
     overflow: scroll;
+    padding-top: govuk-spacing(8);
   }
+}
+
+.app-c-markdown-editor__toolbar {
+  background-color: govuk-colour("grey-4");
+  line-height: 0;
+}
+
+.app-c-markdown-editor__toolbar-group {
+  display: table;
+  width: 100%;
+}
+
+.app-c-markdown-editor__toolbar-button {
+  @include govuk-focusable-fill;
+  display: inline-block;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: govuk-colour("grey-3");
+  }
+}
+
+.app-c-markdown-editor__toolbar-icon {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+.app-c-markdown-editor__toolbar-icon--heading-2 {
+  background-image: image-url("components/markdown-editor/headline_two.svg");
+}
+
+.app-c-markdown-editor__toolbar-icon--heading-3 {
+  background-image: image-url("components/markdown-editor/headline_three.svg");
+}
+
+.app-c-markdown-editor__toolbar-icon--link {
+  background-image: image-url("components/markdown-editor/link.svg");
+}
+
+.app-c-markdown-editor__toolbar-icon--blockquote {
+  background-image: image-url("components/markdown-editor/blockquote.svg");
+}
+
+.app-c-markdown-editor__toolbar-icon--numbered-list {
+  background-image: image-url("components/markdown-editor/number_list.svg");
+}
+
+.app-c-markdown-editor__toolbar-icon--bullets {
+  background-image: image-url("components/markdown-editor/bullet_point.svg");
 }

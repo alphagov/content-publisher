@@ -30,8 +30,6 @@
     - id: body
       label: Body
       type: govspeak
-      validations:
-        min_length: 10
   tags:
     - id: primary_publishing_organisation
       label: Primary organisation
@@ -89,8 +87,6 @@
     - id: body
       label: Body
       type: govspeak
-      validations:
-        min_length: 10
   tags:
     - id: primary_publishing_organisation
       label: Primary organisation

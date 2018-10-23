@@ -1,6 +1,7 @@
-@import "../../../node_modules/govuk-frontend/settings/all";
-@import "../../../node_modules/govuk-frontend/helpers/all";
-@import "../../../node_modules/govuk-frontend/objects/grid";
+@import "govuk-frontend/settings/all";
+@import "govuk-frontend/helpers/all";
+@import "govuk-frontend/objects/grid";
+@import "govuk-frontend/utilities/clearfix";
 
 .app-c-image-meta {
   @include govuk-font(19);
