@@ -25,6 +25,6 @@ describe('Error alert component', function () {
 
   it('should be focused', function () {
     module.focus()
-    expect(element[0]).toBeFocused()
+    expect(element).toBeFocused()
   })
 })

@@ -70,22 +70,22 @@ describe('Markdown editor component', function () {
 
   it('should show the editor header', function () {
     var head = $('.js-markdown-editor__head')
-    expect(head.css('display')).toEqual('block')
+    expect(head).toBeVisible()
   })
 
   it('should show the editor toolbar', function () {
     var toolbar = $('.app-c-markdown-editor__toolbar')
-    expect(toolbar.css('display')).toEqual('block')
+    expect(toolbar).toBeVisible()
   })
 
   it('should show the markdown editor container', function () {
     var editorInput = $('.js-markdown-editor-input')
-    expect(editorInput.css('display')).toEqual('block')
+    expect(editorInput).toBeVisible()
   })
 
   it('should hide the preview container', function () {
     var previewBody = $('.js-markdown-preview-body')
-    expect(previewBody.css('display')).toEqual('none')
+    expect(previewBody).toBeHidden()
   })
 
   describe('when clicking "Preview markdown" button', function () {
@@ -95,30 +95,32 @@ describe('Markdown editor component', function () {
 
     it('should hide the editor toolbar', function () {
       var toolbar = $('.app-c-markdown-editor__toolbar')
-      expect(toolbar.css('display')).toEqual('none')
+      expect(toolbar).toBeHidden()
     })
 
     it('should not mark the edit markdown button as selected', function () {
-      expect($('.js-markdown-edit-button').hasClass('app-c-markdown-editor__button--muted')).toEqual(false)
+      var editButton = $('.js-markdown-edit-button')
+      expect(editButton).not.toHaveClass('app-c-markdown-editor__button--muted')
     })
 
     it('should mark the preview markdown button as selected', function () {
-      expect($('.js-markdown-preview-button').hasClass('app-c-markdown-editor__button--muted')).toEqual(true)
+      var previewButton = $('.js-markdown-preview-button')
+      expect(previewButton).toHaveClass('app-c-markdown-editor__button--muted')
     })
 
     it('should hide the markdown editor container', function () {
       var editorInput = $('.js-markdown-editor-input')
-      expect(editorInput.css('display')).toEqual('none')
+      expect(editorInput).toBeHidden()
     })
 
     it('should show the preview container', function () {
       var previewBody = $('.js-markdown-preview-body')
-      expect(previewBody.css('display')).toEqual('block')
+      expect(previewBody).toBeVisible()
     })
 
     it('should show the default message in the preview container', function () {
       var previewBody = $('.js-markdown-preview-body')
-      expect(previewBody.html()).toContain('Nothing to preview')
+      expect(previewBody).toContainText('Nothing to preview')
     })
   })
 
@@ -129,30 +131,32 @@ describe('Markdown editor component', function () {
 
     it('should show the editor toolbar', function () {
       var toolbar = $('.app-c-markdown-editor__toolbar')
-      expect(toolbar.css('display')).toEqual('block')
+      expect(toolbar).toBeVisible()
     })
 
     it('should mark the edit markdown button as selected', function () {
-      expect($('.js-markdown-edit-button').hasClass('app-c-markdown-editor__button--muted')).toEqual(true)
+      var editButton = $('.js-markdown-edit-button')
+      expect(editButton).toHaveClass('app-c-markdown-editor__button--muted')
     })
 
     it('should not mark the preview markdown button as selected', function () {
-      expect($('.js-markdown-preview-button').hasClass('app-c-markdown-editor__button--muted')).toEqual(false)
+      var previewButton = $('.js-markdown-preview-button')
+      expect(previewButton).not.toHaveClass('app-c-markdown-editor__button--muted')
     })
 
     it('should show the markdown editor container', function () {
       var editorInput = $('.js-markdown-editor-input')
-      expect(editorInput.css('display')).toEqual('block')
+      expect(editorInput).toBeVisible()
     })
 
     it('should hide the preview container', function () {
       var previewBody = $('.js-markdown-preview-body')
-      expect(previewBody.css('display')).toEqual('none')
+      expect(previewBody).toBeHidden()
     })
 
     it('should hide the default message in the preview container', function () {
       var previewBody = $('.js-markdown-preview-body')
-      expect(previewBody.html()).not.toContain('Nothing to preview')
+      expect(previewBody).not.toContainText('Nothing to preview')
     })
   })
 })

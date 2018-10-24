@@ -43,13 +43,13 @@ describe('URL preview component', function () {
     $('[data-url-preview="input"]').focus().blur()
 
     var defaultMessage = $('.js-url-preview-default-message')
-    expect(defaultMessage.hasClass('app-c-url-preview__default-message--hidden')).toEqual(false)
+    expect(defaultMessage).toBeVisible()
 
     var previewURL = $('.js-url-preview-url')
-    expect(previewURL.hasClass('app-c-url-preview__url--hidden')).toEqual(true)
+    expect(previewURL).toBeHidden()
 
     var errorMessage = $('.js-url-preview-error-message')
-    expect(errorMessage.hasClass('app-c-url-preview__error-message--hidden')).toEqual(true)
+    expect(errorMessage).toBeHidden()
   })
 
   it('should only display the preview URL if input has value', function () {
@@ -57,12 +57,12 @@ describe('URL preview component', function () {
     $('[data-url-preview="input"]').focus().val('My title').blur()
 
     var defaultMessage = $('.js-url-preview-default-message')
-    expect(defaultMessage.hasClass('app-c-url-preview__default-message--hidden')).toEqual(true)
+    expect(defaultMessage).toBeHidden()
 
     var previewURL = $('.js-url-preview-url')
-    expect(previewURL.hasClass('app-c-url-preview__url--hidden')).toEqual(false)
+    expect(previewURL).toBeVisible()
 
     var errorMessage = $('.js-url-preview-error-message')
-    expect(errorMessage.hasClass('app-c-url-preview__error-message--hidden')).toEqual(true)
+    expect(errorMessage).toBeHidden()
   })
 })
