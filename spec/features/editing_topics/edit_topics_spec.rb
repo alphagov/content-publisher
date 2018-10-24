@@ -35,10 +35,12 @@ RSpec.feature "Show all the topics" do
       "expanded_links" => {
         "child_taxons" => [
           {
+            "content_id" => "level_two_content_id",
             "title" => "Level Two Topic",
             "links" => {
               "child_taxons" => [
                 {
+                  "content_id" => "level_three_content_id",
                   "title" => "Level Three Topic",
                   "links" => {},
                 },
