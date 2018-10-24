@@ -7,9 +7,12 @@ ErrorAlert.prototype.init = function () {
   if (!$module) {
     return
   }
-  window.addEventListener('load', function () {
-    $module.focus()
-  })
+  window.addEventListener('load', this.focus)
+}
+
+ErrorAlert.prototype.focus = function () {
+  var $module = this.$module
+  $module.focus()
 }
 
 var $errorAlert = document.querySelector('[data-module="error-alert"]')
