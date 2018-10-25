@@ -1,20 +1,18 @@
 # frozen_string_literal: true
 
-require "gds_api/asset_manager"
-
 class AssetManagerService
   def upload_bytes(asset, content)
     file = AssetManagerFile.from_bytes(asset, content)
-    upload = asset_manager.create_asset(file: file, draft: true)
+    upload = GdsApi.asset_manager.create_asset(file: file, draft: true)
     upload["file_url"]
   end
 
   def publish(asset)
-    asset_manager.update_asset(asset.asset_manager_id, draft: false)
+    GdsApi.asset_manager.update_asset(asset.asset_manager_id, draft: false)
   end
 
   def delete(asset)
-    asset_manager.delete_asset(asset.asset_manager_id)
+    GdsApi.asset_manager.delete_asset(asset.asset_manager_id)
   end
 
   # Used as a stand-in for a File / Rack::Multipart::UploadedFile object when
@@ -52,14 +50,5 @@ class AssetManagerService
     def filename
       File.basename(asset.filename)
     end
-  end
-
-private
-
-  def asset_manager
-    @asset_manager ||= GdsApi::AssetManager.new(
-      Plek.new.find("asset-manager"),
-      bearer_token: ENV.fetch("ASSET_MANAGER_BEARER_TOKEN", "example"),
-    )
   end
 end

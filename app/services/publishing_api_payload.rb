@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "gds_api/publishing_api_v2"
-
 class PublishingApiPayload
   PUBLISHING_APP = "content-publisher"
 
@@ -85,7 +83,7 @@ private
 
     role_appointments
       .each_with_object("roles" => [], "people" => []) do |appointment_id, memo|
-        response = publishing_api.get_links(appointment_id).to_hash
+        response = GdsApi.publishing_api_v2.get_links(appointment_id).to_hash
 
         roles = response.dig("links", "role") || []
         people = response.dig("links", "person") || []
@@ -103,12 +101,5 @@ private
     else
       document.contents[field.id]
     end
-  end
-
-  def publishing_api
-    @publishing_api ||= GdsApi::PublishingApiV2.new(
-      Plek.new.find("publishing-api"),
-      bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example",
-    )
   end
 end
