@@ -16,8 +16,9 @@ namespace :import do
 
       importer.import(JSON.parse(line))
       imported += 1
+      puts "Imported #{imported} documents" if (imported % 500).zero?
     end
 
-    puts "Imported #{imported} Whitehall news documents"
+    puts "Completed importing #{imported} Whitehall news documents"
   end
 end
