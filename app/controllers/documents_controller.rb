@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DocumentsController < ApplicationController
+  include GDS::SSO::ControllerMethods
+
   def index
     filter = DocumentFilter.new(filter_params)
     @documents = filter.documents
@@ -76,6 +78,7 @@ class DocumentsController < ApplicationController
   end
 
   def debug
+    authorise_user!(User::DEBUG_PERMISSION)
     @document = Document.find_by_param(params[:id])
     @papertrail_users = User.where(id: @document.versions.pluck(:whodunnit))
   end

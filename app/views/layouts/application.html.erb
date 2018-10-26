@@ -83,7 +83,7 @@
   <%
     internal_metadata = {}
 
-    if @document && debug_document_path(@document)
+    if @document && current_user.has_permission?(User::DEBUG_PERMISSION)
       internal_metadata = {
         href: debug_document_path(@document),
         text: "Internal metadata (not shown to publishers)"
