@@ -19,12 +19,12 @@
         <td class='govuk-table__cell'><%= schema.id %></td>
 
         <% if schema.managed_elsewhere %>
-          <td class='govuk-table__cell'><%= link_to(t("documentation.index.formats.table.link_name"), schema.managed_elsewhere_url) %></td>
+          <td class='govuk-table__cell'><%= link_to(t("documentation.index.formats.table.link_name"), schema.managed_elsewhere_url, class: "govuk-link") %></td>
         <% else %>
           <td class='govuk-table__cell'></td>
         <% end %>
 
-        <td class='govuk-table__cell'><%= link_to 'Tech docs', "https://docs.publishing.service.gov.uk/document-types/#{schema.id}.html" %></td>
+        <td class='govuk-table__cell'><%= link_to 'Tech docs', "https://docs.publishing.service.gov.uk/document-types/#{schema.id}.html", class: "govuk-link"%></td>
       </tr>
     <% end %>
   </body>
@@ -32,7 +32,7 @@
 
 <h2 class='govuk-heading-m'><%= t("documentation.index.states.title") %></h2>
 
-<p><%= t("documentation.index.states.body") %></p>
+<p class='govuk-body'><%= t("documentation.index.states.body") %></p>
 
 <table class='govuk-table'>
   <thead class='govuk-table__head'>
