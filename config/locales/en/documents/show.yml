@@ -8,6 +8,8 @@ en:
       tabs:
         summary: Document summary
         history: Document history
+      topics:
+        title: Topics
       tags:
         title: Tags
         api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.

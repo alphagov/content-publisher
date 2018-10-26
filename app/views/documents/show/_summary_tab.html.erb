@@ -10,20 +10,11 @@
       <%= render "documents/show/lead_image" %>
     <% end %>
 
-    <% tags = @document.document_type_schema.tags.map { |schema|
-      {
-        field: schema.label,
-        value: render("documents/tags/#{schema.type}", schema: schema, values: @document.tags[schema.id]),
-      }
-    } %>
+    <% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <%= render "documents/show/topics" %>
+    <% end %>
+    <%= render "documents/show/tags" %>
 
-    <%= render "components/summary", {
-      title: {
-        text: t("documents.show.tags.title"),
-        change_url: document_tags_path(@document)
-      },
-      items: tags
-    } %>
   </div>
 
   <div class="govuk-grid-column-one-third">

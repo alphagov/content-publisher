@@ -1,3 +1,4 @@
 # frozen_string_literal: true
 
-User.find_or_create_by! name: "publisher"
+user = User.find_or_create_by!(name: "publisher")
+user.update_attribute(:permissions, [User::PRE_RELEASE_FEATURES_PERMISSION])
