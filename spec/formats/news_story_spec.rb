@@ -22,7 +22,7 @@ RSpec.feature "Create a news story", format: true do
     fill_in "document[title]", with: "A great title"
     fill_in "document[summary]", with: "A great summary"
     click_on "Save"
-    WebMock.reset!
+    WebMock::RequestRegistry.instance.reset!
   end
 
   def and_i_add_some_tags

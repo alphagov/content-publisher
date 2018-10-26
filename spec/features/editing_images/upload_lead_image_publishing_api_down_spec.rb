@@ -33,7 +33,6 @@ RSpec.feature "Upload a lead image when Publishing API is down" do
     asset_manager_delete_asset(@asset_id)
     stub_publishing_api_put_content(Document.last.content_id, {})
     click_on "Crop image"
-    WebMock.reset!
   end
 
   def and_the_publishing_api_is_down
