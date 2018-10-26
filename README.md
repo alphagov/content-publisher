@@ -33,6 +33,22 @@ yarn install
 bundle exec rake
 ```
 
+### Permissions
+
+Functionality of this application is enabled with permissions. There is a
+`pre_release_features` permission, for using functionality not yet available to
+users, and there is a `debug` permission, to access debug and documentation in
+app.
+
+To enable these permissions in a development environment run:
+
+```
+bundle exec rake developer_permissions
+```
+
+To enable them for your GOV.UK account add them to your account in
+[signon](https://github.com/alphagov/signon).
+
 ### Importing Whitehall news documents
 
 To populate your local database with [Whitehall][whitehall-repo] content there
