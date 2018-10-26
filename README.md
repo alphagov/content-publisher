@@ -22,8 +22,20 @@ This is a Ruby on Rails application.
 
 ### Running the application
 
+The first time you run this application you'll want to set you
+[permissions](#permissions).
+
+Then, if you are running on the [GOV.UK development VM][dev-vm]:
+
 ```
+cd /var/govuk/govuk-puppet/development-vm
 bowl content-publisher
+```
+
+Otherwise, on your machine:
+
+```
+./startup.sh
 ```
 
 ### Running the test suite
@@ -80,5 +92,6 @@ bundle exec rake import:whitehall_news INPUT=/tmp/whitehall-export.json
 [postgresql]: https://www.postgresql.org/
 [yarn]: https://yarnpkg.com/
 [imagemagick]: https://www.imagemagick.org/script/index.php
+[dev-vm]: https://github.com/alphagov/govuk-puppet/tree/master/development-vm
 [whitehall-repo]: https://github.com/alphagov/whitehall
 [export-filters]: https://github.com/alphagov/whitehall/blob/master/lib/tasks/export.rake#L153
