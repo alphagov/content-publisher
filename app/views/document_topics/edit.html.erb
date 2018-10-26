@@ -4,11 +4,11 @@
 <% def unroll(topic) %>
   <% capture do %>
     <li>
-      <%= @topics[topic][:title] %>
+      <%= @topic_index[topic][:title] %>
 
-      <% if @topics[topic][:children].any? %>
+      <% if @topic_index[topic][:children].any? %>
         <ul>
-          <% @topics[topic][:children].each do |child_topic| %>
+          <% @topic_index[topic][:children].each do |child_topic| %>
             <%= unroll(child_topic) %>
           <% end %>
         </ul>
@@ -18,7 +18,7 @@
 <% end %>
 
 <ul>
-  <% @topics[TopicsService::GOVUK_HOMEPAGE_CONTENT_ID][:children].each do |topic| %>
+  <% @topic_index[TopicsService::GOVUK_HOMEPAGE_CONTENT_ID][:children].each do |topic| %>
     <%= unroll(topic) %>
   <% end %>
 </ul>

@@ -1,7 +1,27 @@
+<% service = TopicsService.new %>
+<% topics = service.topics_for_document(@document.content_id) %>
+
+<% breadcrumbs = capture do %>
+  <% if topics.any? %>
+    <div class="topic-breadcrumb">
+      <% topics.each do |topic| %>
+        <ol>
+          <% service.topic_breadcrumb(topic).reverse.each do |crumb| %>
+            <li><%= crumb[:title] %></li>
+          <% end %>
+        </ol>
+      <% end %>
+    </div>
+  <% else %>
+    <%= t("documents.show.topics.no_topics") %>
+  <% end %>
+<% end %>
+
 <%= render "components/summary", {
   id: "topics",
   title: {
     text: t("documents.show.topics.title"),
     change_url: document_topics_path(@document)
-  }
+  },
+  block: breadcrumbs
 } %>
