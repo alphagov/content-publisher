@@ -10,7 +10,9 @@
       <%= render "documents/show/lead_image" %>
     <% end %>
 
-    <%= render "documents/show/topics" %>
+    <% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <%= render "documents/show/topics" %>
+    <% end %>
     <%= render "documents/show/tags" %>
 
   </div>
