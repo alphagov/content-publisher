@@ -11,6 +11,7 @@ en:
       topics:
         title: Topics
         no_topics: No topics.
+        api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
       tags:
         title: Tags
         api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
