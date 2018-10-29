@@ -1,9 +1,7 @@
-<% service = LinkablesService.new(schema.document_type) %>
-
-<% if values&.any? %>
+<% if values.any? %>
   <ul class="govuk-list govuk-list--bullet">
-    <% values.each do |content_id| %>
-      <li><%= service.by_content_id(content_id)["internal_name"] %></li>
+    <% values.each do |value| %>
+      <li><%= value["internal_name"] %></li>
     <% end %>
   </ul>
 <% else %>

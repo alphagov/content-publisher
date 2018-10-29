@@ -1,14 +1,31 @@
-<% tags = @document.document_type_schema.tags.map { |schema|
-  {
-    field: schema.label,
-    value: render("documents/tags/#{schema.type}", schema: schema, values: @document.tags[schema.id]),
-  }
-} %>
+<% begin %>
+  <% tags = @document.document_type_schema.tags.map { |schema|
+    service = LinkablesService.new(schema.document_type)
 
-<%= render "components/summary", {
-  title: {
-    text: t("documents.show.tags.title"),
-    change_url: document_tags_path(@document)
-  },
-  items: tags
-} %>
+    values = @document.tags[schema.id].to_a
+      .map { |content_id| service.by_content_id(content_id) }
+
+    {
+      field: schema.label,
+      value: render("documents/tags/#{schema.type}", schema: schema, values: values)
+    }
+  } %>
+
+  <%= render "components/summary", {
+    title: {
+      text: t("documents.show.tags.title"),
+      change_url: document_tags_path(@document)
+    },
+    items: tags
+  } %>
+<% rescue GdsApi::BaseError => e %>
+  <%# Don't export the error as we're telling the user about it %>
+  <% Rails.logger.error(e) %>
+
+  <%= render "components/summary", {
+    title: {
+      text: t("documents.show.tags.title")
+    },
+    block: t("documents.show.tags.api_down")
+  } %>
+<% end %>
