@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 class DocumentsController < ApplicationController
-  rescue_from GdsApi::BaseError do |e|
-    Rails.logger.error(e)
-    render "#{action_name}_api_down", status: :service_unavailable
-  end
-
   def index
     filter = DocumentFilter.new(filter_params)
     @documents = filter.documents

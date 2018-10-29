@@ -1,3 +1,5 @@
-<% service = LinkablesService.new(schema.document_type) %>
-<% content = values ? service.by_content_id(values.first) : nil %>
-<%= content ? content["internal_name"] : t("documents.show.tags.none") %>
+<% if values.first %>
+  <%= values.first["internal_name"] %>
+<% else %>
+  <%= t("documents.show.tags.none") %>
+<% end %>
