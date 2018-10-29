@@ -11,6 +11,6 @@ class DocumentTopicsController < ApplicationController
 
   def edit
     @document = Document.find_by_param(params[:document_id])
-    @topics = TopicsService.new.topics
+    @topic_index = TopicsService.new.topic_index
   end
 end

@@ -3,8 +3,8 @@
 RSpec.feature "Show all the topics when the Publishing API is down" do
   scenario do
     given_there_is_a_document
-    and_the_publishing_api_is_down
     when_i_visit_the_document_page
+    and_the_publishing_api_is_down
     and_i_try_to_change_the_topics
     then_i_see_an_error_message
   end

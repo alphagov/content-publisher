@@ -32,7 +32,8 @@ RSpec.feature "Upload a lead image" do
     asset_manager_delete_asset(@asset_id)
     stub_publishing_api_put_content(Document.last.content_id, {})
     click_on "Crop image"
-    WebMock.reset!
+    # TODO: Replace with https://github.com/bblimke/webmock/blob/d8686502442d9830dcccd24a1120ac08413d857a/lib/webmock/api.rb#L69 when it's released
+    WebMock::RequestRegistry.instance.reset!
   end
 
   def and_i_fill_in_the_metadata

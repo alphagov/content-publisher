@@ -23,6 +23,7 @@
   <% Rails.logger.error(e) %>
 
   <%= render "components/summary", {
+    id: "tags",
     title: {
       text: t("documents.show.tags.title")
     },
