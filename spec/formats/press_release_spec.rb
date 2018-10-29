@@ -22,6 +22,7 @@ RSpec.feature "Create a press release", format: true do
     fill_in "document[title]", with: "A great title"
     fill_in "document[summary]", with: "A great summary"
     click_on "Save"
+    # TODO: Replace with https://github.com/bblimke/webmock/blob/d8686502442d9830dcccd24a1120ac08413d857a/lib/webmock/api.rb#L69 when it's released
     WebMock::RequestRegistry.instance.reset!
   end
 
