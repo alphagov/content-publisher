@@ -12,6 +12,7 @@
   } %>
 
   <%= render "components/summary", {
+    id: "tags",
     title: {
       text: t("documents.show.tags.title"),
       change_url: document_tags_path(@document)

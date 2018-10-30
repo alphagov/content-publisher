@@ -69,3 +69,4 @@ en:
           chosen: "Image “%{file}” has been selected as the lead image"
           removed: "Image “%{file}” has been deselected. Document will now use the default lead image"
           deleted: "Image “%{file}” has been deleted. Document wil now use the default lead image"
+        topics_updated: Topics updated on all editions

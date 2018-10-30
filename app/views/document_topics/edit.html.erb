@@ -1,15 +1,21 @@
 <% content_for :back_link, document_path(@document) %>
 <% content_for :title, t("document_topics.edit.title", title: @document.title_or_fallback) %>
 
-<% def unroll(topic) %>
+<% def unroll(topic_content_id) %>
   <% capture do %>
     <li>
-      <%= @topic_index[topic][:title] %>
+      <%= tag.input type: "checkbox",
+        id: topic_content_id,
+        name: "topics[]",
+        value: topic_content_id,
+        checked: @topic_content_ids.include?(topic_content_id) %>
 
-      <% if @topic_index[topic][:children].any? %>
+      <%= @topic_index[topic_content_id][:title] %>
+
+      <% if @topic_index[topic_content_id][:children].any? %>
         <ul>
-          <% @topic_index[topic][:children].each do |child_topic| %>
-            <%= unroll(child_topic) %>
+          <% @topic_index[topic_content_id][:children].each do |child_topic_content_id| %>
+            <%= unroll(child_topic_content_id) %>
           <% end %>
         </ul>
       <% end %>
@@ -17,8 +23,14 @@
   <% end %>
 <% end %>
 
-<ul>
-  <% @topic_index[TopicsService::GOVUK_HOMEPAGE_CONTENT_ID][:children].each do |topic| %>
-    <%= unroll(topic) %>
-  <% end %>
-</ul>
+<%= form_tag update_document_topics_path(@document), method: :patch do %>
+  <ul>
+    <% @topic_index[TopicsService::GOVUK_HOMEPAGE_CONTENT_ID][:children].each do |topic_content_id| %>
+      <%= unroll(topic_content_id) %>
+    <% end %>
+  </ul>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Save", margin_bottom: true
+  } %>
+<% end %>

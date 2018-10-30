@@ -21,14 +21,17 @@ class TopicsService
     end
   end
 
-  def topics_for_document(content_id)
-    publishing_api.get_links(content_id)
-      .dig("links", "taxons").to_a
-      .map { |topic_content_id| topic_index[topic_content_id] }
+  def patch_topics(document, topics)
+    publishing_api.patch_links(document.content_id, links: { taxons: topics })
   end
 
-  def topic_breadcrumb(topic)
-    parent = topic_index[topic[:parent]]
+  def topics_for_document(document)
+    publishing_api.get_links(document.content_id).dig("links", "taxons").to_a
+  end
+
+  def topic_breadcrumb(topic_content_id)
+    topic = topic_index[topic_content_id]
+    parent = topic[:parent]
     parent ? [topic] + topic_breadcrumb(parent) : [topic]
   end
 

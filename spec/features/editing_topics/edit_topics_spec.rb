@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Show all the topics" do
+RSpec.feature "Edit topics for a document" do
   scenario do
     given_there_is_a_document
     when_i_visit_the_document_page
@@ -78,8 +78,8 @@ RSpec.feature "Show all the topics" do
     @request = stub_publishing_api_patch_links(
       @document.content_id,
       "links" => {
-        "taxons" => %w(level_one_topic level_two_topic)
-      }
+        "taxons" => %w(level_one_topic level_two_topic),
+      },
     )
 
     click_on "Save"
