@@ -5,10 +5,18 @@
 var $autocompletes = document.querySelectorAll('[data-module="autocomplete"]')
 if ($autocompletes) {
   $autocompletes.forEach(function ($el) {
+    var customAttributes = {};
+    if ( $el.attributes['data-contextual-guidance'] ) {
+      customAttributes = {
+        "data-contextual-guidance": $el.attributes['data-contextual-guidance'].value
+      };
+    }
+
     new accessibleAutocomplete.enhanceSelectElement({
       selectElement: $el,
       showAllValues: true,
-      showNoOptionsFound: false
+      showNoOptionsFound: false,
+      customAttributes: customAttributes
     })
   })
 }
@@ -16,11 +24,19 @@ if ($autocompletes) {
 var $multiselects = document.querySelectorAll('[data-module="autocomplete-multiselect"]')
 if ($multiselects) {
   $multiselects.forEach(function ($el) {
+    var customAttributes = {};
+    if ( $el.attributes['data-contextual-guidance'] ) {
+      customAttributes = {
+        "data-contextual-guidance": $el.attributes['data-contextual-guidance'].value
+      };
+    }
+
     new accessibleAutocomplete.enhanceSelectElement({
       selectElement: $el,
       showAllValues: true,
       showNoOptionsFound: false,
-      multiple: true
+      multiple: true,
+      customAttributes: customAttributes
     })
   })
 }

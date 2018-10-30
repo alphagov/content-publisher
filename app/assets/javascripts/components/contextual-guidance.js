@@ -47,8 +47,7 @@ ContextualGuidance.prototype.init = function () {
   **/
   $fields.forEach(function ($field) {
     var guidanceId = ContextualGuidance.prototype.getGuidanceId($field)
-
-    if (!guidanceId || !document.querySelector('#' + guidanceId)) {
+    if (!guidanceId) {
       return
     }
     $field.addEventListener('focus', ContextualGuidance.prototype.handleFocus)
