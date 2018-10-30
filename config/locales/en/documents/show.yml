@@ -70,3 +70,6 @@ en:
           removed: "Image “%{file}” has been deselected. Document will now use the default lead image"
           deleted: "Image “%{file}” has been deleted. Document wil now use the default lead image"
         topics_updated: Topics updated on all editions
+        topic_update_error:
+          title: Something has gone wrong
+          description: Something went wrong when saving your changes. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).

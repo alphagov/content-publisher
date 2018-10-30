@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Show all the topics when the Publishing API is down" do
+RSpec.feature "Edit tags when the Publishing API is down" do
   scenario do
     given_there_is_a_document
     when_i_visit_the_document_page
