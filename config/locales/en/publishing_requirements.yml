@@ -1,4 +1,5 @@
 en:
   publishing_requirements:
-    presence: "Enter a %{field}"
-    field_presence: "Enter %{field} content"
+    summary_presence: Enter a summary
+    body_presence: Enter a body
+    change_note_presence: Enter a change note
