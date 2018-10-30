@@ -25,56 +25,10 @@ RSpec.describe Tasks::WhitehallNewsImporter do
           topical_events: [SecureRandom.uuid, SecureRandom.uuid],
           world_locations: [SecureRandom.uuid, SecureRandom.uuid],
           state: "draft",
+          minor_change: false,
           force_published: false,
         },
       ],
-    }
-  end
-  let(:import_published_then_drafted_data) do
-    {
-        content_id: SecureRandom.uuid,
-        editions: [
-            {
-                created_at: Time.zone.now,
-                news_article_type: { key: "news_story" },
-                translations: [
-                    {
-                        locale: "en",
-                        title: "Title",
-                        summary: "Summary",
-                        body: "Body",
-                        base_path: "/government/news/title",
-                    },
-                ],
-                lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                supporting_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                topical_events: [SecureRandom.uuid, SecureRandom.uuid],
-                world_locations: [SecureRandom.uuid, SecureRandom.uuid],
-                state: "draft",
-                force_published: false,
-            },
-            {
-                created_at: Time.zone.now - 1.day,
-                news_article_type: { key: "news_story" },
-                translations: [
-                    {
-                        locale: "en",
-                        title: "Title",
-                        summary: "Summary",
-                        body: "Body",
-                        base_path: "/government/news/title",
-                    },
-                ],
-                lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                supporting_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                topical_events: [SecureRandom.uuid, SecureRandom.uuid],
-                world_locations: [SecureRandom.uuid, SecureRandom.uuid],
-                state: "published",
-                force_published: false,
-            },
-        ],
     }
   end
 
@@ -108,12 +62,12 @@ RSpec.describe Tasks::WhitehallNewsImporter do
       .to eq(imported_edition["world_locations"])
 
     expect(Document.last.current_edition_number).to eql(1)
-
     expect(Document.last.publication_state).to eq("sent_to_draft")
+    expect(Document.last.update_type).to eq("major")
     expect(Document.last.review_state).to eq("unreviewed")
   end
 
-  it "sets the correct publication, review and has live states when Whitehall document state is 'published'" do
+  it "sets the correct states when Whitehall document state is 'published'" do
     import_data[:editions][0][:state] = "published"
     parsed_json = JSON.parse(import_data.to_json)
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
@@ -123,16 +77,15 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     expect(Document.last.has_live_version_on_govuk).to eq(true)
   end
 
-  it "sets the correct publication, review and has live states when Whitehall document has more than one edition" do
-    parsed_json = JSON.parse(import_published_then_drafted_data.to_json)
+  it "can set minor update type" do
+    import_data[:editions][0][:minor_change] = true
+    parsed_json = JSON.parse(import_data.to_json)
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
-
-    expect(Document.last.publication_state).to eq("sent_to_live")
-    expect(Document.last.review_state).to eq("reviewed")
-    expect(Document.last.has_live_version_on_govuk).to eq(true)
+    expect(Document.last.update_type).to eq("minor")
   end
 
-  it "sets the correct publication, review and has live states when Whitehall document is force published" do
+
+  it "sets the correct states when Whitehall document is force published" do
     import_data[:editions][0][:state] = "published"
     import_data[:editions][0][:force_published] = true
     parsed_json = JSON.parse(import_data.to_json)
@@ -143,7 +96,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     expect(Document.last.has_live_version_on_govuk).to eq(true)
   end
 
-  it "sets the correct publication, review and has live states when Whitehall document state is 'rejected'" do
+  it "sets the correct states when Whitehall document state is 'rejected'" do
     import_data[:editions][0][:state] = "rejected"
     parsed_json = JSON.parse(import_data.to_json)
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
@@ -153,7 +106,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     expect(Document.last.has_live_version_on_govuk).to eq(false)
   end
 
-  it "sets the correct publication, review and has live states when Whitehall document state is 'submitted'" do
+  it "sets the correct states when Whitehall document state is 'submitted'" do
     import_data[:editions][0][:state] = "submitted"
     parsed_json = JSON.parse(import_data.to_json)
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
@@ -168,5 +121,65 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     parsed_json = JSON.parse(import_data.to_json)
     importer = Tasks::WhitehallNewsImporter.new
     expect { importer.import(parsed_json) }.not_to(change { Document.count })
+  end
+
+  context "when an imported document has more than on edition" do
+    let(:import_published_then_drafted_data) do
+      {
+          content_id: SecureRandom.uuid,
+          editions: [
+              {
+                  created_at: Time.zone.now,
+                  news_article_type: { key: "news_story" },
+                  translations: [
+                      {
+                          locale: "en",
+                          title: "Title",
+                          summary: "Summary",
+                          body: "Body",
+                          base_path: "/government/news/title",
+                      },
+                  ],
+                  lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+                  supporting_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+                  worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+                  topical_events: [SecureRandom.uuid, SecureRandom.uuid],
+                  world_locations: [SecureRandom.uuid, SecureRandom.uuid],
+                  state: "draft",
+                  force_published: false,
+              },
+              {
+                  created_at: Time.zone.now - 1.day,
+                  news_article_type: { key: "news_story" },
+                  translations: [
+                      {
+                          locale: "en",
+                          title: "Title",
+                          summary: "Summary",
+                          body: "Body",
+                          base_path: "/government/news/title",
+                      },
+                  ],
+                  lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+                  supporting_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+                  worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+                  topical_events: [SecureRandom.uuid, SecureRandom.uuid],
+                  world_locations: [SecureRandom.uuid, SecureRandom.uuid],
+                  state: "published",
+                  force_published: false,
+              },
+          ],
+      }
+    end
+
+
+    it "sets the correct states when Whitehall document has more than one edition" do
+      parsed_json = JSON.parse(import_published_then_drafted_data.to_json)
+      Tasks::WhitehallNewsImporter.new.import(parsed_json)
+
+      expect(Document.last.publication_state).to eq("sent_to_live")
+      expect(Document.last.review_state).to eq("reviewed")
+      expect(Document.last.has_live_version_on_govuk).to eq(true)
+    end
   end
 end

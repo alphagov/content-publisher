@@ -36,6 +36,7 @@ module Tasks
         tags: tags(edition),
         current_edition_number: document["editions"].count,
         has_live_version_on_govuk: is_live?(edition, document),
+        update_type: edition["minor_change"] ? "minor" : "major",
       )
 
       doc.save!
