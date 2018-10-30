@@ -11,7 +11,7 @@ RSpec.feature "Edit document tags" do
     and_i_click_on_edit_tags
     then_i_can_see_the_current_selections
     when_i_edit_the_tags
-    then_i_can_view_the_tags
+    then_i_can_see_the_tags
     and_the_preview_creation_succeeded
   end
 
@@ -54,7 +54,7 @@ RSpec.feature "Edit document tags" do
     click_on "Save"
   end
 
-  def then_i_can_view_the_tags
+  def then_i_can_see_the_tags
     expect(page).to have_content("Tag to select 1")
     expect(page).to have_content("Tag to select 2")
     expect(page).not_to have_content("Initial tag")

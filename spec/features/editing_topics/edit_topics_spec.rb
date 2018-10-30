@@ -4,19 +4,28 @@ RSpec.feature "Show all the topics" do
   scenario do
     given_there_is_a_document
     when_i_visit_the_document_page
-    and_i_try_to_change_the_topics
-    then_i_see_all_of_the_topics
+    and_i_click_on_edit_topics
+    then_i_see_the_current_selections
+    when_i_edit_the_topics
+    then_i_see_the_update_succeeded
   end
 
   def given_there_is_a_document
-    create :document
+    @document = create :document
   end
 
   def when_i_visit_the_document_page
     visit document_path(Document.last)
   end
 
-  def and_i_try_to_change_the_topics
+  def and_i_click_on_edit_topics
+    publishing_api_has_links(
+      "content_id" => @document.content_id,
+      "links" => {
+        "taxons" => %w(level_three_topic),
+      },
+    )
+
     # GOV.UK homepage
     publishing_api_has_expanded_links(
       "content_id" => "f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a",
@@ -54,9 +63,30 @@ RSpec.feature "Show all the topics" do
     click_on "Change Topics"
   end
 
-  def then_i_see_all_of_the_topics
+  def then_i_see_the_current_selections
     expect(page).to have_content("Level One Topic")
     expect(page).to have_content("Level Two Topic")
     expect(page).to have_content("Level Three Topic")
+    expect(find("#level_three_topic")).to be_checked
+  end
+
+  def when_i_edit_the_topics
+    uncheck("level_three_topic")
+    check("level_two_topic")
+    check("level_one_topic")
+
+    @request = stub_publishing_api_patch_links(
+      @document.content_id,
+      "links" => {
+        "taxons" => %w(level_one_topic level_two_topic)
+      }
+    )
+
+    click_on "Save"
+  end
+
+  def then_i_see_the_update_succeeded
+    expect(page).to have_content(I18n.t("documents.show.flashes.topics_updated"))
+    expect(@request).to have_been_requested
   end
 end
