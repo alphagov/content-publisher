@@ -81,12 +81,19 @@
   </div>
 
   <%
-    internal_metadata = {}
+    debug_links = []
 
-    if @document && debug_document_path(@document)
-      internal_metadata = {
+    if current_user.has_permission?(User::DEBUG_PERMISSION)
+      debug_links << {
+        href: documentation_path,
+        text: "App documentation",
+      }
+    end
+
+    if @document && current_user.has_permission?(User::DEBUG_PERMISSION)
+      debug_links << {
         href: debug_document_path(@document),
-        text: "Internal metadata (not shown to publishers)"
+        text: "Document internal metadata",
       }
     end
   %>
@@ -104,7 +111,7 @@
             href: "https://www.gov.uk/government/content-publishing",
             text: "How to write, publish, and improve content"
           }
-        ].push(internal_metadata)
+        ] + debug_links
       }
     ]
   } %>
