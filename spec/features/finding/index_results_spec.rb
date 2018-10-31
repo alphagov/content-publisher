@@ -37,7 +37,7 @@ RSpec.feature "Users views document results on index page" do
   end
 
   def and_i_can_see_the_document_state
-    expect(page).to have_content("Draft")
+    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
   end
 
   def and_i_can_see_the_document_last_editor
