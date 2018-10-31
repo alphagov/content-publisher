@@ -126,48 +126,48 @@ RSpec.describe Tasks::WhitehallNewsImporter do
   context "when an imported document has more than on edition" do
     let(:import_published_then_drafted_data) do
       {
-          content_id: SecureRandom.uuid,
-          editions: [
+        content_id: SecureRandom.uuid,
+        editions: [
+          {
+            created_at: Time.zone.now,
+            news_article_type: { key: "news_story" },
+            translations: [
               {
-                  created_at: Time.zone.now,
-                  news_article_type: { key: "news_story" },
-                  translations: [
-                      {
-                          locale: "en",
-                          title: "Title",
-                          summary: "Summary",
-                          body: "Body",
-                          base_path: "/government/news/title",
-                      },
-                  ],
-                  lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                  supporting_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                  worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                  topical_events: [SecureRandom.uuid, SecureRandom.uuid],
-                  world_locations: [SecureRandom.uuid, SecureRandom.uuid],
-                  state: "draft",
-                  force_published: false,
+                locale: "en",
+                title: "Title",
+                summary: "Summary",
+                body: "Body",
+                base_path: "/government/news/title",
               },
+            ],
+            lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+            supporting_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+            worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+            topical_events: [SecureRandom.uuid, SecureRandom.uuid],
+            world_locations: [SecureRandom.uuid, SecureRandom.uuid],
+            state: "draft",
+            force_published: false,
+          },
+          {
+            created_at: Time.zone.now - 1.day,
+            news_article_type: { key: "news_story" },
+            translations: [
               {
-                  created_at: Time.zone.now - 1.day,
-                  news_article_type: { key: "news_story" },
-                  translations: [
-                      {
-                          locale: "en",
-                          title: "Title",
-                          summary: "Summary",
-                          body: "Body",
-                          base_path: "/government/news/title",
-                      },
-                  ],
-                  lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                  supporting_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                  worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
-                  topical_events: [SecureRandom.uuid, SecureRandom.uuid],
-                  world_locations: [SecureRandom.uuid, SecureRandom.uuid],
-                  state: "published",
-                  force_published: false,
+                locale: "en",
+                title: "Title",
+                summary: "Summary",
+                body: "Body",
+                base_path: "/government/news/title",
               },
+            ],
+            lead_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+            supporting_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+            worldwide_organisations: [SecureRandom.uuid, SecureRandom.uuid],
+            topical_events: [SecureRandom.uuid, SecureRandom.uuid],
+            world_locations: [SecureRandom.uuid, SecureRandom.uuid],
+            state: "published",
+            force_published: false,
+            },
           ],
       }
     end
