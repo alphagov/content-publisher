@@ -31,7 +31,7 @@ module Tasks
         document_type: edition["news_article_type"]["key"],
         title: translation["title"],
         publication_state: publication_state(edition, document),
-        review_state: review_state(edition, document),
+        review_state: review_state(edition),
         summary: translation["summary"],
         tags: tags(edition),
         current_edition_number: document["editions"].count,
@@ -71,9 +71,9 @@ module Tasks
       "sent_to_draft"
     end
 
-    def review_state(edition, document)
+    def review_state(edition)
       return "published_without_review" if edition["force_published"]
-      return "reviewed" if is_live?(edition, document)
+      return "reviewed" if edition["state"] == "published"
       return "unreviewed" if edition["state"] == "draft"
       "submitted_for_review"
     end

@@ -123,7 +123,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     expect { importer.import(parsed_json) }.not_to(change { Document.count })
   end
 
-  context "when an imported document has more than on edition" do
+  context "when an imported document has more than one edition" do
     let(:import_published_then_drafted_data) do
       {
         content_id: SecureRandom.uuid,
@@ -178,7 +178,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
       Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
       expect(Document.last.publication_state).to eq("sent_to_live")
-      expect(Document.last.review_state).to eq("reviewed")
+      expect(Document.last.review_state).to eq("unreviewed")
       expect(Document.last.has_live_version_on_govuk).to eq(true)
     end
   end
