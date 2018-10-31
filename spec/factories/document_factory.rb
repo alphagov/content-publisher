@@ -14,7 +14,11 @@ FactoryBot.define do
 
     trait :with_required_content_for_publishing do
       summary { SecureRandom.alphanumeric(10) }
-      update_type { "minor" }
+    end
+
+    trait :published do
+      has_live_version_on_govuk { true }
+      publication_state { "sent_to_live" }
     end
   end
 end
