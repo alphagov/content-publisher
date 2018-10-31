@@ -30,12 +30,12 @@ module Tasks
         },
         document_type: edition["news_article_type"]["key"],
         title: translation["title"],
-        publication_state: publication_state(edition, document),
+        publication_state: publication_state(edition),
         review_state: review_state(edition),
         summary: translation["summary"],
         tags: tags(edition),
         current_edition_number: document["editions"].count,
-        has_live_version_on_govuk: is_live?(edition, document),
+        has_live_version_on_govuk: has_live_version?(edition, document),
         update_type: edition["minor_change"] ? "minor" : "major",
       )
 
@@ -66,8 +66,8 @@ module Tasks
       edition["lead_organisations"]
     end
 
-    def publication_state(edition, document)
-      return "sent_to_live" if is_live?(edition, document)
+    def publication_state(edition)
+      return "sent_to_live" if edition["state"] == "published"
       "sent_to_draft"
     end
 
@@ -78,7 +78,7 @@ module Tasks
       "submitted_for_review"
     end
 
-    def is_live?(edition, document)
+    def has_live_version?(edition, document)
       document["editions"].count > 1 || edition["state"] == "published"
     end
   end

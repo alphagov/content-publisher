@@ -177,7 +177,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
       parsed_json = JSON.parse(import_published_then_drafted_data.to_json)
       Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
-      expect(Document.last.publication_state).to eq("sent_to_live")
+      expect(Document.last.publication_state).to eq("sent_to_draft")
       expect(Document.last.review_state).to eq("unreviewed")
       expect(Document.last.has_live_version_on_govuk).to eq(true)
     end
