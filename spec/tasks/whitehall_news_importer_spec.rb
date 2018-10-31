@@ -167,8 +167,8 @@ RSpec.describe Tasks::WhitehallNewsImporter do
             world_locations: [SecureRandom.uuid, SecureRandom.uuid],
             state: "published",
             force_published: false,
-            },
-          ],
+          },
+        ],
       }
     end
 
