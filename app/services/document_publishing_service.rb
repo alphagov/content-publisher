@@ -14,7 +14,7 @@ class DocumentPublishingService
   def publish(document, review_state)
     document.update!(publication_state: "sending_to_live", review_state: review_state)
     publish_assets(document.images)
-    GdsApi.publishing_api_v2.publish(document.content_id, nil, locale: document.locale)
+    GdsApi.publishing_api_v2.publish(document.content_id, document.update_type, locale: document.locale)
     document.update!(publication_state: "sent_to_live", has_live_version_on_govuk: true)
   rescue GdsApi::BaseError => e
     GovukError.notify(e)

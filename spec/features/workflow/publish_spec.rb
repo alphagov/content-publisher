@@ -30,7 +30,7 @@ RSpec.feature "Publishing a document" do
   end
 
   def and_i_confirm_the_publishing
-    @request = stub_publishing_api_publish(@document.content_id, update_type: nil, locale: @document.locale)
+    @request = stub_publishing_api_publish(@document.content_id, update_type: @document.update_type, locale: @document.locale)
     asset_manager_update_asset(SecureRandom.uuid)
     click_on "Confirm publish"
   end
