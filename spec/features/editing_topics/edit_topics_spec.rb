@@ -24,6 +24,7 @@ RSpec.feature "Edit topics for a document" do
       "links" => {
         "taxons" => %w(level_three_topic),
       },
+      "version" => 3,
     )
 
     # GOV.UK homepage
@@ -67,6 +68,8 @@ RSpec.feature "Edit topics for a document" do
     expect(page).to have_content("Level One Topic")
     expect(page).to have_content("Level Two Topic")
     expect(page).to have_content("Level Three Topic")
+    expect(find("#level_one_topic")).to_not be_checked
+    expect(find("#level_two_topic")).to_not be_checked
     expect(find("#level_three_topic")).to be_checked
   end
 
@@ -80,6 +83,7 @@ RSpec.feature "Edit topics for a document" do
       "links" => {
         "taxons" => %w(level_one_topic level_two_topic),
       },
+      "previous_version" => "3",
     )
 
     click_on "Save"
