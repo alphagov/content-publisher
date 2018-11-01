@@ -29,7 +29,7 @@ RSpec.feature "Save topics when the Publishing API is down" do
   end
 
   def and_the_publishing_api_is_down
-    @request = stub_publishing_api_patch_links(@document.content_id, {})
+    stub_publishing_api_patch_links(@document.content_id, {})
     publishing_api_isnt_available
   end
 
@@ -42,7 +42,6 @@ RSpec.feature "Save topics when the Publishing API is down" do
   end
 
   def and_the_topic_update_failed
-    expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t("documents.show.flashes.topic_update_error.title"))
   end
 end

@@ -33,6 +33,7 @@ RSpec.feature "Edit topics when there is a conflict" do
       @document.content_id,
       "links" => {
         "taxons" => [],
+        "topics" => [],
       },
       "previous_version" => 3,
     )
