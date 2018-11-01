@@ -32,6 +32,8 @@ cd /var/govuk/govuk-puppet/development-vm
 bowl content-publisher
 ```
 
+You should be able to access the app at: http://content-publisher.dev.gov.uk/
+
 Otherwise, on your machine:
 
 ```
