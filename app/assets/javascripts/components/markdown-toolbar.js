@@ -557,15 +557,15 @@
     return Array(n + 1).join(string);
   }
 
-  function wordSelectionStart(text, index) {
-    while (text[index] && text[index - 1] != null && !text[index - 1].match(/\s/)) {
+  function lineSelectionStart(text, index) {
+    while (text[index] && text[index - 1] != null && !text[index - 1].match(/\n/)) {
       index--;
     }
     return index;
   }
 
-  function wordSelectionEnd(text, index) {
-    while (text[index] && !text[index].match(/\s/)) {
+  function lineSelectionEnd(text, index) {
+    while (text[index] && !text[index].match(/\n/)) {
       index++;
     }
     return index;
@@ -589,7 +589,7 @@
       } catch (error) {
         canInsertText = false;
       }
-      textarea.removeAttribute('contenteditable')
+      textarea.contentEditable = 'false';
     }
 
     if (canInsertText && !textarea.value.slice(0, textarea.selectionStart).endsWith(text)) {
@@ -635,8 +635,8 @@
 
   function expandSelectedText(textarea, prefixToUse, suffixToUse) {
     if (textarea.selectionStart === textarea.selectionEnd) {
-      textarea.selectionStart = wordSelectionStart(textarea.value, textarea.selectionStart);
-      textarea.selectionEnd = wordSelectionEnd(textarea.value, textarea.selectionEnd);
+      textarea.selectionStart = lineSelectionStart(textarea.value, textarea.selectionStart);
+      textarea.selectionEnd = lineSelectionEnd(textarea.value, textarea.selectionEnd);
     } else {
       var expandedSelectionStart = textarea.selectionStart - prefixToUse.length;
       var expandedSelectionEnd = textarea.selectionEnd + suffixToUse.length;
