@@ -35,6 +35,8 @@ module Tasks
         summary: translation["summary"],
         tags: tags(edition),
         current_edition_number: document["editions"].count,
+        has_live_version_on_govuk: has_live_version?(edition, document),
+        update_type: edition["minor_change"] ? "minor" : "major",
       )
 
       doc.save!
@@ -65,14 +67,19 @@ module Tasks
     end
 
     def publication_state(edition)
-      edition["state"] == "published" ? "sent_to_live" : "sent_to_draft"
+      return "sent_to_live" if edition["state"] == "published"
+      "sent_to_draft"
     end
 
     def review_state(edition)
       return "published_without_review" if edition["force_published"]
-      return "unreviewed" if edition["state"] == "draft"
       return "reviewed" if edition["state"] == "published"
+      return "unreviewed" if edition["state"] == "draft"
       "submitted_for_review"
+    end
+
+    def has_live_version?(edition, document)
+      document["editions"].count > 1 || edition["state"] == "published"
     end
   end
 end
