@@ -13,7 +13,7 @@ class TopicsService
 
       index[GOVUK_HOMEPAGE_CONTENT_ID] = {
         title: "GOV.UK Homepage",
-        children: level_one_topics.map { |level_one_topic| level_one_topic["content_id"] },
+        child_topic_content_ids: level_one_topics.map { |level_one_topic| level_one_topic["content_id"] },
       }
 
       unroll(index, level_one_topics, GOVUK_HOMEPAGE_CONTENT_ID)
@@ -33,7 +33,7 @@ class TopicsService
 
   def topic_breadcrumb(topic_content_id)
     topic = topic_index[topic_content_id]
-    parent = topic[:parent]
+    parent = topic[:parent_topic_content_id]
     parent ? [topic] + topic_breadcrumb(parent) : [topic]
   end
 
@@ -46,8 +46,8 @@ private
 
       index[topic["content_id"]] = {
         title: topic["title"],
-        children: child_topic_content_ids,
-        parent: parent_topic["content_id"],
+        child_topic_content_ids: child_topic_content_ids,
+        parent_topic_content_id: parent_topic["content_id"],
       }
       unroll(index, child_topics, topic)
     end

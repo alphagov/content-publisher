@@ -12,9 +12,9 @@
 
       <%= @topic_index[topic_content_id][:title] %>
 
-      <% if @topic_index[topic_content_id][:children].any? %>
+      <% if @topic_index[topic_content_id][:child_topic_content_ids].any? %>
         <ul>
-          <% @topic_index[topic_content_id][:children].each do |child_topic_content_id| %>
+          <% @topic_index[topic_content_id][:child_topic_content_ids].each do |child_topic_content_id| %>
             <%= unroll(child_topic_content_id) %>
           <% end %>
         </ul>
@@ -24,8 +24,9 @@
 <% end %>
 
 <%= form_tag update_document_topics_path(@document), method: :patch do %>
+  <% root_topic = @topic_index[TopicsService::GOVUK_HOMEPAGE_CONTENT_ID] %>
   <ul>
-    <% @topic_index[TopicsService::GOVUK_HOMEPAGE_CONTENT_ID][:children].each do |topic_content_id| %>
+    <% root_topic[:child_topic_content_ids].each do |topic_content_id| %>
       <%= unroll(topic_content_id) %>
     <% end %>
   </ul>
