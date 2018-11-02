@@ -5,7 +5,7 @@ RSpec.feature "Edit tags when the API is down" do
     given_there_is_a_document
     when_i_visit_the_document_page
     and_the_publishing_api_is_down
-    and_i_try_to_change_the_topics
+    and_i_try_to_change_the_tags
     then_i_should_see_an_error_message
   end
 
@@ -24,7 +24,7 @@ RSpec.feature "Edit tags when the API is down" do
     visit document_path(@document)
   end
 
-  def and_i_try_to_change_the_topics
+  def and_i_try_to_change_the_tags
     click_on "Change Tags"
   end
 
