@@ -8,25 +8,25 @@ describe('Contextual guidance component', function () {
   var elements
 
   beforeEach(function () {
-    elements = $(`
-      <input id="document-title" type="text" class="gem-c-input govuk-input" data-contextual-guidance="document-title-guidance"></textarea>
+    elements = $(
+      '<input id="document-title" type="text" class="gem-c-input govuk-input" data-contextual-guidance="document-title-guidance"></textarea>' +
 
-      <div id="document-title-guidance" class="app-c-contextual-guidance-wrapper">
-        <div class="app-c-contextual-guidance">
-        <h2 class="govuk-heading-s">Title</h2>
-        The title should be unique and specific. It must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
-        </div>
-      </div>
+      '<div id="document-title-guidance" class="app-c-contextual-guidance-wrapper">' +
+        '<div class="app-c-contextual-guidance">' +
+        '<h2 class="govuk-heading-s">Title</h2>' +
+        'The title should be unique and specific. It must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.' +
+        '</div>' +
+      '</div>' +
 
-      <textarea id="document-summary" class="gem-c-textarea govuk-textarea" data-contextual-guidance="document-summary-guidance"></textarea>
+      '<textarea id="document-summary" class="gem-c-textarea govuk-textarea" data-contextual-guidance="document-summary-guidance"></textarea>' +
 
-      <div id="document-summary-guidance" class="app-c-contextual-guidance-wrapper">
-        <div class="app-c-contextual-guidance">
-        <h2 class="govuk-heading-s">Summary</h2>
-        The summary should explain the main point of the story. It is the first line of the story so don’t repeat it in the body and end with a full stop.
-        </div>
-      </div>
-    `)
+      '<div id="document-summary-guidance" class="app-c-contextual-guidance-wrapper">' +
+        '<div class="app-c-contextual-guidance">' +
+        '<h2 class="govuk-heading-s">Summary</h2>' +
+        'The summary should explain the main point of the story. It is the first line of the story so don’t repeat it in the body and end with a full stop.' +
+        '</div>' +
+      '</div>'
+    )
     $(document.body).append(elements)
     new ContextualGuidance().init(document)
   })

@@ -9,10 +9,10 @@ describe('Error alert component', function () {
   var element
 
   beforeEach(function () {
-    element = $(`
-      <div class="app-c-error-alert" data-module="error-alert" role="alert" tabindex="-1">
-        <p class="app-c-error-alert__message">Message to alert the user to an unsuccessful action goes here</p>
-      </div>`
+    element = $(
+      '<div class="app-c-error-alert" data-module="error-alert" role="alert" tabindex="-1">' +
+        '<p class="app-c-error-alert__message">Message to alert the user to an unsuccessful action goes here</p>' +
+      '</div>'
     )
     $(document.body).append(element)
     module = new ErrorAlert(element)
