@@ -1,6 +1,6 @@
 <% begin %>
   <% service = TopicsService.new %>
-  <% topic_content_ids = service.topics_for_document(@document) %>
+  <% topic_content_ids, _version = service.topics_for_document(@document) %>
 
   <% breadcrumbs = capture do %>
     <% if topic_content_ids.any? %>

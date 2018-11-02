@@ -30,6 +30,8 @@
     <% end %>
   </ul>
 
+  <%= hidden_field_tag :version, @version %>
+
   <%= render "govuk_publishing_components/components/button", {
     text: "Save", margin_bottom: true
   } %>

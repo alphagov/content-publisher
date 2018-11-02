@@ -21,12 +21,14 @@ class TopicsService
     end
   end
 
-  def patch_topics(document, topics)
-    publishing_api.patch_links(document.content_id, links: { taxons: topics })
+  def patch_topics(document, topics, version)
+    publishing_api.patch_links(document.content_id, links: { taxons: topics }, previous_version: version)
   end
 
   def topics_for_document(document)
-    publishing_api.get_links(document.content_id).dig("links", "taxons").to_a
+    links = publishing_api.get_links(document.content_id)
+    topic_content_ids = links.dig("links", "taxons").to_a
+    [topic_content_ids, links["version"]]
   end
 
   def topic_breadcrumb(topic_content_id)
