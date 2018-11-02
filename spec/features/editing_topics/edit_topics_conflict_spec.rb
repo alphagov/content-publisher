@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.feature "Edit topics when there is a conflict" do
+  include TopicsHelper
+
   scenario do
     given_there_is_a_document
     when_i_visit_the_topics_page
@@ -22,14 +24,7 @@ RSpec.feature "Edit topics when there is a conflict" do
       "version" => 3,
     )
 
-    # GOV.UK homepage
-    publishing_api_has_expanded_links(
-      "content_id" => "f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a",
-      "expanded_links" => {
-        "level_one_taxons" => [],
-      },
-    )
-
+    publishing_api_has_taxonomy
     visit document_topics_path(Document.last)
   end
 

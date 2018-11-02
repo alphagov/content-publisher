@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.feature "Save topics when the Publishing API is down" do
+  include TopicsHelper
+
   scenario do
     given_there_is_a_document
     and_i_am_on_the_topics_page
@@ -22,26 +24,7 @@ RSpec.feature "Save topics when the Publishing API is down" do
       },
     )
 
-    # GOV.UK homepage
-    publishing_api_has_expanded_links(
-      "content_id" => "f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a",
-      "expanded_links" => {
-        "level_one_taxons" => [
-          {
-            "title" => "Level One Topic",
-            "content_id" => "level_one_topic",
-          },
-        ],
-      },
-    )
-
-    publishing_api_has_expanded_links(
-      "content_id" => "level_one_topic",
-      "expanded_links" => {
-        "child_taxons" => [],
-      },
-    )
-
+    publishing_api_has_taxonomy
     visit document_topics_path(@document)
   end
 
