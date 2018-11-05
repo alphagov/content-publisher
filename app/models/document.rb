@@ -48,6 +48,10 @@ class Document < ApplicationRecord
     Document.find_by!(content_id: content_id, locale: locale)
   end
 
+  def editable?
+    publication_state != "sent_to_live"
+  end
+
   def user_facing_state
     UserFacingState.new(self).to_s
   end

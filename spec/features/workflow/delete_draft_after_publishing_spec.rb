@@ -33,7 +33,7 @@ RSpec.feature "Delete draft after publishing" do
 
   def and_i_create_a_new_draft
     stub_any_publishing_api_put_content
-    click_on "Change Content"
+    click_on "Create new edition"
     click_on "Save"
   end
 

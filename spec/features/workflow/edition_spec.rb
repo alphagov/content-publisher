@@ -24,6 +24,7 @@ RSpec.feature "Editions" do
   def then_i_see_it_is_the_first_edition
     expect(page).to have_content(I18n.t("documents.show.contents.update_type.#{@document.update_type}"))
     expect(page).to have_content(@document.change_note)
+    expect(page).to_not have_link "Change Content"
   end
 
   def when_i_click_to_create_a_new_edition
@@ -45,5 +46,6 @@ RSpec.feature "Editions" do
   def then_i_see_there_is_a_new_edition
     expect(page).to have_content(I18n.t("documents.show.contents.update_type.minor"))
     expect(page).to have_content("I made a change")
+    expect(page).to have_link "Change Content"
   end
 end

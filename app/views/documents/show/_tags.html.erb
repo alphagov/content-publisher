@@ -14,7 +14,7 @@
   <%= render "components/summary", {
     title: {
       text: t("documents.show.tags.title"),
-      change_url: document_tags_path(@document)
+      change_url: @document.editable? && document_tags_path(@document)
     },
     items: tags
   } %>

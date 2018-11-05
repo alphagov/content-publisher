@@ -7,7 +7,6 @@
   }
 } %>
 
-
 <% update_types = if @document.has_live_version_on_govuk?
   [
     {
@@ -27,7 +26,7 @@ end %>
   id: "content",
   title: {
     text: t("documents.show.contents.title"),
-    change_url: edit_document_path(@document)
+    change_url: @document.editable? && edit_document_path(@document)
   },
   items: [
     {
