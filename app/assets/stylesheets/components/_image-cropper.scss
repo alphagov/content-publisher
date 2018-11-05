@@ -2,7 +2,7 @@
 @import "govuk-frontend/helpers/all";
 @import "vendor/cropperjs/dist/cropper";
 
-$cropper-point-size: 10px;
+$cropper-point-size: 20px;
 
 .app-c-image-cropper {
   @include govuk-font($size: 19);
