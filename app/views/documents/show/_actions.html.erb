@@ -32,7 +32,7 @@
       <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "submitted_for_review" %>
       <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
-      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
+      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
 
       <% unless @document.has_live_version_on_govuk %>
         <%= link_to "Delete draft", delete_draft_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
@@ -42,7 +42,7 @@
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
       <% end %>
 
-      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true, target: "_blank" %>
+      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
 
       <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
 
