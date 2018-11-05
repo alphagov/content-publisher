@@ -74,5 +74,5 @@ en:
           title: Something has gone wrong
           description: Something went wrong when saving your changes. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         topic_update_conflict:
-          title: Somebody changed the topics before you could
-          description:  Your changes have not been saved. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+          title: Somebody else changed the topics before you could
+          description:  Your changes have not been saved. Please try again.
