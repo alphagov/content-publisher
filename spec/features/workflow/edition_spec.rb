@@ -27,6 +27,7 @@ RSpec.feature "Editions" do
   end
 
   def when_i_click_to_create_a_new_edition
+    stub_any_publishing_api_put_content
     click_on "Create new edition"
   end
 
@@ -38,8 +39,6 @@ RSpec.feature "Editions" do
   def when_i_edit_the_new_edition
     fill_in "document[change_note]", with: "I made a change"
     choose I18n.t("documents.edit.update_type.minor_name")
-
-    stub_any_publishing_api_put_content
     click_on "Save"
   end
 

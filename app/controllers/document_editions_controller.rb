@@ -3,7 +3,13 @@
 class DocumentEditionsController < ApplicationController
   def create
     document = Document.find_by_param(params[:document_id])
-    document.update!(change_note: nil, update_type: "major")
+
+    DocumentDraftingService.update!(
+      document: document,
+      user: current_user,
+      type: "new_edition",
+    )
+
     redirect_to edit_document_path(document)
   end
 end
