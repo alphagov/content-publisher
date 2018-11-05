@@ -52,7 +52,7 @@ RSpec.feature "Edit topics for a document" do
       "links" => {
         "taxons" => %w(level_one_topic level_two_topic),
       },
-      "previous_version" => "3",
+      "previous_version" => 3,
     )
 
     click_on "Save"

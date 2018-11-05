@@ -17,7 +17,7 @@ class DocumentTopicsController < ApplicationController
 
   def update
     document = Document.find_by_param(params[:document_id])
-    TopicsService.new.patch_topics(document, params.fetch(:topics, []), params[:version])
+    TopicsService.new.patch_topics(document, params.fetch(:topics, []), params[:version].to_i)
     redirect_to document_path(document), notice: t("documents.show.flashes.topics_updated")
   rescue GdsApi::HTTPConflict => e
     Rails.logger.error(e)

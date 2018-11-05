@@ -29,16 +29,13 @@ RSpec.feature "Edit topics when there is a conflict" do
   end
 
   def given_the_remote_has_changed
-    #TODO: This should be moved to the gds-api-adapters
-    endpoint = GdsApi::TestHelpers::PublishingApiV2::PUBLISHING_API_V2_ENDPOINT
-    stub_request(:patch, "#{endpoint}/links/#{@document.content_id}")
-      .with(body: {
-        "links" => {
-          "taxons" => [],
-        },
-        "previous_version" => "3",
-      })
-      .to_return(status: 409)
+    stub_publishing_api_patch_links_conflict(
+      @document.content_id,
+      "links" => {
+        "taxons" => [],
+      },
+      "previous_version" => 3,
+    )
   end
 
   def when_i_click_save
