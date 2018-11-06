@@ -9,7 +9,7 @@ $cropper-point-size: 20px;
   @include govuk-responsive-margin(6, "bottom");
 
   .cropper-view-box {
-    outline: 1px solid $govuk-focus-colour;
+    outline: 2px solid $govuk-focus-colour;
     outline-color: $govuk-focus-colour;
   }
 
