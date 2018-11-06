@@ -37,15 +37,15 @@ RSpec.feature "Edit topics for a document" do
     expect(page).to have_content("Level One Topic")
     expect(page).to have_content("Level Two Topic")
     expect(page).to have_content("Level Three Topic")
-    expect(find("#level_one_topic")).to_not be_checked
-    expect(find("#level_two_topic")).to_not be_checked
-    expect(find("#level_three_topic")).to be_checked
+    expect(find("#topic-level_one_topic")).to_not be_checked
+    expect(find("#topic-level_two_topic")).to_not be_checked
+    expect(find("#topic-level_three_topic")).to be_checked
   end
 
   def when_i_edit_the_topics
-    uncheck("level_three_topic")
-    check("level_two_topic")
-    check("level_one_topic")
+    uncheck("Level Three Topic")
+    check("Level Two Topic")
+    check("Level One Topic")
 
     @request = stub_publishing_api_patch_links(
       @document.content_id,
