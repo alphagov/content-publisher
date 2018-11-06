@@ -21,7 +21,7 @@ class DocumentTopicsController < ApplicationController
     redirect_to document_path(document), notice: t("documents.show.flashes.topics_updated")
   rescue GdsApi::HTTPConflict => e
     Rails.logger.error(e)
-    redirect_to document, alert_with_description: t("documents.show.flashes.topic_update_conflict")
+    redirect_to document_topics_path, alert_with_description: t("document_topics.edit.flashes.topic_update_conflict")
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
     redirect_to document, alert_with_description: t("documents.show.flashes.topic_update_error")
