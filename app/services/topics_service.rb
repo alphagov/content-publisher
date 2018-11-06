@@ -34,7 +34,7 @@ class TopicsService
   def topic_breadcrumb(topic_content_id)
     topic = topic_index[topic_content_id]
     parent = topic[:parent_topic_content_id]
-    parent ? [topic] + topic_breadcrumb(parent) : [topic]
+    parent ? topic_breadcrumb(parent) + [topic] : [topic]
   end
 
 private

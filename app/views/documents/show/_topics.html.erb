@@ -7,7 +7,7 @@
       <div class="topic-breadcrumb">
         <% topic_content_ids.each do |topic_content_id| %>
           <ol>
-            <% service.topic_breadcrumb(topic_content_id).reverse.each do |crumb| %>
+            <% service.topic_breadcrumb(topic_content_id).each do |crumb| %>
               <li><%= crumb[:title] %></li>
             <% end %>
           </ol>
