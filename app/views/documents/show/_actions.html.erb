@@ -21,12 +21,16 @@
         <%= render "govuk_publishing_components/components/button", text: "Approve" %>
       <% end %>
 
-      <%= render "govuk_publishing_components/components/button", text: "Create new edition", href: edit_document_path(@document), secondary: true %>
+      <%= form_tag create_document_edition_path(@document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Create new edition", secondary: true %>
+      <% end %>
 
       <%= link_to "Retire", retire_document_path(@document), class: "govuk-link" %>
       <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "published" %>
-      <%= render "govuk_publishing_components/components/button", text: "Create new edition", href: edit_document_path(@document) %>
+      <%= form_tag create_document_edition_path(@document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Create new edition" %>
+      <% end %>
 
       <%= link_to "Retire", retire_document_path(@document), class: "govuk-link" %>
       <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>

@@ -1,5 +1,5 @@
-<% if @document.lead_image %>
-  <% lead_image_block = capture do %>
+<% lead_image_block = if @document.lead_image %>
+  <% capture do %>
     <%= render "components/image_meta", {
       id: "lead-image",
       src: url_for(@document.lead_image.thumbnail),
@@ -10,25 +10,17 @@
       }
     } %>
   <% end %>
-
-  <%= render "components/summary", {
-    title: {
-      text: t("documents.show.lead_image.title"),
-      change_url: document_images_path(@document)
-    },
-    block: lead_image_block
-  } %>
 <% else %>
-  <% no_lead_image_block = capture do %>
+  <% capture do %>
     <%= t("documents.show.lead_image.no_lead_image") %>
     <%= link_to t("documents.show.lead_image.upload_image"), document_images_path(@document), class: "govuk-link" %>
   <% end %>
-
-  <%= render "components/summary", {
-    title: {
-      text: t("documents.show.lead_image.title"),
-      change_url: document_images_path(@document)
-    },
-    block: no_lead_image_block
-  } %>
 <% end %>
+
+<%= render "components/summary", {
+  title: {
+    text: t("documents.show.lead_image.title"),
+    change_url: @document.editable? && document_images_path(@document)
+  },
+  block: lead_image_block
+} %>
