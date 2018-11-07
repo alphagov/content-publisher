@@ -50,7 +50,7 @@ RSpec.feature "Edit topics for a document" do
     @request = stub_publishing_api_patch_links(
       @document.content_id,
       "links" => {
-        "taxons" => %w(level_one_topic level_two_topic),
+        "taxons" => %w(level_two_topic),
         "topics" => %w(specialist_sector_1 specialist_sector_2),
       },
       "previous_version" => 3,

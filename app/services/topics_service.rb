@@ -29,7 +29,7 @@ class TopicsService
 
     publishing_api.patch_links(
       document.content_id,
-      links: { taxons: topic_content_ids, topics: legacy_topic_content_ids },
+      links: { taxons: cleanup_superfluous_topics(topic_content_ids), topics: legacy_topic_content_ids },
       previous_version: version,
     )
   end
@@ -41,9 +41,8 @@ class TopicsService
   end
 
   def topic_breadcrumb(topic_content_id)
-    topic = topic_index[topic_content_id]
-    parent = topic[:parent_topic_content_id]
-    parent ? topic_breadcrumb(parent) + [topic] : [topic]
+    breadcrumb_content_ids = ancestor_content_ids(topic_content_id) + [topic_content_id]
+    breadcrumb_content_ids.map { |breadcrumb_content_id| topic_index[breadcrumb_content_id] }
   end
 
 private
@@ -61,6 +60,19 @@ private
 
       unroll(index, child_topics, topic)
     end
+  end
+
+  def cleanup_superfluous_topics(topic_content_ids)
+    all_ancestor_content_ids = topic_content_ids.map { |topic_content_id|
+      ancestor_content_ids(topic_content_id)
+    }.flatten
+
+    topic_content_ids - all_ancestor_content_ids
+  end
+
+  def ancestor_content_ids(topic_content_id)
+    parent_content_id = topic_index[topic_content_id][:parent_topic_content_id]
+    parent_content_id ? ancestor_content_ids(parent_content_id) + [parent_content_id] : []
   end
 
   def level_one_topics
