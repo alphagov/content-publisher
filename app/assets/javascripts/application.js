@@ -10,6 +10,7 @@
 //= require components/image-cropper.js
 //= require components/markdown-editor.js
 //= require components/url-preview.js
+//= require vendor/@alphagov/miller-columns-element/dist/index.umd.js
 
 /**
  * contextual guidance need to be initialised after the rest of the components

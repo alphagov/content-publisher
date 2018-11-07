@@ -3,15 +3,19 @@
 
 <% def unroll(topic) %>
   <li>
+    <div class="govuk-checkboxes__item">
     <%= tag.input type: "checkbox",
       id: "topic-#{topic.content_id}",
+      class: "govuk-checkboxes__input",
       name: "topics[]",
       value: topic.content_id,
+      tabindex: "-1",
       checked: @topics.include?(topic) %>
 
-    <%= tag.label for: "topic-#{topic.content_id}" do %>
+    <%= tag.label for: "topic-#{topic.content_id}", class:"govuk-label govuk-checkboxes__label" do %>
       <%= topic.title %>
     <% end %>
+    </div>
 
     <% if topic.children.any? %>
       <ul>
@@ -24,11 +28,17 @@
 <% end %>
 
 <%= form_tag update_document_topics_path(@document), method: :patch do %>
-  <ul>
+  <h2 class="govuk-heading-m">Selected topics</h2>
+  <govuk-breadcrumbs class="govuk-breadcrumbs" id="selected-items" for="miller-columns"></govuk-breadcrumbs>
+
+  <% root_topic = @topic_index[TopicsService::GOVUK_HOMEPAGE_CONTENT_ID] %>
+  <govuk-miller-columns id="miller-columns" class="govuk-miller-columns" for="taxonomy" breadcrumbs="selected-items">
+  <ul id="taxonomy">
     <% Topic.govuk_homepage(@document.document_topics.index).children.each do |topic| %>
       <% unroll(topic) %>
     <% end %>
   </ul>
+  </govuk-miller-columns>
 
   <%= hidden_field_tag :version, @version %>
 
