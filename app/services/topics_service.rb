@@ -14,6 +14,7 @@ class TopicsService
       index[GOVUK_HOMEPAGE_CONTENT_ID] = {
         title: "GOV.UK Homepage",
         child_topic_content_ids: level_one_topics.map { |level_one_topic| level_one_topic["content_id"] },
+        legacy_topics: [],
       }
 
       unroll(index, level_one_topics, GOVUK_HOMEPAGE_CONTENT_ID)
@@ -21,8 +22,16 @@ class TopicsService
     end
   end
 
-  def patch_topics(document, topics, version)
-    publishing_api.patch_links(document.content_id, links: { taxons: topics }, previous_version: version)
+  def patch_topics(document, topic_content_ids, version)
+    legacy_topic_content_ids = topic_content_ids.map { |topic_content_id|
+      topic_breadcrumb(topic_content_id).map { |topic| topic[:legacy_topics] }
+    }.flatten.uniq
+
+    publishing_api.patch_links(
+      document.content_id,
+      links: { taxons: topic_content_ids, topics: legacy_topic_content_ids },
+      previous_version: version,
+    )
   end
 
   def topics_for_document(document)
@@ -42,13 +51,14 @@ private
   def unroll(index, topics, parent_topic)
     topics.each do |topic|
       child_topics = topic.dig("links", "child_taxons").to_a
-      child_topic_content_ids = child_topics.map { |child_topic| child_topic["content_id"] }
 
       index[topic["content_id"]] = {
         title: topic["title"],
-        child_topic_content_ids: child_topic_content_ids,
+        child_topic_content_ids: child_topics.map { |child_topic| child_topic["content_id"] },
         parent_topic_content_id: parent_topic["content_id"],
+        legacy_topics: legacy_topics(topic),
       }
+
       unroll(index, child_topics, topic)
     end
   end
@@ -70,7 +80,13 @@ private
     @level_one_topics
   end
 
+  def legacy_topics(topic)
+    topic.dig("links", "legacy_taxons").to_a
+      .select { |legacy_taxon| legacy_taxon["document_type"] == "topic" }
+      .map { |legacy_taxon| legacy_taxon["content_id"] }
+  end
+
   def publishing_api
-    GdsApi.publishing_api_v2(timeout: 1)
+    GdsApi.publishing_api_v2
   end
 end
