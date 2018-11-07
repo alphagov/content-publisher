@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Access topics without the pre-release features permission" do
+RSpec.feature "Edit topics without the pre-release features permission" do
   scenario do
     given_there_is_a_document
     and_i_dont_have_pre_release_features_permission

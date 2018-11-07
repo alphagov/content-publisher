@@ -13,7 +13,7 @@ class TopicsService
 
       index[GOVUK_HOMEPAGE_CONTENT_ID] = {
         title: "GOV.UK Homepage",
-        children: level_one_topics.map { |level_one_topic| level_one_topic["content_id"] },
+        child_topic_content_ids: level_one_topics.map { |level_one_topic| level_one_topic["content_id"] },
       }
 
       unroll(index, level_one_topics, GOVUK_HOMEPAGE_CONTENT_ID)
@@ -21,15 +21,20 @@ class TopicsService
     end
   end
 
-  def topics_for_document(content_id)
-    publishing_api.get_links(content_id)
-      .dig("links", "taxons").to_a
-      .map { |topic_content_id| topic_index[topic_content_id] }
+  def patch_topics(document, topics, version)
+    publishing_api.patch_links(document.content_id, links: { taxons: topics }, previous_version: version)
   end
 
-  def topic_breadcrumb(topic)
-    parent = topic_index[topic[:parent]]
-    parent ? [topic] + topic_breadcrumb(parent) : [topic]
+  def topics_for_document(document)
+    links = publishing_api.get_links(document.content_id)
+    topic_content_ids = links.dig("links", "taxons").to_a
+    [topic_content_ids, links["version"]]
+  end
+
+  def topic_breadcrumb(topic_content_id)
+    topic = topic_index[topic_content_id]
+    parent = topic[:parent_topic_content_id]
+    parent ? topic_breadcrumb(parent) + [topic] : [topic]
   end
 
 private
@@ -41,8 +46,8 @@ private
 
       index[topic["content_id"]] = {
         title: topic["title"],
-        children: child_topic_content_ids,
-        parent: parent_topic["content_id"],
+        child_topic_content_ids: child_topic_content_ids,
+        parent_topic_content_id: parent_topic["content_id"],
       }
       unroll(index, child_topics, topic)
     end

@@ -1,24 +1,39 @@
 <% content_for :back_link, document_path(@document) %>
 <% content_for :title, t("document_topics.edit.title", title: @document.title_or_fallback) %>
 
-<% def unroll(topic) %>
-  <% capture do %>
-    <li>
-      <%= @topic_index[topic][:title] %>
+<% def unroll(topic_content_id) %>
+  <li>
+    <%= tag.input type: "checkbox",
+      id: "topic-#{topic_content_id}",
+      name: "topics[]",
+      value: topic_content_id,
+      checked: @topic_content_ids.include?(topic_content_id) %>
 
-      <% if @topic_index[topic][:children].any? %>
-        <ul>
-          <% @topic_index[topic][:children].each do |child_topic| %>
-            <%= unroll(child_topic) %>
-          <% end %>
-        </ul>
-      <% end %>
-    </li>
-  <% end %>
+    <%= tag.label for: "topic-#{topic_content_id}" do %>
+      <%= @topic_index[topic_content_id][:title] %>
+    <% end %>
+
+    <% if @topic_index[topic_content_id][:child_topic_content_ids].any? %>
+      <ul>
+        <% @topic_index[topic_content_id][:child_topic_content_ids].each do |child_topic_content_id| %>
+          <% unroll(child_topic_content_id) %>
+        <% end %>
+      </ul>
+    <% end %>
+  </li>
 <% end %>
 
-<ul>
-  <% @topic_index[TopicsService::GOVUK_HOMEPAGE_CONTENT_ID][:children].each do |topic| %>
-    <%= unroll(topic) %>
-  <% end %>
-</ul>
+<%= form_tag update_document_topics_path(@document), method: :patch do %>
+  <% root_topic = @topic_index[TopicsService::GOVUK_HOMEPAGE_CONTENT_ID] %>
+  <ul>
+    <% root_topic[:child_topic_content_ids].each do |topic_content_id| %>
+      <% unroll(topic_content_id) %>
+    <% end %>
+  </ul>
+
+  <%= hidden_field_tag :version, @version %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Save", margin_bottom: true
+  } %>
+<% end %>

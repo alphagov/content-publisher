@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   delete "/documents/:document_id/lead-image" => "document_lead_image#remove", as: :remove_document_lead_image
 
   get "/documents/:document_id/topics" => "document_topics#edit", as: :document_topics
+  patch "/documents/:document_id/topics" => "document_topics#update", as: :update_document_topics
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 

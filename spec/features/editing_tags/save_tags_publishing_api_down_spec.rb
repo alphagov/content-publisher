@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.feature "Save document tags when the API is down" do
   scenario do
     given_there_is_a_document_with_tags
-    and_i_am_editing_the_tags
+    and_i_am_on_the_tags_page
     and_the_publishing_api_is_down
-    when_i_finish_editing_the_tags
+    when_i_click_the_save_button
     then_i_see_the_document_page
     and_the_preview_creation_failed
   end
@@ -20,7 +18,7 @@ RSpec.feature "Save document tags when the API is down" do
     @document = create(:document, document_type: document_type_schema.id, tags: tag)
   end
 
-  def and_i_am_editing_the_tags
+  def and_i_am_on_the_tags_page
     visit document_tags_path(@document)
   end
 
@@ -29,12 +27,12 @@ RSpec.feature "Save document tags when the API is down" do
     publishing_api_isnt_available
   end
 
-  def when_i_finish_editing_the_tags
+  def when_i_click_the_save_button
     click_on "Save"
   end
 
   def then_i_see_the_document_page
-    expect(page).to have_content(@document.title)
+    expect(current_path).to eq document_path(@document)
   end
 
   def and_the_preview_creation_failed

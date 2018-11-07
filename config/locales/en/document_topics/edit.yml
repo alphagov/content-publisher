@@ -3,3 +3,7 @@ en:
     edit:
       title: "Topics for ‘%{title}’"
       api_down: This content can't be edited right now. We're having trouble getting the data we need for you to make changes on this page.
+      flashes:
+        topic_update_conflict:
+          title: Somebody else changed the topics before you could
+          description:  Your changes have not been saved. Please try again.

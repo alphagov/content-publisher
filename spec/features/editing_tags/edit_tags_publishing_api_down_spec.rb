@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit document tags when the API is down" do
+RSpec.feature "Edit tags when the API is down" do
   scenario do
     given_there_is_a_document
-    and_the_publishing_api_is_down
     when_i_visit_the_document_page
-    and_i_click_on_edit_tags
+    and_the_publishing_api_is_down
+    and_i_try_to_change_the_tags
     then_i_should_see_an_error_message
   end
 
@@ -24,7 +24,7 @@ RSpec.feature "Edit document tags when the API is down" do
     visit document_path(@document)
   end
 
-  def and_i_click_on_edit_tags
+  def and_i_try_to_change_the_tags
     click_on "Change Tags"
   end
 
