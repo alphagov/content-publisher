@@ -49,7 +49,8 @@ private
 
   def unroll(index, topics, parent_topic)
     topics.each do |topic|
-      child_topics = topic.dig("links", "child_taxons").to_a
+      child_topics = topic.dig("links", "child_taxons")
+        .to_a.sort_by { |child_topic| child_topic["title"] }
 
       index[topic["content_id"]] = {
         title: topic["title"],
@@ -89,7 +90,7 @@ private
       level_one_topic["links"] = level_one_topic_links["expanded_links"]
     end
 
-    @level_one_topics
+    @level_one_topics.sort_by { |level_one_topic| level_one_topic["title"] }
   end
 
   def legacy_topics(topic)
