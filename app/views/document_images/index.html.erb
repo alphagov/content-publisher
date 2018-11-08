@@ -3,37 +3,35 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <% upload_image_heading = capture do %>
-      <h2 class="govuk-heading-m">
-        <%= t("document_images.index.upload_image") %>
-      </h2>
-    <% end %>
-
-    <%= form_tag(create_document_image_path(@document), multipart: true) do %>
-      <%= hidden_field_tag :wizard, "lead_image" %>
-
-      <%= render "govuk_publishing_components/components/file_upload", {
-        label: {
-          text: upload_image_heading,
-        },
-        name: "image"
-      } %>
-
-      <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("document_images.index.description") %>
+    <div class="app-pane">
+      <% upload_image_heading = capture do %>
+        <h2 class="govuk-heading-m">
+          <%= t("document_images.index.upload_image") %>
+        </h2>
       <% end %>
 
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Upload",
-        margin_bottom: true
-      } %>
-    <% end %>
+      <%= form_tag(create_document_image_path(@document), multipart: true) do %>
+        <%= hidden_field_tag :wizard, "lead_image" %>
 
-    <% if @document.images.any? %>
-      <h2 class="govuk-heading-m">
-        <%= t("document_images.index.existing_image") %>
-      </h2>
-      <%= render "image_list" %>
-    <% end %>
+        <%= render "govuk_publishing_components/components/file_upload", {
+          label: {
+            text: upload_image_heading,
+          },
+          name: "image"
+        } %>
+
+        <%= render "govuk_publishing_components/components/govspeak" do %>
+          <%= govspeak_to_html t("document_images.index.description") %>
+        <% end %>
+
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Upload"
+        } %>
+      <% end %>
+    </div>
+
+    <%= render "lead_image" %>
+
+    <%= render "image_list" %>
   </div>
 </div>
