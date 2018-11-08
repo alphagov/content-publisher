@@ -4,11 +4,11 @@ en:
       title: "Images for ‘%{title}’"
       description: Images can be jpg, png, gif, or svg files. [Full guidance on images](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/images-and-videos)
       upload_image: Upload an image
-      existing_image: Choose existing image
       alt_text: Alt text
       caption: Image caption
       credit: Image credit
       lead_image: Lead image
+      other_images: Other images
       flashes:
         upload_requirements:
           title: You need to
