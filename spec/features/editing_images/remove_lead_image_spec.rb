@@ -21,7 +21,7 @@ RSpec.feature "Remove a lead image" do
 
   def and_i_remove_the_lead_image
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
-    click_on "Remove"
+    click_on "Remove lead image"
   end
 
   def then_the_document_has_no_lead_image

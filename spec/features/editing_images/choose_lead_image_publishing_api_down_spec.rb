@@ -31,13 +31,13 @@ RSpec.feature "Choose a lead image when the Publishing API is down" do
 
   def and_i_choose_one_of_the_images
     within("#image-#{@image.id}") do
-      click_on "Choose image"
+      click_on "Select as lead image"
     end
   end
 
   def then_i_see_the_document_has_a_lead_image
     within("#image-#{@image.id}") do
-      expect(page).to have_content(I18n.t("document_images.index.lead_image"))
+      expect(page).to have_content("Remove lead image")
     end
   end
 
