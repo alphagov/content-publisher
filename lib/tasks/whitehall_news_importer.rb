@@ -26,7 +26,7 @@ module Tasks
       doc.assign_attributes(
         base_path: translation["base_path"],
         contents: {
-          body: translation["body"],
+          body: embed_contacts(translation["body"], document.fetch("contacts", {})),
         },
         document_type: edition["news_article_type"]["key"],
         title: translation["title"],
@@ -80,6 +80,14 @@ module Tasks
 
     def has_live_version?(edition, document)
       document["editions"].count > 1 || edition["state"] == "published"
+    end
+
+    def embed_contacts(body, contacts)
+      body&.gsub(/\[Contact:\s*(\d*)\s*\]/) do
+        id = Regexp.last_match[1]
+        embed = contacts[id] || id
+        "[Contact:#{embed}]"
+      end
     end
   end
 end
