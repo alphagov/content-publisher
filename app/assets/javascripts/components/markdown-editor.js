@@ -54,6 +54,7 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
   this.fetchGovspeakPreview(this.$input.value)
     .then(function (text) {
       $preview.innerHTML = text
+      MarkdownEditor.prototype.setTargetBlank($preview)
     })
     .catch(function () {
       $preview.innerHTML = 'Error previewing content'
@@ -62,7 +63,6 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
       $preview.classList.add('app-c-markdown-editor__govspeak--rendered')
     })
 
-  this.setTargetBlank(this.$preview)
   this.toggleElements()
 }
 
