@@ -25,12 +25,12 @@ RSpec.feature "Remove a lead image when Publishing API is down" do
   end
 
   def and_i_remove_the_lead_image
-    click_on "Remove"
+    click_on "Remove lead image"
   end
 
   def then_i_see_the_document_has_no_lead_image
     within("#image-#{@image.id}") do
-      expect(page).to_not have_content(I18n.t("document_images.index.lead_image"))
+      expect(page).to_not have_content("Remove lead image")
     end
   end
 

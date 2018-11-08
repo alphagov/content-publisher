@@ -46,7 +46,7 @@ RSpec.feature "Upload a lead image when Publishing API is down" do
 
   def then_i_see_the_new_lead_image
     within("#image-#{Image.last.id}") do
-      expect(page).to have_content(I18n.t("document_images.index.lead_image"))
+      expect(page).to have_content("Remove lead image")
     end
   end
 

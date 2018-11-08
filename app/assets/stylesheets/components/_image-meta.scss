@@ -6,8 +6,8 @@
 .app-c-image-meta {
   @include govuk-font(19);
 
-  margin-bottom: govuk-spacing(4);
-  padding-bottom: govuk-spacing(4);
+  margin-bottom: govuk-spacing(6);
+  padding-bottom: govuk-spacing(6);
   border-bottom: 1px solid $govuk-border-colour;
 
   .app-c-metadata {
@@ -15,7 +15,7 @@
   }
 }
 
-.app-c-image-meta--no-border {
+.app-c-image-meta:last-child {
   border-bottom: 0;
 }
 
@@ -30,8 +30,12 @@
   padding: 0;
 
   li {
-    display: inline;
+    display: inline-block;
     margin-right: govuk-spacing(3);
+  }
+
+  .govuk-link {
+    margin-bottom: 0;
   }
 }
 

@@ -28,7 +28,7 @@ RSpec.feature "Choose a lead image" do
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
 
     within("#image-#{@image.id}") do
-      click_on "Choose image"
+      click_on "Select as lead image"
     end
   end
 
