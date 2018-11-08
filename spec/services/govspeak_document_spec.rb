@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-RSpec.describe GovspeakService do
+RSpec.describe GovspeakDocument do
   describe "#to_html" do
     it "converts the provided text to HTML" do
-      expect(GovspeakService.new("## Hullo").to_html)
+      expect(GovspeakDocument.new("## Hullo").to_html)
         .to match(%{<h2 id="hullo">Hullo</h2>})
     end
 
@@ -12,7 +12,7 @@ RSpec.describe GovspeakService do
         content_id = SecureRandom.uuid
         govspeak = "[Contact:#{content_id}]"
         publishing_api_does_not_have_item(content_id)
-        expect(GovspeakService.new(govspeak).to_html).to eql("\n")
+        expect(GovspeakDocument.new(govspeak).to_html).to eql("\n")
       end
     end
 
@@ -36,7 +36,7 @@ RSpec.describe GovspeakService do
         )
 
         govspeak = "[Contact:#{content_id}]"
-        expect(GovspeakService.new(govspeak).to_html)
+        expect(GovspeakDocument.new(govspeak).to_html)
           .to match(%{<a href="mailto:clark@dailyplanet.com" class="email">Mail Clark</a>})
       end
     end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GovspeakService
+class GovspeakDocument
   attr_reader :text
 
   def initialize(text)
