@@ -3,16 +3,13 @@
   alt_text ||= nil
   actions ||= []
   meta ||= {}
-  lead_image ||= false
-  no_border ||= false
-  primary_action ||= nil
-  secondary_actions ||= []
+  actions ||= []
 
   if meta.key?(:alt_text)
     alt_text = meta[:alt_text]
   end
 %>
-<div class="app-c-image-meta <%= 'app-c-image-meta--no-border' if no_border %>" id="<%= id %>">
+<div class="app-c-image-meta" id="<%= id %>">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
 
@@ -23,7 +20,6 @@
 
     </div>
     <div class="govuk-grid-column-two-thirds">
-
       <% if meta.any? %>
         <%= render "components/metadata", {
           inline: true,
@@ -43,29 +39,12 @@
           ]
         } %>
       <% end %>
-
-      <% if primary_action %>
-        <div class="app-c-image-meta__primary-action-section">
-          <% if primary_action[:tag] %>
-            <span class="app-c-image-meta__primary-action-tag">
-              <%= primary_action[:tag] %>
-            </span>
-          <% end %>
-
-          <%= primary_action[:action] %>
-        </div>
-      <% end %>
-
-      <% if lead_image %>
-          <div><%= primary_action %></div>
-        </div>
-      <% end %>
     </div>
   </div>
 
-  <% if secondary_actions.any? %>
+  <% if actions.any? %>
     <ul class="app-c-image-meta__actions">
-      <% secondary_actions.each do |action| %>
+      <% actions.each do |action| %>
         <li><%= action %></li>
       <% end %>
     </ul>
