@@ -32,7 +32,6 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     }
   end
 
-
   it "can import JSON data from Whitehall" do
     importer = Tasks::WhitehallNewsImporter.new
     parsed_json = JSON.parse(import_data.to_json)
@@ -121,6 +120,15 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     parsed_json = JSON.parse(import_data.to_json)
     importer = Tasks::WhitehallNewsImporter.new
     expect { importer.import(parsed_json) }.not_to(change { Document.count })
+  end
+
+  it "changes the ids of embedded contacts" do
+    import_data[:editions][0][:translations][0][:body] = "[Contact:123]"
+    content_id = SecureRandom.uuid
+    import_data[:contacts] = { "123" => content_id }
+    Tasks::WhitehallNewsImporter.new.import(JSON.parse(import_data.to_json))
+
+    expect(Document.last.contents["body"]).to eq("[Contact:#{content_id}]")
   end
 
   context "when an imported document has more than one edition" do
