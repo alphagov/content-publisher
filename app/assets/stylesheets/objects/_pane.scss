@@ -1,0 +1,16 @@
+@import "govuk-frontend/helpers/all";
+@import "govuk-frontend/settings/all";
+@import "govuk-frontend/tools/all";
+@import "govuk-frontend/utilities/clearfix";
+
+.app-pane {
+  @include govuk-responsive-margin(6, "bottom");
+  @include govuk-clearfix;
+
+  padding: govuk-spacing(3);
+  background: govuk-colour("grey-4");
+
+  .govuk-button {
+    margin-bottom: govuk-spacing(1);
+  }
+}
