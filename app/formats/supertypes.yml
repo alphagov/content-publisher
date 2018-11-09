@@ -2,7 +2,7 @@
 - id: news
   label: News
   description: To tell users about something government has done or will do
-  hint: For example, press releases, speeches, or statements
+  hint: For example, news stories, press releases, speeches, or statements
   display_document_types:
     - news_story
     - press_release
