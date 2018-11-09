@@ -8,7 +8,7 @@ RSpec.feature "Create a consultation", format: true do
 
   def when_i_choose_this_document_type
     visit "/"
-    click_on "New document"
+    click_on "Create new document"
     choose SupertypeSchema.find("policy").label
     click_on "Continue"
     choose DocumentTypeSchema.find("consultation").label

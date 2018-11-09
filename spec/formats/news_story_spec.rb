@@ -17,7 +17,7 @@ RSpec.feature "Create a news story", format: true do
 
   def when_i_choose_this_document_type
     visit root_path
-    click_on "New document"
+    click_on "Create new document"
     choose SupertypeSchema.find("news").label
     click_on "Continue"
     choose DocumentTypeSchema.find("news_story").label

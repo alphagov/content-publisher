@@ -37,7 +37,18 @@
   }
 
   .gem-c-document-list__attribute {
-    font-size: 16px;
+    @include govuk-font(16);
+  }
+
+  .govuk-table__body {
+    .govuk-table__cell {
+      @include govuk-font(16);
+      max-width: 150px;
+
+      &:nth-of-type(1) {
+        max-width: none;
+      }
+    }
   }
 }
 
