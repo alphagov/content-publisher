@@ -60,6 +60,10 @@ RSpec.feature "Edit document tags" do
       expect(page).to have_content("Tag to select 2")
       expect(page).not_to have_content("Initial tag")
     end
+
+    within find(".app-timeline-entry:first") do
+      expect(page).to have_content I18n.t!("documents.history.entry_types.updated_tags")
+    end
   end
 
   def and_the_preview_creation_succeeded

@@ -7,6 +7,7 @@ RSpec.feature "2i" do
     and_i_click_submit_for_2i
     then_i_see_the_document_is_submitted
     and_i_see_a_link_to_the_document
+
     when_i_edit_the_document
     then_i_see_it_is_still_in_review
   end
@@ -26,6 +27,10 @@ RSpec.feature "2i" do
   def then_i_see_the_document_is_submitted
     expect(page).to have_content I18n.t("documents.show.flashes.submitted_for_review.title")
     expect(page).to have_content I18n.t("user_facing_states.submitted_for_review.name")
+
+    within find(".app-timeline-entry:first") do
+      expect(page).to have_content I18n.t!("documents.history.entry_types.submitted")
+    end
   end
 
   def then_i_see_it_is_still_in_review

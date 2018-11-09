@@ -7,9 +7,7 @@ RSpec.feature "Edit a document" do
     and_i_fill_in_the_content_fields
 
     then_i_see_the_document_is_saved
-    and_the_content_is_available_for_preview
-    and_the_content_needs_review
-    and_i_see_the_content_is_in_draft_state
+    and_the_preview_creation_succeeded
     and_i_see_i_was_the_last_user_to_edit_the_document
   end
 
@@ -28,29 +26,24 @@ RSpec.feature "Edit a document" do
 
   def and_i_fill_in_the_content_fields
     fill_in "document[contents][body]", with: "Edited body."
-    @request = stub_publishing_api_put_content(Document.last.content_id, {})
+    stub_publishing_api_put_content(Document.last.content_id, {})
     click_on "Save"
   end
 
   def then_i_see_the_document_is_saved
     expect(page).to have_content("Edited body.")
+
+    within find(".app-timeline-entry:first") do
+      expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
+    end
   end
 
-  def and_the_content_is_available_for_preview
-    expect(@request).to have_been_requested
-    expect(page).to have_link("Preview")
+  def and_the_preview_creation_succeeded
+    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"]["body"]).to eq("<p>Edited body.</p>\n")
     }).to have_been_requested
-  end
-
-  def and_the_content_needs_review
-    expect(page).to have_button "Submit for 2i review"
-  end
-
-  def and_i_see_the_content_is_in_draft_state
-    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
   end
 
   def and_i_see_i_was_the_last_user_to_edit_the_document
