@@ -18,10 +18,6 @@ RSpec.feature "Edit topics for a document" do
   end
 
   def when_i_visit_the_document_page
-    visit document_path(Document.last)
-  end
-
-  def and_i_click_on_edit_topics
     publishing_api_has_links(
       "content_id" => @document.content_id,
       "links" => {
@@ -31,6 +27,10 @@ RSpec.feature "Edit topics for a document" do
     )
 
     publishing_api_has_taxonomy
+    visit document_path(Document.last)
+  end
+
+  def and_i_click_on_edit_topics
     click_on "Change Topics"
   end
 
