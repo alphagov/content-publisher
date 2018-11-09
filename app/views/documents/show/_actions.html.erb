@@ -1,19 +1,25 @@
 <div class="app-side">
   <div class="app-side__actions">
     <% if @document.publication_state == "error_sending_to_draft" %>
-      <%= govspeak_to_html t("documents.show.sidebar.error_publishing_draft") %>
+      <%= render "govuk_publishing_components/components/govspeak" do %>
+        <%= govspeak_to_html t("documents.show.sidebar.error_publishing_draft") %>
+      <% end %>
 
       <%= form_tag retry_draft_save_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Try again" %>
       <% end %>
     <% elsif @document.publication_state == "error_deleting_draft" %>
-      <%= govspeak_to_html t("documents.show.sidebar.error_deleting_draft") %>
+      <%= render "govuk_publishing_components/components/govspeak" do %>
+        <%= govspeak_to_html t("documents.show.sidebar.error_deleting_draft") %>
+      <% end %>
 
       <%= form_tag document_path(@document), method: :delete do %>
         <%= render "govuk_publishing_components/components/button", text: "Try again" %>
       <% end %>
     <% elsif @document.publication_state == "error_sending_to_live" %>
-      <%= govspeak_to_html t("documents.show.sidebar.error_publishing_live") %>
+      <%= render "govuk_publishing_components/components/govspeak" do %>
+        <%= govspeak_to_html t("documents.show.sidebar.error_publishing_live") %>
+      <% end %>
 
       <%= render "govuk_publishing_components/components/button", text: "Retry publishing", href: publish_document_path(@document) %>
     <% elsif @document.user_facing_state == "published_but_needs_2i" %>
