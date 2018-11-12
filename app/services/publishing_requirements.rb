@@ -7,15 +7,16 @@ class PublishingRequirements
     @document = document
   end
 
-  def errors?
-    errors.values.flatten.any?
+  def errors?(**args)
+    errors(**args).values.flatten.any?
   end
 
-  def errors
+  def errors(tried_to_publish: false)
     messages = Hash.new { |h, k| h[k] = [] }
 
     messages["summary"] += check_summary
     messages["change_note"] += check_change_note
+    messages["topics"] += tried_to_publish ? check_topics : try_check_topics
 
     document.document_type_schema.contents.each do |field|
       messages[field.id] += check_contents(field)
@@ -42,5 +43,18 @@ private
         document.change_note.blank?
 
     [{ text: I18n.t!("publishing_requirements.no_change_note"), href: "#content" }]
+  end
+
+  def try_check_topics
+    check_topics
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
+    []
+  end
+
+  def check_topics
+    return [] unless document.document_type_schema.topics
+    return [] if document.topics.any?
+    [{ text: I18n.t!("publishing_requirements.no_topics"), href: "#topics" }]
   end
 end
