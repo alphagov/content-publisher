@@ -44,11 +44,6 @@ RSpec.configure do |config|
   config.before :each, type: :feature do
     # This is required by lots of specs when visiting the index page
     publishing_api_has_linkables([], document_type: "organisation")
-
-    # This is required by lots of specs when visiting the show page
-    endpoint = GdsApi::TestHelpers::PublishingApiV2::PUBLISHING_API_V2_ENDPOINT
-    stub_request(:get, %r(\A#{endpoint}/links/[a-z0-9\-]+\Z))
-      .to_return(status: 200, body: { "links": {} }.to_json)
   end
 
   config.after :each, type: :feature, js: true do

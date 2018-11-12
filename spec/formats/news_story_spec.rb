@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.feature "Create a news story", format: true do
+  include TopicsHelper
+
+  before do
+    stub_any_publishing_api_put_content
+    stub_any_publishing_api_no_links
+  end
+
   scenario do
     when_i_choose_this_document_type
     and_i_fill_in_the_form_fields
@@ -9,7 +16,7 @@ RSpec.feature "Create a news story", format: true do
   end
 
   def when_i_choose_this_document_type
-    visit "/"
+    visit root_path
     click_on "New document"
     choose SupertypeSchema.find("news").label
     click_on "Continue"
@@ -18,17 +25,15 @@ RSpec.feature "Create a news story", format: true do
   end
 
   def and_i_fill_in_the_form_fields
-    stub_any_publishing_api_put_content
     fill_in "document[title]", with: "A great title"
     fill_in "document[summary]", with: "A great summary"
+
     click_on "Save"
     # TODO: Replace with https://github.com/bblimke/webmock/blob/d8686502442d9830dcccd24a1120ac08413d857a/lib/webmock/api.rb#L69 when it's released
     WebMock::RequestRegistry.instance.reset!
   end
 
   def and_i_add_some_tags
-    stub_any_publishing_api_put_content
-
     publishing_api_has_links(role_appointment_links)
 
     expect(Document.last.document_type_schema.tags.count).to eq(6)

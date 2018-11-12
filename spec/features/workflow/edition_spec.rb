@@ -14,7 +14,7 @@ RSpec.feature "Editions" do
   end
 
   def given_there_is_a_published_document
-    @document = create(:document, :published, update_type: "major", change_note: "First edition.")
+    @document = create(:document, :published, update_type: "major", change_note: "First edition.", current_edition_number: 1)
   end
 
   def when_i_visit_the_document_page
@@ -47,5 +47,10 @@ RSpec.feature "Editions" do
     expect(page).to have_content(I18n.t("documents.show.contents.update_type.minor"))
     expect(page).to have_content("I made a change")
     expect(page).to have_link "Change Content"
+
+    within find("#document-history") do
+      expect(page).to have_content "2nd edition"
+      expect(page).to have_content I18n.t!("documents.history.entry_types.new_edition")
+    end
   end
 end

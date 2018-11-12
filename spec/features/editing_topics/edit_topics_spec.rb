@@ -13,14 +13,11 @@ RSpec.feature "Edit topics for a document" do
   end
 
   def given_there_is_a_document
-    @document = create :document
+    document_type_schema = build(:document_type_schema, topics: true)
+    @document = create(:document, document_type: document_type_schema.id)
   end
 
   def when_i_visit_the_document_page
-    visit document_path(Document.last)
-  end
-
-  def and_i_click_on_edit_topics
     publishing_api_has_links(
       "content_id" => @document.content_id,
       "links" => {
@@ -30,6 +27,10 @@ RSpec.feature "Edit topics for a document" do
     )
 
     publishing_api_has_taxonomy
+    visit document_path(Document.last)
+  end
+
+  def and_i_click_on_edit_topics
     click_on "Change Topics"
   end
 
