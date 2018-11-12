@@ -35,11 +35,11 @@ RSpec.feature "Delete a lead image with Publishing API down" do
   end
 
   def and_the_preview_creation_failed
-    expect(page).to have_content(I18n.t("document_images.index.flashes.api_error.title"))
+    expect(page).to have_content(I18n.t!("document_images.index.flashes.api_error.title"))
   end
 
   def and_the_document_has_no_lead_image
     click_on "Back"
-    expect(page).to have_content(I18n.t("documents.show.lead_image.no_lead_image"))
+    expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
   end
 end

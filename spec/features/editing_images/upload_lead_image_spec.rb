@@ -45,18 +45,18 @@ RSpec.feature "Upload a lead image" do
   end
 
   def then_i_see_the_new_lead_image
-    expect(page).to have_content(I18n.t("documents.show.flashes.lead_image.added", file: Image.last.filename))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.added", file: Image.last.filename))
     expect(page).to have_content("A caption")
     expect(page).to have_content("A credit")
     expect(find("#lead-image img")["src"]).to include("1000x1000.jpg")
     expect(find("#lead-image img")["alt"]).to eq("Some alt text")
-    expect(page).to have_content(I18n.t("documents.history.entry_types.lead_image_updated"))
-    expect(page).to have_content(I18n.t("documents.history.entry_types.image_updated"))
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.lead_image_updated"))
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.image_updated"))
   end
 
   def and_the_preview_creation_succeeded
     expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
+    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"]["image"]["url"]).to eq @asset_url

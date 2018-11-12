@@ -43,14 +43,14 @@ RSpec.feature "Publishing requirements" do
 
   def then_i_see_a_hint_to_enter_the_contents
     within(".app-c-notice") do
-      expect(page).to have_content(I18n.t("publishing_requirements.summary_presence"))
-      expect(page).to have_content(I18n.t("publishing_requirements.body_presence"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.summary_presence"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.body_presence"))
     end
   end
 
   def then_i_see_a_hint_to_enter_a_change_note
     within(".app-c-notice") do
-      expect(page).to have_content(I18n.t("publishing_requirements.change_note_presence"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.change_note_presence"))
     end
   end
 
@@ -64,14 +64,14 @@ RSpec.feature "Publishing requirements" do
 
   def then_i_see_an_error_to_enter_the_contents
     within(".gem-c-error-summary") do
-      expect(page).to have_content(I18n.t("publishing_requirements.summary_presence"))
-      expect(page).to have_content(I18n.t("publishing_requirements.body_presence"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.summary_presence"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.body_presence"))
     end
   end
 
   def and_i_see_an_error_to_enter_a_change_note
     within(".gem-c-error-summary") do
-      expect(page).to have_content(I18n.t("publishing_requirements.change_note_presence"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.change_note_presence"))
     end
   end
 end

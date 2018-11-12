@@ -32,7 +32,7 @@ RSpec.feature "Drafting requirements" do
   end
 
   def then_i_should_see_an_error_message_regarding_a_missing_title
-    expect(page).to have_content(I18n.t("documents.edit.flashes.drafting_requirements.title_missing"))
+    expect(page).to have_content(I18n.t!("documents.edit.flashes.drafting_requirements.title_missing"))
   end
 
   def and_save_a_title_which_has_multiple_lines
@@ -41,7 +41,7 @@ RSpec.feature "Drafting requirements" do
   end
 
   def then_i_should_see_error_messages_regarding_multiple_lines
-    expect(page).to have_content(I18n.t("documents.edit.flashes.drafting_requirements.title_multiple_lines"))
+    expect(page).to have_content(I18n.t!("documents.edit.flashes.drafting_requirements.title_multiple_lines"))
   end
 
   def and_save_a_title_which_exceeds_the_max_length
@@ -50,7 +50,7 @@ RSpec.feature "Drafting requirements" do
   end
 
   def then_i_should_see_error_messages_regarding_max_length
-    expect(page).to have_content(I18n.t("documents.edit.flashes.drafting_requirements.title_max_length",
+    expect(page).to have_content(I18n.t!("documents.edit.flashes.drafting_requirements.title_max_length",
                                         max_length: DraftingRequirements::TITLE_MAX_LENGTH))
   end
 end

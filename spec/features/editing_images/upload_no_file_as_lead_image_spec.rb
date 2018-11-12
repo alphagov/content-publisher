@@ -22,6 +22,6 @@ RSpec.feature "Upload no file as a lead image" do
   end
 
   def then_i_should_see_an_error
-    expect(page).to have_content(I18n.t("document_images.index.flashes.upload_requirements.no_file_selected"))
+    expect(page).to have_content(I18n.t!("document_images.index.flashes.upload_requirements.no_file_selected"))
   end
 end

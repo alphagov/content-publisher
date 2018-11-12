@@ -51,7 +51,7 @@ RSpec.feature "Edit image crop", js: true do
     expect(Image.last.crop_x).to eq(0)
     expect(Image.last.crop_width).to eq(960)
     expect(Image.last.crop_height).to eq(640)
-    expect(page).to have_content(I18n.t("document_images.index.flashes.cropped", file: Image.last.filename))
+    expect(page).to have_content(I18n.t!("document_images.index.flashes.cropped", file: Image.last.filename))
   end
 
   def and_the_preview_creation_succeeded
@@ -62,8 +62,8 @@ RSpec.feature "Edit image crop", js: true do
     }).to have_been_requested
 
     click_on "Back"
-    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
-    expect(page).to have_content(I18n.t("documents.show.lead_image.no_lead_image"))
+    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
+    expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
 
     click_on "Document history"
     expect(page).to have_content I18n.t!("documents.history.entry_types.image_updated")

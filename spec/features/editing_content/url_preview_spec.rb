@@ -39,7 +39,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def then_i_see_a_prompt_to_enter_a_title
-    expect(page).to have_content(I18n.t("documents.edit.url_preview.no_title"))
+    expect(page).to have_content(I18n.t!("documents.edit.url_preview.no_title"))
   end
 
   def and_i_fill_in_the_title

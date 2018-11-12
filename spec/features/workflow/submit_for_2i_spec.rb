@@ -25,8 +25,8 @@ RSpec.feature "2i" do
   end
 
   def then_i_see_the_document_is_submitted
-    expect(page).to have_content I18n.t("documents.show.flashes.submitted_for_review.title")
-    expect(page).to have_content I18n.t("user_facing_states.submitted_for_review.name")
+    expect(page).to have_content I18n.t!("documents.show.flashes.submitted_for_review.title")
+    expect(page).to have_content I18n.t!("user_facing_states.submitted_for_review.name")
 
     within find(".app-timeline-entry:first") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.submitted")
@@ -34,11 +34,11 @@ RSpec.feature "2i" do
   end
 
   def then_i_see_it_is_still_in_review
-    expect(page).to have_content I18n.t("user_facing_states.submitted_for_review.name")
+    expect(page).to have_content I18n.t!("user_facing_states.submitted_for_review.name")
   end
 
   def and_i_see_a_link_to_the_document
-    review_url = find_field(I18n.t("documents.show.flashes.submitted_for_review.label")).value
+    review_url = find_field(I18n.t!("documents.show.flashes.submitted_for_review.label")).value
     expect(review_url).to eq(document_url(@document))
   end
 

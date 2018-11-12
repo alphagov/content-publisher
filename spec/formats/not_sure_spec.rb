@@ -18,6 +18,6 @@ RSpec.feature "User is not sure about the supertype", format: true do
   end
 
   def then_i_see_the_guidance
-    expect(page).to have_title(I18n.t("new_document.guidance.title"))
+    expect(page).to have_title(I18n.t!("new_document.guidance.title"))
   end
 end

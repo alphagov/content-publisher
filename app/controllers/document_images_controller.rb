@@ -16,7 +16,7 @@ class DocumentImagesController < ApplicationController
 
     if @errors.any?
       flash.now["alert"] = {
-        "title" => I18n.t("document_images.index.flashes.upload_requirements.title"),
+        "title" => I18n.t!("document_images.index.flashes.upload_requirements.title"),
         "items" => @errors.map { |error| { text: error } },
       }
 
@@ -75,7 +75,7 @@ class DocumentImagesController < ApplicationController
 
     if @errors.any?
       flash.now["alert"] = {
-        "title" => I18n.t("document_images.edit.flashes.drafting_requirements.title"),
+        "title" => I18n.t!("document_images.edit.flashes.drafting_requirements.title"),
         "items" => @errors.values.flatten.map { |error| { text: error } },
       }
 

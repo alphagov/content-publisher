@@ -14,17 +14,17 @@ class ImageDraftingRequirements
     messages = Hash.new { |h, k| h[k] = [] }
 
     if @image.alt_text.blank?
-      messages["alt_text"] << I18n.t("document_images.edit.flashes.drafting_requirements.alt_text_presence")
+      messages["alt_text"] << I18n.t!("document_images.edit.flashes.drafting_requirements.alt_text_presence")
     end
 
     if @image.alt_text.length > ALT_TEXT_MAX_LENGTH
-      messages["alt_text"] << I18n.t("document_images.edit.flashes.drafting_requirements.alt_text_max_length",
+      messages["alt_text"] << I18n.t!("document_images.edit.flashes.drafting_requirements.alt_text_max_length",
                                      field: "Alt text",
                                      max_length: ALT_TEXT_MAX_LENGTH)
     end
 
     if @image.caption.length > CAPTION_MAX_LENGTH
-      messages["caption"] << I18n.t("document_images.edit.flashes.drafting_requirements.caption_max_length",
+      messages["caption"] << I18n.t!("document_images.edit.flashes.drafting_requirements.caption_max_length",
                                     field: "Caption",
                                     max_length: CAPTION_MAX_LENGTH)
     end

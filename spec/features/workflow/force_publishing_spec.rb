@@ -24,17 +24,17 @@ RSpec.feature "Force publishing" do
 
   def and_i_publish_without_review
     click_on "Publish"
-    choose I18n.t("publish_document.confirmation.should_be_reviewed")
+    choose I18n.t!("publish_document.confirmation.should_be_reviewed")
     stub_any_publishing_api_publish
     click_on "Confirm publish"
   end
 
   def then_i_see_the_publish_succeeded
-    expect(page).to have_content(I18n.t("publish_document.published.published_without_review.title"))
+    expect(page).to have_content(I18n.t!("publish_document.published.published_without_review.title"))
   end
 
   def then_i_see_it_was_force_published
-    expect(page).to have_content I18n.t("user_facing_states.published_but_needs_2i.name")
+    expect(page).to have_content I18n.t!("user_facing_states.published_but_needs_2i.name")
 
     within find(".app-timeline-entry:first") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.published_without_review")
@@ -46,8 +46,8 @@ RSpec.feature "Force publishing" do
   end
 
   def then_i_see_that_its_reviewed
-    expect(page).to have_content I18n.t("documents.show.flashes.approved")
-    expect(page).to have_content I18n.t("user_facing_states.published.name")
+    expect(page).to have_content I18n.t!("documents.show.flashes.approved")
+    expect(page).to have_content I18n.t!("user_facing_states.published.name")
 
     within find(".app-timeline-entry:first") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.approved")

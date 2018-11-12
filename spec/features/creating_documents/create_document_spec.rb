@@ -38,7 +38,7 @@ RSpec.feature "Create a document" do
   end
 
   def then_i_see_the_document_summary
-    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
+    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
     expect(page).to have_content("A title")
 
     within find("#document-history") do

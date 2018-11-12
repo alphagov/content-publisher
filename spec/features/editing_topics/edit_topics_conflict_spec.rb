@@ -44,7 +44,7 @@ RSpec.feature "Edit topics when there is a conflict" do
   end
 
   def then_i_see_an_error_message
-    expect(page).to have_content(I18n.t("document_topics.edit.flashes.topic_update_conflict.title"))
+    expect(page).to have_content(I18n.t!("document_topics.edit.flashes.topic_update_conflict.title"))
     expect(current_path).to eq(document_topics_path(@document))
   end
 end

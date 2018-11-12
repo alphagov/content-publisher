@@ -26,7 +26,7 @@ RSpec.feature "Publishing a document" do
   end
 
   def and_i_say_that_the_document_has_been_reviewed
-    choose I18n.t("publish_document.confirmation.has_been_reviewed")
+    choose I18n.t!("publish_document.confirmation.has_been_reviewed")
   end
 
   def and_i_confirm_the_publishing
@@ -37,12 +37,12 @@ RSpec.feature "Publishing a document" do
 
   def then_i_see_the_publish_succeeded
     expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t("publish_document.published.reviewed.title"))
+    expect(page).to have_content(I18n.t!("publish_document.published.reviewed.title"))
   end
 
   def and_i_see_the_content_is_in_published_state
     visit document_path(@document)
-    expect(page).to have_content(I18n.t("user_facing_states.published.name"))
+    expect(page).to have_content(I18n.t!("user_facing_states.published.name"))
   end
 
   def and_i_see_the_view_on_govuk_link
@@ -51,6 +51,6 @@ RSpec.feature "Publishing a document" do
 
   def and_there_is_a_history_entry
     visit document_path(@document)
-    expect(page).to have_content(I18n.t("documents.history.entry_types.published"))
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.published"))
   end
 end

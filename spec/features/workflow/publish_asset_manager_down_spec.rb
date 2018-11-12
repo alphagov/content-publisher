@@ -29,7 +29,7 @@ RSpec.feature "Publishing a document when Asset Manager is down" do
   end
 
   def then_i_see_the_publish_failed
-    expect(page).to have_content(I18n.t("documents.show.flashes.publish_error.title"))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.publish_error.title"))
   end
 
   def given_the_api_is_up_again_and_i_try_to_publish_the_document
@@ -41,6 +41,6 @@ RSpec.feature "Publishing a document when Asset Manager is down" do
 
   def then_i_see_the_publish_succeeded
     expect(@request).to have_been_requested.twice
-    expect(page).to have_content(I18n.t("publish_document.published.reviewed.title"))
+    expect(page).to have_content(I18n.t!("publish_document.published.reviewed.title"))
   end
 end

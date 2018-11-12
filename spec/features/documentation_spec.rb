@@ -33,6 +33,6 @@ RSpec.feature "Viewing documentation" do
   end
 
   def then_i_see_the_documentation_page
-    expect(page).to have_content(I18n.t("documentation.index.title"))
+    expect(page).to have_content(I18n.t!("documentation.index.title"))
   end
 end
