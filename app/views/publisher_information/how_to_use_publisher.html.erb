@@ -1,0 +1,14 @@
+<% content_for :browser_title, t("publisher_information.how_to_use_publisher.title") %>
+<div class="govuk-grid-row">
+  <%= render partial: "publication_info_nav", locals: {current_page: how_to_use_publisher_path } %>
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l page-title"><%= t("publisher_information.how_to_use_publisher.title") %></h1>
+
+    <%= render "govuk_publishing_components/components/govspeak" do %>
+        <%= govspeak_to_html File.read("app/views/publisher_information/how_to_use_publisher.govspeak.md") %>
+    <% end %>
+    <%= render "govuk_publishing_components/components/govspeak" do %>
+        <%= govspeak_to_html File.read("app/views/publisher_information/request_feature.govspeak.md") %>
+    <% end %>
+  </div>
+</div>
