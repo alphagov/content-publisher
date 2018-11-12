@@ -59,4 +59,8 @@ class Document < ApplicationRecord
   def title_or_fallback
     title.presence || I18n.t!("documents.untitled_document")
   end
+
+  def topics
+    DocumentTopics.new(self)
+  end
 end
