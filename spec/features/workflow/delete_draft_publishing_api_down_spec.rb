@@ -34,7 +34,7 @@ RSpec.feature "Delete draft when the Publishing API is down" do
   end
 
   def then_i_see_the_deletion_failed
-    expect(page).to have_content(I18n.t("documents.show.flashes.delete_draft_error.title"))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.delete_draft_error.title"))
     expect(page).to have_content(@document.title)
   end
 

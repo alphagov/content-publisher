@@ -74,7 +74,7 @@ RSpec.feature "User filters documents" do
   end
 
   def and_i_filter_by_state
-    select I18n.t("user_facing_states.draft.name"), from: "state"
+    select I18n.t!("user_facing_states.draft.name"), from: "state"
     click_on "Filter"
   end
 

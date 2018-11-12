@@ -23,7 +23,7 @@ RSpec.feature "Showing topics when the Publishing API is down" do
 
   def then_i_should_see_an_error_message
     within("#topics") do
-      expect(page).to have_content(I18n.t("documents.show.topics.api_down"))
+      expect(page).to have_content(I18n.t!("documents.show.topics.api_down"))
     end
   end
 end

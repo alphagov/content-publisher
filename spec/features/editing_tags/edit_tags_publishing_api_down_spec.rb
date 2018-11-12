@@ -29,6 +29,6 @@ RSpec.feature "Edit tags when the API is down" do
   end
 
   def then_i_should_see_an_error_message
-    expect(page).to have_content(I18n.t("document_tags.edit.api_down"))
+    expect(page).to have_content(I18n.t!("document_tags.edit.api_down"))
   end
 end

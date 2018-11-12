@@ -20,9 +20,9 @@ RSpec.feature "User pages through a list of documents" do
   end
 
   def then_i_should_see_the_first_results
-    expect(page.html).to include(I18n.t("documents.index.search_results.summary_html", count: 51))
+    expect(page.html).to include(I18n.t!("documents.index.search_results.summary_html", count: 51))
     expect(all(".gem-c-document-list__item").count).to eq 50
-    expect(page).to have_content I18n.t("documents.index.search_results.page_info", page: 1, pages: 2)
+    expect(page).to have_content I18n.t!("documents.index.search_results.page_info", page: 1, pages: 2)
     expect(page).to_not have_content("Previous page")
   end
 
@@ -35,9 +35,9 @@ RSpec.feature "User pages through a list of documents" do
   end
 
   def then_i_should_see_the_next_results
-    expect(page.html).to include(I18n.t("documents.index.search_results.summary_html", count: 51))
+    expect(page.html).to include(I18n.t!("documents.index.search_results.summary_html", count: 51))
     expect(all(".gem-c-document-list__item").count).to eq 1
-    expect(page).to have_content I18n.t("documents.index.search_results.page_info", page: 2, pages: 2)
+    expect(page).to have_content I18n.t!("documents.index.search_results.page_info", page: 2, pages: 2)
     expect(page).to_not have_content("Next page")
   end
 end

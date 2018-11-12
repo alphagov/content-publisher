@@ -29,7 +29,7 @@ RSpec.feature "Viewing a document with a creator" do
 
   def then_i_again_see_who_created_the_document
     expect(page).to have_content(
-      I18n.t("documents.show.metadata.created_by") + ": " + @user.name,
+      I18n.t!("documents.show.metadata.created_by") + ": " + @user.name,
     )
   end
 end

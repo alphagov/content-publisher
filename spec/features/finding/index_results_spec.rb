@@ -31,18 +31,18 @@ RSpec.feature "Users views document results on index page" do
 
   def and_i_can_see_the_document_creator
     expect(page).to have_content(
-      I18n.t("documents.index.search_results.creator",
+      I18n.t!("documents.index.search_results.creator",
         creator: Document.last.creator.name),
     )
   end
 
   def and_i_can_see_the_document_state
-    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
+    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
   end
 
   def and_i_can_see_the_document_last_editor
     expect(page).to have_content(
-      I18n.t("documents.index.search_results.last_edited_by",
+      I18n.t!("documents.index.search_results.last_edited_by",
         user: Document.last.last_editor.name),
     )
   end

@@ -13,7 +13,7 @@ class PublishingRequirements
 
     if @document.summary.blank?
       messages["summary"] << {
-        text: I18n.t("publishing_requirements.summary_presence"),
+        text: I18n.t!("publishing_requirements.summary_presence"),
         href: "#content",
       }
     end
@@ -21,7 +21,7 @@ class PublishingRequirements
     @document.document_type_schema.contents.each do |field|
       if @document.contents[field.id].blank?
         messages[field.id] << {
-          text: I18n.t("publishing_requirements.#{field.id}_presence"),
+          text: I18n.t!("publishing_requirements.#{field.id}_presence"),
           href: "#content",
         }
       end
@@ -31,7 +31,7 @@ class PublishingRequirements
         @document.update_type == "major" &&
         @document.change_note.blank?
       messages["summary"] << {
-        text: I18n.t("publishing_requirements.change_note_presence"),
+        text: I18n.t!("publishing_requirements.change_note_presence"),
         href: "#content",
       }
     end

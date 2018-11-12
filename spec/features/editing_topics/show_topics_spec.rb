@@ -31,7 +31,7 @@ RSpec.feature "Show the topics for a document" do
   end
 
   def then_i_see_there_are_no_topics
-    expect(page).to have_content(I18n.t("documents.show.topics.no_topics"))
+    expect(page).to have_content(I18n.t!("documents.show.topics.no_topics"))
   end
 
   def when_the_document_has_a_topic

@@ -22,7 +22,7 @@ RSpec.feature "Editions" do
   end
 
   def then_i_see_it_is_the_first_edition
-    expect(page).to have_content(I18n.t("documents.show.contents.update_type.#{@document.update_type}"))
+    expect(page).to have_content(I18n.t!("documents.show.contents.update_type.#{@document.update_type}"))
     expect(page).to have_content(@document.change_note)
     expect(page).to_not have_link "Change Content"
   end
@@ -34,17 +34,17 @@ RSpec.feature "Editions" do
 
   def then_i_see_i_am_editing_a_new_edition
     expect(find_field("document[change_note]").value).to be_empty
-    expect(find_field(I18n.t("documents.edit.update_type.major_name"))).to be_checked
+    expect(find_field(I18n.t!("documents.edit.update_type.major_name"))).to be_checked
   end
 
   def when_i_edit_the_new_edition
     fill_in "document[change_note]", with: "I made a change"
-    choose I18n.t("documents.edit.update_type.minor_name")
+    choose I18n.t!("documents.edit.update_type.minor_name")
     click_on "Save"
   end
 
   def then_i_see_there_is_a_new_edition
-    expect(page).to have_content(I18n.t("documents.show.contents.update_type.minor"))
+    expect(page).to have_content(I18n.t!("documents.show.contents.update_type.minor"))
     expect(page).to have_content("I made a change")
     expect(page).to have_link "Change Content"
 

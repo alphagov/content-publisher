@@ -35,6 +35,6 @@ RSpec.feature "Remove a lead image when Publishing API is down" do
   end
 
   def and_the_preview_creation_failed
-    expect(page).to have_content(I18n.t("document_images.index.flashes.api_error.title"))
+    expect(page).to have_content(I18n.t!("document_images.index.flashes.api_error.title"))
   end
 end

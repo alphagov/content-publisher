@@ -36,7 +36,7 @@ RSpec.feature "Image drafting requirements" do
   end
 
   def then_i_see_the_alt_text_is_needed
-    expect(page).to have_content(I18n.t("document_images.edit.flashes.drafting_requirements.alt_text_presence"))
+    expect(page).to have_content(I18n.t!("document_images.edit.flashes.drafting_requirements.alt_text_presence"))
   end
 
   def when_i_enter_too_much_alt_text
@@ -48,7 +48,7 @@ RSpec.feature "Image drafting requirements" do
   def then_i_see_the_alt_text_is_too_long
     expect(find_field("alt_text").value).to eq(@alt_text)
 
-    expect(page).to have_content(I18n.t("document_images.edit.flashes.drafting_requirements.alt_text_max_length",
+    expect(page).to have_content(I18n.t!("document_images.edit.flashes.drafting_requirements.alt_text_max_length",
                                         max_length: ImageDraftingRequirements::ALT_TEXT_MAX_LENGTH))
   end
 
@@ -61,7 +61,7 @@ RSpec.feature "Image drafting requirements" do
   def then_i_see_the_caption_is_too_long
     expect(find_field("caption").value).to eq(@caption)
 
-    expect(page).to have_content(I18n.t("document_images.edit.flashes.drafting_requirements.caption_max_length",
+    expect(page).to have_content(I18n.t!("document_images.edit.flashes.drafting_requirements.caption_max_length",
                                         max_length: ImageDraftingRequirements::CAPTION_MAX_LENGTH))
   end
 end

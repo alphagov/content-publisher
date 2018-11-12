@@ -39,7 +39,7 @@ RSpec.feature "Edit a document" do
   end
 
   def and_the_preview_creation_succeeded
-    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
+    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"]["body"]).to eq("<p>Edited body.</p>\n")
@@ -47,6 +47,6 @@ RSpec.feature "Edit a document" do
   end
 
   def and_i_see_i_was_the_last_user_to_edit_the_document
-    expect(page).to have_content(I18n.t("documents.show.metadata.last_edited_by") + ": #{User.last.name}")
+    expect(page).to have_content(I18n.t!("documents.show.metadata.last_edited_by") + ": #{User.last.name}")
   end
 end

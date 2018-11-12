@@ -30,7 +30,7 @@ RSpec.feature "Edit image metadata" do
 
   def then_i_see_the_image_is_updated
     expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t("document_images.index.flashes.details_edited", file: @image.filename))
+    expect(page).to have_content(I18n.t!("document_images.index.flashes.details_edited", file: @image.filename))
     expect(page).to have_content("Some alt text")
     expect(page).to have_content("A caption")
     expect(page).to have_content("A credit")
@@ -44,8 +44,8 @@ RSpec.feature "Edit image metadata" do
     }).to have_been_requested
 
     click_on "Back"
-    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
-    expect(page).to have_content(I18n.t("documents.show.lead_image.no_lead_image"))
+    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
+    expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
     expect(page).to have_content I18n.t!("documents.history.entry_types.image_updated")
   end
 end

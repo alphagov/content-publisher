@@ -42,6 +42,6 @@ RSpec.feature "Save topics when the Publishing API is down" do
   end
 
   def and_the_topic_update_failed
-    expect(page).to have_content(I18n.t("documents.show.flashes.topic_update_error.title"))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.topic_update_error.title"))
   end
 end

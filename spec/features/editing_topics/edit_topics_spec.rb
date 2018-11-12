@@ -61,7 +61,7 @@ RSpec.feature "Edit topics for a document" do
   end
 
   def then_i_see_the_update_succeeded
-    expect(page).to have_content(I18n.t("documents.show.flashes.topics_updated"))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.topics_updated"))
     expect(@request).to have_been_requested
   end
 end

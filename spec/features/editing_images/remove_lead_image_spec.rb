@@ -25,15 +25,15 @@ RSpec.feature "Remove a lead image" do
   end
 
   def then_the_document_has_no_lead_image
-    expect(page).to have_content(I18n.t("documents.show.flashes.lead_image.removed", file: @image.filename))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.removed", file: @image.filename))
     expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t("user_facing_states.draft.name"))
+    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"].keys).to_not include("image")
     }).to have_been_requested
 
-    expect(page).to have_content(I18n.t("documents.show.lead_image.no_lead_image"))
-    expect(page).to have_content(I18n.t("documents.history.entry_types.lead_image_removed"))
+    expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.lead_image_removed"))
   end
 end

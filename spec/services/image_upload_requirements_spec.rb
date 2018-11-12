@@ -10,7 +10,7 @@ RSpec.describe ImageUploadRequirements do
 
     it "returns an error when no image is specified" do
       errors = ImageUploadRequirements.new(nil).errors
-      error = I18n.t("document_images.index.flashes.upload_requirements.no_file_selected")
+      error = I18n.t!("document_images.index.flashes.upload_requirements.no_file_selected")
       expect(errors).to eq([error])
     end
 
@@ -19,7 +19,7 @@ RSpec.describe ImageUploadRequirements do
       uploaded_file = fixture_file_upload("files/text-file.txt", "text/plain")
       errors = ImageUploadRequirements.new(uploaded_file).errors
 
-      error = I18n.t("document_images.index.flashes.upload_requirements.invalid_format")
+      error = I18n.t!("document_images.index.flashes.upload_requirements.invalid_format")
       expect(errors).to eq([error])
     end
 
@@ -28,7 +28,7 @@ RSpec.describe ImageUploadRequirements do
       allow(uploaded_file).to receive(:size).and_return(30.megabytes)
       errors = ImageUploadRequirements.new(uploaded_file).errors
 
-      error = I18n.t("document_images.index.flashes.upload_requirements.max_size",
+      error = I18n.t!("document_images.index.flashes.upload_requirements.max_size",
                      max_size: "20 MB")
 
       expect(errors).to eq([error])
@@ -38,7 +38,7 @@ RSpec.describe ImageUploadRequirements do
       uploaded_file = fixture_file_upload("files/100x100.jpg", "image/jpeg")
       errors = ImageUploadRequirements.new(uploaded_file).errors
 
-      error = I18n.t("document_images.index.flashes.upload_requirements.min_dimensions",
+      error = I18n.t!("document_images.index.flashes.upload_requirements.min_dimensions",
                      width: Image::WIDTH,
                      height: Image::HEIGHT)
 
