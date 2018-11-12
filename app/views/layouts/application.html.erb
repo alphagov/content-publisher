@@ -104,18 +104,40 @@
   <%= render "govuk_publishing_components/components/layout_footer", {
     navigation: [
       {
-        title: "Support and feedback",
+        title: t("application.footer.support_and_feedback"),
         items: [
           {
-            href: "https://support.publishing.service.gov.uk/",
+            href: Plek.new.external_url_for("support") + "/technical_fault_report/new",
             text: "Raise a support request"
+          },
+          {
+            href: Plek.new.external_url_for("support") + "/general_request/new",
+            text: "Send us feedback"
           },
           {
             href: "https://www.gov.uk/government/content-publishing",
             text: "How to write, publish, and improve content"
           }
         ] + debug_links
-      }
+      },
+      {
+        title: t("application.footer.documentation"),
+        items: [
+          {
+            href: beta_capabilities_path,
+            text: "What the Beta can and cannot do"
+          },
+          {
+            href: how_to_use_publisher_path,
+            text: "How to use Content Publisher"
+          },
+          {
+            href: publisher_updates_path,
+            text: "What's new in Content Publisher"
+          }
+        ] + debug_links
+      },
+
     ]
   } %>
   <script src="https://cdn.ravenjs.com/3.26.4/raven.min.js" crossorigin="anonymous"></script>
