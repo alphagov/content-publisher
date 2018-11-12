@@ -67,3 +67,14 @@
 .govuk-select {
   width: 100%;
 }
+
+.gem-c-phase-banner {
+  .gem-c-phase-banner__banner-item {
+    display: inline-block;
+    margin-right: govuk-spacing(2);
+  }
+
+  .govuk-link {
+    font-size: inherit;
+  }
+}

@@ -25,12 +25,21 @@
   <%= render "govuk_publishing_components/components/layout_header", {
     environment: GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment,
     navigation_items: [
+      { text: "Switch app", href: Plek.new.external_url_for("signon") },
       { text: current_user.name, href: Plek.new.external_url_for("signon") },
       { text: "Log out", href: gds_sign_out_path }
     ]
   }%>
 
   <div class="govuk-width-container">
+    <%= render "govuk_publishing_components/components/phase_banner", {
+      app_name: "Content publisher",
+      phase: "beta",
+      message: capture do
+        render "layouts/phase_banner_elements"
+      end,
+    } %>
+
     <% if yield(:back_link).present? %>
       <%= render "govuk_publishing_components/components/back_link", href: yield(:back_link) %>
     <% end %>
