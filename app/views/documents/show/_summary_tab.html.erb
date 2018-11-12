@@ -10,7 +10,7 @@
       <%= render "documents/show/lead_image" %>
     <% end %>
 
-    <% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) && @document.document_type_schema.topics %>
+    <% if @document.document_type_schema.topics %>
       <%= render "documents/show/topics" %>
     <% end %>
 
