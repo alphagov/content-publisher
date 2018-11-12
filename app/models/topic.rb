@@ -2,11 +2,11 @@
 
 class Topic
   def self.govuk_homepage
-    find(TopicIndex::GOVUK_HOMEPAGE_CONTENT_ID)
+    find(TopicIndexService::GOVUK_HOMEPAGE_CONTENT_ID)
   end
 
   def self.find(topic_content_id)
-    TopicIndex.new.index[topic_content_id]
+    TopicIndexService.new.index[topic_content_id]
   end
 
   attr_reader :title, :child_content_ids, :legacy_topic_content_ids, :parent_content_id, :content_id

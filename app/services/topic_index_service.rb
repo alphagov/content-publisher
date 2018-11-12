@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TopicIndex
+class TopicIndexService
   GOVUK_HOMEPAGE_CONTENT_ID = "f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a"
   CACHE_OPTIONS = { expires_in: 5.minutes, race_condition_ttl: 10.seconds }.freeze
   TOPIC_INDEX_TIMEOUT = 4.seconds
