@@ -20,7 +20,7 @@ en:
         title: Content
         items:
           title: Title
-          base_path: Base path
+          base_path: Page address path
           summary: Summary
           update_type: Update type
           change_note: Change note
