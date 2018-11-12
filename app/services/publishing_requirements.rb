@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Determines whether content should be published to the publishing-api
 class PublishingRequirements
   attr_reader :document
 
@@ -8,34 +7,40 @@ class PublishingRequirements
     @document = document
   end
 
+  def errors?
+    errors.values.flatten.any?
+  end
+
   def errors
     messages = Hash.new { |h, k| h[k] = [] }
 
-    if @document.summary.blank?
-      messages["summary"] << {
-        text: I18n.t!("publishing_requirements.summary_presence"),
-        href: "#content",
-      }
-    end
+    messages["summary"] += check_summary
+    messages["change_note"] += check_change_note
 
-    @document.document_type_schema.contents.each do |field|
-      if @document.contents[field.id].blank?
-        messages[field.id] << {
-          text: I18n.t!("publishing_requirements.#{field.id}_presence"),
-          href: "#content",
-        }
-      end
-    end
-
-    if @document.has_live_version_on_govuk &&
-        @document.update_type == "major" &&
-        @document.change_note.blank?
-      messages["summary"] << {
-        text: I18n.t!("publishing_requirements.change_note_presence"),
-        href: "#content",
-      }
+    document.document_type_schema.contents.each do |field|
+      messages[field.id] += check_contents(field)
     end
 
     messages
+  end
+
+private
+
+  def check_contents(field)
+    return [] if document.contents[field.id].present?
+    [{ text: I18n.t!("publishing_requirements.no_content_#{field.id}"), href: "#content" }]
+  end
+
+  def check_summary
+    return [] if document.summary.present?
+    [{ text: I18n.t!("publishing_requirements.no_summary"), href: "#content" }]
+  end
+
+  def check_change_note
+    return [] unless document.has_live_version_on_govuk &&
+        document.update_type == "major" &&
+        document.change_note.blank?
+
+    [{ text: I18n.t!("publishing_requirements.no_change_note"), href: "#content" }]
   end
 end
