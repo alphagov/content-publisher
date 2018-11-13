@@ -61,6 +61,6 @@ class Document < ApplicationRecord
   end
 
   def topics
-    DocumentTopics.new(self)
+    @topics ||= DocumentTopics.new(self)
   end
 end

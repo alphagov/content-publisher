@@ -15,11 +15,13 @@ class DocumentTopics
   end
 
   def with_version
-    links = publishing_api.get_links(document.content_id)
-    topic_content_ids = links.dig("links", "taxons").to_a
+    @with_version ||= begin
+      links = publishing_api.get_links(document.content_id)
+      topic_content_ids = links.dig("links", "taxons").to_a
 
-    topics = topic_content_ids.map(&Topic.method(:find))
-    [topics, links["version"]]
+      topics = topic_content_ids.map(&Topic.method(:find))
+      [topics, links["version"]]
+    end
   end
 
   def patch(topic_content_ids, version)
