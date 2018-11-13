@@ -35,10 +35,10 @@ RSpec.feature "Publishing requirements" do
 
   def then_i_see_a_warning_to_fix_the_issues
     within(".app-c-notice") do
-      expect(page).to have_content(I18n.t!("publishing_requirements.no_summary"))
-      expect(page).to have_content(I18n.t!("publishing_requirements.no_content_body"))
-      expect(page).to have_content(I18n.t!("publishing_requirements.no_change_note"))
-      expect(page).to have_content(I18n.t!("publishing_requirements.no_topics"))
+      expect(page).to have_content(I18n.t!("requirements.summary.blank.long_message"))
+      expect(page).to have_content(I18n.t!("requirements.body.blank.long_message"))
+      expect(page).to have_content(I18n.t!("requirements.change_note.blank.long_message"))
+      expect(page).to have_content(I18n.t!("requirements.topics.none.long_message"))
     end
   end
 
@@ -52,10 +52,10 @@ RSpec.feature "Publishing requirements" do
 
   def then_i_see_an_error_to_fix_the_issues
     within(".gem-c-error-summary") do
-      expect(page).to have_content(I18n.t!("publishing_requirements.no_summary"))
-      expect(page).to have_content(I18n.t!("publishing_requirements.no_content_body"))
-      expect(page).to have_content(I18n.t!("publishing_requirements.no_change_note"))
-      expect(page).to have_content(I18n.t!("publishing_requirements.no_topics"))
+      expect(page).to have_content(I18n.t!("requirements.summary.blank.long_message"))
+      expect(page).to have_content(I18n.t!("requirements.body.blank.long_message"))
+      expect(page).to have_content(I18n.t!("requirements.change_note.blank.long_message"))
+      expect(page).to have_content(I18n.t!("requirements.topics.none.long_message"))
     end
   end
 end

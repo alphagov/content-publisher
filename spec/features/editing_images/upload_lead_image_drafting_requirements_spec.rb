@@ -41,7 +41,7 @@ RSpec.feature "Upload a lead image drafting requirements" do
   end
 
   def then_i_see_the_alt_text_is_needed
-    expect(page).to have_content(I18n.t!("document_images.edit.flashes.drafting_requirements.alt_text_presence"))
+    expect(page).to have_content(I18n.t!("requirements.alt_text.blank.short_message"))
   end
 
   def when_i_fill_in_the_metadata

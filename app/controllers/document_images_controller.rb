@@ -71,12 +71,12 @@ class DocumentImagesController < ApplicationController
     @document = Document.find_by_param(params[:document_id])
     @image = @document.images.find(params[:image_id])
     @image.assign_attributes(update_params)
-    @errors = ImageDraftingRequirements.new(@image).errors
+    @issues = Requirements::ImageChecker.new(@image).pre_draft_metadata_issues
 
-    if @errors.any?
+    if @issues.any?
       flash.now["alert"] = {
-        "title" => I18n.t!("document_images.edit.flashes.drafting_requirements.title"),
-        "items" => @errors.values.flatten.map { |error| { text: error } },
+        "title" => I18n.t!("document_images.edit.flashes.pre_draft_issues.title"),
+        "items" => @issues.items,
       }
 
       render :edit

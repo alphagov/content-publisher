@@ -36,11 +36,11 @@ RSpec.feature "Image drafting requirements" do
   end
 
   def then_i_see_the_alt_text_is_needed
-    expect(page).to have_content(I18n.t!("document_images.edit.flashes.drafting_requirements.alt_text_presence"))
+    expect(page).to have_content(I18n.t!("requirements.alt_text.blank.short_message"))
   end
 
   def when_i_enter_too_much_alt_text
-    @alt_text = "a" * (ImageDraftingRequirements::ALT_TEXT_MAX_LENGTH + 1)
+    @alt_text = "a" * (Requirements::ImageChecker::ALT_TEXT_MAX_LENGTH + 1)
     fill_in "alt_text", with: @alt_text
     click_on "Save details"
   end
@@ -48,12 +48,12 @@ RSpec.feature "Image drafting requirements" do
   def then_i_see_the_alt_text_is_too_long
     expect(find_field("alt_text").value).to eq(@alt_text)
 
-    expect(page).to have_content(I18n.t!("document_images.edit.flashes.drafting_requirements.alt_text_max_length",
-                                        max_length: ImageDraftingRequirements::ALT_TEXT_MAX_LENGTH))
+    expect(page).to have_content(I18n.t!("requirements.alt_text.too_long.short_message",
+                                        max_length: Requirements::ImageChecker::ALT_TEXT_MAX_LENGTH))
   end
 
   def when_i_enter_too_much_caption_text
-    @caption = "a" * (ImageDraftingRequirements::CAPTION_MAX_LENGTH + 1)
+    @caption = "a" * (Requirements::ImageChecker::CAPTION_MAX_LENGTH + 1)
     fill_in "caption", with: @caption
     click_on "Save details"
   end
@@ -61,7 +61,7 @@ RSpec.feature "Image drafting requirements" do
   def then_i_see_the_caption_is_too_long
     expect(find_field("caption").value).to eq(@caption)
 
-    expect(page).to have_content(I18n.t!("document_images.edit.flashes.drafting_requirements.caption_max_length",
-                                        max_length: ImageDraftingRequirements::CAPTION_MAX_LENGTH))
+    expect(page).to have_content(I18n.t!("requirements.caption.too_long.short_message",
+                                        max_length: Requirements::ImageChecker::CAPTION_MAX_LENGTH))
   end
 end
