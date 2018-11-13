@@ -9,6 +9,8 @@ class Document < ApplicationRecord
   belongs_to :creator, class_name: "User", optional: true, foreign_key: :creator_id, inverse_of: :documents
   belongs_to :last_editor, class_name: "User", optional: true, foreign_key: :last_editor_id, inverse_of: :documents
 
+  delegate :topics, to: :document_topics
+
   PUBLICATION_STATES = %w[
     changes_not_sent_to_draft
     sending_to_draft
@@ -60,7 +62,7 @@ class Document < ApplicationRecord
     title.presence || I18n.t!("documents.untitled_document")
   end
 
-  def topics
-    @topics ||= DocumentTopics.new(self)
+  def document_topics
+    @document_topics ||= DocumentTopics.find_by_document(self)
   end
 end

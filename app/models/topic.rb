@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Topic
+  include ActiveModel::Model
+
   def self.govuk_homepage
     find(TopicIndexService::GOVUK_HOMEPAGE_CONTENT_ID)
   end
@@ -9,15 +11,7 @@ class Topic
     TopicIndexService.new.index[topic_content_id]
   end
 
-  attr_reader :title, :child_content_ids, :legacy_topic_content_ids, :parent_content_id, :content_id
-
-  def initialize(params)
-    @content_id = params[:content_id]
-    @title = params[:title]
-    @child_content_ids = params[:child_content_ids]
-    @legacy_topic_content_ids = params[:legacy_topic_content_ids]
-    @parent_content_id = params[:parent_content_id]
-  end
+  attr_accessor :title, :child_content_ids, :legacy_topic_content_ids, :parent_content_id, :content_id
 
   def breadcrumb
     ancestors + [self]

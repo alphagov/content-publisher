@@ -1,33 +1,27 @@
 # frozen_string_literal: true
 
 class DocumentTopics
-  include Enumerable
+  include ActiveModel::Model
 
-  attr_reader :document
+  attr_accessor :document, :version, :topics
 
-  def initialize(document)
-    @document = document
-  end
+  def self.find_by_document(document)
+    publishing_api = GdsApi.publishing_api_v2
+    links = publishing_api.get_links(document.content_id)
+    topic_content_ids = links.dig("links", "taxons").to_a
 
-  def each
-    topics, _version = with_version
-    topics.each { |topic| yield topic }
-  end
-
-  def with_version
-    @with_version ||= begin
-      links = publishing_api.get_links(document.content_id)
-      topic_content_ids = links.dig("links", "taxons").to_a
-
-      topics = topic_content_ids.map(&Topic.method(:find))
-      [topics, links["version"]]
-    end
+    new(
+      document: document,
+      version: links["version"],
+      topics: topic_content_ids.map(&Topic.method(:find)),
+    )
   end
 
   def patch(topic_content_ids, version)
     topics = topic_content_ids.map(&Topic.method(:find))
+    self.version = version
 
-    publishing_api.patch_links(
+    GdsApi.publishing_api_v2.patch_links(
       document.content_id,
       links: {
         taxons: leaf_topic_content_ids(topics),
@@ -47,9 +41,5 @@ private
   def legacy_topic_content_ids(topics)
     breadcrumbs = topics.map(&:breadcrumb).flatten
     breadcrumbs.map(&:legacy_topic_content_ids).flatten.uniq
-  end
-
-  def publishing_api
-    GdsApi.publishing_api_v2
   end
 end
