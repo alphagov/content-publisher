@@ -9,6 +9,16 @@
 .app-c-summary {
   @include govuk-font(19);
   position: relative;
+  border-bottom: 1px solid $govuk-border-colour;
+  @include govuk-responsive-margin(7, "top");
+
+  &:nth-of-type(1) {
+    margin-top: govuk-spacing(0);
+  }
+
+  &:nth-last-of-type(1) {
+    border-bottom: none;
+  }
 }
 
 .app-c-summary__change-link {
@@ -24,16 +34,12 @@
 }
 
 .app-c-summary__block {
-  @include govuk-responsive-margin(9, "bottom");
+  @include govuk-responsive-margin(7, "bottom");
 }
 
 .app-c-summary__list {
   @include govuk-font(19);
-
-  margin-top: 0;
-
-  @include govuk-responsive-margin(9, "bottom");
-
+  @include govuk-responsive-margin(7, "bottom");
   @include govuk-media-query($from: desktop) {
     display: table;
   }
@@ -65,7 +71,6 @@
 
 .app-c-summary__contents {
   position: relative;
-  border-bottom: 1px solid $govuk-border-colour;
 
   @include govuk-media-query($from: desktop) {
     display: table-row;
@@ -90,7 +95,6 @@
   @include govuk-media-query($from: desktop) {
     display: table-cell;
     padding: govuk-em(12, 19) govuk-em(20, 19) govuk-em(9, 19) 0;
-    border-bottom: 1px solid $govuk-border-colour;
   }
 }
 
