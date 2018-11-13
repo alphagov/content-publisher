@@ -1,8 +1,8 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= render "govuk_publishing_components/components/details", title: "Share" do %>
+    <%= render "govuk_publishing_components/components/details", title: "Share document preview for fact check or approval" do %>
       <%= render "govuk_publishing_components/components/copy_to_clipboard",
-        label: "Copy and send this link to someone and they’ll be able to preview your draft on GOV.UK.",
+        label: "Send this link to someone so they can see a preview of how the document will appear on GOV.UK.",
         copyable_content: url,
         button_text: "Copy link" %>
     <% end %>
