@@ -24,7 +24,9 @@
         id: "document-contents-guidance",
         title: document.document_type_schema.guidance_for(schema.id).title
       } do %>
-        <p class="govuk-body"><%= document.document_type_schema.guidance_for(schema.id).body %></p>
+        <%= render "govuk_publishing_components/components/govspeak" do %>
+          <%= govspeak_to_html document.document_type_schema.guidance_for(schema.id).body %>
+        <% end %>
 
         <h3 class="govuk-heading-s"><%= t("documents.edit.fields.govspeak.title") %></h3>
 

@@ -20,7 +20,14 @@
       body: The summary explains the main point of the content and it should end with a full stop. Avoid repeating the first line of the body.
     - id: body
       title: Writing news
-      body: Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+      body: |
+        Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+        [Guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story){:target="_blank"}
+
+        [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+        [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
     - id: primary_publishing_organisation
       title: Primary organisation
       body: The organisation responsible for publishing and maintaining this content.
@@ -77,8 +84,15 @@
       title: Summary
       body: The summary should explain the main point of the story. It is the first line of the story so don’t repeat it in the body and end with a full stop.
     - id: body
-      title: Writing a news story
-      body: Put the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+      title: Writing a press release
+      body: |
+        Use short words, short sentences, and short paragraphs. Use subheadings in longer content. Avoid 'notes to editors'.
+
+        [Guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release){:target="_blank"}
+
+        [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+        [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
     - id: primary_publishing_organisation
       title: Primary organisation
       body: The organisation responsible for publishing and maintaining this content.
