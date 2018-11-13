@@ -56,26 +56,17 @@ private
   end
 
   def details
-    details_hash = temporary_defaults_in_details
+    details = {}
 
     document_type_schema.contents.each do |field|
-      details_hash[field.id] = perform_input_type_specific_transformations(field)
+      details[field.id] = perform_input_type_specific_transformations(field)
     end
 
     if document_type_schema.lead_image && document.lead_image.present?
-      details_hash["image"] = image
+      details["image"] = image
     end
 
-    details_hash
-  end
-
-  def temporary_defaults_in_details
-    {
-      "government" => {
-        "title" => "Hey", "slug" => "what", "current" => true
-      },
-      "political" => false,
-    }
+    details
   end
 
   def roles_and_people(role_appointments)
