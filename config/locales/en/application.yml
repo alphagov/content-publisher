@@ -1,5 +1,8 @@
 en:
   application:
+    phase_banner:
+      send_us_feedback: Send us feedback
+      whats_new: What's new
     footer:
       support_and_feedback: Support and feedback
       documentation: Documentation
