@@ -11,7 +11,7 @@ RSpec.feature "Choosing a format" do
 
   def when_i_dont_choose_a_supertype
     visit root_path
-    click_on "New document"
+    click_on "Create new document"
     click_on "Continue"
   end
 

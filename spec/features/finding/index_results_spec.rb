@@ -6,7 +6,6 @@ RSpec.feature "Users views document results on index page" do
     when_i_visit_the_index_page
     then_i_can_see_the_document_title
     and_i_can_see_the_document_type
-    and_i_can_see_the_document_creator
     and_i_can_see_the_document_state
     and_i_can_see_the_document_last_editor
   end
@@ -27,13 +26,6 @@ RSpec.feature "Users views document results on index page" do
 
   def and_i_can_see_the_document_type
     expect(page).to have_content(Document.last.document_type_schema.label)
-  end
-
-  def and_i_can_see_the_document_creator
-    expect(page).to have_content(
-      I18n.t!("documents.index.search_results.creator",
-        creator: Document.last.creator.name),
-    )
   end
 
   def and_i_can_see_the_document_state

@@ -8,7 +8,7 @@ RSpec.feature "Create a detailed guide", format: true do
 
   def when_i_choose_this_document_type
     visit "/"
-    click_on "New document"
+    click_on "Create new document"
     choose SupertypeSchema.find("guidance").label
     click_on "Continue"
     choose DocumentTypeSchema.find("detailed_guide").label

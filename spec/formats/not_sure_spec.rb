@@ -9,7 +9,7 @@ RSpec.feature "User is not sure about the supertype", format: true do
 
   def when_i_click_on_create_a_document
     visit "/"
-    click_on "New document"
+    click_on "Create new document"
   end
 
   def and_i_choose_i_am_not_sure_if_it_belongs_on_govuk

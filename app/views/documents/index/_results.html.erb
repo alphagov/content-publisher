@@ -10,6 +10,7 @@
 
   <%= t.head do %>
     <%= t.header t("documents.index.search_results.headings.title") %>
+    <%= t.header t("documents.index.search_results.headings.status") %>
     <%= t.header t("documents.index.search_results.headings.last_updated"), {
         href: documents_path(@filter_params.merge(sort: "#{updated_link_to_asc ? '' : '-'}updated_at", page: nil)),
         sort_direction: updated_sort_direction
@@ -28,13 +29,12 @@
               },
               metadata: {
                 document_type: document.document_type_schema.label,
-                document_create: t("documents.index.search_results.creator", creator: document.creator&.name || I18n.t!("documents.index.search_results.unknown_user")),
-                document_state: t("documents.index.search_results.state", state: t("user_facing_states.#{document.user_facing_state}.name")),
-                document_edit: t("documents.index.search_results.last_edited_by", user: document.last_editor&.name || I18n.t!("documents.index.search_results.unknown_user"))
+                document_edit: t("documents.index.search_results.last_edited_by", user: document.last_editor&.name || I18n.t("documents.index.search_results.unknown_user"))
               }
             }
           ]
         } %>
+        <%= t.cell t("user_facing_states.#{document.user_facing_state}.name") %>
         <%= t.cell document.updated_at.strftime("%d %b %Y") %>
       <% end %>
     <% end %>

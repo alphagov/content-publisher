@@ -17,7 +17,7 @@ RSpec.feature "Create a document" do
 
   def when_i_click_to_create_a_document
     @schema = build :document_type_schema
-    click_on "New document"
+    click_on "Create new document"
   end
 
   def and_i_select_a_supertype
