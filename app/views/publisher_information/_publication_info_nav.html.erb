@@ -1,24 +1,24 @@
 <div class="govuk-grid-column-one-third">
   <ul class="govuk-list">
-    <li>
+    <li class="govuk-list-item--with-border-bottom govuk-!-padding-top-2 govuk-!-padding-bottom-2 govuk-list-item--font-size-16">
       <% if current_page == beta_capabilities_path %>
         <strong>What the Beta can and cannot do</strong>
       <% else %>
-        <a href="<%= beta_capabilities_path %>" class="govuk-link govuk-link--no-visited-state">What the Beta can and cannot do</a>
+        <a href="<%= beta_capabilities_path %>" class="govuk-link govuk-link--no-decoration govuk-link--no-visited-state govuk-list-item--font-size-16">What the Beta can and cannot do</a>
       <% end %>
     </li>
-    <li>
+    <li class="govuk-list-item--with-border-bottom govuk-!-padding-top-2 govuk-!-padding-bottom-2 govuk-list-item--font-size-16">
       <% if current_page == how_to_use_publisher_path %>
         <strong>How to use Content Publisher</strong>
       <% else %>
-        <a href="<%= how_to_use_publisher_path %>" class="govuk-link govuk-link--no-visited-state ">How to use Content Publisher</a>
+        <a href="<%= how_to_use_publisher_path %>" class="govuk-link govuk-link--no-decoration govuk-link--no-visited-state govuk-list-item--font-size-16">How to use Content Publisher</a>
       <% end %>
     </li>
-    <li>
+    <li class="govuk-list-item--with-border-bottom govuk-!-padding-top-2 govuk-!-padding-bottom-2 govuk-list-item--font-size-16">
       <% if current_page == publisher_updates_path %>
         <strong>What's new in Content Publisher</strong>
       <% else %>
-        <a href="<%= publisher_updates_path %>" class="govuk-link govuk-link--no-visited-state ">What's new in Content Publisher</a>
+        <a href="<%= publisher_updates_path %>" class="govuk-link govuk-link--no-decoration govuk-link--no-visited-state govuk-list-item--font-size-16">What's new in Content Publisher</a>
       <% end %>
     </li>
   </ul>
