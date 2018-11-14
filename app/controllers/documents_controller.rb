@@ -38,6 +38,7 @@ class DocumentsController < ApplicationController
   def update
     @document = Document.find_by_param(params[:id])
     @document.assign_attributes(update_params(@document))
+    add_contact_request = params[:submit] == "add_contact"
     @errors = DraftingRequirements.new(@document).errors
 
     if @errors.any?
@@ -56,7 +57,11 @@ class DocumentsController < ApplicationController
       type: "updated_content",
     )
 
-    redirect_to @document
+    if add_contact_request
+      redirect_to search_document_contacts_path(@document)
+    else
+      redirect_to @document
+    end
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
     redirect_to @document, alert_with_description: t("documents.show.flashes.draft_error")
