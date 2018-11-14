@@ -27,7 +27,7 @@ en:
             * double-checking your spelling
         unknown_user: Unknown
       filter:
-        title_or_url: Search for a title or URL slug
+        title_or_url: Title or URL
         document_type: Document type
         state: Status
         organisation: Organisation
