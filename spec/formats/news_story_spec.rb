@@ -36,9 +36,8 @@ RSpec.feature "Create a news story", format: true do
   def and_i_add_some_tags
     publishing_api_has_links(role_appointment_links)
 
-    expect(Document.last.document_type_schema.tags.count).to eq(6)
+    expect(Document.last.document_type_schema.tags.count).to eq(5)
     publishing_api_has_linkables([linkable], document_type: "topical_event")
-    publishing_api_has_linkables([linkable], document_type: "worldwide_organisation")
     publishing_api_has_linkables([linkable], document_type: "world_location")
     publishing_api_has_linkables([linkable], document_type: "organisation")
     publishing_api_has_linkables([linkable], document_type: "role_appointment")
@@ -46,7 +45,6 @@ RSpec.feature "Create a news story", format: true do
     click_on "Change Tags"
 
     select linkable["internal_name"], from: "tags[topical_events][]"
-    select linkable["internal_name"], from: "tags[worldwide_organisations][]"
     select linkable["internal_name"], from: "tags[world_locations][]"
     select linkable["internal_name"], from: "tags[organisations][]"
     select linkable["internal_name"], from: "tags[role_appointments][]"
@@ -65,7 +63,6 @@ RSpec.feature "Create a news story", format: true do
     {
       "links" => {
         "topical_events" => [linkable["content_id"]],
-        "worldwide_organisations" => [linkable["content_id"]],
         "world_locations" => [linkable["content_id"]],
         "organisations" => [linkable["content_id"]],
         "primary_publishing_organisation" => [linkable["content_id"]],
