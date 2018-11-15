@@ -41,7 +41,7 @@ RSpec.feature "User orders documents" do
   end
 
   def when_i_apply_a_filter
-    fill_in "title", with: "recent"
+    fill_in "title_or_url", with: "recent"
     click_on "Filter"
   end
 

@@ -51,7 +51,7 @@ RSpec.feature "User filters documents" do
   end
 
   def and_i_filter_by_title
-    fill_in "title", with: "super"
+    fill_in "title_or_url", with: "super"
     click_on "Filter"
   end
 
@@ -89,7 +89,7 @@ RSpec.feature "User filters documents" do
   end
 
   def when_i_filter_too_much
-    fill_in "title", with: SecureRandom.uuid
+    fill_in "title_or_url", with: SecureRandom.uuid
     click_on "Filter"
   end
 
