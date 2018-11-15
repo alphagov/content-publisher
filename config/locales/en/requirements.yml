@@ -3,13 +3,10 @@ en:
     title:
       blank:
         short_message: Enter a title
-        long_message: Enter a title
       too_long:
         short_message: "Enter a title that is fewer than %{max_length} characters long"
-        long_message: "Enter a title that is fewer than %{max_length} characters long"
       multiline:
-        short_message: Remove any line breaks from the title
-        long_message: Remove any line breaks from the title
+        short_message: Remove line breaks from the title
     summary:
       blank:
         long_message: Enter a summary

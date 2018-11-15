@@ -17,11 +17,11 @@ module Requirements
         issues << Issue.new(:title, :blank)
       end
 
-      if document.title.size > TITLE_MAX_LENGTH
+      if document.title.to_s.size > TITLE_MAX_LENGTH
         issues << Issue.new(:title, :too_long, max_length: TITLE_MAX_LENGTH)
       end
 
-      if document.title.lines.count > 1
+      if document.title.to_s.lines.count > 1
         issues << Issue.new(:title, :multiline)
       end
 
