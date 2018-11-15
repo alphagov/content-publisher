@@ -7,24 +7,27 @@
   </div>
 
   <div class="govuk-grid-column-one-third">
-    <%= render "govuk_publishing_components/components/related_navigation", {
-      links: {
-        quick_links: [
-          {
-            title: t("document_topics.edit.link_guidance"),
-            base_path: "https://www.gov.uk/guidance/how-to-publish-on-gov-uk/creating-and-updating-pages#add-topic-tagging"
-          },
-          {
-            title: t("document_topics.edit.link_suggest_new"),
-            base_path: Plek.new.external_url_for("support") + "/taxonomy_new_topic_request/new"
-          },
-          {
-            title: t("document_topics.edit.link_suggest_change"),
-            base_path: Plek.new.external_url_for("support") + "/taxonomy_change_topic_request/new"
-          }
-        ]
-      }
-    } %>
+    <div class="gem-c-related-navigation">
+      <nav role="navigation" class="gem-c-related-navigation__nav-section">
+        <ul class="gem-c-related-navigation__link-list" data-module="track-click">
+          <li class="gem-c-related-navigation__link">
+            <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/creating-and-updating-pages#add-topic-tagging" class="gem-c-related-navigation__section-link gem-c-related-navigation__section-link--other">
+              <%= t("document_topics.edit.link_guidance") %>
+            </a>
+          </li>
+          <li class="gem-c-related-navigation__link">
+            <a href="<%= Plek.new.external_url_for('support') + '/taxonomy_new_topic_request/new' %>">
+              <%= t("document_topics.edit.link_suggest_new") %>
+            </a>
+          </li>
+          <li class="gem-c-related-navigation__link">
+            <a href="<%= Plek.new.external_url_for('support') + '/taxonomy_change_topic_request/new' %>">
+              <%= t("document_topics.edit.link_suggest_change") %>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </div>
 
