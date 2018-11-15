@@ -160,10 +160,9 @@ GEM
       sass-rails (>= 5.0.4)
     govuk_schemas (3.2.0)
       json-schema (~> 2.8.0)
-    govuk_test (0.3.0)
+    govuk_test (0.3.1)
       capybara
       chromedriver-helper
-      ptools
       puma
       selenium-webdriver
     hashdiff (0.3.7)
@@ -269,7 +268,6 @@ GEM
     phantomjs (2.1.1.0)
     plek (2.1.1)
     powerpack (0.1.2)
-    ptools (1.3.5)
     public_suffix (3.0.3)
     puma (3.12.0)
     rack (2.0.6)
