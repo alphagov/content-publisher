@@ -1,6 +1,33 @@
 <% content_for :back_link, render_back_link(href: document_path(@document)) %>
 <% content_for :title, t("document_topics.edit.title", title: @document.title_or_fallback) %>
 
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <p class="govuk-body"><%= t("document_topics.edit.description") %></p>
+  </div>
+
+  <div class="govuk-grid-column-one-third">
+    <%= render "govuk_publishing_components/components/related_navigation", {
+      links: {
+        quick_links: [
+          {
+            title: t("document_topics.edit.link_guidance"),
+            base_path: "https://www.gov.uk/guidance/how-to-publish-on-gov-uk/creating-and-updating-pages#add-topic-tagging"
+          },
+          {
+            title: t("document_topics.edit.link_suggest_new"),
+            base_path: Plek.new.external_url_for("support") + "/taxonomy_new_topic_request/new"
+          },
+          {
+            title: t("document_topics.edit.link_suggest_change"),
+            base_path: Plek.new.external_url_for("support") + "/taxonomy_change_topic_request/new"
+          }
+        ]
+      }
+    } %>
+  </div>
+</div>
+
 <% def unroll(topic) %>
   <li>
     <div class="govuk-checkboxes__item">
@@ -41,6 +68,16 @@
   </govuk-miller-columns>
 
   <%= hidden_field_tag :version, @version %>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <%= render "govuk_publishing_components/components/details", {
+        title: t("document_topics.edit.warning_title")
+      } do %>
+        <%= t("document_topics.edit.warning_description") %>
+      <% end %>
+    </div>
+  </div>
 
   <%= render "govuk_publishing_components/components/button", {
     text: "Save", margin_bottom: true
