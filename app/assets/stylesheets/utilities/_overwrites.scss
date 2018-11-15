@@ -78,19 +78,3 @@
     font-size: inherit;
   }
 }
-
-.govuk-link {
-  &.govuk-link--no-decoration {
-    text-decoration: none;
-  }
-}
-
-.govuk-list {
-  .govuk-list-item--with-border-bottom {
-    border-bottom: 1px solid govuk-colour('grey-3');
-  }
-
-  .govuk-list-item--font-size-16 {
-    @include govuk-font(16);
-  }
-}
