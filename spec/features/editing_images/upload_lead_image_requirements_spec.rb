@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Upload a lead image drafting requirements" do
+RSpec.feature "Upload a lead image with requirements issues" do
   scenario do
     given_there_is_a_document
     when_i_visit_the_images_page

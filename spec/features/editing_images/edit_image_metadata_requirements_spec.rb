@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Image drafting requirements" do
+RSpec.feature "Edit image metadata with requirements issues" do
   scenario do
     given_there_is_a_document_with_images
     when_i_visit_the_images_page
