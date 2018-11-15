@@ -3,21 +3,28 @@ en:
     title:
       blank:
         short_message: Enter a title
+        long_message: Enter a title
       too_long:
         short_message: "Enter a title that is fewer than %{max_length} characters long"
+        long_message: Enter a shorter title
       multiline:
         short_message: Remove line breaks from the title
+        long_message: Remove line breaks from the title
     summary:
       blank:
+        short_message: Enter a summary
         long_message: Enter a summary
     body:
       blank:
+        short_message: Enter a body
         long_message: Enter a body
     change_note:
       blank:
+        short_message: Enter a change note
         long_message: Enter a change note
     topics:
       none:
+        short_message: Add a topic
         long_message: Add a topic
     alt_text:
       blank:
@@ -25,6 +32,8 @@ en:
         long_message: "Enter alt text for “%{filename}”"
       too_long:
         short_message: "Enter alt text that is fewer than %{max_length} characters long"
+        long_message: "Enter shorter alt text for “%{filename}”"
     caption:
       too_long:
         short_message: "Enter an image caption that is fewer than %{max_length} characters long"
+        long_message: "Enter a shorter caption for “%{filename}”"

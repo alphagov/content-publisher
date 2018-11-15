@@ -6,11 +6,8 @@ RSpec.feature "Upload a lead image with requirements issues" do
     when_i_visit_the_images_page
     and_i_upload_a_new_image
     and_i_crop_the_image
-    and_i_skip_entering_alt_text
-    then_i_see_the_alt_text_is_needed
-
-    when_i_fill_in_the_metadata
-    then_i_see_the_new_lead_image
+    and_i_enter_bad_metadata
+    then_i_see_an_error_to_fix_the_issues
   end
 
   def given_there_is_a_document
@@ -36,21 +33,11 @@ RSpec.feature "Upload a lead image with requirements issues" do
     click_on "Crop image"
   end
 
-  def and_i_skip_entering_alt_text
+  def and_i_enter_bad_metadata
     click_on "Save and choose"
   end
 
-  def then_i_see_the_alt_text_is_needed
+  def then_i_see_an_error_to_fix_the_issues
     expect(page).to have_content(I18n.t!("requirements.alt_text.blank.short_message"))
-  end
-
-  def when_i_fill_in_the_metadata
-    fill_in "alt_text", with: "Some alt text"
-    stub_any_publishing_api_put_content
-    click_on "Save and choose"
-  end
-
-  def then_i_see_the_new_lead_image
-    expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.added", file: Image.last.filename))
   end
 end
