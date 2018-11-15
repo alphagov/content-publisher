@@ -9,6 +9,8 @@ class Document < ApplicationRecord
   belongs_to :creator, class_name: "User", optional: true, foreign_key: :creator_id, inverse_of: :documents
   belongs_to :last_editor, class_name: "User", optional: true, foreign_key: :last_editor_id, inverse_of: :documents
 
+  delegate :topics, to: :document_topics
+
   PUBLICATION_STATES = %w[
     changes_not_sent_to_draft
     sending_to_draft
@@ -58,5 +60,10 @@ class Document < ApplicationRecord
 
   def title_or_fallback
     title.presence || I18n.t!("documents.untitled_document")
+  end
+
+  def document_topics
+    @document_topics_index ||= TopicIndexService.new
+    DocumentTopics.find_by_document(self, @document_topics_index)
   end
 end

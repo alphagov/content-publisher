@@ -1,4 +1,5 @@
-<% errors = PublishingRequirements.new(@document).errors.values.flatten %>
+<% errors = PublishingRequirements.new(@document)
+  .errors(tried_to_publish: flash[:tried_to_publish]).values.flatten %>
 
 <% if errors.any? %>
   <% if flash[:tried_to_publish] %>

@@ -1,5 +1,6 @@
 en:
   publishing_requirements:
-    summary_presence: Enter a summary
-    body_presence: Enter a body
-    change_note_presence: Enter a change note
+    no_summary: Enter a summary
+    no_content_body: Enter a body
+    no_change_note: Enter a change note
+    no_topics: Add a topic

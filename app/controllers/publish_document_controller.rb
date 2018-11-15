@@ -4,10 +4,13 @@ class PublishDocumentController < ApplicationController
   def confirmation
     @document = Document.find_by_param(params[:id])
 
-    if PublishingRequirements.new(@document).errors.any?
+    if PublishingRequirements.new(@document).errors?(tried_to_publish: true)
       redirect_to document_path(@document), tried_to_publish: true
       return
     end
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
+    redirect_to @document, alert_with_description: t("documents.show.flashes.publish_error")
   end
 
   def publish

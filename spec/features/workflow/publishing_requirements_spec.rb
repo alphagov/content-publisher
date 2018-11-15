@@ -1,56 +1,44 @@
 # frozen_string_literal: true
 
 RSpec.feature "Publishing requirements" do
+  include TopicsHelper
+
   scenario do
     given_there_is_a_document
-    when_the_document_has_missing_contents
-    then_i_see_a_hint_to_enter_the_contents
-
-    when_the_document_needs_a_change_note
-    then_i_see_a_hint_to_enter_a_change_note
+    when_the_document_has_issues_to_fix
+    then_i_see_a_warning_to_fix_the_issues
 
     when_i_try_to_publish_the_document
-    then_i_see_an_error_to_enter_the_contents
-    and_i_see_an_error_to_enter_a_change_note
+    then_i_see_an_error_to_fix_the_issues
 
     when_i_try_to_submit_the_document_for_2i
-    then_i_see_an_error_to_enter_the_contents
-    and_i_see_an_error_to_enter_a_change_note
+    then_i_see_an_error_to_fix_the_issues
   end
 
   def given_there_is_a_document
     field_schema = build(:field_schema, id: "body", type: "govspeak")
-    document_type_schema = build(:document_type_schema, contents: [field_schema])
+    document_type_schema = build(:document_type_schema, contents: [field_schema], topics: true)
     @document = create(:document, document_type: document_type_schema.id)
   end
 
-  def when_the_document_has_missing_contents
-    visit document_path(@document)
-    click_on "Change Content"
-    fill_in "document[summary]", with: ""
-    fill_in "document[contents][body]", with: ""
-    stub_any_publishing_api_put_content
-    click_on "Save"
-  end
+  def when_the_document_has_issues_to_fix
+    publishing_api_has_links(
+      "content_id" => @document.content_id,
+      "links" => {},
+      "version" => 3,
+    )
 
-  def when_the_document_needs_a_change_note
+    publishing_api_has_taxonomy
     @document.update!(has_live_version_on_govuk: true)
-    click_on "Change Content"
-    fill_in "document[change_note]", with: ""
-    stub_any_publishing_api_put_content
-    click_on "Save"
+    visit document_path(@document)
   end
 
-  def then_i_see_a_hint_to_enter_the_contents
+  def then_i_see_a_warning_to_fix_the_issues
     within(".app-c-notice") do
-      expect(page).to have_content(I18n.t!("publishing_requirements.summary_presence"))
-      expect(page).to have_content(I18n.t!("publishing_requirements.body_presence"))
-    end
-  end
-
-  def then_i_see_a_hint_to_enter_a_change_note
-    within(".app-c-notice") do
-      expect(page).to have_content(I18n.t!("publishing_requirements.change_note_presence"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.no_summary"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.no_content_body"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.no_change_note"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.no_topics"))
     end
   end
 
@@ -62,16 +50,12 @@ RSpec.feature "Publishing requirements" do
     click_on "Submit for 2i review"
   end
 
-  def then_i_see_an_error_to_enter_the_contents
+  def then_i_see_an_error_to_fix_the_issues
     within(".gem-c-error-summary") do
-      expect(page).to have_content(I18n.t!("publishing_requirements.summary_presence"))
-      expect(page).to have_content(I18n.t!("publishing_requirements.body_presence"))
-    end
-  end
-
-  def and_i_see_an_error_to_enter_a_change_note
-    within(".gem-c-error-summary") do
-      expect(page).to have_content(I18n.t!("publishing_requirements.change_note_presence"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.no_summary"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.no_content_body"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.no_change_note"))
+      expect(page).to have_content(I18n.t!("publishing_requirements.no_topics"))
     end
   end
 end

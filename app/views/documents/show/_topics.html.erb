@@ -1,14 +1,11 @@
 <% begin %>
-  <% service = TopicsService.new %>
-  <% topic_content_ids, _version = service.topics_for_document(@document) %>
-
   <% breadcrumbs = capture do %>
-    <% if topic_content_ids.any? %>
+    <% if @document.topics.any? %>
       <div class="topic-breadcrumb">
-        <% topic_content_ids.each do |topic_content_id| %>
+        <% @document.topics.each do |topic| %>
           <ol>
-            <% service.topic_breadcrumb(topic_content_id).each do |crumb| %>
-              <li><%= crumb[:title] %></li>
+            <% topic.breadcrumb.each do |crumb_topic| %>
+              <li><%= crumb_topic.title %></li>
             <% end %>
           </ol>
         <% end %>

@@ -11,13 +11,13 @@ class DocumentTopicsController < ApplicationController
 
   def edit
     @document = Document.find_by_param(params[:document_id])
-    @topic_index = TopicsService.new.topic_index
-    @topic_content_ids, @version = TopicsService.new.topics_for_document(@document)
+    @version = @document.document_topics.version
+    @topics = @document.topics
   end
 
   def update
     document = Document.find_by_param(params[:document_id])
-    TopicsService.new.patch_topics(document, params.fetch(:topics, []), params[:version].to_i)
+    document.document_topics.patch(params.fetch(:topics, []), params[:version].to_i)
     redirect_to document_path(document), notice: t("documents.show.flashes.topics_updated")
   rescue GdsApi::HTTPConflict => e
     Rails.logger.error(e)

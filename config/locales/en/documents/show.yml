@@ -58,6 +58,9 @@ en:
         publish_error:
           title: Something has gone wrong
           description: Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+        2i_error:
+          title: Something has gone wrong
+          description: Something went wrong when submitting your content for 2i review. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         approved: Content has been reviewed and approved
         submitted_for_review:
           title: Content has been marked as ready for 2i review

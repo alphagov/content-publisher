@@ -4,7 +4,7 @@ class ReviewController < ApplicationController
   def submit_for_2i
     document = Document.find_by_param(params[:id])
 
-    if PublishingRequirements.new(document).errors.any?
+    if PublishingRequirements.new(document).errors?(tried_to_publish: true)
       redirect_to document_path(document), tried_to_publish: true
       return
     end
@@ -13,6 +13,9 @@ class ReviewController < ApplicationController
     TimelineEntry.create!(document: document, user: current_user, entry_type: "submitted")
     flash[:submitted_for_review] = true
     redirect_to document
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
+    redirect_to document, alert_with_description: t("documents.show.flashes.2i_error")
   end
 
   def approve
