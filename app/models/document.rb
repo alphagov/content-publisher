@@ -63,6 +63,7 @@ class Document < ApplicationRecord
   end
 
   def document_topics
-    @document_topics ||= DocumentTopics.find_by_document(self)
+    @document_topics_index ||= TopicIndexService.new
+    DocumentTopics.find_by_document(self, @document_topics_index)
   end
 end

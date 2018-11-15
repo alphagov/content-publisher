@@ -25,7 +25,7 @@
 
 <%= form_tag update_document_topics_path(@document), method: :patch do %>
   <ul>
-    <% Topic.govuk_homepage.children.each do |topic| %>
+    <% Topic.govuk_homepage(@document.document_topics.index).children.each do |topic| %>
       <% unroll(topic) %>
     <% end %>
   </ul>
