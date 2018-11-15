@@ -11,7 +11,7 @@ en:
         title: Title
         summary: Summary
       url_preview:
-        available: Page address path
+        available: Page address
         no_title: You haven't entered a title yet.
         error: Unable to preview address, please edit title and try again.
       change_note:
