@@ -10,7 +10,7 @@ module Requirements
       @document = document
     end
 
-    def pre_publish_issues(raise_exceptions: false)
+    def pre_publish_issues(rescue_api_errors: true)
       issues = []
 
       begin
@@ -18,8 +18,8 @@ module Requirements
           issues << Issue.new(:topics, :none)
         end
       rescue GdsApi::BaseError => e
-        Rails.logger.error(e) unless raise_exceptions
-        raise if raise_exceptions
+        Rails.logger.error(e) if rescue_api_errors
+        raise unless rescue_api_errors
       end
 
       CheckerIssues.new(issues)

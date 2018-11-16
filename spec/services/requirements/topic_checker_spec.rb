@@ -49,7 +49,7 @@ RSpec.describe Requirements::TopicChecker do
       end
 
       it "raises an exception if we specify it should" do
-        expect { Requirements::TopicChecker.new(document).pre_publish_issues(raise_exceptions: true) }
+        expect { Requirements::TopicChecker.new(document).pre_publish_issues(rescue_api_errors: false) }
           .to raise_error GdsApi::BaseError
       end
     end

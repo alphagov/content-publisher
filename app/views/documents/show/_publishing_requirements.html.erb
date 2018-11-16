@@ -15,7 +15,7 @@
 
 <% if draft_issues.none? %>
   <% publish_issues = Requirements::DocumentChecker.new(@document)
-    .pre_publish_issues(raise_exceptions: flash[:tried_to_publish])  %>
+    .pre_publish_issues(rescue_api_errors: !flash[:tried_to_publish])  %>
 <% end %>
 
 <% if draft_issues.any? %>

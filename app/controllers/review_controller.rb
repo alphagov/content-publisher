@@ -4,7 +4,7 @@ class ReviewController < ApplicationController
   def submit_for_2i
     document = Document.find_by_param(params[:id])
 
-    if Requirements::DocumentChecker.new(document).pre_publish_issues(raise_exceptions: true).any?
+    if Requirements::DocumentChecker.new(document).pre_publish_issues(rescue_api_errors: false).any?
       redirect_to document_path(document), tried_to_publish: true
       return
     end
