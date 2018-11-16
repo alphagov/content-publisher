@@ -12,11 +12,11 @@ RSpec.describe Requirements::ImageChecker do
       image = build :image
       issues = Requirements::ImageChecker.new(image).pre_draft_issues
 
-      short_message = issues.items_for(:alt_text).first[:text]
-      expect(short_message).to eq(I18n.t!("requirements.alt_text.blank.short_message"))
+      form_message = issues.items_for(:alt_text).first[:text]
+      expect(form_message).to eq(I18n.t!("requirements.alt_text.blank.form_message"))
 
-      long_message = issues.items_for(:alt_text, verbose: true).first[:text]
-      expect(long_message).to eq(I18n.t!("requirements.alt_text.blank.long_message", filename: image.filename))
+      summary_message = issues.items_for(:alt_text, style: "summary").first[:text]
+      expect(summary_message).to eq(I18n.t!("requirements.alt_text.blank.summary_message", filename: image.filename))
     end
 
     it "returns an issue if the alt text is too long" do
@@ -24,11 +24,11 @@ RSpec.describe Requirements::ImageChecker do
       image = build :image, alt_text: "a" * (max_length + 1)
       issues = Requirements::ImageChecker.new(image).pre_draft_issues
 
-      short_message = issues.items_for(:alt_text).first[:text]
-      expect(short_message).to eq(I18n.t!("requirements.alt_text.too_long.short_message", max_length: max_length))
+      form_message = issues.items_for(:alt_text).first[:text]
+      expect(form_message).to eq(I18n.t!("requirements.alt_text.too_long.form_message", max_length: max_length))
 
-      long_message = issues.items_for(:alt_text, verbose: true).first[:text]
-      expect(long_message).to eq(I18n.t!("requirements.alt_text.too_long.long_message", max_length: max_length, filename: image.filename))
+      summary_message = issues.items_for(:alt_text, style: "summary").first[:text]
+      expect(summary_message).to eq(I18n.t!("requirements.alt_text.too_long.summary_message", max_length: max_length, filename: image.filename))
     end
 
     it "returns an issue if the caption is too long" do
@@ -36,11 +36,11 @@ RSpec.describe Requirements::ImageChecker do
       image = build :image, caption: "a" * (max_length + 1)
       issues = Requirements::ImageChecker.new(image).pre_draft_issues
 
-      short_message = issues.items_for(:caption).first[:text]
-      expect(short_message).to eq(I18n.t!("requirements.caption.too_long.short_message", max_length: max_length))
+      form_message = issues.items_for(:caption).first[:text]
+      expect(form_message).to eq(I18n.t!("requirements.caption.too_long.form_message", max_length: max_length))
 
-      long_message = issues.items_for(:caption, verbose: true).first[:text]
-      expect(long_message).to eq(I18n.t!("requirements.caption.too_long.long_message", max_length: max_length, filename: image.filename))
+      summary_message = issues.items_for(:caption, style: "summary").first[:text]
+      expect(summary_message).to eq(I18n.t!("requirements.caption.too_long.summary_message", max_length: max_length, filename: image.filename))
     end
   end
 end

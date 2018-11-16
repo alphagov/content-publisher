@@ -17,6 +17,6 @@ RSpec.feature "Edit a document with requirements issues" do
   end
 
   def then_i_should_see_an_error_to_fix_the_issues
-    expect(page).to have_content(I18n.t!("requirements.title.blank.short_message"))
+    expect(page).to have_content(I18n.t!("requirements.title.blank.form_message"))
   end
 end

@@ -24,7 +24,7 @@ RSpec.feature "Drafting requirements" do
 
   def then_i_see_a_warning_to_fix_the_issues
     within(".app-c-notice") do
-      expect(page).to have_content(I18n.t!("requirements.alt_text.blank.long_message", filename: @image.filename))
+      expect(page).to have_content(I18n.t!("requirements.alt_text.blank.summary_message", filename: @image.filename))
     end
   end
 end

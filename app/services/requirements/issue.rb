@@ -10,15 +10,12 @@ module Requirements
       @context = context
     end
 
-    def message(verbosity_key)
-      I18n.t("requirements.#{field}.#{issue_key}.#{verbosity_key}_message", context)
+    def message(style:)
+      I18n.t("requirements.#{field}.#{issue_key}.#{style}_message", context)
     end
 
-    def to_item(hrefs: {}, verbose: false)
-      {
-        text: message(verbose ? "long" : "short"),
-        href: hrefs[field],
-      }
+    def to_item(hrefs: {}, style: "form")
+      { text: message(style: style), href: hrefs[field] }
     end
   end
 end

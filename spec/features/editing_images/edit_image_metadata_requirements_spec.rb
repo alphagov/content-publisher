@@ -26,6 +26,6 @@ RSpec.feature "Edit image metadata with requirements issues" do
   end
 
   def then_i_see_an_error_to_fix_the_issues
-    expect(page).to have_content(I18n.t!("requirements.alt_text.blank.short_message"))
+    expect(page).to have_content(I18n.t!("requirements.alt_text.blank.form_message"))
   end
 end
