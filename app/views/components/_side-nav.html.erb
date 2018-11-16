@@ -1,0 +1,17 @@
+<%
+  items ||= []
+%>
+
+<div class="app-c-side-nav">
+  <ul class="govuk-list">
+    <% items.each do |item| %>
+      <li class="govuk-list-item govuk-!-padding-top-2 govuk-!-padding-bottom-2">
+        <% if item[:href] %>
+          <a href="<%= item[:href] %>" class="govuk-link govuk-link--no-visited-state"><%= item[:label] %></a>
+        <% else %>
+          <strong><%= item[:label] %></strong>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>

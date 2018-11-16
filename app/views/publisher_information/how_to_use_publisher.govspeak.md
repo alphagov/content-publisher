@@ -7,7 +7,6 @@ Read more about what Content publish can and cannot do.
 
 This document is for people who need to publish content to help them know what they should do with the new tool.
 
-
 ##How to create content
 
 Content publisher can be used to create news stories and press releases. Other document types still need to be created in Whitehall publisher.
@@ -15,6 +14,8 @@ Content publisher can be used to create news stories and press releases. Other d
 You should always consider if content really needs to be published on GOV.UK. Unnecessary content makes it harder for users to find what the need.
 
 Read guidance on what to publish on GOV.UK.
+
+---
 
 ##Markdown
 
@@ -25,6 +26,8 @@ Content publisher has a toolbar to make it easier to add common markdown. You ca
 More advanced markdown features can be used by following the guidance and examples in the interface. 
 
 Read full guidance on Markdown.
+
+---
 
 ##Lead image
 
@@ -38,6 +41,8 @@ You must add alt text for every image, but the caption is optional and the credi
 
 You can upload several images but must pick the one you want to be the lead image. 
 
+---
+
 ##Tags
 
 You should add tags that describe things the content is associated with. Tags help users find content on GOV.UK. 
@@ -45,6 +50,8 @@ You should add tags that describe things the content is associated with. Tags he
 Tags available include the organisations and ministers involved, and the locations the content is relevant to.
 
 You only need to add any tags if they are relevant. If no minister is involved you don’t need to tag one.
+
+---
 
 ##Topics
 
@@ -58,7 +65,7 @@ Changes to topics are applied to a live page as soon as you save. If the content
 
 Full guidance on topics.
 
-
+---
 
 ##How to update content
 
@@ -70,7 +77,7 @@ When you publish a new edition you need to indicate what type of change you have
 
 Full guidance on change notes.
 
-
+---
 
 ##How to publish content
 
