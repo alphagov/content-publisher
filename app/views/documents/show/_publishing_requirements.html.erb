@@ -11,10 +11,10 @@
   }
 } %>
 
-<% draft_issues = Requirements::Checker.new(@document).pre_draft_issues %>
+<% draft_issues = Requirements::DocumentChecker.new(@document).pre_draft_issues %>
 
 <% if draft_issues.none? %>
-  <% publish_issues = Requirements::Checker.new(@document)
+  <% publish_issues = Requirements::DocumentChecker.new(@document)
     .pre_publish_issues(raise_exceptions: flash[:tried_to_publish])  %>
 <% end %>
 

@@ -4,7 +4,7 @@ class PublishDocumentController < ApplicationController
   def confirmation
     @document = Document.find_by_param(params[:id])
 
-    if Requirements::Checker.new(@document).pre_publish_issues(raise_exceptions: true).any?
+    if Requirements::DocumentChecker.new(@document).pre_publish_issues(raise_exceptions: true).any?
       redirect_to document_path(@document), tried_to_publish: true
       return
     end
