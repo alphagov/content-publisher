@@ -5,6 +5,7 @@
     text: schema.label,
     bold: true
   },
+  hint: schema.hint,
   options: LinkablesService.new(schema.document_type).select_options,
   selected_options: tags[schema.id],
   multiple: true,

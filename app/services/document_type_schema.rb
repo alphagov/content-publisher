@@ -47,7 +47,7 @@ class DocumentTypeSchema
 
   class Tag
     include ActiveModel::Model
-    attr_accessor :id, :label, :type, :document_type
+    attr_accessor :id, :label, :type, :document_type, :hint
   end
 
   class Guidance

@@ -5,6 +5,7 @@
   multiple ||= nil
   size ||= nil
   data ||= nil
+  hint ||= nil
 %>
 
 <div class="app-c-autocomplete govuk-form-group">
@@ -15,6 +16,10 @@
   <% if options.any? %>
     <% if multiple %>
       <span class="govuk-hint app-c-autocomplete__multiselect-instructions">To select multiple items in a list, hold down Ctrl (PC) or Command (Mac) key.</span>
+    <% end %>
+
+    <% if hint %>
+      <span class="govuk-hint"><%= hint %></span>
     <% end %>
 
     <%= select_tag name,
