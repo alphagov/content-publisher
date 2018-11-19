@@ -9,4 +9,8 @@ class DocumentUnpublishingService
       locale: document.locale,
     )
   end
+
+  def remove(document)
+    GdsApi.publishing_api_v2.unpublish(document.content_id, type: "gone")
+  end
 end

@@ -22,4 +22,15 @@ RSpec.describe DocumentUnpublishingService do
       assert_publishing_api_unpublish(french_document.content_id, type: "withdrawal", explanation: explanatory_note, locale: french_document.locale)
     end
   end
+
+  describe "#remove" do
+    it "removes a document" do
+      document = create(:document)
+
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone" })
+      DocumentUnpublishingService.new.remove(document)
+
+      assert_publishing_api_unpublish(document.content_id, type: "gone")
+    end
+  end
 end
