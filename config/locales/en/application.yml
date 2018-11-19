@@ -1,6 +1,7 @@
 en:
   application:
     phase_banner:
+      raise_a_support_request: Raise a support request
       send_us_feedback: Send us feedback
       whats_new: What's new
     footer:
