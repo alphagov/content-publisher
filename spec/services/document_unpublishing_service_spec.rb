@@ -2,14 +2,23 @@
 
 RSpec.describe DocumentUnpublishingService do
   describe "#retire" do
-    it "withdraws a document in publishing-api with an explanatory note" do
-      document = create(:document)
-      explanatory_note = "The document is out of date"
+    let(:document) { create(:document) }
+    let(:explanatory_note) { "The document is out of date" }
 
+    it "withdraws a document in publishing-api with an explanatory note" do
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
       DocumentUnpublishingService.new.retire(document, explanatory_note)
 
       assert_publishing_api_unpublish(document.content_id, type: "withdrawal", explanation: explanatory_note)
+    end
+
+    it "does not delete assets for retired documents" do
+      asset = create(:image, :in_asset_manager, document: document)
+
+      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
+      DocumentUnpublishingService.new.retire(document, explanatory_note)
+
+      assert_not_requested asset_manager_delete_asset(asset.asset_manager_id)
     end
   end
 
@@ -30,6 +39,29 @@ RSpec.describe DocumentUnpublishingService do
       DocumentUnpublishingService.new.remove(document, redirect_path: redirect_path)
 
       assert_publishing_api_unpublish(document.content_id, type: "redirect", alternative_path: redirect_path)
+    end
+
+    describe "assets" do
+      let(:asset) { create(:image, :in_asset_manager, document: document) }
+      it "deletes assets associated with removed documents" do
+        stub_publishing_api_unpublish(document.content_id, body: { type: "gone" })
+        asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
+
+        DocumentUnpublishingService.new.remove(document)
+
+        assert_requested(asset_manager_request)
+      end
+
+      it "deletes assets associated with redirected documents" do
+        redirect_path = "/redirect-path"
+
+        stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
+        asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
+
+        DocumentUnpublishingService.new.remove(document, redirect_path: redirect_path)
+
+        assert_requested(asset_manager_request)
+      end
     end
   end
 end
