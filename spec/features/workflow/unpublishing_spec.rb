@@ -41,6 +41,16 @@ RSpec.feature "Unpublish documents rake tasks" do
       Rake::Task["unpublish:remove_document"].invoke("/a-base-path")
     end
 
+    it "runs the rake task to remove a document with a redirect" do
+      document = create(:document, base_path: "/a-base-path")
+      redirect_path = "/redirect-path"
+      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
+
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(document, redirect_path: redirect_path)
+
+      Rake::Task["unpublish:remove_document"].invoke("/a-base-path", redirect_path)
+    end
+
     it "raises an error if a base_path is not present" do
       expect { Rake::Task["unpublish:remove_document"].invoke }.to raise_error("Missing base_path parameter")
     end
