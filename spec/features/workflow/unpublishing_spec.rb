@@ -36,4 +36,21 @@ RSpec.feature "Unpublish documents rake tasks" do
       end
     end
   end
+
+  describe "unpublish:remove_document" do
+    before do
+      Rake::Task["unpublish:remove_document"].reenable
+    end
+
+    it "runs the rake task to remove a document" do
+      document = create(:document, locale: "en")
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(document)
+
+      Rake::Task["unpublish:remove_document"].invoke(document.content_id)
+    end
+
+    it "raises an error if a content_id is not present" do
+      expect { Rake::Task["unpublish:remove_document"].invoke }.to raise_error("Missing content_id parameter")
+    end
+  end
 end
