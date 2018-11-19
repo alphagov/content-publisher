@@ -19,6 +19,7 @@ GovukTest.configure
 WebMock.disable_net_connect!(allow_localhost: true)
 Capybara.automatic_label_click = true
 ActiveRecord::Migration.maintain_test_schema!
+Rails.application.load_tasks
 
 Capybara.server = :puma, { Silent: true }
 Capybara::Chromedriver::Logger.raise_js_errors = true
