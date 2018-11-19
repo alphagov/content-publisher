@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   get "/documents/:id/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
   delete "/documents/:id" => "documents#destroy"
 
+  get "/documents/:id/search-contacts" => "document_contacts#search", as: :search_document_contacts
+  post "/documents/:id/search-contacts" => "document_contacts#insert", as: :insert_document_contact
+
   post "/documents/:id/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
   post "/documents/:id/approve" => "review#approve", as: :approve_document
 

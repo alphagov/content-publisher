@@ -9,7 +9,7 @@
         data: {
           "contextual-guidance": "document-contents-guidance"
         },
-        id: "govspeak-editor",
+        id: schema.id,
         name: "document[contents][#{schema.id}]",
         value: document.contents[schema.id],
         rows: 25,
@@ -39,3 +39,6 @@
     </div>
   <% end %>
 </div>
+
+<button name="submit" type="submit" value="add_contact" class="govuk-button">Add contact</button>
+<br>
