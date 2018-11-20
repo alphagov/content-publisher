@@ -86,6 +86,35 @@ content publisher directory and run:
 bundle exec rake import:whitehall_news INPUT=/tmp/whitehall-export.json
 ```
 
+### Retiring and removing documents
+
+We need to allow users to unpublish content from GOV.UK. In Content Publisher we are replacing
+unpublish terminology with "retired" and "removed".
+
+Retired content is still displayed on GOV.UK, but there is an explanation box on the page that describes
+why the content is out of date.
+
+Removed content no longer displayed on GOV.UK. The user is either served a "Gone" page, or the removed
+content can be redirected to another page on GOV.UK
+
+#### Retiring documents
+
+```
+rake unpublish:retire_document["/full/base-path","Reason the document is being retired"]
+```
+
+#### Removing documents
+
+```
+rake unpublish:remove_document["/full/base-path"]
+```
+
+##### Redirect removed documents to another page on GOV.UK
+
+```
+rake unpublish:remove_document["/full/base-path","/full/redirect/base-path"]
+```
+
 ## Licence
 
 [MIT License](LICENCE)
