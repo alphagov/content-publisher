@@ -78,16 +78,16 @@ RSpec.describe DocumentUnpublishingService do
     let(:redirect_path) { "/redirect-path" }
 
     it "removes documents with a redirect" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
+      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, locale: "en" })
       DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path)
 
-      assert_publishing_api_unpublish(document.content_id, type: "redirect", alternative_path: redirect_path)
+      assert_publishing_api_unpublish(document.content_id, type: "redirect", alternative_path: redirect_path, locale: "en")
     end
 
     it "deletes assets associated with redirected documents" do
       asset = create(:image, :in_asset_manager, document: document)
 
-      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
+      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, locale: "en" })
       asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
 
       DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path)
@@ -97,10 +97,17 @@ RSpec.describe DocumentUnpublishingService do
 
     it "accepts an optional explanatory note" do
       explanatory_note = "The reason document has been removed"
-      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, explanation: explanatory_note })
+      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, explanation: explanatory_note, locale: "en" })
       DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path, explanatory_note: explanatory_note)
 
-      assert_publishing_api_unpublish(document.content_id, type: "redirect", alternative_path: redirect_path, explanation: explanatory_note)
+      assert_publishing_api_unpublish(document.content_id, type: "redirect", alternative_path: redirect_path, explanation: explanatory_note, locale: "en")
+    end
+
+    it "sets the locale of the document if specified" do
+      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, locale: "fr" })
+      DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path, locale: "fr")
+
+      assert_publishing_api_unpublish(document.content_id, type: "redirect", alternative_path: redirect_path, locale: "fr")
     end
   end
 end
