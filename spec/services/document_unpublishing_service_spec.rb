@@ -39,36 +39,39 @@ RSpec.describe DocumentUnpublishingService do
       assert_publishing_api_unpublish(document.content_id, type: "gone")
     end
 
-    it "allows removed documents to be redirected" do
+    it "deletes assets associated with removed documents" do
+      asset = create(:image, :in_asset_manager, document: document)
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone" })
+      asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
+
+      DocumentUnpublishingService.new.remove(document)
+
+      assert_requested(asset_manager_request)
+    end
+  end
+
+  describe "#remove_and_redirect" do
+    let(:document) { create(:document) }
+
+    it "removes documents with a redirect" do
       redirect_path = "/redirect-path"
 
       stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
-      DocumentUnpublishingService.new.remove(document, redirect_path: redirect_path)
+      DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path)
 
       assert_publishing_api_unpublish(document.content_id, type: "redirect", alternative_path: redirect_path)
     end
 
-    describe "assets" do
-      let(:asset) { create(:image, :in_asset_manager, document: document) }
-      it "deletes assets associated with removed documents" do
-        stub_publishing_api_unpublish(document.content_id, body: { type: "gone" })
-        asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
+    it "deletes assets associated with redirected documents" do
+      asset = create(:image, :in_asset_manager, document: document)
+      redirect_path = "/redirect-path"
 
-        DocumentUnpublishingService.new.remove(document)
+      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
+      asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
 
-        assert_requested(asset_manager_request)
-      end
+      DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path)
 
-      it "deletes assets associated with redirected documents" do
-        redirect_path = "/redirect-path"
-
-        stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
-        asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
-
-        DocumentUnpublishingService.new.remove(document, redirect_path: redirect_path)
-
-        assert_requested(asset_manager_request)
-      end
+      assert_requested(asset_manager_request)
     end
   end
 end
