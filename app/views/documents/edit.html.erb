@@ -17,7 +17,7 @@
           },
           name: "document[title]",
           value: @document.title,
-          error_message: @errors&.fetch("title", nil)&.join("<br/>"),
+          error_items: @issues&.items_for(:title),
           rows: 2,
           data: {
             "url-preview": "input",

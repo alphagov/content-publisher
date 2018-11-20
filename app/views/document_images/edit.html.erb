@@ -16,8 +16,6 @@
 <%= form_tag(update_document_image_path(@document, @image), method: :patch) do %>
   <%= hidden_field_tag :wizard, params[:wizard] %>
 
-  <% alt_text_errors = @issues&.items_for(:alt_text)&.map { |issue| issue[:text] } %>
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
@@ -27,7 +25,7 @@
         },
         name: "alt_text",
         value: @image.alt_text,
-        error_message: alt_text_errors&.any? ? alt_text_errors.join("<br/>") : nil,
+        error_items: @issues&.items_for(:alt_text),
         data: {
           "contextual-guidance": "alt-text-guidance"
         }
@@ -46,8 +44,6 @@
     </div>
   </div>
 
-  <% caption_errors = @issues&.items_for(:caption)&.map { |issue| issue[:text] } %>
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
@@ -57,7 +53,7 @@
         },
         name: "caption",
         value: @image.caption,
-        error_message: caption_errors&.any? ? caption_errors.join("<br/>") : nil,
+        error_items: @issues&.items_for(:caption),
         data: {
           "contextual-guidance": "caption-guidance"
         }
