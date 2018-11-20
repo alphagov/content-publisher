@@ -5,9 +5,9 @@ class DocumentUnpublishingService
     GdsApi.publishing_api_v2.unpublish(document.content_id, type: "withdrawal", explanation: explanatory_note, locale: locale)
   end
 
-  def remove(document, explanatory_note: nil)
+  def remove(document, explanatory_note: nil, alternative_path: nil)
     delete_assets(document.images)
-    GdsApi.publishing_api_v2.unpublish(document.content_id, type: "gone", explanation: explanatory_note)
+    GdsApi.publishing_api_v2.unpublish(document.content_id, type: "gone", explanation: explanatory_note, alternative_path: alternative_path)
   end
 
   def remove_and_redirect(document, redirect_path)

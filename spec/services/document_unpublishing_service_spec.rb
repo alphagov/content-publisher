@@ -56,6 +56,14 @@ RSpec.describe DocumentUnpublishingService do
 
       assert_publishing_api_unpublish(document.content_id, type: "gone", explanation: explanatory_note)
     end
+
+    it "accepts an optional alternative path" do
+      alternative_path = "/look-here-instead"
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", alternative_path: alternative_path })
+      DocumentUnpublishingService.new.remove(document, alternative_path: alternative_path)
+
+      assert_publishing_api_unpublish(document.content_id, type: "gone", alternative_path: alternative_path)
+    end
   end
 
   describe "#remove_and_redirect" do
