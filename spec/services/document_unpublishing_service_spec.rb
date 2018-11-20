@@ -75,10 +75,9 @@ RSpec.describe DocumentUnpublishingService do
 
   describe "#remove_and_redirect" do
     let(:document) { create(:document) }
+    let(:redirect_path) { "/redirect-path" }
 
     it "removes documents with a redirect" do
-      redirect_path = "/redirect-path"
-
       stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
       DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path)
 
@@ -87,7 +86,6 @@ RSpec.describe DocumentUnpublishingService do
 
     it "deletes assets associated with redirected documents" do
       asset = create(:image, :in_asset_manager, document: document)
-      redirect_path = "/redirect-path"
 
       stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
       asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
