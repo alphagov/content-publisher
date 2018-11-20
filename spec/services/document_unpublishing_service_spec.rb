@@ -33,15 +33,15 @@ RSpec.describe DocumentUnpublishingService do
     let(:document) { create(:document) }
 
     it "removes a document" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "gone" })
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", locale: "en" })
       DocumentUnpublishingService.new.remove(document)
 
-      assert_publishing_api_unpublish(document.content_id, type: "gone")
+      assert_publishing_api_unpublish(document.content_id, type: "gone", locale: "en")
     end
 
     it "deletes assets associated with removed documents" do
       asset = create(:image, :in_asset_manager, document: document)
-      stub_publishing_api_unpublish(document.content_id, body: { type: "gone" })
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", locale: "en" })
       asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
 
       DocumentUnpublishingService.new.remove(document)
@@ -51,18 +51,25 @@ RSpec.describe DocumentUnpublishingService do
 
     it "accepts an optional explanatory note" do
       explanatory_note = "The reason document has been removed"
-      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", explanation: explanatory_note })
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", explanation: explanatory_note, locale: "en" })
       DocumentUnpublishingService.new.remove(document, explanatory_note: explanatory_note)
 
-      assert_publishing_api_unpublish(document.content_id, type: "gone", explanation: explanatory_note)
+      assert_publishing_api_unpublish(document.content_id, type: "gone", explanation: explanatory_note, locale: "en")
     end
 
     it "accepts an optional alternative path" do
       alternative_path = "/look-here-instead"
-      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", alternative_path: alternative_path })
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", alternative_path: alternative_path, locale: "en" })
       DocumentUnpublishingService.new.remove(document, alternative_path: alternative_path)
 
-      assert_publishing_api_unpublish(document.content_id, type: "gone", alternative_path: alternative_path)
+      assert_publishing_api_unpublish(document.content_id, type: "gone", alternative_path: alternative_path, locale: "en")
+    end
+
+    it "sets the locale of the document if specified" do
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", locale: "fr" })
+      DocumentUnpublishingService.new.remove(document, locale: "fr")
+
+      assert_publishing_api_unpublish(document.content_id, type: "gone", locale: "fr")
     end
   end
 
