@@ -48,6 +48,14 @@ RSpec.describe DocumentUnpublishingService do
 
       assert_requested(asset_manager_request)
     end
+
+    it "accepts an optional explanatory note" do
+      explanatory_note = "The reason document has been removed"
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", explanation: explanatory_note })
+      DocumentUnpublishingService.new.remove(document, explanatory_note: explanatory_note)
+
+      assert_publishing_api_unpublish(document.content_id, type: "gone", explanation: explanatory_note)
+    end
   end
 
   describe "#remove_and_redirect" do
