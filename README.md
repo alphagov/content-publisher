@@ -86,6 +86,10 @@ content publisher directory and run:
 bundle exec rake import:whitehall_news INPUT=/tmp/whitehall-export.json
 ```
 
+### User support
+
+- [Retiring and removing documents](docs/retiring-and-removing-documents.md)
+
 ## Licence
 
 [MIT License](LICENCE)
