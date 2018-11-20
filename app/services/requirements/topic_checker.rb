@@ -2,8 +2,6 @@
 
 module Requirements
   class TopicChecker
-    TITLE_MAX_LENGTH = 150
-
     attr_reader :document
 
     def initialize(document)
