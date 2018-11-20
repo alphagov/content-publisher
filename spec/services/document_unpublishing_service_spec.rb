@@ -6,19 +6,26 @@ RSpec.describe DocumentUnpublishingService do
     let(:explanatory_note) { "The document is out of date" }
 
     it "withdraws a document in publishing-api with an explanatory note" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
+      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: "en" })
       DocumentUnpublishingService.new.retire(document, explanatory_note)
 
-      assert_publishing_api_unpublish(document.content_id, type: "withdrawal", explanation: explanatory_note)
+      assert_publishing_api_unpublish(document.content_id, type: "withdrawal", explanation: explanatory_note, locale: "en")
     end
 
     it "does not delete assets for retired documents" do
       asset = create(:image, :in_asset_manager, document: document)
 
-      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
+      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: "en" })
       DocumentUnpublishingService.new.retire(document, explanatory_note)
 
       assert_not_requested asset_manager_delete_asset(asset.asset_manager_id)
+    end
+
+    it "sets the locale of the document if specified" do
+      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: "fr" })
+      DocumentUnpublishingService.new.retire(document, explanatory_note, locale: "fr")
+
+      assert_publishing_api_unpublish(document.content_id, type: "withdrawal", explanation: explanatory_note, locale: "fr")
     end
   end
 
