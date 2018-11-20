@@ -7,9 +7,6 @@ RSpec.feature "Drafting requirements" do
     given_there_is_a_document
     when_the_document_has_issues_to_fix
     then_i_see_a_warning_to_fix_the_issues
-
-    #when_i_try_to_generate_a_preview
-    #then_i_see_an_error_to_fix_the_issues
   end
 
   def given_there_is_a_document
