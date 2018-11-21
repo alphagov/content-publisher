@@ -19,9 +19,9 @@ namespace :unpublish do
     raise "Missing CONTENT_ID value" if ENV["CONTENT_ID"].nil?
 
     content_id = ENV["CONTENT_ID"]
-    locale = ENV["LOCALE"] || "en"
     explanatory_note = ENV["NOTE"]
     alternative_path = ENV["NEW_PATH"]
+    locale = ENV["LOCALE"] || "en"
 
     document = Document.find_by_param("#{content_id}:#{locale}")
 
@@ -35,15 +35,15 @@ namespace :unpublish do
     end
   end
 
-  desc "Remove and redirect a document on GOV.UK e.g. unpublish:remove_and_redirect_document CONTENT_ID='a-content-id' REDIRECT='/redirect-to-here'"
+  desc "Remove and redirect a document on GOV.UK e.g. unpublish:remove_and_redirect_document CONTENT_ID='a-content-id' NEW_PATH='/redirect-to-here'"
   task remove_and_redirect_document: :environment do
     raise "Missing CONTENT_ID value" if ENV["CONTENT_ID"].nil?
-    raise "Missing REDIRECT value" if ENV["REDIRECT"].nil?
+    raise "Missing NEW_PATH value" if ENV["NEW_PATH"].nil?
 
     content_id = ENV["CONTENT_ID"]
-    redirect_path = ENV["REDIRECT"]
-    locale = ENV["LOCALE"] || "en"
     explanatory_note = ENV["NOTE"]
+    redirect_path = ENV["NEW_PATH"]
+    locale = ENV["LOCALE"] || "en"
 
     document = Document.find_by_param("#{content_id}:#{locale}")
 

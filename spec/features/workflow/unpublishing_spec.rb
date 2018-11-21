@@ -112,7 +112,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       )
 
       ENV["CONTENT_ID"] = document.content_id
-      ENV["REDIRECT"] = redirect_path
+      ENV["NEW_PATH"] = redirect_path
       Rake::Task["unpublish:remove_and_redirect_document"].invoke
     end
 
@@ -121,10 +121,10 @@ RSpec.feature "Unpublish documents rake tasks" do
       expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Missing CONTENT_ID value")
     end
 
-    it "raises an error if a REDIRECT is not present" do
+    it "raises an error if a NEW_PATH is not present" do
       ENV["CONTENT_ID"] = "a-content-id"
-      ENV["REDIRECT"] = nil
-      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Missing REDIRECT value")
+      ENV["NEW_PATH"] = nil
+      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Missing NEW_PATH value")
     end
 
     it "sets an optional explanatory note" do
@@ -141,7 +141,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       )
 
       ENV["CONTENT_ID"] = document.content_id
-      ENV["REDIRECT"] = redirect_path
+      ENV["NEW_PATH"] = redirect_path
       ENV["NOTE"] = explanatory_note
       Rake::Task["unpublish:remove_and_redirect_document"].invoke
     end
