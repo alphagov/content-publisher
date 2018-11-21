@@ -22,8 +22,13 @@ class DocumentUnpublishingService
     delete_assets(document.images)
   end
 
-  def remove_and_redirect(document, redirect_path)
-    GdsApi.publishing_api_v2.unpublish(document.content_id, type: "redirect", alternative_path: redirect_path)
+  def remove_and_redirect(document, redirect_path, explanatory_note: nil)
+    GdsApi.publishing_api_v2.unpublish(
+      document.content_id,
+      type: "redirect",
+      explanation: explanatory_note,
+      alternative_path: redirect_path,
+    )
 
     delete_assets(document.images)
   end
