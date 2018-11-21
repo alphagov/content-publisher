@@ -16,6 +16,7 @@ class DocumentUnpublishingService
       type: "gone",
       explanation: explanatory_note,
       alternative_path: alternative_path,
+      locale: document.locale,
     )
 
     delete_assets(document.images)
