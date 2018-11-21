@@ -101,7 +101,11 @@ RSpec.feature "Unpublish documents rake tasks" do
       redirect_path = "/redirect-path"
       stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
 
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove_and_redirect).with(document, redirect_path)
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove_and_redirect).with(
+        document,
+        redirect_path,
+        explanatory_note: nil,
+      )
 
       ENV["CONTENT_ID"] = document.content_id
       ENV["REDIRECT"] = redirect_path
@@ -116,7 +120,25 @@ RSpec.feature "Unpublish documents rake tasks" do
     it "raises an error if a REDIRECT is not present" do
       ENV["CONTENT_ID"] = "a-content-id"
       ENV["REDIRECT"] = nil
-      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke("/a-base-path") }.to raise_error("Missing REDIRECT value")
+      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Missing REDIRECT value")
+    end
+
+    it "sets an optional explanatory note" do
+      document = create(:document, locale: "en")
+      redirect_path = "/redirect-path"
+      explanatory_note = "The reason the document is being removed"
+      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, explanatory_note: explanatory_note })
+
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove_and_redirect).with(
+        document,
+        redirect_path,
+        explanatory_note: explanatory_note,
+      )
+
+      ENV["CONTENT_ID"] = document.content_id
+      ENV["REDIRECT"] = redirect_path
+      ENV["NOTE"] = explanatory_note
+      Rake::Task["unpublish:remove_and_redirect_document"].invoke
     end
   end
 end

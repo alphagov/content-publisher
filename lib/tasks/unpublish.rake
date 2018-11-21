@@ -36,9 +36,10 @@ namespace :unpublish do
     content_id = ENV["CONTENT_ID"]
     redirect_path = ENV["REDIRECT"]
     locale = ENV["LOCALE"] || "en"
+    explanatory_note = ENV["NOTE"]
 
     document = Document.find_by_param("#{content_id}:#{locale}")
 
-    DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path) if document.present?
+    DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path, explanatory_note: explanatory_note) if document.present?
   end
 end
