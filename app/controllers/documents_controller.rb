@@ -51,7 +51,7 @@ class DocumentsController < ApplicationController
       return
     end
 
-    PreviewService.new(@document).create_preview(
+    PreviewService.new(@document).try_create_preview(
       user: current_user,
       type: "updated_content",
     )

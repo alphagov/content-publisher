@@ -4,7 +4,7 @@ class DocumentEditionsController < ApplicationController
   def create
     document = Document.find_by_param(params[:document_id])
 
-    PreviewService.new(document).create_preview(
+    PreviewService.new(document).try_create_preview(
       user: current_user,
       type: "new_edition",
     )

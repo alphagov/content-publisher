@@ -21,6 +21,12 @@ class PreviewService
     DocumentPublishingService.new.publish_draft(document)
   end
 
+  def try_create_preview(args)
+    create_preview(args)
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
+  end
+
 private
 
   def edited?(type)
