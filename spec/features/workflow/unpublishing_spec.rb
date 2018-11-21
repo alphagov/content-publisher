@@ -93,4 +93,58 @@ RSpec.feature "Unpublish documents rake tasks" do
       expect { Rake::Task["unpublish:remove_document"].invoke(document.content_id) }.to raise_error("Document must have a published version before it can be removed")
     end
   end
+
+  describe "unpublish:remove_and_redirect_document" do
+    before do
+      Rake::Task["unpublish:remove_and_redirect_document"].reenable
+    end
+
+    it "runs the rake task to remove a document with a redirect" do
+      document = create(:document, :published, locale: "en")
+      redirect_path = "/redirect-path"
+
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove_and_redirect).with(
+        document,
+        redirect_path,
+        explanatory_note: nil,
+      )
+
+      ClimateControl.modify NEW_PATH: redirect_path do
+        Rake::Task["unpublish:remove_and_redirect_document"].invoke(document.content_id)
+      end
+    end
+
+    it "raises an error if a content_id is not present" do
+      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Missing content_id parameter")
+    end
+
+    it "raises an error if a NEW_PATH is not present" do
+      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke("a-content-id") }.to raise_error("Missing NEW_PATH value")
+    end
+
+    it "sets an optional explanatory note" do
+      document = create(:document, :published, locale: "en")
+      redirect_path = "/redirect-path"
+      explanatory_note = "The reason the document is being removed"
+
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove_and_redirect).with(
+        document,
+        redirect_path,
+        explanatory_note: explanatory_note,
+      )
+
+      ClimateControl.modify NEW_PATH: redirect_path, NOTE: explanatory_note do
+        Rake::Task["unpublish:remove_and_redirect_document"].invoke(document.content_id)
+      end
+    end
+
+    it "raises an error if the document does not have a live version on GOV.uk" do
+      document = create(:document, locale: "en")
+      redirect_path = "/redirect-path"
+
+      ClimateControl.modify NEW_PATH: redirect_path do
+        expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke(document.content_id) }.to raise_error("Document must have a published version before it can be redirected")
+      end
+    end
+  end
 end
