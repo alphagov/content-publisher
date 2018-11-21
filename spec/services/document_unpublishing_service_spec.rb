@@ -78,4 +78,16 @@ RSpec.describe DocumentUnpublishingService do
       assert_publishing_api_unpublish(french_document.content_id, type: "gone", locale: french_document.locale)
     end
   end
+
+  describe "#remove_and_redirect" do
+    it "removes documents with a redirect" do
+      document = create(:document)
+      redirect_path = "/redirect-path"
+
+      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
+      DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path)
+
+      assert_publishing_api_unpublish(document.content_id, type: "redirect", alternative_path: redirect_path)
+    end
+  end
 end
