@@ -8,8 +8,9 @@ namespace :unpublish do
 
     content_id = ENV["CONTENT_ID"]
     explanatory_note = ENV["NOTE"]
+    locale = ENV["LOCALE"] || "en"
 
-    document = Document.find_by(content_id: content_id)
+    document = Document.find_by_param("#{content_id}:#{locale}")
     DocumentUnpublishingService.new.retire(document, explanatory_note) if document.present?
   end
 
@@ -18,7 +19,9 @@ namespace :unpublish do
     raise "Missing CONTENT_ID value" if ENV["CONTENT_ID"].nil?
 
     content_id = ENV["CONTENT_ID"]
-    document = Document.find_by(content_id: content_id)
+    locale = ENV["LOCALE"] || "en"
+
+    document = Document.find_by_param("#{content_id}:#{locale}")
 
     DocumentUnpublishingService.new.remove(document) if document.present?
   end
@@ -30,8 +33,9 @@ namespace :unpublish do
 
     content_id = ENV["CONTENT_ID"]
     redirect_path = ENV["REDIRECT"]
+    locale = ENV["LOCALE"] || "en"
 
-    document = Document.find_by(content_id: content_id)
+    document = Document.find_by_param("#{content_id}:#{locale}")
 
     DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path) if document.present?
   end

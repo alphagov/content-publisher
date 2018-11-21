@@ -9,7 +9,7 @@ RSpec.feature "Unpublish documents rake tasks" do
     end
 
     it "runs the task to retire a document" do
-      document = create(:document)
+      document = create(:document, locale: "en")
       explanatory_note = "The reason the document is being retired"
 
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
@@ -38,7 +38,7 @@ RSpec.feature "Unpublish documents rake tasks" do
     end
 
     it "runs the rake task to remove a document" do
-      document = create(:document)
+      document = create(:document, locale: "en")
       stub_publishing_api_unpublish(document.content_id, body: { type: "gone" })
 
       expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(document)
@@ -59,7 +59,7 @@ RSpec.feature "Unpublish documents rake tasks" do
     end
 
     it "runs the rake task to remove a document with a redirect" do
-      document = create(:document)
+      document = create(:document, locale: "en")
       redirect_path = "/redirect-path"
       stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
 
