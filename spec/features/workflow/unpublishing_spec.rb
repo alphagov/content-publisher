@@ -9,7 +9,7 @@ RSpec.feature "Unpublish documents rake tasks" do
     end
 
     it "runs the task to retire a document" do
-      document = create(:document, locale: "en")
+      document = create(:document, :published, locale: "en")
       explanatory_note = "The reason the document is being retired"
 
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
@@ -32,7 +32,7 @@ RSpec.feature "Unpublish documents rake tasks" do
     end
 
     it "copes with commas in the explanatory note" do
-      document = create(:document, locale: "en")
+      document = create(:document, :published, locale: "en")
       explanatory_note = "The reason the document is being retired, firstly, secondly and so forth"
 
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
@@ -41,6 +41,15 @@ RSpec.feature "Unpublish documents rake tasks" do
       ENV["CONTENT_ID"] = document.content_id
       ENV["NOTE"] = explanatory_note
       Rake::Task["unpublish:retire_document"].invoke
+    end
+
+    it "raises an error if the document does not have a live version on GOV.uk" do
+      document = create(:document, locale: "en")
+      explanatory_note = "The reason the document is being retired"
+
+      ENV["CONTENT_ID"] = document.content_id
+      ENV["NOTE"] = explanatory_note
+      expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Document must have a published version before it can be retired")
     end
   end
 
