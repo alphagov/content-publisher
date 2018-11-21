@@ -11,7 +11,7 @@
   }
 } %>
 
-<% draft_issues = Requirements::DocumentChecker.new(@document).pre_draft_issues %>
+<% draft_issues = Requirements::DocumentChecker.new(@document).pre_preview_issues %>
 
 <% if draft_issues.none? %>
   <% publish_issues = Requirements::DocumentChecker.new(@document)

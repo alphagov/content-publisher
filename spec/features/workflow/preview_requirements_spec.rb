@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Drafting requirements" do
+RSpec.feature "Preview requirements" do
   include TopicsHelper
 
   scenario do

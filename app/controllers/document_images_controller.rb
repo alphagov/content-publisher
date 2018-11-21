@@ -71,7 +71,7 @@ class DocumentImagesController < ApplicationController
     @document = Document.find_by_param(params[:document_id])
     @image = @document.images.find(params[:image_id])
     @image.assign_attributes(update_params)
-    @issues = Requirements::ImageChecker.new(@image).pre_draft_metadata_issues
+    @issues = Requirements::ImageChecker.new(@image).pre_preview_metadata_issues
 
     if @issues.any?
       flash.now["alert"] = {
