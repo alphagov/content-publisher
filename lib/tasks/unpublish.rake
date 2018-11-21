@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 namespace :unpublish do
-  desc "Retire a document"
-  task :retire_document, %I(base_path explanatory_note) => :environment do |_, args|
-    raise "Missing base_path parameter" unless args.base_path
-    raise "Missing explanatory_note parameter" unless args.explanatory_note
+  desc "Retire a document on GOV.UK e.g. unpublish:retire_document BASE_PATH='/base-path' NOTE='A note'"
+  task retire_document: :environment do
+    raise "Missing BASE_PATH value" if ENV["BASE_PATH"].nil?
+    raise "Missing NOTE value" if ENV["NOTE"].nil?
 
-    document = Document.find_by(base_path: args.base_path)
+    base_path = ENV["BASE_PATH"]
+    explanatory_note = ENV["NOTE"]
 
-    DocumentUnpublishingService.new.retire(document, args.explanatory_note) if document.present?
+    document = Document.find_by(base_path: base_path)
+    DocumentUnpublishingService.new.retire(document, explanatory_note) if document.present?
   end
 
   desc "Remove a document"

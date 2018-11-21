@@ -15,15 +15,20 @@ RSpec.feature "Unpublish documents rake tasks" do
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
       expect_any_instance_of(DocumentUnpublishingService).to receive(:retire).with(document, explanatory_note)
 
-      Rake::Task["unpublish:retire_document"].invoke("/a-base-path", explanatory_note)
+      ENV["BASE_PATH"] = "/a-base-path"
+      ENV["NOTE"] = explanatory_note
+      Rake::Task["unpublish:retire_document"].invoke
     end
 
-    it "raises an error if a base_path is not present" do
-      expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Missing base_path parameter")
+    it "raises an error if a BASE_PATH is not present" do
+      ENV["BASE_PATH"] = nil
+      expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Missing BASE_PATH value")
     end
 
-    it "raises an error if an explanatory_note is not present" do
-      expect { Rake::Task["unpublish:retire_document"].invoke("/a-base-path") }.to raise_error("Missing explanatory_note parameter")
+    it "raises an error if a NOTE is not present" do
+      ENV["BASE_PATH"] = "/a-base-path"
+      ENV["NOTE"] = nil
+      expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Missing NOTE value")
     end
   end
 
