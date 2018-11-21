@@ -23,13 +23,16 @@ namespace :unpublish do
     DocumentUnpublishingService.new.remove(document) if document.present?
   end
 
-  desc "Remove and redirect a document"
-  task :remove_and_redirect_document, %I(base_path redirect_path) => :environment do |_, args|
-    raise "Missing base_path parameter" unless args.base_path
-    raise "Missing redirect_path parameter" unless args.redirect_path
+  desc "Remove and redirect a document on GOV.UK e.g. unpublish:remove_and_redirect_document CONTENT_ID='a-content-id' REDIRECT='/redirect-to-here'"
+  task remove_and_redirect_document: :environment do
+    raise "Missing CONTENT_ID value" if ENV["CONTENT_ID"].nil?
+    raise "Missing REDIRECT value" if ENV["REDIRECT"].nil?
 
-    document = Document.find_by(base_path: args.base_path)
+    base_path = ENV["BASE_PATH"]
+    redirect_path = ENV["REDIRECT"]
 
-    DocumentUnpublishingService.new.remove_and_redirect(document, args.redirect_path) if document.present?
+    document = Document.find_by(base_path: base_path)
+
+    DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path) if document.present?
   end
 end
