@@ -27,7 +27,7 @@
 
         <%= render "govuk_publishing_components/components/copy_to_clipboard",
           label: t("publish_document.published.published_without_review.send_label"),
-          copyable_content: document_url(@document),
+          copyable_content: document_url(@document, utm_content: "2i-link"),
           button_text: "Copy link" %>
       <% end %>
     <% end %>
