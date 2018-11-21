@@ -30,6 +30,18 @@ RSpec.feature "Unpublish documents rake tasks" do
       ENV["NOTE"] = nil
       expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Missing NOTE value")
     end
+
+    it "copes with commas in the explanatory note" do
+      document = create(:document, locale: "en")
+      explanatory_note = "The reason the document is being retired, firstly, secondly and so forth"
+
+      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:retire).with(document, explanatory_note, locale: "en")
+
+      ENV["CONTENT_ID"] = document.content_id
+      ENV["NOTE"] = explanatory_note
+      Rake::Task["unpublish:retire_document"].invoke
+    end
   end
 
   describe "unpublish:remove_document" do
@@ -49,6 +61,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       )
 
       ENV["CONTENT_ID"] = document.content_id
+      ENV["NOTE"] = nil
       Rake::Task["unpublish:remove_document"].invoke
     end
 
@@ -60,6 +73,24 @@ RSpec.feature "Unpublish documents rake tasks" do
     it "sets an optional explanatory note" do
       document = create(:document, locale: "en")
       explanatory_note = "The reason the document is being removed"
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", explanation: explanatory_note })
+
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(
+        document,
+        explanatory_note: explanatory_note,
+        alternative_path: nil,
+        locale: "en",
+      )
+
+      ENV["CONTENT_ID"] = document.content_id
+      ENV["NOTE"] = explanatory_note
+      ENV["NEW_PATH"] = nil
+      Rake::Task["unpublish:remove_document"].invoke
+    end
+
+    it "copes with commas in the explanatory note" do
+      document = create(:document, locale: "en")
+      explanatory_note = "The reason the document is being removed, firstly, secondly and so forth"
       stub_publishing_api_unpublish(document.content_id, body: { type: "gone", explanation: explanatory_note })
 
       expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(
@@ -131,6 +162,25 @@ RSpec.feature "Unpublish documents rake tasks" do
       document = create(:document, locale: "en")
       redirect_path = "/redirect-path"
       explanatory_note = "The reason the document is being removed"
+      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, explanatory_note: explanatory_note })
+
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove_and_redirect).with(
+        document,
+        redirect_path,
+        explanatory_note: explanatory_note,
+        locale: "en",
+      )
+
+      ENV["CONTENT_ID"] = document.content_id
+      ENV["NEW_PATH"] = redirect_path
+      ENV["NOTE"] = explanatory_note
+      Rake::Task["unpublish:remove_and_redirect_document"].invoke
+    end
+
+    it "copes with commas in the explanatory note" do
+      document = create(:document, locale: "en")
+      redirect_path = "/redirect-path"
+      explanatory_note = "The reason the document is being removed, firstly, secondly and so forth"
       stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, explanatory_note: explanatory_note })
 
       expect_any_instance_of(DocumentUnpublishingService).to receive(:remove_and_redirect).with(
