@@ -14,17 +14,21 @@ namespace :unpublish do
   end
 
   desc "Remove a document"
-  task :remove_document, %I(base_path redirect_path) => :environment do |_, args|
+  task :remove_document, [:base_path] => :environment do |_, args|
     raise "Missing base_path parameter" unless args.base_path
 
     document = Document.find_by(base_path: args.base_path)
 
-    if document.present?
-      if args.redirect_path.present?
-        DocumentUnpublishingService.new.remove(document, redirect_path: args.redirect_path)
-      else
-        DocumentUnpublishingService.new.remove(document)
-      end
-    end
+    DocumentUnpublishingService.new.remove(document) if document.present?
+  end
+
+  desc "Remove and redirect a document"
+  task :remove_and_redirect_document, %I(base_path redirect_path) => :environment do |_, args|
+    raise "Missing base_path parameter" unless args.base_path
+    raise "Missing redirect_path parameter" unless args.redirect_path
+
+    document = Document.find_by(base_path: args.base_path)
+
+    DocumentUnpublishingService.new.remove_and_redirect(document, args.redirect_path) if document.present?
   end
 end
