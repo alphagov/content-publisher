@@ -13,11 +13,12 @@ namespace :unpublish do
     DocumentUnpublishingService.new.retire(document, explanatory_note) if document.present?
   end
 
-  desc "Remove a document"
-  task :remove_document, [:base_path] => :environment do |_, args|
-    raise "Missing base_path parameter" unless args.base_path
+  desc "Remove a document from GOV.UK e.g. unpublish:remove_document BASE_PATH='/base-path'"
+  task remove_document: :environment do
+    raise "Missing BASE_PATH value" if ENV["BASE_PATH"].nil?
 
-    document = Document.find_by(base_path: args.base_path)
+    base_path = ENV["BASE_PATH"]
+    document = Document.find_by(base_path: base_path)
 
     DocumentUnpublishingService.new.remove(document) if document.present?
   end

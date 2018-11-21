@@ -43,11 +43,13 @@ RSpec.feature "Unpublish documents rake tasks" do
 
       expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(document)
 
-      Rake::Task["unpublish:remove_document"].invoke("/a-base-path")
+      ENV["BASE_PATH"] = "/a-base-path"
+      Rake::Task["unpublish:remove_document"].invoke
     end
 
-    it "raises an error if a base_path is not present" do
-      expect { Rake::Task["unpublish:remove_document"].invoke }.to raise_error("Missing base_path parameter")
+    it "raises an error if a BASE_PATH is not present" do
+      ENV["BASE_PATH"] = nil
+      expect { Rake::Task["unpublish:remove_document"].invoke }.to raise_error("Missing BASE_PATH value")
     end
   end
 
