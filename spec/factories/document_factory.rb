@@ -12,7 +12,12 @@ FactoryBot.define do
     current_edition_number { (rand * 100).to_i }
     update_type { "major" }
 
-    trait :with_required_content_for_publishing do
+    trait :in_preview do
+      publication_state { "sent_to_draft" }
+    end
+
+    trait :publishable do
+      publication_state { "sent_to_draft" }
       summary { SecureRandom.alphanumeric(10) }
     end
 

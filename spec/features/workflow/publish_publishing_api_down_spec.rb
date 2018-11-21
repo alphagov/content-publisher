@@ -12,7 +12,7 @@ RSpec.feature "Publishing a document when the Publishing API is down" do
   end
 
   def given_there_is_a_document
-    @document = create(:document, :with_required_content_for_publishing, publication_state: "sent_to_draft")
+    @document = create(:document, :publishable)
   end
 
   def and_the_publishing_api_is_down
@@ -29,7 +29,6 @@ RSpec.feature "Publishing a document when the Publishing API is down" do
   def then_i_see_the_publish_failed
     expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t!("documents.show.flashes.publish_error.title"))
-    expect(@document.reload.publication_state).to eq("error_sending_to_live")
   end
 
   def given_the_api_is_up_again_and_i_try_to_publish_the_document

@@ -37,6 +37,6 @@ RSpec.feature "Save document tags when the API is down" do
 
   def and_the_preview_creation_failed
     expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t!("documents.show.flashes.draft_error.title"))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.preview_error.title"))
   end
 end

@@ -23,7 +23,7 @@ class DocumentTagsController < ApplicationController
     redirect_to document
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
-    redirect_to document, alert_with_description: t("documents.show.flashes.draft_error")
+    redirect_to document, alert_with_description: t("documents.show.flashes.preview_error")
   end
 
 private

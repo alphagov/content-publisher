@@ -17,7 +17,7 @@ RSpec.feature "Publishing requirements when the Publishing API is down" do
 
   def given_there_is_a_document
     document_type_schema = build(:document_type_schema, topics: true)
-    @document = create(:document, document_type: document_type_schema.id)
+    @document = create(:document, :in_preview, document_type: document_type_schema.id)
   end
 
   def when_the_publishing_api_is_down
@@ -27,7 +27,8 @@ RSpec.feature "Publishing requirements when the Publishing API is down" do
 
   def then_i_do_not_see_warnings_that_require_it
     within(".app-c-notice") do
-      expect(page).to_not have_content(I18n.t("publishing_requirements.no_topics"))
+      expect(page).to_not have_content(I18n.t!("requirements.topics.none.summary_message"))
+      expect(page).to have_content(I18n.t!("requirements.summary.blank.summary_message"))
     end
   end
 

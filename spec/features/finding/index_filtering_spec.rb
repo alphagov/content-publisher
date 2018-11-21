@@ -30,13 +30,13 @@ RSpec.feature "User filters documents" do
   end
 
   def given_there_are_some_documents
-    create(:document, title: "Totally irrelevant", publication_state: "sent_to_live")
+    create(:document, :published, title: "Totally irrelevant")
     @primary_organisation = { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 1" }
     @organisation = { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 2" }
 
     @relevant_document = create(:document,
+                                :in_preview,
                                 title: "Super relevant",
-                                publication_state: "sent_to_draft",
                                 tags: {
                                   primary_publishing_organisation: [@primary_organisation["content_id"]],
                                   organisations: [@organisation["content_id"]],

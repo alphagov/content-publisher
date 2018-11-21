@@ -33,7 +33,7 @@ RSpec.feature "Edit a document when the Publishing API is down" do
 
   def then_i_see_the_preview_creation_failed
     expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t!("documents.show.flashes.draft_error.title"))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.preview_error.title"))
   end
 
   def when_the_api_is_up_again_and_i_click_the_retry_button

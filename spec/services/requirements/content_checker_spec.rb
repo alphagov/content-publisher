@@ -45,7 +45,7 @@ RSpec.describe Requirements::ContentChecker do
 
   describe "#pre_publish_issues" do
     it "returns no issues if there are none" do
-      document = build :document, :with_required_content_for_publishing
+      document = build :document, :publishable
       issues = Requirements::ContentChecker.new(document).pre_publish_issues
       expect(issues.items).to be_empty
     end
