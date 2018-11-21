@@ -10,11 +10,12 @@ class DocumentUnpublishingService
     )
   end
 
-  def remove(document, explanatory_note: nil)
+  def remove(document, explanatory_note: nil, alternative_path: nil)
     GdsApi.publishing_api_v2.unpublish(
       document.content_id,
       type: "gone",
       explanation: explanatory_note,
+      alternative_path: alternative_path,
     )
 
     delete_assets(document.images)
