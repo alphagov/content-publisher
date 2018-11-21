@@ -9,8 +9,7 @@ class PreviewController < ApplicationController
       return
     end
 
-    DocumentDraftingService.update!(
-      document: document,
+    PreviewService.new(document).create_preview(
       user: current_user,
       type: "create_preview",
     )

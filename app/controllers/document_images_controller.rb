@@ -48,8 +48,7 @@ class DocumentImagesController < ApplicationController
       image.save!
     end
 
-    DocumentDraftingService.update!(
-      document: document,
+    PreviewService.new(document).create_preview(
       user: current_user,
       type: "image_updated",
     )
@@ -88,16 +87,14 @@ class DocumentImagesController < ApplicationController
     if params[:wizard] == "lead_image"
       @document.assign_attributes(lead_image_id: @image.id)
 
-      DocumentDraftingService.update!(
-        document: @document,
+      PreviewService.new(@document).create_preview(
         user: current_user,
         type: "lead_image_updated",
       )
 
       redirect_to document_path(@document), notice: t("documents.show.flashes.lead_image.added", file: @image.filename)
     else
-      DocumentDraftingService.update!(
-        document: @document,
+      PreviewService.new(@document).create_preview(
         user: current_user,
         type: "image_updated",
       )
@@ -114,14 +111,12 @@ class DocumentImagesController < ApplicationController
     if params[:wizard] == "lead_image"
       document.assign_attributes(lead_image_id: nil)
 
-      DocumentDraftingService.update!(
-        document: document,
+      PreviewService.new(document).create_preview(
         user: current_user,
         type: "lead_image_removed",
       )
     else
-      DocumentDraftingService.update!(
-        document: document,
+      PreviewService.new(document).create_preview(
         user: current_user,
         type: "image_removed",
       )

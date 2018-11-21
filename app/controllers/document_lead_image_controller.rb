@@ -12,8 +12,7 @@ class DocumentLeadImageController < ApplicationController
 
     document.assign_attributes(lead_image_id: params[:image_id])
 
-    DocumentDraftingService.update!(
-      document: document,
+    PreviewService.new(document).create_preview(
       user: current_user,
       type: "lead_image_updated",
     )
@@ -26,8 +25,7 @@ class DocumentLeadImageController < ApplicationController
     image = document.lead_image
     document.assign_attributes(lead_image_id: nil)
 
-    DocumentDraftingService.update!(
-      document: document,
+    PreviewService.new(document).create_preview(
       user: current_user,
       type: "lead_image_removed",
     )

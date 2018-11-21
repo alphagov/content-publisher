@@ -14,8 +14,7 @@ class DocumentTagsController < ApplicationController
     document = Document.find_by_param(params[:id])
     document.assign_attributes(tags: update_params(document))
 
-    DocumentDraftingService.update!(
-      document: document,
+    PreviewService.new(document).create_preview(
       user: current_user,
       type: "updated_tags",
     )
