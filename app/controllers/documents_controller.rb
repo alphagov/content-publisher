@@ -39,12 +39,12 @@ class DocumentsController < ApplicationController
     @document = Document.find_by_param(params[:id])
     @document.assign_attributes(update_params(@document))
     add_contact_request = params[:submit] == "add_contact"
-    @errors = DraftingRequirements.new(@document).errors
+    @issues = Requirements::ContentChecker.new(@document).pre_draft_issues
 
-    if @errors.any?
+    if @issues.any?
       flash.now["alert"] = {
-        "title" => I18n.t!("documents.edit.flashes.drafting_requirements.title"),
-        "items" => @errors.values.flatten.map { |error| { text: error } },
+        "title" => I18n.t!("documents.edit.flashes.pre_draft_issues.title"),
+        "items" => @issues.items,
       }
 
       render :edit

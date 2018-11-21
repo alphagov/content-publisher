@@ -1,7 +1,6 @@
 <% lead_image_block = if @document.lead_image %>
   <% capture do %>
     <%= render "components/image_meta", {
-      id: "lead-image",
       src: url_for(@document.lead_image.thumbnail),
       meta: {
         alt_text: @document.lead_image.alt_text,
@@ -18,6 +17,7 @@
 <% end %>
 
 <%= render "components/summary", {
+  id: "lead-image",
   title: {
     text: t("documents.show.lead_image.title"),
     change_url: @document.editable? && document_images_path(@document)

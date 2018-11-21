@@ -1,18 +1,42 @@
-<% errors = PublishingRequirements.new(@document)
-  .errors(tried_to_publish: flash[:tried_to_publish]).values.flatten %>
+<% issue_params = {
+  style: "summary",
+  hrefs: {
+    title: "#content",
+    summary: "#content",
+    body: "#content",
+    change_note: "#content",
+    alt_text: "#lead-image",
+    caption: "#lead-image",
+    topics: "#topics",
+  }
+} %>
 
-<% if errors.any? %>
+<% draft_issues = Requirements::DocumentChecker.new(@document).pre_draft_issues %>
+
+<% if draft_issues.none? %>
+  <% publish_issues = Requirements::DocumentChecker.new(@document)
+    .pre_publish_issues(rescue_api_errors: !flash[:tried_to_publish])  %>
+<% end %>
+
+<% if draft_issues.any? %>
+    <%= render "/components/notice", {
+      title: t("documents.show.flashes.pre_draft_issues"),
+      items: draft_issues.items(issue_params),
+    } %>
+<% end %>
+
+<% if publish_issues&.any? %>
   <% if flash[:tried_to_publish] %>
     <div class="govuk-!-margin-bottom-4">
       <%= render "govuk_publishing_components/components/error_summary", {
-        title: t("documents.show.flashes.after_publishing_attempt"),
-        items: errors
+        title: t("documents.show.flashes.pre_publish_issues.error"),
+        items: publish_issues.items(issue_params),
       } %>
     </div>
   <% else %>
     <%= render "/components/notice", {
-      title: t("documents.show.flashes.before_publishing_attempt"),
-      items: errors
+      title: t("documents.show.flashes.pre_publish_issues.warning"),
+      items: publish_issues.items(issue_params),
     } %>
   <% end %>
 <% end %>
