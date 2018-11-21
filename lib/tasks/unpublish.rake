@@ -19,10 +19,17 @@ namespace :unpublish do
   task :remove_document, [:content_id] => :environment do |_, args|
     raise "Missing content_id parameter" unless args.content_id
 
+    explanatory_note = ENV["NOTE"]
+    alternative_path = ENV["NEW_PATH"]
     locale = ENV["LOCALE"] || "en"
 
     document = Document.find_by!(content_id: args.content_id, locale: locale)
+    raise "Document must have a published version before it can be removed" unless document.has_live_version_on_govuk
 
-    DocumentUnpublishingService.new.remove(document)
+    DocumentUnpublishingService.new.remove(
+      document,
+      explanatory_note: explanatory_note,
+      alternative_path: alternative_path,
+    )
   end
 end
