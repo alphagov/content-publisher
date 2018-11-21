@@ -28,6 +28,7 @@ class DocumentUnpublishingService
       type: "redirect",
       explanation: explanatory_note,
       alternative_path: redirect_path,
+      locale: document.locale,
     )
 
     delete_assets(document.images)
