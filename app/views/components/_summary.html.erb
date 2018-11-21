@@ -12,7 +12,10 @@
     <%= title[:text] %>
   </h2>
   <% if title[:change_url] %>
-  <a class="app-c-summary__change-section-link" href="<%= title[:change_url] %>" title="Change <%= title[:text] %>">
+  <a class="app-c-summary__change-section-link"
+     href="<%= title[:change_url] %>"
+     title="Change <%= title[:text] %>"
+     data-tag="content-change">
     Change<span class="govuk-visually-hidden"> <%= title[:text] %></span>
   </a>
   <% end %>
