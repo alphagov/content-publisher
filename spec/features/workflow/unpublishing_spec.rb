@@ -149,7 +149,7 @@ RSpec.feature "Unpublish documents rake tasks" do
     end
 
     it "runs the rake task to remove a document with a redirect" do
-      document = create(:document, locale: "en")
+      document = create(:document, :published, locale: "en")
       redirect_path = "/redirect-path"
       stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path })
 
@@ -177,7 +177,7 @@ RSpec.feature "Unpublish documents rake tasks" do
     end
 
     it "sets an optional explanatory note" do
-      document = create(:document, locale: "en")
+      document = create(:document, :published, locale: "en")
       redirect_path = "/redirect-path"
       explanatory_note = "The reason the document is being removed"
       stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, explanatory_note: explanatory_note })
@@ -196,7 +196,7 @@ RSpec.feature "Unpublish documents rake tasks" do
     end
 
     it "copes with commas in the explanatory note" do
-      document = create(:document, locale: "en")
+      document = create(:document, :published, locale: "en")
       redirect_path = "/redirect-path"
       explanatory_note = "The reason the document is being removed, firstly, secondly and so forth"
       stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, explanatory_note: explanatory_note })
@@ -212,6 +212,15 @@ RSpec.feature "Unpublish documents rake tasks" do
       ENV["NEW_PATH"] = redirect_path
       ENV["NOTE"] = explanatory_note
       Rake::Task["unpublish:remove_and_redirect_document"].invoke
+    end
+
+    it "raises an error if the document does not have a live version on GOV.uk" do
+      document = create(:document, locale: "en")
+      redirect_path = "/redirect-path"
+
+      ENV["CONTENT_ID"] = document.content_id
+      ENV["NEW_PATH"] = redirect_path
+      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Document must have a published version before it can be redirected")
     end
   end
 end
