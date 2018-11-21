@@ -15,20 +15,20 @@ RSpec.feature "Unpublish documents rake tasks" do
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
       expect_any_instance_of(DocumentUnpublishingService).to receive(:retire).with(document, explanatory_note, locale: "en")
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NOTE"] = explanatory_note
-      Rake::Task["unpublish:retire_document"].invoke
+
+      ClimateControl.modify CONTENT_ID: document.content_id, NOTE: explanatory_note do
+        Rake::Task["unpublish:retire_document"].invoke
+      end
     end
 
     it "raises an error if a BASE_PATH is not present" do
-      ENV["CONTENT_ID"] = nil
       expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Missing CONTENT_ID value")
     end
 
     it "raises an error if a NOTE is not present" do
-      ENV["CONTENT_ID"] = "a-content-id"
-      ENV["NOTE"] = nil
-      expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Missing NOTE value")
+      ClimateControl.modify CONTENT_ID: "a-content-id" do
+        expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Missing NOTE value")
+      end
     end
 
     it "copes with commas in the explanatory note" do
@@ -38,18 +38,18 @@ RSpec.feature "Unpublish documents rake tasks" do
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
       expect_any_instance_of(DocumentUnpublishingService).to receive(:retire).with(document, explanatory_note, locale: "en")
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NOTE"] = explanatory_note
-      Rake::Task["unpublish:retire_document"].invoke
+      ClimateControl.modify CONTENT_ID: document.content_id, NOTE: explanatory_note do
+        Rake::Task["unpublish:retire_document"].invoke
+      end
     end
 
     it "raises an error if the document does not have a live version on GOV.uk" do
       document = create(:document, locale: "en")
       explanatory_note = "The reason the document is being retired"
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NOTE"] = explanatory_note
-      expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Document must have a published version before it can be retired")
+      ClimateControl.modify CONTENT_ID: document.content_id, NOTE: explanatory_note do
+        expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Document must have a published version before it can be retired")
+      end
     end
   end
 
@@ -69,13 +69,12 @@ RSpec.feature "Unpublish documents rake tasks" do
         locale: "en",
       )
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NOTE"] = nil
-      Rake::Task["unpublish:remove_document"].invoke
+      ClimateControl.modify CONTENT_ID: document.content_id do
+        Rake::Task["unpublish:remove_document"].invoke
+      end
     end
 
     it "raises an error if a BASE_PATH is not present" do
-      ENV["CONTENT_ID"] = nil
       expect { Rake::Task["unpublish:remove_document"].invoke }.to raise_error("Missing CONTENT_ID value")
     end
 
@@ -91,10 +90,9 @@ RSpec.feature "Unpublish documents rake tasks" do
         locale: "en",
       )
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NOTE"] = explanatory_note
-      ENV["NEW_PATH"] = nil
-      Rake::Task["unpublish:remove_document"].invoke
+      ClimateControl.modify CONTENT_ID: document.content_id, NOTE: explanatory_note do
+        Rake::Task["unpublish:remove_document"].invoke
+      end
     end
 
     it "copes with commas in the explanatory note" do
@@ -109,10 +107,9 @@ RSpec.feature "Unpublish documents rake tasks" do
         locale: "en",
       )
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NOTE"] = explanatory_note
-      ENV["NEW_PATH"] = nil
-      Rake::Task["unpublish:remove_document"].invoke
+      ClimateControl.modify CONTENT_ID: document.content_id, NOTE: explanatory_note do
+        Rake::Task["unpublish:remove_document"].invoke
+      end
     end
 
     it "sets an optional alternative path" do
@@ -127,19 +124,17 @@ RSpec.feature "Unpublish documents rake tasks" do
         locale: "en",
       )
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NOTE"] = nil
-      ENV["NEW_PATH"] = alternative_path
-      Rake::Task["unpublish:remove_document"].invoke
+      ClimateControl.modify CONTENT_ID: document.content_id, NEW_PATH: alternative_path do
+        Rake::Task["unpublish:remove_document"].invoke
+      end
     end
 
     it "raises an error if the document does not have a live version on GOV.uk" do
       document = create(:document, locale: "en")
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NOTE"] = nil
-      ENV["NEW_PATH"] = nil
-      expect { Rake::Task["unpublish:remove_document"].invoke }.to raise_error("Document must have a published version before it can be removed")
+      ClimateControl.modify CONTENT_ID: document.content_id do
+        expect { Rake::Task["unpublish:remove_document"].invoke }.to raise_error("Document must have a published version before it can be removed")
+      end
     end
   end
 
@@ -160,20 +155,19 @@ RSpec.feature "Unpublish documents rake tasks" do
         locale: "en",
       )
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NEW_PATH"] = redirect_path
-      Rake::Task["unpublish:remove_and_redirect_document"].invoke
+      ClimateControl.modify CONTENT_ID: document.content_id, NEW_PATH: redirect_path do
+        Rake::Task["unpublish:remove_and_redirect_document"].invoke
+      end
     end
 
     it "raises an error if a BASE_PATH is not present" do
-      ENV["CONTENT_ID"] = nil
       expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Missing CONTENT_ID value")
     end
 
     it "raises an error if a NEW_PATH is not present" do
-      ENV["CONTENT_ID"] = "a-content-id"
-      ENV["NEW_PATH"] = nil
-      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Missing NEW_PATH value")
+      ClimateControl.modify CONTENT_ID: "a-content-id" do
+        expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Missing NEW_PATH value")
+      end
     end
 
     it "sets an optional explanatory note" do
@@ -189,10 +183,9 @@ RSpec.feature "Unpublish documents rake tasks" do
         locale: "en",
       )
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NEW_PATH"] = redirect_path
-      ENV["NOTE"] = explanatory_note
-      Rake::Task["unpublish:remove_and_redirect_document"].invoke
+      ClimateControl.modify CONTENT_ID: document.content_id, NEW_PATH: redirect_path, NOTE: explanatory_note do
+        Rake::Task["unpublish:remove_and_redirect_document"].invoke
+      end
     end
 
     it "copes with commas in the explanatory note" do
@@ -208,19 +201,18 @@ RSpec.feature "Unpublish documents rake tasks" do
         locale: "en",
       )
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NEW_PATH"] = redirect_path
-      ENV["NOTE"] = explanatory_note
-      Rake::Task["unpublish:remove_and_redirect_document"].invoke
+      ClimateControl.modify CONTENT_ID: document.content_id, NEW_PATH: redirect_path, NOTE: explanatory_note do
+        Rake::Task["unpublish:remove_and_redirect_document"].invoke
+      end
     end
 
     it "raises an error if the document does not have a live version on GOV.uk" do
       document = create(:document, locale: "en")
       redirect_path = "/redirect-path"
 
-      ENV["CONTENT_ID"] = document.content_id
-      ENV["NEW_PATH"] = redirect_path
-      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Document must have a published version before it can be redirected")
+      ClimateControl.modify CONTENT_ID: document.content_id, NEW_PATH: redirect_path do
+        expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Document must have a published version before it can be redirected")
+      end
     end
   end
 end
