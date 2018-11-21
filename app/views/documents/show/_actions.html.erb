@@ -1,8 +1,16 @@
 <div class="app-side">
   <div class="app-side__actions">
-    <% if @document.publication_state == "error_sending_to_draft" %>
+    <% if @document.publication_state == "changes_not_sent_to_draft" %>
+      <%= form_tag draft_document_path(@document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Preview" %>
+      <% end %>
+
+      <% unless @document.has_live_version_on_govuk %>
+        <%= link_to "Delete draft", delete_draft_path(@document), class: "govuk-link app-link--destructive" %>
+      <% end %>
+    <% elsif @document.publication_state == "error_sending_to_draft" %>
       <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("documents.show.sidebar.error_publishing_draft") %>
+        <%= govspeak_to_html t("documents.show.sidebar.error_creating_preview") %>
       <% end %>
 
       <%= form_tag retry_draft_save_path(@document) do %>
