@@ -20,10 +20,11 @@ namespace :unpublish do
 
     content_id = ENV["CONTENT_ID"]
     locale = ENV["LOCALE"] || "en"
+    explanatory_note = ENV["NOTE"]
 
     document = Document.find_by_param("#{content_id}:#{locale}")
 
-    DocumentUnpublishingService.new.remove(document) if document.present?
+    DocumentUnpublishingService.new.remove(document, explanatory_note: explanatory_note) if document.present?
   end
 
   desc "Remove and redirect a document on GOV.UK e.g. unpublish:remove_and_redirect_document CONTENT_ID='a-content-id' REDIRECT='/redirect-to-here'"

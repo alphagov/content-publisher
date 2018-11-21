@@ -41,7 +41,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       document = create(:document, locale: "en")
       stub_publishing_api_unpublish(document.content_id, body: { type: "gone" })
 
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(document)
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(document, explanatory_note: nil)
 
       ENV["CONTENT_ID"] = document.content_id
       Rake::Task["unpublish:remove_document"].invoke
@@ -50,6 +50,17 @@ RSpec.feature "Unpublish documents rake tasks" do
     it "raises an error if a BASE_PATH is not present" do
       ENV["CONTENT_ID"] = nil
       expect { Rake::Task["unpublish:remove_document"].invoke }.to raise_error("Missing CONTENT_ID value")
+    end
+
+    it "sets an optional explanatory note" do
+      document = create(:document, locale: "en")
+      explanatory_note = "The reason the document is being removed"
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", explanation: explanatory_note })
+
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(document, explanatory_note: explanatory_note)
+      ENV["CONTENT_ID"] = document.content_id
+      ENV["NOTE"] = explanatory_note
+      Rake::Task["unpublish:remove_document"].invoke
     end
   end
 
