@@ -11,7 +11,7 @@ namespace :unpublish do
     locale = ENV["LOCALE"] || "en"
 
     document = Document.find_by_param("#{content_id}:#{locale}")
-    DocumentUnpublishingService.new.retire(document, explanatory_note) if document.present?
+    DocumentUnpublishingService.new.retire(document, explanatory_note, locale: locale) if document.present?
   end
 
   desc "Remove a document from GOV.UK e.g. unpublish:remove_document CONTENT_ID='a-content-id'"
@@ -25,7 +25,14 @@ namespace :unpublish do
 
     document = Document.find_by_param("#{content_id}:#{locale}")
 
-    DocumentUnpublishingService.new.remove(document, explanatory_note: explanatory_note, alternative_path: alternative_path) if document.present?
+    if document.present?
+      DocumentUnpublishingService.new.remove(
+        document,
+        explanatory_note: explanatory_note,
+        alternative_path: alternative_path,
+        locale: locale,
+      )
+    end
   end
 
   desc "Remove and redirect a document on GOV.UK e.g. unpublish:remove_and_redirect_document CONTENT_ID='a-content-id' REDIRECT='/redirect-to-here'"
@@ -40,6 +47,13 @@ namespace :unpublish do
 
     document = Document.find_by_param("#{content_id}:#{locale}")
 
-    DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path, explanatory_note: explanatory_note) if document.present?
+    if document.present?
+      DocumentUnpublishingService.new.remove_and_redirect(
+        document,
+        redirect_path,
+        explanatory_note: explanatory_note,
+        locale: locale,
+      )
+    end
   end
 end

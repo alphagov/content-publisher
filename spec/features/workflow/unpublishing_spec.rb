@@ -13,7 +13,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       explanatory_note = "The reason the document is being retired"
 
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note })
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:retire).with(document, explanatory_note)
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:retire).with(document, explanatory_note, locale: "en")
 
       ENV["CONTENT_ID"] = document.content_id
       ENV["NOTE"] = explanatory_note
@@ -45,6 +45,7 @@ RSpec.feature "Unpublish documents rake tasks" do
         document,
         explanatory_note: nil,
         alternative_path: nil,
+        locale: "en",
       )
 
       ENV["CONTENT_ID"] = document.content_id
@@ -65,6 +66,7 @@ RSpec.feature "Unpublish documents rake tasks" do
         document,
         explanatory_note: explanatory_note,
         alternative_path: nil,
+        locale: "en",
       )
 
       ENV["CONTENT_ID"] = document.content_id
@@ -82,6 +84,7 @@ RSpec.feature "Unpublish documents rake tasks" do
         document,
         explanatory_note: nil,
         alternative_path: alternative_path,
+        locale: "en",
       )
 
       ENV["CONTENT_ID"] = document.content_id
@@ -105,6 +108,7 @@ RSpec.feature "Unpublish documents rake tasks" do
         document,
         redirect_path,
         explanatory_note: nil,
+        locale: "en",
       )
 
       ENV["CONTENT_ID"] = document.content_id
@@ -133,6 +137,7 @@ RSpec.feature "Unpublish documents rake tasks" do
         document,
         redirect_path,
         explanatory_note: explanatory_note,
+        locale: "en",
       )
 
       ENV["CONTENT_ID"] = document.content_id
