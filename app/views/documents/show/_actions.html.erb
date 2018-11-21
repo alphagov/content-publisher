@@ -13,7 +13,7 @@
         <%= govspeak_to_html t("documents.show.sidebar.error_creating_preview") %>
       <% end %>
 
-      <%= form_tag retry_draft_save_path(@document) do %>
+      <%= form_tag draft_document_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Try again" %>
       <% end %>
     <% elsif @document.publication_state == "error_deleting_draft" %>

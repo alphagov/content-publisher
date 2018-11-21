@@ -67,15 +67,6 @@ class DocumentsController < ApplicationController
     redirect_to @document, alert_with_description: t("documents.show.flashes.draft_error")
   end
 
-  def retry_draft_save
-    document = Document.find_by_param(params[:id])
-    DocumentPublishingService.new.publish_draft(document)
-    redirect_to document
-  rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
-    redirect_to document, alert_with_description: t("documents.show.flashes.draft_error")
-  end
-
   def generate_path
     document = Document.find_by_param(params[:id])
     base_path = PathGeneratorService.new.path(document, params[:title])

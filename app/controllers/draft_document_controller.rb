@@ -11,5 +11,8 @@ class DraftDocumentController < ApplicationController
     )
 
     redirect_to preview_document_path(document)
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
+    redirect_to document_path(document), alert_with_description: t("documents.show.flashes.preview_error")
   end
 end

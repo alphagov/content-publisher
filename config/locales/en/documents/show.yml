@@ -27,7 +27,7 @@ en:
           minor: There’s no change to the published information. For example, spelling corrections.
           major: There’s a change to the published information.
       sidebar:
-        error_publishing_draft: |
+        error_creating_preview: |
           Something went wrong when saving your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         error_publishing_live: |
           Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
@@ -50,14 +50,13 @@ en:
         unknown_user: Unknown
         last_edited_by: Last edited by
       flashes:
-        pre_draft_issues:
-          To preview this document you need to
+        pre_draft_issues: To preview this document you need to
         pre_publish_issues:
           warning: To publish this document you need to
           error: Before you can publish this document you need to
-        draft_error:
+        preview_error:
           title: Something has gone wrong
-          description: Something went wrong when saving your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+          description: Something went wrong when creating your preview. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         publish_error:
           title: Something has gone wrong
           description: Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
