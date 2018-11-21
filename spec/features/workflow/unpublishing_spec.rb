@@ -41,7 +41,11 @@ RSpec.feature "Unpublish documents rake tasks" do
       document = create(:document, locale: "en")
       stub_publishing_api_unpublish(document.content_id, body: { type: "gone" })
 
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(document, explanatory_note: nil)
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(
+        document,
+        explanatory_note: nil,
+        alternative_path: nil,
+      )
 
       ENV["CONTENT_ID"] = document.content_id
       Rake::Task["unpublish:remove_document"].invoke
@@ -57,9 +61,32 @@ RSpec.feature "Unpublish documents rake tasks" do
       explanatory_note = "The reason the document is being removed"
       stub_publishing_api_unpublish(document.content_id, body: { type: "gone", explanation: explanatory_note })
 
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(document, explanatory_note: explanatory_note)
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(
+        document,
+        explanatory_note: explanatory_note,
+        alternative_path: nil,
+      )
+
       ENV["CONTENT_ID"] = document.content_id
       ENV["NOTE"] = explanatory_note
+      ENV["NEW_PATH"] = nil
+      Rake::Task["unpublish:remove_document"].invoke
+    end
+
+    it "sets an optional alternative path" do
+      document = create(:document, locale: "en")
+      alternative_path = "/go-here-instead"
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone" })
+
+      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(
+        document,
+        explanatory_note: nil,
+        alternative_path: alternative_path,
+      )
+
+      ENV["CONTENT_ID"] = document.content_id
+      ENV["NOTE"] = nil
+      ENV["NEW_PATH"] = alternative_path
       Rake::Task["unpublish:remove_document"].invoke
     end
   end
