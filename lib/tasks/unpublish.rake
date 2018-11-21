@@ -10,7 +10,7 @@ namespace :unpublish do
     explanatory_note = ENV["NOTE"]
     locale = ENV["LOCALE"] || "en"
 
-    document = Document.find_by_param("#{content_id}:#{locale}")
+    document = Document.find_by(content_id: content_id, locale: locale)
     DocumentUnpublishingService.new.retire(document, explanatory_note, locale: locale) if document.present?
   end
 
@@ -23,7 +23,7 @@ namespace :unpublish do
     alternative_path = ENV["NEW_PATH"]
     locale = ENV["LOCALE"] || "en"
 
-    document = Document.find_by_param("#{content_id}:#{locale}")
+    document = Document.find_by(content_id: content_id, locale: locale)
 
     if document.present?
       DocumentUnpublishingService.new.remove(
@@ -45,7 +45,7 @@ namespace :unpublish do
     redirect_path = ENV["NEW_PATH"]
     locale = ENV["LOCALE"] || "en"
 
-    document = Document.find_by_param("#{content_id}:#{locale}")
+    document = Document.find_by(content_id: content_id, locale: locale)
 
     if document.present?
       DocumentUnpublishingService.new.remove_and_redirect(
