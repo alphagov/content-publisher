@@ -20,7 +20,7 @@
 
 <% if draft_issues.any? %>
     <%= render "/components/notice", {
-      title: t("documents.show.flashes.pre_draft_issues"),
+      title: t("documents.show.flashes.pre_preview_issues"),
       items: draft_issues.items(issue_params),
     } %>
 <% end %>

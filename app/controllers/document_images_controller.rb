@@ -75,7 +75,7 @@ class DocumentImagesController < ApplicationController
 
     if @issues.any?
       flash.now["alert"] = {
-        "title" => I18n.t!("document_images.edit.flashes.pre_draft_issues.title"),
+        "title" => I18n.t!("document_images.edit.flashes.requirements"),
         "items" => @issues.items,
       }
 

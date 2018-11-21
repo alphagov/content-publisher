@@ -50,7 +50,7 @@ en:
         unknown_user: Unknown
         last_edited_by: Last edited by
       flashes:
-        pre_draft_issues: To preview this document you need to
+        pre_preview_issues: To preview this document you need to
         pre_publish_issues:
           warning: To publish this document you need to
           error: Before you can publish this document you need to

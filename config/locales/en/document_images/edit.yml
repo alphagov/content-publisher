@@ -7,8 +7,7 @@ en:
         caption: Image caption
         credit: Image credit
       flashes:
-        pre_draft_issues:
-          title: You need to
+        requirements: You need to
       guidance:
         alt_text: A simple and specific description of what the image shows. This helps screen-readers and search engines.
         caption: This text appears on the page under the image.

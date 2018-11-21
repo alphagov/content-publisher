@@ -43,7 +43,7 @@ class DocumentsController < ApplicationController
 
     if @issues.any?
       flash.now["alert"] = {
-        "title" => I18n.t!("documents.edit.flashes.pre_draft_issues.title"),
+        "title" => I18n.t!("documents.edit.flashes.requirements"),
         "items" => @issues.items,
       }
 
