@@ -79,6 +79,7 @@
     <% end %>
 
     <main class="govuk-main-wrapper<%= " govuk-main-wrapper--l" if yield(:back_link).blank?%>" id="main-content" role="main">
+      <% if yield(:title).present? %>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <span class="govuk-caption-l"><%= yield(:context) %></span>
@@ -88,6 +89,7 @@
           <%= yield(:title_side) %>
         </div>
       </div>
+      <% end %>
       <%= yield %>
     </main>
   </div>
