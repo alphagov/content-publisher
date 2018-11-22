@@ -26,5 +26,14 @@ RSpec.feature "Unpublish documents rake tasks" do
     it "raises an error if a NOTE is not present" do
       expect { Rake::Task["unpublish:retire_document"].invoke("a-content-id") }.to raise_error("Missing NOTE value")
     end
+
+    it "raises an error if the document does not have a live version on GOV.uk" do
+      document = create(:document, locale: "en")
+      explanatory_note = "The reason the document is being retired"
+
+      ClimateControl.modify NOTE: explanatory_note do
+        expect { Rake::Task["unpublish:retire_document"].invoke(document.content_id) }.to raise_error("Document must have a published version before it can be retired")
+      end
+    end
   end
 end

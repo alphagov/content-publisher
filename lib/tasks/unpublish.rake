@@ -10,6 +10,7 @@ namespace :unpublish do
     locale = ENV["LOCALE"] || "en"
 
     document = Document.find_by!(content_id: args.content_id, locale: locale)
+    raise "Document must have a published version before it can be retired" unless document.has_live_version_on_govuk
 
     DocumentUnpublishingService.new.retire(document, explanatory_note)
   end
