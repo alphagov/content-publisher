@@ -1,9 +1,13 @@
+<%
+  utm_uri = Addressable::URI.parse(url)
+  utm_uri.query_values = (utm_uri.query_values || {}).merge(utm_content: "preview-link")
+%>
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= render "govuk_publishing_components/components/details", title: "Share document preview for fact check or approval" do %>
       <%= render "govuk_publishing_components/components/copy_to_clipboard",
         label: "Send this link to someone so they can see a preview of how the document will appear on GOV.UK. No password is needed.",
-        copyable_content: url,
+        copyable_content: utm_uri.to_s,
         button_text: "Copy link" %>
     <% end %>
   </div>

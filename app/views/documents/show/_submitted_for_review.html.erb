@@ -1,7 +1,7 @@
 <% copy_to_clipboard = render(
   "govuk_publishing_components/components/copy_to_clipboard",
     label: t("documents.show.flashes.submitted_for_review.label"),
-    copyable_content: document_url(@document),
+    copyable_content: document_url(@document, utm_content: "2i-link"),
     button_text: "Copy link"
 ) %>
 

@@ -39,7 +39,7 @@ RSpec.feature "2i" do
 
   def and_i_see_a_link_to_the_document
     review_url = find_field(I18n.t!("documents.show.flashes.submitted_for_review.label")).value
-    expect(review_url).to eq(document_url(@document))
+    expect(review_url).to match(document_url(@document))
   end
 
   def when_i_edit_the_document
