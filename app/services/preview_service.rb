@@ -14,7 +14,7 @@ class PreviewService
 
   def try_create_preview(args)
     save_changes(args)
-    DocumentPublishingService.new.publish_draft(document) unless has_issues?
+    DocumentPublishingService.new.try_publish_draft(document) unless has_issues?
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
   end
