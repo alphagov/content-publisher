@@ -14,7 +14,7 @@ RSpec.feature "Edit image crop", js: true do
     document = create(:document, document_type: document_type_schema.id)
 
     create(:image,
-           :in_asset_manager,
+           :in_preview,
            document: document,
            crop_x: 0,
            crop_y: 167,

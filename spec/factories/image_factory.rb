@@ -25,7 +25,8 @@ FactoryBot.define do
       )
     end
 
-    trait :in_asset_manager do
+    trait :in_preview do
+      alt_text { SecureRandom.hex(8) }
       asset_manager_file_url { "https://asset-manager.test.gov.uk/media/asset-id#{asset_id}/#{filename}" }
     end
   end

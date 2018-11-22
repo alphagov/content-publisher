@@ -7,8 +7,23 @@ class PreviewService
     @document = document
   end
 
-  def create_preview(user:, type:)
+  def create_preview(args)
+    save_changes(args)
+    DocumentPublishingService.new.publish_draft(document)
+  end
+
+  def try_create_preview(args)
+    save_changes(args)
+    DocumentPublishingService.new.publish_draft(document) unless has_issues?
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
+  end
+
+private
+
+  def save_changes(user:, type:)
     create_new_edition(document) if published?(document)
+
     document.publication_state = "changes_not_sent_to_draft"
     document.last_editor = user if edited?(type)
     document.review_state = "unreviewed" unless in_review?(document)
@@ -17,17 +32,11 @@ class PreviewService
       document.save!
       TimelineEntry.create!(document: document, user: user, entry_type: type)
     end
-
-    DocumentPublishingService.new.publish_draft(document)
   end
 
-  def try_create_preview(args)
-    create_preview(args)
-  rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
+  def has_issues?
+    Requirements::DocumentChecker.new(document).pre_preview_issues.any?
   end
-
-private
 
   def edited?(type)
     %w(updated_content updated_tags).include?(type)

@@ -11,7 +11,7 @@ RSpec.feature "Remove a lead image" do
   def given_there_is_a_document_with_a_lead_image
     document_type_schema = build(:document_type_schema, lead_image: true)
     document = create(:document, document_type: document_type_schema.id)
-    @image = create(:image, document: document)
+    @image = create(:image, :in_preview, document: document)
     document.update(lead_image: @image)
   end
 
