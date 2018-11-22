@@ -37,3 +37,7 @@ en:
       too_long:
         form_message: "Enter an image caption that is fewer than %{max_length} characters long"
         summary_message: "Enter a shorter caption for “%{filename}”"
+    base_path:
+      conflict:
+        form_message: "Enter a title that does not conflict with an existing document"
+        summary_message: "Enter a title that does not conflict with an existing document"

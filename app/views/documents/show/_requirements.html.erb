@@ -12,8 +12,7 @@
 } %>
 
 <% if @document.publication_state == "changes_not_sent_to_draft" %>
-  <% draft_issues = Requirements::DocumentChecker.new(@document)
-    .pre_preview_issues %>
+  <% draft_issues = Requirements::DocumentChecker.new(@document).pre_preview_issues %>
 
   <% if draft_issues.any? %>
     <% if flash[:tried_to_preview] %>
@@ -31,8 +30,7 @@
 <% end %>
 
 <% if @document.publication_state == "sent_to_draft" %>
-  <% publish_issues = Requirements::DocumentChecker.new(@document)
-    .pre_publish_issues(rescue_api_errors: !flash[:tried_to_publish])  %>
+  <% publish_issues = Requirements::DocumentChecker.new(@document).pre_publish_issues %>
 
   <% if publish_issues.any? %>
     <% if flash[:tried_to_publish] %>

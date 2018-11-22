@@ -11,6 +11,7 @@ require "govuk_schemas/rspec_matchers"
 require "simplecov"
 require "webmock/rspec"
 require "gds_api/test_helpers/publishing_api_v2"
+require "gds_api/test_helpers/publishing_api"
 require "gds_api/test_helpers/asset_manager"
 
 Dir[Rails.root.join("spec", "support", "**", "*.rb")].each { |f| require f }

@@ -28,6 +28,10 @@ RSpec.feature "Create a news story", format: true do
     fill_in "document[title]", with: "A great title"
     fill_in "document[summary]", with: "A great summary"
 
+    document = Document.first
+    base_path = document.document_type_schema.path_prefix + "/a-great-title"
+    publishing_api_has_lookups(base_path => document.content_id)
+
     click_on "Save"
     # TODO: Replace with https://github.com/bblimke/webmock/blob/d8686502442d9830dcccd24a1120ac08413d857a/lib/webmock/api.rb#L69 when it's released
     WebMock::RequestRegistry.instance.reset!

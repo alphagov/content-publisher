@@ -8,6 +8,7 @@
   path_prefix: /government/news
   lead_image: true
   topics: true
+  check_path_conflict: true
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
@@ -68,6 +69,7 @@
   path_prefix: /government/news
   lead_image: true
   topics: true
+  check_path_conflict: true
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
