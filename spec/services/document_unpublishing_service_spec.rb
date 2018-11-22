@@ -22,7 +22,7 @@ RSpec.describe DocumentUnpublishingService do
     end
 
     it "does not delete assets for retired documents" do
-      asset = create(:image, :in_asset_manager, document: document)
+      asset = create(:image, :in_preview, document: document)
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
 
       DocumentUnpublishingService.new.retire(document, explanatory_note)
@@ -42,7 +42,7 @@ RSpec.describe DocumentUnpublishingService do
     end
 
     it "deletes assets associated with removed documents" do
-      asset = create(:image, :in_asset_manager, document: document)
+      asset = create(:image, :in_preview, document: document)
       stub_publishing_api_unpublish(document.content_id, body: { type: "gone", locale: document.locale })
       asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
 
@@ -91,7 +91,7 @@ RSpec.describe DocumentUnpublishingService do
     end
 
     it "deletes assets associated with redirected documents" do
-      asset = create(:image, :in_asset_manager, document: document)
+      asset = create(:image, :in_preview, document: document)
 
       stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, locale: document.locale })
       asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
