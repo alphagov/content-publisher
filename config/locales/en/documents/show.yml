@@ -28,7 +28,7 @@ en:
           major: There’s a change to the published information.
       sidebar:
         error_creating_preview: |
-          Something went wrong when saving your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+          Something went wrong when creating the preview page. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         error_publishing_live: |
           Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         error_deleting_draft: |
@@ -58,7 +58,7 @@ en:
           error: Before you can publish this document you need to
         preview_error:
           title: Something has gone wrong
-          description: Something went wrong when creating your preview. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+          description: Something went wrong when creating the preview page. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         publish_error:
           title: Something has gone wrong
           description: Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
