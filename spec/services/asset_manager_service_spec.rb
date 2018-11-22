@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.describe AssetManagerService do
   describe "#upload_bytes" do
     it "uploads a byte stream to Asset Manager and returns the asset URL" do

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.describe DocumentPublishingService do
   describe "#publish_draft" do
     it "keeps track of the publication state" do
