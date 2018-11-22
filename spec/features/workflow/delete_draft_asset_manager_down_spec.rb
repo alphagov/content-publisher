@@ -13,7 +13,7 @@ RSpec.feature "Delete draft with Asset Manager down" do
 
   def given_there_is_a_document
     @document = create(:document)
-    @image = create(:image, :in_asset_manager, document: @document)
+    @image = create(:image, :in_preview, document: @document)
   end
 
   def when_i_visit_the_document_page

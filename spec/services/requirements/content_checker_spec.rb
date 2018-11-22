@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe Requirements::ContentChecker do
-  describe "#pre_draft_issues" do
+  describe "#pre_preview_issues" do
     it "returns no issues if there are none" do
       document = build :document
-      issues = Requirements::ContentChecker.new(document).pre_draft_issues
+      issues = Requirements::ContentChecker.new(document).pre_preview_issues
       expect(issues.items).to be_empty
     end
 
     it "returns an issue if there is no title" do
       document = build :document, title: nil
-      issues = Requirements::ContentChecker.new(document).pre_draft_issues
+      issues = Requirements::ContentChecker.new(document).pre_preview_issues
 
       form_message = issues.items_for(:title).first[:text]
       expect(form_message).to eq(I18n.t!("requirements.title.blank.form_message"))
@@ -22,7 +22,7 @@ RSpec.describe Requirements::ContentChecker do
     it "returns an issue if the title is too long" do
       max_length = Requirements::ContentChecker::TITLE_MAX_LENGTH
       document = build :document, title: "a" * (max_length + 1)
-      issues = Requirements::ContentChecker.new(document).pre_draft_issues
+      issues = Requirements::ContentChecker.new(document).pre_preview_issues
 
       form_message = issues.items_for(:title).first[:text]
       expect(form_message).to eq(I18n.t!("requirements.title.too_long.form_message", max_length: max_length))
@@ -33,7 +33,7 @@ RSpec.describe Requirements::ContentChecker do
 
     it "returns an issue if the title has newlines" do
       document = build :document, title: "a\nb"
-      issues = Requirements::ContentChecker.new(document).pre_draft_issues
+      issues = Requirements::ContentChecker.new(document).pre_preview_issues
 
       form_message = issues.items_for(:title).first[:text]
       expect(form_message).to eq(I18n.t!("requirements.title.multiline.form_message"))
@@ -45,7 +45,7 @@ RSpec.describe Requirements::ContentChecker do
 
   describe "#pre_publish_issues" do
     it "returns no issues if there are none" do
-      document = build :document, :with_required_content_for_publishing
+      document = build :document, :publishable
       issues = Requirements::ContentChecker.new(document).pre_publish_issues
       expect(issues.items).to be_empty
     end

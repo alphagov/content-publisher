@@ -15,7 +15,6 @@ Rails.application.routes.draw do
   get "/documents" => "documents#index"
   get "/documents/:id/edit" => "documents#edit", as: :edit_document
   get "/documents/:id/debug" => "documents#debug", as: :debug_document
-  post "/documents/:id/retry-draft" => "documents#retry_draft_save", as: :retry_draft_save
   patch "/documents/:id" => "documents#update", as: :document
   get "/documents/:id" => "documents#show"
   get "/documents/:id/generate-path" => "documents#generate_path", as: :generate_path
@@ -32,6 +31,7 @@ Rails.application.routes.draw do
   post "/documents/:id/tags" => "document_tags#update"
 
   get "/documents/:id/preview" => "preview#show", as: :preview_document
+  post "/documents/:id/create-preview" => "preview#create", as: :create_preview
 
   get "/documents/:id/retire" => "retire_document#retire", as: :retire_document
   get "/documents/:id/remove" => "remove_document#remove", as: :remove_document

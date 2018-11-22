@@ -14,16 +14,12 @@ class DocumentTagsController < ApplicationController
     document = Document.find_by_param(params[:id])
     document.assign_attributes(tags: update_params(document))
 
-    DocumentDraftingService.update!(
-      document: document,
+    PreviewService.new(document).try_create_preview(
       user: current_user,
       type: "updated_tags",
     )
 
     redirect_to document
-  rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
-    redirect_to document, alert_with_description: t("documents.show.flashes.draft_error")
   end
 
 private

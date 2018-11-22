@@ -10,7 +10,7 @@ module Requirements
       @document = document
     end
 
-    def pre_draft_issues
+    def pre_preview_issues
       issues = []
 
       if document.title.blank?

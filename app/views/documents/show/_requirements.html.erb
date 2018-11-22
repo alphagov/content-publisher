@@ -1,0 +1,50 @@
+<% issue_params = {
+  style: "summary",
+  hrefs: {
+    title: "#content",
+    summary: "#content",
+    body: "#content",
+    change_note: "#content",
+    alt_text: "#lead-image",
+    caption: "#lead-image",
+    topics: "#topics",
+  }
+} %>
+
+<% if @document.publication_state == "changes_not_sent_to_draft" %>
+  <% draft_issues = Requirements::DocumentChecker.new(@document)
+    .pre_preview_issues %>
+
+  <% if draft_issues.any? %>
+    <% if flash[:tried_to_preview] %>
+      <%= render "govuk_publishing_components/components/error_summary", {
+        title: t("documents.show.flashes.pre_preview_issues.error"),
+        items: draft_issues.items(issue_params),
+      } %>
+    <% else %>
+      <%= render "/components/notice", {
+        title: t("documents.show.flashes.pre_preview_issues.warning"),
+        items: draft_issues.items(issue_params),
+      } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if @document.publication_state == "sent_to_draft" %>
+  <% publish_issues = Requirements::DocumentChecker.new(@document)
+    .pre_publish_issues(rescue_api_errors: !flash[:tried_to_publish])  %>
+
+  <% if publish_issues.any? %>
+    <% if flash[:tried_to_publish] %>
+      <%= render "govuk_publishing_components/components/error_summary", {
+        title: t("documents.show.flashes.pre_publish_issues.error"),
+        items: publish_issues.items(issue_params),
+      } %>
+    <% else %>
+      <%= render "/components/notice", {
+        title: t("documents.show.flashes.pre_publish_issues.warning"),
+        items: publish_issues.items(issue_params),
+      } %>
+    <% end %>
+  <% end %>
+<% end %>

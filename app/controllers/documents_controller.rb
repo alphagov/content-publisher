@@ -39,11 +39,11 @@ class DocumentsController < ApplicationController
     @document = Document.find_by_param(params[:id])
     @document.assign_attributes(update_params(@document))
     add_contact_request = params[:submit] == "add_contact"
-    @issues = Requirements::ContentChecker.new(@document).pre_draft_issues
+    @issues = Requirements::ContentChecker.new(@document).pre_preview_issues
 
     if @issues.any?
       flash.now["alert"] = {
-        "title" => I18n.t!("documents.edit.flashes.pre_draft_issues.title"),
+        "title" => I18n.t!("documents.edit.flashes.requirements"),
         "items" => @issues.items,
       }
 
@@ -51,8 +51,7 @@ class DocumentsController < ApplicationController
       return
     end
 
-    DocumentDraftingService.update!(
-      document: @document,
+    PreviewService.new(@document).try_create_preview(
       user: current_user,
       type: "updated_content",
     )
@@ -64,16 +63,7 @@ class DocumentsController < ApplicationController
     end
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
-    redirect_to @document, alert_with_description: t("documents.show.flashes.draft_error")
-  end
-
-  def retry_draft_save
-    document = Document.find_by_param(params[:id])
-    DocumentPublishingService.new.publish_draft(document)
-    redirect_to document
-  rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
-    redirect_to document, alert_with_description: t("documents.show.flashes.draft_error")
+    redirect_to @document, alert_with_description: t("documents.show.flashes.preview_error")
   end
 
   def generate_path

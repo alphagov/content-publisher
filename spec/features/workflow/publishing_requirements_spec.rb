@@ -16,7 +16,7 @@ RSpec.feature "Publishing requirements" do
   end
 
   def given_there_is_a_document_with_issues
-    @document = create(:document, :with_required_content_for_publishing, summary: nil)
+    @document = create(:document, :publishable, summary: nil)
   end
 
   def when_i_visit_the_document_page

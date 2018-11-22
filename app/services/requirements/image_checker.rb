@@ -11,7 +11,7 @@ module Requirements
       @image = image
     end
 
-    def pre_draft_metadata_issues
+    def pre_preview_metadata_issues
       issues = []
 
       if image.alt_text.blank?
@@ -29,8 +29,8 @@ module Requirements
       CheckerIssues.new(issues)
     end
 
-    def pre_draft_issues
-      pre_draft_metadata_issues
+    def pre_preview_issues
+      pre_preview_metadata_issues
     end
   end
 end

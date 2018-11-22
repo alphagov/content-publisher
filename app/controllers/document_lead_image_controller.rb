@@ -1,19 +1,13 @@
 # frozen_string_literal: true
 
 class DocumentLeadImageController < ApplicationController
-  rescue_from GdsApi::BaseError do |e|
-    Rails.logger.error(e)
-    redirect_to document_images_path, alert_with_description: t("document_images.index.flashes.api_error")
-  end
-
   def choose
     document = Document.find_by_param(params[:document_id])
     image = Image.find(params[:image_id])
 
     document.assign_attributes(lead_image_id: params[:image_id])
 
-    DocumentDraftingService.update!(
-      document: document,
+    PreviewService.new(document).try_create_preview(
       user: current_user,
       type: "lead_image_updated",
     )
@@ -26,8 +20,7 @@ class DocumentLeadImageController < ApplicationController
     image = document.lead_image
     document.assign_attributes(lead_image_id: nil)
 
-    DocumentDraftingService.update!(
-      document: document,
+    PreviewService.new(document).try_create_preview(
       user: current_user,
       type: "lead_image_removed",
     )

@@ -20,8 +20,7 @@ class DocumentContactsController < ApplicationController
                                   contact_markdown
                                 end
 
-    DocumentDraftingService.update!(
-      document: document,
+    PreviewService.new(document).try_create_preview(
       user: current_user,
       type: "updated_content",
     )

@@ -13,7 +13,7 @@ RSpec.feature "2i" do
   end
 
   def given_there_is_a_document_in_draft
-    @document = create(:document, :with_required_content_for_publishing, publication_state: "sent_to_draft")
+    @document = create(:document, :publishable)
   end
 
   def when_i_visit_the_document

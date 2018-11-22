@@ -8,14 +8,14 @@ module Requirements
       @document = document
     end
 
-    def pre_draft_issues
+    def pre_preview_issues
       issues = []
 
       document.images.each do |image|
-        issues += ImageChecker.new(image).pre_draft_issues.to_a
+        issues += ImageChecker.new(image).pre_preview_issues.to_a
       end
 
-      issues += ContentChecker.new(document).pre_draft_issues.to_a
+      issues += ContentChecker.new(document).pre_preview_issues.to_a
       CheckerIssues.new(issues)
     end
 

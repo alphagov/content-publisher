@@ -28,5 +28,4 @@ en:
         major_name: There’s a change to the published information.
         major_hint: The ‘last updated’ date will change, the change note will be published on the page and emailed to subscribers.
       flashes:
-        pre_draft_issues:
-          title: You need to
+        requirements: You need to

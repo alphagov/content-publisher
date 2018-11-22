@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user!
 
-  add_flash_types :alert_with_description, :confirmation, :tried_to_publish
+  add_flash_types :alert_with_description, :confirmation, :tried_to_publish, :tried_to_preview
 
   before_action :set_paper_trail_whodunnit
 end
