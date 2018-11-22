@@ -2,6 +2,8 @@
 
 module Requirements
   class PathChecker
+    CACHE_OPTIONS = { expires_in: 5.minutes, race_condition_ttl: 10.seconds }.freeze
+
     attr_reader :document
 
     def initialize(document)
@@ -26,8 +28,14 @@ module Requirements
   private
 
     def base_path_conflict?
-      base_path_owner = GdsApi.publishing_api_v2
-        .lookup_content_id(base_path: document.base_path, with_drafts: true)
+      cache_id = "lookup_content_id.#{document.base_path}"
+
+      base_path_owner = Rails.cache.fetch(cache_id, CACHE_OPTIONS) do
+        GdsApi.publishing_api_v2.lookup_content_id(
+          base_path: document.base_path,
+          with_drafts: true,
+        )
+      end
 
       base_path_owner && base_path_owner != document.content_id
     end
