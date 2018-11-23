@@ -19,7 +19,7 @@
     <ul class="govuk-list app-c-notice__list">
       <% items.each_with_index do |item, index| %>
           <% if item[:href] %>
-            <li><%= link_to item[:text], item[:href], class: "govuk-link" %></li>
+            <li><%= link_to item[:text], item[:href], class: "govuk-link govuk-link--no-visited-state" %></li>
           <% else %>
             <li><%= item[:text] %></li>
           <% end %>
