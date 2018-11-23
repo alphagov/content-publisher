@@ -5,7 +5,13 @@
 .govuk-link.app-link--destructive {
   color: $govuk-error-colour;
 
-  &:hover {
+  &:link,
+  &:visited {
+    color: $govuk-error-colour;
+  }
+
+  &:hover,
+  &:active {
     color: govuk-colour("bright-red");
   }
 }
