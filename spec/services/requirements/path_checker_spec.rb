@@ -49,20 +49,12 @@ RSpec.describe Requirements::PathChecker do
           .to_return(status: 503)
       end
 
-      it "returns no issues by default (ignore exception)" do
+      it "returns no issues (ignore exception)" do
         publishing_api_isnt_available
         schema = build :document_type_schema, check_path_conflict: true
         document = build :document, document_type: schema.id
         issues = Requirements::PathChecker.new(document).pre_preview_issues
         expect(issues.items_for(:base_path)).to be_empty
-      end
-
-      it "raises an exception if we specify it should" do
-        schema = build :document_type_schema, check_path_conflict: true
-        document = build :document, document_type: schema.id
-
-        expect { Requirements::PathChecker.new(document).pre_preview_issues(rescue_api_errors: false) }
-          .to raise_error GdsApi::BaseError
       end
     end
   end

@@ -8,14 +8,13 @@ module Requirements
       @document = document
     end
 
-    def pre_preview_issues(params = {})
+    def pre_preview_issues
       issues = []
 
       document.images.each do |image|
         issues += ImageChecker.new(image).pre_preview_issues.to_a
       end
 
-      issues += PathChecker.new(document).pre_preview_issues(params).to_a
       issues += ContentChecker.new(document).pre_preview_issues.to_a
       CheckerIssues.new(issues)
     end
