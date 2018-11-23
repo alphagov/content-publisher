@@ -2,7 +2,6 @@
 
 class DocumentTopicsController < ApplicationController
   include GDS::SSO::ControllerMethods
-  before_action { authorise_user!(User::PRE_RELEASE_FEATURES_PERMISSION) }
 
   rescue_from GdsApi::BaseError do |e|
     Rails.logger.error(e)
