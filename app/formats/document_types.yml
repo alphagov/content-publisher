@@ -5,7 +5,7 @@
   hint: |
     Do not include advice in news stories. Do not use to promote other content.
     Read the full [guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story).
-  path_prefix: /news
+  path_prefix: /government/news
   lead_image: true
   topics: true
   publishing_metadata:
@@ -65,7 +65,7 @@
   hint: |
     Do not use to promote other content. Statements to Parliament should use the Speech document type.
     Read the full [guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release).
-  path_prefix: /news
+  path_prefix: /government/news
   lead_image: true
   topics: true
   publishing_metadata:
