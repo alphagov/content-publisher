@@ -11,7 +11,7 @@ RSpec.feature "Show the topics for a document" do
 
     when_the_document_has_a_topic
     and_i_visit_the_document_page
-    then_i_see_the_topic_breadcrumb
+    then_i_see_the_topic_breadcrumb_trail
   end
 
   def given_there_is_a_document
@@ -45,8 +45,8 @@ RSpec.feature "Show the topics for a document" do
     publishing_api_has_taxonomy
   end
 
-  def then_i_see_the_topic_breadcrumb
-    within("#topics .topic-breadcrumb") do
+  def then_i_see_the_topic_breadcrumb_trail
+    within("#topics .topic-breadcrumb-trail") do
       expect(page).to have_content("Level One Topic")
       expect(page).to have_content("Level Two Topic")
       expect(page).to have_content("Level Three Topic")

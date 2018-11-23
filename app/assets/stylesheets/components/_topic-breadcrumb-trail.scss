@@ -1,0 +1,9 @@
+@import "govuk-frontend/settings/all";
+@import "govuk-frontend/helpers/all";
+@import "govuk_publishing_components/components/breadcrumbs";
+
+.topic-breadcrumb-trail {
+  .govuk-breadcrumbs__list {
+    margin-bottom: 20px;
+  }
+}

@@ -1,11 +1,13 @@
 <% begin %>
   <% breadcrumbs = capture do %>
     <% if @document.topics.any? %>
-      <div class="topic-breadcrumb">
+      <div class="topic-breadcrumb-trail">
         <% @document.topics.each do |topic| %>
-          <ol>
+          <ol class="govuk-breadcrumbs__list">
             <% topic.breadcrumb.each do |crumb_topic| %>
-              <li><%= crumb_topic.title %></li>
+              <li class="govuk-breadcrumbs__list-item" aria-current="false">
+                <%= crumb_topic.title %>
+              </li>
             <% end %>
           </ol>
         <% end %>
