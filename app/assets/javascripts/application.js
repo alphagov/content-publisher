@@ -3,7 +3,6 @@
 
 //= require vendor/@webcomponents/custom-elements/custom-elements.js
 //= require vendor/abortcontroller-polyfill/abortcontroller-polyfill.js
-//= require vendor/fetch-polyfill/fetch.js
 //= require vendor/nodelist-foreach-polyfill/index.js
 
 //= require components/autocomplete.js
