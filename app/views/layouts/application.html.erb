@@ -59,7 +59,7 @@
         message: flash["alert_with_description"].fetch("title"),
         description: capture do
           render "govuk_publishing_components/components/govspeak" do
-            govspeak_to_html(flash["alert_with_description"].fetch("description"))
+            govspeak_to_html(flash["alert_with_description"].fetch("description_govspeak"))
           end
         end
       } %>

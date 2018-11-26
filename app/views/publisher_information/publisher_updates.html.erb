@@ -5,7 +5,7 @@
     <h1 class='govuk-heading-l page-title'><%= t("publisher_information.publisher_updates.title") %></h1>
 
     <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("publisher_information.publisher_updates.summary") %>
+        <%= govspeak_to_html t("publisher_information.publisher_updates.summary_govspeak") %>
     <% end %>
     <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html File.read("app/views/publisher_information/publisher_updates.govspeak.md") %>

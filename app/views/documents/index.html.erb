@@ -21,7 +21,7 @@
 
     <% if @documents.none? %>
       <div class="govuk-body">
-        <%= govspeak_to_html t("documents.index.search_results.guidance") %>
+        <%= govspeak_to_html t("documents.index.search_results.guidance_govspeak") %>
       </div>
     <% else %>
       <%= render "documents/index/results" %>

@@ -2,7 +2,7 @@
 
 class DocumentTypeSchema
   attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
-    :path_prefix, :tags, :guidance, :description, :hint, :lead_image, :topics
+    :path_prefix, :tags, :guidance_govspeak, :description, :hint, :lead_image, :topics
 
   def initialize(params = {})
     @id = params["id"]
@@ -52,7 +52,7 @@ class DocumentTypeSchema
 
   class Guidance
     include ActiveModel::Model
-    attr_accessor :id, :title, :body
+    attr_accessor :id, :title, :body_govspeak
   end
 
   class PublishingMetadata

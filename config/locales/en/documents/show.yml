@@ -27,11 +27,11 @@ en:
           minor: There’s no change to the published information. For example, spelling corrections.
           major: There’s a change to the published information.
       sidebar:
-        error_creating_preview: |
+        error_creating_preview_govspeak: |
           Something went wrong when creating the preview page. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
-        error_publishing_live: |
+        error_publishing_live_govspeak: |
           Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
-        error_deleting_draft: |
+        error_deleting_draft_govspeak: |
           Something went wrong when deleting your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
       lead_image:
         title: Lead image
@@ -58,13 +58,13 @@ en:
           error: Before you can publish this document you need to
         preview_error:
           title: Something has gone wrong
-          description: Something went wrong when creating the preview page. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+          description_govspeak: Something went wrong when creating the preview page. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         publish_error:
           title: Something has gone wrong
-          description: Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+          description_govspeak: Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         2i_error:
           title: Something has gone wrong
-          description: Something went wrong when submitting your content for 2i review. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+          description_govspeak: Something went wrong when submitting your content for 2i review. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         approved: Content has been reviewed and approved
         submitted_for_review:
           title: Content has been marked as ready for 2i review
@@ -72,7 +72,7 @@ en:
         delete_draft: Are you sure you want to delete this draft
         delete_draft_error:
           title: Something has gone wrong
-          description: Something went wrong when deleting your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+          description_govspeak: Something went wrong when deleting your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         lead_image:
           added: "Image “%{file}” has been uploaded and selected as the lead image"
           chosen: "Image “%{file}” has been selected as the lead image"
@@ -81,4 +81,4 @@ en:
         topics_updated: Topics updated on all editions
         topic_update_error:
           title: Something has gone wrong
-          description: Something went wrong when saving your changes. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+          description_govspeak: Something went wrong when saving your changes. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
