@@ -1,4 +1,9 @@
-<% content_for :back_link, document_path(@document) %>
+<% if @document.review_state == "reviewed" %>
+  <% content_for :back_link, render_back_link(text: "Back to document list", href: documents_path) %>
+<% else %>
+  <% content_for :back_link, render_back_link(href: document_path(@document)) %>
+<% end %>
+
 <% content_for :browser_title, t("publish_document.published.title") %>
 
 <div class="govuk-grid-row">

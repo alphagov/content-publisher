@@ -40,9 +40,7 @@
       end,
     } %>
 
-    <% if yield(:back_link).present? %>
-      <%= render "govuk_publishing_components/components/back_link", href: yield(:back_link) %>
-    <% end %>
+    <%= yield(:back_link) %>
 
     <% if flash["notice"] %>
       <%= render "govuk_publishing_components/components/success_alert", {
