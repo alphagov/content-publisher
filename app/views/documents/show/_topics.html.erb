@@ -1,7 +1,7 @@
 <% begin %>
   <% breadcrumbs = capture do %>
     <% if @document.topics.any? %>
-      <ul class="govuk-list">
+      <ul class="app-selected-topics govuk-list">
         <% @document.topics.each do |topic| %>
           <li>
             <%= render "govuk_publishing_components/components/breadcrumbs", {
