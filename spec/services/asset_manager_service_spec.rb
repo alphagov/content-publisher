@@ -3,7 +3,10 @@
 RSpec.describe AssetManagerService do
   describe "#upload_bytes" do
     it "uploads a byte stream to Asset Manager and returns the asset URL" do
-      asset = double(:asset, content_type: "type", filename: "foo/bar.jpg")
+      asset = double(:asset,
+                     content_type: "type",
+                     filename: "foo/bar.jpg",
+                     document: build(:document))
       asset_manager_receives_an_asset("response_asset_manager_file_url")
 
       response = AssetManagerService.new.upload_bytes(asset, "bytes")
@@ -11,7 +14,10 @@ RSpec.describe AssetManagerService do
     end
 
     it "uploads like a Rack::Multipart::UploadedFile to preserve metadata" do
-      asset = double(:asset, content_type: "type", filename: "foo/bar.jpg")
+      asset = double(:asset,
+                     content_type: "type",
+                     filename: "foo/bar.jpg",
+                     document: build(:document))
       asset_manager_receives_an_asset("response_asset_manager_file_url")
 
       AssetManagerService.new.upload_bytes(asset, "bytes")
@@ -20,6 +26,7 @@ RSpec.describe AssetManagerService do
         expect(req.body).to include("filename=\"bar.jpg")
         expect(req.body).to include("Content-Type: #{asset.content_type}")
         expect(req.body).to include("bytes")
+        expect(req.body).to include("auth_bypass_ids")
       }).to have_been_requested
     end
   end

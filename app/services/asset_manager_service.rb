@@ -3,12 +3,17 @@
 class AssetManagerService
   def upload_bytes(asset, content)
     file = AssetManagerFile.from_bytes(asset, content)
-    upload = GdsApi.asset_manager.create_asset(file: file, draft: true)
+    auth_bypass_id = DocumentUrl.new(asset.document).auth_bypass_id
+    upload = GdsApi.asset_manager.create_asset(file: file,
+                                               draft: true,
+                                               auth_bypass_ids: [auth_bypass_id])
     upload["file_url"]
   end
 
   def publish(asset)
-    GdsApi.asset_manager.update_asset(asset.asset_manager_id, draft: false)
+    GdsApi.asset_manager.update_asset(asset.asset_manager_id,
+                                      draft: false,
+                                      auth_bypass_ids: [])
   end
 
   def delete(asset)
