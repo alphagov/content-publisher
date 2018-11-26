@@ -14,7 +14,7 @@ if ($autocompletes) {
 
     new accessibleAutocomplete.enhanceSelectElement({
       selectElement: $el,
-      showAllValues: true,
+      minLength: 3,
       showNoOptionsFound: false,
       customAttributes: customAttributes
     })
@@ -33,7 +33,7 @@ if ($multiselects) {
 
     new accessibleAutocomplete.enhanceSelectElement({
       selectElement: $el,
-      showAllValues: true,
+      minLength: 3,
       showNoOptionsFound: false,
       multiple: true,
       customAttributes: customAttributes
