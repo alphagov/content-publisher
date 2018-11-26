@@ -55,11 +55,10 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
     .then(function (text) {
       $preview.innerHTML = text
       MarkdownEditor.prototype.setTargetBlank($preview)
+      $preview.classList.add('app-c-markdown-editor__govspeak--rendered')
     })
     .catch(function () {
       $preview.innerHTML = 'Error previewing content'
-    })
-    .finally(function () {
       $preview.classList.add('app-c-markdown-editor__govspeak--rendered')
     })
 
