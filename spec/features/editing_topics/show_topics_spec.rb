@@ -46,7 +46,7 @@ RSpec.feature "Show the topics for a document" do
   end
 
   def then_i_see_the_topic_breadcrumb
-    within("#topics .topic-breadcrumb") do
+    within("#topics .govuk-list") do
       expect(page).to have_content("Level One Topic")
       expect(page).to have_content("Level Two Topic")
       expect(page).to have_content("Level Three Topic")
