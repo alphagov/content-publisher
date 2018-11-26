@@ -1,4 +1,4 @@
-<% content_for :back_link, new_document_path %>
+<% content_for :back_link, render_back_link(href: new_document_path) %>
 <% content_for :title, t("new_document.guidance.title") %>
 
 <div class="govuk-grid-row">

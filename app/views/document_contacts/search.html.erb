@@ -1,4 +1,4 @@
-<% content_for :back_link, edit_document_path(@document) %>
+<% content_for :back_link, render_back_link(href: edit_document_path(@document)) %>
 <% content_for :browser_title, t("document_contacts.search.title") %>
 
 <%

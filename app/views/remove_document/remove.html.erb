@@ -1,4 +1,4 @@
-<% content_for :back_link, document_path(@document) %>
+<% content_for :back_link, render_back_link(href: document_path(@document)) %>
 <% content_for :title, t("remove_document.remove.title") %>
 
 <div class="govuk-grid-row">

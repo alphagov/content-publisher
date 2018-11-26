@@ -1,4 +1,4 @@
-<% content_for :back_link, document_path(@document) %>
+<% content_for :back_link, render_back_link(href: document_path(@document)) %>
 <% content_for :title, t("preview.show.title", title: @document.title_or_fallback) %>
 
 <%= render "components/page_preview",

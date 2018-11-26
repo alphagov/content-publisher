@@ -1,4 +1,4 @@
-<% content_for :back_link, document_path(@document) %>
+<% content_for :back_link, render_back_link(href: document_path(@document)) %>
 
 <% if @document.newly_created? %>
   <% content_for :title, t("documents.edit.title_new", document_type: @document.document_type_schema.label.downcase) %>

@@ -1,4 +1,4 @@
-<% content_for :back_link, document_path(@document) %>
+<% content_for :back_link, render_back_link(href: document_path(@document)) %>
 <% content_for :title, t("publish_document.confirmation.title") %>
 
 <div class="govuk-grid-row">
