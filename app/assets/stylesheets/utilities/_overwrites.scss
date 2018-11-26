@@ -78,3 +78,9 @@
     font-size: inherit;
   }
 }
+
+.app-selected-topics {
+  .govuk-breadcrumbs {
+    @include govuk-font(19);
+  }
+}
