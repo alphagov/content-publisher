@@ -39,14 +39,14 @@
         <%= render "govuk_publishing_components/components/button", text: "Create new edition", secondary: true %>
       <% end %>
 
-      <%= link_to "Retire", retire_document_path(@document), class: "govuk-link" %>
+      <%= link_to "Retire", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
       <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "published" %>
       <%= form_tag create_document_edition_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Create new edition" %>
       <% end %>
 
-      <%= link_to "Retire", retire_document_path(@document), class: "govuk-link" %>
+      <%= link_to "Retire", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
       <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "submitted_for_review" %>
       <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
@@ -62,7 +62,7 @@
 
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
 
-      <%= link_to "Publish", publish_document_path(@document), class: "govuk-link" %>
+      <%= link_to "Publish", publish_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
 
       <% unless @document.has_live_version_on_govuk %>
         <%= link_to "Delete draft", delete_draft_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
@@ -71,7 +71,7 @@
 
     <% if @document.has_live_version_on_govuk? %>
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
-      <%= link_to "View published edition on GOV.UK", DocumentUrl.new(@document).public_url, class: "govuk-link" %>
+      <%= link_to "View published edition on GOV.UK", DocumentUrl.new(@document).public_url, class: "govuk-link govuk-link--no-visited-state" %>
     <% end %>
   </div>
 </div>

@@ -22,11 +22,13 @@
 }
 
 .app-c-summary__change-link {
-  @extend %govuk-link;
+  @include govuk-link-common;
+  @include govuk-link-style-no-visited-state;
 }
 
 .app-c-summary__change-section-link {
-  @extend %govuk-link;
+  @include govuk-link-common;
+  @include govuk-link-style-no-visited-state;
 
   position: absolute;
   top: 0;
