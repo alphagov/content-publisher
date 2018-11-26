@@ -109,6 +109,7 @@
 
 .app-c-summary__answer {
   padding-bottom: govuk-em(9, 19);
+  @include app-word-wrap;
 }
 
 .app-c-summary__change {
