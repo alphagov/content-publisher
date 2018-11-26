@@ -27,7 +27,7 @@
   hint: For example, statistics, FOI data, or reports
   display_document_types:
     - any-whitehall-publication
-    - statistics
+    - statistical-data-set
 
 - id: policy
   label: Policy or consultation

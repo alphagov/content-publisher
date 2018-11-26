@@ -175,12 +175,12 @@
     hostname: travel-advice-publisher
     path: /admin
 
-- id: statistics
-  label: Statistics
-  description:
+- id: statistical-data-set
+  label: Statistical data set
+  description: Frequently updated (“live”) statistical data files.
   managed_elsewhere:
-      hostname: whitehall-admin
-      path: /government/admin/case-studies/new
+    hostname: whitehall-admin
+    path: /government/admin/statistical-data-sets/new
 
 - id: case_study
   label: Case study
