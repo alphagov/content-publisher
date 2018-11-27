@@ -10,6 +10,9 @@ en:
       multiline:
         form_message: Remove line breaks from the title
         summary_message: Remove line breaks from the title
+      conflict:
+        form_message: "Enter a title that hasn’t been used before - the system cannot create a unique URL otherwise"
+        summary_message: "Enter a title that hasn’t been used before - the system cannot create a unique URL otherwise"
     summary:
       blank:
         form_message: Enter a summary

@@ -39,7 +39,7 @@ class DocumentsController < ApplicationController
     @document = Document.find_by_param(params[:id])
     @document.assign_attributes(update_params(@document))
     add_contact_request = params[:submit] == "add_contact"
-    @issues = Requirements::ContentChecker.new(@document).pre_preview_issues
+    @issues = Requirements::EditPageChecker.new(@document).pre_preview_issues
 
     if @issues.any?
       flash.now["alert"] = {

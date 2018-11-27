@@ -2,7 +2,7 @@
 
 class DocumentTypeSchema
   attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
-    :path_prefix, :tags, :guidance_govspeak, :description, :hint, :lead_image, :topics
+    :path_prefix, :tags, :guidance_govspeak, :description, :hint, :lead_image, :topics, :check_path_conflict
 
   def initialize(params = {})
     @id = params["id"]
@@ -17,6 +17,7 @@ class DocumentTypeSchema
     @hint = params["hint"]
     @lead_image = params["lead_image"]
     @topics = params["topics"]
+    @check_path_conflict = params["check_path_conflict"]
   end
 
   def self.find(document_type_id)

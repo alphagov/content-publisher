@@ -19,7 +19,7 @@ module Requirements
       CheckerIssues.new(issues)
     end
 
-    def pre_publish_issues(params)
+    def pre_publish_issues(params = {})
       issues = []
       issues += ContentChecker.new(document).pre_publish_issues.to_a
       issues += TopicChecker.new(document).pre_publish_issues(params).to_a
