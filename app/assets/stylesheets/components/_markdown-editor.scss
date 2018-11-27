@@ -4,7 +4,7 @@
 
 .app-c-markdown-editor {
   .govuk-textarea {
-    padding-top: (govuk-spacing(9) + govuk-spacing(6));
+    padding-top: (govuk-spacing(9) + govuk-spacing(8));
     resize: vertical;
   }
 }
@@ -36,7 +36,7 @@
   @include govuk-font(19);
   display: inline-block;
   margin-bottom: -$govuk-border-width-form-element;
-  padding: (govuk-spacing(1) + $govuk-border-width-form-element);
+  padding: govuk-spacing(2);
   border: $govuk-border-width-form-element solid transparent;
   border-top: 0;
   border-bottom: 0;
@@ -77,7 +77,7 @@
 
   .govuk-textarea {
     overflow: scroll;
-    padding-top: govuk-spacing(8);
+    padding-top: govuk-spacing(9);
   }
 }
 
@@ -107,8 +107,8 @@
 
 .app-c-markdown-editor__toolbar-icon {
   display: block;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
 }
 
 .app-c-markdown-editor__toolbar-icon--heading-2 {
