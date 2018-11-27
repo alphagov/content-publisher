@@ -37,6 +37,7 @@ class DocumentUnpublishingService
     )
 
     delete_assets(document.images)
+    document.update!(live_state: "removed")
     TimelineEntry.create!(document: document, entry_type: "removed")
   end
 

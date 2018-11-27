@@ -155,5 +155,13 @@ RSpec.describe DocumentUnpublishingService do
 
       expect(document.timeline_entries.first.entry_type).to eq("removed")
     end
+
+    it "keeps track of the live state" do
+      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, locale: document.locale })
+      DocumentUnpublishingService.new.remove_and_redirect(document, redirect_path)
+      document.reload
+
+      expect(document.live_state).to eq("removed")
+    end
   end
 end
