@@ -2,7 +2,7 @@ en:
   document_images:
     index:
       title: "Images for ‘%{title}’"
-      description_govspeak: Images can be jpg, png or gif files. [Full guidance on images](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/images-and-videos)
+      description_govspeak: Images can be jpg, png or gif files. Full [guidance on images](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/images-and-videos).
       upload_image: Upload an image
       alt_text: Alt text
       caption: Image caption
@@ -16,9 +16,9 @@ en:
           invalid_format: Select a jpg, png or gif image file
           max_size: "Select an image file under %{max_size} in size"
           min_dimensions: "Select an image at least %{width} pixels wide by %{height} pixels high"
-        cropped: "Image “%{file}” has been cropped"
-        details_edited: "Image details for “%{file}” have been updated"
-        deleted: "Image “%{file}” has been deleted"
+        cropped: "Image ‘%{file}’ has been cropped"
+        details_edited: "Image details for ‘%{file}’ have been updated"
+        deleted: "Image ‘%{file}’ has been deleted"
         api_error:
           title: Something has gone wrong
           description_govspeak: Something went wrong when uploading your file. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
