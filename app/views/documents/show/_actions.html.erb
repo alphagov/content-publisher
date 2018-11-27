@@ -10,7 +10,7 @@
       <% end %>
     <% elsif @document.publication_state == "error_sending_to_draft" %>
       <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("documents.show.sidebar.error_creating_preview") %>
+        <%= govspeak_to_html t("documents.show.sidebar.error_creating_preview_govspeak") %>
       <% end %>
 
       <%= form_tag create_preview_path(@document) do %>
@@ -18,7 +18,7 @@
       <% end %>
     <% elsif @document.publication_state == "error_deleting_draft" %>
       <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("documents.show.sidebar.error_deleting_draft") %>
+        <%= govspeak_to_html t("documents.show.sidebar.error_deleting_draft_govspeak") %>
       <% end %>
 
       <%= form_tag document_path(@document), method: :delete do %>
@@ -26,7 +26,7 @@
       <% end %>
     <% elsif @document.publication_state == "error_sending_to_live" %>
       <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("documents.show.sidebar.error_publishing_live") %>
+        <%= govspeak_to_html t("documents.show.sidebar.error_publishing_live_govspeak") %>
       <% end %>
 
       <%= render "govuk_publishing_components/components/button", text: "Retry publishing", href: publish_document_path(@document) %>

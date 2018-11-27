@@ -9,6 +9,6 @@ en:
       flashes:
         requirements: You need to
       guidance:
-        alt_text: A simple and specific description of what the image shows. This helps screen-readers and search engines.
-        caption: This text appears on the page under the image.
-        credit: You must have the rights to use this image. Images should be credited to their source. For example, Getty Images. Open Government Licence (OGL) images do not need to be credited.
+        alt_text_govspeak: A simple and specific description of what the image shows. This helps screen-readers and search engines.
+        caption_govspeak: This text appears on the page under the image.
+        credit_govspeak: You must have the rights to use this image. Images should be credited to their source. For example, Getty Images. Open Government Licence (OGL) images do not need to be credited.

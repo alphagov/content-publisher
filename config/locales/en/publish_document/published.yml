@@ -4,14 +4,14 @@ en:
       title: Content has been published
       reviewed:
         title: Content has been published
-        body: |
+        body_govspeak: |
           ‘%{title}’ has been published on GOV.UK.
 
           It may take 5 minutes to appear live.
 
       published_without_review:
         title: Content has been published but still needs 2i review
-        body: |
+        body_govspeak: |
           ‘%{title}’ has been published on GOV.UK.
 
           It may take 5 minutes to appear live.

@@ -10,7 +10,7 @@
       } %>
 
       <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("publish_document.published.reviewed.body", title: @document.title) %>
+        <%= govspeak_to_html t("publish_document.published.reviewed.body_govspeak", title: @document.title) %>
 
         <%= link_to(nil, DocumentUrl.new(@document).public_url, class: "govuk-link") %>
       <% end %>
@@ -20,7 +20,7 @@
       } %>
 
       <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("publish_document.published.published_without_review.body", title: @document.title) %>
+        <%= govspeak_to_html t("publish_document.published.published_without_review.body_govspeak", title: @document.title) %>
 
         <p> <%= t("publish_document.published.published_without_review.send_label") %> </p>
 

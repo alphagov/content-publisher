@@ -2,7 +2,7 @@ en:
   document_images:
     index:
       title: "Images for ‘%{title}’"
-      description: Images can be jpg, png or gif files. [Full guidance on images](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/images-and-videos)
+      description_govspeak: Images can be jpg, png or gif files. [Full guidance on images](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/images-and-videos)
       upload_image: Upload an image
       alt_text: Alt text
       caption: Image caption
@@ -21,4 +21,4 @@ en:
         deleted: "Image “%{file}” has been deleted"
         api_error:
           title: Something has gone wrong
-          description: Something went wrong when uploading your file. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+          description_govspeak: Something went wrong when uploading your file. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).

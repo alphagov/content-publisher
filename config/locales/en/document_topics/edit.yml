@@ -6,4 +6,4 @@ en:
       flashes:
         topic_update_conflict:
           title: Somebody else changed the topics before you could
-          description:  Your changes have not been saved. Please try again.
+          description_govspeak:  Your changes have not been saved. Please try again.

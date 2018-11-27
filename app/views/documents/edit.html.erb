@@ -44,7 +44,7 @@
           id: "document-title-guidance",
           title: @document.document_type_schema.guidance_for("title").title
         } do %>
-          <p class="govuk-body"><%= @document.document_type_schema.guidance_for("title").body %></p>
+          <p class="govuk-body"><%= @document.document_type_schema.guidance_for("title").body_govspeak %></p>
         <% end %>
       </div>
     <% end %>
@@ -72,7 +72,7 @@
           id: "document-summary-guidance",
           title: @document.document_type_schema.guidance_for("summary").title
         } do %>
-          <p class="govuk-body"><%= @document.document_type_schema.guidance_for("summary").body %></p>
+          <p class="govuk-body"><%= @document.document_type_schema.guidance_for("summary").body_govspeak %></p>
         <% end %>
       </div>
     </div>

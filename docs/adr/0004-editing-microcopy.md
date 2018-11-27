@@ -46,6 +46,7 @@ Although we could use translations to extract all of the strings in the applicat
    * **Domain data** that's static is extracted into custom YAML files. This application has two static models (DocumentTypeSchema and SupertypeSchema) that encapsulate domain concepts where the data is part of the application. We think domain data - whether it's a backend setting or a label - should be defined in one place so it can change together. In this application, we've chosen to store the backing files for the two static models in `app/formats`.
    * **Global strings** (states and validation messages) are extracted using translations. As these strings aren't page-specific, we put them at the top-level of the translation hierarchy (in `states.yml` and `validations.yml`).
    * **All other strings** are extracted using translations, in a hierarchy that follows the structure of the `app/views` directory. For example, the above example relates to `app/views/publish_document/published.html.erb`.
+   * **Small amounts of govspeak and HTML** are extracted using translations as for other strings, with '\_html' or '\_govspeak' appended to the final component of the key to indicate they support rich text.
 
 Every instance of a string in the tests has been replaced according to the above rules, such that the tests continue to pass when an extracted string is changed. **Link and button labels** are not replaced, as they are not extracted in the code.
 

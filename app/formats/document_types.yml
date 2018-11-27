@@ -2,7 +2,7 @@
 - id: news_story
   label: News story
   description: "News written for GOV.UK which users need, can act on, and can’t get from other sources."
-  hint: |
+  hint_govspeak: |
     Do not include advice in news stories. Do not use to promote other content.
     Read the full [guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story).
   path_prefix: /government/news
@@ -14,13 +14,13 @@
   guidance:
     - id: title
       title: Create a news title
-      body: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
+      body_govspeak: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
     - id: summary
       title: Writing a news summary
-      body: The summary explains the main point of the content and it should end with a full stop. Avoid repeating the first line of the body.
+      body_govspeak: The summary explains the main point of the content and it should end with a full stop. Avoid repeating the first line of the body.
     - id: body
       title: Writing news
-      body: |
+      body_govspeak: |
         Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
 
         [Guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story){:target="_blank"}
@@ -62,7 +62,7 @@
 - id: press_release
   label: Press release
   description: "Unedited press releases as sent to the media, and official statements from the organisation."
-  hint: |
+  hint_govspeak: |
     Do not use to promote other content. Statements to Parliament should use the Speech document type.
     Read the full [guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release).
   path_prefix: /government/news
@@ -74,13 +74,13 @@
   guidance:
     - id: title
       title: Title
-      body: The title should be unique and specific. It must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
+      body_govspeak: The title should be unique and specific. It must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
     - id: summary
       title: Summary
-      body: The summary should explain the main point of the story. It is the first line of the story so don’t repeat it in the body and end with a full stop.
+      body_govspeak: The summary should explain the main point of the story. It is the first line of the story so don’t repeat it in the body and end with a full stop.
     - id: body
       title: Writing a press release
-      body: |
+      body_govspeak: |
         Use short words, short sentences, and short paragraphs. Use subheadings in longer content. Avoid 'notes to editors'.
 
         [Guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release){:target="_blank"}

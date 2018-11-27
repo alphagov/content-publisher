@@ -19,7 +19,7 @@ en:
           other: "<strong>%{count}</strong> documents"
         untitled: No title
         page_info: "%{page} of %{pages}"
-        guidance: |
+        guidance_govspeak: |
           Improve your search results:
 
             * removing filters
