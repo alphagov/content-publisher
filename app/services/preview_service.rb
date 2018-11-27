@@ -9,12 +9,12 @@ class PreviewService
 
   def create_preview(args)
     save_changes(args)
-    DocumentPublishingService.new.publish_draft(document)
+    publish_draft(document)
   end
 
   def try_create_preview(args)
     save_changes(args)
-    DocumentPublishingService.new.try_publish_draft(document) unless has_issues?
+    try_publish_draft(document) unless has_issues?
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
   end
@@ -54,5 +54,21 @@ private
     document.current_edition_number += 1
     document.change_note = nil
     document.update_type = "major"
+  end
+
+  def try_publish_draft(document)
+    publish_draft(document)
+  rescue GdsApi::BaseError => e
+    Rails.logger.error(e)
+    document.update!(publication_state: "changes_not_sent_to_draft")
+  end
+
+  def publish_draft(document)
+    payload = PublishingApiPayload.new(document).payload
+    GdsApi.publishing_api_v2.put_content(document.content_id, payload)
+    document.update!(publication_state: "sent_to_draft")
+  rescue GdsApi::BaseError
+    document.update!(publication_state: "error_sending_to_draft")
+    raise
   end
 end

@@ -74,14 +74,6 @@ RSpec.describe UserFacingState do
       expect(state).to eql("draft")
     end
 
-    it "is draft if it has unpublished changes currently sending" do
-      document = build(:document, publication_state: "sending_to_draft")
-
-      state = UserFacingState.new(document).to_s
-
-      expect(state).to eql("draft")
-    end
-
     it "is draft if it has unpublished changes that we can't send to draft" do
       document = build(:document, publication_state: "error_sending_to_draft")
 
@@ -108,14 +100,6 @@ RSpec.describe UserFacingState do
 
     it "is published if it has reviewed changes sent to live" do
       document = build(:document, publication_state: "sent_to_live", review_state: "reviewed")
-
-      state = UserFacingState.new(document).to_s
-
-      expect(state).to eql("published")
-    end
-
-    it "is published if it has reviewed changes sending to live" do
-      document = build(:document, publication_state: "sending_to_live", review_state: "reviewed")
 
       state = UserFacingState.new(document).to_s
 

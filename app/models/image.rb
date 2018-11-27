@@ -26,7 +26,7 @@ class Image < ApplicationRecord
   end
 
   def asset_manager_id
-    url_array = asset_manager_file_url.split("/")
+    url_array = asset_manager_file_url.to_s.split("/")
     # https://github.com/alphagov/asset-manager#create-an-asset
     url_array[url_array.length - 2]
   end
