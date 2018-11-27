@@ -18,8 +18,8 @@ class DocumentTopicsController < ApplicationController
     document = Document.find_by_param(params[:document_id])
     document.document_topics.patch(params.fetch(:topics, []), params[:version].to_i)
     redirect_to document_path(document), notice: t("documents.show.flashes.topics_updated")
-  rescue GdsApi::HTTPConflict => e
-    Rails.logger.error(e)
+  rescue GdsApi::HTTPConflict
+    Rails.logger.warn("Conflict updating topics for #{document.content_id} at version #{params[:version].to_i}")
     redirect_to document_topics_path, alert_with_description: t("document_topics.edit.flashes.topic_update_conflict")
   rescue GdsApi::BaseError => e
     GovukError.notify(e)

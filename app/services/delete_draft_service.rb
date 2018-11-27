@@ -21,14 +21,14 @@ private
 
   def discard_draft
     GdsApi.publishing_api_v2.discard_draft(document.content_id)
-  rescue GdsApi::HTTPNotFound => e
-    Rails.logger.error(e)
+  rescue GdsApi::HTTPNotFound
+    Rails.logger.warn("No draft to discard for content id #{document.content_id}")
   end
 
   def delete_asset(asset)
     return unless asset.asset_manager_id
     AssetManagerService.new.delete(asset)
-  rescue GdsApi::HTTPNotFound => e
-    Rails.logger.error(e)
+  rescue GdsApi::HTTPNotFound
+    Rails.logger.warn("No asset to delete for id #{asset.asset_manager_id}")
   end
 end
