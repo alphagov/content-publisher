@@ -14,25 +14,10 @@ class DocumentPublishingService
     raise
   end
 
-  def discard_draft(document)
-    delete_assets(document.images)
-    GdsApi.publishing_api_v2.discard_draft(document.content_id)
-    document.update!(publication_state: "changes_not_sent_to_draft")
-  rescue GdsApi::BaseError => e
-    GovukError.notify(e)
-    document.update!(publication_state: "error_deleting_draft")
-    raise
-  end
-
 private
 
   def publish_assets(assets)
     asset_manager = AssetManagerService.new
     assets.each { |asset| asset_manager.publish(asset) }
-  end
-
-  def delete_assets(assets)
-    asset_manager = AssetManagerService.new
-    assets.each { |asset| asset_manager.delete(asset) }
   end
 end

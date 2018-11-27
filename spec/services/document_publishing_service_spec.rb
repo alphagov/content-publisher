@@ -22,19 +22,4 @@ RSpec.describe DocumentPublishingService do
       expect(document).to have_received(:update!).with(publication_state: "error_sending_to_live")
     end
   end
-
-  describe "#discard_draft" do
-    it "keeps track of the publication state" do
-      stub_publishing_api_discard_draft(document.content_id)
-      DocumentPublishingService.new.discard_draft(document)
-      expect(document).to have_received(:update!).with(publication_state: "changes_not_sent_to_draft")
-    end
-
-    it "keeps track of the publication state on error" do
-      publishing_api_isnt_available
-      expect { DocumentPublishingService.new.discard_draft(document) }.to raise_error GdsApi::BaseError
-      expect(document).to_not have_received(:update!).with(publication_state: "changes_not_sent_to_draft")
-      expect(document).to have_received(:update!).with(publication_state: "error_deleting_draft")
-    end
-  end
 end

@@ -20,15 +20,12 @@ class DocumentsController < ApplicationController
 
   def confirm_delete_draft
     document = Document.find_by_param(params[:id])
-    raise "Trying to delete a live document" if document.has_live_version_on_govuk
     redirect_to document_path(document), confirmation: "documents/show/delete_draft"
   end
 
   def destroy
     document = Document.find_by_param(params[:id])
-    raise "Trying to delete a live document" if document.has_live_version_on_govuk
-    DocumentPublishingService.new.discard_draft(document)
-    document.destroy!
+    DeleteDraftService.new(document).delete
     redirect_to documents_path
   rescue GdsApi::BaseError => e
     Rails.logger.error(e)
