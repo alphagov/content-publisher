@@ -20,8 +20,7 @@
     items: tags
   } %>
 <% rescue GdsApi::BaseError => e %>
-  <%# Don't export the error as we're telling the user about it %>
-  <% Rails.logger.error(e) %>
+  <% GovukError.notify(e) %>
 
   <%= render "components/summary", {
     id: "tags",

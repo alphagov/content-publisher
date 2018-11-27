@@ -4,7 +4,7 @@ class DocumentTopicsController < ApplicationController
   include GDS::SSO::ControllerMethods
 
   rescue_from GdsApi::BaseError do |e|
-    Rails.logger.error(e)
+    GovukError.notify(e)
     render "#{action_name}_api_down", status: :service_unavailable
   end
 
@@ -22,7 +22,7 @@ class DocumentTopicsController < ApplicationController
     Rails.logger.error(e)
     redirect_to document_topics_path, alert_with_description: t("document_topics.edit.flashes.topic_update_conflict")
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
+    GovukError.notify(e)
     redirect_to document, alert_with_description: t("documents.show.flashes.topic_update_error")
   end
 end

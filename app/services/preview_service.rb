@@ -57,7 +57,7 @@ private
   def try_publish_draft(document)
     publish_draft(document)
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
+    GovukError.notify(e)
     document.update!(publication_state: "changes_not_sent_to_draft")
   end
 

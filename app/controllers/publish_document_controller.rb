@@ -9,7 +9,7 @@ class PublishDocumentController < ApplicationController
       return
     end
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
+    GovukError.notify(e)
     redirect_to @document, alert_with_description: t("documents.show.flashes.publish_error")
   end
 

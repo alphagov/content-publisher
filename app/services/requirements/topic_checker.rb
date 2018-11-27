@@ -16,7 +16,7 @@ module Requirements
           issues << Issue.new(:topics, :none)
         end
       rescue GdsApi::BaseError => e
-        Rails.logger.error(e) if rescue_api_errors
+        GovukError.notify(e) if rescue_api_errors
         raise unless rescue_api_errors
       end
 

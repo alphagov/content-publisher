@@ -28,7 +28,7 @@ class DocumentsController < ApplicationController
     DeleteDraftService.new(document).delete
     redirect_to documents_path
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
+    GovukError.notify(e)
     redirect_to document, alert_with_description: t("documents.show.flashes.delete_draft_error")
   end
 

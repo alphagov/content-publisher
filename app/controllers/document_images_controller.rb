@@ -2,7 +2,7 @@
 
 class DocumentImagesController < ApplicationController
   rescue_from GdsApi::BaseError do |e|
-    Rails.logger.error(e)
+    GovukError.notify(e)
     redirect_to document_images_path, alert_with_description: t("document_images.index.flashes.api_error")
   end
 
