@@ -28,6 +28,7 @@
 .app-c-markdown-editor__preview-toggle {
   width: 100%;
   border-bottom: $govuk-border-width-form-element solid $govuk-border-colour;
+  background-colur: govuk-colour("grey-3");
 }
 
 .app-c-markdown-editor__button {
