@@ -1,22 +1,6 @@
 # frozen_string_literal: true
 
 class DocumentPublishingService
-  def try_publish_draft(document)
-    publish_draft(document)
-  rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
-    document.update!(publication_state: "changes_not_sent_to_draft")
-  end
-
-  def publish_draft(document)
-    document.update!(publication_state: "sending_to_draft")
-    GdsApi.publishing_api_v2.put_content(document.content_id, PublishingApiPayload.new(document).payload)
-    document.update!(publication_state: "sent_to_draft")
-  rescue GdsApi::BaseError
-    document.update!(publication_state: "error_sending_to_draft")
-    raise
-  end
-
   def publish(document, review_state)
     document.update!(publication_state: "sending_to_live", review_state: review_state)
     publish_assets(document.images)

@@ -7,39 +7,6 @@ RSpec.describe DocumentPublishingService do
     allow(document).to receive(:update!)
   end
 
-  describe "#publish_draft" do
-    it "keeps track of the publication state" do
-      stub_any_publishing_api_put_content
-      DocumentPublishingService.new.publish_draft(document)
-      expect(document).to have_received(:update!).with(publication_state: "sending_to_draft")
-      expect(document).to have_received(:update!).with(publication_state: "sent_to_draft")
-    end
-
-    it "keeps track of the publication state on error" do
-      publishing_api_isnt_available
-      expect { DocumentPublishingService.new.publish_draft(document) }.to raise_error GdsApi::BaseError
-      expect(document).to_not have_received(:update!).with(publication_state: "sent_to_draft")
-      expect(document).to have_received(:update!).with(publication_state: "error_sending_to_draft")
-    end
-  end
-
-  describe "#try_publish_draft" do
-    it "keeps track of the publication state on error" do
-      stub_any_publishing_api_put_content
-      DocumentPublishingService.new.try_publish_draft(document)
-      expect(document).to have_received(:update!).with(publication_state: "sending_to_draft")
-      expect(document).to have_received(:update!).with(publication_state: "sent_to_draft")
-    end
-
-    it "keeps track of the publication state on error" do
-      publishing_api_isnt_available
-      DocumentPublishingService.new.try_publish_draft(document)
-      expect(document).to_not have_received(:update!).with(publication_state: "sent_to_draft")
-      expect(document).to have_received(:update!).with(publication_state: "error_sending_to_draft")
-      expect(document).to have_received(:update!).with(publication_state: "changes_not_sent_to_draft")
-    end
-  end
-
   describe "#publish" do
     it "keeps track of the publication state" do
       stub_any_publishing_api_publish
