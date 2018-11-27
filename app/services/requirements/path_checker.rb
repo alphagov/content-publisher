@@ -13,7 +13,7 @@ module Requirements
 
       begin
         if document.document_type_schema.check_path_conflict && base_path_conflict?
-          issues << Issue.new(:base_path, :conflict)
+          issues << Issue.new(:title, :conflict)
         end
       rescue GdsApi::BaseError => e
         Rails.logger.error(e)

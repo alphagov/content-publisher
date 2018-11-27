@@ -34,11 +34,11 @@ RSpec.describe Requirements::PathChecker do
         publishing_api_has_lookups(document.base_path => SecureRandom.uuid)
         issues = Requirements::PathChecker.new(document).pre_preview_issues
 
-        form_message = issues.items_for(:base_path).first[:text]
-        expect(form_message).to eq(I18n.t!("requirements.base_path.conflict.form_message"))
+        form_message = issues.items_for(:title).first[:text]
+        expect(form_message).to eq(I18n.t!("requirements.title.conflict.form_message"))
 
-        summary_message = issues.items_for(:base_path, style: "summary").first[:text]
-        expect(summary_message).to eq(I18n.t!("requirements.base_path.conflict.summary_message"))
+        summary_message = issues.items_for(:title, style: "summary").first[:text]
+        expect(summary_message).to eq(I18n.t!("requirements.title.conflict.summary_message"))
       end
     end
 
@@ -54,7 +54,7 @@ RSpec.describe Requirements::PathChecker do
         schema = build :document_type_schema, check_path_conflict: true
         document = build :document, document_type: schema.id
         issues = Requirements::PathChecker.new(document).pre_preview_issues
-        expect(issues.items_for(:base_path)).to be_empty
+        expect(issues.items_for(:title)).to be_empty
       end
     end
   end
