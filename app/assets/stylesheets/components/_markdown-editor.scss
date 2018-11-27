@@ -36,7 +36,7 @@
   @include govuk-font(19);
   display: inline-block;
   margin-bottom: -$govuk-border-width-form-element;
-  padding: (govuk-spacing(1) + $govuk-border-width-form-element);
+  padding: govuk-spacing(2);
   border: $govuk-border-width-form-element solid transparent;
   border-top: 0;
   border-bottom: 0;
