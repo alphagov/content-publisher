@@ -14,11 +14,5 @@ module Requirements
       issues += ContentChecker.new(document).pre_preview_issues.to_a
       CheckerIssues.new(issues)
     end
-
-  private
-
-    def lookup_content_id
-      GdsApi.publishing_api_v2.lookup_content_id(base_path: document.base_path)
-    end
   end
 end
