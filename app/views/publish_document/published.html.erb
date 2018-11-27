@@ -17,7 +17,7 @@
       <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html t("publish_document.published.reviewed.body_govspeak", title: @document.title) %>
 
-        <%= link_to(nil, DocumentUrl.new(@document).public_url, class: "govuk-link") %>
+        <%= link_to(nil, DocumentUrl.new(@document).public_url, class: "govuk-link govuk-link--no-visited-state") %>
       <% end %>
     <% else %>
       <%= render "govuk_publishing_components/components/panel", {
