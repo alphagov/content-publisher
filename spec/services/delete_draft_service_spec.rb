@@ -51,13 +51,8 @@ RSpec.describe DeleteDraftService do
     it "copes if an asset preview does not exist" do
       document = create :document
       image = create :image, :in_preview, document: document
-
-      # TODO: Move this into gds-api-adapters
-      ASSET_MANAGER_ENDPOINT = Plek.current.find("asset-manager")
-      asset_id = image.asset_manager_id
-      stub_request(:delete, "#{ASSET_MANAGER_ENDPOINT}/assets/#{asset_id}").to_return(status: 404)
+      asset_manager_does_not_have_an_asset(image.asset_manager_id)
       stub_publishing_api_discard_draft(document.content_id)
-
       DeleteDraftService.new(document).delete
       expect(Image.count).to be_zero
       expect(Document.count).to be_zero
