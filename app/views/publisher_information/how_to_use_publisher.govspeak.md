@@ -1,19 +1,17 @@
-Content publisher is a new way of publishing content on GOV.UK. It is designed to make it 
+Content Publisher is a new way of publishing content on GOV.UK. It is designed to make it 
 easier to publish useful content and to help you use data to manage that content.
 
-GDS are now beta testing Content publisher with government publishers. The beta version will have limited functionality at first. We are adding and improving features. 
+We are now beta testing Content Publisher with government publishers. The beta version will have limited functionality at first. We are adding and improving features. 
 
-Read more about what Content publish can and cannot do.
-
-This document is for people who need to publish content to help them know what they should do with the new tool.
+Read more about [what Content Publisher can and cannot do](/beta-capabilities).
 
 ##How to create content
 
-Content publisher can be used to create news stories and press releases. Other document types still need to be created in Whitehall publisher.
+Content Publisher can be used to create news stories and press releases. Other document types still need to be created in Whitehall publisher.
 
 You should always consider if content really needs to be published on GOV.UK. Unnecessary content makes it harder for users to find what the need.
 
-Read guidance on what to publish on GOV.UK.
+Read [guidance on what to publish on GOV.UK](documents/publishing-guidance).
 
 ---
 
@@ -25,7 +23,7 @@ Content publisher has a toolbar to make it easier to add common markdown. You ca
 
 More advanced markdown features can be used by following the guidance and examples in the interface. 
 
-Read full guidance on Markdown.
+Read full [guidance on markdown](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown).
 
 ---
 
@@ -35,7 +33,7 @@ News content has a lead image which appears at the top of the page and is used a
 
 Every page has a default lead image to represent your organisation. You should replace it with a picture that is more relevant to the content.
 
-You can upload any shape or size picture and crop it to the standard shape in Content publisher. Image files can be jpg, gif, or png files.
+You can upload any shape or size picture and crop it to the standard shape in Content Publisher. Image files can be jpg, gif, or png files.
 
 You must add alt text for every image, but the caption is optional and the credit may not be required on all images.
 
@@ -55,7 +53,7 @@ You only need to add any tags if they are relevant. If no minister is involved y
 
 ##Topics
 
-Topics describe what the content is about and group content on GOV.UK to make it easier to find. Topics used to be known as the Taxonomy.
+Topics describe what the content is about and group content on GOV.UK to make it easier to find. Topics are also known as the Taxonomy.
 
 All content must be associated with at least one topic and can have as many as are relevant. Choose the most specific topics you can.
 
@@ -63,19 +61,15 @@ You can select any relevant topics. No topics are restricted or owned by any dep
 
 Changes to topics are applied to a live page as soon as you save. If the content has already been published and you add new topics, then the last published edition will appear on those topic pages immediately, before you publish a new edition.
 
-Full guidance on topics.
-
 ---
 
 ##How to update content
 
 You can search for existing content using the document search.
 
-To update published content you need to create a new edition. This new edition has the status ‘draft’ and can then be edited. When it is published it will replace the current edition live on GOV.UK.
+To update published content you need to create a new edition. This new edition has the status ‘draft’ and can then be edited. When it's published it will replace the current edition live on GOV.UK.
 
 When you publish a new edition you need to indicate what type of change you have made. If the change is significant to users you must add a change note to explain the change. This change note will appear on GOV.UK and will be emailed to users.
-
-Full guidance on change notes.
 
 ---
 
@@ -85,7 +79,7 @@ Full guidance on change notes.
 
 Before you publish content you must preview it. This shows you how the content will look on GOV.UK on a desktop screen and on a mobile screen. Half of our users are on a mobile device and so all content must be clear on small screens.
 
-Fact check or sign off
+###Fact check or sign off
 
 Some content needs to be checked before it is published to make sure it is accurate. 
 
@@ -95,7 +89,7 @@ The person you share it with can then ask you to make any corrections or changes
 
 ###2i review
 
-All content should be reviewed by another person before it is published. This is to make sure the content is easy to understand and there are no mistakes.
+All content should be reviewed by another person before it's published. This is to make sure the content is easy to understand and there are no mistakes.
 
 (2i is short for ‘2nd pair of eyes’, which means getting another person to review work.)
 
@@ -105,7 +99,7 @@ You then need to ask someone to do a 2i review. Send them the link to the page i
 
 If they find any mistakes in the content then they can edit it or ask you to edit it.
 
-When it has been reviewed and any improvements made then either you or they can go ahead and publish it. 
+When it has been reviewed and any improvements made, then either you or they can go ahead and publish it. 
 
 Select the ‘Publish’ button, and then confirm that it has been reviewed. 
 
