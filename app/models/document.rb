@@ -15,7 +15,6 @@ class Document < ApplicationRecord
     changes_not_sent_to_draft
     sent_to_draft
     error_sending_to_draft
-    sending_to_live
     sent_to_live
     error_sending_to_live
     error_deleting_draft

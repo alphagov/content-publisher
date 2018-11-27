@@ -15,6 +15,7 @@ RSpec.feature "Publishing a document" do
 
   def given_there_is_a_document_in_draft
     @document = create(:document, :publishable, base_path: "/news/banana-pricing-updates")
+    @image = create(:image, :in_preview, document: @document)
   end
 
   def when_i_visit_the_document_page
@@ -31,7 +32,7 @@ RSpec.feature "Publishing a document" do
 
   def and_i_confirm_the_publishing
     @request = stub_publishing_api_publish(@document.content_id, update_type: nil, locale: @document.locale)
-    asset_manager_update_asset(SecureRandom.uuid)
+    asset_manager_update_asset(@image.asset_manager_id)
     click_on "Confirm publish"
   end
 

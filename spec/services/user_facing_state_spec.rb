@@ -106,14 +106,6 @@ RSpec.describe UserFacingState do
       expect(state).to eql("published")
     end
 
-    it "is published if it has reviewed changes sending to live" do
-      document = build(:document, publication_state: "sending_to_live", review_state: "reviewed")
-
-      state = UserFacingState.new(document).to_s
-
-      expect(state).to eql("published")
-    end
-
     it "is draft if the publishing failed" do
       document = build(:document, publication_state: "error_sending_to_live", review_state: "reviewed")
 
