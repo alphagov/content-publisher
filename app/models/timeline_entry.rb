@@ -18,6 +18,8 @@ class TimelineEntry < ApplicationRecord
     image_removed
     new_edition
     create_preview
+    retired
+    removed
   ].freeze
 
   validates_inclusion_of :entry_type, in: ENTRY_TYPES
