@@ -44,13 +44,10 @@ RSpec.describe Requirements::PathChecker do
 
     context "when the Publishing API is down" do
       before do
-        # TODO: add this stub as part of the V2 helpers
-        stub_request(:post, GdsApi::TestHelpers::PublishingApi::PUBLISHING_API_ENDPOINT + "/lookup-by-base-path")
-          .to_return(status: 503)
+        publishing_api_isnt_available
       end
 
       it "returns no issues (ignore exception)" do
-        publishing_api_isnt_available
         schema = build :document_type_schema, check_path_conflict: true
         document = build :document, document_type: schema.id
         issues = Requirements::PathChecker.new(document).pre_preview_issues
