@@ -16,3 +16,5 @@ en:
 
           It may take 5 minutes to appear live.
         send_label: Send this document to another publisher for them to review. You or they can then approve it or create a new edition to make changes.
+        what_to_do_govspeak: |
+          ## What to do next

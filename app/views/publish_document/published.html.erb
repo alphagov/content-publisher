@@ -29,7 +29,7 @@
         <% stripped_url = DocumentUrl.new(@document).public_url.sub(/^https?\:\/\//,'') %>
         <%= link_to(nil, stripped_url, class: "govuk-link govuk-link--no-visited-state") %>
 
-        <h2 id="what-to-do-next">What to do next</h2>
+        <%= govspeak_to_html t("publish_document.published.published_without_review.what_to_do_govspeak") %>
       <% end %>
 
       <%= render "govuk_publishing_components/components/copy_to_clipboard",
