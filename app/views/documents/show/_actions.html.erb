@@ -16,6 +16,10 @@
       <%= form_tag create_preview_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Try again" %>
       <% end %>
+
+      <% unless @document.has_live_version_on_govuk %>
+        <%= link_to "Delete draft", delete_draft_path(@document), class: "govuk-link app-link--destructive" %>
+      <% end %>
     <% elsif @document.publication_state == "error_deleting_draft" %>
       <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html t("documents.show.sidebar.error_deleting_draft_govspeak") %>
