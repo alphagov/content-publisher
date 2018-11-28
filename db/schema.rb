@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_142853) do
+ActiveRecord::Schema.define(version: 2018_11_28_164501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,16 @@ ActiveRecord::Schema.define(version: 2018_11_28_142853) do
     t.index ["document_id"], name: "index_images_on_document_id"
   end
 
+  create_table "removes", force: :cascade do |t|
+    t.string "explanatory_note"
+    t.string "alternative_path"
+    t.boolean "redirect", default: false
+    t.bigint "timeline_entries_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["timeline_entries_id"], name: "index_removes_on_timeline_entries_id"
+  end
+
   create_table "retires", force: :cascade do |t|
     t.string "explanatory_note"
     t.bigint "timeline_entries_id", null: false
@@ -133,6 +143,7 @@ ActiveRecord::Schema.define(version: 2018_11_28_142853) do
   add_foreign_key "documents", "users", column: "last_editor_id"
   add_foreign_key "images", "active_storage_blobs", column: "blob_id", on_delete: :cascade
   add_foreign_key "images", "documents", on_delete: :cascade
+  add_foreign_key "removes", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
   add_foreign_key "retires", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
   add_foreign_key "timeline_entries", "documents", on_delete: :cascade
   add_foreign_key "timeline_entries", "users", on_delete: :restrict
