@@ -4,7 +4,7 @@ class UserFacingState
   STATES = %w[draft submitted_for_review published_but_needs_2i published].freeze
 
   attr_reader :document
-  delegate :review_state, :publication_state, to: :document
+  delegate :review_state, :publication_state, :live_state, to: :document
 
   def self.scope(query, state)
     case state.to_sym
@@ -12,6 +12,8 @@ class UserFacingState
       query
         .where(publication_state: %w[changes_not_sent_to_draft sent_to_draft error_sending_to_draft error_sending_to_live error_deleting_draft])
         .where.not(review_state: "submitted_for_review")
+    when :retired
+      query.where(publication_state: "sent_to_live", live_state: "retired")
     when :submitted_for_review
       query.where(review_state: "submitted_for_review")
     when :published_but_needs_2i
@@ -35,6 +37,8 @@ class UserFacingState
       "submitted_for_review"
     elsif publication_state.in?(%w[changes_not_sent_to_draft sent_to_draft error_sending_to_draft error_sending_to_live error_deleting_draft])
       "draft"
+    elsif publication_state == "sent_to_live" && live_state == "retired"
+      "retired"
     elsif review_state == "published_without_review"
       "published_but_needs_2i"
     elsif publication_state.in?(%w[sent_to_live])

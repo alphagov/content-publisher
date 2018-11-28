@@ -47,6 +47,13 @@ RSpec.describe UserFacingState do
     it "finds nothing for an unknown state" do
       expect(UserFacingState.scope(Document, "surprise")).to be_empty
     end
+
+    it "finds items that have been published and later retired" do
+      create(:document, publication_state: "sent_to_live", live_state: "published")
+      retired = create(:document, publication_state: "sent_to_live", live_state: "retired")
+
+      expect(UserFacingState.scope(Document, "retired")).to match([retired])
+    end
   end
 
   describe "#to_s" do
@@ -112,6 +119,27 @@ RSpec.describe UserFacingState do
       state = UserFacingState.new(document).to_s
 
       expect(state).to eql("draft")
+    end
+
+    it "is retired if it has been published and later retired" do
+      document = build(:document, publication_state: "sent_to_live", live_state: "retired")
+
+      state = UserFacingState.new(document).to_s
+
+      expect(state).to eql("retired")
+    end
+
+    it "is retired if it has not been reviewed and but has been retired" do
+      document = build(
+        :document,
+        publication_state: "sent_to_live",
+        review_state: "published_without_review",
+        live_state: "retired",
+      )
+
+      state = UserFacingState.new(document).to_s
+
+      expect(state).to eql("retired")
     end
   end
 end
