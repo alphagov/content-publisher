@@ -4,5 +4,5 @@ GovukPublishingComponents.configure do |c|
   c.application_print_stylesheet = nil
 
   c.application_stylesheet = "application"
-  c.application_javascript = nil
+  c.application_javascript = "application"
 end
