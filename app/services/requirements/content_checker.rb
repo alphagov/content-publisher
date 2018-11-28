@@ -2,7 +2,8 @@
 
 module Requirements
   class ContentChecker
-    TITLE_MAX_LENGTH = 150
+    TITLE_MAX_LENGTH = 300
+    SUMMARY_MAX_LENGTH = 600
 
     attr_reader :document
 
@@ -23,6 +24,14 @@ module Requirements
 
       if document.title.to_s.lines.count > 1
         issues << Issue.new(:title, :multiline)
+      end
+
+      if document.summary.to_s.size > SUMMARY_MAX_LENGTH
+        issues << Issue.new(:summary, :too_long, max_length: SUMMARY_MAX_LENGTH)
+      end
+
+      if document.summary.to_s.lines.count > 1
+        issues << Issue.new(:summary, :multiline)
       end
 
       CheckerIssues.new(issues)

@@ -17,6 +17,12 @@ en:
       blank:
         form_message: Enter a summary
         summary_message: Enter a summary
+      too_long:
+        form_message: "Enter a summary that is fewer than %{max_length} characters long"
+        summary_message: Enter a shorter summary
+      multiline:
+        form_message: Remove line breaks from the summary
+        summary_message: Remove line breaks from the summary
     body:
       blank:
         form_message: Enter a body
