@@ -9,23 +9,27 @@
 <%= form_for(@document, html: {'autocomplete': 'off'}, data: {'module': 'edit-document-form', 'url-preview-path': generate_path_path}) do |f| %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <%= render "govuk_publishing_components/components/character_count", {
-        textarea: {
-          label: {
-            text: t("documents.edit.form_labels.title"),
-            bold: true
-          },
-          name: "document[title]",
-          value: @document.title,
-          error_items: @issues&.items_for(:title),
-          rows: 2,
-          data: {
-            "url-preview": "input",
-            "contextual-guidance": "document-title-guidance"
-          }
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: t("documents.edit.form_labels.title"),
+          bold: true
         },
-        maxlength: Requirements::ContentChecker::TITLE_MAX_LENGTH
-      } %>
+        id: "document_title",
+        name: "document[title]",
+        value: @document.title,
+        error_items: @issues&.items_for(:title),
+        rows: 2,
+        data: {
+          "url-preview": "input",
+          "contextual-guidance": "document-title-guidance"
+        }
+      } do %>
+        <%= render "components/input_length_suggester", {
+          for_id: "document_title",
+          show_from: 55,
+          message: "Title should be under 65 characters. Current length: {count}",
+        } %>
+      <% end %>
 
       <%= render "components/url_preview", {
         title: t("documents.edit.url_preview.available"),
@@ -52,22 +56,26 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <%= render "govuk_publishing_components/components/character_count", {
-        textarea: {
-          label: {
-            text: t("documents.edit.form_labels.summary"),
-            bold: true
-          },
-          name: "document[summary]",
-          value: @document.summary,
-          error_items: @issues&.items_for(:summary),
-          rows: 4,
-          data: {
-            "contextual-guidance": "document-summary-guidance"
-          }
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: t("documents.edit.form_labels.summary"),
+          bold: true
         },
-        maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH
-      } %>
+        id: "document_summary",
+        name: "document[summary]",
+        value: @document.summary,
+        error_items: @issues&.items_for(:summary),
+        rows: 4,
+        data: {
+          "contextual-guidance": "document-summary-guidance"
+        }
+      } do %>
+        <%= render "components/input_length_suggester", {
+          for_id: "document_summary",
+          show_from: 120,
+          message: "Summary should be under 140 characters. Current length: {count}",
+        } %>
+      <% end %>
     </div>
 
     <% if @document.document_type_schema.guidance_for("summary") %>
