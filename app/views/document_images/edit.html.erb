@@ -91,6 +91,7 @@
       <%= render "components/contextual_guidance", {
         id: "credit-guidance",
         title: t("document_images.edit.form_labels.credit"),
+        relative: true
       } do %>
         <%= render "govuk_publishing_components/components/govspeak" do %>
           <%= govspeak_to_html t("document_images.edit.guidance.credit_govspeak") %>
