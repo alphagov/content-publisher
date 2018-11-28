@@ -41,6 +41,18 @@ RSpec.describe Requirements::ContentChecker do
       summary_message = issues.items_for(:title, style: "summary").first[:text]
       expect(summary_message).to eq(I18n.t!("requirements.title.multiline.summary_message"))
     end
+
+    it "returns an issue if the summary is too long" do
+      max_length = Requirements::ContentChecker::SUMMARY_MAX_LENGTH
+      document = build :document, summary: "a" * (max_length + 1)
+      issues = Requirements::ContentChecker.new(document).pre_preview_issues
+
+      form_message = issues.items_for(:summary).first[:text]
+      expect(form_message).to eq(I18n.t!("requirements.summary.too_long.form_message", max_length: max_length))
+
+      summary_message = issues.items_for(:summary, style: "summary").first[:text]
+      expect(summary_message).to eq(I18n.t!("requirements.summary.too_long.summary_message", max_length: max_length))
+    end
   end
 
   describe "#pre_publish_issues" do
