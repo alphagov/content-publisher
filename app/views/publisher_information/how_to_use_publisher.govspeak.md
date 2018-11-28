@@ -9,7 +9,7 @@ Read more about [what Content Publisher can and cannot do](/beta-capabilities).
 
 Content Publisher can be used to create news stories and press releases. Other document types still need to be created in Whitehall publisher.
 
-You should always consider if content really needs to be published on GOV.UK. Unnecessary content makes it harder for users to find what the need.
+You should always consider if content really needs to be published on GOV.UK. Unnecessary content makes it harder for users to find what they need.
 
 Read [guidance on what to publish on GOV.UK](documents/publishing-guidance).
 
