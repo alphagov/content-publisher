@@ -32,11 +32,11 @@ en:
     alt_text:
       blank:
         form_message: Enter alt text
-        summary_message: "Enter alt text for “%{filename}”"
+        summary_message: "Enter alt text for ‘%{filename}’"
       too_long:
         form_message: "Enter alt text that is fewer than %{max_length} characters long"
-        summary_message: "Enter shorter alt text for “%{filename}”"
+        summary_message: "Enter shorter alt text for ‘%{filename}’"
     caption:
       too_long:
         form_message: "Enter an image caption that is fewer than %{max_length} characters long"
-        summary_message: "Enter a shorter caption for “%{filename}”"
+        summary_message: "Enter a shorter caption for ‘%{filename}’"
