@@ -27,8 +27,15 @@ class Document < ApplicationRecord
     reviewed
   ].freeze
 
+  LIVE_STATES = %w[
+    published
+    retired
+    removed
+  ].freeze
+
   validates_inclusion_of :publication_state, in: PUBLICATION_STATES
   validates_inclusion_of :review_state, in: REVIEW_STATES
+  validates_inclusion_of :live_state, in: LIVE_STATES, allow_nil: true, unless: :has_live_version_on_govuk
   validates_inclusion_of :update_type, in: %w[major minor], allow_nil: true
 
   def document_type_schema
