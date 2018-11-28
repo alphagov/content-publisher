@@ -8,4 +8,8 @@ module ApplicationHelper
   def render_back_link(options)
     render("govuk_publishing_components/components/back_link", options)
   end
+
+  def strip_scheme_from_url(url)
+    url.sub(/^https?\:\/\//, "")
+  end
 end
