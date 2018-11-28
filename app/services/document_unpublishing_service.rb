@@ -9,6 +9,7 @@ class DocumentUnpublishingService
       locale: document.locale,
     )
 
+    document.update!(live_state: "retired")
     TimelineEntry.create!(document: document, entry_type: "retired")
   end
 

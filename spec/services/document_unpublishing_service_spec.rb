@@ -36,6 +36,14 @@ RSpec.describe DocumentUnpublishingService do
 
       expect(document.timeline_entries.first.entry_type).to eq("retired")
     end
+
+    it "keeps track of the live state" do
+      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
+      DocumentUnpublishingService.new.retire(document, explanatory_note)
+      document.reload
+
+      expect(document.live_state).to eq("retired")
+    end
   end
 
   describe "#remove" do
