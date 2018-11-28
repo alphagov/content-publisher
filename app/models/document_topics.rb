@@ -16,6 +16,13 @@ class DocumentTopics
       version: links["version"],
       topics: topic_content_ids.map { |topic_content_id| Topic.find(topic_content_id, index) },
     )
+  rescue GdsApi::HTTPNotFound
+    new(
+      index: index,
+      document: document,
+      version: nil,
+      topics: [],
+    )
   end
 
   def patch(topic_content_ids, version)
