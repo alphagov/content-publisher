@@ -1,0 +1,13 @@
+<% show_from ||= nil %>
+<%= tag.span(
+  class: "govuk-hint app-c-input-length-suggester app-c-input-length-suggester__hidden",
+  data: {
+    module: "input-length-suggester",
+    for: for_id,
+    "show-from": show_from,
+    message: message
+  },
+  aria: {
+    live: "polite",
+  },
+) do %>&nbsp;<% end %>
