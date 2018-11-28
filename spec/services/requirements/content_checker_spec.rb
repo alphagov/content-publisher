@@ -53,6 +53,17 @@ RSpec.describe Requirements::ContentChecker do
       summary_message = issues.items_for(:summary, style: "summary").first[:text]
       expect(summary_message).to eq(I18n.t!("requirements.summary.too_long.summary_message", max_length: max_length))
     end
+
+    it "returns an issue if the summary has newlines" do
+      document = build :document, summary: "a\nb"
+      issues = Requirements::ContentChecker.new(document).pre_preview_issues
+
+      form_message = issues.items_for(:summary).first[:text]
+      expect(form_message).to eq(I18n.t!("requirements.summary.multiline.form_message"))
+
+      summary_message = issues.items_for(:summary, style: "summary").first[:text]
+      expect(summary_message).to eq(I18n.t!("requirements.summary.multiline.summary_message"))
+    end
   end
 
   describe "#pre_publish_issues" do
