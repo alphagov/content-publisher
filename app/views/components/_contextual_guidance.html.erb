@@ -1,8 +1,9 @@
 <%
   id ||= "input-#{SecureRandom.hex(4)}"
   title ||= nil
+  relative ||= false
 %>
-<div id="<%= id %>" class="app-c-contextual-guidance-wrapper">
+<div id="<%= id %>" class="app-c-contextual-guidance-wrapper<%= " app-c-contextual-guidance-wrapper--relative" if relative %>">
   <div class="app-c-contextual-guidance">
     <h2 class="govuk-heading-s"><%= title %></h2>
     <%= yield %>

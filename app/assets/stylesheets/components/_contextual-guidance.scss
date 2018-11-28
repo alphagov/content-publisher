@@ -2,12 +2,24 @@
 @import "govuk-frontend/helpers/all";
 
 .app-c-contextual-guidance-wrapper {
+  position: absolute;
+
   @include govuk-font(19);
 
   @include govuk-responsive-margin(6, "bottom");
 
   @include govuk-media-query($from: tablet) {
     padding-top: govuk-spacing(6);
+  }
+}
+
+.app-c-contextual-guidance-wrapper--relative {
+  position: relative;
+}
+
+.js-enabled {
+  .app-c-contextual-guidance-wrapper {
+    display: none;
   }
 }
 
