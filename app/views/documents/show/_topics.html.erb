@@ -24,7 +24,7 @@
     block: breadcrumbs
   } %>
 <% rescue GdsApi::BaseError => e %>
-  <% Rails.logger.error(e) %>
+  <% GovukError.notify(e) %>
 
   <%= render "components/summary", {
     id: "topics",

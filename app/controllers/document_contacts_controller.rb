@@ -5,7 +5,7 @@ class DocumentContactsController < ApplicationController
     @document = Document.find_by_param(params[:id])
     @contacts_by_organisation = ContactsService.new.all_by_organisation
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
+    GovukError.notify(e)
     render "search_api_down", status: :service_unavailable
   end
 

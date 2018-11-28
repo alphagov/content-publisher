@@ -15,8 +15,6 @@ class PreviewService
   def try_create_preview(args)
     save_changes(args)
     try_publish_draft(document) unless has_issues?
-  rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
   end
 
 private
@@ -59,7 +57,7 @@ private
   def try_publish_draft(document)
     publish_draft(document)
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
+    GovukError.notify(e)
     document.update!(publication_state: "changes_not_sent_to_draft")
   end
 

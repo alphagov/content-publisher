@@ -16,7 +16,7 @@ class PreviewController < ApplicationController
 
     redirect_to preview_document_path(document)
   rescue GdsApi::BaseError => e
-    Rails.logger.error(e)
+    GovukError.notify(e)
     redirect_to document_path(document), alert_with_description: t("documents.show.flashes.preview_error")
   end
 

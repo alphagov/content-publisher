@@ -52,7 +52,6 @@
     <% organisation_select = begin
       LinkablesService.new("organisation").select_options
     rescue GdsApi::BaseError => e
-      # Export error as we're not telling the user about it
       GovukError.notify(e)
       []
     end %>

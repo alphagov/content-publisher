@@ -16,7 +16,7 @@ module Requirements
           issues << Issue.new(:title, :conflict)
         end
       rescue GdsApi::BaseError => e
-        Rails.logger.error(e)
+        GovukError.notify(e)
       end
 
       CheckerIssues.new(issues)
