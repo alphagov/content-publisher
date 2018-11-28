@@ -2,7 +2,7 @@
 
 module Requirements
   class ContentChecker
-    TITLE_MAX_LENGTH = 150
+    TITLE_MAX_LENGTH = 300
 
     attr_reader :document
 
