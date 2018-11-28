@@ -61,7 +61,7 @@ RSpec.feature "User filters documents" do
   end
 
   def when_i_clear_the_filters
-    click_on "Clear filter"
+    click_on "Clear all filters"
   end
 
   def then_i_see_all_the_documents
