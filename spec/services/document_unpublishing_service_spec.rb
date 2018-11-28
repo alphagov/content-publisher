@@ -35,6 +35,7 @@ RSpec.describe DocumentUnpublishingService do
       DocumentUnpublishingService.new.retire(document, explanatory_note)
 
       expect(document.timeline_entries.first.entry_type).to eq("retired")
+      expect(document.timeline_entries.first.retire.explanatory_note).to eq(explanatory_note)
     end
 
     it "keeps track of the live state" do
