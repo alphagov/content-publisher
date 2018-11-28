@@ -1,9 +1,7 @@
 <% textarea = capture do %>
-    <%= tag.p(t("documents.edit.update_type.major_hint"), class: "govuk-body") %>
     <%= render "govuk_publishing_components/components/textarea", {
       label: {
         text: t("documents.edit.change_note.title"),
-        bold: true
       },
       name: "document[change_note]",
       value: @document.change_note,
@@ -33,7 +31,6 @@
           {
             value: "minor",
             text: t("documents.edit.update_type.minor_name"),
-            conditional: tag.p(t("documents.edit.update_type.minor_hint"), class: "govuk-body"),
             checked: @document.update_type == "minor",
           }
         ]
