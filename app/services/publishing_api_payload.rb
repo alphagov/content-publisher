@@ -12,7 +12,7 @@ class PublishingApiPayload
   end
 
   def payload
-    {
+    payload = {
       "base_path" => document.base_path,
       "title" => document.title,
       "locale" => document.locale,
@@ -22,7 +22,6 @@ class PublishingApiPayload
       "publishing_app" => PUBLISHING_APP,
       "rendering_app" => publishing_metadata.rendering_app,
       "update_type" => document.update_type,
-      "change_note" => document.change_note,
       "details" => details,
       "routes" => [
         { "path" => document.base_path, "type" => "exact" },
@@ -32,6 +31,8 @@ class PublishingApiPayload
         "auth_bypass_ids" => [DocumentUrl.new(document).auth_bypass_id],
       },
     }
+    payload["change_note"] = document.change_note if major_update?
+    payload
   end
 
 private
@@ -92,5 +93,9 @@ private
     else
       document.contents[field.id]
     end
+  end
+
+  def major_update?
+    document.update_type == "major"
   end
 end
