@@ -2,15 +2,17 @@
 
 class DocumentUnpublishingService
   def retire(document, explanatory_note)
-    GdsApi.publishing_api_v2.unpublish(
-      document.content_id,
-      type: "withdrawal",
-      explanation: explanatory_note,
-      locale: document.locale,
-    )
+    Document.transaction do
+      document.update!(live_state: "retired")
+      TimelineEntry.create!(document: document, entry_type: "retired")
 
-    document.update!(live_state: "retired")
-    TimelineEntry.create!(document: document, entry_type: "retired")
+      GdsApi.publishing_api_v2.unpublish(
+        document.content_id,
+        type: "withdrawal",
+        explanation: explanatory_note,
+        locale: document.locale,
+      )
+    end
   end
 
   def remove(document, explanatory_note: nil, alternative_path: nil)
