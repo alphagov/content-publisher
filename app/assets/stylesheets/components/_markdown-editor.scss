@@ -108,12 +108,13 @@ $toolbar-button-size: 50px;
 }
 
 .app-c-markdown-editor__toolbar-button--text {
-  @include govuk-font(19);
+  @include govuk-font($size: 16, $weight: bold);
   border: none;
+  border-left: 4px solid govuk-colour('white');
   height: $toolbar-button-size;
   vertical-align: top;
   background: transparent;
-  padding: govuk-spacing(2);
+  padding: govuk-spacing(3);
 }
 
 .app-c-markdown-editor__toolbar-button--end {
