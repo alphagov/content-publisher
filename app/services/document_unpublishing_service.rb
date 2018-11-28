@@ -22,6 +22,7 @@ class DocumentUnpublishingService
     )
 
     delete_assets(document.images)
+    TimelineEntry.create!(document: document, entry_type: "removed")
   end
 
   def remove_and_redirect(document, redirect_path, explanatory_note: nil)

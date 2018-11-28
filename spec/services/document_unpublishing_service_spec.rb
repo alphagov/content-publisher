@@ -84,6 +84,13 @@ RSpec.describe DocumentUnpublishingService do
 
       assert_publishing_api_unpublish(french_document.content_id, type: "gone", locale: french_document.locale)
     end
+
+    it "adds an entry in the timeline of the document" do
+      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", locale: document.locale })
+      DocumentUnpublishingService.new.remove(document)
+
+      expect(document.timeline_entries.first.entry_type).to eq("removed")
+    end
   end
 
   describe "#remove_and_redirect" do
