@@ -3,6 +3,7 @@
 class TimelineEntry < ApplicationRecord
   belongs_to :document
   belongs_to :user, optional: true
+  has_one :retire, foreign_key: :timeline_entries_id, dependent: :destroy, inverse_of: :timeline_entry
 
   ENTRY_TYPES = %w[
     created
