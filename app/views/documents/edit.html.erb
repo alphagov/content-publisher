@@ -19,6 +19,7 @@
         value: @document.title,
         error_items: @issues&.items_for(:title),
         rows: 2,
+        maxlength: Requirements::ContentChecker::TITLE_MAX_LENGTH,
         data: {
           "url-preview": "input",
           "contextual-guidance": "document-title-guidance"
@@ -66,6 +67,7 @@
         value: @document.summary,
         error_items: @issues&.items_for(:summary),
         rows: 4,
+        maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH,
         data: {
           "contextual-guidance": "document-summary-guidance"
         }
