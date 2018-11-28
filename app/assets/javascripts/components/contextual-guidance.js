@@ -19,14 +19,14 @@ ContextualGuidance.prototype.handleFocus = function (event) {
 
 ContextualGuidance.prototype.showGuidance = function (element) {
   if (element) {
-    element.classList.remove('govuk-visually-hidden')
+    element.style.display = 'block'
   }
 }
 
 ContextualGuidance.prototype.hideAllGuidance = function () {
   var $guidances = document.querySelectorAll('.app-c-contextual-guidance-wrapper')
   $guidances.forEach(function ($guidance) {
-    $guidance.classList.add('govuk-visually-hidden')
+    $guidance.style.display = 'none'
   })
 }
 
@@ -37,8 +37,6 @@ ContextualGuidance.prototype.getGuidanceId = function (element) {
 
 ContextualGuidance.prototype.init = function () {
   var $fields = this.$fields
-
-  this.hideAllGuidance()
 
   /**
   * Loop over all items with [data-contextual-guidance]
