@@ -14,6 +14,8 @@ class UserFacingState
         .where.not(review_state: "submitted_for_review")
     when :retired
       query.where(publication_state: "sent_to_live", live_state: "retired")
+    when :removed
+      query.where(publication_state: "sent_to_live", live_state: "removed")
     when :submitted_for_review
       query.where(review_state: "submitted_for_review")
     when :published_but_needs_2i
@@ -39,6 +41,8 @@ class UserFacingState
       "draft"
     elsif publication_state == "sent_to_live" && live_state == "retired"
       "retired"
+    elsif publication_state == "sent_to_live" && live_state == "removed"
+      "removed"
     elsif review_state == "published_without_review"
       "published_but_needs_2i"
     elsif publication_state.in?(%w[sent_to_live])
