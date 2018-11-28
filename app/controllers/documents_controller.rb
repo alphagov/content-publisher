@@ -90,7 +90,9 @@ private
     contents_params = document.document_type_schema.contents.map(&:id)
     base_path = PathGeneratorService.new.path(document, params.require(:document)[:title])
     title = params.require(:document)[:title]&.strip
-    params.require(:document).permit(:summary, :update_type, :change_note, contents: contents_params)
-      .merge(base_path: base_path, title: title)
+    summary = params.require(:document)[:summary].strip
+
+    params.require(:document).permit(:update_type, :change_note, contents: contents_params)
+      .merge(base_path: base_path, title: title, summary: summary)
   end
 end
