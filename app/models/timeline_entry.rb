@@ -2,7 +2,7 @@
 
 class TimelineEntry < ApplicationRecord
   belongs_to :document
-  belongs_to :user
+  belongs_to :user, optional: true
 
   ENTRY_TYPES = %w[
     created

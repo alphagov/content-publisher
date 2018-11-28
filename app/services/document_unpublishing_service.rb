@@ -8,6 +8,8 @@ class DocumentUnpublishingService
       explanation: explanatory_note,
       locale: document.locale,
     )
+
+    TimelineEntry.create!(document: document, entry_type: "retired")
   end
 
   def remove(document, explanatory_note: nil, alternative_path: nil)

@@ -29,6 +29,13 @@ RSpec.describe DocumentUnpublishingService do
 
       assert_not_requested asset_manager_delete_asset(asset.asset_manager_id)
     end
+
+    it "adds an entry in the timeline of the document" do
+      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
+      DocumentUnpublishingService.new.retire(document, explanatory_note)
+
+      expect(document.timeline_entries.first.entry_type).to eq("retired")
+    end
   end
 
   describe "#remove" do
