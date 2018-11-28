@@ -19,7 +19,12 @@ class DocumentUnpublishingService
   def remove(document, explanatory_note: nil, alternative_path: nil)
     Document.transaction do
       document.update!(live_state: "removed")
-      TimelineEntry.create!(document: document, entry_type: "removed")
+      timeline_entry = TimelineEntry.create!(document: document, entry_type: "removed")
+      Remove.create!(
+        timeline_entry: timeline_entry,
+        explanatory_note: explanatory_note,
+        alternative_path: alternative_path,
+      )
 
       GdsApi.publishing_api_v2.unpublish(
         document.content_id,
