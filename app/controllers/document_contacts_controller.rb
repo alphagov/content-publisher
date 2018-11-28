@@ -11,7 +11,14 @@ class DocumentContactsController < ApplicationController
 
   def insert
     document = Document.find_by_param(params[:id])
-    contact_markdown = "[Contact:#{params.require(:contact_id)}]\n"
+    redirect_location = edit_document_path(document) + "#body"
+
+    unless params[:contact_id]
+      redirect_to redirect_location
+      return
+    end
+
+    contact_markdown = "[Contact:#{params[:contact_id]}]\n"
 
     body = document.contents.fetch("body", "").chomp
     document.contents["body"] = if body.present?
@@ -25,6 +32,6 @@ class DocumentContactsController < ApplicationController
       type: "updated_content",
     )
 
-    redirect_to edit_document_path(document) + "#body"
+    redirect_to redirect_location
   end
 end
