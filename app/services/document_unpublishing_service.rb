@@ -16,17 +16,20 @@ class DocumentUnpublishingService
   end
 
   def remove(document, explanatory_note: nil, alternative_path: nil)
-    GdsApi.publishing_api_v2.unpublish(
-      document.content_id,
-      type: "gone",
-      explanation: explanatory_note,
-      alternative_path: alternative_path,
-      locale: document.locale,
-    )
+    Document.transaction do
+      document.update!(live_state: "removed")
+      TimelineEntry.create!(document: document, entry_type: "removed")
+
+      GdsApi.publishing_api_v2.unpublish(
+        document.content_id,
+        type: "gone",
+        explanation: explanatory_note,
+        alternative_path: alternative_path,
+        locale: document.locale,
+      )
+    end
 
     delete_assets(document.images)
-    document.update!(live_state: "removed")
-    TimelineEntry.create!(document: document, entry_type: "removed")
   end
 
   def remove_and_redirect(document, redirect_path, explanatory_note: nil)
