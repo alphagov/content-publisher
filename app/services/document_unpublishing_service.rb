@@ -41,7 +41,13 @@ class DocumentUnpublishingService
   def remove_and_redirect(document, redirect_path, explanatory_note: nil)
     Document.transaction do
       document.update!(live_state: "removed")
-      TimelineEntry.create!(document: document, entry_type: "removed")
+      timeline_entry = TimelineEntry.create!(document: document, entry_type: "removed")
+      Remove.create!(
+        timeline_entry: timeline_entry,
+        explanatory_note: explanatory_note,
+        alternative_path: redirect_path,
+        redirect: true,
+      )
 
       GdsApi.publishing_api_v2.unpublish(
         document.content_id,
