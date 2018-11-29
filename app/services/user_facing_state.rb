@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserFacingState
-  STATES = %w[draft submitted_for_review published_but_needs_2i published].freeze
+  STATES = %w[draft submitted_for_review published_but_needs_2i published retired removed].freeze
 
   attr_reader :document
   delegate :review_state, :publication_state, :live_state, to: :document
