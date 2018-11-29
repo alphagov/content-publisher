@@ -15,7 +15,11 @@
       <%= entry.retire.explanatory_note %>
     <% elsif entry.remove.present? %>
       <p><%= entry.remove.explanatory_note %></p>
-      <p><%= entry.remove.alternative_path %></p>
+      <% if entry.remove.redirect %>
+        <p>Redirected to <%= entry.remove.alternative_path %></p>
+      <% else %>
+        <p><%= entry.remove.alternative_path %></p>
+      <% end %>
     <% end %>
 
     <div class="app-timeline-entry__dateline">
