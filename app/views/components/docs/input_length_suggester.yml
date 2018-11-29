@@ -1,0 +1,14 @@
+name: Input Length Suggester
+description: To suggest an input has a certain amount of characters
+accessibility_criteria: |
+  The component must:
+
+  * be hidden by default
+  * be visible when a specified character number is reached
+  * poll for changes to support screen readers
+examples:
+  default:
+    data:
+      for_id: "an-input"
+      show_from: 10
+      message: "This field should be less than 15 characters. Current characters: {count}"
