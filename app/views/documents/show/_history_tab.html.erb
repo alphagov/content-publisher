@@ -1,6 +1,6 @@
 <% displayed_edition_number = nil %>
 
-<% @document.timeline_entries.includes(:user).order(created_at: :desc).each do |entry| %>
+<% @document.timeline_entries.includes(:user).order(created_at: :desc).includes(:retirement).includes(:removal).each do |entry| %>
   <div class="app-timeline-entry govuk-!-margin-bottom-6">
     <% if displayed_edition_number != entry.edition_number %>
       <h3 class="govuk-heading-m"><%= t "documents.history.edition_header", number: entry.edition_number.ordinalize %></h3>
@@ -10,6 +10,17 @@
     <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
       <%= t "documents.history.entry_types.#{entry.entry_type}" %>
     </h4>
+
+    <% if entry.retirement.present? %>
+      <%= entry.retirement.explanatory_note %>
+    <% elsif entry.removal.present? %>
+      <p><%= entry.removal.explanatory_note %></p>
+      <% if entry.removal.redirect %>
+        <p>Redirected to <%= link_to(Plek.new.website_root + entry.removal.alternative_path) %></p>
+      <% else %>
+        <p><%= link_to(Plek.new.website_root + entry.removal.alternative_path) %></p>
+      <% end %>
+    <% end %>
 
     <div class="app-timeline-entry__dateline">
       <%= entry.created_at.strftime("%d %B %Y at %l:%M%P") %> by <%= entry.username_or_unknown %>
