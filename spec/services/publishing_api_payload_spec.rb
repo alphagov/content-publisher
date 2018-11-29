@@ -109,5 +109,19 @@ RSpec.describe PublishingApiPayload do
 
       expect(payload["details"]["image"]).to match a_hash_including(payload_hash)
     end
+
+    it "includes a change note if the update type is 'major'" do
+      document = create(:document, update_type: "major", change_note: "A change note")
+      payload = PublishingApiPayload.new(document).payload
+
+      expect(payload).to match a_hash_including("change_note" => "A change note")
+    end
+
+    it "does not include a change note if the update type is 'minor'" do
+      document = create(:document, update_type: "minor", change_note: "A change note")
+      payload = PublishingApiPayload.new(document).payload
+
+      expect(payload).not_to match a_hash_including("change_note" => "A change note")
+    end
   end
 end

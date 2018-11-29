@@ -15,17 +15,15 @@ en:
         no_title: You haven't entered a title yet.
         error: Unable to preview address, please edit title and try again.
       change_note:
-        title: Change note
+        title: Public change note
         guidance_title: Writing change notes
         guidance: |
-          Describe the change. Include any new or updated information where possible, or summarise and refer to specific sections if it cannot be included.
+          Describe the change for users. Include or refer to any new or updated information. This change note will be published on the page and emailed to subscribers. The 'last updated' date will change.
 
           [Full guidance on change notes](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#change-notes)
       update_type:
-        title: Is the change significant to users?
-        minor_name: There’s no change to the published information. For example, spelling corrections.
-        minor_hint: The ‘last updated’ date will not change, the change note will not be public, and subscribers will not be emailed.
-        major_name: There’s a change to the published information.
-        major_hint: The ‘last updated’ date will change, the change note will be published on the page and emailed to subscribers.
+        title: Is the content change significant to users?
+        minor_name: No - a minor style update
+        major_name: Yes - information has been added or updated
       flashes:
         requirements: You need to
