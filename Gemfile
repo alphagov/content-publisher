@@ -4,7 +4,8 @@ ruby File.read(".ruby-version").strip
 
 source "https://rubygems.org"
 
-gem "rails", "~> 5.2"
+# Temporarily changed from ~> 5.2 due to Rails bug in 5.2.1.1
+gem "rails", "5.2.2.rc1"
 
 gem "aws-sdk-s3", "~> 1"
 gem "bootsnap", "~> 1"
