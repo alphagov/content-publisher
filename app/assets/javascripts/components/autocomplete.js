@@ -19,3 +19,34 @@ if ($autocompletes) {
     })
   })
 }
+
+var $customTemplateAutocomplete = document.querySelector('[data-module="autocomplete-custom-template"]')
+if ($customTemplateAutocomplete) {
+  new window.accessibleAutocomplete.enhanceSelectElement({ // eslint-disable-line no-new, new-cap
+    selectElement: $customTemplateAutocomplete,
+    minLength: 3,
+    autoselect: false,
+    defaultValue: '',
+    templates: {
+      inputValue: function (result) {
+        if (result) {
+          return result.split(' - ')[0]
+        }
+      },
+      suggestion: function (result) {
+        if (result) {
+          var resultItems = result.split(' - ')
+          var elem = document.createElement('span')
+          elem.textContent = resultItems[0]
+          if (resultItems[1]) {
+            var hintContainer = document.createElement('span')
+            hintContainer.className = 'autocomplete__option-hint'
+            hintContainer.textContent = resultItems[1]
+            elem.appendChild(hintContainer)
+          }
+          return elem.innerHTML
+        }
+      }
+    }
+  })
+}

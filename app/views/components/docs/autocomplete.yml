@@ -82,3 +82,24 @@ examples:
       selected_options:
           - fr
           - de
+  autocomplete_with_custom_template:
+    data:
+      id: autocomplete-custom-template
+      name: autocomplete-custom-template
+      label:
+        text: Select your country
+      data:
+        module: autocomplete-custom-template
+      options:
+        -
+          - Select a country
+          -
+        -
+          - France - Paris
+          - fr
+        -
+          - United Arab Emirates - Abu Dhabi
+          - ae
+        -
+          - United Kingdom - London
+          - uk
