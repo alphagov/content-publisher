@@ -15,7 +15,7 @@ if ($autocompletes) {
     new accessibleAutocomplete.enhanceSelectElement({
       selectElement: $el,
       minLength: 3,
-      showNoOptionsFound: false,
+      defaultValue: '',
       customAttributes: customAttributes
     })
   })
@@ -38,6 +38,39 @@ if ($multiselects) {
       multiple: true,
       customAttributes: customAttributes
     })
+  })
+}
+
+var $customTemplateAutocomplete = document.querySelector('[data-module="autocomplete-custom-template"]')
+if ($customTemplateAutocomplete) {
+
+  new accessibleAutocomplete.enhanceSelectElement({
+    selectElement: $customTemplateAutocomplete,
+    minLength: 3,
+    showNoOptionsFound: false,
+    autoselect: false,
+    defaultValue: '',
+    templates: {
+      inputValue: function (result) {
+        if (result) {
+          return result.split(' - ')[0]
+        }
+      },
+      suggestion: function (result) {
+        if (result) {
+          var resultItems = result.split(' - ')
+          var elem = document.createElement('span')
+          elem.textContent = resultItems[0]
+          if (resultItems[1]) {
+            var hintContainer = document.createElement('span')
+            hintContainer.className = 'autocomplete__option-hint'
+            hintContainer.textContent = resultItems[1]
+            elem.appendChild(hintContainer)
+          }
+          return elem.innerHTML
+        }
+      }
+    }
   })
 }
 /* eslint-enable */

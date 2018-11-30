@@ -5,6 +5,19 @@
   @include govuk-font(19);
 }
 
+.autocomplete__option-hint {
+  display: block;
+  @include govuk-font(16);
+  color: $govuk-secondary-text-colour;
+}
+
+.autocomplete__option--focused,
+.autocomplete__option:hover {
+  .autocomplete__option-hint {
+    color: #fff;
+  }
+}
+
 .js-enabled {
   .app-c-autocomplete__multiselect-instructions {
     display: none;
