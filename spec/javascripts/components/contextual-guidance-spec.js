@@ -36,19 +36,16 @@ describe('Contextual guidance component', function () {
     elements = undefined
   })
 
-  it('should hide all guidance', function () {
-    expect($('.app-c-contextual-guidance-wrapper')).toHaveClass('govuk-visually-hidden')
-  })
-
   it('should show associated guidance on focus', function () {
     $('#document-title').focus()
-    expect($('#document-title-guidance')).not.toHaveClass('govuk-visually-hidden')
-    expect($('#document-summary-guidance')).toHaveClass('govuk-visually-hidden')
+    expect($('#document-title-guidance').css('display')).toEqual('block')
+    expect($('#document-summary-guidance').css('display')).toEqual('none')
   })
 
   it('should hide associated guidance when another element is focused', function () {
+    $('#document-title').focus()
     $('#document-summary').focus()
-    expect($('#document-title-guidance')).toHaveClass('govuk-visually-hidden')
-    expect($('#document-summary-guidance')).not.toHaveClass('govuk-visually-hidden')
+    expect($('#document-title-guidance').css('display')).toEqual('none')
+    expect($('#document-summary-guidance').css('display')).toEqual('block')
   })
 })
