@@ -13,7 +13,7 @@ en:
         upload_requirements:
           title: You need to
           no_file_selected: Select a file to upload
-          invalid_format: Select a jpg, png or gif image file
+          invalid_format: Select a jpg, png or static gif image file
           max_size: "Select an image file under %{max_size} in size"
           min_dimensions: "Select an image at least %{width} pixels wide by %{height} pixels high"
         cropped: "Image ‘%{file}’ has been cropped"
