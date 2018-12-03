@@ -1,4 +1,5 @@
-//= require vendor/harmony-reflect/reflect.js
+//= require mdn-polyfills/String.prototype.startsWith
+//= require mdn-polyfills/String.prototype.endsWith
 
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
@@ -81,13 +82,6 @@
     if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
   }
 
-  function _CustomElement() {
-    return Reflect.construct(HTMLElement, [], this.__proto__.constructor);
-  }
-
-  ;
-  Object.setPrototypeOf(_CustomElement.prototype, HTMLElement.prototype);
-  Object.setPrototypeOf(_CustomElement, HTMLElement);
   function keydown(fn) {
     return function (event) {
       if (event.key === ' ' || event.key === 'Enter') {
@@ -138,7 +132,7 @@
     }]);
 
     return MarkdownButtonElement;
-  }(_CustomElement);
+  }(HTMLElement);
 
   var MarkdownHeaderButtonElement = function (_MarkdownButtonElemen) {
     _inherits(MarkdownHeaderButtonElement, _MarkdownButtonElemen);
@@ -530,7 +524,7 @@
     }]);
 
     return MarkdownToolbarElement;
-  }(_CustomElement);
+  }(HTMLElement);
 
   var shortcutListeners = new WeakMap();
 
