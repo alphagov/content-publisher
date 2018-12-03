@@ -18,7 +18,7 @@
       body_govspeak: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
     - id: summary
       title: Writing a news summary
-      body_govspeak: The summary explains the main point of the content and it should end with a full stop. Avoid repeating the first line of the body.
+      body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 140 characters, and avoid repeating the first line of the body.
     - id: body
       title: Writing news
       body_govspeak: |
