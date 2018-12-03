@@ -24,18 +24,16 @@
 //= require components/url-preview.js
 //= require vendor/@alphagov/miller-columns-element/dist/index.umd.js
 
-/**
- * contextual guidance need to be initialised after the rest of the components
- * as it may need to be applied to a JavaScript enchanced element (i.e. autocomplete)
- **/
+// load after other components (esp. autocomplete)
 //= require components/contextual-guidance.js
 
-/* global Raven */
+// raven (for Sentry)
+//= require raven-js/dist/raven.js
 var $sentryDsn = document.querySelector('meta[name=sentry-dsn]')
 var $sentryCurrentEnv = document.querySelector('meta[name=sentry-current-env]')
 
 if ($sentryDsn && $sentryCurrentEnv) {
-  Raven.config($sentryDsn.getAttribute('content'), {
+  window.Raven.config($sentryDsn.getAttribute('content'), {
     environment: $sentryCurrentEnv.getAttribute('content')
   }).install()
 }
