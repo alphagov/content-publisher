@@ -1,4 +1,4 @@
-//= require components/markdown-toolbar
+//= require vendor/@alphagov/markdown-toolbar-element/index.js
 
 function MarkdownEditor ($module) {
   this.$module = $module
