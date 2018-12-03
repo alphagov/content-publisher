@@ -1,4 +1,4 @@
-//= require vendor/cropperjs/dist/cropper.js
+//= require cropperjs/dist/cropper.js
 
 var $imageCroppers = document.querySelectorAll('[data-module="image-cropper"]')
 
