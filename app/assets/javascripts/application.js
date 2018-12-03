@@ -5,6 +5,7 @@
 //= require es5-polyfill/dist/polyfill.js
 
 // support ES6 custom elements
+//= require @webcomponents/custom-elements/src/native-shim.js
 //= require @webcomponents/custom-elements/custom-elements.min.js
 
 // support ES6 fetch
