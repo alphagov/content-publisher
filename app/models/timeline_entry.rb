@@ -25,6 +25,11 @@ class TimelineEntry < ApplicationRecord
   ].freeze
 
   validates_inclusion_of :entry_type, in: ENTRY_TYPES
+  validate :can_only_have_one_associated_type
+
+  def can_only_have_one_associated_type
+    self.retirement.nil? || self.removal.nil?
+  end
 
   def username_or_unknown
     user ? user.name : "Unknown user"
