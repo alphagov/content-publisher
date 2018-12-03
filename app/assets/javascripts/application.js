@@ -4,18 +4,16 @@
 // support ES5
 //= require es5-polyfill/dist/polyfill.js
 
+// support ES6 (promises, functions, etc. - see docs)
+//= require core-js-bundle/index.js
+
 // support ES6 custom elements
-//= require @webcomponents/custom-elements/src/native-shim.js
 //= require @webcomponents/custom-elements/custom-elements.min.js
 
-// support ES6 fetch
+// support ES6 fetch and related utilities
 //= require abortcontroller-polyfill/dist/abortcontroller-polyfill-only.js
 //= require url-polyfill/url-polyfill.js
-//= require promise-polyfill/dist/polyfill.js
 //= require whatwg-fetch/dist/fetch.umd.js
-
-// support ES6 utilities
-//= require mdn-polyfills/NodeList.prototype.forEach
 
 //= require components/autocomplete.js
 //= require components/error-alert.js
