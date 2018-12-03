@@ -95,10 +95,21 @@ RSpec.describe DocumentUnpublishingService do
     end
 
     it "adds an entry in the timeline of the document" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", locale: document.locale })
-      DocumentUnpublishingService.new.remove(document)
+      explanatory_note = "The reason document has been removed"
+      alternative_path = "/look-here-instead"
+
+      stub_publishing_api_unpublish(document.content_id, body: {
+        type: "gone",
+        explanation: explanatory_note,
+        alternative_path: alternative_path,
+        locale: document.locale,
+      })
+      DocumentUnpublishingService.new.remove(document, explanatory_note: explanatory_note, alternative_path: alternative_path)
 
       expect(document.timeline_entries.first.entry_type).to eq("removed")
+      expect(document.timeline_entries.first.removal.explanatory_note).to eq(explanatory_note)
+      expect(document.timeline_entries.first.removal.alternative_path).to eq(alternative_path)
+      expect(document.timeline_entries.first.removal.redirect).to be_falsey
     end
 
     it "keeps track of the live state" do
