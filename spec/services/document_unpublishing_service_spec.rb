@@ -43,6 +43,7 @@ RSpec.describe DocumentUnpublishingService do
       document.reload
 
       expect(document.live_state).to eq("retired")
+      expect(document.timeline_entries.first.retirement.explanatory_note).to eq(explanatory_note)
     end
   end
 

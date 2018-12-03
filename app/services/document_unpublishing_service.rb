@@ -4,7 +4,8 @@ class DocumentUnpublishingService
   def retire(document, explanatory_note)
     Document.transaction do
       document.update!(live_state: "retired")
-      TimelineEntry.create!(document: document, entry_type: "retired")
+      timeline_entry = TimelineEntry.create!(document: document, entry_type: "retired")
+      Retirement.create!(timeline_entry: timeline_entry, explanatory_note: explanatory_note)
 
       GdsApi.publishing_api_v2.unpublish(
         document.content_id,
