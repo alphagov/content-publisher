@@ -44,5 +44,13 @@ RSpec.describe ImageUploadRequirements do
 
       expect(errors).to eq([error])
     end
+
+    it "has an error when a file with multiple frames is provided (animated gif)" do
+      uploaded_file = fixture_file_upload("files/animated-gif.gif", "image/gif")
+      errors = ImageUploadRequirements.new(uploaded_file).errors
+
+      error = I18n.t!("document_images.index.flashes.upload_requirements.invalid_format")
+      expect(errors).to eq([error])
+    end
   end
 end

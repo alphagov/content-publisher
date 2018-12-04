@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "mini_magick"
+
 class ImageUploadRequirements
   include ActionView::Helpers::NumberHelper
 
@@ -19,7 +21,7 @@ class ImageUploadRequirements
       return [I18n.t!("document_images.index.flashes.upload_requirements.no_file_selected")]
     end
 
-    if SUPPORTED_FORMATS.exclude?(Marcel::MimeType.for(file))
+    if SUPPORTED_FORMATS.exclude?(Marcel::MimeType.for(file)) || animated_image?
       return [I18n.t!("document_images.index.flashes.upload_requirements.invalid_format")]
     end
 
@@ -37,5 +39,11 @@ class ImageUploadRequirements
     end
 
     messages
+  end
+
+private
+
+  def animated_image?
+    MiniMagick::Image.new(file.tempfile.path).frames.count > 1
   end
 end
