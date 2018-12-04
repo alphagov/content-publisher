@@ -48,8 +48,13 @@ $mobile-border-bottom-width: 68px;
 }
 
 .app-c-preview__google {
-  max-width: 600px;
-  -webkit-font-smoothing: auto;
+  display: none;
+
+  @include govuk-media-query($from: tablet) {
+    display: block;
+    max-width: 600px;
+    -webkit-font-smoothing: auto;
+  }
 }
 
 .app-c-preview__google-title {
