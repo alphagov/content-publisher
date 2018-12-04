@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_25_082624) do
+ActiveRecord::Schema.define(version: 2018_12_03_134354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2018_09_25_082624) do
     t.string "update_type"
     t.integer "current_edition_number", null: false
     t.bigint "last_editor_id"
+    t.string "live_state"
     t.index ["base_path"], name: "index_documents_on_base_path", unique: true
     t.index ["content_id", "locale"], name: "index_documents_on_content_id_and_locale", unique: true
     t.index ["creator_id"], name: "index_documents_on_creator_id"
@@ -83,6 +84,23 @@ ActiveRecord::Schema.define(version: 2018_09_25_082624) do
     t.index ["document_id"], name: "index_images_on_document_id"
   end
 
+  create_table "removals", force: :cascade do |t|
+    t.string "explanatory_note"
+    t.string "alternative_path"
+    t.boolean "redirect", default: false
+    t.bigint "timeline_entries_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["timeline_entries_id"], name: "index_removals_on_timeline_entries_id"
+  end
+
+  create_table "retirements", force: :cascade do |t|
+    t.string "explanatory_note"
+    t.bigint "timeline_entries_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["timeline_entries_id"], name: "index_retirements_on_timeline_entries_id"
+  end
   create_table "timeline_entries", force: :cascade do |t|
     t.string "entry_type", null: false
     t.bigint "document_id", null: false
@@ -124,6 +142,8 @@ ActiveRecord::Schema.define(version: 2018_09_25_082624) do
   add_foreign_key "documents", "users", column: "last_editor_id"
   add_foreign_key "images", "active_storage_blobs", column: "blob_id", on_delete: :cascade
   add_foreign_key "images", "documents", on_delete: :cascade
+  add_foreign_key "retirements", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
+  add_foreign_key "removals", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
   add_foreign_key "timeline_entries", "documents", on_delete: :cascade
   add_foreign_key "timeline_entries", "users", on_delete: :restrict
 end

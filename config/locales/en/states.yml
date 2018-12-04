@@ -8,6 +8,10 @@ en:
       name: Published but needs 2i review
     published:
       name: Published
+    retired:
+      name: Retired
+    removed:
+      name: Removed
 
   publication_states:
     changes_not_sent_to_draft:

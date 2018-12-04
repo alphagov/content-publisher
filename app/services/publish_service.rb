@@ -17,6 +17,7 @@ class PublishService
       publication_state: "sent_to_live",
       has_live_version_on_govuk: true,
       review_state: review_state,
+      live_state: "published",
     )
   rescue GdsApi::BaseError => e
     GovukError.notify(e)

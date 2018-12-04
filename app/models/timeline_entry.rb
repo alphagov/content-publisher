@@ -2,7 +2,9 @@
 
 class TimelineEntry < ApplicationRecord
   belongs_to :document
-  belongs_to :user
+  belongs_to :user, optional: true
+  has_one :retirement, foreign_key: :timeline_entries_id, dependent: :destroy, inverse_of: :timeline_entry
+  has_one :removal, foreign_key: :timeline_entries_id, dependent: :destroy, inverse_of: :timeline_entry
 
   ENTRY_TYPES = %w[
     created
@@ -18,9 +20,16 @@ class TimelineEntry < ApplicationRecord
     image_removed
     new_edition
     create_preview
+    retired
+    removed
   ].freeze
 
   validates_inclusion_of :entry_type, in: ENTRY_TYPES
+  validate :can_only_have_one_associated_type
+
+  def can_only_have_one_associated_type
+    self.retirement.nil? || self.removal.nil?
+  end
 
   def username_or_unknown
     user ? user.name : "Unknown user"

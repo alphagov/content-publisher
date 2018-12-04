@@ -16,3 +16,5 @@ en:
         image_removed: "Removed image"
         new_edition: "New edition"
         create_preview: "Create preview"
+        retired: "Retired"
+        removed: "Removed"
