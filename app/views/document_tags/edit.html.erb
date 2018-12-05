@@ -13,7 +13,7 @@
     <div class="govuk-grid-column-two-thirds">
       <%= render "document_tags/tags/#{schema.type}_input",
         schema: schema,
-        tags: @document["tags"],
+        tags: @document.tags,
         contextual_guidance_id: "#{schema.id}-guidance" %>
     </div>
     <% if @document.document_type_schema.guidance_for(schema.id) %>
