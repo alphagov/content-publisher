@@ -8,6 +8,6 @@ Jasmine.configure do |config|
     options.headless!
 
     webdriver = Selenium::WebDriver.for(:chrome, options: options)
-    Jasmine::Runners::Selenium.new(formatter, jasmine_server_url, webdriver, 1)
+    Jasmine::Runners::Selenium.new(formatter, jasmine_server_url, webdriver, 50)
   }
 end

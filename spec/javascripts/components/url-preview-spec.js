@@ -1,20 +1,18 @@
 /* global describe beforeEach afterEach it expect */
 /* global UrlPreview */
-var $ = window.jQuery
 
 describe('URL preview component', function () {
   'use strict'
 
-  var form
-  var element
+  var container
 
   beforeEach(function () {
-    form = $(
+    container = document.createElement('div')
+    container.innerHTML =
       '<form data-module="edit-document-form" data-url-preview-path="/documents/df702388-64d3-471e-bd24-5064ada7505e:en/generate-path">' +
         '<textarea name="document[title]" class="gem-c-textarea govuk-textarea" data-url-preview="input"></textarea>' +
-      '</form>'
-    )
-    element = $(
+      '</form>' +
+
       '<div class="app-c-url-preview" data-module="url-preview">' +
         '<div class="gem-c-inset-text govuk-inset-text">' +
           '<p class="app-c-url-preview__title">Page address</p>' +
@@ -25,22 +23,20 @@ describe('URL preview component', function () {
           '</p>' +
         '</div>' +
       '</div>'
-    )
-    $(document.body).append(form)
-    $(document.body).append(element)
-    new UrlPreview(element[0]).init()
+
+    document.body.appendChild(container)
+    var element = document.querySelector('[data-module="url-preview"]')
+    new UrlPreview(element).init()
   })
 
   afterEach(function () {
-    form.remove()
-    form = undefined
-    element.remove()
-    element = undefined
+    document.body.removeChild(container)
   })
 
   it('should only display the default message if input is empty', function () {
     // Interact with input and leave empty
-    $('[data-url-preview="input"]').focus().blur()
+    var input = document.querySelector('[data-url-preview="input"]')
+    input.dispatchEvent(new Event('blur'))
 
     var defaultMessage = $('.js-url-preview-default-message')
     expect(defaultMessage).toBeVisible()
@@ -54,7 +50,9 @@ describe('URL preview component', function () {
 
   it('should only display the preview URL if input has value', function () {
     // Interact with input and set value
-    $('[data-url-preview="input"]').focus().val('My title').blur()
+    var input = document.querySelector('[data-url-preview="input"]')
+    input.value = 'My title'
+    input.dispatchEvent(new Event('blur'))
 
     var defaultMessage = $('.js-url-preview-default-message')
     expect(defaultMessage).toBeHidden()

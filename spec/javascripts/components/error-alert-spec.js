@@ -1,29 +1,30 @@
 /* global describe beforeEach afterEach it expect */
 /* global ErrorAlert */
-var $ = window.jQuery
 
 describe('Error alert component', function () {
   'use strict'
 
+  var container
   var module
-  var element
 
   beforeEach(function () {
-    element = $(
+    container = document.createElement('div')
+    container.innerHTML =
       '<div class="app-c-error-alert" data-module="error-alert" role="alert" tabindex="-1">' +
         '<p class="app-c-error-alert__message">Message to alert the user to an unsuccessful action goes here</p>' +
       '</div>'
-    )
-    $(document.body).append(element)
+
+    document.body.appendChild(container)
+    var element = document.querySelector('[data-module="error-alert"]')
     module = new ErrorAlert(element)
   })
 
   afterEach(function () {
-    element.remove()
-    element = undefined
+    document.body.removeChild(container)
   })
 
   it('should be focused', function () {
+    var element = document.querySelector('[data-module="error-alert"]')
     module.focus()
     expect(element).toBeFocused()
   })

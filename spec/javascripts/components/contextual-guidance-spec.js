@@ -1,14 +1,14 @@
 /* global describe beforeEach afterEach it expect */
 /* global ContextualGuidance */
-var $ = window.jQuery
 
 describe('Contextual guidance component', function () {
   'use strict'
 
-  var elements
+  var container
 
   beforeEach(function () {
-    elements = $(
+    container = document.createElement('div')
+    container.innerHTML =
       '<input id="document-title" type="text" class="gem-c-input govuk-input" data-contextual-guidance="document-title-guidance"></textarea>' +
 
       '<div id="document-title-guidance" class="app-c-contextual-guidance-wrapper">' +
@@ -26,26 +26,39 @@ describe('Contextual guidance component', function () {
         'The summary should explain the main point of the story. It is the first line of the story so don’t repeat it in the body and end with a full stop.' +
         '</div>' +
       '</div>'
-    )
-    $(document.body).append(elements)
+
+    document.body.appendChild(container)
     new ContextualGuidance().init(document)
   })
 
   afterEach(function () {
-    elements.remove()
-    elements = undefined
+    document.body.removeChild(container)
   })
 
   it('should show associated guidance on focus', function () {
-    $('#document-title').focus()
-    expect($('#document-title-guidance').css('display')).toEqual('block')
-    expect($('#document-summary-guidance').css('display')).toEqual('none')
+    var title = document.querySelector('#document-title')
+    var titleGuidance = document.querySelector('#document-title-guidance')
+
+    var summary = document.querySelector('#document-summary')
+    var summaryGuidance = document.querySelector('#document-summary-guidance')
+
+    title.dispatchEvent(new Event('focus'))
+
+    expect(titleGuidance.style.display).toEqual('block')
+    expect(summaryGuidance.style.display).toEqual('none')
   })
 
   it('should hide associated guidance when another element is focused', function () {
-    $('#document-title').focus()
-    $('#document-summary').focus()
-    expect($('#document-title-guidance').css('display')).toEqual('none')
-    expect($('#document-summary-guidance').css('display')).toEqual('block')
+    var title = document.querySelector('#document-title')
+    var titleGuidance = document.querySelector('#document-title-guidance')
+
+    var summary = document.querySelector('#document-summary')
+    var summaryGuidance = document.querySelector('#document-summary-guidance')
+
+    title.dispatchEvent(new Event('focus'))
+    summary.dispatchEvent(new Event('focus'))
+
+    expect(titleGuidance.style.display).toEqual('none')
+    expect(summaryGuidance.style.display).toEqual('block')
   })
 })

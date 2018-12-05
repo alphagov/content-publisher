@@ -1,14 +1,14 @@
 /* global describe beforeEach afterEach it expect */
 /* global MarkdownEditor */
-var $ = window.jQuery
 
 describe('Markdown editor component', function () {
   'use strict'
 
-  var element
+  var container
 
   beforeEach(function () {
-    element = $(
+    container = document.createElement('div')
+    container.innerHTML =
       '<div class="app-c-markdown-editor" data-module="markdown-editor" data-govspeak-path="#">' +
         '<label for="markdown-editor" class="gem-c-label govuk-label ">Body</label>' +
         '<div class="app-c-markdown-editor__container">' +
@@ -58,68 +58,68 @@ describe('Markdown editor component', function () {
           '</div>' +
         '</div>' +
       '</div>'
-    )
-    $(document.body).append(element)
-    new MarkdownEditor(element[0]).init()
+
+    document.body.appendChild(container)
+    var element = document.querySelector('[data-module="markdown-editor"]')
+    new MarkdownEditor(element).init()
   })
 
   afterEach(function () {
-    element.remove()
-    element = undefined
+    document.body.removeChild(container)
   })
 
   it('should show the editor header', function () {
-    var head = $('.js-markdown-editor__head')
+    var head = document.querySelector('.js-markdown-editor__head')
     expect(head).toBeVisible()
   })
 
   it('should show the editor toolbar', function () {
-    var toolbar = $('.app-c-markdown-editor__toolbar')
+    var toolbar = document.querySelector('.app-c-markdown-editor__toolbar')
     expect(toolbar).toBeVisible()
   })
 
   it('should show the markdown editor container', function () {
-    var editorInput = $('.js-markdown-editor-input')
+    var editorInput = document.querySelector('.js-markdown-editor-input')
     expect(editorInput).toBeVisible()
   })
 
   it('should hide the preview container', function () {
-    var previewBody = $('.js-markdown-preview-body')
+    var previewBody = document.querySelector('.js-markdown-preview-body')
     expect(previewBody).toBeHidden()
   })
 
   describe('when clicking "Preview markdown" button', function () {
     beforeEach(function () {
-      $('.js-markdown-preview-button').click()
+      document.querySelector('.js-markdown-preview-button').click()
     })
 
     it('should hide the editor toolbar', function () {
-      var toolbar = $('.app-c-markdown-editor__toolbar')
+      var toolbar = document.querySelector('.app-c-markdown-editor__toolbar')
       expect(toolbar).toBeHidden()
     })
 
     it('should not mark the edit markdown button as selected', function () {
-      var editButton = $('.js-markdown-edit-button')
+      var editButton = document.querySelector('.js-markdown-edit-button')
       expect(editButton).not.toHaveClass('app-c-markdown-editor__button--muted')
     })
 
     it('should mark the preview markdown button as selected', function () {
-      var previewButton = $('.js-markdown-preview-button')
+      var previewButton = document.querySelector('.js-markdown-preview-button')
       expect(previewButton).toHaveClass('app-c-markdown-editor__button--muted')
     })
 
     it('should hide the markdown editor container', function () {
-      var editorInput = $('.js-markdown-editor-input')
+      var editorInput = document.querySelector('.js-markdown-editor-input')
       expect(editorInput).toBeHidden()
     })
 
     it('should show the preview container', function () {
-      var previewBody = $('.js-markdown-preview-body')
+      var previewBody = document.querySelector('.js-markdown-preview-body')
       expect(previewBody).toBeVisible()
     })
 
     it('should show the default message in the preview container', function () {
-      var previewBody = $('.js-markdown-preview-body')
+      var previewBody = document.querySelector('.js-markdown-preview-body')
       expect(previewBody).toContainText('Nothing to preview')
     })
   })
@@ -130,32 +130,32 @@ describe('Markdown editor component', function () {
     })
 
     it('should show the editor toolbar', function () {
-      var toolbar = $('.app-c-markdown-editor__toolbar')
+      var toolbar = document.querySelector('.app-c-markdown-editor__toolbar')
       expect(toolbar).toBeVisible()
     })
 
     it('should mark the edit markdown button as selected', function () {
-      var editButton = $('.js-markdown-edit-button')
+      var editButton = document.querySelector('.js-markdown-edit-button')
       expect(editButton).toHaveClass('app-c-markdown-editor__button--muted')
     })
 
     it('should not mark the preview markdown button as selected', function () {
-      var previewButton = $('.js-markdown-preview-button')
+      var previewButton = document.querySelector('.js-markdown-preview-button')
       expect(previewButton).not.toHaveClass('app-c-markdown-editor__button--muted')
     })
 
     it('should show the markdown editor container', function () {
-      var editorInput = $('.js-markdown-editor-input')
+      var editorInput = document.querySelector('.js-markdown-editor-input')
       expect(editorInput).toBeVisible()
     })
 
     it('should hide the preview container', function () {
-      var previewBody = $('.js-markdown-preview-body')
+      var previewBody = document.querySelector('.js-markdown-preview-body')
       expect(previewBody).toBeHidden()
     })
 
     it('should hide the default message in the preview container', function () {
-      var previewBody = $('.js-markdown-preview-body')
+      var previewBody = document.querySelector('.js-markdown-preview-body')
       expect(previewBody).not.toContainText('Nothing to preview')
     })
   })
