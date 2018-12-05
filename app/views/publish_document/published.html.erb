@@ -36,7 +36,8 @@
       <%= render "govuk_publishing_components/components/copy_to_clipboard",
         label: t("publish_document.published.published_without_review.send_label"),
         copyable_content: document_url(@document, utm_content: "2i-link"),
-        button_text: "Copy link" %>
+        button_text: "Copy link",
+        button_data_attributes: { gtm: "published-content-copy-link-cta" } %>
     <% end %>
   </div>
 </div>
