@@ -17,7 +17,7 @@
       <p><%= entry.removal.explanatory_note %></p>
       <% if entry.removal.redirect %>
         <p>Redirected to <%= link_to(Plek.new.website_root + entry.removal.alternative_path) %></p>
-      <% else %>
+      <% elsif entry.removal.alternative_path.present? %>
         <p><%= link_to(Plek.new.website_root + entry.removal.alternative_path) %></p>
       <% end %>
     <% end %>
