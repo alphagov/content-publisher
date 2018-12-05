@@ -14,7 +14,9 @@
     <% if entry.retirement.present? %>
       <%= entry.retirement.explanatory_note %>
     <% elsif entry.removal.present? %>
-      <p><%= entry.removal.explanatory_note %></p>
+      <% if entry.removal.explanatory_note.present? %>
+        <p><%= entry.removal.explanatory_note %></p>
+      <% end %>
       <% if entry.removal.redirect %>
         <p>Redirected to <%= link_to(Plek.new.website_root + entry.removal.alternative_path) %></p>
       <% elsif entry.removal.alternative_path.present? %>
