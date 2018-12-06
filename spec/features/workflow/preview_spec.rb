@@ -37,7 +37,7 @@ RSpec.feature "Previewing a document" do
   def content_body
     {
       "title" => @document.title,
-      "document_type" => @document.document_type_id,
+      "document_type" => @document.document_type_schema.id,
       "description" => @document.summary,
       "update_type" => @document.update_type,
       "change_note" => @document.change_note,

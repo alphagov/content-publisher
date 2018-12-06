@@ -28,7 +28,7 @@ module Tasks
         contents: {
           body: embed_contacts(translation["body"], document.fetch("contacts", {})),
         },
-        document_type_id: edition["news_article_type"]["key"],
+        document_type: edition["news_article_type"]["key"],
         title: translation["title"],
         publication_state: publication_state(edition),
         review_state: review_state(edition),

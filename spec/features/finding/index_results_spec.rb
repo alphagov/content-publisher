@@ -25,7 +25,7 @@ RSpec.feature "Users views document results on index page" do
   end
 
   def and_i_can_see_the_document_type
-    expect(page).to have_content(Document.last.document_type.label)
+    expect(page).to have_content(Document.last.document_type_schema.label)
   end
 
   def and_i_can_see_the_document_state

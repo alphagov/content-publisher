@@ -25,8 +25,8 @@ class DocumentTagsController < ApplicationController
 private
 
   def update_params(document)
-    permits = document.document_type.tags.map do |tag_field|
-      [tag_field.id, []]
+    permits = document.document_type_schema.tags.map do |schema|
+      [schema.id, []]
     end
 
     params.fetch(:tags, {}).permit(Hash[permits])

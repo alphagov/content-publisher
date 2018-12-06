@@ -10,8 +10,8 @@ RSpec.feature "Delete an image" do
   end
 
   def given_there_is_a_document_with_images
-    document_type = build(:document_type, lead_image: true)
-    document = create(:document, document_type_id: document_type.id)
+    document_type_schema = build(:document_type_schema, lead_image: true)
+    document = create(:document, document_type: document_type_schema.id)
     @image = create(:image, :in_preview, document: document)
     document.update(lead_image: @image)
   end

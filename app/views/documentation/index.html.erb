@@ -13,18 +13,18 @@
   </thead>
 
   <body class='govuk-table__body'>
-    <% DocumentType.all.each do |document_type| %>
+    <% DocumentTypeSchema.all.each do |schema| %>
       <tr class='govuk-table__row'>
-        <td class='govuk-table__header'><%= document_type.label %></td>
-        <td class='govuk-table__cell'><%= document_type.id %></td>
+        <td class='govuk-table__header'><%= schema.label %></td>
+        <td class='govuk-table__cell'><%= schema.id %></td>
 
-        <% if document_type.managed_elsewhere %>
-          <td class='govuk-table__cell'><%= link_to(t("documentation.index.formats.table.link_name"), document_type.managed_elsewhere_url, class: "govuk-link") %></td>
+        <% if schema.managed_elsewhere %>
+          <td class='govuk-table__cell'><%= link_to(t("documentation.index.formats.table.link_name"), schema.managed_elsewhere_url, class: "govuk-link") %></td>
         <% else %>
           <td class='govuk-table__cell'></td>
         <% end %>
 
-        <td class='govuk-table__cell'><%= link_to 'Tech docs', "https://docs.publishing.service.gov.uk/document-types/#{document_type.id}.html", class: "govuk-link"%></td>
+        <td class='govuk-table__cell'><%= link_to 'Tech docs', "https://docs.publishing.service.gov.uk/document-types/#{schema.id}.html", class: "govuk-link"%></td>
       </tr>
     <% end %>
   </body>

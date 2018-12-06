@@ -85,8 +85,8 @@ RSpec.describe Requirements::ContentChecker do
     end
 
     it "returns an issue if a field is blank" do
-      document_type = build :document_type, contents: [(build :field, id: "body")]
-      document = build :document, document_type_id: document_type.id
+      schema = build :document_type_schema, contents: [(build :field_schema, id: "body")]
+      document = build :document, document_type: schema.id
       issues = Requirements::ContentChecker.new(document).pre_publish_issues
 
       form_message = issues.items_for(:body).first[:text]

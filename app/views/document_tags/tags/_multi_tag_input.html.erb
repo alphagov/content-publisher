@@ -1,13 +1,13 @@
 <%= render "components/autocomplete", {
-  id: tag_field.id,
-  name: "tags[#{tag_field.id}][]",
+  id: schema.id,
+  name: "tags[#{schema.id}][]",
   label: {
-    text: tag_field.label,
+    text: schema.label,
     bold: true
   },
-  hint: tag_field.hint,
-  options: LinkablesService.new(tag_field.document_type).select_options,
-  selected_options: tags[tag_field.id],
+  hint: schema.hint,
+  options: LinkablesService.new(schema.document_type).select_options,
+  selected_options: tags[schema.id],
   multiple: true,
   size: 10,
   data: {

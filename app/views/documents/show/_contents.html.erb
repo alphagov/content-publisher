@@ -1,7 +1,7 @@
-<% contents = @document.document_type.contents.map { |field|
+<% contents = @document.document_type_schema.contents.map { |schema|
   {
-    field: field.label,
-    value: render("documents/fields/#{field.type}", field: field, document: @document)
+    field: schema.label,
+    value: render("documents/fields/#{schema.type}", schema: schema, document: @document)
   }
 } %>
 

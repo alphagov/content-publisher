@@ -18,9 +18,9 @@ RSpec.feature "Create a press release", format: true do
   def when_i_choose_this_document_type
     visit root_path
     click_on "Create new document"
-    choose Supertype.find("news").label
+    choose SupertypeSchema.find("news").label
     click_on "Continue"
-    choose DocumentType.find("press_release").label
+    choose DocumentTypeSchema.find("press_release").label
     click_on "Continue"
   end
 
@@ -29,7 +29,7 @@ RSpec.feature "Create a press release", format: true do
     fill_in "document[summary]", with: "A great summary"
 
     document = Document.first
-    base_path = document.document_type.path_prefix + "/a-great-title"
+    base_path = document.document_type_schema.path_prefix + "/a-great-title"
     publishing_api_has_lookups(base_path => document.content_id)
 
     click_on "Save"
@@ -40,7 +40,7 @@ RSpec.feature "Create a press release", format: true do
   def and_i_add_some_tags
     publishing_api_has_links(role_appointment_links)
 
-    expect(Document.last.document_type.tags.count).to eq(5)
+    expect(Document.last.document_type_schema.tags.count).to eq(5)
     publishing_api_has_linkables([linkable], document_type: "topical_event")
     publishing_api_has_linkables([linkable], document_type: "world_location")
     publishing_api_has_linkables([linkable], document_type: "organisation")

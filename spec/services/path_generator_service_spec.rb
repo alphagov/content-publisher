@@ -5,7 +5,7 @@ RSpec.describe PathGeneratorService do
     it "generates a base path which is unique to our database" do
       service = PathGeneratorService.new
       original_document = create(:document)
-      new_document = build(:document, document_type_id: original_document.document_type_id)
+      new_document = build(:document, document_type: original_document.document_type)
       publishing_api_has_lookups("#{original_document.base_path}": nil)
       expect(service.path(new_document, original_document.title)).to eq("#{original_document.base_path}-1")
     end
@@ -14,7 +14,7 @@ RSpec.describe PathGeneratorService do
       service = PathGeneratorService.new(2)
       document = build(:document)
 
-      prefix = document.document_type.path_prefix
+      prefix = document.document_type_schema.path_prefix
       existing_paths = ["#{prefix}/a-title", "#{prefix}/a-title-1", "#{prefix}/a-title-2"]
       existing_paths.each { |path| create(:document, base_path: path) }
 
