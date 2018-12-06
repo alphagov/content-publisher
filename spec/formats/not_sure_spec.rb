@@ -13,7 +13,7 @@ RSpec.feature "User is not sure about the supertype", format: true do
   end
 
   def and_i_choose_i_am_not_sure_if_it_belongs_on_govuk
-    choose SupertypeSchema.find("not-sure").label
+    choose Supertype.find("not-sure").label
     click_on "Continue"
   end
 

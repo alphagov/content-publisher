@@ -1,5 +1,5 @@
 <% content_for :back_link, render_back_link(href: new_document_path) %>
-<% content_for :title, @supertype_schema.label %>
+<% content_for :title, @supertype.label %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -17,7 +17,7 @@
         }
       } %>
 
-      <%= hidden_field(nil, :supertype, value: @supertype_schema.id) %>
+      <%= hidden_field(nil, :supertype, value: @supertype.id) %>
       <%= render "govuk_publishing_components/components/button", text: "Continue", margin_bottom: true %>
     <% end %>
   </div>
