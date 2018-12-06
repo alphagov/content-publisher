@@ -13,7 +13,7 @@
   no_border: true
 } %>
 
-<%= form_tag(update_document_image_path(@document, @image), method: :patch) do %>
+<%= form_tag(update_document_image_path(@document, @image), method: :patch, data: { "warn-before-unload": true }) do %>
   <%= hidden_field_tag :wizard, params[:wizard] %>
 
   <div class="govuk-grid-row">
