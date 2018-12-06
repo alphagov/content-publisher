@@ -8,21 +8,21 @@
 </div>
 <%= form_tag(document_tags_path(@document)) do %>
 
-<% @document.document_type_schema.tags.each do |schema| %>
+<% @document.document_type.tags.each do |tag_field| %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <%= render "document_tags/tags/#{schema.type}_input",
-        schema: schema,
+      <%= render "document_tags/tags/#{tag_field.type}_input",
+        tag_field: tag_field,
         tags: @document.tags,
-        contextual_guidance_id: "#{schema.id}-guidance" %>
+        contextual_guidance_id: "#{tag_field.id}-guidance" %>
     </div>
-    <% if @document.document_type_schema.guidance_for(schema.id) %>
+    <% if @document.document_type.guidance_for(tag_field.id) %>
     <div class="govuk-grid-column-one-third">
       <%= render "components/contextual_guidance", {
-        id: "#{schema.id}-guidance",
-        title: @document.document_type_schema.guidance_for(schema.id).title
+        id: "#{tag_field.id}-guidance",
+        title: @document.document_type.guidance_for(tag_field.id).title
       } do %>
-        <p class="govuk-body"><%= @document.document_type_schema.guidance_for(schema.id).body %></p>
+        <p class="govuk-body"><%= @document.document_type.guidance_for(tag_field.id).body %></p>
       <% end %>
     </div>
     <% end %>

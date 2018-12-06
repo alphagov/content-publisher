@@ -2,7 +2,7 @@
 
 class NewDocumentController < ApplicationController
   def choose_supertype
-    @supertypes = SupertypeSchema.all
+    @supertypes = Supertype.all
   end
 
   def choose_document_type
@@ -13,14 +13,14 @@ class NewDocumentController < ApplicationController
       return
     end
 
-    @supertype_schema = SupertypeSchema.find(params[:supertype])
+    @supertype = Supertype.find(params[:supertype])
 
-    if @supertype_schema.managed_elsewhere
-      redirect_to @supertype_schema.managed_elsewhere_url
+    if @supertype.managed_elsewhere
+      redirect_to @supertype.managed_elsewhere_url
       return
     end
 
-    @document_types = @supertype_schema.document_types
+    @document_types = @supertype.document_types
   end
 
   def create
@@ -31,10 +31,10 @@ class NewDocumentController < ApplicationController
       return
     end
 
-    document_type_schema = DocumentTypeSchema.find(params[:document_type])
+    document_type = DocumentType.find(params[:document_type])
 
-    if document_type_schema.managed_elsewhere
-      redirect_to document_type_schema.managed_elsewhere_url
+    if document_type.managed_elsewhere
+      redirect_to document_type.managed_elsewhere_url
       return
     end
 

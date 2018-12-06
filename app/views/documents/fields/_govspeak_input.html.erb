@@ -2,7 +2,7 @@
   <div class="govuk-grid-column-two-thirds">
     <%= render "components/markdown_editor", {
       label: {
-        text: schema.label,
+        text: field.label,
         bold: true
       },
       textarea: {
@@ -10,24 +10,24 @@
           "contextual-guidance": "document-contents-guidance",
           "gramm": "false", # Disables grammerly plugin for markdown editor
         },
-        id: schema.id,
-        name: "document[contents][#{schema.id}]",
-        value: document.contents[schema.id],
+        id: field.id,
+        name: "document[contents][#{field.id}]",
+        value: document.contents[field.id],
         rows: 20,
         spellcheck: "false"
       }
     } %>
   </div>
 
-  <% if document.document_type_schema.guidance_for(schema.id) %>
+  <% if document.document_type.guidance_for(field.id) %>
     <div class="govuk-grid-column-one-third">
       <%= render "components/contextual_guidance", {
         id: "document-contents-guidance",
-        title: document.document_type_schema.guidance_for(schema.id).title,
+        title: document.document_type.guidance_for(field.id).title,
         relative: true
       } do %>
         <%= render "govuk_publishing_components/components/govspeak" do %>
-          <%= govspeak_to_html document.document_type_schema.guidance_for(schema.id).body_govspeak %>
+          <%= govspeak_to_html document.document_type.guidance_for(field.id).body_govspeak %>
         <% end %>
 
         <h3 class="govuk-heading-s"><%= t("documents.edit.fields.govspeak.title") %></h3>

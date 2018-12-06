@@ -12,8 +12,8 @@ RSpec.feature "Delete an image with Asset Manager down" do
   end
 
   def given_there_is_a_document_with_images
-    document_type_schema = build(:document_type_schema, lead_image: true)
-    document = create(:document, document_type_id: document_type_schema.id)
+    document_type = build(:document_type, lead_image: true)
+    document = create(:document, document_type_id: document_type.id)
     @image = create(:image, :in_preview, document: document)
     document.update(lead_image: @image)
   end

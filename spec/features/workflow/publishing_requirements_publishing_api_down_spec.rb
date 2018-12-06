@@ -16,8 +16,8 @@ RSpec.feature "Publishing requirements when the Publishing API is down" do
   end
 
   def given_there_is_a_document
-    document_type_schema = build(:document_type_schema, topics: true)
-    @document = create(:document, :in_preview, document_type_id: document_type_schema.id)
+    document_type = build(:document_type, topics: true)
+    @document = create(:document, :in_preview, document_type_id: document_type.id)
   end
 
   def when_the_publishing_api_is_down

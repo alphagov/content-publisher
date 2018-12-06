@@ -38,8 +38,8 @@ class Document < ApplicationRecord
   validates_inclusion_of :live_state, in: LIVE_STATES, allow_nil: true, unless: :has_live_version_on_govuk
   validates_inclusion_of :update_type, in: %w[major minor], allow_nil: true
 
-  def document_type_schema
-    DocumentTypeSchema.find(document_type_id)
+  def document_type
+    DocumentType.find(document_type_id)
   end
 
   def newly_created?
