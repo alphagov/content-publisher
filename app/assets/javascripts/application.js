@@ -22,7 +22,8 @@
 //= require components/markdown-editor.js
 //= require components/url-preview.js
 //= require vendor/@alphagov/miller-columns-element/dist/index.umd.js
-//= require components/warn-before-unload.js
+
+//= require modules/warn-before-unload.js
 
 // load after other components (esp. autocomplete)
 //= require components/contextual-guidance.js
