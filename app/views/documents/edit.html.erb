@@ -22,7 +22,8 @@
         maxlength: Requirements::ContentChecker::TITLE_MAX_LENGTH,
         data: {
           "url-preview": "input",
-          "contextual-guidance": "document-title-guidance"
+          "contextual-guidance": "document-title-guidance",
+          gtm: "title-input"
         }
       } do %>
         <%= render "components/input_length_suggester", {
@@ -69,7 +70,8 @@
         rows: 4,
         maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH,
         data: {
-          "contextual-guidance": "document-summary-guidance"
+          "contextual-guidance": "document-summary-guidance",
+          gtm: "summary-input"
         }
       } do %>
         <%= render "components/input_length_suggester", {

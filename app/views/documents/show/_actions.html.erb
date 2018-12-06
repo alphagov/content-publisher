@@ -1,13 +1,19 @@
 <div class="app-side">
   <div class="app-side__actions">
+    <%
+      def delete_draft_link(extra_class = [])
+        link_to("Delete draft",
+                delete_draft_path(@document),
+                class: %w(govuk-link app-link--destructive) + Array(extra_class),
+                data: { gtm: "delete-draft" })
+      end
+    %>
     <% if @document.publication_state == "changes_not_sent_to_draft" %>
       <%= form_tag create_preview_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Preview" %>
       <% end %>
 
-      <% unless @document.has_live_version_on_govuk %>
-        <%= link_to "Delete draft", delete_draft_path(@document), class: "govuk-link app-link--destructive" %>
-      <% end %>
+      <%= delete_draft_link unless @document.has_live_version_on_govuk %>
     <% elsif @document.publication_state == "error_sending_to_draft" %>
       <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html t("documents.show.sidebar.error_creating_preview_govspeak") %>
@@ -17,9 +23,7 @@
         <%= render "govuk_publishing_components/components/button", text: "Try again" %>
       <% end %>
 
-      <% unless @document.has_live_version_on_govuk %>
-        <%= link_to "Delete draft", delete_draft_path(@document), class: "govuk-link app-link--destructive" %>
-      <% end %>
+      <%= delete_draft_link unless @document.has_live_version_on_govuk %>
     <% elsif @document.publication_state == "error_deleting_draft" %>
       <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html t("documents.show.sidebar.error_deleting_draft_govspeak") %>
@@ -40,14 +44,17 @@
       <% end %>
 
       <%= form_tag create_document_edition_path(@document) do %>
-        <%= render "govuk_publishing_components/components/button", text: "Create new edition", secondary: true %>
+        <%= render "govuk_publishing_components/components/button",
+          text: "Create new edition",
+          secondary: true,
+          data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
 
       <%= link_to "Retire", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
       <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "published" %>
       <%= form_tag create_document_edition_path(@document) do %>
-        <%= render "govuk_publishing_components/components/button", text: "Create new edition" %>
+        <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
 
       <%= link_to "Retire", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
@@ -56,15 +63,13 @@
       <%= link_to "Update reason for retiring", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
     <% elsif @document.user_facing_state == "removed" %>
       <%= form_tag create_document_edition_path(@document) do %>
-        <%= render "govuk_publishing_components/components/button", text: "Create new edition" %>
+        <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
     <% elsif @document.user_facing_state == "submitted_for_review" %>
       <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
 
-      <% unless @document.has_live_version_on_govuk %>
-        <%= link_to "Delete draft", delete_draft_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
-      <% end %>
+      <%= delete_draft_link("app-link--right") unless @document.has_live_version_on_govuk %>
     <% elsif @document.user_facing_state == "draft" %>
       <%= form_tag submit_document_for_2i_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
@@ -74,9 +79,7 @@
 
       <%= link_to "Publish", publish_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
 
-      <% unless @document.has_live_version_on_govuk %>
-        <%= link_to "Delete draft", delete_draft_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
-      <% end %>
+      <%= delete_draft_link("app-link--right") unless @document.has_live_version_on_govuk %>
     <% end %>
 
     <% if @document.has_live_version_on_govuk? %>
