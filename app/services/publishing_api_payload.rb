@@ -18,7 +18,7 @@ class PublishingApiPayload
       "locale" => document.locale,
       "description" => document.summary,
       "schema_name" => publishing_metadata.schema_name,
-      "document_type" => document.document_type,
+      "document_type" => document.document_type_id,
       "publishing_app" => PUBLISHING_APP,
       "rendering_app" => publishing_metadata.rendering_app,
       "update_type" => document.update_type,

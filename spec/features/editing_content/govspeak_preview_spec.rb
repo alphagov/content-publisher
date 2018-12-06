@@ -12,7 +12,7 @@ RSpec.feature "Shows a preview of Govspeak", js: true do
   def given_there_is_a_document
     body_field_schema = build(:field_schema, id: "body", type: "govspeak")
     document_type_schema = build(:document_type_schema, contents: [body_field_schema])
-    @document = create(:document, document_type: document_type_schema.id)
+    @document = create(:document, document_type_id: document_type_schema.id)
   end
 
   def when_i_go_to_edit_the_document

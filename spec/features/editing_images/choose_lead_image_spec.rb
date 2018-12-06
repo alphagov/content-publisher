@@ -12,7 +12,7 @@ RSpec.feature "Choose a lead image" do
 
   def given_there_is_a_document_with_images
     document_type_schema = build(:document_type_schema, lead_image: true)
-    document = create(:document, document_type: document_type_schema.id)
+    document = create(:document, document_type_id: document_type_schema.id)
     @image = create(:image, :in_preview, document: document)
   end
 
