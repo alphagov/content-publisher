@@ -38,13 +38,13 @@ describe('URL preview component', function () {
     var input = document.querySelector('[data-url-preview="input"]')
     input.dispatchEvent(new Event('blur'))
 
-    var defaultMessage = $('.js-url-preview-default-message')
+    var defaultMessage = document.querySelector('.js-url-preview-default-message')
     expect(defaultMessage).toBeVisible()
 
-    var previewURL = $('.js-url-preview-url')
+    var previewURL = document.querySelector('.js-url-preview-url')
     expect(previewURL).toBeHidden()
 
-    var errorMessage = $('.js-url-preview-error-message')
+    var errorMessage = document.querySelector('.js-url-preview-error-message')
     expect(errorMessage).toBeHidden()
   })
 
@@ -54,13 +54,13 @@ describe('URL preview component', function () {
     input.value = 'My title'
     input.dispatchEvent(new Event('blur'))
 
-    var defaultMessage = $('.js-url-preview-default-message')
+    var defaultMessage = document.querySelector('.js-url-preview-default-message')
     expect(defaultMessage).toBeHidden()
 
-    var previewURL = $('.js-url-preview-url')
+    var previewURL = document.querySelector('.js-url-preview-url')
     expect(previewURL).toBeVisible()
 
-    var errorMessage = $('.js-url-preview-error-message')
+    var errorMessage = document.querySelector('.js-url-preview-error-message')
     expect(errorMessage).toBeHidden()
   })
 })
