@@ -84,7 +84,7 @@ private
   end
 
   def update_params(document)
-    contents_params = document.document_type.contents.map(&:id)
+    contents_params = document.document_type_schema.contents.map(&:id)
     base_path = PathGeneratorService.new.path(document, params.require(:document)[:title])
     title = params.require(:document)[:title]&.strip
     summary = params.require(:document)[:summary].strip

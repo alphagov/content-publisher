@@ -10,7 +10,7 @@
   } %>
 
   <div class="govuk-form-group">
-    <% document_type_select = DocumentType.all
+    <% document_type_select = DocumentTypeSchema.all
       .reject(&:managed_elsewhere)
       .map { |d| [d.label, d.id] }
     %>

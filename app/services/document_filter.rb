@@ -48,7 +48,7 @@ private
                    "%#{sanitize_sql_like(value)}%",
                    "%#{sanitize_sql_like(value)}%")
       when :document_type
-        memo.where(document_type_id: value)
+        memo.where(document_type: value)
       when :state
         UserFacingState.scope(memo, value)
       when :organisation

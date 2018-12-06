@@ -20,7 +20,7 @@ RSpec.feature "Choosing a format" do
   end
 
   def when_i_choose_a_supertype
-    choose Supertype.all.first.label
+    choose SupertypeSchema.all.first.label
     click_on "Continue"
   end
 

@@ -3,12 +3,12 @@
 class PublishingApiPayload
   PUBLISHING_APP = "content-publisher"
 
-  attr_reader :document, :document_type, :publishing_metadata
+  attr_reader :document, :document_type_schema, :publishing_metadata
 
   def initialize(document)
     @document = document
-    @document_type = document.document_type
-    @publishing_metadata = document_type.publishing_metadata
+    @document_type_schema = document.document_type_schema
+    @publishing_metadata = document_type_schema.publishing_metadata
   end
 
   def payload
@@ -18,7 +18,7 @@ class PublishingApiPayload
       "locale" => document.locale,
       "description" => document.summary,
       "schema_name" => publishing_metadata.schema_name,
-      "document_type" => document.document_type_id,
+      "document_type" => document.document_type,
       "publishing_app" => PUBLISHING_APP,
       "rendering_app" => publishing_metadata.rendering_app,
       "update_type" => document.update_type,
@@ -59,11 +59,11 @@ private
   def details
     details = {}
 
-    document_type.contents.each do |field|
+    document_type_schema.contents.each do |field|
       details[field.id] = perform_input_type_specific_transformations(field)
     end
 
-    if document_type.lead_image && document.lead_image.present?
+    if document_type_schema.lead_image && document.lead_image.present?
       details["image"] = image
     end
 

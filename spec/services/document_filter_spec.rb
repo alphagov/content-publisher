@@ -34,8 +34,8 @@ RSpec.describe DocumentFilter do
     end
 
     it "filters the documents by type" do
-      document1 = create(:document, document_type_id: "type_1")
-      document2 = create(:document, document_type_id: "type_2")
+      document1 = create(:document, document_type: "type_1")
+      document2 = create(:document, document_type: "type_2")
 
       documents = DocumentFilter.new(filters: { document_type: " " }).documents
       expect(documents).to match_array([document1, document2])

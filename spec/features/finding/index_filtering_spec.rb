@@ -69,7 +69,7 @@ RSpec.feature "User filters documents" do
   end
 
   def when_i_filter_by_document_type
-    select @relevant_document.document_type.label, from: "document_type"
+    select @relevant_document.document_type_schema.label, from: "document_type"
     click_on "Filter"
   end
 

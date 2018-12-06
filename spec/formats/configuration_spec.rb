@@ -1,35 +1,35 @@
 # frozen_string_literal: true
 
 RSpec.describe "Format configuration", format: true do
-  Supertype.all.each do |supertype|
-    describe "Supertype #{supertype.id}" do
-      it "has the required attributes for #{supertype.id}" do
-        expect(supertype.id).to_not be_blank
-        expect(supertype.label).to_not be_blank
-        expect(supertype.description).to_not be_blank
+  SupertypeSchema.all.each do |schema|
+    describe "Supertype #{schema.id}" do
+      it "has the required attributes for #{schema.id}" do
+        expect(schema.id).to_not be_blank
+        expect(schema.label).to_not be_blank
+        expect(schema.description).to_not be_blank
       end
     end
   end
 
-  DocumentType.all.each do |document_type|
-    describe "Document type #{document_type.id}" do
+  DocumentTypeSchema.all.each do |schema|
+    describe "Document type #{schema.id}" do
       it "has the required attributes" do
-        expect(document_type.id).to_not be_blank
-        expect(document_type.label).to_not be_blank
+        expect(schema.id).to_not be_blank
+        expect(schema.label).to_not be_blank
       end
 
-      if document_type.managed_elsewhere
+      if schema.managed_elsewhere
         it "has the required attributes for managed_elsewhere" do
-          expect(document_type.managed_elsewhere.keys).to contain_exactly("hostname", "path")
+          expect(schema.managed_elsewhere.keys).to contain_exactly("hostname", "path")
         end
       else
         it "has the required attributes for publishing_metadata" do
-          expect(document_type.publishing_metadata.rendering_app).to_not be_blank
-          expect(document_type.publishing_metadata.schema_name).to_not be_blank
+          expect(schema.publishing_metadata.rendering_app).to_not be_blank
+          expect(schema.publishing_metadata.schema_name).to_not be_blank
         end
 
         it "has a valid document type" do
-          expect(document_type.id).to be_in(GovukSchemas::DocumentTypes.valid_document_types)
+          expect(schema.id).to be_in(GovukSchemas::DocumentTypes.valid_document_types)
         end
       end
     end

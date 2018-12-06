@@ -19,7 +19,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
 
   def given_there_is_a_document
     @document = create(:document)
-    @document_path_prefix = @document.document_type.path_prefix
+    @document_path_prefix = @document.document_type_schema.path_prefix
     @document_base_path = @document.base_path
   end
 

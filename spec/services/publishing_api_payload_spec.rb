@@ -3,15 +3,15 @@
 RSpec.describe PublishingApiPayload do
   describe "#payload" do
     it "generates a payload for the publishing API" do
-      document_type = build(:document_type)
-      document = build(:document, document_type_id: document_type.id, title: "Some title", summary: "document summary", base_path: "/foo/bar/baz")
+      document_type_schema = build(:document_type_schema)
+      document = build(:document, document_type: document_type_schema.id, title: "Some title", summary: "document summary", base_path: "/foo/bar/baz")
 
       payload = PublishingApiPayload.new(document).payload
 
       payload_hash = {
         "base_path" => "/foo/bar/baz",
         "description" => "document summary",
-        "document_type" => document_type.id,
+        "document_type" => document_type_schema.id,
         "links" => { "organisations" => [] },
         "locale" => document.locale,
         "publishing_app" => "content-publisher",
@@ -24,9 +24,9 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "includes primary_publishing_organisation in organisations links" do
-      organisation = build(:tag_field, type: "single_tag", id: "primary_publishing_organisation")
-      document_type = build(:document_type, tags: [organisation])
-      document = build(:document, document_type_id: document_type.id, tags: {
+      organisation_schema = build(:tag_schema, type: "single_tag", id: "primary_publishing_organisation")
+      document_type_schema = build(:document_type_schema, tags: [organisation_schema])
+      document = build(:document, document_type: document_type_schema.id, tags: {
                          primary_publishing_organisation: ["my-org-id"],
                          organisations: ["other-org-id"],
                        })
@@ -43,9 +43,9 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "ensures the organisation links are unique" do
-      organisation = build(:tag_field, type: "single_tag", id: "primary_publishing_organisation")
-      document_type = build(:document_type, tags: [organisation])
-      document = build(:document, document_type_id: document_type.id, tags: {
+      organisation_schema = build(:tag_schema, type: "single_tag", id: "primary_publishing_organisation")
+      document_type_schema = build(:document_type_schema, tags: [organisation_schema])
+      document = build(:document, document_type: document_type_schema.id, tags: {
                          primary_publishing_organisation: ["my-org-id"],
                          organisations: ["my-org-id"],
                        })
@@ -63,9 +63,9 @@ RSpec.describe PublishingApiPayload do
 
     it "converts role appointment links to role and person links" do
       role_appointment_id = SecureRandom.uuid
-      role_appointments = build(:tag_field, type: "multi_tag", id: "role_appointments")
-      document_type = build(:document_type, tags: [role_appointments])
-      document = build(:document, document_type_id: document_type.id, tags: {
+      role_appointments_schema = build(:tag_schema, type: "multi_tag", id: "role_appointments")
+      document_type_schema = build(:document_type_schema, tags: [role_appointments_schema])
+      document = build(:document, document_type: document_type_schema.id, tags: {
                          role_appointments: [role_appointment_id],
                        })
 
@@ -85,9 +85,9 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "transforms Govspeak before sending it to the publishing-api" do
-      body_field = build(:field, type: "govspeak", id: "body")
-      document_type = build(:document_type, contents: [body_field])
-      document = build(:document, document_type_id: document_type.id, contents: { body: "Hey **buddy**!" })
+      body_field_schema = build(:field_schema, type: "govspeak", id: "body")
+      document_type_schema = build(:document_type_schema, contents: [body_field_schema])
+      document = build(:document, document_type: document_type_schema.id, contents: { body: "Hey **buddy**!" })
 
       payload = PublishingApiPayload.new(document).payload
 
@@ -96,8 +96,8 @@ RSpec.describe PublishingApiPayload do
 
     it "includes a lead image if present" do
       image = build(:image, alt_text: "image alt text", caption: "image caption", asset_manager_file_url: "http:://assets-manager.gov.uk/image.jpg")
-      document_type = build(:document_type, lead_image: true)
-      document = build(:document, document_type_id: document_type.id, lead_image: image)
+      document_type_schema = build(:document_type_schema, lead_image: true)
+      document = build(:document, document_type: document_type_schema.id, lead_image: image)
 
       payload = PublishingApiPayload.new(document).payload
 

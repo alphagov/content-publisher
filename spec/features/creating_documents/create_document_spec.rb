@@ -16,17 +16,17 @@ RSpec.feature "Create a document" do
   end
 
   def when_i_click_to_create_a_document
-    @document_type = build :document_type
+    @schema = build :document_type_schema
     click_on "Create new document"
   end
 
   def and_i_select_a_supertype
-    choose Supertype.all.first.label
+    choose SupertypeSchema.all.first.label
     click_on "Continue"
   end
 
   def and_i_select_a_document_type
-    choose @document_type.label
+    choose @schema.label
     click_on "Continue"
   end
 
@@ -61,7 +61,7 @@ RSpec.feature "Create a document" do
         "primary_publishing_organisation" => [User.first.organisation_content_id],
       },
       "title" => "A title",
-      "document_type" => @document_type.id,
+      "document_type" => @schema.id,
       "description" => "A summary",
       "update_type" => "major",
       "change_note" => "First published.",

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DocumentType
+class DocumentTypeSchema
   attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
     :path_prefix, :tags, :guidance_govspeak, :description, :hint, :lead_image, :topics, :check_path_conflict
 
@@ -11,7 +11,7 @@ class DocumentType
     @contents = params["contents"].to_a.map(&Field.method(:new))
     @publishing_metadata = PublishingMetadata.new(params["publishing_metadata"])
     @path_prefix = params["path_prefix"]
-    @tags = params["tags"].to_a.map(&TagField.method(:new))
+    @tags = params["tags"].to_a.map(&Tag.method(:new))
     @guidance = params["guidance"].to_a.map(&Guidance.method(:new))
     @description = params["description"]
     @hint = params["hint"]
@@ -20,22 +20,22 @@ class DocumentType
     @check_path_conflict = params["check_path_conflict"]
   end
 
-  def self.find(id)
-    item = all.find { |document_type| document_type.id == id }
-    item || (raise RuntimeError, "Document type #{id} not found")
+  def self.find(document_type_id)
+    item = all.find { |schema| schema.id == document_type_id }
+    item || (raise RuntimeError, "Document type #{document_type_id} not found")
   end
 
   def self.all
     @all ||= begin
       types = YAML.load_file("app/formats/document_types.yml")
-      types.map { |data| DocumentType.new(data) }
+      types.map { |data| DocumentTypeSchema.new(data) }
     end
   end
 
-  def self.add(params)
-    document_type = new(params)
-    all << document_type
-    document_type
+  def self.add_schema(params)
+    schema = new(params)
+    all << schema
+    schema
   end
 
   def managed_elsewhere_url
@@ -46,7 +46,7 @@ class DocumentType
     @guidance.find { |guidance| guidance.id == id }
   end
 
-  class TagField
+  class Tag
     include ActiveModel::Model
     attr_accessor :id, :label, :type, :document_type, :hint
   end

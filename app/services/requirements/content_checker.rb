@@ -44,7 +44,7 @@ module Requirements
         issues << Issue.new(:summary, :blank)
       end
 
-      document.document_type.contents.each do |field|
+      document.document_type_schema.contents.each do |field|
         if document.contents[field.id].blank?
           issues << Issue.new(field.id, :blank)
         end
