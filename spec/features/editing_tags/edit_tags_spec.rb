@@ -16,20 +16,20 @@ RSpec.feature "Edit document tags" do
   end
 
   def given_there_is_a_document
-    multi_tag_schema = build(:tag_schema, type: "multi_tag", id: "multi_tag_id")
-    single_tag_schema = build(:tag_schema, type: "single_tag", id: "single_tag_id")
-    document_type_schema = build(:document_type_schema, tags: [multi_tag_schema, single_tag_schema])
+    multi_tag_field = build(:tag_field, type: "multi_tag", id: "multi_tag_id")
+    single_tag_field = build(:tag_field, type: "single_tag", id: "single_tag_id")
+    document_type = build(:document_type, tags: [multi_tag_field, single_tag_field])
 
     tag_linkables = [initial_tag, tag_to_select_1, tag_to_select_2]
-    publishing_api_has_linkables(tag_linkables, document_type: multi_tag_schema["document_type"])
-    publishing_api_has_linkables(tag_linkables, document_type: single_tag_schema["document_type"])
+    publishing_api_has_linkables(tag_linkables, document_type: multi_tag_field["document_type"])
+    publishing_api_has_linkables(tag_linkables, document_type: single_tag_field["document_type"])
 
     initial_tags = {
-      multi_tag_schema["id"] => [initial_tag["content_id"]],
-      single_tag_schema["id"] => [initial_tag["content_id"]],
+      multi_tag_field["id"] => [initial_tag["content_id"]],
+      single_tag_field["id"] => [initial_tag["content_id"]],
     }
 
-    @document = create(:document, document_type_id: document_type_schema.id, tags: initial_tags)
+    @document = create(:document, document_type_id: document_type.id, tags: initial_tags)
   end
 
   def when_i_visit_the_document_page

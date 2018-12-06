@@ -1,13 +1,13 @@
 <% begin %>
-  <% tags = @document.document_type_schema.tags.map { |schema|
-    service = LinkablesService.new(schema.document_type)
+  <% tags = @document.document_type.tags.map { |tag_field|
+    service = LinkablesService.new(tag_field.document_type)
 
-    values = @document.tags[schema.id].to_a
+    values = @document.tags[tag_field.id].to_a
       .map { |content_id| service.by_content_id(content_id) }
 
     {
-      field: schema.label,
-      value: render("documents/tags/#{schema.type}", schema: schema, values: values)
+      field: tag_field.label,
+      value: render("documents/tags/#{tag_field.type}", tag_field: tag_field, values: values)
     }
   } %>
 

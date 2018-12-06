@@ -14,7 +14,7 @@ RSpec.describe PathGeneratorService do
       service = PathGeneratorService.new(2)
       document = build(:document)
 
-      prefix = document.document_type_schema.path_prefix
+      prefix = document.document_type.path_prefix
       existing_paths = ["#{prefix}/a-title", "#{prefix}/a-title-1", "#{prefix}/a-title-2"]
       existing_paths.each { |path| create(:document, base_path: path) }
 

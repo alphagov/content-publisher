@@ -28,7 +28,7 @@
                 path: document
               },
               metadata: {
-                document_type: document.document_type_schema.label,
+                document_type: document.document_type.label,
                 document_edit: t("documents.index.search_results.last_edited_by", user: document.last_editor&.name || I18n.t("documents.index.search_results.unknown_user"))
               }
             }

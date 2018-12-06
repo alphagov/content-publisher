@@ -12,7 +12,7 @@ module Requirements
       issues = []
 
       begin
-        if document.document_type_schema.check_path_conflict && base_path_conflict?
+        if document.document_type.check_path_conflict && base_path_conflict?
           issues << Issue.new(:title, :conflict)
         end
       rescue GdsApi::BaseError => e
