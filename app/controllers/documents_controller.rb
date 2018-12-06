@@ -39,7 +39,7 @@ class DocumentsController < ApplicationController
     @issues = Requirements::EditPageChecker.new(@document).pre_preview_issues
 
     if @issues.any?
-      flash.now["alert"] = {
+      flash.now["alert_with_items"] = {
         "title" => I18n.t!("documents.edit.flashes.requirements"),
         "items" => @issues.items,
       }
