@@ -5,20 +5,21 @@
   }
 } %>
 
-<% update_types = if @document.has_live_version_on_govuk?
-  [
-    {
+<% edition_metadata = [] %>
+
+<% if @document.current_edition_number > 1 %>
+  <% edition_metadata << {
       field: t("documents.show.contents.items.update_type"),
       value: t("documents.show.contents.update_type.#{@document.update_type}"),
-    },
-    {
-      field: t("documents.show.contents.items.change_note"),
-      value: @document.change_note,
-    }
-  ]
-else
-  []
-end %>
+  } %>
+<% end %>
+
+<% if @document.current_edition_number > 1 && @document.update_type == "major" %>
+  <% edition_metadata << {
+    field: t("documents.show.contents.items.change_note"),
+    value: @document.change_note,
+  } %>
+<% end %>
 
 <%= render "components/summary", {
   id: "content",
@@ -35,5 +36,5 @@ end %>
       field: t("documents.show.contents.items.summary"),
       value: @document.summary
     }
-  ] + contents + update_types
+  ] + contents + edition_metadata
 } %>
