@@ -1,16 +1,27 @@
 # frozen_string_literal: true
 
 RSpec.feature "Editions" do
-  scenario do
+  background do
     given_there_is_a_published_document
+  end
+
+  scenario "first edition" do
     when_i_visit_the_document_page
     then_i_see_it_is_the_first_edition
+  end
 
-    when_i_click_to_create_a_new_edition
-    then_i_see_i_am_editing_a_new_edition
+  scenario "major change" do
+    when_i_visit_the_document_page
+    and_i_click_to_create_a_new_edition
+    and_i_make_a_major_change
+    then_i_see_there_is_a_new_major_edition
+  end
 
-    when_i_edit_the_new_edition
-    then_i_see_there_is_a_new_edition
+  scenario "minor change" do
+    when_i_visit_the_document_page
+    and_i_click_to_create_a_new_edition
+    and_i_make_a_minor_change
+    then_i_see_there_is_a_new_minor_edition
   end
 
   def given_there_is_a_published_document
@@ -22,29 +33,33 @@ RSpec.feature "Editions" do
   end
 
   def then_i_see_it_is_the_first_edition
-    expect(page).to have_content(I18n.t!("documents.show.contents.update_type.#{@document.update_type}"))
-    expect(page).to have_content(@document.change_note)
+    expect(page).to_not have_content(I18n.t!("documents.show.contents.items.update_type"))
+    expect(page).to_not have_content(I18n.t!("documents.show.contents.items.change_note"))
     expect(page).to_not have_link "Change Content"
   end
 
-  def when_i_click_to_create_a_new_edition
+  def and_i_click_to_create_a_new_edition
     stub_any_publishing_api_put_content
     click_on "Create new edition"
   end
 
-  def then_i_see_i_am_editing_a_new_edition
-    expect(find_field("document[change_note]").value).to be_empty
-    expect(find_field(I18n.t!("documents.edit.update_type.major_name"))).to be_checked
-  end
-
-  def when_i_edit_the_new_edition
-    fill_in "document[change_note]", with: "I made a change"
+  def and_i_make_a_minor_change
     choose I18n.t!("documents.edit.update_type.minor_name")
     click_on "Save"
   end
 
-  def then_i_see_there_is_a_new_edition
+  def and_i_make_a_major_change
+    fill_in "document[change_note]", with: "I made a change"
+    click_on "Save"
+  end
+
+  def then_i_see_there_is_a_new_minor_edition
     expect(page).to have_content(I18n.t!("documents.show.contents.update_type.minor"))
+    expect(page).to_not have_content(I18n.t!("documents.show.contents.items.change_note"))
+  end
+
+  def then_i_see_there_is_a_new_major_edition
+    expect(page).to have_content(I18n.t!("documents.show.contents.update_type.major"))
     expect(page).to have_content("I made a change")
     expect(page).to have_link "Change Content"
 
