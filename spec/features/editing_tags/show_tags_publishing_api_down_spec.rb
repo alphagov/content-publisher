@@ -12,7 +12,7 @@ RSpec.feature "Showing tags when the Publishing API is down" do
     tag_schema = build(:tag_schema, type: "multi_tag")
     document_type_schema = build(:document_type_schema, tags: [tag_schema])
     tags = { tag_schema["id"] => ["a-content-id"] }
-    @document = create(:document, document_type: document_type_schema.id, tags: tags)
+    @document = create(:document, document_type_id: document_type_schema.id, tags: tags)
   end
 
   def and_the_publishing_api_is_down

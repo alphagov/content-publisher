@@ -4,7 +4,7 @@ RSpec.describe PublishingApiPayload do
   describe "#payload" do
     it "generates a payload for the publishing API" do
       document_type_schema = build(:document_type_schema)
-      document = build(:document, document_type: document_type_schema.id, title: "Some title", summary: "document summary", base_path: "/foo/bar/baz")
+      document = build(:document, document_type_id: document_type_schema.id, title: "Some title", summary: "document summary", base_path: "/foo/bar/baz")
 
       payload = PublishingApiPayload.new(document).payload
 
@@ -26,7 +26,7 @@ RSpec.describe PublishingApiPayload do
     it "includes primary_publishing_organisation in organisations links" do
       organisation_schema = build(:tag_schema, type: "single_tag", id: "primary_publishing_organisation")
       document_type_schema = build(:document_type_schema, tags: [organisation_schema])
-      document = build(:document, document_type: document_type_schema.id, tags: {
+      document = build(:document, document_type_id: document_type_schema.id, tags: {
                          primary_publishing_organisation: ["my-org-id"],
                          organisations: ["other-org-id"],
                        })
@@ -45,7 +45,7 @@ RSpec.describe PublishingApiPayload do
     it "ensures the organisation links are unique" do
       organisation_schema = build(:tag_schema, type: "single_tag", id: "primary_publishing_organisation")
       document_type_schema = build(:document_type_schema, tags: [organisation_schema])
-      document = build(:document, document_type: document_type_schema.id, tags: {
+      document = build(:document, document_type_id: document_type_schema.id, tags: {
                          primary_publishing_organisation: ["my-org-id"],
                          organisations: ["my-org-id"],
                        })
@@ -65,7 +65,7 @@ RSpec.describe PublishingApiPayload do
       role_appointment_id = SecureRandom.uuid
       role_appointments_schema = build(:tag_schema, type: "multi_tag", id: "role_appointments")
       document_type_schema = build(:document_type_schema, tags: [role_appointments_schema])
-      document = build(:document, document_type: document_type_schema.id, tags: {
+      document = build(:document, document_type_id: document_type_schema.id, tags: {
                          role_appointments: [role_appointment_id],
                        })
 
@@ -87,7 +87,7 @@ RSpec.describe PublishingApiPayload do
     it "transforms Govspeak before sending it to the publishing-api" do
       body_field_schema = build(:field_schema, type: "govspeak", id: "body")
       document_type_schema = build(:document_type_schema, contents: [body_field_schema])
-      document = build(:document, document_type: document_type_schema.id, contents: { body: "Hey **buddy**!" })
+      document = build(:document, document_type_id: document_type_schema.id, contents: { body: "Hey **buddy**!" })
 
       payload = PublishingApiPayload.new(document).payload
 
@@ -97,7 +97,7 @@ RSpec.describe PublishingApiPayload do
     it "includes a lead image if present" do
       image = build(:image, alt_text: "image alt text", caption: "image caption", asset_manager_file_url: "http:://assets-manager.gov.uk/image.jpg")
       document_type_schema = build(:document_type_schema, lead_image: true)
-      document = build(:document, document_type: document_type_schema.id, lead_image: image)
+      document = build(:document, document_type_id: document_type_schema.id, lead_image: image)
 
       payload = PublishingApiPayload.new(document).payload
 

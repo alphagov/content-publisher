@@ -41,7 +41,7 @@ class NewDocumentController < ApplicationController
     document = Document.create!(
       content_id: SecureRandom.uuid,
       locale: "en",
-      document_type: params[:document_type],
+      document_type_id: params[:document_type],
       publication_state: "changes_not_sent_to_draft",
       review_state: "unreviewed",
       tags: default_tags,

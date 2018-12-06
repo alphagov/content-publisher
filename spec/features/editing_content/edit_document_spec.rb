@@ -15,7 +15,7 @@ RSpec.feature "Edit a document" do
     body_field_schema = build(:field_schema, id: "body", type: "govspeak")
     document_type_schema = build(:document_type_schema, contents: [body_field_schema])
     contents = { body: "Existing body" }
-    create(:document, document_type: document_type_schema.id, contents: contents)
+    create(:document, document_type_id: document_type_schema.id, contents: contents)
   end
 
   def when_i_go_to_edit_the_document

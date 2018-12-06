@@ -5,7 +5,7 @@ RSpec.describe Requirements::PathChecker do
     context "when the format does not check paths" do
       it "returns no issues" do
         schema = build :document_type_schema
-        document = build :document, document_type: schema.id
+        document = build :document, document_type_id: schema.id
         issues = Requirements::PathChecker.new(document).pre_preview_issues
         expect(issues.items).to be_empty
       end
@@ -14,7 +14,7 @@ RSpec.describe Requirements::PathChecker do
     context "when the Publishing API is available" do
       it "returns no issues for unreserved paths" do
         schema = build :document_type_schema, check_path_conflict: true
-        document = build :document, document_type: schema.id
+        document = build :document, document_type_id: schema.id
         publishing_api_has_lookups(document.base_path => nil)
         issues = Requirements::PathChecker.new(document).pre_preview_issues
         expect(issues.items).to be_empty
@@ -22,7 +22,7 @@ RSpec.describe Requirements::PathChecker do
 
       it "returns no issues if the document owns the path" do
         schema = build :document_type_schema, check_path_conflict: true
-        document = build :document, document_type: schema.id
+        document = build :document, document_type_id: schema.id
         publishing_api_has_lookups(document.base_path => document.content_id)
         issues = Requirements::PathChecker.new(document).pre_preview_issues
         expect(issues.items).to be_empty
@@ -30,7 +30,7 @@ RSpec.describe Requirements::PathChecker do
 
       it "returns an issue if the base_path conflicts" do
         schema = build :document_type_schema, check_path_conflict: true
-        document = build :document, document_type: schema.id
+        document = build :document, document_type_id: schema.id
         publishing_api_has_lookups(document.base_path => SecureRandom.uuid)
         issues = Requirements::PathChecker.new(document).pre_preview_issues
 
@@ -49,7 +49,7 @@ RSpec.describe Requirements::PathChecker do
 
       it "returns no issues (ignore exception)" do
         schema = build :document_type_schema, check_path_conflict: true
-        document = build :document, document_type: schema.id
+        document = build :document, document_type_id: schema.id
         issues = Requirements::PathChecker.new(document).pre_preview_issues
         expect(issues.items_for(:title)).to be_empty
       end

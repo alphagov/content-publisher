@@ -12,7 +12,7 @@ RSpec.describe Requirements::TopicChecker do
 
     context "when the Publishing API is available" do
       let(:schema) { build :document_type_schema, topics: true }
-      let(:document) { build :document, document_type: schema.id }
+      let(:document) { build :document, document_type_id: schema.id }
 
       before do
         publishing_api_has_links(
@@ -37,7 +37,7 @@ RSpec.describe Requirements::TopicChecker do
 
     context "when the Publishing API is down" do
       let(:schema) { build :document_type_schema, topics: true }
-      let(:document) { build :document, document_type: schema.id }
+      let(:document) { build :document, document_type_id: schema.id }
 
       before do
         publishing_api_isnt_available

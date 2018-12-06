@@ -39,7 +39,7 @@ class Document < ApplicationRecord
   validates_inclusion_of :update_type, in: %w[major minor], allow_nil: true
 
   def document_type_schema
-    DocumentTypeSchema.find(document_type)
+    DocumentTypeSchema.find(document_type_id)
   end
 
   def newly_created?

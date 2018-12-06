@@ -14,7 +14,7 @@ RSpec.feature "Edit topics for a document" do
 
   def given_there_is_a_document
     document_type_schema = build(:document_type_schema, topics: true)
-    @document = create(:document, document_type: document_type_schema.id)
+    @document = create(:document, document_type_id: document_type_schema.id)
   end
 
   def when_i_visit_the_document_page

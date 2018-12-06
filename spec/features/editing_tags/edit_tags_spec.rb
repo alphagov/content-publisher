@@ -29,7 +29,7 @@ RSpec.feature "Edit document tags" do
       single_tag_schema["id"] => [initial_tag["content_id"]],
     }
 
-    @document = create(:document, document_type: document_type_schema.id, tags: initial_tags)
+    @document = create(:document, document_type_id: document_type_schema.id, tags: initial_tags)
   end
 
   def when_i_visit_the_document_page
