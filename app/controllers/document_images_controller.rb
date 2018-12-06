@@ -15,7 +15,7 @@ class DocumentImagesController < ApplicationController
     @errors = ImageUploadRequirements.new(params[:image]).errors
 
     if @errors.any?
-      flash.now["alert"] = {
+      flash.now["alert_with_items"] = {
         "title" => I18n.t!("document_images.index.flashes.upload_requirements.title"),
         "items" => @errors.map { |error| { text: error } },
       }
@@ -73,7 +73,7 @@ class DocumentImagesController < ApplicationController
     @issues = Requirements::ImageChecker.new(@image).pre_preview_metadata_issues
 
     if @issues.any?
-      flash.now["alert"] = {
+      flash.now["alert_with_items"] = {
         "title" => I18n.t!("document_images.edit.flashes.requirements"),
         "items" => @issues.items,
       }

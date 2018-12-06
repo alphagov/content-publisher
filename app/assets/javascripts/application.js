@@ -16,7 +16,6 @@
 //= require whatwg-fetch/dist/fetch.umd.js
 
 //= require components/autocomplete.js
-//= require components/error-alert.js
 //= require components/image-cropper.js
 //= require components/input-length-suggester.js
 //= require components/markdown-editor.js
