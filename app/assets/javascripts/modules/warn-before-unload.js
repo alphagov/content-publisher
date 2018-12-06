@@ -1,29 +1,29 @@
-function WarnBeforeUnload ($module, $scope) {
-  if (!$module) $module = window
-  if (!$scope) $scope = document
+function WarnBeforeUnload ($module) {
   this.$module = $module
-  this.$forms = $scope.querySelectorAll('[data-warn-before-unload=true]')
 }
 
 WarnBeforeUnload.prototype.init = function () {
-  var _this = this
-  if (!this.$forms) return
+  this.$module.addEventListener('change', function () {
+    window.addEventListener('beforeunload', WarnBeforeUnload.handleBeforeUnload)
+  })
 
-  this.$forms.forEach(function ($form) {
-    $form.addEventListener('change', function () {
-      _this.$module.addEventListener('beforeunload', _this.handleBeforeUnload)
-    })
-    $form.addEventListener('submit', function () {
-      _this.$module.removeEventListener('beforeunload', _this.handleBeforeUnload)
-    })
+  this.$module.addEventListener('submit', function () {
+    window.removeEventListener('beforeunload', WarnBeforeUnload.handleBeforeUnload)
   })
 }
 
-WarnBeforeUnload.prototype.handleBeforeUnload = function (e) {
+// This is a static method on WarnBeforeUnload so that the same function can be
+// added as an event listener no matter which forms on the page use this
+// if this was a prototype method we'd have potentially multiple listeners
+// registered
+WarnBeforeUnload.handleBeforeUnload = function (e) {
   e.preventDefault()
-  e.returnValue = true
+  var message = 'Your changes will not be saved'
+  e.returnValue = message
+  return message
 }
 
-// Initialise WarnBeforeUnload at window level
-var _warnBeforeUnload = new WarnBeforeUnload(window, document)
-_warnBeforeUnload.init()
+document.querySelectorAll('[data-warn-before-unload=true]').forEach(function (form) {
+  var module = new WarnBeforeUnload(form)
+  module.init()
+})
