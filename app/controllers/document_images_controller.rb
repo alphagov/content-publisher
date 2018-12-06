@@ -132,6 +132,17 @@ class DocumentImagesController < ApplicationController
     end
   end
 
+  def download
+    image = Image.find(params[:image_id])
+    variant = image.crop_variant("960x640!").processed
+
+    send_data(
+      image.blob.service.download(variant.key),
+      filename: image.filename,
+      type: image.content_type,
+    )
+  end
+
 private
 
   def update_params

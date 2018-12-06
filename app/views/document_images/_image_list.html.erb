@@ -9,19 +9,20 @@
     <% actions = [
       link_to("Edit crop", crop_document_image_path(@document, image), class: "govuk-link"),
       link_to("Edit details", edit_document_image_path(@document, image), class: "govuk-link"),
+      link_to('Download 960x640 image', download_image_path(@document, image), class: "govuk-link")
     ] %>
+
+    <% actions << capture do %>
+      <%= form_tag choose_document_lead_image_path(@document, image), class: "app-inline-block" do %>
+        <button class="govuk-link">Select as lead image</button>
+      <% end %>
+    <% end %>
 
     <% unless @document.has_live_version_on_govuk %>
       <% actions << capture do %>
         <%= form_tag destroy_document_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
           <button class="govuk-link app-link--destructive">Delete image</button>
         <% end %>
-      <% end %>
-    <% end %>
-
-    <% actions << capture do %>
-      <%= form_tag choose_document_lead_image_path(@document, image), class: "app-inline-block" do %>
-        <button class="govuk-link">Select as lead image</button>
       <% end %>
     <% end %>
 
