@@ -8,7 +8,7 @@ gem "rails", "~> 5.2"
 
 gem "aws-sdk-s3", "~> 1"
 gem "bootsnap", "~> 1"
-gem "gds-api-adapters", "~> 54"
+gem "gds-api-adapters", "~> 55"
 gem "gds-sso", "~> 13"
 gem "govspeak", "~> 5"
 gem "govuk_app_config", "~> 1"
