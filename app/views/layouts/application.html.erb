@@ -57,6 +57,7 @@
     <% if flash["alert_with_description"] %>
       <%= render "govuk_publishing_components/components/error_alert", {
         message: flash["alert_with_description"].fetch("title"),
+        data_attributes: { gtm: "global-alert" },
         description: capture do
           render "govuk_publishing_components/components/govspeak" do
             govspeak_to_html(flash["alert_with_description"].fetch("description_govspeak"))
@@ -68,13 +69,15 @@
     <% if flash["alert_with_items"] %>
       <%= render "govuk_publishing_components/components/error_summary", {
         title: flash["alert_with_items"]["title"],
-        items: flash["alert_with_items"]["items"].map(&:symbolize_keys)
+        items: flash["alert_with_items"]["items"].map(&:symbolize_keys),
+        data_attributes: { gtm: "global-alert" },
       } %>
     <% end %>
 
     <% if flash["alert"] %>
       <%= render "govuk_publishing_components/components/error_alert", {
-        message: flash["alert"]
+        message: flash["alert"],
+        data_attributes: { gtm: "global-alert" },
       } %>
     <% end %>
 
