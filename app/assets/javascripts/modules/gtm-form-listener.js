@@ -1,6 +1,6 @@
-function GTMFormListener ($form, $dataLayer) {
+function GTMFormListener ($form, dataLayer) {
   this.$form = $form
-  this.dataLayer = $dataLayer || window.dataLayer
+  this.dataLayer = dataLayer || window.dataLayer
 }
 
 GTMFormListener.prototype.handleSubmit = function (event) {
