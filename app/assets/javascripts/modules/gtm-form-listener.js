@@ -5,7 +5,7 @@ function GTMFormListener ($form, dataLayer) {
 
 GTMFormListener.prototype.handleSubmit = function (event) {
   var eventName = this.$form.dataset.gtm
-  var message = {}
+  var message
 
   var inputElements = this.$form.querySelectorAll('input:checked')
   inputElements.forEach(function (element) {
