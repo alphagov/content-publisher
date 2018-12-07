@@ -19,12 +19,11 @@ GTMFormListener.prototype.handleSubmit = function (event) {
 }
 
 GTMFormListener.prototype.init = function () {
-  var $form = this.$form
-  if (!$form) {
+  if (!this.$form) {
     return
   }
 
-  $form.addEventListener('submit', function (e) {
+  this.$form.addEventListener('submit', function (e) {
     this.handleSubmit(e)
   }.bind(this), false)
 }
