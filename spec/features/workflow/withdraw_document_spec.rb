@@ -29,6 +29,8 @@ RSpec.feature "Withdraw a document" do
 
   def when_i_fill_in_the_public_explanation
     fill_in "public_explanation", with: "An explanation"
+    expect(page).to have_content(I18n.t!("withdraw_document.withdraw.public_explanation.guidance_title"))
+    expect(page).to have_content(I18n.t!("withdraw_document.withdraw.public_explanation.guidance"))
   end
 
   def and_click_on_withdraw_document

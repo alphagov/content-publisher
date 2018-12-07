@@ -4,6 +4,8 @@ en:
       title: "Withdraw '%{title}'"
       public_explanation:
         title: "Public explanation"
+        guidance_title: Writing public explanation
+        guidance: Explain to users why the page has been withdrawn. You can link to alternative content with markdown.
       intro_paragraph: |
         Withdrawn content stays online but a banner tells users it is no longer current government information.
 
