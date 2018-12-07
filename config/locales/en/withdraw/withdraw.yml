@@ -4,6 +4,7 @@ en:
       title: "Withdraw '%{title}'"
       public_explanation:
         title: "Public explanation"
+        guidance_title: Writing public explanation
       intro_paragraph: |
         Withdrawn content stays online but a banner tells users it is no longer current government information.
 

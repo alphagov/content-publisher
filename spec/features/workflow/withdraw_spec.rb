@@ -30,6 +30,7 @@ RSpec.feature "Withdraw a document" do
   def when_i_fill_in_the_public_explanation
     @explanation = "An explanation using [markdown](https://www.gov.uk)"
     fill_in "public_explanation", with: @explanation
+    expect(page).to have_content(I18n.t!("withdraw.new.public_explanation.guidance_title"))
   end
 
   def and_click_on_withdraw_document
