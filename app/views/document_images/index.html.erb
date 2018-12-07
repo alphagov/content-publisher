@@ -10,7 +10,11 @@
         </h2>
       <% end %>
 
-      <%= form_tag(create_document_image_path(@document), multipart: true) do %>
+      <%= form_tag(
+        create_document_image_path(@document),
+        multipart: true,
+        data: { gtm: "image-upload-submit" },
+      ) do %>
         <%= hidden_field_tag :wizard, "lead_image" %>
 
         <%= render "govuk_publishing_components/components/file_upload", {

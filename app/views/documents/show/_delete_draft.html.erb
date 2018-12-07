@@ -1,5 +1,9 @@
 <% confirmation = capture do %>
-  <%= form_tag document_path(@document), method: :delete do %>
+  <%= form_tag(
+    document_path(@document),
+    method: :delete,
+    data: { gtm: "delete-draft-submit" },
+  ) do %>
     <%= render "govuk_publishing_components/components/button", {
       text: "Yes, delete draft",
       destructive: true

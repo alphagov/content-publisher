@@ -6,7 +6,15 @@
   <% content_for :title, t("documents.edit.title", title: @document.title_or_fallback) %>
 <% end %>
 
-<%= form_for(@document, html: {'autocomplete': 'off'}, data: {'module': 'edit-document-form', 'url-preview-path': generate_path_path, "warn-before-unload": "true"}) do |f| %>
+<%= form_for(
+  @document,
+  html: { "autocomplete": "off" },
+  data: {
+    module: "edit-document-form",
+    "url-preview-path": generate_path_path,
+    "warn-before-unload": "true",
+    gtm: "edit-document-submit",
+  }) do |f| %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/textarea", {
