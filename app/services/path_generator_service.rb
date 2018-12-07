@@ -9,7 +9,7 @@ class PathGeneratorService
   end
 
   def path(document, proposed_title)
-    prefix = document.document_type_schema.path_prefix
+    prefix = document.document_type.path_prefix
     slug = proposed_title.parameterize
     base_path = create_path(prefix, slug)
     return base_path unless document_exists_with_path?(base_path, document)

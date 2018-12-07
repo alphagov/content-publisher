@@ -12,7 +12,7 @@ module Requirements
       issues = []
 
       begin
-        if document.document_type_schema.topics && document.topics.none?
+        if document.document_type.topics && document.topics.none?
           issues << Issue.new(:topics, :none)
         end
       rescue GdsApi::BaseError => e

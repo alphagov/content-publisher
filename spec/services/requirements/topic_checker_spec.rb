@@ -11,8 +11,8 @@ RSpec.describe Requirements::TopicChecker do
     end
 
     context "when the Publishing API is available" do
-      let(:schema) { build :document_type_schema, topics: true }
-      let(:document) { build :document, document_type: schema.id }
+      let(:document_type) { build :document_type, topics: true }
+      let(:document) { build :document, document_type_id: document_type.id }
 
       before do
         publishing_api_has_links(
@@ -36,8 +36,8 @@ RSpec.describe Requirements::TopicChecker do
     end
 
     context "when the Publishing API is down" do
-      let(:schema) { build :document_type_schema, topics: true }
-      let(:document) { build :document, document_type: schema.id }
+      let(:document_type) { build :document_type, topics: true }
+      let(:document) { build :document, document_type_id: document_type.id }
 
       before do
         publishing_api_isnt_available

@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
-RSpec.describe DocumentTypeSchema do
+RSpec.describe DocumentType do
   describe ".find" do
-    it "returns a DocumentTypeSchema when it's a known document_type" do
-      expect(DocumentTypeSchema.find("press_release")).to be_a(DocumentTypeSchema)
+    it "returns a DocumentType when it's a known document_type" do
+      expect(DocumentType.find("press_release")).to be_a(DocumentType)
     end
 
     it "raises a RuntimeError when we don't know the document_type" do
-      expect { DocumentTypeSchema.find("unknown_document_type") }
+      expect { DocumentType.find("unknown_document_type") }
         .to raise_error(RuntimeError, "Document type unknown_document_type not found")
     end
   end
 
   describe "#managed_elsewhere_url" do
     it "returns a full URL" do
-      schema = DocumentTypeSchema.find("consultation")
+      document_type = DocumentType.find("consultation")
       path = "https://whitehall-admin.test.gov.uk/government/admin/consultations/new"
-      expect(schema.managed_elsewhere_url).to eq(path)
+      expect(document_type.managed_elsewhere_url).to eq(path)
     end
   end
 end

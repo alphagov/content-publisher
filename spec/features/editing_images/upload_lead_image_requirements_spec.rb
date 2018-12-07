@@ -11,8 +11,8 @@ RSpec.feature "Upload a lead image with requirements issues" do
   end
 
   def given_there_is_a_document
-    document_type_schema = build(:document_type_schema, lead_image: true)
-    create(:document, document_type: document_type_schema.id)
+    document_type = build(:document_type, lead_image: true)
+    create(:document, document_type_id: document_type.id)
   end
 
   def when_i_visit_the_images_page
