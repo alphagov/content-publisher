@@ -1,0 +1,18 @@
+<%
+  id ||= "side-navigation-#{SecureRandom.hex(4)}"
+  items ||= []
+%>
+
+<%= tag.nav class: "app-c-side-navigation", id: id, role: 'navigation' do %>
+  <%= tag.ul class: "app-c-side-navigation__list" do %>
+    <% items.each do |item| %>
+      <%
+        item_classes = %w( app-c-side-navigation__list-item )
+        item_classes << "app-c-side-navigation__list-item--current" if item[:current]
+      %>
+      <%= tag.li class: item_classes do %>
+        <%= link_to item[:label], item[:href], class: "govuk-link govuk-link--no-visited-state" %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
