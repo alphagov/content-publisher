@@ -2,3 +2,9 @@ en:
   withdraw_document:
     withdraw:
       title: "Withdraw '%{title}'"
+      public_explanation:
+        title: "Public explanation"
+      intro_paragraph: |
+        Withdrawn content stays online but a banner tells users it is no longer current government information.
+
+        [Full guidance on withdrawing content](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/unpublishing-and-archiving)

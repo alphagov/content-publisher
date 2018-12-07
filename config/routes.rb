@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   post "/documents/:id/create-preview" => "preview#create", as: :create_preview
 
   get "/documents/:id/withdraw" => "withdraw#create", as: :withdraw
+  post "/documents/:id/withdraw" => "withdraw#new", as: :new_withdrawal
   get "/documents/:id/retire" => "unpublish#retire", as: :legacy_retire
   get "/documents/:id/remove" => "unpublish#remove", as: :remove
 

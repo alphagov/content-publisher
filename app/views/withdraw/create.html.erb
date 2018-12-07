@@ -3,5 +3,26 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <%= render_govspeak(t("withdraw_document.withdraw.intro_paragraph")) %>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag(new_withdrawal_path(@document)) do %>
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: t("withdraw_document.withdraw.public_explanation.title"),
+          bold: true
+        },
+        id: "withdrawal_public_explanation",
+        name: "public_explanation",
+        rows: 6,
+      }%>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Withdraw document", margin_bottom: true
+      } %>
+    <% end %>
+    <%= link_to "Cancel", document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
   </div>
 </div>
