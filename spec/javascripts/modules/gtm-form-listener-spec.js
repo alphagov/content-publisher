@@ -9,15 +9,14 @@ describe('GTM dataLayer messages for radio button submissions', function () {
 
   beforeEach(function () {
     form = $(`
-      <form data-gtm="new_document" onsubmit="return false;">
+      <form id="myForm" data-gtm="new_document" onsubmit="return false;">
         <input type="radio" name="supertype" id="radio-news" value="news">
         <input type="radio" name="supertype" id="radio-guidance" value="guidance">
       </form>
     `)
     $(document.body).append(form)
     dataLayer = []
-    gtmFormListener = new GTMFormListener(document.querySelector('form'), dataLayer)
-    gtmFormListener.init()
+    GTMFormListener.init(dataLayer)
   })
 
   afterEach(function () {
@@ -27,7 +26,8 @@ describe('GTM dataLayer messages for radio button submissions', function () {
 
   it('should append the corrent message on submit', function () {
     $('#radio-guidance').click()
-    gtmFormListener.handleSubmit()
+    var submitEvent = new Event('submit', {'bubbles': true, 'cancelable': true})
+    !document.getElementById('myForm').dispatchEvent(submitEvent)
     expect(dataLayer).toEqual([{new_document: { supertype: 'guidance' }}])
   })
 })

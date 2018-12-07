@@ -29,7 +29,10 @@ GTMFormListener.prototype.init = function () {
   }.bind(this), false)
 }
 
-var $gtmFormListener = document.querySelector('form[data-gtm]')
-if ($gtmFormListener) {
-  new GTMFormListener($gtmFormListener).init()
+GTMFormListener.init = function (dataLayer) {
+  document.querySelectorAll('form[data-gtm]').forEach(function (element) {
+    new GTMFormListener(element, dataLayer).init()
+  })
 }
+
+GTMFormListener.init()
