@@ -3,7 +3,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag create_document_path, data: { gtm: "new_document" } do %>
+    <%= form_tag create_document_path, data: { gtm: "new-document" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "document_type",
         items: @document_types.map { |document_type|
