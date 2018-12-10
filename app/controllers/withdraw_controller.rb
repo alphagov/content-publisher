@@ -3,6 +3,9 @@
 class WithdrawController < ApplicationController
   def new
     @document = Document.with_current_edition.find_by_param(params[:id])
+    edition = @document.current_edition
+    @public_explanation =
+      edition.withdrawn? ? edition.status.details.public_explanation : nil
   end
 
   def create

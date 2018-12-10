@@ -6,4 +6,9 @@ FactoryBot.define do
     association :created_by, factory: :user
     association :revision_at_creation, factory: :revision
   end
+
+  trait :withdrawn do
+    state { :withdrawn }
+    association :details, factory: :withdrawal
+  end
 end
