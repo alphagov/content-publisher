@@ -8,10 +8,18 @@ class Image < ApplicationRecord
   THUMBNAIL_WIDTH = 300
   THUMBNAIL_HEIGHT = 200
 
+  PUBLICATION_STATES = %w[
+    changes_not_sent_to_draft
+    sent_to_draft
+    sent_to_live
+  ].freeze
+
   after_destroy { blob.delete }
 
   belongs_to :document
   belongs_to :blob, class_name: "ActiveStorage::Blob"
+
+  validates_inclusion_of :publication_state, in: PUBLICATION_STATES
 
   def thumbnail
     crop_variant("#{THUMBNAIL_WIDTH}x#{THUMBNAIL_HEIGHT}")
