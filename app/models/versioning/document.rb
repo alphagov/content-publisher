@@ -11,6 +11,14 @@ module Versioning
                class_name: "User",
                optional: true,
                foreign_key: :created_by_id
+
+    has_one :current_edition,
+            -> { where(current: true) },
+            class_name: "Versioning::Edition"
+
+    has_one :live_edition,
+            -> { where(live: true) },
+            class_name: "Versioning::Edition"
     # rubocop:enable Rails/InverseOf
 
     has_many :editions,
