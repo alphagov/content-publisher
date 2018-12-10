@@ -24,7 +24,7 @@ class DocumentImagesController < ApplicationController
       return
     end
 
-    image = ImageUploader.new(params[:image]).call(@document)
+    image = ImageUploadService.new(params[:image]).call(@document)
     redirect_to crop_document_image_path(params[:document_id], image.id, wizard: params[:wizard])
   end
 

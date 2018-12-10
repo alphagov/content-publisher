@@ -2,7 +2,7 @@
 
 require "mini_magick"
 
-class ImageUploader
+class ImageUploadService
   def initialize(file)
     @file = file
   end
