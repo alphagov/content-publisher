@@ -152,6 +152,17 @@ ActiveRecord::Schema.define(version: 2018_12_14_112140) do
     t.index ["created_by_id"], name: "index_versioned_documents_on_created_by_id"
   end
 
+  create_table "versioned_editions", force: :cascade do |t|
+    t.integer "number", null: false
+    t.datetime "last_edited_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "document_id", null: false
+    t.bigint "created_by_id"
+    t.index ["created_by_id"], name: "index_versioned_editions_on_created_by_id"
+    t.index ["document_id"], name: "index_versioned_editions_on_document_id"
+  end
+
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.integer "item_id", null: false
@@ -176,4 +187,6 @@ ActiveRecord::Schema.define(version: 2018_12_14_112140) do
   add_foreign_key "timeline_entries", "documents", on_delete: :cascade
   add_foreign_key "timeline_entries", "users", on_delete: :nullify
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "versioned_editions", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
 end
