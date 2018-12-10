@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ImageUploader::CentreCropper
+class ImageCentreCropper
   attr_reader :width, :height, :aspect_ratio, :desired_aspect_ratio
 
   def initialize(width, height, desired_aspect_ratio)

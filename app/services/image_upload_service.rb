@@ -45,7 +45,7 @@ private
 
   def image_attributes
     dimensions = image_normaliser.dimensions
-    cropper = CentreCropper.new(dimensions[:width],
+    cropper = ImageCentreCropper.new(dimensions[:width],
                                 dimensions[:height],
                                 Image::WIDTH.to_f / Image::HEIGHT)
     {
