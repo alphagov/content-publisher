@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_10_214512) do
+ActiveRecord::Schema.define(version: 2018_12_10_223006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2018_12_10_214512) do
     t.index ["created_by_id"], name: "index_versioned_editions_on_created_by_id"
     t.index ["document_id", "current"], name: "index_versioned_editions_on_document_id_and_current", unique: true, where: "(current = true)"
     t.index ["document_id", "live"], name: "index_versioned_editions_on_document_id_and_live", unique: true, where: "(live = true)"
+    t.index ["document_id", "number"], name: "index_versioned_editions_on_document_id_and_number", unique: true
     t.index ["document_id"], name: "index_versioned_editions_on_document_id"
   end
 
