@@ -28,7 +28,9 @@ class PublishService
 private
 
   def publish_assets(assets)
-    asset_manager = AssetManagerService.new
-    assets.each { |asset| asset_manager.publish(asset) }
+    assets.each do |asset|
+      AssetManagerService.new.publish(asset)
+      asset.update!(publication_state: "sent_to_live")
+    end
   end
 end

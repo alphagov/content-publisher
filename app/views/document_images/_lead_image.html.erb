@@ -1,6 +1,7 @@
 <%
   lead_images = @document.images.select { |image| image.id == @document.lead_image_id }
   image = lead_images.first
+  actions = []
 %>
 
 <% if image %>
@@ -8,11 +9,11 @@
     <%= t("document_images.index.lead_image") %>
   </h2>
 
-  <% actions = [
-    link_to("Edit crop", crop_document_image_path(@document, image), class: "govuk-link"),
-    link_to("Edit details", edit_document_image_path(@document, image), class: "govuk-link"),
-    link_to('Download 960x640 image', download_image_path(@document, image), class: "govuk-link")
-  ] %>
+  <% unless image.publication_state == "sent_to_live" %>
+    <% actions << link_to("Edit crop", crop_document_image_path(@document, image), class: "govuk-link") %>
+    <% actions << link_to("Edit details", edit_document_image_path(@document, image), class: "govuk-link") %>
+    <% actions << link_to('Download 960x640 image', download_image_path(@document, image), class: "govuk-link") %>
+  <% end %>
 
   <% actions << capture do %>
     <%= form_tag remove_document_lead_image_path(@document), method: :delete, class: "app-inline-block" do %>
@@ -20,7 +21,7 @@
     <% end %>
   <% end %>
 
-  <% unless @document.has_live_version_on_govuk %>
+  <% unless image.publication_state == "sent_to_live" %>
     <% actions << capture do %>
       <%= form_tag destroy_document_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
         <%= hidden_field_tag :wizard, "lead_image" %>
