@@ -1,0 +1,18 @@
+name: Side navigation
+description: Component showing a secondary navigation in a side of the page
+accessibility_criteria: |
+  - Should have a role of 'navigation' on any navigation elements inside the component
+  - Should be marked up as navigation and not as tangential content
+shared_accessibility_criteria:
+  - link
+examples:
+  default:
+    data:
+      items:
+        - label: What the Beta can and cannot do
+          href: /beta-capabilities
+          current: true
+        - label: How to use Content Publisher
+          href: /how-to-use-publisher
+        - label: What's new in Content Publisher
+          href: /publisher-updates

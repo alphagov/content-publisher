@@ -1,17 +1,20 @@
 <div class="govuk-grid-column-one-third">
-  <%= render "components/side-nav", {
+  <%= render "components/side_navigation", {
     items: [
       {
         label: "What the Beta can and cannot do",
-        href: current_page != beta_capabilities_path ? beta_capabilities_path : nil,
+        href: beta_capabilities_path,
+        current: current_page == beta_capabilities_path,
       },
       {
         label: "How to use Content Publisher",
-        href: current_page != how_to_use_publisher_path ? how_to_use_publisher_path : nil,
+        href: how_to_use_publisher_path,
+        current: current_page == how_to_use_publisher_path
       },
       {
         label: "What's new in Content Publisher",
-        href: current_page != publisher_updates_path ? publisher_updates_path : nil,
+        href: publisher_updates_path,
+        current: current_page == publisher_updates_path
       },
     ]
   } %>
