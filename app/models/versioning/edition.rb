@@ -16,5 +16,9 @@ module Versioning
     belongs_to :document,
                class_name: "Versioning::Document",
                inverse_of: :editions
+
+    belongs_to :current_revision,
+               class_name: "Versioning::Revision",
+               inverse_of: :current_for_editions
   end
 end
