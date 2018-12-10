@@ -4,12 +4,9 @@ RSpec.feature "Publishing a document" do
   scenario do
     given_there_is_a_document_in_draft
     when_i_visit_the_document_page
-    and_i_click_on_the_publish_button
-    and_i_say_that_the_document_has_been_reviewed
-    and_i_confirm_the_publishing
+    and_i_publish_the_document
     then_i_see_the_publish_succeeded
-    and_i_see_the_content_is_in_published_state
-    and_i_see_the_view_on_govuk_link
+    and_the_content_is_shown_as_published
     and_there_is_a_history_entry
   end
 
@@ -22,31 +19,23 @@ RSpec.feature "Publishing a document" do
     visit document_path(@document)
   end
 
-  def and_i_click_on_the_publish_button
+  def and_i_publish_the_document
     click_on "Publish"
-  end
-
-  def and_i_say_that_the_document_has_been_reviewed
     choose I18n.t!("publish_document.confirmation.has_been_reviewed")
-  end
-
-  def and_i_confirm_the_publishing
-    @request = stub_publishing_api_publish(@document.content_id, update_type: nil, locale: @document.locale)
-    asset_manager_update_asset(@image.asset_manager_id)
+    @content_request = stub_publishing_api_publish(@document.content_id, update_type: nil, locale: @document.locale)
+    @asset_request = asset_manager_update_asset(@image.asset_manager_id)
     click_on "Confirm publish"
   end
 
   def then_i_see_the_publish_succeeded
-    expect(@request).to have_been_requested
+    expect(@content_request).to have_been_requested
+    expect(@asset_request).to have_been_requested
     expect(page).to have_content(I18n.t!("publish_document.published.reviewed.title"))
   end
 
-  def and_i_see_the_content_is_in_published_state
+  def and_the_content_is_shown_as_published
     visit document_path(@document)
     expect(page).to have_content(I18n.t!("user_facing_states.published.name"))
-  end
-
-  def and_i_see_the_view_on_govuk_link
     expect(page).to have_link("View published edition on GOV.UK", href: "https://www.test.gov.uk/news/banana-pricing-updates")
   end
 
