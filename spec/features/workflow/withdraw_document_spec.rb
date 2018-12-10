@@ -9,6 +9,10 @@ RSpec.feature "Withdraw a document" do
     when_i_fill_in_the_public_explanation
     and_click_on_withdraw_document
     then_i_see_the_document_has_been_withdrawn
+
+    when_i_click_to_change_the_public_explanation
+    then_i_can_see_the_existing_public_explanation
+    and_i_can_edit_the_public_explanation
   end
 
   def given_there_is_a_published_document
@@ -46,5 +50,22 @@ RSpec.feature "Withdraw a document" do
     expect(timeline_entry.retirement.explanatory_note).to eq("An explanation")
     expect(@document.reload.live_state).to eq("retired")
     expect(page).to have_content(I18n.t!("user_facing_states.retired.name"))
+  end
+
+  def when_i_click_to_change_the_public_explanation
+    click_on "Change public explanation"
+  end
+
+  def then_i_can_see_the_existing_public_explanation
+    expect(page).to have_field("public_explanation", with: Retirement.last.explanatory_note)
+  end
+
+  def and_i_can_edit_the_public_explanation
+    explanation = "A different explanation"
+    body = { type: "withdrawal", explanation: explanation, locale: @document.locale }
+    stub_publishing_api_unpublish(@document.content_id, body: body)
+    fill_in "public_explanation", with: explanation
+    click_on "Withdraw document"
+    expect(Retirement.last.explanatory_note).to eq(explanation)
   end
 end

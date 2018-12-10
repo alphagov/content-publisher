@@ -73,4 +73,8 @@ class Document < ApplicationRecord
     @document_topics_index ||= TopicIndexService.new
     DocumentTopics.find_by_document(self, @document_topics_index)
   end
+
+  def retirement
+    self.timeline_entries.where(entry_type: "retired").order(:created_at).last&.retirement
+  end
 end
