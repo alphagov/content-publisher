@@ -36,14 +36,8 @@ class DocumentImagesController < ApplicationController
   def update_crop
     document = Document.find_by_param(params[:document_id])
     image = Image.find(params[:image_id])
-
-    Image.transaction do
-      image.update!(update_crop_params)
-      asset_manager_file_url = upload_image_to_asset_manager(image)
-      delete_image_from_asset_manager(image)
-      image.asset_manager_file_url = asset_manager_file_url
-      image.save!
-    end
+    image.assign_attributes(update_crop_params)
+    ImageUpdateService.new(image).call
 
     PreviewService.new(document).try_create_preview(
       user: current_user,
@@ -79,7 +73,7 @@ class DocumentImagesController < ApplicationController
       return
     end
 
-    @image.save!
+    ImageUpdateService.new(@image).call
 
     if params[:wizard] == "lead_image"
       @document.assign_attributes(lead_image_id: @image.id)
@@ -144,14 +138,6 @@ private
 
   def update_params
     params.permit(:caption, :alt_text, :credit)
-  end
-
-  def upload_image_to_asset_manager(image)
-    AssetManagerService.new.upload_bytes(image, image.cropped_bytes)
-  end
-
-  def delete_image_from_asset_manager(image)
-    AssetManagerService.new.delete(image)
   end
 
   def update_crop_params
