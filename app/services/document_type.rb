@@ -1,24 +1,8 @@
 # frozen_string_literal: true
 
-class DocumentType
+class DocumentType < ReadonlyModel
   attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
     :path_prefix, :tags, :guidance_govspeak, :description, :hint, :lead_image, :topics, :check_path_conflict
-
-  def initialize(params = {})
-    @id = params["id"]
-    @label = params["label"]
-    @managed_elsewhere = params["managed_elsewhere"]
-    @contents = params["contents"].to_a.map(&Field.method(:new))
-    @publishing_metadata = PublishingMetadata.new(params["publishing_metadata"])
-    @path_prefix = params["path_prefix"]
-    @tags = params["tags"].to_a.map(&TagField.method(:new))
-    @guidance = params["guidance"].to_a.map(&Guidance.method(:new))
-    @description = params["description"]
-    @hint = params["hint"]
-    @lead_image = params["lead_image"]
-    @topics = params["topics"]
-    @check_path_conflict = params["check_path_conflict"]
-  end
 
   def self.find(id)
     item = all.find { |document_type| document_type.id == id }
@@ -28,14 +12,23 @@ class DocumentType
   def self.all
     @all ||= begin
       types = YAML.load_file("app/formats/document_types.yml")
-      types.map { |data| DocumentType.new(data) }
+      types.map { |data| new.from_hash(data) }
     end
   end
 
   def self.add(params)
-    document_type = new(params)
+    document_type = new.from_hash(params)
     all << document_type
     document_type
+  end
+
+  def from_hash(hash)
+    hash["contents"] = hash["contents"].to_a.map(&Field.method(:new))
+    hash["publishing_metadata"] = PublishingMetadata.new(hash["publishing_metadata"])
+    hash["tags"] = hash["tags"].to_a.map(&TagField.method(:new))
+    hash["guidance"] = hash["guidance"].to_a.map(&Guidance.method(:new))
+    assign_attributes(hash)
+    self
   end
 
   def managed_elsewhere_url
@@ -46,23 +39,19 @@ class DocumentType
     @guidance.find { |guidance| guidance.id == id }
   end
 
-  class TagField
-    include ActiveModel::Model
-    attr_accessor :id, :label, :type, :document_type, :hint
+  class TagField < ReadonlyModel
+    attr_reader :id, :label, :type, :document_type, :hint
   end
 
-  class Guidance
-    include ActiveModel::Model
-    attr_accessor :id, :title, :body_govspeak
+  class Guidance < ReadonlyModel
+    attr_reader :id, :title, :body_govspeak
   end
 
-  class PublishingMetadata
-    include ActiveModel::Model
-    attr_accessor :schema_name, :rendering_app
+  class PublishingMetadata < ReadonlyModel
+    attr_reader :schema_name, :rendering_app
   end
 
-  class Field
-    include ActiveModel::Model
-    attr_accessor :id, :label, :type
+  class Field < ReadonlyModel
+    attr_reader :id, :label, :type
   end
 end

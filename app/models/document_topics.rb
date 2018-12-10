@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-class DocumentTopics
-  include ActiveModel::Model
-
-  attr_accessor :document, :version, :topics, :index
+class DocumentTopics < ReadonlyModel
+  attr_reader :document, :version, :topics, :index
 
   def self.find_by_document(document, index)
     publishing_api = GdsApi.publishing_api_v2
@@ -27,7 +25,6 @@ class DocumentTopics
 
   def patch(topic_content_ids, version)
     topics = topic_content_ids.map { |topic_content_id| Topic.find(topic_content_id, index) }
-    self.version = version
 
     GdsApi.publishing_api_v2.patch_links(
       document.content_id,

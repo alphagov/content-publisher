@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Topic
-  include ActiveModel::Model
-
+class Topic < ReadonlyModel
   def self.govuk_homepage(index)
     find(TopicIndexService::GOVUK_HOMEPAGE_CONTENT_ID, index)
   end
@@ -12,7 +10,7 @@ class Topic
     raw_topic ? new(raw_topic.merge(index: index)) : nil
   end
 
-  attr_accessor :title, :child_content_ids, :legacy_topic_content_ids, :parent_content_id, :content_id, :index
+  attr_reader :title, :child_content_ids, :legacy_topic_content_ids, :parent_content_id, :content_id, :index
 
   delegate :hash, to: :content_id
 
