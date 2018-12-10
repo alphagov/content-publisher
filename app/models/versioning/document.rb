@@ -13,6 +13,10 @@ module Versioning
                foreign_key: :created_by_id
     # rubocop:enable Rails/InverseOf
 
+    has_many :editions,
+             class_name: "Versioning::Edition",
+             dependent: :restrict_with_exception
+
     delegate :topics, to: :document_topics
 
     def self.find_by_param(content_id_and_locale)
