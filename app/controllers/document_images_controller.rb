@@ -97,7 +97,6 @@ class DocumentImagesController < ApplicationController
   def destroy
     document = Document.find_by_param(params[:document_id])
     image = document.images.find(params[:image_id])
-    raise "Trying to delete image for a live document" if document.has_live_version_on_govuk
 
     if params[:wizard] == "lead_image"
       document.assign_attributes(lead_image_id: nil)
@@ -113,8 +112,7 @@ class DocumentImagesController < ApplicationController
       )
     end
 
-    AssetManagerService.new.delete(image)
-    image.destroy!
+    ImageDeleteService.new(image).call
 
     if params[:wizard] == "lead_image"
       redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.deleted", file: image.filename)
