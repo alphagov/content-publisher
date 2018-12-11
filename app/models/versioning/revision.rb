@@ -21,6 +21,10 @@ module Versioning
                             class_name: "Versioning::Edition",
                             join_table: "versioned_edition_revisions"
 
+    has_and_belongs_to_many :images,
+                            class_name: "Versioning::Image",
+                            join_table: "versioned_revision_images"
+
     def readonly?
       !new_record?
     end
