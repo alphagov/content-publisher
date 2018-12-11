@@ -15,59 +15,23 @@
       </div>
       <div class="app-c-markdown-editor__toolbar">
         <markdown-toolbar class="app-c-markdown-editor__toolbar-group" for="<%= textarea[:id] %>">
-          <md-header-2 class="app-c-markdown-editor__toolbar-button">
-            <i
-              class="app-c-markdown-editor__toolbar-icon app-c-markdown-editor__toolbar-icon--heading-2"
-              title="Heading level 2"
-              aria-hidden="true"
-              data-gtm="markdown-toolbar-selection"
-            ></i>
-            <span class="govuk-visually-hidden">Heading level 2</span>
+          <md-header-2 class="app-c-markdown-editor__toolbar-button" title="Heading level 2" aria-label="Heading level 2" data-gtm="markdown-toolbar-selection">
+            <%= render "components/markdown_editor/heading_two.svg" %>
           </md-header-2>
-          <md-header-3 class="app-c-markdown-editor__toolbar-button">
-            <i
-              class="app-c-markdown-editor__toolbar-icon app-c-markdown-editor__toolbar-icon--heading-3"
-              title="Heading level 3"
-              aria-hidden="true"
-              data-gtm="markdown-toolbar-selection"
-            ></i>
-            <span class="govuk-visually-hidden">Heading level 3</span>
+          <md-header-3 class="app-c-markdown-editor__toolbar-button" title="Heading level 3" aria-label="Heading level 3" data-gtm="markdown-toolbar-selection">
+            <%= render "components/markdown_editor/heading_three.svg" %>
           </md-header-3>
-          <md-link class="app-c-markdown-editor__toolbar-button">
-            <i
-              class="app-c-markdown-editor__toolbar-icon app-c-markdown-editor__toolbar-icon--link"
-              title="Link"
-              aria-hidden="true"
-              data-gtm="markdown-toolbar-selection"
-            ></i>
-            <span class="govuk-visually-hidden">Link</span>
+          <md-link class="app-c-markdown-editor__toolbar-button" title="Link" aria-label="Link" data-gtm="markdown-toolbar-selection">
+            <%= render "components/markdown_editor/link.svg" %>
           </md-link>
-          <md-quote class="app-c-markdown-editor__toolbar-button">
-            <i
-              class="app-c-markdown-editor__toolbar-icon app-c-markdown-editor__toolbar-icon--blockquote"
-              title="Blockquote"
-              aria-hidden="true"
-              data-gtm="markdown-toolbar-selection"
-            ></i>
-            <span class="govuk-visually-hidden">Blockquote</span>
+          <md-quote class="app-c-markdown-editor__toolbar-button" title="Blockquote" aria-label="Blockquote" data-gtm="markdown-toolbar-selection">
+            <%= render "components/markdown_editor/blockquote.svg" %>
           </md-quote>
-          <md-ordered-list class="app-c-markdown-editor__toolbar-button">
-            <i
-              class="app-c-markdown-editor__toolbar-icon app-c-markdown-editor__toolbar-icon--numbered-list"
-              title="Numbered list"
-              aria-hidden="true"
-              data-gtm="markdown-toolbar-selection"
-            ></i>
-            <span class="govuk-visually-hidden">Numbered list</span>
+          <md-ordered-list class="app-c-markdown-editor__toolbar-button" title="Numbered list" aria-label="Numbered list" data-gtm="markdown-toolbar-selection">
+            <%= render "components/markdown_editor/numbered_list.svg" %>
           </md-ordered-list>
-          <md-unordered-list class="app-c-markdown-editor__toolbar-button">
-            <i
-              class="app-c-markdown-editor__toolbar-icon app-c-markdown-editor__toolbar-icon--bullets"
-              title="Bullets"
-              aria-hidden="true"
-              data-gtm="markdown-toolbar-selection"
-            ></i>
-            <span class="govuk-visually-hidden">Bullets</span>
+          <md-unordered-list class="app-c-markdown-editor__toolbar-button" title="Bullets" aria-label="Bullets" data-gtm="markdown-toolbar-selection">
+            <%= render "components/markdown_editor/bullets.svg" %>
           </md-unordered-list>
           <button name="submit" type="submit" value="add_contact" class="app-c-markdown-editor__toolbar-button app-c-markdown-editor__toolbar-button--text app-c-markdown-editor__toolbar-button--end">Add contact</button>
         </markdown-toolbar>

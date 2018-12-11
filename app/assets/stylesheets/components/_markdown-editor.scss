@@ -47,6 +47,7 @@ $toolbar-button-size: 50px;
   cursor: pointer;
 
   &:focus {
+    outline-offset: -$govuk-focus-width;
     border-color: transparent;
     background-color: transparent;
   }
@@ -96,15 +97,22 @@ $toolbar-button-size: 50px;
 .app-c-markdown-editor__toolbar-button {
   @include govuk-focusable-fill;
   display: inline-block;
+  background: none;
 
   &:focus {
-    outline: 0;
+    outline-offset: -$govuk-focus-width;
   }
 
   &:hover {
     cursor: pointer;
     background-color: govuk-colour("grey-3");
   }
+}
+
+.app-c-markdown-editor__toolbar-icon {
+  display: inline-block;
+  fill: currentColor;
+  background: inherit;
 }
 
 .app-c-markdown-editor__toolbar-button--text {
@@ -119,34 +127,4 @@ $toolbar-button-size: 50px;
 
 .app-c-markdown-editor__toolbar-button--end {
   float: right;
-}
-
-.app-c-markdown-editor__toolbar-icon {
-  display: block;
-  width: $toolbar-button-size;
-  height: $toolbar-button-size;
-}
-
-.app-c-markdown-editor__toolbar-icon--heading-2 {
-  background-image: image-url("components/markdown-editor/headline_two.svg");
-}
-
-.app-c-markdown-editor__toolbar-icon--heading-3 {
-  background-image: image-url("components/markdown-editor/headline_three.svg");
-}
-
-.app-c-markdown-editor__toolbar-icon--link {
-  background-image: image-url("components/markdown-editor/link.svg");
-}
-
-.app-c-markdown-editor__toolbar-icon--blockquote {
-  background-image: image-url("components/markdown-editor/blockquote.svg");
-}
-
-.app-c-markdown-editor__toolbar-icon--numbered-list {
-  background-image: image-url("components/markdown-editor/number_list.svg");
-}
-
-.app-c-markdown-editor__toolbar-icon--bullets {
-  background-image: image-url("components/markdown-editor/bullet_point.svg");
 }
