@@ -8,7 +8,10 @@
       <%= render "govuk_publishing_components/components/copy_to_clipboard",
         label: "Send this link to someone so they can see a preview of how the document will appear on GOV.UK. No password is needed.",
         copyable_content: utm_uri.to_s,
-        button_text: "Copy link" %>
+        button_text: "Copy link",
+        button_data_attributes: { gtm: "copy-url-for-preview-cta" },
+        input_data_attributes: { gtm: "copy-url-for-preview-manual" }
+      %>
     <% end %>
   </div>
 </div>
@@ -38,16 +41,19 @@
         id: "mobile",
         label: "Mobile",
         content: mobile_preview,
+        tab_data_attributes: { gtm: "tab-list-selection" },
       },
       {
         id: "desktop",
         label: "Desktop and tablet",
         content: desktop_and_tablet,
+        tab_data_attributes: { gtm: "tab-list-selection" }
       },
       {
         id: "search-engine",
         label: "Search engine snippet",
         content: snippet_preview,
+        tab_data_attributes: { gtm: "tab-list-selection" },
       },
     ]
   } %>

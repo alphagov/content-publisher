@@ -9,7 +9,10 @@
   end
 %>
 
-<%= form_tag(insert_document_contact_path(@document)) do %>
+<%= form_tag(
+  insert_document_contact_path(@document),
+  data: { gtm: "insert-contact-submit" },
+) do %>
   <%= render "components/autocomplete", {
     name: "contact_id",
     label: {

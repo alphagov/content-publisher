@@ -1,6 +1,7 @@
 <div class="app-c-markdown-guidance">
   <%= render "govuk_publishing_components/components/details", {
-        title: "Acronyms"
+        title: "Acronyms",
+        data_attributes: { gtm: "markdown-guidance-details" }
   } do %>
     <p>Definitions for acronyms that will appear if the user hovers the mouse over it.</p>
     <p>Add each definition in its own paragraph at the end of the body copy.</p>
@@ -10,7 +11,8 @@
   <% end %>
 
   <%= render "govuk_publishing_components/components/details", {
-        title: "Addresses"
+        title: "Addresses",
+        data_attributes: { gtm: "markdown-guidance-details" }
   } do %>
     <p>Add $A before and after an address to inset it.</p>
     <pre class="app-c-markdown-guidance__code-snippet">
@@ -22,7 +24,8 @@
   <% end %>
 
   <%= render "govuk_publishing_components/components/details", {
-        title: "Call to action"
+        title: "Call to action",
+        data_attributes: { gtm: "markdown-guidance-details" }
   } do %>
     <p>Add $CTA before and after a paragraph to highlight an action for the user.</p>
     <pre class="app-c-markdown-guidance__code-snippet">
@@ -33,7 +36,8 @@
   <% end %>
 
   <%= render "govuk_publishing_components/components/details", {
-        title: "Email links"
+        title: "Email links",
+        data_attributes: { gtm: "markdown-guidance-details" }
   } do %>
     <p>Add < and > brackets around email addresses to make them a link.</p>
     <pre class="app-c-markdown-guidance__code-snippet">
@@ -42,7 +46,8 @@
   <% end %>
 
   <%= render "govuk_publishing_components/components/details", {
-        title: "Tables"
+        title: "Tables",
+        data_attributes: { gtm: "markdown-guidance-details" }
   } do %>
     <p>Add | to separate data into columns and put each row on a new line.</p>
     <pre class="app-c-markdown-guidance__code-snippet">
@@ -62,11 +67,12 @@
   <% end %>
 
   <%= render "govuk_publishing_components/components/details", {
-        title: "Bar charts"
+        title: "Bar charts",
+        data_attributes: { gtm: "markdown-guidance-details" }
   } do %>
     <p>Add {barchart} at the end of numeric tables to display a simple bar chart.</p>
     <pre class="app-c-markdown-guidance__code-snippet">
-    Name | Number | Number 
+    Name | Number | Number
     -|-|-
     Thing | 120 | 445
     Thing | 154 | 228
