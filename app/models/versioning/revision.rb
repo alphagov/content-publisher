@@ -9,6 +9,11 @@ module Versioning
                class_name: "User",
                optional: true,
                foreign_key: :created_by_id
+
+    belongs_to :lead_image,
+               class_name: "Versioning::Image",
+               optional: true,
+               foreign_key: :lead_image_id
     # rubocop:enable Rails/InverseOf
 
     has_many :current_for_editions,
