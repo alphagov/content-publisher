@@ -21,6 +21,10 @@ module Versioning
                class_name: "Versioning::Revision",
                inverse_of: :current_for_editions
 
+    has_and_belongs_to_many :revisions,
+                            class_name: "Versioning::Revision",
+                            join_table: "versioned_edition_revisions"
+
     delegate_missing_to :current_revision
   end
 end
