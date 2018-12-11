@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_11_221709) do
+ActiveRecord::Schema.define(version: 2018_12_11_223329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,7 +212,9 @@ ActiveRecord::Schema.define(version: 2018_12_11_221709) do
     t.string "update_type"
     t.bigint "created_by_id"
     t.datetime "created_at", null: false
+    t.bigint "lead_image_id"
     t.index ["created_by_id"], name: "index_versioned_revisions_on_created_by_id"
+    t.index ["lead_image_id"], name: "index_versioned_revisions_on_lead_image_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -248,4 +250,5 @@ ActiveRecord::Schema.define(version: 2018_12_11_221709) do
   add_foreign_key "versioned_revision_images", "versioned_images", column: "image_id", on_delete: :restrict
   add_foreign_key "versioned_revision_images", "versioned_revisions", column: "revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "versioned_revisions", "versioned_images", column: "lead_image_id", on_delete: :restrict
 end
