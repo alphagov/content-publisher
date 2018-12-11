@@ -27,6 +27,9 @@ module Versioning
 
     delegate :topics, to: :document_topics
 
+    delegate :title, :base_path, to: :current_edition, allow_nil: true, prefix: true
+    delegate :title, :base_path, to: :live_edition, allow_nil: true, prefix: true
+
     def self.find_by_param(content_id_and_locale)
       content_id, locale = content_id_and_locale.split(":")
       Document.find_by!(content_id: content_id, locale: locale)
