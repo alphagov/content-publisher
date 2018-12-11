@@ -26,6 +26,12 @@ class WithdrawController < ApplicationController
     end
 
     UnpublishService.new.retire(@document, public_explanation)
+  rescue GdsApi::BaseError => e
+    GovukError.notify(e)
+    redirect_to withdraw_path(@document),
+      alert_with_description: t("withdraw_document.withdraw.flashes.publishing_api_error"),
+      public_explanation: public_explanation
+  else
     redirect_to @document
   end
 end
