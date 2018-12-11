@@ -11,6 +11,10 @@ module Versioning
 
     belongs_to :blob, class_name: "ActiveStorage::Blob"
 
+    has_and_belongs_to_many :revisions,
+                            class_name: "Versioning::Revision",
+                            join_table: "versioned_revision_images"
+
     def readonly?
       !new_record?
     end
