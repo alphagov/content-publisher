@@ -20,5 +20,7 @@ module Versioning
     belongs_to :current_revision,
                class_name: "Versioning::Revision",
                inverse_of: :current_for_editions
+
+    delegate_missing_to :current_revision
   end
 end
