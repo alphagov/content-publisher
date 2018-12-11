@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_11_000828) do
+ActiveRecord::Schema.define(version: 2018_12_11_215252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,6 +178,22 @@ ActiveRecord::Schema.define(version: 2018_12_11_000828) do
     t.index ["document_id"], name: "index_versioned_editions_on_document_id"
   end
 
+  create_table "versioned_images", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "filename", null: false
+    t.integer "width", null: false
+    t.integer "height", null: false
+    t.integer "crop_x", null: false
+    t.integer "crop_y", null: false
+    t.integer "crop_width", null: false
+    t.integer "crop_height", null: false
+    t.string "caption"
+    t.string "alt_text"
+    t.string "credit"
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_versioned_images_on_blob_id"
+  end
+
   create_table "versioned_revisions", force: :cascade do |t|
     t.string "title"
     t.string "base_path"
@@ -220,5 +236,6 @@ ActiveRecord::Schema.define(version: 2018_12_11_000828) do
   add_foreign_key "versioned_editions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_revisions", column: "current_revision_id", on_delete: :restrict
+  add_foreign_key "versioned_images", "active_storage_blobs", column: "blob_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :restrict
 end
