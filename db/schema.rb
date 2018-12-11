@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_10_230332) do
+ActiveRecord::Schema.define(version: 2018_12_11_000828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -152,6 +152,14 @@ ActiveRecord::Schema.define(version: 2018_12_10_230332) do
     t.index ["created_by_id"], name: "index_versioned_documents_on_created_by_id"
   end
 
+  create_table "versioned_edition_revisions", force: :cascade do |t|
+    t.bigint "edition_id", null: false
+    t.bigint "revision_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["edition_id"], name: "index_versioned_edition_revisions_on_edition_id"
+    t.index ["revision_id"], name: "index_versioned_edition_revisions_on_revision_id"
+  end
+
   create_table "versioned_editions", force: :cascade do |t|
     t.integer "number", null: false
     t.datetime "last_edited_at"
@@ -207,6 +215,8 @@ ActiveRecord::Schema.define(version: 2018_12_10_230332) do
   add_foreign_key "timeline_entries", "documents", on_delete: :cascade
   add_foreign_key "timeline_entries", "users", on_delete: :nullify
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :restrict
+  add_foreign_key "versioned_edition_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_revisions", column: "current_revision_id", on_delete: :restrict
