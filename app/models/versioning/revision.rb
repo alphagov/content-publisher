@@ -17,6 +17,10 @@ module Versioning
              inverse_of: :current_revision,
              dependent: :restrict_with_exception
 
+    has_and_belongs_to_many :editions,
+                            class_name: "Versioning::Edition",
+                            join_table: "versioned_edition_revisions"
+
     def readonly?
       !new_record?
     end
