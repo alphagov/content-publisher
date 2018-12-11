@@ -11,3 +11,6 @@ en:
         [Full guidance on withdrawing content](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/unpublishing-and-archiving)
       flashes:
         requirements: You need to
+        publishing_api_error:
+          title: Something has gone wrong
+          description_govspeak: Something went wrong when withdrawing this document. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).

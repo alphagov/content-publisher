@@ -22,10 +22,17 @@ class WithdrawController < ApplicationController
 
         render :new
       else
-        #FIXME We should check that the edition is withdrawable before passing
-        # it to the UnpublishService
-        UnpublishService.new.withdraw(@document.current_edition, public_explanation)
-        redirect_to @document
+        begin
+          #FIXME We should check that the edition is withdrawable before passing
+          # it to the UnpublishService
+          UnpublishService.new.withdraw(@document.current_edition, public_explanation)
+          redirect_to @document
+        rescue GdsApi::BaseError => e
+          GovukError.notify(e)
+          redirect_to withdraw_path,
+            alert_with_description: t("withdraw.new.flashes.publishing_api_error"),
+            public_explanation: public_explanation
+        end
       end
     end
   end
