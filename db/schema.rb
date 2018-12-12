@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_11_223329) do
+ActiveRecord::Schema.define(version: 2018_12_12_201517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -240,15 +240,15 @@ ActiveRecord::Schema.define(version: 2018_12_11_223329) do
   add_foreign_key "retirements", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
   add_foreign_key "timeline_entries", "documents", on_delete: :cascade
   add_foreign_key "timeline_entries", "users", on_delete: :nullify
-  add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :restrict
   add_foreign_key "versioned_edition_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
-  add_foreign_key "versioned_editions", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "versioned_editions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_revisions", column: "current_revision_id", on_delete: :restrict
   add_foreign_key "versioned_images", "active_storage_blobs", column: "blob_id", on_delete: :restrict
   add_foreign_key "versioned_revision_images", "versioned_images", column: "image_id", on_delete: :restrict
   add_foreign_key "versioned_revision_images", "versioned_revisions", column: "revision_id", on_delete: :restrict
-  add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_revisions", "versioned_images", column: "lead_image_id", on_delete: :restrict
 end
