@@ -1,0 +1,50 @@
+@startuml
+object document {
+  content_id = "12345-12345-12345"
+  locale = "en"
+}
+
+object edition_1 {
+  number = "1"
+}
+
+object e1_draft {
+  user_facing = "draft"
+}
+
+object e1_submitted {
+  user_facing = "submitted"
+}
+
+object e1_published {
+  user_facing = "published"
+}
+
+object revision_1 {
+  number = "1"
+  title = "Great Title"
+}
+
+object edition_2 {
+  number = "2"
+}
+
+object e2_draft {
+  user_facing = "draft"
+}
+
+object revision_2 {
+  number = "2"
+  title = "A better title"
+}
+
+document -- edition_1: live
+edition_1 .. e1_draft: past state
+edition_1 .. e1_submitted: past state
+edition_1 -- e1_published: state
+edition_1 -- revision_1: current revision
+document -- edition_2: current
+edition_2 -- e2_draft: state
+edition_2 .. revision_1: past revision
+edition_2 -- revision_2: current revision
+@enduml
