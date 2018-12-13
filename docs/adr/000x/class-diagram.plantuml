@@ -1,0 +1,62 @@
+@startuml
+class Document {
+  content_id
+  locale
+}
+note left: Mutable
+
+class Revision {
+  number
+  title
+  summary
+  contents
+}
+note top: Immutable
+
+class Edition {
+  number
+}
+note left: Mutable
+
+class State {
+  user_facing
+  publishing_api
+}
+note bottom
+  Immutable, will contain or be associated
+  with Removals and Retires
+end note
+
+class Image {
+  filename
+  crop
+  alt_text
+  caption
+  credit
+}
+note right: Immutable
+
+class Blob {
+  key
+  content_type
+}
+note bottom: Immutable
+
+class AssetManagerState {
+  value
+  asset_manager_path
+}
+note bottom: Mutable
+
+Document -- Edition : current >
+Document .. Edition : live >
+Edition -- Revision : current >
+Document *-- Revision : all
+Edition *-* Revision : all
+Edition -- State : current
+Edition *-- State : past
+Image --* AssetManagerState
+Image --* Blob
+Revision *-* Image: all
+Revision .. Image: lead >
+@enduml
