@@ -22,8 +22,9 @@
 //= require components/url-preview.js
 //= require vendor/@alphagov/miller-columns-element/dist/index.umd.js
 
-//= require modules/warn-before-unload.js
 //= require modules/gtm-form-listener.js
+//= require modules/gtm-track-copy.js
+//= require modules/warn-before-unload.js
 
 // load after other components (esp. autocomplete)
 //= require components/contextual-guidance.js
