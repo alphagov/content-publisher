@@ -17,12 +17,12 @@ FactoryBot.define do
       asset_id { SecureRandom.hex(8) }
     end
 
-    after(:build) do |image, evaluator|
-      fixture_path = Rails.root.join("spec/fixtures/files/#{evaluator.fixture}")
+    blob do
+      fixture_path = Rails.root.join("spec/fixtures/files/#{fixture}")
 
-      image.blob = ActiveStorage::Blob.build_after_upload(
+      ActiveStorage::Blob.build_after_upload(
         io: File.new(fixture_path),
-        filename: image.filename,
+        filename: filename,
       )
     end
 
