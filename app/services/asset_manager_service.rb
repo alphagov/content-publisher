@@ -16,6 +16,11 @@ class AssetManagerService
                                       auth_bypass_ids: [])
   end
 
+  def update_bytes(asset, content)
+    file = AssetManagerFile.from_bytes(asset, content)
+    GdsApi.asset_manager.update_asset(asset.asset_manager_id, file: file)
+  end
+
   def delete(asset)
     GdsApi.asset_manager.delete_asset(asset.asset_manager_id)
   end
