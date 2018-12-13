@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 
   get "/documents/:document_id/images" => "document_images#index", as: :document_images
   post "/documents/:document_id/images" => "document_images#create", as: :create_document_image
+  get "/documents/:document_id/images/:image_id/download" => "document_images#download", as: :download_image
   get "/documents/:document_id/images/:image_id/crop" => "document_images#crop", as: :crop_document_image
   patch "/documents/:document_id/images/:image_id/crop" => "document_images#update_crop"
   get "/documents/:document_id/images/:image_id/edit" => "document_images#edit", as: :edit_document_image

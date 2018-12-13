@@ -11,7 +11,14 @@
   <% actions = [
     link_to("Edit crop", crop_document_image_path(@document, image), class: "govuk-link"),
     link_to("Edit details", edit_document_image_path(@document, image), class: "govuk-link"),
+    link_to('Download 960x640 image', download_image_path(@document, image), class: "govuk-link")
   ] %>
+
+  <% actions << capture do %>
+    <%= form_tag remove_document_lead_image_path(@document), method: :delete, class: "app-inline-block" do %>
+      <button class="govuk-link">Remove lead image</button>
+    <% end %>
+  <% end %>
 
   <% unless @document.has_live_version_on_govuk %>
     <% actions << capture do %>
@@ -19,12 +26,6 @@
         <%= hidden_field_tag :wizard, "lead_image" %>
         <button class="govuk-link app-link--destructive">Delete lead image</button>
       <% end %>
-    <% end %>
-  <% end %>
-
-  <% actions << capture do %>
-    <%= form_tag remove_document_lead_image_path(@document), method: :delete, class: "app-inline-block" do %>
-      <button class="govuk-link">Remove lead image</button>
     <% end %>
   <% end %>
 
