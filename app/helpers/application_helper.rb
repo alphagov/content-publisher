@@ -12,4 +12,8 @@ module ApplicationHelper
   def strip_scheme_from_url(url)
     url.sub(/^https?\:\/\//, "")
   end
+
+  def escape_and_link(unsafe_text)
+    Rinku.auto_link(html_escape(unsafe_text))
+  end
 end

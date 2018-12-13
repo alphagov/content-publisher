@@ -24,6 +24,7 @@ class TimelineEntry < ApplicationRecord
     create_preview
     retired
     removed
+    internal_note
   ].freeze
 
   validates_inclusion_of :entry_type, in: ENTRY_TYPES
