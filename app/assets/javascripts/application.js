@@ -23,6 +23,7 @@
 //= require vendor/@alphagov/miller-columns-element/dist/index.umd.js
 
 //= require modules/warn-before-unload.js
+//= require modules/gtm-form-listener.js
 
 // load after other components (esp. autocomplete)
 //= require components/contextual-guidance.js
