@@ -18,7 +18,7 @@ class ImageUploadService
     image.document = document
     image.blob = blob
     image.asset_manager_file_url = upload_to_asset_manager(image)
-    image.publication_state = "sent_to_draft"
+    image.publication_state = "draft"
     image.save!
     image
   end

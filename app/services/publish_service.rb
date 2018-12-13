@@ -30,7 +30,7 @@ private
   def publish_assets(assets)
     assets.each do |asset|
       AssetManagerService.new.publish(asset)
-      asset.update!(publication_state: "sent_to_live")
+      asset.update!(publication_state: "live")
     end
   end
 end

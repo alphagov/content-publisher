@@ -9,9 +9,9 @@ class Image < ApplicationRecord
   THUMBNAIL_HEIGHT = 200
 
   PUBLICATION_STATES = %w[
-    changes_not_sent_to_draft
-    sent_to_draft
-    sent_to_live
+    absent
+    draft
+    live
   ].freeze
 
   after_destroy { blob.delete }

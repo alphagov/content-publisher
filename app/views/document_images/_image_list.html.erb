@@ -8,7 +8,7 @@
   <% images.each_with_index do |image, i| %>
     <% actions = [] %>
 
-    <% unless image.publication_state == "sent_to_live" %>
+    <% unless image.publication_state == "live" %>
       <% actions << link_to("Edit crop", crop_document_image_path(@document, image), class: "govuk-link") %>
       <% actions << link_to("Edit details", edit_document_image_path(@document, image), class: "govuk-link") %>
       <% actions << link_to('Download 960x640 image', download_image_path(@document, image), class: "govuk-link") %>
@@ -20,14 +20,13 @@
       <% end %>
     <% end %>
 
-    <% unless image.publication_state == "sent_to_live" %>
+    <% unless image.publication_state == "live" %>
       <% actions << capture do %>
         <%= form_tag destroy_document_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
           <button class="govuk-link app-link--destructive">Delete image</button>
         <% end %>
       <% end %>
     <% end %>
-
 
     <%= render "components/image_meta", {
       id: "image-#{image.id}",

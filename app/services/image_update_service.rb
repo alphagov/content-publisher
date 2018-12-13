@@ -10,7 +10,7 @@ class ImageUpdateService
   end
 
   def call
-    if image.publication_state == "sent_to_live"
+    if image.publication_state == "live"
       raise "Cannot edit live images"
     end
 
@@ -18,7 +18,7 @@ class ImageUpdateService
       asset_manager_file_url = upload_to_asset_manager(image)
       AssetManagerService.new.delete(image)
       image.asset_manager_file_url = asset_manager_file_url
-      image.publication_state = "sent_to_draft"
+      image.publication_state = "draft"
     end
 
     image.save!
