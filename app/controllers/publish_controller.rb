@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PublishDocumentController < ApplicationController
+class PublishController < ApplicationController
   def confirmation
     @document = Document.find_by_param(params[:id])
 
@@ -24,7 +24,7 @@ class PublishDocumentController < ApplicationController
       TimelineEntry.create!(document: document, user: current_user, entry_type: "published_without_review")
     end
 
-    redirect_to document_published_path(document)
+    redirect_to published_path(document)
   rescue GdsApi::BaseError
     redirect_to document, alert_with_description: t("documents.show.flashes.publish_error")
   end

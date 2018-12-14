@@ -3,7 +3,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag publish_document_path(@document), data: { gtm: "publish-document" } do %>
+    <%= form_tag publish_confirmation_path(@document), data: { gtm: "publish-document" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "self_declared_review_state",
         items: [

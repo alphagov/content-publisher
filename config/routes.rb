@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   get "/documents/choose-document-type" => "new_document#choose_document_type", as: :choose_document_type
   post "/documents/create" => "new_document#create", as: :create_document
 
-  get "/documents/:id/publish" => "publish_document#confirmation", as: :publish_document
-  post "/documents/:id/publish" => "publish_document#publish"
-  get "/documents/:id/published" => "publish_document#published", as: :document_published
+  get "/documents/:id/publish" => "publish#confirmation", as: :publish_confirmation
+  post "/documents/:id/publish" => "publish#publish"
+  get "/documents/:id/published" => "publish#published", as: :published
 
   get "/documents" => "documents#index"
   get "/documents/:id/edit" => "documents#edit", as: :edit_document
