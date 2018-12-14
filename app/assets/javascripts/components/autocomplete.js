@@ -15,7 +15,6 @@ if ($autocompletes) {
       selectElement: $el,
       minLength: 3,
       showNoOptionsFound: false,
-      showAllValues: true,
       customAttributes: customAttributes
     })
   })
