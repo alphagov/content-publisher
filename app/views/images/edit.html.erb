@@ -1,9 +1,9 @@
 <% content_for :title, t("document_images.edit.title", title: @document.title_or_fallback) %>
 
 <% if params[:wizard] == "lead_image" %>
-  <% content_for :back_link, render_back_link(href: crop_document_image_path(@document, @image, wizard: params[:wizard])) %>
+  <% content_for :back_link, render_back_link(href: crop_image_path(@document, @image, wizard: params[:wizard])) %>
 <% else %>
-  <% content_for :back_link, render_back_link(href: document_images_path(@document)) %>
+  <% content_for :back_link, render_back_link(href: images_path(@document)) %>
 <% end %>
 
 <%= render "components/image_meta", {
@@ -13,7 +13,7 @@
   no_border: true
 } %>
 
-<%= form_tag(update_document_image_path(@document, @image), method: :patch, data: { "warn-before-unload": true }) do %>
+<%= form_tag(update_image_path(@document, @image), method: :patch, data: { "warn-before-unload": true }) do %>
   <%= hidden_field_tag :wizard, params[:wizard] %>
 
   <div class="govuk-grid-row">

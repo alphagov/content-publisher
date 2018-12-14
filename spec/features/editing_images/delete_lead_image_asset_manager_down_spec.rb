@@ -19,7 +19,7 @@ RSpec.feature "Delete an image with Asset Manager down" do
   end
 
   def when_i_visit_the_images_page
-    visit document_images_path(Document.last)
+    visit images_path(Document.last)
   end
 
   def and_asset_manager_is_down

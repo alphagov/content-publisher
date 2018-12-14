@@ -11,7 +11,7 @@
       <% end %>
 
       <%= form_tag(
-        create_document_image_path(@document),
+        create_image_path(@document),
         multipart: true,
         data: { gtm: "image-upload-submit" },
       ) do %>

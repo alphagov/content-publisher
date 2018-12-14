@@ -15,7 +15,7 @@ RSpec.feature "Download a image" do
   end
 
   def when_i_visit_the_documents_image_index_page
-    visit document_images_path(@document)
+    visit images_path(@document)
   end
 
   def and_i_click_the_link_to_download_the_image

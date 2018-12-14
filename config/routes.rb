@@ -36,14 +36,14 @@ Rails.application.routes.draw do
   get "/documents/:id/retire" => "retire_document#retire", as: :retire_document
   get "/documents/:id/remove" => "remove_document#remove", as: :remove_document
 
-  get "/documents/:document_id/images" => "document_images#index", as: :document_images
-  post "/documents/:document_id/images" => "document_images#create", as: :create_document_image
-  get "/documents/:document_id/images/:image_id/download" => "document_images#download", as: :download_image
-  get "/documents/:document_id/images/:image_id/crop" => "document_images#crop", as: :crop_document_image
-  patch "/documents/:document_id/images/:image_id/crop" => "document_images#update_crop"
-  get "/documents/:document_id/images/:image_id/edit" => "document_images#edit", as: :edit_document_image
-  patch "/documents/:document_id/images/:image_id/edit" => "document_images#update", as: :update_document_image
-  delete "/documents/:document_id/images/:image_id" => "document_images#destroy", as: :destroy_document_image
+  get "/documents/:document_id/images" => "images#index", as: :images
+  post "/documents/:document_id/images" => "images#create", as: :create_image
+  get "/documents/:document_id/images/:image_id/download" => "images#download", as: :download_image
+  get "/documents/:document_id/images/:image_id/crop" => "images#crop", as: :crop_image
+  patch "/documents/:document_id/images/:image_id/crop" => "images#update_crop"
+  get "/documents/:document_id/images/:image_id/edit" => "images#edit", as: :edit_image
+  patch "/documents/:document_id/images/:image_id/edit" => "images#update", as: :update_image
+  delete "/documents/:document_id/images/:image_id" => "images#destroy", as: :destroy_image
 
   post "/documents/:document_id/lead-image/:image_id" => "document_lead_image#choose", as: :choose_document_lead_image
   delete "/documents/:document_id/lead-image" => "document_lead_image#remove", as: :remove_document_lead_image

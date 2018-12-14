@@ -17,7 +17,7 @@ RSpec.feature "Delete an image" do
   end
 
   def when_i_visit_the_images_page
-    visit document_images_path(Document.last)
+    visit images_path(Document.last)
   end
 
   def when_i_delete_the_lead_image
