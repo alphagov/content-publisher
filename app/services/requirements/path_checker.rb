@@ -28,6 +28,8 @@ module Requirements
       base_path_owner = GdsApi.publishing_api_v2.lookup_content_id(
         base_path: document.base_path,
         with_drafts: true,
+        exclude_document_types: [],
+        exclude_unpublishing_types: [],
       )
 
       base_path_owner && base_path_owner != document.content_id
