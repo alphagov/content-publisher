@@ -41,11 +41,11 @@ RSpec.feature "Edit an image after publishing" do
   end
 
   def when_i_visit_the_images_page
-    visit document_images_path(@document)
+    visit images_path(@document)
   end
 
   def then_i_cannot_edit_the_images
-    visit document_images_path(@document)
+    visit images_path(@document)
     expect(page).to_not have_content("Delete image")
     expect(page).to_not have_content("Delete lead image")
     expect(page).to_not have_content("Edit crop")
@@ -60,7 +60,7 @@ RSpec.feature "Edit an image after publishing" do
   end
 
   def then_i_can_edit_the_new_image
-    visit document_images_path(@document)
+    visit images_path(@document)
     then_i_can_edit_the_images
   end
 end
