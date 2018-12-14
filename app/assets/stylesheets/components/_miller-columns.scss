@@ -5,6 +5,11 @@ $transition-time: 400ms;
   .miller-columns {
     display: none;
   }
+
+  .govuk-checkboxes__input,
+  .govuk-checkboxes__label {
+    pointer-events: none;
+  }
 }
 
 // Cascading columns styling
@@ -173,12 +178,10 @@ $transition-time: 400ms;
     left: 0;
     width: 26px;
     height: 26px;
-    pointer-events: none;
   }
 
   .govuk-checkboxes__label {
     padding: 8px 5px 2px;
-    pointer-events: none;
     @include govuk-font($size: 16)
   }
 
