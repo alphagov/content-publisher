@@ -5,6 +5,17 @@
   @include govuk-font(19);
 }
 
+.autocomplete__list .autocomplete__option,
+.autocomplete__list .autocomplete__option:hover {
+  padding: 5px 6px;
+
+  &:before {
+    position: relative;
+    top: 3px;
+    padding-top: 2px;
+  }
+}
+
 .js-enabled {
   .app-c-autocomplete__multiselect-instructions {
     display: none;
