@@ -26,7 +26,7 @@
       options_for_select(options, selected_options),
       id: id,
       class: "govuk-select",
-      data: data,
+      data: (data || {}).merge(module: "autocomplete"),
       size: size,
       multiple: multiple
     %>

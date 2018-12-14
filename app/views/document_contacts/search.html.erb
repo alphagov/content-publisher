@@ -18,14 +18,10 @@
     label: {
       text: %{<h1 class="govuk-heading-l">#{t("document_contacts.search.title")}</h1>}.html_safe,
     },
-    options: ["", ""] + contact_options,
-    data: {
-      module: "autocomplete",
-    }
+    options: ["", ""] + contact_options
   } %>
 
   <%= render "govuk_publishing_components/components/button", {
     text: "Insert contact", margin_bottom: true
   } %>
 <% end %>
-

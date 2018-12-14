@@ -14,6 +14,8 @@ examples:
         text: Select your country
       options:
         -
+          -
+        -
           - France
           - fr
         -
@@ -40,7 +42,7 @@ examples:
           - United Kingdom
           - uk
       selected_options:
-          - fr
+          - de
 
   multiselect:
     data:
