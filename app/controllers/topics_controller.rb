@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DocumentTopicsController < ApplicationController
+class TopicsController < ApplicationController
   include GDS::SSO::ControllerMethods
 
   rescue_from GdsApi::BaseError do |e|
@@ -20,7 +20,7 @@ class DocumentTopicsController < ApplicationController
     redirect_to document_path(document), notice: t("documents.show.flashes.topics_updated")
   rescue GdsApi::HTTPConflict
     Rails.logger.warn("Conflict updating topics for #{document.content_id} at version #{params[:version].to_i}")
-    redirect_to document_topics_path, alert_with_description: t("document_topics.edit.flashes.topic_update_conflict")
+    redirect_to topics_path, alert_with_description: t("document_topics.edit.flashes.topic_update_conflict")
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     redirect_to document, alert_with_description: t("documents.show.flashes.topic_update_error")
