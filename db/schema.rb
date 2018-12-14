@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_07_101337) do
+ActiveRecord::Schema.define(version: 2018_12_10_133134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2018_12_07_101337) do
     t.string "alt_text"
     t.string "credit"
     t.string "asset_manager_file_url"
+    t.string "publication_state", null: false
     t.index ["blob_id"], name: "index_images_on_blob_id"
     t.index ["document_id"], name: "index_images_on_document_id"
   end

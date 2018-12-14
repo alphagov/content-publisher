@@ -6,11 +6,13 @@
   </h2>
 
   <% images.each_with_index do |image, i| %>
-    <% actions = [
-      link_to("Edit crop", crop_document_image_path(@document, image), class: "govuk-link"),
-      link_to("Edit details", edit_document_image_path(@document, image), class: "govuk-link"),
-      link_to('Download 960x640 image', download_image_path(@document, image), class: "govuk-link")
-    ] %>
+    <% actions = [] %>
+
+    <% unless image.publication_state == "live" %>
+      <% actions << link_to("Edit crop", crop_document_image_path(@document, image), class: "govuk-link") %>
+      <% actions << link_to("Edit details", edit_document_image_path(@document, image), class: "govuk-link") %>
+      <% actions << link_to('Download 960x640 image', download_image_path(@document, image), class: "govuk-link") %>
+    <% end %>
 
     <% actions << capture do %>
       <%= form_tag choose_document_lead_image_path(@document, image), class: "app-inline-block" do %>
@@ -18,7 +20,7 @@
       <% end %>
     <% end %>
 
-    <% unless @document.has_live_version_on_govuk %>
+    <% unless image.publication_state == "live" %>
       <% actions << capture do %>
         <%= form_tag destroy_document_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
           <button class="govuk-link app-link--destructive">Delete image</button>

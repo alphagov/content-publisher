@@ -24,10 +24,7 @@ class DocumentImagesController < ApplicationController
       return
     end
 
-    image = ImageUploader.new(params[:image]).upload(@document)
-    image.asset_manager_file_url = upload_image_to_asset_manager(image)
-
-    image.save!
+    image = ImageUploadService.new(params[:image]).call(@document)
     redirect_to crop_document_image_path(params[:document_id], image.id, wizard: params[:wizard])
   end
 
@@ -39,14 +36,8 @@ class DocumentImagesController < ApplicationController
   def update_crop
     document = Document.find_by_param(params[:document_id])
     image = Image.find(params[:image_id])
-
-    Image.transaction do
-      image.update!(update_crop_params)
-      asset_manager_file_url = upload_image_to_asset_manager(image)
-      delete_image_from_asset_manager(image)
-      image.asset_manager_file_url = asset_manager_file_url
-      image.save!
-    end
+    image.assign_attributes(update_crop_params)
+    ImageUpdateService.new(image).call
 
     PreviewService.new(document).try_create_preview(
       user: current_user,
@@ -82,7 +73,7 @@ class DocumentImagesController < ApplicationController
       return
     end
 
-    @image.save!
+    ImageUpdateService.new(@image).call
 
     if params[:wizard] == "lead_image"
       @document.assign_attributes(lead_image_id: @image.id)
@@ -106,7 +97,6 @@ class DocumentImagesController < ApplicationController
   def destroy
     document = Document.find_by_param(params[:document_id])
     image = document.images.find(params[:image_id])
-    raise "Trying to delete image for a live document" if document.has_live_version_on_govuk
 
     if params[:wizard] == "lead_image"
       document.assign_attributes(lead_image_id: nil)
@@ -122,8 +112,7 @@ class DocumentImagesController < ApplicationController
       )
     end
 
-    AssetManagerService.new.delete(image)
-    image.destroy!
+    ImageDeleteService.new(image).call
 
     if params[:wizard] == "lead_image"
       redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.deleted", file: image.filename)
@@ -147,14 +136,6 @@ private
 
   def update_params
     params.permit(:caption, :alt_text, :credit)
-  end
-
-  def upload_image_to_asset_manager(image)
-    AssetManagerService.new.upload_bytes(image, image.cropped_bytes)
-  end
-
-  def delete_image_from_asset_manager(image)
-    AssetManagerService.new.delete(image)
   end
 
   def update_crop_params
