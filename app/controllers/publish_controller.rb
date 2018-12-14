@@ -16,6 +16,11 @@ class PublishController < ApplicationController
   def publish
     document = Document.find_by_param(params[:id])
 
+    if document.publication_state == "sent_to_live"
+      redirect_to published_path(document)
+      return
+    end
+
     PublishService.new(document).publish(
       user: current_user,
       review_state: params[:review_state] || "published_without_review",
