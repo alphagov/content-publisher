@@ -7,18 +7,29 @@ class PublishService
     @document = document
   end
 
-  def publish(review_state)
+  def publish(user:, review_state:)
     publish_assets(document.images)
 
-    # Sending update_type in .publish is deprecated (should be in payload instead)
-    GdsApi.publishing_api_v2.publish(document.content_id, nil, locale: document.locale)
-
-    document.update!(
-      publication_state: "sent_to_live",
-      has_live_version_on_govuk: true,
-      review_state: review_state,
-      live_state: "published",
+    GdsApi.publishing_api_v2.publish(
+      document.content_id,
+      nil, # Sending update_type is deprecated (now in payload)
+      locale: document.locale,
     )
+
+    Document.transaction do
+      document.update!(
+        publication_state: "sent_to_live",
+        has_live_version_on_govuk: true,
+        review_state: review_state,
+        live_state: "published",
+      )
+
+      TimelineEntry.create!(
+        document: document,
+        user: user,
+        entry_type: timeline_entry_type(review_state),
+      )
+    end
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     document.update!(publication_state: "error_sending_to_live")
@@ -26,6 +37,10 @@ class PublishService
   end
 
 private
+
+  def timeline_entry_type(review_state)
+    review_state == "reviewed" ? "published" : "published_without_review"
+  end
 
   def publish_assets(assets)
     assets.each do |asset|

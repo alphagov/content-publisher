@@ -5,14 +5,14 @@
   <div class="govuk-grid-column-two-thirds">
     <%= form_tag publish_confirmation_path(@document), data: { gtm: "publish-document" } do %>
       <%= render "govuk_publishing_components/components/radio", {
-        name: "self_declared_review_state",
+        name: "review_state",
         items: [
           {
-            value: "has-been-reviewed",
+            value: "reviewed",
             text: t("publish.confirmation.has_been_reviewed")
           },
           {
-            value: "should-be-reviewed",
+            value: "published_without_review",
             text: t("publish.confirmation.should_be_reviewed")
           },
         ]
