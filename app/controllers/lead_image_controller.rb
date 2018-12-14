@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DocumentLeadImageController < ApplicationController
+class LeadImageController < ApplicationController
   def choose
     document = Document.find_by_param(params[:document_id])
     image = Image.find(params[:image_id])

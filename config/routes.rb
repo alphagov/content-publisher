@@ -45,8 +45,8 @@ Rails.application.routes.draw do
   patch "/documents/:document_id/images/:image_id/edit" => "images#update", as: :update_image
   delete "/documents/:document_id/images/:image_id" => "images#destroy", as: :destroy_image
 
-  post "/documents/:document_id/lead-image/:image_id" => "document_lead_image#choose", as: :choose_document_lead_image
-  delete "/documents/:document_id/lead-image" => "document_lead_image#remove", as: :remove_document_lead_image
+  post "/documents/:document_id/lead-image/:image_id" => "lead_image#choose", as: :choose_lead_image
+  delete "/documents/:document_id/lead-image" => "lead_image#remove", as: :remove_lead_image
 
   get "/documents/:document_id/topics" => "document_topics#edit", as: :document_topics
   patch "/documents/:document_id/topics" => "document_topics#update", as: :update_document_topics

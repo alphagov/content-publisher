@@ -15,7 +15,7 @@
     <% end %>
 
     <% actions << capture do %>
-      <%= form_tag choose_document_lead_image_path(@document, image), class: "app-inline-block" do %>
+      <%= form_tag choose_lead_image_path(@document, image), class: "app-inline-block" do %>
         <button class="govuk-link">Select as lead image</button>
       <% end %>
     <% end %>
