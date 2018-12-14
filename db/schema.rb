@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_10_133134) do
+ActiveRecord::Schema.define(version: 2018_12_14_112140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,5 +147,5 @@ ActiveRecord::Schema.define(version: 2018_12_10_133134) do
   add_foreign_key "removals", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
   add_foreign_key "retirements", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
   add_foreign_key "timeline_entries", "documents", on_delete: :cascade
-  add_foreign_key "timeline_entries", "users", on_delete: :restrict
+  add_foreign_key "timeline_entries", "users", on_delete: :nullify
 end
