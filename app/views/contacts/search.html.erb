@@ -10,7 +10,7 @@
 %>
 
 <%= form_tag(
-  insert_document_contact_path(@document),
+  insert_contact_path(@document),
   data: { gtm: "insert-contact-submit" },
 ) do %>
   <%= render "components/autocomplete", {

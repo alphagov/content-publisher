@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DocumentContactsController < ApplicationController
+class ContactsController < ApplicationController
   def search
     @document = Document.find_by_param(params[:id])
     @contacts_by_organisation = ContactsService.new.all_by_organisation
