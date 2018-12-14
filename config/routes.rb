@@ -51,7 +51,7 @@ Rails.application.routes.draw do
   get "/documents/:document_id/topics" => "document_topics#edit", as: :document_topics
   patch "/documents/:document_id/topics" => "document_topics#update", as: :update_document_topics
 
-  post "/documents/:document_id/editions" => "document_editions#create", as: :create_document_edition
+  post "/documents/:document_id/editions" => "editions#create", as: :create_edition
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 

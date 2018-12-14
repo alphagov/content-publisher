@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DocumentEditionsController < ApplicationController
+class EditionsController < ApplicationController
   def create
     document = Document.find_by_param(params[:document_id])
 
