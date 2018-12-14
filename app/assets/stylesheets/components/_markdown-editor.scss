@@ -98,6 +98,8 @@ $toolbar-button-size: 50px;
   @include govuk-focusable-fill;
   display: inline-block;
   background: none;
+  width: $toolbar-button-size;
+  height: $toolbar-button-size;
 
   &:focus {
     outline-offset: -$govuk-focus-width;
@@ -113,13 +115,14 @@ $toolbar-button-size: 50px;
   display: inline-block;
   fill: currentColor;
   background: inherit;
+  pointer-events: none;
 }
 
 .app-c-markdown-editor__toolbar-button--text {
   @include govuk-font($size: 16, $weight: bold);
   border: none;
   border-left: 4px solid govuk-colour('white');
-  height: $toolbar-button-size;
+  width: auto;
   vertical-align: top;
   background: transparent;
   padding: govuk-spacing(3);
