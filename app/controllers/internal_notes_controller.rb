@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class InternalNotesController < ApplicationController
+  include GDS::SSO::ControllerMethods
+  before_action { authorise_user!(User::PRE_RELEASE_FEATURES_PERMISSION) }
+
   def create
     Document.transaction do
       document = Document.with_current_edition.lock!.find_by_param(params[:id])
