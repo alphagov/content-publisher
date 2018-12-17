@@ -50,17 +50,17 @@
           data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
 
-      <%= link_to "Retire", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
-      <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
+      <%= link_to "Retire", retire_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Remove", remove_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "published" %>
       <%= form_tag create_edition_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
 
-      <%= link_to "Retire", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
-      <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
+      <%= link_to "Retire", retire_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Remove", remove_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "retired" %>
-      <%= link_to "Update reason for retiring", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Update reason for retiring", retire_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
     <% elsif @document.user_facing_state == "removed" %>
       <%= form_tag create_edition_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
