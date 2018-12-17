@@ -14,11 +14,11 @@ RSpec.describe Requirements::ImageUploadChecker do
       expect(form_message).to eq(I18n.t!("requirements.image_upload.no_file.form_message"))
     end
 
-    it "returns an issue when an incorrect file type is provided" do
+    it "returns an issue when an unsupported file type is provided" do
       file = fixture_file_upload("files/text-file.txt", "text/plain")
       issues = Requirements::ImageUploadChecker.new(file).issues
       form_message = issues.items_for(:image_upload).first[:text]
-      expect(form_message).to eq(I18n.t!("requirements.image_upload.format_not_allowed.form_message"))
+      expect(form_message).to eq(I18n.t!("requirements.image_upload.unsupported_type.form_message"))
     end
 
     it "returns an issue when a file bigger than the max size is provided" do
@@ -40,7 +40,7 @@ RSpec.describe Requirements::ImageUploadChecker do
       file = fixture_file_upload("files/animated-gif.gif", "image/gif")
       issues = Requirements::ImageUploadChecker.new(file).issues
       form_message = issues.items_for(:image_upload).first[:text]
-      expect(form_message).to eq(I18n.t!("requirements.image_upload.format_not_allowed.form_message"))
+      expect(form_message).to eq(I18n.t!("requirements.image_upload.animated_image.form_message"))
     end
   end
 end
