@@ -1,16 +1,17 @@
 <%
-  items||= []
-  inline||= false
+  items ||= []
+  inline ||= false
+  list_classes = %w(app-c-metadata__list)
+  list_classes << 'app-c-metadata__list--inline' if inline
+  data_attributes ||= nil
 %>
-<div class="app-c-metadata">
-
+<%= tag.div class: 'app-c-metadata', data: data_attributes do %>
   <% if items.any? %>
-  <dl class="app-c-metadata__list <%= 'app-c-metadata__list--inline' if inline %>">
-    <% items.each do |item| %>
-      <dt class="app-c-metadata__title"><%= item[:field] %>:</dt>
-      <dd class="app-c-metadata__description"><%= item[:value] %></dd>
+    <%= tag.dl class: list_classes do %>
+      <% items.each do |item| %>
+        <%= tag.dt item[:field] + ':', class: 'app-c-metadata__title' %>
+        <%= tag.dd item[:value], class: 'app-c-metadata__description' %>
+      <% end %>
     <% end %>
-  </dl>
   <% end %>
-
-</div>
+<% end %>
