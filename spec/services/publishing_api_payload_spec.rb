@@ -95,7 +95,13 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "includes a lead image if present" do
-      image = build(:image, alt_text: "image alt text", caption: "image caption", asset_manager_file_url: "http:://assets-manager.gov.uk/image.jpg")
+      image = build(
+        :image,
+        alt_text: "image alt text",
+        caption: "image caption",
+        asset_manager_file_url: "http:://assets-manager.gov.uk/image.jpg",
+        credit: "image credit",
+      )
       document_type = build(:document_type, lead_image: true)
       document = build(:document, document_type_id: document_type.id, lead_image: image)
 
@@ -105,6 +111,7 @@ RSpec.describe PublishingApiPayload do
         "url" => "http:://assets-manager.gov.uk/image.jpg",
         "alt_text" => "image alt text",
         "caption" => "image caption",
+        "credit" => "image credit",
       }
 
       expect(payload["details"]["image"]).to match a_hash_including(payload_hash)

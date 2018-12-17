@@ -53,6 +53,7 @@ private
       "url" => document.lead_image.asset_manager_file_url,
       "alt_text" => document.lead_image.alt_text,
       "caption" => document.lead_image.caption,
+      "credit" => document.lead_image.credit,
     }
   end
 
