@@ -21,6 +21,10 @@
         field: t("documents.show.metadata.last_edited_by"),
         value: @document.last_editor&.name || I18n.t!("documents.show.metadata.unknown_user")
       },
-    ]
+    ],
+    data_attributes: {
+      "gtm-document-type": @document.document_type.label,
+      "gtm-document-status": t("user_facing_states.#{@document.user_facing_state}.name")
+    }
   } %>
 </div>
