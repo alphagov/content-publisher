@@ -1,5 +1,5 @@
 en:
-  document_topics:
+  topics:
     edit:
       title: "Topics for ‘%{title}’"
       description: |

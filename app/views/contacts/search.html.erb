@@ -1,5 +1,5 @@
 <% content_for :back_link, render_back_link(href: edit_document_path(@document)) %>
-<% content_for :browser_title, t("document_contacts.search.title") %>
+<% content_for :browser_title, t("contacts.search.title") %>
 
 <%
   contact_options = @contacts_by_organisation.flat_map do |org|
@@ -16,7 +16,7 @@
   <%= render "components/autocomplete", {
     name: "contact_id",
     label: {
-      text: %{<h1 class="govuk-heading-l">#{t("document_contacts.search.title")}</h1>}.html_safe,
+      text: %{<h1 class="govuk-heading-l">#{t("contacts.search.title")}</h1>}.html_safe,
     },
     options: ["", ""] + contact_options
   } %>

@@ -1,5 +1,5 @@
 en:
-  document_images:
+  images:
     index:
       title: "Images for ‘%{title}’"
       description_govspeak: Images can be jpg, png or gif files. Full [guidance on images](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/images-and-videos).

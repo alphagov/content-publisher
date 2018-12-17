@@ -1,4 +1,4 @@
-<% content_for :title, t("document_images.index.title", title: @document.title_or_fallback) %>
+<% content_for :title, t("images.index.title", title: @document.title_or_fallback) %>
 <% content_for :back_link, render_back_link(href: document_path(@document)) %>
 
 <div class="govuk-grid-row">
@@ -6,7 +6,7 @@
     <div class="app-pane">
       <% upload_image_heading = capture do %>
         <h2 class="govuk-heading-m">
-          <%= t("document_images.index.upload_image") %>
+          <%= t("images.index.upload_image") %>
         </h2>
       <% end %>
 
@@ -25,7 +25,7 @@
         } %>
 
         <%= render "govuk_publishing_components/components/govspeak" do %>
-          <%= govspeak_to_html t("document_images.index.description_govspeak") %>
+          <%= govspeak_to_html t("images.index.description_govspeak") %>
         <% end %>
 
         <%= render "govuk_publishing_components/components/button", {

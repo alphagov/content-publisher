@@ -1,5 +1,5 @@
 <% content_for :back_link, render_back_link(href: images_path(@document)) %>
-<% content_for :title, t("document_images.crop.title", title: @document.title_or_fallback) %>
+<% content_for :title, t("images.crop.title", title: @document.title_or_fallback) %>
 
 <%= form_tag(crop_image_path(@document, @image), method: :patch) do %>
   <%= hidden_field_tag :wizard, params[:wizard] %>

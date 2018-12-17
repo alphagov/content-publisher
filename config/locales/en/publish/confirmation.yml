@@ -1,5 +1,5 @@
 en:
-  publish_document:
+  publish:
     confirmation:
       title: Publish
       has_been_reviewed: "This content has been reviewed and approved for publication"

@@ -1,5 +1,5 @@
 en:
-  document_images:
+  images:
     edit:
       title: "Edit image for ‘%{title}’"
       form_labels:

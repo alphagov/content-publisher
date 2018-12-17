@@ -1,5 +1,5 @@
 en:
-  document_tags:
+  tags:
     edit:
       title: "Tags for ‘%{title}’"
       description: Add tags which describe what the content is about. Content will appear in lists on GOV.UK based on each tag.

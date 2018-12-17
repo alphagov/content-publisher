@@ -3,7 +3,7 @@
 class ImagesController < ApplicationController
   rescue_from GdsApi::BaseError do |e|
     GovukError.notify(e)
-    redirect_to images_path, alert_with_description: t("document_images.index.flashes.api_error")
+    redirect_to images_path, alert_with_description: t("images.index.flashes.api_error")
   end
 
   def index
@@ -16,7 +16,7 @@ class ImagesController < ApplicationController
 
     if @issues.any?
       flash.now["alert_with_items"] = {
-        "title" => I18n.t!("document_images.index.flashes.upload_requirements"),
+        "title" => I18n.t!("images.index.flashes.upload_requirements"),
         "items" => @issues.items,
       }
 
@@ -49,7 +49,7 @@ class ImagesController < ApplicationController
       return
     end
 
-    redirect_to images_path(document), notice: t("document_images.index.flashes.cropped", file: image.filename)
+    redirect_to images_path(document), notice: t("images.index.flashes.cropped", file: image.filename)
   end
 
   def edit
@@ -65,7 +65,7 @@ class ImagesController < ApplicationController
 
     if @issues.any?
       flash.now["alert_with_items"] = {
-        "title" => I18n.t!("document_images.edit.flashes.requirements"),
+        "title" => I18n.t!("images.edit.flashes.requirements"),
         "items" => @issues.items,
       }
 
@@ -90,7 +90,7 @@ class ImagesController < ApplicationController
         type: "image_updated",
       )
 
-      redirect_to images_path(@document), notice: t("document_images.index.flashes.details_edited", file: @image.filename)
+      redirect_to images_path(@document), notice: t("images.index.flashes.details_edited", file: @image.filename)
     end
   end
 
@@ -117,7 +117,7 @@ class ImagesController < ApplicationController
     if params[:wizard] == "lead_image"
       redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.deleted", file: image.filename)
     else
-      redirect_to images_path(document), notice: t("document_images.index.flashes.deleted", file: image.filename)
+      redirect_to images_path(document), notice: t("images.index.flashes.deleted", file: image.filename)
     end
   end
 

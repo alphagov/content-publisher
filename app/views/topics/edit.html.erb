@@ -1,9 +1,9 @@
 <% content_for :back_link, render_back_link(href: document_path(@document)) %>
-<% content_for :title, t("document_topics.edit.title", title: @document.title_or_fallback) %>
+<% content_for :title, t("topics.edit.title", title: @document.title_or_fallback) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <p class="govuk-body"><%= t("document_topics.edit.description") %></p>
+    <p class="govuk-body"><%= t("topics.edit.description") %></p>
   </div>
 
   <div class="govuk-grid-column-one-third">
@@ -12,17 +12,17 @@
         <ul class="gem-c-related-navigation__link-list" data-module="track-click">
           <li class="gem-c-related-navigation__link">
             <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/creating-and-updating-pages#add-topic-tagging" class="gem-c-related-navigation__section-link gem-c-related-navigation__section-link--other">
-              <%= t("document_topics.edit.link_guidance") %>
+              <%= t("topics.edit.link_guidance") %>
             </a>
           </li>
           <li class="gem-c-related-navigation__link">
             <a href="<%= Plek.new.external_url_for('support') + '/taxonomy_new_topic_request/new' %>" class="gem-c-related-navigation__section-link gem-c-related-navigation__section-link--other">
-              <%= t("document_topics.edit.link_suggest_new") %>
+              <%= t("topics.edit.link_suggest_new") %>
             </a>
           </li>
           <li class="gem-c-related-navigation__link">
             <a href="<%= Plek.new.external_url_for('support') + '/taxonomy_change_topic_request/new' %>" class="gem-c-related-navigation__section-link gem-c-related-navigation__section-link--other">
-              <%= t("document_topics.edit.link_suggest_change") %>
+              <%= t("topics.edit.link_suggest_change") %>
             </a>
           </li>
         </ul>
@@ -58,7 +58,7 @@
 <% end %>
 
 <%= form_tag update_topics_path(@document), method: :patch do %>
-  <h2 class="govuk-heading-m"><%= t("document_topics.edit.selected_title") %></h2>
+  <h2 class="govuk-heading-m"><%= t("topics.edit.selected_title") %></h2>
   <miller-columns-selected class="miller-columns-selected" id="selected-items" for="miller-columns"></miller-columns-selected>
 
   <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items">
@@ -74,9 +74,9 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/details", {
-        title: t("document_topics.edit.warning_title")
+        title: t("topics.edit.warning_title")
       } do %>
-        <%= t("document_topics.edit.warning_description") %>
+        <%= t("topics.edit.warning_description") %>
       <% end %>
     </div>
   </div>

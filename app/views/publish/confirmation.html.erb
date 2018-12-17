@@ -1,5 +1,5 @@
 <% content_for :back_link, render_back_link(href: document_path(@document)) %>
-<% content_for :title, t("publish_document.confirmation.title") %>
+<% content_for :title, t("publish.confirmation.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -9,11 +9,11 @@
         items: [
           {
             value: "has-been-reviewed",
-            text: t("publish_document.confirmation.has_been_reviewed")
+            text: t("publish.confirmation.has_been_reviewed")
           },
           {
             value: "should-be-reviewed",
-            text: t("publish_document.confirmation.should_be_reviewed")
+            text: t("publish.confirmation.should_be_reviewed")
           },
         ]
       } %>
