@@ -32,7 +32,7 @@ RSpec.describe DocumentUrl do
   describe "#secret_preview_url" do
     it "returns the URL" do
       url = DocumentUrl.new(document).secret_preview_url
-      expect(url).to eq("https://draft-origin.test.gov.uk/foo?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzMxMzEzMS0zMzY1LTQ4MzgtYjk2My0zNDM3MzYzNTMxNjYifQ.nsYQ81gx2DKs2XQanFQIZzgkq_Ofw4C3Jys9II2RFoQ")
+      expect(url).to eq("https://draft-origin.test.gov.uk/foo?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzMxMzEzMS0zMzY1LTQ4MzgtYjk2My0zNDM3MzYzNTMxNjYifQ.fFE5ctaewPYJap8hmsRyJ87L6a8Co8t9bbD0wpVYSgs")
     end
 
     it "returns nil without a base_path" do
