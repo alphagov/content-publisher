@@ -4,18 +4,23 @@ class Supertype
   attr_reader :id, :label, :description, :managed_elsewhere, :hint, :document_types
 
   def initialize(params = {})
-    @id = params["id"]
-    @label = params["label"]
-    @description = params["description"]
-    @managed_elsewhere = params["managed_elsewhere"]
-    @hint = params["hint"]
-    @document_types = params["display_document_types"].to_a.map { |type| DocumentType.find(type) }
+    params = params.with_indifferent_access
+    @id = params[:id]
+    @label = params[:label]
+    @description = params[:description]
+    @managed_elsewhere = params[:managed_elsewhere]
+    @hint = params[:hint]
+    @document_types = params[:document_types]
   end
 
   def self.all
     @all ||= begin
-      raw = YAML.load_file("app/formats/supertypes.yml")
-      raw.map { |r| Supertype.new(r) }
+      hashes = YAML.load_file(Rails.root.join("app", "formats", "supertypes.yml"))
+
+      hashes.map do |hash|
+        hash["document_types"] = hash["display_document_types"].to_a.map(&DocumentType.method(:find))
+        new(hash)
+      end
     end
   end
 
