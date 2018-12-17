@@ -58,11 +58,14 @@ class TimelineEntry < ApplicationRecord
   def self.create_for_revision(entry_type:,
                                revision: nil,
                                edition:,
-                               details: nil)
+                               details: nil,
+                               created_by: nil)
+
     revision = revision || edition.revision
+    creator = created_by || revision.created_by
 
     create!(entry_type: entry_type,
-            created_by: revision.created_by,
+            created_by: creator,
             revision: revision,
             edition: edition,
             document: edition.document,

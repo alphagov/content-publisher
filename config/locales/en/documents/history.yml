@@ -2,6 +2,7 @@ en:
   documents:
     history:
       edition_header: "%{number} edition"
+      add_internal_note: "Add internal note"
       entry_types:
         created: "First created"
         submitted: "Submitted for review"
