@@ -10,11 +10,11 @@ class ImageUploadService
   def call(document)
     blob = ActiveStorage::Blob.create_after_upload!(
       io: image_normaliser.normalised_file,
-      filename: filename,
+      filename: filename(document),
       content_type: mime_type,
     )
 
-    image = Image.new(image_attributes)
+    image = Image.new(image_attributes(document))
     image.document = document
     image.blob = blob
     image.asset_manager_file_url = upload_to_asset_manager(image)
@@ -31,8 +31,8 @@ private
     AssetManagerService.new.upload_bytes(image, image.cropped_bytes)
   end
 
-  def filename
-    file.respond_to?(:original_filename) ? file.original_filename : File.basename(file)
+  def filename(document)
+    @filename ||= ImageFilenameService.new(document).call(file.original_filename, mime_type)
   end
 
   def mime_type
@@ -43,11 +43,11 @@ private
     @image_normaliser ||= ImageNormaliser.new(file.path)
   end
 
-  def image_attributes
+  def image_attributes(document)
     dimensions = image_normaliser.dimensions
     cropper = ImageCentreCropper.new(dimensions[:width],
-                                dimensions[:height],
-                                Image::WIDTH.to_f / Image::HEIGHT)
+                                     dimensions[:height],
+                                     Image::WIDTH.to_f / Image::HEIGHT)
     {
       width: dimensions[:width],
       height: dimensions[:height],
@@ -55,7 +55,7 @@ private
       crop_y: cropper.dimensions[:y],
       crop_width: cropper.dimensions[:width],
       crop_height: cropper.dimensions[:height],
-      filename: filename,
+      filename: filename(document),
     }
   end
 end

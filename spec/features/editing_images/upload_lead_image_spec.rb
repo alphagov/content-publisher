@@ -13,11 +13,11 @@ RSpec.feature "Upload a lead image" do
 
   def given_there_is_a_document
     document_type = build(:document_type, lead_image: true)
-    create(:document, document_type_id: document_type.id)
+    @document = create(:document, document_type_id: document_type.id)
   end
 
   def when_i_visit_the_images_page
-    visit images_path(Document.last)
+    visit images_path(@document)
   end
 
   def and_i_upload_a_new_image
@@ -30,7 +30,7 @@ RSpec.feature "Upload a lead image" do
 
   def and_i_crop_the_image
     asset_manager_update_asset(@asset_id)
-    stub_publishing_api_put_content(Document.last.content_id, {})
+    stub_publishing_api_put_content(@document.content_id, {})
     click_on "Crop image"
     # TODO: Replace with https://github.com/bblimke/webmock/blob/d8686502442d9830dcccd24a1120ac08413d857a/lib/webmock/api.rb#L69 when it's released
     WebMock::RequestRegistry.instance.reset!
@@ -40,7 +40,7 @@ RSpec.feature "Upload a lead image" do
     fill_in "alt_text", with: "Some alt text"
     fill_in "caption", with: "A caption"
     fill_in "credit", with: "A credit"
-    @request = stub_publishing_api_put_content(Document.last.content_id, {})
+    @request = stub_publishing_api_put_content(@document.content_id, {})
     click_on "Save and choose"
   end
 
