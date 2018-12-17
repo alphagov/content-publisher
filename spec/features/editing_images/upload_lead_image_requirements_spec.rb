@@ -4,10 +4,8 @@ RSpec.feature "Upload a lead image with requirements issues" do
   scenario do
     given_there_is_a_document
     when_i_visit_the_images_page
-    and_i_upload_a_new_image
-    and_i_crop_the_image
-    and_i_enter_bad_metadata
-    then_i_see_an_error_to_fix_the_issues
+    and_i_upload_an_invalid_image
+    then_i_should_see_an_error
   end
 
   def given_there_is_a_document
@@ -16,28 +14,16 @@ RSpec.feature "Upload a lead image with requirements issues" do
   end
 
   def when_i_visit_the_images_page
-    visit document_images_path(Document.last)
+    visit document_path(Document.last)
+    click_on "Change Lead image"
   end
 
-  def and_i_upload_a_new_image
-    @asset_id = SecureRandom.uuid
-    @asset_url = "https://asset-manager.test.gov.uk/media/#{@asset_id}/1000x1000.jpg"
-    asset_manager_receives_an_asset(@asset_url)
-    find('form input[type="file"]').set(Rails.root.join(file_fixture("1000x1000.jpg")))
+  def and_i_upload_an_invalid_image
+    find('form input[type="file"]').set(file_fixture("text-file.txt"))
     click_on "Upload"
   end
 
-  def and_i_crop_the_image
-    asset_manager_delete_asset(@asset_id)
-    stub_publishing_api_put_content(Document.last.content_id, {})
-    click_on "Crop image"
-  end
-
-  def and_i_enter_bad_metadata
-    click_on "Save and choose"
-  end
-
-  def then_i_see_an_error_to_fix_the_issues
-    expect(page).to have_content(I18n.t!("requirements.alt_text.blank.form_message"))
+  def then_i_should_see_an_error
+    expect(page).to have_content(I18n.t!("requirements.image_upload.format_not_allowed.form_message"))
   end
 end

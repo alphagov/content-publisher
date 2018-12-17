@@ -10,12 +10,7 @@ en:
       lead_image: Lead image
       other_images: Other images
       flashes:
-        upload_requirements:
-          title: You need to
-          no_file_selected: Select a file to upload
-          invalid_format: Select a jpg, png or static gif image file
-          max_size: "Select an image file under %{max_size} in size"
-          min_dimensions: "Select an image at least %{width} pixels wide by %{height} pixels high"
+        upload_requirements: You need to
         cropped: "Image ‘%{file}’ has been cropped"
         details_edited: "Image details for ‘%{file}’ have been updated"
         deleted: "Image ‘%{file}’ has been deleted"

@@ -12,12 +12,12 @@ class DocumentImagesController < ApplicationController
 
   def create
     @document = Document.find_by_param(params[:document_id])
-    @errors = ImageUploadRequirements.new(params[:image]).errors
+    @issues = Requirements::ImageUploadChecker.new(params[:image]).issues
 
-    if @errors.any?
+    if @issues.any?
       flash.now["alert_with_items"] = {
-        "title" => I18n.t!("document_images.index.flashes.upload_requirements.title"),
-        "items" => @errors.map { |error| { text: error } },
+        "title" => I18n.t!("document_images.index.flashes.upload_requirements"),
+        "items" => @issues.items,
       }
 
       render :index
