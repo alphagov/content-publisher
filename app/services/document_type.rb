@@ -34,22 +34,22 @@ class DocumentType
   end
 
   class TagField
-    include ActiveModel::Model
-    attr_accessor :id, :label, :type, :document_type, :hint
+    include InitializeWithHash
+    attr_reader :id, :label, :type, :document_type, :hint
   end
 
   class Guidance
-    include ActiveModel::Model
-    attr_accessor :id, :title, :body_govspeak
+    include InitializeWithHash
+    attr_reader :id, :title, :body_govspeak
   end
 
   class PublishingMetadata
-    include ActiveModel::Model
-    attr_accessor :schema_name, :rendering_app
+    include InitializeWithHash
+    attr_reader :schema_name, :rendering_app
   end
 
   class Field
-    include ActiveModel::Model
-    attr_accessor :id, :label, :type
+    include InitializeWithHash
+    attr_reader :id, :label, :type
   end
 end
