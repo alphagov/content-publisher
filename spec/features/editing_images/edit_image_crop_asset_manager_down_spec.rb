@@ -13,7 +13,7 @@ RSpec.feature "Edit image crop when Asset Manager is down", js: true do
   def given_there_is_a_document_with_images
     document_type = build(:document_type, lead_image: true)
     document = create(:document, document_type_id: document_type.id)
-    create(:image, :in_preview, document: document, crop_y: 167, fixture: "1000x1000.jpg")
+    @image = create(:image, :in_preview, document: document, crop_y: 167, fixture: "1000x1000.jpg")
   end
 
   def when_i_visit_the_images_page
@@ -21,7 +21,7 @@ RSpec.feature "Edit image crop when Asset Manager is down", js: true do
   end
 
   def and_asset_manager_is_down
-    asset_manager_upload_failure
+    asset_manager_update_failure(@image.asset_manager_id)
   end
 
   def and_i_crop_the_image

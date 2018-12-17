@@ -20,7 +20,7 @@ RSpec.feature "Edit image metadata" do
   end
 
   def and_i_edit_the_image_metadata
-    @request = stub_publishing_api_put_content(Document.last.content_id, {})
+    @publishing_api_request = stub_publishing_api_put_content(Document.last.content_id, {})
     click_on "Edit details"
     fill_in "alt_text", with: "Some alt text"
     fill_in "caption", with: "A caption"
@@ -29,7 +29,6 @@ RSpec.feature "Edit image metadata" do
   end
 
   def then_i_see_the_image_is_updated
-    expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t!("images.index.flashes.details_edited", file: @image.filename))
     expect(page).to have_content("Some alt text")
     expect(page).to have_content("A caption")
@@ -37,7 +36,7 @@ RSpec.feature "Edit image metadata" do
   end
 
   def and_the_preview_creation_succeeded
-    expect(@request).to have_been_requested
+    expect(@publishing_api_request).to have_been_requested
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"].keys).to_not include("image")
