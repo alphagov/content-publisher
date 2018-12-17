@@ -23,7 +23,7 @@ class PublishController < ApplicationController
 
     PublishService.new(document).publish(
       user: current_user,
-      review_state: params[:review_state] || "published_without_review",
+      review_state: params[:review_state] == "reviewed" ? "reviewed" : "published_without_review",
     )
 
     redirect_to published_path(document)
