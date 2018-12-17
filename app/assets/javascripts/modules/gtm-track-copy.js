@@ -1,27 +1,14 @@
 function GTMCopyListener () { }
 
-GTMCopyListener.prototype.getSelectionText = function () {
-  var text = ''
-  if (window.getSelection) {
-    text = window.getSelection().toString()
-  } else if (document.selection && document.selection.type !== 'Control') {
-    text = document.selection.createRange().text
-  }
-  return text
-}
-
 GTMCopyListener.prototype.handleCopyEvent = function () {
   window.dataLayer.push({
-    'event': 'text-copied',
-    'copiedText': this.getSelectionText(),
-    'textLength': this.getSelectionText().length
+    'event': 'text-copied'
   })
 }
 
 GTMCopyListener.prototype.handlePasteEvent = function () {
   window.dataLayer.push({
-    'event': 'text-pasted',
-    'copiedText': 'N/A'
+    'event': 'text-pasted'
   })
 }
 
