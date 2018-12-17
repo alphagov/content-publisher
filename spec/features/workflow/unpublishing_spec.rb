@@ -12,7 +12,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       document = create(:document, :published, locale: "en")
       explanatory_note = "The reason the document is being retired"
 
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:retire).with(document, explanatory_note)
+      expect_any_instance_of(UnpublishService).to receive(:retire).with(document, explanatory_note)
 
       ClimateControl.modify NOTE: explanatory_note do
         Rake::Task["unpublish:retire_document"].invoke(document.content_id)
@@ -45,7 +45,7 @@ RSpec.feature "Unpublish documents rake tasks" do
     it "runs the rake task to remove a document" do
       document = create(:document, :published, locale: "en")
 
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(
+      expect_any_instance_of(UnpublishService).to receive(:remove).with(
         document,
         explanatory_note: nil,
         alternative_path: nil,
@@ -62,7 +62,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       document = create(:document, :published, locale: "en")
       explanatory_note = "The reason the document is being removed"
 
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(
+      expect_any_instance_of(UnpublishService).to receive(:remove).with(
         document,
         explanatory_note: explanatory_note,
         alternative_path: nil,
@@ -77,7 +77,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       document = create(:document, :published, locale: "en")
       alternative_path = "/go-here-instead"
 
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove).with(
+      expect_any_instance_of(UnpublishService).to receive(:remove).with(
         document,
         explanatory_note: nil,
         alternative_path: alternative_path,
@@ -103,7 +103,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       document = create(:document, :published, locale: "en")
       redirect_path = "/redirect-path"
 
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove_and_redirect).with(
+      expect_any_instance_of(UnpublishService).to receive(:remove_and_redirect).with(
         document,
         redirect_path,
         explanatory_note: nil,
@@ -127,7 +127,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       redirect_path = "/redirect-path"
       explanatory_note = "The reason the document is being removed"
 
-      expect_any_instance_of(DocumentUnpublishingService).to receive(:remove_and_redirect).with(
+      expect_any_instance_of(UnpublishService).to receive(:remove_and_redirect).with(
         document,
         redirect_path,
         explanatory_note: explanatory_note,

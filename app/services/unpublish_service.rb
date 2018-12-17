@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DocumentUnpublishingService
+class UnpublishService
   def retire(document, explanatory_note)
     Document.transaction do
       document.update!(live_state: "retired")
