@@ -1,17 +1,9 @@
 # frozen_string_literal: true
 
 class Supertype
-  attr_reader :id, :label, :description, :managed_elsewhere, :hint, :document_types
+  include InitializeWithHash
 
-  def initialize(params = {})
-    params = params.with_indifferent_access
-    @id = params[:id]
-    @label = params[:label]
-    @description = params[:description]
-    @managed_elsewhere = params[:managed_elsewhere]
-    @hint = params[:hint]
-    @document_types = params[:document_types]
-  end
+  attr_reader :id, :label, :description, :managed_elsewhere, :hint, :document_types
 
   def self.all
     @all ||= begin
