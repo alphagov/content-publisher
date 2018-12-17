@@ -42,9 +42,7 @@
       id: "change-note-guidance",
       title: t("documents.edit.change_note.guidance_title"),
     } do %>
-      <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("documents.edit.change_note.guidance") %>
-      <% end %>
+      <%= render_govspeak(t("documents.edit.change_note.guidance")) %>
     <% end %>
   </div>
 </div>
