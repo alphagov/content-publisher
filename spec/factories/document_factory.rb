@@ -23,6 +23,8 @@ FactoryBot.define do
 
     trait :published do
       has_live_version_on_govuk { true }
+      change_note { SecureRandom.alphanumeric(10) }
+      summary { SecureRandom.alphanumeric(10) }
       publication_state { "sent_to_live" }
     end
   end
