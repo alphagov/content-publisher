@@ -1,25 +1,10 @@
 # frozen_string_literal: true
 
 class DocumentType
+  include InitializeWithHash
+
   attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
     :path_prefix, :tags, :guidance_govspeak, :description, :hint, :lead_image, :topics, :check_path_conflict
-
-  def initialize(params = {})
-    params = params.with_indifferent_access
-    @id = params[:id]
-    @label = params[:label]
-    @managed_elsewhere = params[:managed_elsewhere]
-    @contents = params[:contents]
-    @publishing_metadata = params[:publishing_metadata]
-    @path_prefix = params[:path_prefix]
-    @tags = params[:tags]
-    @guidance = params[:guidance]
-    @description = params[:description]
-    @hint = params[:hint]
-    @lead_image = params[:lead_image]
-    @topics = params[:topics]
-    @check_path_conflict = params[:check_path_conflict]
-  end
 
   def self.find(id)
     item = all.find { |document_type| document_type.id == id }
