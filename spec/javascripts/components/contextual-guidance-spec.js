@@ -1,5 +1,5 @@
 /* global describe beforeEach afterEach it expect */
-/* global ContextualGuidance */
+/* global ContextualGuidance Event */
 
 describe('Contextual guidance component', function () {
   'use strict'
