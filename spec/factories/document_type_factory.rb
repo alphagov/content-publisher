@@ -8,11 +8,11 @@ FactoryBot.define do
     tags { [] }
     guidance { [] }
     publishing_metadata { DocumentType::PublishingMetadata.new }
+    initialize_with { new(attributes) }
 
-    initialize_with do
-      document_type = DocumentType.add(attributes)
+    after(:build) do |document_type|
+      DocumentType.all << document_type
       Supertype.all.first.document_types << document_type
-      document_type
     end
   end
 end

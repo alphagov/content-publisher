@@ -40,12 +40,6 @@ class DocumentType
     end
   end
 
-  def self.add(params)
-    document_type = new(params)
-    all << document_type
-    document_type
-  end
-
   def managed_elsewhere_url
     Plek.new.external_url_for(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
   end
