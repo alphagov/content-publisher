@@ -1,0 +1,43 @@
+<%
+  lead_images = @document.images.select { |image| image.id == @document.lead_image_id }
+  image = lead_images.first
+  actions = []
+%>
+
+<% if image %>
+  <h2 class="govuk-heading-m">
+    <%= t("images.index.lead_image") %>
+  </h2>
+
+  <% unless image.publication_state == "live" %>
+    <% actions << link_to("Edit crop", crop_image_path(@document, image), class: "govuk-link") %>
+    <% actions << link_to("Edit details", edit_image_path(@document, image), class: "govuk-link") %>
+    <% actions << link_to('Download 960x640 image', download_image_path(@document, image), class: "govuk-link") %>
+  <% end %>
+
+  <% actions << capture do %>
+    <%= form_tag remove_lead_image_path(@document), method: :delete, class: "app-inline-block" do %>
+      <button class="govuk-link">Remove lead image</button>
+    <% end %>
+  <% end %>
+
+  <% unless image.publication_state == "live" %>
+    <% actions << capture do %>
+      <%= form_tag destroy_image_path(@document, image), method: :delete, class: "app-inline-block" do %>
+        <%= hidden_field_tag :wizard, "lead_image" %>
+        <button class="govuk-link app-link--destructive">Delete lead image</button>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= render "components/image_meta", {
+    id: "image-#{image.id}",
+    src: url_for(image.thumbnail),
+    meta: {
+      alt_text: image.alt_text,
+      caption: image.caption,
+      credit: image.credit
+    },
+    actions: actions
+  } %>
+<% end %>

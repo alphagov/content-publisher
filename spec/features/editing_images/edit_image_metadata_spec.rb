@@ -16,7 +16,7 @@ RSpec.feature "Edit image metadata" do
   end
 
   def when_i_visit_the_images_page
-    visit document_images_path(Document.last)
+    visit images_path(Document.last)
   end
 
   def and_i_edit_the_image_metadata
@@ -30,7 +30,7 @@ RSpec.feature "Edit image metadata" do
 
   def then_i_see_the_image_is_updated
     expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t!("document_images.index.flashes.details_edited", file: @image.filename))
+    expect(page).to have_content(I18n.t!("images.index.flashes.details_edited", file: @image.filename))
     expect(page).to have_content("Some alt text")
     expect(page).to have_content("A caption")
     expect(page).to have_content("A credit")

@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   get "/documents/choose-document-type" => "new_document#choose_document_type", as: :choose_document_type
   post "/documents/create" => "new_document#create", as: :create_document
 
-  get "/documents/:id/publish" => "publish_document#confirmation", as: :publish_document
-  post "/documents/:id/publish" => "publish_document#publish"
-  get "/documents/:id/published" => "publish_document#published", as: :document_published
+  get "/documents/:id/publish" => "publish#confirmation", as: :publish_confirmation
+  post "/documents/:id/publish" => "publish#publish"
+  get "/documents/:id/published" => "publish#published", as: :published
 
   get "/documents" => "documents#index"
   get "/documents/:id/edit" => "documents#edit", as: :edit_document
@@ -21,37 +21,37 @@ Rails.application.routes.draw do
   get "/documents/:id/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
   delete "/documents/:id" => "documents#destroy"
 
-  get "/documents/:id/search-contacts" => "document_contacts#search", as: :search_document_contacts
-  post "/documents/:id/search-contacts" => "document_contacts#insert", as: :insert_document_contact
+  get "/documents/:id/search-contacts" => "contacts#search", as: :search_contacts
+  post "/documents/:id/search-contacts" => "contacts#insert", as: :insert_contact
 
   post "/documents/:id/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
   post "/documents/:id/approve" => "review#approve", as: :approve_document
 
-  get "/documents/:id/tags" => "document_tags#edit", as: :document_tags
-  post "/documents/:id/tags" => "document_tags#update"
+  get "/documents/:id/tags" => "tags#edit", as: :tags
+  post "/documents/:id/tags" => "tags#update"
 
   get "/documents/:id/preview" => "preview#show", as: :preview_document
   post "/documents/:id/create-preview" => "preview#create", as: :create_preview
 
-  get "/documents/:id/retire" => "retire_document#retire", as: :retire_document
-  get "/documents/:id/remove" => "remove_document#remove", as: :remove_document
+  get "/documents/:id/retire" => "unpublish#retire", as: :retire
+  get "/documents/:id/remove" => "unpublish#remove", as: :remove
 
-  get "/documents/:document_id/images" => "document_images#index", as: :document_images
-  post "/documents/:document_id/images" => "document_images#create", as: :create_document_image
-  get "/documents/:document_id/images/:image_id/download" => "document_images#download", as: :download_image
-  get "/documents/:document_id/images/:image_id/crop" => "document_images#crop", as: :crop_document_image
-  patch "/documents/:document_id/images/:image_id/crop" => "document_images#update_crop"
-  get "/documents/:document_id/images/:image_id/edit" => "document_images#edit", as: :edit_document_image
-  patch "/documents/:document_id/images/:image_id/edit" => "document_images#update", as: :update_document_image
-  delete "/documents/:document_id/images/:image_id" => "document_images#destroy", as: :destroy_document_image
+  get "/documents/:document_id/images" => "images#index", as: :images
+  post "/documents/:document_id/images" => "images#create", as: :create_image
+  get "/documents/:document_id/images/:image_id/download" => "images#download", as: :download_image
+  get "/documents/:document_id/images/:image_id/crop" => "images#crop", as: :crop_image
+  patch "/documents/:document_id/images/:image_id/crop" => "images#update_crop"
+  get "/documents/:document_id/images/:image_id/edit" => "images#edit", as: :edit_image
+  patch "/documents/:document_id/images/:image_id/edit" => "images#update", as: :update_image
+  delete "/documents/:document_id/images/:image_id" => "images#destroy", as: :destroy_image
 
-  post "/documents/:document_id/lead-image/:image_id" => "document_lead_image#choose", as: :choose_document_lead_image
-  delete "/documents/:document_id/lead-image" => "document_lead_image#remove", as: :remove_document_lead_image
+  post "/documents/:document_id/lead-image/:image_id" => "lead_image#choose", as: :choose_lead_image
+  delete "/documents/:document_id/lead-image" => "lead_image#remove", as: :remove_lead_image
 
-  get "/documents/:document_id/topics" => "document_topics#edit", as: :document_topics
-  patch "/documents/:document_id/topics" => "document_topics#update", as: :update_document_topics
+  get "/documents/:document_id/topics" => "topics#edit", as: :topics
+  patch "/documents/:document_id/topics" => "topics#update", as: :update_topics
 
-  post "/documents/:document_id/editions" => "document_editions#create", as: :create_document_edition
+  post "/documents/:document_id/editions" => "editions#create", as: :create_edition
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 

@@ -8,7 +8,7 @@ Every feature we add to the app comes with its own static text, which is either 
 
 Writing text 'inline' makes it hard for us to audit all of strings in our application, some of which can only be seen under special conditions e.g. error messages. It also makes it hard to change strings consistently across the application - a task which has to be done by a developer. Finally, using inline strings in code distracts from the logical flow of that code.
 
-[Rails Internationalization](https://guides.rubyonrails.org/i18n.html) (also referred to as 'translations') are a way to extract all of the strings in the application to a central location in `config/locales/en`. The strings can be organized in a hierarchy over one or more files, as below, where we can refer to the reviewed title by writing `I18n.t("publish_document.published.reviewed.title")`.
+[Rails Internationalization](https://guides.rubyonrails.org/i18n.html) (also referred to as 'translations') are a way to extract all of the strings in the application to a central location in `config/locales/en`. The strings can be organized in a hierarchy over one or more files, as below, where we can refer to the reviewed title by writing `I18n.t("publish.published.reviewed.title")`.
 
 ```
 # publish_document/published.yml

@@ -54,7 +54,7 @@ class DocumentsController < ApplicationController
     )
 
     if add_contact_request
-      redirect_to search_document_contacts_path(@document)
+      redirect_to search_contacts_path(@document)
     else
       redirect_to @document
     end

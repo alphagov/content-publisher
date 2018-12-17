@@ -25,7 +25,7 @@ RSpec.feature "Save topics when the Publishing API is down" do
     )
 
     publishing_api_has_taxonomy
-    visit document_topics_path(@document)
+    visit topics_path(@document)
   end
 
   def and_the_publishing_api_is_down

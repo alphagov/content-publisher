@@ -37,36 +37,36 @@
         <%= govspeak_to_html t("documents.show.sidebar.error_publishing_live_govspeak") %>
       <% end %>
 
-      <%= render "govuk_publishing_components/components/button", text: "Retry publishing", href: publish_document_path(@document) %>
+      <%= render "govuk_publishing_components/components/button", text: "Retry publishing", href: publish_confirmation_path(@document) %>
     <% elsif @document.user_facing_state == "published_but_needs_2i" %>
       <%= form_tag approve_document_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Approve" %>
       <% end %>
 
-      <%= form_tag create_document_edition_path(@document) do %>
+      <%= form_tag create_edition_path(@document) do %>
         <%= render "govuk_publishing_components/components/button",
           text: "Create new edition",
           secondary: true,
           data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
 
-      <%= link_to "Retire", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
-      <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
+      <%= link_to "Retire", retire_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Remove", remove_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "published" %>
-      <%= form_tag create_document_edition_path(@document) do %>
+      <%= form_tag create_edition_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
 
-      <%= link_to "Retire", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
-      <%= link_to "Remove", remove_document_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
+      <%= link_to "Retire", retire_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Remove", remove_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "retired" %>
-      <%= link_to "Update reason for retiring", retire_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Update reason for retiring", retire_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
     <% elsif @document.user_facing_state == "removed" %>
-      <%= form_tag create_document_edition_path(@document) do %>
+      <%= form_tag create_edition_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
     <% elsif @document.user_facing_state == "submitted_for_review" %>
-      <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_document_path(@document) %>
+      <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_confirmation_path(@document) %>
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
 
       <%= delete_draft_link("app-link--right") unless @document.has_live_version_on_govuk %>
@@ -77,7 +77,7 @@
 
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
 
-      <%= link_to "Publish", publish_document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Publish", publish_confirmation_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
 
       <%= delete_draft_link("app-link--right") unless @document.has_live_version_on_govuk %>
     <% end %>

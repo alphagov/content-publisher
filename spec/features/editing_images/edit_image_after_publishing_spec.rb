@@ -34,18 +34,18 @@ RSpec.feature "Edit an image after publishing" do
   def when_i_publish_the_document
     visit document_path(@document)
     click_on "Publish"
-    choose I18n.t!("publish_document.confirmation.has_been_reviewed")
+    choose I18n.t!("publish.confirmation.has_been_reviewed")
     stub_publishing_api_publish(@document.content_id, update_type: nil, locale: @document.locale)
     @document.images.each { |image| asset_manager_update_asset(image.asset_manager_id) }
     click_on "Confirm publish"
   end
 
   def when_i_visit_the_images_page
-    visit document_images_path(@document)
+    visit images_path(@document)
   end
 
   def then_i_cannot_edit_the_images
-    visit document_images_path(@document)
+    visit images_path(@document)
     expect(page).to_not have_content("Delete image")
     expect(page).to_not have_content("Delete lead image")
     expect(page).to_not have_content("Edit crop")
@@ -60,7 +60,7 @@ RSpec.feature "Edit an image after publishing" do
   end
 
   def then_i_can_edit_the_new_image
-    visit document_images_path(@document)
+    visit images_path(@document)
     then_i_can_edit_the_images
   end
 end

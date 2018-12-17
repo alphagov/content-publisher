@@ -24,7 +24,7 @@ RSpec.feature "Edit image crop", js: true do
   end
 
   def when_i_visit_the_images_page
-    visit document_images_path(Document.last)
+    visit images_path(Document.last)
   end
 
   def and_i_edit_the_image_crop
@@ -51,7 +51,7 @@ RSpec.feature "Edit image crop", js: true do
     expect(Image.last.crop_x).to eq(0)
     expect(Image.last.crop_width).to eq(960)
     expect(Image.last.crop_height).to eq(640)
-    expect(page).to have_content(I18n.t!("document_images.index.flashes.cropped", file: Image.last.filename))
+    expect(page).to have_content(I18n.t!("images.index.flashes.cropped", file: Image.last.filename))
   end
 
   def and_the_preview_creation_succeeded

@@ -1,5 +1,0 @@
-en:
-  document_contacts:
-    search:
-      title: Search contacts
-      api_down: Contacts can't be selected right now. We're having trouble getting the data we need for you to make changes on this page.

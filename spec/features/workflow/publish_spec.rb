@@ -21,7 +21,7 @@ RSpec.feature "Publishing a document" do
 
   def and_i_publish_the_document
     click_on "Publish"
-    choose I18n.t!("publish_document.confirmation.has_been_reviewed")
+    choose I18n.t!("publish.confirmation.has_been_reviewed")
     @content_request = stub_publishing_api_publish(@document.content_id, update_type: nil, locale: @document.locale)
     @asset_request = asset_manager_update_asset(@image.asset_manager_id)
     click_on "Confirm publish"
@@ -30,7 +30,7 @@ RSpec.feature "Publishing a document" do
   def then_i_see_the_publish_succeeded
     expect(@content_request).to have_been_requested
     expect(@asset_request).to have_been_requested
-    expect(page).to have_content(I18n.t!("publish_document.published.reviewed.title"))
+    expect(page).to have_content(I18n.t!("publish.published.reviewed.title"))
   end
 
   def and_the_content_is_shown_as_published

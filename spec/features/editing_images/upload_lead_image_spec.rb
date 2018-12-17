@@ -17,7 +17,7 @@ RSpec.feature "Upload a lead image" do
   end
 
   def when_i_visit_the_images_page
-    visit document_images_path(Document.last)
+    visit images_path(Document.last)
   end
 
   def and_i_upload_a_new_image

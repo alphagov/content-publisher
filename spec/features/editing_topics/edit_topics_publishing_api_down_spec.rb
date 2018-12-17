@@ -17,10 +17,10 @@ RSpec.feature "Edit tags when the Publishing API is down" do
   end
 
   def when_i_visit_the_topics_page
-    visit document_topics_path(Document.last)
+    visit topics_path(Document.last)
   end
 
   def then_i_see_an_error_message
-    expect(page).to have_content(I18n.t!("document_topics.edit.api_down"))
+    expect(page).to have_content(I18n.t!("topics.edit.api_down"))
   end
 end

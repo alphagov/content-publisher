@@ -16,7 +16,7 @@ RSpec.feature "Delete an image" do
   end
 
   def when_i_visit_the_images_page
-    visit document_images_path(Document.last)
+    visit images_path(Document.last)
   end
 
   def and_i_delete_the_non_lead_image
@@ -27,7 +27,7 @@ RSpec.feature "Delete an image" do
 
   def then_i_see_the_image_is_gone
     expect(all("#image-#{@image.id}").count).to be_zero
-    expect(page).to have_content(I18n.t!("document_images.index.flashes.deleted", file: @image.filename))
+    expect(page).to have_content(I18n.t!("images.index.flashes.deleted", file: @image.filename))
 
     expect(@image_request).to have_been_requested
     expect(ActiveStorage::Blob.service.exist?(@image.blob.key)).to be_falsey

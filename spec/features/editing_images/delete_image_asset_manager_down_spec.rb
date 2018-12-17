@@ -17,7 +17,7 @@ RSpec.feature "Delete an image with Asset Manager down" do
   end
 
   def when_i_visit_the_images_page
-    visit document_images_path(Document.last)
+    visit images_path(Document.last)
   end
 
   def and_asset_manager_is_down
@@ -34,6 +34,6 @@ RSpec.feature "Delete an image with Asset Manager down" do
   end
 
   def and_the_api_operation_failed
-    expect(page).to have_content(I18n.t!("document_images.index.flashes.api_error.title"))
+    expect(page).to have_content(I18n.t!("images.index.flashes.api_error.title"))
   end
 end

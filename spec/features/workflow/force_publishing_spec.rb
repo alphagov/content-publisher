@@ -24,13 +24,13 @@ RSpec.feature "Force publishing" do
 
   def and_i_publish_without_review
     click_on "Publish"
-    choose I18n.t!("publish_document.confirmation.should_be_reviewed")
+    choose I18n.t!("publish.confirmation.should_be_reviewed")
     stub_any_publishing_api_publish
     click_on "Confirm publish"
   end
 
   def then_i_see_the_publish_succeeded
-    expect(page).to have_content(I18n.t!("publish_document.published.published_without_review.title"))
+    expect(page).to have_content(I18n.t!("publish.published.published_without_review.title"))
   end
 
   def then_i_see_it_was_force_published
