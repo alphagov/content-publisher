@@ -3,8 +3,9 @@
 require "mini_magick"
 
 class ImageUploadService
-  def initialize(file)
+  def initialize(file, revision)
     @file = file
+    @revision = revision
   end
 
   def call(user)
@@ -31,10 +32,10 @@ class ImageUploadService
 
 private
 
-  attr_reader :file
+  attr_reader :file, :revision
 
   def filename
-    file.respond_to?(:original_filename) ? file.original_filename : File.basename(file)
+    ImageFilenameService.new(revision).call(file.original_filename)
   end
 
   def mime_type
@@ -46,22 +47,21 @@ private
   end
 
   def image_attributes
-    @image_attributes ||= build_image_attributes
-  end
+    @image_attributes ||= begin
+      dimensions = image_normaliser.dimensions
+      cropper = ImageCentreCropper.new(dimensions[:width],
+                                       dimensions[:height],
+                                       Image::WIDTH.to_f / Image::HEIGHT)
 
-  def build_image_attributes
-    dimensions = image_normaliser.dimensions
-    cropper = ImageCentreCropper.new(dimensions[:width],
-                                dimensions[:height],
-                                Image::WIDTH.to_f / Image::HEIGHT)
-    {
-      width: dimensions[:width],
-      height: dimensions[:height],
-      crop_x: cropper.dimensions[:x],
-      crop_y: cropper.dimensions[:y],
-      crop_width: cropper.dimensions[:width],
-      crop_height: cropper.dimensions[:height],
-      filename: filename,
-    }
+      {
+        width: dimensions[:width],
+        height: dimensions[:height],
+        crop_x: cropper.dimensions[:x],
+        crop_y: cropper.dimensions[:y],
+        crop_width: cropper.dimensions[:width],
+        crop_height: cropper.dimensions[:height],
+        filename: filename,
+      }
+    end
   end
 end

@@ -40,6 +40,10 @@
         {
           field: t("images.index.meta.credit"),
           value: image.credit,
+        },
+        {
+          field: t("images.index.meta.inline_code.label"),
+          value: I18n.t("images.index.meta.inline_code.value", filename: image.filename),
         }
       ]
     } %>
