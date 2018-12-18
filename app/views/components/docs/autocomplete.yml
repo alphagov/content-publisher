@@ -88,18 +88,19 @@ examples:
       name: autocomplete-custom-template
       label:
         text: Select your country
-      data:
-        module: autocomplete-custom-template
+      custom_template: true
       options:
         -
-          - Select a country
           -
         -
-          - France - Paris
+          - France
           - fr
+          - data-hint: Paris
         -
-          - United Arab Emirates - Abu Dhabi
-          - ae
+          - United Arab Emirates
+          - uae
+          - data-hint: Abu Dhabi
         -
-          - United Kingdom - London
+          - United Kingdom
           - uk
+          - data-hint: London
