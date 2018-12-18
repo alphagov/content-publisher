@@ -9,6 +9,7 @@ class DeleteDraftService
 
   def delete
     raise "Trying to delete a live document" if document.has_live_version_on_govuk
+
     document.images.each { |asset| delete_asset(asset) }
     discard_draft
     document.destroy!
@@ -27,6 +28,7 @@ private
 
   def delete_asset(asset)
     return unless asset.asset_manager_id
+
     AssetManagerService.new.delete(asset)
   rescue GdsApi::HTTPNotFound
     Rails.logger.warn("No asset to delete for id #{asset.asset_manager_id}")

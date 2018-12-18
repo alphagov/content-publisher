@@ -9,6 +9,7 @@ module Tasks
 
       edition["translations"].each do |translation|
         next unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
+
         create_or_update_document(translation, edition, document)
       end
     end
@@ -68,6 +69,7 @@ module Tasks
 
     def publication_state(edition)
       return "sent_to_live" if edition["state"] == "published"
+
       "sent_to_draft"
     end
 
@@ -75,6 +77,7 @@ module Tasks
       return "published_without_review" if edition["force_published"]
       return "reviewed" if edition["state"] == "published"
       return "unreviewed" if edition["state"] == "draft"
+
       "submitted_for_review"
     end
 
