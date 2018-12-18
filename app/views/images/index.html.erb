@@ -34,8 +34,25 @@
       <% end %>
     </div>
 
-    <%= render "lead_image" %>
+    <% lead_image = @document.lead_image %>
+    <% images = @document.images - [lead_image] %>
 
-    <%= render "image_list" %>
+    <% if lead_image %>
+      <h2 class="govuk-heading-m">
+        <%= t("images.index.lead_image") %>
+      </h2>
+
+      <%= render "lead_image", image: lead_image %>
+    <% end %>
+
+    <% if images.any? %>
+      <h2 class="govuk-heading-m">
+        <%= t("images.index.other_images") %>
+      </h2>
+
+      <% images.each do |image| %>
+        <%= render "image", image: image %>
+      <% end %>
+    <% end %>
   </div>
 </div>
