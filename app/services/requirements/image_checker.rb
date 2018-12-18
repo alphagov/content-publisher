@@ -23,7 +23,7 @@ module Requirements
         issues << Issue.new(:alt_text, :too_long, max_length: ALT_TEXT_MAX_LENGTH, filename: image.filename)
       end
 
-      if @image.caption.to_s.length > CAPTION_MAX_LENGTH
+      if image.caption.to_s.length > CAPTION_MAX_LENGTH
         issues << Issue.new(:caption, :too_long, max_length: CAPTION_MAX_LENGTH, filename: image.filename)
       end
 
