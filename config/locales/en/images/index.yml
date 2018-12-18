@@ -4,11 +4,12 @@ en:
       title: "Images for ‘%{title}’"
       description_govspeak: Images can be jpg, png or gif files. Full [guidance on images](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/images-and-videos).
       upload_image: Upload an image
-      alt_text: Alt text
-      caption: Image caption
-      credit: Image credit
       lead_image: Lead image
       other_images: Other images
+      meta:
+        alt_text: Alt text
+        caption: Caption
+        credit: Credit
       flashes:
         upload_requirements: You need to
         cropped: "Image ‘%{file}’ has been cropped"

@@ -1,4 +1,5 @@
 <% lead_image = @document.current_edition.lead_image_revision %>
+
 <% if lead_image %>
   <h2 class="govuk-heading-m">
     <%= t("images.index.lead_image") %>
@@ -23,13 +24,23 @@
   <% end %>
 
   <%= render "components/image_meta", {
-    id: "image-#{lead_image.image_id}",
+    id: "image-#{lead_image.id}",
     src: url_for(lead_image.thumbnail),
-    meta: {
-      alt_text: lead_image.alt_text,
-      caption: lead_image.caption,
-      credit: lead_image.credit
-    },
-    actions: actions
+    alt_text: lead_image.alt_text,
+    actions: actions,
+    metadata_items: [
+      {
+        field: t("images.index.meta.alt_text"),
+        value: lead_image.alt_text,
+      },
+      {
+        field: t("images.index.meta.caption"),
+        value: lead_image.caption,
+      },
+      {
+        field: t("images.index.meta.credit"),
+        value: lead_image.credit,
+      }
+    ]
   } %>
 <% end %>

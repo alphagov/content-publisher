@@ -26,13 +26,22 @@
     <%= render "components/image_meta", {
       id: "image-#{image.image_id}",
       src: url_for(image.thumbnail),
-      no_border: i == images.length - 1,
-      meta: {
-        alt_text: image.alt_text,
-        caption: image.caption,
-        credit: image.credit
-      },
-      actions: actions
+      alt_text: image.alt_text,
+      actions: actions,
+      metadata_items: [
+        {
+          field: t("images.index.meta.alt_text"),
+          value: image.alt_text,
+        },
+        {
+          field: t("images.index.meta.caption"),
+          value: image.caption,
+        },
+        {
+          field: t("images.index.meta.credit"),
+          value: image.credit,
+        }
+      ]
     } %>
   <% end %>
 <% end %>
