@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Publishing requirements" do
+RSpec.feature "Publish requirements" do
   include TopicsHelper
 
   scenario do

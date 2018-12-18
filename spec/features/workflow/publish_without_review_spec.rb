@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Force publishing" do
+RSpec.feature "Publish without review" do
   scenario do
     given_there_is_a_document
     when_i_visit_the_document_page
@@ -8,7 +8,7 @@ RSpec.feature "Force publishing" do
     then_i_see_the_publish_succeeded
 
     when_i_visit_the_document_page
-    then_i_see_it_was_force_published
+    then_i_see_it_has_not_been_reviewed
 
     when_i_click_the_approve_button
     then_i_see_that_its_reviewed
@@ -33,7 +33,7 @@ RSpec.feature "Force publishing" do
     expect(page).to have_content(I18n.t!("publish.published.published_without_review.title"))
   end
 
-  def then_i_see_it_was_force_published
+  def then_i_see_it_has_not_been_reviewed
     expect(page).to have_content I18n.t!("user_facing_states.published_but_needs_2i.name")
 
     within find(".app-timeline-entry:first") do

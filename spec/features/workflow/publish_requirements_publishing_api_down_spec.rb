@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Publishing requirements when the Publishing API is down" do
+RSpec.feature "Publish requirements when the Publishing API is down" do
   include TopicsHelper
 
   scenario do
