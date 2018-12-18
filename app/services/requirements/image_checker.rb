@@ -4,6 +4,7 @@ module Requirements
   class ImageChecker
     ALT_TEXT_MAX_LENGTH = 125
     CAPTION_MAX_LENGTH = 160
+    CREDIT_MAX_LENGTH = 160
 
     attr_reader :image
 
@@ -24,6 +25,10 @@ module Requirements
 
       if @image.caption.to_s.length > CAPTION_MAX_LENGTH
         issues << Issue.new(:caption, :too_long, max_length: CAPTION_MAX_LENGTH, filename: image.filename)
+      end
+
+      if image.credit.to_s.length > CREDIT_MAX_LENGTH
+        issues << Issue.new(:credit, :too_long, max_length: CREDIT_MAX_LENGTH, filename: image.filename)
       end
 
       CheckerIssues.new(issues)

@@ -46,6 +46,10 @@ en:
       too_long:
         form_message: "Enter an image caption that is fewer than %{max_length} characters long"
         summary_message: "Enter a shorter caption for ‘%{filename}’"
+    credit:
+      too_long:
+        form_message: "Enter an image credit that is fewer than %{max_length} characters long"
+        summary_message: "Enter a shorter credit for ‘%{filename}’"
     image_upload:
       no_file:
         form_message: Select a file to upload

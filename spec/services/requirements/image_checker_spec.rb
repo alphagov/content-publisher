@@ -42,5 +42,17 @@ RSpec.describe Requirements::ImageChecker do
       summary_message = issues.items_for(:caption, style: "summary").first[:text]
       expect(summary_message).to eq(I18n.t!("requirements.caption.too_long.summary_message", max_length: max_length, filename: image.filename))
     end
+
+    it "returns an issue if the credit is too long" do
+      max_length = Requirements::ImageChecker::CREDIT_MAX_LENGTH
+      image = build(:image, credit: "a" * (max_length + 1))
+      issues = Requirements::ImageChecker.new(image).pre_preview_issues
+
+      form_message = issues.items_for(:credit).first[:text]
+      expect(form_message).to eq(I18n.t!("requirements.credit.too_long.form_message", max_length: max_length))
+
+      summary_message = issues.items_for(:credit, style: "summary").first[:text]
+      expect(summary_message).to eq(I18n.t!("requirements.credit.too_long.summary_message", max_length: max_length, filename: image.filename))
+    end
   end
 end
