@@ -10,6 +10,9 @@ en:
         alt_text: Alt text
         caption: Caption
         credit: Credit
+        snippet:
+          label: Markdown code
+          value: "[Image:%{file}]"
       flashes:
         upload_requirements: You need to
         cropped: "Image ‘%{file}’ has been cropped"

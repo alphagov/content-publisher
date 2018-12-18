@@ -5,7 +5,7 @@ RSpec.feature "Upload an inline image" do
     given_there_is_a_document
     when_i_visit_the_images_page
     and_i_upload_a_new_image
-    then_it_has_a_normalised_filename
+    then_i_see_it_has_a_snippet
   end
 
   def given_there_is_a_document
@@ -23,7 +23,8 @@ RSpec.feature "Upload an inline image" do
     click_on "Upload"
   end
 
-  def then_it_has_a_normalised_filename
-    expect(Image.last.filename).to eq "bad-name.jpg"
+  def then_i_see_it_has_a_snippet
+    visit images_path(@document)
+    expect(page).to have_content("[Image:bad-name.jpg]")
   end
 end

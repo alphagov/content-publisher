@@ -28,25 +28,36 @@
       <% end %>
     <% end %>
 
+    <% metadata_items = [
+      {
+        field: t("images.index.meta.alt_text"),
+        value: image.alt_text,
+      },
+      {
+        field: t("images.index.meta.caption"),
+        value: image.caption,
+      },
+      {
+        field: t("images.index.meta.credit"),
+        value: image.credit,
+      },
+    ] %>
+
+    <% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <% metadata_items <<
+        {
+          field: t("images.index.meta.snippet.label"),
+          value: t("images.index.meta.snippet.value", file: image.filename),
+        }
+      %>
+    <% end %>
+
     <%= render "components/image_meta", {
       id: "image-#{image.id}",
       src: url_for(image.thumbnail),
       alt_text: image.alt_text,
       actions: actions,
-      metadata_items: [
-        {
-          field: t("images.index.meta.alt_text"),
-          value: image.alt_text,
-        },
-        {
-          field: t("images.index.meta.caption"),
-          value: image.caption,
-        },
-        {
-          field: t("images.index.meta.credit"),
-          value: image.credit,
-        }
-      ]
+      metadata_items: metadata_items,
     } %>
   <% end %>
 <% end %>
