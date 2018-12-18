@@ -14,7 +14,7 @@ RSpec.feature "Publishing a document when Asset Manager is down" do
   def given_there_is_a_document_with_a_lead_image
     @image = create(:image, :in_preview)
     document = create(:document, :publishable, lead_image: @image)
-    @image.update(document: document)
+    @image.update!(document: document)
   end
 
   def and_asset_manager_is_down

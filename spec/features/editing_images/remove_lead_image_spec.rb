@@ -12,7 +12,7 @@ RSpec.feature "Remove a lead image" do
     document_type = build(:document_type, lead_image: true)
     document = create(:document, document_type_id: document_type.id)
     @image = create(:image, :in_preview, document: document)
-    document.update(lead_image: @image)
+    document.update!(lead_image: @image)
   end
 
   def when_i_visit_the_images_page

@@ -13,6 +13,7 @@ class PathGeneratorService
     slug = proposed_title.parameterize
     base_path = create_path(prefix, slug)
     return base_path unless document_exists_with_path?(base_path, document)
+
     find_a_unique_path(document, prefix, slug)
   end
 
