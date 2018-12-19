@@ -14,7 +14,7 @@ if ($autocompletes) {
     new window.accessibleAutocomplete.enhanceSelectElement({ // eslint-disable-line no-new, new-cap
       selectElement: $el,
       minLength: 3,
-      showNoOptionsFound: false,
+      showNoOptionsFound: true,
       customAttributes: customAttributes
     })
   })
