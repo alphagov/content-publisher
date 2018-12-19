@@ -15,9 +15,7 @@
 
       <%= delete_draft_link unless @document.has_live_version_on_govuk %>
     <% elsif @document.publication_state == "error_sending_to_draft" %>
-      <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("documents.show.sidebar.error_creating_preview_govspeak") %>
-      <% end %>
+      <%= render_govspeak(t("documents.show.sidebar.error_creating_preview_govspeak")) %>
 
       <%= form_tag create_preview_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Try again" %>
@@ -25,17 +23,13 @@
 
       <%= delete_draft_link unless @document.has_live_version_on_govuk %>
     <% elsif @document.publication_state == "error_deleting_draft" %>
-      <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("documents.show.sidebar.error_deleting_draft_govspeak") %>
-      <% end %>
+      <%= render_govspeak(t("documents.show.sidebar.error_deleting_draft_govspeak")) %>
 
       <%= form_tag document_path(@document), method: :delete do %>
         <%= render "govuk_publishing_components/components/button", text: "Try again" %>
       <% end %>
     <% elsif @document.publication_state == "error_sending_to_live" %>
-      <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("documents.show.sidebar.error_publishing_live_govspeak") %>
-      <% end %>
+      <%= render_govspeak(t("documents.show.sidebar.error_publishing_live_govspeak")) %>
 
       <%= render "govuk_publishing_components/components/button", text: "Retry publishing", href: publish_confirmation_path(@document) %>
     <% elsif @document.user_facing_state == "published_but_needs_2i" %>

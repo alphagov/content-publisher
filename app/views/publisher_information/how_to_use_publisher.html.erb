@@ -4,11 +4,7 @@
   <div class="govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-l page-title"><%= t("publisher_information.how_to_use_publisher.title") %></h1>
 
-    <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html File.read("app/views/publisher_information/how_to_use_publisher.govspeak.md") %>
-    <% end %>
-    <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html File.read("app/views/publisher_information/request_feature.govspeak.md") %>
-    <% end %>
+    <%= render_govspeak(File.read("app/views/publisher_information/how_to_use_publisher.govspeak.md")) %>
+    <%= render_govspeak(File.read("app/views/publisher_information/request_feature.govspeak.md")) %>
   </div>
 </div>

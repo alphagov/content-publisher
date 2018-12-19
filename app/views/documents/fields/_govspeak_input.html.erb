@@ -27,9 +27,7 @@
         title: document.document_type.guidance_for(field.id).title,
         relative: true
       } do %>
-        <%= render "govuk_publishing_components/components/govspeak" do %>
-          <%= govspeak_to_html document.document_type.guidance_for(field.id).body_govspeak %>
-        <% end %>
+        <%= render_govspeak(document.document_type.guidance_for(field.id).body_govspeak) %>
 
         <h3 class="govuk-heading-s"><%= t("documents.edit.fields.govspeak.title") %></h3>
 

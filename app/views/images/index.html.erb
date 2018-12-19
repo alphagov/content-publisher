@@ -24,9 +24,7 @@
           name: "image"
         } %>
 
-        <%= render "govuk_publishing_components/components/govspeak" do %>
-          <%= govspeak_to_html t("images.index.description_govspeak") %>
-        <% end %>
+        <%= render_govspeak(t("images.index.description_govspeak")) %>
 
         <%= render "govuk_publishing_components/components/button", {
           text: "Upload"

@@ -37,9 +37,7 @@
         id: "alt-text-guidance",
         title: t("images.edit.form_labels.alt_text"),
       } do %>
-        <%= render "govuk_publishing_components/components/govspeak" do %>
-          <%= govspeak_to_html t("images.edit.guidance.alt_text_govspeak") %>
-        <% end %>
+        <%= render_govspeak(t("images.edit.guidance.alt_text_govspeak")) %>
       <% end %>
     </div>
   </div>
@@ -65,9 +63,7 @@
         id: "caption-guidance",
         title: t("images.edit.form_labels.caption"),
       } do %>
-        <%= render "govuk_publishing_components/components/govspeak" do %>
-          <%= govspeak_to_html t("images.edit.guidance.caption_govspeak") %>
-        <% end %>
+        <%= render_govspeak(t("images.edit.guidance.caption_govspeak")) %>
       <% end %>
     </div>
   </div>
@@ -93,9 +89,7 @@
         title: t("images.edit.form_labels.credit"),
         relative: true
       } do %>
-        <%= render "govuk_publishing_components/components/govspeak" do %>
-          <%= govspeak_to_html t("images.edit.guidance.credit_govspeak") %>
-        <% end %>
+        <%= render_govspeak(t("images.edit.guidance.credit_govspeak")) %>
       <% end %>
     </div>
   </div>

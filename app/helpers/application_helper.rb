@@ -9,6 +9,12 @@ module ApplicationHelper
     render("govuk_publishing_components/components/back_link", options)
   end
 
+  def render_govspeak(content)
+    render "govuk_publishing_components/components/govspeak" do
+      govspeak_to_html(content)
+    end
+  end
+
   def strip_scheme_from_url(url)
     url.sub(/^https?\:\/\//, "")
   end
