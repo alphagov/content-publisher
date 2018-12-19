@@ -8,13 +8,11 @@ describe('GTM dataLayer messages for copy and paste events', function () {
 
   beforeEach(function () {
     container = document.createElement('div')
-    container.innerHTML =
-      '<form id="testForm">' +
-        '<input id="textInput" type="text" name="copy" value="the text">' +
-      '</form>'
+    container.innerHTML = '<input id="textInput" type="text" name="copy" value="the text">'
+    container.dataset.module = 'copy-to-clipboard'
     document.body.appendChild(container)
     window.dataLayer = []
-    new GTMCopyListener().init()
+    new GTMCopyListener(container).init()
   })
 
   afterEach(function () {
@@ -24,15 +22,12 @@ describe('GTM dataLayer messages for copy and paste events', function () {
   it('should push to the dataLayer on copy', function () {
     var input = document.getElementById('textInput')
     input.select()
-    if (!document.queryCommandEnabled('copy')) {
-      document.dispatchEvent(new Event('copy'))
-    }
-
-    document.execCommand('copy')
+    container.dispatchEvent(new Event('copy'))
 
     expect(window.dataLayer).toContain(
       {
-        'event': 'text-copied'
+        'event': 'text-copied',
+        'component': 'copy-to-clipboard'
       }
     )
   })
@@ -40,15 +35,12 @@ describe('GTM dataLayer messages for copy and paste events', function () {
   it('should push to the dataLayer on paste', function () {
     var input = document.getElementById('textInput')
     input.select()
-    if (!document.queryCommandEnabled('paste')) {
-      document.dispatchEvent(new Event('paste'))
-    }
-
-    document.execCommand('paste')
+    container.dispatchEvent(new Event('paste'))
 
     expect(window.dataLayer).toContain(
       {
-        'event': 'text-pasted'
+        'event': 'text-pasted',
+        'component': 'copy-to-clipboard'
       }
     )
   })

@@ -1,25 +1,35 @@
-function GTMCopyListener () { }
+function GTMCopyListener ($module, dataLayer) {
+  this.$module = $module
+  this.dataLayer = dataLayer || window.dataLayer
+}
 
-GTMCopyListener.prototype.handleCopyEvent = function () {
-  window.dataLayer.push({
-    'event': 'text-copied'
+GTMCopyListener.prototype.handleCopyEvent = function (component) {
+  this.dataLayer.push({
+    'event': 'text-copied',
+    'component': component
   })
 }
 
-GTMCopyListener.prototype.handlePasteEvent = function () {
-  window.dataLayer.push({
-    'event': 'text-pasted'
+GTMCopyListener.prototype.handlePasteEvent = function (component) {
+  this.dataLayer.push({
+    'event': 'text-pasted',
+    'component': component
   })
 }
 
 GTMCopyListener.prototype.init = function () {
-  document.addEventListener('copy', function (e) {
-    this.handleCopyEvent(e)
+  var $module = this.$module
+  var moduleName = this.$module.dataset.module
+  $module.addEventListener('copy', function (e) {
+    this.handleCopyEvent(moduleName)
   }.bind(this), false)
 
-  document.addEventListener('paste', function (e) {
-    this.handlePasteEvent(e)
+  $module.addEventListener('paste', function (e) {
+    this.handlePasteEvent(moduleName)
   }.bind(this), false)
 }
 
-new GTMCopyListener().init()
+var $trackedComponents = document.querySelectorAll('[data-module="markdown-editor"], [data-module="copy-to-clipboard"]')
+$trackedComponents.forEach(function ($component) {
+  new GTMCopyListener($component).init()
+})
