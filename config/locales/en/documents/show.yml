@@ -77,7 +77,7 @@ en:
           added: "Image ‘%{file}’ has been uploaded and selected as the lead image"
           chosen: "Image ‘%{file}’ has been selected as the lead image"
           removed: "Image ‘%{file}’ has been deselected. Document will now use the default lead image"
-          deleted: "Image ‘%{file}’ has been deleted. Document wil now use the default lead image"
+          deleted: "Image ‘%{file}’ has been deleted. Document will now use the default lead image"
         topics_updated: Topics updated on all editions
         topic_update_error:
           title: Something has gone wrong
