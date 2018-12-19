@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :tag_field, class: Hash do
+  factory :tag_field, class: DocumentType::TagField do
     id { SecureRandom.hex(4) }
     document_type { SecureRandom.alphanumeric(8) }
-    initialize_with { attributes.stringify_keys }
+    initialize_with { new(attributes) }
   end
 end
