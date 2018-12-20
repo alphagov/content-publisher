@@ -16,6 +16,11 @@ module Versioning
                foreign_key: :lead_image_id
     # rubocop:enable Rails/InverseOf
 
+    belongs_to :document,
+               class_name: "Versioning::Document",
+               foreign_key: :document_id,
+               inverse_of: :revisions
+
     has_many :current_for_editions,
              class_name: "Versioning::Edition",
              foreign_key: :current_revision_id,
