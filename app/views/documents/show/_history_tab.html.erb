@@ -2,6 +2,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <%= tag.h2 t("documents.show.tabs.history"), class:"govuk-heading-m app-timeline-heading" %>
     <% @document.timeline_entries.includes(:user).order(created_at: :desc).includes(:retirement, :removal, :internal_note).each do |entry| %>
       <div class="app-timeline-entry govuk-!-margin-bottom-6">
         <% if displayed_edition_number != entry.edition_number %>
