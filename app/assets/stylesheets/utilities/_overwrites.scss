@@ -70,8 +70,12 @@
 
 .gem-c-phase-banner {
   .gem-c-phase-banner__banner-item {
-    display: inline-block;
+    display: none;
     margin-right: govuk-spacing(4);
+
+    @include govuk-media-query($from: desktop) {
+      display: inline-block;
+    }
   }
 
   .govuk-link {
