@@ -26,5 +26,16 @@ module Versioning
                             join_table: "versioned_edition_revisions"
 
     delegate_missing_to :current_revision
+
+    def self.create_initial(document, user = nil)
+      revision = Revision.create!(created_by: user, document: document)
+
+      create!(created_by: user,
+              current: true,
+              current_revision: revision,
+              document: document,
+              number: document.next_edition_number,
+              last_edited_at: Time.zone.now)
+    end
   end
 end

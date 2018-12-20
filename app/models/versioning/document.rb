@@ -39,6 +39,21 @@ module Versioning
       Document.find_by!(content_id: content_id, locale: locale)
     end
 
+    def self.create_initial(content_id: SecureRandom.uuid,
+                          document_type_id:,
+                          locale: "en",
+                          user: nil)
+      transaction do
+        document = create!(content_id: content_id,
+                           locale: locale,
+                           document_type_id: document_type_id,
+                           created_by: user,
+                           last_edited_at: Time.zone.now)
+
+        document.tap { |d| Edition.create_initial(d, user) }
+      end
+    end
+
     def next_edition_number
       (editions.maximum(:number) || 0) + 1
     end
