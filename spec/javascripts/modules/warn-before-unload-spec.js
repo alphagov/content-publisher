@@ -1,5 +1,5 @@
 /* global describe beforeEach afterEach it spyOn expect */
-/* global WarnBeforeUnload */
+/* global WarnBeforeUnload Event */
 
 describe('Warn before unload module', function () {
   'use strict'
@@ -24,7 +24,7 @@ describe('Warn before unload module', function () {
   })
 
   it('should set a before unload event when the form changes', function () {
-    spyOn(window, 'addEventListener');
+    spyOn(window, 'addEventListener')
     var input = container.querySelector('input')
     input.dispatchEvent(new Event('change', { bubbles: true }))
     expect(window.addEventListener)
@@ -32,7 +32,7 @@ describe('Warn before unload module', function () {
   })
 
   it('should remove the before unload event when the form is submitted', function () {
-    spyOn(window, 'removeEventListener');
+    spyOn(window, 'removeEventListener')
     var form = container.querySelector('form')
     form.dispatchEvent(new Event('submit'))
     expect(window.removeEventListener)

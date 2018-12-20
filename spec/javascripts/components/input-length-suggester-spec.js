@@ -1,5 +1,5 @@
 /* global describe beforeEach afterEach it expect */
-/* global InputLengthSuggester */
+/* global InputLengthSuggester Event */
 
 describe('Input length suggester component', function () {
   'use strict'

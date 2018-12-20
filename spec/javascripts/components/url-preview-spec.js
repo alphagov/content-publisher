@@ -1,5 +1,5 @@
 /* global describe beforeEach afterEach it expect */
-/* global UrlPreview */
+/* global UrlPreview Event */
 
 describe('URL preview component', function () {
   'use strict'
