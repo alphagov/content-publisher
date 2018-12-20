@@ -62,8 +62,6 @@
       <%= link_to "Remove", remove_path(@document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @document.user_facing_state == "retired" && !current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)%>
       <%= link_to "Update reason for retiring", retire_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
-    <% elsif @document.user_facing_state == "retired" && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-      <%= link_to "Change public explanation", withdraw_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
     <% elsif @document.user_facing_state == "removed" %>
       <%= form_tag create_edition_path(@document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>

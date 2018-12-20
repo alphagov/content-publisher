@@ -45,11 +45,17 @@ RSpec.feature "Withdraw a document" do
 
   def then_i_see_the_document_has_been_withdrawn
     timeline_entry = TimelineEntry.last
+    document_type = Document.last.document_type.label.downcase
+    retirement = Retirement.last
     expect(timeline_entry.entry_type).to eq("retired")
     expect(timeline_entry.document_id).to eq(@document.id)
     expect(timeline_entry.retirement.explanatory_note).to eq("An explanation")
     expect(@document.reload.live_state).to eq("retired")
     expect(page).to have_content(I18n.t!("user_facing_states.retired.name"))
+    expect(page).to have_content(I18n.t!("documents.show.withdrawn.title",
+                                         document_type: document_type,
+                                         withdrawn_date: retirement.created_at.strftime("%d %B %Y")))
+    expect(page).to have_content(timeline_entry.retirement.explanatory_note)
   end
 
   def when_i_click_to_change_the_public_explanation

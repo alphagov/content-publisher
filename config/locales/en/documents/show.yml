@@ -8,6 +8,8 @@ en:
       tabs:
         summary: Document summary
         history: Document history
+      withdrawn:
+        title: "This %{document_type} was withdrawn on %{withdrawn_date}"
       topics:
         title: Topics
         no_topics: No topics.

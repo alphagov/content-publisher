@@ -3,7 +3,9 @@
     <% if flash[:submitted_for_review] %>
       <%= render "documents/show/submitted_for_review" %>
     <% end %>
-
+    <% if @document.user_facing_state == "retired" && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <%= render "documents/show/withdrawn_notice" %>
+    <% end %>
     <%= render "documents/show/requirements" %>
     <%= render "documents/show/contents" %>
 
