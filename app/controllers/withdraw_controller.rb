@@ -4,6 +4,11 @@ class WithdrawController < ApplicationController
   def create
     @document = Document.find_by_param(params[:id])
     @public_explanation = @document.retirement&.explanatory_note || params[:public_explanation]
+    if current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
+      render :create
+    else
+      render :non_managing_editor
+    end
   end
 
   def new

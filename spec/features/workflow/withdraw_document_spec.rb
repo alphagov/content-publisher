@@ -3,6 +3,7 @@
 RSpec.feature "Withdraw a document" do
   scenario do
     given_there_is_a_published_document
+    given_i_have_the_managing_editor_permission
     when_i_visit_the_document_page
     and_i_click_on_withdraw
     then_i_see_that_i_can_withdraw_the_document
@@ -21,6 +22,12 @@ RSpec.feature "Withdraw a document" do
 
   def when_i_visit_the_document_page
     visit document_path(@document)
+  end
+
+  def given_i_have_the_managing_editor_permission
+    user = User.first
+    user.update_attribute(:permissions,
+                          user.permissions + [User::MANAGING_EDITOR_PERMISSION])
   end
 
   def and_i_click_on_withdraw

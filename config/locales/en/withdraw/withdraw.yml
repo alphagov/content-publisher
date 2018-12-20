@@ -12,3 +12,9 @@ en:
         [Full guidance on withdrawing content](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/unpublishing-and-archiving)
       flashes:
         requirements: You need to
+    no_managing_editor_permission:
+      title: Only a managing editor can remove or withdraw a live page
+      content: |
+        If you think this content is not relevant anymore or that it shouldn’t be on GOV.UK, speak to the managing editor for your organisation.
+
+        Read the [full guidance on removing (unpublishing) and withdrawing content](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/unpublishing-and-archiving)).
