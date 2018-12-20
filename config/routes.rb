@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 
   get "/documents/:id/withdraw" => "withdraw#create", as: :withdraw
   post "/documents/:id/withdraw" => "withdraw#new", as: :new_withdrawal
+  get "/documents/:id/unwithdraw" => "unwithdraw#index", as: :unwithdraw
   get "/documents/:id/retire" => "unpublish#retire", as: :legacy_retire
   get "/documents/:id/remove" => "unpublish#remove", as: :remove
 
