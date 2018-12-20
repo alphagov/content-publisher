@@ -58,6 +58,10 @@ module Versioning
       (editions.maximum(:number) || 0) + 1
     end
 
+    def to_param
+      content_id + ":" + locale
+    end
+
     def document_type
       DocumentType.find(document_type_id)
     end
