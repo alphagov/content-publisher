@@ -15,7 +15,7 @@ namespace :versioning do
       revision = create_revision({ title: "Initial title" }, document, user)
 
       current_edition = create_edition(
-        { number: 1, document: document, current: true },
+        { number: document.next_edition_number, document: document, current: true },
         revision,
         user,
       )
@@ -32,7 +32,8 @@ namespace :versioning do
   def create_revision(data, document, user, previous_revision = nil, image_ids = nil)
     revision = previous_revision&.dup || Versioning::Revision.new
     revision.tap do |r|
-      r.assign_attributes(data.merge(created_by: user))
+      preset_data = { created_by: user, document: document }
+      r.assign_attributes(data.merge(preset_data))
       r.document = document
       r.image_ids = image_ids || previous_revision&.image_ids || []
       r.save!
