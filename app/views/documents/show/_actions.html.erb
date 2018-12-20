@@ -83,7 +83,7 @@
       <%= delete_draft_link("app-link--right") unless @document.has_live_version_on_govuk %>
     <% end %>
 
-    <% if @document.has_live_version_on_govuk? %>
+    <% if @document.has_live_version_on_govuk? && @document.user_facing_state != "retired" %>
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
       <%= link_to "View published edition on GOV.UK", DocumentUrl.new(@document).public_url, class: "govuk-link govuk-link--no-visited-state" %>
     <% end %>
