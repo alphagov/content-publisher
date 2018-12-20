@@ -39,6 +39,10 @@ module Versioning
       Document.find_by!(content_id: content_id, locale: locale)
     end
 
+    def next_edition_number
+      (editions.maximum(:number) || 0) + 1
+    end
+
     def document_type
       DocumentType.find(document_type_id)
     end
