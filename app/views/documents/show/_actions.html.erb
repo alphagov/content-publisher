@@ -48,6 +48,11 @@
       <% end %>
 
       <%= delete_draft_link %>
+    <% elsif @edition.withdrawn? %>
+      <%= render "govuk_publishing_components/components/button",
+                 text: "Undo withdrawal",
+                 data_attributes: { gtm: "undo-withdraw" },
+                 href: unwithdraw_path(@document) %>
     <% else %>
       <%= form_tag submit_document_for_2i_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
