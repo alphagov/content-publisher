@@ -444,6 +444,7 @@ DEPENDENCIES
   pg (~> 1)
   plek (~> 2)
   rails (~> 5.2)
+  rinku (~> 2)
   rspec-rails (~> 3)
   simplecov (~> 0.16)
   uglifier (~> 4)

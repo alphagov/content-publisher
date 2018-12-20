@@ -18,6 +18,7 @@ gem "kaminari", "~> 1"
 gem "paper_trail", "~> 10.1"
 gem "pg", "~> 1"
 gem "plek", "~> 2"
+gem "rinku", "~> 2"
 gem "uglifier", "~> 4"
 
 group :development do

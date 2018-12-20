@@ -3,8 +3,10 @@
 class TimelineEntry < ApplicationRecord
   belongs_to :document
   belongs_to :user, optional: true
+
   has_one :retirement, foreign_key: :timeline_entries_id, dependent: :destroy, inverse_of: :timeline_entry
   has_one :removal, foreign_key: :timeline_entries_id, dependent: :destroy, inverse_of: :timeline_entry
+  has_one :internal_note, foreign_key: :timeline_entries_id, dependent: :destroy, inverse_of: :timeline_entry
 
   ENTRY_TYPES = %w[
     created
@@ -22,6 +24,7 @@ class TimelineEntry < ApplicationRecord
     create_preview
     retired
     removed
+    internal_note
   ].freeze
 
   validates_inclusion_of :entry_type, in: ENTRY_TYPES
