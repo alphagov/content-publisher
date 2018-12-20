@@ -25,6 +25,10 @@ module Versioning
              class_name: "Versioning::Edition",
              dependent: :restrict_with_exception
 
+    has_many :revisions,
+             class_name: "Versioning::Revision",
+             dependent: :restrict_with_exception
+
     delegate :topics, to: :document_topics
 
     delegate :title, :base_path, to: :current_edition, allow_nil: true, prefix: true
