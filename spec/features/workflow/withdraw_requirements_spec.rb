@@ -3,6 +3,7 @@
 RSpec.feature "Withdrawal document requirements" do
   scenario do
     given_there_is_a_published_edition
+    and_i_have_the_managing_editor_permission
     when_i_visit_the_document_withdrawal_page
     and_i_click_withdraw_document
     then_i_see_an_error_to_enter_an_public_explanation
@@ -10,6 +11,12 @@ RSpec.feature "Withdrawal document requirements" do
 
   def given_there_is_a_published_edition
     @edition = create(:edition, :published)
+  end
+
+  def and_i_have_the_managing_editor_permission
+    user = User.first
+    user.update_attribute(:permissions,
+                          user.permissions + [User::MANAGING_EDITOR_PERMISSION])
   end
 
   def when_i_visit_the_document_withdrawal_page

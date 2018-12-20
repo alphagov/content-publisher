@@ -6,6 +6,12 @@ class WithdrawController < ApplicationController
     edition = @document.current_edition
     @public_explanation =
       edition.withdrawn? ? edition.status.details.public_explanation : nil
+
+    if current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
+      render :new
+    else
+      render :non_managing_editor, status: :forbidden
+    end
   end
 
   def create
