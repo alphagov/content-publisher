@@ -247,11 +247,8 @@
       this.parent = parent;
       this.children = Topic.fromList(childList, this);
 
-      if (!this.children.length && this.checkbox.checked) {
-        this.selected = true;
-        if (this.parent) {
-          this.parent.childWasSelected();
-        }
+      if (this.checkbox.checked) {
+        this.select();
       } else {
         this.selected = false;
       }
