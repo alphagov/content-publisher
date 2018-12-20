@@ -41,6 +41,13 @@ RSpec.feature "Withdraw a document" do
   end
 
   def then_i_see_the_document_has_been_withdrawn
+    withdrawal = Withdrawal.last
+    document_type = @edition.document.document_type.label.downcase
+
     expect(page).to have_content(I18n.t!("user_facing_states.withdrawn.name"))
+    expect(page).to have_content(I18n.t!("documents.show.withdrawn.title",
+                                         document_type: document_type,
+                                         withdrawn_date: withdrawal.created_at.strftime("%d %B %Y")))
+    expect(page).to have_content(@explanation)
   end
 end
