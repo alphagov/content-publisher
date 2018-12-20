@@ -59,3 +59,8 @@ en:
         form_message: "Select an image file under %{max_size} in size"
       too_small:
         form_message: "Select an image at least %{width} pixels wide by %{height} pixels high"
+    public_explanation:
+      too_long:
+        form_message: "Enter a public explanation that is fewer than %{max_length} characters long"
+      blank:
+        form_message: Enter a public explanation
