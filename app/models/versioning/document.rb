@@ -36,7 +36,7 @@ module Versioning
 
     def self.find_by_param(content_id_and_locale)
       content_id, locale = content_id_and_locale.split(":")
-      Document.find_by!(content_id: content_id, locale: locale)
+      find_by!(content_id: content_id, locale: locale)
     end
 
     def self.create_initial(content_id: SecureRandom.uuid,
