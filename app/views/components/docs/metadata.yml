@@ -7,6 +7,9 @@ accessibility_criteria: |
 examples:
   default:
     data:
+      data_attributes:
+        gtm-document-type: "News story"
+        gtm-document-status: "Draft"
       items:
       - field: "Status"
         value: "Saved as draft"

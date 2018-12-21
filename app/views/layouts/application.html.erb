@@ -6,8 +6,7 @@
 
   <script>
     var dataLayer = [{ 'dimension1': '<%= current_user.organisation_slug %>' }];
-    dataLayer.push({ 'gtm.blacklist' : ['html', 'customScripts', 'nonGoogleScripts', 'customPixels']});
-<%= yield(:data_layer_js) %>
+    dataLayer.push({ 'gtm.blacklist': ['html', 'customScripts', 'nonGoogleScripts', 'customPixels'] });
   </script>
   <% if ENV["GOOGLE_TAG_MANAGER_ID"] %>
     <%= render "govuk_publishing_components/components/google_tag_manager_script", {

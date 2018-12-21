@@ -1,12 +1,6 @@
 <% content_for :back_link, render_back_link(href: documents_path) %>
 <% content_for :title, @document.title_or_fallback %>
 <% content_for :context, @document.document_type.label %>
-<% content_for :data_layer_js do %>
-  dataLayer.push({
-    "document-type": "<%= @document.document_type.label %>",
-    "document-status": "<%= t("user_facing_states.#{@document.user_facing_state}.name") %>"
-  })
-<% end %>
 
 <%= render "govuk_publishing_components/components/tabs", {
   panel_border: false,
