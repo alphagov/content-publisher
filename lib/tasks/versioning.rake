@@ -10,7 +10,8 @@ namespace :versioning do
       document = Versioning::Document.create!(content_id: content_id,
                                               locale: "en",
                                               created_by: user,
-                                              document_type_id: "news_story")
+                                              document_type_id: "news_story",
+                                              last_edited_by: user)
 
       revision = create_revision({ title: "Initial title" }, document, user)
 
@@ -34,22 +35,21 @@ namespace :versioning do
     revision.tap do |r|
       preset_data = { created_by: user, document: document }
       r.assign_attributes(data.merge(preset_data))
-      r.document = document
       r.image_ids = image_ids || previous_revision&.image_ids || []
       r.save!
     end
   end
 
   def create_edition(data, revision, user)
-    Versioning::Edition.new.tap do |edition|
-      edition.update!(
-        data.merge(current_revision: revision, created_by: user),
-      )
-    end
+    data = data.merge(current_revision: revision, created_by: user, last_edited_by: user)
+    Versioning::Edition.create!(data)
   end
 
   def update_edition_revision(edition, revision)
-    edition.tap { |e| e.update!(current_revision: revision) }
+    edition.tap do |e|
+      e.update!(current_revision: revision)
+      e.update_last_edited_at(revision.created_by)
+    end
   end
 
   def create_image(filename)
