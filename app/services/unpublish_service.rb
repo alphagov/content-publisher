@@ -5,7 +5,7 @@ class UnpublishService
     Document.transaction do
       document.update!(live_state: "retired")
       timeline_entry = TimelineEntry.create!(document: document, entry_type: "retired", user: user)
-      Retirement.create!(timeline_entry: timeline_entry, explanatory_note: explanatory_note)
+      Retirement.create!(timeline_entry: timeline_entry, explanatory_note: explanatory_note, document: document)
 
       GdsApi.publishing_api_v2.unpublish(
         document.content_id,

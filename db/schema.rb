@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_14_112140) do
+ActiveRecord::Schema.define(version: 2018_12_21_114444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,16 +44,16 @@ ActiveRecord::Schema.define(version: 2018_12_14_112140) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "contents", default: {}
-    t.string "base_path"
     t.text "summary"
+    t.string "base_path"
     t.json "tags", default: {}
     t.string "publication_state", null: false
     t.bigint "creator_id"
     t.string "review_state", null: false
-    t.bigint "lead_image_id"
     t.boolean "has_live_version_on_govuk", default: false, null: false
     t.text "change_note"
     t.string "update_type"
+    t.bigint "lead_image_id"
     t.integer "current_edition_number", null: false
     t.bigint "last_editor_id"
     t.string "live_state"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2018_12_14_112140) do
     t.bigint "timeline_entries_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "document_id"
     t.index ["timeline_entries_id"], name: "index_retirements_on_timeline_entries_id"
   end
 
@@ -160,6 +161,7 @@ ActiveRecord::Schema.define(version: 2018_12_14_112140) do
   add_foreign_key "internal_notes", "timeline_entries", column: "timeline_entries_id"
   add_foreign_key "internal_notes", "users", on_delete: :nullify
   add_foreign_key "removals", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
+  add_foreign_key "retirements", "documents"
   add_foreign_key "retirements", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
   add_foreign_key "timeline_entries", "documents", on_delete: :cascade
   add_foreign_key "timeline_entries", "users", on_delete: :nullify

@@ -60,7 +60,7 @@ RSpec.feature "Managing editor permissions" do
   def given_there_is_a_withdrawn_document
     document = create(:document, :retired)
     timeline_entry = create(:timeline_entry, entry_type: "retired", document_id: document.id)
-    create(:retirement, timeline_entry: timeline_entry)
+    create(:retirement, timeline_entry: timeline_entry, document: document)
   end
 
   def and_i_visit_the_withdrawn_document_page

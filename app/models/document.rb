@@ -6,6 +6,7 @@ class Document < ApplicationRecord
   has_many :images, dependent: :destroy
   has_many :timeline_entries, dependent: :destroy
   has_many :internal_notes, dependent: :destroy
+  has_many :retirements, dependent: :destroy
 
   belongs_to :lead_image, class_name: "Image", optional: true, foreign_key: :lead_image_id, inverse_of: :document
   belongs_to :creator, class_name: "User", optional: true, foreign_key: :creator_id, inverse_of: :documents
@@ -75,7 +76,7 @@ class Document < ApplicationRecord
   end
 
   def retirement
-    self.timeline_entries.where(entry_type: "retired").order(:created_at).last&.retirement
+    @retirement ||= self.retirements.order(:created_at).last
   end
 
   def withdrawn_by
