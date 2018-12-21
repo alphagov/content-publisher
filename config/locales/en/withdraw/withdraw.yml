@@ -1,0 +1,4 @@
+en:
+  withdraw_document:
+    withdraw:
+      title: "Withdraw '%{title}'"
