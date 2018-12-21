@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_21_225919) do
+ActiveRecord::Schema.define(version: 2018_12_21_235316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -204,6 +204,7 @@ ActiveRecord::Schema.define(version: 2018_12_21_225919) do
     t.bigint "revision_id", null: false
     t.datetime "created_at", null: false
     t.index ["image_id"], name: "index_versioned_revision_images_on_image_id"
+    t.index ["revision_id", "image_id"], name: "index_versioned_revision_images_on_revision_id_and_image_id", unique: true
     t.index ["revision_id"], name: "index_versioned_revision_images_on_revision_id"
   end
 
