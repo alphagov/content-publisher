@@ -80,11 +80,11 @@
       <%= link_to "Publish", publish_confirmation_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
 
       <%= delete_draft_link("app-link--right") unless @document.has_live_version_on_govuk %>
-    <% elsif @document.user_facing_state == "retired" %>
+    <% elsif @document.withdrawn? %>
       <%= render "govuk_publishing_components/components/button", text: "Undo withdraw", data_attributes: { gtm: "undo-withdraw" }, href: unwithdraw_path(@document) %>
     <% end %>
 
-    <% if @document.has_live_version_on_govuk? && @document.user_facing_state != "retired" %>
+    <% if @document.has_live_version_on_govuk? && !@document.withdrawn? %>
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
       <%= link_to "View published edition on GOV.UK", DocumentUrl.new(@document).public_url, class: "govuk-link govuk-link--no-visited-state" %>
     <% end %>

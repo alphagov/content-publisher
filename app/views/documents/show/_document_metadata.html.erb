@@ -1,4 +1,4 @@
-<% if @document.user_facing_state == "retired" %>
+<% if @document.withdrawn? %>
   <% metadata = [
       field: t("documents.show.metadata.withdrawn_by"),
       value: @document.withdrawn_by&.name || I18n.t!("documents.show.metadata.unknown_user")

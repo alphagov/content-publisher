@@ -81,4 +81,8 @@ class Document < ApplicationRecord
   def withdrawn_by
     @withdrawn_by ||= self.timeline_entries.where(entry_type: "retired").order(:created_at).last.user
   end
+
+  def withdrawn?
+    user_facing_state == "retired"
+  end
 end
