@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UnpublishService
-  def withdraw(edition, public_explanation)
+  def withdraw(edition, public_explanation, user = nil)
     Document.transaction do
       edition.document.lock!
       check_unpublishable(edition)
@@ -15,7 +15,7 @@ class UnpublishService
 
       withdrawal = Withdrawal.new(public_explanation: public_explanation)
 
-      edition.assign_status(:withdrawn, nil, status_details: withdrawal)
+      edition.assign_status(:withdrawn, user, status_details: withdrawal)
       edition.save!
 
       TimelineEntry.create_for_status_change(

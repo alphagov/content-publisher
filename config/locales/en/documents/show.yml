@@ -49,6 +49,7 @@ en:
         created_by: Document created by
         unknown_user: Unknown
         last_edited_by: Last edited by
+        withdrawn_by: Withdrawn by
       flashes:
         pre_preview_issues:
           warning: To preview this document you need to
