@@ -4,6 +4,11 @@ module Versioning
   class Document < ApplicationRecord
     self.table_name = "versioned_documents"
 
+    before_create do
+      # set a default value for last_edited_at works better than using DB default
+      self.last_edited_at = Time.zone.now unless last_edited_at
+    end
+
     attr_readonly :content_id, :locale, :document_type_id
 
     # rubocop:disable Rails/InverseOf
@@ -11,6 +16,11 @@ module Versioning
                class_name: "User",
                optional: true,
                foreign_key: :created_by_id
+
+    belongs_to :last_edited_by,
+               class_name: "User",
+               optional: true,
+               foreign_key: :last_edited_by_id
 
     has_one :current_edition,
             -> { where(current: true) },
@@ -48,7 +58,8 @@ module Versioning
                            locale: locale,
                            document_type_id: document_type_id,
                            created_by: user,
-                           last_edited_at: Time.zone.now)
+                           last_edited_at: Time.zone.now,
+                           last_edited_by: user)
 
         document.tap { |d| Edition.create_initial(d, user) }
       end
@@ -69,6 +80,12 @@ module Versioning
     def document_topics
       @document_topics_index ||= TopicIndexService.new
       DocumentTopics.find_by_document(self, @document_topics_index)
+    end
+
+    def update_last_edited_at(user, time = Time.zone.now)
+      return if last_edited_at > time
+
+      update!(last_edited_by: user, last_edited_at: time)
     end
   end
 end
