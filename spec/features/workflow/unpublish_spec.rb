@@ -12,7 +12,7 @@ RSpec.feature "Unpublish documents rake tasks" do
       document = create(:document, :published, locale: "en")
       explanatory_note = "The reason the document is being retired"
 
-      expect_any_instance_of(UnpublishService).to receive(:retire).with(document, explanatory_note)
+      expect_any_instance_of(UnpublishService).to receive(:retire).with(document, explanatory_note, nil)
 
       ClimateControl.modify NOTE: explanatory_note do
         Rake::Task["unpublish:retire_document"].invoke(document.content_id)

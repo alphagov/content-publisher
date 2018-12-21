@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class UnpublishService
-  def retire(document, explanatory_note)
+  def retire(document, explanatory_note, user)
     Document.transaction do
       document.update!(live_state: "retired")
-      timeline_entry = TimelineEntry.create!(document: document, entry_type: "retired")
+      timeline_entry = TimelineEntry.create!(document: document, entry_type: "retired", user: user)
       Retirement.create!(timeline_entry: timeline_entry, explanatory_note: explanatory_note)
 
       GdsApi.publishing_api_v2.unpublish(

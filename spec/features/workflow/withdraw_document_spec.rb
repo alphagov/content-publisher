@@ -63,6 +63,7 @@ RSpec.feature "Withdraw a document" do
                                          document_type: document_type,
                                          withdrawn_date: retirement.created_at.strftime("%d %B %Y")))
     expect(page).to have_content(timeline_entry.retirement.explanatory_note)
+    expect(page).to have_content(I18n.t!("documents.show.metadata.withdrawn_by") + ": #{timeline_entry.user.name}")
   end
 
   def when_i_click_to_change_the_public_explanation

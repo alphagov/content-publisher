@@ -12,7 +12,7 @@ namespace :unpublish do
     document = Document.find_by!(content_id: args.content_id, locale: locale)
     raise "Document must have a published version before it can be retired" unless document.has_live_version_on_govuk
 
-    UnpublishService.new.retire(document, explanatory_note)
+    UnpublishService.new.retire(document, explanatory_note, nil)
   end
 
   desc "Remove a document from GOV.UK e.g. unpublish:remove_document['a-content-id']"

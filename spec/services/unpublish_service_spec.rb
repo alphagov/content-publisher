@@ -4,10 +4,11 @@ RSpec.describe UnpublishService do
   describe "#retire" do
     let(:document) { create(:document) }
     let(:explanatory_note) { "The document is out of date" }
+    let(:user) { create(:user) }
 
     it "withdraws a document in publishing-api with an explanatory note" do
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
-      UnpublishService.new.retire(document, explanatory_note)
+      UnpublishService.new.retire(document, explanatory_note, user)
 
       assert_publishing_api_unpublish(document.content_id, type: "withdrawal", explanation: explanatory_note, locale: document.locale)
     end
@@ -16,7 +17,7 @@ RSpec.describe UnpublishService do
       french_document = create(:document, locale: "fr")
 
       stub_publishing_api_unpublish(french_document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: french_document.locale })
-      UnpublishService.new.retire(french_document, explanatory_note)
+      UnpublishService.new.retire(french_document, explanatory_note, user)
 
       assert_publishing_api_unpublish(french_document.content_id, type: "withdrawal", explanation: explanatory_note, locale: french_document.locale)
     end
@@ -25,21 +26,21 @@ RSpec.describe UnpublishService do
       asset = create(:image, :in_preview, document: document)
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
 
-      UnpublishService.new.retire(document, explanatory_note)
+      UnpublishService.new.retire(document, explanatory_note, user)
 
       assert_not_requested asset_manager_delete_asset(asset.asset_manager_id)
     end
 
     it "adds an entry in the timeline of the document" do
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
-      UnpublishService.new.retire(document, explanatory_note)
+      UnpublishService.new.retire(document, explanatory_note, user)
 
       expect(document.timeline_entries.first.entry_type).to eq("retired")
     end
 
     it "keeps track of the live state" do
       stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
-      UnpublishService.new.retire(document, explanatory_note)
+      UnpublishService.new.retire(document, explanatory_note, user)
       document.reload
 
       expect(document.live_state).to eq("retired")

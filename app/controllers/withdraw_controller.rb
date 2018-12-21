@@ -25,7 +25,7 @@ class WithdrawController < ApplicationController
       return
     end
 
-    UnpublishService.new.retire(@document, public_explanation)
+    UnpublishService.new.retire(@document, public_explanation, current_user)
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     redirect_to withdraw_path(@document),
