@@ -4,6 +4,11 @@ module Versioning
   class Edition < ApplicationRecord
     self.table_name = "versioned_editions"
 
+    after_save do
+      # Add current revision to the wider revisions collection
+      revisions << current_revision unless revisions.include?(current_revision)
+    end
+
     attr_readonly :number, :document_id
 
     # rubocop:disable Rails/InverseOf

@@ -42,20 +42,14 @@ namespace :versioning do
 
   def create_edition(data, revision, user)
     Versioning::Edition.new.tap do |edition|
-      edition.assign_attributes(
+      edition.update!(
         data.merge(current_revision: revision, created_by: user),
       )
-      edition.revisions << revision
-      edition.save!
     end
   end
 
   def update_edition_revision(edition, revision)
-    edition.tap do |e|
-      e.current_revision = revision
-      e.revisions << revision
-      e.save!
-    end
+    edition.tap { |e| e.update!(current_revision: revision) }
   end
 
   def create_image(filename)
