@@ -6,22 +6,23 @@ $toolbar-button-size: 50px;
 
 .app-c-markdown-editor {
   .govuk-textarea {
-    padding-top: (govuk-spacing(9) + $toolbar-button-size);
+    border-top: none;
     resize: vertical;
+
+    &:focus {
+      outline: none;
+    }
   }
 }
 
-.app-c-markdown-editor__container {
-  position: relative;
+.app-c-markdown-editor__container--focused {
+  outline: $govuk-focus-width solid $govuk-focus-colour;
+  outline-offset: 0;
 }
 
 .app-c-markdown-editor__head {
   @include govuk-font(19);
   display: block;
-  position: absolute;
-  right: 0;
-  left: 0;
-  margin-bottom: -$govuk-border-width-form-element;
   border: $govuk-border-width-form-element solid $govuk-input-border-colour;
   border-bottom: 0;
   background-color: govuk-colour("white");
@@ -80,7 +81,6 @@ $toolbar-button-size: 50px;
 
   .govuk-textarea {
     overflow: scroll;
-    padding-top: govuk-spacing(9);
   }
 }
 

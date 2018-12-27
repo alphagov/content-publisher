@@ -3,6 +3,7 @@
 function MarkdownEditor ($module) {
   this.$module = $module
   this.$head = $module.querySelector('.js-markdown-editor__head')
+  this.$container = $module.querySelector('.js-markdown-editor__container')
   this.$input = $module.querySelector('textarea')
   this.$preview = $module.querySelector('.js-markdown-preview-body .govuk-textarea')
   this.$previewButton = $module.querySelector('.js-markdown-preview-button')
@@ -26,6 +27,9 @@ MarkdownEditor.prototype.init = function () {
   // Handle events
   this.$previewButton.addEventListener('click', $module.boundPreviewButtonClick)
   this.$editButton.addEventListener('click', $module.boundEditButtonClick)
+
+  // Bubble focus events
+  this.bubbleFocus(this.$input, this.$container)
 }
 
 MarkdownEditor.prototype.handlePreviewButton = function (event) {
@@ -37,7 +41,7 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
   }
 
   // Mirror textarea's height
-  this.$preview.style.height = this.$input.offsetHeight + 'px'
+  this.$preview.style.height = this.$input.offsetHeight + this.$editorToolbar.offsetHeight + 'px'
 
   // Clear previous preview
   this.$preview.innerHTML = ''
@@ -120,6 +124,16 @@ MarkdownEditor.prototype.setTargetBlank = function (container) {
       anchor.setAttribute('target', '_blank')
     })
   }
+}
+
+// Bubble focus and blur events from specified element to container
+MarkdownEditor.prototype.bubbleFocus = function (element, container) {
+  element.addEventListener('focus', function (event) {
+    container.classList.add('app-c-markdown-editor__container--focused')
+  }, true)
+  element.addEventListener('blur', function (event) {
+    container.classList.remove('app-c-markdown-editor__container--focused')
+  }, true)
 }
 
 var $govspeak = document.querySelector('[data-module="markdown-editor"]')
