@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Versioning
+module Versioned
   class Revision < ApplicationRecord
     self.table_name = "versioned_revisions"
 
@@ -11,28 +11,28 @@ module Versioning
                foreign_key: :created_by_id
 
     belongs_to :lead_image,
-               class_name: "Versioning::Image",
+               class_name: "Versioned::Image",
                optional: true,
                foreign_key: :lead_image_id
     # rubocop:enable Rails/InverseOf
 
     belongs_to :document,
-               class_name: "Versioning::Document",
+               class_name: "Versioned::Document",
                foreign_key: :document_id,
                inverse_of: :revisions
 
     has_many :current_for_editions,
-             class_name: "Versioning::Edition",
+             class_name: "Versioned::Edition",
              foreign_key: :revision_id,
              inverse_of: :revision,
              dependent: :restrict_with_exception
 
     has_and_belongs_to_many :editions,
-                            class_name: "Versioning::Edition",
+                            class_name: "Versioned::Edition",
                             join_table: "versioned_edition_revisions"
 
     has_and_belongs_to_many :images,
-                            class_name: "Versioning::Image",
+                            class_name: "Versioned::Image",
                             join_table: "versioned_revision_images"
 
     def readonly?

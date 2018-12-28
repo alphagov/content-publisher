@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Versioning
+module Versioned
   class Document < ApplicationRecord
     self.table_name = "versioned_documents"
 
@@ -24,19 +24,19 @@ module Versioning
 
     has_one :current_edition,
             -> { where(current: true) },
-            class_name: "Versioning::Edition"
+            class_name: "Versioned::Edition"
 
     has_one :live_edition,
             -> { where(live: true) },
-            class_name: "Versioning::Edition"
+            class_name: "Versioned::Edition"
     # rubocop:enable Rails/InverseOf
 
     has_many :editions,
-             class_name: "Versioning::Edition",
+             class_name: "Versioned::Edition",
              dependent: :restrict_with_exception
 
     has_many :revisions,
-             class_name: "Versioning::Revision",
+             class_name: "Versioned::Revision",
              dependent: :restrict_with_exception
 
     delegate :topics, to: :document_topics
