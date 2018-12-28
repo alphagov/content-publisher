@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Versioning
+module Versioned
   class Image < ApplicationRecord
     self.table_name = "versioned_images"
 
@@ -12,7 +12,7 @@ module Versioning
     belongs_to :blob, class_name: "ActiveStorage::Blob"
 
     has_and_belongs_to_many :revisions,
-                            class_name: "Versioning::Revision",
+                            class_name: "Versioned::Revision",
                             join_table: "versioned_revision_images"
 
     def readonly?
