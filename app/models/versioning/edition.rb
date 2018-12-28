@@ -12,6 +12,8 @@ module Versioning
     after_save do
       # Add current revision to the wider revisions collection
       revisions << current_revision unless revisions.include?(current_revision)
+      # Store the edition on the status to keep a history
+      status.update(edition: self) if status && !status.edition_id
     end
 
     attr_readonly :number, :document_id
@@ -36,9 +38,21 @@ module Versioning
                class_name: "Versioning::Revision",
                inverse_of: :current_for_editions
 
+    belongs_to :status,
+               class_name: "Versioning::EditionStatus",
+               inverse_of: :status_of
+
+    has_many :statuses,
+             class_name: "Versioning::EditionStatus",
+             dependent: :restrict_with_exception,
+             inverse_of: :edition
+
     has_and_belongs_to_many :revisions,
                             class_name: "Versioning::Revision",
                             join_table: "versioned_edition_revisions"
+
+    delegate :user_facing_state, :publishing_api_sync, to: :status
+    alias state user_facing_state
 
     delegate_missing_to :current_revision
 
