@@ -23,8 +23,8 @@ module Versioning
 
     has_many :current_for_editions,
              class_name: "Versioning::Edition",
-             foreign_key: :current_revision_id,
-             inverse_of: :current_revision,
+             foreign_key: :revision_id,
+             inverse_of: :revision,
              dependent: :restrict_with_exception
 
     has_and_belongs_to_many :editions,
