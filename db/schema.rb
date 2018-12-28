@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_28_105905) do
+ActiveRecord::Schema.define(version: 2018_12_28_124658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -186,16 +186,16 @@ ActiveRecord::Schema.define(version: 2018_12_28_105905) do
     t.bigint "created_by_id"
     t.boolean "current", default: false, null: false
     t.boolean "live", default: false, null: false
-    t.bigint "current_revision_id", null: false
     t.bigint "last_edited_by_id"
     t.bigint "status_id", null: false
+    t.bigint "revision_id", null: false
     t.index ["created_by_id"], name: "index_versioned_editions_on_created_by_id"
-    t.index ["current_revision_id"], name: "index_versioned_editions_on_current_revision_id"
     t.index ["document_id", "current"], name: "index_versioned_editions_on_document_id_and_current", unique: true, where: "(current = true)"
     t.index ["document_id", "live"], name: "index_versioned_editions_on_document_id_and_live", unique: true, where: "(live = true)"
     t.index ["document_id", "number"], name: "index_versioned_editions_on_document_id_and_number", unique: true
     t.index ["document_id"], name: "index_versioned_editions_on_document_id"
     t.index ["last_edited_by_id"], name: "index_versioned_editions_on_last_edited_by_id"
+    t.index ["revision_id"], name: "index_versioned_editions_on_revision_id"
     t.index ["status_id"], name: "index_versioned_editions_on_status_id"
   end
 
@@ -275,7 +275,7 @@ ActiveRecord::Schema.define(version: 2018_12_28_105905) do
   add_foreign_key "versioned_editions", "users", column: "last_edited_by_id", on_delete: :nullify
   add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_edition_statuses", column: "status_id", on_delete: :restrict
-  add_foreign_key "versioned_editions", "versioned_revisions", column: "current_revision_id", on_delete: :restrict
+  add_foreign_key "versioned_editions", "versioned_revisions", column: "revision_id", on_delete: :restrict
   add_foreign_key "versioned_images", "active_storage_blobs", column: "blob_id", on_delete: :restrict
   add_foreign_key "versioned_revision_images", "versioned_images", column: "image_id", on_delete: :restrict
   add_foreign_key "versioned_revision_images", "versioned_revisions", column: "revision_id", on_delete: :restrict
