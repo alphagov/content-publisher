@@ -6,15 +6,43 @@ FactoryBot.define do
     current { true }
     live { false }
     association :created_by, factory: :user
-    association :document, factory: :versioned_document
+
+    transient do
+      content_id { SecureRandom.uuid }
+      locale { I18n.available_locales.sample }
+      document_type_id { build(:document_type, path_prefix: "/prefix").id }
+      title { SecureRandom.alphanumeric(10) }
+      summary { nil }
+      base_path { title ? "/prefix/#{title.parameterize}" : nil }
+      contents { {} }
+      tags { {} }
+      user_facing_state { "draft" }
+    end
 
     after(:build) do |edition, evaluator|
+      unless edition.document
+        edition.document = evaluator.association(
+          :versioned_document,
+          created_by: edition.created_by,
+          content_id: evaluator.content_id,
+          locale: evaluator.locale,
+          document_type_id: evaluator.document_type_id,
+          last_edited_at: edition.last_edited_at,
+        )
+      end
+
       edition.number = edition.document&.next_edition_number unless edition.number
+
       unless edition.revision
         edition.revision = evaluator.association(
           :versioned_revision,
           created_by: edition.created_by,
           document: edition.document,
+          title: evaluator.title,
+          summary: evaluator.summary,
+          base_path: evaluator.base_path,
+          contents: evaluator.contents,
+          tags: evaluator.tags,
         )
       end
 
@@ -23,6 +51,7 @@ FactoryBot.define do
           :versioned_edition_status,
           created_by: edition.created_by,
           revision_at_creation: edition.revision,
+          user_facing_state: evaluator.user_facing_state,
         )
       end
     end
