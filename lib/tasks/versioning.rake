@@ -15,8 +15,16 @@ namespace :versioning do
 
       revision = create_revision({ title: "Initial title" }, document, user)
 
+      status = Versioning::EditionStatus.create!(created_by: user,
+                                                 user_facing_state: :draft,
+                                                 publishing_api_sync: :complete,
+                                                 revision_at_creation: revision)
+
       current_edition = create_edition(
-        { number: document.next_edition_number, document: document, current: true },
+        { number: document.next_edition_number,
+          document: document,
+          current: true,
+          status: status },
         revision,
         user,
       )

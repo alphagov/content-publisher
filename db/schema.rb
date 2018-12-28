@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_21_235316) do
+ActiveRecord::Schema.define(version: 2018_12_28_105905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,6 +163,20 @@ ActiveRecord::Schema.define(version: 2018_12_21_235316) do
     t.index ["revision_id"], name: "index_versioned_edition_revisions_on_revision_id"
   end
 
+  create_table "versioned_edition_statuses", force: :cascade do |t|
+    t.string "user_facing_state", null: false
+    t.string "publishing_api_sync", null: false
+    t.bigint "revision_at_creation_id", null: false
+    t.bigint "edition_id"
+    t.bigint "created_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_versioned_edition_statuses_on_created_by_id"
+    t.index ["edition_id"], name: "index_versioned_edition_statuses_on_edition_id"
+    t.index ["revision_at_creation_id"], name: "index_versioned_edition_statuses_on_revision_at_creation_id"
+    t.index ["user_facing_state"], name: "index_versioned_edition_statuses_on_user_facing_state"
+  end
+
   create_table "versioned_editions", force: :cascade do |t|
     t.integer "number", null: false
     t.datetime "last_edited_at", null: false
@@ -174,6 +188,7 @@ ActiveRecord::Schema.define(version: 2018_12_21_235316) do
     t.boolean "live", default: false, null: false
     t.bigint "current_revision_id", null: false
     t.bigint "last_edited_by_id"
+    t.bigint "status_id", null: false
     t.index ["created_by_id"], name: "index_versioned_editions_on_created_by_id"
     t.index ["current_revision_id"], name: "index_versioned_editions_on_current_revision_id"
     t.index ["document_id", "current"], name: "index_versioned_editions_on_document_id_and_current", unique: true, where: "(current = true)"
@@ -181,6 +196,7 @@ ActiveRecord::Schema.define(version: 2018_12_21_235316) do
     t.index ["document_id", "number"], name: "index_versioned_editions_on_document_id_and_number", unique: true
     t.index ["document_id"], name: "index_versioned_editions_on_document_id"
     t.index ["last_edited_by_id"], name: "index_versioned_editions_on_last_edited_by_id"
+    t.index ["status_id"], name: "index_versioned_editions_on_status_id"
   end
 
   create_table "versioned_images", force: :cascade do |t|
@@ -252,9 +268,13 @@ ActiveRecord::Schema.define(version: 2018_12_21_235316) do
   add_foreign_key "versioned_documents", "users", column: "last_edited_by_id", on_delete: :nullify
   add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :restrict
   add_foreign_key "versioned_edition_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
+  add_foreign_key "versioned_edition_statuses", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_edition_statuses", "versioned_editions", column: "edition_id", on_delete: :restrict
+  add_foreign_key "versioned_edition_statuses", "versioned_revisions", column: "revision_at_creation_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_editions", "users", column: "last_edited_by_id", on_delete: :nullify
   add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
+  add_foreign_key "versioned_editions", "versioned_edition_statuses", column: "status_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_revisions", column: "current_revision_id", on_delete: :restrict
   add_foreign_key "versioned_images", "active_storage_blobs", column: "blob_id", on_delete: :restrict
   add_foreign_key "versioned_revision_images", "versioned_images", column: "image_id", on_delete: :restrict
