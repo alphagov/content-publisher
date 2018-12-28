@@ -10,8 +10,8 @@ module Versioning
     end
 
     after_save do
-      # Add current revision to the wider revisions collection
-      revisions << current_revision unless revisions.include?(current_revision)
+      # Add revision to the wider revisions collection
+      revisions << revision unless revisions.include?(revision)
       # Store the edition on the status to keep a history
       status.update(edition: self) if status && !status.edition_id
     end
@@ -34,7 +34,7 @@ module Versioning
                class_name: "Versioning::Document",
                inverse_of: :editions
 
-    belongs_to :current_revision,
+    belongs_to :revision,
                class_name: "Versioning::Revision",
                inverse_of: :current_for_editions
 
@@ -54,14 +54,14 @@ module Versioning
     delegate :user_facing_state, :publishing_api_sync, to: :status
     alias state user_facing_state
 
-    delegate_missing_to :current_revision
+    delegate_missing_to :revision
 
     def self.create_initial(document, user = nil)
       revision = Revision.create!(created_by: user, document: document)
 
       create!(created_by: user,
               current: true,
-              current_revision: revision,
+              revision: revision,
               document: document,
               number: document.next_edition_number,
               last_edited_by: user)

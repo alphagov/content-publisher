@@ -49,13 +49,13 @@ namespace :versioning do
   end
 
   def create_edition(data, revision, user)
-    data = data.merge(current_revision: revision, created_by: user, last_edited_by: user)
+    data = data.merge(revision: revision, created_by: user, last_edited_by: user)
     Versioning::Edition.create!(data)
   end
 
   def update_edition_revision(edition, revision)
     edition.tap do |e|
-      e.update!(current_revision: revision)
+      e.update!(revision: revision)
       e.update_last_edited_at(revision.created_by)
     end
   end
