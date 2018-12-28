@@ -56,12 +56,19 @@ module Versioned
 
     delegate_missing_to :revision
 
-    def self.create_initial(document, user = nil)
-      revision = Revision.create!(created_by: user, document: document)
+    def self.create_initial(document, user = nil, tags = {})
+      revision = Revision.create!(created_by: user,
+                                  document: document,
+                                  tags: tags)
+      status = EditionStatus.create!(created_by: user,
+                                     user_facing_state: :draft,
+                                     publishing_api_sync: :complete,
+                                     revision_at_creation: revision)
 
       create!(created_by: user,
               current: true,
               revision: revision,
+              status: status,
               document: document,
               number: document.next_edition_number,
               last_edited_by: user)
