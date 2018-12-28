@@ -44,6 +44,12 @@ module Versioned
     delegate :title, :base_path, to: :current_edition, allow_nil: true, prefix: true
     delegate :title, :base_path, to: :live_edition, allow_nil: true, prefix: true
 
+    scope :using_base_path, ->(base_path) do
+      left_outer_joins(current_edition: :revision,
+                       live_edition: :revision)
+        .where("versioned_revisions.base_path": base_path)
+    end
+
     def self.find_by_param(content_id_and_locale)
       content_id, locale = content_id_and_locale.split(":")
       find_by!(content_id: content_id, locale: locale)
