@@ -52,7 +52,8 @@ module Versioned
     def self.create_initial(content_id: SecureRandom.uuid,
                           document_type_id:,
                           locale: "en",
-                          user: nil)
+                          user: nil,
+                          tags: {})
       transaction do
         document = create!(content_id: content_id,
                            locale: locale,
@@ -61,7 +62,7 @@ module Versioned
                            last_edited_at: Time.zone.now,
                            last_edited_by: user)
 
-        document.tap { |d| Edition.create_initial(d, user) }
+        document.tap { |d| Edition.create_initial(d, user, tags) }
       end
     end
 
