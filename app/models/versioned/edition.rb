@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Versioning
+module Versioned
   class Edition < ApplicationRecord
     self.table_name = "versioned_editions"
 
@@ -31,24 +31,24 @@ module Versioning
     # rubocop:enable Rails/InverseOf
 
     belongs_to :document,
-               class_name: "Versioning::Document",
+               class_name: "Versioned::Document",
                inverse_of: :editions
 
     belongs_to :revision,
-               class_name: "Versioning::Revision",
+               class_name: "Versioned::Revision",
                inverse_of: :current_for_editions
 
     belongs_to :status,
-               class_name: "Versioning::EditionStatus",
+               class_name: "Versioned::EditionStatus",
                inverse_of: :status_of
 
     has_many :statuses,
-             class_name: "Versioning::EditionStatus",
+             class_name: "Versioned::EditionStatus",
              dependent: :restrict_with_exception,
              inverse_of: :edition
 
     has_and_belongs_to_many :revisions,
-                            class_name: "Versioning::Revision",
+                            class_name: "Versioned::Revision",
                             join_table: "versioned_edition_revisions"
 
     delegate :user_facing_state, :publishing_api_sync, to: :status

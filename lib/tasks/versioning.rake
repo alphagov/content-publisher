@@ -7,7 +7,7 @@ namespace :versioning do
       user = User.first
 
       # create a document with a current revision
-      document = Versioning::Document.create!(content_id: content_id,
+      document = Versioned::Document.create!(content_id: content_id,
                                               locale: "en",
                                               created_by: user,
                                               document_type_id: "news_story",
@@ -15,7 +15,7 @@ namespace :versioning do
 
       revision = create_revision({ title: "Initial title" }, document, user)
 
-      status = Versioning::EditionStatus.create!(created_by: user,
+      status = Versioned::EditionStatus.create!(created_by: user,
                                                  user_facing_state: :draft,
                                                  publishing_api_sync: :complete,
                                                  revision_at_creation: revision)
@@ -34,12 +34,12 @@ namespace :versioning do
       second_revision = create_revision({}, document, user, revision, [image.id])
       update_edition_revision(current_edition, second_revision)
 
-      puts "Created Versioning::Document with id: #{document.id}"
+      puts "Created Versioned::Document with id: #{document.id}"
     end
   end
 
   def create_revision(data, document, user, previous_revision = nil, image_ids = nil)
-    revision = previous_revision&.dup || Versioning::Revision.new
+    revision = previous_revision&.dup || Versioned::Revision.new
     revision.tap do |r|
       preset_data = { created_by: user, document: document }
       r.assign_attributes(data.merge(preset_data))
@@ -50,7 +50,7 @@ namespace :versioning do
 
   def create_edition(data, revision, user)
     data = data.merge(revision: revision, created_by: user, last_edited_by: user)
-    Versioning::Edition.create!(data)
+    Versioned::Edition.create!(data)
   end
 
   def update_edition_revision(edition, revision)
@@ -65,7 +65,7 @@ namespace :versioning do
     blob = ActiveStorage::Blob.create_after_upload!(io: file,
                                                     filename: filename,
                                                     content_type: "image/jpg")
-    Versioning::Image.create!(blob: blob,
+    Versioned::Image.create!(blob: blob,
                               filename: filename,
                               width: 960,
                               height: 640,
