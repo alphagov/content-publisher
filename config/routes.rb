@@ -96,10 +96,10 @@ Rails.application.routes.draw do
     #
     # post "/documents/:document_id/lead-image/:image_id" => "lead_image#choose", as: :choose_lead_image
     # delete "/documents/:document_id/lead-image" => "lead_image#remove", as: :remove_lead_image
-    #
-    # get "/documents/:document_id/topics" => "topics#edit", as: :topics
-    # patch "/documents/:document_id/topics" => "topics#update", as: :update_topics
-    #
+
+    get "/documents/:document_id/topics" => "topics#edit", as: :topics
+    patch "/documents/:document_id/topics" => "topics#update", as: :update_topics
+
     # post "/documents/:document_id/editions" => "editions#create", as: :create_edition
   end
 
