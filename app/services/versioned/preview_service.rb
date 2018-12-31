@@ -14,7 +14,7 @@ module Versioned
 
     def try_create_preview
       if has_issues?
-        edition.status.publishing_api_sync_cant_sync!
+        edition.draft_requirements_not_met!
       else
         try_publish_draft(edition)
       end
@@ -35,9 +35,9 @@ module Versioned
     def publish_draft(document)
       payload = PublishingApiPayload.new(document).payload
       GdsApi.publishing_api_v2.put_content(document.content_id, payload)
-      edition.status.publishing_api_sync_complete!
+      edition.draft_available!
     rescue GdsApi::BaseError
-      edition.status.publishing_api_sync_failure!
+      edition.draft_failure!
       raise
     end
   end

@@ -35,10 +35,5 @@ module Versioned
                               published_but_needs_2i: "published_but_needs_2i",
                               retired: "retired",
                               removed: "removed" }
-
-    enum publishing_api_sync: { complete: "complete",
-                                failure: "failure",
-                                cant_sync: "cant_sync" },
-         _prefix: true
   end
 end

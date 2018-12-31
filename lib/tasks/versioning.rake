@@ -8,22 +8,27 @@ namespace :versioning do
 
       # create a document with a current revision
       document = Versioned::Document.create!(content_id: content_id,
-                                              locale: "en",
-                                              created_by: user,
-                                              document_type_id: "news_story",
-                                              last_edited_by: user)
+                                             locale: "en",
+                                             created_by: user,
+                                             document_type_id: "news_story",
+                                             last_edited_by: user)
 
-      revision = create_revision({ title: "Initial title" }, document, user)
+      revision = create_revision(
+        { title: "Initial title",
+          update_type: "major" },
+        document,
+        user,
+      )
 
       status = Versioned::EditionStatus.create!(created_by: user,
                                                  user_facing_state: :draft,
-                                                 publishing_api_sync: :complete,
                                                  revision_at_creation: revision)
 
       current_edition = create_edition(
         { number: document.next_edition_number,
           document: document,
           current: true,
+          draft: :available,
           status: status },
         revision,
         user,
