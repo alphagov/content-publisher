@@ -76,9 +76,9 @@ Rails.application.routes.draw do
     post "/documents/:id/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
     post "/documents/:id/approve" => "review#approve", as: :approve_document
 
-    # get "/documents/:id/tags" => "tags#edit", as: :tags
-    # post "/documents/:id/tags" => "tags#update"
-    #
+    get "/documents/:id/tags" => "tags#edit", as: :tags
+    post "/documents/:id/tags" => "tags#update"
+
     # get "/documents/:id/preview" => "preview#show", as: :preview_document
     # post "/documents/:id/create-preview" => "preview#create", as: :create_preview
     #

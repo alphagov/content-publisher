@@ -15,7 +15,7 @@
     id: "tags",
     title: {
       text: t("documents.show.tags.title"),
-      change_url: "" #@document.editable? && tags_path(@document)
+      change_url: !@edition.live && versioned_tags_path(@edition.document)
     },
     items: tags
   } %>
