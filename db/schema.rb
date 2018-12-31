@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_31_123820) do
+ActiveRecord::Schema.define(version: 2018_12_31_150103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -165,7 +165,6 @@ ActiveRecord::Schema.define(version: 2018_12_31_123820) do
 
   create_table "versioned_edition_statuses", force: :cascade do |t|
     t.string "user_facing_state", null: false
-    t.string "publishing_api_sync", null: false
     t.bigint "revision_at_creation_id", null: false
     t.bigint "edition_id"
     t.bigint "created_by_id"
@@ -189,6 +188,7 @@ ActiveRecord::Schema.define(version: 2018_12_31_123820) do
     t.bigint "last_edited_by_id"
     t.bigint "status_id", null: false
     t.bigint "revision_id", null: false
+    t.string "draft", null: false
     t.index ["created_by_id"], name: "index_versioned_editions_on_created_by_id"
     t.index ["current"], name: "index_versioned_editions_on_current"
     t.index ["document_id", "current"], name: "index_versioned_editions_on_document_id_and_current", unique: true, where: "(current = true)"
