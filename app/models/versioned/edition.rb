@@ -51,7 +51,13 @@ module Versioned
                             class_name: "Versioned::Revision",
                             join_table: "versioned_edition_revisions"
 
-    delegate :user_facing_state, :publishing_api_sync, to: :status
+    enum draft: { available: "available",
+                  failure: "failure",
+                  not_applicable: "not_applicable",
+                  requirements_not_met: "requirements_not_met" },
+         _prefix: true
+
+    delegate :user_facing_state, to: :status
     alias state user_facing_state
 
     delegate :content_id, :locale, :document_type, :topics, to: :document
@@ -60,22 +66,22 @@ module Versioned
 
     def self.create_initial(document, user = nil, tags = {})
       revision = Revision.create!(created_by: user,
+                                  change_note: "First published.",
                                   document: document,
                                   tags: tags,
-                                  update_type: "major",
-                                  change_note: "First published.")
+                                  update_type: "major")
       status = EditionStatus.create!(created_by: user,
-                                     user_facing_state: :draft,
-                                     publishing_api_sync: :cant_sync,
-                                     revision_at_creation: revision)
+                                     revision_at_creation: revision,
+                                     user_facing_state: :draft)
 
       create!(created_by: user,
               current: true,
-              revision: revision,
-              status: status,
               document: document,
+              draft: :requirements_not_met,
+              last_edited_by: user,
               number: document.next_edition_number,
-              last_edited_by: user)
+              revision: revision,
+              status: status)
     end
 
     def update_last_edited_at(user, time = Time.zone.now)
