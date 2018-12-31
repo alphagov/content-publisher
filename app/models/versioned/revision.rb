@@ -38,5 +38,16 @@ module Versioned
     def readonly?
       !new_record?
     end
+
+    def build_next_revision(attributes, user)
+      dup.tap do |revision|
+        revision.assign_attributes(attributes.merge(created_by: user))
+        revision.image_ids = image_ids
+      end
+    end
+
+    def title_or_fallback
+      title.presence || I18n.t!("documents.untitled_document")
+    end
   end
 end
