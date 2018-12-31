@@ -56,10 +56,10 @@ module Versioned
     end
 
     def self.create_initial(content_id: SecureRandom.uuid,
-                          document_type_id:,
-                          locale: "en",
-                          user: nil,
-                          tags: {})
+                            document_type_id:,
+                            locale: "en",
+                            user: nil,
+                            tags: {})
       transaction do
         document = create!(content_id: content_id,
                            locale: locale,
