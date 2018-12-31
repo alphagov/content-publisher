@@ -21,19 +21,26 @@ module Versioned
       @edition = document.current_edition
     end
 
-    # def confirm_delete_draft
-    #   document = Document.find_by_param(params[:id])
-    #   redirect_to document_path(document), confirmation: "documents/show/delete_draft"
-    # end
+    def confirm_delete_draft
+      document = Versioned::Document.with_current_edition
+                                    .find_by_param(params[:id])
+      redirect_to versioned_document_path(document), confirmation: "versioned/documents/show/delete_draft"
+    end
 
-    # def destroy
-    #   document = Document.find_by_param(params[:id])
-    #   DeleteDraftService.new(document).delete
-    #   redirect_to documents_path
-    # rescue GdsApi::BaseError => e
-    #   GovukError.notify(e)
-    #   redirect_to document, alert_with_description: t("documents.show.flashes.delete_draft_error")
-    # end
+    def destroy
+      Versioned::Document.transaction do
+        document = Versioned::Document.with_current_edition
+                                      .lock
+                                      .find_by_param(params[:id])
+
+        Versioned::DeleteDraftService.new(document, current_user).delete
+
+        redirect_to versioned_documents_path
+      rescue GdsApi::BaseError => e
+        GovukError.notify(e)
+        redirect_to document, alert_with_description: t("documents.show.flashes.delete_draft_error")
+      end
+    end
 
     def update
       Versioned::Document.transaction do
