@@ -12,6 +12,8 @@ FactoryBot.define do
       locale { I18n.available_locales.sample }
       document_type_id { build(:document_type, path_prefix: "/prefix").id }
       title { SecureRandom.alphanumeric(10) }
+      update_type { "major" }
+      change_note { nil }
       summary { nil }
       base_path { title ? "/prefix/#{title.parameterize}" : nil }
       contents { {} }
@@ -43,6 +45,8 @@ FactoryBot.define do
           base_path: evaluator.base_path,
           contents: evaluator.contents,
           tags: evaluator.tags,
+          update_type: evaluator.update_type,
+          change_note: evaluator.change_note,
         )
       end
 
