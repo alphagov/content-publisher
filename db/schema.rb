@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_28_160727) do
+ActiveRecord::Schema.define(version: 2018_12_31_123820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -233,7 +233,7 @@ ActiveRecord::Schema.define(version: 2018_12_28_160727) do
     t.json "contents", default: {}, null: false
     t.json "tags", default: {}, null: false
     t.text "change_note"
-    t.string "update_type"
+    t.string "update_type", null: false
     t.bigint "created_by_id"
     t.datetime "created_at", null: false
     t.bigint "lead_image_id"

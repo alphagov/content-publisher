@@ -35,6 +35,8 @@ module Versioned
                             class_name: "Versioned::Image",
                             join_table: "versioned_revision_images"
 
+    enum update_type: { major: "major", minor: "minor" }
+
     def readonly?
       !new_record?
     end
