@@ -37,7 +37,8 @@ module Versioned
                               removed: "removed" }
 
     enum publishing_api_sync: { complete: "complete",
-                                failure: "failure" },
+                                failure: "failure",
+                                cant_sync: "cant_sync" },
          _prefix: true
   end
 end
