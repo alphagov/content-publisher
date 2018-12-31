@@ -60,7 +60,14 @@ FactoryBot.define do
       end
     end
 
+    trait :publishable do
+      summary { SecureRandom.alphanumeric(10) }
+    end
+
     trait :published do
+      summary { SecureRandom.alphanumeric(10) }
+      live { true }
+
       after(:build) do |edition, evaluator|
         edition.status = evaluator.association(
           :versioned_edition_status,
