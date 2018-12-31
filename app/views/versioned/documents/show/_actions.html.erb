@@ -50,12 +50,17 @@
         <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
     <% elsif @edition.status.submitted_for_review? %>
-      <%= render "govuk_publishing_components/components/button", text: "Publish", href: publish_confirmation_path(@document) %>
-      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@document), secondary: true %>
+      <%= render "govuk_publishing_components/components/button",
+                 text: "Publish",
+                 href: publish_confirmation_path(@edition.document) %>
+      <%= render "govuk_publishing_components/components/button",
+                 text: "Preview",
+                 href: preview_document_path(@edition.document),
+                 secondary: true %>
 
       <%= delete_draft_link("app-link--right") %>
     <% else %>
-      <%= form_tag submit_document_for_2i_path(@edition.document) do %>
+      <%= form_tag versioned_submit_document_for_2i_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
       <% end %>
 
