@@ -71,7 +71,7 @@ module Versioned
         Versioned::PreviewService.new(current_edition).try_create_preview
 
         if add_contact_request
-          redirect_to search_contacts_path(@document)
+          redirect_to versioned_search_contacts_path(@document)
         else
           redirect_to @document
         end
