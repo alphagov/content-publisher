@@ -1,0 +1,22 @@
+<% confirmation = capture do %>
+  <%= form_tag(
+    document_path(@document),
+    method: :delete,
+    data: { gtm: "delete-draft-submit" },
+  ) do %>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Yes, delete draft",
+      destructive: true
+    } %>
+
+    <div style="display: inline-block; padding-left: 15px; padding-top: 8px">
+      <%= link_to "Cancel", document_path(@document), class: "govuk-link" %>
+    </div>
+  <% end %>
+
+<% end %>
+
+<%= render "govuk_publishing_components/components/error_alert", {
+  message: t("documents.show.flashes.delete_draft"),
+  description: confirmation
+} %>
