@@ -77,12 +77,6 @@ module Versioned
       render plain: base_path
     end
 
-    # def debug
-    #   authorise_user!(User::DEBUG_PERMISSION)
-    #   @document = Document.find_by_param(params[:id])
-    #   @papertrail_users = User.where(id: @document.versions.pluck(:whodunnit))
-    # end
-
   private
 
     def filter_params
