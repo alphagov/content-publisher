@@ -1,0 +1,87 @@
+<%= form_tag({}, method: :get) do %>
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: t("documents.index.filter.title_or_url"),
+      bold: true
+    },
+    name: "title_or_url",
+    value: params[:title_or_url],
+    type: "search"
+  } %>
+
+  <div class="govuk-form-group">
+    <% document_type_select = DocumentType.all
+      .reject(&:managed_elsewhere)
+      .map { |d| [d.label, d.id] }
+    %>
+
+    <%= render "govuk_publishing_components/components/label", {
+      text: t("documents.index.filter.document_type"),
+      html_for: "document-type-filter",
+      bold: true
+    } %>
+
+    <%= select_tag "document_type",
+      options_for_select(document_type_select, [params[:document_type]]),
+      include_blank: true,
+      id: "document-type-filter",
+      class: "govuk-select"
+    %>
+  </div>
+
+  <div class="govuk-form-group">
+    <% selectable_states = %w[draft
+                              submitted_for_review
+                              published
+                              published_but_needs_2i
+                              retired
+                              removed]
+    state_select = selectable_states.map do |state|
+      [t("user_facing_states.#{state}.name"), state]
+    end
+    %>
+
+    <%= render "govuk_publishing_components/components/label", {
+      text: t("documents.index.filter.state"),
+      html_for: "document-status-filter",
+      bold: true
+    } %>
+
+    <%= select_tag "status",
+      options_for_select(state_select, [params[:status]]),
+      include_blank: true,
+      id: "document-status-filter",
+      class: "govuk-select"
+    %>
+  </div>
+
+  <div class="govuk-form-group">
+    <% organisation_select = begin
+      LinkablesService.new("organisation").select_options
+    rescue GdsApi::BaseError => e
+      GovukError.notify(e)
+      []
+    end %>
+
+    <%= render "govuk_publishing_components/components/label", {
+      text: t("documents.index.filter.organisation"),
+      html_for: "document-organisation-filter",
+      bold: true
+    } %>
+
+    <%= select_tag "organisation",
+      options_for_select(organisation_select, [params[:organisation]]),
+      include_blank: true,
+      id: "document-organisation-filter",
+      class: "govuk-select"
+    %>
+  </div>
+
+  <%= hidden_field_tag "sort", @sort %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Filter"
+  } %>
+
+  <p><%= link_to "Clear all filters", documents_path, class: "govuk-link" %></p>
+<% end %>

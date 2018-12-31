@@ -62,15 +62,15 @@ Rails.application.routes.draw do
     # post "/documents/:id/publish" => "publish#publish"
     # get "/documents/:id/published" => "publish#published", as: :published
 
-    # get "/documents" => "documents#index"
+    get "/documents" => "documents#index"
     get "/documents/:id/edit" => "documents#edit", as: :edit_document
-    # get "/documents/:id/debug" => "documents#debug", as: :debug_document
-    # patch "/documents/:id" => "documents#update", as: :document
-    # get "/documents/:id" => "documents#show"
-    # get "/documents/:id/generate-path" => "documents#generate_path", as: :generate_path
-    # get "/documents/:id/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
-    # delete "/documents/:id" => "documents#destroy"
-    #
+    get "/documents/:id/debug" => "documents#debug", as: :debug_document
+    patch "/documents/:id" => "documents#update", as: :document
+    get "/documents/:id" => "documents#show"
+    get "/documents/:id/generate-path" => "documents#generate_path", as: :generate_path
+    get "/documents/:id/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
+    delete "/documents/:id" => "documents#destroy"
+
     # get "/documents/:id/search-contacts" => "contacts#search", as: :search_contacts
     # post "/documents/:id/search-contacts" => "contacts#insert", as: :insert_contact
     #

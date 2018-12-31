@@ -1,0 +1,9 @@
+<% if values.any? %>
+  <ul class="govuk-list">
+    <% values.each do |value| %>
+      <li><%= value["internal_name"] %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <%= t("documents.show.tags.none") %>
+<% end %>

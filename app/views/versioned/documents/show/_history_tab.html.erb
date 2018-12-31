@@ -1,0 +1,39 @@
+<% displayed_edition_number = nil %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <% @document.timeline_entries.includes(:user).order(created_at: :desc).includes(:retirement, :removal, :internal_note).each do |entry| %>
+      <div class="app-timeline-entry govuk-!-margin-bottom-6">
+        <% if displayed_edition_number != entry.edition_number %>
+          <h3 class="govuk-heading-m"><%= t "documents.history.edition_header", number: entry.edition_number.ordinalize %></h3>
+          <% displayed_edition_number = entry.edition_number %>
+        <% end %>
+
+        <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
+          <%= t "documents.history.entry_types.#{entry.entry_type}" %>
+        </h4>
+
+        <div class="app-timeline-entry__dateline">
+          <%= entry.created_at.strftime("%d %B %Y at %l:%M%P") %> by <%= entry.username_or_unknown %>
+        </div>
+
+        <% if entry.internal_note.present? %>
+          <%= simple_format(escape_and_link(entry.internal_note.body)) %>
+        <% end %>
+
+        <% if entry.retirement.present? %>
+          <%= entry.retirement.explanatory_note %>
+        <% elsif entry.removal.present? %>
+          <% if entry.removal.explanatory_note.present? %>
+            <p><%= entry.removal.explanatory_note %></p>
+          <% end %>
+          <% if entry.removal.redirect %>
+            <p>Redirected to <%= link_to(Plek.new.website_root + entry.removal.alternative_path) %></p>
+          <% elsif entry.removal.alternative_path.present? %>
+            <p><%= link_to(Plek.new.website_root + entry.removal.alternative_path) %></p>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

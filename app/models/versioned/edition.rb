@@ -61,10 +61,12 @@ module Versioned
     def self.create_initial(document, user = nil, tags = {})
       revision = Revision.create!(created_by: user,
                                   document: document,
-                                  tags: tags)
+                                  tags: tags,
+                                  update_type: "major",
+                                  change_note: "First published.")
       status = EditionStatus.create!(created_by: user,
                                      user_facing_state: :draft,
-                                     publishing_api_sync: :complete,
+                                     publishing_api_sync: :cant_sync,
                                      revision_at_creation: revision)
 
       create!(created_by: user,

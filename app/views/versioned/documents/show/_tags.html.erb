@@ -1,0 +1,32 @@
+<% begin %>
+  <% tags = @edition.document_type.tags.map { |tag_field|
+    service = LinkablesService.new(tag_field.document_type)
+
+    values = @edition.tags[tag_field.id].to_a
+      .map { |content_id| service.by_content_id(content_id) }
+
+    {
+      field: tag_field.label,
+      value: render("documents/tags/#{tag_field.type}", tag_field: tag_field, values: values)
+    }
+  } %>
+
+  <%= render "components/summary", {
+    id: "tags",
+    title: {
+      text: t("documents.show.tags.title"),
+      change_url: "" #@document.editable? && tags_path(@document)
+    },
+    items: tags
+  } %>
+<% rescue GdsApi::BaseError => e %>
+  <% GovukError.notify(e) %>
+
+  <%= render "components/summary", {
+    id: "tags",
+    title: {
+      text: t("documents.show.tags.title")
+    },
+    block: t("documents.show.tags.api_down")
+  } %>
+<% end %>
