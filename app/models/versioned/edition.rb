@@ -54,6 +54,8 @@ module Versioned
     delegate :user_facing_state, :publishing_api_sync, to: :status
     alias state user_facing_state
 
+    delegate :content_id, :locale, :document_type, :topics, to: :document
+
     delegate_missing_to :revision
 
     def self.create_initial(document, user = nil, tags = {})
