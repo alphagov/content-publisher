@@ -35,5 +35,25 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :with_current_and_live_editions do
+      after(:build) do |document, evaluator|
+        document.live_edition = evaluator.association(
+          :versioned_edition,
+          :published,
+          created_by: document.created_by,
+          current: false,
+          live: true,
+          document: document,
+        )
+
+        document.current_edition = evaluator.association(
+          :versioned_edition,
+          created_by: document.created_by,
+          current: true,
+          document: document,
+        )
+      end
+    end
   end
 end

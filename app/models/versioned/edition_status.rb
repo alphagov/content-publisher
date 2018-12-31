@@ -34,6 +34,7 @@ module Versioned
                               published: "published",
                               published_but_needs_2i: "published_but_needs_2i",
                               retired: "retired",
-                              removed: "removed" }
+                              removed: "removed",
+                              discarded: "discarded" }
   end
 end
