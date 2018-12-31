@@ -3,7 +3,7 @@
     <%
       def delete_draft_link(extra_class = [])
         link_to("Delete draft",
-                delete_draft_path(@edition.document),
+                versioned_delete_draft_path(@edition.document),
                 class: %w(govuk-link app-link--destructive) + Array(extra_class),
                 data: { gtm: "delete-draft" })
       end
