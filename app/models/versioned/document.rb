@@ -44,6 +44,11 @@ module Versioned
     delegate :title, :base_path, to: :current_edition, allow_nil: true, prefix: true
     delegate :title, :base_path, to: :live_edition, allow_nil: true, prefix: true
 
+    scope :with_current_edition, -> do
+      join_tables = { current_edition: %i[revision status] }
+      joins(join_tables).includes(join_tables)
+    end
+
     scope :using_base_path, ->(base_path) do
       left_outer_joins(current_edition: :revision,
                        live_edition: :revision)
@@ -93,6 +98,14 @@ module Versioned
       return if last_edited_at > time
 
       update!(last_edited_by: user, last_edited_at: time)
+    end
+
+    def newly_created?
+      created_at == updated_at
+    end
+
+    def live?
+      live_edition.present?
     end
   end
 end

@@ -1,0 +1,116 @@
+<% content_for :back_link, render_back_link(href: versioned_document_path(@document)) %>
+
+<% if @document.newly_created? %>
+  <% content_for :title, t("documents.edit.title_new", document_type: @document.document_type.label.downcase) %>
+<% else %>
+  <% content_for :title, t("documents.edit.title", title: @revision.title_or_fallback) %>
+<% end %>
+
+<%= form_for(
+  @document,
+  html: { "autocomplete": "off" },
+  data: {
+    module: "edit-document-form",
+    "url-preview-path": versioned_generate_path_path,
+    "warn-before-unload": "true",
+    gtm: "edit-document-submit",
+  }) do |f| %>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: t("documents.edit.form_labels.title"),
+          bold: true
+        },
+        id: "revision_title",
+        name: "revision[title]",
+        value: @revision.title,
+        error_items: @issues&.items_for(:title),
+        rows: 2,
+        maxlength: Requirements::ContentChecker::TITLE_MAX_LENGTH,
+        data: {
+          "url-preview": "input",
+          "contextual-guidance": "revision-title-guidance",
+          gtm: "title-input"
+        }
+      } do %>
+        <%= render "components/input_length_suggester", {
+          for_id: "revision_title",
+          show_from: 55,
+          message: "Title should be under 65 characters. Current length: {count}",
+        } %>
+      <% end %>
+
+      <%= render "components/url_preview", {
+        title: t("documents.edit.url_preview.available"),
+        default_message: t("documents.edit.url_preview.no_title"),
+        error_message: t("documents.edit.url_preview.error"),
+        website_root: Plek.new.website_root,
+        base_path: @revision.base_path
+      } do %>
+      <% end %>
+
+    </div>
+
+    <% if @document.document_type.guidance_for("title") %>
+      <div class="govuk-grid-column-one-third">
+        <%= render "components/contextual_guidance", {
+          id: "revision-title-guidance",
+          title: @document.document_type.guidance_for("title").title
+        } do %>
+          <p class="govuk-body"><%= @document.document_type.guidance_for("title").body_govspeak %></p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: t("documents.edit.form_labels.summary"),
+          bold: true
+        },
+        id: "revision_summary",
+        name: "revision[summary]",
+        value: @revision.summary,
+        error_items: @issues&.items_for(:summary),
+        rows: 4,
+        maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH,
+        data: {
+          "contextual-guidance": "document-summary-guidance",
+          gtm: "summary-input"
+        }
+      } do %>
+        <%= render "components/input_length_suggester", {
+          for_id: "revision_summary",
+          show_from: 120,
+          message: "Summary should be under 160 characters. Current length: {count}",
+        } %>
+      <% end %>
+    </div>
+
+    <% if @document.document_type.guidance_for("summary") %>
+      <div class="govuk-grid-column-one-third">
+        <%= render "components/contextual_guidance", {
+          id: "document-summary-guidance",
+          title: @document.document_type.guidance_for("summary").title
+        } do %>
+          <p class="govuk-body"><%= @document.document_type.guidance_for("summary").body_govspeak %></p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% @document.document_type.contents.each do |field| %>
+    <%= render "versioned/documents/fields/#{field.type}_input", field: field, document: @document, revision: @revision %>
+  <% end %>
+
+  <% if @document.live? %>
+    <%= render "versioned/documents/edit/change_notes" %>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Save", margin_bottom: true
+  } %>
+<% end %>
