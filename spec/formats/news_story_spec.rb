@@ -33,8 +33,7 @@ RSpec.feature "Create a news story", format: true do
     publishing_api_has_lookups(base_path => document.content_id)
 
     click_on "Save"
-    # TODO: Replace with https://github.com/bblimke/webmock/blob/d8686502442d9830dcccd24a1120ac08413d857a/lib/webmock/api.rb#L69 when it's released
-    WebMock::RequestRegistry.instance.reset!
+    reset_executed_requests!
   end
 
   def and_i_add_some_tags
