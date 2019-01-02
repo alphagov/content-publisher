@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_31_150103) do
+ActiveRecord::Schema.define(version: 2019_01_02_110013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -201,8 +201,10 @@ ActiveRecord::Schema.define(version: 2018_12_31_150103) do
     t.index ["status_id"], name: "index_versioned_editions_on_status_id"
   end
 
-  create_table "versioned_images", force: :cascade do |t|
+  create_table "versioned_image_revisions", force: :cascade do |t|
     t.bigint "blob_id", null: false
+    t.bigint "image_id", null: false
+    t.bigint "created_by_id"
     t.string "filename", null: false
     t.integer "width", null: false
     t.integer "height", null: false
@@ -214,16 +216,21 @@ ActiveRecord::Schema.define(version: 2018_12_31_150103) do
     t.string "alt_text"
     t.string "credit"
     t.datetime "created_at", null: false
-    t.index ["blob_id"], name: "index_versioned_images_on_blob_id"
+    t.index ["blob_id"], name: "index_versioned_image_revisions_on_blob_id"
+    t.index ["image_id"], name: "index_versioned_image_revisions_on_image_id"
   end
 
-  create_table "versioned_revision_images", force: :cascade do |t|
-    t.bigint "image_id", null: false
+  create_table "versioned_images", force: :cascade do |t|
+    t.bigint "created_by_id"
+    t.datetime "created_at", null: false
+  end
+
+  create_table "versioned_revision_image_revisions", force: :cascade do |t|
+    t.bigint "image_revision_id", null: false
     t.bigint "revision_id", null: false
     t.datetime "created_at", null: false
-    t.index ["image_id"], name: "index_versioned_revision_images_on_image_id"
-    t.index ["revision_id", "image_id"], name: "index_versioned_revision_images_on_revision_id_and_image_id", unique: true
-    t.index ["revision_id"], name: "index_versioned_revision_images_on_revision_id"
+    t.index ["image_revision_id"], name: "index_versioned_revision_image_revisions_on_image_revision_id"
+    t.index ["revision_id"], name: "index_versioned_revision_image_revisions_on_revision_id"
   end
 
   create_table "versioned_revisions", force: :cascade do |t|
@@ -236,11 +243,11 @@ ActiveRecord::Schema.define(version: 2018_12_31_150103) do
     t.string "update_type", null: false
     t.bigint "created_by_id"
     t.datetime "created_at", null: false
-    t.bigint "lead_image_id"
     t.bigint "document_id", null: false
+    t.bigint "lead_image_revision_id"
     t.index ["created_by_id"], name: "index_versioned_revisions_on_created_by_id"
     t.index ["document_id"], name: "index_versioned_revisions_on_document_id"
-    t.index ["lead_image_id"], name: "index_versioned_revisions_on_lead_image_id"
+    t.index ["lead_image_revision_id"], name: "index_versioned_revisions_on_lead_image_revision_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -278,10 +285,13 @@ ActiveRecord::Schema.define(version: 2018_12_31_150103) do
   add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_edition_statuses", column: "status_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_revisions", column: "revision_id", on_delete: :restrict
-  add_foreign_key "versioned_images", "active_storage_blobs", column: "blob_id", on_delete: :restrict
-  add_foreign_key "versioned_revision_images", "versioned_images", column: "image_id", on_delete: :restrict
-  add_foreign_key "versioned_revision_images", "versioned_revisions", column: "revision_id", on_delete: :restrict
+  add_foreign_key "versioned_image_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
+  add_foreign_key "versioned_image_revisions", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_image_revisions", "versioned_images", column: "image_id", on_delete: :restrict
+  add_foreign_key "versioned_images", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_revision_image_revisions", "versioned_image_revisions", column: "image_revision_id", on_delete: :restrict
+  add_foreign_key "versioned_revision_image_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_revisions", "versioned_documents", column: "document_id", on_delete: :restrict
-  add_foreign_key "versioned_revisions", "versioned_images", column: "lead_image_id", on_delete: :restrict
+  add_foreign_key "versioned_revisions", "versioned_image_revisions", column: "lead_image_revision_id", on_delete: :restrict
 end
