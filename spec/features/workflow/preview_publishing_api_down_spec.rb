@@ -40,7 +40,7 @@ RSpec.feature "Previewing a document when the Publishing API is down" do
   end
 
   def when_the_publishing_api_is_up
-    WebMock::RequestRegistry.instance.reset!
+    reset_executed_requests!
     @request = stub_publishing_api_put_content(Document.last.content_id, {})
   end
 
