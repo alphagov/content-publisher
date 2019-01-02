@@ -33,12 +33,14 @@ module Versioned
                                       .lock
                                       .find_by_param(params[:id])
 
-        Versioned::DeleteDraftService.new(document, current_user).delete
+        begin
+          Versioned::DeleteDraftService.new(document, current_user).delete
 
-        redirect_to versioned_documents_path
-      rescue GdsApi::BaseError => e
-        GovukError.notify(e)
-        redirect_to document, alert_with_description: t("documents.show.flashes.delete_draft_error")
+          redirect_to versioned_documents_path
+        rescue GdsApi::BaseError => e
+          GovukError.notify(e)
+          redirect_to document, alert_with_description: t("documents.show.flashes.delete_draft_error")
+        end
       end
     end
 
