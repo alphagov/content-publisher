@@ -10,10 +10,10 @@ module Versioned
                optional: true,
                foreign_key: :created_by_id
 
-    belongs_to :lead_image,
-               class_name: "Versioned::Image",
+    belongs_to :lead_image_revision,
+               class_name: "Versioned::ImageRevision",
                optional: true,
-               foreign_key: :lead_image_id
+               foreign_key: :lead_image_revision_id
     # rubocop:enable Rails/InverseOf
 
     belongs_to :document,
@@ -31,9 +31,9 @@ module Versioned
                             class_name: "Versioned::Edition",
                             join_table: "versioned_edition_revisions"
 
-    has_and_belongs_to_many :images,
-                            class_name: "Versioned::Image",
-                            join_table: "versioned_revision_images"
+    has_and_belongs_to_many :image_revisions,
+                            class_name: "Versioned::ImageRevision",
+                            join_table: "versioned_revision_image_revisions"
 
     enum update_type: { major: "major", minor: "minor" }
 
@@ -44,7 +44,9 @@ module Versioned
     def build_next_revision(attributes, user)
       dup.tap do |revision|
         revision.assign_attributes(attributes.merge(created_by: user))
-        revision.image_ids = image_ids
+        if !attributes.has_key?(:image_revision_ids) && !attributes.has_key?(:image_revisions)
+          revision.image_revision_ids = image_revision_ids
+        end
       end
     end
 

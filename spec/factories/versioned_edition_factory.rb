@@ -20,6 +20,8 @@ FactoryBot.define do
       contents { {} }
       tags { {} }
       user_facing_state { "draft" }
+      lead_image_revision { nil }
+      image_revisions { [] }
     end
 
     after(:build) do |edition, evaluator|
@@ -48,6 +50,8 @@ FactoryBot.define do
           tags: evaluator.tags,
           update_type: evaluator.update_type,
           change_note: evaluator.change_note,
+          lead_image_revision: evaluator.lead_image_revision,
+          image_revisions: evaluator.image_revisions,
         )
       end
 
