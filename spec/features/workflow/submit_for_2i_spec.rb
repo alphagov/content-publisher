@@ -28,7 +28,7 @@ RSpec.feature "2i" do
     expect(page).to have_content I18n.t!("documents.show.flashes.submitted_for_review.title")
     expect(page).to have_content I18n.t!("user_facing_states.submitted_for_review.name")
 
-    within find(".app-timeline-entry:first") do
+    within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.submitted")
     end
   end

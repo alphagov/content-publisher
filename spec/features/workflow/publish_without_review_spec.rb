@@ -36,7 +36,7 @@ RSpec.feature "Publish without review" do
   def then_i_see_it_has_not_been_reviewed
     expect(page).to have_content I18n.t!("user_facing_states.published_but_needs_2i.name")
 
-    within find(".app-timeline-entry:first") do
+    within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.published_without_review")
     end
   end
@@ -49,7 +49,7 @@ RSpec.feature "Publish without review" do
     expect(page).to have_content I18n.t!("documents.show.flashes.approved")
     expect(page).to have_content I18n.t!("user_facing_states.published.name")
 
-    within find(".app-timeline-entry:first") do
+    within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.approved")
     end
   end
