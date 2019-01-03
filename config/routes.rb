@@ -81,21 +81,21 @@ Rails.application.routes.draw do
 
     # get "/documents/:id/preview" => "preview#show", as: :preview_document
     # post "/documents/:id/create-preview" => "preview#create", as: :create_preview
-    #
+
     # get "/documents/:id/retire" => "unpublish#retire", as: :retire
     # get "/documents/:id/remove" => "unpublish#remove", as: :remove
-    #
-    # get "/documents/:document_id/images" => "images#index", as: :images
-    # post "/documents/:document_id/images" => "images#create", as: :create_image
-    # get "/documents/:document_id/images/:image_id/download" => "images#download", as: :download_image
-    # get "/documents/:document_id/images/:image_id/crop" => "images#crop", as: :crop_image
-    # patch "/documents/:document_id/images/:image_id/crop" => "images#update_crop"
-    # get "/documents/:document_id/images/:image_id/edit" => "images#edit", as: :edit_image
-    # patch "/documents/:document_id/images/:image_id/edit" => "images#update", as: :update_image
-    # delete "/documents/:document_id/images/:image_id" => "images#destroy", as: :destroy_image
-    #
-    # post "/documents/:document_id/lead-image/:image_id" => "lead_image#choose", as: :choose_lead_image
-    # delete "/documents/:document_id/lead-image" => "lead_image#remove", as: :remove_lead_image
+
+    get "/documents/:document_id/images" => "images#index", as: :images
+    post "/documents/:document_id/images" => "images#create", as: :create_image
+    get "/documents/:document_id/images/:image_id/download" => "images#download", as: :download_image
+    get "/documents/:document_id/images/:image_id/crop" => "images#crop", as: :crop_image
+    patch "/documents/:document_id/images/:image_id/crop" => "images#update_crop"
+    get "/documents/:document_id/images/:image_id/edit" => "images#edit", as: :edit_image
+    patch "/documents/:document_id/images/:image_id/edit" => "images#update", as: :update_image
+    delete "/documents/:document_id/images/:image_id" => "images#destroy", as: :destroy_image
+
+    post "/documents/:document_id/lead-image/:image_id" => "lead_image#choose", as: :choose_lead_image
+    delete "/documents/:document_id/lead-image" => "lead_image#remove", as: :remove_lead_image
 
     get "/documents/:document_id/topics" => "topics#edit", as: :topics
     patch "/documents/:document_id/topics" => "topics#update", as: :update_topics
