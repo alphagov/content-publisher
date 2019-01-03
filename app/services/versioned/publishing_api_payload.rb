@@ -32,7 +32,7 @@ module Versioned
           "auth_bypass_ids" => [Versioned::EditionUrl.new(edition).auth_bypass_id],
         },
       }
-      payload["change_note"] = edition.change_note if major_update?
+      payload["change_note"] = edition.change_note if edition.major?
       payload
     end
 
@@ -51,10 +51,11 @@ module Versioned
 
     def image
       {
-        "url" => edition.lead_image.asset_manager_file_url,
-        "alt_text" => edition.lead_image.alt_text,
-        "caption" => edition.lead_image.caption,
-        "credit" => edition.lead_image.credit,
+        "high_resolution_url" => edition.lead_image_revision.asset_manager_url("high_resolution"),
+        "url" => edition.lead_image_revision.asset_manager_url("300"),
+        "alt_text" => edition.lead_image_revision.alt_text,
+        "caption" => edition.lead_image_revision.caption,
+        "credit" => edition.lead_image_revision.credit,
       }
     end
 
@@ -65,7 +66,7 @@ module Versioned
         details[field.id] = perform_input_type_specific_transformations(field)
       end
 
-      if document_type.lead_image && edition.lead_image.present?
+      if document_type.lead_image && edition.lead_image_revision.present?
         details["image"] = image
       end
 
@@ -95,10 +96,6 @@ module Versioned
       else
         document.contents[field.id]
       end
-    end
-
-    def major_update?
-      edition.update_type == "major"
     end
   end
 end

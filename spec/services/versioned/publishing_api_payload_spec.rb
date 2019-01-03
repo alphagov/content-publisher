@@ -100,28 +100,31 @@ RSpec.describe Versioned::PublishingApiPayload do
       expect(payload["details"]["body"]).to eq("<p>Hey <strong>buddy</strong>!</p>\n")
     end
 
-    # it "includes a lead image if present" do
-    #   image = build(
-    #     :image,
-    #     alt_text: "image alt text",
-    #     caption: "image caption",
-    #     asset_manager_file_url: "http:://assets-manager.gov.uk/image.jpg",
-    #     credit: "image credit",
-    #   )
-    #   document_type = build(:document_type, lead_image: true)
-    #   document = build(:document, document_type_id: document_type.id, lead_image: image)
-    #
-    #   payload = Versioned::PublishingApiPayload.new(document).payload
-    #
-    #   payload_hash = {
-    #     "url" => "http:://assets-manager.gov.uk/image.jpg",
-    #     "alt_text" => "image alt text",
-    #     "caption" => "image caption",
-    #     "credit" => "image credit",
-    #   }
-    #
-    #   expect(payload["details"]["image"]).to match a_hash_including(payload_hash)
-    # end
+    it "includes a lead image if present" do
+      image_revision = build(:versioned_image_revision,
+                             :in_preview,
+                             alt_text: "image alt text",
+                             caption: "image caption",
+                             credit: "image credit")
+
+      document_type = build(:document_type, lead_image: true)
+
+      edition = build(:versioned_edition,
+                      document_type_id: document_type.id,
+                      lead_image_revision: image_revision)
+
+      payload = Versioned::PublishingApiPayload.new(edition).payload
+
+      payload_hash = {
+        "url" => image_revision.asset_manager_url("300"),
+        "high_resolution_url" => image_revision.asset_manager_url("high_resolution"),
+        "alt_text" => "image alt text",
+        "caption" => "image caption",
+        "credit" => "image credit",
+      }
+
+      expect(payload["details"]["image"]).to match a_hash_including(payload_hash)
+    end
 
     it "includes a change note if the update type is 'major'" do
       edition = create(:versioned_edition,
