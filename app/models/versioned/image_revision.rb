@@ -79,7 +79,7 @@ module Versioned
     end
 
     def asset_manager_url(variant)
-      asset_manager_variants.find_by(variant: variant)&.file_url
+      asset_manager_variants.find { |v| v.variant == variant }&.file_url
     end
 
     def thumbnail
