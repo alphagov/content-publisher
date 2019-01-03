@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_02_110013) do
+ActiveRecord::Schema.define(version: 2019_01_02_182816) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -138,6 +138,23 @@ ActiveRecord::Schema.define(version: 2019_01_02_110013) do
     t.boolean "disabled", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "versioned_asset_manager_files", force: :cascade do |t|
+    t.string "file_url"
+    t.string "state", default: "absent", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["file_url"], name: "index_versioned_asset_manager_files_on_file_url", unique: true
+  end
+
+  create_table "versioned_asset_manager_image_variants", force: :cascade do |t|
+    t.bigint "image_revision_id", null: false
+    t.bigint "asset_manager_file_id", null: false
+    t.string "variant", null: false
+    t.datetime "created_at", null: false
+    t.index ["image_revision_id", "asset_manager_file_id"], name: "index_image_revision_asset_manager_variant_ids", unique: true
+    t.index ["image_revision_id", "variant"], name: "index_image_revision_asset_manager_variant_unique_variant", unique: true
   end
 
   create_table "versioned_documents", force: :cascade do |t|
@@ -273,6 +290,8 @@ ActiveRecord::Schema.define(version: 2019_01_02_110013) do
   add_foreign_key "retirements", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
   add_foreign_key "timeline_entries", "documents", on_delete: :cascade
   add_foreign_key "timeline_entries", "users", on_delete: :nullify
+  add_foreign_key "versioned_asset_manager_image_variants", "versioned_asset_manager_files", column: "asset_manager_file_id", on_delete: :restrict
+  add_foreign_key "versioned_asset_manager_image_variants", "versioned_image_revisions", column: "image_revision_id", on_delete: :cascade
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_documents", "users", column: "last_edited_by_id", on_delete: :nullify
   add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :restrict
