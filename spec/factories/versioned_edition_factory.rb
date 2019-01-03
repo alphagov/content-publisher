@@ -39,6 +39,12 @@ FactoryBot.define do
       edition.number = edition.document&.next_edition_number unless edition.number
 
       unless edition.revision
+        image_revisions = if evaluator.image_revisions.any?
+                            evaluator.image_revisions
+                          else
+                            [evaluator.lead_image_revision].compact
+                          end
+
         edition.revision = evaluator.association(
           :versioned_revision,
           created_by: edition.created_by,
@@ -51,7 +57,7 @@ FactoryBot.define do
           update_type: evaluator.update_type,
           change_note: evaluator.change_note,
           lead_image_revision: evaluator.lead_image_revision,
-          image_revisions: evaluator.image_revisions,
+          image_revisions: image_revisions,
         )
       end
 
