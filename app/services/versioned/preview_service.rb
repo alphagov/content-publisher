@@ -9,6 +9,7 @@ module Versioned
     end
 
     def create_preview
+      upload_assets(edition)
       publish_draft(edition)
     end
 
@@ -16,7 +17,13 @@ module Versioned
       if has_issues?
         edition.draft_requirements_not_met!
       else
-        try_publish_draft(edition)
+        begin
+          upload_assets(edition)
+          publish_draft(edition)
+        rescue GdsApi::BaseError => e
+          edition.draft_failure!
+          GovukError.notify(e)
+        end
       end
     end
 
@@ -26,19 +33,52 @@ module Versioned
       Versioned::Requirements::EditionChecker.new(edition).pre_preview_issues.any?
     end
 
-    def try_publish_draft(edition)
-      publish_draft(edition)
-    rescue GdsApi::BaseError => e
-      GovukError.notify(e)
-    end
-
-    def publish_draft(document)
-      payload = PublishingApiPayload.new(document).payload
-      GdsApi.publishing_api_v2.put_content(document.content_id, payload)
+    def publish_draft(edition)
+      payload = Versioned::PublishingApiPayload.new(edition).payload
+      GdsApi.publishing_api_v2.put_content(edition.content_id, payload)
       edition.draft_available!
     rescue GdsApi::BaseError
       edition.draft_failure!
       raise
+    end
+
+    def upload_assets(edition)
+      edition.image_revisions.each do |image_revision|
+        image_revision.ensure_asset_manager_variants
+
+        image_revision.asset_manager_variants.each do |variant|
+          if variant.image_revision == edition.lead_image_revision
+            upload_image(edition, variant)
+          else
+            # until we have inline images these don't need to be on asset manager
+            delete_image(variant)
+          end
+        end
+      end
+    rescue GdsApi::BaseError
+      edition.draft_failure!
+      raise
+    end
+
+    def upload_image(edition, asset_manager_variant)
+      return unless asset_manager_variant.absent?
+
+      auth_bypass_id = Versioned::EditionUrl.new(edition).auth_bypass_id
+      file_url = Versioned::AssetManagerService.new
+                                               .upload(asset_manager_variant, auth_bypass_id)
+      asset_manager_variant.file.update!(file_url: file_url, state: :draft)
+    end
+
+    def delete_image(asset_manager_variant)
+      # if it's live we assume it's used by the live edition
+      return if asset_manager_variant.live? || asset_manager_variant.absent?
+
+      begin
+        Versioned::AssetManagerService.new.delete(asset_manager_variant)
+      rescue GdsApi::HTTPNotFound
+        Rails.logger.warn("No asset to delete for id #{asset_manager_variant.asset_manager_id}")
+      end
+      asset_manager_variant.file.absent!
     end
   end
 end

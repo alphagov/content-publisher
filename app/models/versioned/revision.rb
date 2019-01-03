@@ -50,8 +50,33 @@ module Versioned
       end
     end
 
+    def build_next_revision_for_image_upsert(image_revision, user)
+      revisions = image_revisions.reject { |ir| ir.image_id == image_revision.image_id }
+      attributes = { image_revisions: revisions + [image_revision] }
+
+      if lead_image_revision&.image_id == image_revision.image_id
+        attributes[:lead_image_revision] = image_revision
+      end
+
+      build_next_revision(attributes, user)
+    end
+
+    def build_next_revision_for_image_removed(image_revision, user)
+      attributes = { image_revisions: image_revisions - [image_revision] }
+
+      if lead_image_revision == image_revision
+        attributes[:lead_image_revision] = nil
+      end
+
+      build_next_revision(attributes, user)
+    end
+
     def title_or_fallback
       title.presence || I18n.t!("documents.untitled_document")
+    end
+
+    def image_revisions_without_lead
+      image_revisions.reject { |i| i.id == lead_image_revision_id }
     end
   end
 end
