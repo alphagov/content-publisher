@@ -10,10 +10,11 @@ module Versioned
     end
 
     def delete
+      raise "Trying to delete a document without a current edition" unless document.current_edition
       raise "Trying to delete a live document" if document.current_edition.live
 
       current_edition = document.current_edition
-      current_edition.images.each { |asset| delete_asset(asset) }
+      current_edition.image_revisions.each { |ir| delete_image_revision(ir) }
       discard_draft
 
       current_edition.assign_status(user, :discarded)
@@ -34,12 +35,17 @@ module Versioned
       Rails.logger.warn("No draft to discard for content id #{document.content_id}")
     end
 
-    def delete_asset(asset)
-      return unless asset.asset_manager_id
+    def delete_image_revision(image_revision)
+      image_revision.asset_manager_variants.each do |variant|
+        next unless variant.draft?
 
-      AssetManagerService.new.delete(asset)
-    rescue GdsApi::HTTPNotFound
-      Rails.logger.warn("No asset to delete for id #{asset.asset_manager_id}")
+        begin
+          AssetManagerService.new.delete(variant)
+        rescue GdsApi::HTTPNotFound
+          Rails.logger.warn("No asset to delete for id #{variant.asset_manager_id}")
+        end
+        variant.absent!
+      end
     end
   end
 end
