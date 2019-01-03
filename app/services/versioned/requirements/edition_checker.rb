@@ -13,8 +13,8 @@ module Versioned
       def pre_preview_issues
         issues = []
 
-        revision.images.each do |image|
-          issues += ::Requirements::ImageChecker.new(image).pre_preview_issues.to_a
+        revision.image_revisions.each do |image|
+          issues += ImageRevisionChecker.new(image).pre_preview_issues.to_a
         end
 
         issues += ContentChecker.new(edition, revision).pre_preview_issues.to_a
