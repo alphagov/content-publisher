@@ -14,6 +14,7 @@ module Versioned
                foreign_key: :asset_manager_file_id,
                inverse_of: :image_variants
 
+    delegate :filename, :content_type, to: :image_revision
     delegate_missing_to :file
 
     def self.build_with_file(variant)
