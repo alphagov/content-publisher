@@ -33,7 +33,7 @@ RSpec.feature "Edit a document" do
   def then_i_see_the_document_is_saved
     expect(page).to have_content("Edited body.")
 
-    within find(".app-timeline-entry:first") do
+    within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
     end
   end

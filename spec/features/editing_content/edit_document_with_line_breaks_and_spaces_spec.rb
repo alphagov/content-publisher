@@ -35,7 +35,7 @@ RSpec.feature "Edit a document with fields containing line breaks and spaces" do
     expect(page).to have_content("Edited title")
     expect(page).to have_content("Edited summary.")
 
-    within find(".app-timeline-entry:first") do
+    within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
     end
   end

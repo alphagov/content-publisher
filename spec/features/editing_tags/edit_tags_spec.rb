@@ -61,7 +61,7 @@ RSpec.feature "Edit document tags" do
       expect(page).not_to have_content("Initial tag")
     end
 
-    within find(".app-timeline-entry:first") do
+    within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.updated_tags")
     end
   end
