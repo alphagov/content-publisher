@@ -1,0 +1,32 @@
+<% content_for :back_link, render_back_link(href: versioned_images_path(@document)) %>
+<% content_for :title, t("images.crop.title", title: @document.current_edition.title_or_fallback) %>
+
+<%= form_tag(versioned_crop_image_path(@document, @image_revision.image_id), method: :patch) do %>
+  <%= hidden_field_tag :wizard, params[:wizard] %>
+
+  <%= render "/components/image_cropper", {
+    id: "crop-image",
+    src: url_for(@image_revision.blob),
+    no_js_src: url_for(@image_revision.crop_variant('960x640')),
+    exact_dimensions: @image_revision.at_exact_dimensions?,
+    alt_text: @image_revision.alt_text,
+    crop_x: @image_revision.crop_x,
+    crop_y: @image_revision.crop_y,
+    crop_width: @image_revision.crop_width,
+    crop_height: @image_revision.crop_height,
+  } %>
+
+  <div class="app-js-only">
+    <%= render "govuk_publishing_components/components/button", {
+      text: (@image_revision.at_exact_dimensions?) ? "Continue" : "Crop image",
+      margin_bottom: true
+    } %>
+  </div>
+
+  <div class="app-no-js">
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Continue",
+      margin_bottom: true
+    } %>
+  </div>
+<% end %>
