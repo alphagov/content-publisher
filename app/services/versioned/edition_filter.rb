@@ -22,7 +22,7 @@ module Versioned
     def editions
       scope = Versioned::Edition.where(current: true)
                                 .joins(:revision, :status, :document)
-                                .preload(:revision, :status, document: :last_edited_by)
+                                .preload(:revision, :status, :document, :last_edited_by)
       scope = filtered_scope(scope)
       scope = ordered_scope(scope)
       scope.page(page).per(per_page)
