@@ -91,18 +91,20 @@ module Versioned
       document.update_last_edited_at(user, time)
     end
 
-    def assign_status(user, user_facing_state)
+    def assign_status(user, user_facing_state, update_last_edited: true)
       status = Versioned::EditionStatus.new(
         created_by: user,
         user_facing_state: user_facing_state,
         revision_at_creation_id: revision_id,
       )
 
-      assign_attributes(
-        last_edited_at: Time.zone.now,
-        last_edited_by: user,
-        status: status,
-      )
+      attributes = { status: status }
+
+      if update_last_edited
+        attributes.merge!(last_edited_at: Time.zone.now, last_edited_by: user)
+      end
+
+      assign_attributes(attributes)
 
       self
     end
