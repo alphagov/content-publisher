@@ -32,14 +32,27 @@ module Versioned
       end
     end
 
-    # def approve
-    #   Versioned::Document.transaction do
-    #     document = Versioned::Document.with_current_edition
-    #                                   .lock
-    #                                   .find_by_param(params[:id])
-    #     # TimelineEntry.create!(document: document, user: current_user, entry_type: "approved")
-    #     redirect_to document, notice: t("documents.show.flashes.approved")
-    #   end
-    # end
+    def approve
+      Versioned::Document.transaction do
+        document = Versioned::Document.with_current_edition
+                                      .lock
+                                      .find_by_param(params[:id])
+
+        current_edition = document.current_edition
+
+        if !current_edition.status.published_but_needs_2i?
+          # probably better to return a 400 response but we don't currently
+          # have a template
+          redirect_to document
+        end
+
+        current_edition.assign_status(current_user, :published)
+        current_edition.save!
+
+        # TODO: add timeline entry
+
+        redirect_to document, notice: t("documents.show.flashes.approved")
+      end
+    end
   end
 end

@@ -23,7 +23,7 @@
 
       <%= delete_draft_link %>
     <% elsif @edition.status.published_but_needs_2i? %>
-      <%= form_tag approve_document_path(@edition.document) do %>
+      <%= form_tag versioned_approve_document_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Approve" %>
       <% end %>
 
