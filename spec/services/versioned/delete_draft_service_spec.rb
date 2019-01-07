@@ -26,7 +26,7 @@ RSpec.describe Versioned::DeleteDraftService do
     end
 
     it "attempts to delete the assets from asset manager" do
-      image_revision = create :versioned_image_revision, :in_preview
+      image_revision = create :versioned_image_revision, :on_asset_manager
       edition = create :versioned_edition, lead_image_revision: image_revision
 
       stub_publishing_api_discard_draft(edition.content_id)
@@ -86,7 +86,7 @@ RSpec.describe Versioned::DeleteDraftService do
     end
 
     it "copes if an asset is not in Asset Manager" do
-      image_revision = create :versioned_image_revision, :in_preview
+      image_revision = create :versioned_image_revision, :on_asset_manager
       edition = create :versioned_edition, lead_image_revision: image_revision
 
       image_revision.asset_manager_variants.map do |variant|
@@ -106,7 +106,7 @@ RSpec.describe Versioned::DeleteDraftService do
     end
 
     it "raises an error when Asset Manager is down" do
-      image_revision = create :versioned_image_revision, :in_preview
+      image_revision = create :versioned_image_revision, :on_asset_manager
       edition = create :versioned_edition, lead_image_revision: image_revision
 
       image_revision.asset_manager_variants.map do |variant|
