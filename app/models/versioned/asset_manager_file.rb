@@ -11,9 +11,21 @@ module Versioned
 
     has_many :image_revisions, through: :image_variants
 
+    belongs_to :superseded_by,
+               class_name: "Versioned::AssetManagerFile",
+               inverse_of: :supersedes,
+               optional: true
+
+    has_many :supersedes,
+             class_name: "Versioned::AssetManagerFile",
+             foreign_key: :superseded_by_id,
+             inverse_of: :superseded_by,
+             dependent: :nullify
+
     enum state: { absent: "absent",
                   draft: "draft",
-                  live: "live" }
+                  live: "live",
+                  superseded: "superseded" }
 
     def asset_manager_id
       url_array = file_url.to_s.split("/")

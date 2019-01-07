@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_02_182816) do
+ActiveRecord::Schema.define(version: 2019_01_07_171132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,6 +145,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_182816) do
     t.string "state", default: "absent", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "superseded_by_id"
     t.index ["file_url"], name: "index_versioned_asset_manager_files_on_file_url", unique: true
   end
 
@@ -290,6 +291,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_182816) do
   add_foreign_key "retirements", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
   add_foreign_key "timeline_entries", "documents", on_delete: :cascade
   add_foreign_key "timeline_entries", "users", on_delete: :nullify
+  add_foreign_key "versioned_asset_manager_files", "versioned_asset_manager_files", column: "superseded_by_id", on_delete: :nullify
   add_foreign_key "versioned_asset_manager_image_variants", "versioned_asset_manager_files", column: "asset_manager_file_id", on_delete: :restrict
   add_foreign_key "versioned_asset_manager_image_variants", "versioned_image_revisions", column: "image_revision_id", on_delete: :cascade
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :nullify
