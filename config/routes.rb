@@ -79,8 +79,8 @@ Rails.application.routes.draw do
     get "/documents/:id/tags" => "tags#edit", as: :tags
     post "/documents/:id/tags" => "tags#update"
 
-    # get "/documents/:id/preview" => "preview#show", as: :preview_document
-    # post "/documents/:id/create-preview" => "preview#create", as: :create_preview
+    get "/documents/:id/preview" => "preview#show", as: :preview_document
+    post "/documents/:id/create-preview" => "preview#create", as: :create_preview
 
     # get "/documents/:id/retire" => "unpublish#retire", as: :retire
     # get "/documents/:id/remove" => "unpublish#remove", as: :remove

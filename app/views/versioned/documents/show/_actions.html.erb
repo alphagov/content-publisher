@@ -9,7 +9,7 @@
       end
     %>
     <% if @edition.draft_requirements_not_met? %>
-      <%= form_tag create_preview_path(@edition.document) do %>
+      <%= form_tag versioned_create_preview_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Preview" %>
       <% end %>
 
@@ -17,7 +17,7 @@
     <% elsif @edition.draft_failure? %>
       <%= render_govspeak(t("documents.show.sidebar.error_creating_preview_govspeak")) %>
 
-      <%= form_tag create_preview_path(@edition.document) do %>
+      <%= form_tag versioned_create_preview_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Try again" %>
       <% end %>
 
@@ -55,7 +55,7 @@
                  href: publish_confirmation_path(@edition.document) %>
       <%= render "govuk_publishing_components/components/button",
                  text: "Preview",
-                 href: preview_document_path(@edition.document),
+                 href: versioned_preview_document_path(@edition.document),
                  secondary: true %>
 
       <%= delete_draft_link("app-link--right") %>
@@ -64,7 +64,7 @@
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
       <% end %>
 
-      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@edition.document), secondary: true %>
+      <%= render "govuk_publishing_components/components/button", text: "Preview", href: versioned_preview_document_path(@edition.document), secondary: true %>
 
       <%= link_to "Publish", publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
 
