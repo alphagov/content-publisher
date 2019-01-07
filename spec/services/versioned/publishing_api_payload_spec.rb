@@ -102,7 +102,7 @@ RSpec.describe Versioned::PublishingApiPayload do
 
     it "includes a lead image if present" do
       image_revision = build(:versioned_image_revision,
-                             :in_preview,
+                             :on_asset_manager,
                              alt_text: "image alt text",
                              caption: "image caption",
                              credit: "image credit")
