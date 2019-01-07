@@ -101,7 +101,8 @@ module Versioned
       attributes = { status: status }
 
       if update_last_edited
-        attributes.merge!(last_edited_at: Time.zone.now, last_edited_by: user)
+        attributes[:last_edited_at] = Time.zone.now
+        attributes[:last_edited_by] = user
       end
 
       assign_attributes(attributes)

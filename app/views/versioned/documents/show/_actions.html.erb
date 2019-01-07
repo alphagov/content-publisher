@@ -52,7 +52,7 @@
     <% elsif @edition.status.submitted_for_review? %>
       <%= render "govuk_publishing_components/components/button",
                  text: "Publish",
-                 href: publish_confirmation_path(@edition.document) %>
+                 href: versioned_publish_confirmation_path(@edition.document) %>
       <%= render "govuk_publishing_components/components/button",
                  text: "Preview",
                  href: versioned_preview_document_path(@edition.document),
@@ -66,7 +66,7 @@
 
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: versioned_preview_document_path(@edition.document), secondary: true %>
 
-      <%= link_to "Publish", publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Publish", versioned_publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
 
       <%= delete_draft_link("app-link--right") %>
     <% end %>
