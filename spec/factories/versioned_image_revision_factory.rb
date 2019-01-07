@@ -28,14 +28,18 @@ FactoryBot.define do
       image_revision.ensure_asset_manager_variants
     end
 
-    trait :in_preview do
+    trait :on_asset_manager do
       alt_text { SecureRandom.hex(8) }
 
-      after(:build) do |image_revision|
+      transient {
+        state { :draft }
+      }
+
+      after(:build) do |image_revision, evaluator|
         image_revision.asset_manager_variants.each do |variant|
           url = "https://asset-manager.test.gov.uk/media/" +
             "asset-id#{SecureRandom.hex(8)}/#{image_revision.filename}"
-          variant.file.assign_attributes(state: :draft, file_url: url)
+          variant.file.assign_attributes(state: evaluator.state, file_url: url)
         end
       end
     end
