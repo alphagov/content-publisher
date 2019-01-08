@@ -47,6 +47,10 @@ module Versioned
              dependent: :restrict_with_exception,
              inverse_of: :edition
 
+    has_many :timeline_entries,
+             class_name: "Versioned::TimelineEntry",
+             dependent: :destroy
+
     has_and_belongs_to_many :revisions,
                             class_name: "Versioned::Revision",
                             join_table: "versioned_edition_revisions"
