@@ -12,6 +12,7 @@ Metrics/BlockLength:
     - 'config/routes.rb'
     - 'lib/tasks/**/*.rake'
     - 'spec/**/*.rb'
+    - 'db/migrate/*.rb'
 
 Rails:
   Enabled: true

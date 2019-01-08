@@ -39,6 +39,10 @@ module Versioned
              class_name: "Versioned::Revision",
              dependent: :restrict_with_exception
 
+    has_many :timeline_entries,
+             class_name: "Versioned::TimelineEntry",
+             dependent: :destroy
+
     delegate :topics, to: :document_topics
 
     delegate :title, :base_path, :title_or_fallback, to: :current_edition, allow_nil: true, prefix: true
