@@ -29,9 +29,12 @@ module Versioned
         current_edition.update!(revision: revision)
         current_edition.update_last_edited_at(current_user)
 
-        PreviewService.new(current_edition).try_create_preview
+        Versioned::TimelineEntry.create_for_revision(
+          entry_type: :updated_tags,
+          edition: current_edition,
+        )
 
-        # TODO: timeline entry
+        PreviewService.new(current_edition).try_create_preview
 
         redirect_to document
       end

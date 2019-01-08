@@ -21,6 +21,8 @@ module Versioned
 
       supersede_live_edition(user)
       set_new_live_edition(user, with_review)
+
+      current_edition
     rescue GdsApi::BaseError => e
       GovukError.notify(e)
       raise
