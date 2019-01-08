@@ -27,6 +27,9 @@
     environment: GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment,
     navigation_items: [
       { text: "Switch app", href: Plek.new.external_url_for("signon") },
+      { text: t("application.phase_banner.raise_a_support_request"), href: "https://support.publishing.service.gov.uk/technical_fault_report/new", show_only_in_collapsed_menu: true },
+      { text: t("application.phase_banner.send_us_feedback"), href: "https://support.publishing.service.gov.uk/content_publisher_feedback_request/new", show_only_in_collapsed_menu: true },
+      { text: t("application.phase_banner.whats_new"), href: publisher_updates_path, show_only_in_collapsed_menu: true },
       { text: current_user.name, href: Plek.new.external_url_for("signon") },
       { text: "Log out", href: gds_sign_out_path }
     ]
