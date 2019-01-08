@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_07_171132) do
+ActiveRecord::Schema.define(version: 2019_01_08_111128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -268,6 +268,22 @@ ActiveRecord::Schema.define(version: 2019_01_07_171132) do
     t.index ["lead_image_revision_id"], name: "index_versioned_revisions_on_lead_image_revision_id"
   end
 
+  create_table "versioned_timeline_entries", force: :cascade do |t|
+    t.bigint "document_id", null: false
+    t.bigint "edition_id"
+    t.bigint "revision_id"
+    t.bigint "edition_status_id"
+    t.bigint "created_by_id"
+    t.string "details_type"
+    t.bigint "details_id"
+    t.datetime "created_at", null: false
+    t.string "entry_type", null: false
+    t.index ["created_by_id"], name: "index_versioned_timeline_entries_on_created_by_id"
+    t.index ["details_type", "details_id"], name: "index_versioned_timeline_entries_on_details_type_and_details_id"
+    t.index ["document_id"], name: "index_versioned_timeline_entries_on_document_id"
+    t.index ["edition_id"], name: "index_versioned_timeline_entries_on_edition_id"
+  end
+
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.integer "item_id", null: false
@@ -315,4 +331,9 @@ ActiveRecord::Schema.define(version: 2019_01_07_171132) do
   add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_revisions", "versioned_documents", column: "document_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_image_revisions", column: "lead_image_revision_id", on_delete: :restrict
+  add_foreign_key "versioned_timeline_entries", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_timeline_entries", "versioned_documents", column: "document_id", on_delete: :cascade
+  add_foreign_key "versioned_timeline_entries", "versioned_edition_statuses", column: "edition_status_id", on_delete: :nullify
+  add_foreign_key "versioned_timeline_entries", "versioned_editions", column: "edition_id", on_delete: :cascade
+  add_foreign_key "versioned_timeline_entries", "versioned_revisions", column: "revision_id", on_delete: :nullify
 end
