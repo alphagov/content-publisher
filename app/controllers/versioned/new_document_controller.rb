@@ -45,7 +45,10 @@ module Versioned
         user: current_user,
       )
 
-      # TimelineEntry.create!(document: document, user: current_user, entry_type: "created")
+      Versioned::TimelineEntry.create_for_status_change(
+        entry_type: :created,
+        status: document.current_edition.status,
+      )
 
       redirect_to versioned_edit_document_path(document)
     end

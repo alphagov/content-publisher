@@ -28,12 +28,17 @@ module Versioned
           return
         end
 
-        Versioned::PublishService.new(document).publish(
+        with_review = params[:review_state] == "reviewed"
+
+        live_edition = Versioned::PublishService.new(document).publish(
           user: current_user,
-          with_review: params[:review_state] == "reviewed",
+          with_review: with_review,
         )
 
-        # TODO add timeline entry
+        Versioned::TimelineEntry.create_for_status_change(
+          entry_type: with_review ? :published : :published_without_review,
+          status: live_edition.status,
+        )
 
         redirect_to versioned_published_path(document)
       end

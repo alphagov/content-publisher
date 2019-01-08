@@ -57,7 +57,7 @@ module Versioned
     end
 
     def update_crop
-      Versioned::Document.transaction do
+      Versioned::Document.transaction do # rubocop:disable Metrics/BlockLength
         document, previous_image_revision = find_locked_document_and_image_revision(
           params[:document_id],
           params[:image_id],
@@ -79,9 +79,14 @@ module Versioned
         current_edition.update!(revision: next_revision)
         current_edition.update_last_edited_at(current_user)
 
-        # TODO remove old images from asset manager
+        lead = next_revision.lead_image_revision == next_image_revision
 
-        # TODO timeline entry
+        Versioned::TimelineEntry.create_for_revision(
+          entry_type: lead ? :lead_image_updated : :image_updated,
+          edition: current_edition,
+        )
+
+        # TODO remove old images from asset manager
 
         Versioned::PreviewService.new(current_edition).try_create_preview
 
@@ -144,13 +149,19 @@ module Versioned
         Versioned::PreviewService.new(current_edition).try_create_preview
 
         if params[:wizard] == "lead_image"
-          # TODO timeline entry
+          Versioned::TimelineEntry.create_for_revision(
+            entry_type: :lead_image_updated,
+            edition: current_edition,
+          )
 
           redirect_to versioned_document_path(@document),
                       notice: t("documents.show.flashes.lead_image.added",
                                 file: @image_revision.filename)
         else
-          # TODO timeline entry
+          Versioned::TimelineEntry.create_for_revision(
+            entry_type: :image_updated,
+            edition: current_edition,
+          )
 
           redirect_to versioned_images_path(@document),
                       notice: t("images.index.flashes.details_edited",
@@ -167,6 +178,7 @@ module Versioned
         )
 
         current_edition = document.current_edition
+        lead = image_revision == current_edition.lead_image_revision
 
         next_revision = current_edition.build_next_revision_for_image_removed(
           image_revision,
@@ -175,6 +187,11 @@ module Versioned
 
         current_edition.update!(revision: next_revision)
         current_edition.update_last_edited_at(current_user)
+
+        Versioned::TimelineEntry.create_for_revision(
+          entry_type: lead ? :lead_image_removed : :image_removed,
+          edition: current_edition,
+        )
 
         # TODO remove images from asset manager
 

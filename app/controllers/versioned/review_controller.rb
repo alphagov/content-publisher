@@ -22,7 +22,11 @@ module Versioned
                   .assign_status(current_user, :submitted_for_review)
                   .save!
 
-          # TimelineEntry.create!(document: document, user: current_user, entry_type: "submitted")
+          Versioned::TimelineEntry.create_for_status_change(
+            entry_type: :submitted,
+            status: document.current_edition.status,
+          )
+
           flash[:submitted_for_review] = true
           redirect_to document
         rescue GdsApi::BaseError => e
@@ -49,7 +53,10 @@ module Versioned
         current_edition.assign_status(current_user, :published)
         current_edition.save!
 
-        # TODO: add timeline entry
+        Versioned::TimelineEntry.create_for_status_change(
+          entry_type: :approved,
+          status: document.current_edition.status,
+        )
 
         redirect_to document, notice: t("documents.show.flashes.approved")
       end

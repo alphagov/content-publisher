@@ -59,5 +59,30 @@ module Versioned
                        internal_note: "internal_note",
                        draft_discarded: "draft_discarded",
                        draft_reset: "draft_reset" }
+
+    def self.create_for_status_change(entry_type:,
+                                      status:,
+                                      details: nil)
+      create!(entry_type: entry_type,
+              created_by: status.created_by,
+              status: status,
+              edition: status.edition,
+              document: status.edition.document,
+              details: details)
+    end
+
+    def self.create_for_revision(entry_type:,
+                                 revision: nil,
+                                 edition:,
+                                 details: nil)
+      revision = revision || edition.revision
+
+      create!(entry_type: entry_type,
+              created_by: revision.created_by,
+              revision: revision,
+              edition: edition,
+              document: edition.document,
+              details: details)
+    end
   end
 end
