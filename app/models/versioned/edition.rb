@@ -84,6 +84,44 @@ module Versioned
               status: status)
     end
 
+    def self.create_next_edition(proceeding_edition, user)
+      revision = proceeding_edition.revision.build_next_revision(
+        { change_note: "", update_type: "major" },
+        user,
+      )
+
+      status = EditionStatus.create!(created_by: user,
+                                     revision_at_creation: revision,
+                                     user_facing_state: :draft)
+
+      create!(created_by: user,
+              current: true,
+              document: proceeding_edition.document,
+              draft: :requirements_not_met,
+              last_edited_by: user,
+              number: proceeding_edition.document.next_edition_number,
+              revision: revision,
+              status: status)
+    end
+
+    def resume_discarded(proceeding_edition, user)
+      revision = proceeding_edition.revision.build_next_revision(
+        { change_note: "", update_type: "major" },
+        user,
+      )
+
+      status = EditionStatus.create!(created_by: user,
+                                     revision_at_creation: revision,
+                                     user_facing_state: :draft)
+
+      update!(current: true,
+              draft: :requirements_not_met,
+              last_edited_by: user,
+              last_edited_at: Time.zone.now,
+              revision: revision,
+              status: status)
+    end
+
     def update_last_edited_at(user, time = Time.zone.now)
       return if last_edited_at > time
 

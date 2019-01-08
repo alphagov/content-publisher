@@ -3,8 +3,8 @@
       label: {
         text: t("documents.edit.change_note.title"),
       },
-      name: "document[change_note]",
-      value: @document.change_note,
+      name: "revision[change_note]",
+      value: @revision.change_note,
       rows: 4,
       data: {
         "contextual-guidance": "change-note-guidance"
@@ -19,19 +19,19 @@
     %>
     <%= render "govuk_publishing_components/components/fieldset", legend_text: legend_text, data: { "contextual-guidance": "change-note-guidance" } do %>
       <%= render "govuk_publishing_components/components/radio", {
-        name: "document[update_type]",
+        name: "revision[update_type]",
         id: "update-type",
         items: [
           {
             value: "major",
             text: t("documents.edit.update_type.major_name"),
             conditional: textarea,
-            checked: @document.update_type == "major",
+            checked: @revision.major?,
           },
           {
             value: "minor",
             text: t("documents.edit.update_type.minor_name"),
-            checked: @document.update_type == "minor",
+            checked: @revision.minor?,
           }
         ]
       } %>
