@@ -82,8 +82,8 @@ Rails.application.routes.draw do
     get "/documents/:id/preview" => "preview#show", as: :preview_document
     post "/documents/:id/create-preview" => "preview#create", as: :create_preview
 
-    # get "/documents/:id/retire" => "unpublish#retire", as: :retire
-    # get "/documents/:id/remove" => "unpublish#remove", as: :remove
+    get "/documents/:id/retire" => "unpublish#retire", as: :retire
+    get "/documents/:id/remove" => "unpublish#remove", as: :remove
 
     get "/documents/:document_id/images" => "images#index", as: :images
     post "/documents/:document_id/images" => "images#create", as: :create_image
