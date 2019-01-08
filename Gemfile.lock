@@ -432,7 +432,7 @@ DEPENDENCIES
   govspeak (~> 5)
   govuk-lint (~> 3)
   govuk_app_config (~> 1)
-  govuk_publishing_components (~> 13.5)
+  govuk_publishing_components (~> 13.5.4)
   govuk_schemas (~> 3.2)
   govuk_test (~> 0.3)
   image_processing (~> 1)
