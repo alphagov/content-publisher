@@ -34,7 +34,13 @@ module Versioned
                                       .find_by_param(params[:id])
 
         begin
+          current_edition = document.current_edition
           Versioned::DeleteDraftService.new(document, current_user).delete
+
+          Versioned::TimelineEntry.create_for_status_change(
+            entry_type: :draft_discarded,
+            status: current_edition.status,
+          )
 
           redirect_to versioned_documents_path
         rescue GdsApi::BaseError => e
@@ -45,7 +51,7 @@ module Versioned
     end
 
     def update
-      Versioned::Document.transaction do
+      Versioned::Document.transaction do # rubocop:disable Metrics/BlockLength
         @document = Versioned::Document.with_current_edition
                                        .lock
                                        .find_by_param(params[:id])
@@ -69,6 +75,11 @@ module Versioned
 
         current_edition.update!(revision: @revision)
         current_edition.update_last_edited_at(current_user)
+
+        Versioned::TimelineEntry.create_for_revision(
+          entry_type: :updated_content,
+          edition: current_edition,
+        )
 
         Versioned::PreviewService.new(current_edition).try_create_preview
 

@@ -18,9 +18,12 @@ module Versioned
         current_edition.update!(revision: next_revision)
         current_edition.update_last_edited_at(current_user)
 
-        PreviewService.new(current_edition).try_create_preview
+        Versioned::TimelineEntry.create_for_revision(
+          entry_type: :lead_image_updated,
+          edition: current_edition,
+        )
 
-        # TODO: timeline entry
+        PreviewService.new(current_edition).try_create_preview
 
         redirect_to versioned_document_path(document),
                     notice: t("documents.show.flashes.lead_image.chosen", file: image_revision.filename)
@@ -44,9 +47,12 @@ module Versioned
         current_edition.update!(revision: next_revision)
         current_edition.update_last_edited_at(current_user)
 
-        PreviewService.new(current_edition).try_create_preview
+        Versioned::TimelineEntry.create_for_revision(
+          entry_type: :lead_image_removed,
+          edition: current_edition,
+        )
 
-        # TODO: timeline entry
+        PreviewService.new(current_edition).try_create_preview
 
         redirect_to versioned_document_path(document),
                     notice: t("documents.show.flashes.lead_image.removed", file: image_revision.filename)
