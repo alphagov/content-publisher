@@ -27,7 +27,7 @@
         <%= render "govuk_publishing_components/components/button", text: "Approve" %>
       <% end %>
 
-      <%= form_tag create_edition_path(@edition.document) do %>
+      <%= form_tag versioned_create_edition_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button",
           text: "Create new edition",
           secondary: true,

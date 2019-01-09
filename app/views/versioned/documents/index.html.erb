@@ -33,11 +33,11 @@
                      page: @editions.current_page,
                      pages: @editions.total_pages) %>
 
-    <% pages[:previous_page] = { url: documents_path(@filter_params.merge(page: @editions.prev_page)),
+    <% pages[:previous_page] = { url: versioned_documents_path(@filter_params.merge(page: @editions.prev_page)),
                                  label: page_info,
                                  title: "Previous page" } if @editions.prev_page %>
 
-    <% pages[:next_page] = { url: documents_path(@filter_params.merge(page: @editions.next_page)),
+    <% pages[:next_page] = { url: versioned_documents_path(@filter_params.merge(page: @editions.next_page)),
                              label: page_info,
                              title: "Next page" } if @editions.next_page %>
 

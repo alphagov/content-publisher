@@ -19,18 +19,18 @@ module Versioned
 
     def publish
       Versioned::Document.transaction do
-        document = Versioned::Document.with_current_edition
-                                      .lock
-                                      .find_by_param(params[:id])
+        @document = Versioned::Document.with_current_edition
+                                       .lock
+                                       .find_by_param(params[:id])
 
-        if document.live_edition
-          redirect_to versioned_published_path(document)
+        if @document.live_edition
+          redirect_to versioned_published_path(@document)
           return
         end
 
         with_review = params[:review_state] == "reviewed"
 
-        live_edition = Versioned::PublishService.new(document).publish(
+        live_edition = Versioned::PublishService.new(@document).publish(
           user: current_user,
           with_review: with_review,
         )
@@ -40,7 +40,7 @@ module Versioned
           status: live_edition.status,
         )
 
-        redirect_to versioned_published_path(document)
+        redirect_to versioned_published_path(@document)
       end
     rescue GdsApi::BaseError
       redirect_to @document, alert_with_description: t("documents.show.flashes.publish_error")
