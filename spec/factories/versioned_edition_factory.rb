@@ -14,7 +14,7 @@ FactoryBot.define do
       document_type_id { build(:document_type, path_prefix: "/prefix").id }
       title { SecureRandom.alphanumeric(10) }
       update_type { "major" }
-      change_note { nil }
+      change_note { "First published." }
       summary { nil }
       base_path { title ? "/prefix/#{title.parameterize}" : nil }
       contents { {} }
