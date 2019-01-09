@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Versioned
+  # Used to represent the user facing status of an edition. Each status an
+  # edition has is stored and it must always have one.
   class EditionStatus < ApplicationRecord
     self.table_name = "versioned_edition_statuses"
 

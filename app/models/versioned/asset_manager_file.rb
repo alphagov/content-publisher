@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Versioned
+  # This represents a file that is stored on or should be stored on asset
+  # manager
   class AssetManagerFile < ApplicationRecord
     self.table_name = "versioned_asset_manager_files"
 

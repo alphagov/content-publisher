@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
+  # A model used to represent a particular edit of an image
   class ImageRevision < ApplicationRecord
     self.table_name = "versioned_image_revisions"
 
