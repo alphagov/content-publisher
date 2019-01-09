@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
+  # Represents all the versions of a piece of content in a particular locale
   class Document < ApplicationRecord
     self.table_name = "versioned_documents"
 

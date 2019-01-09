@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module Versioned
+  # This is used as a many-to-many relationship between ImageRevision and
+  # AssetManager file. As a single ImageRevision can result in multiple files
+  # being stored on asset manager this has a variant field which specifies the
+  # file (e.g. a variant of high_resolution would be used to identify the
+  # high_resolution version of an image uploaded)
   class AssetManagerImageVariant < ApplicationRecord
     self.table_name = "versioned_asset_manager_image_variants"
 

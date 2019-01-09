@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Versioned
+  # A model that represents a particular revision of a document. An edition
+  # always has a revision for the current state of it and then there are past
+  # revisions that represent all the changes a document has been through.
   class Revision < ApplicationRecord
     self.table_name = "versioned_revisions"
 
