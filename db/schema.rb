@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_145043) do
+ActiveRecord::Schema.define(version: 2019_01_10_213337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -255,6 +255,15 @@ ActiveRecord::Schema.define(version: 2019_01_10_145043) do
     t.datetime "created_at", null: false
   end
 
+  create_table "versioned_internal_notes", force: :cascade do |t|
+    t.text "body", null: false
+    t.bigint "edition_id", null: false
+    t.bigint "created_by_id"
+    t.datetime "created_at"
+    t.index ["created_by_id"], name: "index_versioned_internal_notes_on_created_by_id"
+    t.index ["edition_id"], name: "index_versioned_internal_notes_on_edition_id"
+  end
+
   create_table "versioned_removals", force: :cascade do |t|
     t.string "explanatory_note"
     t.string "alternative_path"
@@ -364,6 +373,8 @@ ActiveRecord::Schema.define(version: 2019_01_10_145043) do
   add_foreign_key "versioned_image_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_image_revisions", "versioned_images", column: "image_id", on_delete: :restrict
   add_foreign_key "versioned_images", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_internal_notes", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_internal_notes", "versioned_editions", column: "edition_id", on_delete: :cascade
   add_foreign_key "versioned_retirements", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_revision_image_revisions", "versioned_image_revisions", column: "image_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revision_image_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
