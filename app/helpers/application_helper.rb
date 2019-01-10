@@ -20,6 +20,6 @@ module ApplicationHelper
   end
 
   def escape_and_link(unsafe_text)
-    Rinku.auto_link(html_escape(unsafe_text))
+    Rinku.auto_link(html_escape(unsafe_text), :all, 'class="govuk-link"')
   end
 end
