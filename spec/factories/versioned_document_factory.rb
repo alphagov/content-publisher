@@ -7,10 +7,6 @@ FactoryBot.define do
     document_type_id { build(:document_type, path_prefix: "/prefix").id }
     association :created_by, factory: :user
 
-    after(:build) do |document|
-      document.last_edited_by = document.created_by unless document.last_edited_by
-    end
-
     trait :with_live_edition do
       after(:build) do |document, evaluator|
         document.live_edition = evaluator.association(
