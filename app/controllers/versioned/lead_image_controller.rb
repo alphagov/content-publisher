@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class LeadImageController < ApplicationController
+  class LeadImageController < BaseController
     def choose
       Versioned::Document.transaction do
         document = Versioned::Document.with_current_edition

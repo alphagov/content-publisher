@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class PreviewController < ApplicationController
+  class PreviewController < BaseController
     def create
       Versioned::Document.transaction do
         @document = Versioned::Document.with_current_edition

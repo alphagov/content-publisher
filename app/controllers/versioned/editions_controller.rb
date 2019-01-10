@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class EditionsController < ApplicationController
+  class EditionsController < BaseController
     def create
       Versioned::Document.transaction do # rubocop:disable Metrics/BlockLength
         document = Versioned::Document.with_current_edition

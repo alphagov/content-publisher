@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class DocumentsController < ApplicationController
+  class DocumentsController < BaseController
     def index
       filter = Versioned::EditionFilter.new(filter_params)
       @editions = filter.editions
