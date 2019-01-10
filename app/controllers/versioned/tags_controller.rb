@@ -21,20 +21,22 @@ module Versioned
 
         current_edition = document.current_edition
 
-        revision = current_edition.build_next_revision(
+        revision = current_edition.build_revision_update(
           { tags: update_params(document) },
           current_user,
         )
 
-        current_edition.update!(revision: revision)
-        current_edition.update_last_edited_at(current_user)
+        if revision != current_edition.revision
+          current_edition.update!(revision: revision)
+          current_edition.update_last_edited_at(current_user)
 
-        Versioned::TimelineEntry.create_for_revision(
-          entry_type: :updated_tags,
-          edition: current_edition,
-        )
+          Versioned::TimelineEntry.create_for_revision(
+            entry_type: :updated_tags,
+            edition: current_edition,
+          )
 
-        PreviewService.new(current_edition).try_create_preview
+          Versioned::PreviewService.new(current_edition).try_create_preview
+        end
 
         redirect_to document
       end
