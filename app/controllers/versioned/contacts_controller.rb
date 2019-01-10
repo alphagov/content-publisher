@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class ContactsController < ApplicationController
+  class ContactsController < BaseController
     def search
       @document = Versioned::Document.with_current_edition
                                      .find_by_param(params[:id])

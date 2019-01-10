@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class TagsController < ApplicationController
+  class TagsController < BaseController
     rescue_from GdsApi::BaseError do |e|
       GovukError.notify(e)
       render "#{action_name}_api_down", status: :service_unavailable

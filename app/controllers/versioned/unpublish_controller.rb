@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class UnpublishController < ApplicationController
+  class UnpublishController < BaseController
     def remove
       @document = Versioned::Document.with_current_edition.find_by_param(params[:id])
     end
