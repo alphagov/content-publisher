@@ -16,8 +16,7 @@ module Versioned
             current_user,
           )
 
-          current_edition.update!(revision: next_revision)
-          current_edition.update_last_edited_at(current_user)
+          current_edition.assign_revision(next_revision, current_user).save!
 
           Versioned::TimelineEntry.create_for_revision(
             entry_type: :lead_image_updated,
@@ -48,8 +47,7 @@ module Versioned
             current_user,
           )
 
-          current_edition.update!(revision: next_revision)
-          current_edition.update_last_edited_at(current_user)
+          current_edition.assign_revision(next_revision, current_user).save!
 
           Versioned::TimelineEntry.create_for_revision(
             entry_type: :lead_image_removed,

@@ -32,7 +32,6 @@ FactoryBot.define do
           content_id: evaluator.content_id,
           locale: evaluator.locale,
           document_type_id: evaluator.document_type_id,
-          last_edited_at: edition.last_edited_at,
         )
       end
 

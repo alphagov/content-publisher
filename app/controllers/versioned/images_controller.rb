@@ -38,8 +38,7 @@ module Versioned
           current_user,
         )
 
-        current_edition.update!(revision: next_revision)
-        current_edition.update_last_edited_at(current_user)
+        current_edition.assign_revision(next_revision, current_user).save!
 
         Versioned::PreviewService.new(current_edition).try_create_preview
 
@@ -77,8 +76,7 @@ module Versioned
             current_user,
           )
 
-          current_edition.update!(revision: next_revision)
-          current_edition.update_last_edited_at(current_user)
+          current_edition.assign_revision(next_revision, current_user).save!
 
           lead = next_revision.lead_image_revision == image_revision
 
@@ -147,8 +145,7 @@ module Versioned
           )
           next_revision.lead_image_revision = @image_revision if params[:wizard] == "lead_image"
 
-          current_edition.update!(revision: next_revision)
-          current_edition.update_last_edited_at(current_user)
+          current_edition.assign_revision(next_revision, current_user).save!
 
           if params[:wizard] == "lead_image"
             Versioned::TimelineEntry.create_for_revision(
@@ -192,8 +189,7 @@ module Versioned
           current_user,
         )
 
-        current_edition.update!(revision: next_revision)
-        current_edition.update_last_edited_at(current_user)
+        current_edition.assign_revision(next_revision, current_user).save!
 
         Versioned::TimelineEntry.create_for_revision(
           entry_type: lead ? :lead_image_removed : :image_removed,
