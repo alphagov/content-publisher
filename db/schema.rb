@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_09_204356) do
+ActiveRecord::Schema.define(version: 2019_01_10_145043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -197,7 +197,10 @@ ActiveRecord::Schema.define(version: 2019_01_09_204356) do
     t.bigint "created_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "details_type"
+    t.bigint "details_id"
     t.index ["created_by_id"], name: "index_versioned_edition_statuses_on_created_by_id"
+    t.index ["details_type", "details_id"], name: "index_versioned_edition_statuses_on_details_type_and_details_id"
     t.index ["edition_id"], name: "index_versioned_edition_statuses_on_edition_id"
     t.index ["revision_at_creation_id"], name: "index_versioned_edition_statuses_on_revision_at_creation_id"
     t.index ["user_facing_state"], name: "index_versioned_edition_statuses_on_user_facing_state"
@@ -250,6 +253,19 @@ ActiveRecord::Schema.define(version: 2019_01_09_204356) do
   create_table "versioned_images", force: :cascade do |t|
     t.bigint "created_by_id"
     t.datetime "created_at", null: false
+  end
+
+  create_table "versioned_removals", force: :cascade do |t|
+    t.string "explanatory_note"
+    t.string "alternative_path"
+    t.boolean "redirect", default: false
+    t.datetime "created_at", null: false
+  end
+
+  create_table "versioned_retirements", force: :cascade do |t|
+    t.string "explanatory_note"
+    t.datetime "created_at", null: false
+    t.bigint "created_by_id"
   end
 
   create_table "versioned_revision_image_revisions", force: :cascade do |t|
@@ -348,6 +364,7 @@ ActiveRecord::Schema.define(version: 2019_01_09_204356) do
   add_foreign_key "versioned_image_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_image_revisions", "versioned_images", column: "image_id", on_delete: :restrict
   add_foreign_key "versioned_images", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_retirements", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_revision_image_revisions", "versioned_image_revisions", column: "image_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revision_image_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :nullify

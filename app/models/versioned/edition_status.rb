@@ -25,6 +25,10 @@ module Versioned
                optional: true,
                inverse_of: :statuses
 
+    belongs_to :details,
+               polymorphic: true,
+               optional: true
+
     has_one :status_of,
             class_name: "Versioned::Edition",
             foreign_key: :status_id,
