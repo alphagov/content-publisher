@@ -43,6 +43,18 @@ module Versioned
                foreign_key: :tags_revision_id,
                inverse_of: :revisions
 
+    belongs_to :preceded_by,
+               class_name: "Versioned::Revision",
+               foreign_key: :preceded_by_id,
+               optional: true,
+               inverse_of: :followed_by
+
+    has_one :followed_by,
+            class_name: "Versioned::Revision",
+            foreign_key: :preceded_by_id,
+            inverse_of: :preceded_by,
+            dependent: :nullify
+
     has_many :current_for_editions,
              class_name: "Versioned::Edition",
              foreign_key: :revision_id,
@@ -145,7 +157,10 @@ module Versioned
         image_revisions(next_revision)
 
         if next_revision.different_to?(preceding_revision)
-          next_revision.tap { |r| r.created_at = user }
+          next_revision.tap do |r|
+            r.created_at = user
+            r.preceded_by = preceding_revision
+          end
         else
           preceding_revision
         end
