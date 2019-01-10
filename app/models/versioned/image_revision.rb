@@ -13,6 +13,8 @@ module Versioned
     # FIXME: we should see if these can be retina variants
     ASSET_MANAGER_VARIANTS = %w[300 960 high_resolution].freeze
 
+    COMPARISON_IGNORE_FIELDS = %w[id created_at created_by_id].freeze
+
     belongs_to :blob, class_name: "ActiveStorage::Blob"
 
     # rubocop:disable Rails/InverseOf
@@ -44,15 +46,23 @@ module Versioned
       !new_record?
     end
 
-    def build_next_revision(attributes, user, keep_variants: true)
-      dup.tap do |revision|
+    def build_revision_update(attributes, user, keep_variants: true)
+      new_revision = dup.tap { |d| d.assign_attributes(attributes) }
+      return self unless different_to?(new_revision)
+
+      new_revision.tap do |revision|
+        revision.created_by = user
         if keep_variants
           revision.asset_manager_variants = asset_manager_variants.map(&:dup)
         else
           revision.ensure_asset_manager_variants
         end
-        revision.assign_attributes(attributes.merge(created_by: user))
       end
+    end
+
+    def different_to?(other_revision)
+      other_attributes = other_revision.attributes.except(*COMPARISON_IGNORE_FIELDS)
+      attributes.except(*COMPARISON_IGNORE_FIELDS) != other_attributes
     end
 
     def ensure_asset_manager_variants
