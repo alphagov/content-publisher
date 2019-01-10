@@ -45,6 +45,17 @@ RSpec.describe Versioned::AssetManagerService do
     end
   end
 
+  describe "#draft" do
+    it "updates an asset's draft status to true in Asset Manager" do
+      asset = double(:asset, asset_manager_id: "id")
+
+      body = { "draft" => true }
+      asset_manager_update_asset(asset.asset_manager_id, body)
+
+      response = Versioned::AssetManagerService.new.draft(asset, "auth_bypass_id")
+      expect(response["draft"]).to be true
+    end
+  end
   describe "#redirect" do
     it "sets a redirect_url on an asset" do
       asset = double(:asset, asset_manager_id: "id")
