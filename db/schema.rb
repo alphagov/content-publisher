@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_08_111128) do
+ActiveRecord::Schema.define(version: 2019_01_09_204356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,6 +158,15 @@ ActiveRecord::Schema.define(version: 2019_01_08_111128) do
     t.index ["image_revision_id", "variant"], name: "index_image_revision_asset_manager_variant_unique_variant", unique: true
   end
 
+  create_table "versioned_content_revisions", force: :cascade do |t|
+    t.string "title"
+    t.string "base_path"
+    t.text "summary"
+    t.json "contents", default: {}, null: false
+    t.datetime "created_at"
+    t.bigint "created_by_id"
+  end
+
   create_table "versioned_documents", force: :cascade do |t|
     t.uuid "content_id", null: false
     t.string "locale", null: false
@@ -252,20 +261,25 @@ ActiveRecord::Schema.define(version: 2019_01_08_111128) do
   end
 
   create_table "versioned_revisions", force: :cascade do |t|
-    t.string "title"
-    t.string "base_path"
-    t.text "summary"
-    t.json "contents", default: {}, null: false
-    t.json "tags", default: {}, null: false
-    t.text "change_note"
-    t.string "update_type", null: false
     t.bigint "created_by_id"
     t.datetime "created_at", null: false
     t.bigint "document_id", null: false
     t.bigint "lead_image_revision_id"
+    t.bigint "content_revision_id", null: false
+    t.bigint "update_revision_id", null: false
+    t.bigint "tags_revision_id", null: false
+    t.index ["content_revision_id"], name: "index_versioned_revisions_on_content_revision_id"
     t.index ["created_by_id"], name: "index_versioned_revisions_on_created_by_id"
     t.index ["document_id"], name: "index_versioned_revisions_on_document_id"
     t.index ["lead_image_revision_id"], name: "index_versioned_revisions_on_lead_image_revision_id"
+    t.index ["tags_revision_id"], name: "index_versioned_revisions_on_tags_revision_id"
+    t.index ["update_revision_id"], name: "index_versioned_revisions_on_update_revision_id"
+  end
+
+  create_table "versioned_tags_revisions", force: :cascade do |t|
+    t.json "tags", default: {}, null: false
+    t.datetime "created_at"
+    t.bigint "created_by_id"
   end
 
   create_table "versioned_timeline_entries", force: :cascade do |t|
@@ -282,6 +296,13 @@ ActiveRecord::Schema.define(version: 2019_01_08_111128) do
     t.index ["details_type", "details_id"], name: "index_versioned_timeline_entries_on_details_type_and_details_id"
     t.index ["document_id"], name: "index_versioned_timeline_entries_on_document_id"
     t.index ["edition_id"], name: "index_versioned_timeline_entries_on_edition_id"
+  end
+
+  create_table "versioned_update_revisions", force: :cascade do |t|
+    t.string "update_type", null: false
+    t.text "change_note"
+    t.datetime "created_at"
+    t.bigint "created_by_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -310,6 +331,7 @@ ActiveRecord::Schema.define(version: 2019_01_08_111128) do
   add_foreign_key "versioned_asset_manager_files", "versioned_asset_manager_files", column: "superseded_by_id", on_delete: :nullify
   add_foreign_key "versioned_asset_manager_image_variants", "versioned_asset_manager_files", column: "asset_manager_file_id", on_delete: :restrict
   add_foreign_key "versioned_asset_manager_image_variants", "versioned_image_revisions", column: "image_revision_id", on_delete: :cascade
+  add_foreign_key "versioned_content_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_documents", "users", column: "last_edited_by_id", on_delete: :nullify
   add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :restrict
@@ -329,11 +351,16 @@ ActiveRecord::Schema.define(version: 2019_01_08_111128) do
   add_foreign_key "versioned_revision_image_revisions", "versioned_image_revisions", column: "image_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revision_image_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_revisions", "versioned_content_revisions", column: "content_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_documents", column: "document_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_image_revisions", column: "lead_image_revision_id", on_delete: :restrict
+  add_foreign_key "versioned_revisions", "versioned_tags_revisions", column: "tags_revision_id", on_delete: :restrict
+  add_foreign_key "versioned_revisions", "versioned_update_revisions", column: "update_revision_id", on_delete: :restrict
+  add_foreign_key "versioned_tags_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_timeline_entries", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_timeline_entries", "versioned_documents", column: "document_id", on_delete: :cascade
   add_foreign_key "versioned_timeline_entries", "versioned_edition_statuses", column: "edition_status_id", on_delete: :nullify
   add_foreign_key "versioned_timeline_entries", "versioned_editions", column: "edition_id", on_delete: :cascade
   add_foreign_key "versioned_timeline_entries", "versioned_revisions", column: "revision_id", on_delete: :nullify
+  add_foreign_key "versioned_update_revisions", "users", column: "created_by_id", on_delete: :nullify
 end

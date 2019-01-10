@@ -74,11 +74,7 @@ module Versioned
     delegate_missing_to :revision
 
     def self.create_initial(document, user = nil, tags = {})
-      revision = Revision.create!(created_by: user,
-                                  change_note: "First published.",
-                                  document: document,
-                                  tags: tags,
-                                  update_type: "major")
+      revision = Revision.create_initial(document, user, tags)
       status = EditionStatus.create!(created_by: user,
                                      revision_at_creation: revision,
                                      user_facing_state: :draft)
@@ -94,7 +90,7 @@ module Versioned
     end
 
     def self.create_next_edition(proceeding_edition, user)
-      revision = proceeding_edition.revision.build_next_revision(
+      revision = proceeding_edition.revision.build_revision_update(
         { change_note: "", update_type: "major" },
         user,
       )
@@ -114,7 +110,7 @@ module Versioned
     end
 
     def resume_discarded(proceeding_edition, user)
-      revision = proceeding_edition.revision.build_next_revision(
+      revision = proceeding_edition.revision.build_revision_update(
         { change_note: "", update_type: "major" },
         user,
       )

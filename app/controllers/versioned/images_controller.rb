@@ -33,7 +33,7 @@ module Versioned
         image_revision = Versioned::ImageUploadService.new(params[:image]).call(current_user)
 
         current_edition = @document.current_edition
-        next_revision = current_edition.build_next_revision_for_image_upsert(
+        next_revision = current_edition.build_revision_update_for_image_upsert(
           image_revision,
           current_user,
         )
@@ -63,42 +63,45 @@ module Versioned
           params[:image_id],
         )
 
-        next_image_revision = previous_image_revision.build_next_revision(
+        image_revision = previous_image_revision.build_revision_update(
           update_crop_params,
           current_user,
           keep_variants: false,
         )
 
-        current_edition = document.current_edition
+        if image_revision != previous_image_revision
+          current_edition = document.current_edition
 
-        next_revision = current_edition.build_next_revision_for_image_upsert(
-          next_image_revision,
-          current_user,
-        )
+          next_revision = current_edition.build_revision_update_for_image_upsert(
+            image_revision,
+            current_user,
+          )
 
-        current_edition.update!(revision: next_revision)
-        current_edition.update_last_edited_at(current_user)
+          current_edition.update!(revision: next_revision)
+          current_edition.update_last_edited_at(current_user)
 
-        lead = next_revision.lead_image_revision == next_image_revision
+          lead = next_revision.lead_image_revision == image_revision
 
-        Versioned::TimelineEntry.create_for_revision(
-          entry_type: lead ? :lead_image_updated : :image_updated,
-          edition: current_edition,
-        )
+          Versioned::TimelineEntry.create_for_revision(
+            entry_type: lead ? :lead_image_updated : :image_updated,
+            edition: current_edition,
+          )
 
-        # TODO remove old images from asset manager
+          # TODO remove old images from asset manager
 
-        Versioned::PreviewService.new(current_edition).try_create_preview
+          Versioned::PreviewService.new(current_edition).try_create_preview
+        end
+
 
         if params[:wizard].present?
           redirect_to versioned_edit_image_path(document,
-                                                next_image_revision.image_id,
+                                                image_revision.image_id,
                                                 wizard: params[:wizard])
           return
         end
 
         redirect_to versioned_images_path(document),
-                    notice: t("images.index.flashes.cropped", file: next_image_revision.filename)
+                    notice: t("images.index.flashes.cropped", file: image_revision.filename)
       end
     end
 
@@ -116,7 +119,7 @@ module Versioned
           params[:image_id],
         )
 
-        @image_revision = previous_image_revision.build_next_revision(
+        @image_revision = previous_image_revision.build_revision_update(
           update_params,
           current_user,
           keep_variants: true,
@@ -135,34 +138,38 @@ module Versioned
           return
         end
 
-        current_edition = @document.current_edition
+        if @image_revision != previous_image_revision
+          current_edition = @document.current_edition
 
-        next_revision = current_edition.build_next_revision_for_image_upsert(
-          @image_revision,
-          current_user,
-        )
-        next_revision.lead_image_revision = @image_revision if params[:wizard] == "lead_image"
+          next_revision = current_edition.build_revision_update_for_image_upsert(
+            @image_revision,
+            current_user,
+          )
+          next_revision.lead_image_revision = @image_revision if params[:wizard] == "lead_image"
 
-        current_edition.update!(revision: next_revision)
-        current_edition.update_last_edited_at(current_user)
+          current_edition.update!(revision: next_revision)
+          current_edition.update_last_edited_at(current_user)
 
-        Versioned::PreviewService.new(current_edition).try_create_preview
+          if params[:wizard] == "lead_image"
+            Versioned::TimelineEntry.create_for_revision(
+              entry_type: :lead_image_updated,
+              edition: current_edition,
+            )
+          else
+            Versioned::TimelineEntry.create_for_revision(
+              entry_type: :image_updated,
+              edition: current_edition,
+            )
+          end
+
+          Versioned::PreviewService.new(current_edition).try_create_preview
+        end
 
         if params[:wizard] == "lead_image"
-          Versioned::TimelineEntry.create_for_revision(
-            entry_type: :lead_image_updated,
-            edition: current_edition,
-          )
-
           redirect_to versioned_document_path(@document),
                       notice: t("documents.show.flashes.lead_image.added",
                                 file: @image_revision.filename)
         else
-          Versioned::TimelineEntry.create_for_revision(
-            entry_type: :image_updated,
-            edition: current_edition,
-          )
-
           redirect_to versioned_images_path(@document),
                       notice: t("images.index.flashes.details_edited",
                                 file: @image_revision.filename)
@@ -180,7 +187,7 @@ module Versioned
         current_edition = document.current_edition
         lead = image_revision == current_edition.lead_image_revision
 
-        next_revision = current_edition.build_next_revision_for_image_removed(
+        next_revision = current_edition.build_revision_update_for_image_removed(
           image_revision,
           current_user,
         )
