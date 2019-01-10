@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class ReviewController < ApplicationController
+  class ReviewController < BaseController
     def submit_for_2i
       Versioned::Document.transaction do
         document = Versioned::Document.with_current_edition

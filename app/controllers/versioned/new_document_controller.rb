@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class NewDocumentController < ApplicationController
+  class NewDocumentController < BaseController
     def choose_supertype
       @supertypes = Supertype.all
     end
