@@ -21,6 +21,7 @@ module Versioned
 
       supersede_live_edition(user)
       set_new_live_edition(user, with_review)
+      set_first_published_at
 
       current_edition
     rescue GdsApi::BaseError => e
@@ -44,6 +45,12 @@ module Versioned
       current_edition.live = true
       current_edition.draft = :not_applicable
       current_edition.save!
+    end
+
+    def set_first_published_at
+      return if document.first_published_at
+
+      document.update!(first_published_at: Time.zone.now)
     end
 
     def publish_new_images
