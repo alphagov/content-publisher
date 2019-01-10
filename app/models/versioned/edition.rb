@@ -134,11 +134,15 @@ module Versioned
       document.update_last_edited_at(user, time)
     end
 
-    def assign_status(user, user_facing_state, update_last_edited: true)
+    def assign_status(user,
+                      user_facing_state,
+                      update_last_edited: true,
+                      status_details: nil)
       status = Versioned::EditionStatus.new(
         created_by: user,
         user_facing_state: user_facing_state,
         revision_at_creation_id: revision_id,
+        details: status_details,
       )
 
       attributes = { status: status }
