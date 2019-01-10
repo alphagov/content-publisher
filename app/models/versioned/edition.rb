@@ -56,6 +56,10 @@ module Versioned
              class_name: "Versioned::TimelineEntry",
              dependent: :destroy
 
+    has_many :internal_notes,
+             class_name: "Versioned::InternalNote",
+             dependent: :delete_all
+
     has_and_belongs_to_many :revisions,
                             class_name: "Versioned::Revision",
                             join_table: "versioned_edition_revisions"
