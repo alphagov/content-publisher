@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class PublishController < ApplicationController
+  class PublishController < BaseController
     def confirmation
       @document = Versioned::Document.with_current_edition.find_by_param(params[:id])
       issues = Versioned::Requirements::EditionChecker

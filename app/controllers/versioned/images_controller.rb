@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioned
-  class ImagesController < ApplicationController
+  class ImagesController < BaseController
     rescue_from GdsApi::BaseError do |e|
       GovukError.notify(e)
       redirect_to images_path, alert_with_description: t("images.index.flashes.api_error")
