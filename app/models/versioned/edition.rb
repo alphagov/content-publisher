@@ -131,13 +131,6 @@ module Versioned
               status: status)
     end
 
-    def update_last_edited_at(user, time = Time.zone.now)
-      return if last_edited_at > time
-
-      update!(last_edited_by: user, last_edited_at: time)
-      document.update_last_edited_at(user, time)
-    end
-
     def assign_status(user,
                       user_facing_state,
                       update_last_edited: true,
@@ -157,6 +150,14 @@ module Versioned
       end
 
       assign_attributes(attributes)
+
+      self
+    end
+
+    def assign_revision(revision, user)
+      assign_attributes(revision: revision,
+                        last_edited_by: user,
+                        last_edited_at: Time.zone.now)
 
       self
     end

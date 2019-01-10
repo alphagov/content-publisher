@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_223219) do
+ActiveRecord::Schema.define(version: 2019_01_10_225358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,14 +171,11 @@ ActiveRecord::Schema.define(version: 2019_01_10_223219) do
     t.uuid "content_id", null: false
     t.string "locale", null: false
     t.string "document_type_id", null: false
-    t.datetime "last_edited_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "created_by_id"
-    t.bigint "last_edited_by_id"
     t.index ["content_id", "locale"], name: "index_versioned_documents_on_content_id_and_locale", unique: true
     t.index ["created_by_id"], name: "index_versioned_documents_on_created_by_id"
-    t.index ["last_edited_by_id"], name: "index_versioned_documents_on_last_edited_by_id"
   end
 
   create_table "versioned_edition_revisions", force: :cascade do |t|
@@ -360,7 +357,6 @@ ActiveRecord::Schema.define(version: 2019_01_10_223219) do
   add_foreign_key "versioned_asset_manager_image_variants", "versioned_image_revisions", column: "image_revision_id", on_delete: :cascade
   add_foreign_key "versioned_content_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :nullify
-  add_foreign_key "versioned_documents", "users", column: "last_edited_by_id", on_delete: :nullify
   add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :restrict
   add_foreign_key "versioned_edition_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
   add_foreign_key "versioned_edition_statuses", "users", column: "created_by_id", on_delete: :nullify

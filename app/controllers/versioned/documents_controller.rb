@@ -75,8 +75,7 @@ module Versioned
         end
 
         if @revision != current_edition.revision
-          current_edition.update!(revision: @revision)
-          current_edition.update_last_edited_at(current_user)
+          current_edition.assign_revision(@revision, current_user).save!
 
           Versioned::TimelineEntry.create_for_revision(
             entry_type: :updated_content,
