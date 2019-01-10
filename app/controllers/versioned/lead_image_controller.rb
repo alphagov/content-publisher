@@ -10,20 +10,22 @@ module Versioned
         current_edition = document.current_edition
         image_revision = current_edition.image_revisions.find_by!(image_id: params[:image_id])
 
-        next_revision = current_edition.build_next_revision(
-          { lead_image_revision: image_revision },
-          current_user,
-        )
+        if current_edition.lead_image_revision != image_revision
+          next_revision = current_edition.build_revision_update(
+            { lead_image_revision: image_revision },
+            current_user,
+          )
 
-        current_edition.update!(revision: next_revision)
-        current_edition.update_last_edited_at(current_user)
+          current_edition.update!(revision: next_revision)
+          current_edition.update_last_edited_at(current_user)
 
-        Versioned::TimelineEntry.create_for_revision(
-          entry_type: :lead_image_updated,
-          edition: current_edition,
-        )
+          Versioned::TimelineEntry.create_for_revision(
+            entry_type: :lead_image_updated,
+            edition: current_edition,
+          )
 
-        PreviewService.new(current_edition).try_create_preview
+          PreviewService.new(current_edition).try_create_preview
+        end
 
         redirect_to versioned_document_path(document),
                     notice: t("documents.show.flashes.lead_image.chosen", file: image_revision.filename)
@@ -37,22 +39,25 @@ module Versioned
                                       .find_by_param(params[:document_id])
 
         current_edition = document.current_edition
-        image_revision = current_edition.lead_image_revision
 
-        next_revision = current_edition.build_next_revision(
-          { lead_image_revision: nil },
-          current_user,
-        )
+        if current_edition.lead_image_revision
+          image_revision = current_edition.lead_image_revision
 
-        current_edition.update!(revision: next_revision)
-        current_edition.update_last_edited_at(current_user)
+          next_revision = current_edition.build_revision_update(
+            { lead_image_revision: nil },
+            current_user,
+          )
 
-        Versioned::TimelineEntry.create_for_revision(
-          entry_type: :lead_image_removed,
-          edition: current_edition,
-        )
+          current_edition.update!(revision: next_revision)
+          current_edition.update_last_edited_at(current_user)
 
-        PreviewService.new(current_edition).try_create_preview
+          Versioned::TimelineEntry.create_for_revision(
+            entry_type: :lead_image_removed,
+            edition: current_edition,
+          )
+
+          PreviewService.new(current_edition).try_create_preview
+        end
 
         redirect_to versioned_document_path(document),
                     notice: t("documents.show.flashes.lead_image.removed", file: image_revision.filename)

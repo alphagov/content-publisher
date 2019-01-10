@@ -12,7 +12,7 @@ module Versioned
     end
 
     def insert
-      Versioned::Document.transaction do
+      Versioned::Document.transaction do # rubocop:disable Metrics/BlockLength
         document = Versioned::Document.with_current_edition
                                       .lock
                                       .find_by_param(params[:id])
@@ -34,17 +34,22 @@ module Versioned
                          contact_markdown
                        end
 
-        revision = current_edition.build_next_revision(
+        revision = current_edition.build_revision_update(
           { contents: current_edition.contents.merge("body" => updated_body) },
           current_user,
         )
 
-        current_edition.update!(revision: revision)
-        current_edition.update_last_edited_at(current_user)
+        if revision != current_edition.revision
+          current_edition.update!(revision: revision)
+          current_edition.update_last_edited_at(current_user)
 
-        PreviewService.new(current_edition).try_create_preview
+          Versioned::TimelineEntry.create_for_revision(
+            entry_type: :updated_content,
+            edition: current_edition,
+          )
 
-        # TODO: Add timeline entry
+          Versioned::PreviewService.new(current_edition).try_create_preview
+        end
 
         redirect_to redirect_location
       end

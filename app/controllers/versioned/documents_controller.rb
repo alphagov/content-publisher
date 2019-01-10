@@ -56,8 +56,9 @@ module Versioned
                                        .lock
                                        .find_by_param(params[:id])
         current_edition = @document.current_edition
-        @revision = current_edition.build_next_revision(update_params(@document),
-                                                        current_user)
+
+        @revision = current_edition.build_revision_update(update_params(@document),
+                                                          current_user)
 
         add_contact_request = params[:submit] == "add_contact"
         @issues = Versioned::Requirements::EditPageChecker.new(current_edition, @revision)
@@ -73,15 +74,17 @@ module Versioned
           return
         end
 
-        current_edition.update!(revision: @revision)
-        current_edition.update_last_edited_at(current_user)
+        if @revision != current_edition.revision
+          current_edition.update!(revision: @revision)
+          current_edition.update_last_edited_at(current_user)
 
-        Versioned::TimelineEntry.create_for_revision(
-          entry_type: :updated_content,
-          edition: current_edition,
-        )
+          Versioned::TimelineEntry.create_for_revision(
+            entry_type: :updated_content,
+            edition: current_edition,
+          )
 
-        Versioned::PreviewService.new(current_edition).try_create_preview
+          Versioned::PreviewService.new(current_edition).try_create_preview
+        end
 
         if add_contact_request
           redirect_to versioned_search_contacts_path(@document)

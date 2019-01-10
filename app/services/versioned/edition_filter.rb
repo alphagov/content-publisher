@@ -2,7 +2,7 @@
 
 module Versioned
   class EditionFilter
-    TAG_CONTAINS_QUERY = "exists(select 1 from json_array_elements(versioned_revisions.tags->'%<tag>s')
+    TAG_CONTAINS_QUERY = "exists(select 1 from json_array_elements(versioned_tags_revisions.tags->'%<tag>s')
                           where array_to_json(array[value])->>0 = :value)"
 
     include ActiveRecord::Sanitization::ClassMethods
@@ -20,9 +20,10 @@ module Versioned
     end
 
     def editions
+      revision_joins = { revision: %i[content_revision tags_revision] }
       scope = Versioned::Edition.where(current: true)
-                                .joins(:revision, :status, :document)
-                                .preload(:revision, :status, :document, :last_edited_by)
+                                .joins(revision_joins, :status, :document)
+                                .preload(revision_joins, :status, :document, :last_edited_by)
       scope = filtered_scope(scope)
       scope = ordered_scope(scope)
       scope.page(page).per(per_page)
@@ -47,7 +48,7 @@ module Versioned
 
         case field
         when :title_or_url
-          memo.where("versioned_revisions.title ILIKE ? OR versioned_revisions.base_path ILIKE ?",
+          memo.where("versioned_content_revisions.title ILIKE ? OR versioned_content_revisions.base_path ILIKE ?",
                      "%#{sanitize_sql_like(value)}%",
                      "%#{sanitize_sql_like(value)}%")
         when :document_type
@@ -72,7 +73,7 @@ module Versioned
       direction = sort.chars.first == "-" ? :desc : :asc
       case sort.delete_prefix("-")
       when "last_updated"
-        scope.order(last_edited_at: direction)
+        scope.order("versioned_editions.last_edited_at #{direction}")
       else
         scope
       end
