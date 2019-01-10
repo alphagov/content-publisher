@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_225358) do
+ActiveRecord::Schema.define(version: 2019_01_10_232157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -174,6 +174,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_225358) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "created_by_id"
+    t.datetime "first_published_at"
     t.index ["content_id", "locale"], name: "index_versioned_documents_on_content_id_and_locale", unique: true
     t.index ["created_by_id"], name: "index_versioned_documents_on_created_by_id"
   end
