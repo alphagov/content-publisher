@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_213337) do
+ActiveRecord::Schema.define(version: 2019_01_10_223219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -293,10 +293,12 @@ ActiveRecord::Schema.define(version: 2019_01_10_213337) do
     t.bigint "content_revision_id", null: false
     t.bigint "update_revision_id", null: false
     t.bigint "tags_revision_id", null: false
+    t.bigint "preceded_by_id"
     t.index ["content_revision_id"], name: "index_versioned_revisions_on_content_revision_id"
     t.index ["created_by_id"], name: "index_versioned_revisions_on_created_by_id"
     t.index ["document_id"], name: "index_versioned_revisions_on_document_id"
     t.index ["lead_image_revision_id"], name: "index_versioned_revisions_on_lead_image_revision_id"
+    t.index ["preceded_by_id"], name: "index_versioned_revisions_on_preceded_by_id"
     t.index ["tags_revision_id"], name: "index_versioned_revisions_on_tags_revision_id"
     t.index ["update_revision_id"], name: "index_versioned_revisions_on_update_revision_id"
   end
@@ -382,6 +384,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_213337) do
   add_foreign_key "versioned_revisions", "versioned_content_revisions", column: "content_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_documents", column: "document_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_image_revisions", column: "lead_image_revision_id", on_delete: :restrict
+  add_foreign_key "versioned_revisions", "versioned_revisions", column: "preceded_by_id", on_delete: :nullify
   add_foreign_key "versioned_revisions", "versioned_tags_revisions", column: "tags_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_update_revisions", column: "update_revision_id", on_delete: :restrict
   add_foreign_key "versioned_tags_revisions", "users", column: "created_by_id", on_delete: :nullify
