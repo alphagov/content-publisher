@@ -88,7 +88,9 @@ module Versioned
     end
 
     def newly_created?
-      created_at == updated_at
+      return false if !current_edition || current_edition.number == 1
+
+      current_edition.created_at == current_edition.updated_at
     end
 
     def live?
