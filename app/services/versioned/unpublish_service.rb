@@ -15,7 +15,7 @@ module Versioned
 
         retirement = Versioned::Retirement.new(explanatory_note: explanatory_note)
 
-        edition.assign_status(nil, :retired, status_details: retirement)
+        edition.assign_status(:retired, nil, status_details: retirement)
         edition.save!
 
         Versioned::TimelineEntry.create_for_status_change(
@@ -41,7 +41,7 @@ module Versioned
         removal = Versioned::Removal.new(explanatory_note: explanatory_note,
                                          alternative_path: alternative_path)
 
-        edition.assign_status(nil, :removed, status_details: removal)
+        edition.assign_status(:removed, nil, status_details: removal)
         edition.save!
 
         Versioned::TimelineEntry.create_for_status_change(
@@ -70,7 +70,7 @@ module Versioned
                                          alternative_path: redirect_path,
                                          redirect: true)
 
-        edition.assign_status(nil, :removed, status_details: removal)
+        edition.assign_status(:removed, nil, status_details: removal)
         edition.save!
 
         Versioned::TimelineEntry.create_for_status_change(

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_232157) do
+ActiveRecord::Schema.define(version: 2019_01_10_233846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,22 +188,6 @@ ActiveRecord::Schema.define(version: 2019_01_10_232157) do
     t.index ["revision_id"], name: "index_versioned_edition_revisions_on_revision_id"
   end
 
-  create_table "versioned_edition_statuses", force: :cascade do |t|
-    t.string "user_facing_state", null: false
-    t.bigint "revision_at_creation_id", null: false
-    t.bigint "edition_id"
-    t.bigint "created_by_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "details_type"
-    t.bigint "details_id"
-    t.index ["created_by_id"], name: "index_versioned_edition_statuses_on_created_by_id"
-    t.index ["details_type", "details_id"], name: "index_versioned_edition_statuses_on_details_type_and_details_id"
-    t.index ["edition_id"], name: "index_versioned_edition_statuses_on_edition_id"
-    t.index ["revision_at_creation_id"], name: "index_versioned_edition_statuses_on_revision_at_creation_id"
-    t.index ["user_facing_state"], name: "index_versioned_edition_statuses_on_user_facing_state"
-  end
-
   create_table "versioned_editions", force: :cascade do |t|
     t.integer "number", null: false
     t.datetime "last_edited_at", null: false
@@ -301,6 +285,22 @@ ActiveRecord::Schema.define(version: 2019_01_10_232157) do
     t.index ["update_revision_id"], name: "index_versioned_revisions_on_update_revision_id"
   end
 
+  create_table "versioned_statuses", force: :cascade do |t|
+    t.string "state", null: false
+    t.bigint "revision_at_creation_id", null: false
+    t.bigint "edition_id"
+    t.bigint "created_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "details_type"
+    t.bigint "details_id"
+    t.index ["created_by_id"], name: "index_versioned_statuses_on_created_by_id"
+    t.index ["details_type", "details_id"], name: "index_versioned_statuses_on_details_type_and_details_id"
+    t.index ["edition_id"], name: "index_versioned_statuses_on_edition_id"
+    t.index ["revision_at_creation_id"], name: "index_versioned_statuses_on_revision_at_creation_id"
+    t.index ["state"], name: "index_versioned_statuses_on_state"
+  end
+
   create_table "versioned_tags_revisions", force: :cascade do |t|
     t.json "tags", default: {}, null: false
     t.datetime "created_at"
@@ -311,7 +311,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_232157) do
     t.bigint "document_id", null: false
     t.bigint "edition_id"
     t.bigint "revision_id"
-    t.bigint "edition_status_id"
+    t.bigint "status_id"
     t.bigint "created_by_id"
     t.string "details_type"
     t.bigint "details_id"
@@ -360,14 +360,11 @@ ActiveRecord::Schema.define(version: 2019_01_10_232157) do
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :restrict
   add_foreign_key "versioned_edition_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
-  add_foreign_key "versioned_edition_statuses", "users", column: "created_by_id", on_delete: :nullify
-  add_foreign_key "versioned_edition_statuses", "versioned_editions", column: "edition_id", on_delete: :restrict
-  add_foreign_key "versioned_edition_statuses", "versioned_revisions", column: "revision_at_creation_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_editions", "users", column: "last_edited_by_id", on_delete: :nullify
   add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
-  add_foreign_key "versioned_editions", "versioned_edition_statuses", column: "status_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_revisions", column: "revision_id", on_delete: :restrict
+  add_foreign_key "versioned_editions", "versioned_statuses", column: "status_id", on_delete: :restrict
   add_foreign_key "versioned_image_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
   add_foreign_key "versioned_image_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_image_revisions", "versioned_images", column: "image_id", on_delete: :restrict
@@ -384,11 +381,14 @@ ActiveRecord::Schema.define(version: 2019_01_10_232157) do
   add_foreign_key "versioned_revisions", "versioned_revisions", column: "preceded_by_id", on_delete: :nullify
   add_foreign_key "versioned_revisions", "versioned_tags_revisions", column: "tags_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_update_revisions", column: "update_revision_id", on_delete: :restrict
+  add_foreign_key "versioned_statuses", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_statuses", "versioned_editions", column: "edition_id", on_delete: :restrict
+  add_foreign_key "versioned_statuses", "versioned_revisions", column: "revision_at_creation_id", on_delete: :restrict
   add_foreign_key "versioned_tags_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_timeline_entries", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_timeline_entries", "versioned_documents", column: "document_id", on_delete: :cascade
-  add_foreign_key "versioned_timeline_entries", "versioned_edition_statuses", column: "edition_status_id", on_delete: :nullify
   add_foreign_key "versioned_timeline_entries", "versioned_editions", column: "edition_id", on_delete: :cascade
   add_foreign_key "versioned_timeline_entries", "versioned_revisions", column: "revision_id", on_delete: :nullify
+  add_foreign_key "versioned_timeline_entries", "versioned_statuses", column: "status_id", on_delete: :nullify
   add_foreign_key "versioned_update_revisions", "users", column: "created_by_id", on_delete: :nullify
 end

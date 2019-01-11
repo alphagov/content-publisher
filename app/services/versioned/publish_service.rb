@@ -34,14 +34,14 @@ module Versioned
     def supersede_live_edition(user)
       return unless live_edition
 
-      live_edition.assign_status(user, :superseded, update_last_edited: false)
+      live_edition.assign_status(:superseded, user, update_last_edited: false)
       live_edition.live = false
       live_edition.save!
     end
 
     def set_new_live_edition(user, with_review)
       status = with_review ? :published : :published_but_needs_2i
-      current_edition.assign_status(user, status)
+      current_edition.assign_status(status, user)
       current_edition.live = true
       current_edition.draft = :not_applicable
       current_edition.save!

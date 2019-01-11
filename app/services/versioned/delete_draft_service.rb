@@ -17,7 +17,7 @@ module Versioned
       current_edition.image_revisions.each { |ir| delete_image_revision(ir) }
       discard_draft
 
-      current_edition.assign_status(user, :discarded)
+      current_edition.assign_status(:discarded, user)
                      .update!(current: false, draft: :not_applicable)
 
       live_edition = document.live_edition

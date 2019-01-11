@@ -25,8 +25,8 @@ module Versioned
 
     # For status changes this associates with the status that was changed,
     belongs_to :status,
-               class_name: "Versioned::EditionStatus",
-               foreign_key: :edition_status_id,
+               class_name: "Versioned::Status",
+               foreign_key: :status_id,
                optional: true
     # rubocop:enable Rails/InverseOf
 

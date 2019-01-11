@@ -6,7 +6,7 @@ module Versioned
 
     has_one :status,
             as: :details,
-            class_name: "Versioned::EditionStatus",
+            class_name: "Versioned::Status",
             dependent: :restrict_with_exception
 
     def readonly?
