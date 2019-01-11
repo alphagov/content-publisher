@@ -44,11 +44,11 @@ module Versioned
                inverse_of: :current_for_editions
 
     belongs_to :status,
-               class_name: "Versioned::EditionStatus",
+               class_name: "Versioned::Status",
                inverse_of: :status_of
 
     has_many :statuses,
-             class_name: "Versioned::EditionStatus",
+             class_name: "Versioned::Status",
              dependent: :restrict_with_exception,
              inverse_of: :edition
 
@@ -70,18 +70,19 @@ module Versioned
                   requirements_not_met: "requirements_not_met" },
          _prefix: true
 
-    delegate :user_facing_state, to: :status
-    alias state user_facing_state
-
     delegate :content_id, :locale, :document_type, :topics, to: :document
+
+    # delegate each state enum method
+    state_methods = Versioned::Status.states.keys.map { |s| (s + "?").to_sym }
+    delegate :state, *state_methods, to: :status
 
     delegate_missing_to :revision
 
     def self.create_initial(document, user = nil, tags = {})
       revision = Revision.create_initial(document, user, tags)
-      status = EditionStatus.create!(created_by: user,
-                                     revision_at_creation: revision,
-                                     user_facing_state: :draft)
+      status = Status.create!(created_by: user,
+                              revision_at_creation: revision,
+                              state: :draft)
 
       create!(created_by: user,
               current: true,
@@ -99,9 +100,9 @@ module Versioned
         user,
       )
 
-      status = EditionStatus.create!(created_by: user,
-                                     revision_at_creation: revision,
-                                     user_facing_state: :draft)
+      status = Status.create!(created_by: user,
+                              revision_at_creation: revision,
+                              state: :draft)
 
       create!(created_by: user,
               current: true,
@@ -119,9 +120,9 @@ module Versioned
         user,
       )
 
-      status = EditionStatus.create!(created_by: user,
-                                     revision_at_creation: revision,
-                                     user_facing_state: :draft)
+      status = Status.create!(created_by: user,
+                              revision_at_creation: revision,
+                              state: :draft)
 
       update!(current: true,
               draft: :requirements_not_met,
@@ -131,13 +132,13 @@ module Versioned
               status: status)
     end
 
-    def assign_status(user,
-                      user_facing_state,
+    def assign_status(state,
+                      user,
                       update_last_edited: true,
                       status_details: nil)
-      status = Versioned::EditionStatus.new(
+      status = Versioned::Status.new(
         created_by: user,
-        user_facing_state: user_facing_state,
+        state: state,
         revision_at_creation_id: revision_id,
         details: status_details,
       )

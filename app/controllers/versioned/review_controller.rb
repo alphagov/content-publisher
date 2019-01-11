@@ -19,7 +19,7 @@ module Versioned
           end
 
           document.current_edition
-                  .assign_status(current_user, :submitted_for_review)
+                  .assign_status(:submitted_for_review, current_user)
                   .save!
 
           Versioned::TimelineEntry.create_for_status_change(
@@ -50,7 +50,7 @@ module Versioned
           redirect_to document
         end
 
-        current_edition.assign_status(current_user, :published)
+        current_edition.assign_status(:published, current_user)
         current_edition.save!
 
         Versioned::TimelineEntry.create_for_status_change(

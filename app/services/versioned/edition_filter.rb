@@ -55,9 +55,9 @@ module Versioned
           memo.where("versioned_documents.document_type_id": value)
         when :status
           if value == "published"
-            memo.where("versioned_edition_statuses.user_facing_state": %w[published published_but_needs_2i])
+            memo.where("versioned_statuses.state": %w[published published_but_needs_2i])
           else
-            memo.where("versioned_edition_statuses.user_facing_state": value)
+            memo.where("versioned_statuses.state": value)
           end
         when :organisation
           memo.where(TAG_CONTAINS_QUERY % { tag: "organisations" } + " OR " +
