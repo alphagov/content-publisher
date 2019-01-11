@@ -11,6 +11,8 @@ module Versioned
   class Revision < ApplicationRecord
     self.table_name = "versioned_revisions"
 
+    COMPARISON_IGNORE_FIELDS = %w[id created_at created_by_id].freeze
+
     # rubocop:disable Rails/InverseOf
     belongs_to :created_by,
                class_name: "User",
@@ -128,11 +130,14 @@ module Versioned
     end
 
     def different_to?(other_revision)
-      content_revision != other_revision.content_revision ||
-        update_revision != other_revision.update_revision ||
-        tags_revision != other_revision.tags_revision ||
-        lead_image_revision != other_revision.lead_image_revision ||
-        image_revisions != other_revision.image_revisions
+      raise "Must compare with a persisted record" if other_revision.new_record?
+
+      other_attributes = other_revision.attributes.except(*COMPARISON_IGNORE_FIELDS)
+      attributes_differ = attributes.except(*COMPARISON_IGNORE_FIELDS) != other_attributes
+
+      # We need to check many-to-many relationship separately as it's not
+      # included in attributes
+      attributes_differ || image_revision_ids.sort != other_revision.image_revision_ids.sort
     end
 
     def image_revisions_without_lead
@@ -149,6 +154,11 @@ module Versioned
       end
 
       def build
+        # we use dup to shallow clone the record which won't work unless data
+        # is persisted (clone would be approriate) - it seems unlikely this
+        # would need to be run with something unpersisted
+        raise "Can't update from an unpersisted record" if preceding_revision.new_record?
+
         next_revision = preceding_revision.dup
         content_revision(next_revision)
         update_revision(next_revision)
@@ -158,7 +168,7 @@ module Versioned
 
         if next_revision.different_to?(preceding_revision)
           next_revision.tap do |r|
-            r.created_at = user
+            r.created_by = user
             r.preceded_by = preceding_revision
           end
         else

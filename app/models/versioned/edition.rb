@@ -94,8 +94,8 @@ module Versioned
               status: status)
     end
 
-    def self.create_next_edition(proceeding_edition, user)
-      revision = proceeding_edition.revision.build_revision_update(
+    def self.create_next_edition(preceding_edition, user)
+      revision = preceding_edition.revision.build_revision_update(
         { change_note: "", update_type: "major" },
         user,
       )
@@ -106,16 +106,16 @@ module Versioned
 
       create!(created_by: user,
               current: true,
-              document: proceeding_edition.document,
+              document: preceding_edition.document,
               draft: :requirements_not_met,
               last_edited_by: user,
-              number: proceeding_edition.document.next_edition_number,
+              number: preceding_edition.document.next_edition_number,
               revision: revision,
               status: status)
     end
 
-    def resume_discarded(proceeding_edition, user)
-      revision = proceeding_edition.revision.build_revision_update(
+    def resume_discarded(live_edition, user)
+      revision = live_edition.revision.build_revision_update(
         { change_note: "", update_type: "major" },
         user,
       )
