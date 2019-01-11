@@ -4,7 +4,7 @@
 <% content_for :data_layer_js do %>
   dataLayer.push({
     "document-type": "<%= @edition.document_type.label %>",
-    "document-status": "<%= t("user_facing_states.#{@edition.user_facing_state}.name") %>"
+    "document-status": "<%= t("user_facing_states.#{@edition.state}.name") %>"
   })
 <% end %>
 

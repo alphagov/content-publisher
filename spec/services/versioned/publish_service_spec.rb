@@ -22,7 +22,7 @@ RSpec.describe Versioned::PublishService do
         expect(publish_request).to have_been_requested
         expect(edition.live).to be(true)
         expect(edition.document.live_edition).to eq(edition)
-        expect(edition.user_facing_state).to eq("published")
+        expect(edition).to be_published
       end
 
       it "can specify if edition is reviewed" do
@@ -30,7 +30,7 @@ RSpec.describe Versioned::PublishService do
                                  .publish(user: create(:user), with_review: false)
         edition.reload
         expect(publish_request).to have_been_requested
-        expect(edition.user_facing_state).to eq("published_but_needs_2i")
+        expect(edition).to be_published_but_needs_2i
       end
     end
 
@@ -48,7 +48,7 @@ RSpec.describe Versioned::PublishService do
 
         document.reload
         expect(document.live_edition).to eq(current_edition)
-        expect(live_edition.user_facing_state).to eq("superseded")
+        expect(live_edition).to be_superseded
       end
     end
 
