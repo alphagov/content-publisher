@@ -13,11 +13,12 @@ module Versioned
                class_name: "User",
                optional: true,
                foreign_key: :created_by_id
+    # rubocop:enable Rails/InverseOf
 
     belongs_to :revision_at_creation,
                class_name: "Versioned::Revision",
-               foreign_key: :revision_at_creation_id
-    # rubocop:enable Rails/InverseOf
+               foreign_key: :revision_at_creation_id,
+               inverse_of: :statuses
 
     belongs_to :edition,
                class_name: "Versioned::Edition",
