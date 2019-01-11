@@ -63,6 +63,12 @@ module Versioned
              inverse_of: :revision,
              dependent: :restrict_with_exception
 
+    has_many :statuses,
+             class_name: "Versioned::Status",
+             foreign_key: :revision_at_creation_id,
+             inverse_of: :revision_at_creation,
+             dependent: :restrict_with_exception
+
     has_and_belongs_to_many :editions,
                             class_name: "Versioned::Edition",
                             join_table: "versioned_edition_revisions"
