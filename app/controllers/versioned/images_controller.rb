@@ -65,7 +65,7 @@ module Versioned
         image_revision = previous_image_revision.build_revision_update(
           update_crop_params,
           current_user,
-          keep_variants: false,
+          keep_files: false, # a crop change will make the files change
         )
 
         if image_revision != previous_image_revision
@@ -120,7 +120,7 @@ module Versioned
         @image_revision = previous_image_revision.build_revision_update(
           update_params,
           current_user,
-          keep_variants: true,
+          keep_files: true,
         )
 
         @issues = Versioned::Requirements::ImageRevisionChecker.new(@image_revision)

@@ -46,13 +46,13 @@ module Versioned
       !new_record?
     end
 
-    def build_revision_update(attributes, user, keep_variants: true)
+    def build_revision_update(attributes, user, keep_files: true)
       new_revision = dup.tap { |d| d.assign_attributes(attributes) }
       return self unless different_to?(new_revision)
 
       new_revision.tap do |revision|
         revision.created_by = user
-        if keep_variants
+        if keep_files
           revision.asset_manager_variants = asset_manager_variants.map(&:dup)
         else
           revision.ensure_asset_manager_variants

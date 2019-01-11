@@ -74,6 +74,10 @@ module Versioned
       (editions.maximum(:number) || 0) + 1
     end
 
+    def next_revision_number
+      (revisions.maximum(:number) || 0) + 1
+    end
+
     def to_param
       content_id + ":" + locale
     end
@@ -88,7 +92,7 @@ module Versioned
     end
 
     def newly_created?
-      return false if !current_edition || current_edition.number == 1
+      return false if !current_edition || current_edition.number != 1
 
       current_edition.created_at == current_edition.updated_at
     end

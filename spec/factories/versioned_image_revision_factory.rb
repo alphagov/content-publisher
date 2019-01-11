@@ -15,6 +15,7 @@ FactoryBot.define do
 
     transient do
       fixture { "1000x1000.jpg" }
+      asset_manager_variants { nil }
     end
 
     after(:build) do |image_revision, evaluator|
@@ -25,7 +26,11 @@ FactoryBot.define do
         filename: image_revision.filename,
       )
 
-      image_revision.ensure_asset_manager_variants
+      if evaluator.asset_manager_variants
+        image_revision.asset_manager_variants = evaluator.asset_manager_variants
+      else
+        image_revision.ensure_asset_manager_variants
+      end
     end
 
     trait :on_asset_manager do
