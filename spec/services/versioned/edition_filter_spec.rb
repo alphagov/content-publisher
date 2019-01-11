@@ -45,8 +45,8 @@ RSpec.describe Versioned::EditionFilter do
     end
 
     it "filters the editions by status" do
-      edition1 = create(:versioned_edition, user_facing_state: "draft")
-      edition2 = create(:versioned_edition, user_facing_state: "submitted_for_review")
+      edition1 = create(:versioned_edition, state: "draft")
+      edition2 = create(:versioned_edition, state: "submitted_for_review")
 
       editions = Versioned::EditionFilter.new(filters: { status: " " }).editions
       expect(editions).to match_array([edition1, edition2])
@@ -59,8 +59,8 @@ RSpec.describe Versioned::EditionFilter do
     end
 
     it "includes published_but_needs_2i in published status filter" do
-      edition1 = create(:versioned_edition, user_facing_state: "published")
-      edition2 = create(:versioned_edition, user_facing_state: "published_but_needs_2i")
+      edition1 = create(:versioned_edition, state: "published")
+      edition2 = create(:versioned_edition, state: "published_but_needs_2i")
 
       editions = Versioned::EditionFilter.new(filters: { status: "published" }).editions
       expect(editions).to match_array([edition1, edition2])

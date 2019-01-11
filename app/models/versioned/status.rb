@@ -3,10 +3,10 @@
 module Versioned
   # Used to represent the user facing status of an edition. Each status an
   # edition has is stored and it must always have one.
-  class EditionStatus < ApplicationRecord
-    self.table_name = "versioned_edition_statuses"
+  class Status < ApplicationRecord
+    self.table_name = "versioned_statuses"
 
-    attr_readonly :user_facing_state, :revision_at_creation_id
+    attr_readonly :value, :revision_at_creation_id
 
     # rubocop:disable Rails/InverseOf
     belongs_to :created_by,
@@ -35,13 +35,13 @@ module Versioned
             inverse_of: :status,
             dependent: :restrict_with_exception
 
-    enum user_facing_state: { draft: "draft",
-                              submitted_for_review: "submitted_for_review",
-                              published: "published",
-                              published_but_needs_2i: "published_but_needs_2i",
-                              retired: "retired",
-                              removed: "removed",
-                              discarded: "discarded",
-                              superseded: "superseded" }
+    enum state: { draft: "draft",
+                  submitted_for_review: "submitted_for_review",
+                  published: "published",
+                  published_but_needs_2i: "published_but_needs_2i",
+                  retired: "retired",
+                  removed: "removed",
+                  discarded: "discarded",
+                  superseded: "superseded" }
   end
 end

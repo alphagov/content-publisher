@@ -19,7 +19,7 @@ FactoryBot.define do
       base_path { title ? "/prefix/#{title.parameterize}" : nil }
       contents { {} }
       tags { {} }
-      user_facing_state { "draft" }
+      state { "draft" }
       lead_image_revision { nil }
       image_revisions { [] }
     end
@@ -62,10 +62,10 @@ FactoryBot.define do
 
       unless edition.status
         edition.status = evaluator.association(
-          :versioned_edition_status,
+          :versioned_status,
           created_by: edition.created_by,
           revision_at_creation: edition.revision,
-          user_facing_state: evaluator.user_facing_state,
+          state: evaluator.state,
         )
       end
     end
@@ -81,9 +81,9 @@ FactoryBot.define do
 
       after(:build) do |edition, evaluator|
         edition.status = evaluator.association(
-          :versioned_edition_status,
+          :versioned_status,
           created_by: edition.created_by,
-          user_facing_state: :published,
+          state: :published,
           revision_at_creation: edition.revision,
         )
       end
