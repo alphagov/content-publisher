@@ -32,7 +32,7 @@ module Versioned
 
     has_many :timeline_entries,
              class_name: "Versioned::TimelineEntry",
-             dependent: :destroy
+             dependent: :delete_all
 
     delegate :topics, to: :document_topics
 

@@ -49,12 +49,12 @@ module Versioned
 
     has_many :statuses,
              class_name: "Versioned::Status",
-             dependent: :restrict_with_exception,
+             dependent: :delete_all,
              inverse_of: :edition
 
     has_many :timeline_entries,
              class_name: "Versioned::TimelineEntry",
-             dependent: :destroy
+             dependent: :delete_all
 
     has_many :internal_notes,
              class_name: "Versioned::InternalNote",

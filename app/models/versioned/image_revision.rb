@@ -36,7 +36,7 @@ module Versioned
     has_many :asset_manager_variants,
              class_name: "Versioned::AssetManagerImageVariant",
              inverse_of: :image_revision,
-             dependent: :destroy
+             dependent: :delete_all
 
     has_many :asset_manager_files,
              through: :asset_manager_variants,
