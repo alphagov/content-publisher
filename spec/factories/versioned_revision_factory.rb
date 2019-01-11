@@ -4,6 +4,8 @@ FactoryBot.define do
   factory :versioned_revision, class: Versioned::Revision do
     association :created_by, factory: :user
     association :document, factory: :versioned_document
+    association :lead_image_revision, factory: :versioned_image_revision
+    image_revisions { lead_image_revision ? [lead_image_revision] : [] }
 
     transient do
       title { SecureRandom.alphanumeric(10) }
