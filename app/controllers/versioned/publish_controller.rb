@@ -23,7 +23,7 @@ module Versioned
                                        .lock
                                        .find_by_param(params[:id])
 
-        if @document.live_edition
+        if @document.current_edition.live
           redirect_to versioned_published_path(@document)
           return
         end
