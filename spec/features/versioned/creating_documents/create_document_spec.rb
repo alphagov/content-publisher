@@ -38,14 +38,14 @@ RSpec.feature "Create a document" do
   end
 
   def then_i_see_the_document_summary
-    # expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
+    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
     expect(page).to have_content("A title")
 
-    # within find("#document-history") do
-    #   expect(page).to have_content "1st edition"
-    #   expect(page).to have_content I18n.t!("documents.history.entry_types.created")
-    #   expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
-    # end
+    within find("#document-history") do
+      expect(page).to have_content "1st edition"
+      expect(page).to have_content I18n.t!("documents.history.entry_types.created")
+      expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
+    end
   end
 
   def and_the_preview_creation_was_successful
