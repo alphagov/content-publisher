@@ -54,6 +54,8 @@ Rails.application.routes.draw do
   post "/documents/:document_id/editions" => "editions#create", as: :create_edition
 
   namespace :versioned do
+    root to: redirect("/versioned/documents")
+
     get "/documents/new" => "new_document#choose_supertype", as: :new_document
     get "/documents/choose-document-type" => "new_document#choose_document_type", as: :choose_document_type
     post "/documents/create" => "new_document#create", as: :create_document
