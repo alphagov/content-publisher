@@ -37,10 +37,10 @@ RSpec.describe Versioned::TimelineEntry do
   end
 
   describe ".created_for_revision" do
-    let(:edition) { build(:versioned_edition) }
+    let(:edition) { create(:versioned_edition) }
 
     it "creates a TimelineEntry" do
-      revision = build(:versioned_revision, document: edition.document)
+      revision = create(:versioned_revision, document: edition.document)
 
       entry = Versioned::TimelineEntry.create_for_revision(
         entry_type: :updated_content,
