@@ -17,32 +17,34 @@ FactoryBot.define do
       change_note { "First published." }
     end
 
-    after(:build) do |edition, evaluator|
-      unless edition.content_revision
-        edition.content_revision = evaluator.association(
+    after(:build) do |revision, evaluator|
+      revision.number = revision.document&.next_revision_number unless revision.number
+
+      unless revision.content_revision
+        revision.content_revision = evaluator.association(
           :versioned_content_revision,
           title: evaluator.title,
           base_path: evaluator.base_path,
           summary: evaluator.summary,
           contents: evaluator.contents,
-          created_by: edition.created_by,
+          created_by: revision.created_by,
         )
       end
 
-      unless edition.update_revision
-        edition.update_revision = evaluator.association(
+      unless revision.update_revision
+        revision.update_revision = evaluator.association(
           :versioned_update_revision,
           update_type: evaluator.update_type,
           change_note: evaluator.change_note,
-          created_by: edition.created_by,
+          created_by: revision.created_by,
         )
       end
 
-      unless edition.tags_revision
-        edition.tags_revision = evaluator.association(
+      unless revision.tags_revision
+        revision.tags_revision = evaluator.association(
           :versioned_tags_revision,
           tags: evaluator.tags,
-          created_by: edition.created_by,
+          created_by: revision.created_by,
         )
       end
     end

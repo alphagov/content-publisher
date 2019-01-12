@@ -11,7 +11,7 @@ module Versioned
   class Revision < ApplicationRecord
     self.table_name = "versioned_revisions"
 
-    COMPARISON_IGNORE_FIELDS = %w[id created_at created_by_id].freeze
+    COMPARISON_IGNORE_FIELDS = %w[id number created_at created_by_id].freeze
 
     # rubocop:disable Rails/InverseOf
     belongs_to :created_by,
@@ -96,6 +96,7 @@ module Versioned
       Revision.create!(
         created_by: user,
         document: document,
+        number: document.next_revision_number,
         content_revision: ContentRevision.new(created_by: user),
         update_revision: UpdateRevision.new(
           change_note: "First published.",
@@ -174,6 +175,7 @@ module Versioned
 
         if next_revision.different_to?(preceding_revision)
           next_revision.tap do |r|
+            r.number = r.document.next_revision_number
             r.created_by = user
             r.preceded_by = preceding_revision
           end
