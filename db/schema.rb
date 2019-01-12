@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_11_104120) do
+ActiveRecord::Schema.define(version: 2019_01_11_235106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -276,10 +276,12 @@ ActiveRecord::Schema.define(version: 2019_01_11_104120) do
     t.bigint "update_revision_id", null: false
     t.bigint "tags_revision_id", null: false
     t.bigint "preceded_by_id"
+    t.integer "number", null: false
     t.index ["content_revision_id"], name: "index_versioned_revisions_on_content_revision_id"
     t.index ["created_by_id"], name: "index_versioned_revisions_on_created_by_id"
     t.index ["document_id"], name: "index_versioned_revisions_on_document_id"
     t.index ["lead_image_revision_id"], name: "index_versioned_revisions_on_lead_image_revision_id"
+    t.index ["number", "document_id"], name: "index_versioned_revisions_on_number_and_document_id", unique: true
     t.index ["preceded_by_id"], name: "index_versioned_revisions_on_preceded_by_id"
     t.index ["tags_revision_id"], name: "index_versioned_revisions_on_tags_revision_id"
     t.index ["update_revision_id"], name: "index_versioned_revisions_on_update_revision_id"
