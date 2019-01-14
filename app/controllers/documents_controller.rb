@@ -14,8 +14,8 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    document = Document.with_current_edition.find_by_param(params[:id])
-    @edition = document.current_edition
+    @document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = @document.current_edition
   end
 
   def confirm_delete_draft

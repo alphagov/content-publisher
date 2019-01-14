@@ -112,7 +112,7 @@
     if @document && current_user.has_permission?(User::DEBUG_PERMISSION)
       debug_links << {
         href: debug_document_path(@document),
-        text: "Document internal metadata",
+        text: "Document revision history",
       }
     end
   %>
