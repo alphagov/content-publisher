@@ -25,8 +25,8 @@ RSpec.feature "Create a news story", format: true do
   end
 
   def and_i_fill_in_the_form_fields
-    fill_in "document[title]", with: "A great title"
-    fill_in "document[summary]", with: "A great summary"
+    fill_in "revision[title]", with: "A great title"
+    fill_in "revision[summary]", with: "A great summary"
 
     document = Document.first
     base_path = document.document_type.path_prefix + "/a-great-title"
