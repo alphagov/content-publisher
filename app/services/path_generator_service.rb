@@ -28,8 +28,9 @@ private
   end
 
   def document_exists_with_path?(base_path, document)
-    doc = Document.where(base_path: base_path).first
-    doc && doc != document
+    Document.using_base_path(base_path)
+            .where.not("versioned_documents.id": document.id)
+            .exists?
   end
 
   def create_path(prefix, slug, count = nil)

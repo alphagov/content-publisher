@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-class DocumentUrl
-  def initialize(document)
-    @document = document
+class EditionUrl
+  def initialize(edition)
+    @edition = edition
   end
 
   def public_url
-    return unless document.base_path
+    return unless edition.base_path
 
-    Plek.new.website_root + document.base_path
+    Plek.new.website_root + edition.base_path
   end
 
   def preview_url
-    return unless document.base_path
+    return unless edition.base_path
 
-    Plek.new.external_url_for("draft-origin") + document.base_path
+    Plek.new.external_url_for("draft-origin") + edition.base_path
   end
 
   def secret_preview_url
-    return unless document.base_path
+    return unless edition.base_path
 
     params = { token: secret_token_for_preview_url }.to_query
     preview_url + "?" + params
@@ -35,12 +35,12 @@ class DocumentUrl
   #
   # For more info, see https://docs.publishing.service.gov.uk/manual/content-preview.html#authentication
   def auth_bypass_id
-    @auth_bypass_id ||= generate_uuid_for_string(document.content_id)
+    @auth_bypass_id ||= generate_uuid_for_string(edition.content_id)
   end
 
 private
 
-  attr_reader :document
+  attr_reader :edition
 
   def secret_token_for_preview_url
     JWT.encode(

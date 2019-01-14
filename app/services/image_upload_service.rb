@@ -7,29 +7,31 @@ class ImageUploadService
     @file = file
   end
 
-  def call(document)
+  def call(user)
+    image = Image.create!(created_by: user)
+
     blob = ActiveStorage::Blob.create_after_upload!(
       io: image_normaliser.normalised_file,
       filename: filename,
       content_type: mime_type,
     )
 
-    image = Image.new(image_attributes)
-    image.document = document
-    image.blob = blob
-    image.asset_manager_file_url = upload_to_asset_manager(image)
-    image.publication_state = "draft"
-    image.save!
-    image
+    file_revision = Image::FileRevision.new(
+      image_attributes.merge(blob: blob, created_by: user),
+    )
+    file_revision.ensure_assets
+
+    Image::Revision.create!(
+      image: image,
+      created_by: user,
+      file_revision: file_revision,
+      metadata_revision: Image::MetadataRevision.new(created_by: user),
+    )
   end
 
 private
 
   attr_reader :file
-
-  def upload_to_asset_manager(image)
-    AssetManagerService.new.upload_bytes(image, image.cropped_bytes)
-  end
 
   def filename
     file.respond_to?(:original_filename) ? file.original_filename : File.basename(file)
@@ -44,6 +46,10 @@ private
   end
 
   def image_attributes
+    @image_attributes ||= build_image_attributes
+  end
+
+  def build_image_attributes
     dimensions = image_normaliser.dimensions
     cropper = ImageCentreCropper.new(dimensions[:width],
                                 dimensions[:height],

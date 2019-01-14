@@ -4,16 +4,20 @@ RSpec.describe PublishingApiPayload do
   describe "#payload" do
     it "generates a payload for the publishing API" do
       document_type = build(:document_type)
-      document = build(:document, document_type_id: document_type.id, title: "Some title", summary: "document summary", base_path: "/foo/bar/baz")
+      edition = build(:edition,
+                      document_type_id: document_type.id,
+                      title: "Some title",
+                      summary: "document summary",
+                      base_path: "/foo/bar/baz")
 
-      payload = PublishingApiPayload.new(document).payload
+      payload = PublishingApiPayload.new(edition).payload
 
       payload_hash = {
         "base_path" => "/foo/bar/baz",
         "description" => "document summary",
         "document_type" => document_type.id,
         "links" => { "organisations" => [] },
-        "locale" => document.locale,
+        "locale" => edition.locale,
         "publishing_app" => "content-publisher",
         "rendering_app" => nil,
         "routes" => [{ "path" => "/foo/bar/baz", "type" => "exact" }],
@@ -26,12 +30,12 @@ RSpec.describe PublishingApiPayload do
     it "includes primary_publishing_organisation in organisations links" do
       organisation = build(:tag_field, type: "single_tag", id: "primary_publishing_organisation")
       document_type = build(:document_type, tags: [organisation])
-      document = build(:document, document_type_id: document_type.id, tags: {
-                         primary_publishing_organisation: ["my-org-id"],
-                         organisations: ["other-org-id"],
-                       })
+      edition = build(:edition,
+                      document_type_id: document_type.id,
+                      tags: { primary_publishing_organisation: ["my-org-id"],
+                              organisations: ["other-org-id"] })
 
-      payload = PublishingApiPayload.new(document).payload
+      payload = PublishingApiPayload.new(edition).payload
 
       payload_hash = {
         "links" => {
@@ -45,12 +49,12 @@ RSpec.describe PublishingApiPayload do
     it "ensures the organisation links are unique" do
       organisation = build(:tag_field, type: "single_tag", id: "primary_publishing_organisation")
       document_type = build(:document_type, tags: [organisation])
-      document = build(:document, document_type_id: document_type.id, tags: {
-                         primary_publishing_organisation: ["my-org-id"],
-                         organisations: ["my-org-id"],
-                       })
+      edition = build(:edition,
+                      document_type_id: document_type.id,
+                      tags: { primary_publishing_organisation: ["my-org-id"],
+                              organisations: ["my-org-id"] })
 
-      payload = PublishingApiPayload.new(document).payload
+      payload = PublishingApiPayload.new(edition).payload
 
       payload_hash = {
         "links" => {
@@ -65,9 +69,9 @@ RSpec.describe PublishingApiPayload do
       role_appointment_id = SecureRandom.uuid
       role_appointments = build(:tag_field, type: "multi_tag", id: "role_appointments")
       document_type = build(:document_type, tags: [role_appointments])
-      document = build(:document, document_type_id: document_type.id, tags: {
-                         role_appointments: [role_appointment_id],
-                       })
+      edition = build(:edition,
+                      document_type_id: document_type.id,
+                      tags: { role_appointments: [role_appointment_id] })
 
       person_id = SecureRandom.uuid
       role_id = SecureRandom.uuid
@@ -76,7 +80,7 @@ RSpec.describe PublishingApiPayload do
         "links" => { "person" => [person_id], "role" => [role_id] },
       )
 
-      payload = PublishingApiPayload.new(document).payload
+      payload = PublishingApiPayload.new(edition).payload
 
       expect(payload["links"]).to match a_hash_including(
         "roles" => [role_id],
@@ -87,28 +91,33 @@ RSpec.describe PublishingApiPayload do
     it "transforms Govspeak before sending it to the publishing-api" do
       body_field = build(:field, type: "govspeak", id: "body")
       document_type = build(:document_type, contents: [body_field])
-      document = build(:document, document_type_id: document_type.id, contents: { body: "Hey **buddy**!" })
+      edition = build(:edition,
+                      document_type_id: document_type.id,
+                      contents: { body: "Hey **buddy**!" })
 
-      payload = PublishingApiPayload.new(document).payload
+      payload = PublishingApiPayload.new(edition).payload
 
       expect(payload["details"]["body"]).to eq("<p>Hey <strong>buddy</strong>!</p>\n")
     end
 
     it "includes a lead image if present" do
-      image = build(
-        :image,
-        alt_text: "image alt text",
-        caption: "image caption",
-        asset_manager_file_url: "http:://assets-manager.gov.uk/image.jpg",
-        credit: "image credit",
-      )
-      document_type = build(:document_type, lead_image: true)
-      document = build(:document, document_type_id: document_type.id, lead_image: image)
+      image_revision = build(:image_revision,
+                             :on_asset_manager,
+                             alt_text: "image alt text",
+                             caption: "image caption",
+                             credit: "image credit")
 
-      payload = PublishingApiPayload.new(document).payload
+      document_type = build(:document_type, lead_image: true)
+
+      edition = build(:edition,
+                      document_type_id: document_type.id,
+                      lead_image_revision: image_revision)
+
+      payload = PublishingApiPayload.new(edition).payload
 
       payload_hash = {
-        "url" => "http:://assets-manager.gov.uk/image.jpg",
+        "url" => image_revision.asset_url("300"),
+        "high_resolution_url" => image_revision.asset_url("high_resolution"),
         "alt_text" => "image alt text",
         "caption" => "image caption",
         "credit" => "image credit",
@@ -118,15 +127,19 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "includes a change note if the update type is 'major'" do
-      document = create(:document, update_type: "major", change_note: "A change note")
-      payload = PublishingApiPayload.new(document).payload
+      edition = create(:edition,
+                       update_type: "major",
+                       change_note: "A change note")
+      payload = PublishingApiPayload.new(edition).payload
 
       expect(payload).to match a_hash_including("change_note" => "A change note")
     end
 
     it "does not include a change note if the update type is 'minor'" do
-      document = create(:document, update_type: "minor", change_note: "A change note")
-      payload = PublishingApiPayload.new(document).payload
+      edition = create(:edition,
+                       update_type: "minor",
+                       change_note: "A change note")
+      payload = PublishingApiPayload.new(edition).payload
 
       expect(payload).not_to match a_hash_including("change_note" => "A change note")
     end

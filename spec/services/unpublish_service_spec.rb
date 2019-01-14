@@ -1,190 +1,241 @@
 # frozen_string_literal: true
 
 RSpec.describe UnpublishService do
+  include AssetManagerHelper
+
+  let(:edition) { create(:edition, :published) }
+  let(:edition_with_image) do
+    create(:edition, :published, lead_image_revision: image_revision)
+  end
+  let(:image_revision) do
+    create(:image_revision, :on_asset_manager, state: :live)
+  end
+
+  before { stub_any_publishing_api_unpublish }
+
   describe "#retire" do
-    let(:document) { create(:document) }
     let(:explanatory_note) { "The document is out of date" }
 
-    it "withdraws a document in publishing-api with an explanatory note" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
-      UnpublishService.new.retire(document, explanatory_note)
+    it "withdraws an edition in publishing-api with an explanatory note" do
+      request = stub_publishing_api_unpublish(edition.content_id,
+                                              body: { type: "withdrawal",
+                                                      explanation: explanatory_note,
+                                                      locale: edition.locale })
+      UnpublishService.new.retire(edition, explanatory_note)
 
-      assert_publishing_api_unpublish(document.content_id, type: "withdrawal", explanation: explanatory_note, locale: document.locale)
+      expect(request).to have_been_requested
     end
 
-    it "sets the locale of the document if specified" do
-      french_document = create(:document, locale: "fr")
+    it "does not delete assets for retired editions" do
+      delete_request = stub_asset_manager_deletes_assets
+      UnpublishService.new.retire(edition_with_image, explanatory_note)
 
-      stub_publishing_api_unpublish(french_document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: french_document.locale })
-      UnpublishService.new.retire(french_document, explanatory_note)
-
-      assert_publishing_api_unpublish(french_document.content_id, type: "withdrawal", explanation: explanatory_note, locale: french_document.locale)
-    end
-
-    it "does not delete assets for retired documents" do
-      asset = create(:image, :in_preview, document: document)
-      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
-
-      UnpublishService.new.retire(document, explanatory_note)
-
-      assert_not_requested asset_manager_delete_asset(asset.asset_manager_id)
+      expect(delete_request).not_to have_been_requested
     end
 
     it "adds an entry in the timeline of the document" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
-      UnpublishService.new.retire(document, explanatory_note)
+      UnpublishService.new.retire(edition, explanatory_note)
 
-      expect(document.timeline_entries.first.entry_type).to eq("retired")
+      expect(edition.timeline_entries.first.entry_type).to eq("retired")
     end
 
-    it "keeps track of the live state" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "withdrawal", explanation: explanatory_note, locale: document.locale })
-      UnpublishService.new.retire(document, explanatory_note)
-      document.reload
+    it "updates the edition status" do
+      UnpublishService.new.retire(edition, explanatory_note)
+      edition.reload
 
-      expect(document.live_state).to eq("retired")
-      expect(document.timeline_entries.first.retirement.explanatory_note).to eq(explanatory_note)
+      expect(edition.status).to be_retired
+      expect(edition.status.details.explanatory_note).to eq(explanatory_note)
+    end
+
+    context "when the given edition is a draft" do
+      it "raises an error" do
+        draft_edition = create(:edition)
+        expect { UnpublishService.new.retire(draft_edition, explanatory_note) }
+          .to raise_error RuntimeError, "attempted to unpublish an edition other than the live edition"
+      end
+    end
+
+    context "when there is a live and a draft edition" do
+      it "raises an error" do
+        draft_edition = create(:edition)
+        live_edition = create(:edition,
+                              :published,
+                              current: false,
+                              document: draft_edition.document)
+
+        expect { UnpublishService.new.retire(live_edition, explanatory_note) }
+          .to raise_error RuntimeError, "Publishing API does not support unpublishing while there is a draft"
+      end
     end
   end
 
   describe "#remove" do
-    let(:document) { create(:document) }
+    it "removes an edition" do
+      request = stub_publishing_api_unpublish(edition.content_id,
+                                              body: { type: "gone",
+                                                      locale: edition.locale })
+      UnpublishService.new.remove(edition)
 
-    it "removes a document" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", locale: document.locale })
-      UnpublishService.new.remove(document)
-
-      assert_publishing_api_unpublish(document.content_id, type: "gone", locale: document.locale)
+      expect(request).to have_been_requested
     end
 
-    it "deletes assets associated with removed documents" do
-      asset = create(:image, :in_preview, document: document)
-      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", locale: document.locale })
-      asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
+    it "deletes assets associated with removed editions" do
+      delete_request = stub_asset_manager_deletes_assets
 
-      UnpublishService.new.remove(document)
-
-      assert_requested(asset_manager_request)
+      UnpublishService.new.remove(edition_with_image)
+      expect(delete_request).to have_been_requested.at_least_once
     end
 
     it "accepts an optional explanatory note" do
       explanatory_note = "The reason document has been removed"
-      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", explanation: explanatory_note, locale: document.locale })
+      request = stub_publishing_api_unpublish(edition.content_id,
+                                              body: { type: "gone",
+                                                      explanation: explanatory_note,
+                                                      locale: edition.locale })
 
-      UnpublishService.new.remove(document, explanatory_note: explanatory_note)
+      UnpublishService.new.remove(edition,
+                                  explanatory_note: explanatory_note)
 
-      assert_publishing_api_unpublish(document.content_id, type: "gone", explanation: explanatory_note, locale: document.locale)
+      expect(request).to have_been_requested
     end
 
     it "accepts an optional alternative path" do
       alternative_path = "/look-here-instead"
-      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", alternative_path: alternative_path, locale: document.locale })
+      request = stub_publishing_api_unpublish(edition.content_id,
+                                              body: { type: "gone",
+                                                      alternative_path: alternative_path,
+                                                      locale: edition.locale })
 
-      UnpublishService.new.remove(document, alternative_path: alternative_path)
+      UnpublishService.new.remove(edition,
+                                  alternative_path: alternative_path)
 
-      assert_publishing_api_unpublish(document.content_id, type: "gone", alternative_path: alternative_path, locale: document.locale)
-    end
-
-    it "sets the locale of the document if specified" do
-      french_document = create(:document, locale: "fr")
-
-      stub_publishing_api_unpublish(french_document.content_id, body: { type: "gone", locale: french_document.locale })
-      UnpublishService.new.remove(french_document)
-
-      assert_publishing_api_unpublish(french_document.content_id, type: "gone", locale: french_document.locale)
+      expect(request).to have_been_requested
     end
 
     it "adds an entry in the timeline of the document" do
       explanatory_note = "The reason document has been removed"
       alternative_path = "/look-here-instead"
 
-      stub_publishing_api_unpublish(document.content_id, body: {
-        type: "gone",
-        explanation: explanatory_note,
-        alternative_path: alternative_path,
-        locale: document.locale,
-      })
-      UnpublishService.new.remove(document, explanatory_note: explanatory_note, alternative_path: alternative_path)
+      UnpublishService.new.remove(edition,
+                                  explanatory_note: explanatory_note,
+                                  alternative_path: alternative_path)
 
-      expect(document.timeline_entries.first.entry_type).to eq("removed")
-      expect(document.timeline_entries.first.removal.explanatory_note).to eq(explanatory_note)
-      expect(document.timeline_entries.first.removal.alternative_path).to eq(alternative_path)
-      expect(document.timeline_entries.first.removal.redirect).to be_falsey
+      timeline_entry = edition.document.timeline_entries.first
+      expect(timeline_entry.entry_type).to eq("removed")
+      expect(timeline_entry.details.explanatory_note).to eq(explanatory_note)
+      expect(timeline_entry.details.alternative_path).to eq(alternative_path)
+      expect(timeline_entry.details.redirect).to be_falsey
     end
 
-    it "keeps track of the live state" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "gone", locale: document.locale })
-      UnpublishService.new.remove(document)
-      document.reload
+    it "updates the edition status" do
+      UnpublishService.new.remove(edition)
+      edition.reload
 
-      expect(document.live_state).to eq("removed")
+      expect(edition.status).to be_removed
+      expect(edition.status.details.redirect).to be false
+    end
+
+    context "when the given edition is a draft" do
+      it "raises an error" do
+        draft_edition = create(:edition)
+        expect { UnpublishService.new.remove(draft_edition) }
+          .to raise_error RuntimeError, "attempted to unpublish an edition other than the live edition"
+      end
+    end
+
+    context "when there is a live and a draft edition" do
+      it "raises an error" do
+        draft_edition = create(:edition)
+        live_edition = create(:edition,
+                              :published,
+                              current: false,
+                              document: draft_edition.document)
+
+        expect { UnpublishService.new.remove(live_edition) }
+          .to raise_error RuntimeError, "Publishing API does not support unpublishing while there is a draft"
+      end
     end
   end
 
   describe "#remove_and_redirect" do
-    let(:document) { create(:document) }
     let(:redirect_path) { "/redirect-path" }
 
-    it "removes documents with a redirect" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, locale: document.locale })
-      UnpublishService.new.remove_and_redirect(document, redirect_path)
+    it "removes editions with a redirect" do
+      unpublish = stub_publishing_api_unpublish(edition.content_id,
+                                                body: { type: "redirect",
+                                                        alternative_path: redirect_path,
+                                                        locale: edition.locale })
+      UnpublishService.new.remove_and_redirect(edition, redirect_path)
 
-      assert_publishing_api_unpublish(document.content_id, type: "redirect", alternative_path: redirect_path, locale: document.locale)
+      expect(unpublish).to have_been_requested
     end
 
-    it "deletes assets associated with redirected documents" do
-      asset = create(:image, :in_preview, document: document)
+    it "deletes assets associated with redirected editions" do
+      delete_request = stub_asset_manager_deletes_assets
 
-      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, locale: document.locale })
-      asset_manager_request = asset_manager_delete_asset(asset.asset_manager_id)
-
-      UnpublishService.new.remove_and_redirect(document, redirect_path)
-
-      assert_requested(asset_manager_request)
+      UnpublishService.new.remove_and_redirect(edition_with_image,
+                                               redirect_path)
+      expect(delete_request).to have_been_requested.at_least_once
     end
 
     it "accepts an optional explanatory note" do
       explanatory_note = "The reason document has been removed"
-      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, explanation: explanatory_note, locale: document.locale })
+      unpublish = stub_publishing_api_unpublish(edition.content_id,
+                                                body: { type: "redirect",
+                                                        alternative_path: redirect_path,
+                                                        explanation: explanatory_note,
+                                                        locale: edition.locale })
 
-      UnpublishService.new.remove_and_redirect(document, redirect_path, explanatory_note: explanatory_note)
+      UnpublishService.new.remove_and_redirect(edition,
+                                               redirect_path,
+                                               explanatory_note: explanatory_note)
 
-      assert_publishing_api_unpublish(document.content_id, type: "redirect", alternative_path: redirect_path, explanation: explanatory_note, locale: document.locale)
-    end
-
-    it "sets the locale of the document if specified" do
-      french_document = create(:document, locale: "fr")
-
-      stub_publishing_api_unpublish(french_document.content_id, body: { type: "redirect", alternative_path: redirect_path, locale: french_document.locale })
-      UnpublishService.new.remove_and_redirect(french_document, redirect_path)
-
-      assert_publishing_api_unpublish(french_document.content_id, type: "redirect", alternative_path: redirect_path, locale: french_document.locale)
+      expect(unpublish).to have_been_requested
     end
 
     it "adds an entry in the timeline of the document" do
       explanatory_note = "The reason document has been removed"
 
-      stub_publishing_api_unpublish(document.content_id, body: {
-        type: "redirect",
-        explanation: explanatory_note,
-        alternative_path: redirect_path,
-        locale: document.locale,
-      })
+      UnpublishService.new.remove_and_redirect(
+        edition,
+        redirect_path,
+        explanatory_note: explanatory_note,
+      )
 
-      UnpublishService.new.remove_and_redirect(document, redirect_path, explanatory_note: explanatory_note)
-
-      expect(document.timeline_entries.first.entry_type).to eq("removed")
-      expect(document.timeline_entries.first.removal.explanatory_note).to eq(explanatory_note)
-      expect(document.timeline_entries.first.removal.alternative_path).to eq(redirect_path)
-      expect(document.timeline_entries.first.removal.redirect).to be_truthy
+      timeline_entry = edition.document.timeline_entries.first
+      expect(timeline_entry.entry_type).to eq("removed")
+      expect(timeline_entry.details.explanatory_note).to eq(explanatory_note)
+      expect(timeline_entry.details.alternative_path).to eq(redirect_path)
+      expect(timeline_entry.details.redirect).to be true
     end
 
-    it "keeps track of the live state" do
-      stub_publishing_api_unpublish(document.content_id, body: { type: "redirect", alternative_path: redirect_path, locale: document.locale })
-      UnpublishService.new.remove_and_redirect(document, redirect_path)
-      document.reload
+    it "updates the edition status" do
+      UnpublishService.new.remove_and_redirect(edition, redirect_path)
+      edition.reload
 
-      expect(document.live_state).to eq("removed")
+      expect(edition.status).to be_removed
+      expect(edition.status.details.redirect).to be true
+    end
+
+    context "when the given edition is a draft" do
+      it "raises an error" do
+        draft_edition = create(:edition)
+        expect { UnpublishService.new.remove_and_redirect(draft_edition, redirect_path) }
+          .to raise_error RuntimeError, "attempted to unpublish an edition other than the live edition"
+      end
+    end
+
+    context "when there is a live and a draft edition" do
+      it "raises an error" do
+        draft_edition = create(:edition)
+        live_edition = create(:edition,
+                              :published,
+                              current: false,
+                              document: draft_edition.document)
+
+        expect { UnpublishService.new.remove_and_redirect(live_edition, redirect_path) }
+          .to raise_error RuntimeError, "Publishing API does not support unpublishing while there is a draft"
+      end
     end
   end
 end

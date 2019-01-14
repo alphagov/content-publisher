@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-class DocumentFilter
-  TAG_CONTAINS_QUERY = "exists(select 1 from json_array_elements(tags->'%<tag>s')
+class EditionFilter
+  TAG_CONTAINS_QUERY = "exists(select 1 from json_array_elements(versioned_tags_revisions.tags->'%<tag>s')
                         where array_to_json(array[value])->>0 = :value)"
 
   include ActiveRecord::Sanitization::ClassMethods
 
-  SORT_KEYS = %w[updated_at].freeze
-  DEFAULT_SORT = "-updated_at"
+  SORT_KEYS = %w[last_updated].freeze
+  DEFAULT_SORT = "-last_updated"
 
   attr_reader :filters, :sort, :page, :per_page
 
@@ -18,8 +18,11 @@ class DocumentFilter
     @per_page = params[:per_page]
   end
 
-  def documents
-    scope = Document.includes(:creator, :last_editor)
+  def editions
+    revision_joins = { revision: %i[content_revision tags_revision] }
+    scope = Edition.where(current: true)
+                   .joins(revision_joins, :status, :document)
+                   .preload(revision_joins, :status, :document, :last_edited_by)
     scope = filtered_scope(scope)
     scope = ordered_scope(scope)
     scope.page(page).per(per_page)
@@ -44,13 +47,17 @@ private
 
       case field
       when :title_or_url
-        memo.where("title ILIKE ? OR base_path ILIKE ?",
+        memo.where("versioned_content_revisions.title ILIKE ? OR versioned_content_revisions.base_path ILIKE ?",
                    "%#{sanitize_sql_like(value)}%",
                    "%#{sanitize_sql_like(value)}%")
       when :document_type
-        memo.where(document_type_id: value)
-      when :state
-        UserFacingState.scope(memo, value)
+        memo.where("versioned_documents.document_type_id": value)
+      when :status
+        if value == "published"
+          memo.where("versioned_statuses.state": %w[published published_but_needs_2i])
+        else
+          memo.where("versioned_statuses.state": value)
+        end
       when :organisation
         memo.where(TAG_CONTAINS_QUERY % { tag: "organisations" } + " OR " +
                    TAG_CONTAINS_QUERY % { tag: "primary_publishing_organisation" },
@@ -63,6 +70,11 @@ private
 
   def ordered_scope(scope)
     direction = sort.chars.first == "-" ? :desc : :asc
-    scope.order(sort.delete_prefix("-") => direction)
+    case sort.delete_prefix("-")
+    when "last_updated"
+      scope.order("versioned_editions.last_edited_at #{direction}")
+    else
+      scope
+    end
   end
 end
