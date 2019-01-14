@@ -144,11 +144,19 @@ module Versioned
 
       # We need to check many-to-many relationship separately as it's not
       # included in attributes
-      attributes_differ || image_revision_ids.sort != other_revision.image_revision_ids.sort
+      attributes_differ || different_image_revision_ids(other_revision.image_revision_ids)
     end
 
     def image_revisions_without_lead
       image_revisions.reject { |i| i.id == lead_image_revision_id }
+    end
+
+  private
+
+    def different_image_revision_ids(other_image_revision_ids)
+      return true if image_revision_ids.include?(nil)
+
+      image_revision_ids.sort != other_image_revision_ids.sort
     end
 
     class BuildRevisionUpdate
