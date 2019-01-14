@@ -26,7 +26,9 @@ RSpec.feature "Insert contact" do
   def given_there_is_a_document
     body_field = build(:field, id: "body", type: "govspeak")
     document_type = build(:document_type, contents: [body_field])
-    @document = create(:document, document_type_id: document_type.id)
+    @document = create(:document,
+                       :with_current_edition,
+                       document_type_id: document_type.id)
   end
 
   def when_i_go_to_edit_the_document
@@ -45,7 +47,7 @@ RSpec.feature "Insert contact" do
   end
 
   def then_i_can_see_the_contact_in_the_body
-    expect(find_field("document[contents][body]").value)
+    expect(find_field("revision[contents][body]").value)
       .to match(/\[Contact:#{contact['content_id']}\]/)
   end
 end

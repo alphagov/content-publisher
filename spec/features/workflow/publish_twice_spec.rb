@@ -9,7 +9,7 @@ RSpec.feature "Publishing a document that's already published" do
   end
 
   def given_there_is_a_published_document
-    @document = create(:document, :published)
+    @document = create(:document, :with_live_edition)
   end
 
   def when_i_visit_the_publish_page

@@ -11,9 +11,8 @@ RSpec.feature "Users views document results on index page" do
   end
 
   def given_there_is_a_document
-    creator = create(:user)
-    editor = create(:user)
-    create(:document, creator: creator, last_editor: editor)
+    @editor = create(:user)
+    @edition = create(:edition, last_edited_by: @editor)
   end
 
   def when_i_visit_the_index_page
@@ -21,11 +20,11 @@ RSpec.feature "Users views document results on index page" do
   end
 
   def then_i_can_see_the_document_title
-    expect(page).to have_content(Document.last.title)
+    expect(page).to have_content(@edition.title)
   end
 
   def and_i_can_see_the_document_type
-    expect(page).to have_content(Document.last.document_type.label)
+    expect(page).to have_content(@edition.document_type.label)
   end
 
   def and_i_can_see_the_document_state
@@ -35,7 +34,7 @@ RSpec.feature "Users views document results on index page" do
   def and_i_can_see_the_document_last_editor
     expect(page).to have_content(
       I18n.t!("documents.index.search_results.last_edited_by",
-        user: Document.last.last_editor.name),
+              user: @editor.name),
     )
   end
 end

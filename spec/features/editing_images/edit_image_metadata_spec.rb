@@ -11,25 +11,27 @@ RSpec.feature "Edit image metadata" do
 
   def given_there_is_a_document_with_images
     document_type = build(:document_type, lead_image: true)
-    document = create(:document, document_type_id: document_type.id)
-    @image = create(:image, document: document)
+    @image_revision = create(:image_revision, :on_asset_manager)
+    @edition = create(:edition,
+                      document_type_id: document_type.id,
+                      image_revisions: [@image_revision])
   end
 
   def when_i_visit_the_images_page
-    visit images_path(Document.last)
+    visit images_path(@edition.document)
   end
 
   def and_i_edit_the_image_metadata
-    @publishing_api_request = stub_publishing_api_put_content(Document.last.content_id, {})
+    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Edit details"
-    fill_in "alt_text", with: "Some alt text"
-    fill_in "caption", with: "A caption"
-    fill_in "credit", with: "A credit"
+    fill_in "image_revision[alt_text]", with: "Some alt text"
+    fill_in "image_revision[caption]", with: "A caption"
+    fill_in "image_revision[credit]", with: "A credit"
     click_on "Save details"
   end
 
   def then_i_see_the_image_is_updated
-    expect(page).to have_content(I18n.t!("images.index.flashes.details_edited", file: @image.filename))
+    expect(page).to have_content(I18n.t!("images.index.flashes.details_edited", file: @image_revision.filename))
     expect(page).to have_content("Some alt text")
     expect(page).to have_content("A caption")
     expect(page).to have_content("A credit")

@@ -15,11 +15,11 @@ RSpec.feature "Publish without review" do
   end
 
   def given_there_is_a_document
-    @document = create(:document, :publishable)
+    @edition = create(:edition, :publishable)
   end
 
   def when_i_visit_the_document_page
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def and_i_publish_without_review

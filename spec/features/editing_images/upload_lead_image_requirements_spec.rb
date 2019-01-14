@@ -10,11 +10,12 @@ RSpec.feature "Upload a lead image with requirements issues" do
 
   def given_there_is_a_document
     document_type = build(:document_type, lead_image: true)
-    create(:document, document_type_id: document_type.id)
+    @edition = create(:edition,
+                      document_type_id: document_type.id)
   end
 
   def when_i_visit_the_images_page
-    visit document_path(Document.last)
+    visit document_path(@edition.document)
     click_on "Change Lead image"
   end
 

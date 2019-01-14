@@ -13,7 +13,7 @@ RSpec.feature "Save topics when the Publishing API is down" do
   end
 
   def given_there_is_a_document
-    @document = create :document
+    @document = create :document, :with_current_edition
   end
 
   def and_i_am_on_the_topics_page

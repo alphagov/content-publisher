@@ -17,12 +17,12 @@ RSpec.feature "Publish requirements when the Publishing API is down" do
 
   def given_there_is_a_document
     document_type = build(:document_type, topics: true)
-    @document = create(:document, :in_preview, document_type_id: document_type.id)
+    @edition = create(:edition, document_type_id: document_type.id)
   end
 
   def when_the_publishing_api_is_down
     publishing_api_isnt_available
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def then_i_do_not_see_warnings_that_require_it

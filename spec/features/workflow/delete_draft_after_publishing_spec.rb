@@ -2,21 +2,20 @@
 
 RSpec.feature "Delete draft after publishing" do
   scenario do
-    given_there_is_a_document
+    given_there_is_a_edition
     when_i_visit_the_document_page
     and_i_publish_the_document
     and_i_create_a_new_draft
-    then_i_cannot_delete_the_draft
-    when_i_submit_for_2i_review
-    then_i_cannot_delete_the_draft
+    and_i_delete_the_draft
+    then_i_see_the_draft_is_gone
   end
 
-  def given_there_is_a_document
-    @document = create(:document, :publishable)
+  def given_there_is_a_edition
+    @edition = create(:edition, :publishable)
   end
 
   def when_i_visit_the_document_page
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def when_i_submit_for_2i_review
@@ -33,11 +32,20 @@ RSpec.feature "Delete draft after publishing" do
 
   def and_i_create_a_new_draft
     stub_any_publishing_api_put_content
+    @new_title = "New draft"
     click_on "Create new edition"
     click_on "Save"
   end
 
-  def then_i_cannot_delete_the_draft
-    expect(page).to_not have_content("Delete draft")
+  def and_i_delete_the_draft
+    stub_any_publishing_api_discard_draft
+    click_on "Delete draft"
+    click_on "Yes, delete draft"
+  end
+
+  def then_i_see_the_draft_is_gone
+    expect(page).to have_current_path(documents_path)
+    expect(page).to_not have_content @new_title
+    expect(page).to have_content @edition.title
   end
 end

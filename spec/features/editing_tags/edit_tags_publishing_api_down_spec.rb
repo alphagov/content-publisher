@@ -13,7 +13,9 @@ RSpec.feature "Edit tags when the API is down" do
     tag_field = build(:tag_field, type: "multi_tag")
     document_type = build(:document_type, tags: [tag_field])
     publishing_api_has_linkables([], document_type: tag_field.document_type)
-    @document = create(:document, document_type_id: document_type.id)
+    @document = create(:document,
+                       :with_current_edition,
+                       document_type_id: document_type.id)
   end
 
   def and_the_publishing_api_is_down

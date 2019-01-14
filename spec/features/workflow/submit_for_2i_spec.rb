@@ -13,11 +13,11 @@ RSpec.feature "2i" do
   end
 
   def given_there_is_a_document_in_draft
-    @document = create(:document, :publishable)
+    @edition = create(:edition, :publishable)
   end
 
   def when_i_visit_the_document
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def and_i_click_submit_for_2i
@@ -39,13 +39,13 @@ RSpec.feature "2i" do
 
   def and_i_see_a_link_to_the_document
     review_url = find_field(I18n.t!("documents.show.flashes.submitted_for_review.label")).value
-    expect(review_url).to match(document_url(@document))
+    expect(review_url).to match(document_url(@edition.document))
   end
 
   def when_i_edit_the_document
     stub_any_publishing_api_put_content
     click_on "Change Content"
-    fill_in "document[title]", with: "a new title"
+    fill_in "revision[title]", with: "a new title"
     click_on "Save"
   end
 end

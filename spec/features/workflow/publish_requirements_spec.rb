@@ -16,11 +16,11 @@ RSpec.feature "Publish requirements" do
   end
 
   def given_there_is_a_document_with_issues
-    @document = create(:document, :publishable, summary: nil)
+    @edition = create(:edition, :publishable, summary: nil)
   end
 
   def when_i_visit_the_document_page
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def then_i_see_a_warning_to_fix_the_issues

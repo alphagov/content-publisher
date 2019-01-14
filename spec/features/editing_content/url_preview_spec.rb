@@ -18,9 +18,9 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def given_there_is_a_document
-    @document = create(:document)
+    @document = create(:document, :with_current_edition)
     @document_path_prefix = @document.document_type.path_prefix
-    @document_base_path = @document.base_path
+    @document_base_path = @document.current_edition_base_path
   end
 
   def when_i_go_to_edit_the_document
@@ -29,12 +29,12 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def and_i_interact_with_the_title_but_leave_it_unedited
-    page.find("textarea[name='document[title]']").click
+    page.find("textarea[name='revision[title]']").click
     page.find("body").click
   end
 
   def and_i_delete_the_title
-    fill_in("document[title]", with: "")
+    fill_in("revision[title]", with: "")
     page.find("body").click
   end
 
@@ -43,7 +43,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def and_i_fill_in_the_title
-    fill_in("document[title]", with: "A great title")
+    fill_in("revision[title]", with: "A great title")
     page.find("body").click
   end
 

@@ -11,7 +11,9 @@ RSpec.feature "Insert contact when the Publishing API down" do
   def given_there_is_a_document
     body_field = build(:field, id: "body", type: "govspeak")
     document_type = build(:document_type, contents: [body_field])
-    @document = create(:document, document_type_id: document_type.id)
+    @document = create(:document,
+                       :with_current_edition,
+                       document_type_id: document_type.id)
   end
 
   def when_i_go_to_edit_the_document

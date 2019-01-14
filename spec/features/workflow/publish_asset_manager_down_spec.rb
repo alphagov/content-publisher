@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.feature "Publishing a document when Asset Manager is down" do
+  include AssetManagerHelper
+
   scenario do
     given_there_is_a_document_with_a_lead_image
     and_asset_manager_is_down
@@ -12,18 +14,19 @@ RSpec.feature "Publishing a document when Asset Manager is down" do
   end
 
   def given_there_is_a_document_with_a_lead_image
-    @image = create(:image, :in_preview)
-    document = create(:document, :publishable, lead_image: @image)
-    @image.update!(document: document)
+    image_revision = create(:image_revision, :on_asset_manager)
+    @edition = create(:edition,
+                      :publishable,
+                      lead_image_revision: image_revision)
   end
 
   def and_asset_manager_is_down
-    asset_manager_update_failure(@image.asset_manager_id)
+    stub_asset_manager_updates_assets.to_return(status: 503)
     stub_any_publishing_api_publish
   end
 
   def when_i_try_to_publish_the_document
-    visit document_path(Document.last)
+    visit document_path(@edition.document)
     click_on "Publish"
     click_on "Confirm publish"
   end
@@ -33,14 +36,14 @@ RSpec.feature "Publishing a document when Asset Manager is down" do
   end
 
   def given_the_api_is_up_again_and_i_try_to_publish_the_document
-    @request = asset_manager_update_asset(@image.asset_manager_id)
-    visit document_path(Document.last)
-    click_on "Retry publishing"
+    @request = stub_asset_manager_updates_assets
+    visit document_path(@edition.document)
+    click_on "Publish"
     click_on "Confirm publish"
   end
 
   def then_i_see_the_publish_succeeded
-    expect(@request).to have_been_requested.twice
+    expect(@request).to have_been_requested.at_least_once
     expect(page).to have_content(I18n.t!("publish.published.reviewed.title"))
   end
 end

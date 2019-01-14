@@ -8,20 +8,23 @@ RSpec.feature "Showing a document summary" do
   end
 
   def given_there_is_a_document
-    @document = create(:document, title: "Title", summary: "Summary", created_at: 1.month.ago)
+    @edition = create(:edition,
+                      title: "Title",
+                      summary: "Summary",
+                      last_edited_at: 2.weeks.ago)
   end
 
   def when_i_visit_the_document_page
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def then_i_see_the_document_summary
-    expect(page).to have_content(@document.title)
-    expect(page).to have_content(@document.summary)
+    expect(page).to have_content(@edition.title)
+    expect(page).to have_content(@edition.summary)
 
     within("div.app-c-metadata") do
-      expect(page).to have_content(@document.created_at.strftime("%l:%M%P on %d %B %Y"))
-      expect(page).to have_content(@document.updated_at.strftime("%l:%M%P on %d %B %Y"))
+      expect(page).to have_content(@edition.document.created_at.strftime("%l:%M%P on %d %B %Y"))
+      expect(page).to have_content(@edition.last_edited_at.strftime("%l:%M%P on %d %B %Y"))
     end
   end
 end

@@ -12,16 +12,16 @@ RSpec.feature "Publishing a document when the Publishing API is down" do
   end
 
   def given_there_is_a_document
-    @document = create(:document, :publishable)
+    @edition = create(:edition, :publishable)
   end
 
   def and_the_publishing_api_is_down
-    @request = stub_publishing_api_publish(@document.content_id, {})
+    @request = stub_publishing_api_publish(@edition.content_id, {})
     publishing_api_isnt_available
   end
 
   def when_i_try_to_publish_the_document
-    visit document_path(@document)
+    visit document_path(@edition.document)
     click_on "Publish"
     click_on "Confirm publish"
   end
@@ -32,9 +32,9 @@ RSpec.feature "Publishing a document when the Publishing API is down" do
   end
 
   def given_the_api_is_up_again_and_i_try_to_publish_the_document
-    @request = stub_publishing_api_publish(@document.content_id, {})
-    visit document_path(@document)
-    click_on "Retry publishing"
+    @request = stub_publishing_api_publish(@edition.content_id, {})
+    visit document_path(@edition.document)
+    click_on "Publish"
     click_on "Confirm publish"
   end
 

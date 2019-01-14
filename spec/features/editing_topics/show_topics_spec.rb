@@ -16,7 +16,9 @@ RSpec.feature "Show the topics for a document" do
 
   def given_there_is_a_document
     document_type = build(:document_type, topics: true)
-    @document = create(:document, document_type_id: document_type.id)
+    @document = create(:document,
+                       :with_current_edition,
+                       document_type_id: document_type.id)
   end
 
   def when_the_document_has_no_topics
@@ -27,7 +29,7 @@ RSpec.feature "Show the topics for a document" do
   end
 
   def and_i_visit_the_document_page
-    visit document_path(Document.last)
+    visit document_path(@document)
   end
 
   def then_i_see_there_are_no_topics

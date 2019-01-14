@@ -30,17 +30,16 @@ RSpec.feature "User filters documents" do
   end
 
   def given_there_are_some_documents
-    create(:document, :published, title: "Totally irrelevant")
+    create(:edition, :published, title: "Totally irrelevant")
     @primary_organisation = { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 1" }
     @organisation = { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 2" }
 
-    @relevant_document = create(:document,
-                                :in_preview,
-                                title: "Super relevant",
-                                tags: {
-                                  primary_publishing_organisation: [@primary_organisation["content_id"]],
-                                  organisations: [@organisation["content_id"]],
-                                })
+    @relevant_edition = create(:edition,
+                               title: "Super relevant",
+                               tags: {
+                                 primary_publishing_organisation: [@primary_organisation["content_id"]],
+                                 organisations: [@organisation["content_id"]],
+                               })
   end
 
   def when_i_visit_the_index_page
@@ -57,7 +56,7 @@ RSpec.feature "User filters documents" do
 
   def then_i_see_just_the_ones_that_match
     expect(page).to have_content("1 document")
-    expect(page).to have_content(@relevant_document.title)
+    expect(page).to have_content(@relevant_edition.title)
   end
 
   def when_i_clear_the_filters
@@ -69,12 +68,12 @@ RSpec.feature "User filters documents" do
   end
 
   def when_i_filter_by_document_type
-    select @relevant_document.document_type.label, from: "document_type"
+    select @relevant_edition.document_type.label, from: "document_type"
     click_on "Filter"
   end
 
   def and_i_filter_by_state
-    select I18n.t!("user_facing_states.draft.name"), from: "state"
+    select I18n.t!("user_facing_states.draft.name"), from: "status"
     click_on "Filter"
   end
 
