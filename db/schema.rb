@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_11_235106) do
+ActiveRecord::Schema.define(version: 2019_01_13_115603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -179,15 +179,6 @@ ActiveRecord::Schema.define(version: 2019_01_11_235106) do
     t.index ["created_by_id"], name: "index_versioned_documents_on_created_by_id"
   end
 
-  create_table "versioned_edition_revisions", force: :cascade do |t|
-    t.bigint "edition_id", null: false
-    t.bigint "revision_id", null: false
-    t.datetime "created_at", null: false
-    t.index ["edition_id", "revision_id"], name: "index_versioned_edition_revisions_on_edition_id_and_revision_id", unique: true
-    t.index ["edition_id"], name: "index_versioned_edition_revisions_on_edition_id"
-    t.index ["revision_id"], name: "index_versioned_edition_revisions_on_revision_id"
-  end
-
   create_table "versioned_editions", force: :cascade do |t|
     t.integer "number", null: false
     t.datetime "last_edited_at", null: false
@@ -265,6 +256,15 @@ ActiveRecord::Schema.define(version: 2019_01_11_235106) do
     t.datetime "created_at", null: false
     t.index ["image_revision_id"], name: "index_versioned_revision_image_revisions_on_image_revision_id"
     t.index ["revision_id"], name: "index_versioned_revision_image_revisions_on_revision_id"
+  end
+
+  create_table "versioned_revision_statuses", force: :cascade do |t|
+    t.bigint "revision_id", null: false
+    t.bigint "status_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["revision_id", "status_id"], name: "index_versioned_revision_statuses_on_revision_id_and_status_id", unique: true
+    t.index ["revision_id"], name: "index_versioned_revision_statuses_on_revision_id"
+    t.index ["status_id"], name: "index_versioned_revision_statuses_on_status_id"
   end
 
   create_table "versioned_revisions", force: :cascade do |t|
@@ -360,8 +360,6 @@ ActiveRecord::Schema.define(version: 2019_01_11_235106) do
   add_foreign_key "versioned_asset_manager_image_variants", "versioned_image_revisions", column: "image_revision_id", on_delete: :cascade
   add_foreign_key "versioned_content_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :nullify
-  add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :cascade
-  add_foreign_key "versioned_edition_revisions", "versioned_revisions", column: "revision_id", on_delete: :cascade
   add_foreign_key "versioned_editions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_editions", "users", column: "last_edited_by_id", on_delete: :nullify
   add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
@@ -376,6 +374,8 @@ ActiveRecord::Schema.define(version: 2019_01_11_235106) do
   add_foreign_key "versioned_retirements", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_revision_image_revisions", "versioned_image_revisions", column: "image_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revision_image_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
+  add_foreign_key "versioned_revision_statuses", "versioned_revisions", column: "revision_id", on_delete: :cascade
+  add_foreign_key "versioned_revision_statuses", "versioned_statuses", column: "status_id", on_delete: :cascade
   add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_revisions", "versioned_content_revisions", column: "content_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_documents", column: "document_id", on_delete: :restrict

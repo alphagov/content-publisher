@@ -13,12 +13,11 @@ module Versioned
                class_name: "User",
                optional: true,
                foreign_key: :created_by_id
-    # rubocop:enable Rails/InverseOf
 
     belongs_to :revision_at_creation,
                class_name: "Versioned::Revision",
-               foreign_key: :revision_at_creation_id,
-               inverse_of: :statuses
+               foreign_key: :revision_at_creation_id
+    # rubocop:enable Rails/InverseOf
 
     belongs_to :edition,
                class_name: "Versioned::Edition",
@@ -35,6 +34,10 @@ module Versioned
             foreign_key: :status_id,
             inverse_of: :status,
             dependent: :restrict_with_exception
+
+    has_and_belongs_to_many :revisions,
+                            class_name: "Versioned::Revision",
+                            join_table: "versioned_revision_statuses"
 
     enum state: { draft: "draft",
                   submitted_for_review: "submitted_for_review",
