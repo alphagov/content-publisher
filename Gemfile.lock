@@ -435,6 +435,7 @@ DEPENDENCIES
   govuk_publishing_components (~> 13.6.0)
   govuk_schemas (~> 3.2)
   govuk_test (~> 0.3)
+  hashdiff (~> 0.3)
   image_processing (~> 1)
   jasmine (~> 3.3)
   jasmine_selenium_runner (~> 3)
