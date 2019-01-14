@@ -72,6 +72,8 @@ Rails.application.routes.draw do
     get "/documents/:id/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
     delete "/documents/:id" => "documents#destroy"
 
+    get "/documents/:id/debug" => "debug#index", as: :debug_document
+
     get "/documents/:id/search-contacts" => "contacts#search", as: :search_contacts
     post "/documents/:id/search-contacts" => "contacts#insert", as: :insert_contact
 
