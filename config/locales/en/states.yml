@@ -16,29 +16,3 @@ en:
       name: Discarded
     superseded:
       name: Superseded
-
-  publication_states:
-    changes_not_sent_to_draft:
-      name: Unsaved changes
-      description: You have made changes that haven't been sent to our publishing platform in draft.
-    sending_to_draft:
-      name: Saving draft
-      description: We're publishing your draft so that you can preview the document.
-    sent_to_draft:
-      name: Saved as draft
-      description: The page is now visible in draft.
-    error_sending_to_draft:
-      name: Error sending to draft
-      description: We've encountered a problem making your preview available.
-    sending_to_live:
-      name: Publishing
-      description: We're currently publishing a new edition to GOV.UK.
-    sent_to_live:
-      name: Published
-      description: Your content has been published on GOV.UK.
-    error_sending_to_live:
-      name: Error publishing
-      description: We've encountered a problem during the publishing.
-    error_deleting_draft:
-      name: Error deleting draft
-      description: We've encountered a problem when deleting the draft.
