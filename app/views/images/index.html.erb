@@ -1,4 +1,4 @@
-<% content_for :title, t("images.index.title", title: @document.title_or_fallback) %>
+<% content_for :title, t("images.index.title", title: @document.current_edition.title_or_fallback) %>
 <% content_for :back_link, render_back_link(href: document_path(@document)) %>
 
 <div class="govuk-grid-row">

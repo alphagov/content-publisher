@@ -7,11 +7,11 @@
     <%= render "documents/show/requirements" %>
     <%= render "documents/show/contents" %>
 
-    <% if @document.document_type.lead_image %>
+    <% if @edition.document_type.lead_image %>
       <%= render "documents/show/lead_image" %>
     <% end %>
 
-    <% if @document.document_type.topics %>
+    <% if @edition.document_type.topics %>
       <%= render "documents/show/topics" %>
     <% end %>
 

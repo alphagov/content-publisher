@@ -30,20 +30,27 @@
   </div>
 
   <div class="govuk-form-group">
-    <% state_select = UserFacingState::STATES
-      .map { |state| [t("user_facing_states.#{state}.name"), state] }
+    <% selectable_states = %w[draft
+                              submitted_for_review
+                              published
+                              published_but_needs_2i
+                              retired
+                              removed]
+    state_select = selectable_states.map do |state|
+      [t("user_facing_states.#{state}.name"), state]
+    end
     %>
 
     <%= render "govuk_publishing_components/components/label", {
       text: t("documents.index.filter.state"),
-      html_for: "document-state-filter",
+      html_for: "document-status-filter",
       bold: true
     } %>
 
-    <%= select_tag "state",
-      options_for_select(state_select, [params[:state]]),
+    <%= select_tag "status",
+      options_for_select(state_select, [params[:status]]),
       include_blank: true,
-      id: "document-state-filter",
+      id: "document-status-filter",
       class: "govuk-select"
     %>
   </div>

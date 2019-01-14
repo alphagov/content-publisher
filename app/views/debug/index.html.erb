@@ -1,4 +1,4 @@
-<% content_for :back_link, render_back_link(href: versioned_document_path(@document)) %>
+<% content_for :back_link, render_back_link(href: document_path(@document)) %>
 <% title = @document.current_edition&.title ? "‘#{@document.current_edition_title}’" : @document.to_param %>
 <% content_for :title, "Revision history for #{title}" %>
 
@@ -76,10 +76,10 @@
 
 <% pages = { } %>
 
-<% pages[:previous_page] = { url: versioned_debug_document_path(page: @revisions.prev_page),
+<% pages[:previous_page] = { url: debug_document_path(page: @revisions.prev_page),
                              title: "Previous page" } if @revisions.prev_page %>
 
-<% pages[:next_page] = { url: versioned_debug_document_path(page: @revisions.next_page),
+<% pages[:next_page] = { url: debug_document_path(page: @revisions.next_page),
                          title: "Next page" } if @revisions.next_page %>
 
 <%= render "govuk_publishing_components/components/previous_and_next_navigation", pages %>

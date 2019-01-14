@@ -16,10 +16,10 @@
 
   <div class="govuk-grid-column-three-quarters">
     <p class="govuk-body govuk-!-margin-bottom-1">
-      <%= t("documents.index.search_results.summary_html", count: @documents.total_count) %>
+      <%= t("documents.index.search_results.summary_html", count: @editions.total_count) %>
     </p>
 
-    <% if @documents.none? %>
+    <% if @editions.none? %>
       <div class="govuk-body">
         <%= govspeak_to_html t("documents.index.search_results.guidance_govspeak") %>
       </div>
@@ -30,16 +30,16 @@
     <% pages = { } %>
 
     <% page_info = t("documents.index.search_results.page_info",
-                     page: @documents.current_page,
-                     pages: @documents.total_pages) %>
+                     page: @editions.current_page,
+                     pages: @editions.total_pages) %>
 
-    <% pages[:previous_page] = { url: documents_path(@filter_params.merge(page: @documents.prev_page)),
+    <% pages[:previous_page] = { url: documents_path(@filter_params.merge(page: @editions.prev_page)),
                                  label: page_info,
-                                 title: "Previous page" } if @documents.prev_page %>
+                                 title: "Previous page" } if @editions.prev_page %>
 
-    <% pages[:next_page] = { url: documents_path(@filter_params.merge(page: @documents.next_page)),
+    <% pages[:next_page] = { url: documents_path(@filter_params.merge(page: @editions.next_page)),
                              label: page_info,
-                             title: "Next page" } if @documents.next_page %>
+                             title: "Next page" } if @editions.next_page %>
 
     <%= render "govuk_publishing_components/components/previous_and_next_navigation", pages %>
   </div>

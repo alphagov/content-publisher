@@ -1,5 +1,5 @@
 <% content_for :back_link, render_back_link(href: document_path(@document)) %>
-<% content_for :title, t("tags.edit.title", title: @document.title_or_fallback) %>
+<% content_for :title, t("tags.edit.title", title: @revision.title_or_fallback) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -13,7 +13,7 @@
     <div class="govuk-grid-column-two-thirds">
       <%= render "tags/tags/#{tag_field.type}_input",
         tag_field: tag_field,
-        tags: @document.tags,
+        tags: @revision.tags,
         contextual_guidance_id: "#{tag_field.id}-guidance" %>
     </div>
     <% if @document.document_type.guidance_for(tag_field.id) %>

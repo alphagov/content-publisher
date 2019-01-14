@@ -1,19 +1,19 @@
-<% content_for :title, t("images.edit.title", title: @document.title_or_fallback) %>
+<% content_for :title, t("images.edit.title", title: @document.current_edition_title_or_fallback) %>
 
 <% if params[:wizard] == "lead_image" %>
-  <% content_for :back_link, render_back_link(href: crop_image_path(@document, @image, wizard: params[:wizard])) %>
+  <% content_for :back_link, render_back_link(href: crop_image_path(@document, @image_revision.image_id, wizard: params[:wizard])) %>
 <% else %>
   <% content_for :back_link, render_back_link(href: images_path(@document)) %>
 <% end %>
 
 <%= render "components/image_meta", {
   id: "selected-image",
-  src: url_for(@image.thumbnail),
-  alt_text: @image.alt_text,
+  src: url_for(@image_revision.thumbnail),
+  alt_text: @image_revision.alt_text,
   no_border: true
 } %>
 
-<%= form_tag(update_image_path(@document, @image), method: :patch, data: { "warn-before-unload": true }) do %>
+<%= form_tag(update_image_path(@document, @image_revision.image_id), method: :patch, data: { "warn-before-unload": true }) do %>
   <%= hidden_field_tag :wizard, params[:wizard] %>
 
   <div class="govuk-grid-row">
@@ -23,8 +23,8 @@
           text: t("images.edit.form_labels.alt_text"),
           bold: true
         },
-        name: "alt_text",
-        value: @image.alt_text,
+        name: "image_revision[alt_text]",
+        value: @image_revision.alt_text,
         error_items: @issues&.items_for(:alt_text),
         data: {
           "contextual-guidance": "alt-text-guidance"
@@ -49,8 +49,8 @@
           text: t("images.edit.form_labels.caption"),
           bold: true
         },
-        name: "caption",
-        value: @image.caption,
+        name: "image_revision[caption]",
+        value: @image_revision.caption,
         error_items: @issues&.items_for(:caption),
         data: {
           "contextual-guidance": "caption-guidance"
@@ -75,8 +75,8 @@
           text: t("images.edit.form_labels.credit"),
           bold: true
         },
-        name: "credit",
-        value: @image.credit,
+        name: "image_revision[credit]",
+        value: @image_revision.credit,
         data: {
           "contextual-guidance": "credit-guidance"
         }
