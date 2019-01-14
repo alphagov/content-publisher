@@ -25,7 +25,7 @@ Optional parameters:
 - LOCALE (set to "en" by default)
 
 ```
-rake unpublish:retire_document['a-content-id'] NOTE='A note'
+rake unpublish:retire['a-content-id'] NOTE='A note'
 ```
 
 ## Removing documents
@@ -41,7 +41,7 @@ Optional parameters:
 - NEW_PATH
 
 ```
-rake unpublish:remove_document['a-content-id']
+rake unpublish:remove['a-content-id']
 ```
 
 ## Redirect removed documents to another page on GOV.UK
@@ -57,5 +57,5 @@ Optional parameters:
 - NOTE
 
 ```
-rake unpublish:remove_and_redirect_document['a-content-id'] NEW_PATH='/redirect-to-here'
+rake unpublish:remove_and_redirect['a-content-id'] NEW_PATH='/redirect-to-here'
 ```
