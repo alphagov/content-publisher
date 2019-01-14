@@ -20,69 +20,82 @@ module Tasks
       document["editions"].max_by { |e| e["created_at"] }
     end
 
-    def create_or_update_document(translation, edition, document)
-      doc = Document.find_or_initialize_by(content_id: document["content_id"],
-                                           locale: translation["locale"])
-
-      doc.assign_attributes(
-        base_path: translation["base_path"],
-        contents: {
-          body: embed_contacts(translation["body"], document.fetch("contacts", {})),
-        },
-        document_type_id: edition["news_article_type"]["key"],
-        title: translation["title"],
-        publication_state: publication_state(edition),
-        review_state: review_state(edition),
-        summary: translation["summary"],
-        tags: tags(edition),
-        current_edition_number: document["editions"].count,
-        has_live_version_on_govuk: has_live_version?(edition, document),
-        update_type: edition["minor_change"] ? "minor" : "major",
+    def create_or_update_document(translation, whitehall_edition, whitehall_document)
+      document = Document.find_or_initialize_by(
+        content_id: whitehall_document["content_id"],
+        locale: translation["locale"],
+        document_type_id: whitehall_edition["news_article_type"]["key"],
       )
 
-      doc.save!
+      revision = Revision.new(
+        document: document,
+        number: document.next_revision_number,
+        content_revision: ContentRevision.new(
+          title: translation["title"],
+          base_path: translation["base_path"],
+          summary: translation["summary"],
+          contents: {
+            body: embed_contacts(translation["body"], whitehall_document.fetch("contacts", {})),
+          },
+        ),
+        update_revision: UpdateRevision.new(
+          update_type: whitehall_edition["minor_change"] ? "minor" : "major",
+        ),
+        tags_revision: TagsRevision.new(tags: tags(whitehall_edition)),
+      )
+
+      edition = Edition.new(
+        document: document,
+        number: whitehall_document["editions"].count,
+        revision_synced: true,
+        revision: revision,
+        status: Status.new(
+          state: state(whitehall_edition),
+          revision_at_creation: revision,
+        ),
+        current: true,
+        live: live?(whitehall_edition),
+      )
+
+      edition.save!
     end
 
-    def tags(edition)
+    def tags(whitehall_edition)
       tags = {}
-      tags["primary_publishing_organisation"] = primary_publishing_organisation(edition)
-      tags["organisations"] = organisations(edition)
-      tags["worldwide_organisations"] = edition["worldwide_organisations"]
-      tags["topical_events"] = edition["topical_events"]
-      tags["world_locations"] = edition["world_locations"]
+      tags["primary_publishing_organisation"] = primary_publishing_organisation(whitehall_edition)
+      tags["organisations"] = organisations(whitehall_edition)
+      tags["worldwide_organisations"] = whitehall_edition["worldwide_organisations"]
+      tags["topical_events"] = whitehall_edition["topical_events"]
+      tags["world_locations"] = whitehall_edition["world_locations"]
       tags
     end
 
-    def primary_publishing_organisation(edition)
-      [lead_organisations(edition).shift]
+    def primary_publishing_organisation(whitehall_edition)
+      [lead_organisations(whitehall_edition).shift]
     end
 
-    def organisations(edition)
-      organisations = edition["supporting_organisations"]
-      organisations += lead_organisations(edition) if lead_organisations(edition).any?
+    def organisations(whitehall_edition)
+      organisations = whitehall_edition["supporting_organisations"]
+      organisations += lead_organisations(whitehall_edition) if lead_organisations(whitehall_edition).any?
       organisations
     end
 
-    def lead_organisations(edition)
-      edition["lead_organisations"]
+    def lead_organisations(whitehall_edition)
+      whitehall_edition["lead_organisations"]
     end
 
-    def publication_state(edition)
-      return "sent_to_live" if edition["state"] == "published"
-
-      "sent_to_draft"
+    def state(whitehall_edition)
+      case whitehall_edition["state"]
+      when "draft" then "draft"
+      when "published"
+        whitehall_edition["force_published"] ? "published_but_needs_2i" : "published"
+      else
+        "submitted_for_review"
+      end
     end
 
-    def review_state(edition)
-      return "published_without_review" if edition["force_published"]
-      return "reviewed" if edition["state"] == "published"
-      return "unreviewed" if edition["state"] == "draft"
-
-      "submitted_for_review"
-    end
-
-    def has_live_version?(edition, document)
-      document["editions"].count > 1 || edition["state"] == "published"
+    def live?(whitehall_edition)
+      whitehall_edition["state"] == "published"
     end
 
     def embed_contacts(body, contacts)
