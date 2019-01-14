@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :internal_note do
-    body { "Amazing internal note" }
-    edition
+  factory :image_metadata_revision, class: Image::MetadataRevision do
     association :created_by, factory: :user
   end
 end

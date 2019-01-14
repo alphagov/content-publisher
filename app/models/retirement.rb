@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class Retirement < ApplicationRecord
-  belongs_to :timeline_entry, class_name: "TimelineEntry", foreign_key: :timeline_entries_id, inverse_of: :retirement
-  validates_inclusion_of :entry_type, in: %w[retired]
+  self.table_name = "versioned_retirements"
 
-  def entry_type
-    self.timeline_entry.entry_type
+  has_one :status, as: :details, dependent: :restrict_with_exception
+
+  def readonly?
+    !new_record?
   end
 end

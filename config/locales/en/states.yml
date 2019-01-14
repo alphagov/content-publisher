@@ -12,6 +12,10 @@ en:
       name: Retired
     removed:
       name: Removed
+    discarded:
+      name: Discarded
+    superseded:
+      name: Superseded
 
   publication_states:
     changes_not_sent_to_draft:
