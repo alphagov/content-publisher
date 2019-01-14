@@ -15,10 +15,12 @@ module Versioned
     end
 
     after_save do
-      # Add revision to the wider revisions collection
-      revisions << revision unless revisions.include?(revision)
       # Store the edition on the status to keep a history
-      status.update(edition: self) if status && !status.edition_id
+      status.update(edition: self) unless status.edition_id
+
+      # Used to keep an audit trail which connects revision, edition and
+      # status
+      revision.statuses << status unless revision.statuses.include?(status)
     end
 
     attr_readonly :number, :document_id
@@ -60,9 +62,10 @@ module Versioned
              class_name: "Versioned::InternalNote",
              dependent: :delete_all
 
-    has_and_belongs_to_many :revisions,
-                            class_name: "Versioned::Revision",
-                            join_table: "versioned_edition_revisions"
+    has_many :revisions,
+             -> { distinct },
+             through: :statuses,
+             source: :revisions
 
     enum draft: { available: "available",
                   failure: "failure",
