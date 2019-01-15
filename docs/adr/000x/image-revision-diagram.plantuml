@@ -1,0 +1,37 @@
+@startuml
+class Image::Revision {
+}
+
+class Image::FileRevision {
+  filename
+  width
+  height
+  crop_x
+  crop_y
+  crop_width
+  crop_height
+}
+
+class Image::MetadataRevision {
+  alt_text
+  credit
+  caption
+}
+
+class ActiveStorage::Blob {
+  key
+  content_type
+}
+
+class Image::Asset {
+  variant
+  file_url
+  state
+}
+
+Image::Revision --* Image
+Image::Revision -- Image::FileRevision
+Image::Revision -- Image::MetadataRevision
+Image::FileRevision -- ActiveStorage::Blob
+Image::FileRevision --* Image::Asset
+@enduml
