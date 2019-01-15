@@ -1,32 +1,37 @@
 @startuml
-class Revision {
-  number
-  title
-  summary
-  contents
+class Image::Revision {
 }
 
-class ImageRevision {
+class Image::FileRevision {
   filename
-  crop
+  width
+  height
+  crop_x
+  crop_y
+  crop_width
+  crop_height
+}
+
+class Image::MetadataRevision {
   alt_text
   caption
   credit
 }
 
-class Blob {
+class Image::Asset {
+  variant
+  file_url
+  state
+}
+
+class ActiveStorage::Blob {
   key
   content_type
 }
 
-class AssetManagerState {
-  value
-  asset_manager_path
-}
-
-Revision *-* ImageRevision: all
-Revision .. ImageRevision: lead >
-ImageRevision --* Image
-ImageRevision --* AssetManagerState
-ImageRevision --* Blob
+Image::Revision --* Image
+Image::Revision -- Image::FileRevision
+Image::Revision -- Image::MetadataRevision
+Image::FileRevision --* Image::Asset
+Image::FileRevision -- ActiveStorage::Blob
 @enduml

@@ -1,0 +1,32 @@
+@startuml
+class Revision {
+  number
+}
+
+class ContentRevision {
+  title
+  base_path
+  summary
+  contents
+}
+
+class TagsRevision {
+  tags
+}
+
+class MetadataRevision {
+  update_type
+  change_note
+}
+
+class ImageRevision {
+  image_file_revision
+  image_metadata_revision
+}
+
+Revision -- ContentRevision
+Revision -- TagsRevision
+Revision -- MetadataRevision
+Revision *--* ImageRevision: all
+Revision .. ImageRevision: lead >
+@enduml

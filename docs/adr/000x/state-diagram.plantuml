@@ -8,23 +8,21 @@ class Edition {
   number
 }
 
-class State {
-  user_facing
-  publishing_api_sync
-  error
+class Status {
+  state
 }
 
 note left
-  Has multiple past states
-  One current state
-  and potentially one next state
+  Has past statuses
+  One status
+  Potentially a next status
 end note
 
-Document -- Edition : current >
-Document .. Edition : live >
-Edition -- State : current
-Edition .. State : next
-Edition *-- State : past
+Document -- Edition : current
+Document .. Edition : live
+Edition -- Status : current
+Edition .. Status : next
+Edition *-- Status : past
 
 object document_1 {
   id = "1"
@@ -36,20 +34,15 @@ object edition_1 {
   id = "1"
   number = "1"
 }
-note right
-  A submitted edition
-  that is syncing a draft
-  to Publishing API
-end note
 
-object e1_past_state {
-  user_facing_state = "draft"
-  publishing_api_sync = "complete"
+object e1_past_status {
+  state = "draft"
+  pending = false
 }
 
-object e1_current_state {
-  user_facing_state = "submitted"
-  publishing_api_sync = "in_progress"
+object e1_status {
+  state = "submitted"
+  pending = false
 }
 
 object document_2 {
@@ -63,27 +56,20 @@ object edition_2 {
   number = "1"
 }
 
-note right
-  A submitted edition
-  that is syncing a draft
-  to Publishing API
-end note
-
-object e2_current_state {
-  user_facing_state = "submitted"
-  publishing_api_sync = "complete"
+object e2_status {
+  state = "submitted"
+  pending = false
 }
 
-object e2_next_state {
-  user_facing_state = "published"
-  publishing_api_sync = "failed"
+object e2_next_status {
+  state = "published"
+  pending = true
 }
-
 
 document_1 -- edition_1: current
-edition_1 .. e1_past_state
-edition_1 -- e1_current_state
+edition_1 .. e1_past_status
+edition_1 -- e1_status
 document_2 -- edition_2: current
-edition_2 -- e2_current_state
-edition_2 -- e2_next_state
+edition_2 -- e2_status
+edition_2 -- e2_next_status
 @enduml
