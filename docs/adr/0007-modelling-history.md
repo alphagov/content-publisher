@@ -47,28 +47,51 @@ functionality was defined as:
 
 ### Must
 
-- Store full information on current and live versions of a document
+- Store full information on current and live versions of a document;
+  *because* we may need to re-present either to the Publishing API for an
+  unexpected need or software change.
 - Consider how a revision of a document and aspects of it have state that may
-  change
+  change;
+  *because* the concept of revision could become convoluted if it stores
+  information that a user does not directly impact.
 
 ### Should
 
-- Have the full information for every edition that was published on GOV.UK
-- Record every change a publisher makes and have that information accessible
-- Consider states to be something that may change in a background job
-- Avoid relying on the TimelineEntry model as the sole answer to any historical
-  queries
+- Have the full information for every edition that was published on GOV.UK;
+  *because* this will allow us the means to show a user what changed between
+  published editions - which is needed for a variety reasons, including in some
+  cases legal.
+- Record every change a publisher makes and allow for that information to be
+  accessible;
+  *because* this maintains options for TimelineEntry and provides rich
+  debugging information.
+- Consider states to be something that may change in a background job;
+  *because* publishing can be a slow task that may be too slow for a single
+  HTTP request, considering this up-front will be less painful than bolting it
+  on.
+- Avoid relying on the TimelineEntry model as the sole/main answer to any
+  historical queries;
+  *because* this model is close to the user and is likely to be iterated, the
+  closer this is coupled to modelling Documents the more difficult this becomes.
+
 
 ### Could
 
-- Link TimelineEntry to changes rather than storing the information twice
-- Enable a future feature to enable reverting to different points in time
+- Link TimelineEntry to changes rather than storing the information twice;
+  *because* this would avoid needing to store information twice.
+- Enable a future feature to enable reverting to different points in time;
+  *because* this could enable users to make minor changes to a live document
+  and then recover a draft.
 - Separate related data to different tables to reduce data usage
+  *because* storing each change a user makes could be inefficient for data
+  usage.
 
 ### Won’t
 
 - Consider the sharing of data between translations, as per
   [ADR-3](0003-initial-domain-modelling.md#decision)
+  *because* there is insufficient product decisions around what translation
+  needs/expectations are.
 
 ## Decision
 
