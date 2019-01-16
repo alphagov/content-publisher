@@ -43,6 +43,27 @@ RSpec.describe Versioned::UnpublishService do
       expect(edition.status).to be_retired
       expect(edition.status.details.explanatory_note).to eq(explanatory_note)
     end
+
+    context "when the given edition is a draft" do
+      it "raises an error" do
+        draft_edition = create(:versioned_edition)
+        expect { Versioned::UnpublishService.new.retire(draft_edition, explanatory_note) }
+          .to raise_error RuntimeError, "attempted to unpublish an edition other than the live edition"
+      end
+    end
+
+    context "when there is a live and a draft edition" do
+      it "raises an error" do
+        draft_edition = create(:versioned_edition)
+        live_edition = create(:versioned_edition,
+                              :published,
+                              current: false,
+                              document: draft_edition.document)
+
+        expect { Versioned::UnpublishService.new.retire(live_edition, explanatory_note) }
+          .to raise_error RuntimeError, "Publishing API does not support unpublishing while there is a draft"
+      end
+    end
   end
 
   describe "#remove" do
@@ -111,26 +132,24 @@ RSpec.describe Versioned::UnpublishService do
       expect(edition.status.details.redirect).to be false
     end
 
-    context "when removing a live version with a draft" do
-      it "sets images used on the draft to draft rather than remove" do
+    context "when the given edition is a draft" do
+      it "raises an error" do
+        draft_edition = create(:versioned_edition)
+        expect { Versioned::UnpublishService.new.remove(draft_edition) }
+          .to raise_error RuntimeError, "attempted to unpublish an edition other than the live edition"
+      end
+    end
+
+    context "when there is a live and a draft edition" do
+      it "raises an error" do
+        draft_edition = create(:versioned_edition)
         live_edition = create(:versioned_edition,
                               :published,
-                              lead_image_revision: image_revision,
-                              current: false)
+                              current: false,
+                              document: draft_edition.document)
 
-        create(:versioned_edition,
-               lead_image_revision: image_revision,
-               document: live_edition.document)
-
-        delete_request = stub_request(:delete, /asset-manager/)
-        update_request = stub_request(:put, /asset-manager/)
-
-        Versioned::UnpublishService.new.remove(live_edition)
-
-        expect(delete_request).to_not have_been_requested
-        expect(update_request).to have_been_requested.at_least_once
-        asset_states = image_revision.asset_manager_variants.map(&:state).uniq
-        expect(asset_states).to match(%w[draft])
+        expect { Versioned::UnpublishService.new.remove(live_edition) }
+          .to raise_error RuntimeError, "Publishing API does not support unpublishing while there is a draft"
       end
     end
   end
@@ -193,6 +212,27 @@ RSpec.describe Versioned::UnpublishService do
 
       expect(edition.status).to be_removed
       expect(edition.status.details.redirect).to be true
+    end
+
+    context "when the given edition is a draft" do
+      it "raises an error" do
+        draft_edition = create(:versioned_edition)
+        expect { Versioned::UnpublishService.new.remove_and_redirect(draft_edition, redirect_path) }
+          .to raise_error RuntimeError, "attempted to unpublish an edition other than the live edition"
+      end
+    end
+
+    context "when there is a live and a draft edition" do
+      it "raises an error" do
+        draft_edition = create(:versioned_edition)
+        live_edition = create(:versioned_edition,
+                              :published,
+                              current: false,
+                              document: draft_edition.document)
+
+        expect { Versioned::UnpublishService.new.remove_and_redirect(live_edition, redirect_path) }
+          .to raise_error RuntimeError, "Publishing API does not support unpublishing while there is a draft"
+      end
     end
   end
 end
