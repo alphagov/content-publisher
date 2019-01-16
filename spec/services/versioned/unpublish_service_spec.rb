@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Versioned::UnpublishService do
+  include AssetManagerHelper
+
   let(:edition) { create(:versioned_edition, :published) }
   let(:edition_with_image) do
     create(:versioned_edition, :published, lead_image_revision: image_revision)
@@ -25,9 +27,10 @@ RSpec.describe Versioned::UnpublishService do
     end
 
     it "does not delete assets for retired editions" do
+      delete_request = stub_asset_manager_deletes_assets
       Versioned::UnpublishService.new.retire(edition_with_image, explanatory_note)
 
-      expect(stub_request(:delete, /asset-manager/)).not_to have_been_requested
+      expect(delete_request).not_to have_been_requested
     end
 
     it "adds an entry in the timeline of the document" do
@@ -56,7 +59,7 @@ RSpec.describe Versioned::UnpublishService do
     end
 
     it "deletes assets associated with removed editions" do
-      delete_request = stub_request(:delete, /asset-manager/)
+      delete_request = stub_asset_manager_deletes_assets
 
       Versioned::UnpublishService.new.remove(edition_with_image)
       expect(delete_request).to have_been_requested.at_least_once
@@ -149,7 +152,7 @@ RSpec.describe Versioned::UnpublishService do
     end
 
     it "deletes assets associated with redirected editions" do
-      delete_request = stub_request(:delete, /asset-manager/)
+      delete_request = stub_asset_manager_deletes_assets
 
       Versioned::UnpublishService.new.remove_and_redirect(edition_with_image,
                                                           redirect_path)

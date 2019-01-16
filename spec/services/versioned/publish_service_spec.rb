@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe Versioned::PublishService do
+  include AssetManagerHelper
+
   describe "#publish" do
-    before do
-      # stub all asset manager requests
-      stub_request(:any, /\A#{Plek.current.find('asset-manager')}/)
-    end
+    before { stub_any_asset_manager_call }
 
     context "when there is no live edition" do
       let(:edition) { create(:versioned_edition, :publishable) }
