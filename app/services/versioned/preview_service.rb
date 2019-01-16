@@ -47,12 +47,7 @@ module Versioned
         image_revision.ensure_asset_manager_variants
 
         image_revision.asset_manager_variants.each do |variant|
-          if variant.image_revision == edition.lead_image_revision
-            upload_image(edition, variant)
-          else
-            # until we have inline images these don't need to be on asset manager
-            delete_image(variant)
-          end
+          upload_image(edition, variant)
         end
       end
     rescue GdsApi::BaseError
@@ -67,18 +62,6 @@ module Versioned
       file_url = Versioned::AssetManagerService.new
                                                .upload(asset_manager_variant, auth_bypass_id)
       asset_manager_variant.file.update!(file_url: file_url, state: :draft)
-    end
-
-    def delete_image(asset_manager_variant)
-      # if it's live we assume it's used by the live edition
-      return if asset_manager_variant.live? || asset_manager_variant.absent?
-
-      begin
-        Versioned::AssetManagerService.new.delete(asset_manager_variant)
-      rescue GdsApi::HTTPNotFound
-        Rails.logger.warn("No asset to delete for id #{asset_manager_variant.asset_manager_id}")
-      end
-      asset_manager_variant.file.absent!
     end
   end
 end
