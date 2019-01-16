@@ -396,7 +396,7 @@ ActiveRecord::Schema.define(version: 2019_01_18_151754) do
   add_foreign_key "versioned_internal_notes", "versioned_editions", column: "edition_id", on_delete: :cascade
   add_foreign_key "versioned_retirements", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_revision_image_revisions", "versioned_image_revisions", column: "image_revision_id", on_delete: :restrict
-  add_foreign_key "versioned_revision_image_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
+  add_foreign_key "versioned_revision_image_revisions", "versioned_revisions", column: "revision_id", on_delete: :cascade
   add_foreign_key "versioned_revision_statuses", "versioned_revisions", column: "revision_id", on_delete: :cascade
   add_foreign_key "versioned_revision_statuses", "versioned_statuses", column: "status_id", on_delete: :cascade
   add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :nullify
