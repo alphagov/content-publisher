@@ -11,7 +11,7 @@ RSpec.feature "Edit image metadata" do
 
   def given_there_is_a_document_with_images
     document_type = build(:document_type, lead_image: true)
-    @image_revision = create(:versioned_image_revision)
+    @image_revision = create(:versioned_image_revision, :on_asset_manager)
     @edition = create(:versioned_edition,
                       document_type_id: document_type.id,
                       image_revisions: [@image_revision])
