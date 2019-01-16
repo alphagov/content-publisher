@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.feature "Upload a lead image" do
+  include AssetManagerHelper
+
   scenario do
     given_there_is_a_document
     when_i_visit_the_images_page
@@ -22,10 +24,7 @@ RSpec.feature "Upload a lead image" do
   end
 
   def and_i_upload_a_new_image
-    stub_request(:post, /assets/).to_return do
-      file_url = Plek.new.find("asset-manager") + "/media/#{SecureRandom.uuid}/1000x1000.jpg"
-      { body: { file_url: file_url }.to_json }
-    end
+    stub_asset_manager_receives_assets("1000x1000.jpg")
 
     find('form input[type="file"]').set(Rails.root.join(file_fixture("1000x1000.jpg")))
     click_on "Upload"

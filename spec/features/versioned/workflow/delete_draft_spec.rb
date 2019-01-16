@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.feature "Delete draft" do
+  include AssetManagerHelper
+
   scenario do
     given_there_is_a_document
     when_i_visit_the_document_page
@@ -20,7 +22,7 @@ RSpec.feature "Delete draft" do
 
   def and_i_delete_the_draft
     @content_request = stub_publishing_api_discard_draft(@edition.content_id)
-    @image_request = stub_request(:delete, /#{Plek.new.find("asset-manager")}/)
+    @image_request = stub_asset_manager_deletes_assets
 
     click_on "Delete draft"
     click_on "Yes, delete draft"
