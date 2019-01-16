@@ -5,6 +5,7 @@ module Versioned
     def retire(edition, explanatory_note)
       Versioned::Document.transaction do
         edition.document.lock!
+        check_unpublishable(edition)
 
         GdsApi.publishing_api_v2.unpublish(
           edition.content_id,
@@ -29,6 +30,7 @@ module Versioned
     def remove(edition, explanatory_note: nil, alternative_path: nil)
       Versioned::Document.transaction do
         edition.document.lock!
+        check_unpublishable(edition)
 
         GdsApi.publishing_api_v2.unpublish(
           edition.content_id,
@@ -57,6 +59,7 @@ module Versioned
     def remove_and_redirect(edition, redirect_path, explanatory_note: nil)
       Versioned::Document.transaction do
         edition.document.lock!
+        check_unpublishable(edition)
 
         GdsApi.publishing_api_v2.unpublish(
           edition.content_id,
@@ -85,40 +88,20 @@ module Versioned
 
   private
 
+    def check_unpublishable(edition)
+      document = edition.document
+
+      if edition != document.live_edition
+        raise "attempted to unpublish an edition other than the live edition"
+      end
+
+      if document.current_edition != document.live_edition
+        raise "Publishing API does not support unpublishing while there is a draft"
+      end
+    end
+
     def delete_assets(edition)
-      edition.image_revisions.each do |image_revision|
-        potential_draft = edition.document.current_edition
-
-        # If this image is also used on a draft of this document we need to
-        # set it as a draft rather than remove it otherwise we break the draft
-        if draft_has_image_revision?(edition.document, image_revision)
-          draft_image_revision(image_revision, potential_draft)
-        else
-          remove_image_revision(image_revision)
-        end
-      end
-    end
-
-    def draft_has_image_revision?(document, image_revision)
-      draft = document.current_edition
-      return false if !draft || draft == document.live_edition
-
-      draft.image_revisions.include?(image_revision)
-    end
-
-    def draft_image_revision(image_revision, edition)
-      image_revision.asset_manager_variants.each do |variant|
-        next if variant.absent?
-
-        begin
-          auth_bypass_id = Versioned::EditionUrl.new(edition).auth_bypass_id
-          Versioned::AssetManagerService.new.draft(variant, auth_bypass_id)
-          variant.file.draft!
-        rescue GdsApi::HTTPNotFound
-          Rails.logger.warn("No asset to draft for id #{variant.asset_manager_id}")
-          variant.file.absent!
-        end
-      end
+      edition.image_revisions.each { |ir| remove_image_revision(ir) }
     end
 
     def remove_image_revision(image_revision)

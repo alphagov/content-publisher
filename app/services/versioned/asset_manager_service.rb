@@ -11,15 +11,6 @@ module Versioned
       upload["file_url"]
     end
 
-    def draft(asset, auth_bypass_id)
-      GdsApi.asset_manager.update_asset(
-        asset.asset_manager_id,
-        draft: true,
-        auth_bypass_ids: [auth_bypass_id],
-        redirect_url: nil,
-      )
-    end
-
     def publish(asset)
       GdsApi.asset_manager.update_asset(
         asset.asset_manager_id,
