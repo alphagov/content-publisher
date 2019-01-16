@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.feature "Delete draft with Asset Manager down" do
+  include AssetManagerHelper
+
   scenario do
     given_there_is_a_document
     when_i_visit_the_document_page
@@ -21,13 +23,11 @@ RSpec.feature "Delete draft with Asset Manager down" do
   end
 
   def and_asset_manager_is_down
-    stub_request(:any, /#{Plek.new.find("asset-manager")}/)
-      .to_return(status: 503)
+    stub_asset_manager_down
   end
 
   def when_asset_manager_is_up_and_i_try_again
-    stub_request(:any, /#{Plek.new.find("asset-manager")}/)
-      .to_return(status: 200)
+    stub_asset_manager_deletes_assets
     click_on "Delete draft"
     click_on "Yes, delete draft"
   end
