@@ -167,6 +167,16 @@ describe('Markdown editor component', function () {
       var container = document.querySelector('.app-c-markdown-editor__container')
       expect(container).toHaveClass('app-c-markdown-editor__container--focused')
     })
+
+    it('should trigger a focus event on component', function () {
+      var container = document.querySelector('.app-c-markdown-editor')
+      spyOnEvent(container, 'focus')
+
+      document.querySelector('.js-markdown-editor-input textarea').focus()
+
+      expect('focus').toHaveBeenTriggeredOn(container)
+    })
+
   })
 
   describe('when blurring the textarea', function () {

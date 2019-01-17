@@ -7,7 +7,6 @@
       },
       textarea: {
         data: {
-          "contextual-guidance": "document-contents-guidance",
           gramm: "false", # Disables grammerly plugin for markdown editor
           gtm: "#{field.id}-input"
         },
@@ -16,7 +15,8 @@
         value: document.contents[field.id],
         rows: 20,
         spellcheck: "false"
-      }
+      },
+      contextual_guidance: "document-contents-guidance"
     } %>
   </div>
 
