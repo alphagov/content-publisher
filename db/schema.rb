@@ -140,24 +140,6 @@ ActiveRecord::Schema.define(version: 2019_01_18_102825) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "versioned_asset_manager_files", force: :cascade do |t|
-    t.string "file_url"
-    t.string "state", default: "absent", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "superseded_by_id"
-    t.index ["file_url"], name: "index_versioned_asset_manager_files_on_file_url", unique: true
-  end
-
-  create_table "versioned_asset_manager_image_variants", force: :cascade do |t|
-    t.bigint "image_revision_id", null: false
-    t.bigint "asset_manager_file_id", null: false
-    t.string "variant", null: false
-    t.datetime "created_at", null: false
-    t.index ["image_revision_id", "asset_manager_file_id"], name: "index_image_revision_asset_manager_variant_ids", unique: true
-    t.index ["image_revision_id", "variant"], name: "index_image_revision_asset_manager_variant_unique_variant", unique: true
-  end
-
   create_table "versioned_content_revisions", force: :cascade do |t|
     t.string "title"
     t.string "base_path"
@@ -213,23 +195,50 @@ ActiveRecord::Schema.define(version: 2019_01_18_102825) do
     t.index ["status_id"], name: "index_versioned_editions_on_status_id"
   end
 
-  create_table "versioned_image_revisions", force: :cascade do |t|
+  create_table "versioned_image_assets", force: :cascade do |t|
+    t.bigint "file_revision_id", null: false
+    t.bigint "superseded_by_id"
+    t.string "variant", null: false
+    t.string "file_url"
+    t.string "state", default: "absent", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["file_revision_id", "variant"], name: "index_versioned_image_asset_unique_variant", unique: true
+    t.index ["file_revision_id"], name: "index_versioned_image_assets_on_file_revision_id"
+    t.index ["file_url"], name: "index_versioned_image_assets_on_file_url", unique: true
+  end
+
+  create_table "versioned_image_file_revisions", force: :cascade do |t|
     t.bigint "blob_id", null: false
-    t.bigint "image_id", null: false
     t.bigint "created_by_id"
-    t.string "filename", null: false
     t.integer "width", null: false
     t.integer "height", null: false
     t.integer "crop_x", null: false
     t.integer "crop_y", null: false
     t.integer "crop_width", null: false
     t.integer "crop_height", null: false
+    t.string "filename", null: false
+    t.datetime "created_at"
+    t.index ["blob_id"], name: "index_versioned_image_file_revisions_on_blob_id"
+  end
+
+  create_table "versioned_image_metadata_revisions", force: :cascade do |t|
     t.string "caption"
     t.string "alt_text"
     t.string "credit"
+    t.datetime "created_at"
+    t.bigint "created_by_id"
+  end
+
+  create_table "versioned_image_revisions", force: :cascade do |t|
+    t.bigint "image_id", null: false
+    t.bigint "created_by_id"
     t.datetime "created_at", null: false
-    t.index ["blob_id"], name: "index_versioned_image_revisions_on_blob_id"
+    t.bigint "file_revision_id", null: false
+    t.bigint "metadata_revision_id", null: false
+    t.index ["file_revision_id"], name: "index_versioned_image_revisions_on_file_revision_id"
     t.index ["image_id"], name: "index_versioned_image_revisions_on_image_id"
+    t.index ["metadata_revision_id"], name: "index_versioned_image_revisions_on_metadata_revision_id"
   end
 
   create_table "versioned_images", force: :cascade do |t|
@@ -364,9 +373,6 @@ ActiveRecord::Schema.define(version: 2019_01_18_102825) do
   add_foreign_key "retirements", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
   add_foreign_key "timeline_entries", "documents", on_delete: :cascade
   add_foreign_key "timeline_entries", "users", on_delete: :nullify
-  add_foreign_key "versioned_asset_manager_files", "versioned_asset_manager_files", column: "superseded_by_id", on_delete: :nullify
-  add_foreign_key "versioned_asset_manager_image_variants", "versioned_asset_manager_files", column: "asset_manager_file_id", on_delete: :restrict
-  add_foreign_key "versioned_asset_manager_image_variants", "versioned_image_revisions", column: "image_revision_id", on_delete: :cascade
   add_foreign_key "versioned_content_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :cascade
@@ -376,8 +382,14 @@ ActiveRecord::Schema.define(version: 2019_01_18_102825) do
   add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_revisions", column: "revision_id", on_delete: :restrict
   add_foreign_key "versioned_editions", "versioned_statuses", column: "status_id", on_delete: :restrict
-  add_foreign_key "versioned_image_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
+  add_foreign_key "versioned_image_assets", "versioned_image_assets", column: "superseded_by_id", on_delete: :nullify
+  add_foreign_key "versioned_image_assets", "versioned_image_file_revisions", column: "file_revision_id", on_delete: :cascade
+  add_foreign_key "versioned_image_file_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
+  add_foreign_key "versioned_image_file_revisions", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_image_metadata_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_image_revisions", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_image_revisions", "versioned_image_file_revisions", column: "file_revision_id", on_delete: :restrict
+  add_foreign_key "versioned_image_revisions", "versioned_image_metadata_revisions", column: "metadata_revision_id", on_delete: :restrict
   add_foreign_key "versioned_image_revisions", "versioned_images", column: "image_id", on_delete: :restrict
   add_foreign_key "versioned_images", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_internal_notes", "users", column: "created_by_id", on_delete: :nullify
