@@ -20,7 +20,7 @@ module Versioned
                foreign_key: :created_by_id
 
     belongs_to :lead_image_revision,
-               class_name: "Versioned::ImageRevision",
+               class_name: "Versioned::Image::Revision",
                optional: true,
                foreign_key: :lead_image_revision_id
     # rubocop:enable Rails/InverseOf
@@ -75,7 +75,8 @@ module Versioned
 
     has_and_belongs_to_many :image_revisions,
                             -> { order("versioned_image_revisions.image_id ASC") },
-                            class_name: "Versioned::ImageRevision",
+                            association_foreign_key: "image_revision_id",
+                            class_name: "Versioned::Image::Revision",
                             join_table: "versioned_revision_image_revisions"
 
     delegate :title,

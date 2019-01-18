@@ -7,6 +7,11 @@ module Versioned
   class Image < ApplicationRecord
     self.table_name = "versioned_images"
 
+    WIDTH = 960
+    HEIGHT = 640
+    THUMBNAIL_WIDTH = 300
+    THUMBNAIL_HEIGHT = 200
+
     # rubocop:disable Rails/InverseOf
     belongs_to :created_by,
                class_name: "User",
