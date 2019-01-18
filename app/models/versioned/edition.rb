@@ -18,9 +18,12 @@ module Versioned
       # Store the edition on the status to keep a history
       status.update(edition: self) unless status.edition_id
 
-      # Used to keep an audit trail which connects revision, edition and
-      # status
+      # Used to keep an audit trail of statuses a revision has held
       revision.statuses << status unless revision.statuses.include?(status)
+
+      # Used to keep an audit trail of all the revisions that have been
+      # associated with an edition
+      revisions << revision unless revisions.include?(revision)
     end
 
     attr_readonly :number, :document_id
@@ -62,10 +65,10 @@ module Versioned
              class_name: "Versioned::InternalNote",
              dependent: :delete_all
 
-    has_many :revisions,
-             -> { distinct },
-             through: :statuses,
-             source: :revisions
+    has_and_belongs_to_many :revisions,
+                            -> { order("versioned_revisions.number DESC") },
+                            class_name: "Versioned::Revision",
+                            join_table: "versioned_edition_revisions"
 
     enum draft: { available: "available",
                   failure: "failure",

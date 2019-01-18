@@ -68,10 +68,10 @@ module Versioned
                             class_name: "Versioned::Status",
                             join_table: "versioned_revision_statuses"
 
-    has_many :editions,
-             -> { distinct.reorder("versioned_editions.number DESC") },
-             through: :statuses,
-             source: :edition
+    has_and_belongs_to_many :editions,
+                            -> { order("versioned_editions.number DESC") },
+                            class_name: "Versioned::Edition",
+                            join_table: "versioned_edition_revisions"
 
     has_and_belongs_to_many :image_revisions,
                             -> { order("versioned_image_revisions.image_id ASC") },
