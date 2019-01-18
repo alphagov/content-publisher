@@ -8,21 +8,7 @@
                 data: { gtm: "delete-draft" })
       end
     %>
-    <% if @edition.draft_requirements_not_met? %>
-      <%= form_tag versioned_create_preview_path(@edition.document) do %>
-        <%= render "govuk_publishing_components/components/button", text: "Preview" %>
-      <% end %>
-
-      <%= delete_draft_link %>
-    <% elsif @edition.draft_failure? %>
-      <%= render_govspeak(t("documents.show.sidebar.error_creating_preview_govspeak")) %>
-
-      <%= form_tag versioned_create_preview_path(@edition.document) do %>
-        <%= render "govuk_publishing_components/components/button", text: "Try again" %>
-      <% end %>
-
-      <%= delete_draft_link %>
-    <% elsif @edition.status.published_but_needs_2i? %>
+    <% if @edition.status.published_but_needs_2i? %>
       <%= form_tag versioned_approve_document_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Approve" %>
       <% end %>
@@ -59,6 +45,12 @@
                  secondary: true %>
 
       <%= delete_draft_link("app-link--right") %>
+    <% elsif !@edition.revision_synced %>
+      <%= form_tag versioned_create_preview_path(@edition.document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Preview" %>
+      <% end %>
+
+      <%= delete_draft_link %>
     <% else %>
       <%= form_tag versioned_submit_document_for_2i_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>

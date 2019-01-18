@@ -110,7 +110,7 @@ RSpec.describe Versioned::DeleteDraftService do
 
       expect { Versioned::DeleteDraftService.new(edition.document, user).delete }
         .to raise_error(GdsApi::BaseError)
-      expect(edition.reload.draft_failure?).to be true
+      expect(edition.reload.revision_synced).to be false
     end
   end
 end
