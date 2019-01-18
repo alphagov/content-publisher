@@ -8,12 +8,15 @@ module Versioned
     def index
       @document = Versioned::Document.find_by_param(params[:id])
 
+      image_preload = {
+        lead_image_revision: %i[file_revision metadata_revision],
+        image_revisions: %i[file_revision metadata_revision],
+      }
+
       preload = [
         :content_revision,
         :created_by,
         :editions,
-        :image_revisions,
-        :lead_image_revision,
         :tags_revision,
         :update_revision,
         {
@@ -21,9 +24,9 @@ module Versioned
                           image_revisions
                           lead_image_revision
                           tags_revision
-                          update_revision],
+                          update_revision] << image_preload,
           statuses: :created_by,
-        },
+        }.merge(image_preload),
       ]
 
       @revisions = Versioned::Revision.where(document: @document)
@@ -44,10 +47,20 @@ module Versioned
       content = revision.content_revision.as_json(except: common_except)
       tags = revision.tags_revision.as_json(except: common_except)
       update = revision.update_revision.as_json(except: common_except)
-      lead_image = revision.lead_image_revision&.as_json(except: common_except)
-      images = revision.image_revisions.map { |r| r.as_json(except: common_except) }
+      lead_image = image_revision_hash(revision.lead_image_revision)
+      images = revision.image_revisions.map { |r| image_revision_hash(r) }
 
       content.merge(tags).merge(update).merge(lead_image: lead_image, images: images)
+    end
+
+    def image_revision_hash(image_revision)
+      return nil unless image_revision
+
+      common_except = %i[id created_at created_by_id]
+      file_revision = image_revision.file_revision.as_json(except: common_except)
+      metadata_revision = image_revision.metadata_revision.as_json(except: common_except)
+
+      file_revision.merge(metadata_revision)
     end
   end
 end
