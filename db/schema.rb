@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_13_115603) do
+ActiveRecord::Schema.define(version: 2019_01_18_102825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,6 +177,15 @@ ActiveRecord::Schema.define(version: 2019_01_13_115603) do
     t.datetime "first_published_at"
     t.index ["content_id", "locale"], name: "index_versioned_documents_on_content_id_and_locale", unique: true
     t.index ["created_by_id"], name: "index_versioned_documents_on_created_by_id"
+  end
+
+  create_table "versioned_edition_revisions", force: :cascade do |t|
+    t.bigint "edition_id", null: false
+    t.bigint "revision_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["edition_id", "revision_id"], name: "index_versioned_edition_revisions_on_edition_id_and_revision_id", unique: true
+    t.index ["edition_id"], name: "index_versioned_edition_revisions_on_edition_id"
+    t.index ["revision_id"], name: "index_versioned_edition_revisions_on_revision_id"
   end
 
   create_table "versioned_editions", force: :cascade do |t|
@@ -360,6 +369,8 @@ ActiveRecord::Schema.define(version: 2019_01_13_115603) do
   add_foreign_key "versioned_asset_manager_image_variants", "versioned_image_revisions", column: "image_revision_id", on_delete: :cascade
   add_foreign_key "versioned_content_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :cascade
+  add_foreign_key "versioned_edition_revisions", "versioned_revisions", column: "revision_id", on_delete: :cascade
   add_foreign_key "versioned_editions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_editions", "users", column: "last_edited_by_id", on_delete: :nullify
   add_foreign_key "versioned_editions", "versioned_documents", column: "document_id", on_delete: :restrict
