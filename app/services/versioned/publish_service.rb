@@ -54,15 +54,16 @@ module Versioned
     end
 
     def publish_new_images
-      return unless current_edition.lead_image_revision
+      return unless current_edition.image_revisions.any?
 
-      # we currently only use the lead image
-      current_edition.lead_image_revision.asset_manager_variants.each do |variant|
-        raise "Expected variant to be on asset manager" if variant.absent?
+      current_edition.image_revisions.each do |image_revision|
+        image_revision.assets.each do |asset|
+          raise "Expected asset to be on asset manager" if asset.absent?
 
-        if variant.draft?
-          Versioned::AssetManagerService.new.publish(variant)
-          variant.file.live!
+          if asset.draft?
+            Versioned::AssetManagerService.new.publish(asset)
+            asset.live!
+          end
         end
       end
     end
@@ -70,50 +71,57 @@ module Versioned
     def retire_old_images
       return unless live_edition
 
-      live_edition.image_revisions.each do |revision|
-        next if revision == current_edition.lead_image_revision
+      image_revisions = current_edition.image_revisions
+      current_file_revisions = image_revisions.map(&:file_revision)
+      current_revisions_by_image_id = image_revisions.group_by(&:image_id)
 
-        if revision.image_id == current_edition.lead_image_revision&.image_id
-          redirect_images(revision, current_edition.lead_image_revision)
+      live_edition.image_revisions.each do |revision|
+        next if current_file_revisions.include?(revision.file_revision)
+
+        if current_revisions_by_image_id.has_key?(revision.image_id)
+          redirect_images(
+            revision,
+            current_revisions_by_image_id[revision.image_id].first,
+          )
         else
-          revision.asset_manager_variants.each { |v| remove_image_variant(v) }
+          revision.assets.each { |a| remove_image_asset(a) }
         end
       end
-    end
-
-    def remove_image_variant(variant)
-      return if variant.absent?
-
-      begin
-        Versioned::AssetManagerService.new.delete(variant)
-      rescue GdsApi::HTTPNotFound
-        Rails.logger.warn("No asset to delete for id #{variant.asset_manager_id}")
-      end
-
-      variant.file.absent!
     end
 
     def redirect_images(old_revision, new_revision)
-      grouped_old = old_revision.asset_manager_variants.group_by(&:variant)
-      grouped_new = new_revision.asset_manager_variants.group_by(&:variant)
-      to_remove = grouped_old.keys - grouped_new.keys
+      old_revision.assets.each do |old_asset|
+        new_asset = new_revision.asset(old_asset.variant)
 
-      to_remove.each { |variant| remove_image_variant(grouped_old[variant].first) }
-
-      to_supersede = grouped_new.keys & grouped_old.keys
-      to_supersede.each do |variant_name|
-        old_variant = grouped_old[variant_name].first
-        new_variant = grouped_new[variant_name].first
-
-        next if old_variant.absent?
-
-        begin
-          Versioned::AssetManagerService.new.redirect(old_variant, to: new_variant.file_url)
-          old_variant.file.update!(state: :superseded, superseded_by: new_variant.file)
-        rescue GdsApi::HTTPNotFound
-          Rails.logger.warn("No asset to supersede for id #{variant.asset_manager_id}")
-          old_variant.file.absent!
+        if new_asset
+          redirect_image_asset(old_asset, new_asset)
+        else
+          remove_image_asset(old_asset)
         end
+      end
+    end
+
+    def remove_image_asset(asset)
+      return if asset.absent?
+
+      begin
+        Versioned::AssetManagerService.new.delete(asset)
+      rescue GdsApi::HTTPNotFound
+        Rails.logger.warn("No asset to delete for id #{asset.asset_manager_id}")
+      end
+
+      asset.absent!
+    end
+
+    def redirect_image_asset(from_asset, to_asset)
+      return if from_asset.absent?
+
+      begin
+        Versioned::AssetManagerService.new.redirect(from_asset, to: to_asset.file_url)
+        from_asset.update!(state: :superseded, superseded_by: to_asset)
+      rescue GdsApi::HTTPNotFound
+        Rails.logger.warn("No asset to supersede for id #{from_asset.asset_manager_id}")
+        from_asset.absent!
       end
     end
   end

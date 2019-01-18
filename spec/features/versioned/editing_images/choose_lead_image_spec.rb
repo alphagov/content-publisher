@@ -44,7 +44,7 @@ RSpec.feature "Choose a lead image" do
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
 
     expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"]["image"]["url"]).to eq @image_revision.asset_manager_url("300")
+      expect(JSON.parse(req.body)["details"]["image"]["url"]).to eq @image_revision.asset_url("300")
     }).to have_been_requested
   end
 end
