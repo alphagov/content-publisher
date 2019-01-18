@@ -17,17 +17,17 @@ module Versioned
         content_type: mime_type,
       )
 
-      image_revision = ImageRevision.create!(
-        image_attributes.merge(
-          image: image,
-          blob: blob,
-          created_by: user,
-        ),
+      file_revision = Versioned::Image::FileRevision.new(
+        image_attributes.merge(blob: blob, created_by: user),
       )
+      file_revision.ensure_assets
 
-      image_revision.ensure_asset_manager_variants
-
-      image_revision
+      Versioned::Image::Revision.create!(
+        image: image,
+        created_by: user,
+        file_revision: file_revision,
+        metadata_revision: Versioned::Image::MetadataRevision.new(created_by: user),
+      )
     end
 
   private
@@ -47,10 +47,14 @@ module Versioned
     end
 
     def image_attributes
+      @image_attributes ||= build_image_attributes
+    end
+
+    def build_image_attributes
       dimensions = image_normaliser.dimensions
       cropper = ImageCentreCropper.new(dimensions[:width],
                                   dimensions[:height],
-                                  ImageRevision::WIDTH.to_f / ImageRevision::HEIGHT)
+                                  Image::WIDTH.to_f / Image::HEIGHT)
       {
         width: dimensions[:width],
         height: dimensions[:height],

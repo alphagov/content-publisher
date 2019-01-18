@@ -65,7 +65,6 @@ module Versioned
         image_revision = previous_image_revision.build_revision_update(
           update_crop_params,
           current_user,
-          keep_files: false, # a crop change will make the files change
         )
 
         if image_revision != previous_image_revision
@@ -120,7 +119,6 @@ module Versioned
         @image_revision = previous_image_revision.build_revision_update(
           update_params,
           current_user,
-          keep_files: true,
         )
 
         @issues = Versioned::Requirements::ImageRevisionChecker.new(@image_revision)
@@ -251,7 +249,7 @@ module Versioned
     end
 
     def update_crop_params
-      image_aspect_ratio = Versioned::ImageRevision::HEIGHT.to_f / Versioned::ImageRevision::WIDTH
+      image_aspect_ratio = Versioned::Image::HEIGHT.to_f / Versioned::Image::WIDTH
       crop_height = params[:crop_width].to_i * image_aspect_ratio
       # FIXME: this will raise a warning because of unpermitted paramaters
       params.permit(:crop_x, :crop_y, :crop_width).merge(crop_height: crop_height.to_i)

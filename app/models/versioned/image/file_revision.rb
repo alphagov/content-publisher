@@ -73,7 +73,11 @@ module Versioned
     end
 
     def asset_url(variant)
-      assets.find { |v| v.variant == variant }&.file_url
+      asset(variant)&.file_url
+    end
+
+    def asset(variant)
+      assets.find { |v| v.variant == variant }
     end
 
     def at_exact_dimensions?

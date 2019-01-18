@@ -15,7 +15,6 @@ RSpec.describe Versioned::Image::FileRevision do
                          crop_x: 5,
                          created_at: 10.days.ago)
       revision2 = revision1.dup
-      revision2.crop_x = 5
       revision2.created_at = 10.seconds.ago
 
       expect(revision1.different_to?(revision2)).to be false

@@ -51,8 +51,8 @@ module Versioned
 
     def image
       {
-        "high_resolution_url" => edition.lead_image_revision.asset_manager_url("high_resolution"),
-        "url" => edition.lead_image_revision.asset_manager_url("300"),
+        "high_resolution_url" => edition.lead_image_revision.asset_url("high_resolution"),
+        "url" => edition.lead_image_revision.asset_url("300"),
         "alt_text" => edition.lead_image_revision.alt_text,
         "caption" => edition.lead_image_revision.caption,
         "credit" => edition.lead_image_revision.credit,

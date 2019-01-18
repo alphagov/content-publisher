@@ -52,6 +52,7 @@ module Versioned
              :crop_y,
              :crop_width,
              :crop_height,
+             :asset,
              :assets,
              :ensure_assets,
              :thumbnail,
