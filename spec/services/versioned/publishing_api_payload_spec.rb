@@ -116,8 +116,8 @@ RSpec.describe Versioned::PublishingApiPayload do
       payload = Versioned::PublishingApiPayload.new(edition).payload
 
       payload_hash = {
-        "url" => image_revision.asset_manager_url("300"),
-        "high_resolution_url" => image_revision.asset_manager_url("high_resolution"),
+        "url" => image_revision.asset_url("300"),
+        "high_resolution_url" => image_revision.asset_url("high_resolution"),
         "alt_text" => "image alt text",
         "caption" => "image caption",
         "credit" => "image credit",

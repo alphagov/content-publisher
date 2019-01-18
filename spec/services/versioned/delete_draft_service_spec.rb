@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Versioned::DeleteDraftService do
+  include AssetManagerHelper
+
   let(:user) { create :user }
 
   describe "#delete" do
@@ -30,15 +32,12 @@ RSpec.describe Versioned::DeleteDraftService do
       edition = create :versioned_edition, lead_image_revision: image_revision
 
       stub_publishing_api_discard_draft(edition.content_id)
-      requests = image_revision.asset_manager_variants.map do |variant|
-        asset_manager_delete_asset(variant.asset_manager_id)
-      end
-      Versioned::DeleteDraftService.new(edition.document, user).delete
-      requests.each { |req| expect(req).to have_been_requested }
+      delete_request = stub_asset_manager_deletes_assets
 
-      image_revision.reload.asset_manager_variants.each do |variant|
-        expect(variant).to be_absent
-      end
+      Versioned::DeleteDraftService.new(edition.document, user).delete
+
+      expect(delete_request).to have_been_requested.at_least_once
+      expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
     end
 
     it "sets the current edition of the document to nil if there is no live edition" do
@@ -80,17 +79,15 @@ RSpec.describe Versioned::DeleteDraftService do
 
       expect(edition.reload.status).to be_discarded
 
-      image_revision.reload.asset_manager_variants.each do |variant|
-        expect(variant).to be_absent
-      end
+      expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
     end
 
     it "copes if an asset is not in Asset Manager" do
       image_revision = create :versioned_image_revision, :on_asset_manager
       edition = create :versioned_edition, lead_image_revision: image_revision
 
-      image_revision.asset_manager_variants.map do |variant|
-        asset_manager_does_not_have_an_asset(variant.asset_manager_id)
+      image_revision.assets.map do |asset|
+        asset_manager_does_not_have_an_asset(asset.asset_manager_id)
       end
 
       stub_publishing_api_discard_draft(edition.content_id)
@@ -109,9 +106,7 @@ RSpec.describe Versioned::DeleteDraftService do
       image_revision = create :versioned_image_revision, :on_asset_manager
       edition = create :versioned_edition, lead_image_revision: image_revision
 
-      image_revision.asset_manager_variants.map do |variant|
-        asset_manager_delete_asset_failure(variant.asset_manager_id)
-      end
+      stub_asset_manager_down
 
       expect { Versioned::DeleteDraftService.new(edition.document, user).delete }
         .to raise_error(GdsApi::BaseError)

@@ -44,24 +44,22 @@ module Versioned
 
     def upload_assets(edition)
       edition.image_revisions.each do |image_revision|
-        image_revision.ensure_asset_manager_variants
+        image_revision.ensure_assets
 
-        image_revision.asset_manager_variants.each do |variant|
-          upload_image(edition, variant)
-        end
+        image_revision.assets.each { |asset| upload_image(edition, asset) }
       end
     rescue GdsApi::BaseError
       edition.draft_failure!
       raise
     end
 
-    def upload_image(edition, asset_manager_variant)
-      return unless asset_manager_variant.absent?
+    def upload_image(edition, image_asset)
+      return unless image_asset.absent?
 
       auth_bypass_id = Versioned::EditionUrl.new(edition).auth_bypass_id
       file_url = Versioned::AssetManagerService.new
-                                               .upload(asset_manager_variant, auth_bypass_id)
-      asset_manager_variant.file.update!(file_url: file_url, state: :draft)
+                                               .upload(image_asset, auth_bypass_id)
+      image_asset.update!(file_url: file_url, state: :draft)
     end
   end
 end

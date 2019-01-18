@@ -4,8 +4,6 @@ RSpec.describe Versioned::PublishService do
   include AssetManagerHelper
 
   describe "#publish" do
-    before { stub_any_asset_manager_call }
-
     context "when there is no live edition" do
       let(:edition) { create(:versioned_edition, :publishable) }
       let!(:publish_request) do
@@ -51,39 +49,39 @@ RSpec.describe Versioned::PublishService do
       end
     end
 
-    context "when the current edition has a lead image" do
-      let(:lead_image) { create(:versioned_image_revision, :on_asset_manager) }
+    context "when the current edition has images" do
+      let(:image_revision) { create(:versioned_image_revision, :on_asset_manager) }
       let!(:edition) do
         create(:versioned_edition,
                :publishable,
-               lead_image_revision: lead_image)
+               image_revisions: [image_revision])
       end
 
       before do
         stub_publishing_api_publish(edition.content_id,
                                     update_type: nil,
                                     locale: edition.locale)
+
+        stub_asset_manager_updates_assets
       end
 
-      it "makes the lead image variants live" do
-        expect(lead_image.asset_manager_variants.map(&:state).uniq)
-          .to eq(%w[draft])
+      it "makes the image assets live" do
+        expect(image_revision.assets.map(&:state).uniq).to eq(%w[draft])
 
         Versioned::PublishService.new(edition.document)
                                  .publish(user: create(:user), with_review: true)
 
-        lead_image.reload
-        expect(lead_image.asset_manager_variants.map(&:state).uniq)
-          .to eq(%w[live])
+        image_revision.reload
+        expect(image_revision.assets.map(&:state).uniq).to eq(%w[live])
       end
     end
 
-    context "when the live edition has live images" do
-      let(:old_lead_image) do
+    context "when the live edition has live images that the current edition hasn't got" do
+      let(:image_revision_to_remove) do
         create(:versioned_image_revision, :on_asset_manager, state: :live)
       end
 
-      let(:other_image) do
+      let(:image_revision_to_keep) do
         create(:versioned_image_revision, :on_asset_manager, state: :live)
       end
 
@@ -92,8 +90,7 @@ RSpec.describe Versioned::PublishService do
       let!(:live_edition) do
         create(:versioned_edition,
                :published,
-               lead_image_revision: old_lead_image,
-               image_revisions: [old_lead_image, other_image],
+               image_revisions: [image_revision_to_remove, image_revision_to_keep],
                current: false,
                document: document)
       end
@@ -101,7 +98,7 @@ RSpec.describe Versioned::PublishService do
       let!(:current_edition) do
         create(:versioned_edition,
                :publishable,
-               lead_image_revision: other_image,
+               image_revisions: [image_revision_to_keep],
                document: document)
       end
 
@@ -112,33 +109,35 @@ RSpec.describe Versioned::PublishService do
       end
 
       it "removes ones not used by the current edition" do
+        delete_request = stub_asset_manager_deletes_assets
+
         Versioned::PublishService.new(document)
                                  .publish(user: create(:user), with_review: true)
 
-        old_lead_image.reload
-        expect(old_lead_image.asset_manager_variants.map(&:state).uniq)
-          .to eq(%w[absent])
+        image_revision_to_remove.reload
+        expect(image_revision_to_remove.assets.map(&:state).uniq).to eq(%w[absent])
+        expect(delete_request).to have_been_requested.at_least_once
       end
 
       it "keeps images used by the current edition" do
+        stub_asset_manager_deletes_assets
         Versioned::PublishService.new(document)
                                  .publish(user: create(:user), with_review: true)
 
-        other_image.reload
-        expect(old_lead_image.asset_manager_variants.map(&:state).uniq)
-          .to eq(%w[live])
+        image_revision_to_keep.reload
+        expect(image_revision_to_keep.assets.map(&:state).uniq).to eq(%w[live])
       end
     end
 
-    context "when the current edition has an updated version of the live editions lead image" do
-      let(:old_lead_image) do
+    context "when the current edition has an updated version of the live editions" do
+      let(:old_image_revision) do
         create(:versioned_image_revision, :on_asset_manager, state: :live)
       end
 
-      let(:new_lead_image) do
+      let(:new_image_revision) do
         create(:versioned_image_revision,
                :on_asset_manager,
-               image: old_lead_image.image)
+               image: old_image_revision.image)
       end
 
       let(:document) { create(:versioned_document) }
@@ -146,7 +145,7 @@ RSpec.describe Versioned::PublishService do
       let!(:live_edition) do
         create(:versioned_edition,
                :published,
-               lead_image_revision: old_lead_image,
+               image_revisions: [old_image_revision],
                current: false,
                document: document)
       end
@@ -154,7 +153,7 @@ RSpec.describe Versioned::PublishService do
       let!(:current_edition) do
         create(:versioned_edition,
                :publishable,
-               lead_image_revision: new_lead_image,
+               image_revisions: [new_image_revision],
                document: document)
       end
 
@@ -162,15 +161,15 @@ RSpec.describe Versioned::PublishService do
         stub_publishing_api_publish(document.content_id,
                                     update_type: nil,
                                     locale: document.locale)
+        stub_asset_manager_updates_assets
       end
 
       it "supersedes the old files" do
         Versioned::PublishService.new(document)
                                  .publish(user: create(:user), with_review: true)
 
-        old_lead_image.reload
-        expect(old_lead_image.asset_manager_variants.map(&:state).uniq)
-          .to eq(%w[superseded])
+        old_image_revision.reload
+        expect(old_image_revision.assets.map(&:state).uniq).to eq(%w[superseded])
       end
     end
   end

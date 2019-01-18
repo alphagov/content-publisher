@@ -105,16 +105,16 @@ module Versioned
     end
 
     def remove_image_revision(image_revision)
-      image_revision.asset_manager_variants.each do |variant|
-        next if variant.absent?
+      image_revision.assets.each do |asset|
+        next if asset.absent?
 
         begin
-          Versioned::AssetManagerService.new.delete(variant)
+          Versioned::AssetManagerService.new.delete(asset)
         rescue GdsApi::HTTPNotFound
-          Rails.logger.warn("No asset to delete for id #{variant.asset_manager_id}")
+          Rails.logger.warn("No asset to delete for id #{asset.asset_manager_id}")
         end
 
-        variant.file.absent!
+        asset.absent!
       end
     end
   end
