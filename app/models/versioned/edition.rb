@@ -70,12 +70,6 @@ module Versioned
                             class_name: "Versioned::Revision",
                             join_table: "versioned_edition_revisions"
 
-    enum draft: { available: "available",
-                  failure: "failure",
-                  not_applicable: "not_applicable",
-                  requirements_not_met: "requirements_not_met" },
-         _prefix: true
-
     delegate :content_id, :locale, :document_type, :topics, to: :document
 
     # delegate each state enum method
@@ -93,7 +87,6 @@ module Versioned
       create!(created_by: user,
               current: true,
               document: document,
-              draft: :requirements_not_met,
               last_edited_by: user,
               number: document.next_edition_number,
               revision: revision,
@@ -113,7 +106,6 @@ module Versioned
       create!(created_by: user,
               current: true,
               document: preceding_edition.document,
-              draft: :requirements_not_met,
               last_edited_by: user,
               number: preceding_edition.document.next_edition_number,
               revision: revision,
@@ -131,7 +123,6 @@ module Versioned
                               state: :draft)
 
       update!(current: true,
-              draft: :requirements_not_met,
               last_edited_by: user,
               last_edited_at: Time.zone.now,
               revision: revision,

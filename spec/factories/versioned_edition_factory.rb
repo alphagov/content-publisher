@@ -5,7 +5,7 @@ FactoryBot.define do
     last_edited_at { Time.zone.now }
     current { true }
     live { false }
-    draft { :available }
+    revision_synced { true }
     association :created_by, factory: :user
 
     transient do
@@ -77,7 +77,6 @@ FactoryBot.define do
     trait :published do
       summary { SecureRandom.alphanumeric(10) }
       live { true }
-      draft { :not_applicable }
 
       after(:build) do |edition, evaluator|
         edition.status = evaluator.association(
