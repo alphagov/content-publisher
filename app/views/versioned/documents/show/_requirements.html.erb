@@ -11,7 +11,7 @@
   }
 } %>
 
-<% if @edition.draft_requirements_not_met? %>
+<% if !@edition.revision_synced %>
   <% draft_issues = Versioned::Requirements::EditionChecker.new(@edition).pre_preview_issues %>
 
   <% if draft_issues.any? %>

@@ -23,7 +23,7 @@ RSpec.feature "Edit a document when the Publishing API is down" do
   end
 
   def and_i_try_preview_the_document
-    click_on "Try again"
+    click_on "Preview"
   end
 
   def then_i_see_an_error_message

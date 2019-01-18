@@ -15,13 +15,12 @@ module Versioned
 
     def try_create_preview
       if has_issues?
-        edition.draft_requirements_not_met!
+        edition.update!(revision_synced: false)
       else
         begin
           upload_assets(edition)
           publish_draft(edition)
         rescue GdsApi::BaseError => e
-          edition.draft_failure!
           GovukError.notify(e)
         end
       end
@@ -36,9 +35,9 @@ module Versioned
     def publish_draft(edition)
       payload = Versioned::PublishingApiPayload.new(edition).payload
       GdsApi.publishing_api_v2.put_content(edition.content_id, payload)
-      edition.draft_available!
+      edition.update!(revision_synced: true)
     rescue GdsApi::BaseError
-      edition.draft_failure!
+      edition.update!(revision_synced: false)
       raise
     end
 
@@ -49,7 +48,7 @@ module Versioned
         image_revision.assets.each { |asset| upload_image(edition, asset) }
       end
     rescue GdsApi::BaseError
-      edition.draft_failure!
+      edition.update!(revision_synced: false)
       raise
     end
 

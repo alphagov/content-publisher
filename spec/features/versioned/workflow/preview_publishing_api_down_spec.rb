@@ -6,17 +6,17 @@ RSpec.feature "Previewing a document when the Publishing API is down" do
     when_i_visit_the_summary_page
 
     and_the_publishing_api_is_down
-    and_i_click_the_try_again_button
+    and_i_click_the_preview_button
     then_i_see_an_error_message
 
     when_the_publishing_api_is_up
-    and_i_click_the_try_again_button
+    and_i_click_the_preview_button
     then_i_see_the_preview_page
     and_the_preview_succeeded
   end
 
   def given_there_is_a_document_that_failed_to_preview
-    @edition = create :versioned_edition, draft: :failure
+    @edition = create :versioned_edition, revision_synced: false
   end
 
   def when_i_visit_the_summary_page
@@ -27,8 +27,8 @@ RSpec.feature "Previewing a document when the Publishing API is down" do
     publishing_api_isnt_available
   end
 
-  def and_i_click_the_try_again_button
-    click_on "Try again"
+  def and_i_click_the_preview_button
+    click_on "Preview"
   end
 
   def then_i_see_an_error_message

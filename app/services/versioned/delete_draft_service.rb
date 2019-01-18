@@ -18,12 +18,12 @@ module Versioned
       discard_draft
 
       current_edition.assign_status(:discarded, user)
-                     .update!(current: false, draft: :not_applicable)
+                     .update!(current: false)
 
       live_edition = document.live_edition
       live_edition&.update!(current: true)
     rescue GdsApi::BaseError
-      document.current_edition.draft_failure!
+      document.current_edition.update!(revision_synced: false)
       raise
     end
 

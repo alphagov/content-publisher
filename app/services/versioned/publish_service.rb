@@ -43,7 +43,6 @@ module Versioned
       status = with_review ? :published : :published_but_needs_2i
       current_edition.assign_status(status, user)
       current_edition.live = true
-      current_edition.draft = :not_applicable
       current_edition.save!
     end
 

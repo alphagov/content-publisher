@@ -19,7 +19,7 @@ RSpec.feature "Preview requirements" do
                       :publishable,
                       document_type_id: document_type.id,
                       lead_image_revision: @image_revision,
-                      draft: :requirements_not_met)
+                      revision_synced: false)
   end
 
   def when_i_view_the_document_summary
