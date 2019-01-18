@@ -1,0 +1,26 @@
+<div class="app-side">
+  <%= render "components/metadata", {
+    items: [
+      {
+        field: t("documents.show.metadata.status"),
+        value: t("user_facing_states.#{@edition.state}.name")
+      },
+      {
+        field: t("documents.show.metadata.updated_at"),
+        value: @edition.last_edited_at.strftime("%l:%M%P on %d %B %Y")
+      },
+      {
+        field: t("documents.show.metadata.created_at"),
+        value: @edition.document.created_at.strftime("%l:%M%P on %d %B %Y")
+      },
+      {
+        field: t("documents.show.metadata.created_by"),
+        value: @edition.document.created_by&.name || I18n.t!("documents.show.metadata.unknown_user")
+      },
+      {
+        field: t("documents.show.metadata.last_edited_by"),
+        value: @edition.last_edited_by&.name || I18n.t!("documents.show.metadata.unknown_user")
+      },
+    ]
+  } %>
+</div>

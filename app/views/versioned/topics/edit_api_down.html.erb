@@ -1,0 +1,6 @@
+<% content_for :back_link, render_back_link(href: versioned_document_path(@document)) %>
+<% content_for :title, t("topics.edit.title", title: @document.current_edition_title_or_fallback) %>
+
+<p class="govuk-body">
+  <%= t("topics.edit.api_down") %>
+</p>

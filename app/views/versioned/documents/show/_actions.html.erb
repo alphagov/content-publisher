@@ -1,0 +1,71 @@
+<div class="app-side">
+  <div class="app-side__actions">
+    <%
+      def delete_draft_link(extra_class = [])
+        link_to("Delete draft",
+                versioned_delete_draft_path(@edition.document),
+                class: %w(govuk-link app-link--destructive) + Array(extra_class),
+                data: { gtm: "delete-draft" })
+      end
+    %>
+    <% if @edition.status.published_but_needs_2i? %>
+      <%= form_tag versioned_approve_document_path(@edition.document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Approve" %>
+      <% end %>
+
+      <%= form_tag versioned_create_edition_path(@edition.document) do %>
+        <%= render "govuk_publishing_components/components/button",
+          text: "Create new edition",
+          secondary: true,
+          data_attributes: { gtm: "create-new-edition" } %>
+      <% end %>
+
+      <%= link_to "Retire", versioned_retire_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Remove", versioned_remove_path(@edition.document), class: "govuk-link app-link--destructive app-link--right" %>
+    <% elsif @edition.status.published? %>
+      <%= form_tag versioned_create_edition_path(@edition.document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
+      <% end %>
+
+      <%= link_to "Retire", versioned_retire_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Remove", versioned_remove_path(@edition.document), class: "govuk-link app-link--destructive app-link--right" %>
+    <% elsif @edition.status.retired? %>
+      <%= link_to "Update reason for retiring", versioned_retire_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+    <% elsif @edition.status.removed? %>
+      <%= form_tag versioned_create_edition_path(@edition.document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
+      <% end %>
+    <% elsif @edition.status.submitted_for_review? %>
+      <%= render "govuk_publishing_components/components/button",
+                 text: "Publish",
+                 href: versioned_publish_confirmation_path(@edition.document) %>
+      <%= render "govuk_publishing_components/components/button",
+                 text: "Preview",
+                 href: versioned_preview_document_path(@edition.document),
+                 secondary: true %>
+
+      <%= delete_draft_link("app-link--right") %>
+    <% elsif !@edition.revision_synced %>
+      <%= form_tag versioned_create_preview_path(@edition.document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Preview" %>
+      <% end %>
+
+      <%= delete_draft_link %>
+    <% else %>
+      <%= form_tag versioned_submit_document_for_2i_path(@edition.document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
+      <% end %>
+
+      <%= render "govuk_publishing_components/components/button", text: "Preview", href: versioned_preview_document_path(@edition.document), secondary: true %>
+
+      <%= link_to "Publish", versioned_publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+
+      <%= delete_draft_link("app-link--right") %>
+    <% end %>
+
+    <% if @edition.document.live? %>
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+      <%= link_to "View published edition on GOV.UK", Versioned::EditionUrl.new(@edition.document.live_edition).public_url, class: "govuk-link govuk-link--no-visited-state" %>
+    <% end %>
+  </div>
+</div>

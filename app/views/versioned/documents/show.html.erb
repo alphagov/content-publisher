@@ -1,0 +1,25 @@
+<% content_for :back_link, render_back_link(href: versioned_documents_path) %>
+<% content_for :title, @edition.title_or_fallback %>
+<% content_for :context, @edition.document_type.label %>
+<% content_for :data_layer_js do %>
+  dataLayer.push({
+    "document-type": "<%= @edition.document_type.label %>",
+    "document-status": "<%= t("user_facing_states.#{@edition.state}.name") %>"
+  })
+<% end %>
+
+<%= render "govuk_publishing_components/components/tabs", {
+  panel_border: false,
+  tabs: [
+    {
+      id: "edit-document",
+      label: t("documents.show.tabs.summary"),
+      content: render("versioned/documents/show/summary_tab"),
+    },
+    {
+      id: "document-history",
+      label: t("documents.show.tabs.history"),
+      content: render("versioned/documents/show/history_tab"),
+    }
+  ]
+} %>

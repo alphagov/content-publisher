@@ -1,0 +1,58 @@
+<% displayed_edition_number = nil %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <% @edition.document.timeline_entries.includes(:created_by, :details).order(created_at: :desc).includes(:edition).each do |entry| %>
+      <div class="app-timeline-entry govuk-!-margin-bottom-6">
+        <% if displayed_edition_number != entry.edition.number %>
+          <h3 class="govuk-heading-m"><%= t "documents.history.edition_header", number: entry.edition.number.ordinalize %></h3>
+          <% displayed_edition_number = entry.edition.number %>
+        <% end %>
+
+        <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
+          <%= t "documents.history.entry_types.#{entry.entry_type}" %>
+        </h4>
+
+        <div class="app-timeline-entry__dateline">
+          <%= entry.created_at.strftime("%d %B %Y at %l:%M%P") %>
+          <% if entry.created_by %>
+            by <%= entry.created_by.name %>
+          <% end %>
+        </div>
+
+        <% if entry.internal_note? && entry.details %>
+          <%= simple_format(escape_and_link(entry.details.body)) %>
+        <% end %>
+
+        <% if entry.retired? && entry.details %>
+          <%= entry.details.explanatory_note %>
+        <% end %>
+
+        <% if entry.removed? && entry.details %>
+          <% removal = entry.details %>
+          <% if removal.explanatory_note.present? %>
+            <p><%= removal.explanatory_note %></p>
+          <% end %>
+
+          <% if removal.alternative_path.present? %>
+            <% if removal.redirect %>
+              <p>
+                Redirected to
+                <%= link_to(Plek.new.website_root + removal.alternative_path,
+                            nil,
+                            class: "govuk-link") %>
+              </p>
+            <% else %>
+              <p>
+                Alternative path
+                <%= link_to(Plek.new.website_root + removal.alternative_path,
+                            nil,
+                            class: "govuk-link") %>
+              </p>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
