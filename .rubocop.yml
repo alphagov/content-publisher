@@ -20,6 +20,9 @@ Rails:
 Rails/InverseOf:
   Enabled: false
 
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Enabled: true
   Exclude:
