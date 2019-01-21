@@ -13,7 +13,7 @@ RSpec.describe UnpublishService do
 
   before { stub_any_publishing_api_unpublish }
 
-  describe "#retire" do
+  describe "#withdraw" do
     let(:explanatory_note) { "The document is out of date" }
 
     it "withdraws an edition in publishing-api with an explanatory note" do
@@ -21,26 +21,26 @@ RSpec.describe UnpublishService do
                                               body: { type: "withdrawal",
                                                       explanation: explanatory_note,
                                                       locale: edition.locale })
-      UnpublishService.new.retire(edition, explanatory_note)
+      UnpublishService.new.withdraw(edition, explanatory_note)
 
       expect(request).to have_been_requested
     end
 
-    it "does not delete assets for retired editions" do
+    it "does not delete assets for withdrawn editions" do
       delete_request = stub_asset_manager_deletes_assets
-      UnpublishService.new.retire(edition_with_image, explanatory_note)
+      UnpublishService.new.withdraw(edition_with_image, explanatory_note)
 
       expect(delete_request).not_to have_been_requested
     end
 
     it "adds an entry in the timeline of the document" do
-      UnpublishService.new.retire(edition, explanatory_note)
+      UnpublishService.new.withdraw(edition, explanatory_note)
 
       expect(edition.timeline_entries.first.entry_type).to eq("retired")
     end
 
     it "updates the edition status" do
-      UnpublishService.new.retire(edition, explanatory_note)
+      UnpublishService.new.withdraw(edition, explanatory_note)
       edition.reload
 
       expect(edition.status).to be_retired
@@ -50,7 +50,7 @@ RSpec.describe UnpublishService do
     context "when the given edition is a draft" do
       it "raises an error" do
         draft_edition = create(:edition)
-        expect { UnpublishService.new.retire(draft_edition, explanatory_note) }
+        expect { UnpublishService.new.withdraw(draft_edition, explanatory_note) }
           .to raise_error RuntimeError, "attempted to unpublish an edition other than the live edition"
       end
     end
@@ -63,7 +63,7 @@ RSpec.describe UnpublishService do
                               current: false,
                               document: draft_edition.document)
 
-        expect { UnpublishService.new.retire(live_edition, explanatory_note) }
+        expect { UnpublishService.new.withdraw(live_edition, explanatory_note) }
           .to raise_error RuntimeError, "Publishing API does not support unpublishing while there is a draft"
       end
     end

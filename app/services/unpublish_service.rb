@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UnpublishService
-  def retire(edition, explanatory_note)
+  def withdraw(edition, explanatory_note)
     Document.transaction do
       edition.document.lock!
       check_unpublishable(edition)
