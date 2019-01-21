@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-RSpec.describe UpdateRevision do
+RSpec.describe MetadataRevision do
   describe "#different_to?" do
-    it "is true when update data is different" do
-      revision1 = build(:update_revision, change_note: "This")
-      revision2 = build(:update_revision, change_note: "That")
+    it "is true when data differs" do
+      revision1 = build(:metadata_revision, change_note: "This")
+      revision2 = build(:metadata_revision, change_note: "That")
 
       expect(revision1.different_to?(revision2)).to be true
     end
 
     it "is false when content is the same and only timestamps differ" do
-      revision1 = build(:update_revision,
+      revision1 = build(:metadata_revision,
                         change_note: "Same",
                         created_at: 10.days.ago)
-      revision2 = build(:update_revision,
+      revision2 = build(:metadata_revision,
                         change_note: "Same",
                         created_at: 10.weeks.ago)
 
@@ -23,7 +23,7 @@ RSpec.describe UpdateRevision do
 
   describe "#build_revision_update" do
     let(:existing_revision) do
-      create(:update_revision, update_type: :minor)
+      create(:metadata_revision, update_type: :minor)
     end
 
     it "returns the current revision if the update does not change it's content" do

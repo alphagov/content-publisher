@@ -1,15 +1,18 @@
 # frozen_string_literal: true
 
-# A revision of update information (change note, update type) for a document.
-# This is accessed through a Revision object
-class UpdateRevision < ApplicationRecord
+# This stores the metadata component of a revision, by metadata we mean
+# supporting data that explains the revision which is represented by
+# update_type and change_note fields.
+#
+# This model is immutable.
+class MetadataRevision < ApplicationRecord
   self.table_name = "versioned_update_revisions"
 
   COMPARISON_IGNORE_FIELDS = %w[id created_at created_by_id].freeze
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  has_many :revisions, inverse_of: :update_revision, dependent: :restrict_with_exception
+  has_many :revisions, inverse_of: :metadata_revision, dependent: :restrict_with_exception
 
   enum update_type: { major: "major", minor: "minor" }
 

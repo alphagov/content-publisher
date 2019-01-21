@@ -20,7 +20,9 @@ class Revision < ApplicationRecord
 
   belongs_to :content_revision, inverse_of: :revisions
 
-  belongs_to :update_revision, inverse_of: :revisions
+  belongs_to :metadata_revision,
+             foreign_key: :update_revision_id,
+             inverse_of: :revisions
 
   belongs_to :tags_revision, inverse_of: :revisions
 
@@ -66,7 +68,7 @@ class Revision < ApplicationRecord
            :change_note,
            :major?,
            :minor?,
-           to: :update_revision
+           to: :metadata_revision
 
   delegate :tags, to: :tags_revision
 
@@ -76,7 +78,7 @@ class Revision < ApplicationRecord
       document: document,
       number: document.next_revision_number,
       content_revision: ContentRevision.new(created_by: user),
-      update_revision: UpdateRevision.new(
+      metadata_revision: MetadataRevision.new(
         change_note: "First published.",
         update_type: "major",
         created_by: user,
@@ -154,7 +156,7 @@ private
 
       next_revision = preceding_revision.dup
       content_revision(next_revision)
-      update_revision(next_revision)
+      metadata_revision(next_revision)
       tags_revision(next_revision)
       lead_image_revision(next_revision)
       image_revisions(next_revision)
@@ -181,12 +183,12 @@ private
       end
     end
 
-    def update_revision(next_revision)
-      update = attributes.slice(:update_type, :change_note)
-      unless update.empty?
-        revision = next_revision.update_revision
-                                .build_revision_update(update, user)
-        next_revision.update_revision = revision
+    def metadata_revision(next_revision)
+      metadata = attributes.slice(:update_type, :change_note)
+      unless metadata.empty?
+        revision = next_revision.metadata_revision
+                                .build_revision_update(metadata, user)
+        next_revision.metadata_revision = revision
       end
     end
 
