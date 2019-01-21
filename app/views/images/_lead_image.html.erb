@@ -1,46 +1,42 @@
-<% lead_image = @document.current_edition.lead_image_revision %>
+<h2 class="govuk-heading-m">
+  <%= t("images.index.lead_image") %>
+</h2>
 
-<% if lead_image %>
-  <h2 class="govuk-heading-m">
-    <%= t("images.index.lead_image") %>
-  </h2>
+<% actions = [] %>
+<% actions << link_to("Edit crop", crop_image_path(document, lead_image.image_id), class: "govuk-link") %>
+<% actions << link_to("Edit details", edit_image_path(document, lead_image.image_id), class: "govuk-link") %>
+<% actions << link_to("Download 960x640 image", download_image_path(document, lead_image.image_id), class: "govuk-link") %>
 
-  <% actions = [] %>
-  <% actions << link_to("Edit crop", crop_image_path(@document, lead_image.image_id), class: "govuk-link") %>
-  <% actions << link_to("Edit details", edit_image_path(@document, lead_image.image_id), class: "govuk-link") %>
-  <% actions << link_to('Download 960x640 image', download_image_path(@document, lead_image.image_id), class: "govuk-link") %>
-
-  <% actions << capture do %>
-    <%= form_tag remove_lead_image_path(@document), method: :delete, class: "app-inline-block" do %>
-      <button class="govuk-link">Remove lead image</button>
-    <% end %>
+<% actions << capture do %>
+  <%= form_tag remove_lead_image_path(document), method: :delete, class: "app-inline-block" do %>
+    <button class="govuk-link">Remove lead image</button>
   <% end %>
-
-  <% actions << capture do %>
-    <%= form_tag destroy_image_path(@document, lead_image.image_id), method: :delete, class: "app-inline-block" do %>
-      <%= hidden_field_tag :wizard, "lead_image" %>
-      <button class="govuk-link app-link--destructive">Delete lead image</button>
-    <% end %>
-  <% end %>
-
-  <%= render "components/image_meta", {
-    id: "image-#{lead_image.id}",
-    src: url_for(lead_image.thumbnail),
-    alt_text: lead_image.alt_text,
-    actions: actions,
-    metadata_items: [
-      {
-        field: t("images.index.meta.alt_text"),
-        value: lead_image.alt_text,
-      },
-      {
-        field: t("images.index.meta.caption"),
-        value: lead_image.caption,
-      },
-      {
-        field: t("images.index.meta.credit"),
-        value: lead_image.credit,
-      }
-    ]
-  } %>
 <% end %>
+
+<% actions << capture do %>
+  <%= form_tag destroy_image_path(document, lead_image.image_id), method: :delete, class: "app-inline-block" do %>
+    <%= hidden_field_tag :wizard, "lead_image" %>
+    <button class="govuk-link app-link--destructive">Delete lead image</button>
+  <% end %>
+<% end %>
+
+<%= render "components/image_meta", {
+  id: "image-#{lead_image.id}",
+  src: url_for(lead_image.thumbnail),
+  alt_text: lead_image.alt_text,
+  actions: actions,
+  metadata_items: [
+    {
+      field: t("images.index.meta.alt_text"),
+      value: lead_image.alt_text,
+    },
+    {
+      field: t("images.index.meta.caption"),
+      value: lead_image.caption,
+    },
+    {
+      field: t("images.index.meta.credit"),
+      value: lead_image.credit,
+    }
+  ]
+} %>

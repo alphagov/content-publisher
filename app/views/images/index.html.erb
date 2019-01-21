@@ -32,8 +32,20 @@
       <% end %>
     </div>
 
-    <%= render "lead_image" %>
+    <% if lead_image = @document.current_edition.lead_image_revision %>
+      <%= render "lead_image", lead_image: lead_image, document: @document %>
+    <% end %>
 
-    <%= render "image_list" %>
+    <% images = @document.current_edition.image_revisions_without_lead %>
+
+    <% if images.any? %>
+      <h2 class="govuk-heading-m">
+        <%= t("images.index.other_images") %>
+      </h2>
+
+      <% images.each do |image| %>
+        <%= render "image", image: image, document: @document %>
+      <% end %>
+    <% end %>
   </div>
 </div>
