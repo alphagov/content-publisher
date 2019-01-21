@@ -13,16 +13,11 @@ class PreviewService
   end
 
   def try_create_preview
-    if has_issues?
-      edition.update!(revision_synced: false)
-    else
-      begin
-        upload_assets(edition)
-        publish_draft(edition)
-      rescue GdsApi::BaseError => e
-        GovukError.notify(e)
-      end
-    end
+    return edition.update!(revision_synced: false) if has_issues?
+
+    create_preview
+  rescue GdsApi::BaseError => e
+    GovukError.notify(e)
   end
 
 private
