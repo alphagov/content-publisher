@@ -23,29 +23,34 @@
       <% end %>
     <% end %>
 
+    <% metadata_items = [
+      {
+        field: t("images.index.meta.alt_text"),
+        value: image.alt_text,
+      },
+      {
+        field: t("images.index.meta.caption"),
+        value: image.caption,
+      },
+      {
+        field: t("images.index.meta.credit"),
+        value: image.credit,
+      },
+    ] %>
+
+    <% if current_user.permissions.include?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <% metadata_items << {
+        field: t("images.index.meta.inline_code.label"),
+        value: I18n.t("images.index.meta.inline_code.value", filename: image.filename),
+      } %>
+    <% end %>
+
     <%= render "components/image_meta", {
       id: "image-#{image.image_id}",
       src: url_for(image.thumbnail),
       alt_text: image.alt_text,
       actions: actions,
-      metadata_items: [
-        {
-          field: t("images.index.meta.alt_text"),
-          value: image.alt_text,
-        },
-        {
-          field: t("images.index.meta.caption"),
-          value: image.caption,
-        },
-        {
-          field: t("images.index.meta.credit"),
-          value: image.credit,
-        },
-        {
-          field: t("images.index.meta.inline_code.label"),
-          value: I18n.t("images.index.meta.inline_code.value", filename: image.filename),
-        }
-      ]
+      metadata_items: metadata_items,
     } %>
   <% end %>
 <% end %>
