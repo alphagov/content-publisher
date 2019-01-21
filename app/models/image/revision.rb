@@ -17,11 +17,11 @@ class Image::Revision < ApplicationRecord
                           class_name: "Revision",
                           join_table: "versioned_revision_image_revisions"
 
-  belongs_to :image, class_name: "Image", inverse_of: :image_revisions
+  belongs_to :image, class_name: "Image"
 
-  belongs_to :file_revision, class_name: "Image::FileRevision", inverse_of: :revisions
+  belongs_to :file_revision, class_name: "Image::FileRevision"
 
-  belongs_to :metadata_revision, class_name: "Image::MetadataRevision", inverse_of: :revisions
+  belongs_to :metadata_revision, class_name: "Image::MetadataRevision"
 
   delegate :alt_text,
            :caption,

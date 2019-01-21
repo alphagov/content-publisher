@@ -12,11 +12,6 @@ class Image::MetadataRevision < ApplicationRecord
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  has_many :revisions,
-           class_name: "Image::Revision",
-           inverse_of: :metadata_revision,
-           dependent: :restrict_with_exception
-
   def readonly?
     !new_record?
   end

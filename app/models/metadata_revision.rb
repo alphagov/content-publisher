@@ -12,8 +12,6 @@ class MetadataRevision < ApplicationRecord
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  has_many :revisions, inverse_of: :metadata_revision, dependent: :restrict_with_exception
-
   enum update_type: { major: "major", minor: "minor" }
 
   def readonly?

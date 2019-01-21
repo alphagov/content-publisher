@@ -9,8 +9,6 @@ class ContentRevision < ApplicationRecord
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  has_many :revisions, inverse_of: :content_revision, dependent: :restrict_with_exception
-
   def readonly?
     !new_record?
   end

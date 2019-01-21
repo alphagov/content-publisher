@@ -15,7 +15,6 @@ class Image < ApplicationRecord
 
   has_many :image_revisions,
            class_name: "Image::Revision",
-           inverse_of: :image,
            dependent: :restrict_with_exception
 
   def readonly?

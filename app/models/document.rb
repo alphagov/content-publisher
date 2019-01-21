@@ -8,11 +8,9 @@ class Document < ApplicationRecord
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  # rubocop:disable Rails/InverseOf
   has_one :current_edition, -> { where(current: true) }, class_name: "Edition"
 
   has_one :live_edition, -> { where(live: true) }, class_name: "Edition"
-  # rubocop:enable Rails/InverseOf
 
   has_many :editions, dependent: :restrict_with_exception
 

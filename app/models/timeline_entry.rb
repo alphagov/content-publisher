@@ -10,10 +10,10 @@ class TimelineEntry < ApplicationRecord
   # The user that performed the action for this entry
   belongs_to :created_by, class_name: "User", optional: true
 
-  belongs_to :document, inverse_of: :timeline_entries
+  belongs_to :document
 
   # If the entry is associated with a particular edition this associates
-  belongs_to :edition, optional: true, inverse_of: :timeline_entries
+  belongs_to :edition, optional: true
 
   # For a content change this associates with the revision at the time,
   # not needed for a status change as the status associates to a revision

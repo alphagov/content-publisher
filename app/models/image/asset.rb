@@ -9,19 +9,11 @@ class Image::Asset < ApplicationRecord
   self.table_name = "versioned_image_assets"
 
   belongs_to :file_revision,
-             class_name: "Image::FileRevision",
-             inverse_of: :assets
+             class_name: "Image::FileRevision"
 
   belongs_to :superseded_by,
              class_name: "Image::Asset",
-             inverse_of: :supersedes,
              optional: true
-
-  has_many :supersedes,
-           class_name: "Image::Asset",
-           foreign_key: :superseded_by_id,
-           inverse_of: :superseded_by,
-           dependent: :nullify
 
   enum state: { absent: "absent",
                 draft: "draft",

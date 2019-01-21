@@ -24,12 +24,6 @@ class Image::FileRevision < ApplicationRecord
 
   has_many :assets,
            class_name: "Image::Asset",
-           inverse_of: :file_revision,
-           dependent: :restrict_with_exception
-
-  has_many :revisions,
-           class_name: "Image::Revision",
-           inverse_of: :file_revision,
            dependent: :restrict_with_exception
 
   delegate :content_type, to: :blob
