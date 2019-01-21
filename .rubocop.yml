@@ -17,6 +17,9 @@ Metrics/BlockLength:
 Rails:
   Enabled: true
 
+Rails/InverseOf:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Enabled: true
   Exclude:
