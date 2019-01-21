@@ -5,7 +5,7 @@ class UnpublishController < ApplicationController
     @document = Document.with_current_edition.find_by_param(params[:id])
   end
 
-  def retire
+  def withdraw
     @document = Document.with_current_edition.find_by_param(params[:id])
   end
 end
