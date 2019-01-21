@@ -3,7 +3,7 @@
 class Withdrawal < ApplicationRecord
   self.table_name = "versioned_retirements"
 
-  has_one :status, as: :details, dependent: :restrict_with_exception
+  has_one :status, as: :details
 
   def readonly?
     !new_record?

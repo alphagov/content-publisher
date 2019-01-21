@@ -12,11 +12,11 @@ class Document < ApplicationRecord
 
   has_one :live_edition, -> { where(live: true) }, class_name: "Edition"
 
-  has_many :editions, dependent: :restrict_with_exception
+  has_many :editions
 
-  has_many :revisions, dependent: :restrict_with_exception
+  has_many :revisions
 
-  has_many :timeline_entries, dependent: :delete_all
+  has_many :timeline_entries
 
   delegate :topics, to: :document_topics
 

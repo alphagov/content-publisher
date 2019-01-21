@@ -37,11 +37,11 @@ class Edition < ApplicationRecord
 
   belongs_to :status
 
-  has_many :statuses, dependent: :delete_all
+  has_many :statuses
 
-  has_many :timeline_entries, dependent: :delete_all
+  has_many :timeline_entries
 
-  has_many :internal_notes, dependent: :delete_all
+  has_many :internal_notes
 
   has_and_belongs_to_many :revisions,
                           -> { order("versioned_revisions.number DESC") },
