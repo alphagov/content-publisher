@@ -166,7 +166,7 @@ GEM
       chromedriver-helper
       puma
       selenium-webdriver
-    hashdiff (0.3.7)
+    hashdiff (0.3.8)
     hashie (3.6.0)
     highline (2.0.0)
     htmlentities (4.3.4)
