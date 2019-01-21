@@ -9,7 +9,7 @@ describe('GTM dataLayer messages for copy and paste events', function () {
   beforeEach(function () {
     container = document.createElement('div')
     container.innerHTML = '<input id="textInput" type="text" name="copy" value="the text">'
-    container.dataset.module = 'copy-to-clipboard'
+    container.dataset.gtmCopyPasteTracking = 'copy-input-value'
     document.body.appendChild(container)
     window.dataLayer = []
     new GTMCopyListener(container).init()
@@ -27,7 +27,7 @@ describe('GTM dataLayer messages for copy and paste events', function () {
     expect(window.dataLayer).toContain(
       {
         'event': 'text-copied',
-        'component': 'copy-to-clipboard'
+        'element': 'copy-input-value'
       }
     )
   })
@@ -40,7 +40,7 @@ describe('GTM dataLayer messages for copy and paste events', function () {
     expect(window.dataLayer).toContain(
       {
         'event': 'text-pasted',
-        'component': 'copy-to-clipboard'
+        'element': 'copy-input-value'
       }
     )
   })
