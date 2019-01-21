@@ -29,11 +29,13 @@ RSpec.feature "Edit document tags" do
       single_tag_field.id => [initial_tag["content_id"]],
     }
 
-    @document = create(:document, document_type_id: document_type.id, tags: initial_tags)
+    @edition = create(:edition,
+                      document_type_id: document_type.id,
+                      tags: initial_tags)
   end
 
   def when_i_visit_the_document_page
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def and_i_click_on_edit_tags
@@ -41,7 +43,7 @@ RSpec.feature "Edit document tags" do
   end
 
   def then_i_see_the_current_selections
-    @request = stub_publishing_api_put_content(Document.last.content_id, {})
+    @request = stub_publishing_api_put_content(@edition.content_id, {})
     expect(page).to have_select("tags[multi_tag_id][]", selected: "Initial tag")
     expect(page).to have_select("tags[single_tag_id][]", selected: "Initial tag")
   end

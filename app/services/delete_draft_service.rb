@@ -1,20 +1,28 @@
 # frozen_string_literal: true
 
 class DeleteDraftService
-  attr_reader :document
+  attr_reader :document, :user
 
-  def initialize(document)
+  def initialize(document, user)
     @document = document
+    @user = user
   end
 
   def delete
-    raise "Trying to delete a live document" if document.has_live_version_on_govuk
+    raise "Trying to delete a document without a current edition" unless document.current_edition
+    raise "Trying to delete a live document" if document.current_edition.live
 
-    document.images.each { |asset| delete_asset(asset) }
+    current_edition = document.current_edition
+    current_edition.image_revisions.each { |ir| delete_image_revision(ir) }
     discard_draft
-    document.destroy!
+
+    current_edition.assign_status(:discarded, user)
+                   .update!(current: false)
+
+    live_edition = document.live_edition
+    live_edition&.update!(current: true)
   rescue GdsApi::BaseError
-    document.update!(publication_state: "error_deleting_draft")
+    document.current_edition.update!(revision_synced: false)
     raise
   end
 
@@ -26,11 +34,16 @@ private
     Rails.logger.warn("No draft to discard for content id #{document.content_id}")
   end
 
-  def delete_asset(asset)
-    return unless asset.asset_manager_id
+  def delete_image_revision(image_revision)
+    image_revision.assets.each do |asset|
+      next unless asset.draft?
 
-    AssetManagerService.new.delete(asset)
-  rescue GdsApi::HTTPNotFound
-    Rails.logger.warn("No asset to delete for id #{asset.asset_manager_id}")
+      begin
+        AssetManagerService.new.delete(asset)
+      rescue GdsApi::HTTPNotFound
+        Rails.logger.warn("No asset to delete for id #{asset.asset_manager_id}")
+      end
+      asset.absent!
+    end
   end
 end

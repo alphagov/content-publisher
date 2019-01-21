@@ -1,5 +1,5 @@
 <% content_for :back_link, render_back_link(href: document_path(@document)) %>
-<% content_for :title, t("topics.edit.title", title: @document.title_or_fallback) %>
+<% content_for :title, t("topics.edit.title", title: @document.current_edition.title_or_fallback) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">

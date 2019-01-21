@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.feature "Upload a lead image" do
+  include AssetManagerHelper
+
   scenario do
     given_there_is_a_document
     when_i_visit_the_images_page
@@ -13,38 +15,37 @@ RSpec.feature "Upload a lead image" do
 
   def given_there_is_a_document
     document_type = build(:document_type, lead_image: true)
-    create(:document, document_type_id: document_type.id)
+    @edition = create(:edition,
+                      document_type_id: document_type.id)
   end
 
   def when_i_visit_the_images_page
-    visit images_path(Document.last)
+    visit images_path(@edition.document)
   end
 
   def and_i_upload_a_new_image
-    @asset_id = SecureRandom.uuid
-    @asset_url = "https://asset-manager.test.gov.uk/media/#{@asset_id}/1000x1000.jpg"
-    asset_manager_receives_an_asset(@asset_url)
+    stub_asset_manager_receives_assets("1000x1000.jpg")
+
     find('form input[type="file"]').set(Rails.root.join(file_fixture("1000x1000.jpg")))
     click_on "Upload"
   end
 
   def and_i_crop_the_image
-    asset_manager_update_asset(@asset_id)
-    stub_publishing_api_put_content(Document.last.content_id, {})
+    stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Crop image"
     reset_executed_requests!
   end
 
   def and_i_fill_in_the_metadata
-    fill_in "alt_text", with: "Some alt text"
-    fill_in "caption", with: "A caption"
-    fill_in "credit", with: "A credit"
-    @request = stub_publishing_api_put_content(Document.last.content_id, {})
+    fill_in "image_revision[alt_text]", with: "Some alt text"
+    fill_in "image_revision[caption]", with: "A caption"
+    fill_in "image_revision[credit]", with: "A credit"
+    @request = stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Save and choose"
   end
 
   def then_i_see_the_new_lead_image
-    expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.added", file: Image.last.filename))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.added", file: "1000x1000.jpg"))
     expect(page).to have_content("A caption")
     expect(page).to have_content("A credit")
     expect(find("#lead-image img")["src"]).to include("1000x1000.jpg")
@@ -58,9 +59,9 @@ RSpec.feature "Upload a lead image" do
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
 
     expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"]["image"]["url"]).to eq @asset_url
-      expect(JSON.parse(req.body)["details"]["image"]["alt_text"]).to eq "Some alt text"
-      expect(JSON.parse(req.body)["details"]["image"]["caption"]).to eq "A caption"
+      expect(JSON.parse(req.body)["details"]["image"]["url"]).to match(/1000x1000.jpg/)
+      expect(JSON.parse(req.body)["details"]["image"]["alt_text"]).to eq("Some alt text")
+      expect(JSON.parse(req.body)["details"]["image"]["caption"]).to eq("A caption")
     }).to have_been_requested
   end
 end

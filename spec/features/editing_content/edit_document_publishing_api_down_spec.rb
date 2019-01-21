@@ -5,12 +5,12 @@ RSpec.feature "Edit a document when the Publishing API is down" do
     given_there_is_a_document
     when_i_go_to_edit_the_document
     and_the_publishing_api_is_down
-    and_i_preview_the_document
+    and_i_try_preview_the_document
     then_i_see_an_error_message
   end
 
   def given_there_is_a_document
-    @document = create(:document, :in_preview)
+    @document = create(:document, :with_current_edition)
   end
 
   def when_i_go_to_edit_the_document
@@ -22,7 +22,7 @@ RSpec.feature "Edit a document when the Publishing API is down" do
     click_on "Save"
   end
 
-  def and_i_preview_the_document
+  def and_i_try_preview_the_document
     click_on "Preview"
   end
 

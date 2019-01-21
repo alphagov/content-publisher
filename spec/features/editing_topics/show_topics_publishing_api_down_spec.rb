@@ -10,7 +10,9 @@ RSpec.feature "Showing topics when the Publishing API is down" do
 
   def given_there_is_a_document
     document_type = build(:document_type, topics: true)
-    @document = create(:document, document_type_id: document_type.id)
+    @document = create(:document,
+                       :with_current_edition,
+                       document_type_id: document_type.id)
   end
 
   def and_the_publishing_api_is_down

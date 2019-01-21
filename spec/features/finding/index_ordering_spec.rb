@@ -12,8 +12,8 @@ RSpec.feature "User orders documents" do
   end
 
   def given_there_are_some_documents
-    @most_recent = create(:document, title: "Most recent", updated_at: 1.minute.ago)
-    @least_recent = create(:document, title: "Least recent", updated_at: 2.minutes.ago)
+    @most_recent = create(:edition, title: "Most recent", last_edited_at: 1.minute.ago)
+    @least_recent = create(:edition, title: "Least recent", last_edited_at: 2.minutes.ago)
   end
 
   def when_i_visit_the_index_page

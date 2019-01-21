@@ -4,28 +4,52 @@ FactoryBot.define do
   factory :document do
     content_id { SecureRandom.uuid }
     locale { I18n.available_locales.sample }
-    title { SecureRandom.alphanumeric(10) }
-    base_path { title ? "/prefix/#{title.parameterize}" : nil }
     document_type_id { build(:document_type, path_prefix: "/prefix").id }
-    publication_state { "changes_not_sent_to_draft" }
-    review_state { "unreviewed" }
-    current_edition_number { (rand * 100).to_i }
-    update_type { "major" }
+    association :created_by, factory: :user
 
-    trait :in_preview do
-      publication_state { "sent_to_draft" }
+    trait :with_live_edition do
+      after(:build) do |document, evaluator|
+        document.live_edition = evaluator.association(
+          :edition,
+          :published,
+          created_by: document.created_by,
+          current: true,
+          live: true,
+          document: document,
+        )
+        document.current_edition = document.live_edition
+      end
     end
 
-    trait :publishable do
-      publication_state { "sent_to_draft" }
-      summary { SecureRandom.alphanumeric(10) }
+    trait :with_current_edition do
+      after(:build) do |document, evaluator|
+        document.current_edition = evaluator.association(
+          :edition,
+          created_by: document.created_by,
+          current: true,
+          document: document,
+        )
+      end
     end
 
-    trait :published do
-      has_live_version_on_govuk { true }
-      change_note { SecureRandom.alphanumeric(10) }
-      summary { SecureRandom.alphanumeric(10) }
-      publication_state { "sent_to_live" }
+    trait :with_current_and_live_editions do
+      after(:build) do |document, evaluator|
+        document.live_edition = evaluator.association(
+          :edition,
+          :published,
+          created_by: document.created_by,
+          current: false,
+          live: true,
+          document: document,
+        )
+
+        document.current_edition = evaluator.association(
+          :edition,
+          created_by: document.created_by,
+          current: true,
+          document: document,
+        )
+      end
     end
   end
 end

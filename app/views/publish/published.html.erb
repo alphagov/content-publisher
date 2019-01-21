@@ -1,7 +1,7 @@
-<% if @document.review_state == "reviewed" %>
-  <% content_for :back_link, render_back_link(text: "Back to document list", href: documents_path) %>
+<% if @edition.status.published_but_needs_2i? %>
+  <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 <% else %>
-  <% content_for :back_link, render_back_link(href: document_path(@document)) %>
+  <% content_for :back_link, render_back_link(text: "Back to document list", href: documents_path) %>
 <% end %>
 
 <% content_for :browser_title, t("publish.published.title") %>
@@ -9,25 +9,14 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    <% if @document.review_state == "reviewed" %>
-      <%= render "govuk_publishing_components/components/panel", {
-        title: t("publish.published.reviewed.title")
-      } %>
-
-      <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("publish.published.reviewed.body_govspeak", title: @document.title) %>
-
-        <% public_url = DocumentUrl.new(@document).public_url %>
-        <%= link_to(strip_scheme_from_url(public_url), public_url, class: "govuk-link govuk-link--no-visited-state") %>
-      <% end %>
-    <% else %>
+    <% if @edition.status.published_but_needs_2i? %>
       <%= render "govuk_publishing_components/components/panel", {
         title: t("publish.published.published_without_review.title")
       } %>
 
       <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("publish.published.published_without_review.body_govspeak", title: @document.title) %>
-        <% public_url = DocumentUrl.new(@document).public_url %>
+        <%= govspeak_to_html t("publish.published.published_without_review.body_govspeak", title: @edition.title) %>
+        <% public_url = EditionUrl.new(@edition).public_url %>
         <%= link_to(strip_scheme_from_url(public_url), public_url, class: "govuk-link govuk-link--no-visited-state") %>
 
         <%= govspeak_to_html t("publish.published.published_without_review.what_to_do_govspeak") %>
@@ -35,9 +24,20 @@
 
       <%= render "govuk_publishing_components/components/copy_to_clipboard",
         label: t("publish.published.published_without_review.send_label"),
-        copyable_content: document_url(@document, utm_content: "2i-link"),
+        copyable_content: document_url(@edition.document, utm_content: "2i-link"),
         button_text: "Copy link",
         button_data_attributes: { gtm: "published-content-copy-link-cta" } %>
+    <% else %>
+      <%= render "govuk_publishing_components/components/panel", {
+        title: t("publish.published.reviewed.title")
+      } %>
+
+      <%= render "govuk_publishing_components/components/govspeak" do %>
+        <%= govspeak_to_html t("publish.published.reviewed.body_govspeak", title: @edition.title) %>
+
+        <% public_url = EditionUrl.new(@edition).public_url %>
+        <%= link_to(strip_scheme_from_url(public_url), public_url, class: "govuk-link govuk-link--no-visited-state") %>
+      <% end %>
     <% end %>
   </div>
 </div>

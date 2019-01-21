@@ -39,31 +39,30 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     expect { importer.import(parsed_json) }.to change { Document.count }.by(1)
 
     imported_edition = JSON.parse(import_data.to_json)["editions"][0]
-    document_tags = Document.last.tags
+    edition = Edition.last
 
-    expect(Document.last.summary)
+    expect(edition.summary)
       .to eq(imported_edition["translations"][0]["summary"])
-    expect(document_tags["primary_publishing_organisation"])
+    expect(edition.tags["primary_publishing_organisation"])
       .to eq([imported_edition["lead_organisations"][0]])
-    expect(document_tags["organisations"]).to include(
+    expect(edition.tags["organisations"]).to include(
       imported_edition["lead_organisations"][1],
       imported_edition["supporting_organisations"][0],
       imported_edition["supporting_organisations"][1],
     )
-    expect(document_tags["organisations"]).not_to include(
+    expect(edition.tags["organisations"]).not_to include(
       imported_edition["lead_organisations"][0],
     )
-    expect(document_tags["worldwide_organisations"])
+    expect(edition.tags["worldwide_organisations"])
       .to eq(imported_edition["worldwide_organisations"])
-    expect(document_tags["topical_events"])
+    expect(edition.tags["topical_events"])
       .to eq(imported_edition["topical_events"])
-    expect(document_tags["world_locations"])
+    expect(edition.tags["world_locations"])
       .to eq(imported_edition["world_locations"])
 
-    expect(Document.last.current_edition_number).to eql(1)
-    expect(Document.last.publication_state).to eq("sent_to_draft")
-    expect(Document.last.update_type).to eq("major")
-    expect(Document.last.review_state).to eq("unreviewed")
+    expect(edition.number).to eql(1)
+    expect(edition.status).to be_draft
+    expect(edition.update_type).to eq("major")
   end
 
   it "sets the correct states when Whitehall document state is 'published'" do
@@ -71,16 +70,15 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     parsed_json = JSON.parse(import_data.to_json)
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
-    expect(Document.last.publication_state).to eq("sent_to_live")
-    expect(Document.last.review_state).to eq("reviewed")
-    expect(Document.last.has_live_version_on_govuk).to eq(true)
+    expect(Edition.last.status).to be_published
+    expect(Edition.last.live).to be true
   end
 
   it "can set minor update type" do
     import_data[:editions][0][:minor_change] = true
     parsed_json = JSON.parse(import_data.to_json)
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
-    expect(Document.last.update_type).to eq("minor")
+    expect(Edition.last.update_type).to eq("minor")
   end
 
 
@@ -90,9 +88,8 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     parsed_json = JSON.parse(import_data.to_json)
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
-    expect(Document.last.publication_state).to eq("sent_to_live")
-    expect(Document.last.review_state).to eq("published_without_review")
-    expect(Document.last.has_live_version_on_govuk).to eq(true)
+    expect(Edition.last.status).to be_published_but_needs_2i
+    expect(Edition.last.live).to be true
   end
 
   it "sets the correct states when Whitehall document state is 'rejected'" do
@@ -100,9 +97,8 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     parsed_json = JSON.parse(import_data.to_json)
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
-    expect(Document.last.publication_state).to eq("sent_to_draft")
-    expect(Document.last.review_state).to eq("submitted_for_review")
-    expect(Document.last.has_live_version_on_govuk).to eq(false)
+    expect(Edition.last.status).to be_submitted_for_review
+    expect(Edition.last.live).to be false
   end
 
   it "sets the correct states when Whitehall document state is 'submitted'" do
@@ -110,9 +106,8 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     parsed_json = JSON.parse(import_data.to_json)
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
-    expect(Document.last.publication_state).to eq("sent_to_draft")
-    expect(Document.last.review_state).to eq("submitted_for_review")
-    expect(Document.last.has_live_version_on_govuk).to eq(false)
+    expect(Edition.last.status).to be_submitted_for_review
+    expect(Edition.last.live).to be false
   end
 
   it "skips importing documents with Whitheall states that are not supported" do
@@ -128,7 +123,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     import_data[:contacts] = { "123" => content_id }
     Tasks::WhitehallNewsImporter.new.import(JSON.parse(import_data.to_json))
 
-    expect(Document.last.contents["body"]).to eq("[Contact:#{content_id}]")
+    expect(Edition.last.contents["body"]).to eq("[Contact:#{content_id}]")
   end
 
   context "when an imported document has more than one edition" do
@@ -181,13 +176,12 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     end
 
 
-    it "sets the correct states when Whitehall document has more than one edition" do
+    it "only creates the latest edition" do
       parsed_json = JSON.parse(import_published_then_drafted_data.to_json)
       Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
-      expect(Document.last.publication_state).to eq("sent_to_draft")
-      expect(Document.last.review_state).to eq("unreviewed")
-      expect(Document.last.has_live_version_on_govuk).to eq(true)
+      expect(Edition.last.status).to be_draft
+      expect(Edition.last.live).to be false
     end
   end
 end

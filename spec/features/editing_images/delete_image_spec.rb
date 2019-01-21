@@ -11,26 +11,24 @@ RSpec.feature "Delete an image" do
 
   def given_there_is_a_document_with_images
     document_type = build(:document_type, lead_image: true)
-    document = create(:document, document_type_id: document_type.id)
-    @image = create(:image, :in_preview, document: document)
+    @image_revision = create(:image_revision, :on_asset_manager)
+    @edition = create(:edition,
+                      document_type_id: document_type.id,
+                      image_revisions: [@image_revision])
   end
 
   def when_i_visit_the_images_page
-    visit images_path(Document.last)
+    visit images_path(@edition.document)
   end
 
   def and_i_delete_the_non_lead_image
-    @image_request = asset_manager_delete_asset(@image.asset_manager_id)
-    @request = stub_publishing_api_put_content(Document.last.content_id, {})
+    @request = stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Delete image"
   end
 
   def then_i_see_the_image_is_gone
-    expect(all("#image-#{@image.id}").count).to be_zero
-    expect(page).to have_content(I18n.t!("images.index.flashes.deleted", file: @image.filename))
-
-    expect(@image_request).to have_been_requested
-    expect(ActiveStorage::Blob.service.exist?(@image.blob.key)).to be_falsey
+    expect(all("#image-#{@image_revision.image_id}").count).to be_zero
+    expect(page).to have_content(I18n.t!("images.index.flashes.deleted", file: @image_revision.filename))
 
     click_on "Back"
     expect(page).to have_content(I18n.t!("documents.history.entry_types.image_removed"))
@@ -39,9 +37,5 @@ RSpec.feature "Delete an image" do
   def and_the_preview_creation_succeeded
     expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"].keys).to_not include("image")
-    }).to have_been_requested
   end
 end

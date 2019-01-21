@@ -32,8 +32,8 @@ RSpec.feature "Create a document" do
 
   def and_i_fill_in_the_contents
     stub_any_publishing_api_put_content
-    fill_in "document[title]", with: "A title"
-    fill_in "document[summary]", with: "A summary"
+    fill_in "revision[title]", with: "A title"
+    fill_in "revision[summary]", with: "A summary"
     click_on "Save"
   end
 

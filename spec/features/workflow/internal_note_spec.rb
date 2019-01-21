@@ -8,18 +8,18 @@ RSpec.feature "Displaying an internal note" do
   end
 
   def given_there_is_a_document_with_a_internal_note
-    @document = create(:document)
-    @timeline_entry = create(:timeline_entry, entry_type: "internal_note", document: @document)
-    @internal_note = create(
-      :internal_note,
-      body: "Belvita's are pure joy",
-      timeline_entry: @timeline_entry,
-      document: @document,
-    )
+    @edition = create(:edition)
+    @internal_note = create(:internal_note,
+                            body: "Belvita's are pure joy",
+                            edition: @edition)
+    create(:timeline_entry,
+           entry_type: "internal_note",
+           edition: @edition,
+           details: @internal_note)
   end
 
   def when_i_visit_the_document_page
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def then_i_should_see_the_internal_note

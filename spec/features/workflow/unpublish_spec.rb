@@ -2,148 +2,147 @@
 
 require "rake"
 
-RSpec.feature "Unpublish documents rake tasks" do
-  describe "unpublish:retire_document" do
+RSpec.feature "Unpublish rake tasks" do
+  let(:edition) { create(:edition, :published, locale: "en") }
+
+  describe "unpublish:retire" do
     before do
-      Rake::Task["unpublish:retire_document"].reenable
+      Rake::Task["unpublish:retire"].reenable
     end
 
-    it "runs the task to retire a document" do
-      document = create(:document, :published, locale: "en")
+    it "runs the task to retire an edition" do
       explanatory_note = "The reason the document is being retired"
 
-      expect_any_instance_of(UnpublishService).to receive(:retire).with(document, explanatory_note)
+      expect_any_instance_of(UnpublishService)
+        .to receive(:retire).with(edition, explanatory_note)
 
       ClimateControl.modify NOTE: explanatory_note do
-        Rake::Task["unpublish:retire_document"].invoke(document.content_id)
+        Rake::Task["unpublish:retire"].invoke(edition.content_id)
       end
     end
 
     it "raises an error if a content_id is not present" do
-      expect { Rake::Task["unpublish:retire_document"].invoke }.to raise_error("Missing content_id parameter")
+      expect { Rake::Task["unpublish:retire"].invoke }
+        .to raise_error("Missing content_id parameter")
     end
 
     it "raises an error if a NOTE is not present" do
-      expect { Rake::Task["unpublish:retire_document"].invoke("a-content-id") }.to raise_error("Missing NOTE value")
+      expect { Rake::Task["unpublish:retire"].invoke("a-content-id") }
+        .to raise_error("Missing NOTE value")
     end
 
     it "raises an error if the document does not have a live version on GOV.uk" do
-      document = create(:document, locale: "en")
+      draft = create(:edition, locale: "en")
       explanatory_note = "The reason the document is being retired"
 
       ClimateControl.modify NOTE: explanatory_note do
-        expect { Rake::Task["unpublish:retire_document"].invoke(document.content_id) }.to raise_error("Document must have a published version before it can be retired")
+        expect { Rake::Task["unpublish:retire"].invoke(draft.content_id) }
+          .to raise_error("Document must have a published version before it can be retired")
       end
     end
   end
 
-  describe "unpublish:remove_document" do
+  describe "unpublish:remove" do
     before do
-      Rake::Task["unpublish:remove_document"].reenable
+      Rake::Task["unpublish:remove"].reenable
     end
 
     it "runs the rake task to remove a document" do
-      document = create(:document, :published, locale: "en")
+      expect_any_instance_of(UnpublishService)
+        .to receive(:remove).with(edition,
+                                  explanatory_note: nil,
+                                  alternative_path: nil)
 
-      expect_any_instance_of(UnpublishService).to receive(:remove).with(
-        document,
-        explanatory_note: nil,
-        alternative_path: nil,
-      )
-
-      Rake::Task["unpublish:remove_document"].invoke(document.content_id)
+      Rake::Task["unpublish:remove"].invoke(edition.content_id)
     end
 
     it "raises an error if a content_id is not present" do
-      expect { Rake::Task["unpublish:remove_document"].invoke }.to raise_error("Missing content_id parameter")
+      expect { Rake::Task["unpublish:remove"].invoke }
+        .to raise_error("Missing content_id parameter")
     end
 
     it "sets an optional explanatory note" do
-      document = create(:document, :published, locale: "en")
       explanatory_note = "The reason the document is being removed"
 
-      expect_any_instance_of(UnpublishService).to receive(:remove).with(
-        document,
-        explanatory_note: explanatory_note,
-        alternative_path: nil,
-      )
+      expect_any_instance_of(UnpublishService)
+        .to receive(:remove).with(edition,
+                                  explanatory_note: explanatory_note,
+                                  alternative_path: nil)
 
       ClimateControl.modify NOTE: explanatory_note do
-        Rake::Task["unpublish:remove_document"].invoke(document.content_id)
+        Rake::Task["unpublish:remove"].invoke(edition.content_id)
       end
     end
 
     it "sets an optional alternative path" do
-      document = create(:document, :published, locale: "en")
       alternative_path = "/go-here-instead"
 
-      expect_any_instance_of(UnpublishService).to receive(:remove).with(
-        document,
-        explanatory_note: nil,
-        alternative_path: alternative_path,
-      )
+      expect_any_instance_of(UnpublishService)
+        .to receive(:remove).with(edition,
+                                  explanatory_note: nil,
+                                  alternative_path: alternative_path)
 
       ClimateControl.modify NEW_PATH: alternative_path do
-        Rake::Task["unpublish:remove_document"].invoke(document.content_id)
+        Rake::Task["unpublish:remove"].invoke(edition.content_id)
       end
     end
 
     it "raises an error if the document does not have a live version on GOV.uk" do
-      document = create(:document, locale: "en")
-      expect { Rake::Task["unpublish:remove_document"].invoke(document.content_id) }.to raise_error("Document must have a published version before it can be removed")
+      draft = create(:edition, locale: "en")
+
+      expect { Rake::Task["unpublish:remove"].invoke(draft.content_id) }
+        .to raise_error("Document must have a published version before it can be removed")
     end
   end
 
-  describe "unpublish:remove_and_redirect_document" do
+  describe "unpublish:remove_and_redirect" do
     before do
-      Rake::Task["unpublish:remove_and_redirect_document"].reenable
+      Rake::Task["unpublish:remove_and_redirect"].reenable
     end
 
     it "runs the rake task to remove a document with a redirect" do
-      document = create(:document, :published, locale: "en")
       redirect_path = "/redirect-path"
 
-      expect_any_instance_of(UnpublishService).to receive(:remove_and_redirect).with(
-        document,
-        redirect_path,
-        explanatory_note: nil,
-      )
+      expect_any_instance_of(UnpublishService)
+        .to receive(:remove_and_redirect).with(edition,
+                                               redirect_path,
+                                               explanatory_note: nil)
 
       ClimateControl.modify NEW_PATH: redirect_path do
-        Rake::Task["unpublish:remove_and_redirect_document"].invoke(document.content_id)
+        Rake::Task["unpublish:remove_and_redirect"].invoke(edition.content_id)
       end
     end
 
     it "raises an error if a content_id is not present" do
-      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke }.to raise_error("Missing content_id parameter")
+      expect { Rake::Task["unpublish:remove_and_redirect"].invoke }
+        .to raise_error("Missing content_id parameter")
     end
 
     it "raises an error if a NEW_PATH is not present" do
-      expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke("a-content-id") }.to raise_error("Missing NEW_PATH value")
+      expect { Rake::Task["unpublish:remove_and_redirect"].invoke("a-content-id") }
+        .to raise_error("Missing NEW_PATH value")
     end
 
     it "sets an optional explanatory note" do
-      document = create(:document, :published, locale: "en")
       redirect_path = "/redirect-path"
       explanatory_note = "The reason the document is being removed"
 
-      expect_any_instance_of(UnpublishService).to receive(:remove_and_redirect).with(
-        document,
-        redirect_path,
-        explanatory_note: explanatory_note,
-      )
+      expect_any_instance_of(UnpublishService)
+        .to receive(:remove_and_redirect).with(edition,
+                                               redirect_path,
+                                               explanatory_note: explanatory_note)
 
       ClimateControl.modify NEW_PATH: redirect_path, NOTE: explanatory_note do
-        Rake::Task["unpublish:remove_and_redirect_document"].invoke(document.content_id)
+        Rake::Task["unpublish:remove_and_redirect"].invoke(edition.content_id)
       end
     end
 
     it "raises an error if the document does not have a live version on GOV.uk" do
-      document = create(:document, locale: "en")
-      redirect_path = "/redirect-path"
+      draft = create(:edition, locale: "en")
 
-      ClimateControl.modify NEW_PATH: redirect_path do
-        expect { Rake::Task["unpublish:remove_and_redirect_document"].invoke(document.content_id) }.to raise_error("Document must have a published version before it can be redirected")
+      ClimateControl.modify NEW_PATH: "/redirect" do
+        expect { Rake::Task["unpublish:remove_and_redirect"].invoke(draft.content_id) }
+          .to raise_error("Document must have a published version before it can be redirected")
       end
     end
   end

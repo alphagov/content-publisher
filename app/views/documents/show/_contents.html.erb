@@ -1,23 +1,23 @@
-<% contents = @document.document_type.contents.map { |field|
+<% contents = @edition.document_type.contents.map { |field|
   {
     field: field.label,
-    value: render("documents/fields/#{field.type}", field: field, document: @document)
+    value: render("documents/fields/#{field.type}", field: field, edition: @edition)
   }
 } %>
 
 <% edition_metadata = [] %>
 
-<% if @document.current_edition_number > 1 %>
+<% if @edition.number > 1 %>
   <% edition_metadata << {
       field: t("documents.show.contents.items.update_type"),
-      value: t("documents.show.contents.update_type.#{@document.update_type}"),
+      value: t("documents.show.contents.update_type.#{@edition.update_type}"),
   } %>
 <% end %>
 
-<% if @document.current_edition_number > 1 && @document.update_type == "major" %>
+<% if @edition.number > 1 && @edition.update_type == "major" %>
   <% edition_metadata << {
     field: t("documents.show.contents.items.change_note"),
-    value: @document.change_note,
+    value: @edition.change_note,
   } %>
 <% end %>
 
@@ -25,16 +25,16 @@
   id: "content",
   title: {
     text: t("documents.show.contents.title"),
-    change_url: @document.editable? && edit_document_path(@document)
+    change_url: !@edition.live && edit_document_path(@edition.document)
   },
   items: [
     {
       field: t("documents.show.contents.items.title"),
-      value: @document.title
+      value: @edition.title
     },
     {
       field: t("documents.show.contents.items.summary"),
-      value: @document.summary
+      value: @edition.summary
     }
   ] + contents + edition_metadata
 } %>

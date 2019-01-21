@@ -2,29 +2,55 @@
 
 class LeadImageController < ApplicationController
   def choose
-    document = Document.find_by_param(params[:document_id])
-    image = Image.find(params[:image_id])
+    Document.transaction do
+      document = Document.with_current_edition.lock.find_by_param(params[:document_id])
 
-    document.assign_attributes(lead_image_id: params[:image_id])
+      current_edition = document.current_edition
+      image_revision = current_edition.image_revisions.find_by!(image_id: params[:image_id])
 
-    PreviewService.new(document).try_create_preview(
-      user: current_user,
-      type: "lead_image_updated",
-    )
+      if current_edition.lead_image_revision != image_revision
+        next_revision = current_edition.build_revision_update(
+          { lead_image_revision: image_revision },
+          current_user,
+        )
 
-    redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.chosen", file: image.filename)
+        current_edition.assign_revision(next_revision, current_user).save!
+
+        TimelineEntry.create_for_revision(entry_type: :lead_image_updated,
+                                          edition: current_edition)
+
+        PreviewService.new(current_edition).try_create_preview
+      end
+
+      redirect_to document_path(document),
+                  notice: t("documents.show.flashes.lead_image.chosen", file: image_revision.filename)
+    end
   end
 
   def remove
-    document = Document.find_by_param(params[:document_id])
-    image = document.lead_image
-    document.assign_attributes(lead_image_id: nil)
+    Document.transaction do
+      document = Document.with_current_edition.lock.find_by_param(params[:document_id])
 
-    PreviewService.new(document).try_create_preview(
-      user: current_user,
-      type: "lead_image_removed",
-    )
+      current_edition = document.current_edition
 
-    redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.removed", file: image.filename)
+      if current_edition.lead_image_revision
+        image_revision = current_edition.lead_image_revision
+
+        next_revision = current_edition.build_revision_update(
+          { lead_image_revision: nil },
+          current_user,
+        )
+
+        current_edition.assign_revision(next_revision, current_user).save!
+
+        TimelineEntry.create_for_revision(entry_type: :lead_image_removed,
+                                          edition: current_edition)
+
+        PreviewService.new(current_edition).try_create_preview
+      end
+
+      redirect_to document_path(document),
+                  notice: t("documents.show.flashes.lead_image.removed", file: image_revision.filename)
+    end
   end
 end

@@ -10,22 +10,25 @@ RSpec.feature "Remove a lead image" do
 
   def given_there_is_a_document_with_a_lead_image
     document_type = build(:document_type, lead_image: true)
-    document = create(:document, document_type_id: document_type.id)
-    @image = create(:image, :in_preview, document: document)
-    document.update!(lead_image: @image)
+    @image_revision = create(:image_revision,
+                             :on_asset_manager,
+                             alt_text: "image")
+    @edition = create(:edition,
+                      document_type_id: document_type.id,
+                      lead_image_revision: @image_revision)
   end
 
   def when_i_visit_the_images_page
-    visit images_path(Document.last)
+    visit images_path(@edition.document)
   end
 
   def and_i_remove_the_lead_image
-    @request = stub_publishing_api_put_content(Document.last.content_id, {})
+    @request = stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Remove lead image"
   end
 
   def then_the_document_has_no_lead_image
-    expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.removed", file: @image.filename))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.removed", file: @image_revision.filename))
     expect(@request).to have_been_requested
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
 

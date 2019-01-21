@@ -5,32 +5,33 @@ module Requirements
     TITLE_MAX_LENGTH = 300
     SUMMARY_MAX_LENGTH = 600
 
-    attr_reader :document
+    attr_reader :edition, :revision
 
-    def initialize(document)
-      @document = document
+    def initialize(edition, revision = nil)
+      @edition = edition
+      @revision = revision || edition.revision
     end
 
     def pre_preview_issues
       issues = []
 
-      if document.title.blank?
+      if revision.title.blank?
         issues << Issue.new(:title, :blank)
       end
 
-      if document.title.to_s.size > TITLE_MAX_LENGTH
+      if revision.title.to_s.size > TITLE_MAX_LENGTH
         issues << Issue.new(:title, :too_long, max_length: TITLE_MAX_LENGTH)
       end
 
-      if document.title.to_s.lines.count > 1
+      if revision.title.to_s.lines.count > 1
         issues << Issue.new(:title, :multiline)
       end
 
-      if document.summary.to_s.size > SUMMARY_MAX_LENGTH
+      if revision.summary.to_s.size > SUMMARY_MAX_LENGTH
         issues << Issue.new(:summary, :too_long, max_length: SUMMARY_MAX_LENGTH)
       end
 
-      if document.summary.to_s.lines.count > 1
+      if revision.summary.to_s.lines.count > 1
         issues << Issue.new(:summary, :multiline)
       end
 
@@ -40,17 +41,17 @@ module Requirements
     def pre_publish_issues
       issues = []
 
-      if document.summary.blank?
+      if revision.summary.blank?
         issues << Issue.new(:summary, :blank)
       end
 
-      document.document_type.contents.each do |field|
-        if document.contents[field.id].blank?
+      edition.document_type.contents.each do |field|
+        if revision.contents[field.id].blank?
           issues << Issue.new(field.id, :blank)
         end
       end
 
-      if document.has_live_version_on_govuk && document.update_type == "major" && document.change_note.blank?
+      if edition.document.live? && revision.update_type == "major" && revision.change_note.blank?
         issues << Issue.new(:change_note, :blank)
       end
 

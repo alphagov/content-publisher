@@ -11,8 +11,8 @@
   }
 } %>
 
-<% if @document.publication_state == "changes_not_sent_to_draft" %>
-  <% draft_issues = Requirements::DocumentChecker.new(@document).pre_preview_issues %>
+<% if !@edition.revision_synced %>
+  <% draft_issues = Requirements::EditionChecker.new(@edition).pre_preview_issues %>
 
   <% if draft_issues.any? %>
     <% if flash[:tried_to_preview] %>
@@ -29,8 +29,8 @@
   <% end %>
 <% end %>
 
-<% if @document.publication_state == "sent_to_draft" %>
-  <% publish_issues = Requirements::DocumentChecker.new(@document).pre_publish_issues %>
+<% if @edition.status.draft? || @edition.status.submitted_for_review? %>
+  <% publish_issues = Requirements::EditionChecker.new(@edition).pre_publish_issues %>
 
   <% if publish_issues.any? %>
     <% if flash[:tried_to_publish] %>

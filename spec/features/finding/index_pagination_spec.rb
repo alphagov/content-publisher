@@ -12,7 +12,7 @@ RSpec.feature "User pages through a list of documents" do
   end
 
   def given_there_are_lots_of_documents
-    create_list(:document, 51)
+    create_list(:edition, 51)
   end
 
   def when_i_visit_the_index_page

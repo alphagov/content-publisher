@@ -1,72 +1,56 @@
 # frozen_string_literal: true
 
 class PreviewService
-  attr_reader :document
+  attr_reader :edition
 
-  def initialize(document)
-    @document = document
+  def initialize(edition)
+    @edition = edition
   end
 
-  def create_preview(args)
-    save_changes(args)
-    publish_draft(document)
+  def create_preview
+    upload_assets(edition)
+    publish_draft(edition)
   end
 
-  def try_create_preview(args)
-    save_changes(args)
-    try_publish_draft(document) unless has_issues?
+  def try_create_preview
+    return edition.update!(revision_synced: false) if has_issues?
+
+    create_preview
+  rescue GdsApi::BaseError => e
+    GovukError.notify(e)
   end
 
 private
 
-  def save_changes(user:, type:)
-    create_new_edition(document) if published?(document)
-
-    document.publication_state = "changes_not_sent_to_draft"
-    document.last_editor = user if edited?(type)
-    document.review_state = "unreviewed" unless in_review?(document)
-
-    Document.transaction do
-      document.save!
-      TimelineEntry.create!(document: document, user: user, entry_type: type)
-    end
-  end
-
   def has_issues?
-    Requirements::DocumentChecker.new(document).pre_preview_issues.any?
+    Requirements::EditionChecker.new(edition).pre_preview_issues.any?
   end
 
-  def edited?(type)
-    %w(updated_content updated_tags).include?(type)
-  end
-
-  def in_review?(document)
-    document.review_state == "submitted_for_review"
-  end
-
-  def published?(document)
-    document.publication_state == "sent_to_live"
-  end
-
-  def create_new_edition(document)
-    document.current_edition_number += 1
-    document.change_note = nil
-    document.update_type = "major"
-  end
-
-  def try_publish_draft(document)
-    publish_draft(document)
-  rescue GdsApi::BaseError => e
-    GovukError.notify(e)
-    document.update!(publication_state: "changes_not_sent_to_draft")
-  end
-
-  def publish_draft(document)
-    payload = PublishingApiPayload.new(document).payload
-    GdsApi.publishing_api_v2.put_content(document.content_id, payload)
-    document.update!(publication_state: "sent_to_draft")
+  def publish_draft(edition)
+    payload = PublishingApiPayload.new(edition).payload
+    GdsApi.publishing_api_v2.put_content(edition.content_id, payload)
+    edition.update!(revision_synced: true)
   rescue GdsApi::BaseError
-    document.update!(publication_state: "error_sending_to_draft")
+    edition.update!(revision_synced: false)
     raise
+  end
+
+  def upload_assets(edition)
+    edition.image_revisions.each do |image_revision|
+      image_revision.ensure_assets
+
+      image_revision.assets.each { |asset| upload_image(edition, asset) }
+    end
+  rescue GdsApi::BaseError
+    edition.update!(revision_synced: false)
+    raise
+  end
+
+  def upload_image(edition, image_asset)
+    return unless image_asset.absent?
+
+    auth_bypass_id = EditionUrl.new(edition).auth_bypass_id
+    file_url = AssetManagerService.new.upload(image_asset, auth_bypass_id)
+    image_asset.update!(file_url: file_url, state: :draft)
   end
 end

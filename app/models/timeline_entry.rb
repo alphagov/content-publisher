@@ -1,45 +1,71 @@
 # frozen_string_literal: true
 
+# A model that is used to represent an entry in the history of a document.
+# It is intended to have information that is shown to a user and is not
+# intended as a debugging history log. It has associations to the data event
+# that caused it's entry to allow it to be re-built were needs to change.
 class TimelineEntry < ApplicationRecord
-  belongs_to :document
-  belongs_to :user, optional: true
+  self.table_name = "versioned_timeline_entries"
 
-  has_one :retirement, foreign_key: :timeline_entries_id, dependent: :destroy, inverse_of: :timeline_entry
-  has_one :removal, foreign_key: :timeline_entries_id, dependent: :destroy, inverse_of: :timeline_entry
-  has_one :internal_note, foreign_key: :timeline_entries_id, dependent: :destroy, inverse_of: :timeline_entry
+  # The user that performed the action for this entry
+  belongs_to :created_by, class_name: "User", optional: true
 
-  ENTRY_TYPES = %w[
-    created
-    submitted
-    updated_content
-    published
-    published_without_review
-    approved
-    updated_tags
-    lead_image_updated
-    lead_image_removed
-    image_updated
-    image_removed
-    new_edition
-    create_preview
-    retired
-    removed
-    internal_note
-  ].freeze
+  belongs_to :document, inverse_of: :timeline_entries
 
-  validates_inclusion_of :entry_type, in: ENTRY_TYPES
-  validate :can_only_have_one_associated_type
+  # If the entry is associated with a particular edition this associates
+  belongs_to :edition, optional: true, inverse_of: :timeline_entries
 
-  def can_only_have_one_associated_type
-    self.retirement.nil? || self.removal.nil?
+  # For a content change this associates with the revision at the time,
+  # not needed for a status change as the status associates to a revision
+  belongs_to :revision, optional: true
+
+  # For status changes this associates with the status that was changed,
+  belongs_to :status, optional: true
+
+  # An association that provides key information to show this information
+  # on the timeline.
+  belongs_to :details, polymorphic: true, optional: true
+
+  enum entry_type: { created: "created",
+                     submitted: "submitted",
+                     updated_content: "updated_content",
+                     published: "published",
+                     published_without_review: "published_without_review",
+                     approved: "approved",
+                     updated_tags: "updated_tags",
+                     lead_image_updated: "lead_image_updated",
+                     lead_image_removed: "lead_image_removed",
+                     image_updated: "image_updated",
+                     image_removed: "image_removed",
+                     new_edition: "new_edition",
+                     retired: "retired",
+                     removed: "removed",
+                     internal_note: "internal_note",
+                     draft_discarded: "draft_discarded",
+                     draft_reset: "draft_reset" }
+
+  def self.create_for_status_change(entry_type:,
+                                    status:,
+                                    details: nil)
+    create!(entry_type: entry_type,
+            created_by: status.created_by,
+            status: status,
+            edition: status.edition,
+            document: status.edition.document,
+            details: details)
   end
 
-  def username_or_unknown
-    user ? user.name : "Unknown user"
-  end
+  def self.create_for_revision(entry_type:,
+                               revision: nil,
+                               edition:,
+                               details: nil)
+    revision = revision || edition.revision
 
-  def self.create!(params)
-    edition_number = params[:document].current_edition_number
-    super(params.merge(edition_number: edition_number))
+    create!(entry_type: entry_type,
+            created_by: revision.created_by,
+            revision: revision,
+            edition: edition,
+            document: edition.document,
+            details: details)
   end
 end

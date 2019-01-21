@@ -1,7 +1,7 @@
 <%= GovukPublishingComponents::AppHelpers::TableHelper.helper(self, "Documents list", { sortable: true, caption_classes: "govuk-visually-hidden" }) do |t| %>
 
   <%
-    updated_active = @sort.delete_prefix("-") == "updated_at"
+    updated_active = @sort.delete_prefix("-") == "last_updated"
     updated_link_to_asc = updated_active && @sort[0] == "-"
 
     updated_sort_direction = "descending" if updated_active && updated_link_to_asc
@@ -12,30 +12,30 @@
     <%= t.header t("documents.index.search_results.headings.title") %>
     <%= t.header t("documents.index.search_results.headings.status") %>
     <%= t.header t("documents.index.search_results.headings.last_updated"), {
-        href: documents_path(@filter_params.merge(sort: "#{updated_link_to_asc ? '' : '-'}updated_at", page: nil)),
+        href: documents_path(@filter_params.merge(sort: "#{updated_link_to_asc ? '' : '-'}last_updated", page: nil)),
         sort_direction: updated_sort_direction
       } %>
   <% end %>
 
   <%= t.body do %>
-    <% @documents.each do |document| %>
+    <% @editions.each do |edition| %>
       <%= t.row do %>
         <%= t.cell render "govuk_publishing_components/components/document_list", {
           items: [
             {
               link: {
-                text: document.title.presence || t("documents.index.search_results.untitled"),
-                path: document
+                text: edition.title.presence || t("documents.index.search_results.untitled"),
+                path: edition.document
               },
               metadata: {
-                document_type: document.document_type.label,
-                document_edit: t("documents.index.search_results.last_edited_by", user: document.last_editor&.name || I18n.t("documents.index.search_results.unknown_user"))
+                document_type: edition.document_type.label,
+                document_edit: t("documents.index.search_results.last_edited_by", user: edition.last_edited_by&.name || I18n.t("documents.index.search_results.unknown_user"))
               }
             }
           ]
         } %>
-        <%= t.cell t("user_facing_states.#{document.user_facing_state}.name") %>
-        <%= t.cell document.updated_at.strftime("%d %b %Y") %>
+        <%= t.cell t("user_facing_states.#{edition.state}.name") %>
+        <%= t.cell edition.last_edited_at.strftime("%d %b %Y") %>
       <% end %>
     <% end %>
   <% end %>

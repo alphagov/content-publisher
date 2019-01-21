@@ -3,46 +3,46 @@
 class PublishingApiPayload
   PUBLISHING_APP = "content-publisher"
 
-  attr_reader :document, :document_type, :publishing_metadata
+  attr_reader :edition, :document_type, :publishing_metadata
 
-  def initialize(document)
-    @document = document
-    @document_type = document.document_type
+  def initialize(edition)
+    @edition = edition
+    @document_type = edition.document_type
     @publishing_metadata = document_type.publishing_metadata
   end
 
   def payload
     payload = {
-      "base_path" => document.base_path,
-      "title" => document.title,
-      "locale" => document.locale,
-      "description" => document.summary,
+      "base_path" => edition.base_path,
+      "title" => edition.title,
+      "locale" => edition.locale,
+      "description" => edition.summary,
       "schema_name" => publishing_metadata.schema_name,
-      "document_type" => document.document_type_id,
+      "document_type" => document_type.id,
       "publishing_app" => PUBLISHING_APP,
       "rendering_app" => publishing_metadata.rendering_app,
-      "update_type" => document.update_type,
+      "update_type" => edition.update_type,
       "details" => details,
       "routes" => [
-        { "path" => document.base_path, "type" => "exact" },
+        { "path" => edition.base_path, "type" => "exact" },
       ],
       "links" => links,
       "access_limited" => {
-        "auth_bypass_ids" => [DocumentUrl.new(document).auth_bypass_id],
+        "auth_bypass_ids" => [EditionUrl.new(edition).auth_bypass_id],
       },
     }
-    payload["change_note"] = document.change_note if major_update?
+    payload["change_note"] = edition.change_note if edition.major?
     payload
   end
 
 private
 
   def links
-    links = document.tags["primary_publishing_organisation"].to_a +
-      document.tags["organisations"].to_a
+    links = edition.tags["primary_publishing_organisation"].to_a +
+      edition.tags["organisations"].to_a
 
-    role_appointments = document.tags["role_appointments"]
-    document.tags
+    role_appointments = edition.tags["role_appointments"]
+    edition.tags
       .except("role_appointments")
       .merge(roles_and_people(role_appointments))
       .merge("organisations" => links.uniq)
@@ -50,10 +50,11 @@ private
 
   def image
     {
-      "url" => document.lead_image.asset_manager_file_url,
-      "alt_text" => document.lead_image.alt_text,
-      "caption" => document.lead_image.caption,
-      "credit" => document.lead_image.credit,
+      "high_resolution_url" => edition.lead_image_revision.asset_url("high_resolution"),
+      "url" => edition.lead_image_revision.asset_url("300"),
+      "alt_text" => edition.lead_image_revision.alt_text,
+      "caption" => edition.lead_image_revision.caption,
+      "credit" => edition.lead_image_revision.credit,
     }
   end
 
@@ -64,7 +65,7 @@ private
       details[field.id] = perform_input_type_specific_transformations(field)
     end
 
-    if document_type.lead_image && document.lead_image.present?
+    if document_type.lead_image && edition.lead_image_revision.present?
       details["image"] = image
     end
 
@@ -90,13 +91,9 @@ private
   # or class system.
   def perform_input_type_specific_transformations(field)
     if field.type == "govspeak"
-      GovspeakDocument.new(document.contents[field.id]).to_html
+      GovspeakDocument.new(edition.contents[field.id]).to_html
     else
       document.contents[field.id]
     end
-  end
-
-  def major_update?
-    document.update_type == "major"
   end
 end

@@ -1,24 +1,29 @@
 # frozen_string_literal: true
 
 class AssetManagerService
-  def upload_bytes(asset, content)
-    file = AssetManagerFile.from_bytes(asset, content)
-    auth_bypass_id = DocumentUrl.new(asset.document).auth_bypass_id
-    upload = GdsApi.asset_manager.create_asset(file: file,
-                                               draft: true,
-                                               auth_bypass_ids: [auth_bypass_id])
+  def upload(asset, auth_bypass_id)
+    upload = GdsApi.asset_manager.create_asset(
+      file: UploadedFile.new(asset),
+      draft: true,
+      auth_bypass_ids: [auth_bypass_id],
+    )
     upload["file_url"]
   end
 
   def publish(asset)
-    GdsApi.asset_manager.update_asset(asset.asset_manager_id,
-                                      draft: false,
-                                      auth_bypass_ids: [])
+    GdsApi.asset_manager.update_asset(
+      asset.asset_manager_id,
+      draft: false,
+      auth_bypass_ids: [],
+      redirect_url: nil,
+    )
   end
 
-  def update_bytes(asset, content)
-    file = AssetManagerFile.from_bytes(asset, content)
-    GdsApi.asset_manager.update_asset(asset.asset_manager_id, file: file)
+  def redirect(asset, to:)
+    GdsApi.asset_manager.update_asset(
+      asset.asset_manager_id,
+      redirect_url: to,
+    )
   end
 
   def delete(asset)
@@ -33,20 +38,12 @@ class AssetManagerService
   #
   # This is done by delegating to 'io' which should implement the IO interface
   # (e.g. StringIO) and adds methods to return filename, content_type and path.
-  class AssetManagerFile < SimpleDelegator
+  class UploadedFile < SimpleDelegator
     attr_reader :asset
 
-    def initialize(asset, io)
-      super(io)
+    def initialize(asset)
+      super(StringIO.new(asset.bytes))
       @asset = asset
-    end
-
-    def self.from_bytes(asset, content)
-      new(asset, StringIO.new(content))
-    end
-
-    def asset_manager_id
-      asset.asset_manager_id
     end
 
     def content_type

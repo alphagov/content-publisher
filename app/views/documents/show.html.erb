@@ -1,6 +1,6 @@
 <% content_for :back_link, render_back_link(href: documents_path) %>
-<% content_for :title, @document.title_or_fallback %>
-<% content_for :context, @document.document_type.label %>
+<% content_for :title, @edition.title_or_fallback %>
+<% content_for :context, @edition.document_type.label %>
 
 <%= render "govuk_publishing_components/components/tabs", {
   panel_border: false,

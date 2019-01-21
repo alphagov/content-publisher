@@ -3,8 +3,7 @@
 FactoryBot.define do
   factory :internal_note do
     body { "Amazing internal note" }
-    document
-    user
-    timeline_entry
+    edition
+    association :created_by, factory: :user
   end
 end

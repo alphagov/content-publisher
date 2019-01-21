@@ -12,16 +12,17 @@ RSpec.feature "Delete draft when the Publishing API is down" do
   end
 
   def given_there_is_a_document
-    @document = create(:document)
+    @edition = create(:edition, :publishable)
   end
 
   def when_i_visit_the_document_page
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def when_the_api_is_up_and_i_try_again
-    @request = stub_publishing_api_discard_draft(@document.content_id)
-    click_on "Try again"
+    @request = stub_publishing_api_discard_draft(@edition.content_id)
+    click_on "Delete draft"
+    click_on "Yes, delete draft"
   end
 
   def and_the_publishing_api_is_down
@@ -35,11 +36,11 @@ RSpec.feature "Delete draft when the Publishing API is down" do
 
   def then_i_see_the_deletion_failed
     expect(page).to have_content(I18n.t!("documents.show.flashes.delete_draft_error.title"))
-    expect(page).to have_content(@document.title)
+    expect(page).to have_content(@edition.title)
   end
 
   def then_i_see_the_document_is_gone
     expect(page).to have_current_path(documents_path)
-    expect(page).to_not have_content @document.title
+    expect(page).to_not have_content @edition.title
   end
 end

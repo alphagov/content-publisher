@@ -12,7 +12,7 @@ RSpec.feature "Edit topics when there is a conflict" do
   end
 
   def given_there_is_a_document
-    @document = create :document
+    @document = create :document, :with_current_edition
   end
 
   def when_i_visit_the_topics_page

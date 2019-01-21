@@ -3,7 +3,7 @@
 <% if @document.newly_created? %>
   <% content_for :title, t("documents.edit.title_new", document_type: @document.document_type.label.downcase) %>
 <% else %>
-  <% content_for :title, t("documents.edit.title", title: @document.title_or_fallback) %>
+  <% content_for :title, t("documents.edit.title", title: @revision.title_or_fallback) %>
 <% end %>
 
 <%= form_for(
@@ -22,20 +22,20 @@
           text: t("documents.edit.form_labels.title"),
           bold: true
         },
-        id: "document_title",
-        name: "document[title]",
-        value: @document.title,
+        id: "revision_title",
+        name: "revision[title]",
+        value: @revision.title,
         error_items: @issues&.items_for(:title),
         rows: 2,
         maxlength: Requirements::ContentChecker::TITLE_MAX_LENGTH,
         data: {
           "url-preview": "input",
-          "contextual-guidance": "document-title-guidance",
+          "contextual-guidance": "revision-title-guidance",
           gtm: "title-input"
         }
       } do %>
         <%= render "components/input_length_suggester", {
-          for_id: "document_title",
+          for_id: "revision_title",
           show_from: 55,
           message: "Title should be under 65 characters. Current length: {count}",
         } %>
@@ -46,7 +46,7 @@
         default_message: t("documents.edit.url_preview.no_title"),
         error_message: t("documents.edit.url_preview.error"),
         website_root: Plek.new.website_root,
-        base_path: @document.base_path
+        base_path: @revision.base_path
       } do %>
       <% end %>
 
@@ -55,7 +55,7 @@
     <% if @document.document_type.guidance_for("title") %>
       <div class="govuk-grid-column-one-third">
         <%= render "components/contextual_guidance", {
-          id: "document-title-guidance",
+          id: "revision-title-guidance",
           title: @document.document_type.guidance_for("title").title
         } do %>
           <p class="govuk-body"><%= @document.document_type.guidance_for("title").body_govspeak %></p>
@@ -71,9 +71,9 @@
           text: t("documents.edit.form_labels.summary"),
           bold: true
         },
-        id: "document_summary",
-        name: "document[summary]",
-        value: @document.summary,
+        id: "revision_summary",
+        name: "revision[summary]",
+        value: @revision.summary,
         error_items: @issues&.items_for(:summary),
         rows: 4,
         maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH,
@@ -83,7 +83,7 @@
         }
       } do %>
         <%= render "components/input_length_suggester", {
-          for_id: "document_summary",
+          for_id: "revision_summary",
           show_from: 120,
           message: "Summary should be under 160 characters. Current length: {count}",
         } %>
@@ -103,10 +103,10 @@
   <% end %>
 
   <% @document.document_type.contents.each do |field| %>
-    <%= render "documents/fields/#{field.type}_input", field: field, document: @document %>
+    <%= render "documents/fields/#{field.type}_input", field: field, document: @document, revision: @revision %>
   <% end %>
 
-  <% if @document.has_live_version_on_govuk %>
+  <% if @document.live? %>
     <%= render "documents/edit/change_notes" %>
   <% end %>
 

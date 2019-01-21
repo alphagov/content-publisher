@@ -8,11 +8,11 @@ RSpec.feature "Edit a document with requirements issues" do
   end
 
   def given_there_is_a_document_with_issues
-    create(:document, title: "")
+    @edition = create(:edition, title: "")
   end
 
   def when_i_visit_the_edit_document_page_and_save
-    visit edit_document_path(Document.last)
+    visit edit_document_path(@edition.document)
     click_on "Save"
   end
 

@@ -12,7 +12,9 @@ RSpec.feature "Showing tags when the Publishing API is down" do
     tag_field = build(:tag_field, type: "multi_tag")
     document_type = build(:document_type, tags: [tag_field])
     tags = { tag_field.id => ["a-content-id"] }
-    @document = create(:document, document_type_id: document_type.id, tags: tags)
+    @edition = create(:edition,
+                      document_type_id: document_type.id,
+                      tags: tags)
   end
 
   def and_the_publishing_api_is_down
@@ -20,7 +22,7 @@ RSpec.feature "Showing tags when the Publishing API is down" do
   end
 
   def when_i_visit_the_document_page
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def then_i_should_see_an_error_message

@@ -11,27 +11,25 @@ RSpec.feature "Delete an image" do
 
   def given_there_is_a_document_with_images
     document_type = build(:document_type, lead_image: true)
-    document = create(:document, document_type_id: document_type.id)
-    @image = create(:image, :in_preview, document: document)
-    document.update!(lead_image: @image)
+    @image_revision = create(:image_revision, :on_asset_manager)
+    @edition = create(:edition,
+                      document_type_id: document_type.id,
+                      lead_image_revision: @image_revision)
   end
 
   def when_i_visit_the_images_page
-    visit images_path(Document.last)
+    visit images_path(@edition.document)
   end
 
   def when_i_delete_the_lead_image
-    @image_request = asset_manager_delete_asset(@image.asset_manager_id)
-    @request = stub_publishing_api_put_content(Document.last.content_id, {})
+    @request = stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Delete lead image"
   end
 
   def then_i_see_the_document_has_no_lead_image
-    expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.deleted", file: @image.filename))
+    expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.deleted", file: @image_revision.filename))
     expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
     expect(page).to have_content(I18n.t!("documents.history.entry_types.lead_image_removed"))
-    expect(@image_request).to have_been_requested
-    expect(ActiveStorage::Blob.service.exist?(@image.blob.key)).to be_falsey
   end
 
   def and_the_preview_creation_succeeded

@@ -25,11 +25,11 @@ RSpec.feature "Editions" do
   end
 
   def given_there_is_a_published_document
-    @document = create(:document, :published, update_type: "major", change_note: "First edition.", current_edition_number: 1)
+    @edition = create(:edition, :published, update_type: "major", change_note: "First edition.")
   end
 
   def when_i_visit_the_document_page
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def then_i_see_it_is_the_first_edition
@@ -49,7 +49,7 @@ RSpec.feature "Editions" do
   end
 
   def and_i_make_a_major_change
-    fill_in "document[change_note]", with: "I made a change"
+    fill_in "revision[change_note]", with: "I made a change"
     click_on "Save"
   end
 

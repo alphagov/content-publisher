@@ -1,62 +1,83 @@
 # frozen_string_literal: true
 
 class DocumentsController < ApplicationController
-  include GDS::SSO::ControllerMethods
-
   def index
-    filter = DocumentFilter.new(filter_params)
-    @documents = filter.documents
+    filter = EditionFilter.new(filter_params)
+    @editions = filter.editions
     @filter_params = filter.filter_params
     @sort = filter.sort
   end
 
   def edit
-    @document = Document.find_by_param(params[:id])
+    @document = Document.with_current_edition.find_by_param(params[:id])
+    @revision = @document.current_edition.revision
   end
 
   def show
-    @document = Document.find_by_param(params[:id])
+    @document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = @document.current_edition
   end
 
   def confirm_delete_draft
-    document = Document.find_by_param(params[:id])
+    document = Document.with_current_edition.find_by_param(params[:id])
     redirect_to document_path(document), confirmation: "documents/show/delete_draft"
   end
 
   def destroy
-    document = Document.find_by_param(params[:id])
-    DeleteDraftService.new(document).delete
-    redirect_to documents_path
-  rescue GdsApi::BaseError => e
-    GovukError.notify(e)
-    redirect_to document, alert_with_description: t("documents.show.flashes.delete_draft_error")
+    Document.transaction do
+      document = Document.with_current_edition.lock.find_by_param(params[:id])
+
+      begin
+        current_edition = document.current_edition
+        DeleteDraftService.new(document, current_user).delete
+
+        TimelineEntry.create_for_status_change(entry_type: :draft_discarded,
+                                               status: current_edition.status)
+
+        redirect_to documents_path
+      rescue GdsApi::BaseError => e
+        GovukError.notify(e)
+        redirect_to document, alert_with_description: t("documents.show.flashes.delete_draft_error")
+      end
+    end
   end
 
   def update
-    @document = Document.find_by_param(params[:id])
-    @document.assign_attributes(update_params(@document))
-    add_contact_request = params[:submit] == "add_contact"
-    @issues = Requirements::EditPageChecker.new(@document).pre_preview_issues
+    Document.transaction do # rubocop:disable Metrics/BlockLength
+      @document = Document.with_current_edition.lock.find_by_param(params[:id])
+      current_edition = @document.current_edition
 
-    if @issues.any?
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("documents.edit.flashes.requirements"),
-        "items" => @issues.items,
-      }
+      @revision = current_edition.build_revision_update(update_params(@document),
+                                                        current_user)
 
-      render :edit
-      return
-    end
+      add_contact_request = params[:submit] == "add_contact"
+      @issues = Requirements::EditPageChecker.new(current_edition, @revision)
+                                             .pre_preview_issues
 
-    PreviewService.new(@document).try_create_preview(
-      user: current_user,
-      type: "updated_content",
-    )
+      if @issues.any?
+        flash.now["alert_with_items"] = {
+          "title" => I18n.t!("documents.edit.flashes.requirements"),
+          "items" => @issues.items,
+        }
 
-    if add_contact_request
-      redirect_to search_contacts_path(@document)
-    else
-      redirect_to @document
+        render :edit
+        return
+      end
+
+      if @revision != current_edition.revision
+        current_edition.assign_revision(@revision, current_user).save!
+
+        TimelineEntry.create_for_revision(entry_type: :updated_content,
+                                          edition: current_edition)
+
+        PreviewService.new(current_edition).try_create_preview
+      end
+
+      if add_contact_request
+        redirect_to search_contacts_path(@document)
+      else
+        redirect_to @document
+      end
     end
   end
 
@@ -66,17 +87,11 @@ class DocumentsController < ApplicationController
     render plain: base_path
   end
 
-  def debug
-    authorise_user!(User::DEBUG_PERMISSION)
-    @document = Document.find_by_param(params[:id])
-    @papertrail_users = User.where(id: @document.versions.pluck(:whodunnit))
-  end
-
 private
 
   def filter_params
     {
-      filters: params.permit(:title_or_url, :document_type, :state, :organisation).to_hash,
+      filters: params.slice(:title_or_url, :document_type, :status, :organisation).permit!,
       sort: params[:sort],
       page: params[:page],
       per_page: 50,
@@ -85,11 +100,13 @@ private
 
   def update_params(document)
     contents_params = document.document_type.contents.map(&:id)
-    base_path = PathGeneratorService.new.path(document, params.require(:document)[:title])
-    title = params.require(:document)[:title]&.strip
-    summary = params.require(:document)[:summary].strip
 
-    params.require(:document).permit(:update_type, :change_note, contents: contents_params)
-      .merge(base_path: base_path, title: title, summary: summary)
+    params.require(:revision)
+      .permit(:update_type, :change_note, :title, :summary, contents: contents_params)
+      .tap do |p|
+        p[:title] = p[:title]&.strip
+        p[:summary] = p[:summary]&.strip
+        p[:base_path] = PathGeneratorService.new.path(document, p[:title])
+      end
   end
 end
