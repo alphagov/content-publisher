@@ -53,7 +53,20 @@ class Edition < ApplicationRecord
   state_methods = Status.states.keys.map { |s| (s + "?").to_sym }
   delegate :state, *state_methods, to: :status
 
-  delegate_missing_to :revision
+  delegate :title,
+           :title_or_fallback,
+           :base_path,
+           :summary,
+           :contents,
+           :update_type,
+           :change_note,
+           :major?,
+           :minor?,
+           :tags,
+           :lead_image_revision,
+           :image_revisions,
+           :image_revisions_without_lead,
+           to: :revision
 
   def self.create_initial(document, user = nil, tags = {})
     revision = Revision.create_initial(document, user, tags)
