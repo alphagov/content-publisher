@@ -9,12 +9,12 @@ RSpec.describe "Unpublish rake tasks" do
     end
 
     it "runs the task to withdraw an edition" do
-      explanatory_note = "The reason the document is being withdrawn"
+      public_explanation = "The reason the document is being withdrawn"
 
       expect_any_instance_of(UnpublishService)
-        .to receive(:withdraw).with(edition, explanatory_note)
+        .to receive(:withdraw).with(edition, public_explanation)
 
-      ClimateControl.modify NOTE: explanatory_note do
+      ClimateControl.modify NOTE: public_explanation do
         Rake::Task["unpublish:withdraw"].invoke(edition.content_id)
       end
     end
@@ -31,9 +31,9 @@ RSpec.describe "Unpublish rake tasks" do
 
     it "raises an error if the document does not have a live version on GOV.uk" do
       draft = create(:edition, locale: "en")
-      explanatory_note = "The reason the document is being withdrawn"
+      public_explanation = "The reason the document is being withdrawn"
 
-      ClimateControl.modify NOTE: explanatory_note do
+      ClimateControl.modify NOTE: public_explanation do
         expect { Rake::Task["unpublish:withdraw"].invoke(draft.content_id) }
           .to raise_error("Document must have a published version before it can be withdrawn")
       end

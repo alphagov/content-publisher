@@ -12,43 +12,43 @@ RSpec.describe UnpublishService do
   before { stub_any_publishing_api_unpublish }
 
   describe "#withdraw" do
-    let(:explanatory_note) { "The document is out of date" }
+    let(:public_explanation) { "The document is out of date" }
 
-    it "withdraws an edition in publishing-api with an explanatory note" do
+    it "withdraws an edition in publishing-api with a public explanation" do
       request = stub_publishing_api_unpublish(edition.content_id,
                                               body: { type: "withdrawal",
-                                                      explanation: explanatory_note,
+                                                      explanation: public_explanation,
                                                       locale: edition.locale })
-      UnpublishService.new.withdraw(edition, explanatory_note)
+      UnpublishService.new.withdraw(edition, public_explanation)
 
       expect(request).to have_been_requested
     end
 
     it "does not delete assets for withdrawn editions" do
       delete_request = stub_asset_manager_deletes_any_asset
-      UnpublishService.new.withdraw(edition_with_image, explanatory_note)
+      UnpublishService.new.withdraw(edition_with_image, public_explanation)
 
       expect(delete_request).not_to have_been_requested
     end
 
     it "adds an entry in the timeline of the document" do
-      UnpublishService.new.withdraw(edition, explanatory_note)
+      UnpublishService.new.withdraw(edition, public_explanation)
 
       expect(edition.timeline_entries.first.entry_type).to eq("withdrawn")
     end
 
     it "updates the edition status" do
-      UnpublishService.new.withdraw(edition, explanatory_note)
+      UnpublishService.new.withdraw(edition, public_explanation)
       edition.reload
 
       expect(edition.status).to be_withdrawn
-      expect(edition.status.details.explanatory_note).to eq(explanatory_note)
+      expect(edition.status.details.public_explanation).to eq(public_explanation)
     end
 
     context "when the given edition is a draft" do
       it "raises an error" do
         draft_edition = create(:edition)
-        expect { UnpublishService.new.withdraw(draft_edition, explanatory_note) }
+        expect { UnpublishService.new.withdraw(draft_edition, public_explanation) }
           .to raise_error RuntimeError, "attempted to unpublish an edition other than the live edition"
       end
     end
@@ -61,7 +61,7 @@ RSpec.describe UnpublishService do
                               current: false,
                               document: draft_edition.document)
 
-        expect { UnpublishService.new.withdraw(live_edition, explanatory_note) }
+        expect { UnpublishService.new.withdraw(live_edition, public_explanation) }
           .to raise_error RuntimeError, "Publishing API does not support unpublishing while there is a draft"
       end
     end

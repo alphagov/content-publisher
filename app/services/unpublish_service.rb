@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UnpublishService
-  def withdraw(edition, explanatory_note)
+  def withdraw(edition, public_explanation)
     Document.transaction do
       edition.document.lock!
       check_unpublishable(edition)
@@ -9,11 +9,11 @@ class UnpublishService
       GdsApi.publishing_api_v2.unpublish(
         edition.content_id,
         type: "withdrawal",
-        explanation: explanatory_note,
+        explanation: public_explanation,
         locale: edition.locale,
       )
 
-      withdrawal = Withdrawal.new(explanatory_note: explanatory_note)
+      withdrawal = Withdrawal.new(public_explanation: public_explanation)
 
       edition.assign_status(:withdrawn, nil, status_details: withdrawal)
       edition.save!
