@@ -9,7 +9,7 @@ class UnpublishService
       GdsApi.publishing_api_v2.unpublish(
         edition.content_id,
         type: "withdrawal",
-        explanation: public_explanation,
+        explanation: format_govspeak(public_explanation),
         locale: edition.locale,
       )
 
@@ -97,6 +97,10 @@ private
     if document.current_edition != document.live_edition
       raise "Publishing API does not support unpublishing while there is a draft"
     end
+  end
+
+  def format_govspeak(text)
+    GovspeakDocument.new(text).to_html
   end
 
   def delete_assets(edition)

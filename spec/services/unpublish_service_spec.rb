@@ -12,12 +12,13 @@ RSpec.describe UnpublishService do
   before { stub_any_publishing_api_unpublish }
 
   describe "#withdraw" do
-    let(:public_explanation) { "The document is out of date" }
+    let(:public_explanation) { "The document is [out of date](https://www.gov.uk)" }
 
-    it "withdraws an edition in publishing-api with a public explanation" do
+    it "converts the public explanation Govspeak to HTML before sending to Publishing API" do
+      converted_public_explanation = GovspeakDocument.new(public_explanation).to_html
       request = stub_publishing_api_unpublish(edition.content_id,
                                               body: { type: "withdrawal",
-                                                      explanation: public_explanation,
+                                                      explanation: converted_public_explanation,
                                                       locale: edition.locale })
       UnpublishService.new.withdraw(edition, public_explanation)
 
