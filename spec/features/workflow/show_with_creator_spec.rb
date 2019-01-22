@@ -18,7 +18,7 @@ RSpec.feature "Viewing a document with a creator" do
   end
 
   def when_i_visit_the_document_page
-    click_on @document.current_edition_title
+    click_on @document.current_edition.title
   end
 
   def then_i_see_who_created_the_document

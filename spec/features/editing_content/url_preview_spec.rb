@@ -20,7 +20,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
   def given_there_is_a_document
     @document = create(:document, :with_current_edition)
     @document_path_prefix = @document.document_type.path_prefix
-    @document_base_path = @document.current_edition_base_path
+    @document_base_path = @document.current_edition.base_path
   end
 
   def when_i_go_to_edit_the_document

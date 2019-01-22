@@ -22,9 +22,6 @@ class Document < ApplicationRecord
 
   delegate :topics, to: :document_topics
 
-  delegate :title, :base_path, :title_or_fallback, to: :current_edition, allow_nil: true, prefix: true
-  delegate :title, :base_path, to: :live_edition, allow_nil: true, prefix: true
-
   scope :with_current_edition, -> do
     join_tables = { current_edition: %i[revision status] }
     joins(join_tables).includes(join_tables)
