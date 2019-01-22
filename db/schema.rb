@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_25_181528) do
+ActiveRecord::Schema.define(version: 2019_01_30_100821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -253,7 +253,7 @@ ActiveRecord::Schema.define(version: 2019_01_25_181528) do
   end
 
   create_table "withdrawals", force: :cascade do |t|
-    t.string "explanatory_note"
+    t.string "public_explanation", null: false
     t.datetime "created_at", null: false
   end
 
