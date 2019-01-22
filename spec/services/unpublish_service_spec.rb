@@ -36,7 +36,7 @@ RSpec.describe UnpublishService do
     it "adds an entry in the timeline of the document" do
       UnpublishService.new.withdraw(edition, explanatory_note)
 
-      expect(edition.timeline_entries.first.entry_type).to eq("retired")
+      expect(edition.timeline_entries.first.entry_type).to eq("withdrawn")
     end
 
     it "updates the edition status" do
