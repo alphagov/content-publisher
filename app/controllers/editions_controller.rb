@@ -7,7 +7,7 @@ class EditionsController < ApplicationController
 
       current_edition = document.current_edition
 
-      if !current_edition.live
+      unless current_edition.live?
         # This should probably be a bad request
         redirect_to document
         return

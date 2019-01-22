@@ -9,9 +9,9 @@
 
   <div>
     <%
-      edition_text = if revision.editions.any? { |e| e.live && e.revision_id == revision.id }
+      edition_text = if revision.editions.any? { |e| e.live? && e.revision_id == revision.id }
                        " - Live"
-                     elsif revision.editions.any? { |e| e.current && e.revision_id == revision.id }
+                     elsif revision.editions.any? { |e| e.current? && e.revision_id == revision.id }
                        " - Draft"
                      end
     %>

@@ -45,7 +45,7 @@
                  secondary: true %>
 
       <%= delete_draft_link("app-link--right") %>
-    <% elsif !@edition.revision_synced %>
+    <% elsif !@edition.revision_synced? %>
       <%= form_tag create_preview_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Preview" %>
       <% end %>

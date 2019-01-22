@@ -20,7 +20,7 @@ class PublishController < ApplicationController
     Document.transaction do
       @document = Document.with_current_edition.lock.find_by_param(params[:id])
 
-      if @document.current_edition.live
+      if @document.current_edition.live?
         redirect_to published_path(@document)
         return
       end

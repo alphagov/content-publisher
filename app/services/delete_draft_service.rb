@@ -10,7 +10,7 @@ class DeleteDraftService
 
   def delete
     raise "Trying to delete a document without a current edition" unless document.current_edition
-    raise "Trying to delete a live document" if document.current_edition.live
+    raise "Trying to delete a live document" if document.current_edition.live?
 
     current_edition = document.current_edition
     current_edition.image_revisions.each { |ir| delete_image_revision(ir) }
