@@ -16,7 +16,7 @@ en:
         image_removed: "Removed image"
         new_edition: "New edition"
         create_preview: "Create preview"
-        retired: "Retired"
+        withdrawn: "Withdrawn"
         removed: "Removed"
         internal_note: "Internal note"
         draft_discarded: "Draft discarded"

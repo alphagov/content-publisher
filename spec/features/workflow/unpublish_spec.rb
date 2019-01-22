@@ -5,39 +5,39 @@ require "rake"
 RSpec.feature "Unpublish rake tasks" do
   let(:edition) { create(:edition, :published, locale: "en") }
 
-  describe "unpublish:retire" do
+  describe "unpublish:withdraw" do
     before do
-      Rake::Task["unpublish:retire"].reenable
+      Rake::Task["unpublish:withdraw"].reenable
     end
 
-    it "runs the task to retire an edition" do
-      explanatory_note = "The reason the document is being retired"
+    it "runs the task to withdraw an edition" do
+      explanatory_note = "The reason the document is being withdrawn"
 
       expect_any_instance_of(UnpublishService)
-        .to receive(:retire).with(edition, explanatory_note)
+        .to receive(:withdraw).with(edition, explanatory_note)
 
       ClimateControl.modify NOTE: explanatory_note do
-        Rake::Task["unpublish:retire"].invoke(edition.content_id)
+        Rake::Task["unpublish:withdraw"].invoke(edition.content_id)
       end
     end
 
     it "raises an error if a content_id is not present" do
-      expect { Rake::Task["unpublish:retire"].invoke }
+      expect { Rake::Task["unpublish:withdraw"].invoke }
         .to raise_error("Missing content_id parameter")
     end
 
     it "raises an error if a NOTE is not present" do
-      expect { Rake::Task["unpublish:retire"].invoke("a-content-id") }
+      expect { Rake::Task["unpublish:withdraw"].invoke("a-content-id") }
         .to raise_error("Missing NOTE value")
     end
 
     it "raises an error if the document does not have a live version on GOV.uk" do
       draft = create(:edition, locale: "en")
-      explanatory_note = "The reason the document is being retired"
+      explanatory_note = "The reason the document is being withdrawn"
 
       ClimateControl.modify NOTE: explanatory_note do
-        expect { Rake::Task["unpublish:retire"].invoke(draft.content_id) }
-          .to raise_error("Document must have a published version before it can be retired")
+        expect { Rake::Task["unpublish:withdraw"].invoke(draft.content_id) }
+          .to raise_error("Document must have a published version before it can be withdrawn")
       end
     end
   end

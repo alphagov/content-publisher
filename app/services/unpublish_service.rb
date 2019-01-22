@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UnpublishService
-  def retire(edition, explanatory_note)
+  def withdraw(edition, explanatory_note)
     Document.transaction do
       edition.document.lock!
       check_unpublishable(edition)
@@ -13,15 +13,15 @@ class UnpublishService
         locale: edition.locale,
       )
 
-      retirement = Retirement.new(explanatory_note: explanatory_note)
+      withdrawal = Withdrawal.new(explanatory_note: explanatory_note)
 
-      edition.assign_status(:retired, nil, status_details: retirement)
+      edition.assign_status(:withdrawn, nil, status_details: withdrawal)
       edition.save!
 
       TimelineEntry.create_for_status_change(
-        entry_type: :retired,
+        entry_type: :withdrawn,
         status: edition.status,
-        details: retirement,
+        details: withdrawal,
       )
     end
   end

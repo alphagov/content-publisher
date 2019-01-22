@@ -24,7 +24,7 @@
           <%= simple_format(escape_and_link(entry.details.body)) %>
         <% end %>
 
-        <% if entry.retired? && entry.details %>
+        <% if entry.withdrawn? && entry.details %>
           <%= entry.details.explanatory_note %>
         <% end %>
 

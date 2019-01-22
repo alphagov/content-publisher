@@ -27,7 +27,7 @@ class Status < ApplicationRecord
                 submitted_for_review: "submitted_for_review",
                 published: "published",
                 published_but_needs_2i: "published_but_needs_2i",
-                retired: "retired",
+                withdrawn: "withdrawn",
                 removed: "removed",
                 discarded: "discarded",
                 superseded: "superseded" }

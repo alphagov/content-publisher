@@ -1,9 +1,9 @@
-# Retiring and removing documents
+# Withdrawing and removing documents
 
 We need to allow users to unpublish content from GOV.UK. In Content Publisher we are replacing
-unpublish terminology with "retired" and "removed".
+unpublish terminology with "withdrawn" and "removed".
 
-Retired content is still displayed on GOV.UK, but there is an explanation box on the page that describes
+Withdrawn content is still displayed on GOV.UK, but there is an explanation box on the page that describes
 why the content is out of date.
 
 Removed content returns a 410 gone page to the user. If an explanatory note or a alternative path have been provided,
@@ -13,7 +13,7 @@ Removed and redirected content redirects users to another page on GOV.UK
 
 Environment variables are being used to pass parameters to the rake tasks.
 
-## Retiring documents
+## Withdrawing documents
 
 Required parameters:
 
@@ -25,7 +25,7 @@ Optional parameters:
 - LOCALE (set to "en" by default)
 
 ```
-rake unpublish:retire['a-content-id'] NOTE='A note'
+rake unpublish:withdraw['a-content-id'] NOTE='A note'
 ```
 
 ## Removing documents

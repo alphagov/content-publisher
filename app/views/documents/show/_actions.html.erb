@@ -20,17 +20,17 @@
           data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
 
-      <%= link_to "Retire", retire_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Withdraw", withdraw_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
       <%= link_to "Remove", remove_path(@edition.document), class: "govuk-link app-link--destructive app-link--right" %>
     <% elsif @edition.status.published? %>
       <%= form_tag create_edition_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
       <% end %>
 
-      <%= link_to "Retire", retire_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+      <%= link_to "Withdraw", withdraw_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
       <%= link_to "Remove", remove_path(@edition.document), class: "govuk-link app-link--destructive app-link--right" %>
-    <% elsif @edition.status.retired? %>
-      <%= link_to "Update reason for retiring", retire_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+    <% elsif @edition.status.withdrawn? %>
+      <%= link_to "Update reason for retiring", withdraw_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
     <% elsif @edition.status.removed? %>
       <%= form_tag create_edition_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Create new edition", data_attributes: { gtm: "create-new-edition" } %>
