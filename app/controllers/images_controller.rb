@@ -29,7 +29,9 @@ class ImagesController < ApplicationController
       image_revision = ImageUploadService.new(params[:image]).call(current_user)
 
       current_edition = @document.current_edition
-      next_revision = current_edition.build_revision_update_for_image_upsert(
+      current_revision = current_edition.revision
+
+      next_revision = current_revision.build_revision_update_for_image_upsert(
         image_revision,
         current_user,
       )
@@ -65,8 +67,9 @@ class ImagesController < ApplicationController
 
       if image_revision != previous_image_revision
         current_edition = document.current_edition
+        current_revision = current_edition.revision
 
-        next_revision = current_edition.build_revision_update_for_image_upsert(
+        next_revision = current_revision.build_revision_update_for_image_upsert(
           image_revision,
           current_user,
         )
@@ -82,7 +85,7 @@ class ImagesController < ApplicationController
 
         # TODO remove old images from asset manager
 
-        PreviewService.new(current_edition).try_create_preview
+        PreviewService.new(document.current_edition).try_create_preview
       end
 
 
@@ -132,8 +135,9 @@ class ImagesController < ApplicationController
 
       if @image_revision != previous_image_revision
         current_edition = @document.current_edition
+        current_revision = current_edition.revision
 
-        next_revision = current_edition.build_revision_update_for_image_upsert(
+        next_revision = current_revision.build_revision_update_for_image_upsert(
           @image_revision,
           current_user,
         )
@@ -172,9 +176,11 @@ class ImagesController < ApplicationController
       )
 
       current_edition = document.current_edition
-      lead = image_revision == current_edition.lead_image_revision
+      current_revision = current_edition.revision
 
-      next_revision = current_edition.build_revision_update_for_image_removed(
+      lead = image_revision == current_revision.lead_image_revision
+
+      next_revision = current_revision.build_revision_update_for_image_removed(
         image_revision,
         current_user,
       )
