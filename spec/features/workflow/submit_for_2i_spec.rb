@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "2i" do
+RSpec.feature "Submit for 2i" do
   scenario do
     given_there_is_a_draft_edition
     when_i_visit_the_summary_page
