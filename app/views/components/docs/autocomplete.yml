@@ -82,10 +82,10 @@ examples:
       selected_options:
           - fr
           - de
-  autocomplete_with_custom_template:
+  autocomplete_with_hint_on_options:
     data:
-      id: autocomplete-custom-template
-      name: autocomplete-custom-template
+      id: autocomplete-with-hint-on-options
+      name: autocomplete-with-hint-on-options
       label:
         text: Select your country
       custom_template: true

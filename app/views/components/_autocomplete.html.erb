@@ -9,7 +9,7 @@
   custom_template ||= nil
 %>
 
-<div class="app-c-autocomplete govuk-form-group" data-module="<%= custom_template ? 'autocomplete-custom-template' : 'autocomplete'%>">
+<div class="app-c-autocomplete govuk-form-group" data-module="<%= custom_template ? 'autocomplete-with-hint-on-options' : 'autocomplete'%>">
   <%= render "govuk_publishing_components/components/label", {
     html_for: id
   }.merge(label.symbolize_keys) %>

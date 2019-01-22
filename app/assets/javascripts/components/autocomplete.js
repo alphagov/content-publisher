@@ -21,34 +21,32 @@ if ($autocompletes) {
   })
 }
 
-var $customTemplateAutocomplete = document.querySelector('[data-module="autocomplete-custom-template"]')
-if ($customTemplateAutocomplete) {
+var $autocompleteWithHintOnOptions = document.querySelector('[data-module="autocomplete-with-hint-on-options"]')
+if ($autocompleteWithHintOnOptions) {
   // Read options and associated data attributes and feed that as results for inputValueTemplate
-  var $select = $customTemplateAutocomplete.querySelector('select')
+  var $select = $autocompleteWithHintOnOptions.querySelector('select')
   var $options = $select.querySelectorAll('option')
 
   // Create wrapper to inject the autocomplete element
-  $customTemplateAutocomplete.insertAdjacentHTML('beforeend', '<div class="autocomplete__wrapper"></div>')
+  $autocompleteWithHintOnOptions.insertAdjacentHTML('beforeend', '<div class="autocomplete__wrapper"></div>')
 
   // Remove select element from DOM
   $select.remove()
 
   new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
-    element: $customTemplateAutocomplete.querySelector('.autocomplete__wrapper'),
+    element: $autocompleteWithHintOnOptions.querySelector('.autocomplete__wrapper'),
     id: $select.id,
     source: function (query, syncResults) {
       var results = []
       $options.forEach(function ($el) {
         results.push({value: $el.textContent, hint: $el.dataset.hint || ''})
       })
-
       syncResults(query
         ? results.filter(function (result) {
           var valueContains = result.value.toLowerCase().indexOf(query.toLowerCase()) !== -1
           var hintContains = result.hint.toLowerCase().indexOf(query.toLowerCase()) !== -1
           return valueContains || hintContains
-        })
-        : []
+        }) : []
       )
     },
     minLength: 3,
