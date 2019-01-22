@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_21_180333) do
+ActiveRecord::Schema.define(version: 2019_01_22_104549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,96 +34,6 @@ ActiveRecord::Schema.define(version: 2019_01_21_180333) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "documents", force: :cascade do |t|
-    t.string "content_id", null: false
-    t.string "locale", null: false
-    t.string "document_type_id", null: false
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.json "contents", default: {}
-    t.text "summary"
-    t.string "base_path"
-    t.json "tags", default: {}
-    t.string "publication_state", null: false
-    t.bigint "creator_id"
-    t.string "review_state", null: false
-    t.boolean "has_live_version_on_govuk", default: false, null: false
-    t.text "change_note"
-    t.string "update_type"
-    t.bigint "lead_image_id"
-    t.integer "current_edition_number", null: false
-    t.bigint "last_editor_id"
-    t.string "live_state"
-    t.index ["base_path"], name: "index_documents_on_base_path", unique: true
-    t.index ["content_id", "locale"], name: "index_documents_on_content_id_and_locale", unique: true
-    t.index ["creator_id"], name: "index_documents_on_creator_id"
-    t.index ["last_editor_id"], name: "index_documents_on_last_editor_id"
-    t.index ["lead_image_id"], name: "index_documents_on_lead_image_id"
-  end
-
-  create_table "images", force: :cascade do |t|
-    t.bigint "document_id", null: false
-    t.bigint "blob_id", null: false
-    t.string "filename", null: false
-    t.integer "width", null: false
-    t.integer "height", null: false
-    t.integer "crop_x", null: false
-    t.integer "crop_y", null: false
-    t.integer "crop_width", null: false
-    t.integer "crop_height", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "caption"
-    t.string "alt_text"
-    t.string "credit"
-    t.string "asset_manager_file_url"
-    t.string "publication_state", null: false
-    t.index ["blob_id"], name: "index_images_on_blob_id"
-    t.index ["document_id"], name: "index_images_on_document_id"
-  end
-
-  create_table "internal_notes", force: :cascade do |t|
-    t.text "body", null: false
-    t.bigint "document_id", null: false
-    t.bigint "user_id"
-    t.bigint "timeline_entries_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["document_id"], name: "index_internal_notes_on_document_id"
-    t.index ["timeline_entries_id"], name: "index_internal_notes_on_timeline_entries_id"
-    t.index ["user_id"], name: "index_internal_notes_on_user_id"
-  end
-
-  create_table "removals", force: :cascade do |t|
-    t.string "explanatory_note"
-    t.string "alternative_path"
-    t.boolean "redirect", default: false
-    t.bigint "timeline_entries_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["timeline_entries_id"], name: "index_removals_on_timeline_entries_id"
-  end
-
-  create_table "retirements", force: :cascade do |t|
-    t.string "explanatory_note"
-    t.bigint "timeline_entries_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["timeline_entries_id"], name: "index_retirements_on_timeline_entries_id"
-  end
-
-  create_table "timeline_entries", force: :cascade do |t|
-    t.string "entry_type", null: false
-    t.bigint "document_id", null: false
-    t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "edition_number", null: false
-    t.index ["document_id"], name: "index_timeline_entries_on_document_id"
-    t.index ["user_id"], name: "index_timeline_entries_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -265,7 +175,6 @@ ActiveRecord::Schema.define(version: 2019_01_21_180333) do
   create_table "versioned_retirements", force: :cascade do |t|
     t.string "explanatory_note"
     t.datetime "created_at", null: false
-    t.bigint "created_by_id"
   end
 
   create_table "versioned_revision_image_revisions", force: :cascade do |t|
@@ -350,18 +259,6 @@ ActiveRecord::Schema.define(version: 2019_01_21_180333) do
     t.bigint "created_by_id"
   end
 
-  add_foreign_key "documents", "images", column: "lead_image_id", on_delete: :nullify
-  add_foreign_key "documents", "users", column: "creator_id"
-  add_foreign_key "documents", "users", column: "last_editor_id"
-  add_foreign_key "images", "active_storage_blobs", column: "blob_id", on_delete: :cascade
-  add_foreign_key "images", "documents", on_delete: :cascade
-  add_foreign_key "internal_notes", "documents", on_delete: :cascade
-  add_foreign_key "internal_notes", "timeline_entries", column: "timeline_entries_id"
-  add_foreign_key "internal_notes", "users", on_delete: :nullify
-  add_foreign_key "removals", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
-  add_foreign_key "retirements", "timeline_entries", column: "timeline_entries_id", on_delete: :cascade
-  add_foreign_key "timeline_entries", "documents", on_delete: :cascade
-  add_foreign_key "timeline_entries", "users", on_delete: :nullify
   add_foreign_key "versioned_content_revisions", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_documents", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_edition_revisions", "versioned_editions", column: "edition_id", on_delete: :cascade
@@ -383,7 +280,6 @@ ActiveRecord::Schema.define(version: 2019_01_21_180333) do
   add_foreign_key "versioned_images", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_internal_notes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_internal_notes", "versioned_editions", column: "edition_id", on_delete: :cascade
-  add_foreign_key "versioned_retirements", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "versioned_revision_image_revisions", "versioned_image_revisions", column: "image_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revision_image_revisions", "versioned_revisions", column: "revision_id", on_delete: :cascade
   add_foreign_key "versioned_revision_statuses", "versioned_revisions", column: "revision_id", on_delete: :cascade
