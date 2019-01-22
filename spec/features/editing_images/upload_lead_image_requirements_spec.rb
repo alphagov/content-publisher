@@ -25,6 +25,6 @@ RSpec.feature "Upload a lead image with requirements issues" do
   end
 
   def then_i_should_see_an_error
-    expect(page).to have_content(I18n.t!("requirements.image_upload.format_not_allowed.form_message"))
+    expect(page).to have_content(I18n.t!("requirements.image_upload.unsupported_type.form_message"))
   end
 end

@@ -53,8 +53,10 @@ en:
     image_upload:
       no_file:
         form_message: Select a file to upload
-      format_not_allowed:
-        form_message: Select a jpg, png or static gif image file
+      unsupported_type:
+        form_message: Select a jpg, png or gif image file
+      animated_image:
+        form_message: Select an image file that is not animated
       too_big:
         form_message: "Select an image file under %{max_size} in size"
       too_small:

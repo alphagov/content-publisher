@@ -23,8 +23,13 @@ module Requirements
         return CheckerIssues.new(issues)
       end
 
-      if unsupported_type? || animated_image?
-        issues << Issue.new(:image_upload, :format_not_allowed)
+      if unsupported_type?
+        issues << Issue.new(:image_upload, :unsupported_type)
+        return CheckerIssues.new(issues)
+      end
+
+      if animated_image?
+        issues << Issue.new(:image_upload, :animated_image)
         return CheckerIssues.new(issues)
       end
 
