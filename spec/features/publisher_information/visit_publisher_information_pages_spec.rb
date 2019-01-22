@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "User is on the home page and can visit the publisher information pages" do
+RSpec.feature "User can view the publisher information pages" do
   scenario do
     given_im_on_the_home_page
     when_i_click_on_the_publisher_updates_link_in_footer
