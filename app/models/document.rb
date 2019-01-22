@@ -8,9 +8,15 @@ class Document < ApplicationRecord
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  has_one :current_edition, -> { where(current: true) }, class_name: "Edition"
+  has_one :current_edition,
+          -> { where(current: true) },
+          class_name: "Edition",
+          inverse_of: :document
 
-  has_one :live_edition, -> { where(live: true) }, class_name: "Edition"
+  has_one :live_edition,
+          -> { where(live: true) },
+          class_name: "Edition",
+          inverse_of: :document
 
   has_many :editions
 
