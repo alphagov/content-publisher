@@ -89,6 +89,10 @@ class Edition < ApplicationRecord
             status: status)
   end
 
+  def editable?
+    !live?
+  end
+
   def resume_discarded(live_edition, user)
     revision = live_edition.revision.build_revision_update(
       { change_note: "", update_type: "major" },
