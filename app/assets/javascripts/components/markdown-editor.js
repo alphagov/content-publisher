@@ -3,6 +3,7 @@
 function MarkdownEditor ($module) {
   this.$module = $module
   this.$head = $module.querySelector('.js-markdown-editor__head')
+  this.$container = $module.querySelector('.js-markdown-editor__container')
   this.$input = $module.querySelector('textarea')
   this.$preview = $module.querySelector('.js-markdown-preview-body .govuk-textarea')
   this.$previewButton = $module.querySelector('.js-markdown-preview-button')
@@ -23,9 +24,15 @@ MarkdownEditor.prototype.init = function () {
   // Enable toggle bar
   this.$head.style.display = 'block'
 
-  // Handle events
+  // Handle button events
   this.$previewButton.addEventListener('click', $module.boundPreviewButtonClick)
   this.$editButton.addEventListener('click', $module.boundEditButtonClick)
+
+  // Reflect focus events
+  this.reflectFocusStateToContainer(this.$input, this.$container)
+  this.bubbleFocusEventToComponent(this.$input)
+  this.bubbleFocusEventToComponent(this.$editButton)
+  this.bubbleFocusEventToComponent(this.$previewButton)
 }
 
 MarkdownEditor.prototype.handlePreviewButton = function (event) {
@@ -37,7 +44,7 @@ MarkdownEditor.prototype.handlePreviewButton = function (event) {
   }
 
   // Mirror textarea's height
-  this.$preview.style.height = this.$input.offsetHeight + 'px'
+  this.$preview.style.height = this.$input.offsetHeight + this.$editorToolbar.offsetHeight + 'px'
 
   // Clear previous preview
   this.$preview.innerHTML = ''
@@ -120,6 +127,27 @@ MarkdownEditor.prototype.setTargetBlank = function (container) {
       anchor.setAttribute('target', '_blank')
     })
   }
+}
+
+// Reflect focus and blur events to component
+MarkdownEditor.prototype.bubbleFocusEventToComponent = function (element) {
+  var $module = this.$module
+  element.addEventListener('focus', function (event) {
+    $module.dispatchEvent(new window.Event('focus'))
+  }, true)
+  element.addEventListener('blur', function (event) {
+    $module.dispatchEvent(new window.Event('blur'))
+  }, true)
+}
+
+// Reflect focus and blur element state to container
+MarkdownEditor.prototype.reflectFocusStateToContainer = function (element, container) {
+  element.addEventListener('focus', function (event) {
+    container && container.classList.add('app-c-markdown-editor__container--focused')
+  }, true)
+  element.addEventListener('blur', function (event) {
+    container && container.classList.remove('app-c-markdown-editor__container--focused')
+  }, true)
 }
 
 var $govspeak = document.querySelector('[data-module="markdown-editor"]')

@@ -2,12 +2,18 @@
   textarea ||= {}
   edit_button_text ||= 'Edit markdown'
   preview_button_text ||= 'Preview markdown'
+  contextual_guidance ||= nil
 %>
-<div class="app-c-markdown-editor" data-module="markdown-editor" data-govspeak-path="<%= govspeak_preview_path %>">
+<%= tag.div class: "app-c-markdown-editor",
+  data: {
+    "module": "markdown-editor",
+    "govspeak-path": govspeak_preview_path,
+    "contextual-guidance": contextual_guidance,
+  } do %>
   <%= render "govuk_publishing_components/components/label", {
       html_for: textarea[:id]
   }.merge(label.symbolize_keys) %>
-  <div class="app-c-markdown-editor__container">
+  <div class="app-c-markdown-editor__container js-markdown-editor__container">
     <div class="app-c-markdown-editor__head js-markdown-editor__head">
       <div class="app-c-markdown-editor__preview-toggle">
         <button type="button" class="app-c-markdown-editor__button app-c-markdown-editor__button--muted js-markdown-edit-button"><%= edit_button_text %></button>
@@ -48,4 +54,4 @@
       <% end %>
     </div>
   </div>
-</div>
+<% end %>

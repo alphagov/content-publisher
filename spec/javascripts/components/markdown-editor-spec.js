@@ -11,7 +11,7 @@ describe('Markdown editor component', function () {
     container.innerHTML =
       '<div class="app-c-markdown-editor" data-module="markdown-editor" data-govspeak-path="#">' +
         '<label for="markdown-editor" class="gem-c-label govuk-label ">Body</label>' +
-        '<div class="app-c-markdown-editor__container">' +
+        '<div class="app-c-markdown-editor__container js-markdown-editor__container">' +
           '<div class="app-c-markdown-editor__head js-markdown-editor__head">' +
             '<div class="app-c-markdown-editor__preview-toggle">' +
               '<button type="button" class="app-c-markdown-editor__button app-c-markdown-editor__button--muted js-markdown-edit-button">Edit markdown</button>' +
@@ -126,7 +126,7 @@ describe('Markdown editor component', function () {
 
   describe('when clicking "Edit markdown" button', function () {
     beforeEach(function () {
-      $('.js-markdown-edit-button').click()
+      document.querySelector('.js-markdown-edit-button').click()
     })
 
     it('should show the editor toolbar', function () {
@@ -157,6 +157,34 @@ describe('Markdown editor component', function () {
     it('should hide the default message in the preview container', function () {
       var previewBody = document.querySelector('.js-markdown-preview-body')
       expect(previewBody).not.toContainText('Nothing to preview')
+    })
+  })
+
+  describe('when focusing the textarea', function () {
+    it('should add focused class to container', function () {
+      document.querySelector('.js-markdown-editor-input textarea').focus()
+
+      var container = document.querySelector('.app-c-markdown-editor__container')
+      expect(container).toHaveClass('app-c-markdown-editor__container--focused')
+    })
+
+    it('should trigger a focus event on component', function () {
+      var container = document.querySelector('.app-c-markdown-editor')
+      spyOnEvent(container, 'focus')
+
+      document.querySelector('.js-markdown-editor-input textarea').focus()
+
+      expect('focus').toHaveBeenTriggeredOn(container)
+    })
+
+  })
+
+  describe('when blurring the textarea', function () {
+    it('should remove focused class to container', function () {
+      document.querySelector('.js-markdown-editor-input textarea').blur()
+
+      var container = document.querySelector('.app-c-markdown-editor__container')
+      expect(container).not.toHaveClass('app-c-markdown-editor__container--focused')
     })
   })
 })
