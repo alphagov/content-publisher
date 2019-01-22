@@ -9,8 +9,13 @@
         label: "Send this link to someone so they can see a preview of how the document will appear on GOV.UK. No password is needed.",
         copyable_content: utm_uri.to_s,
         button_text: "Copy link",
-        button_data_attributes: { gtm: "copy-url-for-preview-cta" },
-        input_data_attributes: { gtm: "copy-url-for-preview-manual" }
+        button_data_attributes: {
+          gtm: "copy-url-for-preview-cta"
+        },
+        input_data_attributes: {
+          gtm: "copy-url-for-preview-manual",
+          "gtm-copy-paste-tracking": "copy-url-for-preview-manual"
+        }
       %>
     <% end %>
   </div>

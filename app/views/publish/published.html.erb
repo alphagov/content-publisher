@@ -26,7 +26,13 @@
         label: t("publish.published.published_without_review.send_label"),
         copyable_content: document_url(@edition.document, utm_content: "2i-link"),
         button_text: "Copy link",
-        button_data_attributes: { gtm: "published-content-copy-link-cta" } %>
+        button_data_attributes: {
+          gtm: "published-content-copy-link-cta"
+        },
+        input_data_attributes: {
+          "gtm-copy-paste-tracking": "published-content-copy-link-manual"
+        }
+    %>
     <% else %>
       <%= render "govuk_publishing_components/components/panel", {
         title: t("publish.published.reviewed.title")

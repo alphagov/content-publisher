@@ -3,8 +3,13 @@
     label: t("documents.show.flashes.submitted_for_review.label"),
     copyable_content: document_url(@edition.document, utm_content: "2i-link"),
     button_text: "Copy link",
-    button_data_attributes: { gtm: "copy-url-for-2i-approval-cta" },
-    input_data_attributes: { gtm: "copy-url-for-2i-approval-manual" }
+    button_data_attributes: {
+      gtm: "copy-url-for-2i-approval-cta"
+    },
+    input_data_attributes: {
+      gtm: "copy-url-for-2i-approval-manual",
+      "gtm-copy-paste-tracking": "copy-url-for-2i-approval-manual"
+    }
 ) %>
 
 <%= render "govuk_publishing_components/components/success_alert",
