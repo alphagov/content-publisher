@@ -4,7 +4,7 @@ RSpec.feature "Viewing a document with a creator" do
   scenario do
     given_there_is_a_document_with_a_creator
     when_i_visit_the_index_page
-    when_i_visit_the_document_page
+    and_i_click_on_the_document_title
     then_i_see_who_created_the_document
   end
 
@@ -17,7 +17,7 @@ RSpec.feature "Viewing a document with a creator" do
     visit documents_path
   end
 
-  def when_i_visit_the_document_page
+  def and_i_click_on_the_document_title
     click_on @document.current_edition.title
   end
 

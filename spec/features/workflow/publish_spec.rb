@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
-RSpec.feature "Publishing a document" do
+RSpec.feature "Publishing an edition" do
   scenario do
-    given_there_is_a_document_in_draft
-    when_i_visit_the_document_page
-    and_i_publish_the_document
+    given_there_is_an_edition_in_draft
+    when_i_visit_the_summary_page
+    and_i_publish_the_edition
     then_i_see_the_publish_succeeded
     and_the_content_is_shown_as_published
     and_there_is_a_history_entry
   end
 
-  def given_there_is_a_document_in_draft
+  def given_there_is_an_edition_in_draft
     @edition = create(:edition,
                       :publishable,
                       base_path: "/news/banana-pricing-updates")
   end
 
-  def when_i_visit_the_document_page
+  def when_i_visit_the_summary_page
     visit document_path(@edition.document)
   end
 
-  def and_i_publish_the_document
+  def and_i_publish_the_edition
     click_on "Publish"
     choose I18n.t!("publish.confirmation.has_been_reviewed")
     @content_request = stub_publishing_api_publish(@edition.content_id, update_type: nil, locale: @edition.locale)

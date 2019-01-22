@@ -3,8 +3,8 @@
 RSpec.feature "Delete draft after publishing" do
   scenario do
     given_there_is_a_edition
-    when_i_visit_the_document_page
-    and_i_publish_the_document
+    when_i_visit_the_summary_page
+    and_i_publish_the_edition
     and_i_create_a_new_draft
     and_i_delete_the_draft
     then_i_see_the_draft_is_gone
@@ -14,7 +14,7 @@ RSpec.feature "Delete draft after publishing" do
     @edition = create(:edition, :publishable)
   end
 
-  def when_i_visit_the_document_page
+  def when_i_visit_the_summary_page
     visit document_path(@edition.document)
   end
 
@@ -22,7 +22,7 @@ RSpec.feature "Delete draft after publishing" do
     click_on "Submit for 2i review"
   end
 
-  def and_i_publish_the_document
+  def and_i_publish_the_edition
     stub_any_publishing_api_publish
     click_on "Publish"
     choose I18n.t!("publish.confirmation.should_be_reviewed")

@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-RSpec.feature "Previewing a document" do
+RSpec.feature "Previewing an edition" do
   scenario do
-    given_there_is_a_document
+    given_there_is_an_edition
     when_i_visit_the_summary_page
     and_i_click_the_preview_button
     then_i_see_the_preview_page
   end
 
-  def given_there_is_a_document
-    @document = create :document, :with_current_edition
+  def given_there_is_an_edition
+    @edition = create :edition
   end
 
   def when_i_visit_the_summary_page
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def and_i_click_the_preview_button

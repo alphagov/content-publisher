@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit a document" do
+RSpec.feature "Edit an edition" do
   scenario do
-    given_there_is_a_document
-    when_i_go_to_edit_the_document
+    given_there_is_an_edition
+    when_i_go_to_edit_the_edition
     and_i_fill_in_the_content_fields
 
-    then_i_see_the_document_is_saved
+    then_i_see_the_edition_is_saved
     and_the_preview_creation_succeeded
-    and_i_see_i_was_the_last_user_to_edit_the_document
+    and_i_see_i_was_the_last_user_to_edit_the_edition
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     body_field = build(:field, id: "body", type: "govspeak")
     document_type = build(:document_type, contents: [body_field])
     contents = { body: "Existing body" }
     @edition = create(:edition, document_type_id: document_type.id, contents: contents)
   end
 
-  def when_i_go_to_edit_the_document
+  def when_i_go_to_edit_the_edition
     visit document_path(@edition.document)
     expect(page).to have_content("Existing body")
     click_on "Change Content"
@@ -30,7 +30,7 @@ RSpec.feature "Edit a document" do
     click_on "Save"
   end
 
-  def then_i_see_the_document_is_saved
+  def then_i_see_the_edition_is_saved
     expect(page).to have_content("Edited body.")
 
     within first(".app-timeline-entry") do
@@ -46,7 +46,7 @@ RSpec.feature "Edit a document" do
     }).to have_been_requested
   end
 
-  def and_i_see_i_was_the_last_user_to_edit_the_document
+  def and_i_see_i_was_the_last_user_to_edit_the_edition
     editor = User.first.name
     last_edited = I18n.t!("documents.show.metadata.last_edited_by") + ": #{editor}"
     expect(page).to have_content(last_edited)

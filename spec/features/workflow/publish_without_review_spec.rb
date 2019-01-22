@@ -2,23 +2,23 @@
 
 RSpec.feature "Publish without review" do
   scenario do
-    given_there_is_a_document
-    when_i_visit_the_document_page
+    given_there_is_an_edition
+    when_i_visit_the_summary_page
     and_i_publish_without_review
     then_i_see_the_publish_succeeded
 
-    when_i_visit_the_document_page
+    when_i_visit_the_summary_page
     then_i_see_it_has_not_been_reviewed
 
     when_i_click_the_approve_button
     then_i_see_that_its_reviewed
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     @edition = create(:edition, :publishable)
   end
 
-  def when_i_visit_the_document_page
+  def when_i_visit_the_summary_page
     visit document_path(@edition.document)
   end
 

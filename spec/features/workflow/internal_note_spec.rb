@@ -2,8 +2,8 @@
 
 RSpec.feature "Creating a internal note" do
   scenario do
-    given_there_is_a_document
-    when_i_visit_the_document_page
+    given_there_is_an_edition
+    when_i_visit_the_summary_page
     and_i_fill_in_and_submit_a_internal_note
     then_i_should_see_the_internal_note
 
@@ -11,12 +11,12 @@ RSpec.feature "Creating a internal note" do
     then_no_internal_note_is_created
   end
 
-  def given_there_is_a_document
-    @document = create(:document, :with_current_edition)
+  def given_there_is_an_edition
+    @edition = create(:edition)
   end
 
-  def when_i_visit_the_document_page
-    visit document_path(@document)
+  def when_i_visit_the_summary_page
+    visit document_path(@edition.document)
   end
 
   def and_i_fill_in_and_submit_a_internal_note
@@ -27,7 +27,7 @@ RSpec.feature "Creating a internal note" do
   def then_i_should_see_the_internal_note
     within("#document-history") do
       expect(page).to have_content(I18n.t!("documents.history.entry_types.internal_note"))
-      expect(page).to have_content(@document.timeline_entries.last.details.body)
+      expect(page).to have_content(@edition.timeline_entries.last.details.body)
     end
   end
 
@@ -37,6 +37,6 @@ RSpec.feature "Creating a internal note" do
   end
 
   def then_no_internal_note_is_created
-    expect(@document.timeline_entries.last.details.body).to_not eq("")
+    expect(@edition.timeline_entries.last.details.body).to_not eq("")
   end
 end

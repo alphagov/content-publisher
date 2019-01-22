@@ -4,15 +4,15 @@ RSpec.feature "Preview requirements" do
   include TopicsHelper
 
   scenario do
-    given_there_is_a_document_with_issues_to_fix
-    when_i_view_the_document_summary
+    given_there_is_an_edition_with_issues_to_fix
+    when_i_view_the_summary_page
     then_i_see_a_warning_to_fix_the_issues
 
-    when_i_try_to_preview_the_document
+    when_i_try_to_preview_the_edition
     then_i_see_an_error_to_fix_the_issues
   end
 
-  def given_there_is_a_document_with_issues_to_fix
+  def given_there_is_an_edition_with_issues_to_fix
     document_type = build(:document_type, lead_image: true)
     @image_revision = create(:image_revision, alt_text: "")
     @edition = create(:edition,
@@ -22,7 +22,7 @@ RSpec.feature "Preview requirements" do
                       revision_synced: false)
   end
 
-  def when_i_view_the_document_summary
+  def when_i_view_the_summary_page
     visit document_path(@edition.document)
   end
 
@@ -32,7 +32,7 @@ RSpec.feature "Preview requirements" do
     end
   end
 
-  def when_i_try_to_preview_the_document
+  def when_i_try_to_preview_the_edition
     stub_any_publishing_api_put_content
     click_on "Preview"
   end

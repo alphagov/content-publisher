@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-RSpec.feature "Publishing a document when the Publishing API is down" do
+RSpec.feature "Publishing an edition when the Publishing API is down" do
   scenario do
-    given_there_is_a_document
+    given_there_is_an_edition
     and_the_publishing_api_is_down
-    when_i_try_to_publish_the_document
+    when_i_try_to_publish_the_edition
     then_i_see_the_publish_failed
 
-    given_the_api_is_up_again_and_i_try_to_publish_the_document
+    given_the_api_is_up_again_and_i_try_to_publish_the_edition
     then_i_see_the_publish_succeeded
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     @edition = create(:edition, :publishable)
   end
 
@@ -20,7 +20,7 @@ RSpec.feature "Publishing a document when the Publishing API is down" do
     publishing_api_isnt_available
   end
 
-  def when_i_try_to_publish_the_document
+  def when_i_try_to_publish_the_edition
     visit document_path(@edition.document)
     click_on "Publish"
     click_on "Confirm publish"
@@ -31,7 +31,7 @@ RSpec.feature "Publishing a document when the Publishing API is down" do
     expect(page).to have_content(I18n.t!("documents.show.flashes.publish_error.title"))
   end
 
-  def given_the_api_is_up_again_and_i_try_to_publish_the_document
+  def given_the_api_is_up_again_and_i_try_to_publish_the_edition
     @request = stub_publishing_api_publish(@edition.content_id, {})
     visit document_path(@edition.document)
     click_on "Publish"

@@ -1,27 +1,25 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit topics for a document" do
+RSpec.feature "Edit topics" do
   include TopicsHelper
 
   scenario do
-    given_there_is_a_document
-    when_i_visit_the_document_page
+    given_there_is_an_edition
+    when_i_visit_the_summary_page
     and_i_click_on_edit_topics
     then_i_see_the_current_selections
     when_i_edit_the_topics
     then_i_see_the_update_succeeded
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     document_type = build(:document_type, topics: true)
-    @document = create(:document,
-                       :with_current_edition,
-                       document_type_id: document_type.id)
+    @edition = create(:edition, document_type_id: document_type.id)
   end
 
-  def when_i_visit_the_document_page
+  def when_i_visit_the_summary_page
     publishing_api_has_links(
-      "content_id" => @document.content_id,
+      "content_id" => @edition.content_id,
       "links" => {
         "taxons" => %w(level_three_topic),
       },
@@ -29,7 +27,7 @@ RSpec.feature "Edit topics for a document" do
     )
 
     publishing_api_has_taxonomy
-    visit document_path(@document)
+    visit document_path(@edition.document)
   end
 
   def and_i_click_on_edit_topics
@@ -51,7 +49,7 @@ RSpec.feature "Edit topics for a document" do
     check("Level One Topic")
 
     @request = stub_publishing_api_patch_links(
-      @document.content_id,
+      @edition.content_id,
       "links" => {
         "taxons" => %w(level_two_topic),
         "topics" => %w(specialist_sector_1 specialist_sector_2),

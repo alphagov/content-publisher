@@ -2,13 +2,13 @@
 
 RSpec.feature "Edit image metadata with requirements issues" do
   scenario do
-    given_there_is_a_document_with_images
+    given_there_is_an_edition_with_images
     when_i_visit_the_images_page
     and_i_edit_the_image_with_bad_metadata
     then_i_see_an_error_to_fix_the_issues
   end
 
-  def given_there_is_a_document_with_images
+  def given_there_is_an_edition_with_images
     document_type = build(:document_type, lead_image: true)
     @image_revision = create(:image_revision, :on_asset_manager)
     @edition = create(:edition,

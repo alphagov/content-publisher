@@ -4,21 +4,21 @@ RSpec.feature "Delete draft with Asset Manager down" do
   include AssetManagerHelper
 
   scenario do
-    given_there_is_a_document
-    when_i_visit_the_document_page
+    given_there_is_an_edition
+    when_i_visit_the_summary_page
     and_asset_manager_is_down
     and_i_delete_the_draft
     then_i_see_the_deletion_failed
     when_asset_manager_is_up_and_i_try_again
-    then_i_see_the_document_is_gone
+    then_i_see_the_edition_is_gone
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     @image_revision = create(:image_revision, :on_asset_manager)
     @edition = create(:edition, lead_image_revision: @image_revision)
   end
 
-  def when_i_visit_the_document_page
+  def when_i_visit_the_summary_page
     visit document_path(@edition.document)
   end
 
@@ -43,7 +43,7 @@ RSpec.feature "Delete draft with Asset Manager down" do
     expect(page).to have_content(@edition.title)
   end
 
-  def then_i_see_the_document_is_gone
+  def then_i_see_the_edition_is_gone
     expect(page).to have_current_path(documents_path)
     expect(page).to_not have_content @edition.title
   end

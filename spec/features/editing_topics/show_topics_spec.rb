@@ -1,35 +1,33 @@
 # frozen_string_literal: true
 
-RSpec.feature "Show the topics for a document" do
+RSpec.feature "Show topics" do
   include TopicsHelper
 
   scenario do
-    given_there_is_a_document
+    given_there_is_an_edition
     when_the_document_has_no_topics
-    and_i_visit_the_document_page
+    and_i_visit_the_summary_page
     then_i_see_there_are_no_topics
 
     when_the_document_has_a_topic
-    and_i_visit_the_document_page
+    and_i_visit_the_summary_page
     then_i_see_the_topic_breadcrumb
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     document_type = build(:document_type, topics: true)
-    @document = create(:document,
-                       :with_current_edition,
-                       document_type_id: document_type.id)
+    @edition = create(:edition, document_type_id: document_type.id)
   end
 
   def when_the_document_has_no_topics
     publishing_api_has_links(
-      "content_id" => @document.content_id,
+      "content_id" => @edition.content_id,
       "links" => {},
     )
   end
 
-  def and_i_visit_the_document_page
-    visit document_path(@document)
+  def and_i_visit_the_summary_page
+    visit document_path(@edition.document)
   end
 
   def then_i_see_there_are_no_topics
@@ -38,7 +36,7 @@ RSpec.feature "Show the topics for a document" do
 
   def when_the_document_has_a_topic
     publishing_api_has_links(
-      "content_id" => @document.content_id,
+      "content_id" => @edition.content_id,
       "links" => {
         "taxons" => %w(level_three_topic),
       },

@@ -4,7 +4,7 @@ RSpec.feature "Upload a lead image" do
   include AssetManagerHelper
 
   scenario do
-    given_there_is_a_document
+    given_there_is_an_edition
     when_i_visit_the_images_page
     and_i_upload_a_new_image
     and_i_crop_the_image
@@ -13,10 +13,9 @@ RSpec.feature "Upload a lead image" do
     and_the_preview_creation_succeeded
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     document_type = build(:document_type, lead_image: true)
-    @edition = create(:edition,
-                      document_type_id: document_type.id)
+    @edition = create(:edition, document_type_id: document_type.id)
   end
 
   def when_i_visit_the_images_page

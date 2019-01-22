@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.feature "User pages through a list of documents" do
+RSpec.feature "User pages through a list of editions" do
   scenario do
-    given_there_are_lots_of_documents
+    given_there_are_lots_of_editions
     when_i_visit_the_index_page
     then_i_should_see_the_first_results
     when_i_click_to_see_the_next_results
@@ -11,7 +11,7 @@ RSpec.feature "User pages through a list of documents" do
     then_i_should_see_the_first_results
   end
 
-  def given_there_are_lots_of_documents
+  def given_there_are_lots_of_editions
     create_list(:edition, 51)
   end
 

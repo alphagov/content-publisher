@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit a document with requirements issues" do
+RSpec.feature "Edit an edition with requirements issues" do
   scenario do
-    given_there_is_a_document_with_issues
+    given_there_is_an_edition_with_issues
     when_i_visit_the_edit_document_page_and_save
     then_i_should_see_an_error_to_fix_the_issues
   end
 
-  def given_there_is_a_document_with_issues
+  def given_there_is_an_edition_with_issues
     @edition = create(:edition, title: "")
   end
 

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.feature "User orders documents" do
+RSpec.feature "Index document ordering" do
   scenario do
-    given_there_are_some_documents
+    given_there_are_some_editions
     when_i_visit_the_index_page
     then_i_see_the_most_recently_updated_first
     when_i_toggle_the_last_updated_sort_order
@@ -11,7 +11,7 @@ RSpec.feature "User orders documents" do
     then_i_see_the_least_recently_ordering_is_maintained
   end
 
-  def given_there_are_some_documents
+  def given_there_are_some_editions
     @most_recent = create(:edition, title: "Most recent", last_edited_at: 1.minute.ago)
     @least_recent = create(:edition, title: "Least recent", last_edited_at: 2.minutes.ago)
   end

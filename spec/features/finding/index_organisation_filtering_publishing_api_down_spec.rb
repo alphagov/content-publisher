@@ -1,18 +1,13 @@
 # frozen_string_literal: true
 
-RSpec.feature "User filters documents when the Publishing API is down" do
+RSpec.feature "Index organisation filtering when the Publishing API is down" do
   scenario do
-    given_there_are_some_documents
-    and_the_publishing_api_is_down
+    given_the_publishing_api_is_down
     when_i_visit_the_index_page
     then_i_cannot_filter_by_organisation
   end
 
-  def given_there_are_some_documents
-    create(:document)
-  end
-
-  def and_the_publishing_api_is_down
+  def given_the_publishing_api_is_down
     publishing_api_isnt_available
   end
 

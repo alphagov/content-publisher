@@ -2,8 +2,8 @@
 
 RSpec.feature "Insert contact" do
   scenario do
-    given_there_is_a_document
-    when_i_go_to_edit_the_document
+    given_there_is_an_edition
+    when_i_go_to_edit_the_edition
     and_i_go_to_add_a_contact
     when_i_select_a_contact
     then_i_can_see_the_contact_in_the_body
@@ -23,21 +23,19 @@ RSpec.feature "Insert contact" do
     publishing_api_get_editions([contact], ContactsService::EDITION_PARAMS)
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     body_field = build(:field, id: "body", type: "govspeak")
     document_type = build(:document_type, contents: [body_field])
-    @document = create(:document,
-                       :with_current_edition,
-                       document_type_id: document_type.id)
+    @edition = create(:edition, document_type_id: document_type.id)
   end
 
-  def when_i_go_to_edit_the_document
-    visit document_path(@document)
+  def when_i_go_to_edit_the_edition
+    visit document_path(@edition.document)
     click_on "Change Content"
   end
 
   def and_i_go_to_add_a_contact
-    @request = stub_publishing_api_put_content(@document.content_id, {})
+    @request = stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Add contact"
   end
 

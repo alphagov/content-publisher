@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-RSpec.feature "User filters documents" do
+RSpec.feature "Index document filtering" do
   scenario do
-    given_there_are_some_documents
+    given_there_are_some_editions
     when_i_visit_the_index_page
     and_i_filter_by_title
     then_i_see_just_the_ones_that_match
 
     when_i_clear_the_filters
-    then_i_see_all_the_documents
+    then_i_see_all_the_editions
 
     when_i_filter_by_document_type
     then_i_see_just_the_ones_that_match
@@ -29,7 +29,7 @@ RSpec.feature "User filters documents" do
     then_i_see_there_are_no_results
   end
 
-  def given_there_are_some_documents
+  def given_there_are_some_editions
     create(:edition, :published, title: "Totally irrelevant")
     @primary_organisation = { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 1" }
     @organisation = { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation 2" }
@@ -63,7 +63,7 @@ RSpec.feature "User filters documents" do
     click_on "Clear all filters"
   end
 
-  def then_i_see_all_the_documents
+  def then_i_see_all_the_editions
     expect(page).to have_content("2 documents")
   end
 
