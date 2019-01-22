@@ -31,9 +31,9 @@ FactoryBot.define do
         )
       end
 
-      unless revision.update_revision
-        revision.update_revision = evaluator.association(
-          :update_revision,
+      unless revision.metadata_revision
+        revision.metadata_revision = evaluator.association(
+          :metadata_revision,
           update_type: evaluator.update_type,
           change_note: evaluator.change_note,
           created_by: revision.created_by,

@@ -38,7 +38,7 @@ module Tasks
             body: embed_contacts(translation["body"], whitehall_document.fetch("contacts", {})),
           },
         ),
-        update_revision: UpdateRevision.new(
+        metadata_revision: MetadataRevision.new(
           update_type: whitehall_edition["minor_change"] ? "minor" : "major",
         ),
         tags_revision: TagsRevision.new(tags: tags(whitehall_edition)),

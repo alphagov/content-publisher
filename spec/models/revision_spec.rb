@@ -26,8 +26,8 @@ RSpec.describe Revision do
 
       expect(revision.created_by).to eq(user)
       expect(revision.content_revision.created_by).to eq(user)
+      expect(revision.metadata_revision.created_by).to eq(user)
       expect(revision.tags_revision.created_by).to eq(user)
-      expect(revision.update_revision.created_by).to eq(user)
     end
 
     it "can set tags" do
@@ -50,7 +50,7 @@ RSpec.describe Revision do
                             document: old_revision.document,
                             content_revision: old_revision.content_revision,
                             tags_revision: old_revision.tags_revision,
-                            update_revision: old_revision.update_revision,
+                            metadata_revision: old_revision.metadata_revision,
                             lead_image_revision: nil)
 
       expect(new_revision.different_to?(old_revision)).to be false
@@ -62,7 +62,7 @@ RSpec.describe Revision do
                             document: old_revision.document,
                             content_revision: build(:content_revision),
                             tags_revision: old_revision.tags_revision,
-                            update_revision: old_revision.update_revision,
+                            metadata_revision: old_revision.metadata_revision,
                             lead_image_revision: nil)
 
       expect(new_revision.different_to?(old_revision)).to be true
@@ -76,7 +76,7 @@ RSpec.describe Revision do
                             document: old_revision.document,
                             content_revision: old_revision.content_revision,
                             tags_revision: old_revision.tags_revision,
-                            update_revision: old_revision.update_revision,
+                            metadata_revision: old_revision.metadata_revision,
                             lead_image_revision: nil,
                             image_revisions: [build(:image_revision)])
 
@@ -116,8 +116,8 @@ RSpec.describe Revision do
       new_revision = revision.build_revision_update(update, user)
 
       expect(new_revision.content_revision).not_to eq(revision.content_revision)
+      expect(new_revision.metadata_revision).to eq(revision.metadata_revision)
       expect(new_revision.tags_revision).to eq(revision.tags_revision)
-      expect(new_revision.update_revision).to eq(revision.update_revision)
     end
 
     it "includes a new tags revision when tags are updated" do
@@ -126,8 +126,8 @@ RSpec.describe Revision do
       new_revision = revision.build_revision_update(update, user)
 
       expect(new_revision.content_revision).to eq(revision.content_revision)
+      expect(new_revision.metadata_revision).to eq(revision.metadata_revision)
       expect(new_revision.tags_revision).not_to eq(revision.tags_revision)
-      expect(new_revision.update_revision).to eq(revision.update_revision)
     end
 
     it "includes a new update revision when those attributes are updated" do
@@ -136,8 +136,8 @@ RSpec.describe Revision do
       new_revision = revision.build_revision_update(update, user)
 
       expect(new_revision.content_revision).to eq(revision.content_revision)
+      expect(new_revision.metadata_revision).not_to eq(revision.metadata_revision)
       expect(new_revision.tags_revision).to eq(revision.tags_revision)
-      expect(new_revision.update_revision).not_to eq(revision.update_revision)
     end
 
     it "can retain image revisions" do
