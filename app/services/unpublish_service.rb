@@ -15,7 +15,7 @@ class UnpublishService
 
       withdrawal = Withdrawal.new(explanatory_note: explanatory_note)
 
-      edition.assign_status(:retired, nil, status_details: withdrawal)
+      edition.assign_status(:withdrawn, nil, status_details: withdrawal)
       edition.save!
 
       TimelineEntry.create_for_status_change(

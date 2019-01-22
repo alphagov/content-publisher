@@ -43,7 +43,7 @@ RSpec.describe UnpublishService do
       UnpublishService.new.withdraw(edition, explanatory_note)
       edition.reload
 
-      expect(edition.status).to be_retired
+      expect(edition.status).to be_withdrawn
       expect(edition.status.details.explanatory_note).to eq(explanatory_note)
     end
 
