@@ -51,7 +51,7 @@ module Requirements
         end
       end
 
-      if edition.document.live? && revision.update_type == "major" && revision.change_note.blank?
+      if edition.document.live_edition && revision.update_type == "major" && revision.change_note.blank?
         issues << Issue.new(:change_note, :blank)
       end
 
