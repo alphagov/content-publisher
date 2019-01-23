@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(version: 2019_01_25_181528) do
     t.string "state", default: "absent", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["file_revision_id", "variant"], name: "index_versioned_image_asset_unique_variant", unique: true
+    t.index ["file_revision_id", "variant"], name: "index_image_asset_unique_variant", unique: true
     t.index ["file_revision_id"], name: "index_image_assets_on_file_revision_id"
     t.index ["file_url"], name: "index_image_assets_on_file_url", unique: true
   end
