@@ -8,9 +8,9 @@ class EditionsController < ApplicationController
       current_edition = document.current_edition
 
       unless current_edition.live?
-        # This should probably be a bad request
-        redirect_to document
-        return
+        # FIXME: this shouldn't be an exception but we've not worked out the
+        # right response - maybe bad request or a redirect with flash?
+        raise "Can't create a new edition when the current edition is a draft"
       end
 
       current_edition.update!(current: false)
