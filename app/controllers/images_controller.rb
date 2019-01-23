@@ -26,10 +26,9 @@ class ImagesController < ApplicationController
         return
       end
 
-      image_revision = ImageUploadService.new(params[:image]).call(current_user)
-
       current_edition = @document.current_edition
       current_revision = current_edition.revision
+      image_revision = ImageUploadService.new(params[:image], current_revision).call(current_user)
 
       next_revision = current_revision.build_revision_update_for_image_upsert(
         image_revision,
