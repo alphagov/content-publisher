@@ -7,8 +7,6 @@
 #
 # This model is mutable
 class Document < ApplicationRecord
-  self.table_name = "versioned_documents"
-
   attr_readonly :content_id, :locale, :document_type_id
 
   belongs_to :created_by, class_name: "User", optional: true
@@ -39,7 +37,7 @@ class Document < ApplicationRecord
   scope :using_base_path, ->(base_path) do
     left_outer_joins(current_edition: { revision: :content_revision },
                      live_edition: { revision: :content_revision })
-      .where("versioned_content_revisions.base_path": base_path)
+      .where("content_revisions.base_path": base_path)
   end
 
   def self.find_by_param(content_id_and_locale)

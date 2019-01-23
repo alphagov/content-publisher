@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EditionFilter
-  TAG_CONTAINS_QUERY = "exists(select 1 from json_array_elements(versioned_tags_revisions.tags->'%<tag>s')
+  TAG_CONTAINS_QUERY = "exists(select 1 from json_array_elements(tags_revisions.tags->'%<tag>s')
                         where array_to_json(array[value])->>0 = :value)"
 
   include ActiveRecord::Sanitization::ClassMethods
@@ -47,16 +47,16 @@ private
 
       case field
       when :title_or_url
-        memo.where("versioned_content_revisions.title ILIKE ? OR versioned_content_revisions.base_path ILIKE ?",
+        memo.where("content_revisions.title ILIKE ? OR content_revisions.base_path ILIKE ?",
                    "%#{sanitize_sql_like(value)}%",
                    "%#{sanitize_sql_like(value)}%")
       when :document_type
-        memo.where("versioned_documents.document_type_id": value)
+        memo.where("documents.document_type_id": value)
       when :status
         if value == "published"
-          memo.where("versioned_statuses.state": %w[published published_but_needs_2i])
+          memo.where("statuses.state": %w[published published_but_needs_2i])
         else
-          memo.where("versioned_statuses.state": value)
+          memo.where("statuses.state": value)
         end
       when :organisation
         memo.where(TAG_CONTAINS_QUERY % { tag: "organisations" } + " OR " +
@@ -72,7 +72,7 @@ private
     direction = sort.chars.first == "-" ? :desc : :asc
     case sort.delete_prefix("-")
     when "last_updated"
-      scope.order("versioned_editions.last_edited_at #{direction}")
+      scope.order("editions.last_edited_at #{direction}")
     else
       scope
     end

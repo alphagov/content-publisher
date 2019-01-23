@@ -8,8 +8,6 @@
 #
 # This model is immutable
 class Revision < ApplicationRecord
-  self.table_name = "versioned_revisions"
-
   COMPARISON_IGNORE_FIELDS = %w[id number created_at created_by_id].freeze
 
   belongs_to :created_by, class_name: "User", optional: true
@@ -28,12 +26,12 @@ class Revision < ApplicationRecord
              class_name: "Revision",
              optional: true
 
-  has_and_belongs_to_many :statuses, -> { order("versioned_statuses.created_at DESC") }
+  has_and_belongs_to_many :statuses, -> { order("statuses.created_at DESC") }
 
-  has_and_belongs_to_many :editions, -> { order("versioned_editions.number DESC") }
+  has_and_belongs_to_many :editions, -> { order("editions.number DESC") }
 
   has_and_belongs_to_many :image_revisions,
-                          -> { order("versioned_image_revisions.image_id ASC") },
+                          -> { order("image_revisions.image_id ASC") },
                           class_name: "Image::Revision",
                           association_foreign_key: "image_revision_id",
                           join_table: "revisions_image_revisions"

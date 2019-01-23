@@ -4,8 +4,6 @@
 #
 # This model is immutable
 class Removal < ApplicationRecord
-  self.table_name = "versioned_removals"
-
   has_one :status, as: :details
 
   def readonly?

@@ -11,8 +11,6 @@
 #
 # This is an immutable model.
 class Image::FileRevision < ApplicationRecord
-  self.table_name = "versioned_image_file_revisions"
-
   # FIXME: we should see if these can be retina variants
   ASSET_VARIANTS = %w[300 960 high_resolution].freeze
 

@@ -6,8 +6,6 @@
 #
 # This is an immutable model
 class Image::Revision < ApplicationRecord
-  self.table_name = "versioned_image_revisions"
-
   COMPARISON_IGNORE_FIELDS = %w[id created_at created_by_id].freeze
 
   belongs_to :created_by, class_name: "User", optional: true

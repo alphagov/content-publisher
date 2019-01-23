@@ -5,8 +5,6 @@
 # intended as a debugging history log. It has associations to the data event
 # that caused it's entry to allow it to be re-built were needs to change.
 class TimelineEntry < ApplicationRecord
-  self.table_name = "versioned_timeline_entries"
-
   # The user that performed the action for this entry
   belongs_to :created_by, class_name: "User", optional: true
 
