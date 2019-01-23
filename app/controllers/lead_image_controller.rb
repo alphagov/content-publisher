@@ -6,10 +6,12 @@ class LeadImageController < ApplicationController
       document = Document.with_current_edition.lock.find_by_param(params[:document_id])
 
       current_edition = document.current_edition
-      image_revision = current_edition.image_revisions.find_by!(image_id: params[:image_id])
+      current_revision = current_edition.revision
 
-      if current_edition.lead_image_revision != image_revision
-        next_revision = current_edition.build_revision_update(
+      image_revision = current_revision.image_revisions.find_by!(image_id: params[:image_id])
+
+      if current_revision.lead_image_revision != image_revision
+        next_revision = current_revision.build_revision_update(
           { lead_image_revision: image_revision },
           current_user,
         )
@@ -32,11 +34,12 @@ class LeadImageController < ApplicationController
       document = Document.with_current_edition.lock.find_by_param(params[:document_id])
 
       current_edition = document.current_edition
+      current_revision = current_edition.revision
 
-      if current_edition.lead_image_revision
-        image_revision = current_edition.lead_image_revision
+      if current_revision.lead_image_revision
+        image_revision = current_revision.lead_image_revision
 
-        next_revision = current_edition.build_revision_update(
+        next_revision = current_revision.build_revision_update(
           { lead_image_revision: nil },
           current_user,
         )
