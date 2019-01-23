@@ -1,5 +1,5 @@
 <% content_for :back_link, render_back_link(href: document_path(@document)) %>
-<% title = @document.current_edition&.title ? "‘#{@document.current_edition_title}’" : @document.to_param %>
+<% title = @document.current_edition&.title ? "‘#{@document.current_edition.title}’" : @document.to_param %>
 <% content_for :title, "Revision history for #{title}" %>
 
 <% @revisions.each.with_index do |revision, index| %>

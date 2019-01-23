@@ -1,4 +1,4 @@
-<% content_for :title, t("images.edit.title", title: @document.current_edition_title_or_fallback) %>
+<% content_for :title, t("images.edit.title", title: @document.current_edition.title_or_fallback) %>
 
 <% if params[:wizard] == "lead_image" %>
   <% content_for :back_link, render_back_link(href: crop_image_path(@document, @image_revision.image_id, wizard: params[:wizard])) %>

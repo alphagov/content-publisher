@@ -6,9 +6,9 @@ RSpec.describe PathGeneratorService do
       service = PathGeneratorService.new
       original_document = create(:document, :with_current_edition)
       new_document = build(:document, document_type_id: original_document.document_type_id)
-      publishing_api_has_lookups("#{original_document.current_edition_base_path}": nil)
-      expect(service.path(new_document, original_document.current_edition_title))
-        .to eq("#{original_document.current_edition_base_path}-1")
+      publishing_api_has_lookups("#{original_document.current_edition.base_path}": nil)
+      expect(service.path(new_document, original_document.current_edition.title))
+        .to eq("#{original_document.current_edition.base_path}-1")
     end
 
     it "raises a 'Path unable to be generated' when many variations of that path are in use" do
