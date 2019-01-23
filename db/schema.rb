@@ -45,6 +45,13 @@ ActiveRecord::Schema.define(version: 2019_01_25_181528) do
     t.index ["revision_id"], name: "index_editions_revisions_on_revision_id"
   end
 
+  create_table "metadata_revisions", force: :cascade do |t|
+    t.string "update_type", null: false
+    t.text "change_note"
+    t.datetime "created_at"
+    t.bigint "created_by_id"
+  end
+
   create_table "revisions_image_revisions", force: :cascade do |t|
     t.bigint "image_revision_id", null: false
     t.bigint "revision_id", null: false
@@ -198,7 +205,7 @@ ActiveRecord::Schema.define(version: 2019_01_25_181528) do
     t.bigint "document_id", null: false
     t.bigint "lead_image_revision_id"
     t.bigint "content_revision_id", null: false
-    t.bigint "update_revision_id", null: false
+    t.bigint "metadata_revision_id", null: false
     t.bigint "tags_revision_id", null: false
     t.bigint "preceded_by_id"
     t.integer "number", null: false
@@ -206,10 +213,10 @@ ActiveRecord::Schema.define(version: 2019_01_25_181528) do
     t.index ["created_by_id"], name: "index_versioned_revisions_on_created_by_id"
     t.index ["document_id"], name: "index_versioned_revisions_on_document_id"
     t.index ["lead_image_revision_id"], name: "index_versioned_revisions_on_lead_image_revision_id"
+    t.index ["metadata_revision_id"], name: "index_versioned_revisions_on_metadata_revision_id"
     t.index ["number", "document_id"], name: "index_versioned_revisions_on_number_and_document_id", unique: true
     t.index ["preceded_by_id"], name: "index_versioned_revisions_on_preceded_by_id"
     t.index ["tags_revision_id"], name: "index_versioned_revisions_on_tags_revision_id"
-    t.index ["update_revision_id"], name: "index_versioned_revisions_on_update_revision_id"
   end
 
   create_table "versioned_statuses", force: :cascade do |t|
@@ -250,15 +257,9 @@ ActiveRecord::Schema.define(version: 2019_01_25_181528) do
     t.index ["edition_id"], name: "index_versioned_timeline_entries_on_edition_id"
   end
 
-  create_table "versioned_update_revisions", force: :cascade do |t|
-    t.string "update_type", null: false
-    t.text "change_note"
-    t.datetime "created_at"
-    t.bigint "created_by_id"
-  end
-
   add_foreign_key "editions_revisions", "versioned_editions", column: "edition_id", on_delete: :restrict
   add_foreign_key "editions_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
+  add_foreign_key "metadata_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "revisions_image_revisions", "versioned_image_revisions", column: "image_revision_id", on_delete: :restrict
   add_foreign_key "revisions_image_revisions", "versioned_revisions", column: "revision_id", on_delete: :restrict
   add_foreign_key "revisions_statuses", "versioned_revisions", column: "revision_id", on_delete: :restrict
@@ -282,13 +283,13 @@ ActiveRecord::Schema.define(version: 2019_01_25_181528) do
   add_foreign_key "versioned_images", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "versioned_internal_notes", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "versioned_internal_notes", "versioned_editions", column: "edition_id", on_delete: :restrict
+  add_foreign_key "versioned_revisions", "metadata_revisions", on_delete: :restrict
   add_foreign_key "versioned_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_content_revisions", column: "content_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_documents", column: "document_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_image_revisions", column: "lead_image_revision_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_revisions", column: "preceded_by_id", on_delete: :restrict
   add_foreign_key "versioned_revisions", "versioned_tags_revisions", column: "tags_revision_id", on_delete: :restrict
-  add_foreign_key "versioned_revisions", "versioned_update_revisions", column: "update_revision_id", on_delete: :restrict
   add_foreign_key "versioned_statuses", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "versioned_statuses", "versioned_editions", column: "edition_id", on_delete: :restrict
   add_foreign_key "versioned_statuses", "versioned_revisions", column: "revision_at_creation_id", on_delete: :restrict
@@ -298,5 +299,4 @@ ActiveRecord::Schema.define(version: 2019_01_25_181528) do
   add_foreign_key "versioned_timeline_entries", "versioned_editions", column: "edition_id", on_delete: :restrict
   add_foreign_key "versioned_timeline_entries", "versioned_revisions", column: "revision_id", on_delete: :restrict
   add_foreign_key "versioned_timeline_entries", "versioned_statuses", column: "status_id", on_delete: :restrict
-  add_foreign_key "versioned_update_revisions", "users", column: "created_by_id", on_delete: :restrict
 end

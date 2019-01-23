@@ -20,7 +20,7 @@ class Revision < ApplicationRecord
 
   belongs_to :content_revision
 
-  belongs_to :metadata_revision, foreign_key: :update_revision_id
+  belongs_to :metadata_revision
 
   belongs_to :tags_revision
 
