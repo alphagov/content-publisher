@@ -187,18 +187,14 @@ private
     end
 
     def lead_image_revision(next_revision)
-      if attributes.has_key?(:lead_image_revision)
-        next_revision.lead_image_revision = attributes[:lead_image_revision]
-      elsif attributes.has_key?(:lead_image_revision_id)
-        next_revision.lead_image_revision_id = attributes[:lead_image_revision_id]
-      end
+      return unless attributes.has_key?(:lead_image_revision)
+
+      next_revision.lead_image_revision = attributes[:lead_image_revision]
     end
 
     def image_revisions(next_revision)
       if attributes.has_key?(:image_revisions)
         next_revision.image_revisions = attributes[:image_revisions]
-      elsif attributes.has_key?(:image_revision_ids)
-        next_revision.image_revision_ids = attributes[:image_revision_ids]
       else
         next_revision.image_revision_ids = preceding_revision.image_revision_ids
       end
