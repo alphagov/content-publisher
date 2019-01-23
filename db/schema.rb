@@ -194,11 +194,6 @@ ActiveRecord::Schema.define(version: 2019_01_25_181528) do
     t.datetime "created_at", null: false
   end
 
-  create_table "versioned_retirements", force: :cascade do |t|
-    t.string "explanatory_note"
-    t.datetime "created_at", null: false
-  end
-
   create_table "versioned_revisions", force: :cascade do |t|
     t.bigint "created_by_id"
     t.datetime "created_at", null: false
@@ -255,6 +250,11 @@ ActiveRecord::Schema.define(version: 2019_01_25_181528) do
     t.index ["details_type", "details_id"], name: "index_versioned_timeline_entries_on_details_type_and_details_id"
     t.index ["document_id"], name: "index_versioned_timeline_entries_on_document_id"
     t.index ["edition_id"], name: "index_versioned_timeline_entries_on_edition_id"
+  end
+
+  create_table "withdrawals", force: :cascade do |t|
+    t.string "explanatory_note"
+    t.datetime "created_at", null: false
   end
 
   add_foreign_key "editions_revisions", "versioned_editions", column: "edition_id", on_delete: :restrict
