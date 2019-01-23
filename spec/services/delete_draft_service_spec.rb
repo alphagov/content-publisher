@@ -82,7 +82,7 @@ RSpec.describe DeleteDraftService do
       expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
     end
 
-    it "copes if an asset is not in Asset Manager" do
+    it "removes assets if the asset is on Asset Manager" do
       image_revision = create :image_revision, :on_asset_manager
       edition = create :edition, lead_image_revision: image_revision
 
@@ -94,6 +94,7 @@ RSpec.describe DeleteDraftService do
       DeleteDraftService.new(edition.document, user).delete
 
       expect(edition.reload.status).to be_discarded
+      expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
     end
 
     it "raises an error when the Pubishing API is down" do
