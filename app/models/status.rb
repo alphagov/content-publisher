@@ -15,7 +15,7 @@ class Status < ApplicationRecord
 
   belongs_to :details, polymorphic: true, optional: true
 
-  has_and_belongs_to_many :revisions, join_table: "versioned_revision_statuses"
+  has_and_belongs_to_many :revisions
 
   enum state: { draft: "draft",
                 submitted_for_review: "submitted_for_review",

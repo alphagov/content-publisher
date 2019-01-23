@@ -43,9 +43,7 @@ class Edition < ApplicationRecord
 
   has_many :internal_notes
 
-  has_and_belongs_to_many :revisions,
-                          -> { order("versioned_revisions.number DESC") },
-                          join_table: "versioned_edition_revisions"
+  has_and_belongs_to_many :revisions, -> { order("versioned_revisions.number DESC") }
 
   delegate :content_id, :locale, :document_type, :topics, to: :document
 
