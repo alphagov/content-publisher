@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Users views edition details on index page" do
+RSpec.feature "Index details" do
   scenario do
     given_there_is_an_edition
     when_i_visit_the_index_page

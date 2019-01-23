@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Index document ordering" do
+RSpec.feature "Index ordering" do
   scenario do
     given_there_are_some_editions
     when_i_visit_the_index_page
