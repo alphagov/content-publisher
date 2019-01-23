@@ -2,14 +2,14 @@
 
 RSpec.feature "Edit tags when the Publishing API is down" do
   scenario do
-    given_there_is_a_document
+    given_there_is_an_edition
     and_the_publishing_api_is_down
     when_i_visit_the_topics_page
     then_i_see_an_error_message
   end
 
-  def given_there_is_a_document
-    @document = create(:document, :with_current_edition)
+  def given_there_is_an_edition
+    @edition = create(:edition)
   end
 
   def and_the_publishing_api_is_down
@@ -17,7 +17,7 @@ RSpec.feature "Edit tags when the Publishing API is down" do
   end
 
   def when_i_visit_the_topics_page
-    visit topics_path(@document)
+    visit topics_path(@edition.document)
   end
 
   def then_i_see_an_error_message

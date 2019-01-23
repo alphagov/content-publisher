@@ -2,15 +2,15 @@
 
 RSpec.feature "Choose a lead image" do
   scenario do
-    given_there_is_a_document_with_images
+    given_there_is_an_edition_with_images
     when_i_visit_the_summary_page
     and_i_visit_the_lead_images_page
     and_i_choose_one_of_the_images
-    then_the_document_has_a_lead_image
+    then_the_edition_has_a_lead_image
     and_the_preview_creation_succeeded
   end
 
-  def given_there_is_a_document_with_images
+  def given_there_is_an_edition_with_images
     document_type = build(:document_type, lead_image: true)
     @image_revision = create(:image_revision, :on_asset_manager)
     @edition = create(:edition,
@@ -34,7 +34,7 @@ RSpec.feature "Choose a lead image" do
     end
   end
 
-  def then_the_document_has_a_lead_image
+  def then_the_edition_has_a_lead_image
     expect(find("#lead-image img")["src"]).to include(@image_revision.filename)
   end
 

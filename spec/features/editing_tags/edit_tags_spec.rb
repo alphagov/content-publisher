@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit document tags" do
+RSpec.feature "Edit tags" do
   let(:initial_tag) { { "content_id" => SecureRandom.uuid, "internal_name" => "Initial tag" } }
   let(:tag_to_select_1) { { "content_id" => SecureRandom.uuid, "internal_name" => "Tag to select 1" } }
   let(:tag_to_select_2) { { "content_id" => SecureRandom.uuid, "internal_name" => "Tag to select 2" } }
 
   scenario do
-    given_there_is_a_document
-    when_i_visit_the_document_page
+    given_there_is_an_edition
+    when_i_visit_the_summary_page
     and_i_click_on_edit_tags
     then_i_see_the_current_selections
     when_i_edit_the_tags
@@ -15,7 +15,7 @@ RSpec.feature "Edit document tags" do
     and_the_preview_creation_succeeded
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     multi_tag_field = build(:tag_field, type: "multi_tag", id: "multi_tag_id")
     single_tag_field = build(:tag_field, type: "single_tag", id: "single_tag_id")
     document_type = build(:document_type, tags: [multi_tag_field, single_tag_field])
@@ -34,7 +34,7 @@ RSpec.feature "Edit document tags" do
                       tags: initial_tags)
   end
 
-  def when_i_visit_the_document_page
+  def when_i_visit_the_summary_page
     visit document_path(@edition.document)
   end
 

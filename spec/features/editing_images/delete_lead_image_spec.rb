@@ -2,14 +2,14 @@
 
 RSpec.feature "Delete an image" do
   scenario do
-    given_there_is_a_document_with_images
+    given_there_is_an_edition_with_images
     when_i_visit_the_images_page
     when_i_delete_the_lead_image
     then_i_see_the_document_has_no_lead_image
     and_the_preview_creation_succeeded
   end
 
-  def given_there_is_a_document_with_images
+  def given_there_is_an_edition_with_images
     document_type = build(:document_type, lead_image: true)
     @image_revision = create(:image_revision, :on_asset_manager)
     @edition = create(:edition,

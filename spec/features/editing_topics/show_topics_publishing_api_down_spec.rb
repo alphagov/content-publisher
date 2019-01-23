@@ -2,25 +2,23 @@
 
 RSpec.feature "Showing topics when the Publishing API is down" do
   scenario do
-    given_there_is_a_document
+    given_there_is_an_edition
     and_the_publishing_api_is_down
-    when_i_visit_the_document_page
+    when_i_visit_the_summary_page
     then_i_should_see_an_error_message
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     document_type = build(:document_type, topics: true)
-    @document = create(:document,
-                       :with_current_edition,
-                       document_type_id: document_type.id)
+    @edition = create(:edition, document_type_id: document_type.id)
   end
 
   def and_the_publishing_api_is_down
     publishing_api_isnt_available
   end
 
-  def when_i_visit_the_document_page
-    visit document_path(@document)
+  def when_i_visit_the_summary_page
+    visit document_path(@edition.document)
   end
 
   def then_i_should_see_an_error_message

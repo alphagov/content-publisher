@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.feature "Previewing a document when the Publishing API is down" do
+RSpec.feature "Previewing an edition when the Publishing API is down" do
   scenario do
-    given_there_is_a_document_that_failed_to_preview
+    given_there_is_an_edition_that_failed_to_preview
     when_i_visit_the_summary_page
 
     and_the_publishing_api_is_down
@@ -15,7 +15,7 @@ RSpec.feature "Previewing a document when the Publishing API is down" do
     and_the_preview_succeeded
   end
 
-  def given_there_is_a_document_that_failed_to_preview
+  def given_there_is_an_edition_that_failed_to_preview
     @edition = create :edition, revision_synced: false
   end
 

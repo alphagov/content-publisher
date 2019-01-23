@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit a document with fields containing line breaks and spaces" do
+RSpec.feature "Edit an edition with fields containing line breaks and spaces" do
   scenario do
-    given_there_is_a_document
-    when_i_go_to_edit_the_document
+    given_there_is_an_edition
+    when_i_go_to_edit_the_edition
     and_i_fill_in_the_title_with_leading_and_trailing_line_breaks_and_spaces
     and_i_fill_in_the_summary_with_leading_and_trailing_line_breaks_and_spaces
-    then_i_see_the_document_is_saved
+    then_i_see_the_edition_is_saved
     and_the_title_no_longer_has_leading_and_trailing_line_breaks_and_spaces
     and_the_summary_no_longer_has_leading_and_trailing_line_breaks_and_spaces
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     @edition = create(:edition, title: "Existing title", summary: "Existing summary.")
   end
 
-  def when_i_go_to_edit_the_document
+  def when_i_go_to_edit_the_edition
     visit document_path(@edition.document)
     expect(page).to have_content("Existing title")
     click_on "Change Content"
@@ -31,7 +31,7 @@ RSpec.feature "Edit a document with fields containing line breaks and spaces" do
     click_on "Save"
   end
 
-  def then_i_see_the_document_is_saved
+  def then_i_see_the_edition_is_saved
     expect(page).to have_content("Edited title")
     expect(page).to have_content("Edited summary.")
 

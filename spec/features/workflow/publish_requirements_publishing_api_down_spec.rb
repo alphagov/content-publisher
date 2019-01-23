@@ -4,18 +4,18 @@ RSpec.feature "Publish requirements when the Publishing API is down" do
   include TopicsHelper
 
   scenario do
-    given_there_is_a_document
+    given_there_is_an_edition
     when_the_publishing_api_is_down
     then_i_do_not_see_warnings_that_require_it
 
-    when_i_try_to_publish_the_document
+    when_i_try_to_publish_the_edition
     then_i_see_an_error_to_prevent_publishing
 
-    when_i_try_to_submit_the_document_for_2i
+    when_i_try_to_submit_for_2i
     then_i_see_an_error_to_prevent_submission
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     document_type = build(:document_type, topics: true)
     @edition = create(:edition, document_type_id: document_type.id)
   end
@@ -32,11 +32,11 @@ RSpec.feature "Publish requirements when the Publishing API is down" do
     end
   end
 
-  def when_i_try_to_publish_the_document
+  def when_i_try_to_publish_the_edition
     click_on "Publish"
   end
 
-  def when_i_try_to_submit_the_document_for_2i
+  def when_i_try_to_submit_for_2i
     click_on "Submit for 2i review"
   end
 

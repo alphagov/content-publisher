@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit a document when the Publishing API is down" do
+RSpec.feature "Edit an edition when the Publishing API is down" do
   scenario do
-    given_there_is_a_document
-    when_i_go_to_edit_the_document
+    given_there_is_an_edition
+    when_i_go_to_edit_the_edition
     and_the_publishing_api_is_down
-    and_i_try_preview_the_document
+    and_i_try_preview_the_edition
     then_i_see_an_error_message
   end
 
-  def given_there_is_a_document
-    @document = create(:document, :with_current_edition)
+  def given_there_is_an_edition
+    @edition = create(:edition)
   end
 
-  def when_i_go_to_edit_the_document
-    visit edit_document_path(@document)
+  def when_i_go_to_edit_the_edition
+    visit edit_document_path(@edition.document)
   end
 
   def and_the_publishing_api_is_down
@@ -22,7 +22,7 @@ RSpec.feature "Edit a document when the Publishing API is down" do
     click_on "Save"
   end
 
-  def and_i_try_preview_the_document
+  def and_i_try_preview_the_edition
     click_on "Preview"
   end
 

@@ -2,12 +2,12 @@
 
 RSpec.feature "Showing a document summary" do
   scenario do
-    given_there_is_a_document
+    given_there_is_an_edition
     when_i_visit_the_document_page
     then_i_see_the_document_summary
   end
 
-  def given_there_is_a_document
+  def given_there_is_an_edition
     @edition = create(:edition,
                       title: "Title",
                       summary: "Summary",
