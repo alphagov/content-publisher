@@ -147,6 +147,8 @@ class Edition < ApplicationRecord
   end
 
   def assign_revision(revision, user)
+    raise "cannot update revision on a live edition" if live?
+
     assign_attributes(revision: revision,
                       last_edited_by: user,
                       last_edited_at: Time.zone.now)
