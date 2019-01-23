@@ -71,7 +71,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
     expect(Edition.last.status).to be_published
-    expect(Edition.last.live).to be true
+    expect(Edition.last).to be_live
   end
 
   it "can set minor update type" do
@@ -89,7 +89,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
     expect(Edition.last.status).to be_published_but_needs_2i
-    expect(Edition.last.live).to be true
+    expect(Edition.last).to be_live
   end
 
   it "sets the correct states when Whitehall document state is 'rejected'" do
@@ -98,7 +98,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
     expect(Edition.last.status).to be_submitted_for_review
-    expect(Edition.last.live).to be false
+    expect(Edition.last).not_to be_live
   end
 
   it "sets the correct states when Whitehall document state is 'submitted'" do
@@ -107,7 +107,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
     Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
     expect(Edition.last.status).to be_submitted_for_review
-    expect(Edition.last.live).to be false
+    expect(Edition.last).not_to be_live
   end
 
   it "skips importing documents with Whitheall states that are not supported" do
@@ -181,7 +181,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
       Tasks::WhitehallNewsImporter.new.import(parsed_json)
 
       expect(Edition.last.status).to be_draft
-      expect(Edition.last.live).to be false
+      expect(Edition.last).not_to be_live
     end
   end
 end
