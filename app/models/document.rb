@@ -82,8 +82,4 @@ class Document < ApplicationRecord
 
     current_edition.created_at == current_edition.updated_at
   end
-
-  def live?
-    live_edition.present?
-  end
 end

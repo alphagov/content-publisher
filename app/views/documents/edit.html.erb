@@ -106,7 +106,7 @@
     <%= render "documents/fields/#{field.type}_input", field: field, document: @document, revision: @revision %>
   <% end %>
 
-  <% if @document.live? %>
+  <% if @document.live_edition %>
     <%= render "documents/edit/change_notes" %>
   <% end %>
 

@@ -124,7 +124,7 @@ RSpec.describe UnpublishService do
       expect(timeline_entry.entry_type).to eq("removed")
       expect(timeline_entry.details.explanatory_note).to eq(explanatory_note)
       expect(timeline_entry.details.alternative_path).to eq(alternative_path)
-      expect(timeline_entry.details.redirect).to be_falsey
+      expect(timeline_entry.details.redirect?).to be false
     end
 
     it "updates the edition status" do
@@ -132,7 +132,7 @@ RSpec.describe UnpublishService do
       edition.reload
 
       expect(edition.status).to be_removed
-      expect(edition.status.details.redirect).to be false
+      expect(edition.status.details.redirect?).to be false
     end
 
     context "when the given edition is a draft" do
@@ -206,7 +206,7 @@ RSpec.describe UnpublishService do
       expect(timeline_entry.entry_type).to eq("removed")
       expect(timeline_entry.details.explanatory_note).to eq(explanatory_note)
       expect(timeline_entry.details.alternative_path).to eq(redirect_path)
-      expect(timeline_entry.details.redirect).to be true
+      expect(timeline_entry.details.redirect?).to be true
     end
 
     it "updates the edition status" do
@@ -214,7 +214,7 @@ RSpec.describe UnpublishService do
       edition.reload
 
       expect(edition.status).to be_removed
-      expect(edition.status.details.redirect).to be true
+      expect(edition.status.details.redirect?).to be true
     end
 
     context "when the given edition is a draft" do

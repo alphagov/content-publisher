@@ -45,7 +45,7 @@
                  secondary: true %>
 
       <%= delete_draft_link("app-link--right") %>
-    <% elsif !@edition.revision_synced %>
+    <% elsif !@edition.revision_synced? %>
       <%= form_tag create_preview_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Preview" %>
       <% end %>
@@ -63,7 +63,7 @@
       <%= delete_draft_link("app-link--right") %>
     <% end %>
 
-    <% if @edition.document.live? %>
+    <% if @edition.document.live_edition %>
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
       <%= link_to "View published edition on GOV.UK", EditionUrl.new(@edition.document.live_edition).public_url, class: "govuk-link govuk-link--no-visited-state" %>
     <% end %>

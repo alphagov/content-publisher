@@ -35,7 +35,7 @@
           <% end %>
 
           <% if removal.alternative_path.present? %>
-            <% if removal.redirect %>
+            <% if removal.redirect? %>
               <p>
                 Redirected to
                 <%= link_to(Plek.new.website_root + removal.alternative_path,

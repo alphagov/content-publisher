@@ -25,7 +25,7 @@
   id: "content",
   title: {
     text: t("documents.show.contents.title"),
-    change_url: !@edition.live && edit_document_path(@edition.document)
+    change_url: @edition.editable? && edit_document_path(@edition.document)
   },
   items: [
     {

@@ -17,9 +17,9 @@ RSpec.describe PublishService do
                       .publish(user: create(:user), with_review: true)
         edition.reload
         expect(publish_request).to have_been_requested
-        expect(edition.live).to be(true)
         expect(edition.document.live_edition).to eq(edition)
         expect(edition).to be_published
+        expect(edition).to be_live
       end
 
       it "can specify if edition is reviewed" do
