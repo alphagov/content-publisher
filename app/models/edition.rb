@@ -22,7 +22,7 @@ class Edition < ApplicationRecord
 
     # Used to keep an audit trail of all the revisions that have been
     # associated with an edition
-    revisions << revision unless revisions.include?(revision)
+    all_revisions << revision unless all_revisions.include?(revision)
   end
 
   attr_readonly :number, :document_id
@@ -37,14 +37,17 @@ class Edition < ApplicationRecord
 
   belongs_to :status
 
-  has_many :statuses
+  # all the statuses this edition has held
+  has_many :all_statuses, class_name: "Status"
 
   has_many :timeline_entries
 
   has_many :internal_notes
 
-  has_and_belongs_to_many :revisions,
+  # all the revisions that have been associated with this edition
+  has_and_belongs_to_many :all_revisions,
                           -> { order("versioned_revisions.number DESC") },
+                          class_name: "Revision",
                           join_table: "versioned_edition_revisions"
 
   delegate :content_id, :locale, :document_type, :topics, to: :document
