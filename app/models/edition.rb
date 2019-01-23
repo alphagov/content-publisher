@@ -31,17 +31,17 @@ class Edition < ApplicationRecord
 
   belongs_to :last_edited_by, class_name: "User", optional: true
 
-  belongs_to :document, inverse_of: :editions
+  belongs_to :document
 
-  belongs_to :revision, inverse_of: :current_for_editions
+  belongs_to :revision
 
-  belongs_to :status, inverse_of: :status_of
+  belongs_to :status
 
-  has_many :statuses, dependent: :delete_all, inverse_of: :edition
+  has_many :statuses
 
-  has_many :timeline_entries, dependent: :delete_all
+  has_many :timeline_entries
 
-  has_many :internal_notes, dependent: :delete_all
+  has_many :internal_notes
 
   has_and_belongs_to_many :revisions,
                           -> { order("versioned_revisions.number DESC") },

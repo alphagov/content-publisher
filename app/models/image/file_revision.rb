@@ -22,15 +22,7 @@ class Image::FileRevision < ApplicationRecord
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  has_many :assets,
-           class_name: "Image::Asset",
-           inverse_of: :file_revision,
-           dependent: :restrict_with_exception
-
-  has_many :revisions,
-           class_name: "Image::Revision",
-           inverse_of: :file_revision,
-           dependent: :restrict_with_exception
+  has_many :assets, class_name: "Image::Asset"
 
   delegate :content_type, to: :blob
 

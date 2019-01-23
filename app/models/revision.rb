@@ -16,32 +16,17 @@ class Revision < ApplicationRecord
 
   belongs_to :lead_image_revision, class_name: "Image::Revision", optional: true
 
-  belongs_to :document, inverse_of: :revisions
+  belongs_to :document
 
-  belongs_to :content_revision, inverse_of: :revisions
+  belongs_to :content_revision
 
-  belongs_to :metadata_revision,
-             foreign_key: :update_revision_id,
-             inverse_of: :revisions
+  belongs_to :metadata_revision, foreign_key: :update_revision_id
 
-  belongs_to :tags_revision, inverse_of: :revisions
+  belongs_to :tags_revision
 
   belongs_to :preceded_by,
              class_name: "Revision",
-             optional: true,
-             inverse_of: :followed_by
-
-  has_one :followed_by,
-          class_name: "Revision",
-          foreign_key: :preceded_by_id,
-          inverse_of: :preceded_by,
-          dependent: :nullify
-
-  has_many :current_for_editions,
-           class_name: "Edition",
-           foreign_key: :revision_id,
-           inverse_of: :revision,
-           dependent: :restrict_with_exception
+             optional: true
 
   has_and_belongs_to_many :statuses,
                           -> { order("versioned_statuses.created_at DESC") },

@@ -11,15 +11,9 @@ class Status < ApplicationRecord
 
   belongs_to :revision_at_creation, class_name: "Revision"
 
-  belongs_to :edition, optional: true, inverse_of: :statuses
+  belongs_to :edition, optional: true
 
   belongs_to :details, polymorphic: true, optional: true
-
-  has_one :status_of,
-          class_name: "Edition",
-          foreign_key: :status_id,
-          inverse_of: :status,
-          dependent: :restrict_with_exception
 
   has_and_belongs_to_many :revisions, join_table: "versioned_revision_statuses"
 

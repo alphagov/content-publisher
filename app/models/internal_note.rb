@@ -5,7 +5,7 @@ class InternalNote < ApplicationRecord
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  belongs_to :edition, inverse_of: :internal_notes
+  belongs_to :edition
 
   def readonly?
     !new_record?
