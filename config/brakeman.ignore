@@ -1,0 +1,46 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "39145c63d5ed51c628cecba5ff39b0a863b65a55c23ef65fa614d94d93daf5d0",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/new_document_controller.rb",
+      "line": 35,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(DocumentType.find(params[:document_type]).managed_elsewhere_url)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "NewDocumentController",
+        "method": "create"
+      },
+      "user_input": "DocumentType.find(params[:document_type]).managed_elsewhere_url",
+      "confidence": "High",
+      "note": ""
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "75d6b449105b8850a30def35269aefc1e3243311114e535637ea821db114a6b0",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/new_document_controller.rb",
+      "line": 18,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(Supertype.find(params[:supertype]).managed_elsewhere_url)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "NewDocumentController",
+        "method": "choose_document_type"
+      },
+      "user_input": "Supertype.find(params[:supertype]).managed_elsewhere_url",
+      "confidence": "High",
+      "note": ""
+    }
+  ],
+  "updated": "2019-01-23 13:38:56 +0000",
+  "brakeman_version": "4.4.0"
+}
