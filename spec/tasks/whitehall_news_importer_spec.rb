@@ -8,7 +8,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
       content_id: SecureRandom.uuid,
       editions: [
         {
-          created_at: Time.zone.now,
+          created_at: Time.current,
           news_article_type: { key: "news_story" },
           translations: [
             {
@@ -132,7 +132,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
         content_id: SecureRandom.uuid,
         editions: [
           {
-            created_at: Time.zone.now,
+            created_at: Time.current,
             news_article_type: { key: "news_story" },
             translations: [
               {
@@ -152,7 +152,7 @@ RSpec.describe Tasks::WhitehallNewsImporter do
             force_published: false,
           },
           {
-            created_at: Time.zone.now - 1.day,
+            created_at: Time.current - 1.day,
             news_article_type: { key: "news_story" },
             translations: [
               {
