@@ -1,22 +1,22 @@
-<% lead_image = @edition.lead_image_revision %>
+<% lead_image_revision = @edition.lead_image_revision %>
 
-<% lead_image_block = if lead_image %>
+<% lead_image_block = if lead_image_revision %>
   <% capture do %>
     <%= render "components/image_meta", {
-      src: url_for(lead_image.thumbnail),
-      alt_text: lead_image.alt_text,
+      src: url_for(lead_image_revision.thumbnail),
+      alt_text: lead_image_revision.alt_text,
       metadata_items: [
         {
           field: t("documents.show.lead_image.alt_text"),
-          value: lead_image.alt_text,
+          value: lead_image_revision.alt_text,
         },
         {
           field: t("documents.show.lead_image.caption"),
-          value: lead_image.caption,
+          value: lead_image_revision.caption,
         },
         {
           field: t("documents.show.lead_image.credit"),
-          value: lead_image.credit,
+          value: lead_image_revision.credit,
         }
       ],
     } %>
