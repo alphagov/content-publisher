@@ -43,8 +43,8 @@ RSpec.feature "Index filtering" do
   end
 
   def when_i_visit_the_index_page
-    publishing_api_has_linkables([@primary_organisation, @organisation],
-                                 document_type: "organisation")
+    stub_publishing_api_has_linkables([@primary_organisation, @organisation],
+                                      document_type: "organisation")
 
     visit documents_path
   end

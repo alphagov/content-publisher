@@ -15,13 +15,13 @@ RSpec.describe Requirements::TopicChecker do
       let(:document) { build :document, document_type_id: document_type.id }
 
       before do
-        publishing_api_has_links(
+        stub_publishing_api_has_links(
           "content_id" => document.content_id,
           "links" => {},
           "version" => 3,
         )
 
-        publishing_api_has_taxonomy
+        stub_publishing_api_has_taxonomy
       end
 
       it "returns an issue if there are no topics" do
@@ -40,7 +40,7 @@ RSpec.describe Requirements::TopicChecker do
       let(:document) { build :document, document_type_id: document_type.id }
 
       before do
-        publishing_api_isnt_available
+        stub_publishing_api_isnt_available
       end
 
       it "returns no issues by default (ignore exception)" do

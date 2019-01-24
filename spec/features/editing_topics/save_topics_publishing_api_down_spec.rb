@@ -17,20 +17,20 @@ RSpec.feature "Save topics when the Publishing API is down" do
   end
 
   def and_i_am_on_the_topics_page
-    publishing_api_has_links(
+    stub_publishing_api_has_links(
       "content_id" => @edition.content_id,
       "links" => {
         "taxons" => %w(level_one_topic),
       },
     )
 
-    publishing_api_has_taxonomy
+    stub_publishing_api_has_taxonomy
     visit topics_path(@edition.document)
   end
 
   def and_the_publishing_api_is_down
     stub_publishing_api_patch_links(@edition.content_id, {})
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
   end
 
   def when_i_click_the_save_button

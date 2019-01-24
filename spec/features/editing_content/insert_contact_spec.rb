@@ -19,8 +19,8 @@ RSpec.feature "Insert contact" do
   end
 
   before do
-    publishing_api_has_linkables([organisation], document_type: "organisation")
-    publishing_api_get_editions([contact], ContactsService::EDITION_PARAMS)
+    stub_publishing_api_has_linkables([organisation], document_type: "organisation")
+    stub_publishing_api_get_editions([contact], ContactsService::EDITION_PARAMS)
   end
 
   def given_there_is_an_edition

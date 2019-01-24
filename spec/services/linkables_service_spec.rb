@@ -5,7 +5,7 @@ RSpec.describe LinkablesService do
     it "returns a sorted array of linkables" do
       linkable1 = { "content_id" => SecureRandom.uuid, "internal_name" => "linkable 1" }
       linkable2 = { "content_id" => SecureRandom.uuid, "internal_name" => "Linkable 2" }
-      publishing_api_has_linkables([linkable2, linkable1], document_type: "topical_event")
+      stub_publishing_api_has_linkables([linkable2, linkable1], document_type: "topical_event")
 
       options = LinkablesService.new("topical_event").select_options
 
@@ -17,7 +17,7 @@ RSpec.describe LinkablesService do
   describe "#by_content_id" do
     it "returns the linkable with the matching content_id" do
       linkable = { "content_id" => SecureRandom.uuid, "internal_name" => "Linkable 1" }
-      publishing_api_has_linkables([linkable], document_type: "topical_event")
+      stub_publishing_api_has_linkables([linkable], document_type: "topical_event")
 
       service = LinkablesService.new("topical_event")
       expect(service.by_content_id(linkable["content_id"])).to eq(linkable)

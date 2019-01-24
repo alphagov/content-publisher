@@ -20,7 +20,7 @@ RSpec.feature "Show topics" do
   end
 
   def when_the_document_has_no_topics
-    publishing_api_has_links(
+    stub_publishing_api_has_links(
       "content_id" => @edition.content_id,
       "links" => {},
     )
@@ -35,14 +35,14 @@ RSpec.feature "Show topics" do
   end
 
   def when_the_document_has_a_topic
-    publishing_api_has_links(
+    stub_publishing_api_has_links(
       "content_id" => @edition.content_id,
       "links" => {
         "taxons" => %w(level_three_topic),
       },
     )
 
-    publishing_api_has_taxonomy
+    stub_publishing_api_has_taxonomy
   end
 
   def then_i_see_the_topic_breadcrumb

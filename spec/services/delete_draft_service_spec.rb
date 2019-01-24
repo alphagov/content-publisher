@@ -98,7 +98,7 @@ RSpec.describe DeleteDraftService do
 
     it "raises an error when the Pubishing API is down" do
       document = create :document, :with_current_edition
-      publishing_api_isnt_available
+      stub_publishing_api_isnt_available
       expect { DeleteDraftService.new(document, user).delete }.to raise_error GdsApi::BaseError
     end
 
