@@ -3,6 +3,7 @@
 
 .autocomplete__option {
   @include govuk-font(19);
+  color: $govuk-text-colour;
 }
 
 .autocomplete__list .autocomplete__option,
@@ -13,6 +14,21 @@
     position: relative;
     top: 3px;
     padding-top: 2px;
+  }
+}
+
+.autocomplete__option-hint {
+  display: block;
+  @include govuk-font(16);
+  color: $govuk-secondary-text-colour;
+}
+
+.autocomplete__option--focused,
+.autocomplete__option:hover {
+  color: govuk-colour('white');
+
+  .autocomplete__option-hint {
+    color: govuk-colour('white');
   }
 }
 

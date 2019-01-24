@@ -4,7 +4,7 @@
 <%
   contact_options = @contacts_by_organisation.flat_map do |org|
     org["contacts"].map do |contact|
-      ["#{contact['title']} - #{org['name']}", contact["content_id"]]
+      [contact['title'], contact["content_id"], {"data-hint": org['name']}]
     end
   end
 %>
@@ -18,7 +18,8 @@
     label: {
       text: %{<h1 class="govuk-heading-l">#{t("contacts.search.title")}</h1>}.html_safe,
     },
-    options: ["", ""] + contact_options
+    options: ["", ""] + contact_options,
+    custom_template: true
   } %>
 
   <%= render "govuk_publishing_components/components/button", {

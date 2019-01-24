@@ -82,3 +82,25 @@ examples:
       selected_options:
           - fr
           - de
+  autocomplete_with_hint_on_options:
+    data:
+      id: autocomplete-with-hint-on-options
+      name: autocomplete-with-hint-on-options
+      label:
+        text: Select your country
+      custom_template: true
+      options:
+        -
+          -
+        -
+          - France
+          - fr
+          - data-hint: Paris
+        -
+          - United Arab Emirates
+          - uae
+          - data-hint: Abu Dhabi
+        -
+          - United Kingdom
+          - uk
+          - data-hint: London

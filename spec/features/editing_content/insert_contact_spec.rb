@@ -40,7 +40,7 @@ RSpec.feature "Insert contact" do
   end
 
   def when_i_select_a_contact
-    select "Contact - Organisation", from: "contact_id"
+    select "Contact", from: "contact_id"
     click_on "Insert contact"
   end
 
