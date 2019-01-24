@@ -2,9 +2,9 @@
 
 # Respresents the current state of a piece of content that was once or is
 # expected to be published on GOV.UK.
-# It is a mutable concept that is associated with a variety of immutable
-# models such as revisions and status which represent the current & past
-# information on the content.
+#
+# It is a mutable concept that is associated with a revision model and status
+# model to represent the current content and state of the edition.
 class Edition < ApplicationRecord
   self.table_name = "versioned_editions"
 

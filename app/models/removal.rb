@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Stores the specific data for a removed status.
+#
+# This model is immutable
 class Removal < ApplicationRecord
   self.table_name = "versioned_removals"
 

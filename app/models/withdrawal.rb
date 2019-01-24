@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Stores the specific data for a withdrawn status.
+#
+# This model is immutable
 class Withdrawal < ApplicationRecord
   self.table_name = "versioned_retirements"
 

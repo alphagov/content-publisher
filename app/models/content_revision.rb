@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-# A revision of content for a document. This is accessed through a Revision
-# object
+# This stores the content component of a revision, such as title, body and
+# other data a particular format uses.
+#
+# This model is immutable.
 class ContentRevision < ApplicationRecord
   self.table_name = "versioned_content_revisions"
 

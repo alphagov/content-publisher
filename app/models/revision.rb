@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-# A model that represents a particular revision of a document. An edition
-# always has a revision for the current state of it and then there are past
-# revisions that represent all the changes a document has been through.
+# Represents a particular revision of a document - acting as a snapshot to
+# a particular user's edit.
 #
-# This model aims to store as little data as possible (since there are many
-# in the database) and has associations that store specific types of data,
-# these are delegated to so methods can still be ran on a revision
+# This model stores as little data as possible by having associations to more
+# specific types of revision and delegating its methods to them.
+#
+# This model is immutable
 class Revision < ApplicationRecord
   self.table_name = "versioned_revisions"
 
