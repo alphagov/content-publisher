@@ -13,8 +13,6 @@ FactoryBot.define do
           :edition,
           :published,
           created_by: document.created_by,
-          current: true,
-          live: true,
           document: document,
         )
         document.current_edition = document.live_edition
@@ -26,7 +24,6 @@ FactoryBot.define do
         document.current_edition = evaluator.association(
           :edition,
           created_by: document.created_by,
-          current: true,
           document: document,
         )
       end
@@ -39,14 +36,12 @@ FactoryBot.define do
           :published,
           created_by: document.created_by,
           current: false,
-          live: true,
           document: document,
         )
 
         document.current_edition = evaluator.association(
           :edition,
           created_by: document.created_by,
-          current: true,
           document: document,
         )
       end
