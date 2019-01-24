@@ -10,13 +10,21 @@ class PreviewService
   def create_preview
     upload_assets(edition)
     publish_draft(edition)
+    DraftAssetCleanupService.new.call(edition)
+  rescue GdsApi::BaseError
+    edition.update!(revision_synced: false)
+    raise
   end
 
   def try_create_preview
-    return edition.update!(revision_synced: false) if has_issues?
-
-    create_preview
+    if has_issues?
+      DraftAssetCleanupService.new.call(edition)
+      edition.update!(revision_synced: false)
+    else
+      create_preview
+    end
   rescue GdsApi::BaseError => e
+    edition.update!(revision_synced: false)
     GovukError.notify(e)
   end
 
@@ -30,9 +38,6 @@ private
     payload = PublishingApiPayload.new(edition).payload
     GdsApi.publishing_api_v2.put_content(edition.content_id, payload)
     edition.update!(revision_synced: true)
-  rescue GdsApi::BaseError
-    edition.update!(revision_synced: false)
-    raise
   end
 
   def upload_assets(edition)
@@ -41,9 +46,6 @@ private
 
       image_revision.assets.each { |asset| upload_image(edition, asset) }
     end
-  rescue GdsApi::BaseError
-    edition.update!(revision_synced: false)
-    raise
   end
 
   def upload_image(edition, image_asset)
