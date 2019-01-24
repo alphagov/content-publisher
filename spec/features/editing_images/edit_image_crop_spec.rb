@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.feature "Edit image crop", js: true do
-  include AssetManagerHelper
-
   scenario do
     given_there_is_an_edition_with_images
     when_i_visit_the_images_page
@@ -40,7 +38,7 @@ RSpec.feature "Edit image crop", js: true do
     bottom_right_handle.drag_to(find(".govuk-heading-l"))
 
     @publishing_api_request = stub_any_publishing_api_put_content
-    @asset_manager_requests = stub_asset_manager_receives_assets
+    @asset_manager_requests = stub_asset_manager_receives_an_asset
 
     click_on "Crop image"
   end
