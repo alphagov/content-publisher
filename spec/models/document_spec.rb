@@ -34,12 +34,7 @@ RSpec.describe Document do
     end
 
     it "returns true if the timestamps are equal" do
-      time = Time.current
-      document = create(:edition,
-                        current: true,
-                        number: 1,
-                        created_at: time,
-                        updated_at: time).document
+      document = create(:edition, current: true, number: 1).document
 
       expect(document.newly_created?).to be true
     end

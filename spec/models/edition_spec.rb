@@ -117,7 +117,7 @@ RSpec.describe Edition do
       end
     end
 
-    it "can not update last edited" do
+    it "preserves last edited when specified" do
       travel_to(Time.current) do
         edition.last_edited_at = 10.days.ago
         edition.last_edited_by = build(:user)

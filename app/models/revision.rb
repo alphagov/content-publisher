@@ -106,22 +106,15 @@ class Revision < ApplicationRecord
 
     other_attributes = other_revision.attributes.except(*COMPARISON_IGNORE_FIELDS)
     attributes_differ = attributes.except(*COMPARISON_IGNORE_FIELDS) != other_attributes
-
     # We need to check many-to-many relationship separately as it's not
     # included in attributes
-    attributes_differ || different_image_revision_ids(other_revision.image_revision_ids)
+    image_revisions_differ = image_revision_ids.to_set != other_revision.image_revision_ids.to_set
+
+    attributes_differ || image_revisions_differ
   end
 
   def image_revisions_without_lead
     image_revisions.reject { |i| i.id == lead_image_revision_id }
-  end
-
-private
-
-  def different_image_revision_ids(other_image_revision_ids)
-    return true if image_revision_ids.include?(nil)
-
-    image_revision_ids.sort != other_image_revision_ids.sort
   end
 
   class BuildRevisionUpdate
@@ -187,18 +180,14 @@ private
     end
 
     def lead_image_revision(next_revision)
-      if attributes.has_key?(:lead_image_revision)
-        next_revision.lead_image_revision = attributes[:lead_image_revision]
-      elsif attributes.has_key?(:lead_image_revision_id)
-        next_revision.lead_image_revision_id = attributes[:lead_image_revision_id]
-      end
+      return unless attributes.has_key?(:lead_image_revision)
+
+      next_revision.lead_image_revision = attributes[:lead_image_revision]
     end
 
     def image_revisions(next_revision)
       if attributes.has_key?(:image_revisions)
         next_revision.image_revisions = attributes[:image_revisions]
-      elsif attributes.has_key?(:image_revision_ids)
-        next_revision.image_revision_ids = attributes[:image_revision_ids]
       else
         next_revision.image_revision_ids = preceding_revision.image_revision_ids
       end

@@ -36,9 +36,9 @@ class ReviewController < ApplicationController
       current_edition = document.current_edition
 
       if !current_edition.status.published_but_needs_2i?
-        # probably better to return a 400 response but we don't currently
-        # have a template
-        redirect_to document
+        # FIXME: this shouldn't be an exception but we've not worked out the
+        # right response - maybe bad request or a redirect with flash?
+        raise "Can't approve a document that doesn't need 2i"
       end
 
       current_edition.assign_status(:published, current_user).save!

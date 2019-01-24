@@ -172,26 +172,6 @@ RSpec.describe Revision do
       expect(new_revision.image_revisions)
         .to match([image_revision1, image_revision2])
     end
-
-    it "can change image revisions by id" do
-      image_revision1 = create(:image_revision)
-      revision = create(:revision,
-                        lead_image_revision: image_revision1,
-                        image_revisions: [image_revision1])
-
-      image_revision2 = create(:image_revision)
-      new_revision = revision.build_revision_update(
-        {
-          lead_image_revision_id: image_revision2.id,
-          image_revision_ids: [image_revision1.id, image_revision2.id],
-        },
-        user,
-      )
-
-      expect(new_revision.lead_image_revision).to eq(image_revision2)
-      expect(new_revision.image_revisions)
-        .to match([image_revision1, image_revision2])
-    end
   end
 
   describe "#build_revision_update_for_image_upsert" do
