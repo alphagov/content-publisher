@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe DeleteDraftService do
-  include AssetManagerHelper
-
   let(:user) { create :user }
 
   describe "#delete" do
@@ -32,7 +30,7 @@ RSpec.describe DeleteDraftService do
       edition = create :edition, lead_image_revision: image_revision
 
       stub_publishing_api_discard_draft(edition.content_id)
-      delete_request = stub_asset_manager_deletes_assets
+      delete_request = stub_asset_manager_deletes_any_asset
 
       DeleteDraftService.new(edition.document, user).delete
 
@@ -87,7 +85,7 @@ RSpec.describe DeleteDraftService do
       edition = create :edition, lead_image_revision: image_revision
 
       image_revision.assets.map do |asset|
-        asset_manager_does_not_have_an_asset(asset.asset_manager_id)
+        stub_asset_manager_does_not_have_an_asset(asset.asset_manager_id)
       end
 
       stub_publishing_api_discard_draft(edition.content_id)
@@ -107,7 +105,7 @@ RSpec.describe DeleteDraftService do
       image_revision = create :image_revision, :on_asset_manager
       edition = create :edition, lead_image_revision: image_revision
 
-      stub_asset_manager_down
+      stub_asset_manager_isnt_available
 
       expect { DeleteDraftService.new(edition.document, user).delete }
         .to raise_error(GdsApi::BaseError)

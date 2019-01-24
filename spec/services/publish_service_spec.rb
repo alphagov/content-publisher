@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe PublishService do
-  include AssetManagerHelper
-
   describe "#publish" do
     context "when there is no live edition" do
       let(:edition) { create(:edition, :publishable) }
@@ -60,7 +58,7 @@ RSpec.describe PublishService do
                                     update_type: nil,
                                     locale: edition.locale)
 
-        stub_asset_manager_updates_assets
+        stub_asset_manager_updates_any_asset
       end
 
       it "makes the image assets live" do
@@ -107,7 +105,7 @@ RSpec.describe PublishService do
       end
 
       it "removes ones not used by the current edition" do
-        delete_request = stub_asset_manager_deletes_assets
+        delete_request = stub_asset_manager_deletes_any_asset
 
         PublishService.new(document)
                       .publish(user: create(:user), with_review: true)
@@ -118,7 +116,7 @@ RSpec.describe PublishService do
       end
 
       it "keeps images used by the current edition" do
-        stub_asset_manager_deletes_assets
+        stub_asset_manager_deletes_any_asset
         PublishService.new(document)
                       .publish(user: create(:user), with_review: true)
 
@@ -157,7 +155,7 @@ RSpec.describe PublishService do
         stub_publishing_api_publish(document.content_id,
                                     update_type: nil,
                                     locale: document.locale)
-        stub_asset_manager_updates_assets
+        stub_asset_manager_updates_any_asset
       end
 
       it "supersedes the old files" do

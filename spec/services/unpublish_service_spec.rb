@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe UnpublishService do
-  include AssetManagerHelper
-
   let(:edition) { create(:edition, :published) }
   let(:edition_with_image) do
     create(:edition, :published, lead_image_revision: image_revision)
@@ -27,7 +25,7 @@ RSpec.describe UnpublishService do
     end
 
     it "does not delete assets for withdrawn editions" do
-      delete_request = stub_asset_manager_deletes_assets
+      delete_request = stub_asset_manager_deletes_any_asset
       UnpublishService.new.withdraw(edition_with_image, explanatory_note)
 
       expect(delete_request).not_to have_been_requested
@@ -80,7 +78,7 @@ RSpec.describe UnpublishService do
     end
 
     it "deletes assets associated with removed editions" do
-      delete_request = stub_asset_manager_deletes_assets
+      delete_request = stub_asset_manager_deletes_any_asset
 
       UnpublishService.new.remove(edition_with_image)
       expect(delete_request).to have_been_requested.at_least_once
@@ -171,7 +169,7 @@ RSpec.describe UnpublishService do
     end
 
     it "deletes assets associated with redirected editions" do
-      delete_request = stub_asset_manager_deletes_assets
+      delete_request = stub_asset_manager_deletes_any_asset
 
       UnpublishService.new.remove_and_redirect(edition_with_image,
                                                redirect_path)

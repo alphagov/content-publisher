@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.feature "Delete draft" do
-  include AssetManagerHelper
-
   scenario do
     given_there_is_an_edition
     when_i_visit_the_summary_page
@@ -22,7 +20,7 @@ RSpec.feature "Delete draft" do
 
   def and_i_delete_the_draft
     @content_request = stub_publishing_api_discard_draft(@edition.content_id)
-    @image_request = stub_asset_manager_deletes_assets
+    @image_request = stub_asset_manager_deletes_any_asset
 
     click_on "Delete draft"
     click_on "Yes, delete draft"

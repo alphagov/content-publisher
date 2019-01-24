@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.feature "Delete draft with Asset Manager down" do
-  include AssetManagerHelper
-
   scenario do
     given_there_is_an_edition
     when_i_visit_the_summary_page
@@ -23,11 +21,11 @@ RSpec.feature "Delete draft with Asset Manager down" do
   end
 
   def and_asset_manager_is_down
-    stub_asset_manager_down
+    stub_asset_manager_isnt_available
   end
 
   def when_asset_manager_is_up_and_i_try_again
-    stub_asset_manager_deletes_assets
+    stub_asset_manager_deletes_any_asset
     click_on "Delete draft"
     click_on "Yes, delete draft"
   end
