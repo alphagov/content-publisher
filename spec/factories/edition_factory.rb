@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :edition do
-    last_edited_at { Time.zone.now }
+    last_edited_at { Time.current }
     current { true }
     live { false }
     revision_synced { true }

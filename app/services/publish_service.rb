@@ -48,7 +48,7 @@ private
   def set_first_published_at
     return if document.first_published_at
 
-    document.update!(first_published_at: Time.zone.now)
+    document.update!(first_published_at: Time.current)
   end
 
   def publish_new_images

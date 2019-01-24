@@ -10,7 +10,7 @@ class Edition < ApplicationRecord
 
   before_create do
     # set a default value for last_edited_at works better than using DB default
-    self.last_edited_at = Time.zone.now unless last_edited_at
+    self.last_edited_at = Time.current unless last_edited_at
   end
 
   after_save do
@@ -118,7 +118,7 @@ class Edition < ApplicationRecord
 
     update!(current: true,
             last_edited_by: user,
-            last_edited_at: Time.zone.now,
+            last_edited_at: Time.current,
             revision: revision,
             status: status)
   end
@@ -137,7 +137,7 @@ class Edition < ApplicationRecord
     attributes = { status: status }
 
     if update_last_edited
-      attributes[:last_edited_at] = Time.zone.now
+      attributes[:last_edited_at] = Time.current
       attributes[:last_edited_by] = user
     end
 
@@ -151,7 +151,7 @@ class Edition < ApplicationRecord
 
     assign_attributes(revision: revision,
                       last_edited_by: user,
-                      last_edited_at: Time.zone.now)
+                      last_edited_at: Time.current)
 
     self
   end
