@@ -16,7 +16,7 @@ RSpec.feature "Edit topics when there is a conflict" do
   end
 
   def when_i_visit_the_topics_page
-    publishing_api_has_links(
+    stub_publishing_api_has_links(
       "content_id" => @edition.content_id,
       "links" => {
         "taxons" => [],
@@ -24,7 +24,7 @@ RSpec.feature "Edit topics when there is a conflict" do
       "version" => 3,
     )
 
-    publishing_api_has_taxonomy
+    stub_publishing_api_has_taxonomy
     visit topics_path(@edition.document)
   end
 

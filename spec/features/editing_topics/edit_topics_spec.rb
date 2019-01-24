@@ -18,7 +18,7 @@ RSpec.feature "Edit topics" do
   end
 
   def when_i_visit_the_summary_page
-    publishing_api_has_links(
+    stub_publishing_api_has_links(
       "content_id" => @edition.content_id,
       "links" => {
         "taxons" => %w(level_three_topic),
@@ -26,7 +26,7 @@ RSpec.feature "Edit topics" do
       "version" => 3,
     )
 
-    publishing_api_has_taxonomy
+    stub_publishing_api_has_taxonomy
     visit document_path(@edition.document)
   end
 

@@ -45,7 +45,7 @@ RSpec.configure do |config|
 
   config.before :each, type: :feature do
     # This is required by lots of specs when visiting the index page
-    publishing_api_has_linkables([], document_type: "organisation")
+    stub_publishing_api_has_linkables([], document_type: "organisation")
   end
 
   config.after :each, type: :feature, js: true do

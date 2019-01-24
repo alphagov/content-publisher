@@ -8,9 +8,9 @@ module TopicsHelper
       .to_return(status: 200, body: { "links": {} }.to_json)
   end
 
-  def publishing_api_has_taxonomy
+  def stub_publishing_api_has_taxonomy
     # GOV.UK homepage
-    publishing_api_has_expanded_links(
+    stub_publishing_api_has_expanded_links(
       "content_id" => "f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a",
       "expanded_links" => {
         "level_one_taxons" => [
@@ -22,7 +22,7 @@ module TopicsHelper
       },
     )
 
-    publishing_api_has_expanded_links(
+    stub_publishing_api_has_expanded_links(
       "content_id" => "level_one_topic",
       "expanded_links" => {
         "legacy_taxons" => [

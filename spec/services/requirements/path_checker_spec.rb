@@ -15,7 +15,7 @@ RSpec.describe Requirements::PathChecker do
       it "returns no issues for unreserved paths" do
         document_type = build :document_type, check_path_conflict: true
         edition = build :edition, document_type_id: document_type.id
-        publishing_api_has_lookups(edition.base_path => nil)
+        stub_publishing_api_has_lookups(edition.base_path => nil)
         issues = Requirements::PathChecker.new(edition).pre_preview_issues
         expect(issues.items).to be_empty
       end
@@ -23,7 +23,7 @@ RSpec.describe Requirements::PathChecker do
       it "returns no issues if the document owns the path" do
         document_type = build :document_type, check_path_conflict: true
         edition = build :edition, document_type_id: document_type.id
-        publishing_api_has_lookups(edition.base_path => edition.content_id)
+        stub_publishing_api_has_lookups(edition.base_path => edition.content_id)
         issues = Requirements::PathChecker.new(edition).pre_preview_issues
         expect(issues.items).to be_empty
       end
@@ -31,7 +31,7 @@ RSpec.describe Requirements::PathChecker do
       it "returns an issue if the base_path conflicts" do
         document_type = build :document_type, check_path_conflict: true
         edition = build :edition, document_type_id: document_type.id
-        publishing_api_has_lookups(edition.base_path => SecureRandom.uuid)
+        stub_publishing_api_has_lookups(edition.base_path => SecureRandom.uuid)
         issues = Requirements::PathChecker.new(edition).pre_preview_issues
 
         form_message = issues.items_for(:title).first[:text]
@@ -45,7 +45,7 @@ RSpec.describe Requirements::PathChecker do
         document_type = build :document_type, check_path_conflict: true
         edition = build :edition, document_type_id: document_type.id
         revision = build :revision
-        publishing_api_has_lookups(edition.base_path => nil,
+        stub_publishing_api_has_lookups(edition.base_path => nil,
                                    revision.base_path => SecureRandom.uuid)
         issues = Requirements::PathChecker.new(edition).pre_preview_issues
         expect(issues.items).to be_empty
@@ -58,7 +58,7 @@ RSpec.describe Requirements::PathChecker do
 
     context "when the Publishing API is down" do
       before do
-        publishing_api_isnt_available
+        stub_publishing_api_isnt_available
       end
 
       it "returns no issues (ignore exception)" do

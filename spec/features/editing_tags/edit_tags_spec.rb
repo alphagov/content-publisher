@@ -21,8 +21,8 @@ RSpec.feature "Edit tags" do
     document_type = build(:document_type, tags: [multi_tag_field, single_tag_field])
 
     tag_linkables = [initial_tag, tag_to_select_1, tag_to_select_2]
-    publishing_api_has_linkables(tag_linkables, document_type: multi_tag_field.document_type)
-    publishing_api_has_linkables(tag_linkables, document_type: single_tag_field.document_type)
+    stub_publishing_api_has_linkables(tag_linkables, document_type: multi_tag_field.document_type)
+    stub_publishing_api_has_linkables(tag_linkables, document_type: single_tag_field.document_type)
 
     initial_tags = {
       multi_tag_field.id => [initial_tag["content_id"]],

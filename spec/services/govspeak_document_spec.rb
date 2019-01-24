@@ -11,7 +11,7 @@ RSpec.describe GovspeakDocument do
       it "renders an empty string" do
         content_id = SecureRandom.uuid
         govspeak = "[Contact:#{content_id}]"
-        publishing_api_get_editions([], ContactsService::EDITION_PARAMS)
+        stub_publishing_api_get_editions([], ContactsService::EDITION_PARAMS)
         expect(GovspeakDocument.new(govspeak).to_html).to eql("\n")
       end
     end
@@ -19,7 +19,7 @@ RSpec.describe GovspeakDocument do
     context "when a known contact that is referenced" do
       it "renders the contact" do
         content_id = SecureRandom.uuid
-        publishing_api_get_editions(
+        stub_publishing_api_get_editions(
           [
             {
               "content_id" => content_id,

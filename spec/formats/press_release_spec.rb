@@ -30,20 +30,20 @@ RSpec.feature "Create a press release", format: true do
 
     document = Document.first
     base_path = document.document_type.path_prefix + "/a-great-title"
-    publishing_api_has_lookups(base_path => document.content_id)
+    stub_publishing_api_has_lookups(base_path => document.content_id)
 
     click_on "Save"
     reset_executed_requests!
   end
 
   def and_i_add_some_tags
-    publishing_api_has_links(role_appointment_links)
+    stub_publishing_api_has_links(role_appointment_links)
 
     expect(Document.last.document_type.tags.count).to eq(5)
-    publishing_api_has_linkables([linkable], document_type: "topical_event")
-    publishing_api_has_linkables([linkable], document_type: "world_location")
-    publishing_api_has_linkables([linkable], document_type: "organisation")
-    publishing_api_has_linkables([linkable], document_type: "role_appointment")
+    stub_publishing_api_has_linkables([linkable], document_type: "topical_event")
+    stub_publishing_api_has_linkables([linkable], document_type: "world_location")
+    stub_publishing_api_has_linkables([linkable], document_type: "organisation")
+    stub_publishing_api_has_linkables([linkable], document_type: "role_appointment")
 
     click_on "Change Tags"
 
