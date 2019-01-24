@@ -85,7 +85,7 @@ RSpec.describe DeleteDraftService do
       edition = create :edition, lead_image_revision: image_revision
 
       image_revision.assets.map do |asset|
-        asset_manager_does_not_have_an_asset(asset.asset_manager_id)
+        stub_asset_manager_does_not_have_an_asset(asset.asset_manager_id)
       end
 
       stub_publishing_api_discard_draft(edition.content_id)

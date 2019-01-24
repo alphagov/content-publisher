@@ -7,7 +7,7 @@ RSpec.describe AssetManagerService do
                      content_type: "type",
                      filename: "foo/bar.jpg",
                      bytes: "bytes")
-      asset_manager_receives_an_asset("response_asset_manager_file_url")
+      stub_asset_manager_receives_an_asset("response_asset_manager_file_url")
 
       response = AssetManagerService.new.upload(asset, "auth_bypass_id")
       expect(response).to eq("response_asset_manager_file_url")
@@ -18,7 +18,7 @@ RSpec.describe AssetManagerService do
                      content_type: "type",
                      filename: "foo/bar.jpg",
                      bytes: "bytes")
-      asset_manager_receives_an_asset("response_asset_manager_file_url")
+      stub_asset_manager_receives_an_asset("response_asset_manager_file_url")
 
       AssetManagerService.new.upload(asset, "auth_bypass_id")
 
@@ -38,7 +38,7 @@ RSpec.describe AssetManagerService do
       asset = double(:asset, asset_manager_id: "id")
 
       body = { "draft" => false }
-      asset_manager_update_asset(asset.asset_manager_id, body)
+      stub_asset_manager_update_asset(asset.asset_manager_id, body)
 
       response = AssetManagerService.new.publish(asset)
       expect(response["draft"]).to be false
@@ -51,7 +51,7 @@ RSpec.describe AssetManagerService do
       url = "https://example.com/asset-path.jpg"
 
       body = { "redirect_url" => url }
-      asset_manager_update_asset(asset.asset_manager_id, body)
+      stub_asset_manager_update_asset(asset.asset_manager_id, body)
 
       response = AssetManagerService.new.redirect(asset, to: url)
       expect(response["redirect_url"]).to eq(url)
@@ -62,7 +62,7 @@ RSpec.describe AssetManagerService do
     it "deletes an asset from Asset Manager" do
       asset = double(:asset, asset_manager_id: "id")
 
-      asset_manager_delete_asset(asset.asset_manager_id)
+      stub_asset_manager_delete_asset(asset.asset_manager_id)
 
       response = AssetManagerService.new.delete(asset)
       expect(response.code).to eq 200
