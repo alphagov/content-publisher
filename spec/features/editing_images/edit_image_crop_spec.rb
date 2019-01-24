@@ -38,7 +38,8 @@ RSpec.feature "Edit image crop", js: true do
     bottom_right_handle.drag_to(find(".govuk-heading-l"))
 
     @publishing_api_request = stub_any_publishing_api_put_content
-    @asset_manager_requests = stub_asset_manager_receives_an_asset
+    @new_asset_requests = stub_asset_manager_receives_an_asset
+    @old_asset_requests = stub_asset_manager_deletes_any_asset
 
     click_on "Crop image"
   end
@@ -55,7 +56,8 @@ RSpec.feature "Edit image crop", js: true do
 
   def and_the_preview_creation_succeeded
     expect(@publishing_api_request).to have_been_requested
-    expect(@asset_manager_requests).to have_been_requested.at_least_once
+    expect(@new_asset_requests).to have_been_requested.at_least_once
+    expect(@old_asset_requests).to have_been_requested.at_least_once
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"].keys).to_not include("image")
