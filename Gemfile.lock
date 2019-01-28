@@ -110,7 +110,7 @@ GEM
     ffi (1.10.0)
     foreman (0.85.0)
       thor (~> 0.19.1)
-    gds-api-adapters (57.2.2)
+    gds-api-adapters (57.2.3)
       addressable
       link_header
       null_logger
