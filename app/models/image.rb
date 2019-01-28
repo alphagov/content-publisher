@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# A basic model that is used to join together a collection of image revisions
-# with the item they represent. Thus two image_revisions that link to the
-# same Image are considered two revision of that image.
+# Represents all versions of a particular image. Each change is represented
+# as an ImageRevision.
+#
+# This model is immutable
 class Image < ApplicationRecord
   self.table_name = "versioned_images"
 

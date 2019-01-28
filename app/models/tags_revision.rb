@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-# A revision of tags for a document.
-# This is accessed through a Revision object
+# This stores the tags of a revision, which are grouped associations to other
+# GOV.UK content by a particular tag (such as organisations).
+#
+# This model is immutable.
 class TagsRevision < ApplicationRecord
   self.table_name = "versioned_tags_revisions"
 
