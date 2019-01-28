@@ -91,7 +91,7 @@ private
   # or class system.
   def perform_input_type_specific_transformations(field)
     if field.type == "govspeak"
-      GovspeakDocument.new(edition.contents[field.id]).to_html
+      GovspeakDocument.new(edition.contents[field.id]).payload_html
     else
       document.contents[field.id]
     end

@@ -7,7 +7,11 @@ class GovspeakDocument
     @text = text
   end
 
-  def to_html
+  def in_app_html
+    Govspeak::Document.new(text, contacts: contacts).to_html
+  end
+
+  def payload_html
     Govspeak::Document.new(text, contacts: contacts).to_html
   end
 
@@ -22,4 +26,7 @@ private
                     contacts.compact
                   end
   end
+
+
+
 end
