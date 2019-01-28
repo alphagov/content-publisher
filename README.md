@@ -47,7 +47,7 @@ yarn install
 bundle exec rake
 ```
 
-### Permissions
+### Permissions
 
 Functionality of this application is enabled with permissions. There is a
 `pre_release_features` permission, for using functionality not yet available to
