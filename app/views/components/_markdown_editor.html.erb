@@ -3,11 +3,12 @@
   edit_button_text ||= 'Edit markdown'
   preview_button_text ||= 'Preview markdown'
   contextual_guidance ||= nil
+  govspeak_path ||= nil
 %>
 <%= tag.div class: "app-c-markdown-editor",
   data: {
     "module": "markdown-editor",
-    "govspeak-path": govspeak_preview_path,
+    "govspeak-path": govspeak_path,
     "contextual-guidance": contextual_guidance,
   } do %>
   <%= render "govuk_publishing_components/components/label", {

@@ -3,8 +3,9 @@
 class GovspeakDocument
   attr_reader :text
 
-  def initialize(text)
+  def initialize(text, edition)
     @text = text
+    @edition = edition
   end
 
   def in_app_html

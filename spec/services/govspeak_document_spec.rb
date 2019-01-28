@@ -2,8 +2,12 @@
 
 RSpec.describe GovspeakDocument do
   describe "#in_app_html" do
+    before(:each) do
+      @edition = create :edition
+    end
+
     it "converts the provided text to HTML" do
-      expect(GovspeakDocument.new("## Hullo").in_app_html)
+      expect(GovspeakDocument.new("## Hullo", @edition).in_app_html)
         .to match(%{<h2 id="hullo">Hullo</h2>})
     end
 
@@ -12,7 +16,7 @@ RSpec.describe GovspeakDocument do
         content_id = SecureRandom.uuid
         govspeak = "[Contact:#{content_id}]"
         stub_publishing_api_get_editions([], ContactsService::EDITION_PARAMS)
-        expect(GovspeakDocument.new(govspeak).in_app_html).to eql("\n")
+        expect(GovspeakDocument.new(govspeak, @edition).in_app_html).to eql("\n")
       end
     end
 
@@ -37,15 +41,19 @@ RSpec.describe GovspeakDocument do
         )
 
         govspeak = "[Contact:#{content_id}]"
-        expect(GovspeakDocument.new(govspeak).in_app_html)
+        expect(GovspeakDocument.new(govspeak, @edition).in_app_html)
           .to match(%{<a href="mailto:clark@dailyplanet.com" class="email">Mail Clark</a>})
       end
     end
   end
 
   describe "#payload_html" do
+    before(:each) do
+      @edition = create :edition
+    end
+
     it "converts the provided text to HTML" do
-      expect(GovspeakDocument.new("## Hullo").payload_html)
+      expect(GovspeakDocument.new("## Hullo", @edition).payload_html)
         .to match(%{<h2 id="hullo">Hullo</h2>})
     end
 
@@ -54,7 +62,7 @@ RSpec.describe GovspeakDocument do
         content_id = SecureRandom.uuid
         govspeak = "[Contact:#{content_id}]"
         stub_publishing_api_get_editions([], ContactsService::EDITION_PARAMS)
-        expect(GovspeakDocument.new(govspeak).payload_html).to eql("\n")
+        expect(GovspeakDocument.new(govspeak, @edition).payload_html).to eql("\n")
       end
     end
 
@@ -79,7 +87,7 @@ RSpec.describe GovspeakDocument do
         )
 
         govspeak = "[Contact:#{content_id}]"
-        expect(GovspeakDocument.new(govspeak).payload_html)
+        expect(GovspeakDocument.new(govspeak, @edition).payload_html)
           .to match(%{<a href="mailto:clark@dailyplanet.com" class="email">Mail Clark</a>})
       end
     end

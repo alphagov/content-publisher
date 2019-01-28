@@ -67,7 +67,7 @@ Rails.application.routes.draw do
   get "/beta-capabilities" => "publisher_information#beta_capabilities", as: :beta_capabilities
   get "/publisher-updates" => "publisher_information#publisher_updates", as: :publisher_updates
 
-  post "/govspeak-preview" => "govspeak_preview#to_html"
+  post "/documents/:id/govspeak-preview" => "govspeak_preview#to_html", as: :govspeak_preview
 
   mount GovukPublishingComponents::Engine, at: "/component-guide"
 
