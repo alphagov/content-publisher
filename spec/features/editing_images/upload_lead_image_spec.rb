@@ -21,9 +21,9 @@ RSpec.feature "Upload a lead image" do
   end
 
   def and_i_upload_a_new_image
-    stub_asset_manager_receives_an_asset(filename: "1000x1000.jpg")
+    @image_filename = "1000x1000.jpg"
 
-    find('form input[type="file"]').set(Rails.root.join(file_fixture("1000x1000.jpg")))
+    find('form input[type="file"]').set(Rails.root.join(file_fixture(@image_filename)))
     click_on "Upload"
   end
 
@@ -34,10 +34,12 @@ RSpec.feature "Upload a lead image" do
   end
 
   def and_i_fill_in_the_metadata
+    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
+    @asset_manager_request = stub_asset_manager_receives_an_asset(filename: @image_filename)
+
     fill_in "image_revision[alt_text]", with: "Some alt text"
     fill_in "image_revision[caption]", with: "A caption"
     fill_in "image_revision[credit]", with: "A credit"
-    @request = stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Save and choose"
   end
 
@@ -52,7 +54,8 @@ RSpec.feature "Upload a lead image" do
   end
 
   def and_the_preview_creation_succeeded
-    expect(@request).to have_been_requested
+    expect(@publishing_api_request).to have_been_requested
+    expect(@asset_manager_request).to have_been_requested.at_least_once
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
 
     expect(a_request(:put, /content/).with { |req|
