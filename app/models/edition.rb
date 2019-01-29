@@ -6,8 +6,6 @@
 # It is a mutable concept that is associated with a revision model and status
 # model to represent the current content and state of the edition.
 class Edition < ApplicationRecord
-  self.table_name = "versioned_editions"
-
   before_create do
     # set a default value for last_edited_at works better than using DB default
     self.last_edited_at = Time.current unless last_edited_at
@@ -43,9 +41,7 @@ class Edition < ApplicationRecord
 
   has_many :internal_notes
 
-  has_and_belongs_to_many :revisions,
-                          -> { order("versioned_revisions.number DESC") },
-                          join_table: "versioned_edition_revisions"
+  has_and_belongs_to_many :revisions, -> { order("revisions.number DESC") }
 
   delegate :content_id, :locale, :document_type, :topics, to: :document
 

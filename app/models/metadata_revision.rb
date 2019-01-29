@@ -6,8 +6,6 @@
 #
 # This model is immutable.
 class MetadataRevision < ApplicationRecord
-  self.table_name = "versioned_update_revisions"
-
   COMPARISON_IGNORE_FIELDS = %w[id created_at created_by_id].freeze
 
   belongs_to :created_by, class_name: "User", optional: true

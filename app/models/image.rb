@@ -5,8 +5,6 @@
 #
 # This model is immutable
 class Image < ApplicationRecord
-  self.table_name = "versioned_images"
-
   WIDTH = 960
   HEIGHT = 640
   THUMBNAIL_WIDTH = 300

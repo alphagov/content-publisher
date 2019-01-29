@@ -29,7 +29,7 @@ private
 
   def document_exists_with_path?(base_path, document)
     Document.using_base_path(base_path)
-            .where.not("versioned_documents.id": document.id)
+            .where.not("documents.id": document.id)
             .exists?
   end
 

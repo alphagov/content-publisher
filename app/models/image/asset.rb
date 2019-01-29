@@ -6,8 +6,6 @@
 #
 # This is a mutable model that is mutated when state changes on Asset Manager
 class Image::Asset < ApplicationRecord
-  self.table_name = "versioned_image_assets"
-
   belongs_to :file_revision,
              class_name: "Image::FileRevision"
 
