@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_23_105011) do
+ActiveRecord::Schema.define(version: 2019_01_25_181528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,13 +94,11 @@ ActiveRecord::Schema.define(version: 2019_01_23_105011) do
     t.bigint "revision_id", null: false
     t.boolean "revision_synced", default: false, null: false
     t.index ["created_by_id"], name: "index_versioned_editions_on_created_by_id"
-    t.index ["current"], name: "index_versioned_editions_on_current"
     t.index ["document_id", "current"], name: "index_versioned_editions_on_document_id_and_current", unique: true, where: "(current = true)"
     t.index ["document_id", "live"], name: "index_versioned_editions_on_document_id_and_live", unique: true, where: "(live = true)"
     t.index ["document_id", "number"], name: "index_versioned_editions_on_document_id_and_number", unique: true
     t.index ["document_id"], name: "index_versioned_editions_on_document_id"
     t.index ["last_edited_by_id"], name: "index_versioned_editions_on_last_edited_by_id"
-    t.index ["live"], name: "index_versioned_editions_on_live"
     t.index ["revision_id"], name: "index_versioned_editions_on_revision_id"
     t.index ["status_id"], name: "index_versioned_editions_on_status_id"
   end
