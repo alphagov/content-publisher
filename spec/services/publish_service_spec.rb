@@ -125,7 +125,7 @@ RSpec.describe PublishService do
       end
     end
 
-    context "when the current edition has an updated version of the live editions" do
+    context "when the current edition has an updated version of a live edition's image" do
       let(:old_image_revision) do
         create(:image_revision, :on_asset_manager, state: :live)
       end
