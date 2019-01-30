@@ -43,8 +43,7 @@ RSpec.feature "Withdraw a document when Publishing API is down" do
   end
 
   def and_the_document_has_not_been_withdrawn
-    expect(Withdrawal.count).to eq(0)
-    expect(TimelineEntry.count).to eq(0)
+    @edition.reload
     expect(@edition.state).not_to eq("withdrawn")
   end
 end

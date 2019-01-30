@@ -2,16 +2,10 @@
 
 class UnpublishService
   def withdraw(edition, public_explanation, user = nil)
-    Document.transaction do
+    Document.transaction(requires_new: true) do
       edition.document.lock!
       check_unpublishable(edition)
 
-      GdsApi.publishing_api_v2.unpublish(
-        edition.content_id,
-        type: "withdrawal",
-        explanation: format_govspeak(public_explanation),
-        locale: edition.locale,
-      )
 
       withdrawal = Withdrawal.new(public_explanation: public_explanation)
 
@@ -23,11 +17,18 @@ class UnpublishService
         status: edition.status,
         details: withdrawal,
       )
+
+      GdsApi.publishing_api_v2.unpublish(
+        edition.content_id,
+        type: "withdrawal",
+        explanation: format_govspeak(public_explanation),
+        locale: edition.locale,
+      )
     end
   end
 
   def remove(edition, explanatory_note: nil, alternative_path: nil)
-    Document.transaction do
+    Document.transaction(requires_new: true) do
       edition.document.lock!
       check_unpublishable(edition)
 
@@ -56,7 +57,7 @@ class UnpublishService
   end
 
   def remove_and_redirect(edition, redirect_path, explanatory_note: nil)
-    Document.transaction do
+    Document.transaction(requires_new: true) do
       edition.document.lock!
       check_unpublishable(edition)
 
