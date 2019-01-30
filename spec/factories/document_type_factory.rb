@@ -2,6 +2,8 @@
 
 FactoryBot.define do
   factory :document_type do
+    skip_create
+
     id { SecureRandom.hex(4) }
     label { SecureRandom.alphanumeric(8) }
     contents { [] }
