@@ -4,6 +4,8 @@
   title ||= nil
   wide ||= false
 %>
+<button class="govuk-button" data-toggle="modal" data-target="#<%= id %>">Launch modal dialogue</button>
+
 <div class="app-c-modal-dialogue" data-module="modal-dialogue" id="<%= id %>">
   <div class="app-c-modal-dialogue__overlay"></div>
   <dialog class="app-c-modal-dialogue__box <%= 'app-c-modal-dialogue__box--wide' if wide %>"
