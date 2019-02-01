@@ -12,15 +12,17 @@ node {
         sh("yarn")
         sh("yarn run lint")
       }
-      stage("Lint FactoryBot") {
-        sh("bundle exec rake factorybot:lint RAILS_ENV='test'")
-      }
     },
     rubyLintDiff: false,
     rubyLintDirs: "",
     overrideTestTask: {
       stage("Run tests") {
         govuk.runTests("spec jasmine:ci")
+      }
+    },
+    afterTest: {
+      stage("Lint FactoryBot") {
+        sh("bundle exec rake factorybot:lint RAILS_ENV=test")
       }
     }
   )
