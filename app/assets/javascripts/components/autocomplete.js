@@ -27,23 +27,17 @@ if ($autocompleteWithHintOnOptions) {
   var $select = $autocompleteWithHintOnOptions.querySelector('select')
   var $options = $select.querySelectorAll('option')
 
-  // Create wrapper to inject the autocomplete element
-  $autocompleteWithHintOnOptions.insertAdjacentHTML('beforeend', '<div class="autocomplete__wrapper"></div>')
-
-  // Remove select element from DOM
-  $select.remove()
-
   new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
-    element: $autocompleteWithHintOnOptions.querySelector('.autocomplete__wrapper'),
+    element: $autocompleteWithHintOnOptions,
     id: $select.id,
     source: function (query, syncResults) {
       var results = []
       $options.forEach(function ($el) {
-        results.push({value: $el.textContent, hint: $el.dataset.hint || ''})
+        results.push({text: $el.textContent, hint: $el.dataset.hint || '', value: $el.value})
       })
       syncResults(query
         ? results.filter(function (result) {
-          var valueContains = result.value.toLowerCase().indexOf(query.toLowerCase()) !== -1
+          var valueContains = result.text.toLowerCase().indexOf(query.toLowerCase()) !== -1
           var hintContains = result.hint.toLowerCase().indexOf(query.toLowerCase()) !== -1
           return valueContains || hintContains
         }) : []
@@ -54,11 +48,24 @@ if ($autocompleteWithHintOnOptions) {
     showNoOptionsFound: true,
     templates: {
       inputValue: function (result) {
-        return result && result.value
+        return result && result.text
       },
       suggestion: function (result) {
-        return result && result.value + '<span class="autocomplete__option-hint">' + result.hint + '</span>'
+        return result && result.text + '<span class="autocomplete__option-hint">' + result.hint + '</span>'
+      }
+    },
+    onConfirm: function (result) {
+      var value = result && result.value
+      var options = [].filter.call($select.options, function (option) {
+        return option.value === value
+      })
+
+      if (options.length) {
+        options[0].selected = true
       }
     }
   })
+
+  $select.style.display = 'none'
+  $select.id = $select.id + '-select'
 }
