@@ -8,6 +8,8 @@ en:
       tabs:
         summary: Document summary
         history: Document history
+      withdrawn:
+        title: "This %{document_type} was withdrawn on %{withdrawn_date}"
       topics:
         title: Topics
         no_topics: No topics.
@@ -47,6 +49,7 @@ en:
         created_by: Document created by
         unknown_user: Unknown
         last_edited_by: Last edited by
+        withdrawn_by: Withdrawn by
       flashes:
         pre_preview_issues:
           warning: To preview this document you need to

@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :withdrawal do
-    explanatory_note { SecureRandom.alphanumeric }
+    public_explanation { SecureRandom.alphanumeric }
   end
 end

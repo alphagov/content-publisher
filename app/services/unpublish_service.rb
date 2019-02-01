@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
 class UnpublishService
-  def withdraw(edition, explanatory_note)
-    Document.transaction do
+  def withdraw(edition, public_explanation, user = nil)
+    Document.transaction(requires_new: true) do
       edition.document.lock!
       check_unpublishable(edition)
 
-      GdsApi.publishing_api_v2.unpublish(
-        edition.content_id,
-        type: "withdrawal",
-        explanation: explanatory_note,
-        locale: edition.locale,
-      )
 
-      withdrawal = Withdrawal.new(explanatory_note: explanatory_note)
+      withdrawal = Withdrawal.new(public_explanation: public_explanation)
 
-      edition.assign_status(:withdrawn, nil, status_details: withdrawal)
+      edition.assign_status(:withdrawn, user, status_details: withdrawal)
       edition.save!
 
       TimelineEntry.create_for_status_change(
@@ -23,11 +17,18 @@ class UnpublishService
         status: edition.status,
         details: withdrawal,
       )
+
+      GdsApi.publishing_api_v2.unpublish(
+        edition.content_id,
+        type: "withdrawal",
+        explanation: format_govspeak(public_explanation),
+        locale: edition.locale,
+      )
     end
   end
 
   def remove(edition, explanatory_note: nil, alternative_path: nil)
-    Document.transaction do
+    Document.transaction(requires_new: true) do
       edition.document.lock!
       check_unpublishable(edition)
 
@@ -56,7 +57,7 @@ class UnpublishService
   end
 
   def remove_and_redirect(edition, redirect_path, explanatory_note: nil)
-    Document.transaction do
+    Document.transaction(requires_new: true) do
       edition.document.lock!
       check_unpublishable(edition)
 
@@ -97,6 +98,10 @@ private
     if document.current_edition != document.live_edition
       raise "Publishing API does not support unpublishing while there is a draft"
     end
+  end
+
+  def format_govspeak(text)
+    GovspeakDocument.new(text).to_html
   end
 
   def delete_assets(edition)

@@ -1,0 +1,8 @@
+<% content_for :back_link, render_back_link(href: document_path(@document)) %>
+<% content_for :title, t("withdraw.no_managing_editor_permission.title") %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render_govspeak(t("withdraw.no_managing_editor_permission.content")) %>
+  </div>
+</div>

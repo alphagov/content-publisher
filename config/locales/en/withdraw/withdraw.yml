@@ -1,0 +1,22 @@
+en:
+  withdraw:
+    new:
+      title: "Withdraw '%{title}'"
+      public_explanation:
+        title: "Public explanation"
+        guidance_title: Writing public explanation
+      intro_paragraph: |
+        Withdrawn content stays online but a banner tells users it is no longer current government information.
+
+        [Full guidance on withdrawing content](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/unpublishing-and-archiving)
+      flashes:
+        requirements: You need to
+        publishing_api_error:
+          title: Something has gone wrong
+          description_govspeak: Something went wrong when withdrawing this document. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+    no_managing_editor_permission:
+      title: Only a managing editor can remove or withdraw a live page
+      content: |
+        If you think this content is not relevant anymore or that it shouldn’t be on GOV.UK, speak to the managing editor for your organisation.
+
+        Read the [full guidance on removing (unpublishing) and withdrawing content](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/unpublishing-and-archiving)).

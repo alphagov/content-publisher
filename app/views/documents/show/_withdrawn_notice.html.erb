@@ -1,0 +1,10 @@
+<%= render "govuk_publishing_components/components/notice", {
+  title: I18n.t("documents.show.withdrawn.title",
+                document_type: @document.document_type.label.downcase,
+                withdrawn_date: @edition.status.created_at.strftime("%d %B %Y"))
+} do %>
+  <%= @edition.status.details.public_explanation %>
+  <p>
+  <p>
+  <%= link_to "Change public explanation", withdraw_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+<% end %>

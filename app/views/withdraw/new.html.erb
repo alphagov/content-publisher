@@ -1,0 +1,43 @@
+<% content_for :back_link, render_back_link(href: document_path(@document)) %>
+<% content_for :title, t("withdraw.new.title", title: @document.current_edition.title) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render_govspeak(t("withdraw.new.intro_paragraph")) %>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag(withdraw_path(@document)) do %>
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: t("withdraw.new.public_explanation.title"),
+          bold: true
+        },
+        id: "withdrawal_public_explanation",
+        value: @public_explanation,
+        name: "public_explanation",
+        rows: 6,
+        data: {
+          "contextual_guidance": "withdrawal-public-explanation-guidance",
+        }
+      } %>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Withdraw document", margin_bottom: true
+      } %>
+    <% end %>
+    <%= link_to "Cancel", document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+  </div>
+  <div class="govuk-grid-column-one-third">
+    <%= render "components/contextual_guidance", {
+      id: "withdrawal-public-explanation-guidance",
+      title: t("withdraw.new.public_explanation.guidance_title"),
+    } do %>
+      <p>Explain to users why the page has been withdrawn. You can link to alternative content with markdown.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+        [linktext](https://www.gov.uk/example)
+      </pre>
+    <% end %>
+  </div>
+</div>
