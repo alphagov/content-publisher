@@ -6,6 +6,8 @@
 class Withdrawal < ApplicationRecord
   has_one :status, as: :details
 
+  belongs_to :published_status, class_name: "Status"
+
   def readonly?
     !new_record?
   end

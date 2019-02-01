@@ -256,6 +256,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_183954) do
     t.string "public_explanation", null: false
     t.datetime "created_at", null: false
     t.datetime "withdrawn_at", null: false
+    t.bigint "published_status_id", null: false
   end
 
   add_foreign_key "content_revisions", "users", column: "created_by_id", on_delete: :restrict
@@ -300,4 +301,5 @@ ActiveRecord::Schema.define(version: 2019_02_07_183954) do
   add_foreign_key "timeline_entries", "revisions", on_delete: :restrict
   add_foreign_key "timeline_entries", "statuses", on_delete: :restrict
   add_foreign_key "timeline_entries", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "withdrawals", "statuses", column: "published_status_id", on_delete: :restrict
 end
