@@ -35,7 +35,7 @@ group :development, :test do
   gem "byebug", "~> 10"
   gem "capybara-chromedriver-logger"
   gem "climate_control"
-  gem "factory_bot_rails", "~> 4"
+  gem "factory_bot_rails", "~> 5"
   gem "govuk-lint", "~> 3"
   gem "govuk_schemas", "~> 3.2"
   gem "govuk_test", "~> 0.3"
