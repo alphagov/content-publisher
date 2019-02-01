@@ -123,3 +123,13 @@ If they find mistakes then they or you can update the content to fix them.
 
 If there are no mistakes then they or you can select the ‘Approve’ button to confirm that the content has been reviewed. The content will then get the status ‘Published’.
 
+##Featured documents
+
+You can feature Content Publisher documents on organisation homepages. 
+
+They will not appear in the main content search in Whitehall.
+
+You need to use the option to 'Feature non-GOV.UK government link'. It is at the end of the page. This is the same way blog posts are featured. 
+
+We have added document types for Content Publisher documents so that they appear just like Whitehall content.
+
