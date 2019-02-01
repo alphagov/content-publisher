@@ -88,7 +88,7 @@ examples:
       name: autocomplete-with-hint-on-options
       label:
         text: Select your country
-      custom_template: true
+      data_module: autocomplete-with-hint-on-options
       options:
         -
           -

@@ -6,10 +6,10 @@
   size ||= nil
   data ||= nil
   hint ||= nil
-  custom_template ||= nil
+  data_module ||= "autocomplete"
 %>
 
-<div class="app-c-autocomplete govuk-form-group" data-module="<%= custom_template ? 'autocomplete-with-hint-on-options' : 'autocomplete'%>">
+<div class="app-c-autocomplete govuk-form-group" data-module="<%= data_module %>">
   <%= render "govuk_publishing_components/components/label", {
     html_for: id
   }.merge(label.symbolize_keys) %>
