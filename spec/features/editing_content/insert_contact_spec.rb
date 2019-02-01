@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.feature "Insert contact" do
+RSpec.feature "Insert contact", js: true do
+  include AccessibleAutocompleteHelper
+
   scenario do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
@@ -40,7 +42,9 @@ RSpec.feature "Insert contact" do
   end
 
   def when_i_select_a_contact
-    select "Contact", from: "contact_id"
+    accessible_autocomplete_select "Contact",
+                                   for_id: "contact-id",
+                                   value: contact["content_id"]
     click_on "Insert contact"
   end
 
