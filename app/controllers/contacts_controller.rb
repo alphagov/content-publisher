@@ -15,7 +15,7 @@ class ContactsController < ApplicationController
 
       redirect_location = edit_document_path(document) + "#body"
 
-      unless params[:contact_id]
+      if params[:contact_id].empty?
         redirect_to redirect_location
         return
       end
