@@ -12,6 +12,9 @@ node {
         sh("yarn")
         sh("yarn run lint")
       }
+      stage("Lint FactoryBot") {
+        sh("bundle exec rake factorybot:lint RAILS_ENV='test'")
+      }
     },
     rubyLintDiff: false,
     rubyLintDirs: "",
