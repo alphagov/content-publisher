@@ -13,18 +13,6 @@
   height: 100%;
 }
 
-.govuk-link {
-  @extend %govuk-link;
-  @extend %govuk-body-m;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  color: $govuk-link-colour;
-  background: transparent;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .govuk-table {
   .gem-c-document-list__item {
     margin: 0;

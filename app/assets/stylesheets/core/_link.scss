@@ -19,3 +19,12 @@
 .app-link--right {
   float: right;
 }
+
+.app-link--inline {
+  padding: govuk-spacing(3) 0;
+  display: inline-block;
+
+  @include govuk-media-query($from: tablet) {
+    padding: 8px 0 0 govuk-spacing(3);
+  }
+}
