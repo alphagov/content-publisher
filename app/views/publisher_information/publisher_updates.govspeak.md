@@ -1,3 +1,6 @@
+### Withdrawing content <span class="govuk-caption-m">7 February 2019</span>
+Managing Editors can now [withdrawn](https://www.gov.uk/guidance/content-design/gov-uk-content-retention-and-withdrawal-archiving-policy) content without raising a support request.
+
 ### Internal notes added <span class="govuk-caption-m">30 January 2019</span>
 You can now add internal notes about a document on the Document History screen.
 
