@@ -9,9 +9,9 @@
       destructive: true
     } %>
 
-    <div style="display: inline-block; padding-left: 15px; padding-top: 8px">
-      <%= link_to "Cancel", document_path(@edition.document), class: "govuk-link" %>
-    </div>
+  <%= link_to "Cancel",
+              document_path(@edition.document),
+              class: "govuk-link govuk-link--no-visited-state app-link--inline" %>
   <% end %>
 
 <% end %>
