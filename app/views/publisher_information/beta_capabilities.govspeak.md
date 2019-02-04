@@ -1,4 +1,4 @@
-<span class="govuk-hint">Last updated: 9 November 2018</span>
+<span class="govuk-hint">Last updated: 30 February 2018</span>
 The Content Publisher beta tool can be used to publish the following document types:
 
 * News stories
@@ -6,10 +6,7 @@ The Content Publisher beta tool can be used to publish the following document ty
 
 Content created in Content Publisher cannot be edited in Whitehall publisher. Whitehall content cannot be edited in Content Publisher.
 
-These features are only available on request:
-
-* unpublishing content
-* withdrawing content
+It is possible to remove (unpublish) pages on request.
 
 Some features are not available yet:
 
