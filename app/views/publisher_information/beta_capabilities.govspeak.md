@@ -1,4 +1,4 @@
-<span class="govuk-hint">Last updated: 30 February 2018</span>
+<span class="govuk-hint">Last updated: 7 February 2018</span>
 The Content Publisher beta tool can be used to publish the following document types:
 
 * News stories
