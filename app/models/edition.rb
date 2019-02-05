@@ -18,9 +18,12 @@ class Edition < ApplicationRecord
     # Used to keep an audit trail of statuses a revision has held
     revision.statuses << status unless revision.statuses.include?(status)
 
-    # Used to keep an audit trail of all the revisions that have been
-    # associated with an edition
-    revisions << revision unless revisions.include?(revision)
+    # An edition points to a single revision, however we want to mantain a log
+    # of all joins between revision and edition. Revision has a many-to-many
+    # edition association that we use for storing this (to avoid the complexity
+    # of an edition having revision and revsions methods). Typically a revision
+    # would only be associated with a single edition.
+    revision.editions << self unless revision.editions.include?(self)
   end
 
   attr_readonly :number, :document_id
@@ -35,13 +38,9 @@ class Edition < ApplicationRecord
 
   belongs_to :status
 
-  has_many :statuses
-
   has_many :timeline_entries
 
   has_many :internal_notes
-
-  has_and_belongs_to_many :revisions, -> { order("revisions.number DESC") }
 
   delegate :content_id, :locale, :document_type, :topics, to: :document
 
