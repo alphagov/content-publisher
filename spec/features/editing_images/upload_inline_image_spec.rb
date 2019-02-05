@@ -9,7 +9,7 @@ RSpec.feature "Upload an inline image" do
   end
 
   def given_there_is_a_document
-    document_type = build(:document_type, lead_image: true)
+    document_type = build(:document_type, images: true)
     @edition = create(:edition, document_type_id: document_type.id)
   end
 

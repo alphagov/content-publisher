@@ -10,7 +10,7 @@ RSpec.feature "Edit image crop", js: true do
   end
 
   def given_there_is_an_edition_with_images
-    document_type = build(:document_type, lead_image: true)
+    document_type = build(:document_type, images: true)
     @image_revision = create(:image_revision,
                              :on_asset_manager,
                              crop_x: 0,

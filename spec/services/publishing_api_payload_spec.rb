@@ -107,7 +107,7 @@ RSpec.describe PublishingApiPayload do
                              caption: "image caption",
                              credit: "image credit")
 
-      document_type = build(:document_type, lead_image: true)
+      document_type = build(:document_type, images: true)
 
       edition = build(:edition,
                       document_type_id: document_type.id,
