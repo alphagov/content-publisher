@@ -48,7 +48,6 @@ RSpec.feature "Upload an image" do
       expect(page).to have_content("A caption")
       expect(page).to have_content("A credit")
       expect(page).to have_content(I18n.t("images.index.meta.inline_code.value", filename: "1000x1000.jpg"))
-
       expect(find("img")["src"]).to include("1000x1000.jpg")
       expect(find("img")["alt"]).to eq("Some alt text")
     end
