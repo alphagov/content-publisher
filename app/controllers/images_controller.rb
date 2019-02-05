@@ -138,30 +138,30 @@ class ImagesController < ApplicationController
           @image_revision,
           current_user,
         )
-        next_revision.lead_image_revision = @image_revision if params[:wizard] == "lead_image"
+        #next_revision.lead_image_revision = @image_revision if params[:wizard] == "lead_image"
 
         current_edition.assign_revision(next_revision, current_user).save!
 
-        if params[:wizard] == "lead_image"
-          TimelineEntry.create_for_revision(entry_type: :lead_image_updated,
-                                            edition: current_edition)
-        else
+        #if params[:wizard] == "lead_image"
+          #TimelineEntry.create_for_revision(entry_type: :lead_image_updated,
+                                            #edition: current_edition)
+        #else
           TimelineEntry.create_for_revision(entry_type: :image_updated,
                                             edition: current_edition)
-        end
+        #end
 
         PreviewService.new(current_edition).try_create_preview
       end
 
-      if params[:wizard] == "lead_image"
-        redirect_to document_path(@document),
-                    notice: t("documents.show.flashes.lead_image.added",
-                              file: @image_revision.filename)
-      else
+      #if params[:wizard] == "lead_image"
+        #redirect_to document_path(@document),
+                    #notice: t("documents.show.flashes.lead_image.added",
+                              #file: @image_revision.filename)
+      #else
         redirect_to images_path(@document),
                     notice: t("images.index.flashes.details_edited",
                               file: @image_revision.filename)
-      end
+      #end
     end
   end
 
