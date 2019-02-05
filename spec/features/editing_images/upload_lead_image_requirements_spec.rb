@@ -9,7 +9,7 @@ RSpec.feature "Upload a lead image with requirements issues" do
   end
 
   def given_there_is_an_edition
-    document_type = build(:document_type, lead_image: true)
+    document_type = build(:document_type, images: true)
     @edition = create(:edition, document_type_id: document_type.id)
   end
 

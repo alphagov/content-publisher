@@ -13,7 +13,7 @@ RSpec.feature "Preview requirements" do
   end
 
   def given_there_is_an_edition_with_issues_to_fix
-    document_type = build(:document_type, lead_image: true)
+    document_type = build(:document_type, images: true)
     @image_revision = create(:image_revision, alt_text: "")
     @edition = create(:edition,
                       :publishable,

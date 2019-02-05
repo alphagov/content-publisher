@@ -65,7 +65,7 @@ private
       details[field.id] = perform_input_type_specific_transformations(field)
     end
 
-    if document_type.lead_image && edition.lead_image_revision.present?
+    if document_type.images && edition.lead_image_revision.present?
       details["image"] = image
     end
 

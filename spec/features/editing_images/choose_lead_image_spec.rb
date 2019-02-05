@@ -11,7 +11,7 @@ RSpec.feature "Choose a lead image" do
   end
 
   def given_there_is_an_edition_with_images
-    document_type = build(:document_type, lead_image: true)
+    document_type = build(:document_type, images: true)
     @image_revision = create(:image_revision, :on_asset_manager)
     @edition = create(:edition,
                       document_type_id: document_type.id,
