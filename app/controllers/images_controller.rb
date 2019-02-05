@@ -82,8 +82,6 @@ class ImagesController < ApplicationController
           edition: current_edition,
         )
 
-        # TODO remove old images from asset manager
-
         PreviewService.new(document.current_edition).try_create_preview
       end
 
@@ -190,8 +188,6 @@ class ImagesController < ApplicationController
         entry_type: lead ? :lead_image_removed : :image_removed,
         edition: current_edition,
       )
-
-      # TODO remove images from asset manager
 
       PreviewService.new(current_edition).try_create_preview
 
