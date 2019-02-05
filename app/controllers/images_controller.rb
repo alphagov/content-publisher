@@ -130,38 +130,68 @@ class ImagesController < ApplicationController
         return
       end
 
-      if @image_revision != previous_image_revision
-        current_edition = @document.current_edition
-        current_revision = current_edition.revision
+      current_edition = @document.current_edition
+      current_revision = current_edition.revision
+      next_revision = current_revision
 
+      if @image_revision != previous_image_revision
         next_revision = current_revision.build_revision_update_for_image_upsert(
           @image_revision,
           current_user,
         )
-        #next_revision.lead_image_revision = @image_revision if params[:wizard] == "lead_image"
+      end
 
+      if params[:lead_image] == "on" && @image_revision != next_revision.lead_image_revision
+        if next_revision == current_revision
+          next_revision = next_revision.build_revision_update(
+            { lead_image_revision: @image_revision },
+            current_user,
+          )
+        else
+          next_revision.lead_image_revision = @image_revision
+        end
+      end
+
+      if params[:lead_image] != "on" && @image_revision == next_revision.lead_image_revision
+        if next_revision == current_revision
+          next_revision = next_revision.build_revision_update(
+            { lead_image_revision: nil },
+            current_user,
+          )
+        else
+          next_revision.lead_image_revision = nil
+        end
+      end
+
+      if params[:lead_image] != "on" && previous_image_revision == current_revision.lead_image_revision
+        TimelineEntry.create_for_revision(entry_type: :lead_image_removed,
+                                          edition: current_edition)
+      elsif params[:lead_image] == "on" && previous_image_revision != current_revision.lead_image_revision
+        TimelineEntry.create_for_revision(entry_type: :lead_image_updated,
+                                          edition: current_edition)
+      elsif previous_image_revision != @image_revision
+        TimelineEntry.create_for_revision(entry_type: :image_updated,
+                                          edition: current_edition)
+      end
+
+      if current_revision != next_revision
         current_edition.assign_revision(next_revision, current_user).save!
-
-        #if params[:wizard] == "lead_image"
-          #TimelineEntry.create_for_revision(entry_type: :lead_image_updated,
-                                            #edition: current_edition)
-        #else
-          TimelineEntry.create_for_revision(entry_type: :image_updated,
-                                            edition: current_edition)
-        #end
-
         PreviewService.new(current_edition).try_create_preview
       end
 
-      #if params[:wizard] == "lead_image"
-        #redirect_to document_path(@document),
-                    #notice: t("documents.show.flashes.lead_image.added",
-                              #file: @image_revision.filename)
-      #else
+      if params[:lead_image] == "on"
+        redirect_to document_path(@document),
+                    notice: t("documents.show.flashes.lead_image.selected",
+                              file: @image_revision.filename)
+      elsif previous_image_revision == current_revision.lead_image_revision
+        redirect_to images_path(@document),
+                    notice: t("images.index.flashes.lead_image.removed",
+                              file: @image_revision.filename)
+      else
         redirect_to images_path(@document),
                     notice: t("images.index.flashes.details_edited",
                               file: @image_revision.filename)
-      #end
+      end
     end
   end
 
