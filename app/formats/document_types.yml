@@ -1,7 +1,7 @@
 ---
 - id: news_story
   label: News story
-  description: "News written for GOV.UK which users need, can act on, and can’t get from other sources."
+  description: "News written for GOV.UK which users need, can act on, and cannot get from other sources."
   hint_govspeak: |
     Do not include advice in news stories. Do not use to promote other content.
     Read the full [guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story).
