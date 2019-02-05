@@ -2,8 +2,13 @@
 
 class UnwithdrawController < ApplicationController
   def confirm
-    document = Document.with_current_edition.find_by_param(params[:id])
-    redirect_to document_path(document), confirmation: "unwithdraw/confirm"
+    @document = Document.with_current_edition.find_by_param(params[:id])
+
+    if current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
+      redirect_to document_path(@document), confirmation: "unwithdraw/confirm"
+    else
+      render :non_managing_editor
+    end
   end
 
   def unwithdraw
