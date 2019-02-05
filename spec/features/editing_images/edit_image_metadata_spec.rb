@@ -27,7 +27,7 @@ RSpec.feature "Edit image metadata" do
     fill_in "image_revision[alt_text]", with: "Some alt text"
     fill_in "image_revision[caption]", with: "A caption"
     fill_in "image_revision[credit]", with: "A credit"
-    click_on "Save details"
+    click_on "Save"
   end
 
   def then_i_see_the_image_is_updated
@@ -40,11 +40,7 @@ RSpec.feature "Edit image metadata" do
   def and_the_preview_creation_succeeded
     expect(@publishing_api_request).to have_been_requested
 
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"].keys).to_not include("image")
-    }).to have_been_requested
-
-    click_on "Back"
+    visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
     expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
     expect(page).to have_content I18n.t!("documents.history.entry_types.image_updated")

@@ -32,7 +32,7 @@ RSpec.feature "Delete an image" do
     expect(all("#image-#{@image_revision.image_id}").count).to be_zero
     expect(page).to have_content(I18n.t!("images.index.flashes.deleted", file: @image_revision.filename))
 
-    click_on "Back"
+    visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.history.entry_types.image_removed"))
   end
 
