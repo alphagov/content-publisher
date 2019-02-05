@@ -41,7 +41,7 @@ RSpec.feature "Withdraw a document" do
   end
 
   def and_click_on_withdraw_document
-    converted_explanation = GovspeakDocument.new(@explanation).to_html
+    converted_explanation = GovspeakDocument.new(@explanation, @edition).payload_html
     body = { type: "withdrawal", explanation: converted_explanation, locale: @edition.locale }
     stub_publishing_api_unpublish(@edition.content_id, body: body)
     click_on "Withdraw document"

@@ -16,7 +16,7 @@ RSpec.describe UnpublishService do
     let(:public_explanation) { "The document is [out of date](https://www.gov.uk)" }
 
     it "converts the public explanation Govspeak to HTML before sending to Publishing API" do
-      converted_public_explanation = GovspeakDocument.new(public_explanation).to_html
+      converted_public_explanation = GovspeakDocument.new(public_explanation, edition).payload_html
       request = stub_publishing_api_unpublish(edition.content_id,
                                               body: { type: "withdrawal",
                                                       explanation: converted_public_explanation,
