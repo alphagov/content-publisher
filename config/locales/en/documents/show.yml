@@ -10,6 +10,10 @@ en:
         history: Document history
       withdrawn:
         title: "This %{document_type} was withdrawn on %{withdrawn_date}"
+      unwithdraw:
+        title: Are you sure you want to undo withdraw?
+        description: This will remove the withdrawn banner and republish the content immediately. It will not send an email alert to users.
+        confirm: Yes, undo withdrawal
       topics:
         title: Topics
         no_topics: No topics.
