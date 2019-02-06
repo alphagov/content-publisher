@@ -37,6 +37,7 @@ class TimelineEntry < ApplicationRecord
                      image_removed: "image_removed",
                      new_edition: "new_edition",
                      withdrawn: "withdrawn",
+                     unwithdrawn: "unwithdrawn",
                      removed: "removed",
                      internal_note: "internal_note",
                      draft_discarded: "draft_discarded",
