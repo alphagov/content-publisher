@@ -222,7 +222,7 @@ class ImagesController < ApplicationController
       PreviewService.new(current_edition).try_create_preview
 
       if params[:wizard] == "lead_image"
-        redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.deleted", file: image_revision.filename)
+        redirect_to images_path(document), notice: t("images.index.flashes.lead_image.deleted", file: image_revision.filename)
       else
         redirect_to images_path(document), notice: t("images.index.flashes.deleted", file: image_revision.filename)
       end

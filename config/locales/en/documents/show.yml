@@ -76,7 +76,6 @@ en:
           description_govspeak: Something went wrong when deleting your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         lead_image:
           selected: "Image ‘%{file}’ has been selected as the lead image"
-          deleted: "Image ‘%{file}’ has been deleted. Document will now use the default lead image"
         topics_updated: Topics updated on all editions
         topic_update_error:
           title: Something has gone wrong
