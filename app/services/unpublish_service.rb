@@ -21,7 +21,7 @@ class UnpublishService
       GdsApi.publishing_api_v2.unpublish(
         edition.content_id,
         type: "withdrawal",
-        explanation: format_govspeak(public_explanation),
+        explanation: format_govspeak(public_explanation, edition),
         locale: edition.locale,
       )
     end
@@ -100,8 +100,8 @@ private
     end
   end
 
-  def format_govspeak(text)
-    GovspeakDocument.new(text).to_html
+  def format_govspeak(text, edition)
+    GovspeakDocument.new(text, edition).payload_html
   end
 
   def delete_assets(edition)

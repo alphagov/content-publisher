@@ -1,25 +1,20 @@
 # frozen_string_literal: true
 
 class GovspeakDocument
-  attr_reader :text
+  attr_reader :text, :edition
 
-  def initialize(text)
+  def initialize(text, edition)
     @text = text
+    @edition = edition
   end
 
-  def to_html
-    Govspeak::Document.new(text, contacts: contacts).to_html
+  def in_app_html
+    in_app_options = InAppOptions.new(text, edition).to_h
+    Govspeak::Document.new(text, in_app_options).to_html
   end
 
-private
-
-  def contacts
-    @contacts ||= begin
-                    contact_content_ids = Govspeak::Document.new(text).extract_contact_content_ids
-                    contacts = contact_content_ids.map do |id|
-                      ContactsService.new.by_content_id(id)
-                    end
-                    contacts.compact
-                  end
+  def payload_html
+    payload_options = PayloadOptions.new(text, edition).to_h
+    Govspeak::Document.new(text, payload_options).to_html
   end
 end

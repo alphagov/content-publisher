@@ -82,6 +82,12 @@ $toolbar-button-size: 50px;
   .govuk-textarea {
     overflow: scroll;
   }
+
+  .govuk-govspeak {
+    .image {
+      margin: 0;
+    }
+  }
 }
 
 .app-c-markdown-editor__toolbar {
