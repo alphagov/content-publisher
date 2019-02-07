@@ -18,6 +18,7 @@ en:
         new_edition: "New edition"
         create_preview: "Create preview"
         withdrawn: "Withdrawn"
+        withdrawn_updated: "Updated withdrawal explanation"
         removed: "Removed"
         internal_note: "Internal note"
         draft_discarded: "Draft discarded"
