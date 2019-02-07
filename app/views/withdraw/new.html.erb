@@ -1,5 +1,5 @@
-<% content_for :back_link, render_back_link(href: document_path(@document)) %>
-<% content_for :title, t("withdraw.new.title", title: @document.current_edition.title) %>
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, t("withdraw.new.title", title: @edition.title) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -9,7 +9,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag(withdraw_path(@document)) do %>
+    <%= form_tag(withdraw_path(@edition.document)) do %>
       <%= render "govuk_publishing_components/components/textarea", {
         label: {
           text: t("withdraw.new.public_explanation.title"),
@@ -23,12 +23,19 @@
           "contextual_guidance": "withdrawal-public-explanation-guidance",
         }
       } %>
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Withdraw document", margin_bottom: true
-      } %>
+
+      <% if @edition.withdrawn? %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Update explanation", margin_bottom: true
+        } %>
+      <% else %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Withdraw document", margin_bottom: true
+        } %>
+      <% end %>
 
       <p class="govuk-body">
-        <%= link_to "Cancel", document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+        <%= link_to "Cancel", document_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
       </p>
     <% end %>
   </div>
