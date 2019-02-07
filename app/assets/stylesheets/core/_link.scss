@@ -28,3 +28,14 @@
     padding: 8px 0 0 govuk-spacing(3);
   }
 }
+
+.app-link--button {
+  @extend %govuk-body-m;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: $govuk-link-colour;
+  background: transparent;
+  text-decoration: underline;
+  cursor: pointer;
+}
