@@ -36,9 +36,12 @@ RSpec.describe UnpublishService do
     end
 
     it "adds an entry in the timeline of the document" do
-      UnpublishService.new.withdraw(edition, public_explanation, user)
+      expect { UnpublishService.new.withdraw(edition, public_explanation, user) }
+        .to change { edition.reload.timeline_entries.count }
+        .by(1)
 
-      expect(edition.timeline_entries.first.entry_type).to eq("withdrawn")
+      timeline_entry = edition.timeline_entries.last
+      expect(timeline_entry.entry_type).to eq("withdrawn")
     end
 
     it "updates the edition status to withdrawn" do
@@ -110,6 +113,16 @@ RSpec.describe UnpublishService do
         expect { UnpublishService.new.withdraw(edition, public_explanation, user) }
           .not_to change { edition.reload.status.details.withdrawn_at }
           .from(withdrawn_at)
+      end
+
+      it "creates a withdrawn_updated timeline entry" do
+        withdrawn_edition = create(:edition, :withdrawn)
+        expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
+          .to change { withdrawn_edition.reload.timeline_entries.count }
+          .by(1)
+
+        timeline_entry = withdrawn_edition.timeline_entries.last
+        expect(timeline_entry.entry_type).to eq("withdrawn_updated")
       end
     end
   end

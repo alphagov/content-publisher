@@ -21,7 +21,7 @@ class UnpublishService
       edition.save!
 
       TimelineEntry.create_for_status_change(
-        entry_type: :withdrawn,
+        entry_type: previous_withdrawal ? :withdrawn_updated : :withdrawn,
         status: edition.status,
         details: withdrawal,
       )
