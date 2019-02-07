@@ -6,13 +6,13 @@
 
 <% actions << capture do %>
   <%= form_tag choose_lead_image_path(document, image.image_id), class: "app-inline-block" do %>
-    <button class="govuk-link">Select as lead image</button>
+    <button class="govuk-link app-link--button">Select as lead image</button>
   <% end %>
 <% end %>
 
 <% actions << capture do %>
   <%= form_tag destroy_image_path(document, image.image_id), method: :delete, class: "app-inline-block" do %>
-    <button class="govuk-link app-link--destructive">Delete image</button>
+    <button class="govuk-link app-link--button app-link--destructive">Delete image</button>
   <% end %>
 <% end %>
 
