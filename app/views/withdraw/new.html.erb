@@ -26,8 +26,11 @@
       <%= render "govuk_publishing_components/components/button", {
         text: "Withdraw document", margin_bottom: true
       } %>
+
+      <p class="govuk-body">
+        <%= link_to "Cancel", document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
+      </p>
     <% end %>
-    <%= link_to "Cancel", document_path(@document), class: "govuk-link govuk-link--no-visited-state" %>
   </div>
   <div class="govuk-grid-column-one-third">
     <%= render "components/contextual_guidance", {
