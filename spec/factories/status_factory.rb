@@ -8,12 +8,18 @@ FactoryBot.define do
 
     trait :withdrawn do
       state { :withdrawn }
-      association :details, factory: :withdrawal
-    end
-  end
 
-  trait :withdrawn do
-    state { :withdrawn }
-    association :details, factory: :withdrawal
+      transient do
+        withdrawn_at { Time.current }
+      end
+
+      association :details, factory: :withdrawal
+      after(:build) do |status, evaluator|
+        status.details = evaluator.association(
+          :withdrawal,
+          withdrawn_at: evaluator.withdrawn_at,
+        )
+      end
+    end
   end
 end

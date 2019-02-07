@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_30_100821) do
+ActiveRecord::Schema.define(version: 2019_02_07_183954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -255,6 +255,7 @@ ActiveRecord::Schema.define(version: 2019_01_30_100821) do
   create_table "withdrawals", force: :cascade do |t|
     t.string "public_explanation", null: false
     t.datetime "created_at", null: false
+    t.datetime "withdrawn_at", null: false
   end
 
   add_foreign_key "content_revisions", "users", column: "created_by_id", on_delete: :restrict

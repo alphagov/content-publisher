@@ -6,8 +6,15 @@ class UnpublishService
       edition.document.lock!
       check_unpublishable(edition)
 
-
-      withdrawal = Withdrawal.new(public_explanation: public_explanation)
+      previous_withdrawal = edition.withdrawn? && edition.status.details
+      withdrawal = if previous_withdrawal
+                     previous_withdrawal.dup.tap do |w|
+                       w.assign_attributes(public_explanation: public_explanation)
+                     end
+                   else
+                     Withdrawal.new(public_explanation: public_explanation,
+                                    withdrawn_at: Time.current)
+                   end
 
       edition.assign_status(:withdrawn, user, status_details: withdrawal)
       edition.save!

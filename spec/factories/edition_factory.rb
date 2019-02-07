@@ -92,6 +92,10 @@ FactoryBot.define do
       summary { SecureRandom.alphanumeric(10) }
       live { true }
 
+      transient do
+        withdrawn_at { Time.current }
+      end
+
       after(:build) do |edition, evaluator|
         edition.revision = evaluator.association(:revision)
         edition.status = evaluator.association(
@@ -100,6 +104,7 @@ FactoryBot.define do
           created_by: edition.created_by,
           state: :withdrawn,
           revision_at_creation: edition.revision,
+          withdrawn_at: evaluator.withdrawn_at,
         )
       end
     end
