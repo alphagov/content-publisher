@@ -79,10 +79,8 @@ class Edition < ApplicationRecord
   end
 
   def self.create_next_edition(preceding_edition, user)
-    revision = preceding_edition.revision.build_revision_update(
-      { change_note: "", update_type: "major" },
-      user,
-    )
+    updater = Versioning::RevisionUpdater.new(preceding_edition.revision, user)
+    revision = updater.assign_attributes(change_note: "", update_type: "major")
 
     status = Status.create!(created_by: user,
                             revision_at_creation: revision,

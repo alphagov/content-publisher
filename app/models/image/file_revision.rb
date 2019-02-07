@@ -14,8 +14,6 @@ class Image::FileRevision < ApplicationRecord
   # FIXME: we should see if these can be retina variants
   ASSET_VARIANTS = %w[300 960 high_resolution].freeze
 
-  COMPARISON_IGNORE_FIELDS = %w[id created_at created_by_id].freeze
-
   belongs_to :blob, class_name: "ActiveStorage::Blob"
 
   belongs_to :created_by, class_name: "User", optional: true
@@ -64,21 +62,6 @@ class Image::FileRevision < ApplicationRecord
 
   def at_exact_dimensions?
     width == Image::WIDTH && height == Image::HEIGHT
-  end
-
-  def build_revision_update(attributes, user)
-    new_revision = dup.tap { |d| d.assign_attributes(attributes) }
-    return self unless different_to?(new_revision)
-
-    new_revision.tap do |r|
-      r.created_by = user
-      r.ensure_assets
-    end
-  end
-
-  def different_to?(other_revision)
-    other_attributes = other_revision.attributes.except(*COMPARISON_IGNORE_FIELDS)
-    attributes.except(*COMPARISON_IGNORE_FIELDS) != other_attributes
   end
 
   def ensure_assets

@@ -6,8 +6,6 @@
 #
 # This is an immutable model
 class Image::Revision < ApplicationRecord
-  COMPARISON_IGNORE_FIELDS = %w[id created_at created_by_id].freeze
-
   belongs_to :created_by, class_name: "User", optional: true
 
   has_and_belongs_to_many :revisions
@@ -65,67 +63,5 @@ class Image::Revision < ApplicationRecord
 
   def readonly?
     !new_record?
-  end
-
-  def build_revision_update(attributes, user)
-    BuildRevisionUpdate.new(attributes, user, self).build
-  end
-
-  def different_to?(other_revision)
-    raise "Must compare with a persisted record" if other_revision.new_record?
-
-    other_attributes = other_revision.attributes.except(*COMPARISON_IGNORE_FIELDS)
-    attributes.except(*COMPARISON_IGNORE_FIELDS) != other_attributes
-  end
-
-  class BuildRevisionUpdate
-    attr_reader :attributes, :user, :preceding_revision
-
-    def initialize(attributes, user, preceding_revision)
-      @attributes = HashWithIndifferentAccess.new(attributes)
-      @user = user
-      @preceding_revision = preceding_revision
-    end
-
-    def build
-      # we use dup to shallow clone the record which won't work unless data
-      # is persisted (clone would be approriate) - it seems unlikely this
-      # would need to be run with something unpersisted
-      raise "Can't update from an unpersisted record" if preceding_revision.new_record?
-
-      next_revision = preceding_revision.dup
-      file_revision(next_revision)
-      metadata_revision(next_revision)
-
-      if next_revision.different_to?(preceding_revision)
-        next_revision.tap { |r| r.created_by = user }
-      else
-        preceding_revision
-      end
-    end
-
-  private
-
-    def file_revision(next_revision)
-      file_attributes = attributes.slice(:filename,
-                                         :crop_x,
-                                         :crop_y,
-                                         :crop_width,
-                                         :crop_height)
-      unless file_attributes.empty?
-        revision = preceding_revision.file_revision
-                                     .build_revision_update(file_attributes, user)
-        next_revision.file_revision = revision
-      end
-    end
-
-    def metadata_revision(next_revision)
-      metadata = attributes.slice(:alt_text, :caption, :credit)
-      unless metadata.empty?
-        revision = next_revision.metadata_revision
-                                .build_revision_update(metadata, user)
-        next_revision.metadata_revision = revision
-      end
-    end
   end
 end

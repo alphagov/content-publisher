@@ -14,16 +14,13 @@ class TagsController < ApplicationController
   def update
     Document.transaction do
       document = Document.with_current_edition.lock.find_by_param(params[:id])
+      current_edition = document.current_edition
+      current_revision = current_edition.revision
 
-      current_revision = document.current_edition.revision
+      updater = Versioning::RevisionUpdater.new(current_revision, current_user)
+      next_revision = updater.assign_attributes(tags: update_params(document))
 
-      next_revision = current_revision.build_revision_update(
-        { tags: update_params(document) },
-        current_user,
-      )
-
-      if next_revision != current_revision
-        current_edition = document.current_edition
+      if updater.changed?
         current_edition.assign_revision(next_revision, current_user).save!
 
         TimelineEntry.create_for_revision(entry_type: :updated_tags,

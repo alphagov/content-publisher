@@ -46,10 +46,9 @@ class DocumentsController < ApplicationController
     Document.transaction do # rubocop:disable Metrics/BlockLength
       @document = Document.with_current_edition.lock.find_by_param(params[:id])
       current_edition = @document.current_edition
-      current_revision = current_edition.revision
 
-      @revision = current_revision.build_revision_update(update_params(@document),
-                                                         current_user)
+      updater = Versioning::RevisionUpdater.new(current_edition.revision, current_user)
+      @revision = updater.assign_attributes(update_params(@document))
 
       add_contact_request = params[:submit] == "add_contact"
       @issues = Requirements::EditPageChecker.new(current_edition, @revision)
@@ -65,7 +64,7 @@ class DocumentsController < ApplicationController
         return
       end
 
-      if @revision != current_revision
+      if updater.changed?
         current_edition.assign_revision(@revision, current_user).save!
 
         TimelineEntry.create_for_revision(entry_type: :updated_content,
