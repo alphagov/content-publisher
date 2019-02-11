@@ -93,8 +93,7 @@ FactoryBot.define do
       live { true }
 
       transient do
-        public_explanation { SecureRandom.alphanumeric }
-        withdrawn_at { Time.current }
+        withdrawal { nil }
       end
 
       after(:build) do |edition, evaluator|
@@ -105,8 +104,7 @@ FactoryBot.define do
           created_by: edition.created_by,
           state: :withdrawn,
           revision_at_creation: edition.revision,
-          withdrawn_at: evaluator.withdrawn_at,
-          public_explanation: evaluator.public_explanation,
+          withdrawal: evaluator.withdrawal,
         )
       end
     end

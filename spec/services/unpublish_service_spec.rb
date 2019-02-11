@@ -101,7 +101,8 @@ RSpec.describe UnpublishService do
 
     context "when an edition is already withdrawn and public_explanation is the same" do
       let!(:withdrawn_edition) do
-        create(:edition, :withdrawn, public_explanation: public_explanation)
+        withdrawal = build(:withdrawal, public_explanation: public_explanation)
+        create(:edition, :withdrawn, withdrawal: withdrawal)
       end
 
       it "doesn't update the Publishing API" do
@@ -131,7 +132,8 @@ RSpec.describe UnpublishService do
 
       it "maintains the withdrawn timestamp" do
         withdrawn_at = 10.days.ago.midnight
-        withdrawn_edition = create(:edition, :withdrawn, withdrawn_at: withdrawn_at)
+        withdrawal = build(:withdrawal, withdrawn_at: withdrawn_at)
+        withdrawn_edition = create(:edition, :withdrawn, withdrawal: withdrawal)
         expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
           .not_to change { withdrawn_edition.reload.status.details.withdrawn_at }
           .from(withdrawn_at)
