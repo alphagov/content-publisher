@@ -36,9 +36,12 @@ RSpec.describe UnpublishService do
     end
 
     it "adds an entry in the timeline of the document" do
-      UnpublishService.new.withdraw(edition, public_explanation, user)
+      expect { UnpublishService.new.withdraw(edition, public_explanation, user) }
+        .to change { edition.reload.timeline_entries.count }
+        .by(1)
 
-      expect(edition.timeline_entries.first.entry_type).to eq("withdrawn")
+      timeline_entry = edition.timeline_entries.last
+      expect(timeline_entry.entry_type).to eq("withdrawn")
     end
 
     it "updates the edition status to withdrawn" do
@@ -96,20 +99,54 @@ RSpec.describe UnpublishService do
       end
     end
 
-    context "when the edition is already withdrawn" do
-      it "updates the public explanation" do
-        edition = create(:edition, :withdrawn)
-        expect { UnpublishService.new.withdraw(edition, public_explanation, user) }
-          .to change { edition.reload.status.details.public_explanation }
+    context "when an edition is already withdrawn and public_explanation is the same" do
+      let!(:withdrawn_edition) do
+        withdrawal = build(:withdrawal, public_explanation: public_explanation)
+        create(:edition, :withdrawn, withdrawal: withdrawal)
+      end
+
+      it "doesn't update the Publishing API" do
+        request = stub_any_publishing_api_unpublish
+        UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user)
+        expect(request).not_to have_been_requested
+      end
+
+      it "doesn't create a Withdrawal" do
+        expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
+          .not_to(change { Withdrawal.count })
+      end
+
+      it "doesn't create a TimelineEntry" do
+        expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
+          .not_to(change { withdrawn_edition.reload.timeline_entries.count })
+      end
+    end
+
+    context "when an edition is already withdrawn and public_explanation differs" do
+      it "updates public_explanation" do
+        withdrawn_edition = create(:edition, :withdrawn)
+        expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
+          .to change { withdrawn_edition.reload.status.details.public_explanation }
           .to(public_explanation)
       end
 
       it "maintains the withdrawn timestamp" do
         withdrawn_at = 10.days.ago.midnight
-        edition = create(:edition, :withdrawn, withdrawn_at: withdrawn_at)
-        expect { UnpublishService.new.withdraw(edition, public_explanation, user) }
-          .not_to change { edition.reload.status.details.withdrawn_at }
+        withdrawal = build(:withdrawal, withdrawn_at: withdrawn_at)
+        withdrawn_edition = create(:edition, :withdrawn, withdrawal: withdrawal)
+        expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
+          .not_to change { withdrawn_edition.reload.status.details.withdrawn_at }
           .from(withdrawn_at)
+      end
+
+      it "creates a withdrawn_updated timeline entry" do
+        withdrawn_edition = create(:edition, :withdrawn)
+        expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
+          .to change { withdrawn_edition.reload.timeline_entries.count }
+          .by(1)
+
+        timeline_entry = withdrawn_edition.timeline_entries.last
+        expect(timeline_entry.entry_type).to eq("withdrawn_updated")
       end
     end
   end

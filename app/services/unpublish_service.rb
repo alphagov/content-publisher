@@ -6,22 +6,16 @@ class UnpublishService
       edition.document.lock!
       check_unpublishable(edition)
 
-      previous_withdrawal = edition.withdrawn? && edition.status.details
-      withdrawal = if previous_withdrawal
-                     previous_withdrawal.dup.tap do |w|
-                       w.assign_attributes(public_explanation: public_explanation)
-                     end
-                   else
-                     Withdrawal.new(public_explanation: public_explanation,
-                                    published_status: edition.status,
-                                    withdrawn_at: Time.current)
-                   end
+      return if withdrawn_with_public_explanation?(edition, public_explanation)
 
+      withdrawal = build_withdrawal(edition, public_explanation)
+
+      already_withdrawn = edition.withdrawn?
       edition.assign_status(:withdrawn, user, status_details: withdrawal)
       edition.save!
 
       TimelineEntry.create_for_status_change(
-        entry_type: :withdrawn,
+        entry_type: already_withdrawn ? :withdrawn_updated : :withdrawn,
         status: edition.status,
         details: withdrawal,
       )
@@ -105,6 +99,26 @@ private
 
     if document.current_edition != document.live_edition
       raise "Publishing API does not support unpublishing while there is a draft"
+    end
+  end
+
+  def withdrawn_with_public_explanation?(edition, public_explanation)
+    return false unless edition.withdrawn?
+
+    withdrawal = edition.status.details
+    withdrawal.public_explanation == public_explanation
+  end
+
+  def build_withdrawal(edition, public_explanation)
+    if edition.withdrawn?
+      withdrawal = edition.status.details.dup
+      withdrawal.tap do |w|
+        w.assign_attributes(public_explanation: public_explanation)
+      end
+    else
+      Withdrawal.new(public_explanation: public_explanation,
+                     published_status: edition.status,
+                     withdrawn_at: Time.current)
     end
   end
 

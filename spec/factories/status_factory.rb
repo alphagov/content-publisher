@@ -10,15 +10,11 @@ FactoryBot.define do
       state { :withdrawn }
 
       transient do
-        withdrawn_at { Time.current }
+        withdrawal { nil }
       end
 
-      association :details, factory: :withdrawal
       after(:build) do |status, evaluator|
-        status.details = evaluator.association(
-          :withdrawal,
-          withdrawn_at: evaluator.withdrawn_at,
-        )
+        status.details = evaluator.withdrawal || evaluator.association(:withdrawal)
       end
     end
 

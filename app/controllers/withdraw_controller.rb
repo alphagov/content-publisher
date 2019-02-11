@@ -2,10 +2,10 @@
 
 class WithdrawController < ApplicationController
   def new
-    @document = Document.with_current_edition.find_by_param(params[:id])
-    edition = @document.current_edition
+    document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = document.current_edition
     @public_explanation =
-      edition.withdrawn? ? edition.status.details.public_explanation : nil
+      @edition.withdrawn? ? @edition.status.details.public_explanation : nil
 
     if !current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
       render :withdraw
@@ -27,7 +27,8 @@ class WithdrawController < ApplicationController
     end
 
     Document.transaction do
-      @document = Document.with_current_edition.lock!.find_by_param(params[:id])
+      document = Document.with_current_edition.lock!.find_by_param(params[:id])
+      @edition = document.current_edition
       public_explanation = params[:public_explanation]
       issues = Requirements::WithdrawalChecker.new(public_explanation).pre_withdrawal_issues
 
@@ -38,18 +39,19 @@ class WithdrawController < ApplicationController
         }
 
         render :new
-      else
-        begin
-          #FIXME We should check that the edition is withdrawable before passing
-          # it to the UnpublishService
-          UnpublishService.new.withdraw(@document.current_edition, public_explanation, current_user)
-          redirect_to @document
-        rescue GdsApi::BaseError => e
-          GovukError.notify(e)
-          redirect_to withdraw_path,
-            alert_with_description: t("withdraw.new.flashes.publishing_api_error"),
-            public_explanation: public_explanation
-        end
+        return
+      end
+
+      begin
+        #FIXME We should check that the edition is withdrawable before passing
+        # it to the UnpublishService
+        UnpublishService.new.withdraw(@edition, public_explanation, current_user)
+        redirect_to document_path(@edition.document)
+      rescue GdsApi::BaseError => e
+        GovukError.notify(e)
+        redirect_to withdraw_path,
+          alert_with_description: t("withdraw.new.flashes.publishing_api_error"),
+          public_explanation: public_explanation
       end
     end
   end
