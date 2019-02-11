@@ -18,14 +18,14 @@ class LeadImageController < ApplicationController
 
         current_edition.assign_revision(next_revision, current_user).save!
 
-        TimelineEntry.create_for_revision(entry_type: :lead_image_updated,
+        TimelineEntry.create_for_revision(entry_type: :lead_image_selected,
                                           edition: current_edition)
 
         PreviewService.new(current_edition).try_create_preview
       end
 
       redirect_to document_path(document),
-                  notice: t("documents.show.flashes.lead_image.chosen", file: image_revision.filename)
+                  notice: t("documents.show.flashes.lead_image.selected", file: image_revision.filename)
     end
   end
 
@@ -52,8 +52,8 @@ class LeadImageController < ApplicationController
         PreviewService.new(current_edition).try_create_preview
       end
 
-      redirect_to document_path(document),
-                  notice: t("documents.show.flashes.lead_image.removed", file: image_revision.filename)
+      redirect_to images_path(document),
+                  notice: t("images.index.flashes.lead_image.removed", file: image_revision.filename)
     end
   end
 end

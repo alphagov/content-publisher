@@ -6,6 +6,7 @@ en:
         alt_text: Alt text
         caption: Image caption
         credit: Image credit
+        lead_image: Select as lead image
       flashes:
         requirements: You need to
       guidance:

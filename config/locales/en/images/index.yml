@@ -18,6 +18,9 @@ en:
         cropped: "Image ‘%{file}’ has been cropped"
         details_edited: "Image details for ‘%{file}’ have been updated"
         deleted: "Image ‘%{file}’ has been deleted"
+        lead_image:
+          removed: "Image ‘%{file}’ has been deselected. Document will now use the default lead image"
+          deleted: "Image ‘%{file}’ has been deleted. Document will now use the default lead image"
         api_error:
           title: Something has gone wrong
           description_govspeak: Something went wrong when uploading your file. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).

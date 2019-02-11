@@ -14,8 +14,6 @@
 } %>
 
 <%= form_tag(update_image_path(@document, @image_revision.image_id), method: :patch, data: { "warn-before-unload": true }) do %>
-  <%= hidden_field_tag :wizard, params[:wizard] %>
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
@@ -94,8 +92,22 @@
     </div>
   </div>
 
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <%= render "govuk_publishing_components/components/checkboxes", {
+        items: [
+          {
+            label: t("images.edit.form_labels.lead_image"),
+            checked: @document.current_edition.lead_image_revision == @image_revision,
+            name: "lead_image",
+          }
+        ]
+      } %>
+    </div>
+  </div>
+
   <%= render "govuk_publishing_components/components/button", {
     margin_bottom: true,
-    text: params[:wizard] == "lead_image" ? "Save and choose" : "Save details"
+    text: "Save",
   } %>
 <% end %>

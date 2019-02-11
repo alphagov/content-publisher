@@ -75,10 +75,8 @@ class ImagesController < ApplicationController
 
         current_edition.assign_revision(next_revision, current_user).save!
 
-        lead = next_revision.lead_image_revision == image_revision
-
         TimelineEntry.create_for_revision(
-          entry_type: lead ? :lead_image_updated : :image_updated,
+          entry_type: :image_updated,
           edition: current_edition,
         )
 
@@ -130,37 +128,51 @@ class ImagesController < ApplicationController
         return
       end
 
-      if @image_revision != previous_image_revision
-        current_edition = @document.current_edition
-        current_revision = current_edition.revision
+      current_edition = @document.current_edition
+      current_revision = current_edition.revision
 
-        next_revision = current_revision.build_revision_update_for_image_upsert(
-          @image_revision,
-          current_user,
-        )
-        next_revision.lead_image_revision = @image_revision if params[:wizard] == "lead_image"
+      lead_image_revision = next_lead_image_revision(
+        current_revision,
+        @image_revision,
+        params[:lead_image] == "on",
+      )
+
+      next_revision = current_revision.build_revision_update_for_lead_image_upsert(
+        @image_revision,
+        lead_image_revision,
+        current_user,
+      )
+
+      if current_revision != next_revision
+        timeline_entry_type = if lead_image_selected?(current_revision, next_revision)
+                                :lead_image_selected
+                              elsif lead_image_removed?(current_revision, next_revision)
+                                :lead_image_removed
+                              else
+                                :image_updated
+                              end
+
+        TimelineEntry.create_for_revision(entry_type: timeline_entry_type,
+                                          edition: current_edition)
 
         current_edition.assign_revision(next_revision, current_user).save!
-
-        if params[:wizard] == "lead_image"
-          TimelineEntry.create_for_revision(entry_type: :lead_image_updated,
-                                            edition: current_edition)
-        else
-          TimelineEntry.create_for_revision(entry_type: :image_updated,
-                                            edition: current_edition)
-        end
-
         PreviewService.new(current_edition).try_create_preview
       end
 
-      if params[:wizard] == "lead_image"
+      if lead_image_selected?(current_revision, next_revision)
         redirect_to document_path(@document),
-                    notice: t("documents.show.flashes.lead_image.added",
+                    notice: t("documents.show.flashes.lead_image.selected",
                               file: @image_revision.filename)
-      else
+      elsif lead_image_removed?(current_revision, next_revision)
+        redirect_to images_path(@document),
+                    notice: t("images.index.flashes.lead_image.removed",
+                              file: @image_revision.filename)
+      elsif previous_image_revision != @image_revision
         redirect_to images_path(@document),
                     notice: t("images.index.flashes.details_edited",
                               file: @image_revision.filename)
+      else
+        redirect_to images_path(@document)
       end
     end
   end
@@ -175,8 +187,6 @@ class ImagesController < ApplicationController
       current_edition = document.current_edition
       current_revision = current_edition.revision
 
-      lead = image_revision == current_revision.lead_image_revision
-
       next_revision = current_revision.build_revision_update_for_image_removed(
         image_revision,
         current_user,
@@ -185,14 +195,14 @@ class ImagesController < ApplicationController
       current_edition.assign_revision(next_revision, current_user).save!
 
       TimelineEntry.create_for_revision(
-        entry_type: lead ? :lead_image_removed : :image_removed,
+        entry_type: :image_deleted,
         edition: current_edition,
       )
 
       PreviewService.new(current_edition).try_create_preview
 
       if params[:wizard] == "lead_image"
-        redirect_to document_path(document), notice: t("documents.show.flashes.lead_image.deleted", file: image_revision.filename)
+        redirect_to images_path(document), notice: t("images.index.flashes.lead_image.deleted", file: image_revision.filename)
       else
         redirect_to images_path(document), notice: t("images.index.flashes.deleted", file: image_revision.filename)
       end
@@ -243,5 +253,24 @@ private
     crop_height = params[:crop_width].to_i * image_aspect_ratio
     # FIXME: this will raise a warning because of unpermitted paramaters
     params.permit(:crop_x, :crop_y, :crop_width).merge(crop_height: crop_height.to_i)
+  end
+
+  def next_lead_image_revision(revision, image_revision, selected)
+    return image_revision if selected
+
+    currently_lead = revision.lead_image_revision&.image_id == image_revision.image_id
+    return if currently_lead && !selected
+
+    revision.lead_image_revision
+  end
+
+  def lead_image_selected?(current_revision, next_revision)
+    next_revision.lead_image_revision.present? &&
+      current_revision.lead_image_revision != next_revision.lead_image_revision
+  end
+
+  def lead_image_removed?(current_revision, next_revision)
+    current_revision.lead_image_revision.present? &&
+      next_revision.lead_image_revision.nil?
   end
 end

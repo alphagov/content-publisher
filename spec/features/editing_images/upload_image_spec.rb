@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-RSpec.feature "Upload a lead image" do
+RSpec.feature "Upload an image" do
   scenario do
     given_there_is_an_edition
     when_i_visit_the_images_page
     and_i_upload_a_new_image
     and_i_crop_the_image
     and_i_fill_in_the_metadata
-    then_i_see_the_new_lead_image
+    then_i_see_the_new_image
     and_the_preview_creation_succeeded
   end
 
@@ -40,16 +40,20 @@ RSpec.feature "Upload a lead image" do
     fill_in "image_revision[alt_text]", with: "Some alt text"
     fill_in "image_revision[caption]", with: "A caption"
     fill_in "image_revision[credit]", with: "A credit"
-    click_on "Save and choose"
+    click_on "Save"
   end
 
-  def then_i_see_the_new_lead_image
-    expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.added", file: "1000x1000.jpg"))
-    expect(page).to have_content("A caption")
-    expect(page).to have_content("A credit")
-    expect(find("#lead-image img")["src"]).to include("1000x1000.jpg")
-    expect(find("#lead-image img")["alt"]).to eq("Some alt text")
-    expect(page).to have_content(I18n.t!("documents.history.entry_types.lead_image_updated"))
+  def then_i_see_the_new_image
+    within("#image-#{Image.first.id}") do
+      expect(page).to have_content("A caption")
+      expect(page).to have_content("A credit")
+      expect(page).to have_content(I18n.t("images.index.meta.inline_code.value", filename: "1000x1000.jpg"))
+
+      expect(find("img")["src"]).to include("1000x1000.jpg")
+      expect(find("img")["alt"]).to eq("Some alt text")
+    end
+
+    visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.history.entry_types.image_updated"))
   end
 
@@ -57,11 +61,5 @@ RSpec.feature "Upload a lead image" do
     expect(@publishing_api_request).to have_been_requested
     expect(@asset_manager_request).to have_been_requested.at_least_once
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"]["image"]["url"]).to match(/1000x1000.jpg/)
-      expect(JSON.parse(req.body)["details"]["image"]["alt_text"]).to eq("Some alt text")
-      expect(JSON.parse(req.body)["details"]["image"]["caption"]).to eq("A caption")
-    }).to have_been_requested
   end
 end

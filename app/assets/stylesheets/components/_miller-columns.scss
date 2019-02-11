@@ -4,11 +4,11 @@ $transition-time: 400ms;
 .js-enabled {
   .miller-columns {
     display: none;
-  }
 
-  .govuk-checkboxes__input,
-  .govuk-checkboxes__label {
-    pointer-events: none;
+    .govuk-checkboxes__input,
+    .govuk-checkboxes__label {
+      pointer-events: none;
+    }
   }
 }
 
