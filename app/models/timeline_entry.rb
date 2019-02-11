@@ -34,7 +34,7 @@ class TimelineEntry < ApplicationRecord
                      lead_image_selected: "lead_image_selected",
                      lead_image_removed: "lead_image_removed",
                      image_updated: "image_updated",
-                     image_removed: "image_removed",
+                     image_deleted: "image_deleted",
                      new_edition: "new_edition",
                      withdrawn: "withdrawn",
                      removed: "removed",

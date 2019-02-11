@@ -33,7 +33,7 @@ RSpec.feature "Delete an image" do
 
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
-    expect(page).to have_content(I18n.t!("documents.history.entry_types.lead_image_removed"))
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.image_deleted"))
   end
 
   def and_the_preview_creation_succeeded

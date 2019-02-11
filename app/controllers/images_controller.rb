@@ -75,8 +75,6 @@ class ImagesController < ApplicationController
 
         current_edition.assign_revision(next_revision, current_user).save!
 
-        lead = next_revision.lead_image_revision == image_revision
-
         TimelineEntry.create_for_revision(
           entry_type: :image_updated,
           edition: current_edition,
@@ -213,7 +211,7 @@ class ImagesController < ApplicationController
       current_edition.assign_revision(next_revision, current_user).save!
 
       TimelineEntry.create_for_revision(
-        entry_type: lead ? :lead_image_removed : :image_removed,
+        entry_type: :image_deleted,
         edition: current_edition,
       )
 
