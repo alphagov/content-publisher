@@ -2,12 +2,11 @@
 
 module Versioning
   class ImageRevisionUpdater
-    attr_reader :revision, :user, :attribute_keys
+    attr_reader :revision, :user
 
     def initialize(revision, user)
       @revision = revision
       @user = user
-      @attribute_keys = %i[metadata_revision file_revision]
     end
 
     def assign_attributes(attributes)
@@ -39,14 +38,18 @@ module Versioning
 
   private
 
+    def attribute_keys
+      @attribute_keys ||= revision.class.reflect_on_all_associations.map(&:name) +
+        revision.class.column_names.map(&:to_sym) -
+        %i[created_by id created_at created_by_id revisions a]
+    end
+
     def metadata_updater
       @metadata_updater ||= SubRevisionUpdater.new(revision.metadata_revision, user)
-        .track_attributes(%i[alt_text caption credit])
     end
 
     def file_updater
       @file_updater ||= SubRevisionUpdater.new(revision.file_revision, user)
-        .track_attributes(%i[crop_x crop_y crop_width crop_height])
     end
 
     def dup_revision
@@ -55,5 +58,6 @@ module Versioning
         dup_revision.created_by = user
         dup_revision
       end
+    end
   end
 end

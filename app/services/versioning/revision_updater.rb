@@ -1,18 +1,12 @@
 # frozen_string_literal: true
 
 module Versioning
-  class RevisionUpdater < BaseUpdater
-    attr_reader :revision, :user, :attribute_keys
+  class RevisionUpdater
+    attr_reader :revision, :user
 
     def initialize(revision, user)
       @revision = revision
       @user = user
-
-      @attribute_keys = %i[metadata_revision
-                           content_revision
-                           tags_revision
-                           image_revisions
-                           lead_image_revision]
     end
 
     def assign_attributes(attributes)
@@ -46,19 +40,22 @@ module Versioning
 
   private
 
+    def attribute_keys
+      @attribute_keys ||= revision.class.reflect_on_all_associations.map(&:name) +
+        revision.class.column_names.map(&:to_sym) -
+        %i[created_by number preceded_by id created_at created_by_id preceded_by_id]
+    end
+
     def metadata_updater
       @metadata_updater ||= SubRevisionUpdater.new(revision.metadata_revision, user)
-        .track_attributes(%i[update_type change_note])
     end
 
     def content_updater
       @content_updater ||= SubRevisionUpdater.new(revision.content_revision, user)
-        .track_attributes(%i[title base_path summary contents])
     end
 
     def tags_updater
       @tags_updater ||= SubRevisionUpdater.new(revision.tags_revision, user)
-        .track_attributes(%i[tags])
     end
 
     def dup_revision

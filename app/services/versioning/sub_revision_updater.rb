@@ -2,17 +2,11 @@
 
 module Versioning
   class SubRevisionUpdater
-    attr_reader :revision, :user, :attribute_keys
+    attr_reader :revision, :user
 
     def initialize(revision, user)
       @revision = revision
       @user = user
-      @attribute_keys = []
-    end
-
-    def track_attributes(attribute_keys)
-      @attribute_keys = attribute_keys
-      self
     end
 
     def assign_attributes(attributes)
@@ -33,6 +27,11 @@ module Versioning
 
     def next_revision
       changed? ? dup_revision : revision
+    end
+
+    def attribute_keys
+      @attribute_keys ||= revision.class.column_names.map(&:to_sym) -
+        %i[created_by id created_at created_by_id]
     end
 
   private
