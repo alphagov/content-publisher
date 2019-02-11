@@ -10,6 +10,7 @@ FactoryBot.define do
       state { :withdrawn }
 
       transient do
+        public_explanation { SecureRandom.alphanumeric }
         withdrawn_at { Time.current }
       end
 
@@ -18,6 +19,7 @@ FactoryBot.define do
         status.details = evaluator.association(
           :withdrawal,
           withdrawn_at: evaluator.withdrawn_at,
+          public_explanation: evaluator.public_explanation,
         )
       end
     end

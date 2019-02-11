@@ -99,19 +99,41 @@ RSpec.describe UnpublishService do
       end
     end
 
-    context "when the edition is already withdrawn" do
-      it "updates the public explanation" do
-        edition = create(:edition, :withdrawn)
-        expect { UnpublishService.new.withdraw(edition, public_explanation, user) }
-          .to change { edition.reload.status.details.public_explanation }
+    context "when an edition is already withdrawn and public_explanation is the same" do
+      let!(:withdrawn_edition) do
+        create(:edition, :withdrawn, public_explanation: public_explanation)
+      end
+
+      it "doesn't update the Publishing API" do
+        request = stub_any_publishing_api_unpublish
+        UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user)
+        expect(request).not_to have_been_requested
+      end
+
+      it "doesn't create a Withdrawal" do
+        expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
+          .not_to(change { Withdrawal.count })
+      end
+
+      it "doesn't create a TimelineEntry" do
+        expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
+          .not_to(change { withdrawn_edition.reload.timeline_entries.count })
+      end
+    end
+
+    context "when an edition is already withdrawn and public_explanation differs" do
+      it "updates public_explanation" do
+        withdrawn_edition = create(:edition, :withdrawn)
+        expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
+          .to change { withdrawn_edition.reload.status.details.public_explanation }
           .to(public_explanation)
       end
 
       it "maintains the withdrawn timestamp" do
         withdrawn_at = 10.days.ago.midnight
-        edition = create(:edition, :withdrawn, withdrawn_at: withdrawn_at)
-        expect { UnpublishService.new.withdraw(edition, public_explanation, user) }
-          .not_to change { edition.reload.status.details.withdrawn_at }
+        withdrawn_edition = create(:edition, :withdrawn, withdrawn_at: withdrawn_at)
+        expect { UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user) }
+          .not_to change { withdrawn_edition.reload.status.details.withdrawn_at }
           .from(withdrawn_at)
       end
 
