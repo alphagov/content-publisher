@@ -78,7 +78,7 @@ class ImagesController < ApplicationController
         lead = next_revision.lead_image_revision == image_revision
 
         TimelineEntry.create_for_revision(
-          entry_type: lead ? :lead_image_updated : :image_updated,
+          entry_type: :image_updated,
           edition: current_edition,
         )
 
@@ -167,7 +167,7 @@ class ImagesController < ApplicationController
         TimelineEntry.create_for_revision(entry_type: :lead_image_removed,
                                           edition: current_edition)
       elsif params[:lead_image] == "on" && previous_image_revision != current_revision.lead_image_revision
-        TimelineEntry.create_for_revision(entry_type: :lead_image_updated,
+        TimelineEntry.create_for_revision(entry_type: :lead_image_selected,
                                           edition: current_edition)
       elsif previous_image_revision != @image_revision
         TimelineEntry.create_for_revision(entry_type: :image_updated,
@@ -204,8 +204,6 @@ class ImagesController < ApplicationController
 
       current_edition = document.current_edition
       current_revision = current_edition.revision
-
-      lead = image_revision == current_revision.lead_image_revision
 
       next_revision = current_revision.build_revision_update_for_image_removed(
         image_revision,

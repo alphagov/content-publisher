@@ -31,7 +31,7 @@ class TimelineEntry < ApplicationRecord
                      published_without_review: "published_without_review",
                      approved: "approved",
                      updated_tags: "updated_tags",
-                     lead_image_updated: "lead_image_updated",
+                     lead_image_selected: "lead_image_selected",
                      lead_image_removed: "lead_image_removed",
                      image_updated: "image_updated",
                      image_removed: "image_removed",

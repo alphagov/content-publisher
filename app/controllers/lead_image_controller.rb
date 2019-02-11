@@ -18,7 +18,7 @@ class LeadImageController < ApplicationController
 
         current_edition.assign_revision(next_revision, current_user).save!
 
-        TimelineEntry.create_for_revision(entry_type: :lead_image_updated,
+        TimelineEntry.create_for_revision(entry_type: :lead_image_selected,
                                           edition: current_edition)
 
         PreviewService.new(current_edition).try_create_preview

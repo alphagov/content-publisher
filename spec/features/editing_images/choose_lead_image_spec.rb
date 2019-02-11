@@ -57,7 +57,7 @@ RSpec.feature "Choose a lead image" do
   def and_the_preview_creation_succeeded
     expect(@publishing_api_request).to have_been_requested
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-    expect(page).to have_content(I18n.t!("documents.history.entry_types.lead_image_updated"))
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.lead_image_selected"))
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"]["image"]["url"])
