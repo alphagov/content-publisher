@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Versioning
-  class BaseUpdater
+  class SubRevisionUpdater
     attr_reader :revision, :user, :attribute_keys
 
     def initialize(revision, user)
