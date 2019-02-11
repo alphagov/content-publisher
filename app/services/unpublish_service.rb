@@ -13,6 +13,7 @@ class UnpublishService
                      end
                    else
                      Withdrawal.new(public_explanation: public_explanation,
+                                    published_status: edition.status,
                                     withdrawn_at: Time.current)
                    end
 

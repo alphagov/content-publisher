@@ -424,7 +424,7 @@ DEPENDENCIES
   climate_control
   factory_bot_rails (~> 5)
   foreman (~> 0.85)
-  gds-api-adapters (~> 57)
+  gds-api-adapters (~> 57.4.0)
   gds-sso (~> 14)
   govspeak (~> 5)
   govuk-lint (~> 3)

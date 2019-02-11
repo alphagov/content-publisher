@@ -1,4 +1,6 @@
 en:
   unwithdraw:
-    index:
+    no_managing_editor_permission:
+      title: Only a managing editor can undo withdraw
+    non_pre_release:
       title: Sorry, this hasn't been built yet

@@ -1,0 +1,21 @@
+<% confirmation = capture do %>
+  <%= form_tag(unwithdraw_path(@document), method: :post) do %>
+
+    <p><%= t("documents.show.unwithdraw.title") %></p>
+
+    <%= render "govuk_publishing_components/components/button", {
+      text: t("documents.show.unwithdraw.confirm"),
+      destructive: true
+    } %>
+
+    <%= link_to "Cancel",
+                document_path(@document),
+                class: "govuk-link govuk-link--no-visited-state app-link--inline" %>
+
+  <% end %>
+<% end %>
+
+<%= render "govuk_publishing_components/components/error_alert", {
+  message: t("documents.show.unwithdraw.title"),
+  description: confirmation,
+} %>

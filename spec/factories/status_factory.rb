@@ -21,5 +21,9 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :published do
+      state { :published }
+    end
   end
 end

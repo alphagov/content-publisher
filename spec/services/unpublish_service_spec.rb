@@ -53,6 +53,28 @@ RSpec.describe UnpublishService do
       end
     end
 
+    it "saves the published_status to the withdrawal record" do
+      previous_published_status = edition.status
+
+      UnpublishService.new.withdraw(edition, public_explanation, user)
+      edition.reload
+
+      withdrawal = edition.status.details
+
+      expect(withdrawal.published_status).to eq(previous_published_status)
+    end
+
+    it "saves the correct published_status when the document is already withdrawn" do
+      withdrawn_edition = create(:edition, :withdrawn)
+      previous_withdrawal = withdrawn_edition.status.details
+
+      UnpublishService.new.withdraw(withdrawn_edition, public_explanation, user)
+
+      withdrawal = withdrawn_edition.status.details
+
+      expect(withdrawal.published_status).to eq(previous_withdrawal.published_status)
+    end
+
     context "when the given edition is a draft" do
       it "raises an error" do
         draft_edition = create(:edition)

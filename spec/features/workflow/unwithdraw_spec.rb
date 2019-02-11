@@ -3,24 +3,51 @@
 RSpec.feature "Unwithdraw a document" do
   scenario do
     given_there_is_a_withdrawn_document
+    and_i_have_the_managing_editor_permission
     when_i_visit_the_summary_page
-    and_i_click_on_undo_withdraw
-    then_i_see_the_feature_is_currently_unavailable
+    then_i_see_the_documents_withdrawn_banner
+    and_i_click_on_undo_withdrawal_and_confirm
+    then_i_see_the_document_is_now_unwithdrawn
+  end
+
+  def and_i_have_the_managing_editor_permission
+    user = User.first
+    user.update_attribute(:permissions,
+                          user.permissions + [User::MANAGING_EDITOR_PERMISSION])
   end
 
   def given_there_is_a_withdrawn_document
-    @edition = create(:edition, :withdrawn)
+    @withdrawn_edition = create(:edition, :withdrawn)
   end
 
   def when_i_visit_the_summary_page
-    visit document_path(@edition.document)
+    visit document_path(@withdrawn_edition.document)
   end
 
-  def and_i_click_on_undo_withdraw
+  def then_i_see_the_documents_withdrawn_banner
+    @withdrawal = @withdrawn_edition.status.details
+
+    expect(page.body).to include(I18n.t!("documents.show.withdrawn.title",
+                                     document_type: @withdrawn_edition.document_type.label.downcase,
+                                     withdrawn_date: @withdrawal.created_at.strftime("%d %B %Y")))
+  end
+
+  def and_i_click_on_undo_withdrawal_and_confirm
+    @request = stub_publishing_api_republish(@withdrawn_edition.content_id, {})
+
     click_on "Undo withdrawal"
+    click_on(I18n.t!("documents.show.unwithdraw.confirm"))
   end
 
-  def then_i_see_the_feature_is_currently_unavailable
-    expect(page).to have_content("Sorry, this hasn't been built yet")
+  def then_i_see_the_document_is_now_unwithdrawn
+    @withdrawn_edition.reload
+
+    expect(@request).to have_been_requested
+    expect(@withdrawn_edition).to be_published
+    expect(@withdrawn_edition.timeline_entries.last.entry_type).to eq("unwithdrawn")
+
+    expect(page.body).to_not include(I18n.t!("documents.show.withdrawn.title",
+                                     document_type: @withdrawn_edition.document_type.label.downcase,
+                                     withdrawn_date: @withdrawal.created_at.strftime("%d %B %Y")))
   end
 end
