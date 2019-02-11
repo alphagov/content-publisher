@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe UnpublishService do
+  include ActiveSupport::Testing::TimeHelpers
+
   let(:edition) { create(:edition, :published) }
   let(:edition_with_image) do
     create(:edition, :published, lead_image_revision: image_revision)
@@ -39,12 +41,16 @@ RSpec.describe UnpublishService do
       expect(edition.timeline_entries.first.entry_type).to eq("withdrawn")
     end
 
-    it "updates the edition status" do
-      UnpublishService.new.withdraw(edition, public_explanation, user)
-      edition.reload
+    it "updates the edition status to withdrawn" do
+      travel_to(Time.current) do
+        UnpublishService.new.withdraw(edition, public_explanation, user)
+        edition.reload
+        withdrawal = edition.status.details
 
-      expect(edition.status).to be_withdrawn
-      expect(edition.status.details.public_explanation).to eq(public_explanation)
+        expect(edition.status).to be_withdrawn
+        expect(withdrawal.public_explanation).to eq(public_explanation)
+        expect(withdrawal.withdrawn_at).to eq(Time.current)
+      end
     end
 
     context "when the given edition is a draft" do
@@ -65,6 +71,23 @@ RSpec.describe UnpublishService do
 
         expect { UnpublishService.new.withdraw(live_edition, public_explanation, user) }
           .to raise_error RuntimeError, "Publishing API does not support unpublishing while there is a draft"
+      end
+    end
+
+    context "when the edition is already withdrawn" do
+      it "updates the public explanation" do
+        edition = create(:edition, :withdrawn)
+        expect { UnpublishService.new.withdraw(edition, public_explanation, user) }
+          .to change { edition.reload.status.details.public_explanation }
+          .to(public_explanation)
+      end
+
+      it "maintains the withdrawn timestamp" do
+        withdrawn_at = 10.days.ago.midnight
+        edition = create(:edition, :withdrawn, withdrawn_at: withdrawn_at)
+        expect { UnpublishService.new.withdraw(edition, public_explanation, user) }
+          .not_to change { edition.reload.status.details.withdrawn_at }
+          .from(withdrawn_at)
       end
     end
   end
