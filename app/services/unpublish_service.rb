@@ -6,25 +6,16 @@ class UnpublishService
       edition.document.lock!
       check_unpublishable(edition)
 
-      previous_withdrawal = edition.withdrawn? && edition.status.details
-
       return if withdrawn_with_public_explanation?(edition, public_explanation)
 
-      withdrawal = if previous_withdrawal
-                     previous_withdrawal.dup.tap do |w|
-                       w.assign_attributes(public_explanation: public_explanation)
-                     end
-                   else
-                     Withdrawal.new(public_explanation: public_explanation,
-                                    published_status: edition.status,
-                                    withdrawn_at: Time.current)
-                   end
+      withdrawal = build_withdrawal(edition, public_explanation)
 
+      already_withdrawn = edition.withdrawn?
       edition.assign_status(:withdrawn, user, status_details: withdrawal)
       edition.save!
 
       TimelineEntry.create_for_status_change(
-        entry_type: previous_withdrawal ? :withdrawn_updated : :withdrawn,
+        entry_type: already_withdrawn ? :withdrawn_updated : :withdrawn,
         status: edition.status,
         details: withdrawal,
       )
@@ -116,6 +107,19 @@ private
 
     withdrawal = edition.status.details
     withdrawal.public_explanation == public_explanation
+  end
+
+  def build_withdrawal(edition, public_explanation)
+    if edition.withdrawn?
+      withdrawal = edition.status.details.dup
+      withdrawal.tap do |w|
+        w.assign_attributes(public_explanation: public_explanation)
+      end
+    else
+      Withdrawal.new(public_explanation: public_explanation,
+                     published_status: edition.status,
+                     withdrawn_at: Time.current)
+    end
   end
 
   def format_govspeak(text, edition)
