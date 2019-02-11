@@ -7,11 +7,6 @@ class WithdrawController < ApplicationController
     @public_explanation =
       @edition.withdrawn? ? @edition.status.details.public_explanation : nil
 
-    if !current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
-      render :withdraw
-      return
-    end
-
     if current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
       render :new
     else
@@ -20,10 +15,10 @@ class WithdrawController < ApplicationController
   end
 
   def create
-    unless user_has_permissions?
+    unless current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
       # FIXME: this shouldn't be an exception but we've not worked out the
       # right response - maybe bad request or a redirect with flash?
-      raise "Can't withdraw an edition without permissions"
+      raise "Can't withdraw an edition without managing editor permissions"
     end
 
     Document.transaction do
@@ -54,12 +49,5 @@ class WithdrawController < ApplicationController
           public_explanation: public_explanation
       end
     end
-  end
-
-private
-
-  def user_has_permissions?
-    current_user.has_all_permissions?([User::MANAGING_EDITOR_PERMISSION,
-                                       User::PRE_RELEASE_FEATURES_PERMISSION])
   end
 end
