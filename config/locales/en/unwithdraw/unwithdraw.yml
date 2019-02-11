@@ -2,6 +2,5 @@ en:
   unwithdraw:
     no_managing_editor_permission:
       title: Only a managing editor can undo withdraw
-      content: If you think this content should have the withdrawn banner removed, speak to the managing editor for your organisation.
-    index:
+    non_pre_release:
       title: Sorry, this hasn't been built yet
