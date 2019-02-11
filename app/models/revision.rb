@@ -74,6 +74,17 @@ class Revision < ApplicationRecord
     BuildRevisionUpdate.new(attributes, user, self).build
   end
 
+  def build_revision_update_for_lead_image_upsert(image_revision, lead_image_revision, user)
+    revisions = image_revisions.reject { |ir| ir.image_id == image_revision.image_id }
+
+    attributes = {
+      image_revisions: revisions + [image_revision],
+      lead_image_revision: lead_image_revision,
+    }
+
+    build_revision_update(attributes, user)
+  end
+
   def build_revision_update_for_image_upsert(image_revision, user)
     revisions = image_revisions.reject { |ir| ir.image_id == image_revision.image_id }
     attributes = { image_revisions: revisions + [image_revision] }

@@ -130,65 +130,49 @@ class ImagesController < ApplicationController
 
       current_edition = @document.current_edition
       current_revision = current_edition.revision
-      next_revision = current_revision
 
-      if @image_revision != previous_image_revision
-        next_revision = current_revision.build_revision_update_for_image_upsert(
-          @image_revision,
-          current_user,
-        )
-      end
+      lead_image_revision = next_lead_image_revision(
+        current_revision,
+        @image_revision,
+        params[:lead_image] == "on",
+      )
 
-      if params[:lead_image] == "on" && @image_revision != next_revision.lead_image_revision
-        if next_revision == current_revision
-          next_revision = next_revision.build_revision_update(
-            { lead_image_revision: @image_revision },
-            current_user,
-          )
-        else
-          next_revision.lead_image_revision = @image_revision
-        end
-      end
-
-      if params[:lead_image] != "on" && @image_revision == next_revision.lead_image_revision
-        if next_revision == current_revision
-          next_revision = next_revision.build_revision_update(
-            { lead_image_revision: nil },
-            current_user,
-          )
-        else
-          next_revision.lead_image_revision = nil
-        end
-      end
-
-      if params[:lead_image] != "on" && previous_image_revision == current_revision.lead_image_revision
-        TimelineEntry.create_for_revision(entry_type: :lead_image_removed,
-                                          edition: current_edition)
-      elsif params[:lead_image] == "on" && previous_image_revision != current_revision.lead_image_revision
-        TimelineEntry.create_for_revision(entry_type: :lead_image_selected,
-                                          edition: current_edition)
-      elsif previous_image_revision != @image_revision
-        TimelineEntry.create_for_revision(entry_type: :image_updated,
-                                          edition: current_edition)
-      end
+      next_revision = current_revision.build_revision_update_for_lead_image_upsert(
+        @image_revision,
+        lead_image_revision,
+        current_user,
+      )
 
       if current_revision != next_revision
+        timeline_entry_type = if lead_image_selected?(current_revision, next_revision)
+                                :lead_image_selected
+                              elsif lead_image_removed?(current_revision, next_revision)
+                                :lead_image_removed
+                              else
+                                :image_updated
+                              end
+
+        TimelineEntry.create_for_revision(entry_type: timeline_entry_type,
+                                          edition: current_edition)
+
         current_edition.assign_revision(next_revision, current_user).save!
         PreviewService.new(current_edition).try_create_preview
       end
 
-      if params[:lead_image] == "on"
+      if lead_image_selected?(current_revision, next_revision)
         redirect_to document_path(@document),
                     notice: t("documents.show.flashes.lead_image.selected",
                               file: @image_revision.filename)
-      elsif previous_image_revision == current_revision.lead_image_revision
+      elsif lead_image_removed?(current_revision, next_revision)
         redirect_to images_path(@document),
                     notice: t("images.index.flashes.lead_image.removed",
                               file: @image_revision.filename)
-      else
+      elsif previous_image_revision != @image_revision
         redirect_to images_path(@document),
                     notice: t("images.index.flashes.details_edited",
                               file: @image_revision.filename)
+      else
+        redirect_to images_path(@document)
       end
     end
   end
@@ -269,5 +253,24 @@ private
     crop_height = params[:crop_width].to_i * image_aspect_ratio
     # FIXME: this will raise a warning because of unpermitted paramaters
     params.permit(:crop_x, :crop_y, :crop_width).merge(crop_height: crop_height.to_i)
+  end
+
+  def next_lead_image_revision(revision, image_revision, selected)
+    return image_revision if selected
+
+    currently_lead = revision.lead_image_revision&.image_id == image_revision.image_id
+    return if currently_lead && !selected
+
+    revision.lead_image_revision
+  end
+
+  def lead_image_selected?(current_revision, next_revision)
+    next_revision.lead_image_revision.present? &&
+      current_revision.lead_image_revision != next_revision.lead_image_revision
+  end
+
+  def lead_image_removed?(current_revision, next_revision)
+    current_revision.lead_image_revision.present? &&
+      next_revision.lead_image_revision.nil?
   end
 end
