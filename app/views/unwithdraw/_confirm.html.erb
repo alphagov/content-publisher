@@ -1,7 +1,7 @@
 <% confirmation = capture do %>
   <%= form_tag(unwithdraw_path(@document), method: :post) do %>
 
-    <p><%= t("documents.show.unwithdraw.title") %></p>
+    <p><%= t("documents.show.unwithdraw.description") %></p>
 
     <%= render "govuk_publishing_components/components/button", {
       text: t("documents.show.unwithdraw.confirm"),

@@ -1,8 +1,0 @@
-<% content_for :back_link, render_back_link(href: document_path(@document)) %>
-<% content_for :title, t("unwithdraw.non_pre_release.title") %>
-
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <%= render_govspeak(File.read("app/views/unwithdraw/non_pre_release.govspeak.md")) %>
-  </div>
-</div>
