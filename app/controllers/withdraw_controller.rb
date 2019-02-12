@@ -44,8 +44,8 @@ class WithdrawController < ApplicationController
 
       begin
         #FIXME We should check that the edition is withdrawable before passing
-        # it to the UnpublishService
-        UnpublishService.new.withdraw(@edition, public_explanation, current_user)
+        # it to the WithdrawService
+        WithdrawService.new.call(@edition, public_explanation, current_user)
         redirect_to document_path(@edition.document)
       rescue GdsApi::BaseError => e
         GovukError.notify(e)
