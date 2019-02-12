@@ -5,223 +5,223 @@ Amended: 2019-01-29
 
 ## Context
 
-Using terminology as defined in [ADR-3](0003-initial-domain-modelling.md):
+The Content Publisher domain model is focused on storing current
+information. There is a documents table which stores the most recent content of
+a document and an images table which stores the most recent version of
+a document's images. History of these changes is stored using [Papertrail][],
+which is not [intended as a permanent store][papertrail-pr]. The presentation
+of a document's history is done via a TimelineEntry model which stores that a
+user did something, but lacks any further detail. In places where richer
+information was required there have been models such as Removal or Withdrawal
+associated with a TimelineEntry.
 
-- **Document**: A piece of content in a particular locale that can have many
-versions;
-- **Revision**: A particular edit of a piece of content, represents a document at
-a specific point in time;
-- **Edition**: A particular revision that was published to GOV.UK or is the
-current draft of a document.
+This has led to a number of pain points:
 
-Content Publisher currently has a concept of a document and not editions or
-revisions. A consequence of this is that an edit to a document overwrites the
-previous state of the document. Since a document can exist in two forms, draft
-and live, we can only know about one of these at any time and not of any
-previous versions.
+- users cannot discard a new draft of a published document, because creating a
+  new draft overwrites the data stored for the published edition
+- Content Publisher can't show an accurate link or status for the live edition
+  of a document when a new draft of a published document is created;
+- users cannot edit or remove images on a document once the first
+  edition is published;
+- the TimelineEntry model stores aspects of a document's state, resulting in it
+  needing to be queried outside a timeline context which limits flexibility
+  for the timeline.
 
-The suggestion is that we enhance Content Publisher to support the concepts of
-Document, Edition and Revision.
+And this prevents a number of intended features for Content Publisher:
 
-For a document with a live version and a draft this could enable the ability to:
-
-- discard the draft and revert the current version in Content
-  Publisher back to the live version (including all images and attachments) to
-  be in sync with Publishing API;
-- have the details of the live version, most noticeably state and URL, so this
-  can be presented to users;
-- re-present either the live or draft version to Publishing API
-  should there be any problems with publishing.
-
-And with regards to history this could enable the ability to:
-
-- record of who did what to a document and when - effectively an audit trail
-  of accountability;
-- compare two revisions of a document to show changes;
-- store a full history of a document - to enable importing Whitehall
-  documents with histories pre-dating the Publishing API.
-
-A [MoSCoW](https://en.wikipedia.org/wiki/MoSCoW_method) breakdown of this
-functionality is defined as:
-
-### Must
-
-- Store full information on current and live versions of a document;
-  *because* we may need to re-present either to the Publishing API as Content
-  Publisher is the source of truth.
-- Consider how a revision of a document and aspects of it have state that may
-  change;
-  *because* the concept of revision could become convoluted if it stores
-  information that a user does not directly impact.
-
-### Should
-
-- Have the full information for every edition that was published on GOV.UK;
-  *because* this will allow us the means to present what changed between
-  published editions, which is needed for a variety reasons, including legal.
-- Record every change a publisher makes and allow for that information to be
-  accessible;
-  *because* this maintains options for TimelineEntry and provides rich
-  debugging information.
-- Avoid relying on the TimelineEntry model as the main answer to any
-  historical queries;
-  *because* this model is close to the user and is likely to be iterated. The
-  deeper the coupling to a document the more difficult this becomes.
-
-### Could
-
-- Link TimelineEntry to changes rather than storing the information twice;
-  *because* this would reduce concerns and opportunities for error.
-- Consider states to be something that may change in a background job;
-  *because* publishing can be a slow task that could timeout a single
-  HTTP request. Considering this up-front will be less painful than bolting it
-  on.
-- Enable a future feature to enable reverting to past revisions;
-  *because* this could enable users to make minor changes to a live document
-  and then recover a draft.
-- Separate related data to different tables to reduce data usage;
-  *because* storing each change a user makes could be inefficient for data
-  usage.
-
-### Won’t
-
-- Consider the sharing of data between translations, as per
-  [ADR-3](0003-initial-domain-modelling.md#decision);
-  *because* we don't yet have the product decisions around what translation needs
-  are.
+- comparing different editions of a document;
+- republishing live content if there are any problems (currently a common
+  support task for Whitehall publisher);
+- showing users what changes a user made in a particular edit.
 
 ## Decision
 
-The proposed data model expands on the definitions of entities accordingly:
+This ADR proposes changes to the domain model to resolve the aforementioned
+pain points and provide a means to support the future intended features. These
+changes provide the means to store the individual editions of a document,
+each revision of the content of a document and each status an edition has held.
+As per [ADR-3](0003-initial-domain-modelling.md) it does not consider the
+option of sharing data between translations of a document as there are not
+the appropriate product decisions for this.
 
-**Document**: A record that represents all versions of a piece of content in a
-particular locale. It has many editions and many revisions. At any time it will
-have a current edition -  shown on Content Publisher index - and potentially a
-live edition which is currently on GOV.UK. The live and current edition can be
-the same. Document serves as a mutable entity that tracks data across all
-editions (such as first publishing date) and it is expected to be a joining
-point for document related data that is not associated with a particular
-edition.
+A common theme in this modelling is the defining of
+[whether models are mutable](#approach-to-mutabilityimmutability) once
+persisted. Immutability is favoured as a means to preserve a history since
+each change requires storing a new record, implicitly creating a history.
+Where mutability is used, it is to simplify interacting with models and
+preserve Rails idioms.
 
-**Edition**: A numbered version of a document that has been, or is
-expected to be, published on GOV.UK. It is associated with a revision
-and a status. It is mutable and is expected as a place where any edition level
-database constraints can be placed.
+This ADR then considers the impact of history for [timeline](#timeline) and
+[topics](#topics), both areas where the needs for history are less
+clear. Finally, this ADR concludes with a [collated diagram](#collated-diagram)
+of the domain model concepts.
 
-**Revision**: Represents the content of a document at a particular point
-in time. It has a number to indicate which revision of the document it is and
-stores who created it. Any time a user changes the data of a document a new
-revision object is created and the edition is updated to reference that
-revision. A revision itself cannot be edited and is considered immutable. A
-revision may have an association with a collection of items, such as image
-revisions. When a new revision is created new image revisions are not created,
-but a new join between them is.
-
-This modelling now has a concept of:
-
-**Status**: Represents a particular singular state that an edition can
-hold such as: draft, submitted for review, published, etc. This is typically a
-field exposed to a user to explain the current edition's state and provided as
-a means of filtering editions. Each time a user performs an action which
-changes this state a new status object is created. A status stores the state
-assigned, the user who created it and the revision for when it was created. It
-may be associated with a specialised model which contains data that is specific
-to a particular state. Initially this object is intended to be immutable
-although this may change in future if status changes are not synchronous.
-
-These are represented in the following diagram:
+### Core Concepts
 
 ![Main concepts](000x/main-concepts-diagram.png)
 
-Further details are then explained in the following sections.
+**Document**: A record that represents all versions of a piece of content in a
+particular locale. It has many editions and at any time it will have a current
+edition - shown on Content Publisher index - and potentially a live edition
+which is currently on GOV.UK. The live and current edition can be
+the same. Each iteration of a document's content is represented as a revision
+on the current edition, thus a document has many revisions. Document is a
+mutable entity that is used to store data common across all editions (such as
+first publishing date) and it is expected to be a joining point for
+document-related data that is not associated with a particular edition.
+
+**Edition**: A numbered version of a document that has been, or is
+expected to be, published on GOV.UK. It is associated with a revision
+and a status. It is mutable so that it can be a consistent object that
+joins to immutable data. It is a place where any edition-level
+database constraints can be placed, such as only one live edition can exist for
+a document. It is supported that two editions of the same document share the
+same revision, this allows them to explicitly reference the same content.
+
+**Revision**: Represents an immutable snapshot of the content of a document at a
+particular point in time. It has a number to indicate which revision of the
+document it is and stores who created it. Any request by a user that changes
+content should result in a single new revision, this is to directly map the
+concept of a revision to each time a user revises a document. Data outside of
+content, such as state, should not be stored in a revision to ensure that
+differences between revisions can be represented to a user. The
+[anatomy of a Revision model](#breakdown-of-revision) is explored further in
+this document.
+
+**Status**: Represents a state that an edition can hold such as: "draft" or
+"submitted for review". This model is coupled to the concept of status that is
+shown and changed by a user. Each time a user changes the status of an edition
+a new Status model is created and the user who created it stored. An edition
+can only have one status at any one time. If a status has data specific to
+that status, such as explanatory note for a Withdrawal, this can be stored in a
+specific model associated by a polymorphic relation. This allows for models,
+such as Removal or Withdrawal, to no longer be the responsibility of
+TimelineEntry. Initially this object is intended to be immutable however this
+may be changed if status changes become asynchronous operations, which may be
+the case with scheduling.
 
 ### Approach to mutability/immutability
 
 A number of the models in Content Publisher are defined as immutable, most
-significantly Revision and its associated types. These models should be
-persisted to the database once and never updated or deleted, any need to change
-them requires creating a new record. This allows us to store a full history
-by only adding to the database.
+significantly Revision and [associated models](#breakdown-of-revision). These
+models should be persisted to the database once and never updated or deleted,
+any need to change them requires creating a new record. This allows us to store
+a full history by only appending to the database.
 
-Accessing immutable models is intended to always be done by a foreign key that
-is updated and not by the usage of `SELECT MAX` style queries. This is done for
-simplicity, performance and for consistency with Rails idioms. To achieve this
-we maintain a number of mutable models (such as Document or Edition) that are
-updated to the most recent foreign keys which makes them not suitable vessels
-for storing data that may change.
+For simplicity, performance and consistency with Rails idioms the accessing
+of immutable models is intended to be done by foreign key and not by the usage
+of `SELECT MAX` style queries. An example of this is the Edition model which
+references an immutable model, Revision, that stores the content. This allows
+accessing an edition by a consistent primary key and the access of it's
+revision by a foreign key on the edition.
+
+Since the data on a mutable model can be lost when the model is updated these
+should not be used for data where there is a need for history. For example, to
+store the statuses an edition has held there are individual status models that
+reference the Edition. This allows an edition to reference a single status that
+is replaced while a history is maintained.
 
 The choice of this immutability strategy is to store both present and
-historical concerns in the same data stores, thus ensuring history remains a
+historical concerns in the same way, thus ensuring history remains a
 first class citizen. A nice side effect of having immutable models is
-this opens options for caching. Since we know that data for that
+this opens options for caching. Since data for that
 model will never change it can effectively be cached forever.
 
 ### Breakdown of Revision
 
-Revision is a model that stores little data itself and joins to other models
-that store the data. This can be visualised as:
+As Revision is an immutable model, used to store each edit of a Document, there
+is likely to be a large amount of these with often only minor differences
+between them. To address this a Revision is not stored as a single model but
+instead as a collection of models, where the Revision model stores little data
+and joins to other models. This can be visualised as:
 
 ![Revision breakdown](000x/revision-diagram.png)
 
 The intention of breaking this up is to be conservative with the amount of data
-duplicated for both storage and maintenance reasons. Thus when a user edits
-the title of an edition a new ContentRevision object is created and the other
-objects (TagsRevision, MetadataRevision and ImageRevisions) are associated with
-the next revision.
+duplicated between consecutive revisions. For example when a user edits
+the title of an edition a new ContentRevision is created and the existing
+TagsRevision, MetadataRevision and ImageRevisions models are associated with
+the next revision. An ImageRevision is modelled in a similar way to a Revision
+and this is explained further in [Image modelling](#image-modelling).
 
-It is intended that delegation be used when interfacing with a revision to
-enable accessing data within the child objects of a revision without the caller
-being directly aware of them.
+It is intended that [delegation][delegate] be used when interfacing with a
+revision so that the caller need not be concerned with which sub-revision
+stores particular fields. This allows a revision to have a rich interface
+despite storing a low amount of data directly.
 
 ### Image modelling
 
-Images are modelled in a similar pattern to Revision. At their core is a
-concept of an Image::Revision which stores joins to other models, as
-represented below:
+Content Publisher supports a user uploading image files and referencing them
+in a revision of a document. They have metadata and editable properties that a
+user can change, of which a history is stored. A single image file uploaded
+produces multiple files that are uploaded to Asset Manager for different sizing
+variations. Images are modelled in a similar way to Revision with an
+immutable Image::Revision model, as represented below:
 
 ![Image Revision breakdown](000x/image-revision-diagram.png)
 
-The Image model itself is used for continuation between image revisions. We know
-that two Image::Revisions are versions of the same item if they share the same
-Image association.
+The Image model itself is used for continuation between image revisions. It is
+known that two Image::Revisions are versions of the same item if they share the
+same Image association. The id of the Image is used in URLs to consistently
+reference the Image no matter which revision it is.
 
 The data of an Image::Revision is stored between an Image::FileRevision and an
-Image::MetadataRevision. These two objects differ by the fact that any change to
-Image::FileRevision requires changes to the resultant files (such as crop
-dimensions), whereas Image::MetadataRevision stores accompanying data that
-doesn't affect the files (such as alt text).
+Image::MetadataRevision. Both are immutable and they differ by the fact that
+any change to Image::FileRevision requires changes to the resultant Asset
+Manager files (such as crop dimensions), whereas Image::MetadataRevision stores
+accompanying data that doesn't affect the Asset Manager files (such as alt
+text).
 
 Image::FileRevision is associated with an ActiveStorage::Blob object that is
 responsible for managing the storage of the source file. It also has a one to
-many association with Image::Asset, each of these represent resulting files that
-are uploaded to Asset Manager. For a single image uploaded we'd likely upload
-multiple sizes to Asset Manager - these different files are named variants. An
-Image::Asset object stores whether the asset is on Asset Manager, what state it
-is in and the URL.
+many association with Image::Asset, each of these representing resultant files
+that are uploaded to Asset Manager for the various image sizes. The
+Image::Asset model stores the URL to the Asset Manager file and what state the
+file is on Asset Manager.
 
-### Timeline entry
+### Timeline
 
-A timeline entry represents an event that should be shown to a user as part
-of a document's history. This stores the event which occurred and associations
-to relevant models. The sole purpose of this is for representing a
-timeline to users visually and not for storing historical metadata.
-
-The TimelineEntry model should not store data which could not be
-derived from other aspects of a document. This is to maintain
-flexibility for timeline to be an evolving and iterated part of the
-application.
+The TimelineEntry model represents an event that should be shown to a user as
+part of a visual timeline of a document's history. In order for the timeline to
+be a flexible feature that can be iterated, this model should not be used
+outside of the timeline context.
 
 At the time of writing it wasn't yet determined what the
 timeline would show, and therefore it wasn't clear exactly how
-best to model them. Because of this TimelineEntry will be modelled in a
-speculative way with a number of joins to relevant data.
+best to model an entry for it. Because of this TimelineEntry is modelled in a
+speculative way with a number of references to relevant data, including a
+polymorphic association for flexibility.
 
-### Topics / Taxonomy
+The TimelineEntry model should not store data which could not be
+derived from other aspects of a document. This is the allow the ability to
+rebuild TimelineEntry models if the needs of the timeline changed and to avoid
+timeline being an aspect of a documents state. Previously models such as
+Removal and Withdrawal were associated directly with a TimelineEntry which
+meant state was access through the timeline. These are now suggested to be
+associated with a Status model.
 
-No data related to topics / taxonomy is intended to be stored in Content
-Publisher at the current point in time. This is due to this being editable
-from other locations, most notably Content Tagger, and therefore difficult for
-us to store an accurate picture. As we learn more this may be reconsidered.
+### Topics
+
+No data related to topics (otherwise known as GOV.UK taxonomy) is intended to
+be stored in Content Publisher at this current point in time. This is due to
+topics being accessed and edited by directly interacting with the Publishing
+API. Other applications, notably Content Tagger, can also edit topics which has
+the consequence that the Publishing API is the source of truth for this data
+rather than Content Publisher.
+
+This inconsistency makes it difficult to store the history of topics in a
+reliable way. Thus, until needs are determined to store this data, Content
+Publisher will continue to query the Publishing API rather than storing this
+data and history will not be available.
+
+### Collated diagram
+
+The various aspects of this decision can be collated together to be represented
+in the following, somewhat daunting, diagram. It has been simplified for ease
+of reading with noticeable omissions being a User model, since most models have
+a creator, and the speculative joins of a TimelineEntry.
+
+![Domain model diagram](000x/domain-model-diagram.png)
 
 ## Status
 
@@ -243,67 +243,22 @@ more database queries or a more complicated single query to look up information.
 
 Some ideas to alleviate this are:
 
-- the use of [delegate][] with ActiveRecord to make it simpler to access data
-  without interacting with individual models;
+- the use of [delegate][] with ActiveRecord to make it simpler to access and
+  update data without interacting with individual models;
 - use of [scopes][] / find methods to alleviate join knowledge;
 - A [materialized view][] or [search index][elasticsearch-rails] to have
   current and live edition data in a flat form.
 
-### We're not considering removing the past
+### No removal of past data
 
 This data model is built around the expectation that the history of documents
-published to GOV.UK is something that we want to preserve. Over time this may
-lead to a large amount of data usage.
+published to GOV.UK is something to be preserved. Over time this may
+lead to a large amount of data usage. At some point in the future it may need
+to be evaluated whether it is appropriate to have some form of archiving
+strategy for older data.
 
-## Further options being considered
-
-This section outlines some further options that was considered as part of this
-ADR but not part of the decision and may be explored further in future.
-
-### Efficient ways to load a timeline
-
-With the database storing a rich history there are options for the
-timeline to associate with models directly rather than store much information
-itself. However this may not be efficient or simple to access due to the
-need for many joins.
-
-A suggestion would be that we associate a TimelineEntry model with the
-associated models created in the event that created the entry but also store
-a denormalised version of the data tailored for rendering the timeline. If at
-any time we have to resolve an issue with incorrect entries or want to
-change their functionality we can use the associated model(s) as a source of
-truth to regenerate them.
-
-### States changed asynchronously
-
-This proposal mostly considers state changes to be a synchronous action in a
-single request. However this may be done asynchronously in order to provide
-timely responses and accurate information.
-
-This presents us with a challenge in that an edition can be in a transitory
-state and the way we present that might differ depending on the status. For
-example:
-
-- Transitioning from `draft` -> `submitted_for_review`. We'd consider the
-  document to instantly be in `submitted_for_review` status and no need to
-  update the Publishing API.
-- Transitioning from `scheduled` -> `published`. We'd consider the document to not
-  be considered published until we had successfully synced the resources with
-  the Publishing API. We'd want to inform the user that a transition was in
-  progress and whether that failed.
-
-An approach to resolve this would be to provide the ability for an edition to
-also be associated with a next status. This could be used to present the
-status that an item is being transitioned to whilst still maintaining it's
-current status. When the sync to Publishing API is complete the next status
-could replace the editions status. If it fails then this can be shown to the
-user and re-attempted.
-
-An example of how this could be modelled is illustrated in the following
-diagram:
-
-![Diagram illustrating asynchronous state](000x/state-diagram.png)
-
+[Papertrail]: https://github.com/paper-trail-gem/paper_trail
+[papertrail-pr]: https://github.com/alphagov/content-publisher/pull/302
 [delegate]: https://api.rubyonrails.org/classes/Module.html#method-i-delegate
 [scopes]: https://guides.rubyonrails.org/active_record_querying.html#scopes
 [materialized view]: https://github.com/scenic-views/scenic

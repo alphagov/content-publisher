@@ -1,0 +1,97 @@
+@startuml
+class Document {
+  content_id
+  locale
+}
+
+class Edition {
+  number
+}
+
+class Status {
+  state
+}
+
+class Withdrawal {
+  explanatory_note
+}
+
+class Removal {
+  explanatory_note
+  alternative_path
+  redirect
+}
+
+class Revision {
+  number
+}
+
+class ContentRevision {
+  title
+  base_path
+  summary
+  contents
+}
+
+class TagsRevision {
+  tags
+}
+
+class MetadataRevision {
+  update_type
+  change_note
+}
+
+class Image::Revision {
+}
+
+class Image::FileRevision {
+  filename
+  width
+  height
+  crop_x
+  crop_y
+  crop_width
+  crop_height
+}
+
+class Image::MetadataRevision {
+  alt_text
+  caption
+  credit
+}
+
+class Image::Asset {
+  variant
+  file_url
+  state
+}
+
+class ActiveStorage::Blob {
+  key
+  content_type
+}
+
+class TimelineEntry {
+  entry_type
+}
+
+Document -- Edition : current
+Document .. Edition : live
+Document --* Revision
+Edition -- Revision
+Edition -- Status
+Status .. Withdrawal: details
+Status .. Removal: details
+Revision -- ContentRevision
+Revision -- TagsRevision
+Revision -- MetadataRevision
+Revision *--* Image::Revision
+Revision .. Image::Revision: lead
+Image::Revision --* Image
+Image::Revision -- Image::FileRevision
+Image::Revision -- Image::MetadataRevision
+Image::FileRevision --* Image::Asset
+Image::FileRevision -- ActiveStorage::Blob
+TimelineEntry -right-* Document
+@enduml
