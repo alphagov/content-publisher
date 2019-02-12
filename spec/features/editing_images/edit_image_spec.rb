@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit image crop", js: true do
+RSpec.feature "Edit image", js: true do
   scenario do
     given_there_is_an_edition_with_images
+
     when_i_visit_the_images_page
     and_i_edit_the_image_crop
     then_the_image_crop_is_updated
+
+    when_i_edit_the_image_metadata
+    then_i_see_the_image_is_updated
     and_the_preview_creation_succeeded
   end
 
@@ -28,7 +32,7 @@ RSpec.feature "Edit image crop", js: true do
   end
 
   def and_i_edit_the_image_crop
-    click_on "Edit crop"
+    click_on "Edit image"
 
     # drag towards the top of the page where the page heading is located
     crop_box = find(".cropper-crop-box")
@@ -44,24 +48,36 @@ RSpec.feature "Edit image crop", js: true do
     click_on "Crop image"
   end
 
+  def when_i_edit_the_image_metadata
+    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
+    fill_in "image_revision[alt_text]", with: "Some alt text"
+    fill_in "image_revision[caption]", with: "A caption"
+    fill_in "image_revision[credit]", with: "A credit"
+    click_on "Save"
+  end
+
+  def then_i_see_the_image_is_updated
+    expect(page).to have_content("Some alt text")
+    expect(page).to have_content("A caption")
+    expect(page).to have_content("A credit")
+  end
+
   def then_the_image_crop_is_updated
     image_revision = @edition.reload.image_revisions[0]
-
     expect(image_revision.crop_y).to eq(0)
     expect(image_revision.crop_x).to eq(0)
     expect(image_revision.crop_width).to eq(960)
     expect(image_revision.crop_height).to eq(640)
-    expect(page).to have_content(I18n.t!("images.index.flashes.cropped", file: image_revision.filename))
   end
 
   def and_the_preview_creation_succeeded
-    expect(@publishing_api_request).to have_been_requested
+    expect(@publishing_api_request).to have_been_requested.at_least_once
     expect(@new_asset_requests).to have_been_requested.at_least_once
     expect(@old_asset_requests).to have_been_requested.at_least_once
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"].keys).to_not include("image")
-    }).to have_been_requested
+    }).to have_been_requested.at_least_once
 
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))

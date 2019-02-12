@@ -2,8 +2,6 @@
 <% content_for :title, t("images.crop.title", title: @document.current_edition.title_or_fallback) %>
 
 <%= form_tag(crop_image_path(@document, @image_revision.image_id), method: :patch) do %>
-  <%= hidden_field_tag :wizard, params[:wizard] %>
-
   <%= render "/components/image_cropper", {
     id: "crop-image",
     src: url_for(@image_revision.blob),

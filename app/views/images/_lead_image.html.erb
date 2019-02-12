@@ -3,8 +3,7 @@
 </h2>
 
 <% actions = [] %>
-<% actions << link_to("Edit crop", crop_image_path(document, lead_image.image_id), class: "govuk-link") %>
-<% actions << link_to("Edit details", edit_image_path(document, lead_image.image_id), class: "govuk-link") %>
+<% actions << link_to("Edit image", crop_image_path(document, lead_image.image_id), class: "govuk-link") %>
 <% actions << link_to("Download 960x640 image", download_image_path(document, lead_image.image_id), class: "govuk-link") %>
 
 <% actions << capture do %>
@@ -15,7 +14,6 @@
 
 <% actions << capture do %>
   <%= form_tag destroy_image_path(document, lead_image.image_id), method: :delete, class: "app-inline-block" do %>
-    <%= hidden_field_tag :wizard, "lead_image" %>
     <button class="govuk-link app-link--button app-link--destructive">Delete lead image</button>
   <% end %>
 <% end %>

@@ -3,7 +3,7 @@
 RSpec.feature "Edit image metadata with requirements issues" do
   scenario do
     given_there_is_an_edition_with_images
-    when_i_visit_the_images_page
+    when_i_visit_the_image_metadata_page
     and_i_edit_the_image_with_bad_metadata
     then_i_see_an_error_to_fix_the_issues
   end
@@ -16,13 +16,12 @@ RSpec.feature "Edit image metadata with requirements issues" do
                       image_revisions: [@image_revision])
   end
 
-  def when_i_visit_the_images_page
-    visit images_path(@edition.document)
+  def when_i_visit_the_image_metadata_page
+    visit edit_image_path(@edition.document, @image_revision.image_id)
   end
 
   def and_i_edit_the_image_with_bad_metadata
     @request = stub_publishing_api_put_content(@edition.content_id, {})
-    click_on "Edit details"
     fill_in "image_revision[alt_text]", with: ""
     click_on "Save"
   end

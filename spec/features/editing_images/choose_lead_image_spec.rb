@@ -32,7 +32,7 @@ RSpec.feature "Choose a lead image" do
 
   def and_i_edit_the_image_metadata
     @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
-    click_on "Edit details"
+    visit edit_image_path(@edition.document, @image_revision.image_id)
   end
 
   def and_i_tick_the_image_is_the_lead_image

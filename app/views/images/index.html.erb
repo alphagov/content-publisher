@@ -15,8 +15,6 @@
         multipart: true,
         data: { gtm: "image-upload-submit" },
       ) do %>
-        <%= hidden_field_tag :wizard, "lead_image" %>
-
         <%= render "govuk_publishing_components/components/file_upload", {
           label: {
             text: upload_image_heading,
