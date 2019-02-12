@@ -36,12 +36,8 @@ class ImagesController < ApplicationController
       )
 
       current_edition.assign_revision(next_revision, current_user).save!
-
       PreviewService.new(current_edition).try_create_preview
-
-      redirect_to crop_image_path(params[:document_id],
-                                  image_revision.image_id,
-                                  wizard: params[:wizard])
+      redirect_to crop_image_path(params[:document_id], image_revision.image_id)
     end
   end
 
@@ -53,7 +49,7 @@ class ImagesController < ApplicationController
   end
 
   def update_crop
-    Document.transaction do # rubocop:disable Metrics/BlockLength
+    Document.transaction do
       document, previous_image_revision = find_locked_document_and_image_revision(
         params[:document_id],
         params[:image_id],
@@ -83,9 +79,7 @@ class ImagesController < ApplicationController
         PreviewService.new(document.current_edition).try_create_preview
       end
 
-      redirect_to edit_image_path(document,
-                                  image_revision.image_id,
-                                  wizard: params[:wizard])
+      redirect_to edit_image_path(document, image_revision.image_id)
     end
   end
 
@@ -190,7 +184,7 @@ class ImagesController < ApplicationController
 
       PreviewService.new(current_edition).try_create_preview
 
-      if params[:wizard] == "lead_image"
+      if lead_image_removed?(current_revision, next_revision)
         redirect_to images_path(document), notice: t("images.index.flashes.lead_image.deleted", file: image_revision.filename)
       else
         redirect_to images_path(document), notice: t("images.index.flashes.deleted", file: image_revision.filename)

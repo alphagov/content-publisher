@@ -14,7 +14,6 @@
 
 <% actions << capture do %>
   <%= form_tag destroy_image_path(document, lead_image.image_id), method: :delete, class: "app-inline-block" do %>
-    <%= hidden_field_tag :wizard, "lead_image" %>
     <button class="govuk-link app-link--button app-link--destructive">Delete lead image</button>
   <% end %>
 <% end %>
