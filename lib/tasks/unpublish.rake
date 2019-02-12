@@ -12,7 +12,7 @@ namespace :unpublish do
     document = Document.find_by!(content_id: args.content_id, locale: locale)
     raise "Document must have a published version before it can be withdrawn" unless document.live_edition
 
-    UnpublishService.new.withdraw(document.live_edition, public_explanation)
+    WithdrawService.new.call(document.live_edition, public_explanation)
   end
 
   desc "Remove a document from GOV.UK e.g. unpublish:remove['a-content-id']"
@@ -26,11 +26,10 @@ namespace :unpublish do
     document = Document.find_by!(content_id: args.content_id, locale: locale)
     raise "Document must have a published version before it can be removed" unless document.live_edition
 
-    UnpublishService.new.remove(
-      document.live_edition,
-      explanatory_note: explanatory_note,
-      alternative_path: alternative_path,
-    )
+    removal = Removal.new(explanatory_note: explanatory_note,
+                          alternative_path: alternative_path)
+
+    RemoveService.new.call(document.live_edition, removal)
   end
 
   desc "Remove and redirect a document on GOV.UK e.g. unpublish:remove_and_redirect['a-content-id'] NEW_PATH='/redirect-to-here'"
@@ -45,10 +44,10 @@ namespace :unpublish do
     document = Document.find_by!(content_id: args.content_id, locale: locale)
     raise "Document must have a published version before it can be redirected" unless document.live_edition
 
-    UnpublishService.new.remove_and_redirect(
-      document.live_edition,
-      redirect_path,
-      explanatory_note: explanatory_note,
-    )
+    removal = Removal.new(redirect: true,
+                          explanatory_note: explanatory_note,
+                          alternative_path: redirect_path)
+
+    RemoveService.new.call(document.live_edition, removal)
   end
 end
