@@ -24,7 +24,7 @@ RSpec.feature "Publish requirements" do
   end
 
   def then_i_see_a_warning_to_fix_the_issues
-    within(".app-c-notice") do
+    within(".app-c-warning-summary") do
       expect(page).to have_content(I18n.t!("requirements.summary.blank.summary_message"))
     end
   end
