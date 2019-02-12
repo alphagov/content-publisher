@@ -83,16 +83,9 @@ class ImagesController < ApplicationController
         PreviewService.new(document.current_edition).try_create_preview
       end
 
-
-      if params[:wizard].present?
-        redirect_to edit_image_path(document,
-                                    image_revision.image_id,
-                                    wizard: params[:wizard])
-        return
-      end
-
-      redirect_to images_path(document),
-                  notice: t("images.index.flashes.cropped", file: image_revision.filename)
+      redirect_to edit_image_path(document,
+                                  image_revision.image_id,
+                                  wizard: params[:wizard])
     end
   end
 
@@ -166,10 +159,6 @@ class ImagesController < ApplicationController
       elsif lead_image_removed?(current_revision, next_revision)
         redirect_to images_path(@document),
                     notice: t("images.index.flashes.lead_image.removed",
-                              file: @image_revision.filename)
-      elsif previous_image_revision != @image_revision
-        redirect_to images_path(@document),
-                    notice: t("images.index.flashes.details_edited",
                               file: @image_revision.filename)
       else
         redirect_to images_path(@document)

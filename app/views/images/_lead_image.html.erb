@@ -3,8 +3,7 @@
 </h2>
 
 <% actions = [] %>
-<% actions << link_to("Edit crop", crop_image_path(document, lead_image.image_id), class: "govuk-link") %>
-<% actions << link_to("Edit details", edit_image_path(document, lead_image.image_id), class: "govuk-link") %>
+<% actions << link_to("Edit image", crop_image_path(document, lead_image.image_id), class: "govuk-link") %>
 <% actions << link_to("Download 960x640 image", download_image_path(document, lead_image.image_id), class: "govuk-link") %>
 
 <% actions << capture do %>
