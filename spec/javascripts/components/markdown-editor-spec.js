@@ -162,7 +162,7 @@ describe('Markdown editor component', function () {
 
   describe('when focusing the textarea', function () {
     it('should add focused class to container', function () {
-      document.querySelector('.js-markdown-editor-input textarea').focus()
+      document.querySelector('.js-markdown-editor-input textarea').dispatchEvent(new Event("focus"))
 
       var container = document.querySelector('.app-c-markdown-editor__container')
       expect(container).toHaveClass('app-c-markdown-editor__container--focused')
@@ -172,7 +172,7 @@ describe('Markdown editor component', function () {
       var container = document.querySelector('.app-c-markdown-editor')
       spyOnEvent(container, 'focus')
 
-      document.querySelector('.js-markdown-editor-input textarea').focus()
+      document.querySelector('.js-markdown-editor-input textarea').dispatchEvent(new Event("focus"))
 
       expect('focus').toHaveBeenTriggeredOn(container)
     })
@@ -181,9 +181,10 @@ describe('Markdown editor component', function () {
 
   describe('when blurring the textarea', function () {
     it('should remove focused class to container', function () {
-      document.querySelector('.js-markdown-editor-input textarea').blur()
-
       var container = document.querySelector('.app-c-markdown-editor__container')
+      container.classList.add('app-c-markdown-editor__container--focused')
+
+      document.querySelector('.js-markdown-editor-input textarea').dispatchEvent(new Event("blur"))
       expect(container).not.toHaveClass('app-c-markdown-editor__container--focused')
     })
   })
