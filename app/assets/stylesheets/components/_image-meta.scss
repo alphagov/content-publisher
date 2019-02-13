@@ -32,18 +32,10 @@
   li {
     display: inline-block;
     margin-right: govuk-spacing(3);
+    margin-bottom: govuk-spacing(1);
   }
 
   .govuk-link {
     margin-bottom: 0;
   }
-}
-
-.app-c-image-meta__primary-action-section {
-  margin-bottom: govuk-spacing(3);
-  @include govuk-clearfix;
-}
-
-.app-c-image-meta__primary-action-tag {
-  margin-right: govuk-spacing(3);
 }
