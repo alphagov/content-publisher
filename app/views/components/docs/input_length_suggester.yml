@@ -12,3 +12,6 @@ examples:
       for_id: "an-input"
       show_from: 10
       message: "This field should be less than 15 characters. Current characters: {count}"
+    embed: |
+      <input id="an-input" class="govuk-input" placeholder="Type 10 characters to reveal">
+      <%= component %>

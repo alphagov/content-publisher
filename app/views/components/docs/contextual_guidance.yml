@@ -9,7 +9,13 @@ accessibility_criteria: |
   * stay visible until another input field with guidance is being focused
 examples:
   default:
+    embed: |
+      <div style="height:200px">
+        <input class="govuk-input" data-contextual-guidance="news-title-guidance" placeholder="Focus to reveal">
+        <%= component %>
+      </div>
     data:
       title: Writing a news title
+      id: news-title-guidance
       block: |
         The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
