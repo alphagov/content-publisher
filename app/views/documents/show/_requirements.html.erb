@@ -21,7 +21,7 @@
         items: draft_issues.items(issue_params),
       } %>
     <% else %>
-      <%= render "/components/notice", {
+      <%= render "/components/warning_summary", {
         title: t("documents.show.flashes.pre_preview_issues.warning"),
         items: draft_issues.items(issue_params),
       } %>
@@ -39,7 +39,7 @@
         items: publish_issues.items(issue_params),
       } %>
     <% else %>
-      <%= render "/components/notice", {
+      <%= render "/components/warning_summary", {
         title: t("documents.show.flashes.pre_publish_issues.warning"),
         items: publish_issues.items(issue_params),
       } %>

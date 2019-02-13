@@ -12,7 +12,7 @@
 @import "components/markdown-editor";
 @import "components/markdown-guidance";
 @import "components/metadata";
-@import "components/notice";
+@import "components/warning-summary";
 @import "components/summary";
 @import "components/page-preview";
 @import "components/autocomplete";
@@ -21,7 +21,7 @@
 @import "components/image-cropper";
 @import "components/side-navigation";
 @import "components/miller-columns";
-@import "components/input_length_suggester";
+@import "components/input-length-suggester";
 
 @import "utilities/display";
 @import "utilities/overwrites";

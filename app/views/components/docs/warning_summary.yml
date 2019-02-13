@@ -1,5 +1,5 @@
-name: Notice
-description: A notice to convey and highlight information
+name: Warning summary
+description: A summary of warnings
 body: |
   Optional markdown providing further detail about the component
 examples:
