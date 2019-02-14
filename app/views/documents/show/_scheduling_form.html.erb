@@ -13,16 +13,19 @@
       label: { text: "Day" },
       name: "scheduled[day]",
       maxlength: 2,
+      value: publish_datetime&.day,
     } %>
     <%= render "govuk_publishing_components/components/input", {
       label: { text: "Month" },
       name: "scheduled[month]",
       maxlength: 2,
+      value: publish_datetime&.month,
     } %>
     <%= render "govuk_publishing_components/components/input", {
       label: { text: "Year" },
       name: "scheduled[year]",
       maxlength: 4,
+      value: publish_datetime&.year,
     } %>
     <%= render "govuk_publishing_components/components/select", {
       label: "Time",

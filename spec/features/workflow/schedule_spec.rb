@@ -27,7 +27,7 @@ RSpec.feature "Scheduling an edition" do
     fill_in "scheduled[day]", with: @date.day
     fill_in "scheduled[month]", with: @date.month
     fill_in "scheduled[year]", with: @date.year
-    select "12:01am", from: "scheduled[time]"
+    select "11:00pm", from: "scheduled[time]"
   end
 
   def and_i_click_save
@@ -35,7 +35,11 @@ RSpec.feature "Scheduling an edition" do
   end
 
   def then_i_see_the_edition_has_a_set_scheduled_publishing_date_and_time
-    scheduled_date = @date.strftime("%-d %B %Y - 12:01am")
+    scheduled_date = @date.strftime("%-d %B %Y - 11:00pm")
     expect(page).to have_content("Publish date: #{scheduled_date}")
+    expect(page).to have_selector("[@name='scheduled[day]'][@value='#{@date.day}']")
+    expect(page).to have_selector("[@name='scheduled[month]'][@value='#{@date.month}']")
+    expect(page).to have_selector("[@name='scheduled[year]'][@value='#{@date.year}']")
+    expect(page).to have_select("scheduled[time]", selected: "11:00pm")
   end
 end
