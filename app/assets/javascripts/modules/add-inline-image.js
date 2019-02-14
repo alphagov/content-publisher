@@ -16,11 +16,18 @@ ModalManager.prototype.handleModalOpen = function (event) {
   var $modalBody = this.$modal.querySelector('.app-c-modal-dialogue__body')
   var $module = this
 
-  this.fetchModalContent().then(function (text) {
-    $modalTitle.innerHTML = $module.$trigger.dataset.modalTitle
-    $modalBody.innerHTML = text
-    $module.overrideActions($modalBody)
-  })
+  this.fetchModalContent()
+    .then(function (text) {
+      $modalTitle.innerHTML = $module.$trigger.dataset.modalTitle
+      $modalBody.innerHTML = text
+      $module.overrideActions($modalBody)
+    })
+    .catch(function (result) {
+      if (result) {
+        $modalTitle.innerHTML = ''
+        $modalBody.innerHTML = '<p class="govuk-error-message">' + result + '</p>'
+      }
+    })
 }
 
 ModalManager.prototype.fetchModalContent = function () {
@@ -30,7 +37,12 @@ ModalManager.prototype.fetchModalContent = function () {
   setTimeout(function () { controller.abort() }, 5000)
 
   return window.fetch(url, options)
-    .then(function (response) { return response.text() })
+    .then(function (response) {
+      if (!response.ok) {
+        return window.Promise.reject('Unable to render the content.')
+      }
+      return response.text()
+    })
 }
 
 ModalManager.prototype.performAction = function (action) {
