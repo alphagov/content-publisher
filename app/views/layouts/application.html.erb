@@ -163,5 +163,7 @@
     ]
   } %>
 
-  <%= render "components/modal_dialogue", { title: "", id: "modal" } %>
+  <%= render "components/modal_dialogue", { title: "", id: "modal" } do %>
+    <%= render "components/loading_spinner" %>
+  <% end %>
 <% end %>
