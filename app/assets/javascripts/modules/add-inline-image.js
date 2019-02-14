@@ -1,14 +1,14 @@
-function ModalManager (trigger) {
+function AddInlineImage (trigger) {
   this.$trigger = trigger
   var id = trigger.dataset.modalId
   this.$modal = document.getElementById(id)
 }
 
-ModalManager.prototype.init = function () {
+AddInlineImage.prototype.init = function () {
   this.$trigger.addEventListener('click', this.handleModalOpen.bind(this))
 }
 
-ModalManager.prototype.handleModalOpen = function (event) {
+AddInlineImage.prototype.handleModalOpen = function (event) {
   event.preventDefault()
   this.$modal.open()
 
@@ -30,7 +30,7 @@ ModalManager.prototype.handleModalOpen = function (event) {
     })
 }
 
-ModalManager.prototype.fetchModalContent = function () {
+AddInlineImage.prototype.fetchModalContent = function () {
   var url = this.$trigger.dataset.modalUrl
   var controller = new window.AbortController()
   var options = { credentials: 'include', signal: controller.signal }
@@ -45,7 +45,7 @@ ModalManager.prototype.fetchModalContent = function () {
     })
 }
 
-ModalManager.prototype.performAction = function (action) {
+AddInlineImage.prototype.performAction = function (action) {
   var actions = {
     'insert': function () {
       var editor = this.$trigger.closest('[data-module="markdown-editor"]')
@@ -60,7 +60,7 @@ ModalManager.prototype.performAction = function (action) {
   actions[action.dataset.modalAction].bind(this)()
 }
 
-ModalManager.prototype.overrideActions = function (modalBody) {
+AddInlineImage.prototype.overrideActions = function (modalBody) {
   var actions = modalBody.querySelectorAll('[data-modal-action]')
   var $module = this
 
@@ -73,4 +73,4 @@ ModalManager.prototype.overrideActions = function (modalBody) {
 }
 
 var element = document.querySelector('[data-module="add-inline-image"]')
-new ModalManager(element).init()
+new AddInlineImage(element).init()
