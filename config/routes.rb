@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   post "/documents/:id/publish" => "publish#publish"
   get "/documents/:id/published" => "publish#published", as: :published
 
+  post "documents/:id/save-scheduled-publishing-datetime" => "schedule#save_scheduled_publishing_datetime", as: :save_scheduled_publishing_datetime
+
   get "/documents" => "documents#index"
   get "/documents/:id/edit" => "documents#edit", as: :edit_document
   patch "/documents/:id" => "documents#update", as: :document

@@ -47,6 +47,7 @@ class Revision < ApplicationRecord
            :change_note,
            :major?,
            :minor?,
+           :scheduled_publishing_datetime,
            to: :metadata_revision
 
   delegate :tags, to: :tags_revision
@@ -167,7 +168,12 @@ class Revision < ApplicationRecord
     end
 
     def metadata_revision(next_revision)
-      metadata = attributes.slice(:update_type, :change_note)
+      metadata = attributes.slice(
+        :update_type,
+        :change_note,
+        :scheduled_publishing_datetime,
+      )
+
       unless metadata.empty?
         revision = next_revision.metadata_revision
                                 .build_revision_update(metadata, user)

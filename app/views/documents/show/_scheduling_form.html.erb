@@ -1,0 +1,40 @@
+<% publish_datetime = @edition.revision.scheduled_publishing_datetime %>
+
+<%= form_tag(save_scheduled_publishing_datetime_path(@edition.document)) do %>
+  <%= render "govuk_publishing_components/components/details", {
+    title: if publish_datetime
+             simple_format("Publish date: \n" + publish_datetime.strftime("%-d %B %Y - %l:%M%P"))
+           else
+             "Schedule publishing"
+           end
+  } do %>
+    <%= render "govuk_publishing_components/components/input", {
+      label: { text: "Day" },
+      name: "scheduled[day]",
+      maxlength: 2,
+    } %>
+    <%= render "govuk_publishing_components/components/input", {
+      label: { text: "Month" },
+      name: "scheduled[month]",
+      maxlength: 2,
+    } %>
+    <%= render "govuk_publishing_components/components/input", {
+      label: { text: "Year" },
+      name: "scheduled[year]",
+      maxlength: 4,
+    } %>
+    <%= render "govuk_publishing_components/components/select", {
+      label: "Time",
+      id: "scheduled[time]",
+      options: [
+        {
+          text: "12:01am",
+          value: "12:01am"
+        }
+      ]
+    } %>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Save", margin_bottom: true
+    } %>
+  <% end %>
+<% end %>
