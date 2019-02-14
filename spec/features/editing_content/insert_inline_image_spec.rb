@@ -31,13 +31,13 @@ RSpec.feature "Insert inline image", js: true do
   end
 
   def and_i_choose_one_of_the_images
-    click_on "Insert markdown snippet"
+    click_on "Insert image markdown"
   end
 
   def then_i_see_the_snippet_is_inserted
     snippet = I18n.t("images.index.meta.inline_code.value",
                      filename: @image_revision.filename)
 
-    expect(find_field("#body").value).to match snippet
+    expect(find("#body").value).to match snippet
   end
 end
