@@ -33,6 +33,10 @@ ModalDialogue.prototype.handleOpen = function (event) {
   this.$body.classList.add('app-o-template__body--blur')
   this.$focusedElementBeforeOpen = document.activeElement
   this.$module.style.display = 'block'
+  this.$dialogBox.setAttribute('open', '')
+
+  this.$module.dispatchEvent(new window.CustomEvent('modalOpen', { bubbles: true }))
+
   this.$dialogBox.focus()
 
   document.addEventListener('keydown', this.$module.boundKeyDown, true)
@@ -45,7 +49,12 @@ ModalDialogue.prototype.handleClose = function (event) {
   this.$body.classList.remove('app-o-template__body--modal')
   this.$body.classList.remove('app-o-template__body--blur')
   this.$module.style.display = 'none'
-  this.$focusedElementBeforeOpen.focus()
+  this.$dialogBox.removeAttribute('open')
+  if (this.$focusedElementBeforeOpen) {
+    this.$focusedElementBeforeOpen.focus()
+  }
+
+  this.$module.dispatchEvent(new window.CustomEvent('modalClose', { bubbles: true }))
 
   document.removeEventListener('keydown', this.$module.boundKeyDown, true)
 }

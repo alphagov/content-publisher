@@ -162,4 +162,12 @@
       },
     ]
   } %>
+
+  <%= render "components/modal_dialogue", {
+    title: "Images for ‘" + @revision.title_or_fallback + "’",
+    id: "add-image-modal"
+  } do %>
+    <button data-modal-action="insert-image" class="govuk-button">Insert image</button>
+  <% end %>
+
 <% end %>
