@@ -31,7 +31,7 @@
     </div>
 
     <% if lead_image = @document.current_edition.lead_image_revision %>
-      <%= render "lead_image", lead_image: lead_image, document: @document %>
+      <%= render "lead_image", lead_image: lead_image, document: @document, context: @context %>
     <% end %>
 
     <% images = @document.current_edition.image_revisions_without_lead %>
@@ -42,7 +42,7 @@
       </h2>
 
       <% images.each do |image| %>
-        <%= render "image", image: image, document: @document %>
+        <%= render "image", image: image, document: @document, context: @context %>
       <% end %>
     <% end %>
   </div>
