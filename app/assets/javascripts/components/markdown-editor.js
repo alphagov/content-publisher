@@ -21,6 +21,8 @@ MarkdownEditor.prototype.init = function () {
   $module.boundPreviewButtonClick = this.handlePreviewButton.bind(this)
   $module.boundEditButtonClick = this.handleEditButton.bind(this)
 
+  $module.selectionReplace = this.handleSelectionReplace.bind(this)
+
   // Enable toggle bar
   this.$head.style.display = 'block'
 
@@ -148,6 +150,10 @@ MarkdownEditor.prototype.reflectFocusStateToContainer = function (element, conta
   element.addEventListener('blur', function (event) {
     container && container.classList.remove('app-c-markdown-editor__container--focused')
   }, true)
+}
+
+MarkdownEditor.prototype.handleSelectionReplace = function (text) {
+  document.execCommand('insertText', false, text)
 }
 
 var $govspeak = document.querySelector('[data-module="markdown-editor"]')

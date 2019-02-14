@@ -8,7 +8,7 @@ ModalManager.prototype.init = function () {
   this.$trigger.addEventListener('click', this.handleModalOpen.bind(this))
 }
 
-ModalManager.prototype.handleModalOpen = function () {
+ModalManager.prototype.handleModalOpen = function (event) {
   event.preventDefault()
   this.$modal.open()
 
@@ -35,13 +35,13 @@ ModalManager.prototype.fetchModalContent = function () {
 
 ModalManager.prototype.performAction = function (action) {
   var actions = {
-    "insert": function () {
-      var editor = document.getElementById("body")
-      editor.value = action.dataset.modalData
+    'insert': function () {
+      var editor = this.$trigger.closest('[data-module="markdown-editor"]')
       this.$modal.close()
+      editor.selectionReplace(action.dataset.modalData)
     },
-    "upload": function () {
-      console.log("hi")
+    'upload': function () {
+      console.log('hi')
     }
   }
 
@@ -53,7 +53,7 @@ ModalManager.prototype.overrideActions = function (modalBody) {
   var $module = this
 
   actions.forEach(function (action) {
-    action.addEventListener('click', function () {
+    action.addEventListener('click', function (event) {
       event.preventDefault()
       $module.performAction(action)
     })
