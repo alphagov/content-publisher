@@ -25,7 +25,8 @@
         <%= render_govspeak(t("images.index.description_govspeak")) %>
 
         <%= render "govuk_publishing_components/components/button", {
-          text: "Upload"
+          text: "Upload",
+          data_attributes: { "modal-action": "upload" },
         } %>
       <% end %>
     </div>

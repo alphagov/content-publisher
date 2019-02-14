@@ -15,7 +15,7 @@ ModalDialogue.prototype.init = function () {
   this.$module.focusDialog = this.handleFocusDialog.bind(this)
   this.$module.boundKeyDown = this.handleKeyDown.bind(this)
 
-  var $triggerElement = document.querySelector('[data-toggle="modal"][data-target="#' + this.$module.id + '"]')
+  var $triggerElement = document.querySelector('[data-target="#' + this.$module.id + '"]')
   if ($triggerElement) {
     $triggerElement.addEventListener('click', this.$module.open)
   }

@@ -2,7 +2,10 @@
 <% actions << link_to("Download 960x640 image", download_image_path(document, image.image_id), class: "govuk-link") %>
 
 <% if context == "modal" %>
-  <% actions << link_to("Insert image markdown", "#", class: "govuk-link govuk-link--no-visited-state") %>
+  <% actions << link_to("Insert image markdown", "#",
+                        data: { "modal-action": "insert",
+                                "modal-data": I18n.t("images.index.meta.inline_code.value", filename: image.filename) },
+                        class: "govuk-link govuk-link--no-visited-state") %>
 <% else %>
   <% actions << link_to("Edit image", crop_image_path(document, image.image_id), class: "govuk-link") %>
   <% actions << link_to("Download 960x640 image", download_image_path(document, image.image_id), class: "govuk-link") %>
