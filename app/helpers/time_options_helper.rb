@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 module TimeOptionsHelper
+  DEFAULT_PUBLISHING_TIME = "9:00am"
+
   def time_options(selected = nil)
     options = times.map { |time| { text: time, value: time } }
     options.each do |option|
-      if option[:text] == selected
+      if option[:text] == (selected || DEFAULT_PUBLISHING_TIME)
         option[:selected] = true
         break
       end
