@@ -8,11 +8,7 @@ class ImagesController < ApplicationController
 
   def index
     @document = Document.with_current_edition.find_by_param(params[:document_id])
-
-    if params[:modal]
-      @context = "modal"
-      render layout: false
-    end
+    render layout: (@context = "modal") if params[:modal]
   end
 
   def create

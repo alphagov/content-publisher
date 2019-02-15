@@ -12,13 +12,11 @@ AddInlineImage.prototype.handleModalOpen = function (event) {
   event.preventDefault()
   this.$modal.open()
 
-  var $modalTitle = this.$modal.querySelector('.app-c-modal-dialogue__title')
   var $modalBody = this.$modal.querySelector('.app-c-modal-dialogue__body')
   var $module = this
 
   this.fetchModalContent()
     .then(function (text) {
-      $modalTitle.innerHTML = $module.$trigger.dataset.modalTitle
       $modalBody.innerHTML = text
       $module.overrideActions($modalBody)
     })
