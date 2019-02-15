@@ -43,9 +43,8 @@
           <button name="submit" type="submit" value="add_contact" class="app-c-markdown-editor__toolbar-button app-c-markdown-editor__toolbar-button--text app-c-markdown-editor__toolbar-button--end">Add contact</button>
           <button name="submit" type="submit" value="add_image" class="app-c-markdown-editor__toolbar-button app-c-markdown-editor__toolbar-button--text app-c-markdown-editor__toolbar-button--end"
             data-module="add-inline-image"
-            data-modal-id="modal"
-            data-modal-title="<%= t("images.index.title", title: @document.current_edition.title_or_fallback) %>"
-            data-modal-url="<%= images_path(@document, modal: true) %>"
+            data-modal-action="open"
+            data-modal-action-url="<%= images_path(@document, modal: true) %>"
           >Insert image</button>
         </markdown-toolbar>
       </div>

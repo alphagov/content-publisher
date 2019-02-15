@@ -1,35 +1,17 @@
 function AddInlineImage (trigger) {
   this.$trigger = trigger
-  var id = trigger.dataset.modalId
-  this.$modal = document.getElementById(id)
+  this.$modal = document.getElementById("modal")
+  this.$modalBody = this.$modal.querySelector('.app-c-modal-dialogue__body')
 }
 
 AddInlineImage.prototype.init = function () {
-  this.$trigger.addEventListener('click', this.handleModalOpen.bind(this))
+  this.$trigger.addEventListener('click', function (event) {
+    event.preventDefault()
+    $module.performAction($module.$trigger)
+  })
 }
 
-AddInlineImage.prototype.handleModalOpen = function (event) {
-  event.preventDefault()
-  this.$modal.open()
-
-  var $modalBody = this.$modal.querySelector('.app-c-modal-dialogue__body')
-  var $module = this
-
-  this.fetchModalContent()
-    .then(function (text) {
-      $modalBody.innerHTML = text
-      $module.overrideActions($modalBody)
-    })
-    .catch(function (result) {
-      if (result) {
-        $modalTitle.innerHTML = ''
-        $modalBody.innerHTML = '<p class="govuk-error-message">' + result + '</p>'
-      }
-    })
-}
-
-AddInlineImage.prototype.fetchModalContent = function () {
-  var url = this.$trigger.dataset.modalUrl
+AddInlineImage.prototype.fetchModalContent = function (url) {
   var controller = new window.AbortController()
   var options = { credentials: 'include', signal: controller.signal }
   setTimeout(function () { controller.abort() }, 5000)
@@ -43,26 +25,39 @@ AddInlineImage.prototype.fetchModalContent = function () {
     })
 }
 
-AddInlineImage.prototype.performAction = function (action) {
-  var actions = {
+AddInlineImage.prototype.performAction = function (item) {
+  var handlers = {
+    'open': function () {
+      this.$modal.open()
+      var $module = this
+
+      this.fetchModalContent(item.dataset.modalActionUrl)
+        .then(function (text) {
+          $module.$modalBody.innerHTML = text
+          $module.overrideActions()
+        })
+        .catch(function (result) {
+          $module.$modalBody.innerHTML = '<p class="govuk-error-message">' + result + '</p>'
+        })
+    },
     'insert': function () {
       var editor = this.$trigger.closest('[data-module="markdown-editor"]')
       this.$modal.close()
-      editor.selectionReplace(action.dataset.modalData)
+      editor.selectionReplace(item.dataset.modalData)
     }
   }
 
-  actions[action.dataset.modalAction].bind(this)()
+  handlers[item.dataset.modalAction].bind(this)()
 }
 
-AddInlineImage.prototype.overrideActions = function (modalBody) {
-  var actions = modalBody.querySelectorAll('[data-modal-action]')
+AddInlineImage.prototype.overrideActions = function () {
+  var items = this.$modalBody.querySelectorAll('[data-modal-action]')
   var $module = this
 
-  actions.forEach(function (action) {
-    action.addEventListener('click', function (event) {
+  items.forEach(function (item) {
+    item.addEventListener('click', function (event) {
       event.preventDefault()
-      $module.performAction(action)
+      $module.performAction(item)
     })
   })
 }
