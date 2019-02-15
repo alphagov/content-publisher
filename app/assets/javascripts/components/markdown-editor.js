@@ -153,6 +153,7 @@ MarkdownEditor.prototype.reflectFocusStateToContainer = function (element, conta
 }
 
 MarkdownEditor.prototype.handleSelectionReplace = function (text) {
+  this.$input.focus()
   document.execCommand('insertText', false, text)
 }
 

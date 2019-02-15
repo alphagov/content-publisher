@@ -51,9 +51,6 @@ AddInlineImage.prototype.performAction = function (action) {
       var editor = this.$trigger.closest('[data-module="markdown-editor"]')
       this.$modal.close()
       editor.selectionReplace(action.dataset.modalData)
-    },
-    'upload': function () {
-      console.log('hi')
     }
   }
 
