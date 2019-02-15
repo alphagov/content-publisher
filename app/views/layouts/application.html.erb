@@ -163,7 +163,17 @@
     ]
   } %>
 
-  <%= render "components/modal_dialogue", { title: "", id: "modal", wide: true } do %>
-    <%= render "components/loading_spinner" %>
+  <%= render "components/modal_dialogue", { id: "modal", wide: true } do %>
+    <div id="modal-loading" style="display: none">
+      <%= render "components/loading_spinner" %>
+    </div>
+
+    <div id="modal-error", style="display: none">
+      <%= render "govuk_publishing_components/components/heading", {
+        text: t("application.modal_error.title")
+      } %>
+      <br>
+      <%= render_govspeak(t("application.modal_error.description_govspeak")) %>
+    </div>
   <% end %>
 <% end %>

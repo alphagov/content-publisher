@@ -1,10 +1,17 @@
 function AddInlineImage (trigger) {
   this.$trigger = trigger
-  this.$modal = document.getElementById("modal")
+  this.$modal = document.getElementById('modal')
   this.$modalBody = this.$modal.querySelector('.app-c-modal-dialogue__body')
+  this.$initialBodyHTML = this.$modalBody.innerHTML
 }
 
 AddInlineImage.prototype.init = function () {
+  var $module = this
+
+  if (!this.$trigger) {
+    return
+  }
+
   this.$trigger.addEventListener('click', function (event) {
     event.preventDefault()
     $module.performAction($module.$trigger)
@@ -26,6 +33,21 @@ AddInlineImage.prototype.fetchModalContent = function (url) {
     })
 }
 
+AddInlineImage.prototype.showStaticPage = function (page) {
+  this.$modalBody.innerHTML = this.$initialBodyHTML
+
+  var pages = {
+    'error': this.$modalBody.querySelector('#modal-error'),
+    'loading': this.$modalBody.querySelector('#modal-loading')
+  }
+
+  Object.values(pages).forEach(function (page) {
+    page.style.display = 'none'
+  })
+
+  pages[page].style.display = 'block'
+}
+
 AddInlineImage.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
@@ -38,7 +60,7 @@ AddInlineImage.prototype.performAction = function (item) {
           $module.overrideActions()
         })
         .catch(function (result) {
-          $module.$modalBody.innerHTML = '<p class="govuk-error-message">' + result + '</p>'
+          $module.showStaticPage('error')
         })
     },
     'insert': function () {
@@ -48,6 +70,7 @@ AddInlineImage.prototype.performAction = function (item) {
     }
   }
 
+  this.showStaticPage('loading')
   handlers[item.dataset.modalAction].bind(this)()
 }
 
