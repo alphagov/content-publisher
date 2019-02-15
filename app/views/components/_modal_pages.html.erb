@@ -1,0 +1,10 @@
+<%
+  id ||= "modal-pages-#{SecureRandom.hex(4)}"
+%>
+
+<button class="govuk-button" data-toggle="modal-pages" data-target="pages" data-target-page="1">Show Page 1</button>
+<button class="govuk-button" data-toggle="modal-pages" data-target="pages" data-target-page="2">Show Page 2</button>
+
+<div id="<%= id %>" data-module="modal-pages">
+  <%= yield %>
+</div>
