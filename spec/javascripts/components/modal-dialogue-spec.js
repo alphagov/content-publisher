@@ -45,7 +45,7 @@ describe('Modal dialogue component', function () {
     expect(modal).toBeHidden()
   })
 
-  describe('when clicking "Launch modal dialogue" button', function () {
+  describe('open button', function () {
     beforeEach(function () {
       document.querySelector('.govuk-button').click()
     })
@@ -58,38 +58,58 @@ describe('Modal dialogue component', function () {
       var modal = document.querySelector('.app-c-modal-dialogue')
       expect(modal).toBeVisible()
     })
+  })
+
+  describe('esc key', function () {
+    it('should close the modal', function () {
+      var modal = document.querySelector('.app-c-modal-dialogue')
+      modal.open()
+
+      keyPress(modal, 27)
+      expect(modal).toBeHidden()
+    })
+  })
+
+  describe('close button', function () {
+    it('should hide the modal dialogue', function () {
+      document.querySelector('.govuk-button').dispatchEvent(new Event('focus'))
+      document.querySelector('.govuk-button').click()
+      document.querySelector('.app-c-modal-dialogue__close-button').click()
+
+      var modal = document.querySelector('.app-c-modal-dialogue')
+      document.querySelector('.app-c-modal-dialogue__close-button').click()
+      expect(modal).toBeHidden()
+    })
+  })
+
+  describe('open', function () {
+    beforeEach(function () {
+      var modal = document.querySelector('.app-c-modal-dialogue')
+      modal.open()
+    })
+
+    afterEach(function () {
+      var modal = document.querySelector('.app-c-modal-dialogue')
+      modal.close()
+    })
+
+    it('should show the modal dialogue', function () {
+      var modal = document.querySelector('.app-c-modal-dialogue')
+      expect(modal).toBeVisible()
+    })
 
     it('should focus the modal dialogue', function () {
       var modalFocused = document.querySelector('.app-c-modal-dialogue__box')
       expect(modalFocused).toBeTruthy()
     })
-
-    it('should close the modal if ESC key is pressed', function () {
-      var modal = document.querySelector('.app-c-modal-dialogue')
-      keyPress(modal, 27)
-
-      expect(modal).toBeHidden()
-    })
   })
 
-  describe('when clicking "Close" button', function () {
+  describe('close', function () {
     it('should hide the modal dialogue', function () {
-      document.querySelector('.govuk-button').focus()
-      document.querySelector('.govuk-button').click()
-      document.querySelector('.app-c-modal-dialogue__close-button').click()
-
       var modal = document.querySelector('.app-c-modal-dialogue')
-      document.querySelector('.app-c-modal-dialogue__close-button').click()
+      modal.open()
+      modal.close()
       expect(modal).toBeHidden()
-    })
-
-    it('should return focus to last focused element on close', function () {
-      document.querySelector('.govuk-button').focus()
-      document.querySelector('.govuk-button').click()
-      document.querySelector('.app-c-modal-dialogue__close-button').click()
-
-      var buttonFocused = document.querySelector('.govuk-button:focus')
-      expect(buttonFocused).toBeTruthy()
     })
   })
 })
