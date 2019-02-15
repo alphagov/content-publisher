@@ -2,6 +2,7 @@ function ModalDialogue ($module) {
   this.$module = $module
   this.$dialogBox = $module.querySelector('.app-c-modal-dialogue__box')
   this.$closeButton = $module.querySelector('.app-c-modal-dialogue__close-button')
+  this.$content = $module.querySelector('.app-c-modal-dialogue__content')
   this.$body = document.querySelector('body')
 }
 
@@ -12,6 +13,7 @@ ModalDialogue.prototype.init = function () {
 
   this.$module.open = this.handleOpen.bind(this)
   this.$module.close = this.handleClose.bind(this)
+  this.$module.setContent = this.handleSetContent.bind(this)
   this.$module.boundKeyDown = this.handleKeyDown.bind(this)
 
   var $triggerElement = document.querySelector('[data-toggle="modal"][data-target="#' + this.$module.id + '"]')
@@ -47,6 +49,10 @@ ModalDialogue.prototype.handleClose = function (event) {
   this.$focusedElementBeforeOpen.focus()
 
   document.removeEventListener('keydown', this.$module.boundKeyDown, true)
+}
+
+ModalDialogue.prototype.handleSetContent = function (content) {
+  this.$content.innerHTML = content
 }
 
 // while open, prevent tabbing to outside the dialogue

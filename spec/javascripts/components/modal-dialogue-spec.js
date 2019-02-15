@@ -112,4 +112,14 @@ describe('Modal dialogue component', function () {
       expect(modal).toBeHidden()
     })
   })
+
+  describe('setContent', function () {
+    it('should update the content of the modal', function () {
+      var modal = document.querySelector('.app-c-modal-dialogue')
+      modal.setContent('new HTML')
+
+      var content = document.querySelector('.app-c-modal-dialogue__content')
+      expect(content.innerHTML).toEqual('new HTML')
+    })
+  })
 })
