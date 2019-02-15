@@ -32,8 +32,14 @@
       id: "scheduled[time]",
       options: time_options(publish_datetime&.strftime("%l:%M%P")&.strip),
     } %>
-    <%= render "govuk_publishing_components/components/button", {
-      text: "Save", margin_bottom: true
-    } %>
+    <% if publish_datetime %>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Update"
+      } %>
+    <% else %>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save"
+      } %>
+    <% end %>
   <% end %>
 <% end %>
