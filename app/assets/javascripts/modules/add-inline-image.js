@@ -13,7 +13,8 @@ AddInlineImage.prototype.init = function () {
 
 AddInlineImage.prototype.fetchModalContent = function (url) {
   var controller = new window.AbortController()
-  var options = { credentials: 'include', signal: controller.signal }
+  var headers = { 'X-Requested-With': 'XMLHttpRequest' }
+  var options = { credentials: 'include', signal: controller.signal, headers: headers }
   setTimeout(function () { controller.abort() }, 5000)
 
   return window.fetch(url, options)
