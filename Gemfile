@@ -32,7 +32,7 @@ group :test do
 end
 
 group :development, :test do
-  gem "byebug", "~> 10"
+  gem "byebug", "~> 11"
   gem "capybara-chromedriver-logger"
   gem "climate_control"
   gem "factory_bot_rails", "~> 5"
