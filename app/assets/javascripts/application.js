@@ -19,6 +19,7 @@
 //= require components/image-cropper.js
 //= require components/input-length-suggester.js
 //= require components/markdown-editor.js
+//= require components/modal-dialogue.js
 //= require components/url-preview.js
 //= require vendor/@alphagov/miller-columns-element/dist/index.umd.js
 
