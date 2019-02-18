@@ -12,6 +12,7 @@ ModalDialogue.prototype.init = function () {
 
   this.$module.open = this.handleOpen.bind(this)
   this.$module.close = this.handleClose.bind(this)
+  this.$module.focusDialog = this.handleFocusDialog.bind(this)
   this.$module.boundKeyDown = this.handleKeyDown.bind(this)
 
   var $triggerElement = document.querySelector('[data-toggle="modal"][data-target="#' + this.$module.id + '"]')
@@ -47,6 +48,10 @@ ModalDialogue.prototype.handleClose = function (event) {
   this.$focusedElementBeforeOpen.focus()
 
   document.removeEventListener('keydown', this.$module.boundKeyDown, true)
+}
+
+ModalDialogue.prototype.handleFocusDialog = function () {
+  this.$dialogBox.focus()
 }
 
 // while open, prevent tabbing to outside the dialogue
