@@ -21,7 +21,7 @@ accessibility_criteria: |
 examples:
   default:
     embed: |
-      <button class="govuk-button" data-toggle="modal" data-target="#modal-default">Open modal</button>
+      <button class="govuk-button" data-toggle="modal" data-target="modal-default">Open modal</button>
       <%= component %>
     data:
       aria_labelledby: default-title
@@ -33,7 +33,7 @@ examples:
     description: |
       A wide version of the modal dialogue will provide the same width with the main container
     embed: |
-      <button class="govuk-button" data-toggle="modal" data-target="#modal-wide">Open wide modal</button>
+      <button class="govuk-button" data-toggle="modal" data-target="modal-wide">Open wide modal</button>
       <%= component %>
     data:
       aria_labelledby: wide-title
@@ -46,7 +46,7 @@ examples:
     description: |
       Modal dialogue with form elements inside to show how it prevents tabbing to outside the dialogue when open while preserving the tabindex on focusable elements
     embed: |
-      <button class="govuk-button" data-toggle="modal" data-target="#modal-with-form">Open modal with form</button>
+      <button class="govuk-button" data-toggle="modal" data-target="modal-with-form">Open modal with form</button>
       <%= component %>
     data:
       aria_labelledby: with-form-title
@@ -68,7 +68,7 @@ examples:
     description: |
       Modal dialogue with a large block content to show how the modal scrolls withing the page and how it prevents scrolling the page while the dialogue is open
     embed: |
-      <button class="govuk-button" data-toggle="modal" data-target="#modal-with-large-content">Open modal with large content</button>
+      <button class="govuk-button" data-toggle="modal" data-target="modal-with-large-content">Open modal with large content</button>
       <%= component %>
     data:
       aria_labelledby: with-large-content-title

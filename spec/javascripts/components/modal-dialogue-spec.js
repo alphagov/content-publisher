@@ -17,7 +17,7 @@ describe('Modal dialogue component', function () {
   beforeEach(function () {
     container = document.createElement('div')
     container.innerHTML =
-    '<button class="govuk-button" data-toggle="modal" data-target="#my-modal">Launch modal dialogue</button>' +
+    '<button class="govuk-button" data-toggle="modal" data-target="my-modal">Launch modal dialogue</button>' +
     '<div class="app-c-modal-dialogue" data-module="modal-dialogue" id="my-modal">' +
       '<dialog class="app-c-modal-dialogue__box" aria-modal="true" role="dialogue" aria-labelledby="my-modal-title">' +
         '<div class="app-c-modal-dialogue__container">' +
