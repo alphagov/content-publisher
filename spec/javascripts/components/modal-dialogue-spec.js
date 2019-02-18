@@ -22,7 +22,7 @@ describe('Modal dialogue component', function () {
       '<dialog class="app-c-modal-dialogue__box" aria-modal="true" role="dialogue" aria-labelledby="my-modal-title">' +
         '<div class="app-c-modal-dialogue__container">' +
           '<div class="app-c-modal-dialogue__content">' +
-            '<h2 id="my-modal-title" class="app-c-modal-dialogue__title">Modal title</h2>' +
+            '<h2 id="my-modal-title">Modal title</h2>' +
           '</div>' +
           '<button class="app-c-modal-dialogue__close-button" aria-label="Close modal dialogue">&times;</button>' +
         '</div>' +
