@@ -1,0 +1,14 @@
+name: Multi section viewer
+description: Switches between multiple static sections of HTML
+examples:
+  default:
+    data:
+      id: sections
+      block: |
+        <div class="app-c-multi-section-viewer__section" data-multi-section="1">
+          Section 1
+        </div>
+
+        <div class="app-c-multi-section-viewer__section" data-multi-section="2">
+          Section 2
+        </div>

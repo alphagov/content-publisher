@@ -164,15 +164,15 @@
   } %>
 
   <%= render "components/modal_dialogue", { id: "modal", wide: true } do %>
-    <% render "components/modal_pages" do %>
-      <div class="app-c-modal-pages__page" data-modal-page="loading">
+    <% render "components/multi_section_viewer" do %>
+      <section class="app-c-multi-section-viewer__section" data-multi-section="loading">
         <%= render "components/loading_spinner" %>
-      </div>
+      </section>
 
-      <div class="app-c-modal-pages__page" data-modal-page="error">
+      <section class="app-c-multi-section-viewer__section" data-multi-section="error">
         <h1 class="govuk-heading-l"><%= t("application.modal_error.title") %></h1>
         <%= render_govspeak(t("application.modal_error.description_govspeak")) %>
-      </div>
+      </section>
     <% end %>
   <% end %>
 <% end %>

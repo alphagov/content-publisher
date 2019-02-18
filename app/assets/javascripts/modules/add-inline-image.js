@@ -10,8 +10,8 @@ AddInlineImage.prototype.init = function () {
     return
   }
 
-  this.$modalPages = new ModalPages(this.$modal.querySelector('[data-module="modal-pages"]'))
-  this.$modalPages.init()
+  this.$multiSectionViewer = new MultiSectionViewer(this.$modal.querySelector('[data-module="multi-section-viewer"]'))
+  this.$multiSectionViewer.init()
 
   this.$trigger.addEventListener('click', function (event) {
     event.preventDefault()
@@ -42,11 +42,11 @@ AddInlineImage.prototype.performAction = function (item) {
 
       this.fetchModalContent(item.dataset.modalActionUrl)
         .then(function (text) {
-          $module.$modalPages.showDynamicPage(text)
+          $module.$multiSectionViewer.showDynamicSection(text)
           $module.overrideActions()
         })
         .catch(function (result) {
-          $module.$modalPages.showStaticPage('error')
+          $module.$multiSectionViewer.showStaticSection('error')
         })
     },
     'insert': function () {
@@ -56,7 +56,7 @@ AddInlineImage.prototype.performAction = function (item) {
     }
   }
 
-  this.$modalPages.showStaticPage('loading')
+  this.$multiSectionViewer.showStaticSection('loading')
   handlers[item.dataset.modalAction].bind(this)()
 }
 

@@ -1,0 +1,13 @@
+<%
+  id ||= "multi-section-viewer-#{SecureRandom.hex(4)}"
+%>
+
+<button class="govuk-button" data-toggle="multi-section-viewer" data-target="sections" data-target-section="1">Show Section 1</button>
+<button class="govuk-button" data-toggle="multi-section-viewer" data-target="sections" data-target-section="2">Show Section 2</button>
+
+<div id="<%= id %>" data-module="multi-section-viewer">
+  <%= yield %>
+
+  <div class="app-c-multi-section-viewer__section js-dynamic-section">
+  </div>
+</div>
