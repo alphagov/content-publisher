@@ -3,35 +3,38 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <div class="app-pane">
-      <% upload_image_heading = capture do %>
-        <h2 class="govuk-heading-m">
-          <%= t("images.index.upload_image") %>
-        </h2>
-      <% end %>
 
-      <%= form_tag(
-        create_image_path(@document),
-        multipart: true,
-        data: { gtm: "image-upload-submit" },
-      ) do %>
-        <%= render "govuk_publishing_components/components/file_upload", {
-          label: {
-            text: upload_image_heading,
-          },
-          name: "image"
-        } %>
+    <% unless @context == 'modal' %>
+      <div class="app-pane">
+        <% upload_image_heading = capture do %>
+          <h2 class="govuk-heading-m">
+            <%= t("images.index.upload_image") %>
+          </h2>
+        <% end %>
 
-        <%= render_govspeak(t("images.index.description_govspeak")) %>
+        <%= form_tag(
+          create_image_path(@document),
+          multipart: true,
+          data: { gtm: "image-upload-submit" },
+        ) do %>
+          <%= render "govuk_publishing_components/components/file_upload", {
+            label: {
+              text: upload_image_heading,
+            },
+            name: "image"
+          } %>
 
-        <%= render "govuk_publishing_components/components/button", {
-          text: "Upload"
-        } %>
-      <% end %>
-    </div>
+          <%= render_govspeak(t("images.index.description_govspeak")) %>
+
+          <%= render "govuk_publishing_components/components/button", {
+            text: "Upload",
+          } %>
+        <% end %>
+      </div>
+    <% end %>
 
     <% if lead_image = @document.current_edition.lead_image_revision %>
-      <%= render "lead_image", lead_image: lead_image, document: @document %>
+      <%= render "lead_image", lead_image: lead_image, document: @document, context: @context %>
     <% end %>
 
     <% images = @document.current_edition.image_revisions_without_lead %>
@@ -42,7 +45,7 @@
       </h2>
 
       <% images.each do |image| %>
-        <%= render "image", image: image, document: @document %>
+        <%= render "image", image: image, document: @document, context: @context %>
       <% end %>
     <% end %>
   </div>
