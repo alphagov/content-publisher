@@ -42,11 +42,11 @@ AddInlineImage.prototype.performAction = function (item) {
 
       this.fetchModalContent(item.dataset.modalActionUrl)
         .then(function (text) {
-          $module.$modalPages.setContent(text)
+          $module.$modalPages.showDynamicPage(text)
           $module.overrideActions()
         })
         .catch(function (result) {
-          $module.$modalPages.showPage('error')
+          $module.$modalPages.showStaticPage('error')
         })
     },
     'insert': function () {
@@ -56,7 +56,7 @@ AddInlineImage.prototype.performAction = function (item) {
     }
   }
 
-  this.$modalPages.showPage('loading')
+  this.$modalPages.showStaticPage('loading')
   handlers[item.dataset.modalAction].bind(this)()
 }
 

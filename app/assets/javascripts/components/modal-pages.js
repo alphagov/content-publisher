@@ -1,7 +1,6 @@
 function ModalPages(container) {
   this.$container = container
-  this.$initialInnerHTML = container.innerHTML
-  this.$pages = container.querySelectorAll('[data-modal-page]')
+  this.$dynamicPage = container.querySelector('.js-dynamic-page')
 }
 
 ModalPages.prototype.init = function () {
@@ -10,23 +9,28 @@ ModalPages.prototype.init = function () {
 
   actions.forEach(function (action) {
     action.addEventListener('click', function (event) {
-      $module.showPage(event.target.dataset.targetPage)
+      $module.showStaticPage(event.target.dataset.targetPage)
     })
   })
 }
 
-ModalPages.prototype.setContent = function (content) {
-  this.$container.innerHTML = content
+ModalPages.prototype.hideAllPages = function () {
+  var pages = this.$container.querySelectorAll('.app-c-modal-pages__page')
+
+  pages.forEach(function (page) {
+    page.style.display = 'none'
+  })
 }
 
-ModalPages.prototype.showPage = function (name) {
-  this.setContent(this.$initialInnerHTML)
+ModalPages.prototype.showDynamicPage = function (content) {
+  this.hideAllPages()
+  this.$dynamicPage.innerHTML = content
+  this.$dynamicPage.style.display = 'block'
+}
+
+ModalPages.prototype.showStaticPage = function (name) {
+  this.hideAllPages()
   var page = this.$container.querySelector('[data-modal-page="' + name + '"]')
-
-  if (!page || page.style.display == 'block') {
-    return
-  }
-
   page.style.display = 'block'
 }
 
