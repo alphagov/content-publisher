@@ -1,0 +1,4 @@
+name: Loading spinner
+description: Displays an animated graphic to indicate loading activity
+examples:
+  default:
