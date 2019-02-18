@@ -1,9 +1,9 @@
-function AddInlineImage (trigger) {
+function InlineImageModal (trigger) {
   this.$trigger = trigger
   this.$modal = document.getElementById('modal')
 }
 
-AddInlineImage.prototype.init = function () {
+InlineImageModal.prototype.init = function () {
   var $module = this
 
   if (!this.$trigger || !this.$modal) {
@@ -19,7 +19,7 @@ AddInlineImage.prototype.init = function () {
   })
 }
 
-AddInlineImage.prototype.fetchModalContent = function (url) {
+InlineImageModal.prototype.fetchModalContent = function (url) {
   var controller = new window.AbortController()
   var headers = { 'X-Requested-With': 'XMLHttpRequest' }
   var options = { credentials: 'include', signal: controller.signal, headers: headers }
@@ -34,7 +34,7 @@ AddInlineImage.prototype.fetchModalContent = function (url) {
     })
 }
 
-AddInlineImage.prototype.performAction = function (item) {
+InlineImageModal.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
       this.$modal.open()
@@ -60,7 +60,7 @@ AddInlineImage.prototype.performAction = function (item) {
   handlers[item.dataset.modalAction].bind(this)()
 }
 
-AddInlineImage.prototype.overrideActions = function () {
+InlineImageModal.prototype.overrideActions = function () {
   var items = this.$modal.querySelectorAll('[data-modal-action]')
   var $module = this
 
@@ -72,5 +72,5 @@ AddInlineImage.prototype.overrideActions = function () {
   })
 }
 
-var element = document.querySelector('[data-module="add-inline-image"]')
-new AddInlineImage(element).init()
+var element = document.querySelector('[data-module="inline-image-modal"]')
+new InlineImageModal(element).init()
