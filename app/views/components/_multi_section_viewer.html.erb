@@ -1,0 +1,13 @@
+<%
+  sections ||= []
+%>
+
+<div id="<%= id %>" class="app-c-multi-section-viewer" data-module="multi-section-viewer" aria-live="assertive">
+  <% sections.each do |section| %>
+    <section class="app-c-multi-section-viewer__section" id="<%= section[:id] %>">
+      <%= section[:content] %>
+    </section>
+  <% end %>
+
+  <div class="app-c-multi-section-viewer__section js-dynamic-section"></div>
+</div>
