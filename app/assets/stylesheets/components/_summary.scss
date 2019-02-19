@@ -1,11 +1,6 @@
 // Recommended styles from the check your answers pattern
 // https://design-system.service.gov.uk/patterns/check-answers/
 
-@import "govuk-frontend/helpers/all";
-@import "govuk-frontend/settings/all";
-@import "govuk-frontend/tools/all";
-@import "govuk-frontend/core/links";
-
 .app-c-summary {
   @include govuk-font(19);
   position: relative;
