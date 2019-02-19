@@ -1,7 +1,7 @@
 describe('Multi section viewer', function () {
   'use strict'
 
-  var container, module
+  var container, element
 
   beforeEach(function () {
     container = document.createElement('div')
@@ -20,9 +20,8 @@ describe('Multi section viewer', function () {
       '</div>'
 
     document.body.appendChild(container)
-    var element = document.querySelector('[data-module="multi-section-viewer"]')
-    module = new GOVUK.Modules.MultiSectionViewer()
-    module.start($(element))
+    element = document.querySelector('[data-module="multi-section-viewer"]')
+    new GOVUK.Modules.MultiSectionViewer().start($(element))
   })
 
   afterEach(function () {
@@ -69,12 +68,12 @@ describe('Multi section viewer', function () {
 
       dynamicSection.style.display = 'block'
 
-      module.showStaticSection('section-1')
+      element.showStaticSection('section-1')
       expect(section1).toBeVisible()
       expect(section2).toBeHidden()
       expect(dynamicSection).toBeHidden()
 
-      module.showStaticSection('section-2')
+      element.showStaticSection('section-2')
       expect(section2).toBeVisible()
       expect(section1).toBeHidden()
       expect(dynamicSection).toBeHidden()
@@ -87,14 +86,14 @@ describe('Multi section viewer', function () {
       var section1 = document.querySelector('#section-1')
 
       section1.style.display = 'block'
-      module.showDynamicSection('<div>Dynamic</div>')
+      element.showDynamicSection('<div>Dynamic</div>')
       expect(dynamicSection).toBeVisible()
       expect(section1).toBeHidden()
     })
 
     it('sets the content of the dynamic section', function () {
       var dynamicSection = document.querySelector('.js-dynamic-section')
-      module.showDynamicSection('<div>Dynamic</div>')
+      element.showDynamicSection('<div>Dynamic</div>')
       expect(dynamicSection.innerHTML).toEqual('<div>Dynamic</div>')
     })
   })
@@ -107,7 +106,7 @@ describe('Multi section viewer', function () {
       section1.style.display = 'block'
       dynamicSection.style.display = 'block'
 
-      module.hideAllSections()
+      element.hideAllSections()
       expect(section1).toBeHidden()
       expect(dynamicSection).toBeHidden()
     })

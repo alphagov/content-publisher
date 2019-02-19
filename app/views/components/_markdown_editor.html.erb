@@ -41,6 +41,11 @@
             <%= render "components/markdown_editor/bullets.svg" %>
           </md-unordered-list>
           <button name="submit" type="submit" value="add_contact" class="app-c-markdown-editor__toolbar-button app-c-markdown-editor__toolbar-button--text app-c-markdown-editor__toolbar-button--end">Add contact</button>
+          <button name="submit" type="submit" value="add_image" class="app-c-markdown-editor__toolbar-button app-c-markdown-editor__toolbar-button--text app-c-markdown-editor__toolbar-button--end"
+            data-module="inline-image-modal"
+            data-modal-action="open"
+            data-modal-action-url="<%= images_path(@document) %>"
+          >Insert image</button>
         </markdown-toolbar>
       </div>
     </div>

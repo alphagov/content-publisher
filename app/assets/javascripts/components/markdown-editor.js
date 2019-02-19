@@ -17,6 +17,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.$previewBody = this.$module.querySelector('.js-markdown-preview-body')
     this.$toolbar = document.querySelector('.app-c-markdown-guidance')
     this.$editorToolbar = document.querySelector('.app-c-markdown-editor__toolbar')
+    this.$module.selectionReplace = this.handleSelectionReplace.bind(this)
 
     // Enable toggle bar
     this.$head.style.display = 'block'
@@ -30,6 +31,16 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.bubbleFocusEventToComponent(this.$input)
     this.bubbleFocusEventToComponent(this.$editButton)
     this.bubbleFocusEventToComponent(this.$previewButton)
+  }
+
+  MarkdownEditor.prototype.handleSelectionReplace = function (text) {
+    var selectionStart = this.$input.selectionStart + text.length
+    this.$input.focus()
+
+    window.MarkdownToolbarElement.insertText(
+      this.$input,
+      { text: text, selectionStart: selectionStart, selectionEnd: selectionStart }
+    )
   }
 
   MarkdownEditor.prototype.handlePreviewButton = function (event) {
