@@ -3,35 +3,37 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <div class="app-pane">
+      <% upload_image_heading = capture do %>
+        <h2 class="govuk-heading-m">
+          <%= t("images.index.upload_image") %>
+        </h2>
+      <% end %>
 
-    <% unless rendering_context == 'modal' %>
-      <div class="app-pane">
-        <% upload_image_heading = capture do %>
-          <h2 class="govuk-heading-m">
-            <%= t("images.index.upload_image") %>
-          </h2>
-        <% end %>
+      <%= form_tag(
+        create_image_path(@document),
+        id: "image-upload",
+        multipart: true,
+        data: { gtm: "image-upload-submit" },
+      ) do %>
+        <%= render "govuk_publishing_components/components/file_upload", {
+          label: {
+            text: upload_image_heading,
+          },
+          name: "image"
+        } %>
 
-        <%= form_tag(
-          create_image_path(@document),
-          multipart: true,
-          data: { gtm: "image-upload-submit" },
-        ) do %>
-          <%= render "govuk_publishing_components/components/file_upload", {
-            label: {
-              text: upload_image_heading,
-            },
-            name: "image"
-          } %>
+        <%= render_govspeak(t("images.index.description_govspeak")) %>
 
-          <%= render_govspeak(t("images.index.description_govspeak")) %>
-
-          <%= render "govuk_publishing_components/components/button", {
-            text: "Upload",
-          } %>
-        <% end %>
-      </div>
-    <% end %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Upload",
+          data_attributes: {
+            "modal-action": "upload",
+            "modal-action-form": "image-upload",
+          }
+        } %>
+      <% end %>
+    </div>
 
     <% if lead_image = @document.current_edition.lead_image_revision %>
       <%= render "lead_image", lead_image: lead_image, document: @document %>

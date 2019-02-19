@@ -23,7 +23,7 @@ class ImagesController < ApplicationController
           "items" => @issues.items,
         }
 
-        render :index
+        render :index, layout: rendering_context
         return
       end
 
@@ -38,7 +38,12 @@ class ImagesController < ApplicationController
 
       current_edition.assign_revision(next_revision, current_user).save!
       PreviewService.new(current_edition).try_create_preview
-      redirect_to crop_image_path(params[:document_id], image_revision.image_id)
+
+      if rendering_context == "modal"
+        redirect_to images_path(params[:document_id])
+      else
+        redirect_to crop_image_path(params[:document_id], image_revision.image_id)
+      end
     end
   end
 
