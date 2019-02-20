@@ -65,6 +65,7 @@ InlineImageModal.prototype.performAction = function (item) {
         .then(function (text) {
           this.$multiSectionViewer.showDynamicSection(text)
           this.overrideActions()
+          this.initComponents()
         }.bind(this))
         .catch(function (result) {
           this.$multiSectionViewer.showStaticSection('error')
@@ -80,6 +81,7 @@ InlineImageModal.prototype.performAction = function (item) {
         .then(function (text) {
           this.$multiSectionViewer.showDynamicSection(text)
           this.overrideActions()
+          this.initComponents()
         }.bind(this))
         .catch(function (result) {
           this.$multiSectionViewer.showStaticSection('error')
@@ -93,12 +95,14 @@ InlineImageModal.prototype.performAction = function (item) {
 }
 
 InlineImageModal.prototype.initComponents = function () {
-  // TODO: change govuk-frontend so we can do GOVUKFrontend.initAll(dynamicSection)
+  // TODO: change ErrorSummary so it just focusses when it's initialised
   var $errorSummary = document.querySelector('[data-module="error-summary"]')
-  new GOVUKFrontend.ErrorSummary($errorSummary).init()
 
-  // TODO: change ErrorSummary to listen on the scoped element (not static window)
-  window.dispatchEvent(new window.Event('load'))
+  if (!$errorSummary) {
+    return
+  }
+
+  $errorSummary.focus()
 }
 
 InlineImageModal.prototype.overrideActions = function () {
