@@ -1,0 +1,23 @@
+name: Multi section viewer
+description: Switches between multiple sections of HTML
+body: |
+  This component is a wrapper for multiple section blocks. It ensures only one is shown at a time.
+
+  The sections can be defined and toggled statically, as in the examples. The module also exposes an API to show dynamic content in its own section.
+accessibility_criteria: |
+  The multi selection view box must:
+
+  - Notify the user when the content changes
+examples:
+  default:
+    embed: |
+      <button class="govuk-button" data-toggle="multi-section-viewer" data-target="sections" data-target-section="section-1">Show Section 1</button>
+      <button class="govuk-button" data-toggle="multi-section-viewer" data-target="sections" data-target-section="section-2">Show Section 2</button>
+      <%= component %>
+    data:
+      id: sections
+      sections:
+        - id: section-1
+          content: Section 1
+        - id: section-2
+          content: Section 2
