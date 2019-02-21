@@ -85,6 +85,28 @@ InlineImageModal.prototype.performAction = function (item) {
         .catch(function (result) {
           this.$multiSectionViewer.showStaticSection('error')
         }.bind(this))
+    },
+    'crop': function () {
+      this.postModalForm(item)
+        .then(function (text) {
+          this.$multiSectionViewer.showDynamicSection(text)
+          this.overrideActions()
+          this.initComponents()
+        }.bind(this))
+        .catch(function (result) {
+          this.$multiSectionViewer.showStaticSection('error')
+        }.bind(this))
+    },
+    'edit': function () {
+      this.fetchModalContent(item.dataset.modalActionUrl)
+        .then(function (text) {
+          this.$multiSectionViewer.showDynamicSection(text)
+          this.overrideActions()
+          this.initComponents()
+        }.bind(this))
+        .catch(function (result) {
+          this.$multiSectionViewer.showStaticSection('error')
+        }.bind(this))
     }
   }
 
@@ -94,6 +116,8 @@ InlineImageModal.prototype.performAction = function (item) {
 }
 
 InlineImageModal.prototype.initComponents = function () {
+  window.GOVUK.modules.start()
+
   // TODO: change ErrorSummary so it just focusses when it's initialised
   var $errorSummary = document.querySelector('[data-module="error-summary"]')
 

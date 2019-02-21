@@ -1,7 +1,15 @@
 <% content_for :back_link, render_back_link(href: images_path(@document)) %>
 <% content_for :title, t("images.crop.title", title: @document.current_edition.title_or_fallback) %>
 
-<%= form_tag(crop_image_path(@document, @image_revision.image_id), method: :patch) do %>
+<%= form_tag(
+  crop_image_path(@document, @image_revision.image_id),
+  id: "image-crop",
+  method: :patch,
+  data: {
+    "modal-action": "crop",
+    "modal-action-form": "image-crop",
+  }
+) do %>
   <%= render "/components/image_cropper", {
     id: "crop-image",
     src: url_for(@image_revision.blob),

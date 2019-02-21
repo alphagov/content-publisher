@@ -6,6 +6,7 @@ RSpec.feature "Upload image in a modal", js: true do
     when_i_go_to_edit_the_edition
     and_i_click_to_insert_an_image
     and_i_pick_and_upload_an_image
+    and_i_crop_the_image
     then_i_see_the_uploaded_image
   end
 
@@ -30,6 +31,10 @@ RSpec.feature "Upload image in a modal", js: true do
     @image_filename = "1000x1000.jpg"
     find('form input[type="file"]').set(Rails.root.join(file_fixture(@image_filename)))
     click_on "Upload"
+  end
+
+  def and_i_crop_the_image
+    click_on "Crop image"
   end
 
   def then_i_see_the_uploaded_image

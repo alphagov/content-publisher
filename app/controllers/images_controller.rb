@@ -38,12 +38,7 @@ class ImagesController < ApplicationController
 
       current_edition.assign_revision(next_revision, current_user).save!
       PreviewService.new(current_edition).try_create_preview
-
-      if rendering_context == "modal"
-        redirect_to images_path(params[:document_id])
-      else
-        redirect_to crop_image_path(params[:document_id], image_revision.image_id)
-      end
+      redirect_to crop_image_path(params[:document_id], image_revision.image_id)
     end
   end
 
@@ -52,10 +47,12 @@ class ImagesController < ApplicationController
       params[:document_id],
       params[:image_id],
     )
+
+    render layout: rendering_context
   end
 
   def update_crop
-    Document.transaction do
+    Document.transaction do # rubocop:disable Metrics/BlockLength
       document, previous_image_revision = find_locked_document_and_image_revision(
         params[:document_id],
         params[:image_id],
@@ -85,7 +82,11 @@ class ImagesController < ApplicationController
         PreviewService.new(document.current_edition).try_create_preview
       end
 
-      redirect_to edit_image_path(document, image_revision.image_id)
+      if rendering_context == "modal"
+        redirect_to images_path(document)
+      else
+        redirect_to edit_image_path(document, image_revision.image_id)
+      end
     end
   end
 
