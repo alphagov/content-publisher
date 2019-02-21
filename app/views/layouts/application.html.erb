@@ -5,7 +5,10 @@
   <% end %>
 
   <script>
-    var dataLayer = [{ 'dimension1': '<%= current_user.organisation_slug %>' }];
+    var dataLayer = [{
+      'dimension1': '<%= current_user.organisation_slug %>',
+      'cp_uid': '<%= current_user.uid %>'
+    }];
     dataLayer.push({ 'gtm.blacklist': ['html', 'customScripts', 'nonGoogleScripts', 'customPixels'] });
   </script>
   <% if ENV["GOOGLE_TAG_MANAGER_ID"] %>
