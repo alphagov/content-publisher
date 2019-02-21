@@ -21,8 +21,8 @@ describe('Multi section viewer', function () {
 
     document.body.appendChild(container)
     var element = document.querySelector('[data-module="multi-section-viewer"]')
-    module = new MultiSectionViewer(element)
-    module.init()
+    module = new GOVUK.Modules.MultiSectionViewer()
+    module.start($(element))
   })
 
   afterEach(function () {

@@ -1,42 +1,44 @@
-function MultiSectionViewer ($container) {
-  this.$container = $container
-  this.$dynamicSection = $container.querySelector('.js-dynamic-section')
-}
+window.GOVUK = window.GOVUK || {}
+window.GOVUK.Modules = window.GOVUK.Modules || {};
 
-MultiSectionViewer.prototype.init = function () {
-  var actions = document.querySelectorAll('[data-toggle="multi-section-viewer"][data-target="' + this.$container.id + '"]')
-  var $module = this
+(function (Modules) {
+  function MultiSectionViewer () { }
 
-  actions.forEach(function (action) {
-    action.addEventListener('click', function (event) {
-      event.preventDefault()
-      $module.showStaticSection(event.target.dataset.targetSection)
+  MultiSectionViewer.prototype.start = function ($module) {
+    this.$module = $module[0]
+    this.$dynamicSection = this.$module.querySelector('.js-dynamic-section')
+
+    var actions = document.querySelectorAll(
+      '[data-toggle="multi-section-viewer"][data-target="' + this.$module.id + '"]'
+    )
+
+    actions.forEach(function (action) {
+      action.addEventListener('click', function (event) {
+        event.preventDefault()
+        this.showStaticSection(event.target.dataset.targetSection)
+      }.bind(this))
+    }.bind(this))
+  }
+
+  MultiSectionViewer.prototype.hideAllSections = function () {
+    var sections = this.$module.querySelectorAll('.app-c-multi-section-viewer__section')
+
+    sections.forEach(function (section) {
+      section.style.display = 'none'
     })
-  })
-}
+  }
 
-MultiSectionViewer.prototype.hideAllSections = function () {
-  var sections = this.$container.querySelectorAll('.app-c-multi-section-viewer__section')
+  MultiSectionViewer.prototype.showDynamicSection = function (content) {
+    this.hideAllSections()
+    this.$dynamicSection.innerHTML = content
+    this.$dynamicSection.style.display = 'block'
+  }
 
-  sections.forEach(function (section) {
-    section.style.display = 'none'
-  })
-}
+  MultiSectionViewer.prototype.showStaticSection = function (id) {
+    this.hideAllSections()
+    var section = this.$module.querySelector('#' + id)
+    section.style.display = 'block'
+  }
 
-MultiSectionViewer.prototype.showDynamicSection = function (content) {
-  this.hideAllSections()
-  this.$dynamicSection.innerHTML = content
-  this.$dynamicSection.style.display = 'block'
-}
-
-MultiSectionViewer.prototype.showStaticSection = function (name) {
-  this.hideAllSections()
-  var section = this.$container.querySelector('#' + name)
-  section.style.display = 'block'
-}
-
-var multiSectionViewers = document.querySelectorAll('[data-module="multi-section-viewer"]')
-
-multiSectionViewers.forEach(function (multiSectionViewer) {
-  new MultiSectionViewer(multiSectionViewer).init()
-})
+  Modules.MultiSectionViewer = MultiSectionViewer
+})(window.GOVUK.Modules)
