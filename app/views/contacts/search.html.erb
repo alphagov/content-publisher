@@ -20,7 +20,10 @@
     },
     id: "contact-id",
     options: [["", ""]] + contact_options,
-    data_module: "autocomplete-with-hint-on-options",
+    data: {
+      module: "autocomplete",
+      "autocomplete-type": "with-hint-on-options"
+    }
   } %>
 
   <%= render "govuk_publishing_components/components/button", {
