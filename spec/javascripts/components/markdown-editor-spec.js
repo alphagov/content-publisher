@@ -61,7 +61,7 @@ describe('Markdown editor component', function () {
 
     document.body.appendChild(container)
     var element = document.querySelector('[data-module="markdown-editor"]')
-    new MarkdownEditor(element).init()
+    new GOVUK.Modules.MarkdownEditor().start($(element))
   })
 
   afterEach(function () {
