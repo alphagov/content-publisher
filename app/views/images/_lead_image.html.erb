@@ -5,7 +5,7 @@
 <% actions = [] %>
 <% actions << link_to("Download 960x640 image", download_image_path(document, lead_image.image_id), class: "govuk-link") %>
 
-<% unless context == "modal" %>
+<% unless rendering_context == "modal" %>
   <% actions << link_to("Edit image", crop_image_path(document, lead_image.image_id), class: "govuk-link") %>
 
   <% actions << capture do %>

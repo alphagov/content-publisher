@@ -19,7 +19,7 @@ InlineImageModal.prototype.init = function () {
 
 InlineImageModal.prototype.fetchModalContent = function (url) {
   var controller = new window.AbortController()
-  var headers = { 'X-Requested-With': 'XMLHttpRequest' }
+  var headers = { 'Content-Publisher-Rendering-Context': 'modal' }
   var options = { credentials: 'include', signal: controller.signal, headers: headers }
   setTimeout(function () { controller.abort() }, 5000)
 
