@@ -1,57 +1,33 @@
-function ContextualGuidance ($module) {
-  if (!$module) $module = document
-  this.$module = $module
-  this.$fields = $module.querySelectorAll('[data-contextual-guidance]')
-}
+window.GOVUK = window.GOVUK || {}
+window.GOVUK.Modules = window.GOVUK.Modules || {};
 
-ContextualGuidance.prototype.handleFocus = function (event) {
-  // Get the target element
-  var target = event.target
-  var guidanceId = ContextualGuidance.prototype.getGuidanceId(target)
+(function (Modules) {
+  function ContextualGuidance () { }
 
-  // If we have guidance for the field
-  if (guidanceId) {
-    var guidance = document.querySelector('#' + guidanceId)
-    ContextualGuidance.prototype.hideAllGuidance()
-    ContextualGuidance.prototype.showGuidance(guidance)
+  ContextualGuidance.prototype.start = function ($module) {
+    this.$module = $module[0]
+
+    var fields = document.querySelectorAll(
+      '[data-contextual-guidance="' + this.$module.id + '"]'
+    )
+
+    fields.forEach(function (field) {
+      field.addEventListener('focus', this.handleFocus.bind(this))
+    }, this)
   }
-}
 
-ContextualGuidance.prototype.showGuidance = function (element) {
-  if (element) {
-    element.style.display = 'block'
+  ContextualGuidance.prototype.handleFocus = function (event) {
+    this.hideAllGuidance()
+    this.$module.style.display = 'block'
   }
-}
 
-ContextualGuidance.prototype.hideAllGuidance = function () {
-  var $guidances = document.querySelectorAll('.app-c-contextual-guidance-wrapper')
-  $guidances.forEach(function ($guidance) {
-    $guidance.style.display = 'none'
-  })
-}
+  ContextualGuidance.prototype.hideAllGuidance = function () {
+    var guidances = document.querySelectorAll('.app-c-contextual-guidance-wrapper')
 
-ContextualGuidance.prototype.getGuidanceId = function (element) {
-  var guidanceId = element.getAttribute('data-contextual-guidance')
-  return guidanceId
-}
+    guidances.forEach(function (guidance) {
+      guidance.style.display = 'none'
+    })
+  }
 
-ContextualGuidance.prototype.init = function () {
-  var $fields = this.$fields
-
-  /**
-  * Loop over all items with [data-contextual-guidance]
-  * Check if they have a matching contextual guidance
-  * If they do, add event listener on focus
-  **/
-  $fields.forEach(function ($field) {
-    var guidanceId = ContextualGuidance.prototype.getGuidanceId($field)
-    if (!guidanceId) {
-      return
-    }
-    $field.addEventListener('focus', ContextualGuidance.prototype.handleFocus)
-  })
-}
-
-// Initialise guidance at document level
-var guidance = new ContextualGuidance()
-guidance.init(document)
+  Modules.ContextualGuidance = ContextualGuidance
+})(window.GOVUK.Modules)
