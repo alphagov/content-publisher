@@ -1,1 +1,7 @@
-<p class="govuk-body app-c-loading-spinner">Loading...</p>
+<div class="app-c-loading-spinner" role="progressbar" aria-label="Loading, please wait." tabindex="0">
+  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="-50 -50 100 100">
+    <% (0..11).each do |i| %>
+      <rect fill="#000" width="12" height="5" rx="2.5" ry="2.5" transform="rotate(<%= i*30 %>, 0, 2) translate(10 0)" opacity="0.25" style="animation: app-loading-spinner-opacity-<%= i %> 1s linear 0s infinite normal none running;"></rect>
+    <% end %>
+  </svg>
+</div>
