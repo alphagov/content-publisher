@@ -53,6 +53,11 @@
                  text: "Undo withdrawal",
                  data_attributes: { gtm: "undo-withdraw" },
                  href: unwithdraw_path(@document) %>
+    <% elsif @edition.scheduled? %>
+      <%= form_tag create_preview_path(@edition.document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Preview" %>
+      <% end %>
+      <%= delete_draft_link %>
     <% else %>
       <%= form_tag submit_document_for_2i_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
@@ -60,7 +65,7 @@
 
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@edition.document), secondary: true %>
 
-      <% if @edition.scheduled_publishing_datetime.present? %>
+      <% if @edition.scheduled_publishing_datetime.present? && !@edition.scheduled? %>
         <%= link_to "Schedule", scheduling_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
       <% else %>
         <%= link_to "Publish", publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
