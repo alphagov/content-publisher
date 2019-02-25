@@ -12,6 +12,7 @@ RSpec.feature "Schedule an edition" do
     when_i_visit_the_summary_page
     then_i_see_the_edition_has_been_scheduled
     and_i_can_no_longer_see_a_schedule_action
+    and_i_can_no_longer_edit_the_content
   end
 
   def given_there_is_an_edition_with_set_scheduled_publishing_datetime
@@ -45,5 +46,9 @@ RSpec.feature "Schedule an edition" do
 
   def and_i_can_no_longer_see_a_schedule_action
     expect(page).not_to have_link("Schedule")
+  end
+
+  def and_i_can_no_longer_edit_the_content
+    expect(page).not_to have_link("Change Content")
   end
 end

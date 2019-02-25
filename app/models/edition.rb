@@ -99,7 +99,7 @@ class Edition < ApplicationRecord
   end
 
   def editable?
-    !live?
+    !live? && !scheduled?
   end
 
   def resume_discarded(live_edition, user)
