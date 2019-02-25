@@ -61,6 +61,7 @@ class Edition < ApplicationRecord
            :lead_image_revision,
            :image_revisions,
            :image_revisions_without_lead,
+           :scheduled_publishing_datetime,
            to: :revision
 
   def self.create_initial(document, user = nil, tags = {})

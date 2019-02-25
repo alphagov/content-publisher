@@ -26,6 +26,16 @@ class ScheduleController < ApplicationController
     end
   end
 
+  def confirmation
+    document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = document.current_edition
+  end
+
+  def schedule
+    document = Document.with_current_edition.find_by_param(params[:id])
+    redirect_to document_path(document)
+  end
+
 private
 
   def permitted_params

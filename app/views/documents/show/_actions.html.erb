@@ -60,8 +60,11 @@
 
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@edition.document), secondary: true %>
 
-      <%= link_to "Publish", publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
-
+      <% if @edition.scheduled_publishing_datetime.present? %>
+        <%= link_to "Schedule", scheduling_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+      <% else %>
+        <%= link_to "Publish", publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+      <% end %>
       <%= delete_draft_link("app-link--right") %>
     <% end %>
 
