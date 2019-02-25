@@ -32,13 +32,25 @@ class ScheduleController < ApplicationController
   end
 
   def schedule
-    document = Document.with_current_edition.find_by_param(params[:id])
-    redirect_to document_path(document)
+    Document.transaction do
+      document = Document.with_current_edition.lock!.find_by_param(params[:id])
+      edition = document.current_edition
+      reviewed = review_params == "reviewed"
+      scheduling = Scheduling.new(pre_scheduled_status: edition.status, reviewed: reviewed)
+      edition.assign_status(:scheduled, current_user, status_details: scheduling)
+      edition.save!
+
+      redirect_to document_path(document)
+    end
   end
 
 private
 
   def permitted_params
     params.require(:scheduled).permit(:year, :month, :day, :time)
+  end
+
+  def review_params
+    params.require(:review_status)
   end
 end
