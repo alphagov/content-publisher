@@ -35,6 +35,13 @@ class ScheduleController < ApplicationController
     Document.transaction do
       document = Document.with_current_edition.lock!.find_by_param(params[:id])
       edition = document.current_edition
+
+      if edition.scheduled_publishing_datetime.blank?
+        # FIXME: this shouldn't be an exception but we've not worked out the
+        # right response - maybe bad request or a redirect with flash?
+        raise "Cannot schedule an edition to be published without setting a publishing date and time."
+      end
+
       reviewed = review_params == "reviewed"
       scheduling = Scheduling.new(pre_scheduled_status: edition.status, reviewed: reviewed)
       edition.assign_status(:scheduled, current_user, status_details: scheduling)
