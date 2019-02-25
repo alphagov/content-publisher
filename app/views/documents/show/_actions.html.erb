@@ -69,5 +69,10 @@
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
       <%= link_to "View published edition on GOV.UK", EditionUrl.new(@edition.document.live_edition).public_url, class: "govuk-link govuk-link--no-visited-state" %>
     <% end %>
+
+    <% if (@edition.submitted_for_review? || @edition.draft?) && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+      <%= render "documents/show/scheduling_form" %>
+    <% end %>
   </div>
 </div>

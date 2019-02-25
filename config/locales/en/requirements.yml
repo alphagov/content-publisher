@@ -64,3 +64,10 @@ en:
     public_explanation:
       blank:
         form_message: Enter a public explanation
+    scheduled_datetime:
+      in_the_past:
+        form_message: Date & time cannot be in the past
+      invalid:
+        form_message: "%{field} is invalid"
+      too_far_in_future:
+        form_message: "Please select a date within the next %{time_period}"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_12_110438) do
+ActiveRecord::Schema.define(version: 2019_02_14_120136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(version: 2019_02_12_110438) do
     t.text "change_note"
     t.datetime "created_at"
     t.bigint "created_by_id"
+    t.datetime "scheduled_publishing_datetime"
   end
 
   create_table "removals", force: :cascade do |t|
@@ -255,8 +256,8 @@ ActiveRecord::Schema.define(version: 2019_02_12_110438) do
   create_table "withdrawals", force: :cascade do |t|
     t.string "public_explanation", null: false
     t.datetime "created_at", null: false
-    t.bigint "published_status_id", null: false
     t.datetime "withdrawn_at", null: false
+    t.bigint "published_status_id", null: false
   end
 
   add_foreign_key "content_revisions", "users", column: "created_by_id", on_delete: :restrict
