@@ -43,9 +43,7 @@ class ScheduleController < ApplicationController
       end
 
       reviewed = review_params == "reviewed"
-      scheduling = Scheduling.new(pre_scheduled_status: edition.status, reviewed: reviewed)
-      edition.assign_status(:scheduled, current_user, status_details: scheduling)
-      edition.save!
+      ScheduleService.new(edition).schedule(user: current_user, reviewed: reviewed)
 
       redirect_to scheduled_path(document)
     end
