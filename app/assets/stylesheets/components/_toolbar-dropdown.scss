@@ -1,0 +1,92 @@
+$dropdown-arrow-size: 12px;
+$dropdown-arrow-spacing: $dropdown-arrow-size / 2;
+
+.app-c-toolbar-dropdown {
+  display: inline-block;
+  min-width: 120px;
+  position: relative;
+  text-align: left;
+  background: inherit;
+}
+
+.app-c-toolbar-dropdown--end {
+  float: right;
+  border-left: 4px solid govuk-colour('white');
+}
+
+.app-c-toolbar-dropdown__title {
+  @include govuk-font($size: 16, $weight: bold);
+  @include govuk-focusable;
+  background: inherit;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  display: block;
+  padding: govuk-spacing(3);
+
+  &:hover {
+    background-color: govuk-colour("grey-3");
+  }
+
+  &:focus {
+    outline-offset: -$govuk-focus-width;
+  }
+
+  &::after {
+    position: relative;
+    top: 4px;
+    content: "";
+    float: right;
+    @include govuk-shape-arrow($direction: down, $base: $dropdown-arrow-size, $display: inline-block);
+  }
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.app-c-toolbar-dropdown__container {
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+}
+
+.app-c-toolbar-dropdown__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-c-toolbar-dropdown__list-item {
+  margin: 0;
+  padding: 0;
+}
+
+.app-c-toolbar-dropdown__button {
+  @include govuk-font($size: 16);
+  @include govuk-focusable;
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: govuk-colour("grey-4");
+  color: $govuk-text-colour;
+  border: 0;
+  cursor: pointer;
+  display: block;
+  padding: govuk-spacing(3);
+  text-align: inherit;
+  width: 100%;
+
+  &:hover {
+    background-color: govuk-colour("grey-3");
+  }
+
+  &:focus {
+    outline-offset: -$govuk-focus-width;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+}

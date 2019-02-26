@@ -38,7 +38,8 @@ RSpec.feature "Insert contact", js: true do
 
   def and_i_go_to_add_a_contact
     @request = stub_publishing_api_put_content(@edition.content_id, {})
-    click_on "Add contact"
+    find("markdown-toolbar details").click
+    click_on "Contact"
   end
 
   def when_i_select_a_contact

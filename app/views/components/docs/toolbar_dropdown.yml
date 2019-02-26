@@ -1,0 +1,45 @@
+name: Toolbar dropdown
+description: Toggles a contextual overlay for displaying lists of button.
+body: |
+  Use this component to group a series of actions
+accessibility_criteria: |
+  The dropdown component must:
+
+  - be operable with a keyboard
+  - toggle the contextual overlay when clicked
+  - hide the contextual overlay on blur
+  - hide the contextual overlay when a button element within the component is being clicked
+
+examples:
+  default:
+    data:
+      title: Insert...
+      items:
+        - text: Image
+          data_attributes:
+            module: inline-image-modal
+            modal-action: open
+        - text: Contact
+          data_attributes:
+            module: inline-contact-modal
+            modal-action: open
+
+  within_markdown_editor_toolbar:
+    embed: |
+      <div class="app-c-markdown-editor__toolbar">
+        <markdown-toolbar class="app-c-markdown-editor__toolbar-group" for="markdown-editor">
+          <%= component %>
+        </markdown-toolbar>
+      </div>
+    data:
+      title: Insert...
+      align: right
+      items:
+        - text: Image
+          data_attributes:
+            module: inline-image-modal
+            modal-action: open
+        - text: Contact
+          data_attributes:
+            module: inline-contact-modal
+            modal-action: open

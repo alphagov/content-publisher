@@ -25,7 +25,8 @@ RSpec.feature "Insert contact when the Publishing API down" do
     # thus we want the put content API call to succeed before contacts being
     # unavailable
     stub_publishing_api_put_content(@edition.content_id, {})
-    click_on "Add contact"
+    find("markdown-toolbar details").click
+    click_on "Contact"
   end
 
   def then_i_should_see_an_error_message

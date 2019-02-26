@@ -40,13 +40,29 @@
           <md-unordered-list class="app-c-markdown-editor__toolbar-button" title="Bullets" aria-label="Bullets" data-gtm="markdown-toolbar-selection">
             <%= render "components/markdown_editor/bullets.svg" %>
           </md-unordered-list>
-          <button name="submit" type="submit" value="add_contact" class="app-c-markdown-editor__toolbar-button app-c-markdown-editor__toolbar-button--text app-c-markdown-editor__toolbar-button--end">Add contact</button>
           <% if current_user.permissions.include?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-            <button name="submit" type="submit" value="add_image" class="app-c-markdown-editor__toolbar-button app-c-markdown-editor__toolbar-button--text app-c-markdown-editor__toolbar-button--end"
-              data-module="inline-image-modal"
-              data-modal-action="open"
-              data-modal-action-url="<%= images_path(@document) %>"
-            >Insert image</button>
+            <%= render "components/toolbar_dropdown", {
+              title: "Insert...",
+              align: 'right',
+              items: [
+                {
+                  text: "Contact",
+                  value: "add_contact",
+                  name: "submit"
+                },
+                {
+                  text: "Image",
+                  value: "add_image",
+                  data_attributes: {
+                    module: "inline-image-modal",
+                    "modal-action": "open",
+                    "modal-action-url": images_path(@document)
+                  }
+                }
+              ]
+            } %>
+          <% else %>
+            <button name="submit" type="submit" value="add_contact" class="app-c-markdown-editor__toolbar-button app-c-markdown-editor__toolbar-button--text app-c-markdown-editor__toolbar-button--end">Add contact</button>
           <% end %>
         </markdown-toolbar>
       </div>

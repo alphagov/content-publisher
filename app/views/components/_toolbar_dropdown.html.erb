@@ -1,0 +1,30 @@
+<%
+  id ||= "toolbar-dropdown-#{SecureRandom.hex(4)}"
+  align ||= false
+  items ||= []
+  data_attributes ||= {}
+  data_attributes[:module] = 'toolbar-dropdown'
+  css_classes = %w(app-c-toolbar-dropdown)
+  css_classes << 'app-c-toolbar-dropdown--end' if align == 'right'
+%>
+
+<%= tag.details id: id, class: css_classes, data: data_attributes do %>
+  <%= tag.summary title, class: "app-c-toolbar-dropdown__title" %>
+  <%= tag.div class: "app-c-toolbar-dropdown__container" do %>
+    <% if items.any? %>
+      <%= tag.ul class: "app-c-toolbar-dropdown__list" do %>
+        <% items.each do |item| %>
+          <%= tag.li class: "app-c-toolbar-dropdown__list-item" do %>
+            <%= tag.button item[:text],
+              class:"app-c-toolbar-dropdown__button",
+              type: "submit",
+              name: item[:name],
+              value: item[:value],
+              data: item[:data_attributes]
+            %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
