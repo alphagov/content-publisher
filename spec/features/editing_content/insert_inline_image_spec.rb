@@ -26,7 +26,8 @@ RSpec.feature "Insert inline image", js: true do
 
   def and_i_click_to_insert_an_image
     within(".app-c-markdown-editor") do
-      click_on "Insert image"
+      find("markdown-toolbar details").click
+      click_on "Image"
     end
   end
 
