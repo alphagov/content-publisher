@@ -40,8 +40,13 @@ class ScheduleController < ApplicationController
       edition.assign_status(:scheduled, current_user, status_details: scheduling)
       edition.save!
 
-      redirect_to document_path(document)
+      redirect_to scheduled_path(document)
     end
+  end
+
+  def scheduled
+    document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = document.current_edition
   end
 
 private

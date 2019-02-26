@@ -7,6 +7,9 @@ RSpec.feature "Schedule an edition" do
     and_i_click_on_schedule
     and_i_select_the_content_has_been_reviewed_option
     and_i_click_on_publish
+    then_i_see_a_confirmation_that_the_edition_has_been_scheduled
+
+    when_i_visit_the_summary_page
     then_i_see_the_edition_has_been_scheduled
   end
 
@@ -29,6 +32,10 @@ RSpec.feature "Schedule an edition" do
 
   def and_i_click_on_publish
     click_on "Publish"
+  end
+
+  def then_i_see_a_confirmation_that_the_edition_has_been_scheduled
+    expect(page).to have_content(I18n.t!("schedule.scheduled.title"))
   end
 
   def then_i_see_the_edition_has_been_scheduled
