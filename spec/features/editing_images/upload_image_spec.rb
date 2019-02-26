@@ -16,7 +16,9 @@ RSpec.feature "Upload an image", js: true do
     when_i_insert_an_inline_image
     and_i_upload_a_new_image
     and_i_crop_the_image
-    then_i_see_the_uploaded_image
+    and_i_fill_in_the_metadata
+    then_i_see_the_new_image
+    and_the_preview_creation_succeeded
   end
 
   def given_there_is_an_edition

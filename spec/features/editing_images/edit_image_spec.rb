@@ -20,6 +20,8 @@ RSpec.feature "Edit image", js: true do
     and_i_edit_the_image_crop
     then_the_image_crop_is_updated
 
+    when_i_edit_the_image_metadata
+    then_i_see_the_image_is_updated
     and_the_preview_creation_succeeded
   end
 
@@ -27,7 +29,7 @@ RSpec.feature "Edit image", js: true do
     body_field = build(:field, id: "body", type: "govspeak")
     document_type = build(:document_type, contents: [body_field], images: true)
 
-    @image_revision = create(:image_revision,
+    image_revision = create(:image_revision,
                              :on_asset_manager,
                              crop_x: 0,
                              crop_y: 167,
@@ -37,7 +39,7 @@ RSpec.feature "Edit image", js: true do
 
     @edition = create(:edition,
                       document_type_id: document_type.id,
-                      image_revisions: [@image_revision])
+                      image_revisions: [image_revision])
   end
 
   def when_i_visit_the_images_page
