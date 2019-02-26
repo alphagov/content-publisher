@@ -26,6 +26,7 @@
 
 //= require modules/gtm-form-listener.js
 //= require modules/gtm-track-copy.js
+//= require modules/inline-image-modal.js
 //= require modules/warn-before-unload.js
 
 // load after other components (esp. autocomplete)

@@ -18,6 +18,10 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         this.showStaticSection(event.target.dataset.targetSection)
       }.bind(this))
     }.bind(this))
+
+    this.$module.hideAllSections = this.hideAllSections.bind(this)
+    this.$module.showDynamicSection = this.showDynamicSection.bind(this)
+    this.$module.showStaticSection = this.showStaticSection.bind(this)
   }
 
   MultiSectionViewer.prototype.hideAllSections = function () {

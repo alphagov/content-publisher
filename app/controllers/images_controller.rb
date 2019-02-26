@@ -8,6 +8,7 @@ class ImagesController < ApplicationController
 
   def index
     @document = Document.with_current_edition.find_by_param(params[:document_id])
+    render layout: rendering_context
   end
 
   def create

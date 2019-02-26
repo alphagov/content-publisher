@@ -1,0 +1,6 @@
+$loading-spinner-container-padding: govuk-spacing(8) + govuk-spacing(8);
+
+.app-c-loading-spinner {
+  text-align: center;
+  padding: $loading-spinner-container-padding;
+}

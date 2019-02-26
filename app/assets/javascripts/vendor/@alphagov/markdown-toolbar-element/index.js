@@ -857,5 +857,6 @@
     }
   }
 
+  MarkdownToolbarElement.insertText = insertText;
   exports.default = MarkdownToolbarElement;
 });
