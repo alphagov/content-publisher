@@ -1,6 +1,100 @@
-$loading-spinner-container-padding: govuk-spacing(8) + govuk-spacing(8);
-
 .app-c-loading-spinner {
+  @include govuk-focusable;
   text-align: center;
-  padding: $loading-spinner-container-padding;
+}
+
+@keyframes app-loading-spinner-opacity-0 {
+  0% { opacity: 0.250075; }
+  0.01% { opacity: 0.25; }
+  0.03% { opacity: 1; }
+  0.01% { opacity: 0.25; }
+  100% { opacity: 0.250075; }
+}
+
+@keyframes app-loading-spinner-opacity-1 {
+  0% { opacity: 0.312575; }
+  8.34333% { opacity: 0.25; }
+  8.36333% { opacity: 1; }
+  8.34333% { opacity: 0.25; }
+  100% { opacity: 0.312575; }
+}
+
+@keyframes app-loading-spinner-opacity-2 {
+  0% { opacity: 0.375075; }
+  16.6767% { opacity: 0.25; }
+  16.6967% { opacity: 1; }
+  16.6767% { opacity: 0.25; }
+  100% { opacity: 0.375075; }
+}
+
+@keyframes app-loading-spinner-opacity-3 {
+  0% { opacity: 0.437575; }
+  25.01% { opacity: 0.25; }
+  25.03% { opacity: 1; }
+  25.01% { opacity: 0.25; }
+  100% { opacity: 0.437575; }
+}
+
+@keyframes app-loading-spinner-opacity-4 {
+  0% { opacity: 0.500075; }
+  33.3433% { opacity: 0.25; }
+  33.3633% { opacity: 1; }
+  33.3433% { opacity: 0.25; }
+  100% { opacity: 0.500075; }
+}
+
+@keyframes app-loading-spinner-opacity-5 {
+  0% { opacity: 0.562575; }
+  41.6767% { opacity: 0.25; }
+  41.6967% { opacity: 1; }
+  41.6767% { opacity: 0.25; }
+  100% { opacity: 0.562575; }
+}
+
+@keyframes app-loading-spinner-opacity-6 {
+  0% { opacity: 0.625075; }
+  50.01% { opacity: 0.25; }
+  50.03% { opacity: 1; }
+  50.01% { opacity: 0.25; }
+  100% { opacity: 0.625075; }
+}
+
+@keyframes app-loading-spinner-opacity-7 {
+  0% { opacity: 0.687575; }
+  58.3433% { opacity: 0.25; }
+  58.3633% { opacity: 1; }
+  58.3433% { opacity: 0.25; }
+  100% { opacity: 0.687575; }
+}
+
+@keyframes app-loading-spinner-opacity-8 {
+  0% { opacity: 0.750075; }
+  66.6767% { opacity: 0.25; }
+  66.6967% { opacity: 1; }
+  66.6767% { opacity: 0.25; }
+  100% { opacity: 0.750075; }
+}
+
+@keyframes app-loading-spinner-opacity-9 {
+  0% { opacity: 0.812575; }
+  75.01% { opacity: 0.25; }
+  75.03% { opacity: 1; }
+  75.01% { opacity: 0.25; }
+  100% { opacity: 0.812575; }
+}
+
+@keyframes app-loading-spinner-opacity-10 {
+  0% { opacity: 0.875075; }
+  83.3433% { opacity: 0.25; }
+  83.3633% { opacity: 1; }
+  83.3433% { opacity: 0.25; }
+  100% { opacity: 0.875075; }
+}
+
+@keyframes app-loading-spinner-opacity-11 {
+  0% { opacity: 0.937575; }
+  91.6767% { opacity: 0.25; }
+  91.6967% { opacity: 1; }
+  91.6767% { opacity: 0.25; }
+  100% { opacity: 0.937575; }
 }

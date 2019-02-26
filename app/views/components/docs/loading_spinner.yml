@@ -1,4 +1,10 @@
 name: Loading spinner
 description: Displays an animated graphic to indicate loading activity
+accessibility_criteria: |
+  The loading spinner must:
+
+   - be focusable with a keyboard
+   - indicate when it has keyboard focus
+   - inform the user that it is progress indicator
 examples:
-  default:
+  default: {}
