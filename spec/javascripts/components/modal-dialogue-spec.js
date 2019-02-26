@@ -33,7 +33,7 @@ describe('Modal dialogue component', function () {
     document.body.classList.add('js-enabled')
     document.body.appendChild(container)
     var element = document.querySelector('[data-module="modal-dialogue"]')
-    new ModalDialogue(element).init()
+    new GOVUK.Modules.ModalDialogue().start($(element))
   })
 
   afterEach(function () {
