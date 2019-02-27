@@ -23,7 +23,7 @@ RSpec.feature "Upload an image" do
   def and_i_upload_a_new_image
     @image_filename = "1000x1000.jpg"
 
-    find('form input[type="file"]').set(Rails.root.join(file_fixture(@image_filename)))
+    find('form input[type="file"]').set(file_fixture(@image_filename))
     click_on "Upload"
   end
 
