@@ -28,7 +28,11 @@ InlineImageModal.prototype.fetchModalContent = function (url) {
       if (!response.ok) {
         return window.Promise.reject('Unable to render the content.')
       }
+
       return response.text()
+        .then(function (text) {
+          return { body: text }
+        })
     })
 }
 
@@ -52,6 +56,9 @@ InlineImageModal.prototype.postModalForm = function (form) {
       }
 
       return response.text()
+        .then(function (text) {
+          return { body: text, finished: response.redirected }
+        })
     })
 }
 
@@ -61,8 +68,8 @@ InlineImageModal.prototype.performAction = function (item) {
       this.$modal.open()
 
       this.fetchModalContent(item.dataset.modalActionUrl)
-        .then(function (text) {
-          this.$multiSectionViewer.showDynamicSection(text)
+        .then(function (result) {
+          this.$multiSectionViewer.showDynamicSection(result.body)
           this.overrideActions()
           this.initComponents()
         }.bind(this))
@@ -77,8 +84,8 @@ InlineImageModal.prototype.performAction = function (item) {
     },
     'upload': function () {
       this.postModalForm(item)
-        .then(function (text) {
-          this.$multiSectionViewer.showDynamicSection(text)
+        .then(function (result) {
+          this.$multiSectionViewer.showDynamicSection(result.body)
           this.overrideActions()
           this.initComponents()
         }.bind(this))
@@ -88,8 +95,8 @@ InlineImageModal.prototype.performAction = function (item) {
     },
     'crop': function () {
       this.postModalForm(item)
-        .then(function (text) {
-          this.$multiSectionViewer.showDynamicSection(text)
+        .then(function (result) {
+          this.$multiSectionViewer.showDynamicSection(result.body)
           this.overrideActions()
           this.initComponents()
         }.bind(this))
@@ -109,9 +116,9 @@ InlineImageModal.prototype.performAction = function (item) {
         }.bind(this))
     },
     'meta': function () {
-      this.postModalForm(item.dataset.modalActionForm)
-        .then(function (text) {
-          this.$multiSectionViewer.showDynamicSection(text)
+      this.postModalForm(item)
+        .then(function (result) {
+          this.$multiSectionViewer.showDynamicSection(result.body)
           this.overrideActions()
           this.initComponents()
         }.bind(this))
@@ -119,10 +126,27 @@ InlineImageModal.prototype.performAction = function (item) {
           this.$multiSectionViewer.showStaticSection('error')
         }.bind(this))
     },
+    'metaInsert': function () {
+      this.postModalForm(item)
+        .then(function (result) {
+          if (result.finished) {
+            var editor = this.$module.closest('[data-module="markdown-editor"]')
+            this.$modal.close()
+            editor.selectionReplace(item.dataset.modalData)
+          } else {
+            this.$multiSectionViewer.showDynamicSection(result.body)
+            this.overrideActions()
+            this.initComponents()
+          }
+        }.bind(this))
+        .catch(function (result) {
+          this.$multiSectionViewer.showStaticSection('error')
+        }.bind(this))
+    },
     'edit': function () {
       this.fetchModalContent(item.dataset.modalActionUrl)
-        .then(function (text) {
-          this.$multiSectionViewer.showDynamicSection(text)
+        .then(function (result) {
+          this.$multiSectionViewer.showDynamicSection(result.body)
           this.overrideActions()
           this.initComponents()
         }.bind(this))
