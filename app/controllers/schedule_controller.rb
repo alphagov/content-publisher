@@ -33,7 +33,7 @@ class ScheduleController < ApplicationController
     unless @edition.schedulable?
       # FIXME: this shouldn't be an exception but we've not worked out the
       # right response - maybe bad request or a redirect with flash?
-      raise "Scheduled publishing date and time must be in the future."
+      raise "Scheduled publishing date and time must be at least 15 minutes in the future."
     end
   end
 

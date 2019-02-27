@@ -64,6 +64,8 @@ class Edition < ApplicationRecord
            :scheduled_publishing_datetime,
            to: :revision
 
+  MINIMUM_SCHEDULING_TIME = { minutes: 15 }.freeze
+
   def self.create_initial(document, user = nil, tags = {})
     revision = Revision.create_initial(document, user, tags)
     status = Status.create!(created_by: user,
@@ -106,7 +108,7 @@ class Edition < ApplicationRecord
     return false unless editable?
     return false if scheduled_publishing_datetime.nil?
 
-    scheduled_publishing_datetime > Time.zone.now
+    scheduled_publishing_datetime > Time.zone.now.advance(MINIMUM_SCHEDULING_TIME)
   end
 
   def resume_discarded(live_edition, user)
