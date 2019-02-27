@@ -65,7 +65,7 @@
 
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@edition.document), secondary: true %>
 
-      <% if @edition.scheduled_publishing_datetime.present? && !@edition.scheduled? %>
+      <% if @edition.schedulable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <%= link_to "Schedule", scheduling_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
       <% else %>
         <%= link_to "Publish", publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
