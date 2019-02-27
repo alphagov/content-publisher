@@ -68,11 +68,6 @@
   }
 }
 
-.govuk-grid-column-one-third,
-.govuk-grid-column-two-thirds {
-  position: relative;
-}
-
 .app-selected-topics {
   .govuk-breadcrumbs {
     @include govuk-font(19);

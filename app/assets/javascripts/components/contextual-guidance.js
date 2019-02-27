@@ -22,7 +22,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
   }
 
   ContextualGuidance.prototype.hideAllGuidance = function () {
-    var guidances = document.querySelectorAll('.app-c-contextual-guidance-wrapper')
+    var guidances = document.querySelectorAll('[data-module="contextual-guidance"]')
 
     guidances.forEach(function (guidance) {
       guidance.style.display = 'none'

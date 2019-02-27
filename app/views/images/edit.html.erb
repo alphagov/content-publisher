@@ -17,6 +17,7 @@
 <%= form_tag(
   update_image_path(@document, @image_revision.image_id, wizard: params[:wizard]),
   method: :patch,
+  class: "app-c-contextual-guidance__form",
   data: {
     "warn-before-unload": true,
     "modal-action": "meta",

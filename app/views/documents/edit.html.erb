@@ -8,7 +8,7 @@
 
 <%= form_for(
   @document,
-  html: { "autocomplete": "off" },
+  html: { "autocomplete": "off", class: "app-c-contextual-guidance__form" },
   data: {
     module: "edit-document-form",
     "url-preview-path": generate_path_path,

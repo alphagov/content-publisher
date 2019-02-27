@@ -1,4 +1,15 @@
-.app-c-contextual-guidance-wrapper {
+.app-c-contextual-guidance__form {
+  .govuk-grid-column-one-third,
+  .govuk-grid-column-two-thirds {
+    position: relative;
+  }
+
+  .govuk-grid-row:last-of-type .app-c-contextual-guidance__wrapper {
+    position: relative;
+  }
+}
+
+.app-c-contextual-guidance__wrapper {
   position: relative;
 
   @include govuk-font(19);
@@ -8,10 +19,6 @@
   @include govuk-media-query($from: tablet) {
     padding-top: govuk-spacing(6);
   }
-}
-
-.app-c-contextual-guidance__form .govuk-grid-row:last-of-type .app-c-contextual-guidance__wrapper {
-  position: relative;
 }
 
 .js-enabled {
