@@ -93,6 +93,27 @@ InlineImageModal.prototype.performAction = function (item) {
           this.$multiSectionViewer.showStaticSection('error')
         }.bind(this))
     },
+    'cropBack': function () {
+      this.fetchModalContent(item.dataset.modalActionUrl)
+        .then(function (text) {
+          this.$multiSectionViewer.showDynamicSection(text)
+          this.overrideActions()
+          this.initComponents()
+        }.bind(this))
+        .catch(function (result) {
+          this.$multiSectionViewer.showStaticSection('error')
+        }.bind(this))
+    'metaBack': function () {
+      this.fetchModalContent(item.dataset.modalActionUrl)
+        .then(function (text) {
+          this.$multiSectionViewer.showDynamicSection(text)
+          this.overrideActions()
+          this.initComponents()
+        }.bind(this))
+        .catch(function (result) {
+          this.$multiSectionViewer.showStaticSection('error')
+        }.bind(this))
+    },
     'crop': function () {
       this.postModalForm(item)
         .then(function (result) {

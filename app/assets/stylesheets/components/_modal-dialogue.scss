@@ -81,7 +81,7 @@ $govuk-modal-wide-breakpoint: $govuk-page-width + $govuk-modal-margin * 2 + $gov
   .govuk-skip-link,
   .govuk-header,
   .govuk-phase-banner,
-  .govuk-back-link,
+  .govuk-width-container .govuk-back-link,
   .govuk-footer,
   .govuk-main-wrapper {
     filter: blur(2px);
