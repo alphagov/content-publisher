@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   get "/documents/:id/published" => "publish#published", as: :published
 
   post "/documents/:id/save-scheduled-publishing-datetime" => "schedule#save_scheduled_publishing_datetime", as: :save_scheduled_publishing_datetime
+  post "/documents/:id/clear-scheduled-publishing-datetime" => "schedule#clear_scheduled_publishing_datetime", as: :clear_scheduled_publishing_datetime
+
   get "/documents/:id/schedule" => "schedule#confirmation", as: :scheduling_confirmation
   post "/documents/:id/schedule" => "schedule#schedule"
   get "/documents/:id/scheduled" => "schedule#scheduled", as: :scheduled

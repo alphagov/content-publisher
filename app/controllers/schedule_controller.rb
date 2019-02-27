@@ -26,6 +26,20 @@ class ScheduleController < ApplicationController
     end
   end
 
+  def clear_scheduled_publishing_datetime
+    Document.transaction do
+      document = Document.with_current_edition.lock.find_by_param(params[:id])
+      edition = document.current_edition
+
+      new_revision = edition.revision.build_revision_update(
+        { scheduled_publishing_datetime: nil }, current_user
+      )
+      edition.assign_revision(new_revision, current_user).save!
+
+      redirect_to document_path(document)
+    end
+  end
+
   def confirmation
     document = Document.with_current_edition.find_by_param(params[:id])
     @edition = document.current_edition
