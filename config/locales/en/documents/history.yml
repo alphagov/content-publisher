@@ -24,3 +24,4 @@ en:
         draft_discarded: "Draft discarded"
         draft_reset: "Draft reset to last published edition"
         unwithdrawn: "Unwithdrawn"
+        scheduled: "Scheduled to publish"
