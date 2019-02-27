@@ -1,3 +1,9 @@
+<% if flash["notice"] %>
+  <%= render "govuk_publishing_components/components/success_alert", {
+    message: flash["notice"]
+  } %>
+<% end %>
+
 <% if flash["alert_with_items"] %>
   <%= render "govuk_publishing_components/components/error_summary", {
     title: flash["alert_with_items"]["title"],
