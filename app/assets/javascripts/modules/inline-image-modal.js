@@ -32,8 +32,7 @@ InlineImageModal.prototype.fetchModalContent = function (url) {
     })
 }
 
-InlineImageModal.prototype.postModalForm = function (formId) {
-  var form = document.getElementById(formId)
+InlineImageModal.prototype.postModalForm = function (form) {
   var controller = new window.AbortController()
   setTimeout(function () { controller.abort() }, 10000)
 
@@ -77,7 +76,7 @@ InlineImageModal.prototype.performAction = function (item) {
       editor.selectionReplace(item.dataset.modalData)
     },
     'upload': function () {
-      this.postModalForm(item.dataset.modalActionForm)
+      this.postModalForm(item)
         .then(function (text) {
           this.$multiSectionViewer.showDynamicSection(text)
           this.overrideActions()
@@ -106,14 +105,17 @@ InlineImageModal.prototype.initComponents = function () {
 }
 
 InlineImageModal.prototype.overrideActions = function () {
-  var items = this.$modal.querySelectorAll('[data-modal-action]')
+  var formItems = this.$modal.querySelectorAll('form[data-modal-action]')
+  var linkItems = this.$modal.querySelectorAll('a[data-modal-action]')
 
-  items.forEach(function (item) {
+  linkItems.forEach(function (item) {
     item.addEventListener('click', function (event) {
       event.preventDefault()
       this.performAction(item)
     }.bind(this))
+  }.bind(this))
 
+  formItems.forEach(function (item) {
     item.addEventListener('submit', function (event) {
       event.preventDefault()
       this.performAction(item)
