@@ -47,6 +47,20 @@ yarn install
 bundle exec rake
 ```
 
+#### Running JavaScript tests only
+
+Running [Jasmine][] tests in local web browser
+
+```
+bundle exec rake jasmine
+```
+
+Running [Jasmine][] tests in console
+
+```
+bundle exec rake jasmine:ci
+```
+
 ### Permissions
 
 Functionality of this application is enabled with permissions. There is a
@@ -97,6 +111,7 @@ bundle exec rake import:whitehall_news INPUT=/tmp/whitehall-export.json
 [content-schemas]: https://github.com/alphagov/govuk-content-schemas
 [postgresql]: https://www.postgresql.org/
 [yarn]: https://yarnpkg.com/
+[jasmine]: https://github.com/jasmine/jasmine
 [imagemagick]: https://www.imagemagick.org/script/index.php
 [dev-vm]: https://github.com/alphagov/govuk-puppet/tree/master/development-vm
 [whitehall-repo]: https://github.com/alphagov/whitehall
