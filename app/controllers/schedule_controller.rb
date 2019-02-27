@@ -29,6 +29,12 @@ class ScheduleController < ApplicationController
   def confirmation
     document = Document.with_current_edition.find_by_param(params[:id])
     @edition = document.current_edition
+
+    unless @edition.schedulable?
+      # FIXME: this shouldn't be an exception but we've not worked out the
+      # right response - maybe bad request or a redirect with flash?
+      raise "Scheduled publishing date and time must be in the future."
+    end
   end
 
   def schedule
