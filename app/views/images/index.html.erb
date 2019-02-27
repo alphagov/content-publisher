@@ -14,7 +14,11 @@
         create_image_path(@document),
         id: "image-upload",
         multipart: true,
-        data: { gtm: "image-upload-submit" },
+        data: {
+          gtm: "image-upload-submit",
+          "modal-action": "upload",
+          "modal-action-form": "image-upload",
+        }
       ) do %>
         <%= render "govuk_publishing_components/components/file_upload", {
           label: {
@@ -27,10 +31,6 @@
 
         <%= render "govuk_publishing_components/components/button", {
           text: "Upload",
-          data_attributes: {
-            "modal-action": "upload",
-            "modal-action-form": "image-upload",
-          }
         } %>
       <% end %>
     </div>

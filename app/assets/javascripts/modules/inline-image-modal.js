@@ -113,6 +113,11 @@ InlineImageModal.prototype.overrideActions = function () {
       event.preventDefault()
       this.performAction(item)
     }.bind(this))
+
+    item.addEventListener('submit', function (event) {
+      event.preventDefault()
+      this.performAction(item)
+    }.bind(this))
   }.bind(this))
 }
 
