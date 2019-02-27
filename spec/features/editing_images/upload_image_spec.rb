@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.feature "Upload an image" do
-  scenario do
+RSpec.feature "Upload an image", js: true do
+  scenario "lead image" do
     given_there_is_an_edition
     when_i_visit_the_images_page
     and_i_upload_a_new_image
@@ -11,8 +11,17 @@ RSpec.feature "Upload an image" do
     and_the_preview_creation_succeeded
   end
 
+  scenario "inline image" do
+    given_there_is_an_edition
+    when_i_insert_an_inline_image
+    and_i_upload_a_new_image
+    and_i_crop_the_image
+    then_i_see_the_uploaded_image
+  end
+
   def given_there_is_an_edition
-    document_type = build(:document_type, images: true)
+    body_field = build(:field, id: "body", type: "govspeak")
+    document_type = build(:document_type, contents: [body_field], images: true)
     @edition = create(:edition, document_type_id: document_type.id)
   end
 
@@ -20,10 +29,18 @@ RSpec.feature "Upload an image" do
     visit images_path(@edition.document)
   end
 
+  def when_i_insert_an_inline_image
+    visit edit_document_path(@edition.document)
+
+    within(".app-c-markdown-editor") do
+      find("markdown-toolbar details").click
+      click_on "Image"
+    end
+  end
+
   def and_i_upload_a_new_image
     @image_filename = "1000x1000.jpg"
-
-    find('form input[type="file"]').set(file_fixture(@image_filename))
+    find('form input[type="file"]').set(Rails.root.join(file_fixture(@image_filename)))
     click_on "Upload"
   end
 
@@ -43,6 +60,15 @@ RSpec.feature "Upload an image" do
     click_on "Save"
   end
 
+  def then_i_see_the_uploaded_image
+    expect(page).to have_selector(".app-c-image-meta")
+
+    within("#image-#{Image.first.id}") do
+      expect(find("img")["src"]).to include("1000x1000.jpg")
+      expect(page).to have_link("Insert image markdown")
+    end
+  end
+
   def then_i_see_the_new_image
     within("#image-#{Image.first.id}") do
       expect(page).to have_content("A caption")
@@ -52,14 +78,16 @@ RSpec.feature "Upload an image" do
       expect(find("img")["src"]).to include("1000x1000.jpg")
       expect(find("img")["alt"]).to eq("Some alt text")
     end
-
-    visit document_path(@edition.document)
-    expect(page).to have_content(I18n.t!("documents.history.entry_types.image_updated"))
   end
 
   def and_the_preview_creation_succeeded
     expect(@publishing_api_request).to have_been_requested
     expect(@asset_manager_request).to have_been_requested.at_least_once
+
+    visit document_path(@edition.document)
+
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
+    click_on "Document history"
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.image_updated"))
   end
 end

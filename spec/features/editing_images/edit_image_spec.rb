@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.feature "Edit image", js: true do
-  scenario do
+  scenario "lead image" do
     given_there_is_an_edition_with_images
 
     when_i_visit_the_images_page
@@ -13,8 +13,20 @@ RSpec.feature "Edit image", js: true do
     and_the_preview_creation_succeeded
   end
 
+  scenario "inline image" do
+    given_there_is_an_edition_with_images
+
+    when_i_insert_an_inline_image
+    and_i_edit_the_image_crop
+    then_the_image_crop_is_updated
+
+    and_the_preview_creation_succeeded
+  end
+
   def given_there_is_an_edition_with_images
-    document_type = build(:document_type, images: true)
+    body_field = build(:field, id: "body", type: "govspeak")
+    document_type = build(:document_type, contents: [body_field], images: true)
+
     @image_revision = create(:image_revision,
                              :on_asset_manager,
                              crop_x: 0,
@@ -22,6 +34,7 @@ RSpec.feature "Edit image", js: true do
                              crop_width: 1000,
                              crop_height: 666,
                              fixture: "1000x1000.jpg")
+
     @edition = create(:edition,
                       document_type_id: document_type.id,
                       image_revisions: [@image_revision])
@@ -29,6 +42,15 @@ RSpec.feature "Edit image", js: true do
 
   def when_i_visit_the_images_page
     visit images_path(@edition.document)
+  end
+
+  def when_i_insert_an_inline_image
+    visit edit_document_path(@edition.document)
+
+    within(".app-c-markdown-editor") do
+      find("markdown-toolbar details").click
+      click_on "Image"
+    end
   end
 
   def and_i_edit_the_image_crop
@@ -49,7 +71,6 @@ RSpec.feature "Edit image", js: true do
   end
 
   def when_i_edit_the_image_metadata
-    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
     fill_in "image_revision[alt_text]", with: "Some alt text"
     fill_in "image_revision[caption]", with: "A caption"
     fill_in "image_revision[credit]", with: "A credit"
@@ -63,9 +84,10 @@ RSpec.feature "Edit image", js: true do
   end
 
   def then_the_image_crop_is_updated
+    expect(page).to have_selector(".app-c-image-meta")
     image_revision = @edition.reload.image_revisions[0]
-    expect(image_revision.crop_y).to eq(0)
-    expect(image_revision.crop_x).to eq(0)
+    expect(image_revision.crop_y).to be <= 1
+    expect(image_revision.crop_x).to be <= 1
     expect(image_revision.crop_width).to eq(960)
     expect(image_revision.crop_height).to eq(640)
   end
