@@ -38,7 +38,7 @@ class ImagesController < ApplicationController
 
       current_edition.assign_revision(next_revision, current_user).save!
       PreviewService.new(current_edition).try_create_preview
-      redirect_to crop_image_path(params[:document_id], image_revision.image_id)
+      redirect_to crop_image_path(params[:document_id], image_revision.image_id, wizard: "upload")
     end
   end
 
@@ -82,7 +82,7 @@ class ImagesController < ApplicationController
         PreviewService.new(document.current_edition).try_create_preview
       end
 
-      redirect_to edit_image_path(document, image_revision.image_id)
+      redirect_to edit_image_path(document, image_revision.image_id, wizard: params[:wizard])
     end
   end
 

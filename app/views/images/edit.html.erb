@@ -13,7 +13,7 @@
   method: :patch,
   data: {
     "warn-before-unload": true,
-    "modal-action": params[:wizard] == "upload" ? "metaInsert" : "meta"
+    "modal-action": "meta",
     "modal-data": I18n.t("images.index.meta.inline_code.value", filename: @image_revision.filename),
   }
 ) do %>
@@ -113,6 +113,6 @@
 
   <%= render "govuk_publishing_components/components/button", {
     margin_bottom: true,
-    text: (rendering_context == "modal" && params[:wizard] == "upload") ? "Save and insert" : "Save"
+    text: (rendering_context == "modal" && params[:wizard] == "upload") ? "Save and insert" : "Save",
   } %>
 <% end %>
