@@ -16,16 +16,6 @@
         tags: @revision.tags,
         contextual_guidance_id: "#{tag_field.id}-guidance" %>
     </div>
-    <% if @document.document_type.guidance_for(tag_field.id) %>
-    <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual_guidance", {
-        id: "#{tag_field.id}-guidance",
-        title: @document.document_type.guidance_for(tag_field.id).title
-      } do %>
-        <p class="govuk-body"><%= @document.document_type.guidance_for(tag_field.id).body %></p>
-      <% end %>
-    </div>
-    <% end %>
   </div>
   <% end %>
 
