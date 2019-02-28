@@ -1,3 +1,5 @@
+/* global $ */
+
 function InlineImageModal ($module) {
   this.$module = $module
   this.$modal = document.getElementById('modal')
@@ -127,7 +129,7 @@ InlineImageModal.prototype.performAction = function (item) {
 }
 
 InlineImageModal.prototype.initComponents = function () {
-  window.GOVUK.modules.start()
+  window.GOVUK.modules.start($(this.$modal))
 
   // TODO: change ErrorSummary so it just focusses when it's initialised
   var $errorSummary = document.querySelector('[data-module="error-summary"]')
