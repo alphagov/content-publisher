@@ -69,6 +69,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         this.$preview.innerHTML = text
         this.setTargetBlank(this.$preview)
         this.$preview.classList.add('app-c-markdown-editor__govspeak--rendered')
+        window.GOVUK.modules.start()
       }.bind(this))
       .catch(function () {
         this.$preview.innerHTML = 'Error previewing content'
