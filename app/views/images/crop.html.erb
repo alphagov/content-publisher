@@ -3,11 +3,9 @@
 
 <%= form_tag(
   crop_image_path(@document, @image_revision.image_id),
-  id: "image-crop",
   method: :patch,
   data: {
     "modal-action": "crop",
-    "modal-action-form": "image-crop",
   }
 ) do %>
   <%= render "/components/image_cropper", {
