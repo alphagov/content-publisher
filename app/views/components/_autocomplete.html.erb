@@ -4,12 +4,10 @@
   selected_options ||= []
   multiple ||= nil
   size ||= nil
-  data ||= nil
   hint ||= nil
-  data_module ||= "autocomplete"
 %>
 
-<div class="app-c-autocomplete govuk-form-group" data-module="<%= data_module %>">
+<div class="app-c-autocomplete govuk-form-group" data-module="autocomplete">
   <%= render "govuk_publishing_components/components/label", {
     html_for: id
   }.merge(label.symbolize_keys) %>
@@ -27,7 +25,6 @@
       options_for_select(options, selected_options),
       id: id,
       class: "govuk-select",
-      data: data,
       size: size,
       multiple: multiple
     %>
