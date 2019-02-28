@@ -97,6 +97,17 @@ InlineImageModal.prototype.performAction = function (item) {
           this.$multiSectionViewer.showStaticSection('error')
         }.bind(this))
     },
+    'delete': function () {
+      this.postModalForm(item)
+        .then(function (text) {
+          this.$multiSectionViewer.showDynamicSection(text)
+          this.overrideActions()
+          this.initComponents()
+        }.bind(this))
+        .catch(function (result) {
+          this.$multiSectionViewer.showStaticSection('error')
+        }.bind(this))
+    },
     'edit': function () {
       this.fetchModalContent(item.dataset.modalActionUrl)
         .then(function (text) {
