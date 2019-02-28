@@ -15,6 +15,7 @@ FactoryBot.define do
       title { SecureRandom.alphanumeric(10) }
       update_type { "major" }
       change_note { "First published." }
+      scheduled_publishing_datetime { nil }
       summary { nil }
       base_path { title ? "/prefix/#{title.parameterize}" : nil }
       contents { {} }
@@ -55,6 +56,7 @@ FactoryBot.define do
           tags: evaluator.tags,
           update_type: evaluator.update_type,
           change_note: evaluator.change_note,
+          scheduled_publishing_datetime: evaluator.scheduled_publishing_datetime,
           lead_image_revision: evaluator.lead_image_revision,
           image_revisions: image_revisions,
         )

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_14_120136) do
+ActiveRecord::Schema.define(version: 2019_02_25_133030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -201,6 +201,12 @@ ActiveRecord::Schema.define(version: 2019_02_14_120136) do
     t.index ["status_id"], name: "index_revisions_statuses_on_status_id"
   end
 
+  create_table "schedulings", force: :cascade do |t|
+    t.boolean "reviewed", default: false
+    t.datetime "created_at", null: false
+    t.bigint "pre_scheduled_status_id", null: false
+  end
+
   create_table "statuses", force: :cascade do |t|
     t.string "state", null: false
     t.bigint "revision_at_creation_id", null: false
@@ -293,6 +299,7 @@ ActiveRecord::Schema.define(version: 2019_02_14_120136) do
   add_foreign_key "revisions_image_revisions", "revisions", on_delete: :restrict
   add_foreign_key "revisions_statuses", "revisions", on_delete: :restrict
   add_foreign_key "revisions_statuses", "statuses", on_delete: :restrict
+  add_foreign_key "schedulings", "statuses", column: "pre_scheduled_status_id", on_delete: :restrict
   add_foreign_key "statuses", "editions", on_delete: :restrict
   add_foreign_key "statuses", "revisions", column: "revision_at_creation_id", on_delete: :restrict
   add_foreign_key "statuses", "users", column: "created_by_id", on_delete: :restrict

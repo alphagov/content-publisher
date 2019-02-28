@@ -15,6 +15,7 @@ FactoryBot.define do
       tags { {} }
       update_type { "major" }
       change_note { "First published." }
+      scheduled_publishing_datetime { nil }
     end
 
     after(:build) do |revision, evaluator|
@@ -37,6 +38,7 @@ FactoryBot.define do
           update_type: evaluator.update_type,
           change_note: evaluator.change_note,
           created_by: revision.created_by,
+          scheduled_publishing_datetime: evaluator.scheduled_publishing_datetime,
         )
       end
 

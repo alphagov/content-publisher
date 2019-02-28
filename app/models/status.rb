@@ -22,5 +22,6 @@ class Status < ApplicationRecord
                 withdrawn: "withdrawn",
                 removed: "removed",
                 discarded: "discarded",
-                superseded: "superseded" }
+                superseded: "superseded",
+                scheduled: "scheduled" }
 end

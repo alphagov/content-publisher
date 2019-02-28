@@ -42,7 +42,8 @@ class TimelineEntry < ApplicationRecord
                      removed: "removed",
                      internal_note: "internal_note",
                      draft_discarded: "draft_discarded",
-                     draft_reset: "draft_reset" }
+                     draft_reset: "draft_reset",
+                     scheduled: "scheduled" }
 
   def self.create_for_status_change(entry_type:,
                                     status:,

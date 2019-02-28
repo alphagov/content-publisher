@@ -1,0 +1,19 @@
+<% content_for :back_link, render_back_link(text: "Return to dashboard", href: document_path(@edition.document)) %>
+<% content_for :browser_title, t("schedule.scheduled.title") %>
+<% scheduled_time = @edition.scheduled_publishing_datetime.strftime("%l:%M%P").strip %>
+<% scheduled_date = @edition.scheduled_publishing_datetime.strftime("%-d %B %Y") %>
+<% public_url = EditionUrl.new(@edition).public_url %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/panel", {
+      title: t("schedule.scheduled.title")
+    } %>
+    <%= render "govuk_publishing_components/components/govspeak" do %>
+      <%= govspeak_to_html t("schedule.scheduled.body_govspeak", title: @edition.title, time: scheduled_time, date: scheduled_date) %>
+    <% end %>
+    <%= render "govuk_publishing_components/components/inset_text", {
+      text: strip_scheme_from_url(public_url)
+    } %>
+  </div>
+</div>

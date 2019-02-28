@@ -61,7 +61,10 @@ class Edition < ApplicationRecord
            :lead_image_revision,
            :image_revisions,
            :image_revisions_without_lead,
+           :scheduled_publishing_datetime,
            to: :revision
+
+  MINIMUM_SCHEDULING_TIME = { minutes: 15 }.freeze
 
   def self.create_initial(document, user = nil, tags = {})
     revision = Revision.create_initial(document, user, tags)
@@ -98,7 +101,14 @@ class Edition < ApplicationRecord
   end
 
   def editable?
-    !live?
+    !live? && !scheduled?
+  end
+
+  def schedulable?
+    return false unless editable?
+    return false if scheduled_publishing_datetime.nil?
+
+    scheduled_publishing_datetime > Time.zone.now.advance(MINIMUM_SCHEDULING_TIME)
   end
 
   def resume_discarded(live_edition, user)

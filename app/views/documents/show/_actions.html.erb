@@ -53,6 +53,11 @@
                  text: "Undo withdrawal",
                  data_attributes: { gtm: "undo-withdraw" },
                  href: unwithdraw_path(@document) %>
+    <% elsif @edition.scheduled? %>
+      <%= form_tag create_preview_path(@edition.document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Preview" %>
+      <% end %>
+      <%= delete_draft_link %>
     <% else %>
       <%= form_tag submit_document_for_2i_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
@@ -60,8 +65,11 @@
 
       <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@edition.document), secondary: true %>
 
-      <%= link_to "Publish", publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
-
+      <% if @edition.schedulable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+        <%= link_to "Schedule", scheduling_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+      <% else %>
+        <%= link_to "Publish", publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+      <% end %>
       <%= delete_draft_link("app-link--right") %>
     <% end %>
 
@@ -70,7 +78,7 @@
       <%= link_to "View published edition on GOV.UK", EditionUrl.new(@edition.document.live_edition).public_url, class: "govuk-link govuk-link--no-visited-state" %>
     <% end %>
 
-    <% if (@edition.submitted_for_review? || @edition.draft?) && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+    <% if (@edition.editable? || @edition.scheduled?) && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
       <%= render "documents/show/scheduling_form" %>
     <% end %>

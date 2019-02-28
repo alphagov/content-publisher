@@ -26,9 +26,47 @@ class ScheduleController < ApplicationController
     end
   end
 
+  def confirmation
+    document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = document.current_edition
+
+    unless @edition.schedulable?
+      # FIXME: this shouldn't be an exception but we've not worked out the
+      # right response - maybe bad request or a redirect with flash?
+      raise "Scheduled publishing date and time must be at least 15 minutes in the future."
+    end
+  end
+
+  def schedule
+    Document.transaction do
+      document = Document.with_current_edition.lock!.find_by_param(params[:id])
+      edition = document.current_edition
+
+      if edition.scheduled_publishing_datetime.blank?
+        # FIXME: this shouldn't be an exception but we've not worked out the
+        # right response - maybe bad request or a redirect with flash?
+        raise "Cannot schedule an edition to be published without setting a publishing date and time."
+      end
+
+      reviewed = review_params == "reviewed"
+      ScheduleService.new(edition).schedule(user: current_user, reviewed: reviewed)
+
+      redirect_to scheduled_path(document)
+    end
+  end
+
+  def scheduled
+    document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = document.current_edition
+  end
+
 private
 
   def permitted_params
     params.require(:scheduled).permit(:year, :month, :day, :time)
+  end
+
+  def review_params
+    params.require(:review_status)
   end
 end
