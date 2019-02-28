@@ -60,7 +60,11 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
     end
 
     it "returns an issue if the datetime is in the past" do
-      datetime_params[:day] -= 2
+      past_datetime = valid_datetime - 2.days
+      datetime_params[:day] = past_datetime.day
+      datetime_params[:month] = past_datetime.month
+      datetime_params[:year] = past_datetime.year
+
       issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).datetime_issues
       datetime_issue = I18n.t!("requirements.scheduled_datetime.in_the_past.form_message")
 
@@ -93,7 +97,11 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
     end
 
     it "returns datetime issues if any are present" do
-      datetime_params[:day] -= 2
+      past_datetime = valid_datetime - 2.days
+      datetime_params[:day] = past_datetime.day
+      datetime_params[:month] = past_datetime.month
+      datetime_params[:year] = past_datetime.year
+
       datetime_issue = I18n.t!("requirements.scheduled_datetime.in_the_past.form_message")
 
       issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
