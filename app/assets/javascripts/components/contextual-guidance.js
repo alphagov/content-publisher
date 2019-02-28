@@ -18,7 +18,9 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
   ContextualGuidance.prototype.handleFocus = function (event) {
     this.hideAllGuidance()
-    this.$module.style.display = 'block'
+    if (!event.target.dataset.contextualGuidanceHideOnly) {
+      this.$module.style.display = 'block'
+    }
   }
 
   ContextualGuidance.prototype.hideAllGuidance = function () {
