@@ -1,6 +1,7 @@
 .app-c-loading-spinner {
   @include govuk-focusable;
   text-align: center;
+  padding: govuk-spacing(8) * 2;
 }
 
 @keyframes app-loading-spinner-opacity-0 {
