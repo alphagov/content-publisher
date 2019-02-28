@@ -16,11 +16,7 @@ class ScheduleController < ApplicationController
         return
       end
 
-      new_revision = edition.revision.build_revision_update(
-        { scheduled_publishing_datetime: checker.parsed_datetime },
-        current_user,
-      )
-      edition.assign_revision(new_revision, current_user).save!
+      set_scheduled_publishing_datetime(edition, checker.parsed_datetime)
 
       redirect_to document_path(document)
     end
@@ -31,10 +27,7 @@ class ScheduleController < ApplicationController
       document = Document.with_current_edition.lock.find_by_param(params[:id])
       edition = document.current_edition
 
-      new_revision = edition.revision.build_revision_update(
-        { scheduled_publishing_datetime: nil }, current_user
-      )
-      edition.assign_revision(new_revision, current_user).save!
+      set_scheduled_publishing_datetime(edition)
 
       redirect_to document_path(document)
     end
@@ -82,5 +75,12 @@ private
 
   def review_params
     params.require(:review_status)
+  end
+
+  def set_scheduled_publishing_datetime(edition, datetime = nil)
+    new_revision = edition.revision.build_revision_update(
+      { scheduled_publishing_datetime: datetime }, current_user
+    )
+    edition.assign_revision(new_revision, current_user).save!
   end
 end
