@@ -4,12 +4,17 @@
 <% submitted_values = flash[:scheduled_publishing_params] %>
 <% selected_time = submitted_values&.fetch("time") ||  current_scheduled_publish_datetime&.strftime("%l:%M%P")&.strip %>
 
+<% scheduling_title = capture do %>
+  <% if current_scheduled_publish_datetime %>
+    Publish date: <br><%= current_scheduled_publish_datetime.strftime("%-d %B %Y - %l:%M%P") %>
+  <% else %>
+    Schedule publishing
+  <% end %>
+<% end %>
+
 <%= render "govuk_publishing_components/components/details", {
-  title: if current_scheduled_publish_datetime
-           simple_format("Publish date: \n" + current_scheduled_publish_datetime.strftime("%-d %B %Y - %l:%M%P"))
-         else
-           "Schedule publishing"
-         end
+  margin_bottom: 0,
+  title: scheduling_title
 } do %>
   <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document)) do %>
     <% if flash[:scheduled_publishing_datetime_issues] %>
