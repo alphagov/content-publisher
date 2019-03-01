@@ -25,3 +25,5 @@ en:
         draft_reset: "Draft reset to last published edition"
         unwithdrawn: "Unwithdrawn"
         scheduled: "Scheduled to publish"
+        scheduled_publishing_datetime_set: "Scheduled publishing date and time set"
+        scheduled_publishing_datetime_cleared: "Scheduled publishing date and time cleared"

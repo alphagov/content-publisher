@@ -4,14 +4,14 @@
 <% submitted_values = flash[:scheduled_publishing_params] %>
 <% selected_time = submitted_values&.fetch("time") ||  current_scheduled_publish_datetime&.strftime("%l:%M%P")&.strip %>
 
-<%= form_tag(save_scheduled_publishing_datetime_path(@edition.document)) do %>
-  <%= render "govuk_publishing_components/components/details", {
-    title: if current_scheduled_publish_datetime
-             simple_format("Publish date: \n" + current_scheduled_publish_datetime.strftime("%-d %B %Y - %l:%M%P"))
-           else
-             "Schedule publishing"
-           end
-  } do %>
+<%= render "govuk_publishing_components/components/details", {
+  title: if current_scheduled_publish_datetime
+           simple_format("Publish date: \n" + current_scheduled_publish_datetime.strftime("%-d %B %Y - %l:%M%P"))
+         else
+           "Schedule publishing"
+         end
+} do %>
+  <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document)) do %>
     <% if flash[:scheduled_publishing_datetime_issues] %>
       <% flash[:scheduled_publishing_datetime_issues].each do |issue| %>
         <%= render "govuk_publishing_components/components/error_message", {
@@ -50,6 +50,11 @@
       <%= render "govuk_publishing_components/components/button", {
         text: "Save"
       } %>
+    <% end %>
+  <% end %>
+  <% if current_scheduled_publish_datetime %>
+    <%= form_tag clear_scheduled_publishing_datetime_path(@edition.document), class: "app-inline-block" do %>
+      <button class="govuk-link app-link--button">Clear date</button>
     <% end %>
   <% end %>
 <% end %>
