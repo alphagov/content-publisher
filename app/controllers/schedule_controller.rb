@@ -82,5 +82,14 @@ private
       { scheduled_publishing_datetime: datetime }, current_user
     )
     edition.assign_revision(new_revision, current_user).save!
+    create_timeline_entry(edition, new_revision)
+  end
+
+  def create_timeline_entry(edition, revision)
+    TimelineEntry.create_for_revision(entry_type: :scheduled_publishing_datetime_set,
+                                      revision: revision,
+                                      edition: edition,
+                                      details: nil,
+                                      created_by: current_user)
   end
 end

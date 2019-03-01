@@ -65,5 +65,9 @@ RSpec.feature "Set scheduled publishing datetime" do
       "[@name='scheduled[year]'][@value='#{@date.year}']",
     )
     expect(find_field("scheduled[time]").value).to eq("11:00pm")
+
+    within first(".app-timeline-entry") do
+      expect(page).to have_content I18n.t!("documents.history.entry_types.scheduled_publishing_datetime_set")
+    end
   end
 end
