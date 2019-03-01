@@ -83,7 +83,7 @@ class Edition < ApplicationRecord
 
   def self.create_next_edition(preceding_edition, user)
     revision = preceding_edition.revision.build_revision_update(
-      { change_note: "", update_type: "major" },
+      { change_note: "", update_type: "major", scheduled_publishing_datetime: nil },
       user,
     )
 
