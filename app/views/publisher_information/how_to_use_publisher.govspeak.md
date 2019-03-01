@@ -123,6 +123,8 @@ If they find mistakes then they or you can update the content to fix them.
 
 If there are no mistakes then they or you can select the ‘Approve’ button to confirm that the content has been reviewed. The content will then get the status ‘Published’.
 
+---
+
 ##Featured documents
 
 You can feature Content Publisher documents on organisation homepages. 
