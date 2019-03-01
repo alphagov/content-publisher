@@ -44,7 +44,8 @@ class TimelineEntry < ApplicationRecord
                      draft_discarded: "draft_discarded",
                      draft_reset: "draft_reset",
                      scheduled: "scheduled",
-                     scheduled_publishing_datetime_set: "scheduled_publishing_datetime_set" }
+                     scheduled_publishing_datetime_set: "scheduled_publishing_datetime_set",
+                     scheduled_publishing_datetime_cleared: "scheduled_publishing_datetime_cleared" }
 
   def self.create_for_status_change(entry_type:,
                                     status:,

@@ -55,5 +55,9 @@ RSpec.feature "Clear scheduled publishing datetime" do
       "[@name='scheduled[year]'][@value='#{default_date.year}']",
     )
     expect(page).to have_select("scheduled[time]", selected: "9:00am")
+
+    within first(".app-timeline-entry") do
+      expect(page).to have_content I18n.t!("documents.history.entry_types.scheduled_publishing_datetime_cleared")
+    end
   end
 end
