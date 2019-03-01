@@ -22,7 +22,11 @@
   display: inline-block;
 
   @include govuk-media-query($from: tablet) {
-    padding: 8px 0 0 govuk-spacing(3);
+    padding: 8px govuk-spacing(3);
+  }
+
+  &:focus {
+    outline: none;
   }
 }
 
