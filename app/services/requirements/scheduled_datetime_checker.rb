@@ -4,7 +4,8 @@ module Requirements
   class ScheduledDatetimeChecker
     attr_reader :day, :month, :year, :time
 
-    FUTURE_TIME_PERIOD = { months: 14 }.freeze
+    MAXIMUM_FUTURE_TIME_PERIOD = { months: 14 }.freeze
+    MINIMUM_FUTURE_TIME_PERIOD = { minutes: 15 }.freeze
 
     def initialize(params)
       @day = params[:day]
@@ -43,10 +44,15 @@ module Requirements
       end
 
       if too_far_in_the_future?
-        time_period = FUTURE_TIME_PERIOD.map { |k, v| "#{v} #{k}" }.join(" & ")
         issues << Issue.new(:scheduled_datetime,
                             :too_far_in_future,
-                            time_period: time_period)
+                            time_period: time_period_for_issue(MAXIMUM_FUTURE_TIME_PERIOD))
+      end
+
+      if !in_the_past? && too_close_to_now?
+        issues << Issue.new(:scheduled_datetime,
+                            :too_close_to_now,
+                            time_period: time_period_for_issue(MINIMUM_FUTURE_TIME_PERIOD))
       end
 
       CheckerIssues.new(issues)
@@ -83,7 +89,16 @@ module Requirements
 
     def too_far_in_the_future?
       now = Time.zone.now
-      parsed_datetime > now.advance(FUTURE_TIME_PERIOD).end_of_day
+      parsed_datetime > now.advance(MAXIMUM_FUTURE_TIME_PERIOD).end_of_day
+    end
+
+    def too_close_to_now?
+      now = Time.zone.now
+      parsed_datetime < now.advance(MINIMUM_FUTURE_TIME_PERIOD)
+    end
+
+    def time_period_for_issue(time_period)
+      time_period.map { |k, v| "#{v} #{k}" }.join(" & ")
     end
   end
 end
