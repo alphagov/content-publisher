@@ -77,7 +77,7 @@ InlineImageModal.prototype.renderResponse = function (response) {
 
 InlineImageModal.prototype.insertSnippet = function (item) {
   var editor = this.$module.closest('[data-module="markdown-editor"]')
-  editor.selectionReplace(item.dataset.modalData)
+  editor.selectionReplace(item.dataset.modalData + '\n')
 }
 
 InlineImageModal.prototype.performAction = function (item) {
