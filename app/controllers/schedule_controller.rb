@@ -78,11 +78,14 @@ private
   end
 
   def set_scheduled_publishing_datetime(edition, datetime = nil)
-    new_revision = edition.revision.build_revision_update(
+    current_revision = edition.revision
+    new_revision = current_revision.build_revision_update(
       { scheduled_publishing_datetime: datetime }, current_user
     )
-    edition.assign_revision(new_revision, current_user).save!
-    create_timeline_entry(edition, new_revision, datetime)
+    if new_revision != current_revision
+      edition.assign_revision(new_revision, current_user).save!
+      create_timeline_entry(edition, new_revision, datetime)
+    end
   end
 
   def create_timeline_entry(edition, revision, datetime)
