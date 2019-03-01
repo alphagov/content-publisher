@@ -65,6 +65,7 @@ en:
       blank:
         form_message: Enter a public explanation
     scheduled_datetime:
+      title: The scheduled publishing date and time needs to be changed
       in_the_past:
         form_message: Date & time cannot be in the past
       invalid:

@@ -17,13 +17,6 @@
   title: scheduling_title
 } do %>
   <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document)) do %>
-    <% if flash[:scheduled_publishing_datetime_issues] %>
-      <% flash[:scheduled_publishing_datetime_issues].each do |issue| %>
-        <%= render "govuk_publishing_components/components/error_message", {
-          text: issue["text"]
-        } %>
-      <% end %>
-    <% end %>
     <%= render "govuk_publishing_components/components/input", {
       label: { text: "Day" },
       name: "scheduled[day]",
