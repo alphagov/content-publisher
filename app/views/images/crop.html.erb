@@ -1,5 +1,11 @@
-<% content_for :back_link, render_back_link(href: images_path(@document)) %>
 <% content_for :title, t("images.crop.title", title: @document.current_edition.title_or_fallback) %>
+
+<% content_for :back_link, render_back_link(
+  href: images_path(@document),
+  data_attributes: {
+    "modal-action": "cropBack",
+  }
+) %>
 
 <%= form_tag(
   crop_image_path(@document, @image_revision.image_id),
@@ -8,6 +14,8 @@
     "modal-action": "crop",
   }
 ) do %>
+  <%= hidden_field_tag(:wizard, params[:wizard]) %>
+
   <%= render "/components/image_cropper", {
     id: "crop-image",
     src: url_for(@image_revision.blob),

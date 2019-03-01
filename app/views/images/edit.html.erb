@@ -1,5 +1,11 @@
 <% content_for :title, t("images.edit.title", title: @document.current_edition.title_or_fallback) %>
-<% content_for :back_link, render_back_link(href: crop_image_path(@document, @image_revision.image_id)) %>
+
+<% content_for :back_link, render_back_link(
+  href: crop_image_path(@document, @image_revision.image_id, wizard: params[:wizard]),
+  data_attributes: {
+    "modal-action": "metaBack"
+  }
+) %>
 
 <%= render "components/image_meta", {
   id: "selected-image",
@@ -8,7 +14,15 @@
   no_border: true
 } %>
 
-<%= form_tag(update_image_path(@document, @image_revision.image_id), method: :patch, data: { "warn-before-unload": true }) do %>
+<%= form_tag(
+  update_image_path(@document, @image_revision.image_id, wizard: params[:wizard]),
+  method: :patch,
+  data: {
+    "warn-before-unload": true,
+    "modal-action": "meta",
+    "modal-data": I18n.t("images.index.meta.inline_code.value", filename: @image_revision.filename),
+  }
+) do %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
@@ -87,22 +101,24 @@
     </div>
   </div>
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <%= render "govuk_publishing_components/components/checkboxes", {
-        items: [
-          {
-            label: t("images.edit.form_labels.lead_image"),
-            checked: @document.current_edition.lead_image_revision == @image_revision,
-            name: "lead_image",
-          }
-        ]
-      } %>
+  <% unless rendering_context == "modal" %>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <%= render "govuk_publishing_components/components/checkboxes", {
+          items: [
+            {
+              label: t("images.edit.form_labels.lead_image"),
+              checked: @document.current_edition.lead_image_revision == @image_revision,
+              name: "lead_image",
+            }
+          ]
+        } %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <%= render "govuk_publishing_components/components/button", {
     margin_bottom: true,
-    text: "Save",
+    text: (rendering_context == "modal" && params[:wizard] == "upload") ? "Save and insert" : "Save",
   } %>
 <% end %>

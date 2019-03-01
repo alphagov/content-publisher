@@ -1,5 +1,8 @@
 <% content_for :title, t("images.index.title", title: @document.current_edition.title_or_fallback) %>
-<% content_for :back_link, render_back_link(href: document_path(@document)) %>
+
+<% unless rendering_context == "modal" %>
+  <% content_for :back_link, render_back_link(href: document_path(@document)) %>
+<% end %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">

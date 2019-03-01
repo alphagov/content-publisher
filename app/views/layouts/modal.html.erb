@@ -1,3 +1,5 @@
+<%= yield(:back_link) %>
+
 <% if flash["notice"] %>
   <%= render "govuk_publishing_components/components/success_alert", {
     message: flash["notice"]

@@ -17,10 +17,11 @@ InlineImageModal.prototype.init = function () {
   }.bind(this))
 }
 
-InlineImageModal.prototype.fetchModalContent = function (url) {
+InlineImageModal.prototype.fetchModalContent = function (item) {
   var controller = new window.AbortController()
   var headers = { 'Content-Publisher-Rendering-Context': 'modal' }
   var options = { credentials: 'include', signal: controller.signal, headers: headers }
+  var url = item.href || item.dataset.modalActionUrl
   setTimeout(function () { controller.abort() }, 5000)
 
   return window.fetch(url, options)
@@ -28,7 +29,11 @@ InlineImageModal.prototype.fetchModalContent = function (url) {
       if (!response.ok) {
         return window.Promise.reject('Unable to render the content.')
       }
+
       return response.text()
+        .then(function (text) {
+          return { body: text }
+        })
     })
 }
 
@@ -52,72 +57,75 @@ InlineImageModal.prototype.postModalForm = function (form) {
       }
 
       return response.text()
+        .then(function (text) {
+          return { body: text, done: response.redirected }
+        })
     })
+}
+
+InlineImageModal.prototype.renderResponse = function (response) {
+  response
+    .then(function (result) {
+      this.$multiSectionViewer.showDynamicSection(result.body)
+      this.overrideActions()
+      this.initComponents()
+    }.bind(this))
+    .catch(function (result) {
+      this.$multiSectionViewer.showStaticSection('error')
+    }.bind(this))
+}
+
+InlineImageModal.prototype.insertSnippet = function (item) {
+  var editor = this.$module.closest('[data-module="markdown-editor"]')
+  editor.selectionReplace(item.dataset.modalData)
 }
 
 InlineImageModal.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
       this.$modal.open()
-
-      this.fetchModalContent(item.dataset.modalActionUrl)
-        .then(function (text) {
-          this.$multiSectionViewer.showDynamicSection(text)
-          this.overrideActions()
-          this.initComponents()
-        }.bind(this))
-        .catch(function (result) {
-          this.$multiSectionViewer.showStaticSection('error')
-        }.bind(this))
+      this.renderResponse(this.fetchModalContent(item))
     },
     'insert': function () {
-      var editor = this.$module.closest('[data-module="markdown-editor"]')
       this.$modal.close()
-      editor.selectionReplace(item.dataset.modalData)
+      this.insertSnippet(item)
     },
     'upload': function () {
-      this.postModalForm(item)
-        .then(function (text) {
-          this.$multiSectionViewer.showDynamicSection(text)
-          this.overrideActions()
-          this.initComponents()
-        }.bind(this))
-        .catch(function (result) {
-          this.$multiSectionViewer.showStaticSection('error')
-        }.bind(this))
+      this.renderResponse(this.postModalForm(item))
+    },
+    'cropBack': function () {
+      this.renderResponse(this.fetchModalContent(item))
+    },
+    'metaBack': function () {
+      this.renderResponse(this.fetchModalContent(item))
     },
     'crop': function () {
-      this.postModalForm(item)
-        .then(function (text) {
-          this.$multiSectionViewer.showDynamicSection(text)
-          this.overrideActions()
-          this.initComponents()
-        }.bind(this))
-        .catch(function (result) {
-          this.$multiSectionViewer.showStaticSection('error')
-        }.bind(this))
+      this.renderResponse(this.postModalForm(item))
     },
     'delete': function () {
+      this.renderResponse(this.postModalForm(item))
+    },
+    'meta': function () {
+      this.renderResponse(this.postModalForm(item))
+    },
+    'metaInsert': function () {
       this.postModalForm(item)
-        .then(function (text) {
-          this.$multiSectionViewer.showDynamicSection(text)
-          this.overrideActions()
-          this.initComponents()
+        .then(function (result) {
+          if (result.done) {
+            this.$modal.close()
+            this.insertSnippet(item)
+          } else {
+            this.$multiSectionViewer.showDynamicSection(result.body)
+            this.overrideActions()
+            this.initComponents()
+          }
         }.bind(this))
         .catch(function (result) {
           this.$multiSectionViewer.showStaticSection('error')
         }.bind(this))
     },
     'edit': function () {
-      this.fetchModalContent(item.dataset.modalActionUrl)
-        .then(function (text) {
-          this.$multiSectionViewer.showDynamicSection(text)
-          this.overrideActions()
-          this.initComponents()
-        }.bind(this))
-        .catch(function (result) {
-          this.$multiSectionViewer.showStaticSection('error')
-        }.bind(this))
+      this.renderResponse(this.fetchModalContent(item))
     }
   }
 
