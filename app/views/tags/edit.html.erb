@@ -6,16 +6,16 @@
     <p class="govuk-body"><%= t("tags.edit.description") %></p>
   </div>
 </div>
-<%= form_tag(tags_path(@document), data: { "warn-before-unload": "true" }, class: "app-c-contextual-guidance__form") do %>
 
-<% @document.document_type.tags.each do |tag_field| %>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <%= render "tags/tags/#{tag_field.type}_input",
-        tag_field: tag_field,
-        tags: @revision.tags %>
+<%= form_tag(tags_path(@document), data: { "warn-before-unload": "true" }, class: "app-c-contextual-guidance__form") do %>
+  <% @document.document_type.tags.each do |tag_field| %>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <%= render "tags/tags/#{tag_field.type}_input",
+          tag_field: tag_field,
+          tags: @revision.tags %>
+      </div>
     </div>
-  </div>
   <% end %>
 
   <%= render "govuk_publishing_components/components/button", {

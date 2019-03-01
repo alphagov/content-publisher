@@ -86,9 +86,10 @@ examples:
     data:
       id: autocomplete-with-hint-on-options
       name: autocomplete-with-hint-on-options
+      type: with-hint-on-options
       label:
         text: Select your country
-      data_module: autocomplete-with-hint-on-options
+      data_module: autocomplete
       options:
         -
           -
