@@ -1,18 +1,17 @@
 /* global describe beforeEach afterEach it expect */
-/* global GTMCopyListener Event */
+/* global GtmCopyListener */
 
-describe('GTM dataLayer messages for copy and paste events', function () {
+describe('Gtm copy paste listener', function () {
   'use strict'
 
   var container
 
   beforeEach(function () {
     container = document.createElement('div')
-    container.innerHTML = '<input id="textInput" type="text" name="copy" value="the text">'
-    container.dataset.gtmCopyPasteTracking = 'copy-input-value'
+    container.innerHTML = '<input data-gtm-copy-paste-tracking="my-input">'
+
     document.body.appendChild(container)
     window.dataLayer = []
-    new GTMCopyListener(container).init()
   })
 
   afterEach(function () {
@@ -20,27 +19,25 @@ describe('GTM dataLayer messages for copy and paste events', function () {
   })
 
   it('should push to the dataLayer on copy', function () {
-    var input = document.getElementById('textInput')
-    input.select()
-    container.dispatchEvent(new Event('copy'))
+    var input = container.querySelector('input')
+    input.dispatchEvent(new window.Event('copy', { bubbles: true }))
 
     expect(window.dataLayer).toContain(
       {
         'event': 'text-copied',
-        'element': 'copy-input-value'
+        'element': 'my-input'
       }
     )
   })
 
   it('should push to the dataLayer on paste', function () {
-    var input = document.getElementById('textInput')
-    input.select()
-    container.dispatchEvent(new Event('paste'))
+    var input = container.querySelector('input')
+    input.dispatchEvent(new window.Event('paste', { bubbles: true }))
 
     expect(window.dataLayer).toContain(
       {
         'event': 'text-pasted',
-        'element': 'copy-input-value'
+        'element': 'my-input'
       }
     )
   })

@@ -1,37 +1,28 @@
-function GTMFormListener ($form, dataLayer) {
-  this.$form = $form
-  this.dataLayer = dataLayer || window.dataLayer
-}
+function GtmFormListener () { }
 
-GTMFormListener.prototype.handleSubmit = function (event) {
-  var eventName = this.$form.dataset.gtm
+GtmFormListener.prototype.handleSubmit = function (event) {
+  var form = event.target
+
+  if (!form.hasAttribute('data-gtm')) {
+    return
+  }
+
+  var eventName = form.dataset.gtm
+  var inputElements = form.querySelectorAll('input:checked')
   var message
 
-  var inputElements = this.$form.querySelectorAll('input:checked')
   inputElements.forEach(function (element) {
     if (element.value.length > 0) {
       message = {}
       message[eventName] = {}
       message[eventName][element.name] = element.value
-      this.dataLayer.push(message)
+      window.dataLayer.push(message)
     }
   }, this)
 }
 
-GTMFormListener.prototype.init = function () {
-  if (!this.$form) {
-    return
-  }
-
-  this.$form.addEventListener('submit', function (e) {
-    this.handleSubmit(e)
-  }.bind(this), false)
+GtmFormListener.prototype.init = function () {
+  window.addEventListener('submit', this.handleSubmit.bind(this))
 }
 
-GTMFormListener.init = function (dataLayer) {
-  document.querySelectorAll('form[data-gtm]').forEach(function (element) {
-    new GTMFormListener(element, dataLayer).init()
-  })
-}
-
-GTMFormListener.init()
+new GtmFormListener().init()
