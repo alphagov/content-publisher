@@ -84,14 +84,13 @@ class ImagesController < ApplicationController
 
   def update
     Edition.find_and_lock_current(document: params[:document]) do |edition| # rubocop:disable Metrics/BlockLength
-      previous_image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
+      image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
+      image_updater = Versioning::ImageRevisionUpdater.new(image_revision, current_user)
 
-      image_revision = previous_image_revision.build_revision_update(
-        update_params,
-        current_user,
-      )
+      image_updater.assign(update_params)
+      next_image_revision = image_updater.next_revision
 
-      issues = Requirements::ImageRevisionChecker.new(image_revision)
+      issues = Requirements::ImageRevisionChecker.new(next_image_revision)
                                                  .pre_preview_metadata_issues
 
       if issues.any?
@@ -101,47 +100,34 @@ class ImagesController < ApplicationController
         }
 
         render :edit,
-               assigns: { edition: edition, image_revision: image_revision, issues: issues },
+               assigns: { edition: edition, image_revision: next_image_revision, issues: issues },
                layout: rendering_context,
                status: :unprocessable_entity
         next
       end
 
-      lead_image_revision = next_lead_image_revision(
-        edition.revision,
-        image_revision,
-        params[:lead_image] == "on",
-      )
+      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
+      updater.assign(update_image_fields(edition.revision, next_image_revision, params[:lead_image] == "on"))
 
-      current_revision = edition.revision
-
-      next_revision = current_revision.build_revision_update_for_lead_image_upsert(
-        image_revision,
-        lead_image_revision,
-        current_user,
-      )
-
-      if current_revision != next_revision
-        timeline_entry_type = if lead_image_selected?(current_revision, next_revision)
+      if updater.changed?
+        timeline_entry_type = if updater.changes[:lead_image_revision].present?
                                 :lead_image_selected
-                              elsif lead_image_removed?(current_revision, next_revision)
+                              elsif updater.changed?(:lead_image_revision)
                                 :lead_image_removed
                               else
                                 :image_updated
                               end
 
-        TimelineEntry.create_for_revision(entry_type: timeline_entry_type,
-                                          edition: edition)
-
-        edition.assign_revision(next_revision, current_user).save!
+        TimelineEntry.create_for_revision(entry_type: timeline_entry_type, edition: edition)
+        edition.assign_revision(updater.next_revision, current_user).save!
         PreviewService.new(edition).try_create_preview
       end
 
-      if lead_image_selected?(current_revision, next_revision)
+      if updater.changes[:lead_image_revision].present?
         redirect_to document_path(edition.document),
                     notice: t("documents.show.flashes.lead_image.selected",
                               file: image_revision.filename)
-      elsif lead_image_removed?(current_revision, next_revision)
+      elsif updater.changed?(:lead_image_revision)
         redirect_to images_path(edition.document),
                     notice: t("images.index.flashes.lead_image.removed",
                               file: image_revision.filename)
@@ -154,28 +140,22 @@ class ImagesController < ApplicationController
   def destroy
     Edition.find_and_lock_current(document: params[:document]) do |edition|
       image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
-      current_revision = edition.revision
+      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
 
-      next_revision = current_revision.build_revision_update_for_image_removed(
-        image_revision,
-        current_user,
-      )
+      updater.remove_image(image_revision)
+      edition.assign_revision(updater.next_revision, current_user).save!
 
-      edition.assign_revision(next_revision, current_user).save!
-
-      TimelineEntry.create_for_revision(
-        entry_type: :image_deleted,
-        edition: edition,
-      )
-
+      TimelineEntry.create_for_revision(entry_type: :image_deleted, edition: edition)
       PreviewService.new(edition).try_create_preview
 
-      if lead_image_removed?(current_revision, next_revision)
+      if updater.changed?(:lead_image_revision)
         redirect_to images_path(edition.document),
-                    notice: t("images.index.flashes.lead_image.deleted", file: image_revision.filename)
+                    notice: t("images.index.flashes.lead_image.deleted",
+                              file: image_revision.filename)
       else
         redirect_to images_path(edition.document),
-                    notice: t("images.index.flashes.deleted", file: image_revision.filename)
+                    notice: t("images.index.flashes.deleted",
+                              file: image_revision.filename)
       end
     end
   end
@@ -205,22 +185,31 @@ private
     params.permit(:crop_x, :crop_y, :crop_width).merge(crop_height: crop_height.to_i)
   end
 
-  def next_lead_image_revision(revision, image_revision, selected)
-    return image_revision if selected
-
+  def update_image_fields(revision, image_revision, selected = false)
+    revisions = revision.image_revisions.reject { |ir| ir.image_id == image_revision.image_id }
     currently_lead = revision.lead_image_revision&.image_id == image_revision.image_id
-    return if currently_lead && !selected
 
-    revision.lead_image_revision
+    fields = {
+      image_revisions: revisions + [image_revision],
+      lead_image_revision: revision.lead_image_revision,
+    }
+
+    if selected
+      fields[:lead_image_revision] = image_revision
+    elsif currently_lead
+      fields[:lead_image_revision] = nil
+    end
+
+    fields
   end
 
-  def lead_image_selected?(current_revision, next_revision)
-    next_revision.lead_image_revision.present? &&
-      current_revision.lead_image_revision != next_revision.lead_image_revision
-  end
+  def remove_image_fields(revision, image_revision)
+    revisions = revision.image_revisions.reject { |ir| ir.image_id == image_revision.image_id }
+    currently_lead = revision.lead_image_revision&.image_id == image_revision.image_id
 
-  def lead_image_removed?(current_revision, next_revision)
-    current_revision.lead_image_revision.present? &&
-      next_revision.lead_image_revision.nil?
+    {
+      image_revisions: revisions,
+      lead_image_revision: currently_lead ? nil : revision.lead_image_revision,
+    }
   end
 end
