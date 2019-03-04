@@ -1,5 +1,16 @@
-.app-c-contextual-guidance-wrapper {
-  position: absolute;
+.app-c-contextual-guidance__form {
+  .govuk-grid-column-one-third,
+  .govuk-grid-column-two-thirds {
+    position: relative;
+  }
+
+  .govuk-grid-row:last-of-type .app-c-contextual-guidance__wrapper {
+    position: relative;
+  }
+}
+
+.app-c-contextual-guidance__wrapper {
+  position: relative;
 
   @include govuk-font(19);
 
@@ -10,13 +21,14 @@
   }
 }
 
-.app-c-contextual-guidance-wrapper--relative {
-  position: relative;
-}
-
 .js-enabled {
-  .app-c-contextual-guidance-wrapper {
+  .app-c-contextual-guidance__wrapper {
     display: none;
+
+    @include govuk-media-query($from: tablet) {
+      position: absolute;
+      margin-right: govuk-spacing(3);
+    }
   }
 }
 

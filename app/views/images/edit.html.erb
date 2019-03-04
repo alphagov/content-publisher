@@ -17,6 +17,7 @@
 <%= form_tag(
   update_image_path(@document, @image_revision.image_id, wizard: params[:wizard]),
   method: :patch,
+  class: "app-c-contextual-guidance__form",
   data: {
     "warn-before-unload": true,
     "modal-action": "meta",
@@ -93,8 +94,7 @@
     <div class="govuk-grid-column-one-third">
       <%= render "components/contextual_guidance", {
         id: "credit-guidance",
-        title: t("images.edit.form_labels.credit"),
-        relative: true
+        title: t("images.edit.form_labels.credit")
       } do %>
         <%= render_govspeak(t("images.edit.guidance.credit_govspeak")) %>
       <% end %>

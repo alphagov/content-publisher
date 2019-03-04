@@ -1,5 +1,5 @@
 /* global describe beforeEach afterEach it expect */
-/* global ContextualGuidance Event */
+/* global $, GOVUK */
 
 describe('Contextual guidance component', function () {
   'use strict'
@@ -11,7 +11,7 @@ describe('Contextual guidance component', function () {
     container.innerHTML =
       '<input id="document-title" type="text" class="gem-c-input govuk-input" data-contextual-guidance="document-title-guidance"></textarea>' +
 
-      '<div id="document-title-guidance" class="app-c-contextual-guidance-wrapper">' +
+      '<div id="document-title-guidance" class="app-c-contextual-guidance__wrapper" data-module="contextual-guidance">' +
         '<div class="app-c-contextual-guidance">' +
         '<h2 class="govuk-heading-s">Title</h2>' +
         'The title should be unique and specific. It must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.' +
@@ -20,13 +20,14 @@ describe('Contextual guidance component', function () {
 
       '<textarea id="document-summary" class="gem-c-textarea govuk-textarea" data-contextual-guidance="document-summary-guidance"></textarea>' +
 
-      '<div id="document-summary-guidance" class="app-c-contextual-guidance-wrapper">' +
+      '<div id="document-summary-guidance" class="app-c-contextual-guidance__wrapper" data-module="contextual-guidance">' +
         '<div class="app-c-contextual-guidance">' +
         '<h2 class="govuk-heading-s">Summary</h2>' +
         'The summary should explain the main point of the story. It is the first line of the story so don’t repeat it in the body and end with a full stop.' +
         '</div>' +
       '</div>'
 
+    document.body.classList.add('js-enabled')
     document.body.appendChild(container)
     var titleContextualGuidance = document.getElementById('document-title-guidance')
     var summaryContextualGuidance = document.getElementById('document-summary-guidance')
@@ -42,10 +43,9 @@ describe('Contextual guidance component', function () {
     var title = document.querySelector('#document-title')
     var titleGuidance = document.querySelector('#document-title-guidance')
 
-    var summary = document.querySelector('#document-summary')
     var summaryGuidance = document.querySelector('#document-summary-guidance')
 
-    title.dispatchEvent(new Event('focus'))
+    title.dispatchEvent(new window.Event('focus'))
 
     expect(titleGuidance.style.display).toEqual('block')
     expect(summaryGuidance.style.display).toEqual('none')
@@ -58,8 +58,8 @@ describe('Contextual guidance component', function () {
     var summary = document.querySelector('#document-summary')
     var summaryGuidance = document.querySelector('#document-summary-guidance')
 
-    title.dispatchEvent(new Event('focus'))
-    summary.dispatchEvent(new Event('focus'))
+    title.dispatchEvent(new window.Event('focus'))
+    summary.dispatchEvent(new window.Event('focus'))
 
     expect(titleGuidance.style.display).toEqual('none')
     expect(summaryGuidance.style.display).toEqual('block')

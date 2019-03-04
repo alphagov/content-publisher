@@ -6,7 +6,7 @@
     <p class="govuk-body"><%= t("tags.edit.description") %></p>
   </div>
 </div>
-<%= form_tag(tags_path(@document), data: { "warn-before-unload": "true" }) do %>
+<%= form_tag(tags_path(@document), data: { "warn-before-unload": "true" }, class: "app-c-contextual-guidance__form") do %>
 
 <% @document.document_type.tags.each do |tag_field| %>
   <div class="govuk-grid-row">

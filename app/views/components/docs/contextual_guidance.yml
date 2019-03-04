@@ -27,24 +27,3 @@ examples:
       id: news-title-guidance
       block: |
         The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
-
-  relative_position:
-    description: Reveals a contextul guidance on the side expaning the height of the container
-    embed: |
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <div class="govuk-form-group">
-            <label for="title-relative" class="govuk-label govuk-label--s">Title</label>
-            <input class="govuk-input" id="title-relative" data-contextual-guidance="news-title-guidance-relative" placeholder="Focus to reveal">
-          </div>
-        </div>
-        <div class="govuk-grid-column-one-third">
-          <%= component %>
-        </div>
-      </div>
-    data:
-      title: Writing a news title
-      id: news-title-guidance-relative
-      relative: true
-      block: |
-        The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.

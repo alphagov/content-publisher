@@ -18,11 +18,13 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
   ContextualGuidance.prototype.handleFocus = function (event) {
     this.hideAllGuidance()
-    this.$module.style.display = 'block'
+    if (!event.target.dataset.contextualGuidanceHideOnly) {
+      this.$module.style.display = 'block'
+    }
   }
 
   ContextualGuidance.prototype.hideAllGuidance = function () {
-    var guidances = document.querySelectorAll('.app-c-contextual-guidance-wrapper')
+    var guidances = document.querySelectorAll('[data-module="contextual-guidance"]')
 
     guidances.forEach(function (guidance) {
       guidance.style.display = 'none'
