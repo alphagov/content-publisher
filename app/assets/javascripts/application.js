@@ -25,6 +25,9 @@
 //= require components/url-preview.js
 //= require vendor/@alphagov/miller-columns-element/dist/index.umd.js
 
+//= require modal/modal-fetch.js
+//= require modal/modal-workflow.js
+
 //= require modules/gtm-form-listener.js
 //= require modules/gtm-copy-paste-listener.js
 //= require modules/inline-image-modal.js

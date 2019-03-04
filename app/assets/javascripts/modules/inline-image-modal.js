@@ -1,8 +1,7 @@
-/* global $ */
-
 function InlineImageModal ($module) {
   this.$module = $module
   this.$modal = document.getElementById('modal')
+  this.workflow = new window.ModalWorkflow(this.$modal)
 }
 
 InlineImageModal.prototype.init = function () {
@@ -19,62 +18,20 @@ InlineImageModal.prototype.init = function () {
   }.bind(this))
 }
 
-InlineImageModal.prototype.fetchModalContent = function (item) {
-  var controller = new window.AbortController()
-  var headers = { 'Content-Publisher-Rendering-Context': 'modal' }
-  var options = { credentials: 'include', signal: controller.signal, headers: headers }
-  var url = item.href || item.dataset.modalActionUrl
-  setTimeout(function () { controller.abort() }, 5000)
-
-  return window.fetch(url, options)
-    .then(function (response) {
-      if (!response.ok) {
-        return window.Promise.reject('Unable to render the content.')
-      }
-
-      return response.text()
-        .then(function (text) {
-          return { body: text }
-        })
-    })
-}
-
-InlineImageModal.prototype.postModalForm = function (form) {
-  var controller = new window.AbortController()
-  setTimeout(function () { controller.abort() }, 10000)
-
-  var options = {
-    credentials: 'include',
-    signal: controller.signal,
-    headers: { 'Content-Publisher-Rendering-Context': 'modal' },
-    redirect: 'follow',
-    method: 'POST',
-    body: (new window.FormData(form))
-  }
-
-  return window.fetch(form.action, options)
-    .then(function (response) {
-      if (!response.ok) {
-        return window.Promise.reject('Unable to render the content.')
-      }
-
-      return response.text()
-        .then(function (text) {
-          return { body: text, done: response.redirected }
-        })
-    })
-}
-
-InlineImageModal.prototype.renderResponse = function (response) {
+InlineImageModal.prototype.render = function (response) {
   response
-    .then(function (result) {
-      this.$multiSectionViewer.showDynamicSection(result.body)
-      this.overrideActions()
-      this.initComponents()
-    }.bind(this))
-    .catch(function (result) {
-      this.$multiSectionViewer.showStaticSection('error')
-    }.bind(this))
+    .then(this.renderSuccess.bind(this))
+    .catch(this.renderError.bind(this))
+}
+
+InlineImageModal.prototype.renderError = function (result) {
+  this.$multiSectionViewer.showStaticSection('error')
+}
+
+InlineImageModal.prototype.renderSuccess = function (result) {
+  this.$multiSectionViewer.showDynamicSection(result.body)
+  this.workflow.overrideActions(this.performAction.bind(this))
+  this.workflow.initComponents()
 }
 
 InlineImageModal.prototype.insertSnippet = function (item) {
@@ -86,86 +43,50 @@ InlineImageModal.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
       this.$modal.open()
-      this.renderResponse(this.fetchModalContent(item))
+      this.render(window.ModalFetch.getLink(item))
     },
     'insert': function () {
       this.$modal.close()
       this.insertSnippet(item)
     },
     'upload': function () {
-      this.renderResponse(this.postModalForm(item))
+      this.render(window.ModalFetch.postForm(item))
     },
     'cropBack': function () {
-      this.renderResponse(this.fetchModalContent(item))
+      this.render(window.ModalFetch.getLink(item))
     },
     'metaBack': function () {
-      this.renderResponse(this.fetchModalContent(item))
+      this.render(window.ModalFetch.getLink(item))
     },
     'crop': function () {
-      this.renderResponse(this.postModalForm(item))
+      this.render(window.ModalFetch.postForm(item))
     },
     'delete': function () {
-      this.renderResponse(this.postModalForm(item))
+      this.render(window.ModalFetch.postForm(item))
     },
     'meta': function () {
-      this.renderResponse(this.postModalForm(item))
+      this.render(window.ModalFetch.postForm(item))
+    },
+    'edit': function () {
+      this.render(window.ModalFetch.getLink(item))
     },
     'metaInsert': function () {
-      this.postModalForm(item)
+      window.ModalFetch.postForm(item)
         .then(function (result) {
           if (result.done) {
             this.$modal.close()
             this.insertSnippet(item)
           } else {
-            this.$multiSectionViewer.showDynamicSection(result.body)
-            this.overrideActions()
-            this.initComponents()
+            this.renderSuccess(result)
           }
         }.bind(this))
-        .catch(function (result) {
-          this.$multiSectionViewer.showStaticSection('error')
-        }.bind(this))
-    },
-    'edit': function () {
-      this.renderResponse(this.fetchModalContent(item))
+        .catch(this.renderError.bind(this))
     }
   }
 
   this.$modal.focusDialog()
   this.$multiSectionViewer.showStaticSection('loading')
   handlers[item.dataset.modalAction].bind(this)()
-}
-
-InlineImageModal.prototype.initComponents = function () {
-  window.GOVUK.modules.start($(this.$modal))
-
-  // TODO: change ErrorSummary so it just focusses when it's initialised
-  var $errorSummary = document.querySelector('[data-module="error-summary"]')
-
-  if (!$errorSummary) {
-    return
-  }
-
-  $errorSummary.focus()
-}
-
-InlineImageModal.prototype.overrideActions = function () {
-  var formItems = this.$modal.querySelectorAll('form[data-modal-action]')
-  var linkItems = this.$modal.querySelectorAll('a[data-modal-action]')
-
-  linkItems.forEach(function (item) {
-    item.addEventListener('click', function (event) {
-      event.preventDefault()
-      this.performAction(item)
-    }.bind(this))
-  }.bind(this))
-
-  formItems.forEach(function (item) {
-    item.addEventListener('submit', function (event) {
-      event.preventDefault()
-      this.performAction(item)
-    }.bind(this))
-  }.bind(this))
 }
 
 var element = document.querySelector('[data-module="inline-image-modal"]')
