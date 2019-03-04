@@ -25,6 +25,8 @@ InlineImageModal.prototype.render = function (response) {
 }
 
 InlineImageModal.prototype.renderError = function (result) {
+  window.Raven.captureException(result)
+  console.error(result)
   this.$multiSectionViewer.showStaticSection('error')
 }
 

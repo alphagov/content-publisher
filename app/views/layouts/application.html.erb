@@ -18,6 +18,8 @@
       gtm_preview: ENV["GOOGLE_TAG_MANAGER_PREVIEW"]
     } %>
   <% end %>
+
+  <meta name="app-environment" content"<%= Rails.env %>"
 <% end %>
 
 <%= render 'govuk_publishing_components/components/layout_for_admin',
