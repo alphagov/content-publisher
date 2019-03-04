@@ -74,10 +74,10 @@ by creating a remote debugging session with byebug and listening. This can be
 done by running the following in a separate terminal window:
 
 ```
-bundle exec byebug -R localhost:3236
+bundle exec byebug -R localhost:3237
 ```
 
-which will listen for the web application. Substitute port 3236 for 3237 to
+which will listen for the web application. Substitute port 3237 for 3238 to
 listen to the sidekiq processes.
 
 ### Permissions

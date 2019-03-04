@@ -1,2 +1,2 @@
-web: BYEBUG_PORT=3236 bundle exec rails s -p 3221
-worker: BYEBUG_PORT=3237 bundle exec sidekiq -C ./config/sidekiq.yml
+web: BYEBUG_PORT=3237 bundle exec rails s -p 3221
+worker: BYEBUG_PORT=3238 bundle exec sidekiq -C ./config/sidekiq.yml
