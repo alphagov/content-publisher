@@ -1,1 +1,2 @@
 web: bundle exec unicorn -p 3221
+worker: bundle exec sidekiq -C ./config/sidekiq.yml

@@ -17,6 +17,7 @@ This is a Ruby on Rails application.
 ### Dependencies
 
 - [postgresql][] - provides a backing database
+- [redis][] - used as a storage layer for asynchronous job processing
 - [yarn][] - package manager for JavaScripts
 - [imagemagick][] - image manipulation library
 
@@ -110,6 +111,7 @@ bundle exec rake import:whitehall_news INPUT=/tmp/whitehall-export.json
 
 [content-schemas]: https://github.com/alphagov/govuk-content-schemas
 [postgresql]: https://www.postgresql.org/
+[redis]: https://redis.io/
 [yarn]: https://yarnpkg.com/
 [jasmine]: https://github.com/jasmine/jasmine
 [imagemagick]: https://www.imagemagick.org/script/index.php
