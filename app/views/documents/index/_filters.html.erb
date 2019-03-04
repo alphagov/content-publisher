@@ -10,21 +10,23 @@
   } %>
 
   <div class="govuk-form-group">
-    <% document_type_select = DocumentType.all
-      .reject(&:managed_elsewhere)
-      .map { |d| [d.label, d.id] }
-    %>
+    <% organisation_select = begin
+      LinkablesService.new("organisation").select_options
+    rescue GdsApi::BaseError => e
+      GovukError.notify(e)
+      []
+    end %>
 
     <%= render "govuk_publishing_components/components/label", {
-      text: t("documents.index.filter.document_type"),
-      html_for: "document-type-filter",
+      text: t("documents.index.filter.organisation"),
+      html_for: "document-organisation-filter",
       bold: true
     } %>
 
-    <%= select_tag "document_type",
-      options_for_select(document_type_select, [params[:document_type]]),
+    <%= select_tag "organisation",
+      options_for_select(organisation_select, [params[:organisation]]),
       include_blank: true,
-      id: "document-type-filter",
+      id: "document-organisation-filter",
       class: "govuk-select"
     %>
   </div>
@@ -56,23 +58,21 @@
   </div>
 
   <div class="govuk-form-group">
-    <% organisation_select = begin
-      LinkablesService.new("organisation").select_options
-    rescue GdsApi::BaseError => e
-      GovukError.notify(e)
-      []
-    end %>
+    <% document_type_select = DocumentType.all
+      .reject(&:managed_elsewhere)
+      .map { |d| [d.label, d.id] }
+    %>
 
     <%= render "govuk_publishing_components/components/label", {
-      text: t("documents.index.filter.organisation"),
-      html_for: "document-organisation-filter",
+      text: t("documents.index.filter.document_type"),
+      html_for: "document-type-filter",
       bold: true
     } %>
 
-    <%= select_tag "organisation",
-      options_for_select(organisation_select, [params[:organisation]]),
+    <%= select_tag "document_type",
+      options_for_select(document_type_select, [params[:document_type]]),
       include_blank: true,
-      id: "document-organisation-filter",
+      id: "document-type-filter",
       class: "govuk-select"
     %>
   </div>
@@ -83,5 +83,9 @@
     text: "Filter"
   } %>
 
-  <p><%= link_to "Clear all filters", documents_path, class: "govuk-link govuk-link--no-visited-state" %></p>
+  <p>
+    <%= link_to "Clear all filters",
+                documents_path(organisation: ""),
+                class: "govuk-link govuk-link--no-visited-state" %>
+  </p>
 <% end %>
