@@ -62,6 +62,24 @@ Running [Jasmine][] tests in console
 bundle exec rake jasmine:ci
 ```
 
+### Debugging the application
+
+This application uses [byebug](https://github.com/deivid-rodriguez/byebug) for
+debugging. A breakpoint can be inserted by inserting a line of
+`byebug` into the ruby code.
+
+As this application is run via foreman it is not easy to interact with the
+debugger via the running processes. Instead the debugger should be accessed
+by creating a remote debugging session with byebug and listening. This can be
+done by running the following in a separate terminal window:
+
+```
+bundle exec byebug -R localhost:3236
+```
+
+which will listen for the web application. Substitute port 3236 for 3237 to
+listen to the sidekiq processes.
+
 ### Permissions
 
 Functionality of this application is enabled with permissions. There is a
