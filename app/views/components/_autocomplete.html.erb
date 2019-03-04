@@ -3,11 +3,12 @@
   options ||= []
   selected_options ||= []
   multiple ||= nil
+  type ||= nil
   size ||= nil
   hint ||= nil
 %>
 
-<div class="app-c-autocomplete govuk-form-group" data-module="autocomplete">
+<div class="app-c-autocomplete govuk-form-group" data-module="autocomplete" data-autocomplete-type="<%= type %>">
   <%= render "govuk_publishing_components/components/label", {
     html_for: id
   }.merge(label.symbolize_keys) %>

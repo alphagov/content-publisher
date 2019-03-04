@@ -7,6 +7,32 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
   Autocomplete.prototype.start = function ($module) {
     this.$module = $module[0]
+    var type = this.$module.dataset.autocompleteType
+
+    if (type === 'with-hint-on-options') {
+      this.initAutoCompleteWithHintOnOptions()
+    } else {
+      this.initAutoComplete()
+    }
+  }
+
+  Autocomplete.prototype.initAutoComplete = function () {
+    var $select = this.$module.querySelector('select')
+
+    if (!$select) {
+      return
+    }
+
+    // disabled eslint because we can not control the name of the constructor (expected to be EnhanceSelectElement)
+    new window.accessibleAutocomplete.enhanceSelectElement({ // eslint-disable-line no-new, new-cap
+      selectElement: $select,
+      minLength: 3,
+      showNoOptionsFound: true
+    })
+  }
+
+  Autocomplete.prototype.initAutoCompleteWithHintOnOptions = function () {
+    // Read options and associated data attributes and feed that as results for inputValueTemplate
     var $select = this.$module.querySelector('select')
 
     if (!$select) {
