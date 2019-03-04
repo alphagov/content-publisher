@@ -17,7 +17,8 @@
   title: scheduling_title,
   open: submitted_values.present?,
 } do %>
-  <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document)) do %>
+  <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document),
+               id: "scheduled_publishing_datetime") do %>
     <%= render "govuk_publishing_components/components/input", {
       label: { text: "Day" },
       name: "scheduled[day]",
