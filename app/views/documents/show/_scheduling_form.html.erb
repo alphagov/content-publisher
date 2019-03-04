@@ -14,7 +14,8 @@
 
 <%= render "govuk_publishing_components/components/details", {
   margin_bottom: 0,
-  title: scheduling_title
+  title: scheduling_title,
+  open: submitted_values.present?,
 } do %>
   <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document)) do %>
     <%= render "govuk_publishing_components/components/input", {
