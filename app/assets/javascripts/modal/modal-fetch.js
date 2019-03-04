@@ -10,6 +10,7 @@ window.ModalFetch.getLink = function (item) {
   return window.fetch(url, options)
     .then(function (response) {
       if (!response.ok) {
+        window.ModalFetch.debug(response)
         return window.Promise.reject('Unable to render the content.')
       }
 
@@ -36,6 +37,7 @@ window.ModalFetch.postForm = function (form) {
   return window.fetch(form.action, options)
     .then(function (response) {
       if (!response.ok) {
+        window.ModalFetch.debug(response)
         return window.Promise.reject('Unable to render the content.')
       }
 
@@ -44,4 +46,14 @@ window.ModalFetch.postForm = function (form) {
           return { body: text, done: response.redirected }
         })
     })
+}
+
+window.ModalFetch.debug = function (response) {
+  var envMeta = document.querySelector('meta[name="app-environment"]')
+
+  if (envMeta.content !== 'production') {
+    return
+  }
+
+  response.text().then(console.debug)
 }
