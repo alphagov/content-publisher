@@ -20,7 +20,7 @@
   class: "app-c-contextual-guidance__form",
   data: {
     "warn-before-unload": true,
-    "modal-action": "meta",
+    "modal-action": (params[:wizard] == "upload") ? "metaInsert": "meta",
     "modal-data": I18n.t("images.index.meta.inline_code.value", filename: @image_revision.filename),
   }
 ) do %>
