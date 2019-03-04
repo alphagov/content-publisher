@@ -2,7 +2,7 @@ en:
   images:
     index:
       title: "Images for ‘%{title}’"
-      description_govspeak: Images can be jpg, png or gif files. Full [guidance on images](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/images-and-videos).
+      description_govspeak: Images can be jpg, png or gif files. Full [guidance on images](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/images-and-videos){:target="_blank"}.
       upload_image: Upload an image
       lead_image: Lead image
       other_images: Other images
