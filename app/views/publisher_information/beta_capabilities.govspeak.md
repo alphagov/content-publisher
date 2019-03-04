@@ -13,7 +13,6 @@ It is possible to remove (unpublish) pages on request.
 
 Some features are not available yet:
 
-* pictures embedded in the body content
 * scheduling
 * backdating content
 * access limiting
