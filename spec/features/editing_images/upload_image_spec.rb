@@ -17,7 +17,7 @@ RSpec.feature "Upload an image", js: true do
     and_i_upload_a_new_image
     and_i_crop_the_image
     and_i_fill_in_the_metadata
-    then_i_see_the_new_image
+    then_i_see_the_snippet_is_inserted
     and_the_preview_creation_succeeded
   end
 
@@ -80,6 +80,12 @@ RSpec.feature "Upload an image", js: true do
       expect(find("img")["src"]).to include("1000x1000.jpg")
       expect(find("img")["alt"]).to eq("Some alt text")
     end
+  end
+
+  def then_i_see_the_snippet_is_inserted
+    expect(page).to_not have_selector(".app-c-modal-dialogue")
+    snippet = I18n.t("images.index.meta.inline_code.value", filename: @image_filename)
+    expect(find("#body").value).to match snippet
   end
 
   def and_the_preview_creation_succeeded
