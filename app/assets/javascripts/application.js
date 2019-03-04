@@ -30,6 +30,8 @@
 //= require modules/inline-image-modal.js
 //= require modules/warn-before-unload.js
 
+//= require utilities/modal-fetch.js
+
 // load after other components (esp. autocomplete)
 //= require components/contextual-guidance.js
 

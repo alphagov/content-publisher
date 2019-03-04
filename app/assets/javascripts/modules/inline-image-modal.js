@@ -19,52 +19,6 @@ InlineImageModal.prototype.init = function () {
   }.bind(this))
 }
 
-InlineImageModal.prototype.fetchModalContent = function (item) {
-  var controller = new window.AbortController()
-  var headers = { 'Content-Publisher-Rendering-Context': 'modal' }
-  var options = { credentials: 'include', signal: controller.signal, headers: headers }
-  var url = item.href || item.dataset.modalActionUrl
-  setTimeout(function () { controller.abort() }, 5000)
-
-  return window.fetch(url, options)
-    .then(function (response) {
-      if (!response.ok) {
-        return window.Promise.reject('Unable to render the content.')
-      }
-
-      return response.text()
-        .then(function (text) {
-          return { body: text }
-        })
-    })
-}
-
-InlineImageModal.prototype.postModalForm = function (form) {
-  var controller = new window.AbortController()
-  setTimeout(function () { controller.abort() }, 10000)
-
-  var options = {
-    credentials: 'include',
-    signal: controller.signal,
-    headers: { 'Content-Publisher-Rendering-Context': 'modal' },
-    redirect: 'follow',
-    method: 'POST',
-    body: (new window.FormData(form))
-  }
-
-  return window.fetch(form.action, options)
-    .then(function (response) {
-      if (!response.ok) {
-        return window.Promise.reject('Unable to render the content.')
-      }
-
-      return response.text()
-        .then(function (text) {
-          return { body: text, done: response.redirected }
-        })
-    })
-}
-
 InlineImageModal.prototype.renderResponse = function (response) {
   response
     .then(function (result) {
@@ -86,32 +40,32 @@ InlineImageModal.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
       this.$modal.open()
-      this.renderResponse(this.fetchModalContent(item))
+      this.renderResponse(window.ModalFetch.getLink(item))
     },
     'insert': function () {
       this.$modal.close()
       this.insertSnippet(item)
     },
     'upload': function () {
-      this.renderResponse(this.postModalForm(item))
+      this.renderResponse(window.ModalFetch.postForm(item))
     },
     'cropBack': function () {
-      this.renderResponse(this.fetchModalContent(item))
+      this.renderResponse(window.ModalFetch.getLink(item))
     },
     'metaBack': function () {
-      this.renderResponse(this.fetchModalContent(item))
+      this.renderResponse(window.ModalFetch.getLink(item))
     },
     'crop': function () {
-      this.renderResponse(this.postModalForm(item))
+      this.renderResponse(window.ModalFetch.postForm(item))
     },
     'delete': function () {
-      this.renderResponse(this.postModalForm(item))
+      this.renderResponse(window.ModalFetch.postForm(item))
     },
     'meta': function () {
-      this.renderResponse(this.postModalForm(item))
+      this.renderResponse(window.ModalFetch.postForm(item))
     },
     'metaInsert': function () {
-      this.postModalForm(item)
+      window.ModalFetch.postForm(item)
         .then(function (result) {
           if (result.done) {
             this.$modal.close()
@@ -127,7 +81,7 @@ InlineImageModal.prototype.performAction = function (item) {
         }.bind(this))
     },
     'edit': function () {
-      this.renderResponse(this.fetchModalContent(item))
+      this.renderResponse(window.ModalFetch.getLink(item))
     }
   }
 
