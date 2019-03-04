@@ -11,8 +11,10 @@ RSpec.feature "Viewing a document with no creator or editor" do
   end
 
   def given_there_is_a_document_with_no_creator
-    document = create(:document, created_by: nil)
-    @edition = create(:edition, document: document, last_edited_by: nil)
+    @edition = create(:edition,
+                      document: build(:document, created_by: nil),
+                      last_edited_by: nil,
+                      created_by: current_user)
   end
 
   def when_i_visit_the_index_page
