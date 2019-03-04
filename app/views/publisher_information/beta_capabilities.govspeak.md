@@ -1,4 +1,4 @@
-<span class="govuk-hint">Last updated: 12 February 2019</span>
+<span class="govuk-hint">Last updated: 7 March 2019</span>
 
 Content Publisher beta can be used to publish the following document types:
 
@@ -13,7 +13,6 @@ It is possible to remove (unpublish) pages on request.
 
 Some features are not available yet:
 
-* pictures embedded in the body content
 * scheduling
 * backdating content
 * access limiting
