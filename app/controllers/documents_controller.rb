@@ -2,6 +2,11 @@
 
 class DocumentsController < ApplicationController
   def index
+    if filter_params[:filters].empty? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
+      redirect_to documents_path(organisation: current_user.organisation_content_id)
+      return
+    end
+
     filter = EditionFilter.new(filter_params)
     @editions = filter.editions
     @filter_params = filter.filter_params
