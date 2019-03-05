@@ -18,7 +18,8 @@ module Versioning
       end
 
       def selected_lead_image?
-        changes[:lead_image_revision].present?
+        changes[:lead_image_revision].present? &&
+          revision.lead_image_revision&.image_id != changes[:lead_image_revision].image_id
       end
 
       def removed_lead_image?
