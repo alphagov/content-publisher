@@ -1,5 +1,5 @@
-/* global describe beforeEach afterEach it expect */
-/* global UrlPreview Event */
+/* eslint-env jasmine, jquery */
+/* global GOVUK */
 
 describe('URL preview component', function () {
   'use strict'
@@ -36,7 +36,7 @@ describe('URL preview component', function () {
   it('should only display the default message if input is empty', function () {
     // Interact with input and leave empty
     var input = document.querySelector('[data-url-preview="input"]')
-    input.dispatchEvent(new Event('blur'))
+    input.dispatchEvent(new window.Event('blur'))
 
     var defaultMessage = document.querySelector('.js-url-preview-default-message')
     expect(defaultMessage).toBeVisible()
@@ -52,7 +52,7 @@ describe('URL preview component', function () {
     // Interact with input and set value
     var input = document.querySelector('[data-url-preview="input"]')
     input.value = 'My title'
-    input.dispatchEvent(new Event('blur'))
+    input.dispatchEvent(new window.Event('blur'))
 
     var defaultMessage = document.querySelector('.js-url-preview-default-message')
     expect(defaultMessage).toBeHidden()

@@ -1,5 +1,5 @@
-/* global describe beforeEach afterEach it expect */
-/* global InputLengthSuggester Event */
+/* eslint-env jasmine, jquery */
+/* global GOVUK */
 
 describe('Input length suggester component', function () {
   'use strict'
@@ -36,7 +36,7 @@ describe('Input length suggester component', function () {
   it('is visible when the input grows too long', function () {
     var input = document.querySelector('#document_title')
     input.value = 'a'.repeat(55)
-    input.dispatchEvent(new Event('change'))
+    input.dispatchEvent(new window.Event('change'))
 
     var suggester = document.querySelector('[data-module="input-length-suggester"]')
     expect(suggester).not.toHaveClass('app-c-input-length-suggester__hidden')
@@ -45,20 +45,20 @@ describe('Input length suggester component', function () {
   it('is hidden when the input gets smaller again', function () {
     var input = document.querySelector('#document_title')
     input.value = 'a'.repeat(55)
-    input.dispatchEvent(new Event('keyup'))
+    input.dispatchEvent(new window.Event('keyup'))
 
     var suggester = document.querySelector('[data-module="input-length-suggester"]')
     expect(suggester).not.toHaveClass('app-c-input-length-suggester__hidden')
 
     input.value = 'a'.repeat(54)
-    input.dispatchEvent(new Event('keydown'))
+    input.dispatchEvent(new window.Event('keydown'))
     expect(suggester).toHaveClass('app-c-input-length-suggester__hidden')
   })
 
   it('shows a message when the input grows too long', function () {
     var input = document.querySelector('#document_title')
     input.value = 'a'.repeat(55)
-    input.dispatchEvent(new Event('change'))
+    input.dispatchEvent(new window.Event('change'))
 
     var suggester = document.querySelector('[data-module="input-length-suggester"]')
     expect(suggester.innerHTML).toEqual('Title should be under 65 characters. Current length: 55')
