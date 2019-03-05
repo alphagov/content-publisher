@@ -5,13 +5,14 @@
   "author": "Government Digital Service",
   "license": "MIT",
   "scripts": {
-    "lint": "standard app/assets/javascripts/{*,**/*}",
-    "lint:fix": "standard --fix app/javascripts/{*,**/*}"
+    "lint": "standard app/assets/javascripts/{*.js,**/*.js} spec/javascripts/{*.js,**/*.js}",
+    "lint:fix": "standard --fix app/javascripts/{*.js,**/*.js} spec/javascripts/{*.js,**/*.js}"
   },
   "standard": {
     "ignore": [
       "/app/assets/javascripts/components/markdown-toolbar.js",
-      "/app/assets/javascripts/vendor/"
+      "/app/assets/javascripts/vendor/",
+      "/spec/javascripts/helpers/jasmine-jquery.js"
     ]
   },
   "devDependencies": {
