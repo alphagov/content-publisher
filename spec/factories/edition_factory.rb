@@ -110,5 +110,24 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :scheduled do
+      summary { SecureRandom.alphanumeric(10) }
+
+      transient do
+        scheduling { nil }
+      end
+
+      after(:build) do |edition, evaluator|
+        edition.status = evaluator.association(
+          :status,
+          :scheduled,
+          created_by: edition.created_by,
+          state: :scheduled,
+          revision_at_creation: edition.revision,
+          scheduling: evaluator.scheduling,
+        )
+      end
+    end
   end
 end
