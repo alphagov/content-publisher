@@ -30,6 +30,7 @@
 
 //= require modules/gtm-form-listener.js
 //= require modules/gtm-copy-paste-listener.js
+//= require modules/gtm-selected-topics-listener.js
 //= require modules/inline-image-modal.js
 //= require modules/warn-before-unload.js
 
