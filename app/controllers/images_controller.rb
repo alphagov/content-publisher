@@ -107,12 +107,12 @@ class ImagesController < ApplicationController
       end
 
       updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
-      updater.assign(update_image_fields(edition.revision, next_image_revision, params[:lead_image] == "on"))
+      updater.update_image(next_image_revision, params[:lead_image] == "on")
 
       if updater.changed?
-        timeline_entry_type = if updater.changes[:lead_image_revision].present?
+        timeline_entry_type = if updater.selected_lead_image?
                                 :lead_image_selected
-                              elsif updater.changed?(:lead_image_revision)
+                              elsif updater.removed_lead_image?
                                 :lead_image_removed
                               else
                                 :image_updated
@@ -123,11 +123,11 @@ class ImagesController < ApplicationController
         PreviewService.new(edition).try_create_preview
       end
 
-      if updater.changes[:lead_image_revision].present?
+      if updater.selected_lead_image?
         redirect_to document_path(edition.document),
                     notice: t("documents.show.flashes.lead_image.selected",
                               file: image_revision.filename)
-      elsif updater.changed?(:lead_image_revision)
+      elsif updater.removed_lead_image?
         redirect_to images_path(edition.document),
                     notice: t("images.index.flashes.lead_image.removed",
                               file: image_revision.filename)
@@ -148,7 +148,7 @@ class ImagesController < ApplicationController
       TimelineEntry.create_for_revision(entry_type: :image_deleted, edition: edition)
       PreviewService.new(edition).try_create_preview
 
-      if updater.changed?(:lead_image_revision)
+      if updater.removed_lead_image?
         redirect_to images_path(edition.document),
                     notice: t("images.index.flashes.lead_image.deleted",
                               file: image_revision.filename)
@@ -183,33 +183,5 @@ private
     crop_height = params[:crop_width].to_i * image_aspect_ratio
     # FIXME: this will raise a warning because of unpermitted paramaters
     params.permit(:crop_x, :crop_y, :crop_width).merge(crop_height: crop_height.to_i)
-  end
-
-  def update_image_fields(revision, image_revision, selected = false)
-    revisions = revision.image_revisions.reject { |ir| ir.image_id == image_revision.image_id }
-    currently_lead = revision.lead_image_revision&.image_id == image_revision.image_id
-
-    fields = {
-      image_revisions: revisions + [image_revision],
-      lead_image_revision: revision.lead_image_revision,
-    }
-
-    if selected
-      fields[:lead_image_revision] = image_revision
-    elsif currently_lead
-      fields[:lead_image_revision] = nil
-    end
-
-    fields
-  end
-
-  def remove_image_fields(revision, image_revision)
-    revisions = revision.image_revisions.reject { |ir| ir.image_id == image_revision.image_id }
-    currently_lead = revision.lead_image_revision&.image_id == image_revision.image_id
-
-    {
-      image_revisions: revisions,
-      lead_image_revision: currently_lead ? nil : revision.lead_image_revision,
-    }
   end
 end

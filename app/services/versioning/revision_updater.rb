@@ -2,6 +2,8 @@
 
 module Versioning
   class RevisionUpdater < BaseUpdater
+    include RevisionUpdater::Image
+
     def column_names
       sub_updaters.keys + %i[lead_image_revision]
     end
