@@ -11,7 +11,7 @@ window.ModalFetch.getLink = function (item) {
     .then(function (response) {
       if (!response.ok) {
         window.ModalFetch.debug(response)
-        return window.Promise.reject('Unable to render the content.')
+        return window.Promise.reject('Unable to fetch modal content')
       }
 
       return response.text()
@@ -38,7 +38,7 @@ window.ModalFetch.postForm = function (form) {
     .then(function (response) {
       if (!response.ok) {
         window.ModalFetch.debug(response)
-        return window.Promise.reject('Unable to render the content.')
+        return window.Promise.reject('Unable to fetch modal content')
       }
 
       return response.text()
