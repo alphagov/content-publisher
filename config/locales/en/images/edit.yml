@@ -1,7 +1,7 @@
 en:
   images:
     edit:
-      title: "Edit image for ‘%{title}’"
+      title: "Image details for ‘%{title}’"
       title_modal: "Image details"
       form_labels:
         alt_text: Alt text
