@@ -2,3 +2,4 @@ en:
   images:
     crop:
       title: "Crop image for ‘%{title}’"
+      title_modal: "Crop image"
