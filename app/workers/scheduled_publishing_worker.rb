@@ -2,6 +2,9 @@
 
 class ScheduledPublishingWorker
   include Sidekiq::Worker
+  # We want to retry for up to 5 minutes. 10 retries x 30s intervals = 5 minutes.
+  sidekiq_options retry: 10
+  sidekiq_retry_in { 30 }
 
   def perform(id)
     Edition.transaction do
