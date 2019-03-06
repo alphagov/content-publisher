@@ -1,6 +1,6 @@
-function GtmCopyPasteListener () { }
+var GtmCopyPasteListener = {}
 
-GtmCopyPasteListener.prototype.handleCopy = function (event) {
+GtmCopyPasteListener.handleCopy = function (event) {
   var element = event.target
 
   if (!element.hasAttribute('data-gtm-copy-paste-tracking')) {
@@ -13,7 +13,7 @@ GtmCopyPasteListener.prototype.handleCopy = function (event) {
   })
 }
 
-GtmCopyPasteListener.prototype.handlePaste = function (event) {
+GtmCopyPasteListener.handlePaste = function (event) {
   var element = event.target
 
   if (!element.hasAttribute('data-gtm-copy-paste-tracking')) {
@@ -26,9 +26,5 @@ GtmCopyPasteListener.prototype.handlePaste = function (event) {
   })
 }
 
-GtmCopyPasteListener.prototype.init = function () {
-  window.addEventListener('copy', this.handleCopy.bind(this))
-  window.addEventListener('paste', this.handlePaste.bind(this))
-}
-
-new GtmCopyPasteListener().init()
+window.addEventListener('copy', GtmCopyPasteListener.handleCopy)
+window.addEventListener('paste', GtmCopyPasteListener.handlePaste)

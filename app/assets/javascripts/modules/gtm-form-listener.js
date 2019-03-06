@@ -1,6 +1,6 @@
-function GtmFormListener () { }
+var GtmFormListener = {}
 
-GtmFormListener.prototype.handleSubmit = function (event) {
+GtmFormListener.handleSubmit = function (event) {
   var form = event.target
 
   if (!form.hasAttribute('data-gtm')) {
@@ -21,8 +21,4 @@ GtmFormListener.prototype.handleSubmit = function (event) {
   }, this)
 }
 
-GtmFormListener.prototype.init = function () {
-  window.addEventListener('submit', this.handleSubmit.bind(this))
-}
-
-new GtmFormListener().init()
+window.addEventListener('submit', GtmFormListener.handleSubmit)
