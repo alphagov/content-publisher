@@ -254,9 +254,6 @@
       }
     }
 
-    /** The presence of selected children determines whether this item is considered selected */
-
-
     _createClass(Topic, [{
       key: 'parentOf',
       value: function parentOf(other) {
@@ -401,6 +398,11 @@
         if (this.parent) {
           this.parent.childWasSelected();
         }
+      }
+    }, {
+      key: 'topicName',
+      get: function get() {
+        return this.label.textContent.replace(/(^\s+|\s+$)/g, '');
       }
     }, {
       key: 'selectedChildren',
@@ -758,25 +760,23 @@
         }
       }
     }, {
-      key: 'update',
-      value: function update(taxonomy) {
-        this.taxonomy = taxonomy;
-        var selectedTopics = taxonomy.selectedTopics;
-        // seems simpler to nuke the list and re-build it
-        while (this.list.lastChild) {
-          this.list.removeChild(this.list.lastChild);
+      key: 'selectedTopicNames',
+      value: function selectedTopicNames() {
+        if (!this.taxonomy) {
+          return [];
         }
 
-        if (selectedTopics.length) {
+        return this.taxonomy.selectedTopics.map(function (topic) {
+          var items = [];
           var _iteratorNormalCompletion10 = true;
           var _didIteratorError10 = false;
           var _iteratorError10 = undefined;
 
           try {
-            for (var _iterator10 = selectedTopics[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-              var topic = _step10.value;
+            for (var _iterator10 = topic.parents[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+              var parent = _step10.value;
 
-              this.addSelectedTopic(topic);
+              items.push(parent.topicName);
             }
           } catch (err) {
             _didIteratorError10 = true;
@@ -789,6 +789,46 @@
             } finally {
               if (_didIteratorError10) {
                 throw _iteratorError10;
+              }
+            }
+          }
+
+          items.push(topic.topicName);
+          return items;
+        });
+      }
+    }, {
+      key: 'update',
+      value: function update(taxonomy) {
+        this.taxonomy = taxonomy;
+        var selectedTopics = taxonomy.selectedTopics;
+        // seems simpler to nuke the list and re-build it
+        while (this.list.lastChild) {
+          this.list.removeChild(this.list.lastChild);
+        }
+
+        if (selectedTopics.length) {
+          var _iteratorNormalCompletion11 = true;
+          var _didIteratorError11 = false;
+          var _iteratorError11 = undefined;
+
+          try {
+            for (var _iterator11 = selectedTopics[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+              var topic = _step11.value;
+
+              this.addSelectedTopic(topic);
+            }
+          } catch (err) {
+            _didIteratorError11 = true;
+            _iteratorError11 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion11 && _iterator11.return) {
+                _iterator11.return();
+              }
+            } finally {
+              if (_didIteratorError11) {
+                throw _iteratorError11;
               }
             }
           }
@@ -815,13 +855,13 @@
         div.className = 'govuk-breadcrumbs';
         var ol = document.createElement('ol');
         ol.className = 'govuk-breadcrumbs__list';
-        var _iteratorNormalCompletion11 = true;
-        var _didIteratorError11 = false;
-        var _iteratorError11 = undefined;
+        var _iteratorNormalCompletion12 = true;
+        var _didIteratorError12 = false;
+        var _iteratorError12 = undefined;
 
         try {
-          for (var _iterator11 = topic.withParents()[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-            var current = _step11.value;
+          for (var _iterator12 = topic.withParents()[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+            var current = _step12.value;
 
             var li = document.createElement('li');
             li.className = 'govuk-breadcrumbs__list-item';
@@ -829,16 +869,16 @@
             ol.appendChild(li);
           }
         } catch (err) {
-          _didIteratorError11 = true;
-          _iteratorError11 = err;
+          _didIteratorError12 = true;
+          _iteratorError12 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion11 && _iterator11.return) {
-              _iterator11.return();
+            if (!_iteratorNormalCompletion12 && _iterator12.return) {
+              _iterator12.return();
             }
           } finally {
-            if (_didIteratorError11) {
-              throw _iteratorError11;
+            if (_didIteratorError12) {
+              throw _iteratorError12;
             }
           }
         }
