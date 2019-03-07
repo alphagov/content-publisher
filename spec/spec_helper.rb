@@ -24,7 +24,7 @@ Rails.application.load_tasks
 Capybara.server = :puma, { Silent: true }
 Capybara::Chromedriver::Logger.raise_js_errors = true
 Capybara::Chromedriver::Logger.filters = [
-  /the server responded with a status of 409/i,
+  /the server responded with a status of 422/i,
 ]
 
 RSpec.configure do |config|
