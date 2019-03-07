@@ -19,11 +19,22 @@ class ScheduledPublishingWorker
         return
       end
 
+      if scheduled_publishing_datetime_in_the_future?(edition)
+        logger.warn("Cannot schedule an edition whose scheduled publishing datetime is in the future")
+        return
+      end
+
       user = edition.status.created_by
       reviewed = edition.status.details.reviewed
 
       PublishService.new(edition.document)
                     .publish(user: user, with_review: reviewed)
     end
+  end
+
+private
+
+  def scheduled_publishing_datetime_in_the_future?(edition)
+    edition.scheduled_publishing_datetime >= Time.current
   end
 end

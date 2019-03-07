@@ -26,5 +26,14 @@ RSpec.describe ScheduledPublishingWorker, type: :worker do
 
       ScheduledPublishingWorker.new.perform(edition.id)
     end
+
+    it "aborts the worker and does not call Publish Service if the edition's scheduled publishing datetime is in the future" do
+      edition = create(:edition,
+                       :scheduled,
+                       scheduled_publishing_datetime: Time.current.tomorrow)
+      expect_any_instance_of(PublishService).not_to receive(:publish)
+
+      ScheduledPublishingWorker.new.perform(edition.id)
+    end
   end
 end
