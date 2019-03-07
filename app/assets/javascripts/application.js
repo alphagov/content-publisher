@@ -28,7 +28,7 @@
 //= require modal/modal-fetch.js
 //= require modal/modal-workflow.js
 
-//= require modules/gtm-form-listener.js
+//= require modules/gtm-checked-inputs-listener.js
 //= require modules/gtm-copy-paste-listener.js
 //= require modules/gtm-selected-topics-listener.js
 //= require modules/inline-image-modal.js

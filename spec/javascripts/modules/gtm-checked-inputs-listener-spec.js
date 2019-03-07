@@ -1,6 +1,6 @@
 /* eslint-env jasmine */
 
-describe('GTM form listener', function () {
+describe('GTM checked inputs listener', function () {
   'use strict'
 
   var container
@@ -8,7 +8,7 @@ describe('GTM form listener', function () {
   beforeEach(function () {
     container = document.createElement('div')
     container.innerHTML =
-      '<form data-gtm="new-document" onsubmit="return false;">' +
+      '<form data-gtm-checked-inputs="new-document" onsubmit="return false;">' +
         '<input type="radio" name="supertype" id="radio-news" value="news">' +
         '<input type="radio" name="supertype" id="radio-guidance" value="guidance">' +
         '<input type="checkbox" name="caprinae" id="checkbox-goat" value="goat">' +
@@ -26,19 +26,30 @@ describe('GTM form listener', function () {
   it('should append the corrent message on submit for radios', function () {
     document.getElementById('radio-guidance').click()
     var submitFormEvent = new window.Event('submit', { 'bubbles': true })
-    document.querySelector('form[data-gtm]').dispatchEvent(submitFormEvent)
-    expect(window.dataLayer).toEqual([{'new-document': { supertype: 'guidance' }}])
+    document.querySelector('form[data-gtm-checked-inputs]').dispatchEvent(submitFormEvent)
+    expect(window.dataLayer).toEqual([
+      {
+        event: 'checked-inputs.new-document',
+        value: 'supertype: guidance'
+      }
+    ])
   })
 
   it('should append the corrent message on submit for checkboxes', function () {
     document.getElementById('checkbox-ibex').click()
     document.getElementById('checkbox-goat').click()
     var submitFormEvent = new window.Event('submit', { 'bubbles': true })
-    document.querySelector('form[data-gtm]').dispatchEvent(submitFormEvent)
+    document.querySelector('form[data-gtm-checked-inputs]').dispatchEvent(submitFormEvent)
 
     expect(window.dataLayer).toEqual([
-      {'new-document': { caprinae: 'goat' }},
-      {'new-document': { caprinae: 'ibex' }}
+      {
+        event: 'checked-inputs.new-document',
+        value: 'caprinae: goat'
+      },
+      {
+        event: 'checked-inputs.new-document',
+        value: 'caprinae: ibex'
+      }
     ])
   })
 })
