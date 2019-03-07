@@ -1,0 +1,30 @@
+@startuml
+class Document {
+  content_id
+  locale
+}
+note left: Mutable
+
+class Revision {
+  number
+  contents
+}
+note bottom: Immutable
+
+class Edition {
+  number
+}
+note left: Mutable
+
+class Status {
+  state
+}
+note bottom
+  Initally Immutable
+end note
+
+Document --> Edition : current
+Document ..> Edition : live
+Edition -right-> Revision
+Edition --> Status
+@enduml
