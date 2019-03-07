@@ -23,9 +23,7 @@ RSpec.feature "Viewing debug information" do
   end
 
   def when_i_dont_have_the_debug_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions - [User::DEBUG_PERMISSION])
+    login_as(create(:user))
   end
 
   def then_i_see_an_error_page
@@ -35,9 +33,7 @@ RSpec.feature "Viewing debug information" do
   end
 
   def when_im_given_debug_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions + [User::DEBUG_PERMISSION])
+    current_user.update_attribute(:permissions, [User::DEBUG_PERMISSION])
   end
 
   def then_i_see_the_debug_page

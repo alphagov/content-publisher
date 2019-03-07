@@ -2,7 +2,7 @@
 
 RSpec.feature "Withdraw without managing editor permission" do
   background do
-    given_i_dont_have_the_managing_editor_permission
+    given_i_am_not_a_managing_editor
   end
 
   scenario "published edition" do
@@ -19,14 +19,12 @@ RSpec.feature "Withdraw without managing editor permission" do
     then_i_see_a_message_to_ask_my_managing_editor_to_withdraw_content
   end
 
-  def when_there_is_a_published_edition
-    @edition = create(:edition, :published)
+  def given_i_am_not_a_managing_editor
+    login_as(create(:user))
   end
 
-  def given_i_dont_have_the_managing_editor_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions - [User::MANAGING_EDITOR_PERMISSION])
+  def when_there_is_a_published_edition
+    @edition = create(:edition, :published)
   end
 
   def and_i_visit_the_summary_page

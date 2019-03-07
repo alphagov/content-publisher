@@ -11,9 +11,7 @@ RSpec.feature "Viewing documentation" do
   end
 
   def when_i_dont_have_the_debug_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions - [User::DEBUG_PERMISSION])
+    login_as(create(:user))
   end
 
   def and_i_visit_the_documentation_page
@@ -27,9 +25,7 @@ RSpec.feature "Viewing documentation" do
   end
 
   def when_im_given_debug_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions + [User::DEBUG_PERMISSION])
+    current_user.update_attribute(:permissions, [User::DEBUG_PERMISSION])
   end
 
   def then_i_see_the_documentation_page
