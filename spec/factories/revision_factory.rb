@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :revision do
-    association :created_by, factory: :user
-    document
-    association :lead_image_revision, factory: :image_revision
-    image_revisions { lead_image_revision ? [lead_image_revision] : [] }
-
+  trait :revision_fields do
     transient do
       title { SecureRandom.alphanumeric(10) }
       base_path { title ? "/prefix/#{title.parameterize}" : nil }
@@ -17,6 +12,15 @@ FactoryBot.define do
       change_note { "First published." }
       scheduled_publishing_datetime { nil }
     end
+  end
+
+  factory :revision do
+    association :created_by, factory: :user
+    document
+    association :lead_image_revision, factory: :image_revision
+    image_revisions { lead_image_revision ? [lead_image_revision] : [] }
+
+    revision_fields
 
     after(:build) do |revision, evaluator|
       revision.number = revision.document&.next_revision_number unless revision.number

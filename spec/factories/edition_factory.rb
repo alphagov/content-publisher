@@ -8,18 +8,12 @@ FactoryBot.define do
     revision_synced { true }
     association :created_by, factory: :user
 
+    revision_fields
+
     transient do
       content_id { SecureRandom.uuid }
       locale { I18n.available_locales.sample }
       document_type_id { build(:document_type, path_prefix: "/prefix").id }
-      title { SecureRandom.alphanumeric(10) }
-      update_type { "major" }
-      change_note { "First published." }
-      scheduled_publishing_datetime { nil }
-      summary { nil }
-      base_path { title ? "/prefix/#{title.parameterize}" : nil }
-      contents { {} }
-      tags { {} }
       state { "draft" }
       lead_image_revision { nil }
       image_revisions { [] }
