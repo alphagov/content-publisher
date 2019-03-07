@@ -1,4 +1,4 @@
-//= require vendor/@alphagov/markdown-toolbar-element/index.js
+//= require vendor/@alphagov/markdown-toolbar-element/dist/index.umd.js
 window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 

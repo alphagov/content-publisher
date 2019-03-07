@@ -858,5 +858,7 @@
   }
 
   MarkdownToolbarElement.insertText = insertText;
+  MarkdownToolbarElement.newlinesToSurroundSelectedText = newlinesToSurroundSelectedText;
+
   exports.default = MarkdownToolbarElement;
 });
