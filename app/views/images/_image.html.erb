@@ -49,14 +49,11 @@
     field: t("images.index.meta.credit"),
     value: image.credit,
   },
-] %>
-
-<% if current_user.permissions.include?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-  <% metadata_items << {
+  {
     field: t("images.index.meta.inline_code.label"),
     value: I18n.t("images.index.meta.inline_code.value", filename: image.filename),
-  } %>
-<% end %>
+  },
+] %>
 
 <%= render "components/image_meta", {
   id: "image-#{image.image_id}",
