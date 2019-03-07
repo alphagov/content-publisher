@@ -75,11 +75,11 @@ InlineImageModal.prototype.performAction = function (item) {
     'metaInsert': function () {
       window.ModalFetch.postForm(item)
         .then(function (result) {
-          if (result.done) {
+          if (result.unprocessableEntity) {
+            this.renderSuccess(result)
+          } else {
             this.$modal.close()
             this.insertSnippet(item)
-          } else {
-            this.renderSuccess(result)
           }
         }.bind(this))
         .catch(this.renderError.bind(this))
