@@ -9,6 +9,11 @@ class ScheduledPublishingWorker
   def perform(id)
     Edition.transaction do
       edition = Edition.lock.find_by(id: id, current: true)
+      if edition.nil?
+        logger.warn("Could not find edition id #{id} for scheduled publishing")
+        return
+      end
+
       user = edition.status.created_by
       reviewed = edition.status.details.reviewed
 

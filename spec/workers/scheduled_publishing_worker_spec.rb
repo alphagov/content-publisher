@@ -14,5 +14,10 @@ RSpec.describe ScheduledPublishingWorker, type: :worker do
 
       ScheduledPublishingWorker.new.perform(edition.id)
     end
+
+    it "aborts the worker and does not call Publish Service if edition id cannot be found" do
+      expect_any_instance_of(PublishService).not_to receive(:publish)
+      ScheduledPublishingWorker.new.perform(100)
+    end
   end
 end
