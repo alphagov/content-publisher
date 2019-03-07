@@ -1,4 +1,4 @@
 en:
   images:
     crop:
-      title: "Crop lead image for ‘%{title}’"
+      title: "Crop image for ‘%{title}’"
