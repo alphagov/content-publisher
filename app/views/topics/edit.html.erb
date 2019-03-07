@@ -57,7 +57,7 @@
   </li>
 <% end %>
 
-<%= form_tag update_topics_path(@document), method: :patch do %>
+<%= form_tag update_topics_path(@document), data: { "gtm-selected-topics": "" }, method: :patch do %>
   <h2 class="govuk-heading-m"><%= t("topics.edit.selected_title") %></h2>
   <miller-columns-selected class="miller-columns-selected" id="selected-items" for="miller-columns"></miller-columns-selected>
 
