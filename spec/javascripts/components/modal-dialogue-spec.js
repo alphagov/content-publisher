@@ -1,5 +1,5 @@
-/* global describe beforeEach afterEach it expect */
-/* global ModalDialogue */
+/* eslint-env jasmine, jquery */
+/* global GOVUK */
 
 function keyPress (element, key) {
   var event = document.createEvent('Event')
@@ -72,7 +72,7 @@ describe('Modal dialogue component', function () {
 
   describe('close button', function () {
     it('should hide the modal dialogue', function () {
-      document.querySelector('.govuk-button').dispatchEvent(new Event('focus'))
+      document.querySelector('.govuk-button').dispatchEvent(new window.Event('focus'))
       document.querySelector('.govuk-button').click()
       document.querySelector('.app-c-modal-dialogue__close-button').click()
 

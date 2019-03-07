@@ -1,5 +1,4 @@
-/* global describe beforeEach afterEach it expect */
-/* global GtmCopyListener */
+/* eslint-env jasmine */
 
 describe('Gtm copy paste listener', function () {
   'use strict'

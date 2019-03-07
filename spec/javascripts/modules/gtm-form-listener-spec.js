@@ -1,5 +1,4 @@
-/* global describe beforeEach afterEach it expect */
-/* global GTMFormListener */
+/* eslint-env jasmine */
 
 describe('GTM form listener', function () {
   'use strict'

@@ -1,5 +1,5 @@
-/* global describe beforeEach afterEach it expect */
-/* global MarkdownEditor */
+/* eslint-env jasmine, jquery */
+/* global GOVUK spyOnEvent */
 
 describe('Markdown editor component', function () {
   'use strict'
@@ -162,7 +162,7 @@ describe('Markdown editor component', function () {
 
   describe('when focusing the textarea', function () {
     it('should add focused class to container', function () {
-      document.querySelector('.js-markdown-editor-input textarea').dispatchEvent(new Event("focus"))
+      document.querySelector('.js-markdown-editor-input textarea').dispatchEvent(new window.Event('focus'))
 
       var container = document.querySelector('.app-c-markdown-editor__container')
       expect(container).toHaveClass('app-c-markdown-editor__container--focused')
@@ -172,11 +172,10 @@ describe('Markdown editor component', function () {
       var container = document.querySelector('.app-c-markdown-editor')
       spyOnEvent(container, 'focus')
 
-      document.querySelector('.js-markdown-editor-input textarea').dispatchEvent(new Event("focus"))
+      document.querySelector('.js-markdown-editor-input textarea').dispatchEvent(new window.Event('focus'))
 
       expect('focus').toHaveBeenTriggeredOn(container)
     })
-
   })
 
   describe('when blurring the textarea', function () {
@@ -184,7 +183,7 @@ describe('Markdown editor component', function () {
       var container = document.querySelector('.app-c-markdown-editor__container')
       container.classList.add('app-c-markdown-editor__container--focused')
 
-      document.querySelector('.js-markdown-editor-input textarea').dispatchEvent(new Event("blur"))
+      document.querySelector('.js-markdown-editor-input textarea').dispatchEvent(new window.Event('blur'))
       expect(container).not.toHaveClass('app-c-markdown-editor__container--focused')
     })
   })
