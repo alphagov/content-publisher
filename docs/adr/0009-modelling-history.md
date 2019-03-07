@@ -1,4 +1,4 @@
-# X. Modelling history
+# 9. Modelling history
 
 Date: 2018-12-17  
 Amended: 2019-01-29
@@ -56,7 +56,7 @@ a [collated diagram](#collated-diagram) of the domain model concepts.
 
 ### Core Concepts
 
-![Main concepts](000x/main-concepts-diagram.png)
+![Main concepts](0009/main-concepts-diagram.png)
 
 **Document**: A record that represents all versions of a piece of content in a
 particular locale. It has many editions and at any time it will have a current
@@ -112,8 +112,8 @@ a full history by only appending to the database.
 For simplicity, performance and consistency with Rails idioms the accessing
 of immutable models is intended to be done by foreign key and not by the usage
 of `SELECT MAX` style queries. This maintains the ability to use the regular
-approach to ActiveRecord associations and the means to require an associations
-existence (by specifying an association cannot be null). An example of this
+approach to ActiveRecord associations and the means to require the existence of
+a association (by specifying a foreign key cannot be null). An example of this
 modelling is the mutable Edition model which references an immutable model,
 Revision, that stores the content. Edition is accessed by a
 consistent primary key and the revision accessed by a foreign key stored on
@@ -139,7 +139,7 @@ between them. To address this a Revision is not stored as a single model but
 instead as a collection of models, where the Revision model stores little data
 and joins to other models. This can be visualised as:
 
-![Revision breakdown](000x/revision-diagram.png)
+![Revision breakdown](0009/revision-diagram.png)
 
 The intention of breaking this up is to be conservative with the amount of data
 duplicated between consecutive revisions. For example when a user edits
@@ -162,7 +162,7 @@ produces multiple files that are uploaded to Asset Manager for different sizing
 variations. Images are modelled in a similar way to Revision with an
 immutable Image::Revision model, as represented below:
 
-![Image Revision breakdown](000x/image-revision-diagram.png)
+![Image Revision breakdown](0009/image-revision-diagram.png)
 
 The Image model itself is used for continuation between image revisions. It is
 known that two Image::Revisions are versions of the same item if they share the
@@ -178,7 +178,7 @@ text).
 
 Each Image::FileRevision is associated with an ActiveStorage::Blob object that
 is responsible for managing the storage of the source file. It also has a one
-to many association with Image::Asset, each Image::Asset represents resultant
+to many association with Image::Asset. Each Image::Asset represents resultant
 files that are uploaded to Asset Manager for the various image sizes. The
 Image::Asset model stores the URL to the Asset Manager file and what state the
 file is on Asset Manager.
@@ -225,7 +225,7 @@ in the following, somewhat daunting, diagram. It has been simplified for ease
 of reading with noticeable omissions being a User model, since most models have
 a creator, and the speculative joins of a TimelineEntry.
 
-![Domain model diagram](000x/domain-model-diagram.png)
+![Domain model diagram](0009/domain-model-diagram.png)
 
 ## Status
 
