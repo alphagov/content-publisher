@@ -7,7 +7,16 @@ FactoryBot.define do
       base_path { title ? "/prefix/#{title.parameterize}" : nil }
       summary { nil }
       contents { {} }
-      tags { {} }
+      tags do
+        if created_by&.organisation_content_id
+          {
+            primary_publishing_organisation: [created_by.organisation_content_id],
+            organisations: [created_by.organisation_content_id],
+          }
+        else
+          {}
+        end
+      end
       update_type { "major" }
       change_note { "First published." }
       scheduled_publishing_datetime { nil }
