@@ -14,6 +14,11 @@ class ScheduledPublishingWorker
         return
       end
 
+      unless edition.scheduled?
+        logger.warn("Cannot schedule an edition that is not in a scheduled state")
+        return
+      end
+
       user = edition.status.created_by
       reviewed = edition.status.details.reviewed
 
