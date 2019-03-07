@@ -33,9 +33,22 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.bubbleFocusEventToComponent(this.$previewButton)
   }
 
-  MarkdownEditor.prototype.handleSelectionReplace = function (text) {
+  MarkdownEditor.prototype.handleSelectionReplace = function (text, options) {
+    options = Object.assign({
+      surroundWithNewLines: false
+    }, options)
+
     var selectionStart = this.$input.selectionStart + text.length
     this.$input.focus()
+
+    if (options.surroundWithNewLines) {
+      var newlines = window.MarkdownToolbarElement.newlinesToSurroundSelectedText(this.$input)
+      // despite what logic might tell you, this is supposed to be append as a
+      // prefix and prepend as a suffix. Perhaps the github logic was that you
+      // append new lines to the text before selection and prepend it to text
+      // after selection.
+      text = newlines.newlinesToAppend + text + newlines.newlinesToPrepend
+    }
 
     window.MarkdownToolbarElement.insertText(
       this.$input,

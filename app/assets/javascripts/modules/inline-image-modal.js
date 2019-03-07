@@ -38,7 +38,7 @@ InlineImageModal.prototype.renderSuccess = function (result) {
 
 InlineImageModal.prototype.insertSnippet = function (item) {
   var editor = this.$module.closest('[data-module="markdown-editor"]')
-  editor.selectionReplace(item.dataset.modalData)
+  editor.selectionReplace(item.dataset.modalData, { surroundWithNewLines: true })
 }
 
 InlineImageModal.prototype.performAction = function (item) {
