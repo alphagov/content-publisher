@@ -23,7 +23,7 @@ class ImagesController < ApplicationController
           "items" => @issues.items,
         }
 
-        render :index, layout: rendering_context
+        render :index, layout: rendering_context, status: :unprocessable_entity
         return
       end
 
@@ -116,7 +116,7 @@ class ImagesController < ApplicationController
           "items" => @issues.items,
         }
 
-        render :edit, layout: rendering_context
+        render :edit, layout: rendering_context, status: :unprocessable_entity
         return
       end
 
