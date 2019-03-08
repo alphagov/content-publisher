@@ -1,4 +1,7 @@
-<% content_for :title, t("images.index.title", title: @document.current_edition.title_or_fallback) %>
+<%
+title_key = rendering_context == "modal" ? "images.index.title_modal" : "images.index.title"
+content_for :title,t(title_key, title: @document.current_edition.title_or_fallback)
+%>
 
 <% unless rendering_context == "modal" %>
   <% content_for :back_link, render_back_link(href: document_path(@document)) %>
