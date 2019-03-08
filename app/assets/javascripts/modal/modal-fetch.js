@@ -36,14 +36,14 @@ window.ModalFetch.postForm = function (form) {
 
   return window.fetch(form.action, options)
     .then(function (response) {
-      if (!response.ok) {
+      if (!response.ok && response.status !== 422) {
         window.ModalFetch.debug(response)
         return window.Promise.reject('Unable to fetch modal content')
       }
 
       return response.text()
         .then(function (text) {
-          return { body: text, done: response.redirected }
+          return { body: text, unprocessableEntity: response.status === 422 }
         })
     })
 }

@@ -61,7 +61,7 @@ class DocumentsController < ApplicationController
           "items" => @issues.items,
         }
 
-        render :edit
+        render :edit, status: :unprocessable_entity
         return
       end
 
