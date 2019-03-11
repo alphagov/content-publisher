@@ -2,26 +2,24 @@
 
 class UnwithdrawController < ApplicationController
   def confirm
-    @document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = Edition.find_current(document: params[:document])
 
     if current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
-      redirect_to document_path(@document), confirmation: "unwithdraw/confirm"
+      redirect_to document_path(@edition.document), confirmation: "unwithdraw/confirm"
     else
       render :non_managing_editor
     end
   end
 
   def unwithdraw
-    Document.transaction do
-      document = Document.with_current_edition.lock!.find_by_param(params[:id])
-      edition = document.current_edition
-
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
       begin
         UnwithdrawService.new.call(edition, current_user)
-        redirect_to document
+        redirect_to edition.document
       rescue GdsApi::BaseError => e
         GovukError.notify(e)
-        redirect_to document, alert_with_description: t("documents.show.flashes.unwithdraw_error")
+        redirect_to edition.document,
+                    alert_with_description: t("documents.show.flashes.unwithdraw_error")
       end
     end
   end

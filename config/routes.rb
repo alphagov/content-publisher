@@ -48,8 +48,8 @@ Rails.application.routes.draw do
   get "/documents/:document/withdraw" => "withdraw#new", as: :withdraw
   post "/documents/:document/withdraw" => "withdraw#create"
 
-  get "/documents/:id/unwithdraw" => "unwithdraw#confirm", as: :confirm_unwithdraw
-  post "/documents/:id/unwithdraw" => "unwithdraw#unwithdraw", as: :unwithdraw
+  get "/documents/:document/unwithdraw" => "unwithdraw#confirm", as: :confirm_unwithdraw
+  post "/documents/:document/unwithdraw" => "unwithdraw#unwithdraw", as: :unwithdraw
 
   get "/documents/:id/remove" => "unpublish#remove", as: :remove
 
