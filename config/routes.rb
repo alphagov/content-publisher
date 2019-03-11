@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   get "/documents/:document/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
   delete "/documents/:document" => "documents#destroy"
 
-  post "/documents/:id/internal_notes" => "internal_notes#create", as: :create_internal_note
+  post "/documents/:document/internal_notes" => "internal_notes#create", as: :create_internal_note
 
   get "/documents/:id/debug" => "debug#index", as: :debug_document
 
