@@ -3,6 +3,39 @@
 RSpec.describe Edition do
   include ActiveSupport::Testing::TimeHelpers
 
+  describe ".find_current" do
+    it "finds an edition by id" do
+      edition = create(:edition)
+
+      expect(Edition.find_current(id: edition.id)).to eq(edition)
+    end
+
+    it "finds an edition by a document param" do
+      edition = create(:edition)
+      param = "#{edition.content_id}:#{edition.locale}"
+
+      expect(Edition.find_current(document: param)).to eq(edition)
+    end
+
+    it "only finds a current edition" do
+      edition = create(:edition, current: false)
+
+      expect { Edition.find_current(id: edition.id) }
+        .to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  describe ".find_and_lock_current" do
+    it "passes a found and locked edition to a block" do
+      edition = create(:edition)
+      param = "#{edition.content_id}:#{edition.locale}"
+
+      expect(Edition).to receive(:lock).and_call_original
+      expect { |block| Edition.find_and_lock_current(document: param, &block) }
+        .to yield_with_args(edition)
+    end
+  end
+
   describe ".create_initial" do
     let(:document) { build(:document) }
     let(:user) { build(:user) }

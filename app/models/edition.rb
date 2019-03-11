@@ -66,6 +66,27 @@ class Edition < ApplicationRecord
 
   MINIMUM_SCHEDULING_TIME = { minutes: 15 }.freeze
 
+  scope :find_current, ->(id: nil, document: nil) do
+    find_by = {}.tap do |criteria|
+      criteria[:id] = id if id
+
+      if document
+        content_id, locale = document.split(":")
+        criteria[:documents] = { content_id: content_id, locale: locale }
+      end
+    end
+
+    join_tables = %i[document revision status]
+    where(current: true)
+      .joins(join_tables)
+      .includes(join_tables)
+      .find_by!(find_by)
+  end
+
+  def self.find_and_lock_current(*args, &block)
+    transaction { lock.find_current(*args).tap(&block) }
+  end
+
   def self.create_initial(document, user = nil, tags = {})
     revision = Revision.create_initial(document, user, tags)
     status = Status.create!(created_by: user,
