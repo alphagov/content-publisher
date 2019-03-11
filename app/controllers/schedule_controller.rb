@@ -2,10 +2,7 @@
 
 class ScheduleController < ApplicationController
   def save_scheduled_publishing_datetime
-    Document.transaction do
-      document = Document.with_current_edition.lock.find_by_param(params[:id])
-      edition = document.current_edition
-
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
       checker = Requirements::ScheduledDatetimeChecker.new(permitted_params)
       issues = checker.pre_submit_issues
 
@@ -16,30 +13,26 @@ class ScheduleController < ApplicationController
           items: issues.items(hrefs: href),
         }
         flash[:scheduled_publishing_params] = permitted_params
-        redirect_to document_path(document)
-        return
+        redirect_to document_path(edition.document)
+        next
       end
 
       set_scheduled_publishing_datetime(edition, checker.parsed_datetime)
 
-      redirect_to document_path(document)
+      redirect_to document_path(edition.document)
     end
   end
 
   def clear_scheduled_publishing_datetime
-    Document.transaction do
-      document = Document.with_current_edition.lock.find_by_param(params[:id])
-      edition = document.current_edition
-
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
       set_scheduled_publishing_datetime(edition)
 
-      redirect_to document_path(document)
+      redirect_to document_path(edition.document)
     end
   end
 
   def confirmation
-    document = Document.with_current_edition.find_by_param(params[:id])
-    @edition = document.current_edition
+    @edition = Edition.find_current(document: params[:document])
 
     unless @edition.schedulable?
       # FIXME: this shouldn't be an exception but we've not worked out the
@@ -49,10 +42,7 @@ class ScheduleController < ApplicationController
   end
 
   def schedule
-    Document.transaction do
-      document = Document.with_current_edition.lock!.find_by_param(params[:id])
-      edition = document.current_edition
-
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
       if edition.scheduled_publishing_datetime.blank?
         # FIXME: this shouldn't be an exception but we've not worked out the
         # right response - maybe bad request or a redirect with flash?
@@ -65,13 +55,12 @@ class ScheduleController < ApplicationController
       reviewed = review_params == "reviewed"
       ScheduleService.new(edition).schedule(user: current_user, reviewed: reviewed)
 
-      redirect_to scheduled_path(document)
+      redirect_to scheduled_path(edition.document)
     end
   end
 
   def scheduled
-    document = Document.with_current_edition.find_by_param(params[:id])
-    @edition = document.current_edition
+    @edition = Edition.find_current(document: params[:document])
   end
 
 private
