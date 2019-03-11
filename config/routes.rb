@@ -31,7 +31,7 @@ Rails.application.routes.draw do
 
   post "/documents/:document/internal_notes" => "internal_notes#create", as: :create_internal_note
 
-  get "/documents/:id/debug" => "debug#index", as: :debug_document
+  get "/documents/:document/debug" => "debug#index", as: :debug_document
 
   get "/documents/:id/search-contacts" => "contacts#search", as: :search_contacts
   post "/documents/:id/search-contacts" => "contacts#insert", as: :insert_contact
