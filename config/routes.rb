@@ -39,8 +39,8 @@ Rails.application.routes.draw do
   post "/documents/:document/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
   post "/documents/:document/approve" => "review#approve", as: :approve_document
 
-  get "/documents/:id/tags" => "tags#edit", as: :tags
-  post "/documents/:id/tags" => "tags#update"
+  get "/documents/:document/tags" => "tags#edit", as: :tags
+  post "/documents/:document/tags" => "tags#update"
 
   get "/documents/:id/preview" => "preview#show", as: :preview_document
   post "/documents/:id/create-preview" => "preview#create", as: :create_preview
