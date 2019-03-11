@@ -8,21 +8,8 @@ class ScheduledPublishingWorker
 
   def perform(id)
     Edition.transaction do
-      edition = Edition.lock.find_by(id: id, current: true)
-      if edition.nil?
-        logger.warn("Could not find edition id #{id} for scheduled publishing")
-        return
-      end
-
-      unless edition.scheduled?
-        logger.warn("Cannot schedule an edition that is not in a scheduled state")
-        return
-      end
-
-      if scheduled_publishing_datetime_in_the_future?(edition)
-        logger.warn("Cannot schedule an edition whose scheduled publishing datetime is in the future")
-        return
-      end
+      edition = Edition.lock.find_by!(id: id, current: true)
+      check_edition_scheduled_and_publishable(edition)
 
       user = edition.status.created_by
       reviewed = edition.status.details.reviewed
@@ -30,11 +17,21 @@ class ScheduledPublishingWorker
       PublishService.new(edition.document)
                     .publish(user: user, with_review: reviewed)
     end
+  rescue ActiveRecord::RecordNotFound
+    raise AbortWorkerError, "Could not find edition id #{id} for scheduled publishing"
   end
 
 private
 
-  def scheduled_publishing_datetime_in_the_future?(edition)
-    edition.scheduled_publishing_datetime >= Time.current
+  def check_edition_scheduled_and_publishable(edition)
+    unless edition.scheduled?
+      raise AbortWorkerError, "Cannot schedule an edition that is not in a scheduled state"
+    end
+
+    scheduled_in_future = edition.scheduled_publishing_datetime > Time.current
+
+    if scheduled_in_future
+      raise AbortWorkerError, "Cannot publish an edition whose scheduled publishing datetime is in the future"
+    end
   end
 end
