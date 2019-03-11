@@ -21,5 +21,17 @@ FactoryBot.define do
     trait :published do
       state { :published }
     end
+
+    trait :scheduled do
+      state { :scheduled }
+
+      transient do
+        scheduling { nil }
+      end
+
+      after(:build) do |status, evaluator|
+        status.details = evaluator.scheduling || evaluator.association(:scheduling)
+      end
+    end
   end
 end
