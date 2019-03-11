@@ -22,12 +22,12 @@ Rails.application.routes.draw do
   post "/documents/:id/unschedule" => "unschedule#unschedule", as: :unschedule
 
   get "/documents" => "documents#index"
-  get "/documents/:id/edit" => "documents#edit", as: :edit_document
-  patch "/documents/:id" => "documents#update", as: :document
-  get "/documents/:id" => "documents#show"
-  get "/documents/:id/generate-path" => "documents#generate_path", as: :generate_path
-  get "/documents/:id/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
-  delete "/documents/:id" => "documents#destroy"
+  get "/documents/:document/edit" => "documents#edit", as: :edit_document
+  patch "/documents/:document" => "documents#update", as: :document
+  get "/documents/:document" => "documents#show"
+  get "/documents/:document/generate-path" => "documents#generate_path", as: :generate_path
+  get "/documents/:document/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
+  delete "/documents/:document" => "documents#destroy"
 
   post "/documents/:id/internal_notes" => "internal_notes#create", as: :create_internal_note
 

@@ -1,13 +1,13 @@
-<% content_for :back_link, render_back_link(href: document_path(@document)) %>
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 
-<% if @document.newly_created? %>
-  <% content_for :title, t("documents.edit.title_new", document_type: @document.document_type.label.downcase) %>
+<% if @edition.document.newly_created? %>
+  <% content_for :title, t("documents.edit.title_new", document_type: @edition.document_type.label.downcase) %>
 <% else %>
-  <% content_for :title, t("documents.edit.title", title: @revision.title_or_fallback) %>
+  <% content_for :title, t("documents.edit.title", title: @edition.title_or_fallback) %>
 <% end %>
 
 <%= form_for(
-  @document,
+  @edition.document,
   html: { "autocomplete": "off", class: "app-c-contextual-guidance__form" },
   data: {
     module: "edit-document-form",
@@ -52,13 +52,13 @@
 
     </div>
 
-    <% if @document.document_type.guidance_for("title") %>
+    <% if @edition.document_type.guidance_for("title") %>
       <div class="govuk-grid-column-one-third">
         <%= render "components/contextual_guidance", {
           id: "revision-title-guidance",
-          title: @document.document_type.guidance_for("title").title
+          title: @edition.document_type.guidance_for("title").title
         } do %>
-          <p class="govuk-body"><%= @document.document_type.guidance_for("title").body_govspeak %></p>
+          <p class="govuk-body"><%= @edition.document_type.guidance_for("title").body_govspeak %></p>
         <% end %>
       </div>
     <% end %>
@@ -90,23 +90,23 @@
       <% end %>
     </div>
 
-    <% if @document.document_type.guidance_for("summary") %>
+    <% if @edition.document_type.guidance_for("summary") %>
       <div class="govuk-grid-column-one-third">
         <%= render "components/contextual_guidance", {
           id: "document-summary-guidance",
-          title: @document.document_type.guidance_for("summary").title
+          title: @edition.document_type.guidance_for("summary").title
         } do %>
-          <p class="govuk-body"><%= @document.document_type.guidance_for("summary").body_govspeak %></p>
+          <p class="govuk-body"><%= @edition.document_type.guidance_for("summary").body_govspeak %></p>
         <% end %>
       </div>
     </div>
   <% end %>
 
-  <% @document.document_type.contents.each do |field| %>
-    <%= render "documents/fields/#{field.type}_input", field: field, document: @document, revision: @revision %>
+  <% @edition.document_type.contents.each do |field| %>
+    <%= render "documents/fields/#{field.type}_input", field: field, edition: @edition, revision: @revision %>
   <% end %>
 
-  <% if @document.live_edition %>
+  <% if @edition.document.live_edition %>
     <%= render "documents/edit/change_notes" %>
   <% end %>
 

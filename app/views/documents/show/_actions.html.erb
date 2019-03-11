@@ -52,7 +52,7 @@
       <%= render "govuk_publishing_components/components/button",
                  text: "Undo withdrawal",
                  data_attributes: { gtm: "undo-withdraw" },
-                 href: unwithdraw_path(@document) %>
+                 href: unwithdraw_path(@edition.document) %>
     <% elsif @edition.scheduled? %>
       <%= form_tag create_preview_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Preview" %>
