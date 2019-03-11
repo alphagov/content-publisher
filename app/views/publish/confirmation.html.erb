@@ -1,9 +1,9 @@
-<% content_for :back_link, render_back_link(href: document_path(@document)) %>
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 <% content_for :title, t("publish.confirmation.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag publish_confirmation_path(@document), data: { "gtm-checked-inputs": "publish-document" } do %>
+    <%= form_tag publish_confirmation_path(@edition.document), data: { "gtm-checked-inputs": "publish-document" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "review_state",
         items: [

@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   get "/documents/choose-document-type" => "new_document#choose_document_type", as: :choose_document_type
   post "/documents/create" => "new_document#create", as: :create_document
 
-  get "/documents/:id/publish" => "publish#confirmation", as: :publish_confirmation
-  post "/documents/:id/publish" => "publish#publish"
-  get "/documents/:id/published" => "publish#published", as: :published
+  get "/documents/:document/publish" => "publish#confirmation", as: :publish_confirmation
+  post "/documents/:document/publish" => "publish#publish"
+  get "/documents/:document/published" => "publish#published", as: :published
 
   post "/documents/:id/save-scheduled-publishing-datetime" => "schedule#save_scheduled_publishing_datetime", as: :save_scheduled_publishing_datetime
   post "/documents/:id/clear-scheduled-publishing-datetime" => "schedule#clear_scheduled_publishing_datetime", as: :clear_scheduled_publishing_datetime
