@@ -2,8 +2,7 @@
 
 class WithdrawController < ApplicationController
   def new
-    document = Document.with_current_edition.find_by_param(params[:id])
-    @edition = document.current_edition
+    @edition = Edition.find_current(document: params[:document])
     @public_explanation =
       @edition.withdrawn? ? @edition.status.details.public_explanation : nil
 
@@ -21,9 +20,7 @@ class WithdrawController < ApplicationController
       raise "Can't withdraw an edition without managing editor permissions"
     end
 
-    Document.transaction do
-      document = Document.with_current_edition.lock!.find_by_param(params[:id])
-      @edition = document.current_edition
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
       public_explanation = params[:public_explanation]
       issues = Requirements::WithdrawalChecker.new(public_explanation).pre_withdrawal_issues
 
@@ -33,15 +30,15 @@ class WithdrawController < ApplicationController
           "items" => issues.items,
         }
 
-        render :new, status: :unprocessable_entity
-        return
+        render :new, assigns: { edition: edition }, status: :unprocessable_entity
+        next
       end
 
       begin
         #FIXME We should check that the edition is withdrawable before passing
         # it to the WithdrawService
-        WithdrawService.new.call(@edition, public_explanation, current_user)
-        redirect_to document_path(@edition.document)
+        WithdrawService.new.call(edition, public_explanation, current_user)
+        redirect_to document_path(edition.document)
       rescue GdsApi::BaseError => e
         GovukError.notify(e)
         redirect_to withdraw_path,
