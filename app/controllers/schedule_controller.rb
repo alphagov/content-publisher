@@ -59,6 +59,9 @@ class ScheduleController < ApplicationController
         raise "Cannot schedule an edition to be published without setting a publishing date and time."
       end
 
+      datetime = edition.scheduled_publishing_datetime
+      ScheduledPublishingWorker.perform_at(datetime, edition.id)
+
       reviewed = review_params == "reviewed"
       ScheduleService.new(edition).schedule(user: current_user, reviewed: reviewed)
 

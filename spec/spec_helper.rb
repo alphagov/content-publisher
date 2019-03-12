@@ -29,6 +29,10 @@ Capybara::Chromedriver::Logger.filters = [
 
 Sidekiq::Logging.logger = nil
 
+RSpec::Sidekiq.configure do |config|
+  config.warn_when_jobs_not_processed_by_sidekiq = false
+end
+
 RSpec.configure do |config|
   config.expose_dsl_globally = false
   config.infer_spec_type_from_file_location!
