@@ -23,7 +23,8 @@ class WithdrawController < ApplicationController
     public_explanation = params[:public_explanation]
 
     Edition.find_and_lock_current(document: params[:document]) do |edition|
-      issues = Requirements::WithdrawalChecker.new(public_explanation).pre_withdrawal_issues
+      issues = Requirements::WithdrawalChecker.new(public_explanation, edition)
+                                              .pre_withdrawal_issues
 
       if issues.any?
         flash["alert_with_items"] = {

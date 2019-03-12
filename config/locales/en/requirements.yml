@@ -67,6 +67,8 @@ en:
     public_explanation:
       blank:
         form_message: Enter a public explanation
+      invalid_govspeak:
+        form_message: Remove HTML from the public explanation
     scheduled_datetime:
       title: The scheduled publishing date and time needs to be changed
       in_the_past:
