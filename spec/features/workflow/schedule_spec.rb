@@ -16,8 +16,8 @@ RSpec.feature "Schedule an edition" do
   end
 
   def given_there_is_an_edition_with_set_scheduled_publishing_datetime
-    datetime = Time.zone.tomorrow
-    @edition = create(:edition, scheduled_publishing_datetime: datetime)
+    @datetime = Time.current.tomorrow
+    @edition = create(:edition, scheduled_publishing_datetime: @datetime)
   end
 
   def when_i_visit_the_summary_page
@@ -38,6 +38,11 @@ RSpec.feature "Schedule an edition" do
 
   def then_i_see_a_confirmation_that_the_edition_has_been_scheduled
     expect(page).to have_content(I18n.t!("schedule.scheduled.title"))
+
+    govuk_header_args = an_instance_of(Hash) # args from govuk_sidekiq gem
+    expect(ScheduledPublishingWorker)
+      .to have_enqueued_sidekiq_job(@edition.id, govuk_header_args)
+      .at(@datetime)
   end
 
   def then_i_see_the_edition_has_been_scheduled
