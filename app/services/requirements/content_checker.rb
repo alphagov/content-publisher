@@ -35,6 +35,14 @@ module Requirements
         issues << Issue.new(:summary, :multiline)
       end
 
+      edition.document_type.contents.each do |field|
+        next unless field.type == "govspeak"
+
+        unless GovspeakDocument.new(revision.contents[field.id], edition).valid?
+          issues << Issue.new(field.id, :invalid_govspeak)
+        end
+      end
+
       CheckerIssues.new(issues)
     end
 

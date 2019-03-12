@@ -27,6 +27,9 @@ en:
       blank:
         form_message: Enter a body
         summary_message: Enter a body
+      invalid_govspeak:
+        form_message: Remove HTML from the body
+        summary_message: Remove HTML from the body
     change_note:
       blank:
         form_message: Enter a change note
