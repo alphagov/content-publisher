@@ -30,7 +30,7 @@
         field = "#{diff[0]} #{diff[1]}"
         {
           field: field,
-          value: ("<code>" + diff.last.inspect + "</code>").html_safe,
+          value: ("<code>" + html_escape(diff.last.inspect) + "</code>").html_safe,
         }
       end
 
