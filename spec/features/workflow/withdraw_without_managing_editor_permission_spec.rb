@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.feature "Withdraw without managing editor permission" do
-  background do
-    given_i_am_not_a_managing_editor
-  end
-
   scenario "published edition" do
     when_there_is_a_published_edition
     and_i_visit_the_summary_page
@@ -17,10 +13,6 @@ RSpec.feature "Withdraw without managing editor permission" do
     and_i_visit_the_withdrawn_document_summary_page
     and_i_click_on_change_public_explanation
     then_i_see_a_message_to_ask_my_managing_editor_to_withdraw_content
-  end
-
-  def given_i_am_not_a_managing_editor
-    login_as(create(:user))
   end
 
   def when_there_is_a_published_edition

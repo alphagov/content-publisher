@@ -2,15 +2,10 @@
 
 RSpec.feature "Undo a withdraw without managing editor permission" do
   scenario "withdrawn edition" do
-    given_i_am_not_a_managing_editor
     when_there_is_a_withdrawn_edition
     and_i_visit_the_withdrawn_document_summary_page
     and_i_click_on_undo_withdrawal
     then_i_see_a_message_to_ask_my_managing_editor_to_unwithdraw_content
-  end
-
-  def given_i_am_not_a_managing_editor
-    login_as(create(:user))
   end
 
   def when_there_is_a_withdrawn_edition
