@@ -29,6 +29,7 @@ group :development do
 end
 
 group :test do
+  gem "rspec-sidekiq", "~> 3"
   gem "simplecov", "~> 0.16"
 end
 
