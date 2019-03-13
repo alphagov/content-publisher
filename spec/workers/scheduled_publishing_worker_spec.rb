@@ -17,14 +17,16 @@ RSpec.describe ScheduledPublishingWorker, type: :worker do
 
     it "aborts the worker and does not call Publish Service if edition id cannot be found" do
       expect_any_instance_of(PublishService).not_to receive(:publish)
-      ScheduledPublishingWorker.new.perform(100)
+      expect { ScheduledPublishingWorker.new.perform(100) }
+        .to raise_error(AbortWorkerError)
     end
 
     it "aborts the worker and does not call Publish Service if the edition is not scheduled" do
       edition = create(:edition)
       expect_any_instance_of(PublishService).not_to receive(:publish)
 
-      ScheduledPublishingWorker.new.perform(edition.id)
+      expect { ScheduledPublishingWorker.new.perform(edition.id) }
+        .to raise_error(AbortWorkerError)
     end
 
     it "aborts the worker and does not call Publish Service if the edition's scheduled publishing datetime is in the future" do
@@ -33,7 +35,8 @@ RSpec.describe ScheduledPublishingWorker, type: :worker do
                        scheduled_publishing_datetime: Time.current.tomorrow)
       expect_any_instance_of(PublishService).not_to receive(:publish)
 
-      ScheduledPublishingWorker.new.perform(edition.id)
+      expect { ScheduledPublishingWorker.new.perform(edition.id) }
+        .to raise_error(AbortWorkerError)
     end
   end
 end
