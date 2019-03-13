@@ -14,7 +14,7 @@ class EditionFilter
   def initialize(params)
     @filters = params[:filters].to_h.symbolize_keys
     @sort = allowed_sort?(params[:sort]) ? params[:sort] : DEFAULT_SORT
-    @page = params[:page]
+    @page = params.fetch(:page, 1).to_i
     @per_page = params[:per_page]
   end
 
@@ -29,9 +29,9 @@ class EditionFilter
   end
 
   def filter_params
-    filters.select { |_, value| value.present? }.tap do |params|
+    filters.dup.tap do |params|
       params[:sort] = sort if sort != DEFAULT_SORT
-      params[:page] = page if page != "1"
+      params[:page] = page if page > 1
     end
   end
 
