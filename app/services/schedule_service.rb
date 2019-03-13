@@ -11,6 +11,8 @@ class ScheduleService
     scheduling = Scheduling.new(pre_scheduled_status: edition.status, reviewed: reviewed)
     set_edition_status(scheduling, user)
     create_timeline_entry(scheduling)
+
+    create_publish_intent(edition)
   end
 
 private
@@ -26,5 +28,10 @@ private
       status: edition.status,
       details: scheduling,
     )
+  end
+
+  def create_publish_intent(edition)
+    payload = PublishingApiPayload.new(edition).intent_payload
+    GdsApi.publishing_api.put_intent(edition.base_path, payload)
   end
 end
