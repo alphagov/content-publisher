@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   post "/documents/:id/schedule" => "schedule#schedule"
   get "/documents/:id/scheduled" => "schedule#scheduled", as: :scheduled
 
+  post "/documents/:id/unschedule" => "unschedule#unschedule", as: :unschedule
+
   get "/documents" => "documents#index"
   get "/documents/:id/edit" => "documents#edit", as: :edit_document
   patch "/documents/:id" => "documents#update", as: :document

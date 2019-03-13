@@ -57,6 +57,10 @@
       <%= form_tag create_preview_path(@edition.document) do %>
         <%= render "govuk_publishing_components/components/button", text: "Preview" %>
       <% end %>
+      <%= form_tag unschedule_path(@edition.document) do %>
+        <%= render "govuk_publishing_components/components/button", text: "Stop scheduled publishing", secondary: true
+      %>
+      <% end %>
       <%= delete_draft_link %>
     <% else %>
       <%= form_tag submit_document_for_2i_path(@edition.document) do %>
