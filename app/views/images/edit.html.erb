@@ -1,10 +1,10 @@
 <%
 title_key = rendering_context == "modal" ? "images.edit.title_modal" : "images.edit.title"
-content_for :title,t(title_key, title: @document.current_edition.title_or_fallback)
+content_for :title,t(title_key, title: @edition.title_or_fallback)
 %>
 
 <% content_for :back_link, render_back_link(
-  href: crop_image_path(@document, @image_revision.image_id, wizard: params[:wizard]),
+  href: crop_image_path(@edition.document, @image_revision.image_id, wizard: params[:wizard]),
   data_attributes: {
     "modal-action": "metaBack"
   }
@@ -18,7 +18,7 @@ content_for :title,t(title_key, title: @document.current_edition.title_or_fallba
 } %>
 
 <%= form_tag(
-  update_image_path(@document, @image_revision.image_id, wizard: params[:wizard]),
+  update_image_path(@edition.document, @image_revision.image_id, wizard: params[:wizard]),
   method: :patch,
   class: "app-c-contextual-guidance__form",
   data: {
@@ -111,7 +111,7 @@ content_for :title,t(title_key, title: @document.current_edition.title_or_fallba
           items: [
             {
               label: t("images.edit.form_labels.lead_image"),
-              checked: @document.current_edition.lead_image_revision == @image_revision,
+              checked: @edition.lead_image_revision == @image_revision,
               name: "lead_image",
             }
           ]
