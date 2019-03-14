@@ -3,7 +3,7 @@
 RSpec.feature "Unwithdraw a document when Publishing API is down" do
   scenario do
     given_there_is_a_withdrawn_edition
-    and_i_have_the_managing_editor_permission
+    and_i_am_a_managing_editor
     and_the_publishing_api_is_down
     when_i_visit_the_summary_page
     and_i_click_on_undo_withdraw_and_confirm
@@ -15,10 +15,8 @@ RSpec.feature "Unwithdraw a document when Publishing API is down" do
     @edition = create(:edition, :withdrawn)
   end
 
-  def and_i_have_the_managing_editor_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions + [User::MANAGING_EDITOR_PERMISSION])
+  def and_i_am_a_managing_editor
+    login_as(create(:user, :managing_editor))
   end
 
   def and_the_publishing_api_is_down

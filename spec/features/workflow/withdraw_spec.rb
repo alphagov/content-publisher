@@ -3,7 +3,7 @@
 RSpec.feature "Withdraw a document" do
   scenario do
     given_there_is_a_published_edition
-    and_i_have_the_managing_editor_permission
+    and_i_am_a_managing_editor
     when_i_visit_the_summary_page
     and_i_click_on_withdraw
     then_i_see_that_i_can_withdraw_the_document
@@ -16,14 +16,12 @@ RSpec.feature "Withdraw a document" do
     @edition = create(:edition, :published)
   end
 
-  def when_i_visit_the_summary_page
-    visit document_path(@edition.document)
+  def and_i_am_a_managing_editor
+    login_as(create(:user, :managing_editor))
   end
 
-  def and_i_have_the_managing_editor_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions + [User::MANAGING_EDITOR_PERMISSION])
+  def when_i_visit_the_summary_page
+    visit document_path(@edition.document)
   end
 
   def and_i_click_on_withdraw

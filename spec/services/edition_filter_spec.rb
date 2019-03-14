@@ -99,4 +99,26 @@ RSpec.describe EditionFilter do
       expect(editions).to eq([edition2])
     end
   end
+
+  describe "#filter_params" do
+    it "returns the params used to filter" do
+      params = EditionFilter.new(filters: { title_or_url: "title" }).filter_params
+      expect(params).to eq(title_or_url: "title")
+    end
+
+    it "maintains empty params" do
+      params = EditionFilter.new(filters: { organisation: "" }).filter_params
+      expect(params).to eq(organisation: "")
+    end
+
+    it "includes sort and page if they are different to default" do
+      params = EditionFilter.new(sort: "last_updated", page: 5).filter_params
+      expect(params).to eq(sort: "last_updated", page: 5)
+    end
+
+    it "rejects page parameters less than 1" do
+      params = EditionFilter.new(page: 0).filter_params
+      expect(params).to eq({})
+    end
+  end
 end

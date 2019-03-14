@@ -3,7 +3,7 @@
 RSpec.feature "Withdraw a document when Publishing API is down" do
   scenario do
     given_there_is_a_published_edition
-    and_i_have_the_managing_editor_permission
+    and_i_am_a_managing_editor
     when_i_visit_the_withdraw_document_page
     and_the_publishing_api_is_down
     when_i_fill_in_the_public_explanation
@@ -16,10 +16,8 @@ RSpec.feature "Withdraw a document when Publishing API is down" do
     @edition = create(:edition, :published)
   end
 
-  def and_i_have_the_managing_editor_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions + [User::MANAGING_EDITOR_PERMISSION])
+  def and_i_am_a_managing_editor
+    login_as(create(:user, :managing_editor))
   end
 
   def when_i_visit_the_withdraw_document_page

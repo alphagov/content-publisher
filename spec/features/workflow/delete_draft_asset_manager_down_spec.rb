@@ -13,7 +13,9 @@ RSpec.feature "Delete draft with Asset Manager down" do
 
   def given_there_is_an_edition
     @image_revision = create(:image_revision, :on_asset_manager)
-    @edition = create(:edition, lead_image_revision: @image_revision)
+    @edition = create(:edition,
+                      lead_image_revision: @image_revision,
+                      created_by: current_user)
   end
 
   def when_i_visit_the_summary_page
@@ -42,7 +44,7 @@ RSpec.feature "Delete draft with Asset Manager down" do
   end
 
   def then_i_see_the_edition_is_gone
-    expect(page).to have_current_path(documents_path)
+    expect(page).to have_current_path(documents_path, ignore_query: true)
     expect(page).to_not have_content @edition.title
   end
 end

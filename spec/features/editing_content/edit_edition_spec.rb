@@ -47,7 +47,7 @@ RSpec.feature "Edit an edition" do
   end
 
   def and_i_see_i_was_the_last_user_to_edit_the_edition
-    editor = User.first.name
+    editor = current_user.name
     last_edited = I18n.t!("documents.show.metadata.last_edited_by") + ": #{editor}"
     expect(page).to have_content(last_edited)
   end

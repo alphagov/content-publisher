@@ -12,7 +12,7 @@ RSpec.feature "Delete draft after publishing" do
   end
 
   def given_there_is_a_edition
-    @edition = create(:edition, :publishable)
+    @edition = create(:edition, :publishable, created_by: current_user)
   end
 
   def when_i_visit_the_summary_page
@@ -50,7 +50,7 @@ RSpec.feature "Delete draft after publishing" do
   end
 
   def then_i_see_the_draft_is_gone
-    expect(page).to have_current_path(documents_path)
+    expect(page).to have_current_path(documents_path, ignore_query: true)
     expect(page).to_not have_content @new_title
     expect(page).to have_content @edition.title
   end

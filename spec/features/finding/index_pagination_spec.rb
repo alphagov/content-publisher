@@ -12,7 +12,7 @@ RSpec.feature "User pages through a list of editions" do
   end
 
   def given_there_are_lots_of_editions
-    create_list(:edition, 51)
+    create_list(:edition, 51, created_by: current_user)
   end
 
   def when_i_visit_the_index_page

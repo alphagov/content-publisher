@@ -3,7 +3,7 @@
 RSpec.feature "Edit a withdrawal" do
   scenario do
     given_there_is_a_withdrawn_edition
-    and_i_have_the_managing_editor_permission
+    and_i_am_a_managing_editor
     when_i_visit_the_summary_page
     and_i_click_to_change_the_public_explanation
     then_i_can_see_the_existing_public_explanation
@@ -15,10 +15,8 @@ RSpec.feature "Edit a withdrawal" do
     @edition = create(:edition, :withdrawn)
   end
 
-  def and_i_have_the_managing_editor_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions + [User::MANAGING_EDITOR_PERMISSION])
+  def and_i_am_a_managing_editor
+    login_as(create(:user, :managing_editor))
   end
 
   def when_i_visit_the_summary_page

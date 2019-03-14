@@ -57,8 +57,8 @@ RSpec.feature "Create a document" do
   def content_body
     {
       "links" => {
-        "organisations" => [User.first.organisation_content_id],
-        "primary_publishing_organisation" => [User.first.organisation_content_id],
+        "organisations" => [current_user.organisation_content_id],
+        "primary_publishing_organisation" => [current_user.organisation_content_id],
       },
       "title" => "A title",
       "document_type" => @document_type.id,

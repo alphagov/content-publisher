@@ -3,21 +3,19 @@
 RSpec.feature "Unwithdraw a document" do
   scenario do
     given_there_is_a_withdrawn_document
-    and_i_have_the_managing_editor_permission
+    and_i_am_a_managing_editor
     when_i_visit_the_summary_page
     then_i_see_the_documents_withdrawn_banner
     and_i_click_on_undo_withdrawal_and_confirm
     then_i_see_the_document_is_now_unwithdrawn
   end
 
-  def and_i_have_the_managing_editor_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions + [User::MANAGING_EDITOR_PERMISSION])
-  end
-
   def given_there_is_a_withdrawn_document
     @withdrawn_edition = create(:edition, :withdrawn)
+  end
+
+  def and_i_am_a_managing_editor
+    login_as(create(:user, :managing_editor))
   end
 
   def when_i_visit_the_summary_page

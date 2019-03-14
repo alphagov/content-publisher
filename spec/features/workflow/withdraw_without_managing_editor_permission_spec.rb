@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.feature "Withdraw without managing editor permission" do
-  background do
-    given_i_dont_have_the_managing_editor_permission
-  end
-
   scenario "published edition" do
     when_there_is_a_published_edition
     and_i_visit_the_summary_page
@@ -21,12 +17,6 @@ RSpec.feature "Withdraw without managing editor permission" do
 
   def when_there_is_a_published_edition
     @edition = create(:edition, :published)
-  end
-
-  def given_i_dont_have_the_managing_editor_permission
-    user = User.first
-    user.update_attribute(:permissions,
-                          user.permissions - [User::MANAGING_EDITOR_PERMISSION])
   end
 
   def and_i_visit_the_summary_page

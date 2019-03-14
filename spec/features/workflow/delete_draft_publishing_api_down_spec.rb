@@ -12,7 +12,7 @@ RSpec.feature "Delete draft when the Publishing API is down" do
   end
 
   def given_there_is_an_edition
-    @edition = create(:edition, :publishable)
+    @edition = create(:edition, created_by: current_user)
   end
 
   def when_i_visit_the_summary_page
@@ -40,7 +40,7 @@ RSpec.feature "Delete draft when the Publishing API is down" do
   end
 
   def then_i_see_the_edition_is_gone
-    expect(page).to have_current_path(documents_path)
+    expect(page).to have_current_path(documents_path, ignore_query: true)
     expect(page).to_not have_content @edition.title
   end
 end
