@@ -14,50 +14,44 @@ class DocumentsController < ApplicationController
   end
 
   def edit
-    @document = Document.with_current_edition.find_by_param(params[:id])
-    @revision = @document.current_edition.revision
+    @edition = Edition.find_current(document: params[:document])
+    @revision = @edition.revision
   end
 
   def show
-    @document = Document.with_current_edition.find_by_param(params[:id])
-    @edition = @document.current_edition
+    @edition = Edition.find_current(document: params[:document])
   end
 
   def confirm_delete_draft
-    document = Document.with_current_edition.find_by_param(params[:id])
-    redirect_to document_path(document), confirmation: "documents/show/delete_draft"
+    edition = Edition.find_current(document: params[:document])
+    redirect_to document_path(edition.document), confirmation: "documents/show/delete_draft"
   end
 
   def destroy
-    Document.transaction do
-      document = Document.with_current_edition.lock.find_by_param(params[:id])
-
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
       begin
-        current_edition = document.current_edition
-        DeleteDraftService.new(document, current_user).delete
+        DeleteDraftService.new(edition.document, current_user).delete
 
         TimelineEntry.create_for_status_change(entry_type: :draft_discarded,
-                                               status: current_edition.status)
+                                               status: edition.status)
 
         redirect_to documents_path
       rescue GdsApi::BaseError => e
         GovukError.notify(e)
-        redirect_to document, alert_with_description: t("documents.show.flashes.delete_draft_error")
+        redirect_to edition.document, alert_with_description: t("documents.show.flashes.delete_draft_error")
       end
     end
   end
 
   def update
-    Document.transaction do # rubocop:disable Metrics/BlockLength
-      @document = Document.with_current_edition.lock.find_by_param(params[:id])
-      current_edition = @document.current_edition
-      current_revision = current_edition.revision
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
+      current_revision = edition.revision
 
-      @revision = current_revision.build_revision_update(update_params(@document),
+      @revision = current_revision.build_revision_update(update_params(edition.document),
                                                          current_user)
 
       add_contact_request = params[:submit] == "add_contact"
-      @issues = Requirements::EditPageChecker.new(current_edition, @revision)
+      @issues = Requirements::EditPageChecker.new(edition, @revision)
                                              .pre_preview_issues
 
       if @issues.any?
@@ -66,30 +60,30 @@ class DocumentsController < ApplicationController
           "items" => @issues.items,
         }
 
-        render :edit, status: :unprocessable_entity
-        return
+        render :edit, assigns: { edition: edition }, status: :unprocessable_entity
+        next
       end
 
       if @revision != current_revision
-        current_edition.assign_revision(@revision, current_user).save!
+        edition.assign_revision(@revision, current_user).save!
 
         TimelineEntry.create_for_revision(entry_type: :updated_content,
-                                          edition: current_edition)
+                                          edition: edition)
 
-        PreviewService.new(current_edition).try_create_preview
+        PreviewService.new(edition).try_create_preview
       end
 
       if add_contact_request
-        redirect_to search_contacts_path(@document)
+        redirect_to search_contacts_path(edition.document)
       else
-        redirect_to @document
+        redirect_to edition.document
       end
     end
   end
 
   def generate_path
-    document = Document.find_by_param(params[:id])
-    base_path = PathGeneratorService.new.path(document, params[:title])
+    edition = Edition.find_current(document: params[:document])
+    base_path = PathGeneratorService.new.path(edition.document, params[:title])
     render plain: base_path
   end
 

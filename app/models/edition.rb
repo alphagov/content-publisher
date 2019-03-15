@@ -42,7 +42,7 @@ class Edition < ApplicationRecord
 
   has_many :internal_notes
 
-  delegate :content_id, :locale, :document_type, :topics, to: :document
+  delegate :content_id, :locale, :document_type, :topics, :document_topics, to: :document
 
   # delegate each state enum method
   state_methods = Status.states.keys.map { |s| (s + "?").to_sym }
@@ -65,6 +65,27 @@ class Edition < ApplicationRecord
            to: :revision
 
   MINIMUM_SCHEDULING_TIME = { minutes: 15 }.freeze
+
+  scope :find_current, ->(id: nil, document: nil) do
+    find_by = {}.tap do |criteria|
+      criteria[:id] = id if id
+
+      if document
+        content_id, locale = document.split(":")
+        criteria[:documents] = { content_id: content_id, locale: locale }
+      end
+    end
+
+    join_tables = %i[document revision status]
+    where(current: true)
+      .joins(join_tables)
+      .includes(join_tables)
+      .find_by!(find_by)
+  end
+
+  def self.find_and_lock_current(*args, &block)
+    transaction { lock.find_current(*args).tap(&block) }
+  end
 
   def self.create_initial(document, user = nil, tags = {})
     revision = Revision.create_initial(document, user, tags)

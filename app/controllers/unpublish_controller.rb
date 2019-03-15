@@ -2,6 +2,6 @@
 
 class UnpublishController < ApplicationController
   def remove
-    @document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = Edition.find_current(document: params[:document])
   end
 end

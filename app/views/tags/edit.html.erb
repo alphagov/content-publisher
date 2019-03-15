@@ -1,5 +1,5 @@
-<% content_for :back_link, render_back_link(href: document_path(@document)) %>
-<% content_for :title, t("tags.edit.title", title: @revision.title_or_fallback) %>
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, t("tags.edit.title", title: @edition.title_or_fallback) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -7,13 +7,13 @@
   </div>
 </div>
 
-<%= form_tag(tags_path(@document), data: { "warn-before-unload": "true" }, class: "app-c-contextual-guidance__form") do %>
-  <% @document.document_type.tags.each do |tag_field| %>
+<%= form_tag(tags_path(@edition.document), data: { "warn-before-unload": "true" }, class: "app-c-contextual-guidance__form") do %>
+  <% @edition.document_type.tags.each do |tag_field| %>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <%= render "tags/tags/#{tag_field.type}_input",
           tag_field: tag_field,
-          tags: @revision.tags %>
+          tags: @edition.tags %>
       </div>
     </div>
   <% end %>

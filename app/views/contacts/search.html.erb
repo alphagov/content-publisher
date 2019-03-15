@@ -1,4 +1,4 @@
-<% content_for :back_link, render_back_link(href: edit_document_path(@document)) %>
+<% content_for :back_link, render_back_link(href: edit_document_path(@edition.document)) %>
 <% content_for :browser_title, t("contacts.search.title") %>
 
 <%
@@ -10,7 +10,7 @@
 %>
 
 <%= form_tag(
-  insert_contact_path(@document),
+  insert_contact_path(@edition.document),
   data: { gtm: "insert-contact-submit" },
 ) do %>
   <%= render "components/autocomplete", {

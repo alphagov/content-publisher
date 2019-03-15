@@ -7,25 +7,26 @@ class TopicsController < ApplicationController
   end
 
   def edit
-    @document = Document.with_current_edition.find_by_param(params[:document_id])
-    @version = @document.document_topics.version
-    @topics = @document.topics
+    @edition = Edition.find_current(document: params[:document])
+    @version = @edition.document_topics.version
+    @topics = @edition.topics
   end
 
   def update
-    Document.transaction do
-      document = Document.with_current_edition.lock.find_by_param(params[:document_id])
-
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
       begin
-        document.document_topics.patch(params.fetch(:topics, []), params[:version].to_i)
+        edition.document_topics.patch(params.fetch(:topics, []), params[:version].to_i)
 
-        redirect_to document_path(document), notice: t("documents.show.flashes.topics_updated")
+        redirect_to document_path(edition.document),
+                    notice: t("documents.show.flashes.topics_updated")
       rescue GdsApi::HTTPConflict
-        Rails.logger.warn("Conflict updating topics for #{document.content_id} at version #{params[:version].to_i}")
-        redirect_to topics_path(document), alert_with_description: t("topics.edit.flashes.topic_update_conflict")
+        Rails.logger.warn("Conflict updating topics for #{edition.content_id} at version #{params[:version].to_i}")
+        redirect_to topics_path(edition.document),
+                    alert_with_description: t("topics.edit.flashes.topic_update_conflict")
       rescue GdsApi::BaseError => e
         GovukError.notify(e)
-        redirect_to document, alert_with_description: t("documents.show.flashes.topic_update_error")
+        redirect_to edition.document,
+                    alert_with_description: t("documents.show.flashes.topic_update_error")
       end
     end
   end

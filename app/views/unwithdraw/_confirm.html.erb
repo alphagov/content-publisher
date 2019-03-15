@@ -1,5 +1,5 @@
 <% confirmation = capture do %>
-  <%= form_tag(unwithdraw_path(@document), method: :post) do %>
+  <%= form_tag(unwithdraw_path(@edition.document), method: :post) do %>
 
     <p><%= t("documents.show.unwithdraw.description") %></p>
 
@@ -9,7 +9,7 @@
     } %>
 
     <%= link_to "Cancel",
-                document_path(@document),
+                document_path(@edition.document),
                 class: "govuk-link govuk-link--no-visited-state app-link--inline" %>
 
   <% end %>

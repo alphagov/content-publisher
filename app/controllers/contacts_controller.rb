@@ -2,7 +2,7 @@
 
 class ContactsController < ApplicationController
   def search
-    @document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = Edition.find_current(document: params[:document])
     @contacts_by_organisation = ContactsService.new.all_by_organisation
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
@@ -10,18 +10,16 @@ class ContactsController < ApplicationController
   end
 
   def insert
-    Document.transaction do # rubocop:disable Metrics/BlockLength
-      document = Document.with_current_edition.lock.find_by_param(params[:id])
-
-      redirect_location = edit_document_path(document) + "#body"
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
+      redirect_location = edit_document_path(edition.document) + "#body"
 
       if params[:contact_id].empty?
         redirect_to redirect_location
-        return
+        next
       end
 
       contact_markdown = "[Contact:#{params[:contact_id]}]\n"
-      current_revision = document.current_edition.revision
+      current_revision = edition.revision
 
       body = current_revision.contents.fetch("body", "").chomp
       updated_body = if body.present?
@@ -36,13 +34,12 @@ class ContactsController < ApplicationController
       )
 
       if next_revision != current_revision
-        current_edition = document.current_edition
-        current_edition.assign_revision(next_revision, current_user).save!
+        edition.assign_revision(next_revision, current_user).save!
 
         TimelineEntry.create_for_revision(entry_type: :updated_content,
-                                          edition: current_edition)
+                                          edition: edition)
 
-        PreviewService.new(current_edition).try_create_preview
+        PreviewService.new(edition).try_create_preview
       end
 
       redirect_to redirect_location

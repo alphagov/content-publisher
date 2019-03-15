@@ -2,9 +2,7 @@
 
 class UnscheduleController < ApplicationController
   def unschedule
-    Document.transaction do
-      document = Document.with_current_edition.lock!.find_by_param(params[:id])
-      edition = document.current_edition
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
       schedule = edition.status.details
 
       remove_scheduled_publishing_datetime(edition)
@@ -18,7 +16,7 @@ class UnscheduleController < ApplicationController
         status: edition.status,
       )
 
-      redirect_to document_path(document)
+      redirect_to document_path(edition.document)
     end
   end
 

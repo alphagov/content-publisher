@@ -5,7 +5,7 @@ class DebugController < ApplicationController
   helper_method :revision_diff
 
   def index
-    @document = Document.find_by_param(params[:id])
+    @document = Document.find_by_param(params[:document])
 
     image_preload = {
       lead_image_revision: %i[file_revision metadata_revision],

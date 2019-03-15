@@ -7,14 +7,12 @@ class ImagesController < ApplicationController
   end
 
   def index
-    @document = Document.with_current_edition.find_by_param(params[:document_id])
+    @edition = Edition.find_current(document: params[:document])
     render layout: rendering_context
   end
 
   def create
-    Document.transaction do
-      @document = Document.with_current_edition.lock.find_by_param(params[:document_id])
-
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
       @issues = ::Requirements::ImageUploadChecker.new(params[:image]).issues
 
       if @issues.any?
@@ -23,40 +21,35 @@ class ImagesController < ApplicationController
           "items" => @issues.items,
         }
 
-        render :index, layout: rendering_context, status: :unprocessable_entity
-        return
+        render :index,
+               assigns: { edition: edition },
+               layout: rendering_context,
+               status: :unprocessable_entity
+        next
       end
 
-      current_edition = @document.current_edition
-      current_revision = current_edition.revision
-      image_revision = ImageUploadService.new(params[:image], current_revision).call(current_user)
+      image_revision = ImageUploadService.new(params[:image], edition.revision).call(current_user)
 
-      next_revision = current_revision.build_revision_update_for_image_upsert(
+      next_revision = edition.revision.build_revision_update_for_image_upsert(
         image_revision,
         current_user,
       )
 
-      current_edition.assign_revision(next_revision, current_user).save!
-      PreviewService.new(current_edition).try_create_preview
-      redirect_to crop_image_path(params[:document_id], image_revision.image_id, wizard: "upload")
+      edition.assign_revision(next_revision, current_user).save!
+      PreviewService.new(edition).try_create_preview
+      redirect_to crop_image_path(params[:document], image_revision.image_id, wizard: "upload")
     end
   end
 
   def crop
-    @document, @image_revision = find_document_and_image_revision(
-      params[:document_id],
-      params[:image_id],
-    )
-
+    @edition = Edition.find_current(document: params[:document])
+    @image_revision = @edition.image_revisions.find_by!(image_id: params[:image_id])
     render layout: rendering_context
   end
 
   def update_crop
-    Document.transaction do
-      document, previous_image_revision = find_locked_document_and_image_revision(
-        params[:document_id],
-        params[:image_id],
-      )
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
+      previous_image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
 
       image_revision = previous_image_revision.build_revision_update(
         update_crop_params,
@@ -64,73 +57,66 @@ class ImagesController < ApplicationController
       )
 
       if image_revision != previous_image_revision
-        current_edition = document.current_edition
-        current_revision = current_edition.revision
-
-        next_revision = current_revision.build_revision_update_for_image_upsert(
+        next_revision = edition.revision.build_revision_update_for_image_upsert(
           image_revision,
           current_user,
         )
 
-        current_edition.assign_revision(next_revision, current_user).save!
+        edition.assign_revision(next_revision, current_user).save!
 
         TimelineEntry.create_for_revision(
           entry_type: :image_updated,
-          edition: current_edition,
+          edition: edition,
         )
 
-        PreviewService.new(document.current_edition).try_create_preview
+        PreviewService.new(edition).try_create_preview
       end
 
-      redirect_to edit_image_path(document, image_revision.image_id, wizard: params[:wizard])
+      redirect_to edit_image_path(edition.document, image_revision.image_id, wizard: params[:wizard])
     end
   end
 
   def edit
-    @document, @image_revision = find_document_and_image_revision(
-      params[:document_id],
-      params[:image_id],
-    )
-
+    @edition = Edition.find_current(document: params[:document])
+    @image_revision = @edition.image_revisions.find_by!(image_id: params[:image_id])
     render layout: rendering_context
   end
 
   def update
-    Document.transaction do # rubocop:disable Metrics/BlockLength
-      @document, previous_image_revision = find_locked_document_and_image_revision(
-        params[:document_id],
-        params[:image_id],
-      )
+    Edition.find_and_lock_current(document: params[:document]) do |edition| # rubocop:disable Metrics/BlockLength
+      previous_image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
 
-      @image_revision = previous_image_revision.build_revision_update(
+      image_revision = previous_image_revision.build_revision_update(
         update_params,
         current_user,
       )
 
-      @issues = Requirements::ImageRevisionChecker.new(@image_revision)
-                                                  .pre_preview_metadata_issues
+      issues = Requirements::ImageRevisionChecker.new(image_revision)
+                                                 .pre_preview_metadata_issues
 
-      if @issues.any?
+      if issues.any?
         flash.now["alert_with_items"] = {
           "title" => I18n.t!("images.edit.flashes.requirements"),
-          "items" => @issues.items,
+          "items" => issues.items,
         }
 
-        render :edit, layout: rendering_context, status: :unprocessable_entity
-        return
+        render :edit,
+               assigns: { edition: edition, image_revision: image_revision, issues: issues },
+               layout: rendering_context,
+               status: :unprocessable_entity
+        next
       end
 
-      current_edition = @document.current_edition
-      current_revision = current_edition.revision
-
       lead_image_revision = next_lead_image_revision(
-        current_revision,
-        @image_revision,
+        edition.revision,
+        image_revision,
         params[:lead_image] == "on",
       )
 
+      current_revision = edition.revision
+
       next_revision = current_revision.build_revision_update_for_lead_image_upsert(
-        @image_revision,
+        image_revision,
         lead_image_revision,
         current_user,
       )
@@ -145,62 +131,58 @@ class ImagesController < ApplicationController
                               end
 
         TimelineEntry.create_for_revision(entry_type: timeline_entry_type,
-                                          edition: current_edition)
+                                          edition: edition)
 
-        current_edition.assign_revision(next_revision, current_user).save!
-        PreviewService.new(current_edition).try_create_preview
+        edition.assign_revision(next_revision, current_user).save!
+        PreviewService.new(edition).try_create_preview
       end
 
       if lead_image_selected?(current_revision, next_revision)
-        redirect_to document_path(@document),
+        redirect_to document_path(edition.document),
                     notice: t("documents.show.flashes.lead_image.selected",
-                              file: @image_revision.filename)
+                              file: image_revision.filename)
       elsif lead_image_removed?(current_revision, next_revision)
-        redirect_to images_path(@document),
+        redirect_to images_path(edition.document),
                     notice: t("images.index.flashes.lead_image.removed",
-                              file: @image_revision.filename)
+                              file: image_revision.filename)
       else
-        redirect_to images_path(@document)
+        redirect_to images_path(edition.document)
       end
     end
   end
 
   def destroy
-    Document.transaction do
-      document, image_revision = find_locked_document_and_image_revision(
-        params[:document_id],
-        params[:image_id],
-      )
-
-      current_edition = document.current_edition
-      current_revision = current_edition.revision
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
+      image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
+      current_revision = edition.revision
 
       next_revision = current_revision.build_revision_update_for_image_removed(
         image_revision,
         current_user,
       )
 
-      current_edition.assign_revision(next_revision, current_user).save!
+      edition.assign_revision(next_revision, current_user).save!
 
       TimelineEntry.create_for_revision(
         entry_type: :image_deleted,
-        edition: current_edition,
+        edition: edition,
       )
 
-      PreviewService.new(current_edition).try_create_preview
+      PreviewService.new(edition).try_create_preview
 
       if lead_image_removed?(current_revision, next_revision)
-        redirect_to images_path(document), notice: t("images.index.flashes.lead_image.deleted", file: image_revision.filename)
+        redirect_to images_path(edition.document),
+                    notice: t("images.index.flashes.lead_image.deleted", file: image_revision.filename)
       else
-        redirect_to images_path(document), notice: t("images.index.flashes.deleted", file: image_revision.filename)
+        redirect_to images_path(edition.document),
+                    notice: t("images.index.flashes.deleted", file: image_revision.filename)
       end
     end
   end
 
   def download
-    _, image_revision = find_document_and_image_revision(params[:document_id],
-                                                         params[:image_id])
-
+    edition = Edition.find_current(document: params[:document])
+    image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
     variant = image_revision.crop_variant("960x640!").processed
 
     send_data(
@@ -211,26 +193,6 @@ class ImagesController < ApplicationController
   end
 
 private
-
-  def find_document_and_image_revision(document_id, image_id)
-    document = Document.with_current_edition.find_by_param(document_id)
-
-    image_revision = document.current_edition
-                             .image_revisions
-                             .find_by!(image_id: image_id)
-
-    [document, image_revision]
-  end
-
-  def find_locked_document_and_image_revision(document_id, image_id)
-    document = Document.with_current_edition.lock.find_by_param(document_id)
-
-    image_revision = document.current_edition
-                             .image_revisions
-                             .find_by!(image_id: image_id)
-
-    [document, image_revision]
-  end
 
   def update_params
     params.require(:image_revision).permit(:caption, :alt_text, :credit)

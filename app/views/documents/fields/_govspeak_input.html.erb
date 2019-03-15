@@ -18,18 +18,18 @@
         spellcheck: "false"
       },
       contextual_guidance: "document-contents-guidance",
-      govspeak_path: govspeak_preview_path(document),
+      govspeak_path: govspeak_preview_path(edition.document),
     } %>
   </div>
 
-  <% if document.document_type.guidance_for(field.id) %>
+  <% if edition.document_type.guidance_for(field.id) %>
     <div class="govuk-grid-column-one-third">
       <%= render "components/contextual_guidance", {
         id: "document-contents-guidance",
-        title: document.document_type.guidance_for(field.id).title,
+        title: edition.document_type.guidance_for(field.id).title,
         relative: true
       } do %>
-        <%= render_govspeak(document.document_type.guidance_for(field.id).body_govspeak) %>
+        <%= render_govspeak(edition.document_type.guidance_for(field.id).body_govspeak) %>
 
         <h3 class="govuk-heading-s"><%= t("documents.edit.fields.govspeak.title") %></h3>
 
