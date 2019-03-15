@@ -16,13 +16,15 @@ examples:
       title: Insert...
       items:
         - text: Image
+          href: '#'
+          target: _blank
           data_attributes:
             module: inline-image-modal
             modal-action: open
         - text: Contact
-          data_attributes:
-            module: inline-contact-modal
-            modal-action: open
+          button_options:
+            value: add_contact
+            name: submit
 
   within_markdown_editor_toolbar:
     embed: |
@@ -36,10 +38,12 @@ examples:
       align: right
       items:
         - text: Image
+          href: '#'
+          target: _blank
           data_attributes:
             module: inline-image-modal
             modal-action: open
         - text: Contact
-          data_attributes:
-            module: inline-contact-modal
-            modal-action: open
+          button_options:
+            value: add_contact
+            name: submit

@@ -46,16 +46,18 @@
             items: [
               {
                 text: "Contact",
-                value: "add_contact",
-                name: "submit"
+                button_options: {
+                  value: "add_contact",
+                  name: "submit",
+                },
               },
               {
                 text: "Image",
-                value: "add_image",
+                href: images_path(@edition.document),
+                target: "_blank",
                 data_attributes: {
                   module: "inline-image-modal",
                   "modal-action": "open",
-                  "modal-action-url": images_path(@edition.document)
                 }
               }
             ]

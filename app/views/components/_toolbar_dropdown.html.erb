@@ -15,13 +15,20 @@
       <%= tag.ul class: "app-c-toolbar-dropdown__list" do %>
         <% items.each do |item| %>
           <%= tag.li class: "app-c-toolbar-dropdown__list-item" do %>
-            <%= tag.button item[:text],
-              class:"app-c-toolbar-dropdown__button",
-              type: "submit",
-              name: item[:name],
-              value: item[:value],
-              data: item[:data_attributes]
-            %>
+            <% if item[:button_options] %>
+              <%= tag.button item[:text],
+                class: "app-c-toolbar-dropdown__button",
+                type: "submit",
+                name: item[:button_options][:name],
+                value: item[:button_options][:value]
+              %>
+            <% else %>
+              <%= link_to item[:text], item[:href],
+                class: "app-c-toolbar-dropdown__link",
+                data: item[:data_attributes],
+                target: item[:target]
+              %>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
