@@ -8,11 +8,17 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.$module = $module[0]
     this.$title = this.$module.querySelector('.app-c-toolbar-dropdown__title')
     this.$container = this.$module.querySelector('.app-c-toolbar-dropdown__container')
-    this.$buttons = this.$module.querySelectorAll('.app-c-toolbar-dropdown__button')
-
     this.$module.addEventListener('blur', ToolbarDropdown.prototype.handleBlur.bind(this), true)
-    this.$buttons.forEach(function ($button) {
-      $button.addEventListener('click', ToolbarDropdown.prototype.handleButtonClick.bind(this), true)
+
+    var $buttons = this.$module.querySelectorAll('.app-c-toolbar-dropdown__button')
+    var $links = this.$module.querySelectorAll('.app-c-toolbar-dropdown__link')
+
+    $buttons.forEach(function ($button) {
+      $button.addEventListener('click', ToolbarDropdown.prototype.handleClick.bind(this), true)
+    }, this)
+
+    $links.forEach(function ($link) {
+      $link.addEventListener('click', ToolbarDropdown.prototype.handleClick.bind(this), true)
     }, this)
   }
 
@@ -27,7 +33,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     }
   }
 
-  ToolbarDropdown.prototype.handleButtonClick = function (event) {
+  ToolbarDropdown.prototype.handleClick = function (event) {
     this.closeToolbarDropdown()
   }
 
