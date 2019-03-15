@@ -1,10 +1,10 @@
 <%
 title_key = rendering_context == "modal" ? "images.index.title_modal" : "images.index.title"
-content_for :title,t(title_key, title: @document.current_edition.title_or_fallback)
+content_for :title,t(title_key, title: @edition.title_or_fallback)
 %>
 
 <% unless rendering_context == "modal" %>
-  <% content_for :back_link, render_back_link(href: document_path(@document)) %>
+  <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 <% end %>
 
 <div class="govuk-grid-row">
@@ -17,7 +17,7 @@ content_for :title,t(title_key, title: @document.current_edition.title_or_fallba
       <% end %>
 
       <%= form_tag(
-        create_image_path(@document),
+        create_image_path(@edition.document),
         multipart: true,
         data: {
           gtm: "image-upload-submit",
@@ -39,11 +39,11 @@ content_for :title,t(title_key, title: @document.current_edition.title_or_fallba
       <% end %>
     </div>
 
-    <% if lead_image = @document.current_edition.lead_image_revision %>
-      <%= render "lead_image", lead_image: lead_image, document: @document %>
+    <% if lead_image = @edition.lead_image_revision %>
+      <%= render "lead_image", lead_image: lead_image, document: @edition.document %>
     <% end %>
 
-    <% images = @document.current_edition.image_revisions_without_lead %>
+    <% images = @edition.image_revisions_without_lead %>
 
     <% if images.any? %>
       <h2 class="govuk-heading-m">
@@ -51,7 +51,7 @@ content_for :title,t(title_key, title: @document.current_edition.title_or_fallba
       </h2>
 
       <% images.each do |image| %>
-        <%= render "image", image: image, document: @document %>
+        <%= render "image", image: image, document: @edition.document %>
       <% end %>
     <% end %>
   </div>

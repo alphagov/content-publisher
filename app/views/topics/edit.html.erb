@@ -1,5 +1,5 @@
-<% content_for :back_link, render_back_link(href: document_path(@document)) %>
-<% content_for :title, t("topics.edit.title", title: @document.current_edition.title_or_fallback) %>
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, t("topics.edit.title", title: @edition.title_or_fallback) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -57,13 +57,13 @@
   </li>
 <% end %>
 
-<%= form_tag update_topics_path(@document), data: { "gtm-selected-topics": "" }, method: :patch do %>
+<%= form_tag update_topics_path(@edition.document), data: { "gtm-selected-topics": "" }, method: :patch do %>
   <h2 class="govuk-heading-m"><%= t("topics.edit.selected_title") %></h2>
   <miller-columns-selected class="miller-columns-selected" id="selected-items" for="miller-columns"></miller-columns-selected>
 
   <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items">
   <ul id="taxonomy">
-    <% Topic.govuk_homepage(@document.document_topics.index).children.each do |topic| %>
+    <% Topic.govuk_homepage(@edition.document_topics.index).children.each do |topic| %>
       <% unroll(topic) %>
     <% end %>
   </ul>

@@ -8,67 +8,72 @@ Rails.application.routes.draw do
   get "/documents/choose-document-type" => "new_document#choose_document_type", as: :choose_document_type
   post "/documents/create" => "new_document#create", as: :create_document
 
-  get "/documents/:id/publish" => "publish#confirmation", as: :publish_confirmation
-  post "/documents/:id/publish" => "publish#publish"
-  get "/documents/:id/published" => "publish#published", as: :published
-
-  post "/documents/:id/save-scheduled-publishing-datetime" => "schedule#save_scheduled_publishing_datetime", as: :save_scheduled_publishing_datetime
-  post "/documents/:id/clear-scheduled-publishing-datetime" => "schedule#clear_scheduled_publishing_datetime", as: :clear_scheduled_publishing_datetime
-
-  get "/documents/:id/schedule" => "schedule#confirmation", as: :scheduling_confirmation
-  post "/documents/:id/schedule" => "schedule#schedule"
-  get "/documents/:id/scheduled" => "schedule#scheduled", as: :scheduled
-
-  post "/documents/:id/unschedule" => "unschedule#unschedule", as: :unschedule
-
   get "/documents" => "documents#index"
-  get "/documents/:document/edit" => "documents#edit", as: :edit_document
-  patch "/documents/:document" => "documents#update", as: :document
-  get "/documents/:document" => "documents#show"
-  get "/documents/:document/generate-path" => "documents#generate_path", as: :generate_path
-  get "/documents/:document/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
-  delete "/documents/:document" => "documents#destroy"
 
-  post "/documents/:id/internal_notes" => "internal_notes#create", as: :create_internal_note
+  scope "/documents/:document" do
+    get "" => "documents#show", as: :document
+    patch "" => "documents#update"
+    delete "" => "documents#destroy"
+    get "/edit" => "documents#edit", as: :edit_document
+    get "/generate-path" => "documents#generate_path", as: :generate_path
+    get "/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
 
-  get "/documents/:id/debug" => "debug#index", as: :debug_document
+    get "/publish" => "publish#confirmation", as: :publish_confirmation
+    post "/publish" => "publish#publish"
+    get "/published" => "publish#published", as: :published
 
-  get "/documents/:id/search-contacts" => "contacts#search", as: :search_contacts
-  post "/documents/:id/search-contacts" => "contacts#insert", as: :insert_contact
+    post "/save-scheduled-publishing-datetime" => "schedule#save_scheduled_publishing_datetime", as: :save_scheduled_publishing_datetime
+    post "/clear-scheduled-publishing-datetime" => "schedule#clear_scheduled_publishing_datetime", as: :clear_scheduled_publishing_datetime
 
-  post "/documents/:id/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
-  post "/documents/:id/approve" => "review#approve", as: :approve_document
+    get "/schedule" => "schedule#confirmation", as: :scheduling_confirmation
+    post "/schedule" => "schedule#schedule"
+    get "/scheduled" => "schedule#scheduled", as: :scheduled
 
-  get "/documents/:id/tags" => "tags#edit", as: :tags
-  post "/documents/:id/tags" => "tags#update"
+    post "/unschedule" => "unschedule#unschedule", as: :unschedule
 
-  get "/documents/:id/preview" => "preview#show", as: :preview_document
-  post "/documents/:id/create-preview" => "preview#create", as: :create_preview
+    post "/internal_notes" => "internal_notes#create", as: :create_internal_note
 
-  get "/documents/:id/withdraw" => "withdraw#new", as: :withdraw
-  post "/documents/:id/withdraw" => "withdraw#create"
+    get "/debug" => "debug#index", as: :debug_document
 
-  get "/documents/:id/unwithdraw" => "unwithdraw#confirm", as: :confirm_unwithdraw
-  post "/documents/:id/unwithdraw" => "unwithdraw#unwithdraw", as: :unwithdraw
+    get "/search-contacts" => "contacts#search", as: :search_contacts
+    post "/search-contacts" => "contacts#insert", as: :insert_contact
 
-  get "/documents/:id/remove" => "unpublish#remove", as: :remove
+    post "/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
+    post "/approve" => "review#approve", as: :approve_document
 
-  get "/documents/:document_id/images" => "images#index", as: :images
-  post "/documents/:document_id/images" => "images#create", as: :create_image
-  get "/documents/:document_id/images/:image_id/download" => "images#download", as: :download_image
-  get "/documents/:document_id/images/:image_id/crop" => "images#crop", as: :crop_image
-  patch "/documents/:document_id/images/:image_id/crop" => "images#update_crop"
-  get "/documents/:document_id/images/:image_id/edit" => "images#edit", as: :edit_image
-  patch "/documents/:document_id/images/:image_id/edit" => "images#update", as: :update_image
-  delete "/documents/:document_id/images/:image_id" => "images#destroy", as: :destroy_image
+    get "/tags" => "tags#edit", as: :tags
+    post "/tags" => "tags#update"
 
-  post "/documents/:document_id/lead-image/:image_id" => "lead_image#choose", as: :choose_lead_image
-  delete "/documents/:document_id/lead-image" => "lead_image#remove", as: :remove_lead_image
+    get "/preview" => "preview#show", as: :preview_document
+    post "/create-preview" => "preview#create", as: :create_preview
 
-  get "/documents/:document_id/topics" => "topics#edit", as: :topics
-  patch "/documents/:document_id/topics" => "topics#update", as: :update_topics
+    get "/withdraw" => "withdraw#new", as: :withdraw
+    post "/withdraw" => "withdraw#create"
 
-  post "/documents/:document_id/editions" => "editions#create", as: :create_edition
+    get "/unwithdraw" => "unwithdraw#confirm", as: :confirm_unwithdraw
+    post "/unwithdraw" => "unwithdraw#unwithdraw", as: :unwithdraw
+
+    get "/remove" => "unpublish#remove", as: :remove
+
+    get "/images" => "images#index", as: :images
+    post "/images" => "images#create", as: :create_image
+    get "/images/:image_id/download" => "images#download", as: :download_image
+    get "/images/:image_id/crop" => "images#crop", as: :crop_image
+    patch "/images/:image_id/crop" => "images#update_crop"
+    get "/images/:image_id/edit" => "images#edit", as: :edit_image
+    patch "/images/:image_id/edit" => "images#update", as: :update_image
+    delete "/images/:image_id" => "images#destroy", as: :destroy_image
+
+    post "/lead-image/:image_id" => "lead_image#choose", as: :choose_lead_image
+    delete "/lead-image" => "lead_image#remove", as: :remove_lead_image
+
+    get "/topics" => "topics#edit", as: :topics
+    patch "/topics" => "topics#update", as: :update_topics
+
+    post "/editions" => "editions#create", as: :create_edition
+
+    post "/govspeak-preview" => "govspeak_preview#to_html", as: :govspeak_preview
+  end
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 
@@ -77,8 +82,6 @@ Rails.application.routes.draw do
   get "/how-to-use-publisher" => "publisher_information#how_to_use_publisher", as: :how_to_use_publisher
   get "/beta-capabilities" => "publisher_information#beta_capabilities", as: :beta_capabilities
   get "/publisher-updates" => "publisher_information#publisher_updates", as: :publisher_updates
-
-  post "/documents/:id/govspeak-preview" => "govspeak_preview#to_html", as: :govspeak_preview
 
   mount GovukPublishingComponents::Engine, at: "/component-guide"
 

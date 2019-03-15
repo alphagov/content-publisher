@@ -42,7 +42,7 @@ class Edition < ApplicationRecord
 
   has_many :internal_notes
 
-  delegate :content_id, :locale, :document_type, :topics, to: :document
+  delegate :content_id, :locale, :document_type, :topics, :document_topics, to: :document
 
   # delegate each state enum method
   state_methods = Status.states.keys.map { |s| (s + "?").to_sym }

@@ -2,47 +2,49 @@
 
 class PublishController < ApplicationController
   def confirmation
-    @document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = Edition.find_current(document: params[:document])
 
-    issues = Requirements::EditionChecker.new(@document.current_edition)
+    issues = Requirements::EditionChecker.new(@edition)
                                          .pre_publish_issues(rescue_api_errors: false)
 
     if issues.any?
-      redirect_to document_path(@document), tried_to_publish: true
+      redirect_to document_path(@edition.document), tried_to_publish: true
       return
     end
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
-    redirect_to @document, alert_with_description: t("documents.show.flashes.publish_error")
+    redirect_to @edition.document,
+                alert_with_description: t("documents.show.flashes.publish_error")
   end
 
   def publish
-    Document.transaction do
-      @document = Document.with_current_edition.lock.find_by_param(params[:id])
-
-      if @document.current_edition.live?
-        redirect_to published_path(@document)
-        return
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
+      if edition.live?
+        redirect_to published_path(edition.document)
+        next
       end
 
       with_review = params[:review_state] == "reviewed"
 
-      live_edition = PublishService.new(@document).publish(user: current_user,
-                                                           with_review: with_review)
+      begin
+        live_edition = PublishService.new(edition.document)
+                                     .publish(user: current_user, with_review: with_review)
+      rescue GdsApi::BaseError
+        redirect_to edition.document,
+                    alert_with_description: t("documents.show.flashes.publish_error")
+        next
+      end
 
       TimelineEntry.create_for_status_change(
         entry_type: with_review ? :published : :published_without_review,
         status: live_edition.status,
       )
 
-      redirect_to published_path(@document)
+      redirect_to published_path(edition.document)
     end
-  rescue GdsApi::BaseError
-    redirect_to @document, alert_with_description: t("documents.show.flashes.publish_error")
   end
 
   def published
-    document = Document.with_current_edition.find_by_param(params[:id])
-    @edition = document.current_edition
+    @edition = Edition.find_current(document: params[:document])
   end
 end

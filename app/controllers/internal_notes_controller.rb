@@ -2,34 +2,34 @@
 
 class InternalNotesController < ApplicationController
   def create
-    Document.transaction do
-      document = Document.with_current_edition.lock!.find_by_param(params[:id])
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
       note = params.fetch(:internal_note)
 
       if note&.chomp.blank?
-        return redirect_to_document_history(document)
+        redirect_to_document_history(edition)
+        next
       end
 
       internal_note = InternalNote.create!(
         body: note,
-        edition: document.current_edition,
+        edition: edition,
         created_by: current_user,
       )
 
       TimelineEntry.create_for_revision(
         entry_type: :internal_note,
-        edition: document.current_edition,
+        edition: edition,
         details: internal_note,
         created_by: current_user,
       )
 
-      redirect_to_document_history(document)
+      redirect_to_document_history(edition)
     end
   end
 
 private
 
-  def redirect_to_document_history(document)
-    redirect_to("#{document_path(document)}#document-history")
+  def redirect_to_document_history(edition)
+    redirect_to(document_path(edition.document), anchor: "document-history")
   end
 end

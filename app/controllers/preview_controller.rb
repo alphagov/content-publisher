@@ -2,24 +2,26 @@
 
 class PreviewController < ApplicationController
   def create
-    Document.transaction do
-      @document = Document.with_current_edition.lock.find_by_param(params[:id])
+    Edition.find_and_lock_current(document: params[:document]) do |edition|
+      begin
+        if Requirements::EditionChecker.new(edition).pre_preview_issues.any?
+          redirect_to document_path(edition.document), tried_to_preview: true
+          next
+        end
 
-      if Requirements::EditionChecker.new(@document.current_edition).pre_preview_issues.any?
-        redirect_to document_path(@document), tried_to_preview: true
-        return
+        PreviewService.new(edition).create_preview
+      rescue GdsApi::BaseError => e
+        GovukError.notify(e)
+        redirect_to document_path(edition.document),
+                    alert_with_description: t("documents.show.flashes.preview_error")
+        next
       end
 
-      PreviewService.new(@document.current_edition).create_preview
-
-      redirect_to preview_document_path(@document)
+      redirect_to preview_document_path(edition.document)
     end
-  rescue GdsApi::BaseError => e
-    GovukError.notify(e)
-    redirect_to document_path(@document), alert_with_description: t("documents.show.flashes.preview_error")
   end
 
   def show
-    @document = Document.with_current_edition.find_by_param(params[:id])
+    @edition = Edition.find_current(document: params[:document])
   end
 end
