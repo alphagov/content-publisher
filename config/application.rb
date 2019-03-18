@@ -12,6 +12,7 @@ require "action_view/railtie"
 # require "action_cable/engine"
 require "sprockets/railtie"
 require "rails/test_unit/railtie"
+require "action_mailer/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -36,6 +37,10 @@ module ContentPublisher
 
     unless Rails.application.secrets.jwt_auth_secret
       raise "JWT auth secret is not configured. See config/secrets.yml"
+    end
+
+    config.after_initialize do
+      config.action_mailer.notify_settings = { api_key: Rails.application.secrets.notify_api_key }
     end
   end
 end

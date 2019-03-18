@@ -262,6 +262,8 @@ GEM
       mini_portile2 (~> 2.4.0)
     nokogumbo (1.5.0)
       nokogiri
+    notifications-ruby-client (3.1.0)
+      jwt (>= 1.5, < 3)
     null_logger (0.0.1)
     oauth2 (1.4.1)
       faraday (>= 0.8, < 0.16.0)
@@ -475,6 +477,7 @@ DEPENDENCIES
   jasmine_selenium_runner (~> 3)
   kaminari (~> 1)
   listen (~> 3)
+  notifications-ruby-client (~> 3.1)
   pg (~> 1)
   plek (~> 2)
   rails (~> 5.2)

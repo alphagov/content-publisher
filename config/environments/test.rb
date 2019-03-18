@@ -36,4 +36,8 @@ Rails.application.configure do
 
   # Immediately discard cache in tests
   config.cache_store = :null_store
+
+  # Use test delivery method instead of sending emails to Notify
+  config.action_mailer.delivery_method = :test
+  config.action_mailer.default_options = { from: "test@example.com" }
 end
