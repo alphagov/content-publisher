@@ -78,7 +78,7 @@ GEM
       oj (~> 3.0)
     bootsnap (1.4.1)
       msgpack (~> 1.0)
-    brakeman (4.4.0)
+    brakeman (4.5.0)
     builder (3.2.3)
     byebug (11.0.0)
     capybara (3.10.1)
