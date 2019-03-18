@@ -12,19 +12,12 @@ class TagsController < ApplicationController
 
   def update
     Edition.find_and_lock_current(document: params[:document]) do |edition|
-      revision = edition.revision
+      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
+      updater.assign(tags: update_params(edition))
 
-      next_revision = revision.build_revision_update(
-        { tags: update_params(edition) },
-        current_user,
-      )
-
-      if next_revision != revision
-        edition.assign_revision(next_revision, current_user).save!
-
-        TimelineEntry.create_for_revision(entry_type: :updated_tags,
-                                          edition: edition)
-
+      if updater.changed?
+        edition.assign_revision(updater.next_revision, current_user).save!
+        TimelineEntry.create_for_revision(entry_type: :updated_tags, edition: edition)
         PreviewService.new(edition).try_create_preview
       end
 
