@@ -4,14 +4,21 @@ require "mail_recipient_interceptor"
 
 RSpec.describe MailRecipientInterceptor do
   describe "#delivering_email" do
-    it "intercepts emails and sends to an allow-listed email address" do
-      mail = Mail.new(to: "not-allowed@example.com")
+    let(:original_recipient) { "not-allowed@example.com" }
+    let(:mail) { Mail.new(to: original_recipient) }
 
+    before do
       ClimateControl.modify(GOVUK_NOTIFY_ALLOW_LIST: "allowed@example.com") do
         MailRecipientInterceptor.delivering_email(mail)
       end
+    end
 
+    it "intercepts emails and sends to an allow-listed email address" do
       expect(mail.to).to include("allowed@example.com")
+    end
+
+    it "intercepts emails and prefixes the original recipient to the body" do
+      expect(mail.body.raw_source).to include(original_recipient)
     end
   end
 end
