@@ -40,7 +40,10 @@ module ContentPublisher
     end
 
     config.after_initialize do
-      config.action_mailer.notify_settings = { api_key: Rails.application.secrets.notify_api_key }
+      config.action_mailer.notify_settings = {
+        api_key: Rails.application.secrets.notify_api_key,
+        template_id: ENV["GOVUK_NOTIFY_TEMPLATE_ID"],
+      }
     end
   end
 end
