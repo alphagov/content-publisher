@@ -19,26 +19,21 @@ class ContactsController < ApplicationController
       end
 
       contact_markdown = "[Contact:#{params[:contact_id]}]\n"
-      current_revision = edition.revision
+      revision = edition.revision
 
-      body = current_revision.contents.fetch("body", "").chomp
+      body = revision.contents.fetch("body", "").chomp
       updated_body = if body.present?
                        "#{body}\n\n#{contact_markdown}"
                      else
                        contact_markdown
                      end
 
-      next_revision = current_revision.build_revision_update(
-        { contents: current_revision.contents.merge("body" => updated_body) },
-        current_user,
-      )
+      updater = Versioning::RevisionUpdater.new(revision, current_user)
+      updater.assign(contents: revision.contents.merge("body" => updated_body))
 
-      if next_revision != current_revision
-        edition.assign_revision(next_revision, current_user).save!
-
-        TimelineEntry.create_for_revision(entry_type: :updated_content,
-                                          edition: edition)
-
+      if updater.changed?
+        edition.assign_revision(updater.next_revision, current_user).save!
+        TimelineEntry.create_for_revision(entry_type: :updated_content, edition: edition)
         PreviewService.new(edition).try_create_preview
       end
 

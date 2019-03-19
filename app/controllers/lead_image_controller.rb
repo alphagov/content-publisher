@@ -3,20 +3,13 @@
 class LeadImageController < ApplicationController
   def choose
     Edition.find_and_lock_current(document: params[:document]) do |edition|
-      revision = edition.revision
-      image_revision = revision.image_revisions.find_by!(image_id: params[:image_id])
+      image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
+      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
+      updater.assign(lead_image_revision: image_revision)
 
-      if revision.lead_image_revision != image_revision
-        next_revision = revision.build_revision_update(
-          { lead_image_revision: image_revision },
-          current_user,
-        )
-
-        edition.assign_revision(next_revision, current_user).save!
-
-        TimelineEntry.create_for_revision(entry_type: :lead_image_selected,
-                                          edition: edition)
-
+      if updater.changed?
+        edition.assign_revision(updater.next_revision, current_user).save!
+        TimelineEntry.create_for_revision(entry_type: :lead_image_selected, edition: edition)
         PreviewService.new(edition).try_create_preview
       end
 
@@ -27,21 +20,13 @@ class LeadImageController < ApplicationController
 
   def remove
     Edition.find_and_lock_current(document: params[:document]) do |edition|
-      revision = edition.revision
+      image_revision = edition.lead_image_revision
+      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
+      updater.assign(lead_image_revision: nil)
 
-      if revision.lead_image_revision
-        image_revision = revision.lead_image_revision
-
-        next_revision = revision.build_revision_update(
-          { lead_image_revision: nil },
-          current_user,
-        )
-
-        edition.assign_revision(next_revision, current_user).save!
-
-        TimelineEntry.create_for_revision(entry_type: :lead_image_removed,
-                                          edition: edition)
-
+      if updater.changed?
+        edition.assign_revision(updater.next_revision, current_user).save!
+        TimelineEntry.create_for_revision(entry_type: :lead_image_removed, edition: edition)
         PreviewService.new(edition).try_create_preview
       end
 

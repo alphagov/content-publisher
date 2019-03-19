@@ -45,13 +45,11 @@ class DocumentsController < ApplicationController
 
   def update
     Edition.find_and_lock_current(document: params[:document]) do |edition|
-      current_revision = edition.revision
-
-      @revision = current_revision.build_revision_update(update_params(edition.document),
-                                                         current_user)
+      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
+      updater.assign(update_params(edition.document))
 
       add_contact_request = params[:submit] == "add_contact"
-      @issues = Requirements::EditPageChecker.new(edition, @revision)
+      @issues = Requirements::EditPageChecker.new(edition, updater.next_revision)
                                              .pre_preview_issues
 
       if @issues.any?
@@ -60,16 +58,13 @@ class DocumentsController < ApplicationController
           "items" => @issues.items,
         }
 
-        render :edit, assigns: { edition: edition }, status: :unprocessable_entity
+        render :edit, assigns: { edition: edition, revision: edition.revision }, status: :unprocessable_entity
         next
       end
 
-      if @revision != current_revision
-        edition.assign_revision(@revision, current_user).save!
-
-        TimelineEntry.create_for_revision(entry_type: :updated_content,
-                                          edition: edition)
-
+      if updater.changed?
+        edition.assign_revision(updater.next_revision, current_user).save!
+        TimelineEntry.create_for_revision(entry_type: :updated_content, edition: edition)
         PreviewService.new(edition).try_create_preview
       end
 
