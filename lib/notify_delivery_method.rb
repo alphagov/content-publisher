@@ -22,7 +22,7 @@ private
   def payload(mail)
     {
       email_address: mail.to.first,
-      template_id: mail[:template_id].to_s,
+      template_id: settings[:template_id],
       personalisation: {
         body: mail.body.raw_source,
         subject: mail.subject,
