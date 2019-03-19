@@ -4,7 +4,9 @@ module ApplicationHelper
   include TimeOptionsHelper
 
   def govspeak_to_html(govspeak)
-    raw(Govspeak::Document.new(govspeak).to_html) # rubocop:disable Rails/OutputSafety
+    # We expect all the govspeak through this to be commited code where we
+    # verify the safety
+    raw(Govspeak::Document.new(govspeak, sanitize: false).to_html) # rubocop:disable Rails/OutputSafety
   end
 
   def render_back_link(options)
