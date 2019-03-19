@@ -1,60 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Image::FileRevision do
-  describe "#different_to?" do
-    it "is true when update data is different" do
-      revision1 = create(:image_file_revision, crop_x: 5)
-      revision2 = revision1.dup
-      revision2.crop_x = 6
-
-      expect(revision1.different_to?(revision2)).to be true
-    end
-
-    it "is false when content is the same and only timestamps differ" do
-      revision1 = create(:image_file_revision,
-                         crop_x: 5,
-                         created_at: 10.days.ago)
-      revision2 = revision1.dup
-      revision2.created_at = 10.seconds.ago
-
-      expect(revision1.different_to?(revision2)).to be false
-    end
-  end
-
-  describe "#build_revision_update" do
-    let(:existing_revision) do
-      create(:image_file_revision, crop_y: 10)
-    end
-
-    it "returns the current revision if the update does not change it's content" do
-      revision = existing_revision.build_revision_update(
-        { crop_y: existing_revision.crop_y },
-        build(:user),
-      )
-
-      expect(revision).to be(existing_revision)
-    end
-
-    it "returns a new revision if the update changes content" do
-      revision = existing_revision.build_revision_update(
-        { crop_y: 200 },
-        build(:user),
-      )
-
-      expect(revision).not_to be(existing_revision)
-      expect(revision).to be_new_record
-    end
-
-    it "creates new assets for a change" do
-      revision = existing_revision.build_revision_update(
-        { crop_y: 200 },
-        build(:user),
-      )
-
-      expect(revision.assets).not_to match(existing_revision.assets)
-    end
-  end
-
   describe "#ensure_assets" do
     it "doesn't change the assets when they already exist" do
       image_revision = build(:image_file_revision)
