@@ -29,13 +29,9 @@ class ImagesController < ApplicationController
       end
 
       image_revision = ImageUploadService.new(params[:image], edition.revision).call(current_user)
-
-      next_revision = edition.revision.build_revision_update_for_image_upsert(
-        image_revision,
-        current_user,
-      )
-
-      edition.assign_revision(next_revision, current_user).save!
+      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
+      updater.update_image(image_revision)
+      edition.assign_revision(updater.next_revision, current_user).save!
       PreviewService.new(edition).try_create_preview
       redirect_to crop_image_path(params[:document], image_revision.image_id, wizard: "upload")
     end
@@ -49,26 +45,15 @@ class ImagesController < ApplicationController
 
   def update_crop
     Edition.find_and_lock_current(document: params[:document]) do |edition|
-      previous_image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
+      image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
+      image_updater = Versioning::ImageRevisionUpdater.new(image_revision, current_user)
+      image_updater.assign(update_crop_params)
 
-      image_revision = previous_image_revision.build_revision_update(
-        update_crop_params,
-        current_user,
-      )
-
-      if image_revision != previous_image_revision
-        next_revision = edition.revision.build_revision_update_for_image_upsert(
-          image_revision,
-          current_user,
-        )
-
-        edition.assign_revision(next_revision, current_user).save!
-
-        TimelineEntry.create_for_revision(
-          entry_type: :image_updated,
-          edition: edition,
-        )
-
+      if image_updater.changed?
+        updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
+        updater.update_image(image_updater.next_revision)
+        edition.assign_revision(updater.next_revision, current_user).save!
+        TimelineEntry.create_for_revision(entry_type: :image_updated, edition: edition)
         PreviewService.new(edition).try_create_preview
       end
 

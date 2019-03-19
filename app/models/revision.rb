@@ -75,38 +75,6 @@ class Revision < ApplicationRecord
     BuildRevisionUpdate.new(attributes, user, self).build
   end
 
-  def build_revision_update_for_lead_image_upsert(image_revision, lead_image_revision, user)
-    revisions = image_revisions.reject { |ir| ir.image_id == image_revision.image_id }
-
-    attributes = {
-      image_revisions: revisions + [image_revision],
-      lead_image_revision: lead_image_revision,
-    }
-
-    build_revision_update(attributes, user)
-  end
-
-  def build_revision_update_for_image_upsert(image_revision, user)
-    revisions = image_revisions.reject { |ir| ir.image_id == image_revision.image_id }
-    attributes = { image_revisions: revisions + [image_revision] }
-
-    if lead_image_revision&.image_id == image_revision.image_id
-      attributes[:lead_image_revision] = image_revision
-    end
-
-    build_revision_update(attributes, user)
-  end
-
-  def build_revision_update_for_image_removed(image_revision, user)
-    attributes = { image_revisions: image_revisions - [image_revision] }
-
-    if lead_image_revision == image_revision
-      attributes[:lead_image_revision] = nil
-    end
-
-    build_revision_update(attributes, user)
-  end
-
   def different_to?(other_revision)
     raise "Must compare with a persisted record" if other_revision.new_record?
 
