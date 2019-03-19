@@ -33,6 +33,7 @@ RSpec.feature "Delete draft with Asset Manager down" do
   end
 
   def and_i_delete_the_draft
+    stub_publishing_api_unreserve_path(@edition.base_path)
     stub_any_publishing_api_discard_draft
     click_on "Delete draft"
     click_on "Yes, delete draft"

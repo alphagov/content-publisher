@@ -20,7 +20,8 @@ RSpec.feature "Delete draft when the Publishing API is down" do
   end
 
   def when_the_api_is_up_and_i_try_again
-    @request = stub_publishing_api_discard_draft(@edition.content_id)
+    stub_publishing_api_discard_draft(@edition.content_id)
+    stub_publishing_api_unreserve_path(@edition.base_path)
     click_on "Delete draft"
     click_on "Yes, delete draft"
   end
