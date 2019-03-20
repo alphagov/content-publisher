@@ -116,7 +116,7 @@ GEM
     ffi (1.10.0)
     foreman (0.85.0)
       thor (~> 0.19.1)
-    gds-api-adapters (57.4.2)
+    gds-api-adapters (57.5.0)
       addressable
       link_header
       null_logger
@@ -456,7 +456,7 @@ DEPENDENCIES
   climate_control
   factory_bot_rails (~> 5)
   foreman (~> 0.85)
-  gds-api-adapters (~> 57.4.2)
+  gds-api-adapters (~> 57.5.0)
   gds-sso (~> 14)
   govspeak (~> 6)
   govuk-lint (~> 3)
