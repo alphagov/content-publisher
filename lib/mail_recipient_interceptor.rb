@@ -5,6 +5,6 @@ class MailRecipientInterceptor
     body_prefix = "Intended recipient(s): #{message.to.join(', ')}\n"
 
     message.body = body_prefix + message.body.raw_source
-    message.to = ENV["GOVUK_NOTIFY_ALLOW_LIST"]
+    message.to = ENV["EMAIL_ADDRESS_OVERRIDE"]
   end
 end

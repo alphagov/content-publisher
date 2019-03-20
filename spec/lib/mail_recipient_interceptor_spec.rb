@@ -8,7 +8,7 @@ RSpec.describe MailRecipientInterceptor do
     let(:mail) { Mail.new(to: original_recipient) }
 
     before do
-      ClimateControl.modify(GOVUK_NOTIFY_ALLOW_LIST: "allowed@example.com") do
+      ClimateControl.modify(EMAIL_ADDRESS_OVERRIDE: "allowed@example.com") do
         MailRecipientInterceptor.delivering_email(mail)
       end
     end

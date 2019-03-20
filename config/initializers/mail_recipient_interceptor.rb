@@ -1,3 +1,3 @@
-if ENV.fetch("GOVUK_NOTIFY_ALLOW_LIST", nil)
+if ENV.fetch("EMAIL_ADDRESS_OVERRRIDE", nil)
   ActionMailer::Base.register_interceptor(MailRecipientInterceptor)
 end
