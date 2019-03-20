@@ -1,5 +1,8 @@
+### Document list defaults to your organisation <span class="govuk-caption-m">21 March 2019</span>
+The document search list will now only show content tagged to your organisation. You can clear filters to see all content tagged to any organisation.
+
 ### Images in body text <span class="govuk-caption-m">7 March 2019</span>
-You can now embed images in the body text of content. Images can now display a copyright credit if needed.
+You can now embed images in the body text of content from the Insert menu. Images can display a copyright credit if needed.
 
 ### Withdrawing content <span class="govuk-caption-m">12 February 2019</span>
 Managing Editors can now [withdraw](https://www.gov.uk/guidance/content-design/gov-uk-content-retention-and-withdrawal-archiving-policy) content without raising a support request.
