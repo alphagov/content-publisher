@@ -35,6 +35,17 @@ class PublishingApiPayload
     payload
   end
 
+  def intent_payload
+    rendering_app = publishing_metadata.rendering_app
+    publish_time = edition.scheduled_publishing_datetime
+
+    {
+      publish_time: publish_time,
+      publishing_app: PUBLISHING_APP,
+      rendering_app: rendering_app,
+    }
+  end
+
 private
 
   def links

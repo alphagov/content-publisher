@@ -10,6 +10,7 @@ require "byebug"
 require "govuk_schemas/rspec_matchers"
 require "simplecov"
 require "webmock/rspec"
+require "gds_api/test_helpers/publishing_api"
 require "gds_api/test_helpers/publishing_api_v2"
 require "gds_api/test_helpers/asset_manager"
 
@@ -38,6 +39,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.use_transactional_fixtures = true
   config.include FactoryBot::Syntax::Methods
+  config.include GdsApi::TestHelpers::PublishingApi
   config.include GdsApi::TestHelpers::PublishingApiV2
   config.include GdsApi::TestHelpers::AssetManager
   config.include GovukSchemas::RSpecMatchers

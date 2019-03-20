@@ -74,6 +74,9 @@ en:
         submitted_for_review:
           title: Content has been marked as ready for 2i review
           label: Send this document to another publisher for them to review. When content is ready you or they can publish it.
+        schedule_error:
+          title: Something has gone wrong
+          description_govspeak: Something went wrong when scheduling your document. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         delete_draft: Are you sure you want to delete this draft?
         delete_draft_error:
           title: Something has gone wrong

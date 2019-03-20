@@ -18,6 +18,7 @@ RSpec.feature "Schedule an edition" do
   def given_there_is_an_edition_with_set_scheduled_publishing_datetime
     @datetime = Time.current.tomorrow
     @edition = create(:edition, scheduled_publishing_datetime: @datetime)
+    @request = stub_default_publishing_api_put_intent
   end
 
   def when_i_visit_the_summary_page
@@ -43,6 +44,8 @@ RSpec.feature "Schedule an edition" do
     expect(ScheduledPublishingWorker)
       .to have_enqueued_sidekiq_job(@edition.id, govuk_header_args)
       .at(@datetime)
+
+    assert_requested @request
   end
 
   def then_i_see_the_edition_has_been_scheduled
