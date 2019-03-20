@@ -22,6 +22,7 @@ RSpec.feature "Delete draft" do
 
   def and_i_delete_the_draft
     @content_request = stub_publishing_api_discard_draft(@edition.content_id)
+    @unreserve_request = stub_publishing_api_unreserve_path(@edition.base_path)
     @image_request = stub_asset_manager_deletes_any_asset
 
     click_on "Delete draft"
@@ -36,5 +37,6 @@ RSpec.feature "Delete draft" do
   def and_the_draft_is_discarded
     expect(@content_request).to have_been_requested
     expect(@image_request).to have_been_requested.at_least_once
+    expect(@unreserve_request).to have_been_requested
   end
 end

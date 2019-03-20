@@ -40,6 +40,8 @@ class Edition < ApplicationRecord
 
   has_many :timeline_entries
 
+  has_and_belongs_to_many :revisions
+
   has_many :internal_notes
 
   delegate :content_id, :locale, :document_type, :topics, :document_topics, to: :document
