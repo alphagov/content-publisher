@@ -58,12 +58,12 @@ RSpec.feature "Edit image", js: true do
   def and_i_edit_the_image_crop
     click_on "Edit image"
 
-    # drag towards the top of the page where the page heading is located
+    # drag towards the top of the page where the page header is located
     crop_box = find(".cropper-crop-box")
-    crop_box.drag_to(find(".govuk-heading-l"))
+    crop_box.drag_to(find(".govuk-header"))
 
     bottom_right_handle = find(".cropper-point.point-se")
-    bottom_right_handle.drag_to(find(".govuk-heading-l"))
+    bottom_right_handle.drag_to(find(".govuk-header"))
 
     @publishing_api_request = stub_any_publishing_api_put_content
     @new_asset_requests = stub_asset_manager_receives_an_asset
