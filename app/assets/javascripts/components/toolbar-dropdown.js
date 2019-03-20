@@ -23,11 +23,10 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
   }
 
   ToolbarDropdown.prototype.handleBlur = function (event) {
-    var target = event.relatedTarget
-    if (!target) {
-      target = document.activeElement
-    }
-
+    var target = event.relatedTarget || // Chrome
+                 event.explicitOriginalTarget || // Firefox
+                 event.target || // Safari
+                 document.activeElement // IE
     if (!this.$module.contains(target)) {
       this.closeToolbarDropdown()
     }
