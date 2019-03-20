@@ -121,7 +121,7 @@ bundle exec rake import:whitehall_news INPUT=/tmp/whitehall-export.json
 
 ### User support
 
-- [Withdrawing and removing documents](docs/withdrawing-and-removing-documents.md)
+- [Removing documents](docs/removing-documents.md)
 
 ## Licence
 

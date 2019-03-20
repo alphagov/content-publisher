@@ -1,20 +1,6 @@
 # frozen_string_literal: true
 
 namespace :unpublish do
-  desc "Withdraw a document on GOV.UK e.g. unpublish:withdraw['a-content-id'] NOTE='A note'"
-  task :withdraw, [:content_id] => :environment do |_, args|
-    raise "Missing content_id parameter" unless args.content_id
-    raise "Missing NOTE value" if ENV["NOTE"].blank?
-
-    public_explanation = ENV["NOTE"]
-    locale = ENV["LOCALE"] || "en"
-
-    document = Document.find_by!(content_id: args.content_id, locale: locale)
-    raise "Document must have a published version before it can be withdrawn" unless document.live_edition
-
-    WithdrawService.new.call(document.live_edition, public_explanation)
-  end
-
   desc "Remove a document from GOV.UK e.g. unpublish:remove['a-content-id']"
   task :remove, [:content_id] => :environment do |_, args|
     raise "Missing content_id parameter" unless args.content_id

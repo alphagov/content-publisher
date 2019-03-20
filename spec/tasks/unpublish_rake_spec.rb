@@ -3,51 +3,6 @@
 RSpec.describe "Unpublish rake tasks" do
   let(:edition) { create(:edition, :published, locale: "en") }
 
-  describe "unpublish:withdraw" do
-    before do
-      Rake::Task["unpublish:withdraw"].reenable
-    end
-
-    it "withdraws an edition" do
-      public_explanation = "The reason the edition is being withdrawn"
-      unpublish_request = stub_publishing_api_unpublish(
-        edition.content_id,
-        body: {
-          explanation: %{<p>#{public_explanation}</p>\n},
-          locale: edition.locale,
-          type: "withdrawal",
-        },
-      )
-
-      ClimateControl.modify NOTE: public_explanation do
-        Rake::Task["unpublish:withdraw"].invoke(edition.content_id)
-      end
-
-      expect(unpublish_request).to have_been_requested
-      expect(edition.reload).to be_withdrawn
-    end
-
-    it "raises an error if a content_id is not present" do
-      expect { Rake::Task["unpublish:withdraw"].invoke }
-        .to raise_error("Missing content_id parameter")
-    end
-
-    it "raises an error if a NOTE is not present" do
-      expect { Rake::Task["unpublish:withdraw"].invoke("a-content-id") }
-        .to raise_error("Missing NOTE value")
-    end
-
-    it "raises an error if the document does not have a live version on GOV.uk" do
-      draft = create(:edition, locale: "en")
-      public_explanation = "The reason the document is being withdrawn"
-
-      ClimateControl.modify NOTE: public_explanation do
-        expect { Rake::Task["unpublish:withdraw"].invoke(draft.content_id) }
-          .to raise_error("Document must have a published version before it can be withdrawn")
-      end
-    end
-  end
-
   describe "unpublish:remove" do
     before do
       Rake::Task["unpublish:remove"].reenable
