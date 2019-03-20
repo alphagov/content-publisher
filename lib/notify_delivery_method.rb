@@ -20,6 +20,10 @@ private
   end
 
   def payload(mail)
+    if mail.to.length > 1
+      raise "Sending emails with multiple recipients is not supported"
+    end
+
     {
       email_address: mail.to.first,
       template_id: settings[:template_id],
