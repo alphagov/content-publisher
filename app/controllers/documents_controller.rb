@@ -2,7 +2,7 @@
 
 class DocumentsController < ApplicationController
   def index
-    if filter_params[:filters].empty? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
+    if filter_params[:filters].empty?
       redirect_to documents_path(organisation: current_user.organisation_content_id)
       return
     end
