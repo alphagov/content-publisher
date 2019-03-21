@@ -6,11 +6,13 @@ RSpec.describe NotifyDeliveryMethod do
       headers = { to: "x@y.com",
                   body: "Body content",
                   subject: "A subject line" }
+
       template_id = SecureRandom.uuid
       message = Mail::Message.new(headers)
-
       client = instance_double("Notifications::Client")
-      allow(Notifications::Client).to receive(:new).and_return(client)
+
+      allow(Notifications::Client).to receive(:new)
+        .with("api-key").and_return(client)
 
       expect(client).to receive(:send_email)
         .with(email_address: headers[:to],
@@ -20,8 +22,28 @@ RSpec.describe NotifyDeliveryMethod do
                 subject: headers[:subject],
               })
 
-      NotifyDeliveryMethod.new(api_key: "api-key", template_id: template_id)
-                          .deliver!(message)
+      method = NotifyDeliveryMethod.new(notify_api_key: "api-key", template_id: template_id)
+      method.deliver!(message)
+    end
+
+    it "raises an exception for multiple recipients" do
+      headers = { to: ["x@y.com", "a@b.com"],
+                  body: "Body content",
+                  subject: "A subject line" }
+
+      template_id = SecureRandom.uuid
+      message = Mail::Message.new(headers)
+      client = instance_double("Notifications::Client")
+
+      allow(Notifications::Client).to receive(:new)
+        .with("api-key").and_return(client)
+
+      method = NotifyDeliveryMethod.new(notify_api_key: "api-key", template_id: template_id)
+
+      expect { method.deliver!(message) }.to raise_error(
+        RuntimeError,
+        "Sending emails with multiple recipients is not supported",
+      )
     end
   end
 end
