@@ -176,30 +176,35 @@ RSpec.describe Edition do
   end
 
   describe "#assign_revision" do
-    let(:edition) { build(:edition) }
-    let(:revision) { build(:revision, document: edition.document) }
+    let(:revision) { build(:revision) }
     let(:user) { build(:user) }
 
-    it "sets the revision and updates last edited" do
-      travel_to(Time.current) do
-        edition.assign_revision(revision, user)
+    context "when an edition is live" do
+      it "raises an error" do
+        edition = build(:edition, :published)
 
-        expect(edition.revision).to eq(revision)
-        expect(edition.last_edited_by).to eq(user)
-        expect(edition.last_edited_at).to eq(Time.current)
+        expect { edition.assign_revision(revision, user) }
+          .to raise_error(RuntimeError, "cannot update revision on a live edition")
       end
     end
 
-    it "does not save the edition" do
-      edition.assign_revision(revision, user)
+    context "when an edition is not live" do
+      let(:edition) { build(:edition) }
 
-      expect(edition).to be_new_record
-    end
+      it "sets the revision and updates last edited" do
+        travel_to(Time.current) do
+          edition.assign_revision(revision, user)
+          expect(edition.revision).to eq(revision)
+          expect(edition.last_edited_by).to eq(user)
+          expect(edition.last_edited_at).to eq(Time.current)
+          expect(edition).to be_new_record
+        end
+      end
 
-    it "returns the edition" do
-      returned = edition.assign_revision(revision, user)
-
-      expect(returned).to be(edition)
+      it "returns the edition" do
+        returned = edition.assign_revision(revision, user)
+        expect(returned).to be(edition)
+      end
     end
   end
 end
