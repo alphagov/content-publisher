@@ -2,31 +2,29 @@
 
 class WithdrawService
   def call(edition, public_explanation, user = nil)
-    Document.transaction(requires_new: true) do
-      edition.document.lock!
-      check_withdrawable(edition)
+    edition.document.lock!
+    check_withdrawable(edition)
 
-      return if withdrawn_with_public_explanation?(edition, public_explanation)
+    return if withdrawn_with_public_explanation?(edition, public_explanation)
 
-      withdrawal = build_withdrawal(edition, public_explanation)
+    withdrawal = build_withdrawal(edition, public_explanation)
 
-      already_withdrawn = edition.withdrawn?
-      edition.assign_status(:withdrawn, user, status_details: withdrawal)
-      edition.save!
+    already_withdrawn = edition.withdrawn?
+    edition.assign_status(:withdrawn, user, status_details: withdrawal)
+    edition.save!
 
-      TimelineEntry.create_for_status_change(
-        entry_type: already_withdrawn ? :withdrawn_updated : :withdrawn,
-        status: edition.status,
-        details: withdrawal,
-      )
+    TimelineEntry.create_for_status_change(
+      entry_type: already_withdrawn ? :withdrawn_updated : :withdrawn,
+      status: edition.status,
+      details: withdrawal,
+    )
 
-      GdsApi.publishing_api_v2.unpublish(
-        edition.content_id,
-        type: "withdrawal",
-        explanation: format_govspeak(public_explanation, edition),
-        locale: edition.locale,
-      )
-    end
+    GdsApi.publishing_api_v2.unpublish(
+      edition.content_id,
+      type: "withdrawal",
+      explanation: format_govspeak(public_explanation, edition),
+      locale: edition.locale,
+    )
   end
 
 private
