@@ -2,7 +2,7 @@
 
 RSpec.feature "Schedule a document when Publishing API is down" do
   scenario do
-    given_there_is_an_edition_with_set_scheduled_publishing_datetime
+    given_there_is_an_edition_ready_to_schedule
     and_the_publishing_api_is_down
     when_i_visit_the_summary_page
     and_i_try_to_schedule_the_edition
@@ -10,7 +10,7 @@ RSpec.feature "Schedule a document when Publishing API is down" do
     and_the_document_has_not_been_scheduled
   end
 
-  def given_there_is_an_edition_with_set_scheduled_publishing_datetime
+  def given_there_is_an_edition_ready_to_schedule
     @datetime = Time.current.tomorrow
     @edition = create(:edition, scheduled_publishing_datetime: @datetime)
   end
