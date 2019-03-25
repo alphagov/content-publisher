@@ -7,8 +7,7 @@ class ScheduledPublishingWorker
   sidekiq_retry_in { 30 }
 
   def perform(id)
-    Edition.transaction do
-      edition = Edition.lock.find_by!(id: id, current: true)
+    Edition.find_and_lock_current(id: id) do |edition|
       check_edition_scheduled_and_publishable(edition)
 
       user = edition.status.created_by
