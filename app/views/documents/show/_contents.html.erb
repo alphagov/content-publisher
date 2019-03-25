@@ -14,7 +14,7 @@
   } %>
 <% end %>
 
-<% if @edition.number > 1 && @edition.update_type == "major" %>
+<% if @edition.number > 1 && @edition.major? %>
   <% edition_metadata << {
     field: t("documents.show.contents.items.change_note"),
     value: @edition.change_note,

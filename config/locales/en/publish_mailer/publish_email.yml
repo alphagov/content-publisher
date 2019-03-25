@@ -1,0 +1,16 @@
+en:
+  publish_mailer:
+    publish_email:
+      subject:
+        published: "Published: ‘%{title}’"
+        published_but_needs_2i: "Published but needs 2i review: ‘%{title}’"
+        update: "Update published: ‘%{title}’"
+      details:
+        publish: "Published at %{time} on %{date} by %{user}"
+        update: "Update published at %{time} on %{date} by %{user}"
+      delay_warning: It may take 5 minutes to appear live.
+      page_address: Page address
+      change_note: Public change note
+      edit_in_app: Edit in Content Publisher
+      2i_warning: This content still needs 2i review. It can then be approved or updated.
+      minor_update: A minor style update

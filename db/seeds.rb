@@ -5,4 +5,5 @@ user = User.find_or_create_by!(name: "publisher")
 gds_organisation_content_id = "af07d5a5-df63-4ddc-9383-6a666845ebe9"
 
 user.update!(permissions: [User::PRE_RELEASE_FEATURES_PERMISSION],
-            organisation_content_id: gds_organisation_content_id)
+             organisation_content_id: gds_organisation_content_id,
+             email: "someone-else@example.com")

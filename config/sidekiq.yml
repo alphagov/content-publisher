@@ -5,3 +5,6 @@
 :logfile: ./log/sidekiq.json.log
 development:
   :logfile: null
+:queues:
+  - default
+  - mailers

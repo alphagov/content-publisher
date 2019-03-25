@@ -18,7 +18,12 @@ class PublishController < ApplicationController
   end
 
   def publish
-    Edition.find_and_lock_current(document: params[:document]) do |edition| # rubocop:disable Metrics/BlockLength
+    edition = Edition.find_current(document: params[:document])
+    live_edition = nil
+
+    Edition.transaction do
+      edition.lock!
+
       if params[:review_status].blank?
         flash.now["alert_with_items"] = {
           "title" => I18n.t!("publish.confirmation.flashes.requirements"),
@@ -28,12 +33,12 @@ class PublishController < ApplicationController
         render :confirmation,
                assigns: { issues: review_status_issues, edition: edition },
                status: :unprocessable_entity
-        next
+        return
       end
 
       if edition.live?
         redirect_to published_path(edition.document)
-        next
+        return
       end
 
       with_review = params[:review_status] == "reviewed"
@@ -43,16 +48,17 @@ class PublishController < ApplicationController
                                      .publish(user: current_user, with_review: with_review)
       rescue GdsApi::BaseError
         redirect_to edition.document, alert_with_description: t("documents.show.flashes.publish_error")
-        next
+        return
       end
 
       TimelineEntry.create_for_status_change(
         entry_type: with_review ? :published : :published_without_review,
         status: live_edition.status,
       )
-
-      redirect_to published_path(edition.document)
     end
+
+    send_notifications(live_edition)
+    redirect_to published_path(edition.document)
   end
 
   def published
@@ -65,5 +71,11 @@ private
     @review_status_issues ||= Requirements::CheckerIssues.new([
       Requirements::Issue.new(:review_status, :not_selected),
     ])
+  end
+
+  def send_notifications(edition)
+    edition.editors.each do |user|
+      PublishMailer.publish_email(edition.status, user).deliver_later
+    end
   end
 end
