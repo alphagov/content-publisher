@@ -5,29 +5,15 @@ class UnscheduleController < ApplicationController
     Edition.find_and_lock_current(document: params[:document]) do |edition|
       schedule = edition.status.details
 
-      remove_scheduled_publishing_datetime(edition)
+      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
+      updater.assign(scheduled_publishing_datetime: nil)
+      edition.assign_revision(updater.next_revision, current_user)
 
       state = schedule.reviewed? ? "submitted_for_review" : "draft"
-      edition.assign_status(state, current_user)
-      edition.save!
+      edition.assign_status(state, current_user).save!
 
-      TimelineEntry.create_for_status_change(
-        entry_type: :unscheduled,
-        status: edition.status,
-      )
-
+      TimelineEntry.create_for_status_change(entry_type: :unscheduled, status: edition.status)
       redirect_to document_path(edition.document)
     end
-  end
-
-private
-
-  def remove_scheduled_publishing_datetime(edition)
-    current_revision = edition.revision
-    new_revision = current_revision.build_revision_update(
-      { scheduled_publishing_datetime: nil }, current_user
-    )
-
-    edition.assign_revision(new_revision, current_user).save!
   end
 end

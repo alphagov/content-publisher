@@ -77,26 +77,22 @@ private
   end
 
   def set_scheduled_publishing_datetime(edition, datetime = nil)
-    current_revision = edition.revision
-    new_revision = current_revision.build_revision_update(
-      { scheduled_publishing_datetime: datetime }, current_user
-    )
-    if new_revision != current_revision
-      edition.assign_revision(new_revision, current_user).save!
-      create_timeline_entry(edition, new_revision, datetime)
+    updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
+    updater.assign(scheduled_publishing_datetime: datetime)
+
+    if updater.changed?
+      edition.assign_revision(updater.next_revision, current_user).save!
+      create_timeline_entry(edition, datetime)
     end
   end
 
-  def create_timeline_entry(edition, revision, datetime)
+  def create_timeline_entry(edition, datetime)
     entry_type = if datetime
                    :scheduled_publishing_datetime_set
                  else
                    :scheduled_publishing_datetime_cleared
                  end
-    TimelineEntry.create_for_revision(entry_type: entry_type,
-                                      revision: revision,
-                                      edition: edition,
-                                      details: nil,
-                                      created_by: current_user)
+
+    TimelineEntry.create_for_revision(entry_type: entry_type, edition: edition)
   end
 end

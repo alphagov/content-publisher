@@ -105,13 +105,11 @@ class Edition < ApplicationRecord
   end
 
   def self.create_next_edition(preceding_edition, user)
-    revision = preceding_edition.revision.build_revision_update(
-      { change_note: "", update_type: "major", scheduled_publishing_datetime: nil },
-      user,
-    )
+    updater = Versioning::RevisionUpdater.new(preceding_edition.revision, user)
+    updater.assign(change_note: "", update_type: "major", scheduled_publishing_datetime: nil)
 
     status = Status.create!(created_by: user,
-                            revision_at_creation: revision,
+                            revision_at_creation: updater.next_revision,
                             state: :draft)
 
     create!(created_by: user,
@@ -119,7 +117,7 @@ class Edition < ApplicationRecord
             document: preceding_edition.document,
             last_edited_by: user,
             number: preceding_edition.document.next_edition_number,
-            revision: revision,
+            revision: updater.next_revision,
             status: status)
   end
 
@@ -135,19 +133,17 @@ class Edition < ApplicationRecord
   end
 
   def resume_discarded(live_edition, user)
-    revision = live_edition.revision.build_revision_update(
-      { change_note: "", update_type: "major" },
-      user,
-    )
+    updater = Versioning::RevisionUpdater.new(live_edition.revision, user)
+    updater.assign(change_note: "", update_type: "major")
 
     status = Status.create!(created_by: user,
-                            revision_at_creation: revision,
+                            revision_at_creation: updater.next_revision,
                             state: :draft)
 
     update!(current: true,
             last_edited_by: user,
             last_edited_at: Time.current,
-            revision: revision,
+            revision: updater.next_revision,
             status: status)
   end
 
