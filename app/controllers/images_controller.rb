@@ -7,29 +7,27 @@ class ImagesController < ApplicationController
   end
 
   def create
-    Edition.find_and_lock_current(document: params[:document]) do |edition|
-      @issues = ::Requirements::ImageUploadChecker.new(params[:image]).issues
+    result = Images::CreateActor.call(document: params[:document],
+                                      image: params[:image],
+                                      user: current_user)
 
-      if @issues.any?
-        flash.now["alert_with_items"] = {
-          "title" => I18n.t!("images.index.flashes.upload_requirements"),
-          "items" => @issues.items,
-        }
+    if result.aborted?(:issues)
+      flash.now["alert_with_items"] = {
+        "title" => I18n.t!("images.index.flashes.upload_requirements"),
+        "items" => result.issues.items,
+      }
 
-        render :index,
-               assigns: { edition: edition },
-               layout: rendering_context,
-               status: :unprocessable_entity
-        next
-      end
+      render :index,
+             assigns: { issues: result.issues, edition: result.edition },
+             layout: rendering_context,
+             status: :unprocessable_entity
 
-      image_revision = ImageUploadService.new(params[:image], edition.revision).call(current_user)
-      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
-      updater.update_image(image_revision)
-      edition.assign_revision(updater.next_revision, current_user).save!
-      PreviewService.new(edition).try_create_preview
-      redirect_to crop_image_path(params[:document], image_revision.image_id, wizard: "upload")
+      return
     end
+
+    redirect_to crop_image_path(params[:document],
+                                result.image_revision.image_id,
+                                wizard: "upload")
   end
 
   def crop
@@ -63,57 +61,35 @@ class ImagesController < ApplicationController
   end
 
   def update
-    Edition.find_and_lock_current(document: params[:document]) do |edition| # rubocop:disable Metrics/BlockLength
-      image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
-      image_updater = Versioning::ImageRevisionUpdater.new(image_revision, current_user)
+    result = Images::UpdateActor.call(document: params[:document],
+                                      image_id: params[:image_id],
+                                      lead_image: params[:lead_image],
+                                      user: current_user,
+                                      update_params: update_params)
 
-      image_updater.assign(update_params)
-      next_image_revision = image_updater.next_revision
+    if result.aborted?(:issues)
+      flash.now["alert_with_items"] = {
+        "title" => I18n.t!("images.edit.flashes.requirements"),
+        "items" => result.issues.items,
+      }
 
-      issues = Requirements::ImageRevisionChecker.new(next_image_revision)
-                                                 .pre_preview_metadata_issues
+      render :edit,
+             assigns: { edition: result.edition, image_revision: result.next_image_revision, issues: result.issues },
+             layout: rendering_context,
+             status: :unprocessable_entity
+      return
+    end
 
-      if issues.any?
-        flash.now["alert_with_items"] = {
-          "title" => I18n.t!("images.edit.flashes.requirements"),
-          "items" => issues.items,
-        }
-
-        render :edit,
-               assigns: { edition: edition, image_revision: next_image_revision, issues: issues },
-               layout: rendering_context,
-               status: :unprocessable_entity
-        next
-      end
-
-      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
-      updater.update_image(next_image_revision, params[:lead_image] == "on")
-
-      if updater.changed?
-        timeline_entry_type = if updater.selected_lead_image?
-                                :lead_image_selected
-                              elsif updater.removed_lead_image?
-                                :lead_image_removed
-                              else
-                                :image_updated
-                              end
-
-        TimelineEntry.create_for_revision(entry_type: timeline_entry_type, edition: edition)
-        edition.assign_revision(updater.next_revision, current_user).save!
-        PreviewService.new(edition).try_create_preview
-      end
-
-      if updater.selected_lead_image?
-        redirect_to document_path(edition.document),
-                    notice: t("documents.show.flashes.lead_image.selected",
-                              file: image_revision.filename)
-      elsif updater.removed_lead_image?
-        redirect_to images_path(edition.document),
-                    notice: t("images.index.flashes.lead_image.removed",
-                              file: image_revision.filename)
-      else
-        redirect_to images_path(edition.document)
-      end
+    if result.success?(:lead_image_selected)
+      redirect_to document_path(params[:document]),
+                  notice: t("documents.show.flashes.lead_image.selected",
+                            file: result.image_revision.filename)
+    elsif result.success?(:lead_image_removed)
+      redirect_to images_path(params[:document]),
+                  notice: t("images.index.flashes.lead_image.removed",
+                            file: result.image_revision.filename)
+    else
+      redirect_to images_path(params[:document])
     end
   end
 
