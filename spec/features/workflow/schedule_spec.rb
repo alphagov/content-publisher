@@ -4,9 +4,7 @@ RSpec.feature "Schedule an edition" do
   scenario do
     given_there_is_an_edition_ready_to_schedule
     when_i_visit_the_summary_page
-    and_i_click_on_schedule
-    and_i_select_the_content_has_been_reviewed_option
-    and_i_click_on_publish
+    and_i_schedule_a_document
     then_i_see_the_edition_has_been_scheduled
     and_i_can_no_longer_edit_the_content
   end
@@ -21,15 +19,9 @@ RSpec.feature "Schedule an edition" do
     visit document_path(@edition.document)
   end
 
-  def and_i_click_on_schedule
+  def and_i_schedule_a_document
     click_on "Schedule"
-  end
-
-  def and_i_select_the_content_has_been_reviewed_option
     choose I18n.t!("schedule.confirmation.review_status.reviewed")
-  end
-
-  def and_i_click_on_publish
     click_on "Publish"
   end
 
