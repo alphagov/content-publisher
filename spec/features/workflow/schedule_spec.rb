@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.feature "Schedule an edition" do
+  include ActiveJob::TestHelper
+
   scenario do
     given_there_is_an_edition_ready_to_schedule
     when_i_visit_the_summary_page
@@ -27,11 +29,11 @@ RSpec.feature "Schedule an edition" do
 
   def then_i_see_the_edition_has_been_scheduled
     expect(page).to have_content(I18n.t!("schedule.scheduled.title"))
-    expect(Sidekiq::Worker.jobs.count).to eq 1
+    expect(enqueued_jobs.count).to eq 1
 
-    job = Sidekiq::Worker.jobs.first
-    expect(job["args"].first).to eq @edition.id
-    expect(job["at"].to_i).to eq @datetime.to_i
+    job = enqueued_jobs.first
+    expect(job[:args].first).to eq @edition.id
+    expect(job[:at].to_i).to eq @datetime.to_i
 
     assert_requested @request
 
