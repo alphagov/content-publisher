@@ -13,6 +13,7 @@ require "webmock/rspec"
 require "gds_api/test_helpers/publishing_api"
 require "gds_api/test_helpers/publishing_api_v2"
 require "gds_api/test_helpers/asset_manager"
+require "govuk_sidekiq/testing"
 
 Dir[Rails.root.join("spec", "support", "**", "*.rb")].each { |f| require f }
 SimpleCov.start
@@ -27,12 +28,6 @@ Capybara::Chromedriver::Logger.raise_js_errors = true
 Capybara::Chromedriver::Logger.filters = [
   /the server responded with a status of 422/i,
 ]
-
-Sidekiq::Logging.logger = nil
-
-RSpec::Sidekiq.configure do |config|
-  config.warn_when_jobs_not_processed_by_sidekiq = false
-end
 
 RSpec.configure do |config|
   config.expose_dsl_globally = false
@@ -58,6 +53,10 @@ RSpec.configure do |config|
 
   config.after :each, type: :feature do
     reset_authentication
+  end
+
+  config.before :each do
+    Sidekiq::Worker.clear_all
   end
 
   config.after :each, type: :feature, js: true do
