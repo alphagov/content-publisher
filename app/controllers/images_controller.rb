@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 class ImagesController < ApplicationController
-  rescue_from GdsApi::BaseError do |e|
-    GovukError.notify(e)
-    redirect_to images_path, alert_with_description: t("images.index.flashes.api_error")
-  end
-
   def index
     @edition = Edition.find_current(document: params[:document])
     render layout: rendering_context
