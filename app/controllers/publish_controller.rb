@@ -19,19 +19,27 @@ class PublishController < ApplicationController
 
   def publish
     Edition.find_and_lock_current(document: params[:document]) do |edition|
+      if params[:review_status].nil?
+        flash["alert_with_items"] = {
+          "title" => t("publish.confirmation.radio_not_selected.title"),
+          "items" => [{ 'text': t("publish.confirmation.radio_not_selected.description_govspeak") }],
+        }
+        redirect_to publish_confirmation_path(edition.document)
+        next
+      end
+
       if edition.live?
         redirect_to published_path(edition.document)
         next
       end
 
-      with_review = params[:review_state] == "reviewed"
+      with_review = params[:review_status] == "reviewed"
 
       begin
         live_edition = PublishService.new(edition.document)
                                      .publish(user: current_user, with_review: with_review)
       rescue GdsApi::BaseError
-        redirect_to edition.document,
-                    alert_with_description: t("documents.show.flashes.publish_error")
+        redirect_to edition.document, alert_with_description: t("documents.show.flashes.publish_error")
         next
       end
 

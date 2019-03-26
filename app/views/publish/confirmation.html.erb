@@ -5,7 +5,7 @@
   <div class="govuk-grid-column-two-thirds">
     <%= form_tag publish_confirmation_path(@edition.document), data: { "gtm-checked-inputs": "publish-document" } do %>
       <%= render "govuk_publishing_components/components/radio", {
-        name: "review_state",
+        name: "review_status",
         items: [
           {
             value: "reviewed",
