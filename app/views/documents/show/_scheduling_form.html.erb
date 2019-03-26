@@ -19,24 +19,28 @@
 } do %>
   <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document),
                id: "scheduled_publishing_datetime") do %>
-    <%= render "govuk_publishing_components/components/input", {
-      label: { text: "Day" },
-      name: "scheduled[day]",
-      maxlength: 2,
-      value: submitted_values&.fetch("day") || publish_date&.day,
-    } %>
-    <%= render "govuk_publishing_components/components/input", {
-      label: { text: "Month" },
-      name: "scheduled[month]",
-      maxlength: 2,
-      value: submitted_values&.fetch("month") || publish_date&.month,
-    } %>
-    <%= render "govuk_publishing_components/components/input", {
-      label: { text: "Year" },
-      name: "scheduled[year]",
-      maxlength: 4,
-      value: submitted_values&.fetch("year") || publish_date&.year,
-    } %>
+     <%= render "govuk_publishing_components/components/date_input", {
+       legend_text: "Date",
+       hint: "For example, 27 3 2027",
+       name: 'scheduled',
+       items: [
+         {
+           name: "day",
+           width: 2,
+           value: submitted_values&.fetch("day") || publish_date&.day
+         },
+         {
+           name: "month",
+           width: 2,
+           value: submitted_values&.fetch("month") || publish_date&.month,
+         },
+         {
+           name: "year",
+           width: 4,
+           value: submitted_values&.fetch("year") || publish_date&.year,
+         }
+       ]
+     } %>
     <%= render "govuk_publishing_components/components/select", {
       label: "Time",
       id: "scheduled[time]",
