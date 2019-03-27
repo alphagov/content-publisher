@@ -1,7 +1,7 @@
 <% if @edition.withdrawn? %>
   <% metadata = [
       field: t("documents.show.metadata.withdrawn_by"),
-      value: @edition.status.created_by&.name || I18n.t!("documents.show.metadata.unknown_user")
+      value: name_or_fallback(@edition.status.created_by)
   ] %>
 <% else %>
   <% metadata = [
@@ -11,11 +11,11 @@
     },
     {
       field: t("documents.show.metadata.created_by"),
-      value: @edition.document.created_by&.name || I18n.t!("documents.show.metadata.unknown_user")
+      value: name_or_fallback(@edition.document.created_by)
     },
     {
       field: t("documents.show.metadata.last_edited_by"),
-      value: @edition.last_edited_by&.name || I18n.t!("documents.show.metadata.unknown_user")
+      value: name_or_fallback(@edition.last_edited_by)
     }
   ] %>
 <% end %>

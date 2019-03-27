@@ -17,7 +17,6 @@ en:
         summary_html:
           one: "<strong>1</strong> document"
           other: "<strong>%{count}</strong> documents"
-        untitled: No title
         page_info: "%{page} of %{pages}"
         guidance_govspeak: |
           Improve your search results:
@@ -25,7 +24,6 @@ en:
             * removing filters
             * searching for something less specific
             * double-checking your spelling
-        unknown_user: Unknown
       filter:
         title_or_url: Title or URL
         document_type: Document type
