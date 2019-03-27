@@ -21,4 +21,8 @@
   .govuk-section-break {
     clear: both;
   }
+
+  .govuk-details__text {
+    padding: govuk-spacing(3);
+  }
 }
