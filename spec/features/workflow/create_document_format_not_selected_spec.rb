@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Choosing a format" do
+RSpec.feature "Creating a document without selecting a format" do
   scenario do
     when_i_dont_choose_a_supertype
     then_i_see_a_supertype_error
