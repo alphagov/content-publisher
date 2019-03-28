@@ -75,9 +75,13 @@
       <% end %>
 
       <% if flash["alert_with_items"] %>
+        <% items = flash["alert_with_items"]["message"] ?
+          [{ text: flash["alert_with_items"]["message"] }] :
+          flash["alert_with_items"]["items"].map(&:symbolize_keys) %>
+
         <%= render "govuk_publishing_components/components/error_summary", {
           title: flash["alert_with_items"]["title"],
-          items: flash["alert_with_items"]["items"].map(&:symbolize_keys),
+          items: items,
           data_attributes: { gtm: "global-alert" },
         } %>
       <% end %>
