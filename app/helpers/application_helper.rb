@@ -26,4 +26,8 @@ module ApplicationHelper
   def escape_and_link(unsafe_text)
     Rinku.auto_link(html_escape(unsafe_text), :all, 'class="govuk-link"')
   end
+
+  def name_or_fallback(user)
+    user&.name || I18n.t("documents.unknown_user")
+  end
 end

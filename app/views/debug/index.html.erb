@@ -21,7 +21,7 @@
     <p class="govuk-caption-m govuk-!-margin-top-0">
       Created at <%= revision.created_at.strftime("%d %B %Y at %l:%M%P") %>
       <% if revision.created_by %>
-        by <%= revision.created_by.name %>
+        by <%= name_or_fallback(revision.created_by) %>
       <% end %>
     </p>
 

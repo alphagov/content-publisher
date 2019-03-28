@@ -16,7 +16,7 @@
         <div class="app-timeline-entry__dateline">
           <%= entry.created_at.strftime("%d %B %Y at %l:%M%P") %>
           <% if entry.created_by %>
-            by <%= entry.created_by.name %>
+            by <%= name_or_fallback(entry.created_by) %>
           <% end %>
         </div>
 
