@@ -43,6 +43,15 @@ class ScheduleController < ApplicationController
 
   def schedule
     Edition.find_and_lock_current(document: params[:document]) do |edition|
+      if params[:review_status].nil?
+        flash["alert_with_items"] = {
+          "title" => t("schedule.confirmation.radio_not_selected.title"),
+          "items" => [{ "text": t("schedule.confirmation.radio_not_selected.description_govspeak") }],
+        }
+        redirect_to scheduling_confirmation_path(edition.document)
+        next
+      end
+
       if edition.scheduled_publishing_datetime.blank?
         # FIXME: this shouldn't be an exception but we've not worked out the
         # right response - maybe bad request or a redirect with flash?
@@ -52,7 +61,7 @@ class ScheduleController < ApplicationController
       datetime = edition.scheduled_publishing_datetime
       ScheduledPublishingWorker.perform_at(datetime, edition.id)
 
-      reviewed = review_params == "reviewed"
+      reviewed = params[:review_status] == "reviewed"
       ScheduleService.new(edition).schedule(user: current_user, reviewed: reviewed)
 
       redirect_to scheduled_path(edition.document)
@@ -70,10 +79,6 @@ private
 
   def permitted_params
     params.require(:scheduled).permit(:year, :month, :day, :time)
-  end
-
-  def review_params
-    params.require(:review_status)
   end
 
   def set_scheduled_publishing_datetime(edition, datetime = nil)

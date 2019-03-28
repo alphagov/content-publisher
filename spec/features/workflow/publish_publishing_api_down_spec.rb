@@ -23,6 +23,7 @@ RSpec.feature "Publishing an edition when the Publishing API is down" do
   def when_i_try_to_publish_the_edition
     visit document_path(@edition.document)
     click_on "Publish"
+    choose I18n.t!("publish.confirmation.has_been_reviewed")
     click_on "Confirm publish"
   end
 
@@ -35,6 +36,7 @@ RSpec.feature "Publishing an edition when the Publishing API is down" do
     @request = stub_publishing_api_publish(@edition.content_id, {})
     visit document_path(@edition.document)
     click_on "Publish"
+    choose I18n.t!("publish.confirmation.has_been_reviewed")
     click_on "Confirm publish"
   end
 
