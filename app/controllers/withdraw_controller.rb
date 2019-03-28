@@ -20,8 +20,9 @@ class WithdrawController < ApplicationController
       raise "Can't withdraw an edition without managing editor permissions"
     end
 
+    public_explanation = params[:public_explanation]
+
     Edition.find_and_lock_current(document: params[:document]) do |edition|
-      public_explanation = params[:public_explanation]
       issues = Requirements::WithdrawalChecker.new(public_explanation).pre_withdrawal_issues
 
       if issues.any?
@@ -34,17 +35,15 @@ class WithdrawController < ApplicationController
         next
       end
 
-      begin
-        #FIXME We should check that the edition is withdrawable before passing
-        # it to the WithdrawService
-        WithdrawService.new.call(edition, public_explanation, current_user)
-        redirect_to document_path(edition.document)
-      rescue GdsApi::BaseError => e
-        GovukError.notify(e)
-        redirect_to withdraw_path,
-          alert_with_description: t("withdraw.new.flashes.publishing_api_error"),
-          public_explanation: public_explanation
-      end
+      #FIXME We should check that the edition is withdrawable before passing
+      # it to the WithdrawService
+      WithdrawService.new.call(edition, public_explanation, current_user)
+      redirect_to document_path(edition.document)
     end
+  rescue GdsApi::BaseError => e
+    GovukError.notify(e)
+    redirect_to withdraw_path(params[:document]),
+      alert_with_description: t("withdraw.new.flashes.publishing_api_error"),
+      public_explanation: public_explanation
   end
 end

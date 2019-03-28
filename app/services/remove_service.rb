@@ -2,7 +2,7 @@
 
 class RemoveService
   def call(edition, removal)
-    Document.transaction(requires_new: true) do
+    Document.transaction do
       edition.document.lock!
       check_removeable(edition)
 
