@@ -48,3 +48,6 @@ Rails/DynamicFindBy:
 
 Rails/SaveBang:
   Enabled: true
+
+Style/DateTime:
+  Enabled: true
