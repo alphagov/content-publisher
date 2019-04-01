@@ -11,51 +11,9 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
     }
   end
 
-  describe "#date_issues" do
+  describe "#pre_submit_issues" do
     it "returns no issues if there are none" do
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).date_issues
-      expect(issues.items).to be_empty
-    end
-
-    it "returns an issue if the date is invalid" do
-      datetime_params[:day] = ""
-      datetime_params[:month] = ""
-      datetime_params[:year] = ""
-
-      invalid_date = I18n.t!(
-        "requirements.scheduled_datetime.invalid.form_message",
-        field: "Date",
-      )
-
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).date_issues
-      expect(issues.items_for(:scheduled_datetime))
-        .to include(a_hash_including(text: invalid_date))
-    end
-  end
-
-  describe "#time_issues" do
-    it "returns no issues if there are none" do
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).time_issues
-      expect(issues.items).to be_empty
-    end
-
-    it "returns an issue if the time values are invalid" do
-      datetime_params[:time] = ""
-
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).time_issues
-      time_issue = I18n.t!(
-        "requirements.scheduled_datetime.invalid.form_message",
-        field: "Time",
-      )
-
-      expect(issues.items_for(:scheduled_datetime))
-        .to include(a_hash_including(text: time_issue))
-    end
-  end
-
-  describe "#datetime_issues" do
-    it "returns no issues if the datetime is in the future within the limit" do
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).datetime_issues
+      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
       expect(issues.items).to be_empty
     end
 
@@ -65,7 +23,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
       datetime_params[:month] = past_datetime.month
       datetime_params[:year] = past_datetime.year
 
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).datetime_issues
+      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
       datetime_issue = I18n.t!("requirements.scheduled_datetime.in_the_past.form_message")
 
       expect(issues.items_for(:scheduled_datetime))
@@ -80,7 +38,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
       datetime_params[:month] = future_date_time.month.to_i
       datetime_params[:year] = future_date_time.year.to_i
 
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).datetime_issues
+      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
       datetime_issue = I18n.t!("requirements.scheduled_datetime.too_far_in_future.form_message",
                                time_period: "14 months")
 
@@ -97,36 +55,15 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
       datetime_params[:year] = future_datetime.year
       datetime_params[:time] = future_datetime.strftime("%l:%M%P").strip
 
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).datetime_issues
+      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
       datetime_issue = I18n.t!("requirements.scheduled_datetime.too_close_to_now.form_message",
                                time_period: "15 minutes")
 
       expect(issues.items_for(:scheduled_datetime))
         .to include(a_hash_including(text: datetime_issue))
     end
-  end
 
-  describe "#pre_submit_issues" do
-    it "returns no issues if there are none" do
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
-      expect(issues.items).to be_empty
-    end
-
-    it "returns datetime issues if any are present" do
-      past_datetime = valid_datetime - 2.days
-      datetime_params[:day] = past_datetime.day
-      datetime_params[:month] = past_datetime.month
-      datetime_params[:year] = past_datetime.year
-
-      datetime_issue = I18n.t!("requirements.scheduled_datetime.in_the_past.form_message")
-
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
-
-      expect(issues.items_for(:scheduled_datetime))
-        .to include(a_hash_including(text: datetime_issue))
-    end
-
-    it "returns date and time issues if any are present" do
+    it "returns an issue if the date or time fields are blank" do
       datetime_params[:day] = ""
       datetime_params[:time] = ""
 
@@ -144,6 +81,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
 
       expect(issues.items_for(:scheduled_datetime))
       .to include(a_hash_including(text: date_issue))
+
       expect(issues.items_for(:scheduled_datetime))
         .to include(a_hash_including(text: time_issue))
     end

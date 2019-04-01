@@ -14,33 +14,24 @@ module Requirements
       @time = params[:time]
     end
 
-    def date_issues
+    def pre_submit_issues
       issues = []
 
-      begin
-        parsed_date
-      rescue ArgumentError
+      if day.blank? || month.blank? || year.blank?
         issues << Issue.new(:scheduled_datetime, :invalid, field: "Date")
       end
 
-      CheckerIssues.new(issues)
-    end
-
-    def time_issues
-      issues = []
-
-      if parsed_time.nil?
+      if time.blank?
         issues << Issue.new(:scheduled_datetime, :invalid, field: "Time")
       end
 
-      CheckerIssues.new(issues)
-    end
-
-    def datetime_issues
-      issues = []
+      if issues.any?
+        return CheckerIssues.new(issues)
+      end
 
       if in_the_past?
         issues << Issue.new(:scheduled_datetime, :in_the_past)
+        return CheckerIssues.new(issues)
       end
 
       if too_far_in_the_future?
@@ -49,7 +40,7 @@ module Requirements
                             time_period: time_period_for_issue(MAXIMUM_FUTURE_TIME_PERIOD))
       end
 
-      if !in_the_past? && too_close_to_now?
+      if too_close_to_now?
         issues << Issue.new(:scheduled_datetime,
                             :too_close_to_now,
                             time_period: time_period_for_issue(MINIMUM_FUTURE_TIME_PERIOD))
@@ -58,29 +49,11 @@ module Requirements
       CheckerIssues.new(issues)
     end
 
-    def pre_submit_issues
-      issues = []
-      issues += date_issues.to_a
-      issues += time_issues.to_a
-      if date_issues.items.empty? && time_issues.items.empty?
-        issues += datetime_issues.to_a
-      end
-      CheckerIssues.new(issues)
-    end
-
     def parsed_datetime
-      @parsed_datetime ||= DateTime.parse("#{parsed_date} #{parsed_time}").in_time_zone
+      @parsed_datetime ||= Time.zone.parse("#{year}-#{month}-#{day} #{time}")
     end
 
   private
-
-    def parsed_date
-      @parsed_date ||= Date.parse("#{year}-#{month}-#{day}")
-    end
-
-    def parsed_time
-      @parsed_time ||= Time.zone.parse(time)
-    end
 
     def in_the_past?
       now = Time.zone.now
