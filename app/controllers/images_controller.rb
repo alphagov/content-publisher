@@ -160,8 +160,10 @@ private
 
   def update_crop_params
     image_aspect_ratio = Image::HEIGHT.to_f / Image::WIDTH
-    crop_height = params[:crop_width].to_i * image_aspect_ratio
-    # FIXME: this will raise a warning because of unpermitted paramaters
-    params.permit(:crop_x, :crop_y, :crop_width).merge(crop_height: crop_height.to_i)
+
+    params
+      .require(:image_revision)
+      .permit(:crop_x, :crop_y, :crop_width, :crop_width)
+      .tap { |p| p[:crop_height] = (p[:crop_width].to_i * image_aspect_ratio).to_i }
   end
 end
