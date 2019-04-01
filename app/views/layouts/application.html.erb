@@ -114,9 +114,9 @@
       }
     end
 
-    if @document && current_user.has_permission?(User::DEBUG_PERMISSION)
+    if (@document || @edition) && current_user.has_permission?(User::DEBUG_PERMISSION)
       debug_links << {
-        href: debug_document_path(@document),
+        href: debug_document_path(@document || @edition.document),
         text: "Document revision history",
       }
     end
