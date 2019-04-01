@@ -6,15 +6,7 @@ function ModalWorkflow ($modal) {
 
 ModalWorkflow.prototype.initComponents = function () {
   window.GOVUK.modules.start($(this.$modal))
-
-  // TODO: change ErrorSummary so it just focusses when it's initialised
-  var $errorSummary = document.querySelector('[data-module="error-summary"]')
-
-  if (!$errorSummary) {
-    return
-  }
-
-  $errorSummary.focus()
+  window.GOVUKFrontend.initAll(this.$modal)
 }
 
 ModalWorkflow.prototype.overrideActions = function (actions) {
