@@ -1,36 +1,36 @@
 <%= @edition.document_type.label %> ‘<%= @edition.title %>’
 
-<% if @edition.number > 1 %>
+<% if @edition.number > 1 -%>
   <%= t("publish_mailer.publish_email.details.update",
     time: @status.created_at.strftime("%l:%M%P").strip,
     date: @status.created_at.strftime("%d %B %Y"),
     user: @status.created_by.name,
   ) %>
-<% else %>
+<% else -%>
   <%= t("publish_mailer.publish_email.details.publish",
     time: @status.created_at.strftime("%l:%M%P").strip,
     date: @status.created_at.strftime("%d %B %Y"),
     user: @status.created_by.name,
   ) %>
-<% end %>
+<% end -%>
 
 <%= t("publish_mailer.publish_email.delay_warning") %>
 
 <%= t("publish_mailer.publish_email.page_address") %>
 <%= EditionUrl.new(@edition).public_url %>
 
-<% if @edition.number > 1 %>
-  <% if @edition.major? %>
+<% if @edition.number > 1 -%>
+  <% if @edition.major? -%>
     <%= t("publish_mailer.publish_email.change_note") %>
-    <%= @edition.change_note %>
-  <% else %>
-    <%= t("publish_mailer.publish_email.minor_update") %>
-  <% end %>
-<% end %>
+    <%= @edition.change_note -%>
+  <% else -%>
+    <%= t("publish_mailer.publish_email.minor_update") -%>
+  <% end -%>
+<% end -%>
 
-<% if @edition.published_but_needs_2i? %>
+<% if @edition.published_but_needs_2i? -%>
   <%= t("publish_mailer.publish_email.2i_warning") %>
-<% end %>
+<% end -%>
 
 <%= t("publish_mailer.publish_email.edit_in_app") %>
 <%= document_url(@edition.document) %>
