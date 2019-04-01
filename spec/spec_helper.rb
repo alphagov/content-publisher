@@ -59,6 +59,10 @@ RSpec.configure do |config|
     Sidekiq::Worker.clear_all
   end
 
+  config.around :each, inline: true do |example|
+    Sidekiq::Testing.inline! { example.run }
+  end
+
   config.after :each, type: :feature, js: true do
     Capybara::Chromedriver::Logger::TestHooks.after_example!
   end

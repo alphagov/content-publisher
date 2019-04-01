@@ -59,7 +59,7 @@ class ScheduleController < ApplicationController
       end
 
       datetime = edition.scheduled_publishing_datetime
-      ScheduledPublishingWorker.perform_at(datetime, edition.id)
+      ScheduledPublishingJob.set(wait_until: datetime).perform_later(edition.id)
 
       reviewed = params[:review_status] == "reviewed"
       ScheduleService.new(edition).schedule(user: current_user, reviewed: reviewed)

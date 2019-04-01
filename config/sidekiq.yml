@@ -1,6 +1,7 @@
 ---
 :verbose: false
 :concurrency: 10
+:max_retries: 0
 :logfile: ./log/sidekiq.json.log
 development:
   :logfile: null
