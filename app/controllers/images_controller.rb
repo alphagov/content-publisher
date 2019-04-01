@@ -164,6 +164,6 @@ private
     params
       .require(:image_revision)
       .permit(:crop_x, :crop_y, :crop_width, :crop_width)
-      .tap { |p| p[:crop_height] = (p[:crop_width].to_i * image_aspect_ratio).to_i }
+      .tap { |p| p[:crop_height] = (p[:crop_width].to_i * image_aspect_ratio).round }
   end
 end
