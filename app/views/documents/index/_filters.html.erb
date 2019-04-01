@@ -80,10 +80,11 @@
   <%= hidden_field_tag "sort", @sort %>
 
   <%= render "govuk_publishing_components/components/button", {
-    text: "Filter"
+    text: "Filter",
+    margin_bottom: true
   } %>
 
-  <p>
+  <p class="govuk-body">
     <%= link_to "Clear all filters",
                 documents_path(organisation: ""),
                 class: "govuk-link govuk-link--no-visited-state" %>
