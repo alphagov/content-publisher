@@ -44,11 +44,8 @@ class ScheduleController < ApplicationController
   def schedule
     Edition.find_and_lock_current(document: params[:document]) do |edition|
       if params[:review_status].nil?
-        flash["alert_with_items"] = {
-          "title" => t("schedule.confirmation.radio_not_selected.title"),
-          "items" => [{ "text": t("schedule.confirmation.radio_not_selected.description_govspeak") }],
-        }
-        redirect_to scheduling_confirmation_path(edition.document)
+        redirect_to scheduling_confirmation_path(edition.document),
+                    alert_with_items: t("schedule.confirmation.flashes.not_selected")
         next
       end
 

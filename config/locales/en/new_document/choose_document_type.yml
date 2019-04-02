@@ -2,4 +2,6 @@ en:
   new_document:
     choose_document_type:
       flashes:
-        choose_error: Please choose a document type
+        not_selected:
+          title: You must
+          message: Select an option

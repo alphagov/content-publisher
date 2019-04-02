@@ -3,4 +3,6 @@ en:
     choose_supertype:
       title: "What is the content for?"
       flashes:
-        choose_error: Please choose a supertype
+        not_selected:
+          title: You must
+          message: Select an option
