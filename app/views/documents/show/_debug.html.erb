@@ -1,0 +1,11 @@
+<div class="app-side">
+  <h3 class="govuk-heading-s">Debug</h3>
+  <ul class="govuk-list govuk-!-margin-0">
+    <li>
+      <%= link_to(
+        "Revision History",
+        debug_document_path(@edition.document),
+        class: "govuk-link govuk-link--no-visited-state"
+      ) %>
+  </ul>
+</div>

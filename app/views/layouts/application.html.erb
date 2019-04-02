@@ -101,24 +101,6 @@
     </main>
   </div>
 
-  <%
-    debug_links = []
-
-    if current_user.has_permission?(User::DEBUG_PERMISSION)
-      debug_links << {
-        href: documentation_path,
-        text: "App documentation",
-      }
-    end
-
-    if @document && current_user.has_permission?(User::DEBUG_PERMISSION)
-      debug_links << {
-        href: debug_document_path(@document),
-        text: "Document revision history",
-      }
-    end
-  %>
-
   <%= render "govuk_publishing_components/components/layout_footer", {
     navigation: [
       {
@@ -143,7 +125,7 @@
             href: "https://www.gov.uk/government/content-publishing",
             text: "How to write, publish, and improve content"
           }
-        ] + debug_links
+        ]
       },
       {
         title: t("application.footer.documentation"),
