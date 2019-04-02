@@ -7,6 +7,4 @@ en:
         reviewed: This content has been reviewed and approved for publication.
         not_reviewed: This content needs to be published urgently but should be reviewed as soon as possible.
       flashes:
-        not_selected:
-          title: You must
-          message: Select a publishing option
+        requirements: You must

@@ -10,6 +10,7 @@
       <%= render "govuk_publishing_components/components/radio", {
         name: "review_status",
         is_page_heading: true,
+        error_items: @issues&.items_for(:review_status),
         hint: t("schedule.confirmation.hint_text", time: scheduled_time, date: scheduled_date),
         items: [
           {

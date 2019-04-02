@@ -6,9 +6,15 @@ class NewDocumentController < ApplicationController
   end
 
   def choose_document_type
-    unless params[:supertype]
-      redirect_to new_document_path,
-                  alert_with_items: t("new_document.choose_supertype.flashes.not_selected")
+    if params[:supertype].blank?
+      flash.now["alert_with_items"] = {
+        "title" => I18n.t!("new_document.choose_supertype.flashes.requirements"),
+        "items" => supertype_issues.items,
+      }
+
+      render :choose_supertype,
+             assigns: { issues: supertype_issues, supertypes: Supertype.all },
+             status: :unprocessable_entity
       return
     end
 
@@ -18,14 +24,19 @@ class NewDocumentController < ApplicationController
       redirect_to @supertype.managed_elsewhere_url
       return
     end
-
-    @document_types = @supertype.document_types
   end
 
   def create
-    unless params[:document_type]
-      redirect_to choose_document_type_path(supertype: params[:supertype]),
-                  alert_with_items: t("new_document.choose_document_type.flashes.not_selected")
+    if params[:document_type].blank?
+      flash.now["alert_with_items"] = {
+        "title" => I18n.t!("new_document.choose_document_type.flashes.requirements"),
+        "items" => document_type_issues.items,
+      }
+
+      render :choose_document_type,
+             assigns: { issues: document_type_issues,
+                        supertype: Supertype.find(params[:supertype]) },
+             status: :unprocessable_entity
       return
     end
 
@@ -50,5 +61,17 @@ private
 
   def default_tags
     current_user.organisation_content_id ? { primary_publishing_organisation: [current_user.organisation_content_id] } : {}
+  end
+
+  def document_type_issues
+    @document_type_issues ||= Requirements::CheckerIssues.new([
+      Requirements::Issue.new(:document_type, :not_selected),
+    ])
+  end
+
+  def supertype_issues
+    @supertype_issues ||= Requirements::CheckerIssues.new([
+      Requirements::Issue.new(:supertype, :not_selected),
+    ])
   end
 end

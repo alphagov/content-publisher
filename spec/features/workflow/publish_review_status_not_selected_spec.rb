@@ -23,8 +23,7 @@ RSpec.feature "Publish without confirming a review status" do
 
   def then_an_error_is_displayed
     within(".gem-c-error-summary") do
-      expect(page).to have_content(I18n.t!("publish.confirmation.flashes.not_selected.title"))
-      expect(page).to have_content(I18n.t!("publish.confirmation.flashes.not_selected.message"))
+      expect(page).to have_content(I18n.t!("requirements.review_status.not_selected.form_message"))
     end
   end
 end
