@@ -77,8 +77,6 @@ Rails.application.routes.draw do
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 
-  get "/documentation" => "documentation#index"
-
   get "/how-to-use-publisher" => "publisher_information#how_to_use_publisher", as: :how_to_use_publisher
   get "/beta-capabilities" => "publisher_information#beta_capabilities", as: :beta_capabilities
   get "/publisher-updates" => "publisher_information#publisher_updates", as: :publisher_updates
