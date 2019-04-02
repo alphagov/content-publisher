@@ -74,6 +74,22 @@ RSpec.describe Requirements::ContentChecker do
       summary_message = issues.items_for(:summary, style: "summary").first[:text]
       expect(summary_message).to eq(I18n.t!("requirements.summary.multiline.summary_message"))
     end
+
+    it "returns an issue if the a govspeak field contains forbidden HTML" do
+      body_field = build :field, id: "body", type: "govspeak"
+      document_type = build :document_type, contents: [body_field]
+      edition = build :edition, document_type_id: document_type.id
+      revision = build :revision, contents: { body: "<script>alert('hi')</script>" }
+
+      issues = Requirements::ContentChecker.new(edition, revision)
+                                           .pre_preview_issues
+
+      form_message = issues.items_for(:body).first[:text]
+      expect(form_message).to eq(I18n.t!("requirements.body.invalid_govspeak.form_message"))
+
+      summary_message = issues.items_for(:body, style: "summary").first[:text]
+      expect(summary_message).to eq(I18n.t!("requirements.body.invalid_govspeak.summary_message"))
+    end
   end
 
   describe "#pre_publish_issues" do

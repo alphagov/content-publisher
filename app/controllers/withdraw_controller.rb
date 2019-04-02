@@ -23,7 +23,8 @@ class WithdrawController < ApplicationController
     public_explanation = params[:public_explanation]
 
     Edition.find_and_lock_current(document: params[:document]) do |edition|
-      issues = Requirements::WithdrawalChecker.new(public_explanation).pre_withdrawal_issues
+      issues = Requirements::WithdrawalChecker.new(public_explanation, edition)
+                                              .pre_withdrawal_issues
 
       if issues.any?
         flash["alert_with_items"] = {
@@ -31,7 +32,9 @@ class WithdrawController < ApplicationController
           "items" => issues.items,
         }
 
-        render :new, assigns: { edition: edition }, status: :unprocessable_entity
+        render :new,
+               assigns: { edition: edition, public_explanation: public_explanation },
+               status: :unprocessable_entity
         next
       end
 
@@ -44,6 +47,6 @@ class WithdrawController < ApplicationController
     GovukError.notify(e)
     redirect_to withdraw_path(params[:document]),
       alert_with_description: t("withdraw.new.flashes.publishing_api_error"),
-      public_explanation: public_explanation
+      public_explanation: params[:public_explanation]
   end
 end

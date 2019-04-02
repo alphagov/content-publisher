@@ -27,6 +27,9 @@ en:
       blank:
         form_message: Enter a body
         summary_message: Enter a body
+      invalid_govspeak:
+        form_message: Remove invalid HTML or any JavaScript from the body
+        summary_message: Remove invalid HTML or any JavaScript from the body
     change_note:
       blank:
         form_message: Enter a change note
@@ -64,6 +67,8 @@ en:
     public_explanation:
       blank:
         form_message: Enter a public explanation
+      invalid_govspeak:
+        form_message: Remove invalid HTML or any JavaScript from the public explanation
     scheduled_datetime:
       title: The scheduled publishing date and time needs to be changed
       in_the_past:

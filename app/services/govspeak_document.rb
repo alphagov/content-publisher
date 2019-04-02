@@ -8,6 +8,11 @@ class GovspeakDocument
     @edition = edition
   end
 
+  def valid?
+    in_app_options = InAppOptions.new(text, edition).to_h
+    Govspeak::Document.new(text, in_app_options).valid?
+  end
+
   def in_app_html
     in_app_options = InAppOptions.new(text, edition).to_h
     Govspeak::Document.new(text, in_app_options).to_html
