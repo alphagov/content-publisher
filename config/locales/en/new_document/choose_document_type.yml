@@ -2,6 +2,4 @@ en:
   new_document:
     choose_document_type:
       flashes:
-        not_selected:
-          title: You must
-          message: Select an option
+        requirements: You must

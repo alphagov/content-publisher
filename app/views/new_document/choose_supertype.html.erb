@@ -6,6 +6,7 @@
     <%= form_tag(choose_document_type_path, method: :get, enforce_utf8: false, data: { "gtm-checked-inputs": "new-document" } ) do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "supertype",
+        error_items: @issues&.items_for(:supertype),
         items: @supertypes.map do |supertype|
           {
             value: supertype.id,

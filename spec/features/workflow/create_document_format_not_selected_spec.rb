@@ -17,8 +17,7 @@ RSpec.feature "Creating a document without selecting a format" do
 
   def then_i_see_an_error_to_choose_a_supertype
     within(".gem-c-error-summary") do
-      expect(page).to have_content(I18n.t!("new_document.choose_supertype.flashes.not_selected.title"))
-      expect(page).to have_content(I18n.t!("new_document.choose_supertype.flashes.not_selected.message"))
+      expect(page).to have_content(I18n.t!("requirements.supertype.not_selected.form_message"))
     end
   end
 
@@ -33,8 +32,7 @@ RSpec.feature "Creating a document without selecting a format" do
 
   def then_i_see_an_error_to_choose_a_document_type
     within(".gem-c-error-summary") do
-      expect(page).to have_content(I18n.t!("new_document.choose_document_type.flashes.not_selected.title"))
-      expect(page).to have_content(I18n.t!("new_document.choose_document_type.flashes.not_selected.message"))
+      expect(page).to have_content(I18n.t!("requirements.document_type.not_selected.form_message"))
     end
   end
 end

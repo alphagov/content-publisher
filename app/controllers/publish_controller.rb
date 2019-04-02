@@ -18,10 +18,16 @@ class PublishController < ApplicationController
   end
 
   def publish
-    Edition.find_and_lock_current(document: params[:document]) do |edition|
-      if params[:review_status].nil?
-        redirect_to publish_confirmation_path(edition.document),
-                    alert_with_items: t("publish.confirmation.flashes.not_selected")
+    Edition.find_and_lock_current(document: params[:document]) do |edition| # rubocop:disable Metrics/BlockLength
+      if params[:review_status].blank?
+        flash.now["alert_with_items"] = {
+          "title" => I18n.t!("publish.confirmation.flashes.requirements"),
+          "items" => review_status_issues.items,
+        }
+
+        render :confirmation,
+               assigns: { issues: review_status_issues, edition: edition },
+               status: :unprocessable_entity
         next
       end
 
@@ -51,5 +57,13 @@ class PublishController < ApplicationController
 
   def published
     @edition = Edition.find_current(document: params[:document])
+  end
+
+private
+
+  def review_status_issues
+    @review_status_issues ||= Requirements::CheckerIssues.new([
+      Requirements::Issue.new(:review_status, :not_selected),
+    ])
   end
 end

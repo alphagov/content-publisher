@@ -6,7 +6,8 @@
     <%= form_tag create_document_path, data: { "gtm-checked-inputs": "new-document" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "document_type",
-        items: @document_types.map { |document_type|
+        error_items: @issues&.items_for(:document_type),
+        items: @supertype.document_types.map { |document_type|
           {
             value: document_type.id,
             text: document_type.label,
