@@ -4,9 +4,10 @@ window.ModalFetch.getLink = function (item) {
   var controller = new window.AbortController()
   var headers = { 'Content-Publisher-Rendering-Context': 'modal' }
   var options = { credentials: 'include', signal: controller.signal, headers: headers }
+  var href = item.dataset.modalActionUrl || item.href
   setTimeout(function () { controller.abort() }, 5000)
 
-  return window.fetch(item.href, options)
+  return window.fetch(href, options)
     .then(function (response) {
       if (!response.ok) {
         window.ModalFetch.debug(response)

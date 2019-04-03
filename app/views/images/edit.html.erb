@@ -1,6 +1,6 @@
 <%
 title_key = rendering_context == "modal" ? "images.edit.title_modal" : "images.edit.title"
-content_for :title,t(title_key, title: @edition.title_or_fallback)
+content_for :title, t(title_key, title: @edition.title_or_fallback)
 %>
 
 <% content_for :back_link, render_back_link(

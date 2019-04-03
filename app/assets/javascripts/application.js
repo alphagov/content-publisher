@@ -31,6 +31,7 @@
 //= require modules/gtm-copy-paste-listener.js
 //= require modules/gtm-selected-topics-listener.js
 //= require modules/inline-image-modal.js
+//= require modules/video-embed-modal.js
 //= require modules/warn-before-unload.js
 
 // load after other components (esp. autocomplete)

@@ -1,0 +1,32 @@
+<% content_for :title, t("video_embed.new.title") %>
+
+<%= render_govspeak(t("video_embed.new.guidance_markdown")) %>
+
+<%= form_tag(
+  video_embed_path,
+  data: {
+    modal_action: "insert"
+  }
+) do %>
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: t("video_embed.new.form_labels.title"),
+      bold: true
+    },
+    name: "title"
+  } %>
+
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: t("video_embed.new.form_labels.url"),
+      bold: true
+    },
+    hint: t("video_embed.new.form_labels.url_hint"),
+    name: "url"
+  } %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    margin_bottom: true,
+    text: "Embed video",
+  } %>
+<% end %>
