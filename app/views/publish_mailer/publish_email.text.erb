@@ -33,4 +33,4 @@
 <% end -%>
 
 <%= t("publish_mailer.publish_email.edit_in_app") %>
-<%= document_url(@edition.document) %>
+<%= document_url(@edition.document, utm_content: "publish-email-link") %>
