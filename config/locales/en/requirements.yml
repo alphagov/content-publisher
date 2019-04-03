@@ -88,3 +88,11 @@ en:
     review_status:
       not_selected:
         form_message: Select an option
+    video_embed_title:
+      blank:
+        form_message: Enter a title
+    video_embed_url:
+      blank:
+        form_message: Enter a web address
+      non_youtube:
+        form_message: Enter a valid YouTube web address

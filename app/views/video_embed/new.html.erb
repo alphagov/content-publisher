@@ -13,6 +13,8 @@
       text: t("video_embed.new.form_labels.title"),
       bold: true
     },
+    error_items: @issues&.items_for(:video_embed_title),
+    value: params[:title],
     name: "title"
   } %>
 
@@ -22,6 +24,8 @@
       bold: true
     },
     hint: t("video_embed.new.form_labels.url_hint"),
+    error_items: @issues&.items_for(:video_embed_url),
+    value: params[:url],
     name: "url"
   } %>
 
