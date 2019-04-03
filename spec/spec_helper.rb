@@ -22,6 +22,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 Capybara.automatic_label_click = true
 ActiveRecord::Migration.maintain_test_schema!
 Rails.application.load_tasks
+Sidekiq::Testing.inline!
 
 Capybara.server = :puma, { Silent: true }
 Capybara::Chromedriver::Logger.raise_js_errors = true
@@ -51,16 +52,13 @@ RSpec.configure do |config|
     stub_publishing_api_has_linkables([], document_type: "organisation")
   end
 
-  config.after :each, type: :feature do
-    reset_authentication
-  end
-
   config.before :each do
     Sidekiq::Worker.clear_all
+    ActionMailer::Base.deliveries.clear
   end
 
-  config.around :each, inline: true do |example|
-    Sidekiq::Testing.inline! { example.run }
+  config.after :each, type: :feature do
+    reset_authentication
   end
 
   config.after :each, type: :feature, js: true do

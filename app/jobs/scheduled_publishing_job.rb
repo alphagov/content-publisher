@@ -15,7 +15,7 @@ class ScheduledPublishingJob < ApplicationJob
       user = edition.status.created_by
       reviewed = edition.status.details.reviewed
 
-      PublishService.new(edition.document)
+      PublishService.new(edition)
                     .publish(user: user, with_review: reviewed)
     end
   end

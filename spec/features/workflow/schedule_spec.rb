@@ -3,6 +3,10 @@
 RSpec.feature "Schedule an edition" do
   include ActiveJob::TestHelper
 
+  background do
+    Sidekiq::Testing.fake!
+  end
+
   scenario do
     given_there_is_an_edition_ready_to_schedule
     when_i_visit_the_summary_page

@@ -42,6 +42,8 @@ class Edition < ApplicationRecord
 
   has_and_belongs_to_many :revisions
 
+  has_many :statuses
+
   has_many :internal_notes
 
   delegate :content_id, :locale, :document_type, :topics, :document_topics, to: :document
@@ -178,5 +180,10 @@ class Edition < ApplicationRecord
                       last_edited_at: Time.current)
 
     self
+  end
+
+  def editors
+    user_ids = statuses.pluck(:created_by_id) + revisions.pluck(:created_by_id)
+    User.where(id: user_ids.uniq)
   end
 end
