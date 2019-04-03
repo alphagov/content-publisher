@@ -7,8 +7,11 @@ RSpec.describe ScheduledPublishingJob, inline: true do
                        :scheduled,
                        scheduled_publishing_datetime: Time.current)
       user = edition.status.created_by
+      publish_service = double(:publish_service, publish: nil)
 
-      expect_any_instance_of(PublishService)
+      expect(PublishService).to receive(:new).with(edition) { publish_service }
+
+      expect(publish_service)
         .to receive(:publish)
         .with(user: user, with_review: edition.status.details.reviewed)
 

@@ -18,11 +18,10 @@ class PublishController < ApplicationController
   end
 
   def publish
-    edition = Edition.find_current(document: params[:document])
-    live_edition = nil
+    edition = nil
 
-    Edition.transaction do
-      edition.lock!
+    Edition.transaction do # rubocop:disable Metrics/BlockLength
+      edition = Edition.lock.find_current(document: params[:document])
 
       if params[:review_status].blank?
         flash.now["alert_with_items"] = {
@@ -44,8 +43,8 @@ class PublishController < ApplicationController
       with_review = params[:review_status] == "reviewed"
 
       begin
-        live_edition = PublishService.new(edition.document)
-                                     .publish(user: current_user, with_review: with_review)
+        PublishService.new(edition)
+                      .publish(user: current_user, with_review: with_review)
       rescue GdsApi::BaseError
         redirect_to edition.document, alert_with_description: t("documents.show.flashes.publish_error")
         return
@@ -53,11 +52,11 @@ class PublishController < ApplicationController
 
       TimelineEntry.create_for_status_change(
         entry_type: with_review ? :published : :published_without_review,
-        status: live_edition.status,
+        status: edition.status,
       )
     end
 
-    send_notifications(live_edition)
+    send_notifications(edition)
     redirect_to published_path(edition.document)
   end
 

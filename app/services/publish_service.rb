@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 class PublishService
-  attr_reader :document
-  delegate :current_edition, :live_edition, to: :document
+  attr_reader :edition
+  delegate :document, to: :edition
 
-  def initialize(document)
-    @document = document
+  def initialize(edition)
+    @edition = edition
   end
 
   def publish(user:, with_review:)
+    live_edition = document.live_edition
+
     publish_new_images
-    retire_old_images
+    retire_old_images(live_edition)
 
     GdsApi.publishing_api_v2.publish(
       document.content_id,
@@ -18,11 +20,11 @@ class PublishService
       locale: document.locale,
     )
 
-    supersede_live_edition(user)
+    supersede_live_edition(live_edition, user)
     set_new_live_edition(user, with_review)
     set_first_published_at
 
-    current_edition
+    document.reload
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     raise
@@ -30,7 +32,7 @@ class PublishService
 
 private
 
-  def supersede_live_edition(user)
+  def supersede_live_edition(live_edition, user)
     return unless live_edition
 
     live_edition.assign_status(:superseded, user, update_last_edited: false)
@@ -40,9 +42,9 @@ private
 
   def set_new_live_edition(user, with_review)
     status = with_review ? :published : :published_but_needs_2i
-    current_edition.assign_status(status, user)
-    current_edition.live = true
-    current_edition.save!
+    edition.assign_status(status, user)
+    edition.live = true
+    edition.save!
   end
 
   def set_first_published_at
@@ -52,42 +54,32 @@ private
   end
 
   def publish_new_images
-    return unless current_edition.image_revisions.any?
+    assets = edition.image_revisions.flat_map(&:assets)
 
-    current_edition.image_revisions.each do |image_revision|
-      image_revision.assets.each do |asset|
-        raise "Expected asset to be on asset manager" if asset.absent?
+    assets.each do |asset|
+      raise "Expected asset to be on asset manager" if asset.absent?
+      next unless asset.draft?
 
-        if asset.draft?
-          AssetManagerService.new.publish(asset)
-          asset.live!
-        end
-      end
+      AssetManagerService.new.publish(asset)
+      asset.live!
     end
   end
 
-  def retire_old_images
+  def retire_old_images(live_edition)
     return unless live_edition
 
-    image_revisions = current_edition.image_revisions
-    current_file_revisions = image_revisions.map(&:file_revision)
-    current_revisions_by_image_id = image_revisions.group_by(&:image_id)
+    live_edition.image_revisions.each do |old_revision|
+      new_revision = find_image_revision(edition, old_revision)
 
-    live_edition.image_revisions.each do |revision|
-      next if current_file_revisions.include?(revision.file_revision)
-
-      if current_revisions_by_image_id.has_key?(revision.image_id)
-        redirect_images(
-          revision,
-          current_revisions_by_image_id[revision.image_id].first,
-        )
+      if new_revision
+        redirect_image_assets(old_revision, new_revision)
       else
-        revision.assets.each { |a| remove_image_asset(a) }
+        old_revision.assets.each { |a| remove_image_asset(a) }
       end
     end
   end
 
-  def redirect_images(old_revision, new_revision)
+  def redirect_image_assets(old_revision, new_revision)
     old_revision.assets.each do |old_asset|
       new_asset = new_revision.asset(old_asset.variant)
 
@@ -113,6 +105,7 @@ private
 
   def redirect_image_asset(from_asset, to_asset)
     return if from_asset.absent?
+    return if from_asset == to_asset
 
     begin
       AssetManagerService.new.redirect(from_asset, to: to_asset.file_url)
@@ -121,5 +114,9 @@ private
       Rails.logger.warn("No asset to supersede for id #{from_asset.asset_manager_id}")
       from_asset.absent!
     end
+  end
+
+  def find_image_revision(edition, old_revision)
+    edition.image_revisions.find { |r| r.image_id == old_revision.image_id }
   end
 end
