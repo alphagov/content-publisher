@@ -17,6 +17,7 @@ FactoryBot.define do
       state { "draft" }
       lead_image_revision { nil }
       image_revisions { [] }
+      first_published_at { nil }
     end
 
     after(:build) do |edition, evaluator|
@@ -27,6 +28,7 @@ FactoryBot.define do
           content_id: evaluator.content_id,
           locale: evaluator.locale,
           document_type_id: evaluator.document_type_id,
+          first_published_at: evaluator.first_published_at,
         )
       end
 
@@ -73,6 +75,7 @@ FactoryBot.define do
     trait :published do
       summary { SecureRandom.alphanumeric(10) }
       live { true }
+      first_published_at { Time.current }
 
       after(:build) do |edition, evaluator|
         edition.status = evaluator.association(
@@ -87,6 +90,7 @@ FactoryBot.define do
     trait :withdrawn do
       summary { SecureRandom.alphanumeric(10) }
       live { true }
+      first_published_at { Time.current }
 
       transient do
         withdrawal { nil }
