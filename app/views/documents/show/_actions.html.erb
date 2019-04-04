@@ -84,7 +84,14 @@
 
     <% if @edition.document.live_edition %>
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
-      <%= link_to "View published edition on GOV.UK", EditionUrl.new(@edition.document.live_edition).public_url, class: "govuk-link govuk-link--no-visited-state" %>
+      <ul class="govuk-list govuk-!-margin-0">
+        <li>
+          <%= link_to "View published edition on GOV.UK", EditionUrl.new(@edition.document.live_edition).public_url, class: "govuk-link govuk-link--no-visited-state" %>
+        </li>
+        <li>
+          <%= link_to "View data about this page", ContentDataUrl.new(@edition.document).url, target: "_blank", class: "govuk-link govuk-link--no-visited-state" %>
+        </li>
+      </ul>
     <% end %>
   </div>
 </div>
