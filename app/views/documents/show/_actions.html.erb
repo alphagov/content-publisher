@@ -88,9 +88,12 @@
         <li>
           <%= link_to "View published edition on GOV.UK", EditionUrl.new(@edition.document.live_edition).public_url, class: "govuk-link govuk-link--no-visited-state" %>
         </li>
-        <li>
-          <%= link_to "View data about this page", ContentDataUrl.new(@edition.document).url, target: "_blank", class: "govuk-link govuk-link--no-visited-state" %>
-        </li>
+        <% content_data_url = ContentDataUrl.new(@edition.document) %>
+        <% if content_data_url.displayable?(current_user) %>
+          <li>
+            <%= link_to "View data about this page", content_data_url.url, target: "_blank", class: "govuk-link govuk-link--no-visited-state" %>
+          </li>
+        <% end %>
       </ul>
     <% end %>
   </div>
