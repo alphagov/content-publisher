@@ -94,6 +94,9 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
   MarkdownEditor.prototype.fetchGovspeakPreview = function (text) {
     var path = this.$module.getAttribute('data-govspeak-path')
+    if (!path) {
+      return window.Promise.reject('Govspeak path not set')
+    }
     var url = new URL(document.location.origin + path)
 
     var formData = new window.FormData()

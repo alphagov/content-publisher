@@ -23,5 +23,4 @@ examples:
       textarea:
         name: markdown-editor
         id: markdown-editor
-      govspeak_preview_path: "#"
       contextual_guidance: "document-contents-guidance"

@@ -4,6 +4,30 @@
   preview_button_text ||= 'Preview markdown'
   contextual_guidance ||= nil
   govspeak_path ||= nil
+  edition ||= nil
+
+  insert_items = []
+
+  if edition
+    insert_items = [
+      {
+        text: "Contact",
+        button_options: {
+          value: "add_contact",
+          name: "submit",
+        },
+      },
+      {
+        text: "Image",
+        href: images_path(edition.document),
+        target: "_blank",
+        data_attributes: {
+          module: "inline-image-modal",
+          "modal-action": "open",
+        }
+      }
+    ]
+  end
 %>
 <%= tag.div class: "app-c-markdown-editor",
   data: {
@@ -40,28 +64,13 @@
           <md-unordered-list class="app-c-markdown-editor__toolbar-button" title="Bullets" aria-label="Bullets" data-gtm="markdown-toolbar-selection">
             <%= render "components/markdown_editor/bullets.svg" %>
           </md-unordered-list>
-          <%= render "components/toolbar_dropdown", {
-            title: "Insert...",
-            align: 'right',
-            items: [
-              {
-                text: "Contact",
-                button_options: {
-                  value: "add_contact",
-                  name: "submit",
-                },
-              },
-              {
-                text: "Image",
-                href: images_path(@edition.document),
-                target: "_blank",
-                data_attributes: {
-                  module: "inline-image-modal",
-                  "modal-action": "open",
-                }
-              }
-            ]
-          } %>
+          <% if insert_items.any? %>
+            <%= render "components/toolbar_dropdown", {
+              title: "Insert...",
+              align: 'right',
+              items: insert_items
+            } %>
+          <% end %>
         </markdown-toolbar>
       </div>
     </div>
