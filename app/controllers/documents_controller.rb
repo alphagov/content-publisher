@@ -58,7 +58,9 @@ class DocumentsController < ApplicationController
           "items" => @issues.items,
         }
 
-        render :edit, assigns: { edition: edition, revision: edition.revision }, status: :unprocessable_entity
+        render :edit,
+               assigns: { edition: edition, revision: updater.next_revision },
+               status: :unprocessable_entity
         next
       end
 
