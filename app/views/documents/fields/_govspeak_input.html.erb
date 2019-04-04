@@ -20,6 +20,7 @@
       contextual_guidance: "document-contents-guidance",
       govspeak_path: govspeak_preview_path(edition.document),
       edition: edition,
+      error_items: issues&.items_for(field.id.to_sym)
     } %>
   </div>
 

@@ -103,7 +103,12 @@
   <% end %>
 
   <% @edition.document_type.contents.each do |field| %>
-    <%= render "documents/fields/#{field.type}_input", field: field, edition: @edition, revision: @revision %>
+    <%= render "documents/fields/#{field.type}_input",
+      field: field,
+      edition: @edition,
+      revision: @revision,
+      issues: @issues
+    %>
   <% end %>
 
   <% if @edition.document.live_edition %>
