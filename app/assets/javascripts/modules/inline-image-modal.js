@@ -44,6 +44,7 @@ InlineImageModal.prototype.insertSnippet = function (item) {
 InlineImageModal.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
+      this.$modal.resize('wide')
       this.$modal.open()
       this.render(window.ModalFetch.getLink(item))
     },
