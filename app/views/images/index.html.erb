@@ -1,6 +1,6 @@
 <%
 title_key = rendering_context == "modal" ? "images.index.title_modal" : "images.index.title"
-content_for :title,t(title_key, title: @edition.title_or_fallback)
+content_for :title, t(title_key, title: @edition.title_or_fallback)
 %>
 
 <% unless rendering_context == "modal" %>

@@ -81,6 +81,9 @@ Rails.application.routes.draw do
   get "/beta-capabilities" => "publisher_information#beta_capabilities", as: :beta_capabilities
   get "/publisher-updates" => "publisher_information#publisher_updates", as: :publisher_updates
 
+  get "/video-embed" => "video_embed#new", as: :video_embed
+  post "/video-embed" => "video_embed#create", as: :create_video_embed
+
   mount GovukPublishingComponents::Engine, at: "/component-guide"
 
   if Rails.env.test?
