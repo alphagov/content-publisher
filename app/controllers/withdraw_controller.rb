@@ -33,7 +33,7 @@ class WithdrawController < ApplicationController
         }
 
         render :new,
-               assigns: { edition: edition, public_explanation: public_explanation },
+               assigns: { edition: edition, public_explanation: public_explanation, issues: issues },
                status: :unprocessable_entity
         next
       end
