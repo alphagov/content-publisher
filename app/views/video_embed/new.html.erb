@@ -31,6 +31,9 @@
 
   <%= render "govuk_publishing_components/components/button", {
     margin_bottom: true,
+    data_attributes: {
+      gtm: "insert-video-embed"
+    },
     text: "Embed video",
   } %>
 <% end %>
