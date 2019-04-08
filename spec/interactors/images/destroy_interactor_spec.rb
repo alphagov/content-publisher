@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Images::Destroy do
+RSpec.describe Images::DestroyInteractor do
   def strong_params(**params)
     ActionController::Parameters.new(params)
   end
@@ -24,7 +24,7 @@ RSpec.describe Images::Destroy do
     end
 
     it "creates a revision without the image revision" do
-      Images::Destroy.call(params: params, user: user)
+      Images::DestroyInteractor.call(params: params, user: user)
       revision = edition.reload.revision
       expect(revision.image_revisions).not_to include(image_revision)
     end
@@ -33,12 +33,12 @@ RSpec.describe Images::Destroy do
       expect(TimelineEntry)
         .to receive(:create_for_revision)
         .with(entry_type: :image_deleted, edition: edition)
-      Images::Destroy.call(params: params, user: user)
+      Images::DestroyInteractor.call(params: params, user: user)
     end
 
     it "creates a preview" do
       expect(preview_service).to receive(:try_create_preview)
-      Images::Destroy.call(params: params, user: user)
+      Images::DestroyInteractor.call(params: params, user: user)
     end
 
     context "when the image does not exist" do
@@ -50,7 +50,7 @@ RSpec.describe Images::Destroy do
           image_id: Image.maximum(:id).to_i + 1,
         )
 
-        expect { Images::Destroy.call(params: params, user: user) }
+        expect { Images::DestroyInteractor.call(params: params, user: user) }
           .to raise_error(ActiveRecord::RecordNotFound)
       end
     end

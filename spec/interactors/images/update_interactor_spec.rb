@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Images::Update do
+RSpec.describe Images::UpdateInteractor do
   def strong_params(**params)
     ActionController::Parameters.new(params)
   end
@@ -25,7 +25,7 @@ RSpec.describe Images::Update do
 
     context "when an image is updated" do
       it "creates a new revision" do
-        expect { Images::Update.call(params: strong_params(success_params), user: user) }
+        expect { Images::UpdateInteractor.call(params: strong_params(success_params), user: user) }
           .to(change { edition.reload.revision })
         image_revision = edition.image_revisions.first
         alt_text = success_params[:image_revision][:alt_text]
@@ -34,7 +34,7 @@ RSpec.describe Images::Update do
 
       it "creates a preview" do
         expect(preview_service).to receive(:try_create_preview)
-        Images::Update.call(params: strong_params(success_params), user: user)
+        Images::UpdateInteractor.call(params: strong_params(success_params), user: user)
       end
     end
 
@@ -43,7 +43,7 @@ RSpec.describe Images::Update do
         expect(TimelineEntry)
           .to receive(:create_for_revision)
           .with(entry_type: :image_updated, edition: edition)
-        Images::Update.call(params: strong_params(success_params), user: user)
+        Images::UpdateInteractor.call(params: strong_params(success_params), user: user)
       end
     end
 
@@ -53,7 +53,7 @@ RSpec.describe Images::Update do
       end
 
       it "sets the edition lead image" do
-        expect { Images::Update.call(params: params, user: user) }
+        expect { Images::UpdateInteractor.call(params: params, user: user) }
           .to change { edition.reload.lead_image_revision }
           .from(nil)
       end
@@ -62,7 +62,7 @@ RSpec.describe Images::Update do
         expect(TimelineEntry)
           .to receive(:create_for_revision)
           .with(entry_type: :lead_image_selected, edition: edition)
-        Images::Update.call(params: params, user: user)
+        Images::UpdateInteractor.call(params: params, user: user)
       end
     end
 
@@ -73,7 +73,7 @@ RSpec.describe Images::Update do
       end
 
       it "removes the edition lead image" do
-        expect { Images::Update.call(params: params, user: user) }
+        expect { Images::UpdateInteractor.call(params: params, user: user) }
           .to change { edition.reload.lead_image_revision }
           .to(nil)
       end
@@ -82,7 +82,7 @@ RSpec.describe Images::Update do
         expect(TimelineEntry)
           .to receive(:create_for_revision)
           .with(entry_type: :lead_image_removed, edition: edition)
-        Images::Update.call(params: params, user: user)
+        Images::UpdateInteractor.call(params: params, user: user)
       end
     end
 
@@ -93,24 +93,24 @@ RSpec.describe Images::Update do
       end
 
       it "doesn't create a timeline entry" do
-        expect { Images::Update.call(params: params, user: user) }
+        expect { Images::UpdateInteractor.call(params: params, user: user) }
           .not_to change(TimelineEntry, :count)
       end
 
       it "doesn't update the editions revision" do
-        expect { Images::Update.call(params: params, user: user) }
+        expect { Images::UpdateInteractor.call(params: params, user: user) }
           .not_to(change { edition.reload.revision })
       end
 
       it "doesn't preview" do
         expect(preview_service).not_to receive(:try_create_preview)
-        Images::Update.call(params: params, user: user)
+        Images::UpdateInteractor.call(params: params, user: user)
       end
     end
 
     context "when there are issues" do
       it "fails with issues" do
-        result = Images::Update.call(
+        result = Images::UpdateInteractor.call(
           params: strong_params(
             document: edition.document.to_param,
             image_id: image_revision.image_id,
@@ -133,7 +133,7 @@ RSpec.describe Images::Update do
           image_revision: { caption: "Caption" },
         )
 
-        expect { Images::Update.call(params: params, user: user) }
+        expect { Images::UpdateInteractor.call(params: params, user: user) }
           .to raise_error(ActiveRecord::RecordNotFound)
       end
     end
