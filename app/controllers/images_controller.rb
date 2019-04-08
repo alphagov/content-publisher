@@ -12,20 +12,24 @@ class ImagesController < ApplicationController
   end
 
   def create
-    result = Images::Create.call(params: params, user: current_user)
-    if result.failure?
+    result = Images::CreateInteractor.call(params: params, user: current_user)
+    edition, image_revision, issues = result.to_h.values_at(:edition,
+                                                            :image_revision,
+                                                            :issues)
+
+    if issues
       flash.now["alert_with_items"] = {
         "title" => I18n.t!("images.index.flashes.upload_requirements"),
-        "items" => result.issues.items,
+        "items" => issues.items,
       }
 
       render :index,
-             assigns: { edition: result.edition },
+             assigns: { edition: edition },
              layout: rendering_context,
              status: :unprocessable_entity
     else
-      redirect_to crop_image_path(result.edition.document,
-                                  result.image_revision.image_id,
+      redirect_to crop_image_path(edition.document,
+                                  image_revision.image_id,
                                   wizard: "upload")
     end
   end
@@ -37,9 +41,10 @@ class ImagesController < ApplicationController
   end
 
   def update_crop
-    result = Images::UpdateCrop.call(params: params, user: current_user)
-    redirect_to edit_image_path(result.edition.document,
-                                result.image_revision.image_id,
+    result = Images::UpdateCropInteractor.call(params: params, user: current_user)
+    edition, image_revision = result.to_h.values_at(:edition, :image_revision)
+    redirect_to edit_image_path(edition.document,
+                                image_revision.image_id,
                                 wizard: params[:wizard])
   end
 
@@ -50,49 +55,51 @@ class ImagesController < ApplicationController
   end
 
   def update
-    result = Images::Update.call(params: params, user: current_user)
+    result = Images::UpdateInteractor.call(params: params, user: current_user)
 
-    if result.failure?
+    edition, image_revision, issues, lead_selected, lead_removed =
+      result.to_h.values_at(:edition,
+                            :image_revision,
+                            :issues,
+                            :selected_lead_image,
+                            :removed_lead_image)
+
+    if issues
       flash.now["alert_with_items"] = {
         "title" => I18n.t!("images.edit.flashes.requirements"),
-        "items" => result.issues.items,
+        "items" => issues.items,
       }
 
       render :edit,
-             assigns: { edition: result.edition,
-                        image_revision: result.image_revision,
-                        issues: result.issues },
+             assigns: { edition: edition,
+                        image_revision: image_revision,
+                        issues: issues },
              layout: rendering_context,
              status: :unprocessable_entity
+    elsif lead_selected
+      redirect_to document_path(edition.document),
+                  notice: t("documents.show.flashes.lead_image.selected", file: image_revision.filename)
+    elsif lead_removed
+      redirect_to images_path(edition.document),
+                  notice: t("images.index.flashes.lead_image.removed", file: image_revision.filename)
     else
-      document = result.edition.document
-
-      if result.updater.selected_lead_image?
-        redirect_to document_path(document),
-                    notice: t("documents.show.flashes.lead_image.selected",
-                              file: result.image_revision.filename)
-      elsif result.updater.removed_lead_image?
-        redirect_to images_path(document),
-                    notice: t("images.index.flashes.lead_image.removed",
-                              file: result.image_revision.filename)
-      else
-        redirect_to images_path(document)
-      end
+      redirect_to images_path(edition.document)
     end
   end
 
   def destroy
-    result = Images::Destroy.call(params: params, user: current_user)
-    document = result.edition.document
-
-    if result.updater.removed_lead_image?
-      redirect_to images_path(document),
+    result = Images::DestroyInteractor.call(params: params, user: current_user)
+    edition, image_revision, removed_lead = result.to_h.values_at(:edition,
+                                                                  :image_revision,
+                                                                  :removed_lead_image)
+    if removed_lead
+      redirect_to images_path(edition.document),
                   notice: t("images.index.flashes.lead_image.deleted",
-                            file: result.image_revision.filename)
+                            file: image_revision.filename)
     else
-      redirect_to images_path(document),
+      redirect_to images_path(edition.document),
                   notice: t("images.index.flashes.deleted",
-                            file: result.image_revision.filename)
+                            file: image_revision.filename)
     end
   end
 

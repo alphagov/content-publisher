@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Images::UpdateCrop do
+RSpec.describe Images::UpdateCropInteractor do
   def strong_params(**params)
     ActionController::Parameters.new(params)
   end
@@ -28,7 +28,7 @@ RSpec.describe Images::UpdateCrop do
       end
 
       it "creates a new revision" do
-        expect { Images::UpdateCrop.call(params: params, user: user) }
+        expect { Images::UpdateCropInteractor.call(params: params, user: user) }
           .to(change { edition.reload.revision })
       end
 
@@ -36,12 +36,12 @@ RSpec.describe Images::UpdateCrop do
         expect(TimelineEntry)
           .to receive(:create_for_revision)
           .with(entry_type: :image_updated, edition: edition)
-        Images::UpdateCrop.call(params: params, user: user)
+        Images::UpdateCropInteractor.call(params: params, user: user)
       end
 
       it "creates a preview" do
         expect(preview_service).to receive(:try_create_preview)
-        Images::UpdateCrop.call(params: params, user: user)
+        Images::UpdateCropInteractor.call(params: params, user: user)
       end
     end
 
@@ -57,18 +57,18 @@ RSpec.describe Images::UpdateCrop do
       end
 
       it "doesn't create a new revision" do
-        expect { Images::UpdateCrop.call(params: params, user: user) }
+        expect { Images::UpdateCropInteractor.call(params: params, user: user) }
           .not_to(change { edition.reload.revision })
       end
 
       it "doesn't create a timeline entry" do
-        expect { Images::UpdateCrop.call(params: params, user: user) }
+        expect { Images::UpdateCropInteractor.call(params: params, user: user) }
           .not_to change(TimelineEntry, :count)
       end
 
       it "creates a preview" do
         expect(preview_service).not_to receive(:try_create_preview)
-        Images::UpdateCrop.call(params: params, user: user)
+        Images::UpdateCropInteractor.call(params: params, user: user)
       end
     end
 
@@ -79,7 +79,7 @@ RSpec.describe Images::UpdateCrop do
           image_id: Image.maximum(:id).to_i + 1,
         )
 
-        expect { Images::UpdateCrop.call(params: params, user: user) }
+        expect { Images::UpdateCropInteractor.call(params: params, user: user) }
           .to raise_error(ActiveRecord::RecordNotFound)
       end
     end

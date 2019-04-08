@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Images::Create do
+RSpec.describe Images::CreateInteractor do
   def strong_params(**params)
     ActionController::Parameters.new(params)
   end
@@ -11,7 +11,7 @@ RSpec.describe Images::Create do
 
     context "when an image upload has issues" do
       it "fails with issues" do
-        result = Images::Create.call(
+        result = Images::CreateInteractor.call(
           params: strong_params(
             document: edition.document.to_param,
             image: nil,
@@ -32,13 +32,13 @@ RSpec.describe Images::Create do
       end
 
       it "uploads an image" do
-        expect { Images::Create.call(params: params, user: user) }
+        expect { Images::CreateInteractor.call(params: params, user: user) }
           .to change { Image.count }
           .by(1)
       end
 
       it "updates the edition revision" do
-        expect { Images::Create.call(params: params, user: user) }
+        expect { Images::CreateInteractor.call(params: params, user: user) }
           .to(change { edition.reload.revision })
       end
     end
