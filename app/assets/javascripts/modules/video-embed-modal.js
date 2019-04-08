@@ -44,6 +44,7 @@ VideoEmbedModal.prototype.insertSnippet = function (text) {
 VideoEmbedModal.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
+      this.$modal.resize('narrow')
       this.$modal.open()
       this.render(window.ModalFetch.getLink(item))
     },
