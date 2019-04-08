@@ -55,14 +55,14 @@ class ImagesController < ApplicationController
   end
 
   def update
-    result = Images::UpdateInteractor.call(params: params, user: current_user)
+    service = Images::UpdateService.call(params: params, user: current_user)
 
     edition, image_revision, issues, lead_selected, lead_removed =
-      result.to_h.values_at(:edition,
-                            :image_revision,
-                            :issues,
-                            :selected_lead_image,
-                            :removed_lead_image)
+      service.result.values_at(:edition,
+                               :image_revision,
+                               :issues,
+                               :selected_lead_image,
+                               :removed_lead_image)
 
     if issues
       flash.now["alert_with_items"] = {
@@ -88,10 +88,10 @@ class ImagesController < ApplicationController
   end
 
   def destroy
-    result = Images::DestroyInteractor.call(params: params, user: current_user)
-    edition, image_revision, removed_lead = result.to_h.values_at(:edition,
-                                                                  :image_revision,
-                                                                  :removed_lead_image)
+    service = Images::DestroyService.call(params: params, user: current_user)
+    edition, image_revision, removed_lead = service.result.values_at(:edition,
+                                                                     :image_revision,
+                                                                     :removed_lead_image)
     if removed_lead
       redirect_to images_path(edition.document),
                   notice: t("images.index.flashes.lead_image.deleted",

@@ -79,6 +79,7 @@ GEM
       msgpack (~> 1.0)
     brakeman (4.5.0)
     builder (3.2.3)
+    business_process (1.0.3)
     byebug (11.0.1)
     capybara (3.10.1)
       addressable
@@ -452,6 +453,7 @@ DEPENDENCIES
   aws-sdk-s3 (~> 1)
   bootsnap (~> 1)
   brakeman (~> 4)
+  business_process (~> 1)
   byebug (~> 11)
   capybara-chromedriver-logger!
   climate_control

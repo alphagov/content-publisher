@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-class Images::DestroyInteractor
-  include Interactor
-
-  delegate :params, :user, to: :context
+class Images::DestroyService < BusinessProcess::Base
+  needs :params
+  needs :user
 
   def call
     Edition.transaction do
@@ -12,7 +11,7 @@ class Images::DestroyInteractor
       update_edition
       create_timeline_entry
       update_preview
-      update_context
+      build_result
     end
   end
 
@@ -40,9 +39,9 @@ private
     PreviewService.new(@edition).try_create_preview
   end
 
-  def update_context
-    context.edition = @edition
-    context.image_revision = @image_revision
-    context.removed_lead_image = @updater.removed_lead_image?
+  def build_result
+    { edition: @edition,
+      image_revision: @image_revision,
+      removed_lead_image: @updater.removed_lead_image? }
   end
 end

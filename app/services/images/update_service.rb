@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 
-class Images::UpdateInteractor
-  include Interactor
-
-  delegate :params, :user, to: :context
+class Images::UpdateService < BusinessProcess::Base
+  needs :params
+  needs :user
 
   def call
     Edition.transaction do
       find_and_lock_edition
       find_and_update_image
       check_for_issues
+
+      if @issues.any?
+        return build_result
+      end
+
       update_edition
 
       if @updater.changed?
@@ -17,7 +21,7 @@ class Images::UpdateInteractor
         update_preview
       end
 
-      update_context
+      build_result
     end
   end
 
@@ -38,12 +42,7 @@ private
 
   def check_for_issues
     checker = Requirements::ImageRevisionChecker.new(@image_revision)
-    issues = checker.pre_preview_metadata_issues
-    return unless issues.any?
-
-    context.fail!(issues: issues,
-                  edition: @edition,
-                  image_revision: @image_revision)
+    @issues = checker.pre_preview_metadata_issues
   end
 
   def update_edition
@@ -70,10 +69,11 @@ private
     PreviewService.new(@edition).try_create_preview
   end
 
-  def update_context
-    context.edition = @edition
-    context.image_revision = @image_revision
-    context.selected_lead_image = @updater.selected_lead_image?
-    context.removed_lead_image = @updater.removed_lead_image?
+  def build_result
+    { edition: @edition,
+      image_revision: @image_revision,
+      selected_lead_image: @updater&.selected_lead_image?,
+      removed_lead_image: @updater&.removed_lead_image?,
+      issues: @issues.any? && @issues }
   end
 end
