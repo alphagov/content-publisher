@@ -9,30 +9,29 @@ class Images::DestroyInteractor
            :removed_lead_image,
            to: :context
 
-  def initialize(params:, user:)
-    super
-  end
-
   def call
     Edition.transaction do
-      context.edition = Edition.lock.find_current(document: params[:document])
-      context.image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
-
-      updater = remove_image(image_revision)
+      find_and_lock_edition
+      find_and_remove_image
       create_timeline_entry
       update_preview
-
-      context.removed_lead_image = updater.removed_lead_image?
     end
   end
 
 private
 
-  def remove_image(image_revision)
-    Versioning::RevisionUpdater.new(edition.revision, user).tap do |updater|
-      updater.remove_image(image_revision)
-      edition.assign_revision(updater.next_revision, user).save!
-    end
+  def find_and_lock_edition
+    context.edition = Edition.lock.find_current(document: params[:document])
+  end
+
+  def find_and_remove_image
+    current_image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
+    updater = Versioning::RevisionUpdater.new(edition.revision, user)
+    updater.remove_image(current_image_revision)
+    edition.assign_revision(updater.next_revision, user).save!
+
+    context.image_revision = current_image_revision
+    context.removed_lead_image = updater.removed_lead_image?
   end
 
   def create_timeline_entry
