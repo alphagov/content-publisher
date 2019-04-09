@@ -23,7 +23,7 @@ class ImagesController < ApplicationController
              layout: rendering_context,
              status: :unprocessable_entity
     else
-      redirect_to crop_image_path(edition.document,
+      redirect_to crop_image_path(params[:document],
                                   image_revision.image_id,
                                   wizard: "upload")
     end
@@ -37,8 +37,8 @@ class ImagesController < ApplicationController
 
   def update_crop
     result = Images::UpdateCropInteractor.call(params: params, user: current_user)
-    edition, image_revision = result.to_h.values_at(:edition, :image_revision)
-    redirect_to edit_image_path(edition.document,
+    image_revision = result.image_revision
+    redirect_to edit_image_path(params[:document],
                                 image_revision.image_id,
                                 wizard: params[:wizard])
   end
@@ -72,27 +72,26 @@ class ImagesController < ApplicationController
              layout: rendering_context,
              status: :unprocessable_entity
     elsif lead_selected
-      redirect_to document_path(edition.document),
+      redirect_to document_path(params[:document]),
                   notice: t("documents.show.flashes.lead_image.selected", file: image_revision.filename)
     elsif lead_removed
-      redirect_to images_path(edition.document),
+      redirect_to images_path(params[:document]),
                   notice: t("images.index.flashes.lead_image.removed", file: image_revision.filename)
     else
-      redirect_to images_path(edition.document)
+      redirect_to images_path(params[:document])
     end
   end
 
   def destroy
     result = Images::DestroyInteractor.call(params: params, user: current_user)
-    edition, image_revision, removed_lead = result.to_h.values_at(:edition,
-                                                                  :image_revision,
-                                                                  :removed_lead_image)
+    image_revision, removed_lead = result.to_h.values_at(:image_revision, :removed_lead_image)
+
     if removed_lead
-      redirect_to images_path(edition.document),
+      redirect_to images_path(params[:document]),
                   notice: t("images.index.flashes.lead_image.deleted",
                             file: image_revision.filename)
     else
-      redirect_to images_path(edition.document),
+      redirect_to images_path(params[:document]),
                   notice: t("images.index.flashes.deleted",
                             file: image_revision.filename)
     end

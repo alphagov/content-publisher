@@ -6,31 +6,34 @@ class Images::UpdateCropInteractor
            :user,
            :edition,
            :image_revision,
+           :edition_updated,
            to: :context
-
-  def initialize(params:, user:)
-    super
-  end
 
   def call
     Edition.transaction do
-      context.edition = Edition.lock.find_current(document: params[:document])
+      find_and_lock_edition
+      find_and_update_image
 
-      updater = update_image(find_image_revision(params[:image_id]), crop_params)
+      update_edition
 
-      if updater.changed?
-        create_timeline_entry
-        update_preview
-      end
-
-      context.image_revision = updater.next_revision
+      create_timeline_entry
+      update_preview
     end
   end
 
 private
 
-  def find_image_revision(image_id)
-    edition.image_revisions.find_by!(image_id: image_id)
+  def find_and_lock_edition
+    context.edition = Edition.lock.find_current(document: params[:document])
+  end
+
+  def find_and_update_image
+    image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
+
+    updater = Versioning::ImageRevisionUpdater.new(image_revision, user)
+    updater.assign(crop_params)
+
+    context.image_revision = updater.next_revision
   end
 
   def crop_params
@@ -42,24 +45,24 @@ private
       .tap { |p| p[:crop_height] = (p[:crop_width].to_i * image_aspect_ratio).round }
   end
 
-  def update_image(image_revision, params)
-    Versioning::ImageRevisionUpdater.new(image_revision, user).tap do |updater|
-      updater.assign(params)
-      update_edition(updater.next_revision) if updater.changed?
-    end
-  end
-
-  def update_edition(image_revision)
+  def update_edition
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
+
     updater.update_image(image_revision, false)
-    edition.assign_revision(updater.next_revision, user).save!
+    edition.assign_revision(updater.next_revision, user).save! if updater.changed?
+
+    context.edition_updated = updater.changed?
   end
 
   def create_timeline_entry
+    return unless edition_updated
+
     TimelineEntry.create_for_revision(entry_type: :image_updated, edition: edition)
   end
 
   def update_preview
+    return unless edition_updated
+
     PreviewService.new(edition).try_create_preview
   end
 end
