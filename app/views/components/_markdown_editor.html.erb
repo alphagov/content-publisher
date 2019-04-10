@@ -6,11 +6,15 @@
   govspeak_path ||= nil
   edition ||= nil
   error_items ||= []
+  paste_html_to_govspeak ||= false
 
   component_classes = %w[app-c-markdown-editor govuk-form-group]
   component_classes << "govuk-form-group--error" if error_items.any?
 
   insert_items = []
+
+  textarea[:data] = textarea.fetch(:data, {})
+                            .merge({ "paste-html-to-govspeak": paste_html_to_govspeak })
 
   if edition
     insert_items = [

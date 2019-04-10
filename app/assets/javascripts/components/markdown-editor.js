@@ -34,8 +34,10 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.bubbleFocusEventToComponent(this.$editButton)
     this.bubbleFocusEventToComponent(this.$previewButton)
 
-    // Convert pasted HTML to govspeak
-    this.$input.addEventListener('paste', window.pasteHtmlToGovspeak.pasteListener)
+    // Convert pasted HTML to govspeak. Behind a pre-release feature flag.
+    if (this.$input.dataset.pasteHtmlToGovspeak === 'true') {
+      this.$input.addEventListener('paste', window.pasteHtmlToGovspeak.pasteListener)
+    }
   }
 
   MarkdownEditor.prototype.handleSelectionReplace = function (text, options) {
