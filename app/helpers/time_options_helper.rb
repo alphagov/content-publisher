@@ -4,14 +4,10 @@ module TimeOptionsHelper
   DEFAULT_PUBLISHING_TIME = "9:00am"
 
   def time_options(selected = nil)
-    options = times.map { |time| { text: time, value: time } }
-    options.each do |option|
-      if option[:text] == (selected || DEFAULT_PUBLISHING_TIME)
-        option[:selected] = true
-        break
-      end
-    end
-    options
+    options = times.map { |time| [time, time] }
+    selected_options = times.map { |time| [time, time] if time == (selected || DEFAULT_PUBLISHING_TIME) }.compact
+    options_for_select = { options: options, selected_options: selected_options }
+    options_for_select
   end
 
 private

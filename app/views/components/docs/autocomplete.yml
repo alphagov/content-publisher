@@ -105,3 +105,21 @@ examples:
           - United Kingdom
           - uk
           - data-hint: London
+  autocomplete_without_narrowing_results:
+    data:
+      id: autocomplete-without-narrowing-results
+      name: autocomplete-without-narrowing-results
+      type: without-narrowing-results
+      label:
+        text: Select your country
+      data_module: autocomplete
+      options:
+        -
+          - France
+          - fr
+        -
+          - United Arab Emirates
+          - uae
+        -
+          - United Kingdom
+          - uk
