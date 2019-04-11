@@ -24,7 +24,7 @@ private
     # Maybe we'll need to go further with this a la:
     # https://github.com/alphagov/whitehall/blob/fc62edcd5a9b1ba8bfb22911f69f128083535127/app/models/policy.rb#L45-L58
     @linkables ||= Rails.cache.fetch("linkables.#{document_type}", CACHE_OPTIONS) do
-      GdsApi.publishing_api_v2(timeout: 1).get_linkables(document_type: document_type).to_hash
+      GdsApi.publishing_api_v2(timeout: 3).get_linkables(document_type: document_type).to_hash
     end
   end
 end
