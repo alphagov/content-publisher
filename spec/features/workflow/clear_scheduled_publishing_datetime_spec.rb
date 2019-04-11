@@ -34,7 +34,7 @@ RSpec.feature "Clear scheduled publishing datetime" do
     expect(page).to have_selector(
       "[@name='scheduled[year]'][@value='#{@datetime.year}']",
     )
-    expect(page).to have_select("scheduled[time]", selected: "12:00pm")
+    expect(page).to have_field("scheduled[time]", text: "12:00pm")
   end
 
   def when_i_click_clear_date
@@ -54,7 +54,7 @@ RSpec.feature "Clear scheduled publishing datetime" do
     expect(page).to have_selector(
       "[@name='scheduled[year]'][@value='#{default_date.year}']",
     )
-    expect(page).to have_select("scheduled[time]", selected: "9:00am")
+    expect(page).to have_field("scheduled[time]", text: "9:00am")
 
     within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.scheduled_publishing_datetime_cleared")

@@ -35,8 +35,8 @@ RSpec.feature "Set scheduled publishing datetime" do
     expect(page).to have_selector(
       "[@name='scheduled[year]'][@value='#{default_date.year}']",
     )
-    expect(page).to have_select(
-      "scheduled[time]", selected: "9:00am"
+    expect(page).to have_field(
+      "scheduled[time]", text: "9:00am"
     )
   end
 
@@ -64,7 +64,7 @@ RSpec.feature "Set scheduled publishing datetime" do
     expect(page).to have_selector(
       "[@name='scheduled[year]'][@value='#{@date.year}']",
     )
-    expect(find_field("scheduled[time]").value).to eq("11:00pm")
+    expect(page).to have_field("scheduled[time]", text: "11:00am")
 
     within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.scheduled_publishing_datetime_set")
