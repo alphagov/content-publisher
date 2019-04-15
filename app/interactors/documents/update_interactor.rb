@@ -6,7 +6,7 @@ class Documents::UpdateInteractor
            :user,
            :edition,
            :revision,
-           :changed,
+           :updated,
            to: :context
 
   def call
@@ -31,7 +31,7 @@ private
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(update_params(edition))
 
-    context.changed = updater.changed?
+    context.updated = updater.changed?
     context.revision = updater.next_revision
   end
 

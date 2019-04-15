@@ -6,7 +6,7 @@ class Contacts::InsertInteractor
            :user,
            :edition,
            :empty_submission,
-           :edition_updated,
+           :updated,
            to: :context
 
   def call
@@ -46,17 +46,17 @@ private
     updater.assign(contents: revision.contents.merge("body" => updated_body))
 
     edition.assign_revision(updater.next_revision, user).save! if updater.changed?
-    context.edition_updated = updater.changed?
+    context.updated = updater.changed?
   end
 
   def create_timeline_entry
-    return unless edition_updated
+    return unless updated
 
     TimelineEntry.create_for_revision(entry_type: :updated_content, edition: edition)
   end
 
   def update_preview
-    return unless edition_updated
+    return unless updated
 
     PreviewService.new(edition).try_create_preview
   end

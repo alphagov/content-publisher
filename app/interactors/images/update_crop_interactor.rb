@@ -6,7 +6,7 @@ class Images::UpdateCropInteractor
            :user,
            :edition,
            :image_revision,
-           :edition_updated,
+           :updated,
            to: :context
 
   def call
@@ -51,17 +51,17 @@ private
     updater.update_image(image_revision, false)
     edition.assign_revision(updater.next_revision, user).save! if updater.changed?
 
-    context.edition_updated = updater.changed?
+    context.updated = updater.changed?
   end
 
   def create_timeline_entry
-    return unless edition_updated
+    return unless updated
 
     TimelineEntry.create_for_revision(entry_type: :image_updated, edition: edition)
   end
 
   def update_preview
-    return unless edition_updated
+    return unless updated
 
     PreviewService.new(edition).try_create_preview
   end
