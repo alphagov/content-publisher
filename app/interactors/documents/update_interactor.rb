@@ -6,7 +6,7 @@ class Documents::UpdateInteractor
            :user,
            :edition,
            :revision,
-           :changed,
+           :unchanged,
            to: :context
 
   def call
@@ -31,8 +31,11 @@ private
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(update_params(edition))
 
-    context.changed = updater.changed?
-    context.revision = updater.next_revision
+    if updater.changed?
+      context.revision = updater.next_revision
+    else
+      context.fail!(unchanged: true)
+    end
   end
 
   def check_for_issues
@@ -41,18 +44,14 @@ private
   end
 
   def update_edition
-    edition.assign_revision(revision, user).save! if changed
+    edition.assign_revision(revision, user).save!
   end
 
   def create_timeline_entry
-    return unless changed
-
     TimelineEntry.create_for_revision(entry_type: :updated_content, edition: edition)
   end
 
   def update_preview
-    return unless changed
-
     PreviewService.new(edition).try_create_preview
   end
 

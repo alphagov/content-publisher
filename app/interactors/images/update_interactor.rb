@@ -8,7 +8,7 @@ class Images::UpdateInteractor
            :edition,
            :image_revision,
            :issues,
-           :edition_updated,
+           :unchanged,
            :selected_lead_image,
            :removed_lead_image,
            to: :context
@@ -54,16 +54,17 @@ private
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
 
     updater.update_image(image_revision, is_lead_image)
-    edition.assign_revision(updater.next_revision, user).save! if updater.changed?
 
-    context.edition_updated = updater.changed?
-    context.selected_lead_image = updater.selected_lead_image?
-    context.removed_lead_image = updater.removed_lead_image?
+    if updater.changed?
+      edition.assign_revision(updater.next_revision, user).save!
+      context.selected_lead_image = updater.selected_lead_image?
+      context.removed_lead_image = updater.removed_lead_image?
+    else
+      context.fail!(unchanged: true)
+    end
   end
 
   def create_timeline_entry
-    return unless edition_updated
-
     timeline_entry_type = if selected_lead_image
                             :lead_image_selected
                           elsif removed_lead_image
@@ -76,8 +77,6 @@ private
   end
 
   def update_preview
-    return unless edition_updated
-
     PreviewService.new(edition).try_create_preview
   end
 end

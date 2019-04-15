@@ -57,4 +57,3 @@ private
     PreviewService.new(live_edition).try_create_preview
   end
 end
-
