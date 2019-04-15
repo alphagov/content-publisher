@@ -832,9 +832,10 @@ parse-json@^4.0.0:
     error-ex "^1.3.1"
     json-parse-better-errors "^1.0.1"
 
-paste-html-to-govspeak@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/paste-html-to-govspeak/-/paste-html-to-govspeak-0.2.0.tgz#5ed55fc6418c623c646032d2b740e3e86768d6b1"
+paste-html-to-govspeak@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/paste-html-to-govspeak/-/paste-html-to-govspeak-0.2.1.tgz#42ee088d39f8f1ada42e7d17aac96c8daab33566"
+  integrity sha512-JdoRiXr3BNNTm0nOCkNfCEs+pHMVFvU5wQo63WI9lUHKQRurdU73cbl6Km48CotOm2XZt7/KOd+ww7poPySUVQ==
 
 path-exists@^2.0.0:
   version "2.1.0"
