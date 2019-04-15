@@ -36,6 +36,12 @@ class Revision < ApplicationRecord
                           association_foreign_key: "image_revision_id",
                           join_table: "revisions_image_revisions"
 
+  has_and_belongs_to_many :file_attachment_revisions,
+                          -> { order("file_attachment_revisions.file_attachment_id ASC") },
+                          class_name: "FileAttachment::Revision",
+                          association_foreign_key: "file_attachment_revision_id",
+                          join_table: "revisions_file_attachment_revisions"
+
   delegate :title,
            :base_path,
            :summary,

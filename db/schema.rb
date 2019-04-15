@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_15_144101) do
+ActiveRecord::Schema.define(version: 2019_04_15_144526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,6 +214,14 @@ ActiveRecord::Schema.define(version: 2019_04_15_144101) do
     t.index ["tags_revision_id"], name: "index_revisions_on_tags_revision_id"
   end
 
+  create_table "revisions_file_attachment_revisions", force: :cascade do |t|
+    t.bigint "file_attachment_revision_id", null: false
+    t.bigint "revision_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["file_attachment_revision_id"], name: "index_revisions_file_attachment_on_file_attachment_revision_id"
+    t.index ["revision_id"], name: "index_revisions_file_attachment_revisions_on_revision_id"
+  end
+
   create_table "revisions_image_revisions", force: :cascade do |t|
     t.bigint "image_revision_id", null: false
     t.bigint "revision_id", null: false
@@ -333,6 +341,8 @@ ActiveRecord::Schema.define(version: 2019_04_15_144101) do
   add_foreign_key "revisions", "revisions", column: "preceded_by_id", on_delete: :restrict
   add_foreign_key "revisions", "tags_revisions", on_delete: :restrict
   add_foreign_key "revisions", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "revisions_file_attachment_revisions", "file_attachment_revisions", on_delete: :restrict
+  add_foreign_key "revisions_file_attachment_revisions", "revisions", on_delete: :restrict
   add_foreign_key "revisions_image_revisions", "image_revisions", on_delete: :restrict
   add_foreign_key "revisions_image_revisions", "revisions", on_delete: :restrict
   add_foreign_key "revisions_statuses", "revisions", on_delete: :restrict
