@@ -70,7 +70,7 @@ RSpec.feature "Publishing an edition" do
   def and_the_content_is_shown_as_published
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("user_facing_states.published.name"))
-    expect(page).to have_link("View published edition on GOV.UK", href: "https://www.test.gov.uk/news/banana-pricing-updates")
+    expect(page).to have_link("View on GOV.UK", href: "https://www.test.gov.uk/news/banana-pricing-updates")
   end
 
   def and_there_is_a_history_entry
