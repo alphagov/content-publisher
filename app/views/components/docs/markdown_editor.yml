@@ -33,3 +33,11 @@ examples:
         id: markdown-editor-error
       error_items:
         - text: There is a problem with this input
+  with_paste_html_to_govspeak:
+    data:
+      label:
+        text: Body
+      textarea:
+        name: markdown-editor-with-paste-html-to-govspeak
+        id: markdown-editor-with-paste-html-to-govspeak
+      paste_html_to_govspeak: true

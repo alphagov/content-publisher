@@ -1,4 +1,6 @@
 //= require vendor/@alphagov/markdown-toolbar-element/dist/index.umd.js
+//= require paste-html-to-govspeak/dist/paste-html-to-markdown.js
+
 window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
@@ -31,6 +33,11 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.bubbleFocusEventToComponent(this.$input)
     this.bubbleFocusEventToComponent(this.$editButton)
     this.bubbleFocusEventToComponent(this.$previewButton)
+
+    // Convert pasted HTML to govspeak. Behind a pre-release feature flag.
+    if (this.$input.dataset.pasteHtmlToGovspeak === 'true') {
+      this.$input.addEventListener('paste', window.pasteHtmlToGovspeak.pasteListener)
+    }
   }
 
   MarkdownEditor.prototype.handleSelectionReplace = function (text, options) {

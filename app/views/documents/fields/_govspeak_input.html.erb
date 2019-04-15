@@ -20,7 +20,8 @@
       contextual_guidance: "document-contents-guidance",
       govspeak_path: govspeak_preview_path(edition.document),
       edition: edition,
-      error_items: issues&.items_for(field.id.to_sym)
+      error_items: issues&.items_for(field.id.to_sym),
+      paste_html_to_govspeak: current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
     } %>
   </div>
 
