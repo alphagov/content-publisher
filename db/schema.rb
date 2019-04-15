@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_15_135406) do
+ActiveRecord::Schema.define(version: 2019_04_15_141144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,14 @@ ActiveRecord::Schema.define(version: 2019_04_15_135406) do
     t.index ["edition_id", "revision_id"], name: "index_editions_revisions_on_edition_id_and_revision_id", unique: true
     t.index ["edition_id"], name: "index_editions_revisions_on_edition_id"
     t.index ["revision_id"], name: "index_editions_revisions_on_revision_id"
+  end
+
+  create_table "file_attachment_file_revisions", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.bigint "created_by_id"
+    t.string "filename", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_file_attachment_file_revisions_on_blob_id"
   end
 
   create_table "file_attachment_metadata_revisions", force: :cascade do |t|
@@ -293,6 +301,8 @@ ActiveRecord::Schema.define(version: 2019_04_15_135406) do
   add_foreign_key "editions", "users", column: "last_edited_by_id", on_delete: :restrict
   add_foreign_key "editions_revisions", "editions", on_delete: :restrict
   add_foreign_key "editions_revisions", "revisions", on_delete: :restrict
+  add_foreign_key "file_attachment_file_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
+  add_foreign_key "file_attachment_file_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "file_attachment_metadata_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "file_attachment_revisions", "file_attachments", on_delete: :restrict
   add_foreign_key "file_attachment_revisions", "users", column: "created_by_id", on_delete: :restrict
