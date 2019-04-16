@@ -89,7 +89,7 @@
           <%= link_to "View on GOV.UK", EditionUrl.new(@edition.document.live_edition).public_url, class: "govuk-link govuk-link--no-visited-state" %>
         </li>
         <% content_data_url = ContentDataUrl.new(@edition.document) %>
-        <% if content_data_url.displayable?(current_user) && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+        <% if content_data_url.displayable?(current_user) %>
           <li>
             <%= link_to "View data about this page",
                         content_data_url.url,
