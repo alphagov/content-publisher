@@ -1,0 +1,41 @@
+<%
+  id ||= nil
+  title ||= nil
+  thumbnail_src ||= nil
+  actions ||= []
+  metadata_items ||= []
+%>
+
+<%= tag.div class: "app-c-attachment-meta", id: id do %>
+  <%= tag.div class: "app-c-attachment-meta__thumbnail-container" do %>
+
+    <%= tag.img class: "app-c-attachment-meta__thumbnail-image",
+      src: thumbnail_src,
+      alt: title
+    %>
+
+  <% end %>
+
+  <%= tag.div class: "app-c-attachment-meta__metadata-container" do %>
+
+    <%= tag.p class: "app-c-attachment-meta__title" do %>
+      <%= link_to title, url, class: 'govuk-link' %>
+    <% end %>
+
+    <% if metadata_items.any? %>
+      <%= tag.p class: "app-c-attachment-meta__metadata" do %>
+        <%= metadata_items.map {|metadata| metadata.values.map {|value| "#{value}"} }.join(', ') %>
+      <% end %>
+    <% end %>
+
+  <% end %>
+
+  <% if actions.any? %>
+    <%= tag.ul class: "app-c-attachment-meta__actions" do %>
+      <% actions.each do |action| %>
+        <li><%= action %></li>
+      <% end %>
+    <% end %>
+  <% end %>
+
+<% end %>
