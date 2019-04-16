@@ -4,11 +4,11 @@ body: |
   Metadata contains alt text, image caption and image credit. Actions can be choose, edit and remove.
   The component is dependent on the govuk-frontend grid system.
 accessibility_criteria: |
-  Markdown listing what this component must do to be accessible. For example:
-
-  The image must:
+  Images in this component must:
 
   * have alt text
+shared_accessibility_criteria:
+  - link
 examples:
   default:
     data:

@@ -1,9 +1,7 @@
 name: Metadata
 description: To display relevant metadata about a document
-accessibility_criteria: |
-  If metadata contains links, they must:
-
-  * be keyboard focusable
+shared_accessibility_criteria:
+  - link
 examples:
   default:
     data:

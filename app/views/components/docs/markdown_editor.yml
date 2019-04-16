@@ -4,17 +4,17 @@ body: |
   If JavaScript is disabled this component falls back to a textarea component
   without the preview functionality
 part_of_admin_layout: true
-shared_accessibility_criteria:
-  - link
 accessibility_criteria: |
   The component must:
 
-  - accept focus
-  - be focusable with a keyboard
-  - be usable with a keyboard
-  - be usable with touch
-  - indicate when they have focus
-  - have correctly associated labels
+  * accept focus
+  * be focusable with a keyboard
+  * be usable with a keyboard
+  * be usable with touch
+  * indicate when it has focus
+  * have correctly associated labels
+shared_accessibility_criteria:
+  - link
 examples:
   default:
     data:
