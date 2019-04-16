@@ -8,24 +8,25 @@
 @import "objects/pane";
 @import "objects/side";
 
+@import "components/autocomplete";
+@import "components/attachment-meta";
 @import "components/contextual-guidance";
 @import "components/formatted-text";
+@import "components/image-cropper";
+@import "components/image-meta";
+@import "components/input-length-suggester";
+@import "components/loading-spinner";
 @import "components/markdown-editor";
 @import "components/markdown-guidance";
 @import "components/metadata";
-@import "components/warning-summary";
-@import "components/summary";
-@import "components/page-preview";
-@import "components/autocomplete";
-@import "components/url-preview";
-@import "components/image-meta";
-@import "components/image-cropper";
-@import "components/side-navigation";
 @import "components/miller-columns";
-@import "components/input-length-suggester";
 @import "components/multi-section-viewer";
-@import "components/loading-spinner";
+@import "components/page-preview";
+@import "components/side-navigation";
+@import "components/summary";
 @import "components/toolbar-dropdown";
+@import "components/url-preview";
+@import "components/warning-summary";
 
 @import "utilities/display";
 @import "utilities/overwrites";
