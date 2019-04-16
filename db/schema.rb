@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_15_144526) do
+ActiveRecord::Schema.define(version: 2019_04_16_075600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,18 @@ ActiveRecord::Schema.define(version: 2019_04_15_144526) do
     t.index ["edition_id", "revision_id"], name: "index_editions_revisions_on_edition_id_and_revision_id", unique: true
     t.index ["edition_id"], name: "index_editions_revisions_on_edition_id"
     t.index ["revision_id"], name: "index_editions_revisions_on_revision_id"
+  end
+
+  create_table "file_attachment_assets", force: :cascade do |t|
+    t.bigint "file_revision_id", null: false
+    t.string "variant", default: "file", null: false
+    t.string "file_url"
+    t.string "state", default: "absent", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["file_revision_id", "variant"], name: "index_file_attachment_assets_on_file_revision_id_and_variant", unique: true
+    t.index ["file_revision_id"], name: "index_file_attachment_assets_on_file_revision_id"
+    t.index ["file_url"], name: "index_file_attachment_assets_on_file_url", unique: true
   end
 
   create_table "file_attachment_file_revisions", force: :cascade do |t|
@@ -313,6 +325,7 @@ ActiveRecord::Schema.define(version: 2019_04_15_144526) do
   add_foreign_key "editions", "users", column: "last_edited_by_id", on_delete: :restrict
   add_foreign_key "editions_revisions", "editions", on_delete: :restrict
   add_foreign_key "editions_revisions", "revisions", on_delete: :restrict
+  add_foreign_key "file_attachment_assets", "file_attachment_file_revisions", column: "file_revision_id", on_delete: :restrict
   add_foreign_key "file_attachment_file_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
   add_foreign_key "file_attachment_file_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "file_attachment_metadata_revisions", "users", column: "created_by_id", on_delete: :restrict
