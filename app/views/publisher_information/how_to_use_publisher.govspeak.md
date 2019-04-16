@@ -19,7 +19,13 @@ Read [guidance on what to publish on GOV.UK](documents/publishing-guidance).
 
 The body text can be formatted using markdown. Markdown uses special characters to indicate what text needs styling. For example, adding ## at the start of a line makes that line a heading.
 
+When you paste text into the body field Content Publisher will try to convert it to markdown. It will recognise headings, links, and lists. Other formatting will be removed and only plain text pasted.
+
+This works best when copy and pasting from text editing software like Word. It is less likely to recognise formatting from PDFs.
+
 Content publisher has a toolbar to make it easier to add common markdown. You can use the buttons to add headings, links, or lists. 
+
+Use the Insert menu to add other media or special content. For example, you can insert images, videos, or contact addresses.
 
 More advanced markdown features can be used by following the guidance and examples in the interface. 
 
