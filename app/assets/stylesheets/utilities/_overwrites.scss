@@ -69,10 +69,3 @@
     @include govuk-font(19);
   }
 }
-
-// Remove this after the modal-dialogue component handles this overwrite
-.govuk-template {
-  @include govuk-media-query($media-type: screen) {
-    overflow-y: inherit;
-  }
-}
