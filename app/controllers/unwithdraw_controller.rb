@@ -12,13 +12,13 @@ class UnwithdrawController < ApplicationController
   end
 
   def unwithdraw
-    Edition.find_and_lock_current(document: params[:document]) do |edition|
-      UnwithdrawService.new.call(edition, current_user)
-      redirect_to edition.document
+    result = Unwithdraw::UnwithdrawInteractor.call(params: params, user: current_user)
+
+    if result.api_error
+      redirect_to document_path(params[:document]),
+        alert_with_description: t("documents.show.flashes.unwithdraw_error")
+    else
+      redirect_to document_path(params[:document])
     end
-  rescue GdsApi::BaseError => e
-    GovukError.notify(e)
-    redirect_to document_path(params[:document]),
-      alert_with_description: t("documents.show.flashes.unwithdraw_error")
   end
 end
