@@ -73,6 +73,9 @@ Rails.application.routes.draw do
     post "/editions" => "editions#create", as: :create_edition
 
     post "/govspeak-preview" => "govspeak_preview#to_html", as: :govspeak_preview
+
+    get "/attachments" => "attachments#index", as: :attachments
+    post "/attachments" => "attachments#create", as: :create_attachment
   end
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }

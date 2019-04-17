@@ -19,6 +19,11 @@
   if edition
     insert_items = [
       {
+        text: "Attachment",
+        href: attachments_path(edition.document),
+        target: "_blank",
+      },
+      {
         text: "Contact",
         button_options: {
           value: "add_contact",

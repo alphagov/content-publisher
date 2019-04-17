@@ -1,0 +1,10 @@
+en:
+  attachments:
+    index:
+      title: "Attachments for ‘%{title}’"
+      upload:
+        title: Upload a file attachment
+        description_govspeak: All files must be accessible.  Full [guidance on accessible attachments](){:target="_blank"}. Files must be uploaded in an open standards file format. For example, .odt not .docx.
+      attachment_title:
+        heading: Attachment title
+        hint_text: Use the official title of the document
