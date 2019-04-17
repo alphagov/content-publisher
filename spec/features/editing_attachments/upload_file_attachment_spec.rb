@@ -6,6 +6,8 @@ RSpec.feature "Upload file attachment" do
     when_i_go_to_edit_the_edition
     and_i_go_to_insert_an_attachment
     and_i_upload_a_file_attachment
+    then_i_can_see_the_attachment_markdown
+    and_the_preview_creation_succeeded
   end
 
   def given_there_is_an_edition
@@ -29,5 +31,9 @@ RSpec.feature "Upload file attachment" do
     find('form input[type="file"]').set(Rails.root.join(file_fixture(@attachment_filename)))
     fill_in "title", with: "A title"
     click_on "Upload"
+
+  def then_i_can_see_the_attachment_markdown
+    expect(page).to have_content("[Attachment: attachment.csv]")
+    expect(page).to have_content("[AttachmentLink: attachment.csv]")
   end
 end
