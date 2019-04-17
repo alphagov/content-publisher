@@ -10,6 +10,12 @@ abortcontroller-polyfill@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.2.1.tgz#4e88847513a4ed691d5e4899d8b3a3af6f7d90ee"
 
+"accessible-autocomplete@git://github.com/alphagov/accessible-autocomplete.git#add-multiselect-support":
+  version "1.6.2"
+  resolved "git://github.com/alphagov/accessible-autocomplete.git#0c518b4fa79b9a95b544410858486ed9e6403c84"
+  dependencies:
+    preact "^8.3.1"
+
 acorn-jsx@^3.0.0:
   version "3.0.1"
   resolved "http://registry.npmjs.org/acorn-jsx/-/acorn-jsx-3.0.1.tgz#afdf9488fb1ecefc8348f6fb22f464e32a58b36b"
@@ -184,9 +190,9 @@ core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-cropperjs@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.4.3.tgz#dc44d6c9e73269e7f96894c726ab91e8913f9e90"
+cropperjs@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.1.tgz#3bf93c6e89bf46d18cccc27160cd7d9b936cac7a"
 
 cross-spawn@^5.1.0:
   version "5.1.0"
@@ -719,6 +725,14 @@ lru-cache@^4.0.1:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
+"markdown-toolbar-element@git://github.com/alphagov/markdown-toolbar-element.git":
+  version "0.1.0"
+  resolved "git://github.com/alphagov/markdown-toolbar-element.git#75b162c93120254fb7a081940ff4afa1e49342e8"
+
+"miller-columns-element@git://github.com/alphagov/miller-columns-element.git":
+  version "0.0.2"
+  resolved "git://github.com/alphagov/miller-columns-element.git#6631a1a1049a83714c6415c960fc16a05c356a47"
+
 mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
@@ -835,7 +849,6 @@ parse-json@^4.0.0:
 paste-html-to-govspeak@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/paste-html-to-govspeak/-/paste-html-to-govspeak-0.2.2.tgz#7966cf10dca3cae82770f35c79f66b6aaf07ecb2"
-  integrity sha512-Pwog/JBO98ch5PjpFr7zashgW2uS0QcS3AKK1WO+o8APIqh8ERMzqmFgMzHOC8eYidYUAEBy0gwbw1y6MR9Bkg==
 
 path-exists@^2.0.0:
   version "2.1.0"
@@ -907,6 +920,10 @@ pkg-dir@^1.0.0:
 pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
+
+preact@^8.3.1:
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-8.4.2.tgz#1263b974a17d1ea80b66590e41ef786ced5d6a23"
 
 prelude-ls@~1.1.2:
   version "1.1.2"

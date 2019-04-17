@@ -1,4 +1,4 @@
-//= require vendor/@alphagov/markdown-toolbar-element/dist/index.umd.js
+//= require markdown-toolbar-element/dist/index.umd.js
 //= require paste-html-to-govspeak/dist/paste-html-to-markdown.js
 
 window.GOVUK = window.GOVUK || {}

@@ -1,4 +1,4 @@
-@import "vendor/accessible-autocomplete/dist/accessible-autocomplete.min";
+@import url(asset-path("accessible-autocomplete/dist/accessible-autocomplete.min.css"));
 
 .autocomplete__option {
   @include govuk-font(19);
