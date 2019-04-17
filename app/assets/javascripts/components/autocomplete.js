@@ -120,7 +120,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       },
       onConfirm: function (result) {
         var value = result && result.value
-        var options = [].filter.call($select.options, function (option) {
+        var options = [].filter.call($options, function (option) {
           return option.value === value
         })
 
@@ -130,8 +130,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       }
     })
 
-    $select.style.display = 'none'
-    $select.id = $select.id + '-select'
+    $select.parentNode.removeChild($select)
   }
 
   Modules.Autocomplete = Autocomplete
