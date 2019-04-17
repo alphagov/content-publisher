@@ -13,6 +13,7 @@ RSpec.describe Versioning::RevisionUpdater do
         change_note: "old change note",
         lead_image_revision: (create :image_revision),
         image_revisions: [create(:image_revision)],
+        file_attachment_revisions: [create(:file_attachment_revision)],
       )
     end
 
@@ -41,6 +42,7 @@ RSpec.describe Versioning::RevisionUpdater do
         change_note: "new change note",
         lead_image_revision: nil,
         image_revisions: [],
+        file_attachment_revisions: [],
       }
 
       updater.assign(new_fields)
@@ -64,6 +66,7 @@ RSpec.describe Versioning::RevisionUpdater do
         change_note: revision.change_note,
         lead_image_revision: revision.lead_image_revision,
         image_revisions: revision.image_revisions,
+        file_attachment_revisions: revision.file_attachment_revisions,
       }
 
       updater.assign(old_fields)
@@ -81,6 +84,7 @@ RSpec.describe Versioning::RevisionUpdater do
         change_note: revision.change_note,
         lead_image_revision: revision.lead_image_revision,
         image_revisions: revision.image_revisions,
+        file_attachment_revisions: revision.file_attachment_revisions,
       }
 
       updater.assign(summary: "new summary")
