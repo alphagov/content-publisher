@@ -1,14 +1,19 @@
 <%
   id ||= "multi-section-viewer-#{SecureRandom.hex(4)}"
   sections ||= []
+  data_attributes ||= {}
+  data_attributes[:module] = "multi-section-viewer"
+  aria_attributes ||= {}
+  aria_attributes[:live] = "assertive"
 %>
 
-<div id="<%= id %>" class="app-c-multi-section-viewer" data-module="multi-section-viewer" aria-live="assertive">
+<%= tag.div class: "app-c-multi-section-viewer",
+  id: id,
+  data: data_attributes,
+  aria: aria_attributes do %>
   <% sections.each do |section| %>
-    <section class="app-c-multi-section-viewer__section" id="<%= section[:id] %>">
-      <%= section[:content] %>
-    </section>
+    <%= tag.section section[:content], class: "app-c-multi-section-viewer__section", id: section[:id] %>
   <% end %>
 
-  <div class="app-c-multi-section-viewer__section js-dynamic-section"></div>
-</div>
+  <%= tag.div class: "app-c-multi-section-viewer__section js-dynamic-section" %>
+<% end %>
