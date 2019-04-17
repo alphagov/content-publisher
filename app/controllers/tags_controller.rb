@@ -11,18 +11,8 @@ class TagsController < ApplicationController
   end
 
   def update
-    Edition.find_and_lock_current(document: params[:document]) do |edition|
-      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
-      updater.assign(tags: update_params(edition))
-
-      if updater.changed?
-        edition.assign_revision(updater.next_revision, current_user).save!
-        TimelineEntry.create_for_revision(entry_type: :updated_tags, edition: edition)
-        PreviewService.new(edition).try_create_preview
-      end
-
-      redirect_to edition.document
-    end
+    Tags::UpdateInteractor.call(params: params, user: current_user)
+    redirect_to document_path(params[:document])
   end
 
 private
