@@ -2,6 +2,8 @@ name: Warning summary
 description: A summary of warnings
 body: |
   Optional markdown providing further detail about the component
+shared_accessibility_criteria:
+  - link
 examples:
   default:
     data:

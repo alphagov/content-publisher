@@ -7,6 +7,8 @@ accessibility_criteria: |
   * be hidden by default
   * be visible when the associated input field if focused
   * stay visible until another input field with guidance is being focused
+shared_accessibility_criteria:
+  - link
 examples:
   default:
     description: Reveals a contextul guidance on the side overflowing the container

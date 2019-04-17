@@ -5,9 +5,9 @@ body: |
 
   The sections can be defined and toggled statically, as in the examples. The module also exposes an API to show dynamic content in its own section.
 accessibility_criteria: |
-  The multi selection view box must:
+  The component must:
 
-  - Notify the user when the content changes
+  * notify the user when the content changes
 examples:
   default:
     embed: |

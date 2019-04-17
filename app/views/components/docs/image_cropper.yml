@@ -4,9 +4,7 @@ body: |
  This component uses Cropper.js - a JavaScript library for cropping image.
  Users can select an specific area of an image, and then upload the coordinates data to server-side to crop the image, or crop the image on browser-side directly.
 accessibility_criteria: |
-  Markdown listing what this component must do to be accessible. For example:
-
-  The image must:
+  Images in this component must:
 
   * have alt text
 examples:

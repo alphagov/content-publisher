@@ -3,12 +3,12 @@ description: Let users check their input before proceeding forward
 body: |
   This component was build based on [Check answers pattern](https://design-system.service.gov.uk/patterns/check-answers/)
 part_of_admin_layout: true
-shared_accessibility_criteria:
-- link
 accessibility_criteria: |
-  The change/edit link must:
+  The links in this component must:
 
   * indicate which item or section refers to (e.g. Change title)
+shared_accessibility_criteria:
+- link
 examples:
   default:
     data:

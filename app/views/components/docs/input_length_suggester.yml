@@ -1,4 +1,4 @@
-name: Input Length Suggester
+name: Input length suggester
 description: To suggest an input has a certain amount of characters
 accessibility_criteria: |
   The component must:
