@@ -9,8 +9,10 @@ class FileAttachment::Revision < ApplicationRecord
   belongs_to :metadata_revision, class_name: "FileAttachment::MetadataRevision"
   belongs_to :file_revision, class_name: "FileAttachment::FileRevision"
 
-  # TODO this picks the wrong table (Image::Revision also broken)
-  has_and_belongs_to_many :revisions
+  has_and_belongs_to_many :revisions,
+                          class_name: "::Revision",
+                          foreign_key: "file_attachment_revision_id",
+                          join_table: "revisions_file_attachment_revisions"
 
   delegate :title, to: :metadata_revision
   delegate :filename, to: :file_revision
