@@ -1,3 +1,6 @@
+### Body text converted to markdown <span class="govuk-caption-m">17 April 2019</span>
+When you paste text into the body field Content Publisher will try to convert it to markdown. It will recognise headings, links, and lists. Other formatting will be removed and only plain text pasted.
+
 ### YouTube videos in content <span class="govuk-caption-m">8 April 2019</span>
 You can now embed YouTube videos in the body text of content using the Insert menu.
 
