@@ -1,0 +1,33 @@
+name: Attachment meta
+description: Displays an attachment with the associated metadata and possible actions
+body: |
+  Metadata contains title, file format, file size, number of pages. Actions can be insert, preview, edit and delete.
+  The component is dependent on the govuk-frontend grid system.
+accessibility_criteria: |
+  The image must:
+
+  * have alt text
+examples:
+  default:
+    data:
+      url: https://www.gov.uk/government/publications/minimum-wage-jobs-in-ashfield-local-authority-since-2009
+      thumbnail_src: https://assets.digital.cabinet-office.gov.uk/government/assets/pub-cover-doc-afe3b0a8a9511beeca890340170aee8b5649413f948e512c9b8ce432d8513d32.png
+      title: Document attachment
+      metadata_items:
+       - file_format: MS Word Document
+       - file_size: 24.2KB
+       - page_length: 2 pages
+  with_actions:
+    data:
+      url: https://www.gov.uk/government/world-location-news/294043.es-419
+      thumbnail_src: https://assets.digital.cabinet-office.gov.uk/government/uploads/system/uploads/attachment_data/file/496127/thumbnail_LPC_FoI_09.12.15_NMW_jobs_Ashfield_LA.pdf.png
+      title: PDF attachment
+      metadata_items:
+       - file_format: PDF
+       - file_size: 153KB
+       - page_length: 12 pages
+      actions:
+        - <a class="govuk-link" href="#">Insert attachment</a>
+        - <a class="govuk-link" href="#">Preview</a>
+        - <a class="govuk-link" href="#">Edit file</a>
+        - <a class="govuk-link" href="#">Delete attachment</a>
