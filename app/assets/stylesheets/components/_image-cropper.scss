@@ -1,5 +1,4 @@
-@import "vendor/cropperjs/dist/cropper";
-
+@import url(asset-path("cropperjs/dist/cropper.min.css"));
 $cropper-point-size: 20px;
 
 .app-c-image-cropper {
