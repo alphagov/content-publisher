@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_16_075600) do
+ActiveRecord::Schema.define(version: 2019_04_17_133100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_075600) do
     t.bigint "created_by_id"
     t.string "filename", null: false
     t.datetime "created_at", null: false
+    t.bigint "size", null: false
     t.index ["blob_id"], name: "index_file_attachment_file_revisions_on_blob_id"
   end
 
