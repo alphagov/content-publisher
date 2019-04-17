@@ -1,10 +1,13 @@
 <%
-  id ||= "input-#{SecureRandom.hex(4)}"
+  id ||= nil
   title ||= nil
+  data_attributes ||= {}
+  data_attributes[:module] = "contextual-guidance"
 %>
-<div id="<%= id %>" class="app-c-contextual-guidance__wrapper" data-module="contextual-guidance">
-  <div class="app-c-contextual-guidance">
-    <h2 class="govuk-heading-s"><%= title %></h2>
+
+<%= tag.div class: "app-c-contextual-guidance__wrapper", id: id, data: data_attributes do %>
+  <%= tag.div class: "app-c-contextual-guidance" do %>
+    <%= tag.h2 title, class: "govuk-heading-s" %>
     <%= yield %>
-  </div>
-</div>
+  <% end %>
+<% end %>

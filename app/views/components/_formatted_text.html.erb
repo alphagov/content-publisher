@@ -1,3 +1,4 @@
-<pre class="app-c-formatted-text">
+<%# Don't indent elements inside the pre tag %>
+<%= tag.pre class: "app-c-formatted-text" do %>
 <%= text[0..chars] %> <% if text.length > chars %>…<% end %>
-</pre>
+<% end %>

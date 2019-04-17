@@ -5,48 +5,38 @@
   items ||= []
 %>
 
-<div class="app-c-summary" id="<%= id %>">
-
-<% if title %>
-  <h2 class="govuk-heading-m">
-    <%= title[:text] %>
-  </h2>
-  <% if title[:change_url] %>
-  <a class="app-c-summary__change-section-link"
-     href="<%= title[:change_url] %>"
-     title="Change <%= title[:text] %>"
-     data-gtm="content-change">
-    Change<span class="govuk-visually-hidden"> <%= title[:text] %></span>
-  </a>
-  <% end %>
-<% end %>
-
-<% if items.any? %>
-  <dl class="app-c-summary__list app-c-summary__list--short">
-    <% items.each do |item| %>
-    <div class="app-c-summary__contents">
-      <dt class="app-c-summary__question">
-        <%= item[:field] %>
-      </dt>
-      <dd class="app-c-summary__answer">
-        <%= item[:value] %>
-      </dd>
-      <% if item[:change_url] %>
-      <dd class="app-c-summary__change">
-        <a class="app-c-summary__change-link" href="<%= item[:change_url] %>">
-          Change<span class="govuk-visually-hidden"> <%= item[:field] %></span>
-        </a>
-      </dd>
+<%= tag.div class: "app-c-summary", id: id do %>
+  <% if title %>
+    <%= tag.h2 title[:text], class:"govuk-heading-m" %>
+    <% if title[:change_url] %>
+      <%= link_to title[:change_url], class: "app-c-summary__change-section-link",
+        title: "Change #{title[:text]}",
+        data: { gtm: "content-change" } do %>
+        Change<span class="govuk-visually-hidden"> <%= title[:text] %></span>
       <% end %>
-    </div>
     <% end %>
-  </dl>
-<% end %>
+  <% end %>
 
-<% if block %>
-  <div class="app-c-summary__block">
-    <%= block %>
-  </div>
-<% end %>
+  <% if items.any? %>
+    <%= tag.dl class: "app-c-summary__list app-c-summary__list--short" do %>
+      <% items.each do |item| %>
+        <%= tag.div class: "app-c-summary__contents" do %>
 
-</div>
+          <%= tag.dt item[:field], class:"app-c-summary__question" %>
+          <%= tag.dd item[:value], class:"app-c-summary__answer" %>
+
+          <% if item[:change_url] %>
+            <%= tag.dd link_to, class:"app-c-summary__change" do %>
+              <%= link_to item[:change_url], class:"app-c-summary__change-link" do %>
+                Change<span class="govuk-visually-hidden"> <%= item[:field] %></span>
+              <% end %>
+            <% end %>
+          <% end %>
+
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= tag.div block, class: "app-c-summary__block" if block %>
+<% end %>

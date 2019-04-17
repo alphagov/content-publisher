@@ -3,7 +3,7 @@ description: Generates URL from an input value and validates it with a server en
 body: |
   This component uses an text input field to get the input value, sends the value to
   a server endpoint and returns the appropriate response
-shared_accessibility_criteria:
+shared_accessibility_criteria: |
   The component must:
 
   * update its content to reflect changes in the referenced input field
