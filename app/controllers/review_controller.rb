@@ -2,45 +2,30 @@
 
 class ReviewController < ApplicationController
   def submit_for_2i
-    Edition.find_and_lock_current(document: params[:document]) do |edition|
-      begin
-        issues = Requirements::EditionChecker.new(edition)
-                                             .pre_publish_issues(rescue_api_errors: false)
-      rescue GdsApi::BaseError => e
-        GovukError.notify(e)
-        redirect_to edition.document, alert_with_description: t("documents.show.flashes.2i_error")
-        next
-      end
+    result = Review::SubmitFor2iInteractor.call(params: params, user: current_user)
+    issues, api_errored = result.to_h.values_at(:issues, :api_errored)
 
-      if issues.any?
-        redirect_to document_path(edition.document), tried_to_publish: true
-        next
-      end
-
-      edition.assign_status(:submitted_for_review, current_user).save!
-
-      TimelineEntry.create_for_status_change(entry_type: :submitted,
-                                             status: edition.status)
-
+    if api_errored
+      redirect_to document_path(params[:document]),
+                  alert_with_description: t("documents.show.flashes.2i_error")
+    elsif issues
+      redirect_to document_path(params[:document]), tried_to_publish: true
+    else
       flash[:submitted_for_review] = true
-      redirect_to edition.document
+      redirect_to document_path(params[:document])
     end
   end
 
   def approve
-    Edition.find_and_lock_current(document: params[:document]) do |edition|
-      if !edition.status.published_but_needs_2i?
-        # FIXME: this shouldn't be an exception but we've not worked out the
-        # right response - maybe bad request or a redirect with flash?
-        raise "Can't approve a document that doesn't need 2i"
-      end
+    result = Review::ApproveInteractor.call(params: params, user: current_user)
 
-      edition.assign_status(:published, current_user).save!
-
-      TimelineEntry.create_for_status_change(entry_type: :approved,
-                                             status: edition.status)
-
-      redirect_to edition.document, notice: t("documents.show.flashes.approved")
+    if result.wrong_status
+      # FIXME: this shouldn't be an exception but we've not worked out the
+      # right response - maybe bad request or a redirect with flash?
+      raise "Can't approve a document that doesn't need 2i"
     end
+
+    redirect_to document_path(params[:document]),
+                notice: t("documents.show.flashes.approved")
   end
 end
