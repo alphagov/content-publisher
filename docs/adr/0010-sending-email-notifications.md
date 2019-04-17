@@ -1,4 +1,4 @@
-# X. Sending email notifiations
+# 10. Sending email notifiations
 
 [notify]: https://www.notifications.service.gov.uk/
 [notify-features]: https://www.notifications.service.gov.uk/features
@@ -21,7 +21,7 @@
 [consequences-sidekiq-worker]: https://github.com/alphagov/content-publisher/commit/88e27840f7a7f812d83c5878503cc6aece01127b
 [consequences-sidekiq-abort]: https://github.com/alphagov/content-publisher/commit/ce13ccd34e967e091526adb20938b815faf5a912
 
-Date: 2019-XX-XX
+Date: 2019-04-09
 
 ## Context
 
