@@ -18,63 +18,29 @@ class PublishController < ApplicationController
   end
 
   def publish
-    edition = nil
+    result = Publish::PublishInteractor.call(params: params, user: current_user)
 
-    Edition.transaction do # rubocop:disable Metrics/BlockLength
-      edition = Edition.lock.find_current(document: params[:document])
+    edition, issues, publish_failed = result.to_h.values_at(:edition,
+                                                            :issues,
+                                                            :publish_failed)
+    if issues
+      flash.now["alert_with_items"] = {
+        "title" => I18n.t!("publish.confirmation.flashes.requirements"),
+        "items" => issues.items,
+      }
 
-      if params[:review_status].blank?
-        flash.now["alert_with_items"] = {
-          "title" => I18n.t!("publish.confirmation.flashes.requirements"),
-          "items" => review_status_issues.items,
-        }
-
-        render :confirmation,
-               assigns: { issues: review_status_issues, edition: edition },
-               status: :unprocessable_entity
-        return
-      end
-
-      if edition.live?
-        redirect_to published_path(edition.document)
-        return
-      end
-
-      with_review = params[:review_status] == "reviewed"
-
-      begin
-        PublishService.new(edition)
-                      .publish(user: current_user, with_review: with_review)
-      rescue GdsApi::BaseError
-        redirect_to edition.document, alert_with_description: t("documents.show.flashes.publish_error")
-        return
-      end
-
-      TimelineEntry.create_for_status_change(
-        entry_type: with_review ? :published : :published_without_review,
-        status: edition.status,
-      )
+      render :confirmation,
+             assigns: { issues: issues, edition: edition },
+             status: :unprocessable_entity
+    elsif publish_failed
+      redirect_to edition.document,
+                  alert_with_description: t("documents.show.flashes.publish_error")
+    else
+      redirect_to published_path(params[:document])
     end
-
-    send_notifications(edition)
-    redirect_to published_path(edition.document)
   end
 
   def published
     @edition = Edition.find_current(document: params[:document])
-  end
-
-private
-
-  def review_status_issues
-    @review_status_issues ||= Requirements::CheckerIssues.new([
-      Requirements::Issue.new(:review_status, :not_selected),
-    ])
-  end
-
-  def send_notifications(edition)
-    edition.editors.each do |user|
-      PublishMailer.publish_email(edition, user).deliver_later
-    end
   end
 end
