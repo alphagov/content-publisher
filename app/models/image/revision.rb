@@ -10,7 +10,10 @@ class Image::Revision < ApplicationRecord
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  has_and_belongs_to_many :revisions
+  has_and_belongs_to_many :revisions,
+                          class_name: "::Revision",
+                          foreign_key: "image_revision_id",
+                          join_table: "revisions_image_revisions"
 
   belongs_to :image, class_name: "Image"
 

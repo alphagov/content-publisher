@@ -66,6 +66,7 @@ class Edition < ApplicationRecord
            :image_revisions,
            :image_revisions_without_lead,
            :scheduled_publishing_datetime,
+           :file_attachment_revisions,
            to: :revision
 
   MINIMUM_SCHEDULING_TIME = { minutes: 15 }.freeze
