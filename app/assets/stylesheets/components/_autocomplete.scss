@@ -1,5 +1,19 @@
 @import "vendor/accessible-autocomplete/dist/accessible-autocomplete.min";
 
+.autocomplete__wrapper {
+  background: govuk-colour('white');
+}
+
+.autocomplete__input {
+  @include govuk-font(19);
+  color: $govuk-text-colour;
+  z-index: 1;
+}
+
+.autocomplete__dropdown-arrow-down {
+  z-index: 0;
+}
+
 .autocomplete__option {
   @include govuk-font(19);
   color: $govuk-text-colour;

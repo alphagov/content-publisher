@@ -41,11 +41,17 @@
          }
        ]
      } %>
-    <%= render "govuk_publishing_components/components/select", {
-      label: "Time",
-      id: "scheduled[time]",
-      options: time_options(selected_time),
-    } %>
+     <% time_options = time_options(selected_time) %>
+     <%= render "components/autocomplete", {
+       id: "scheduled[time]",
+       name: "scheduled[time]",
+       label: {
+         text: "Time"
+       },
+       options: time_options[:options],
+       selected_options: time_options[:selected_options],
+       type: "without-narrowing-results"
+     } %>
     <% if current_scheduled_publish_datetime %>
       <%= render "govuk_publishing_components/components/button", {
         text: "Update"
