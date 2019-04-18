@@ -18,6 +18,22 @@ FactoryBot.define do
         filename: file_revision.filename,
       )
       file_revision.size = File.size(fixture_path) unless file_revision.size
+
+      file_revision.ensure_assets
+    end
+
+    trait :on_asset_manager do
+      transient do
+        state { :draft }
+      end
+
+      after(:build) do |file_revision, evaluator|
+        file_revision.file_asset.assign_attributes(
+          state: evaluator.state,
+          file_url: "https://asset-manager.test.gov.uk/media/" +
+            "asset-id#{SecureRandom.hex(8)}/#{file_revision.filename}",
+        )
+      end
     end
   end
 end
