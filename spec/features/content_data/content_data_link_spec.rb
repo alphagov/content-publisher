@@ -17,7 +17,7 @@ RSpec.feature "Link to content data admin app data page" do
   end
 
   def then_i_see_a_link_to_the_content_data_page_for_the_document
-    content_data_url_prefix = "https://content-data-admin.test.gov.uk/metrics"
+    content_data_url_prefix = "https://content-data.test.gov.uk/metrics"
     expect(page).to have_link(
       "View data about this page",
       href: content_data_url_prefix + @edition.base_path,

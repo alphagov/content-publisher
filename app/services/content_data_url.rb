@@ -13,7 +13,7 @@ class ContentDataUrl
   end
 
   def url
-    content_data_root = Plek.new.external_url_for("content-data-admin")
+    content_data_root = Plek.new.external_url_for("content-data")
     content_data_root + "/metrics" + document.live_edition.base_path
   end
 

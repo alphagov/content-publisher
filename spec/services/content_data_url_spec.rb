@@ -11,7 +11,7 @@ RSpec.describe ContentDataUrl do
       base_path = document.current_edition.base_path
       data_page_url = ContentDataUrl.new(document).url
 
-      expect(data_page_url).to eq("https://content-data-admin.test.gov.uk/metrics#{base_path}")
+      expect(data_page_url).to eq("https://content-data.test.gov.uk/metrics#{base_path}")
     end
   end
 
