@@ -35,7 +35,8 @@ private
   attr_reader :file, :revision
 
   def filename
-    ImageFilenameService.new(revision).call(file.original_filename)
+    filenames = revision.image_revisions.map(&:filename)
+    UniqueFilenameService.new(filenames).call(file.original_filename)
   end
 
   def mime_type
