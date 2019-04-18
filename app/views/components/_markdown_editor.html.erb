@@ -19,11 +19,6 @@
   if edition
     insert_items = [
       {
-        text: "Attachment",
-        href: attachments_path(edition.document),
-        target: "_blank",
-      },
-      {
         text: "Contact",
         button_options: {
           value: "add_contact",
@@ -51,6 +46,18 @@
         }
       }
     ]
+
+    if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
+      insert_items.prepend(
+        {
+          text: "Attachment",
+          href: attachments_path(edition.document),
+          target: "_blank",
+        }
+      )
+    end
+
+    insert_items
   end
 %>
 <%= tag.div class: component_classes,
