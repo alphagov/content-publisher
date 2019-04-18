@@ -15,5 +15,11 @@ class FileAttachment::Asset < ApplicationRecord
 
   enum variant: { file: "file", thumbnail: "thumbnail" }
 
-  delegate :filename, to: :file_revision
+  delegate :filename, :content_type, to: :file_revision
+
+  def bytes
+    raise "Cannot determine bytes for #{variant}" unless file?
+
+    file_revision.bytes_for_file
+  end
 end

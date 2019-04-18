@@ -27,5 +27,26 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :on_asset_manager do
+      transient {
+        state { :draft }
+      }
+
+      after(:build) do |revision, evaluator|
+        revision.file_revision = evaluator.association(
+          :file_attachment_file_revision,
+          :on_asset_manager,
+          filename: evaluator.filename,
+          fixture: evaluator.fixture,
+          state: evaluator.state,
+        )
+
+        revision.metadata_revision = evaluator.association(
+          :file_attachment_metadata_revision,
+          title: evaluator.title,
+        )
+      end
+    end
   end
 end

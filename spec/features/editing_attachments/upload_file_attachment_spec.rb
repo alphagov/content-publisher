@@ -27,13 +27,22 @@ RSpec.feature "Upload file attachment" do
   end
 
   def and_i_upload_a_file_attachment
+    @asset_manager_request = stub_asset_manager_receives_an_asset(filename: @attachment_filename)
+    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
+
     @attachment_filename = "attachment.csv"
     find('form input[type="file"]').set(Rails.root.join(file_fixture(@attachment_filename)))
     fill_in "title", with: "A title"
     click_on "Upload"
+  end
 
   def then_i_can_see_the_attachment_markdown
     expect(page).to have_content("[Attachment: attachment.csv]")
     expect(page).to have_content("[AttachmentLink: attachment.csv]")
+  end
+
+  def and_the_preview_creation_succeeded
+    expect(@publishing_api_request).to have_been_requested
+    expect(@asset_manager_request).to have_been_requested.at_least_once
   end
 end

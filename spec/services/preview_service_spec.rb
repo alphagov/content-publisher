@@ -34,13 +34,17 @@ RSpec.describe PreviewService do
     context "when there are assets that aren't on Asset Manager" do
       it "uploads the assets to Asset Manager" do
         image_revision = create(:image_revision)
-        edition = create(:edition, image_revisions: [image_revision])
+        file_attachment_revision = create(:file_attachment_revision)
+        edition = create(:edition,
+                         image_revisions: [image_revision],
+                         file_attachment_revisions: [file_attachment_revision])
 
         request = stub_asset_manager_receives_an_asset
         PreviewService.new(edition).create_preview
 
         expect(request).to have_been_requested.at_least_once
         expect(image_revision.assets.map(&:state).uniq).to match(%w[draft])
+        expect(file_attachment_revision.file_asset).to be_draft
       end
     end
 
@@ -48,7 +52,15 @@ RSpec.describe PreviewService do
       it "doesn't upload the assets to asset manager" do
         image_revision1 = create(:image_revision, :on_asset_manager)
         image_revision2 = create(:image_revision, :on_asset_manager, state: :live)
-        edition = create(:edition, image_revisions: [image_revision1, image_revision2])
+        file_attachment_revision1 = create(:file_attachment_revision,
+                                           :on_asset_manager)
+        file_attachment_revision2 = create(:file_attachment_revision,
+                                           :on_asset_manager,
+                                           state: :live)
+
+        edition = create(:edition,
+                         image_revisions: [image_revision1, image_revision2],
+                         file_attachment_revisions: [file_attachment_revision1, file_attachment_revision2])
 
         request = stub_asset_manager_receives_an_asset
         PreviewService.new(edition).create_preview
@@ -56,6 +68,8 @@ RSpec.describe PreviewService do
         expect(request).not_to have_been_requested
         expect(image_revision1.assets.map(&:state).uniq).to match(%w[draft])
         expect(image_revision2.assets.map(&:state).uniq).to match(%w[live])
+        expect(file_attachment_revision1.file_asset).to be_draft
+        expect(file_attachment_revision2.file_asset).to be_live
       end
     end
 

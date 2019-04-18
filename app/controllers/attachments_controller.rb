@@ -18,6 +18,7 @@ class AttachmentsController < ApplicationController
 
       edition.assign_revision(updater.next_revision, current_user).save!
 
+      PreviewService.new(edition).try_create_preview
       redirect_to attachments_path(edition.document)
     end
   end

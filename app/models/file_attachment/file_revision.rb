@@ -23,4 +23,8 @@ class FileAttachment::FileRevision < ApplicationRecord
       self.file_asset = FileAttachment::Asset.new(file_revision: self, variant: :file)
     end
   end
+
+  def bytes_for_file
+    blob.download
+  end
 end
