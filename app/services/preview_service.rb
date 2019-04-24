@@ -50,7 +50,7 @@ private
     edition.file_attachment_revisions.each do |file_attachment_revision|
       file_attachment_revision.ensure_assets
 
-      upload_asset(edition, file_attachment_revision.file_asset)
+      file_attachment_revision.assets.each { |asset| upload_asset(edition, asset) }
     end
   end
 

@@ -9,6 +9,7 @@ FactoryBot.define do
       filename { SecureRandom.hex(8) }
       fixture { "text-file.txt" }
       title { SecureRandom.hex(8) }
+      assets { nil }
     end
 
     after(:build) do |revision, evaluator|
@@ -17,6 +18,7 @@ FactoryBot.define do
           :file_attachment_file_revision,
           filename: evaluator.filename,
           fixture: evaluator.fixture,
+          assets: evaluator.assets,
         )
       end
 
@@ -40,6 +42,7 @@ FactoryBot.define do
           filename: evaluator.filename,
           fixture: evaluator.fixture,
           state: evaluator.state,
+          assets: evaluator.assets,
         )
 
         revision.metadata_revision = evaluator.association(

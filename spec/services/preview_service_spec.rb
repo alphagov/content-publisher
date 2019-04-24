@@ -43,33 +43,52 @@ RSpec.describe PreviewService do
         PreviewService.new(edition).create_preview
 
         expect(request).to have_been_requested.at_least_once
-        expect(image_revision.assets.map(&:state).uniq).to match(%w[draft])
-        expect(file_attachment_revision.file_asset).to be_draft
+        asset_states = image_revision.assets.map(&:state) + file_attachment_revision.assets.map(&:state)
+        expect(asset_states.uniq).to match(%w[draft])
       end
     end
 
     context "when there are assets that are on Asset Manager" do
-      it "doesn't upload the assets to asset manager" do
-        image_revision1 = create(:image_revision, :on_asset_manager)
-        image_revision2 = create(:image_revision, :on_asset_manager, state: :live)
-        file_attachment_revision1 = create(:file_attachment_revision,
-                                           :on_asset_manager)
-        file_attachment_revision2 = create(:file_attachment_revision,
-                                           :on_asset_manager,
-                                           state: :live)
+      let(:image_revision_draft) do
+        create(:image_revision, :on_asset_manager, state: :draft)
+      end
 
-        edition = create(:edition,
-                         image_revisions: [image_revision1, image_revision2],
-                         file_attachment_revisions: [file_attachment_revision1, file_attachment_revision2])
+      let(:image_revision_live) do
+        create(:image_revision, :on_asset_manager, state: :live)
+      end
 
+      let(:file_attachment_revision_draft) do
+        create(:file_attachment_revision, :on_asset_manager, state: :draft)
+      end
+
+      let(:file_attachment_revision_live) do
+        create(:file_attachment_revision, :on_asset_manager, state: :live)
+      end
+
+      let(:edition) do
+        create(:edition,
+               image_revisions: [image_revision_draft, image_revision_live],
+               file_attachment_revisions: [file_attachment_revision_draft, file_attachment_revision_live])
+      end
+
+      it "doesn't change the state of assets on asset manager" do
+        PreviewService.new(edition).create_preview
+
+        draft_asset_states = image_revision_draft.assets.map(&:state) +
+          file_attachment_revision_draft.assets.map(&:state)
+        expect(draft_asset_states.uniq).to match(%w[draft])
+
+        live_asset_states = image_revision_live.assets.map(&:state) +
+          file_attachment_revision_live.assets.map(&:state)
+        expect(live_asset_states.uniq).to match(%w[live])
+      end
+
+      it "doesn't upload assets to asset manager" do
         request = stub_asset_manager_receives_an_asset
+
         PreviewService.new(edition).create_preview
 
         expect(request).not_to have_been_requested
-        expect(image_revision1.assets.map(&:state).uniq).to match(%w[draft])
-        expect(image_revision2.assets.map(&:state).uniq).to match(%w[live])
-        expect(file_attachment_revision1.file_asset).to be_draft
-        expect(file_attachment_revision2.file_asset).to be_live
       end
     end
 
