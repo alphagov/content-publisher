@@ -25,7 +25,7 @@ class ImagesController < ApplicationController
 
       image_revision = ImageUploadService.new(params[:image], edition.revision).call(current_user)
       updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
-      updater.update_image(image_revision)
+      updater.add_image(image_revision)
       edition.assign_revision(updater.next_revision, current_user).save!
       PreviewService.new(edition).try_create_preview
       redirect_to crop_image_path(params[:document], image_revision.image_id, wizard: "upload")
