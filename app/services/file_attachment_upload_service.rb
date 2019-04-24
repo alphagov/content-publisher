@@ -16,7 +16,7 @@ class FileAttachmentUploadService
       content_type: Marcel::MimeType.for(file),
     )
 
-    file_revision = FileAttachment::FileRevision.new(
+    blob_revision = FileAttachment::BlobRevision.new(
       blob: blob, created_by: user, filename: filename, size: file.size,
     )
 
@@ -27,7 +27,7 @@ class FileAttachmentUploadService
     FileAttachment::Revision.create!(
       file_attachment: file_attachment,
       created_by: user,
-      file_revision: file_revision,
+      blob_revision: blob_revision,
       metadata_revision: metadata_revision,
     )
   end

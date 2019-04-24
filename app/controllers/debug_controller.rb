@@ -8,8 +8,8 @@ class DebugController < ApplicationController
     @document = Document.find_by_param(params[:document])
 
     image_preload = {
-      lead_image_revision: %i[file_revision metadata_revision],
-      image_revisions: %i[file_revision metadata_revision],
+      lead_image_revision: %i[blob_revision metadata_revision],
+      image_revisions: %i[blob_revision metadata_revision],
     }
 
     preload = [
@@ -56,9 +56,9 @@ class DebugController < ApplicationController
     return nil unless image_revision
 
     common_except = %i[id created_at created_by_id]
-    file_revision = image_revision.file_revision.as_json(except: common_except)
+    blob_revision = image_revision.blob_revision.as_json(except: common_except)
     metadata_revision = image_revision.metadata_revision.as_json(except: common_except)
 
-    file_revision.merge(metadata_revision)
+    blob_revision.merge(metadata_revision)
   end
 end

@@ -17,14 +17,14 @@ class ImageUploadService
       content_type: mime_type,
     )
 
-    file_revision = Image::FileRevision.new(
+    blob_revision = Image::BlobRevision.new(
       image_attributes.merge(blob: blob, created_by: user),
     )
 
     Image::Revision.create!(
       image: image,
       created_by: user,
-      file_revision: file_revision,
+      blob_revision: blob_revision,
       metadata_revision: Image::MetadataRevision.new(created_by: user),
     )
   end

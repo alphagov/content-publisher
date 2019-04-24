@@ -1,32 +1,32 @@
 # frozen_string_literal: true
 
-RSpec.describe Image::FileRevision do
+RSpec.describe Image::BlobRevision do
   describe "#ensure_assets" do
     it "doesn't change the assets when they already exist" do
-      image_revision = build(:image_file_revision)
+      image_revision = build(:image_blob_revision)
       assets = image_revision.assets.to_a
 
       image_revision.ensure_assets
 
       expect(image_revision.assets.to_a).to eq(assets)
       expect(image_revision.assets.map(&:variant))
-        .to match(Image::FileRevision::ASSET_VARIANTS)
+        .to match(Image::BlobRevision::ASSET_VARIANTS)
     end
 
     it "creates variants for those that don't exist" do
-      image_revision = build(:image_file_revision, assets: [])
+      image_revision = build(:image_blob_revision, assets: [])
 
       expect(image_revision.assets).to be_empty
 
       image_revision.ensure_assets
 
       expect(image_revision.assets.map(&:variant))
-        .to match(Image::FileRevision::ASSET_VARIANTS)
+        .to match(Image::BlobRevision::ASSET_VARIANTS)
     end
   end
 
   describe "#bytes_for_asset" do
-    let(:image_revision) { build(:image_file_revision) }
+    let(:image_revision) { build(:image_blob_revision) }
 
     it "returns a string of bytes for a known variant" do
       response = image_revision.bytes_for_asset("high_resolution")
@@ -41,7 +41,7 @@ RSpec.describe Image::FileRevision do
   end
 
   describe "#asset_url" do
-    let(:image_revision) { build(:image_file_revision, :on_asset_manager) }
+    let(:image_revision) { build(:image_blob_revision, :on_asset_manager) }
 
     it "returns a url for a known variant" do
       asset = image_revision.assets.first

@@ -6,8 +6,9 @@
 #
 # This is a mutable model that is mutated when state changes on Asset Manager
 class Image::Asset < ApplicationRecord
-  belongs_to :file_revision,
-             class_name: "Image::FileRevision"
+  belongs_to :blob_revision,
+             class_name: "Image::BlobRevision",
+             foreign_key: "file_revision_id"
 
   belongs_to :superseded_by,
              class_name: "Image::Asset",
@@ -18,7 +19,10 @@ class Image::Asset < ApplicationRecord
                 live: "live",
                 superseded: "superseded" }
 
-  delegate :filename, :content_type, to: :file_revision
+  delegate :filename, :content_type, to: :blob_revision
+
+  # TODO: Remove after breaking migration
+  alias_attribute :blob_revision_id, :file_revision_id
 
   def asset_manager_id
     url_array = file_url.to_s.split("/")
@@ -27,6 +31,6 @@ class Image::Asset < ApplicationRecord
   end
 
   def bytes
-    file_revision.bytes_for_asset(variant)
+    blob_revision.bytes_for_asset(variant)
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :image_file_revision, class: Image::FileRevision do
+  factory :image_blob_revision, class: Image::BlobRevision do
     association :created_by, factory: :user
 
     filename { SecureRandom.hex(8) }
@@ -17,18 +17,18 @@ FactoryBot.define do
       assets { nil }
     end
 
-    after(:build) do |file_revision, evaluator|
+    after(:build) do |blob_revision, evaluator|
       fixture_path = Rails.root.join("spec/fixtures/files/#{evaluator.fixture}")
 
-      file_revision.blob = ActiveStorage::Blob.build_after_upload(
+      blob_revision.blob = ActiveStorage::Blob.build_after_upload(
         io: File.new(fixture_path),
-        filename: file_revision.filename,
+        filename: blob_revision.filename,
       )
 
       if evaluator.assets
-        file_revision.assets = evaluator.assets
+        blob_revision.assets = evaluator.assets
       else
-        file_revision.ensure_assets
+        blob_revision.ensure_assets
       end
     end
 
@@ -37,10 +37,10 @@ FactoryBot.define do
         state { :draft }
       }
 
-      after(:build) do |file_revision, evaluator|
-        file_revision.assets.each do |asset|
+      after(:build) do |blob_revision, evaluator|
+        blob_revision.assets.each do |asset|
           url = "https://asset-manager.test.gov.uk/media/" +
-            "asset-id#{SecureRandom.hex(8)}/#{file_revision.filename}"
+            "asset-id#{SecureRandom.hex(8)}/#{blob_revision.filename}"
           asset.assign_attributes(state: evaluator.state, file_url: url)
         end
       end

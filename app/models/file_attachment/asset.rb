@@ -6,8 +6,9 @@
 #
 # This is a mutable model that is mutated when state changes on Asset Manager
 class FileAttachment::Asset < ApplicationRecord
-  belongs_to :file_revision,
-             class_name: "FileAttachment::FileRevision"
+  belongs_to :blob_revision,
+             class_name: "FileAttachment::BlobRevision",
+             foreign_key: "file_revision_id"
 
   enum state: { absent: "absent",
                 draft: "draft",
@@ -15,9 +16,12 @@ class FileAttachment::Asset < ApplicationRecord
 
   enum variant: { file: "file", thumbnail: "thumbnail" }
 
-  delegate :filename, :content_type, to: :file_revision
+  delegate :filename, :content_type, to: :blob_revision
+
+  # TODO: Remove after breaking migration
+  alias_attribute :blob_revision_id, :file_revision_id
 
   def bytes
-    file_revision.bytes_for_asset(variant)
+    blob_revision.bytes_for_asset(variant)
   end
 end
