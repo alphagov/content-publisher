@@ -15,7 +15,11 @@ class FileAttachment::Revision < ApplicationRecord
                           join_table: "revisions_file_attachment_revisions"
 
   delegate :title, to: :metadata_revision
-  delegate :filename, to: :file_revision
+  delegate :filename,
+           :asset,
+           :assets,
+           :ensure_assets,
+           to: :file_revision
 
   def readonly?
     !new_record?

@@ -15,5 +15,9 @@ class FileAttachment::Asset < ApplicationRecord
 
   enum variant: { file: "file", thumbnail: "thumbnail" }
 
-  delegate :filename, to: :file_revision
+  delegate :filename, :content_type, to: :file_revision
+
+  def bytes
+    file_revision.bytes_for_asset(variant)
+  end
 end

@@ -46,6 +46,18 @@
         }
       }
     ]
+
+    if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
+      insert_items.prepend(
+        {
+          text: "Attachment",
+          href: file_attachments_path(edition.document),
+          target: "_blank",
+        }
+      )
+    end
+
+    insert_items
   end
 %>
 <%= tag.div class: component_classes,

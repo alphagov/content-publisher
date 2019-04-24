@@ -9,6 +9,7 @@ FactoryBot.define do
       filename { SecureRandom.hex(8) }
       fixture { "text-file.txt" }
       title { SecureRandom.hex(8) }
+      assets { nil }
     end
 
     after(:build) do |revision, evaluator|
@@ -17,10 +18,33 @@ FactoryBot.define do
           :file_attachment_file_revision,
           filename: evaluator.filename,
           fixture: evaluator.fixture,
+          assets: evaluator.assets,
         )
       end
 
       unless revision.metadata_revision
+        revision.metadata_revision = evaluator.association(
+          :file_attachment_metadata_revision,
+          title: evaluator.title,
+        )
+      end
+    end
+
+    trait :on_asset_manager do
+      transient {
+        state { :draft }
+      }
+
+      after(:build) do |revision, evaluator|
+        revision.file_revision = evaluator.association(
+          :file_attachment_file_revision,
+          :on_asset_manager,
+          filename: evaluator.filename,
+          fixture: evaluator.fixture,
+          state: evaluator.state,
+          assets: evaluator.assets,
+        )
+
         revision.metadata_revision = evaluator.association(
           :file_attachment_metadata_revision,
           title: evaluator.title,

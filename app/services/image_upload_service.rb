@@ -20,7 +20,6 @@ class ImageUploadService
     file_revision = Image::FileRevision.new(
       image_attributes.merge(blob: blob, created_by: user),
     )
-    file_revision.ensure_assets
 
     Image::Revision.create!(
       image: image,
@@ -35,7 +34,8 @@ private
   attr_reader :file, :revision
 
   def filename
-    ImageFilenameService.new(revision).call(file.original_filename)
+    filenames = revision.image_revisions.map(&:filename)
+    UniqueFilenameService.new(filenames).call(file.original_filename)
   end
 
   def mime_type

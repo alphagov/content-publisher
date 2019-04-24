@@ -17,6 +17,7 @@ FactoryBot.define do
       state { "draft" }
       lead_image_revision { nil }
       image_revisions { [] }
+      file_attachment_revisions { [] }
       first_published_at { nil }
     end
 
@@ -55,6 +56,7 @@ FactoryBot.define do
           scheduled_publishing_datetime: evaluator.scheduled_publishing_datetime,
           lead_image_revision: evaluator.lead_image_revision,
           image_revisions: image_revisions,
+          file_attachment_revisions: evaluator.file_attachment_revisions,
         )
       end
 

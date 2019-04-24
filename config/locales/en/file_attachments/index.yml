@@ -1,0 +1,17 @@
+en:
+  file_attachments:
+    index:
+      title: "Attachments for ‘%{title}’"
+      upload:
+        title: Upload an attachment
+        description_govspeak: |
+          All files must be [accessible](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/accessible-pdfs){:target="_blank"}.
+
+          Files must be uploaded in an [open standards file format](https://www.gov.uk/guidance/content-design/planning-content#open-formats){:target="_blank"}.  
+          For example, .odt not .docx.
+      attachment_title:
+        heading: Attachment title
+        hint_text: Use the official title of the document
+      other_attachments: Other attachments
+      attachment_markdown: "[Attachment: %{filename}]"
+      attachment_link_markdown: "[AttachmentLink: %{filename}]"

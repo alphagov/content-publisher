@@ -4,11 +4,11 @@ RSpec.describe Image::FileRevision do
   describe "#ensure_assets" do
     it "doesn't change the assets when they already exist" do
       image_revision = build(:image_file_revision)
-      assets = image_revision.assets
+      assets = image_revision.assets.to_a
 
       image_revision.ensure_assets
 
-      expect(image_revision.assets).to be(assets)
+      expect(image_revision.assets.to_a).to eq(assets)
       expect(image_revision.assets.map(&:variant))
         .to match(Image::FileRevision::ASSET_VARIANTS)
     end

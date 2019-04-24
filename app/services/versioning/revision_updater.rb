@@ -3,13 +3,14 @@
 module Versioning
   class RevisionUpdater < BaseUpdater
     include RevisionUpdater::Image
+    include RevisionUpdater::FileAttachment
 
     def column_names
       sub_updaters.keys + %i[lead_image_revision]
     end
 
     def collection_names
-      %i[image_revisions]
+      %i[image_revisions file_attachment_revisions]
     end
 
     def assign(fields)
@@ -43,6 +44,7 @@ module Versioning
         r.created_by = user
         r.number = revision.document.next_revision_number
         r.image_revisions = revision.image_revisions
+        r.file_attachment_revisions = revision.file_attachment_revisions
         r.preceded_by = revision
       end
     end

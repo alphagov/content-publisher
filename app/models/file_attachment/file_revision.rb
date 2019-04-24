@@ -6,11 +6,7 @@ class FileAttachment::FileRevision < ApplicationRecord
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  # There is an expectation there will also be a thumbnail asset
-  has_one :file_asset,
-          -> { where(variant: :file) },
-          class_name: "FileAttachment::Asset",
-          inverse_of: :file_revision
+  has_many :assets, class_name: "FileAttachment::Asset"
 
   delegate :content_type, to: :blob
 
@@ -18,9 +14,21 @@ class FileAttachment::FileRevision < ApplicationRecord
     !new_record?
   end
 
+  def asset(variant)
+    assets.find { |v| v.variant == variant }
+  end
+
+  def bytes_for_asset(variant)
+    if variant == "file"
+      blob.download
+    else
+      raise RuntimeError, "Unsupported file revision variant #{variant}"
+    end
+  end
+
   def ensure_assets
-    unless file_asset
-      self.file_asset = FileAttachment::Asset.new(file_revision: self, variant: :file)
+    unless asset("file")
+      assets << FileAttachment::Asset.new(file_revision: self, variant: "file")
     end
   end
 end

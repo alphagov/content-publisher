@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class ImageFilenameService
+class UniqueFilenameService
   MAX_LENGTH = 65
 
-  def initialize(revision)
-    @revision = revision
+  def initialize(existing_filenames)
+    @existing_filenames = existing_filenames
   end
 
   def call(suggested_name)
@@ -20,16 +20,12 @@ class ImageFilenameService
 
 private
 
-  attr_reader :revision
-
-  def image_revisions
-    @image_revisions ||= revision.image_revisions
-  end
+  attr_reader :existing_filenames
 
   def ensure_unique(base)
-    potential_conflicts = revision.image_revisions.map(&:filename)
-      .map(&ActiveStorage::Filename.method(:new))
-      .map(&:base)
+    potential_conflicts = existing_filenames
+                            .map(&ActiveStorage::Filename.method(:new))
+                            .map(&:base)
 
     return base unless potential_conflicts.include?(base)
 

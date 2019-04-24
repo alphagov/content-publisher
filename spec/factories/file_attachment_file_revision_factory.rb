@@ -8,6 +8,7 @@ FactoryBot.define do
 
     transient do
       fixture { "text-file.txt" }
+      assets { nil }
     end
 
     after(:build) do |file_revision, evaluator|
@@ -19,7 +20,11 @@ FactoryBot.define do
       )
       file_revision.size = File.size(fixture_path) unless file_revision.size
 
-      file_revision.ensure_assets
+      if evaluator.assets
+        file_revision.assets = evaluator.assets
+      else
+        file_revision.ensure_assets
+      end
     end
 
     trait :on_asset_manager do
@@ -28,11 +33,11 @@ FactoryBot.define do
       end
 
       after(:build) do |file_revision, evaluator|
-        file_revision.file_asset.assign_attributes(
-          state: evaluator.state,
-          file_url: "https://asset-manager.test.gov.uk/media/" +
-            "asset-id#{SecureRandom.hex(8)}/#{file_revision.filename}",
-        )
+        file_revision.assets.each do |asset|
+          url = "https://asset-manager.test.gov.uk/media/" +
+            "asset-id#{SecureRandom.hex(8)}/#{file_revision.filename}"
+          asset.assign_attributes(state: evaluator.state, file_url: url)
+        end
       end
     end
   end
