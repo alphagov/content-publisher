@@ -20,8 +20,6 @@ class FileAttachmentUploadService
       blob: blob, created_by: user, filename: filename, size: file.size,
     )
 
-    file_revision.ensure_assets
-
     metadata_revision = FileAttachment::MetadataRevision.new(
       created_by: user, title: title,
     )

@@ -20,7 +20,6 @@ class ImageUploadService
     file_revision = Image::FileRevision.new(
       image_attributes.merge(blob: blob, created_by: user),
     )
-    file_revision.ensure_assets
 
     Image::Revision.create!(
       image: image,
