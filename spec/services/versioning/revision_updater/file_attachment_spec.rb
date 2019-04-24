@@ -7,28 +7,23 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
     create :revision, file_attachment_revisions: [file_attachment_revision]
   end
 
-  describe "#update_file_attachment" do
+  describe "#add_file_attachment" do
     it "extends file attachment revisions with a new file attachment" do
       new_file_attachment = create :file_attachment_revision
 
       updater = Versioning::RevisionUpdater.new(revision, user)
-      updater.update_file_attachment(new_file_attachment)
+      updater.add_file_attachment(new_file_attachment)
 
       next_revision = updater.next_revision
       expect(next_revision.file_attachment_revisions)
         .to match_array [file_attachment_revision, new_file_attachment]
     end
 
-    it "updates an existing file attachment with a new revision" do
-      updated_file_attachment = create :file_attachment_revision,
-                                file_attachment_id: file_attachment_revision.file_attachment_id
-
+    it "raises an error if a revision exists for the same attachment" do
       updater = Versioning::RevisionUpdater.new(revision, user)
-      updater.update_file_attachment(updated_file_attachment)
 
-      next_revision = updater.next_revision
-      expect(next_revision.file_attachment_revisions)
-        .to match_array [updated_file_attachment]
+      expect { updater.add_file_attachment(file_attachment_revision) }
+        .to raise_error(RuntimeError, "Cannot add another revision for the same file attachment")
     end
   end
 end

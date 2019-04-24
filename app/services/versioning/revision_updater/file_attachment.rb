@@ -3,15 +3,19 @@
 module Versioning
   class RevisionUpdater
     module FileAttachment
-      def update_file_attachment(attachment_revision)
-        revisions = other_file_attachments(attachment_revision) + [attachment_revision]
+      def add_file_attachment(attachment_revision)
+        if attachment_exists?(attachment_revision)
+          raise "Cannot add another revision for the same file attachment"
+        end
+
+        revisions = revision.file_attachment_revisions + [attachment_revision]
         assign(file_attachment_revisions: revisions)
       end
 
     private
 
-      def other_file_attachments(attachment_revision)
-        revision.file_attachment_revisions.reject do |far|
+      def attachment_exists?(attachment_revision)
+        revision.file_attachment_revisions.find do |far|
           far.file_attachment_id == attachment_revision.file_attachment_id
         end
       end

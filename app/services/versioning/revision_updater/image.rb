@@ -3,7 +3,19 @@
 module Versioning
   class RevisionUpdater
     module Image
+      def add_image(image_revision)
+        if image_exists?(image_revision)
+          raise "Cannot add another revision for the same image"
+        end
+
+        assign(image_revisions: revision.image_revisions + [image_revision])
+      end
+
       def update_image(image_revision, selected = false)
+        unless image_exists?(image_revision)
+          raise "Cannot update an image that doesn't exist"
+        end
+
         assign(
           image_revisions: other_images(image_revision) + [image_revision],
           lead_image_revision: next_lead_image(image_revision, selected),
@@ -30,6 +42,10 @@ module Versioning
 
       def other_images(image_revision)
         revision.image_revisions.reject { |ir| ir.image_id == image_revision.image_id }
+      end
+
+      def image_exists?(image_revision)
+        revision.image_revisions.find { |ir| ir.image_id == image_revision.image_id }
       end
 
       def next_lead_image(image_revision, selected = false)

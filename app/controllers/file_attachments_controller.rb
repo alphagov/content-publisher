@@ -14,7 +14,7 @@ class FileAttachmentsController < ApplicationController
       ).call(current_user)
 
       updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
-      updater.update_file_attachment(attachment_revision)
+      updater.add_file_attachment(attachment_revision)
 
       edition.assign_revision(updater.next_revision, current_user).save!
 
