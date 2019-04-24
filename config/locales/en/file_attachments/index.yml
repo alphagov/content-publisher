@@ -3,8 +3,12 @@ en:
     index:
       title: "Attachments for ‘%{title}’"
       upload:
-        title: Upload a file attachment
-        description_govspeak: All files must be accessible.  Full [guidance on accessible attachments](){:target="_blank"}. Files must be uploaded in an open standards file format. For example, .odt not .docx.
+        title: Upload an attachment
+        description_govspeak: |
+          All files must be [accessible](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/accessible-pdfs){:target="_blank"}.
+
+          Files must be uploaded in an [open standards file format](https://www.gov.uk/guidance/content-design/planning-content#open-formats){:target="_blank"}.  
+          For example, .odt not .docx.
       attachment_title:
         heading: Attachment title
         hint_text: Use the official title of the document
