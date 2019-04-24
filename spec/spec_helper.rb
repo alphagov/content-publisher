@@ -2,6 +2,7 @@
 
 ENV["RAILS_ENV"] ||= "test"
 ENV["GOVUK_APP_DOMAIN"] = "test.gov.uk"
+ENV["GOVUK_TEST_USE_SYSTEM_CHROMEDRIVER"] = "true"
 
 require File.expand_path("../config/environment", __dir__)
 require "rspec/rails"
