@@ -1,26 +1,26 @@
-<% content_for :title, t("attachments.index.title", title: @edition.title_or_fallback) %>
+<% content_for :title, t("file_attachments.index.title", title: @edition.title_or_fallback) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <div class="app-pane">
       <%= form_tag(
-        create_attachment_path(@edition.document),
+        create_file_attachment_path(@edition.document),
         multipart: true,
       ) do %>
         <h2 class="govuk-heading-m">
-          <%= t("attachments.index.upload.title") %>
+          <%= t("file_attachments.index.upload.title") %>
         </h2>
-        <%= render_govspeak(t("attachments.index.upload.description_govspeak")) %>
+        <%= render_govspeak(t("file_attachments.index.upload.description_govspeak")) %>
         <%= render "govuk_publishing_components/components/file_upload", {
           name: "file"
         } %>
         <%= render "govuk_publishing_components/components/input", {
           label: {
-            text: t("attachments.index.attachment_title.heading"),
+            text: t("file_attachments.index.attachment_title.heading"),
             bold: true
           },
           name: "title",
-          hint: t("attachments.index.attachment_title.hint_text")
+          hint: t("file_attachments.index.attachment_title.hint_text")
           } %>
         <%= render "govuk_publishing_components/components/button", {
           text: "Upload",
@@ -35,11 +35,11 @@
 
     <% if attachments.any? %>
       <h2 class="govuk-heading-m">
-        <%= t("attachments.index.other_attachments") %>
+        <%= t("file_attachments.index.other_attachments") %>
       </h2>
 
       <% attachments.each do |attachment| %>
-        <%= render "attachment", attachment: attachment, document: @edition.document %>
+        <%= render "file_attachment", attachment: attachment, document: @edition.document %>
       <% end %>
     <% end %>
   </div>

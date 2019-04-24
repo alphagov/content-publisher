@@ -74,8 +74,8 @@ Rails.application.routes.draw do
 
     post "/govspeak-preview" => "govspeak_preview#to_html", as: :govspeak_preview
 
-    get "/attachments" => "attachments#index", as: :attachments
-    post "/attachments" => "attachments#create", as: :create_attachment
+    get "/file-attachments" => "file_attachments#index", as: :file_attachments
+    post "/file-attachments" => "file_attachments#create", as: :create_file_attachment
   end
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
