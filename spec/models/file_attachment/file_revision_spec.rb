@@ -4,11 +4,11 @@ RSpec.describe FileAttachment::FileRevision do
   describe "#ensure_assets" do
     it "doesn't change the assets when they already exist" do
       file_revision = build(:file_attachment_file_revision)
-      assets = file_revision.assets
+      assets = file_revision.assets.to_a
 
       file_revision.ensure_assets
 
-      expect(file_revision.assets).to be(assets)
+      expect(file_revision.assets.to_a).to eq(assets)
       expect(file_revision.assets.map(&:variant)).to match(%w[file])
     end
 
