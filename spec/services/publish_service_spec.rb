@@ -46,147 +46,17 @@ RSpec.describe PublishService do
       end
     end
 
-    context "when the current edition has images" do
-      let(:image_revision) { create(:image_revision, :on_asset_manager) }
-      let!(:edition) do
-        create(:edition, :publishable, image_revisions: [image_revision])
-      end
+    it "calls the PublishAssetService" do
+      document = create(:document, :with_current_and_live_editions)
+      current_edition = document.current_edition
+      stub_publishing_api_publish(document.content_id,
+                                  update_type: nil,
+                                  locale: document.locale)
 
-      before do
-        stub_publishing_api_publish(edition.content_id,
-                                    update_type: nil,
-                                    locale: edition.locale)
+      expect_any_instance_of(PublishAssetService).to receive(:publish_assets)
 
-        stub_asset_manager_updates_any_asset
-      end
-
-      it "makes the image assets live" do
-        expect(image_revision.assets.map(&:state).uniq).to eq(%w[draft])
-
-        PublishService.new(edition)
-                      .publish(user: create(:user), with_review: true)
-
-        expect(image_revision.assets.map(&:state).uniq).to eq(%w[live])
-      end
-    end
-
-    context "when an image was removed since the live edition" do
-      let(:image_revision_to_remove) do
-        create(:image_revision, :on_asset_manager, state: :live)
-      end
-
-      let(:document) { create(:document) }
-
-      let!(:live_edition) do
-        create(:edition,
-               :published,
-               image_revisions: [image_revision_to_remove],
-               current: false,
-               document: document)
-      end
-
-      let!(:current_edition) do
-        create(:edition,
-               :publishable,
-               image_revisions: [],
-               document: document)
-      end
-
-      before do
-        stub_publishing_api_publish(document.content_id,
-                                    update_type: nil,
-                                    locale: document.locale)
-      end
-
-      it "removes ones not used by the current edition" do
-        delete_request = stub_asset_manager_deletes_any_asset
-
-        PublishService.new(current_edition)
-                      .publish(user: create(:user), with_review: true)
-
-        image_revision_to_remove.reload
-        expect(image_revision_to_remove.assets.map(&:state).uniq).to eq(%w[absent])
-        expect(delete_request).to have_been_requested.at_least_once
-      end
-    end
-
-    context "when the current and live editions share an image" do
-      let(:image_revision_to_keep) do
-        create(:image_revision, :on_asset_manager, state: :live)
-      end
-
-      let(:document) { create(:document) }
-
-      let!(:live_edition) do
-        create(:edition,
-               :published,
-               image_revisions: [image_revision_to_keep],
-               current: false,
-               document: document)
-      end
-
-      let!(:current_edition) do
-        create(:edition,
-               :publishable,
-               image_revisions: [image_revision_to_keep],
-               document: document)
-      end
-
-      before do
-        stub_publishing_api_publish(document.content_id,
-                                    update_type: nil,
-                                    locale: document.locale)
-      end
-
-      it "keeps images used by the current edition" do
-        stub_asset_manager_deletes_any_asset
-        PublishService.new(current_edition)
-                      .publish(user: create(:user), with_review: true)
-
-        expect(image_revision_to_keep.assets.map(&:state).uniq).to eq(%w[live])
-      end
-    end
-
-    context "when the current edition has an updated version of a live edition's image" do
-      let(:old_image_revision) do
-        create(:image_revision, :on_asset_manager, state: :live)
-      end
-
-      let(:new_image_revision) do
-        create(:image_revision, :on_asset_manager, image: old_image_revision.image)
-      end
-
-      let(:document) { create(:document) }
-
-      let!(:live_edition) do
-        create(:edition,
-               :published,
-               image_revisions: [old_image_revision],
-               current: false,
-               document: document)
-      end
-
-      let!(:current_edition) do
-        create(:edition,
-               :publishable,
-               image_revisions: [new_image_revision],
-               document: document)
-      end
-
-      before do
-        stub_publishing_api_publish(document.content_id,
-                                    update_type: nil,
-                                    locale: document.locale)
-        stub_asset_manager_updates_any_asset
-      end
-
-      it "supersedes the old files" do
-        PublishService.new(current_edition)
-                      .publish(user: create(:user), with_review: true)
-
-        old_image_revision.reload
-        expect(old_image_revision.assets.map(&:state).uniq).to eq(%w[superseded])
-      end
+      PublishService.new(current_edition)
+        .publish(user: create(:user), with_review: true)
     end
   end
 end

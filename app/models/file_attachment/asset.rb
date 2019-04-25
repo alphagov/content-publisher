@@ -22,6 +22,12 @@ class FileAttachment::Asset < ApplicationRecord
 
   delegate :filename, :content_type, to: :blob_revision
 
+  def asset_manager_id
+    url_array = file_url.to_s.split("/")
+    # https://github.com/alphagov/asset-manager#create-an-asset
+    url_array[url_array.length - 2]
+  end
+
   def bytes
     blob_revision.bytes_for_asset(variant)
   end
