@@ -5,7 +5,7 @@ class Documents::DestroyInteractor
   delegate :params,
            :user,
            :edition,
-           :api_errored,
+           :api_error,
            to: :context
 
   def call
@@ -26,7 +26,7 @@ private
     DeleteDraftService.new(edition.document, user).delete
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
-    context.fail!(api_errored: true)
+    context.fail!(api_error: true)
   end
 
   def create_timeline_entry

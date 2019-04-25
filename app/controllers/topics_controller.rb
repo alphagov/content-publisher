@@ -14,12 +14,12 @@ class TopicsController < ApplicationController
 
   def update
     result = Topics::UpdateInteractor.call(params: params, user: current_user)
-    api_conflict, api_errored = result.to_h.values_at(:api_conflict, :api_errored)
+    api_conflict, api_error = result.to_h.values_at(:api_conflict, :api_error)
 
     if api_conflict
       redirect_to topics_path(params[:document]),
                   alert_with_description: t("topics.edit.flashes.topic_update_conflict")
-    elsif api_errored
+    elsif api_error
       redirect_to document_path(params[:document]),
                   alert_with_description: t("documents.show.flashes.topic_update_error")
     else

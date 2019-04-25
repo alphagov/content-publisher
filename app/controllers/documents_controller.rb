@@ -29,7 +29,7 @@ class DocumentsController < ApplicationController
 
   def destroy
     result = Documents::DestroyInteractor.call(params: params, user: current_user)
-    if result.api_errored
+    if result.api_error
       redirect_to document_path(params[:document]),
                   alert_with_description: t("documents.show.flashes.delete_draft_error")
     else

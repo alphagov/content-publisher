@@ -7,7 +7,7 @@ class Review::SubmitFor2iInteractor
            :user,
            :edition,
            :issues,
-           :api_errored,
+           :api_error,
            to: :context
 
   def call
@@ -32,7 +32,7 @@ private
     context.fail!(issues: issues) if issues.any?
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
-    context.fail!(api_errored: true)
+    context.fail!(api_error: true)
   end
 
   def update_status
