@@ -7,7 +7,7 @@ class Editions::CreateInteractor
            :live_edition,
            :next_edition,
            :draft_current_edition,
-           :resume_discarded,
+           :discarded_edition,
            to: :context
 
   def call
@@ -31,20 +31,17 @@ private
   def create_next_edition
     live_edition.update!(current: false)
 
-    context.resume_discarded = Edition.find_by(
+    context.discarded_edition = Edition.find_by(
       document: live_edition.document,
       number: live_edition.number + 1,
     )
 
-    context.next_edition = if resume_discarded
-                             discarded_edition.resume_discarded(live_edition, user)
-                           else
-                             Edition.create_next_edition(live_edition, user)
-                           end
+    discarded_edition.resume_discarded(live_edition, user) if discarded_edition
+    context.next_edition = discarded_edition || Edition.create_next_edition(live_edition, user)
   end
 
   def create_timeline_entry
-    if resume_discarded
+    if discarded_edition
       TimelineEntry.create_for_status_change(entry_type: :draft_reset,
                                              status: next_edition.status)
     else
