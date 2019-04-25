@@ -7,8 +7,7 @@
 # This is a mutable model that is mutated when state changes on Asset Manager
 class Image::Asset < ApplicationRecord
   belongs_to :blob_revision,
-             class_name: "Image::BlobRevision",
-             foreign_key: "file_revision_id"
+             class_name: "Image::BlobRevision"
 
   belongs_to :superseded_by,
              class_name: "Image::Asset",
@@ -20,9 +19,6 @@ class Image::Asset < ApplicationRecord
                 superseded: "superseded" }
 
   delegate :filename, :content_type, to: :blob_revision
-
-  # TODO: Remove after breaking migration
-  alias_attribute :blob_revision_id, :file_revision_id
 
   def asset_manager_id
     url_array = file_url.to_s.split("/")

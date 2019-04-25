@@ -14,9 +14,6 @@ class Image::BlobRevision < ApplicationRecord
   # FIXME: we should see if these can be retina variants
   ASSET_VARIANTS = %w[300 960 high_resolution].freeze
 
-  # TODO: remove after breaking migration
-  self.table_name = "image_file_revisions"
-
   belongs_to :blob, class_name: "ActiveStorage::Blob"
 
   belongs_to :created_by, class_name: "User", optional: true

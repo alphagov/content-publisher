@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_17_133100) do
+ActiveRecord::Schema.define(version: 2019_04_24_145213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,24 +90,24 @@ ActiveRecord::Schema.define(version: 2019_04_17_133100) do
   end
 
   create_table "file_attachment_assets", force: :cascade do |t|
-    t.bigint "file_revision_id", null: false
+    t.bigint "blob_revision_id", null: false
     t.string "variant", default: "file", null: false
     t.string "file_url"
     t.string "state", default: "absent", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["file_revision_id", "variant"], name: "index_file_attachment_assets_on_file_revision_id_and_variant", unique: true
-    t.index ["file_revision_id"], name: "index_file_attachment_assets_on_file_revision_id"
+    t.index ["blob_revision_id", "variant"], name: "index_file_attachment_assets_on_blob_revision_id_and_variant", unique: true
+    t.index ["blob_revision_id"], name: "index_file_attachment_assets_on_blob_revision_id"
     t.index ["file_url"], name: "index_file_attachment_assets_on_file_url", unique: true
   end
 
-  create_table "file_attachment_file_revisions", force: :cascade do |t|
+  create_table "file_attachment_blob_revisions", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.bigint "created_by_id"
     t.string "filename", null: false
     t.datetime "created_at", null: false
     t.bigint "size", null: false
-    t.index ["blob_id"], name: "index_file_attachment_file_revisions_on_blob_id"
+    t.index ["blob_id"], name: "index_file_attachment_blob_revisions_on_blob_id"
   end
 
   create_table "file_attachment_metadata_revisions", force: :cascade do |t|
@@ -120,10 +120,10 @@ ActiveRecord::Schema.define(version: 2019_04_17_133100) do
     t.datetime "created_at", null: false
     t.bigint "created_by_id"
     t.bigint "file_attachment_id", null: false
-    t.bigint "file_revision_id", null: false
+    t.bigint "blob_revision_id", null: false
     t.bigint "metadata_revision_id", null: false
+    t.index ["blob_revision_id"], name: "index_file_attachment_revisions_on_blob_revision_id"
     t.index ["file_attachment_id"], name: "index_file_attachment_revisions_on_file_attachment_id"
-    t.index ["file_revision_id"], name: "index_file_attachment_revisions_on_file_revision_id"
     t.index ["metadata_revision_id"], name: "index_file_attachment_revisions_on_metadata_revision_id"
   end
 
@@ -133,19 +133,19 @@ ActiveRecord::Schema.define(version: 2019_04_17_133100) do
   end
 
   create_table "image_assets", force: :cascade do |t|
-    t.bigint "file_revision_id", null: false
+    t.bigint "blob_revision_id", null: false
     t.bigint "superseded_by_id"
     t.string "variant", null: false
     t.string "file_url"
     t.string "state", default: "absent", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["file_revision_id", "variant"], name: "index_image_asset_unique_variant", unique: true
-    t.index ["file_revision_id"], name: "index_image_assets_on_file_revision_id"
+    t.index ["blob_revision_id", "variant"], name: "index_image_asset_unique_variant", unique: true
+    t.index ["blob_revision_id"], name: "index_image_assets_on_blob_revision_id"
     t.index ["file_url"], name: "index_image_assets_on_file_url", unique: true
   end
 
-  create_table "image_file_revisions", force: :cascade do |t|
+  create_table "image_blob_revisions", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.bigint "created_by_id"
     t.integer "width", null: false
@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(version: 2019_04_17_133100) do
     t.integer "crop_height", null: false
     t.string "filename", null: false
     t.datetime "created_at"
-    t.index ["blob_id"], name: "index_image_file_revisions_on_blob_id"
+    t.index ["blob_id"], name: "index_image_blob_revisions_on_blob_id"
   end
 
   create_table "image_metadata_revisions", force: :cascade do |t|
@@ -171,9 +171,9 @@ ActiveRecord::Schema.define(version: 2019_04_17_133100) do
     t.bigint "image_id", null: false
     t.bigint "created_by_id"
     t.datetime "created_at", null: false
-    t.bigint "file_revision_id", null: false
+    t.bigint "blob_revision_id", null: false
     t.bigint "metadata_revision_id", null: false
-    t.index ["file_revision_id"], name: "index_image_revisions_on_file_revision_id"
+    t.index ["blob_revision_id"], name: "index_image_revisions_on_blob_revision_id"
     t.index ["image_id"], name: "index_image_revisions_on_image_id"
     t.index ["metadata_revision_id"], name: "index_image_revisions_on_metadata_revision_id"
   end
@@ -326,21 +326,21 @@ ActiveRecord::Schema.define(version: 2019_04_17_133100) do
   add_foreign_key "editions", "users", column: "last_edited_by_id", on_delete: :restrict
   add_foreign_key "editions_revisions", "editions", on_delete: :restrict
   add_foreign_key "editions_revisions", "revisions", on_delete: :restrict
-  add_foreign_key "file_attachment_assets", "file_attachment_file_revisions", column: "file_revision_id", on_delete: :restrict
-  add_foreign_key "file_attachment_file_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
-  add_foreign_key "file_attachment_file_revisions", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "file_attachment_assets", "file_attachment_blob_revisions", column: "blob_revision_id", on_delete: :restrict
+  add_foreign_key "file_attachment_blob_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
+  add_foreign_key "file_attachment_blob_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "file_attachment_metadata_revisions", "users", column: "created_by_id", on_delete: :restrict
-  add_foreign_key "file_attachment_revisions", "file_attachment_file_revisions", column: "file_revision_id", on_delete: :restrict
+  add_foreign_key "file_attachment_revisions", "file_attachment_blob_revisions", column: "blob_revision_id", on_delete: :restrict
   add_foreign_key "file_attachment_revisions", "file_attachment_metadata_revisions", column: "metadata_revision_id", on_delete: :restrict
   add_foreign_key "file_attachment_revisions", "file_attachments", on_delete: :restrict
   add_foreign_key "file_attachment_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "file_attachments", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "image_assets", "image_assets", column: "superseded_by_id", on_delete: :restrict
-  add_foreign_key "image_assets", "image_file_revisions", column: "file_revision_id", on_delete: :restrict
-  add_foreign_key "image_file_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
-  add_foreign_key "image_file_revisions", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "image_assets", "image_blob_revisions", column: "blob_revision_id", on_delete: :restrict
+  add_foreign_key "image_blob_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
+  add_foreign_key "image_blob_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "image_metadata_revisions", "users", column: "created_by_id", on_delete: :restrict
-  add_foreign_key "image_revisions", "image_file_revisions", column: "file_revision_id", on_delete: :restrict
+  add_foreign_key "image_revisions", "image_blob_revisions", column: "blob_revision_id", on_delete: :restrict
   add_foreign_key "image_revisions", "image_metadata_revisions", column: "metadata_revision_id", on_delete: :restrict
   add_foreign_key "image_revisions", "images", on_delete: :restrict
   add_foreign_key "image_revisions", "users", column: "created_by_id", on_delete: :restrict

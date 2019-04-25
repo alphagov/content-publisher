@@ -17,10 +17,7 @@ class Image::Revision < ApplicationRecord
 
   belongs_to :image, class_name: "Image"
 
-  belongs_to :blob_revision, class_name: "Image::BlobRevision", foreign_key: "file_revision_id"
-
-  # TODO: Remove after breaking migration
-  alias_attribute :blob_revision_id, :file_revision_id
+  belongs_to :blob_revision, class_name: "Image::BlobRevision"
 
   belongs_to :metadata_revision, class_name: "Image::MetadataRevision"
 
