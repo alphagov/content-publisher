@@ -7,7 +7,7 @@ class FileAttachment::Revision < ApplicationRecord
   belongs_to :created_by, class_name: "User", optional: true
   belongs_to :file_attachment, class_name: "FileAttachment"
   belongs_to :metadata_revision, class_name: "FileAttachment::MetadataRevision"
-  belongs_to :blob_revision, class_name: "FileAttachment::BlobRevision", foreign_key: "file_revision_id"
+  belongs_to :blob_revision, class_name: "FileAttachment::BlobRevision"
 
   has_and_belongs_to_many :revisions,
                           class_name: "::Revision",
@@ -20,9 +20,6 @@ class FileAttachment::Revision < ApplicationRecord
            :assets,
            :ensure_assets,
            to: :blob_revision
-
-  # TODO: Remove after breaking migration
-  alias_attribute :blob_revision_id, :file_revision_id
 
   def readonly?
     !new_record?

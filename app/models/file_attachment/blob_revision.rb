@@ -2,9 +2,6 @@
 
 # This is an immutable model
 class FileAttachment::BlobRevision < ApplicationRecord
-  # TODO: remove after breaking migration
-  self.table_name = "file_attachment_file_revisions"
-
   belongs_to :blob, class_name: "ActiveStorage::Blob"
 
   belongs_to :created_by, class_name: "User", optional: true
