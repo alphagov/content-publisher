@@ -8,7 +8,6 @@ class Images::UpdateInteractor
            :edition,
            :image_revision,
            :issues,
-           :unchanged,
            :selected_lead_image,
            :removed_lead_image,
            to: :context
@@ -55,13 +54,11 @@ private
 
     updater.update_image(image_revision, is_lead_image)
 
-    if updater.changed?
-      edition.assign_revision(updater.next_revision, user).save!
-      context.selected_lead_image = updater.selected_lead_image?
-      context.removed_lead_image = updater.removed_lead_image?
-    else
-      context.fail!(unchanged: true)
-    end
+    context.fail! unless updater.changed?
+
+    edition.assign_revision(updater.next_revision, user).save!
+    context.selected_lead_image = updater.selected_lead_image?
+    context.removed_lead_image = updater.removed_lead_image?
   end
 
   def create_timeline_entry

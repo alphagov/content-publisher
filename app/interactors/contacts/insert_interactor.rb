@@ -5,8 +5,6 @@ class Contacts::InsertInteractor
   delegate :params,
            :user,
            :edition,
-           :empty_submission,
-           :unchanged,
            to: :context
 
   def call
@@ -28,7 +26,7 @@ private
   end
 
   def check_for_submission
-    context.fail!(empty_submission: true) if params[:contact_id].empty?
+    context.fail! if params[:contact_id].empty?
   end
 
   def update_edition
@@ -45,11 +43,8 @@ private
     updater = Versioning::RevisionUpdater.new(revision, user)
     updater.assign(contents: revision.contents.merge("body" => updated_body))
 
-    if updater.changed?
-      edition.assign_revision(updater.next_revision, user).save!
-    else
-      context.fail!(unchanged: true)
-    end
+    context.fail! unless updater.changed?
+    edition.assign_revision(updater.next_revision, user).save!
   end
 
   def create_timeline_entry

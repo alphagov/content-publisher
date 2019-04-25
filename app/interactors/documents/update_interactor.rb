@@ -6,7 +6,6 @@ class Documents::UpdateInteractor
            :user,
            :edition,
            :revision,
-           :unchanged,
            to: :context
 
   def call
@@ -31,11 +30,8 @@ private
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(update_params(edition))
 
-    if updater.changed?
-      context.revision = updater.next_revision
-    else
-      context.fail!(unchanged: true)
-    end
+    context.fail! unless updater.changed?
+    context.revision = updater.next_revision
   end
 
   def check_for_issues

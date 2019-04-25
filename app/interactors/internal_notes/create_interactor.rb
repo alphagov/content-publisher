@@ -6,7 +6,6 @@ class InternalNotes::CreateInteractor
   delegate :params,
            :user,
            :edition,
-           :blank_note,
            :internal_note,
            to: :context
 
@@ -28,7 +27,7 @@ private
 
   def check_note_presence
     note = params.fetch(:internal_note)
-    context.fail!(blank_note: true) if note.chomp.blank?
+    context.fail! if note.chomp.blank?
   end
 
   def create_internal_note

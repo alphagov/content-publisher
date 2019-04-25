@@ -6,7 +6,6 @@ class Images::UpdateCropInteractor
            :user,
            :edition,
            :image_revision,
-           :unchanged,
            to: :context
 
   def call
@@ -50,11 +49,9 @@ private
 
     updater.update_image(image_revision, false)
 
-    if updater.changed?
-      edition.assign_revision(updater.next_revision, user).save!
-    else
-      context.fail!(unchanged: true)
-    end
+    context.fail! unless updater.changed?
+
+    edition.assign_revision(updater.next_revision, user).save!
   end
 
   def create_timeline_entry

@@ -7,7 +7,6 @@ class Publish::PublishInteractor
            :user,
            :edition,
            :issues,
-           :already_live,
            :publish_failed,
            to: :context
 
@@ -27,7 +26,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-    context.fail!(already_live: true) if edition.live?
+    context.fail! if edition.live?
   end
 
   def check_for_issues
