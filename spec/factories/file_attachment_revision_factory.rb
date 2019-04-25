@@ -13,9 +13,9 @@ FactoryBot.define do
     end
 
     after(:build) do |revision, evaluator|
-      unless revision.file_revision
-        revision.file_revision = evaluator.association(
-          :file_attachment_file_revision,
+      unless revision.blob_revision
+        revision.blob_revision = evaluator.association(
+          :file_attachment_blob_revision,
           filename: evaluator.filename,
           fixture: evaluator.fixture,
           assets: evaluator.assets,
@@ -36,8 +36,8 @@ FactoryBot.define do
       }
 
       after(:build) do |revision, evaluator|
-        revision.file_revision = evaluator.association(
-          :file_attachment_file_revision,
+        revision.blob_revision = evaluator.association(
+          :file_attachment_blob_revision,
           :on_asset_manager,
           filename: evaluator.filename,
           fixture: evaluator.fixture,

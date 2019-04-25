@@ -31,7 +31,7 @@ module Versioning
     def sub_updaters
       @sub_updaters ||= {
         metadata_revision: SubRevisionUpdater.new(revision.metadata_revision, user),
-        file_revision: SubRevisionUpdater.new(revision.file_revision, user),
+        blob_revision: SubRevisionUpdater.new(revision.blob_revision, user),
       }
     end
   end

@@ -10,9 +10,12 @@
 # the underlying blob.
 #
 # This is an immutable model.
-class Image::FileRevision < ApplicationRecord
+class Image::BlobRevision < ApplicationRecord
   # FIXME: we should see if these can be retina variants
   ASSET_VARIANTS = %w[300 960 high_resolution].freeze
+
+  # TODO: remove after breaking migration
+  self.table_name = "image_file_revisions"
 
   belongs_to :blob, class_name: "ActiveStorage::Blob"
 
@@ -68,7 +71,7 @@ class Image::FileRevision < ApplicationRecord
     known_variants = assets.map(&:variant)
     missing_variants = ASSET_VARIANTS - known_variants
     missing_variants.each do |variant|
-      assets << Image::Asset.new(file_revision: self, variant: variant)
+      assets << Image::Asset.new(blob_revision: self, variant: variant)
     end
   end
 end

@@ -8,8 +8,8 @@ class DebugController < ApplicationController
     @document = Document.find_by_param(params[:document])
 
     image_preload = {
-      lead_image_revision: %i[file_revision metadata_revision],
-      image_revisions: %i[file_revision metadata_revision],
+      lead_image_revision: %i[blob_revision metadata_revision],
+      image_revisions: %i[blob_revision metadata_revision],
     }
 
     preload = [
@@ -48,17 +48,30 @@ class DebugController < ApplicationController
     metadata = revision.metadata_revision.as_json(except: common_except)
     lead_image = image_revision_hash(revision.lead_image_revision)
     images = revision.image_revisions.map { |r| image_revision_hash(r) }
+    file_attachments = revision.file_attachment_revisions.map { |r| file_attachment_revision_hash(r) }
 
-    content.merge(tags).merge(metadata).merge(lead_image: lead_image, images: images)
+    content.merge(tags).merge(metadata).merge(lead_image: lead_image,
+                                              images: images,
+                                              file_attachments: file_attachments)
   end
 
   def image_revision_hash(image_revision)
     return nil unless image_revision
 
     common_except = %i[id created_at created_by_id]
-    file_revision = image_revision.file_revision.as_json(except: common_except)
+    blob_revision = image_revision.blob_revision.as_json(except: common_except)
     metadata_revision = image_revision.metadata_revision.as_json(except: common_except)
 
-    file_revision.merge(metadata_revision)
+    blob_revision.merge(metadata_revision)
+  end
+
+  def file_attachment_revision_hash(file_attachment_revision)
+    return nil unless file_attachment_revision
+
+    common_except = %i[id created_at created_by_id]
+    blob_revision = file_attachment_revision.blob_revision.as_json(except: common_except)
+    metadata_revision = file_attachment_revision.metadata_revision.as_json(except: common_except)
+
+    blob_revision.merge(metadata_revision)
   end
 end

@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 # This is an immutable model
-class FileAttachment::FileRevision < ApplicationRecord
+class FileAttachment::BlobRevision < ApplicationRecord
+  # TODO: remove after breaking migration
+  self.table_name = "file_attachment_file_revisions"
+
   belongs_to :blob, class_name: "ActiveStorage::Blob"
 
   belongs_to :created_by, class_name: "User", optional: true
@@ -22,13 +25,13 @@ class FileAttachment::FileRevision < ApplicationRecord
     if variant == "file"
       blob.download
     else
-      raise RuntimeError, "Unsupported file revision variant #{variant}"
+      raise RuntimeError, "Unsupported blob revision variant #{variant}"
     end
   end
 
   def ensure_assets
     unless asset("file")
-      assets << FileAttachment::Asset.new(file_revision: self, variant: "file")
+      assets << FileAttachment::Asset.new(blob_revision: self, variant: "file")
     end
   end
 end
