@@ -9,9 +9,14 @@ class FileAttachment::Asset < ApplicationRecord
   belongs_to :blob_revision,
              class_name: "FileAttachment::BlobRevision"
 
+  belongs_to :superseded_by,
+             class_name: "FileAttachment::Asset",
+             optional: true
+
   enum state: { absent: "absent",
                 draft: "draft",
-                live: "live" }
+                live: "live",
+                superseded: "superseded" }
 
   enum variant: { file: "file", thumbnail: "thumbnail" }
 

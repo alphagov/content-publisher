@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_091427) do
     t.string "state", default: "absent", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "superseded_by_id"
     t.index ["blob_revision_id", "variant"], name: "index_file_attachment_assets_on_blob_revision_id_and_variant", unique: true
     t.index ["blob_revision_id"], name: "index_file_attachment_assets_on_blob_revision_id"
     t.index ["file_url"], name: "index_file_attachment_assets_on_file_url", unique: true
@@ -312,8 +313,8 @@ ActiveRecord::Schema.define(version: 2019_04_30_091427) do
   create_table "withdrawals", force: :cascade do |t|
     t.string "public_explanation", null: false
     t.datetime "created_at", null: false
-    t.datetime "withdrawn_at", null: false
     t.bigint "published_status_id", null: false
+    t.datetime "withdrawn_at", null: false
   end
 
   add_foreign_key "content_revisions", "users", column: "created_by_id", on_delete: :restrict
@@ -325,6 +326,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_091427) do
   add_foreign_key "editions", "users", column: "last_edited_by_id", on_delete: :restrict
   add_foreign_key "editions_revisions", "editions", on_delete: :restrict
   add_foreign_key "editions_revisions", "revisions", on_delete: :restrict
+  add_foreign_key "file_attachment_assets", "file_attachment_assets", column: "superseded_by_id", on_delete: :restrict
   add_foreign_key "file_attachment_assets", "file_attachment_blob_revisions", column: "blob_revision_id", on_delete: :restrict
   add_foreign_key "file_attachment_blob_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
   add_foreign_key "file_attachment_blob_revisions", "users", column: "created_by_id", on_delete: :restrict
