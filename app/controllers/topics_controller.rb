@@ -13,21 +13,18 @@ class TopicsController < ApplicationController
   end
 
   def update
-    Edition.find_and_lock_current(document: params[:document]) do |edition|
-      begin
-        edition.document_topics.patch(params.fetch(:topics, []), params[:version].to_i)
+    result = Topics::UpdateInteractor.call(params: params, user: current_user)
+    api_conflict, api_error = result.to_h.values_at(:api_conflict, :api_error)
 
-        redirect_to document_path(edition.document),
-                    notice: t("documents.show.flashes.topics_updated")
-      rescue GdsApi::HTTPConflict
-        Rails.logger.warn("Conflict updating topics for #{edition.content_id} at version #{params[:version].to_i}")
-        redirect_to topics_path(edition.document),
-                    alert_with_description: t("topics.edit.flashes.topic_update_conflict")
-      rescue GdsApi::BaseError => e
-        GovukError.notify(e)
-        redirect_to edition.document,
-                    alert_with_description: t("documents.show.flashes.topic_update_error")
-      end
+    if api_conflict
+      redirect_to topics_path(params[:document]),
+                  alert_with_description: t("topics.edit.flashes.topic_update_conflict")
+    elsif api_error
+      redirect_to document_path(params[:document]),
+                  alert_with_description: t("documents.show.flashes.topic_update_error")
+    else
+      redirect_to document_path(params[:document]),
+                  notice: t("documents.show.flashes.topics_updated")
     end
   end
 end
