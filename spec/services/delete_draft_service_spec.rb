@@ -151,10 +151,26 @@ RSpec.describe DeleteDraftService do
       expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
     end
 
+    it "raises an error when a base path cannot be deleted" do
+      edition = create :edition
+
+      stub_publishing_api_discard_draft(edition.content_id)
+      stub_publishing_api_unreserve_path_invalid(edition.base_path)
+
+      expect { DeleteDraftService.new(edition.document, user).delete }
+        .to raise_error(GdsApi::BaseError)
+
+      expect(edition.reload.revision_synced?).to be true
+    end
+
     it "raises an error when the Pubishing API is down" do
-      document = create :document, :with_current_edition
+      edition = create :edition
       stub_publishing_api_isnt_available
-      expect { DeleteDraftService.new(document, user).delete }.to raise_error GdsApi::BaseError
+
+      expect { DeleteDraftService.new(edition.document, user).delete }
+        .to raise_error(GdsApi::BaseError)
+
+      expect(edition.reload.revision_synced?).to be false
     end
 
     it "raises an error when Asset Manager is down" do
@@ -165,6 +181,7 @@ RSpec.describe DeleteDraftService do
 
       expect { DeleteDraftService.new(edition.document, user).delete }
         .to raise_error(GdsApi::BaseError)
+
       expect(edition.reload.revision_synced?).to be false
     end
   end
