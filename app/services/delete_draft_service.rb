@@ -15,7 +15,10 @@ class DeleteDraftService
     raise "Trying to delete a live document" if edition.live?
 
     begin
-      edition.image_revisions.each { |ir| delete_image_revision(ir) }
+      assets = edition.image_revisions.flat_map(&:assets) +
+        edition.file_attachment_revisions.flat_map(&:assets)
+
+      delete_assets(assets)
       discard_draft(edition)
     rescue GdsApi::BaseError
       document.current_edition.update!(revision_synced: false)
@@ -53,8 +56,8 @@ private
     edition.assign_status(:discarded, user).update!(current: false)
   end
 
-  def delete_image_revision(image_revision)
-    image_revision.assets.each do |asset|
+  def delete_assets(assets)
+    assets.each do |asset|
       next unless asset.draft?
 
       begin
