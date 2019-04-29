@@ -14,14 +14,16 @@ class DeleteDraftService
     raise "Trying to delete a document without a current edition" unless edition
     raise "Trying to delete a live document" if edition.live?
 
-    edition.image_revisions.each { |ir| delete_image_revision(ir) }
-    discard_draft(edition)
+    begin
+      edition.image_revisions.each { |ir| delete_image_revision(ir) }
+      discard_draft(edition)
+    rescue GdsApi::BaseError
+      document.current_edition.update!(revision_synced: false)
+      raise
+    end
 
     reset_live_edition if document.live_edition
     discard_path_reservations(edition) if edition.number == 1
-  rescue GdsApi::BaseError
-    document.current_edition.update!(revision_synced: false)
-    raise
   end
 
 private
