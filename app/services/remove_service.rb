@@ -24,7 +24,10 @@ class RemoveService
       )
     end
 
-    delete_assets(edition)
+    assets = edition.image_revisions.flat_map(&:assets) +
+      edition.file_attachment_revisions.flat_map(&:assets)
+
+    delete_assets(assets)
   end
 
 private
@@ -41,12 +44,8 @@ private
     end
   end
 
-  def delete_assets(edition)
-    edition.image_revisions.each { |ir| remove_image_revision(ir) }
-  end
-
-  def remove_image_revision(image_revision)
-    image_revision.assets.each do |asset|
+  def delete_assets(assets)
+    assets.each do |asset|
       next if asset.absent?
 
       begin
