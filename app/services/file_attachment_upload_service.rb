@@ -17,7 +17,7 @@ class FileAttachmentUploadService
     )
 
     blob_revision = FileAttachment::BlobRevision.new(
-      blob: blob, created_by: user, filename: filename, size: file.size,
+      blob: blob, created_by: user, filename: filename,
     )
 
     metadata_revision = FileAttachment::MetadataRevision.new(

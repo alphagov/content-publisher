@@ -18,7 +18,6 @@ FactoryBot.define do
         io: File.new(fixture_path),
         filename: blob_revision.filename,
       )
-      blob_revision.size = File.size(fixture_path) unless blob_revision.size
 
       if evaluator.assets
         blob_revision.assets = evaluator.assets
