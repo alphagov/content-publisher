@@ -19,6 +19,7 @@ class FileAttachment::Revision < ApplicationRecord
            :asset,
            :assets,
            :ensure_assets,
+           :blob,
            to: :blob_revision
 
   def readonly?
