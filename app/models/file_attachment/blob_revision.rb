@@ -8,7 +8,7 @@ class FileAttachment::BlobRevision < ApplicationRecord
 
   has_many :assets, class_name: "FileAttachment::Asset"
 
-  delegate :content_type, to: :blob
+  delegate :content_type, :byte_size, to: :blob
 
   def readonly?
     !new_record?

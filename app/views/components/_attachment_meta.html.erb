@@ -24,7 +24,7 @@
 
     <% if metadata_items.any? %>
       <%= tag.p class: "app-c-attachment-meta__metadata" do %>
-        <%= metadata_items.map {|metadata| metadata.values.map {|value| "#{value}"} }.join(', ') %>
+        <%= metadata_items.join(", ") %>
       <% end %>
     <% end %>
 

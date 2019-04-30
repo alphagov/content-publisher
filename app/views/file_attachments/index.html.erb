@@ -39,7 +39,17 @@
       </h2>
 
       <% attachments.each do |attachment| %>
-        <%= render "file_attachment", attachment: attachment, document: @edition.document %>
+        <%= render "components/attachment_meta", {
+          title: attachment.title,
+          url: "#",
+          metadata_items: [
+            attachment.content_type,
+            number_to_human_size(attachment.byte_size),
+          ],
+          actions: [
+            link_to("Insert attachment", file_attachment_path(@edition.document, attachment.file_attachment))
+          ]
+        } %>
       <% end %>
     <% end %>
   </div>
