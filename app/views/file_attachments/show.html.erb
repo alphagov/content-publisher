@@ -1,0 +1,22 @@
+<% content_for :title, t("file_attachments.show.title") %>
+<% content_for :back_link, render_back_link(href: file_attachments_path(@edition.document)) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <dl>
+      <dt class="govuk-body">Title</dt>
+      <dd class="govuk-body"><%= @attachment.title %></dd>
+      <dt class="govuk-body">Attachment markdown:</dt>
+      <dd class="govuk-body"><%= t("file_attachments.index.attachment_markdown", filename: @attachment.filename) %></dd>
+    </dl>
+
+    <hr class="govuk-!-margin-bottom-6 govuk-!-margin-top-6"/>
+
+    <dl>
+      <dt class="govuk-body">Title</dt>
+      <dd class="govuk-body"><%= @attachment.title %></dd>
+      <dt class="govuk-body">Attachment link markdown:</dt>
+      <dd class="govuk-body"><%= t("file_attachments.index.attachment_link_markdown", filename: @attachment.filename) %></dd>
+    </dl>
+  </div>
+</div>
