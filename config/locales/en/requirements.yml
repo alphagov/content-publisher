@@ -67,6 +67,8 @@ en:
     file_attachment_upload:
       no_file:
         form_message: Select a file to upload
+      unsupported_type:
+        form_message: Select a supported file type
     file_attachment_title:
       blank:
         form_message: Enter a title
