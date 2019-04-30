@@ -64,6 +64,14 @@ en:
         form_message: "Select an image file under %{max_size} in size"
       too_small:
         form_message: "Select an image at least %{width} pixels wide by %{height} pixels high"
+    file_attachment_upload:
+      no_file:
+        form_message: Select a file to upload
+    file_attachment_title:
+      blank:
+        form_message: Enter a title
+      too_long:
+        form_message: "Enter a title that is fewer than %{max_length} characters long"
     public_explanation:
       blank:
         form_message: Enter a public explanation
