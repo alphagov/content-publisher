@@ -12,6 +12,7 @@ class FileAttachments::CreateInteractor
   def call
     Edition.transaction do
       find_and_lock_edition
+      check_for_issues
       upload_attachment
       update_edition
       update_preview
@@ -19,6 +20,11 @@ class FileAttachments::CreateInteractor
   end
 
 private
+
+  def check_for_issues
+    issues = Requirements::FileAttachmentUploadChecker.new(params[:file], params[:title]).issues
+    context.fail!(issues: issues) if issues.any?
+  end
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])

@@ -7,7 +7,7 @@ en:
         description_govspeak: |
           All files must be [accessible](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/accessible-pdfs){:target="_blank"}.
 
-          Files must be uploaded in an [open standards file format](https://www.gov.uk/guidance/content-design/planning-content#open-formats){:target="_blank"}.  
+          Files must be uploaded in an [open standards file format](https://www.gov.uk/guidance/content-design/planning-content#open-formats){:target="_blank"}.
           For example, .odt not .docx.
       attachment_title:
         heading: Attachment title
@@ -17,3 +17,4 @@ en:
       attachment_link_markdown: "[AttachmentLink: %{filename}]"
       flashes:
         deleted: "Attachment ‘%{file}’ has been deleted"
+        upload_requirements: You need to
