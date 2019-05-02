@@ -2,10 +2,7 @@
 
 class PublishAssetService
   def publish_assets(edition, live_edition)
-    assets = edition.file_attachment_revisions.flat_map(&:assets) +
-      edition.image_revisions.flat_map(&:assets)
-
-    assets.each do |asset|
+    edition.assets.each do |asset|
       raise "Expected asset to be on asset manager" if asset.absent?
       next unless asset.draft?
 

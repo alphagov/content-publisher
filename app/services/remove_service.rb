@@ -24,10 +24,7 @@ class RemoveService
       )
     end
 
-    assets = edition.image_revisions.flat_map(&:assets) +
-      edition.file_attachment_revisions.flat_map(&:assets)
-
-    delete_assets(assets)
+    delete_assets(edition.assets)
   end
 
 private

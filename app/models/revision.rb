@@ -80,4 +80,8 @@ class Revision < ApplicationRecord
   def image_revisions_without_lead
     image_revisions.reject { |i| i.id == lead_image_revision_id }
   end
+
+  def assets
+    image_revisions.flat_map(&:assets) + file_attachment_revisions.flat_map(&:assets)
+  end
 end
