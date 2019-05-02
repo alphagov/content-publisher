@@ -69,6 +69,8 @@ en:
         form_message: Select a file to upload
       unsupported_type:
         form_message: Select a supported file type
+      zip_unsupported_type:
+        form_message: Select a zip that contains supported file types
     file_attachment_title:
       blank:
         form_message: Enter a title

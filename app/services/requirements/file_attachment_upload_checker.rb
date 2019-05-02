@@ -3,7 +3,6 @@
 module Requirements
   class FileAttachmentUploadChecker
     TITLE_MAX_LENGTH = 255
-
     ALLOWED_FORMATS = [
       "text/csv", # csv
       "application/msword", # doc
@@ -25,6 +24,7 @@ module Requirements
       "application/vnd.ms-excel.sheet.macroenabled.12", # xlsm
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", # xlsx
       "application/xml", # xml
+      "application/zip", # zip
       "text/xml", # xml, xsd
     ].freeze
 
@@ -53,6 +53,11 @@ module Requirements
         return CheckerIssues.new(issues)
       end
 
+      if invalid_zip?
+        issues << Issue.new(:file_attachment_upload, :zip_unsupported_type)
+        return CheckerIssues.new(issues)
+      end
+
       if unsupported_type?
         issues << Issue.new(:file_attachment_upload, :unsupported_type)
       end
@@ -66,8 +71,21 @@ module Requirements
       ALLOWED_FORMATS.exclude?(content_type)
     end
 
+    def invalid_zip?
+      return if content_type != "application/zip"
+
+      Zip::File.open(file.path) do |zf|
+        zf.any? do |entry|
+          type = Marcel::MimeType.for(entry.get_input_stream, name: entry.name)
+
+          # We don't allow nested archives
+          ALLOWED_FORMATS.exclude?(type) || type == "application/zip"
+        end
+      end
+    end
+
     def content_type
-      Marcel::MimeType.for(file, declared_type: file.content_type, name: file.original_filename)
+      @content_type ||= Marcel::MimeType.for(file, declared_type: file.content_type, name: file.original_filename)
     end
   end
 end

@@ -16,6 +16,13 @@ RSpec.describe Requirements::FileAttachmentUploadChecker do
       expect(issues.items_for(:file_attachment_upload)).to be_empty
     end
 
+    it "returns no upload issues when a zip file contains supported file types" do
+      file = fixture_file_upload("files/valid_zip.zip", "application/zip")
+      issues = Requirements::FileAttachmentUploadChecker.new(file, nil).issues
+
+      expect(issues.items_for(:file_attachment_upload)).to be_empty
+    end
+
     it "returns an issue when there is no title" do
       issues = Requirements::FileAttachmentUploadChecker.new(nil, "").issues
       form_message = issues.items_for(:file_attachment_title).first[:text]
@@ -44,6 +51,14 @@ RSpec.describe Requirements::FileAttachmentUploadChecker do
 
       form_message = issues.items_for(:file_attachment_upload).first[:text]
       expect(form_message).to eq(I18n.t!("requirements.file_attachment_upload.unsupported_type.form_message"))
+    end
+
+    it "returns an issue when the zip file contains unsupported file types" do
+      file = fixture_file_upload("files/unsupported_type_in_zip.zip", "application/zip")
+      issues = Requirements::FileAttachmentUploadChecker.new(file, "Cool title").issues
+
+      form_message = issues.items_for(:file_attachment_upload).first[:text]
+      expect(form_message).to eq(I18n.t!("requirements.file_attachment_upload.zip_unsupported_type.form_message"))
     end
   end
 end
