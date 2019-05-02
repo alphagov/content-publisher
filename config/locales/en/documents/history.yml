@@ -28,3 +28,4 @@ en:
         unscheduled: "Unscheduled"
         scheduled_publishing_datetime_set: "Scheduled publishing date and time set"
         scheduled_publishing_datetime_cleared: "Scheduled publishing date and time cleared"
+        file_attachment_deleted: "Deleted attachment"

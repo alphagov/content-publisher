@@ -12,12 +12,21 @@ module Versioning
         assign(file_attachment_revisions: revisions)
       end
 
+      def remove_file_attachment(attachment_revision)
+        assign(file_attachment_revisions: other_file_attachments(attachment_revision))
+      end
+
     private
 
       def attachment_exists?(attachment_revision)
         revision.file_attachment_revisions.find do |far|
           far.file_attachment_id == attachment_revision.file_attachment_id
         end
+      end
+
+      def other_file_attachments(attachment_revision)
+        revision.file_attachment_revisions
+          .reject { |ar| ar.file_attachment_id == attachment_revision.file_attachment_id }
       end
     end
   end

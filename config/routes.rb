@@ -77,6 +77,7 @@ Rails.application.routes.draw do
     get "/file-attachments" => "file_attachments#index", as: :file_attachments
     post "/file-attachments" => "file_attachments#create", as: :create_file_attachment
     get "/file-attachments/:file_attachment_id" => "file_attachments#show", as: :file_attachment
+    delete "/file-attachments/:file_attachment_id" => "file_attachments#destroy", as: :destroy_file_attachment
   end
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
