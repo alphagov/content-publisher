@@ -6,8 +6,8 @@
 
   <script>
     var dataLayer = [{
-      'dimension1': '<%= current_user.organisation_slug %>',
-      'cp_uid': '<%= current_user.uid %>'
+      'user-organisation': '<%= current_user.organisation_slug %>',
+      'cp-uid': '<%= current_user.uid %>'
     }];
     dataLayer.push({ 'gtm.blacklist': ['html', 'customScripts', 'nonGoogleScripts', 'customPixels'] });
   </script>
