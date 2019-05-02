@@ -17,7 +17,10 @@ class FileAttachmentUploadService
     )
 
     blob_revision = FileAttachment::BlobRevision.new(
-      blob: blob, created_by: user, filename: filename,
+      blob: blob,
+      created_by: user,
+      filename: filename,
+      number_of_pages: number_of_pages,
     )
 
     metadata_revision = FileAttachment::MetadataRevision.new(
@@ -39,5 +42,13 @@ private
   def filename
     existing_filenames = revision.file_attachment_revisions.map(&:filename)
     UniqueFilenameService.new(existing_filenames).call(file.original_filename)
+  end
+
+  def number_of_pages
+    return unless file.content_type == "application/pdf"
+
+    PDF::Reader.new(file.tempfile).page_count
+  rescue PDF::Reader::MalformedPDFError, PDF::Reader::UnsupportedFeatureError, OpenSSL::Cipher::CipherError
+    nil
   end
 end

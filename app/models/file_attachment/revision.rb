@@ -21,6 +21,7 @@ class FileAttachment::Revision < ApplicationRecord
            :ensure_assets,
            :content_type,
            :byte_size,
+           :number_of_pages,
            to: :blob_revision
 
   def readonly?
