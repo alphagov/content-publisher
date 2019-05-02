@@ -25,12 +25,10 @@ private
   end
 
   def find_and_remove_image
-    current_image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
+    context.image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.remove_image(current_image_revision)
+    updater.remove_image(image_revision)
     edition.assign_revision(updater.next_revision, user).save!
-
-    context.image_revision = current_image_revision
     context.removed_lead_image = updater.removed_lead_image?
   end
 
