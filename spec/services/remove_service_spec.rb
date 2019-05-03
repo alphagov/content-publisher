@@ -92,29 +92,46 @@ RSpec.describe RemoveService do
     context "when an edition has assets" do
       it "removes assets that aren't absent" do
         image_revision = create(:image_revision, :on_asset_manager, state: :live)
-        edition = create(:edition, :published, lead_image_revision: image_revision)
+        file_attachment_revision = create(:file_attachment_revision, :on_asset_manager, state: :live)
+        edition = create(:edition,
+                         :published,
+                         lead_image_revision: image_revision,
+                         file_attachment_revisions: [file_attachment_revision])
+
         delete_request = stub_asset_manager_deletes_any_asset
 
         RemoveService.new.call(edition, build(:removal))
 
         expect(delete_request).to have_been_requested.at_least_once
         expect(image_revision.assets.map(&:state).uniq).to eq(%w[absent])
+        expect(file_attachment_revision.assets.map(&:state).uniq).to eq(%w[absent])
       end
 
       it "copes with assets that 404" do
         image_revision = create(:image_revision, :on_asset_manager, state: :live)
-        edition = create(:edition, :published, lead_image_revision: image_revision)
+        file_attachment_revision = create(:file_attachment_revision, :on_asset_manager, state: :live)
+        edition = create(:edition,
+                         :published,
+                         lead_image_revision: image_revision,
+                         file_attachment_revisions: [file_attachment_revision])
+
         delete_request = stub_asset_manager_deletes_any_asset.to_return(status: 404)
 
         RemoveService.new.call(edition, build(:removal))
 
         expect(delete_request).to have_been_requested.at_least_once
         expect(image_revision.assets.map(&:state).uniq).to eq(%w[absent])
+        expect(file_attachment_revision.assets.map(&:state).uniq).to eq(%w[absent])
       end
 
       it "ignores assets that are absent" do
         image_revision = create(:image_revision, :on_asset_manager, state: :absent)
-        edition = create(:edition, :published, lead_image_revision: image_revision)
+        file_attachment_revision = create(:file_attachment_revision, :on_asset_manager, state: :absent)
+        edition = create(:edition,
+                         :published,
+                         lead_image_revision: image_revision,
+                         file_attachment_revisions: [file_attachment_revision])
+
         delete_request = stub_asset_manager_deletes_any_asset
 
         RemoveService.new.call(edition, build(:removal))
@@ -128,7 +145,11 @@ RSpec.describe RemoveService do
 
       it "removes the edition" do
         image_revision = create(:image_revision, :on_asset_manager)
-        edition = create(:edition, :published, lead_image_revision: image_revision)
+        file_attachment_revision = create(:file_attachment_revision, :on_asset_manager)
+        edition = create(:edition,
+                         :published,
+                         lead_image_revision: image_revision,
+                         file_attachment_revisions: [file_attachment_revision])
 
         expect { RemoveService.new.call(edition, build(:removal)) }
           .to raise_error(GdsApi::BaseError)

@@ -24,7 +24,7 @@ class RemoveService
       )
     end
 
-    delete_assets(edition)
+    delete_assets(edition.assets)
   end
 
 private
@@ -41,12 +41,8 @@ private
     end
   end
 
-  def delete_assets(edition)
-    edition.image_revisions.each { |ir| remove_image_revision(ir) }
-  end
-
-  def remove_image_revision(image_revision)
-    image_revision.assets.each do |asset|
+  def delete_assets(assets)
+    assets.each do |asset|
       next if asset.absent?
 
       begin

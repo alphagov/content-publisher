@@ -28,7 +28,10 @@ RSpec.describe DeleteDraftService do
 
     it "attempts to delete the assets from asset manager" do
       image_revision = create :image_revision, :on_asset_manager
-      edition = create :edition, lead_image_revision: image_revision
+      file_attachment_revision = create :file_attachment_revision, :on_asset_manager
+      edition = create(:edition,
+                       lead_image_revision: image_revision,
+                       file_attachment_revisions: [file_attachment_revision])
 
       stub_publishing_api_discard_draft(edition.content_id)
       stub_publishing_api_unreserve_path(edition.base_path)
@@ -38,6 +41,7 @@ RSpec.describe DeleteDraftService do
 
       expect(delete_request).to have_been_requested.at_least_once
       expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
+      expect(file_attachment_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
     end
 
     it "attempts to delete path reservations for a first draft" do
@@ -106,7 +110,10 @@ RSpec.describe DeleteDraftService do
 
     it "copes if an asset is not in Asset Manager" do
       image_revision = create :image_revision
-      edition = create :edition, lead_image_revision: image_revision
+      file_attachment_revision = create :file_attachment_revision
+      edition = create(:edition,
+                       lead_image_revision: image_revision,
+                       file_attachment_revisions: [file_attachment_revision])
 
       stub_publishing_api_unreserve_path(edition.base_path)
       stub_publishing_api_discard_draft(edition.content_id)
@@ -114,6 +121,7 @@ RSpec.describe DeleteDraftService do
 
       expect(edition.reload.status).to be_discarded
       expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
+      expect(file_attachment_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
     end
 
     it "copes if the base path is not reserved" do
@@ -137,10 +145,13 @@ RSpec.describe DeleteDraftService do
 
     it "removes assets if the asset is on Asset Manager" do
       image_revision = create :image_revision, :on_asset_manager
-      edition = create :edition, lead_image_revision: image_revision
+      file_attachment_revision = create :file_attachment_revision, :on_asset_manager
+      edition = create(:edition,
+                       lead_image_revision: image_revision,
+                       file_attachment_revisions: [file_attachment_revision])
 
-      image_revision.assets.map do |asset|
-        stub_asset_manager_does_not_have_an_asset(asset.asset_manager_id)
+      (image_revision.assets + file_attachment_revision.assets).map do |asset|
+        stub_asset_manager_delete_asset(asset.asset_manager_id)
       end
 
       stub_publishing_api_unreserve_path(edition.base_path)
@@ -149,6 +160,7 @@ RSpec.describe DeleteDraftService do
 
       expect(edition.reload.status).to be_discarded
       expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
+      expect(file_attachment_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
     end
 
     it "raises an error when a base path cannot be deleted" do
@@ -175,7 +187,10 @@ RSpec.describe DeleteDraftService do
 
     it "raises an error when Asset Manager is down" do
       image_revision = create :image_revision, :on_asset_manager
-      edition = create :edition, lead_image_revision: image_revision
+      file_attachment_revision = create :file_attachment_revision, :on_asset_manager
+      edition = create(:edition,
+                       lead_image_revision: image_revision,
+                       file_attachment_revisions: [file_attachment_revision])
 
       stub_asset_manager_isnt_available
 

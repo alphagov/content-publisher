@@ -9,13 +9,24 @@ class FileAttachment::Asset < ApplicationRecord
   belongs_to :blob_revision,
              class_name: "FileAttachment::BlobRevision"
 
+  belongs_to :superseded_by,
+             class_name: "FileAttachment::Asset",
+             optional: true
+
   enum state: { absent: "absent",
                 draft: "draft",
-                live: "live" }
+                live: "live",
+                superseded: "superseded" }
 
   enum variant: { file: "file", thumbnail: "thumbnail" }
 
   delegate :filename, :content_type, to: :blob_revision
+
+  def asset_manager_id
+    url_array = file_url.to_s.split("/")
+    # https://github.com/alphagov/asset-manager#create-an-asset
+    url_array[url_array.length - 2]
+  end
 
   def bytes
     blob_revision.bytes_for_asset(variant)
