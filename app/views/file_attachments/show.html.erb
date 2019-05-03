@@ -3,9 +3,18 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/attachment", {
+      attachment: {
+        title: @attachment.title,
+        url: "#",
+        content_type: @attachment.content_type,
+        file_size: @attachment.byte_size,
+        number_of_pages: @attachment.number_of_pages,
+      },
+      target: "_blank"
+    } %>
+
     <dl>
-      <dt class="govuk-body">Title</dt>
-      <dd class="govuk-body"><%= @attachment.title %></dd>
       <dt class="govuk-body">Attachment markdown:</dt>
       <dd class="govuk-body"><%= t("file_attachments.index.attachment_markdown", filename: @attachment.filename) %></dd>
     </dl>
