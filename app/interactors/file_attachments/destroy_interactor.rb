@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-class Images::DestroyInteractor
+class FileAttachments::DestroyInteractor
   include Interactor
+
   delegate :params,
            :user,
            :edition,
-           :image_revision,
-           :removed_lead_image,
+           :attachment_revision,
            to: :context
 
   def call
     Edition.transaction do
       find_and_lock_edition
-      find_and_remove_image
+      find_and_remove_attachment
       create_timeline_entry
       update_preview
     end
@@ -24,16 +24,17 @@ private
     context.edition = Edition.lock.find_current(document: params[:document])
   end
 
-  def find_and_remove_image
-    context.image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
+  def find_and_remove_attachment
+    context.attachment_revision = edition.file_attachment_revisions
+      .find_by!(file_attachment_id: params[:file_attachment_id])
+
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.remove_image(image_revision)
+    updater.remove_file_attachment(attachment_revision)
     edition.assign_revision(updater.next_revision, user).save!
-    context.removed_lead_image = updater.removed_lead_image?
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_revision(entry_type: :image_deleted, edition: edition)
+    TimelineEntry.create_for_revision(entry_type: :file_attachment_deleted, edition: edition)
   end
 
   def update_preview

@@ -29,6 +29,7 @@
     </div>
   </div>
 </div>
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <% attachments = @edition.file_attachment_revisions %>
@@ -39,17 +40,7 @@
       </h2>
 
       <% attachments.each do |attachment| %>
-        <%= render "components/attachment_meta", {
-          title: attachment.title,
-          url: "#",
-          metadata_items: [
-            attachment.content_type,
-            number_to_human_size(attachment.byte_size),
-          ],
-          actions: [
-            link_to("Insert attachment", file_attachment_path(@edition.document, attachment.file_attachment))
-          ]
-        } %>
+        <%= render "file_attachment", document: @edition.document, attachment: attachment %>
       <% end %>
     <% end %>
   </div>
