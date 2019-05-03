@@ -17,6 +17,7 @@ class FileAttachment::Revision < ApplicationRecord
   delegate :title, to: :metadata_revision
   delegate :filename,
            :asset,
+           :asset_url,
            :assets,
            :ensure_assets,
            :content_type,

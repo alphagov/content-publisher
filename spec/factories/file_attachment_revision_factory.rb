@@ -7,6 +7,7 @@ FactoryBot.define do
 
     transient do
       filename { SecureRandom.hex(8) }
+      number_of_pages { nil }
       fixture { "text-file.txt" }
       title { SecureRandom.hex(8) }
       assets { nil }
@@ -17,6 +18,7 @@ FactoryBot.define do
         revision.blob_revision = evaluator.association(
           :file_attachment_blob_revision,
           filename: evaluator.filename,
+          number_of_pages: evaluator.number_of_pages,
           fixture: evaluator.fixture,
           assets: evaluator.assets,
         )
@@ -40,6 +42,7 @@ FactoryBot.define do
           :file_attachment_blob_revision,
           :on_asset_manager,
           filename: evaluator.filename,
+          number_of_pages: evaluator.number_of_pages,
           fixture: evaluator.fixture,
           state: evaluator.state,
           assets: evaluator.assets,

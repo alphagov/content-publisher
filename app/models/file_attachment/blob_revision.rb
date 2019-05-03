@@ -18,6 +18,10 @@ class FileAttachment::BlobRevision < ApplicationRecord
     assets.find { |v| v.variant == variant }
   end
 
+  def asset_url(variant)
+    asset(variant)&.file_url
+  end
+
   def bytes_for_asset(variant)
     if variant == "file"
       blob.download

@@ -7,6 +7,12 @@ module FileAttachmentHelper
     )
   end
 
+  def file_attachment_payload_attributes(file_attachment)
+    file_attachment_attributes(file_attachment).merge(
+      url: file_attachment.asset_url("file"),
+    )
+  end
+
 private
 
   def file_attachment_attributes(file_attachment)
