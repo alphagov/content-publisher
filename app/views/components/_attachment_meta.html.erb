@@ -1,35 +1,14 @@
 <%
   id ||= nil
-  title ||= nil
-  thumbnail_src ||= nil
   actions ||= []
-  metadata_items ||= []
 %>
 
 <%= tag.div class: "app-c-attachment-meta", id: id do %>
-  <%= tag.div class: "app-c-attachment-meta__thumbnail-container" do %>
-
-    <%= tag.img class: "app-c-attachment-meta__thumbnail-image",
-      src: thumbnail_src,
-      alt: title
-    %>
-
-  <% end %>
-
-  <%= tag.div class: "app-c-attachment-meta__metadata-container" do %>
-
-    <%= tag.p class: "app-c-attachment-meta__title" do %>
-      <%= link_to title, url, class: 'govuk-link' %>
-    <% end %>
-
-    <% if metadata_items.any? %>
-      <%= tag.p class: "app-c-attachment-meta__metadata" do %>
-        <%= metadata_items.join(", ") %>
-      <% end %>
-    <% end %>
-
-  <% end %>
-
+  <%= render "govuk_publishing_components/components/attachment", {
+    attachment: attachment,
+    hide_help_text: true,
+    target: "_blank",
+  } %>
   <% if actions.any? %>
     <%= tag.ul class: "app-c-attachment-meta__actions" do %>
       <% actions.each do |action| %>

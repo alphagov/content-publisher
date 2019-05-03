@@ -16,12 +16,12 @@
 <% end %>
 
 <%= render "components/attachment_meta", {
-  id: "file-attachment-#{attachment.file_attachment_id}",
-  title: attachment.title,
-  url: "#",
-  metadata_items: [
-    attachment.content_type,
-    number_to_human_size(attachment.byte_size),
-  ],
+  attachment: {
+    title: attachment.title,
+    url: "#",
+    content_type: attachment.content_type,
+    file_size: attachment.byte_size,
+    number_of_pages: attachment.number_of_pages,
+  },
   actions: actions
 } %>
