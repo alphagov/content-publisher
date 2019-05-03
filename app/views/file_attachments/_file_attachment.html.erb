@@ -2,14 +2,15 @@
 
 <% actions << link_to(
   "Insert attachment",
-  file_attachment_path(document, attachment.file_attachment)
+  file_attachment_path(document, attachment.file_attachment),
+  class: "govuk-link govuk-link--no-visited-state app-link--button",
 ) %>
 
 <% actions << capture do %>
   <%= form_tag(
     destroy_file_attachment_path(document, attachment.file_attachment_id),
     method: :delete,
-    class: "app-inline-block"
+    class: "app-inline-block",
   ) do %>
     <button class="govuk-link app-link--button app-link--destructive">Delete attachment</button>
   <% end %>
