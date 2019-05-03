@@ -47,6 +47,7 @@ class TimelineEntry < ApplicationRecord
                      unscheduled: "unscheduled",
                      scheduled_publishing_datetime_set: "scheduled_publishing_datetime_set",
                      scheduled_publishing_datetime_cleared: "scheduled_publishing_datetime_cleared",
+                     file_attachment_uploaded: "file_attachment_uploaded",
                      file_attachment_deleted: "file_attachment_deleted" }
 
   def self.create_for_status_change(entry_type:,

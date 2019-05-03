@@ -7,7 +7,7 @@ RSpec.feature "Upload file attachment" do
     and_i_go_to_insert_an_attachment
     and_i_upload_a_file_attachment
     then_i_can_see_the_attachment_markdown
-    and_the_preview_creation_succeeded
+    and_the_attachment_has_been_uploaded_successfully
   end
 
   def given_there_is_an_edition
@@ -41,8 +41,13 @@ RSpec.feature "Upload file attachment" do
     expect(page).to have_content("[AttachmentLink: attachment.csv]")
   end
 
-  def and_the_preview_creation_succeeded
+  def and_the_attachment_has_been_uploaded_successfully
     expect(@publishing_api_request).to have_been_requested
     expect(@asset_manager_request).to have_been_requested.at_least_once
+
+    visit document_path(@edition.document)
+    within first(".app-timeline-entry") do
+      expect(page).to have_content I18n.t!("documents.history.entry_types.file_attachment_uploaded")
+    end
   end
 end
