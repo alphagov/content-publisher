@@ -16,12 +16,6 @@
 <% end %>
 
 <%= render "components/attachment_meta", {
-  attachment: {
-    title: attachment.title,
-    url: "#",
-    content_type: attachment.content_type,
-    file_size: attachment.byte_size,
-    number_of_pages: attachment.number_of_pages,
-  },
-  actions: actions
+  attachment: file_attachment_in_app_attributes(attachment),
+  actions: actions,
 } %>

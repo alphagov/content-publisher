@@ -4,14 +4,8 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= render "govuk_publishing_components/components/attachment", {
-      attachment: {
-        title: @attachment.title,
-        url: "#",
-        content_type: @attachment.content_type,
-        file_size: @attachment.byte_size,
-        number_of_pages: @attachment.number_of_pages,
-      },
-      target: "_blank"
+      attachment: file_attachment_in_app_attributes(@attachment),
+      target: "_blank",
     } %>
 
     <dl>
@@ -30,13 +24,7 @@
 
     <div class="govuk-body">
       <%= render "govuk_publishing_components/components/attachment_link", {
-        attachment: {
-          title: @attachment.title,
-          url: "#",
-          content_type: @attachment.content_type,
-          file_size: @attachment.byte_size,
-          number_of_pages: @attachment.number_of_pages,
-        },
+        attachment: file_attachment_in_app_attributes(@attachment),
         target: "_blank"
       } %>
     </div>
