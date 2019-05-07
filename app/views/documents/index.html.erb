@@ -1,7 +1,12 @@
 <% content_for :title, t("documents.index.title") %>
 
 <% content_for :title_side, render("govuk_publishing_components/components/button", {
-  text: "Create new document", href: new_document_path, margin_bottom: true
+  text: "Create new document",
+  href: new_document_path,
+  margin_bottom: true,
+  data_attributes: {
+    "prevent-double-click": true
+  }
 }) %>
 
 <div class="govuk-grid-row">

@@ -6,7 +6,10 @@
   ) do %>
     <%= render "govuk_publishing_components/components/button", {
       text: "Yes, delete draft",
-      destructive: true
+      destructive: true,
+      data_attributes: {
+        "prevent-double-click": true
+      }
     } %>
 
   <%= link_to "Cancel",

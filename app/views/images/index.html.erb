@@ -35,6 +35,9 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
 
         <%= render "govuk_publishing_components/components/button", {
           text: "Upload",
+          data_attributes: {
+            "prevent-double-click": true
+          }
         } %>
       <% end %>
     </div>
