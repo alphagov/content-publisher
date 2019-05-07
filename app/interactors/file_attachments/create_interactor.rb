@@ -13,7 +13,9 @@ class FileAttachments::CreateInteractor
     Edition.transaction do
       find_and_lock_edition
       upload_attachment
+
       update_edition
+      create_timeline_entry
       update_preview
     end
   end
@@ -30,6 +32,10 @@ private
       edition.revision,
       params[:title],
     ).call(user)
+  end
+
+  def create_timeline_entry
+    TimelineEntry.create_for_revision(entry_type: :file_attachment_uploaded, edition: edition)
   end
 
   def update_edition
