@@ -1,10 +1,6 @@
 en:
   documents:
     show:
-      format:
-        title: Document type
-        items:
-          document_type: Document type
       tabs:
         summary: Document summary
         history: Document history
@@ -32,13 +28,6 @@ en:
         update_type:
           minor: There’s no change to the published information. For example, spelling corrections.
           major: There’s a change to the published information.
-      sidebar:
-        error_creating_preview_govspeak: |
-          Something went wrong when creating the preview page. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
-        error_publishing_live_govspeak: |
-          Something went wrong when publishing. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
-        error_deleting_draft_govspeak: |
-          Something went wrong when deleting your draft. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
       lead_image:
         title: Lead image
         no_lead_image: No image selected. The default image for your department will be used.
