@@ -30,12 +30,12 @@ RSpec.feature "Edit image", js: true do
     document_type = build(:document_type, contents: [body_field], images: true)
 
     image_revision = create(:image_revision,
-                             :on_asset_manager,
-                             crop_x: 0,
-                             crop_y: 167,
-                             crop_width: 1000,
-                             crop_height: 666,
-                             fixture: "1000x1000.jpg")
+                            :on_asset_manager,
+                            crop_x: 0,
+                            crop_y: 167,
+                            crop_width: 1000,
+                            crop_height: 666,
+                            fixture: "1000x1000.jpg")
 
     @edition = create(:edition,
                       document_type_id: document_type.id,

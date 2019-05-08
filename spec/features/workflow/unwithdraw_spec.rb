@@ -26,8 +26,8 @@ RSpec.feature "Unwithdraw a document" do
     @withdrawal = @withdrawn_edition.status.details
 
     expect(page.body).to include(I18n.t!("documents.show.withdrawn.title",
-                                     document_type: @withdrawn_edition.document_type.label.downcase,
-                                     withdrawn_date: @withdrawal.created_at.strftime("%d %B %Y")))
+                                         document_type: @withdrawn_edition.document_type.label.downcase,
+                                         withdrawn_date: @withdrawal.created_at.strftime("%d %B %Y")))
   end
 
   def and_i_click_on_undo_withdrawal_and_confirm
@@ -45,7 +45,7 @@ RSpec.feature "Unwithdraw a document" do
     expect(@withdrawn_edition.timeline_entries.last.entry_type).to eq("unwithdrawn")
 
     expect(page.body).to_not include(I18n.t!("documents.show.withdrawn.title",
-                                     document_type: @withdrawn_edition.document_type.label.downcase,
-                                     withdrawn_date: @withdrawal.created_at.strftime("%d %B %Y")))
+                                             document_type: @withdrawn_edition.document_type.label.downcase,
+                                             withdrawn_date: @withdrawal.created_at.strftime("%d %B %Y")))
   end
 end

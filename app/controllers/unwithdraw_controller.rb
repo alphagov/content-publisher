@@ -16,7 +16,7 @@ class UnwithdrawController < ApplicationController
 
     if result.api_error
       redirect_to document_path(params[:document]),
-        alert_with_description: t("documents.show.flashes.unwithdraw_error")
+                  alert_with_description: t("documents.show.flashes.unwithdraw_error")
     else
       redirect_to document_path(params[:document])
     end
