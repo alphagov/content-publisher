@@ -153,7 +153,7 @@ GEM
     govuk_frontend_toolkit (8.1.0)
       railties (>= 3.1.0)
       sass (>= 3.2.0)
-    govuk_publishing_components (16.14.1)
+    govuk_publishing_components (16.15.0)
       gds-api-adapters
       govuk_app_config
       govuk_frontend_toolkit
@@ -249,7 +249,7 @@ GEM
     msgpack (1.2.10)
     multi_json (1.13.1)
     multi_xml (0.6.0)
-    multipart-post (2.0.0)
+    multipart-post (2.1.0)
     netrc (0.11.0)
     nio4r (2.3.1)
     nokogiri (1.10.3)
@@ -470,7 +470,7 @@ DEPENDENCIES
   govspeak (~> 6)
   govuk-lint (~> 3)
   govuk_app_config (~> 1)
-  govuk_publishing_components (~> 16.14)
+  govuk_publishing_components (~> 16.15)
   govuk_schemas (~> 3.2)
   govuk_sidekiq (~> 3)
   govuk_test (~> 0.4)
