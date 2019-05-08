@@ -1,4 +1,5 @@
 #!/bin/bash
 
 bundle install
-bundle exec foreman start -f Procfile.dev
+gem install foreman --conservative
+foreman start -f Procfile.dev

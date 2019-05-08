@@ -111,8 +111,6 @@ GEM
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.10.0)
-    foreman (0.85.0)
-      thor (~> 0.19.1)
     gds-api-adapters (59.2.0)
       addressable
       link_header
@@ -462,7 +460,6 @@ DEPENDENCIES
   capybara-chromedriver-logger!
   climate_control
   factory_bot_rails (~> 5)
-  foreman (~> 0.85)
   gds-api-adapters (~> 59)
   gds-sso (~> 14)
   govspeak (~> 6)
