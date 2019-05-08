@@ -7,6 +7,18 @@ class PreviewAssetService
     @edition = edition
   end
 
+  def upload_assets
+    edition.image_revisions.each do |image_revision|
+      image_revision.ensure_assets
+      image_revision.assets.each { |asset| upload_asset(asset) }
+    end
+
+    edition.file_attachment_revisions.each do |file_attachment_revision|
+      file_attachment_revision.ensure_assets
+      file_attachment_revision.assets.each { |asset| upload_asset(asset) }
+    end
+  end
+
   def upload_asset(asset)
     return unless asset.absent?
 
