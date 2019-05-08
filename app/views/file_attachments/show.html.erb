@@ -18,5 +18,18 @@
       <dt class="govuk-body">Attachment link markdown:</dt>
       <dd class="govuk-body"><%= t("file_attachments.index.attachment_link_markdown", filename: @attachment.filename) %></dd>
     </dl>
+
+    <div class="govuk-body">
+      <%= render "govuk_publishing_components/components/attachment_link", {
+        attachment: {
+          title: @attachment.title,
+          url: "#",
+          content_type: @attachment.content_type,
+          file_size: @attachment.byte_size,
+          number_of_pages: @attachment.number_of_pages,
+        },
+        target: "_blank"
+      } %>
+    </div>
   </div>
 </div>
