@@ -31,9 +31,9 @@ class VideoEmbedController < ApplicationController
       }
 
       render :new,
-        assigns: { issues: issues },
-        layout: rendering_context,
-        status: :unprocessable_entity
+             assigns: { issues: issues },
+             layout: rendering_context,
+             status: :unprocessable_entity
 
       return
     end

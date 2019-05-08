@@ -10,10 +10,10 @@ class CreateVersionedImageAsset < ActiveRecord::Migration[5.2]
                    null: false
 
       t.references :superseded_by,
-                    foreign_key: { to_table: :versioned_image_assets,
-                                 on_delete: :nullify },
-                    index: false,
-                    null: true
+                   foreign_key: { to_table: :versioned_image_assets,
+                                on_delete: :nullify },
+                   index: false,
+                   null: true
 
       t.string :variant, null: false
       t.string :file_url
