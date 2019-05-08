@@ -19,11 +19,11 @@
 
   <% if exact_dimensions %>
     <%= tag.p class: "app-c-image-cropper__description" do %>
-      The image you selected has exactly the required dimensions so it cannot be cropped or resized.
+      The image you selected has exactly the required dimensions so it cannot be cropped.
     <% end %>
   <% else %>
     <%= tag.p class: "app-c-image-cropper__description" do %>
-      Select the part of the image to use. Images on GOV.UK are a fixed shape.
+      The part you select will be automatically resized for GOV.UK. The shape is fixed.
     <% end %>
   <% end %>
 
