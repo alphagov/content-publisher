@@ -77,6 +77,8 @@ $toolbar-button-size: 50px;
 
   .govuk-textarea {
     overflow: scroll;
+    padding: govuk-spacing(6);
+    background-color: govuk-colour("grey-4");
   }
 
   .govuk-govspeak {
