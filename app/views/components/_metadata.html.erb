@@ -4,8 +4,11 @@
   list_classes = %w(app-c-metadata__list)
   list_classes << 'app-c-metadata__list--inline' if inline
   data_attributes ||= nil
+  margin_bottom ||= 0
+  component_classes = %w(app-c-metadata)
+  component_classes << "govuk-!-margin-bottom-#{margin_bottom}" unless margin_bottom.zero?
 %>
-<%= tag.div class: 'app-c-metadata', data: data_attributes do %>
+<%= tag.div class: component_classes, data: data_attributes do %>
   <% if items.any? %>
     <%= tag.dl class: list_classes do %>
       <% items.each do |item| %>
