@@ -17,3 +17,13 @@ examples:
         value: "11:02pm on 10 August 2018"
       - field: "First published on GOV.UK"
         value: "12:00pm on 10 August 2018"
+  inline:
+    description: |
+      Metadata can be displayed in a single line per entry
+    data:
+      items:
+      - field: Alt text
+        value: A nice tree
+      - field: "Markdown code"
+        value: "[Image: file.jpg]"
+      inline: true
