@@ -104,7 +104,7 @@
       label: Organisations
       type: multi_tag
       document_type: organisation
-      hint: Tag organisations who share responsibility for this content.
+      hint: Tag organisations associated with this content.
     - id: role_appointments
       label: Ministers and government appointments
       type: multi_tag
