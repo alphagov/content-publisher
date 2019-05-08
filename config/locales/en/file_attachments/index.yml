@@ -13,8 +13,6 @@ en:
         heading: Attachment title
         hint_text: Use the official title of the document
       other_attachments: Other attachments
-      attachment_markdown: "[Attachment: %{filename}]"
-      attachment_link_markdown: "[AttachmentLink: %{filename}]"
       flashes:
         deleted: "Attachment ‘%{file}’ has been deleted"
         upload_requirements: You need to

@@ -2,3 +2,12 @@ en:
   file_attachments:
     show:
       title: Insert attachment
+      markdown_code: "Markdown code"
+      attachment_markdown: "[Attachment: %{filename}]"
+      attachment_link_markdown: "[AttachmentLink: %{filename}]"
+      attachment_instructions: |
+        Copy the markdown code and paste it into the text in a new paragraph
+        where you want the file to appear.
+      attachment_link_instructions: |
+        Copy the markdown code and paste it into the text where you want the
+        file link to appear.
