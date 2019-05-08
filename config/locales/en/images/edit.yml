@@ -12,7 +12,7 @@ en:
         requirements: You need to
       guidance:
         alt_text_govspeak: A simple and specific description of what the image shows. This helps screen-readers and search engines.
-        caption_govspeak: An optional description of what the image shows. This appears next to the image.
+        caption_govspeak: Optional. A description of what the image shows. Caption appears next to the image.
         credit_govspeak: |
           Images licensed from a 3rd party must be credited. Government images do not need a credit.
 
