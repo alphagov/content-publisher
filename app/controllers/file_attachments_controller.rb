@@ -12,6 +12,17 @@ class FileAttachmentsController < ApplicationController
       .find_by!(file_attachment_id: params[:file_attachment_id])
   end
 
+  def preview
+    result = FileAttachments::PreviewInteractor.call(params: params)
+    asset, can_preview, api_error = result.to_h.values_at(:asset, :can_preview, :api_error)
+
+    if api_error || !can_preview
+      render :preview_pending
+    else
+      redirect_to asset.file_url
+    end
+  end
+
   def create
     result = FileAttachments::CreateInteractor.call(params: params, user: current_user)
     edition, attachment_revision, issues = result.to_h.values_at(:edition, :attachment_revision, :issues)
