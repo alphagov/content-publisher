@@ -3,3 +3,4 @@ en:
     crop:
       title: "Crop image for ‘%{title}’"
       title_modal: "Crop image"
+      title_exact_dimensions: "Image does not need to be cropped"

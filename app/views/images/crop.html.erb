@@ -1,5 +1,8 @@
 <%
 title_key = rendering_context == "modal" ? "images.crop.title_modal" : "images.crop.title"
+if @image_revision.at_exact_dimensions?
+  title_key = "images.crop.title_exact_dimensions"
+end
 content_for :title,t(title_key, title: @edition.title_or_fallback)
 %>
 
