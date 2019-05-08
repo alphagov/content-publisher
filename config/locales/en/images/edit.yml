@@ -12,5 +12,5 @@ en:
         requirements: You need to
       guidance:
         alt_text_govspeak: A simple and specific description of what the image shows. This helps screen-readers and search engines.
-        caption_govspeak: This text appears on the page under the image.
-        credit_govspeak: You must have the rights to use this image. Images should be credited to their source. For example, Getty Images. Open Government Licence (OGL) images do not need to be credited.
+        caption_govspeak: An optional description of what the image shows. This appears next to the image.
+        credit_govspeak: Images licensed from a 3rd party must be credited. Government images do not need a credit. [Full image credit guidance](https://www.gov.uk/guidance/content-design/image-copyright-standards-for-gov-uk)
