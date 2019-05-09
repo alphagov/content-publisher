@@ -1,6 +1,6 @@
 en:
   images:
     crop:
-      title: "Crop image for ‘%{title}’"
+      title: "Select the part of the image to use"
       title_modal: "Crop image"
-      title_exact_dimensions: "Image does not need to be cropped"
+      title_exact_dimensions: "This image cannot be cropped"
