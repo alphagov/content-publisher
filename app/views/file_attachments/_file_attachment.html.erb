@@ -3,14 +3,20 @@
 <% actions << link_to(
   "Insert attachment",
   file_attachment_path(document, attachment.file_attachment),
-  class: "govuk-link govuk-link--no-visited-state",
+  class: "govuk-link govuk-link--no-visited-state app-link--button",
 ) %>
 
 <% actions << link_to(
   "Preview",
   preview_file_attachment_path(document, attachment.file_attachment),
   target: :_blank,
-  class: "govuk-link govuk-link--no-visited-state"
+  class: "govuk-link govuk-link--no-visited-state app-link--button",
+) %>
+
+<% actions << link_to(
+  "Edit file",
+  edit_file_attachment_path(document, attachment.file_attachment_id),
+  class: "govuk-link govuk-link--no-visited-state app-link--button",
 ) %>
 
 <% actions << capture do %>

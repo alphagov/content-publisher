@@ -1,0 +1,24 @@
+<% content_for :title, t("file_attachments.edit.title", title: @edition.title_or_fallback) %>
+<% content_for :back_link, render_back_link(href: file_attachments_path(@edition.document)) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag(
+      update_file_attachment_path(@edition.document, @attachment.file_attachment_id),
+      method: :patch,
+    ) do %>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: t("file_attachments.edit.attachment_title.heading"),
+          bold: true
+        },
+        name: "file_attachment[title]",
+        value: @attachment.title,
+        hint: t("file_attachments.edit.attachment_title.hint_text"),
+      } %>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save",
+      } %>
+    <% end %>
+  </div>
+</div>

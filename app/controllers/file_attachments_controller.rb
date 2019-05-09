@@ -50,4 +50,14 @@ class FileAttachmentsController < ApplicationController
                 notice: t("file_attachments.index.flashes.deleted",
                           file: attachment_revision.filename)
   end
+
+  def edit
+    @edition = Edition.find_current(document: params[:document])
+    @attachment = @edition.file_attachment_revisions
+      .find_by!(file_attachment_id: params[:file_attachment_id])
+  end
+
+  def update
+    redirect_to file_attachments_path
+  end
 end

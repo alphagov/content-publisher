@@ -1,0 +1,7 @@
+en:
+  file_attachments:
+    edit:
+      title: Edit attachment
+      attachment_title:
+        heading: Edit title
+        hint_text: Use the official title of the document
