@@ -12,6 +12,15 @@ module Versioning
         assign(file_attachment_revisions: revisions)
       end
 
+      def update_file_attachment(attachment_revision)
+        unless attachment_exists?(attachment_revision)
+          raise "Cannot update a file attachment that doesn't exist"
+        end
+
+        revisions = other_file_attachments(attachment_revision) + [attachment_revision]
+        assign(file_attachment_revisions: revisions)
+      end
+
       def remove_file_attachment(attachment_revision)
         assign(file_attachment_revisions: other_file_attachments(attachment_revision))
       end

@@ -41,4 +41,25 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
       expect(next_revision.file_attachment_revisions).to match_array [other_attachment_revision]
     end
   end
+
+  describe "#update_file_attachment" do
+    it "updates an existing file attachment with a new revision" do
+      updated_attachment = create :file_attachment_revision,
+                                  file_attachment_id: attachment_revision.file_attachment_id
+
+      updater = Versioning::RevisionUpdater.new(revision, user)
+      updater.update_file_attachment(updated_attachment)
+
+      next_revision = updater.next_revision
+      expect(next_revision.file_attachment_revisions).to match_array [updated_attachment]
+    end
+
+    it "raises an error if there is no file attachment to update" do
+      revision = create :revision
+      updater = Versioning::RevisionUpdater.new(revision, user)
+
+      expect { updater.update_file_attachment(attachment_revision) }
+        .to raise_error(RuntimeError, "Cannot update a file attachment that doesn't exist")
+    end
+  end
 end
