@@ -20,7 +20,9 @@
             bold: true
           },
           name: "title",
-          hint: t("file_attachments.index.attachment_title.hint_text")
+          value: params[:title],
+          hint: t("file_attachments.index.attachment_title.hint_text"),
+          error_items: @issues&.items_for(:file_attachment_title),
           } %>
         <%= render "govuk_publishing_components/components/button", {
           text: "Upload",

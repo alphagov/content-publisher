@@ -13,7 +13,7 @@ class FileAttachmentUploadService
     blob = ActiveStorage::Blob.create_after_upload!(
       io: file,
       filename: filename,
-      content_type: Marcel::MimeType.for(file),
+      content_type: content_type,
     )
 
     blob_revision = FileAttachment::BlobRevision.new(
@@ -50,5 +50,9 @@ private
     PDF::Reader.new(file.tempfile).page_count
   rescue PDF::Reader::MalformedPDFError, PDF::Reader::UnsupportedFeatureError, OpenSSL::Cipher::CipherError
     nil
+  end
+
+  def content_type
+    @content_type ||= Marcel::MimeType.for(file, declared_type: file.content_type, name: file.original_filename)
   end
 end

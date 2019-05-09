@@ -14,8 +14,21 @@ class FileAttachmentsController < ApplicationController
 
   def create
     result = FileAttachments::CreateInteractor.call(params: params, user: current_user)
-    edition, attachment_revision = result.to_h.values_at(:edition, :attachment_revision)
-    redirect_to file_attachment_path(edition.document, attachment_revision.file_attachment)
+    edition, attachment_revision, issues = result.to_h.values_at(:edition, :attachment_revision, :issues)
+
+    if issues
+      flash.now["alert_with_items"] = {
+        "title" => I18n.t!("file_attachments.index.flashes.upload_requirements"),
+        "items" => issues.items,
+      }
+
+      render :index,
+             assigns: { edition: edition,
+                        issues: issues },
+             status: :unprocessable_entity
+    else
+      redirect_to file_attachment_path(edition.document, attachment_revision.file_attachment)
+    end
   end
 
   def destroy
