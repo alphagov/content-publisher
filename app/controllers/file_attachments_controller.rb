@@ -58,6 +58,13 @@ class FileAttachmentsController < ApplicationController
   end
 
   def update
-    redirect_to file_attachments_path
+    result = FileAttachments::UpdateInteractor.call(params: params,
+                                                   user: current_user)
+    edition, attachment_revision = result.to_h
+                                         .values_at(:edition,
+                                                    :file_attachment_revision)
+
+    redirect_to file_attachment_path(edition.document,
+                                     attachment_revision.file_attachment)
   end
 end
