@@ -30,3 +30,4 @@ en:
         scheduled_publishing_datetime_cleared: "Scheduled publishing date and time cleared"
         file_attachment_deleted: "Deleted attachment"
         file_attachment_uploaded: "Uploaded attachment"
+        file_attachment_updated: "Updated file attachment"

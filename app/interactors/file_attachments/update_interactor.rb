@@ -17,6 +17,7 @@ class FileAttachments::UpdateInteractor
       check_for_issues
       update_edition
 
+      create_timeline_entry
       update_preview
     end
   end
@@ -52,6 +53,11 @@ private
     context.fail! unless updater.changed?
 
     edition.assign_revision(updater.next_revision, user).save!
+  end
+
+  def create_timeline_entry
+    TimelineEntry.create_for_revision(entry_type: :file_attachment_updated,
+                                      edition: edition)
   end
 
   def update_preview

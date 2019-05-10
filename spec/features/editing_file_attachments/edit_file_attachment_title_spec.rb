@@ -50,5 +50,12 @@ RSpec.feature "Edit a file attachment title" do
 
   def and_the_preview_creation_succeeded
     expect(@put_content_request).to have_been_requested
+
+    visit document_path(@edition.document)
+    within first(".app-timeline-entry") do
+      expect(page).to have_content I18n.t!(
+        "documents.history.entry_types.file_attachment_updated",
+      )
+    end
   end
 end

@@ -48,7 +48,8 @@ class TimelineEntry < ApplicationRecord
                      scheduled_publishing_datetime_set: "scheduled_publishing_datetime_set",
                      scheduled_publishing_datetime_cleared: "scheduled_publishing_datetime_cleared",
                      file_attachment_uploaded: "file_attachment_uploaded",
-                     file_attachment_deleted: "file_attachment_deleted" }
+                     file_attachment_deleted: "file_attachment_deleted",
+                     file_attachment_updated: "file_attachment_updated" }
 
   def self.create_for_status_change(entry_type:,
                                     status:,
