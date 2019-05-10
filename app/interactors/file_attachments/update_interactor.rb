@@ -14,7 +14,9 @@ class FileAttachments::UpdateInteractor
       find_and_lock_edition
       find_and_update_file_attachment
 
+      check_for_issues
       update_edition
+
       update_preview
     end
   end
@@ -34,6 +36,13 @@ private
     updater.assign(attachment_params)
 
     context.file_attachment_revision = updater.next_revision
+  end
+
+  def check_for_issues
+    checker = Requirements::FileAttachmentChecker.new(title: file_attachment_revision.title)
+    issues = checker.pre_update_issues
+
+    context.fail!(issues: issues) if issues.any?
   end
 
   def update_edition

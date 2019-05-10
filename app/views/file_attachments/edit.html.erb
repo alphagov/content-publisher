@@ -13,7 +13,7 @@
           bold: true
         },
         name: "file_attachment[title]",
-        value: @attachment.title,
+        value: params[:title] || @attachment.title,
         hint: t("file_attachments.edit.attachment_title.hint_text"),
       } %>
       <%= render "govuk_publishing_components/components/button", {
