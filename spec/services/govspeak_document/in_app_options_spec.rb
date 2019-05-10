@@ -2,14 +2,13 @@
 
 RSpec.describe GovspeakDocument::InAppOptions do
   describe "#to_h" do
-    it "returns the local representation of the image" do
+    it "returns a hash of image attributes" do
       image_revision = build(:image_revision,
                              alt_text: "Some alt text",
                              caption: "An optional caption",
                              credit: "An optional credit",
                              filename: "filename.png")
-      edition = build(:edition,
-                      image_revisions: [image_revision])
+      edition = build(:edition, image_revisions: [image_revision])
 
       in_app_options = GovspeakDocument::InAppOptions.new("govspeak", edition)
       actual_image_options = in_app_options.to_h[:images].first
@@ -25,7 +24,7 @@ RSpec.describe GovspeakDocument::InAppOptions do
       )
     end
 
-    it "returns the local representation of a file attachment" do
+    it "returns a hash of file attachment attributes" do
       file_attachment_revision = build(:file_attachment_revision,
                                        fixture: "13kb-1-page-attachment.pdf",
                                        filename: "13kb-1-page-attachment.pdf",

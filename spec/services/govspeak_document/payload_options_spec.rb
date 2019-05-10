@@ -2,15 +2,14 @@
 
 RSpec.describe GovspeakDocument::PayloadOptions do
   describe "#to_h" do
-    it "returns the remote asset options for the image" do
+    it "returns a hash of image attributes" do
       image_revision = build(:image_revision,
                              :on_asset_manager,
                              alt_text: "Some alt text",
                              caption: "An optional caption",
                              credit: "An optional credit",
                              filename: "filename.png")
-      edition = build(:edition,
-                      image_revisions: [image_revision])
+      edition = build(:edition, image_revisions: [image_revision])
 
       payload_options = GovspeakDocument::PayloadOptions.new("govspeak", edition)
       actual_image_options = payload_options.to_h[:images].first
@@ -26,7 +25,7 @@ RSpec.describe GovspeakDocument::PayloadOptions do
       )
     end
 
-    it "returns the remote asset options for a file attachment" do
+    it "returns a hash of file attachment attributes" do
       file_attachment_revision = build(:file_attachment_revision,
                                        :on_asset_manager,
                                        fixture: "13kb-1-page-attachment.pdf",
