@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FileAttachmentsController < ApplicationController
+  include FileAttachmentHelper
+
   def index
     @edition = Edition.find_current(document: params[:document])
   end
@@ -14,12 +16,15 @@ class FileAttachmentsController < ApplicationController
 
   def preview
     result = FileAttachments::PreviewInteractor.call(params: params)
-    asset, can_preview, api_error = result.to_h.values_at(:asset, :can_preview, :api_error)
+    attachment_revision, edition, can_preview, api_error = result.to_h.values_at(:attachment_revision,
+                                                                                 :edition,
+                                                                                 :can_preview,
+                                                                                 :api_error)
 
     if api_error || !can_preview
       render :preview_pending
     else
-      redirect_to asset.file_url
+      redirect_to file_attachment_preview_url(attachment_revision, edition.document)
     end
   end
 

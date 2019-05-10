@@ -39,6 +39,6 @@ class PreviewAssetService
 private
 
   def auth_bypass_id
-    PreviewSecretService.new(edition).auth_bypass_id
+    PreviewAuthBypassService.new(edition).auth_bypass_id
   end
 end
