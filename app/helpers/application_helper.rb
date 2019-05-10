@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  include TimeOptionsHelper
-
   def govspeak_to_html(govspeak)
     # We expect all the govspeak through this to be commited code where we
     # verify the safety

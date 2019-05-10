@@ -2,15 +2,23 @@
 
 class GovspeakDocument::InAppOptions < GovspeakDocument::Options
   include Rails.application.routes.url_helpers
+  include FileAttachmentHelper
 
   def to_h
-    super.merge(images: in_app_images)
+    super.merge(
+      images: in_app_images,
+      attachments: in_app_attachments,
+    )
   end
 
 private
 
   def in_app_images
     edition.revision.image_revisions.map { |image_revision| image_attributes(image_revision) }
+  end
+
+  def in_app_attachments
+    edition.file_attachment_revisions.map { |far| file_attachment_in_app_attributes(far) }
   end
 
   def image_attributes(image_revision)

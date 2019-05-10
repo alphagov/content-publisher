@@ -3,33 +3,42 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <dl>
-      <dt class="govuk-body">Title</dt>
-      <dd class="govuk-body"><%= @attachment.title %></dd>
-      <dt class="govuk-body">Attachment markdown:</dt>
-      <dd class="govuk-body"><%= t("file_attachments.index.attachment_markdown", filename: @attachment.filename) %></dd>
-    </dl>
+    <%= render "govuk_publishing_components/components/attachment", {
+      attachment: file_attachment_in_app_attributes(@attachment),
+      target: "_blank",
+    } %>
+
+    <%= render "components/metadata", {
+      items: [
+        {
+          field: t("file_attachments.show.markdown_code"),
+          value: t("file_attachments.show.attachment_markdown", filename: @attachment.filename)
+        },
+      ],
+      inline: true,
+      margin_bottom: 3,
+    } %>
+    <p class="govuk-body"><%= t("file_attachments.show.attachment_instructions") %></p>
+    </p>
 
     <hr class="govuk-!-margin-bottom-6 govuk-!-margin-top-6"/>
 
-    <dl>
-      <dt class="govuk-body">Title</dt>
-      <dd class="govuk-body"><%= @attachment.title %></dd>
-      <dt class="govuk-body">Attachment link markdown:</dt>
-      <dd class="govuk-body"><%= t("file_attachments.index.attachment_link_markdown", filename: @attachment.filename) %></dd>
-    </dl>
-
     <div class="govuk-body">
       <%= render "govuk_publishing_components/components/attachment_link", {
-        attachment: {
-          title: @attachment.title,
-          url: "#",
-          content_type: @attachment.content_type,
-          file_size: @attachment.byte_size,
-          number_of_pages: @attachment.number_of_pages,
-        },
+        attachment: file_attachment_in_app_attributes(@attachment),
         target: "_blank"
       } %>
     </div>
+    <%= render "components/metadata", {
+      items: [
+        {
+          field: t("file_attachments.show.markdown_code"),
+          value: t("file_attachments.show.attachment_link_markdown", filename: @attachment.filename)
+        },
+      ],
+      inline: true,
+      margin_bottom: 3,
+    } %>
+    <p class="govuk-body"><%= t("file_attachments.show.attachment_link_instructions") %></p>
   </div>
 </div>
