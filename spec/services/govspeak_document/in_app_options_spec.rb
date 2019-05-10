@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe GovspeakDocument::InAppOptions do
+  include Rails.application.routes.url_helpers
+
   describe "#to_h" do
     it "returns a hash of image attributes" do
       image_revision = build(:image_revision,
@@ -25,13 +27,13 @@ RSpec.describe GovspeakDocument::InAppOptions do
     end
 
     it "returns a hash of file attachment attributes" do
-      file_attachment_revision = build(:file_attachment_revision,
-                                       fixture: "13kb-1-page-attachment.pdf",
-                                       filename: "13kb-1-page-attachment.pdf",
-                                       title: "A title",
-                                       number_of_pages: 1)
+      attachment_revision = create(:file_attachment_revision,
+                                   fixture: "13kb-1-page-attachment.pdf",
+                                   filename: "13kb-1-page-attachment.pdf",
+                                   title: "A title",
+                                   number_of_pages: 1)
       edition = build(:edition,
-                      file_attachment_revisions: [file_attachment_revision])
+                      file_attachment_revisions: [attachment_revision])
 
       in_app_options = GovspeakDocument::InAppOptions.new("govspeak", edition)
       actual_attachment_options = in_app_options.to_h[:attachments].first
@@ -44,7 +46,7 @@ RSpec.describe GovspeakDocument::InAppOptions do
           content_type: "application/pdf",
           number_of_pages: 1,
           file_size: 13264,
-          # TODO add url expectation when we have an internal preview URL
+          url: preview_file_attachment_path(edition.document, attachment_revision.file_attachment),
         ),
       )
     end
