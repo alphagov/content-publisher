@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Requirements
-  class FileAttachmentUploadChecker
+  class FileAttachmentChecker
     TITLE_MAX_LENGTH = 255
     ALLOWED_FORMATS = [
       "text/csv", # csv
@@ -30,37 +30,20 @@ module Requirements
 
     attr_reader :file, :title
 
-    def initialize(file, title)
+    def initialize(file: nil, title: nil)
       @file = file
       @title = title
     end
 
-    def issues
+    def pre_upload_issues
+      issues = title_issues + file_issues
+
+      CheckerIssues.new(issues)
+    end
+
+    def pre_update_issues
       issues = []
-
-      if title.blank?
-        issues << Issue.new(:file_attachment_title, :blank)
-      end
-
-      if title.to_s.size > TITLE_MAX_LENGTH
-        issues << Issue.new(:file_attachment_title,
-                            :too_long,
-                            max_length: TITLE_MAX_LENGTH)
-      end
-
-      unless file
-        issues << Issue.new(:file_attachment_upload, :no_file)
-        return CheckerIssues.new(issues)
-      end
-
-      if invalid_zip?
-        issues << Issue.new(:file_attachment_upload, :zip_unsupported_type)
-        return CheckerIssues.new(issues)
-      end
-
-      if unsupported_type?
-        issues << Issue.new(:file_attachment_upload, :unsupported_type)
-      end
+      issues += title_issues if title_issues.any?
 
       CheckerIssues.new(issues)
     end
@@ -86,6 +69,42 @@ module Requirements
 
     def content_type
       @content_type ||= Marcel::MimeType.for(file, declared_type: file.content_type, name: file.original_filename)
+    end
+
+    def title_issues
+      issues = []
+
+      if title.blank?
+        issues << Issue.new(:file_attachment_title, :blank)
+      end
+
+      if title.to_s.size > TITLE_MAX_LENGTH
+        issues << Issue.new(:file_attachment_title,
+                            :too_long,
+                            max_length: TITLE_MAX_LENGTH)
+      end
+
+      issues
+    end
+
+    def file_issues
+      issues = []
+
+      unless file
+        issues << Issue.new(:file_attachment_upload, :no_file)
+        return issues
+      end
+
+      if invalid_zip?
+        issues << Issue.new(:file_attachment_upload, :zip_unsupported_type)
+        return issues
+      end
+
+      if unsupported_type?
+        issues << Issue.new(:file_attachment_upload, :unsupported_type)
+      end
+
+      issues
     end
   end
 end
