@@ -8,8 +8,8 @@ class PreviewService
   end
 
   def create_preview
-    upload_assets(edition)
-    publish_draft(edition)
+    PreviewAssetService.new(edition).upload_assets
+    publish_draft
     DraftAssetCleanupService.new.call(edition)
   rescue GdsApi::BaseError
     edition.update!(revision_synced: false)
@@ -34,31 +34,9 @@ private
     Requirements::EditionChecker.new(edition).pre_preview_issues.any?
   end
 
-  def publish_draft(edition)
+  def publish_draft
     payload = PublishingApiPayload.new(edition).payload
     GdsApi.publishing_api_v2.put_content(edition.content_id, payload)
     edition.update!(revision_synced: true)
-  end
-
-  def upload_assets(edition)
-    edition.image_revisions.each do |image_revision|
-      image_revision.ensure_assets
-
-      image_revision.assets.each { |asset| upload_asset(edition, asset) }
-    end
-
-    edition.file_attachment_revisions.each do |file_attachment_revision|
-      file_attachment_revision.ensure_assets
-
-      file_attachment_revision.assets.each { |asset| upload_asset(edition, asset) }
-    end
-  end
-
-  def upload_asset(edition, asset)
-    return unless asset.absent?
-
-    auth_bypass_id = EditionUrl.new(edition).auth_bypass_id
-    file_url = AssetManagerService.new.upload(asset, auth_bypass_id)
-    asset.update!(file_url: file_url, state: :draft)
   end
 end

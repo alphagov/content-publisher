@@ -18,7 +18,9 @@ private
   end
 
   def in_app_attachments
-    edition.file_attachment_revisions.map { |far| file_attachment_in_app_attributes(far) }
+    edition.file_attachment_revisions.map do |attachment_revision|
+      file_attachment_in_app_attributes(attachment_revision, edition.document)
+    end
   end
 
   def image_attributes(image_revision)

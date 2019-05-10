@@ -3,7 +3,14 @@
 <% actions << link_to(
   "Insert attachment",
   file_attachment_path(document, attachment.file_attachment),
-  class: "govuk-link govuk-link--no-visited-state app-link--button",
+  class: "govuk-link govuk-link--no-visited-state",
+) %>
+
+<% actions << link_to(
+  "Preview",
+  preview_file_attachment_path(document, attachment.file_attachment),
+  target: :_blank,
+  class: "govuk-link govuk-link--no-visited-state"
 ) %>
 
 <% actions << capture do %>
@@ -17,6 +24,6 @@
 <% end %>
 
 <%= render "components/attachment_meta", {
-  attachment: file_attachment_in_app_attributes(attachment),
+  attachment: file_attachment_in_app_attributes(attachment, document),
   actions: actions,
 } %>

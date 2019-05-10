@@ -4,7 +4,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= render "govuk_publishing_components/components/attachment", {
-      attachment: file_attachment_in_app_attributes(@attachment),
+      attachment: file_attachment_in_app_attributes(@attachment, @edition.document),
       target: "_blank",
     } %>
 
@@ -25,7 +25,7 @@
 
     <div class="govuk-body">
       <%= render "govuk_publishing_components/components/attachment_link", {
-        attachment: file_attachment_in_app_attributes(@attachment),
+        attachment: file_attachment_in_app_attributes(@attachment, @edition.document),
         target: "_blank"
       } %>
     </div>
