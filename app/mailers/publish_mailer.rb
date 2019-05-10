@@ -3,6 +3,8 @@
 class PublishMailer < ApplicationMailer
   self.delivery_job = EmailDeliveryJob
 
+  add_template_helper(EditionUrlHelper)
+
   def publish_email(edition, user)
     @user = user
     @edition = edition

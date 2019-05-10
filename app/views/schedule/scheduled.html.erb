@@ -2,7 +2,7 @@
 <% content_for :browser_title, t("schedule.scheduled.title") %>
 <% scheduled_time = @edition.scheduled_publishing_datetime.strftime("%l:%M%P").strip %>
 <% scheduled_date = @edition.scheduled_publishing_datetime.strftime("%-d %B %Y") %>
-<% public_url = EditionUrl.new(@edition).public_url %>
+<% public_url = edition_public_url(@edition) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">

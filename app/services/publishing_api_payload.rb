@@ -28,7 +28,9 @@ class PublishingApiPayload
       ],
       "links" => links,
       "access_limited" => {
-        "auth_bypass_ids" => [EditionUrl.new(edition).auth_bypass_id],
+        "auth_bypass_ids" => [
+          PreviewAuthBypassService.new(edition).auth_bypass_id,
+        ],
       },
     }
     payload["change_note"] = edition.change_note if edition.major?

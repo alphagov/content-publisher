@@ -17,7 +17,7 @@
 <%= t("publish_mailer.publish_email.delay_warning") %>
 
 <%= t("publish_mailer.publish_email.page_address") %>
-<%= EditionUrl.new(@edition).public_url %>
+<%= edition_public_url(@edition) %>
 
 <% if @edition.number > 1 -%>
 <% if @edition.major? -%>

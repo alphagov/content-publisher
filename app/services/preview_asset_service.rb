@@ -22,7 +22,6 @@ class PreviewAssetService
   def upload_asset(asset)
     return unless asset.absent?
 
-    auth_bypass_id = EditionUrl.new(edition).auth_bypass_id
     file_url = AssetManagerService.new.upload(asset, auth_bypass_id)
     asset.update!(file_url: file_url, state: :draft)
   rescue GdsApi::BaseError => e
@@ -35,5 +34,11 @@ class PreviewAssetService
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     raise
+  end
+
+private
+
+  def auth_bypass_id
+    PreviewSecretService.new(edition).auth_bypass_id
   end
 end
