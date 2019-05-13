@@ -16,6 +16,20 @@
         value: params[:title] || @attachment.title,
         hint: t("file_attachments.edit.attachment_title.hint_text"),
       } %>
+      <% file_upload_id = "file-upload-#{SecureRandom.hex(4)}" %>
+      <%= render "govuk_publishing_components/components/label", {
+        text: t("file_attachments.edit.attachment_file.heading"),
+        html_for: file_upload_id,
+        bold: true,
+      } %>
+      <%= render_govspeak(t("file_attachments.edit.attachment_file.description_govspeak")) %>
+      <%= render "govuk_publishing_components/components/inset_text", {
+        text: t("file_attachments.edit.attachment_file.filename_change_callout"),
+      } %>
+      <%= render "govuk_publishing_components/components/file_upload", {
+        name: "file_attachment[file]",
+        id: file_upload_id,
+      } %>
       <%= render "govuk_publishing_components/components/button", {
         text: "Save",
       } %>

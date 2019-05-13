@@ -5,3 +5,11 @@ en:
       attachment_title:
         heading: Edit title
         hint_text: Use the official title of the document
+      attachment_file:
+        heading: Replace file
+        description_govspeak: |
+          All files must be [accessible](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/accessible-pdfs){:target="_blank"}.
+
+          Files must be uploaded in an [open standards file format](https://www.gov.uk/guidance/content-design/planning-content#open-formats){:target="_blank"}.
+          For example, .odt not .docx.
+        filename_change_callout: If your new file has a different file name or file type to the original you will need to update the attachment markdown in your content.
