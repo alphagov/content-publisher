@@ -9,7 +9,7 @@ RSpec.describe NotifyDeliveryMethod do
 
       template_id = SecureRandom.uuid
       message = Mail::Message.new(headers)
-      client = instance_double("Notifications::Client")
+      client = instance_double(Notifications::Client)
 
       allow(Notifications::Client).to receive(:new)
         .with("api-key").and_return(client)
@@ -33,7 +33,7 @@ RSpec.describe NotifyDeliveryMethod do
 
       template_id = SecureRandom.uuid
       message = Mail::Message.new(headers)
-      client = instance_double("Notifications::Client")
+      client = instance_double(Notifications::Client)
 
       allow(Notifications::Client).to receive(:new)
         .with("api-key").and_return(client)

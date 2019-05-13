@@ -2,11 +2,11 @@
 
 RSpec.describe PreviewService do
   let(:draft_asset_cleanup_service) do
-    instance_double("DraftAssetCleanupService", call: nil)
+    instance_double(DraftAssetCleanupService, call: nil)
   end
 
   let(:preview_asset_service) do
-    instance_double("PreviewAssetService", upload_assets: nil)
+    instance_double(PreviewAssetService, upload_assets: nil)
   end
 
   before do
