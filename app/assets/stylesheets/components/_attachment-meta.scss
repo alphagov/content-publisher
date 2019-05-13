@@ -1,3 +1,15 @@
+.app-c-attachment-meta {
+  @include govuk-font(19);
+
+  margin-bottom: govuk-spacing(6);
+  padding-bottom: govuk-spacing(6);
+  border-bottom: 1px solid $govuk-border-colour;
+
+  .app-c-metadata {
+    margin-bottom: govuk-spacing(3);
+  }
+}
+
 .app-c-attachment-meta:last-child {
   border-bottom: 0;
 }
