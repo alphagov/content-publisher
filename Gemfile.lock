@@ -483,6 +483,7 @@ DEPENDENCIES
   rails (~> 5.2)
   rinku (~> 2)
   rspec-rails (~> 3)
+  rubyzip (~> 1)
   simplecov (~> 0.16)
   uglifier (~> 4)
   webmock (~> 3)
