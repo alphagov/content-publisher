@@ -78,6 +78,8 @@ Rails.application.routes.draw do
     post "/file-attachments" => "file_attachments#create", as: :create_file_attachment
     get "/file-attachments/:file_attachment_id" => "file_attachments#show", as: :file_attachment
     get "/file-attachments/:file_attachment_id/preview" => "file_attachments#preview", as: :preview_file_attachment
+    get "/file-attachments/:file_attachment_id/edit" => "file_attachments#edit", as: :edit_file_attachment
+    patch "/file-attachments/:file_attachment_id/edit" => "file_attachments#update", as: :update_file_attachment
     delete "/file-attachments/:file_attachment_id" => "file_attachments#destroy", as: :destroy_file_attachment
   end
 
