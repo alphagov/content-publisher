@@ -23,7 +23,7 @@ gem "pdf-reader", "~> 2"
 gem "pg", "~> 1"
 gem "plek", "~> 2"
 gem "rinku", "~> 2"
-gem "rubyzip", "~> 1"
+gem "rubyzip", "~> 1", require: "zip"
 gem "uglifier", "~> 4"
 
 group :development do
