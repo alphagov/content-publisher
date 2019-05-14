@@ -20,6 +20,11 @@ RSpec.describe ContentDataUrl do
       expect(ContentDataUrl.new(document).displayable?(beta_partner)).to be true
     end
 
+    it "returns true if the user has pre-release permission and edition was published before yesterday" do
+      pre_release_user = build(:user, permissions: [User::PRE_RELEASE_FEATURES_PERMISSION])
+      expect(ContentDataUrl.new(document).displayable?(pre_release_user)).to be true
+    end
+
     it "returns false if the user is not part of a Content Data beta partner organisation" do
       user = build(:user, organisation_content_id: SecureRandom.uuid)
       expect(ContentDataUrl.new(document).displayable?(user)).to be false

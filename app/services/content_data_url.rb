@@ -18,7 +18,11 @@ class ContentDataUrl
   end
 
   def displayable?(user)
-    has_content_data_access?(user) && expected_in_content_data?
+    if user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
+      expected_in_content_data?
+    else
+      has_content_data_access?(user) && expected_in_content_data?
+    end
   end
 
 private
