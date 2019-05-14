@@ -68,7 +68,9 @@ module Requirements
     end
 
     def content_type
-      @content_type ||= Marcel::MimeType.for(file, declared_type: file.content_type, name: file.original_filename)
+      @content_type ||= Marcel::MimeType.for(file,
+                                             declared_type: file.content_type,
+                                             name: file.original_filename)
     end
 
     def title_issues

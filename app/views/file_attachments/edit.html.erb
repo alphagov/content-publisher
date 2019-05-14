@@ -6,6 +6,7 @@
     <%= form_tag(
       update_file_attachment_path(@edition.document, @attachment.file_attachment_id),
       method: :patch,
+      multipart: true,
     ) do %>
       <%= render "govuk_publishing_components/components/input", {
         label: {

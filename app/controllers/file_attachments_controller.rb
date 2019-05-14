@@ -84,8 +84,7 @@ class FileAttachmentsController < ApplicationController
                         attachment: attachment_revision },
              status: :unprocessable_entity
     else
-      redirect_to file_attachment_path(edition.document,
-                                       attachment_revision.file_attachment)
+      redirect_to file_attachments_path(edition.document)
     end
   end
 end

@@ -31,12 +31,32 @@ private
   def find_and_update_file_attachment
     current_attachment_revision = edition.file_attachment_revisions
                                          .find_by!(file_attachment_id: params[:file_attachment_id])
-    attachment_params = params.require(:file_attachment).permit(:title)
 
     updater = Versioning::FileAttachmentRevisionUpdater.new(current_attachment_revision, user)
-    updater.assign(attachment_params)
+    attributes = attachment_params.slice(:title)
+                                  .merge(file_attachment_attributes(current_attachment_revision))
+
+    updater.assign(attributes)
 
     context.file_attachment_revision = updater.next_revision
+  end
+
+  def attachment_params
+    params.require(:file_attachment).permit(:file, :title)
+  end
+
+  def file_attachment_attributes(file_attachment_revision)
+    return {} unless attachment_params[:file]
+
+    blob_service = FileAttachmentBlobService.new(file: attachment_params[:file],
+                                                 revision: edition.revision,
+                                                 replacement: file_attachment_revision)
+
+    {
+      blob_id: blob_service.blob_id,
+      filename: blob_service.filename,
+      number_of_pages: blob_service.number_of_pages,
+    }
   end
 
   def check_for_issues
