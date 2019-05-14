@@ -35,7 +35,7 @@ RSpec.feature "Preview file attachment", js: true do
 
   def then_i_should_see_the_attachment
     within_window @preview_window do
-      expect(current_url).to eq @asset.file_url
+      expect(current_url).to match(/#{@asset.file_url}\?token=.*/)
     end
   end
 end

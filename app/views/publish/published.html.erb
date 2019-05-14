@@ -8,6 +8,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <% public_url = edition_public_url(@edition) %>
 
     <% if @edition.status.published_but_needs_2i? %>
       <%= render "govuk_publishing_components/components/panel", {
@@ -16,7 +17,6 @@
 
       <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html t("publish.published.published_without_review.body_govspeak", title: @edition.title) %>
-        <% public_url = EditionUrl.new(@edition).public_url %>
         <%= link_to(strip_scheme_from_url(public_url), public_url, class: "govuk-link govuk-link--no-visited-state") %>
 
         <%= govspeak_to_html t("publish.published.published_without_review.what_to_do_govspeak") %>
@@ -32,7 +32,7 @@
         input_data_attributes: {
           "gtm-copy-paste-tracking": "published-content-copy-link-manual"
         }
-    %>
+      %>
     <% else %>
       <%= render "govuk_publishing_components/components/panel", {
         title: t("publish.published.reviewed.title")
@@ -41,7 +41,6 @@
       <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html t("publish.published.reviewed.body_govspeak", title: @edition.title) %>
 
-        <% public_url = EditionUrl.new(@edition).public_url %>
         <%= link_to(strip_scheme_from_url(public_url), public_url, class: "govuk-link govuk-link--no-visited-state") %>
       <% end %>
     <% end %>

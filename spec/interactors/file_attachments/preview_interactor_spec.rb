@@ -10,7 +10,7 @@ RSpec.describe FileAttachments::PreviewInteractor do
     end
 
     let(:preview_asset_service) do
-      instance_double("PreviewAssetService", upload_asset: nil, can_preview_asset?: nil)
+      instance_double(PreviewAssetService, upload_asset: nil, can_preview_asset?: nil)
     end
 
     before do
