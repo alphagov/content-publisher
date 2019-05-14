@@ -60,7 +60,8 @@ private
   end
 
   def check_for_issues
-    checker = Requirements::FileAttachmentChecker.new(title: file_attachment_revision.title)
+    checker = Requirements::FileAttachmentChecker.new(file: params.dig(:file_attachment, :file),
+                                                      title: file_attachment_revision.title)
     issues = checker.pre_update_issues
 
     context.fail!(issues: issues) if issues.any?

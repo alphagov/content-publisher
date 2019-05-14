@@ -44,6 +44,7 @@ module Requirements
     def pre_update_issues
       issues = []
       issues += title_issues if title_issues.any?
+      issues += file_issues if file.present? && file_issues.any?
 
       CheckerIssues.new(issues)
     end
