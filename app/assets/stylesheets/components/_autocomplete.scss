@@ -4,6 +4,7 @@
   background: govuk-colour('white');
 }
 
+.autocomplete__hint,
 .autocomplete__input {
   @include govuk-font(19);
   color: $govuk-text-colour;
