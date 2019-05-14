@@ -28,10 +28,9 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
           label: {
             text: upload_image_heading,
           },
+          hint: render_govspeak(t("images.index.description_govspeak")),
           name: "image"
         } %>
-
-        <%= render_govspeak(t("images.index.description_govspeak")) %>
 
         <%= render "govuk_publishing_components/components/button", {
           text: "Upload",

@@ -3,17 +3,24 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <div class="app-pane">
+      <% upload_attachment_heading = capture do %>
+        <h2 class="govuk-heading-m">
+          <%= t("file_attachments.index.upload.title") %>
+        </h2>
+      <% end %>
+
       <%= form_tag(
         create_file_attachment_path(@edition.document),
         multipart: true,
       ) do %>
-        <h2 class="govuk-heading-m">
-          <%= t("file_attachments.index.upload.title") %>
-        </h2>
-        <%= render_govspeak(t("file_attachments.index.upload.description_govspeak")) %>
         <%= render "govuk_publishing_components/components/file_upload", {
+          label: {
+            text: upload_attachment_heading,
+          },
+          hint: render_govspeak(t("file_attachments.index.upload.description_govspeak")),
           name: "file"
         } %>
+
         <%= render "govuk_publishing_components/components/input", {
           label: {
             text: t("file_attachments.index.attachment_title.heading"),
@@ -29,11 +36,7 @@
         } %>
       <% end %>
     </div>
-  </div>
-</div>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
     <% attachments = @edition.file_attachment_revisions %>
 
     <% if attachments.any? %>
