@@ -11,7 +11,7 @@ RSpec.feature "Preview file attachment when unavailable" do
   def given_there_is_an_edition_with_attachments
     body_field = build(:field, id: "body", type: "govspeak")
     document_type = build(:document_type, contents: [body_field])
-    @attachment_revision = create(:file_attachment_revision)
+    @attachment_revision = create(:file_attachment_revision, assets: [])
     @asset = @attachment_revision.asset("file")
 
     @edition = create(:edition,
@@ -20,7 +20,7 @@ RSpec.feature "Preview file attachment when unavailable" do
   end
 
   def when_i_preview_the_attachment
-    @request = stub_asset_manager_receives_an_asset(filename: @asset.filename)
+    @request = stub_asset_manager_receives_an_asset(filename: /.*/)
     visit edit_document_path(@edition.document)
     find("markdown-toolbar details").click
     click_on "Attachment"
