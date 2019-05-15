@@ -32,8 +32,8 @@ RSpec.describe GovspeakDocument::PayloadOptions do
                                        filename: "13kb-1-page-attachment.pdf",
                                        title: "A title",
                                        number_of_pages: 1)
-      edition = build(:edition,
-                      file_attachment_revisions: [file_attachment_revision])
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision])
 
       payload_options = GovspeakDocument::PayloadOptions.new("govspeak", edition)
       actual_attachment_options = payload_options.to_h[:attachments].first
