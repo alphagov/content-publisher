@@ -1,9 +1,21 @@
-Content Publisher is a new way of publishing content on GOV.UK. It is designed to make it 
-easier to publish useful content and to help you use data to manage that content.
+Content Publisher is a new way of publishing content on GOV.UK. It is designed to make it easier to publish useful content and to help you use data to manage that content.
 
-We are now beta testing Content Publisher with government publishers. The beta version will have limited functionality at first. We are adding and improving features. 
+We are beta testing Content Publisher. The beta version has limited functionality. We are adding and improving features. Read more about [what Content Publisher can and cannot do](/beta-capabilities).
 
-Read more about [what Content Publisher can and cannot do](/beta-capabilities).
+##Whitehall users
+
+Content Publisher works differently to Whitehall. If you are familiar with Whitehall there are some differences to be aware of:
+
+- Markdown can be added using a menu to format text
+- Text pasted into the content body will be automatically converted to markdown
+- There is an Insert menu to use to add pictures, contacts, or video embeds
+- Pictures can be any size larger than 960px wide and 640px high
+- Content is tagged to one Primary Organisation and they are responsible for managing that content
+- Pictures to go at the top of content are added in the Lead Image section
+- Previews can be shared to show other people the page
+- You don’t need a second user to publish content if it has already been approved
+
+---
 
 ##How to create content
 
@@ -23,11 +35,11 @@ When you paste text into the body field Content Publisher will try to convert it
 
 This works best when copy and pasting from text editing software like Word. It is less likely to recognise formatting from PDFs.
 
-Content publisher has a toolbar to make it easier to add common markdown. You can use the buttons to add headings, links, or lists. 
+Content publisher has a toolbar to make it easier to add common markdown. You can use the buttons to add headings, links, or lists.
 
 Use the Insert menu to add other media or special content. For example, you can insert images, videos, or contact addresses.
 
-More advanced markdown features can be used by following the guidance and examples in the interface. 
+More advanced markdown features can be used by following the guidance and examples in the interface.
 
 Read full [guidance on markdown](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown).
 
@@ -35,7 +47,7 @@ Read full [guidance on markdown](https://www.gov.uk/guidance/how-to-publish-on-g
 
 ##Lead image
 
-News content has a lead image which appears at the top of the page and is used as the thumbnail image on some links to the content. 
+News content has a lead image which appears at the top of the page and is used as the thumbnail image on some links to the content.
 
 Every page has a default lead image to represent your organisation. You should replace it with a picture that is more relevant to the content.
 
@@ -43,13 +55,13 @@ You can upload any shape or size picture and crop it to the standard shape in Co
 
 You must add alt text for every image, but the caption is optional and the credit may not be required on all images.
 
-You can upload several images but must pick the one you want to be the lead image. 
+You can upload several images but must pick the one you want to be the lead image.
 
 ---
 
 ##Tags
 
-You should add tags that describe things the content is associated with. Tags help users find content on GOV.UK. 
+You should add tags that describe things the content is associated with. Tags help users find content on GOV.UK.
 
 Tags available include the organisations and ministers involved, and the locations the content is relevant to.
 
@@ -87,7 +99,7 @@ Before you publish content you must preview it. This shows you how the content w
 
 ###Fact check or sign off
 
-Some content needs to be checked before it is published to make sure it is accurate. 
+Some content needs to be checked before it is published to make sure it is accurate.
 
 You can share the content preview with others using the link provided so that they can see how it will look on GOV.UK.
 
@@ -105,15 +117,15 @@ You then need to ask someone to do a 2i review. Send them the link to the page i
 
 If they find any mistakes in the content then they can edit it or ask you to edit it.
 
-When it has been reviewed and any improvements made, then either you or they can go ahead and publish it. 
+When it has been reviewed and any improvements made, then either you or they can go ahead and publish it.
 
-Select the ‘Publish’ button, and then confirm that it has been reviewed. 
+Select the ‘Publish’ button, and then confirm that it has been reviewed.
 
 ###2i review before Content publisher
 
-The text may have been thoroughly reviewed before the document is created in Content publisher and the page prepared without any changes. If so it is possible to publish content without needing further review. 
+The text may have been thoroughly reviewed before the document is created in Content publisher and the page prepared without any changes. If so it is possible to publish content without needing further review.
 
-Select the ‘Publish’ button, and then confirm that it has been reviewed. 
+Select the ‘Publish’ button, and then confirm that it has been reviewed.
 
 ###Urgent publishing
 
@@ -133,11 +145,11 @@ If there are no mistakes then they or you can select the ‘Approve’ button to
 
 ##Featured documents
 
-You can feature Content Publisher documents on organisation homepages. 
+You can feature Content Publisher documents on organisation homepages.
 
 They will not appear in the main content search in Whitehall.
 
-You need to use the option to 'Feature non-GOV.UK government link'. It is at the end of the page. This is the same way blog posts are featured. 
+You need to use the option to 'Feature non-GOV.UK government link'. It is at the end of the page. This is the same way blog posts are featured.
 
 We have added document types for Content Publisher documents so that they appear just like Whitehall content.
 
