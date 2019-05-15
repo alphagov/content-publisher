@@ -13,8 +13,7 @@ class FileAttachments::PreviewInteractor
     Edition.transaction do
       find_and_lock_edition
       find_attachment
-      check_uploaded
-      check_available
+      find_or_upload_asset
     end
   end
 
@@ -29,19 +28,16 @@ private
       .find_by!(file_attachment_id: params[:file_attachment_id])
   end
 
-  def check_uploaded
+  def find_or_upload_asset
     attachment_revision.ensure_assets
     context.asset = attachment_revision.asset("file")
 
     if asset.absent?
       PreviewAssetService.new(edition).upload_asset(asset)
-      context.fail!(can_preview: false)
+      context.can_preview = false
+      return
     end
-  rescue GdsApi::BaseError
-    context.fail!(api_error: true)
-  end
 
-  def check_available
     service = PreviewAssetService.new(edition)
     context.can_preview = service.can_preview_asset?(asset)
   rescue GdsApi::BaseError
