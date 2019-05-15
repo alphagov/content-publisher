@@ -5,7 +5,7 @@ window.ModalFetch.getLink = function (item) {
   var headers = { 'Content-Publisher-Rendering-Context': 'modal' }
   var options = { credentials: 'include', signal: controller.signal, headers: headers }
   var href = item.dataset.modalActionUrl || item.href
-  setTimeout(function () { controller.abort() }, 5000)
+  setTimeout(function () { controller.abort() }, 15000)
 
   return window.fetch(href, options)
     .then(function (response) {
@@ -23,7 +23,10 @@ window.ModalFetch.getLink = function (item) {
 
 window.ModalFetch.postForm = function (form) {
   var controller = new window.AbortController()
-  setTimeout(function () { controller.abort() }, 10000)
+
+  if (!window.ModalFetch._isFileUpload(form)) {
+    setTimeout(function () { controller.abort() }, 15000)
+  }
 
   var options = {
     credentials: 'include',
@@ -46,6 +49,10 @@ window.ModalFetch.postForm = function (form) {
           return { body: text, unprocessableEntity: response.status === 422 }
         })
     })
+}
+
+window.ModalFetch._isFileUpload = function (form) {
+  return form.getAttribute('enctype') === 'multipart/form-data'
 }
 
 window.ModalFetch.debug = function (response) {
