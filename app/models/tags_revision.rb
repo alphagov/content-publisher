@@ -10,4 +10,8 @@ class TagsRevision < ApplicationRecord
   def readonly?
     !new_record?
   end
+
+  def primary_publishing_organisation_id
+    tags["primary_publishing_organisation"].to_a.first
+  end
 end

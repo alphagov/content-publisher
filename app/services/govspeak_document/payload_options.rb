@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 class GovspeakDocument::PayloadOptions < GovspeakDocument::Options
   include Rails.application.routes.url_helpers
   include FileAttachmentHelper
@@ -35,8 +34,12 @@ private
   end
 
   def attachment_attributes(attachment_revision)
-    file_attachment_attributes(attachment_revision, edition.document).merge(
+    alt_email = OrganisationService.new(edition).alternative_format_contact_email
+    attributes = file_attachment_attributes(attachment_revision, edition.document)
+
+    attributes.merge(
       url: attachment_revision.asset_url("file"),
+      alternative_format_contact_email: alt_email,
     )
   end
 end

@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 RSpec.describe GovspeakDocument::PayloadOptions do
+  let(:organisation_service) { instance_double(OrganisationService) }
+
+  before do
+    allow(OrganisationService).to receive(:new) { organisation_service }
+  end
+
   describe "#to_h" do
     it "returns a hash of image attributes" do
       image_revision = build(:image_revision,
@@ -35,6 +41,9 @@ RSpec.describe GovspeakDocument::PayloadOptions do
       edition = create(:edition,
                        file_attachment_revisions: [file_attachment_revision])
 
+      allow(organisation_service)
+        .to receive(:alternative_format_contact_email) { "foo@bar.com" }
+
       payload_options = GovspeakDocument::PayloadOptions.new("govspeak", edition)
       actual_attachment_options = payload_options.to_h[:attachments].first
 
@@ -47,6 +56,7 @@ RSpec.describe GovspeakDocument::PayloadOptions do
           number_of_pages: 1,
           file_size: 13264,
           url: a_string_matching(%r{/media/.*/13kb-1-page-attachment.pdf}),
+          alternative_format_contact_email: "foo@bar.com",
         ),
       )
     end
