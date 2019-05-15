@@ -1,9 +1,21 @@
-Content Publisher is a new way of publishing content on GOV.UK. It is designed to make it 
-easier to publish useful content and to help you use data to manage that content.
+Content Publisher is a new way of publishing content on GOV.UK. It is designed to make it easier to publish useful content and to help you use data to manage that content.
 
-We are now beta testing Content Publisher with government publishers. The beta version will have limited functionality at first. We are adding and improving features. 
+We are beta testing Content Publisher. The beta version has limited functionality. We are adding and improving features. Read more about [what Content Publisher can and cannot do](/beta-capabilities).
 
-Read more about [what Content Publisher can and cannot do](/beta-capabilities).
+##Whitehall users
+
+Content Publisher works differently to Whitehall. If you are familiar with Whitehall there are some differences to be aware of:
+
+- Markdown can be added using a menu to format text
+- Text pasted into the content body will be automatically converted to markdown
+- There is an Insert menu to use to add pictures, contacts, or video embeds
+- Pictures can be any size larger than 960px wide and 640px high 
+- Content has one primary organisation tag. They will be responsible for it
+- Pictures to go at the top of content are added in the Lead Image section
+- Previews can be shared to show other people the page
+- You don’t need a second user to publish content if it has already been approved
+
+---
 
 ##How to create content
 
