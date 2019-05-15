@@ -719,6 +719,11 @@ lru-cache@^4.0.1:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
+markdown-toolbar-element@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/markdown-toolbar-element/-/markdown-toolbar-element-0.2.0.tgz#df9f1bc347e1f3174ddc4d69e4e6f5fe2c32285a"
+  integrity sha512-0QJfZmS7JE6JNtax2U1qdTQSFCO3dtQBlVYzTMO8nKuOktbR1xJVk7mneMBTVj9j2GTnq+dquDqk2Hb+fDKhFg==
+
 mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
