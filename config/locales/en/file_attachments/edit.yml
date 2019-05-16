@@ -12,4 +12,7 @@ en:
 
           Files must be uploaded in an [open standards file format](https://www.gov.uk/guidance/content-design/planning-content#open-formats){:target="_blank"}.
           For example, .odt not .docx.
-        filename_change_callout: If your new file has a different file name or file type to the original you will need to update the attachment markdown in your content.
+        filename_change_callout_govspeak: |
+          If your new file has a different file name or file type to the original you will need to update the attachment markdown in your content.
+
+          Existing file: %{filename}

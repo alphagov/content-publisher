@@ -25,7 +25,10 @@
       } %>
       <%= render_govspeak(t("file_attachments.edit.attachment_file.description_govspeak")) %>
       <%= render "govuk_publishing_components/components/inset_text", {
-        text: t("file_attachments.edit.attachment_file.filename_change_callout"),
+        text: render_govspeak(
+          t("file_attachments.edit.attachment_file.filename_change_callout_govspeak",
+            filename: @attachment.filename)
+        ),
       } %>
       <%= render "govuk_publishing_components/components/file_upload", {
         name: "file_attachment[file]",
