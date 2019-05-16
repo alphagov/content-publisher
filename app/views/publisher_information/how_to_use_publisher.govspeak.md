@@ -10,7 +10,7 @@ Content Publisher works differently to Whitehall. If you are familiar with White
 - Text pasted into the content body will be automatically converted to markdown
 - There is an Insert menu to use to add pictures, contacts, or video embeds
 - Pictures can be any size larger than 960px wide and 640px high 
-- Content has one primary organisation tag. They will be responsible for it
+- Content is tagged to one Primary Organisation and they are responsible for managing that content
 - Pictures to go at the top of content are added in the Lead Image section
 - Previews can be shared to show other people the page
 - You don’t need a second user to publish content if it has already been approved
