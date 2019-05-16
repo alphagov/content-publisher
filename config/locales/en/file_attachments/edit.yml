@@ -16,3 +16,5 @@ en:
           If your new file has a different file name or file type to the original you will need to update the attachment markdown in your content.
 
           Existing file: %{filename}
+      flashes:
+        update_confirmation: Attachment has been updated. If your new file has a different file name or file type to the original then you now need to replace the attachment markdown in your content.
