@@ -8,7 +8,8 @@ Updated styling of markdown preview to help you see the difference between editi
 
 Added [guidance to help users familiar with Whitehall publisher get started](/how-to-use-publisher).
 
-We have also updated the guidance on 
+We have also updated the guidance on:
+
 - image captions and credits
 - image cropping
 - organisation tags
