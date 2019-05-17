@@ -1,3 +1,21 @@
+
+### Email links, content data, and guidance updates <span class="govuk-caption-m">17 May 2019</span>
+Added a link to [Content Data](https://content-data.publishing.service.gov.uk/content) from the edit screen so you can easily check the performance of published content.
+
+You can now make email links with the link button. Select an email address and the link button will add email markdown.
+
+Updated styling of markdown preview to help you see the difference between editing and preview more easily.
+
+Added [guidance to help users familiar with Whitehall publisher get started](/how-to-use-publisher).
+
+We have also updated the guidance on:
+
+- image captions and credits
+- image cropping
+- organisation tags
+- sending links for 2i review
+- address markdown
+
 ### Body text converted to markdown <span class="govuk-caption-m">17 April 2019</span>
 When you paste text into the body field Content Publisher will try to convert it to markdown. It will recognise headings, links, and lists. Other formatting will be removed and only plain text pasted.
 
