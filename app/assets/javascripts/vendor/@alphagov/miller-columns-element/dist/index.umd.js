@@ -186,6 +186,25 @@
           return memo.concat(topic.selectedChildren);
         }, []);
       }
+    }, {
+      key: 'flattenedTopics',
+      get: function get() {
+        return this.topics.reduce(function (memo, topic) {
+          memo.push(topic);
+          return memo.concat(topic.flattenedChildren);
+        }, []);
+      }
+    }, {
+      key: 'allTopicNames',
+      get: function get() {
+        if (!this.topics) {
+          return [];
+        }
+
+        return this.flattenedTopics.map(function (topic) {
+          return topic.topicNames;
+        });
+      }
     }]);
 
     return Taxonomy;
@@ -405,6 +424,38 @@
         return this.label.textContent.replace(/(^\s+|\s+$)/g, '');
       }
     }, {
+      key: 'topicNames',
+      get: function get() {
+        var items = [];
+        var _iteratorNormalCompletion6 = true;
+        var _didIteratorError6 = false;
+        var _iteratorError6 = undefined;
+
+        try {
+          for (var _iterator6 = this.parents[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+            var parent = _step6.value;
+
+            items.push(parent.topicName);
+          }
+        } catch (err) {
+          _didIteratorError6 = true;
+          _iteratorError6 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion6 && _iterator6.return) {
+              _iterator6.return();
+            }
+          } finally {
+            if (_didIteratorError6) {
+              throw _iteratorError6;
+            }
+          }
+        }
+
+        items.push(this.topicName);
+        return items;
+      }
+    }, {
       key: 'selectedChildren',
       get: function get() {
         return this.children.reduce(function (memo, topic) {
@@ -423,6 +474,14 @@
         } else {
           return [];
         }
+      }
+    }, {
+      key: 'flattenedChildren',
+      get: function get() {
+        return this.children.reduce(function (memo, topic) {
+          memo.push(topic);
+          return memo.concat(topic.flattenedChildren);
+        }, []);
       }
     }]);
 
@@ -476,27 +535,27 @@
           ul.classList.add(this.classNames.columnCollapse);
         }
         this.appendChild(ul);
-        var _iteratorNormalCompletion6 = true;
-        var _didIteratorError6 = false;
-        var _iteratorError6 = undefined;
+        var _iteratorNormalCompletion7 = true;
+        var _didIteratorError7 = false;
+        var _iteratorError7 = undefined;
 
         try {
-          for (var _iterator6 = topics[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-            var topic = _step6.value;
+          for (var _iterator7 = topics[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+            var topic = _step7.value;
 
             this.renderTopic(topic, ul);
           }
         } catch (err) {
-          _didIteratorError6 = true;
-          _iteratorError6 = err;
+          _didIteratorError7 = true;
+          _iteratorError7 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion6 && _iterator6.return) {
-              _iterator6.return();
+            if (!_iteratorNormalCompletion7 && _iterator7.return) {
+              _iterator7.return();
             }
           } finally {
-            if (_didIteratorError6) {
-              throw _iteratorError6;
+            if (_didIteratorError7) {
+              throw _iteratorError7;
             }
           }
         }
@@ -551,13 +610,13 @@
       value: function updateClassName(className, items) {
         var currentlyWithClass = nodesToArray(this.getElementsByClassName(className));
 
-        var _iteratorNormalCompletion7 = true;
-        var _didIteratorError7 = false;
-        var _iteratorError7 = undefined;
+        var _iteratorNormalCompletion8 = true;
+        var _didIteratorError8 = false;
+        var _iteratorError8 = undefined;
 
         try {
-          for (var _iterator7 = currentlyWithClass.concat(items)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-            var item = _step7.value;
+          for (var _iterator8 = currentlyWithClass.concat(items)[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+            var item = _step8.value;
 
             if (!item) {
               continue;
@@ -570,16 +629,16 @@
             }
           }
         } catch (err) {
-          _didIteratorError7 = true;
-          _iteratorError7 = err;
+          _didIteratorError8 = true;
+          _iteratorError8 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion7 && _iterator7.return) {
-              _iterator7.return();
+            if (!_iteratorNormalCompletion8 && _iterator8.return) {
+              _iterator8.return();
             }
           } finally {
-            if (_didIteratorError7) {
-              throw _iteratorError7;
+            if (_didIteratorError8) {
+              throw _iteratorError8;
             }
           }
         }
@@ -590,13 +649,13 @@
         var _this3 = this;
 
         var selectedItems = selectedTopics.reduce(function (memo, child) {
-          var _iteratorNormalCompletion8 = true;
-          var _didIteratorError8 = false;
-          var _iteratorError8 = undefined;
+          var _iteratorNormalCompletion9 = true;
+          var _didIteratorError9 = false;
+          var _iteratorError9 = undefined;
 
           try {
-            for (var _iterator8 = child.withParents()[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-              var topic = _step8.value;
+            for (var _iterator9 = child.withParents()[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+              var topic = _step9.value;
 
               var item = topic.checkbox.closest('.' + _this3.classNames.item);
               if (item instanceof HTMLElement) {
@@ -604,16 +663,16 @@
               }
             }
           } catch (err) {
-            _didIteratorError8 = true;
-            _iteratorError8 = err;
+            _didIteratorError9 = true;
+            _iteratorError9 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion8 && _iterator8.return) {
-                _iterator8.return();
+              if (!_iteratorNormalCompletion9 && _iterator9.return) {
+                _iterator9.return();
               }
             } finally {
-              if (_didIteratorError8) {
-                throw _iteratorError8;
+              if (_didIteratorError9) {
+                throw _iteratorError9;
               }
             }
           }
@@ -655,14 +714,14 @@
         var _classNames = this.classNames,
             collapseClass = _classNames.columnCollapse,
             narrowClass = _classNames.columnNarrow;
-        var _iteratorNormalCompletion9 = true;
-        var _didIteratorError9 = false;
-        var _iteratorError9 = undefined;
+        var _iteratorNormalCompletion10 = true;
+        var _didIteratorError10 = false;
+        var _iteratorError10 = undefined;
 
         try {
 
-          for (var _iterator9 = allColumns[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-            var item = _step9.value;
+          for (var _iterator10 = allColumns[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+            var item = _step10.value;
 
             if (!item) {
               continue;
@@ -689,16 +748,16 @@
             }
           }
         } catch (err) {
-          _didIteratorError9 = true;
-          _iteratorError9 = err;
+          _didIteratorError10 = true;
+          _iteratorError10 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion9 && _iterator9.return) {
-              _iterator9.return();
+            if (!_iteratorNormalCompletion10 && _iterator10.return) {
+              _iterator10.return();
             }
           } finally {
-            if (_didIteratorError9) {
-              throw _iteratorError9;
+            if (_didIteratorError10) {
+              throw _iteratorError10;
             }
           }
         }
@@ -767,34 +826,7 @@
         }
 
         return this.taxonomy.selectedTopics.map(function (topic) {
-          var items = [];
-          var _iteratorNormalCompletion10 = true;
-          var _didIteratorError10 = false;
-          var _iteratorError10 = undefined;
-
-          try {
-            for (var _iterator10 = topic.parents[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-              var parent = _step10.value;
-
-              items.push(parent.topicName);
-            }
-          } catch (err) {
-            _didIteratorError10 = true;
-            _iteratorError10 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion10 && _iterator10.return) {
-                _iterator10.return();
-              }
-            } finally {
-              if (_didIteratorError10) {
-                throw _iteratorError10;
-              }
-            }
-          }
-
-          items.push(topic.topicName);
-          return items;
+          return topic.topicNames;
         });
       }
     }, {
