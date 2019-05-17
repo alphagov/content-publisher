@@ -1,4 +1,4 @@
-<span class="govuk-hint">Last updated: 23 May 2019</span>
+<span class="govuk-hint">Last updated: 29 May 2019</span>
 
 Content Publisher beta can be used to publish the following document types:
 
@@ -18,6 +18,6 @@ Some features are not available yet:
 * access limiting
 * translations
 
-If you need to publish a document that requires any of these features you should use Whitehall publisher. 
+If you need to publish a document that requires any of these features you should use Whitehall publisher.
 
 If you use Whitehall to publish News content please send feedback to explain why.

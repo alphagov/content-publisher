@@ -1,6 +1,6 @@
 
-### Attachments <span class="govuk-caption-m">23 May 2019</span>
-You can now upload file attachments and link to them in the body text of content using the Insert menu. 
+### Attachments <span class="govuk-caption-m">29 May 2019</span>
+You can now upload file attachments and link to them in the body text of content using the Insert menu.
 
 Attachments can be displayed as icons or as simple links. Attachment titles can be edited and files can be replaced.
 
