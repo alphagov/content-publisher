@@ -45,7 +45,10 @@ RSpec.feature "Edit image metadata with requirements issues", js: true do
 
     click_on "Edit image"
     click_on "Crop image"
+
+    expect(page).to have_selector(".app-c-image-meta")
     fill_in "image_revision[alt_text]", with: ""
+
     click_on "Save"
   end
 
