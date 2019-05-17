@@ -16,7 +16,6 @@ en:
         image_updated: "Updated image"
         image_deleted: "Deleted image"
         new_edition: "New edition"
-        create_preview: "Create preview"
         withdrawn: "Withdrawn"
         withdrawn_updated: "Updated withdrawal explanation"
         removed: "Removed"

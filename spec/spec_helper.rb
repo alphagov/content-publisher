@@ -18,6 +18,7 @@ require "govuk_sidekiq/testing"
 Dir[Rails.root.join("spec", "support", "**", "*.rb")].each { |f| require f }
 SimpleCov.start
 GovukTest.configure
+I18nCov.start
 WebMock.disable_net_connect!(allow_localhost: true)
 Capybara.automatic_label_click = true
 ActiveRecord::Migration.maintain_test_schema!
