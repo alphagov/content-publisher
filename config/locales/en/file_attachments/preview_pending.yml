@@ -1,8 +1,8 @@
 en:
   file_attachments:
     preview_pending:
-      title: Sorry, this file isn't available yet
+      title: Sorry, you can't preview this file yet
       description_govspeak: |
-        Your file is being scanned and will be ready to preview soon.
+        Your file is still being security scanned.
 
-        Please refresh or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new) if it's not available after 5 minutes.
+        Please try again in a few minutes.
