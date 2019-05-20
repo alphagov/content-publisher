@@ -56,7 +56,9 @@ class Revision < ApplicationRecord
            :scheduled_publishing_datetime,
            to: :metadata_revision
 
-  delegate :tags, to: :tags_revision
+  delegate :tags,
+           :primary_publishing_organisation_id,
+           to: :tags_revision
 
   def self.create_initial(document, user = nil, tags = {})
     Revision.create!(

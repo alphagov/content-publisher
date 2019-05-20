@@ -3,6 +3,12 @@
 RSpec.describe GovspeakDocument::InAppOptions do
   include Rails.application.routes.url_helpers
 
+  let(:organisation_service) { instance_double(OrganisationService) }
+
+  before do
+    allow(OrganisationService).to receive(:new) { organisation_service }
+  end
+
   describe "#to_h" do
     it "returns a hash of image attributes" do
       image_revision = build(:image_revision,
@@ -35,6 +41,9 @@ RSpec.describe GovspeakDocument::InAppOptions do
       edition = build(:edition,
                       file_attachment_revisions: [attachment_revision])
 
+      allow(organisation_service)
+        .to receive(:alternative_format_contact_email) { "foo@bar.com" }
+
       in_app_options = GovspeakDocument::InAppOptions.new("govspeak", edition)
       actual_attachment_options = in_app_options.to_h[:attachments].first
 
@@ -47,6 +56,7 @@ RSpec.describe GovspeakDocument::InAppOptions do
           number_of_pages: 1,
           file_size: 13264,
           url: preview_file_attachment_path(edition.document, attachment_revision.file_attachment),
+          alternative_format_contact_email: "foo@bar.com",
         ),
       )
     end

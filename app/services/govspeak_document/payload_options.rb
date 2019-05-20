@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-
 class GovspeakDocument::PayloadOptions < GovspeakDocument::Options
+  include Rails.application.routes.url_helpers
   include FileAttachmentHelper
 
   attr_reader :text, :edition
@@ -16,11 +16,11 @@ class GovspeakDocument::PayloadOptions < GovspeakDocument::Options
 private
 
   def payload_images
-    edition.revision.image_revisions.map { |image_revision| image_attributes(image_revision) }
+    edition.revision.image_revisions.map(&method(:image_attributes))
   end
 
   def payload_attachments
-    edition.file_attachment_revisions.map { |far| file_attachment_payload_attributes(far) }
+    edition.file_attachment_revisions.map(&method(:attachment_attributes))
   end
 
   def image_attributes(image_revision)
@@ -31,5 +31,15 @@ private
       credit: image_revision.credit,
       id: image_revision.filename,
     }
+  end
+
+  def attachment_attributes(attachment_revision)
+    alt_email = OrganisationService.new(edition).alternative_format_contact_email
+    attributes = file_attachment_attributes(attachment_revision, edition.document)
+
+    attributes.merge(
+      url: attachment_revision.asset_url("file"),
+      alternative_format_contact_email: alt_email,
+    )
   end
 end
