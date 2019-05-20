@@ -25,12 +25,13 @@ RSpec.feature "Preview file attachment", js: true do
 
   def when_i_preview_the_attachment
     visit edit_document_path(@edition.document)
-    find("markdown-toolbar details").click
-    @new_window = window_opened_by { click_on "Attachment" }
-
-    within_window(@new_window) do
-      @preview_window = window_opened_by { click_on "Preview" }
+    within(".app-c-markdown-editor") do
+      find("markdown-toolbar details").click
+      click_on "Attachment"
     end
+
+    expect(page).to have_selector(".gem-c-attachment__metadata")
+    @preview_window = window_opened_by { click_on "Preview" }
   end
 
   def then_i_should_see_the_attachment

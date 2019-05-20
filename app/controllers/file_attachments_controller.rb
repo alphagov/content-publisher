@@ -5,6 +5,7 @@ class FileAttachmentsController < ApplicationController
 
   def index
     @edition = Edition.find_current(document: params[:document])
+    render layout: rendering_context
   end
 
   def show
