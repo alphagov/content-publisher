@@ -44,6 +44,7 @@ module Requirements
     def pre_update_issues
       issues = []
       issues += title_issues if title_issues.any?
+      issues += file_issues if file.present? && file_issues.any?
 
       CheckerIssues.new(issues)
     end
@@ -68,7 +69,9 @@ module Requirements
     end
 
     def content_type
-      @content_type ||= Marcel::MimeType.for(file, declared_type: file.content_type, name: file.original_filename)
+      @content_type ||= Marcel::MimeType.for(file,
+                                             declared_type: file.content_type,
+                                             name: file.original_filename)
     end
 
     def title_issues

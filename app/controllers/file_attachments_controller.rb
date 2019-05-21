@@ -84,8 +84,8 @@ class FileAttachmentsController < ApplicationController
                         attachment: attachment_revision },
              status: :unprocessable_entity
     else
-      redirect_to file_attachment_path(edition.document,
-                                       attachment_revision.file_attachment)
+      flash[:notice] = I18n.t!("file_attachments.edit.flashes.update_confirmation")
+      redirect_to file_attachments_path(edition.document)
     end
   end
 end

@@ -12,9 +12,10 @@ class FileAttachments::UpdateInteractor
   def call
     Edition.transaction do
       find_and_lock_edition
-      find_and_update_file_attachment
-
+      find_file_attachment
       check_for_issues
+
+      update_file_attachment
       update_edition
 
       create_timeline_entry
@@ -28,22 +29,26 @@ private
     context.edition = Edition.lock.find_current(document: params[:document])
   end
 
-  def find_and_update_file_attachment
-    current_attachment_revision = edition.file_attachment_revisions
-                                         .find_by!(file_attachment_id: params[:file_attachment_id])
-    attachment_params = params.require(:file_attachment).permit(:title)
-
-    updater = Versioning::FileAttachmentRevisionUpdater.new(current_attachment_revision, user)
-    updater.assign(attachment_params)
-
-    context.file_attachment_revision = updater.next_revision
+  def find_file_attachment
+    context.file_attachment_revision = edition.file_attachment_revisions
+                                              .find_by!(file_attachment_id: params[:file_attachment_id])
   end
 
   def check_for_issues
-    checker = Requirements::FileAttachmentChecker.new(title: file_attachment_revision.title)
+    checker = Requirements::FileAttachmentChecker.new(file: attachment_params[:file],
+                                                      title: attachment_params[:title])
     issues = checker.pre_update_issues
 
     context.fail!(issues: issues) if issues.any?
+  end
+
+  def update_file_attachment
+    updater = Versioning::FileAttachmentRevisionUpdater.new(file_attachment_revision, user)
+    attributes = attachment_params.slice(:title)
+                                  .merge(blob_attributes(file_attachment_revision))
+
+    updater.assign(attributes)
+    context.file_attachment_revision = updater.next_revision
   end
 
   def update_edition
@@ -62,5 +67,23 @@ private
 
   def update_preview
     PreviewService.new(edition).try_create_preview
+  end
+
+  def attachment_params
+    params.require(:file_attachment).permit(:file, :title)
+  end
+
+  def blob_attributes(file_attachment_revision)
+    return {} unless attachment_params[:file]
+
+    blob_service = FileAttachmentBlobService.new(file: attachment_params[:file],
+                                                 revision: edition.revision,
+                                                 replacement: file_attachment_revision)
+
+    {
+      blob_id: blob_service.blob_id,
+      filename: blob_service.filename,
+      number_of_pages: blob_service.number_of_pages,
+    }
   end
 end

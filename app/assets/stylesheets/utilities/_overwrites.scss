@@ -69,3 +69,11 @@
     @include govuk-font(19);
   }
 }
+
+.govuk-inset-text {
+  .govuk-govspeak {
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
