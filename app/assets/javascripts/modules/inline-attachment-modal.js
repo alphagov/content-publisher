@@ -49,6 +49,15 @@ InlineAttachmentModal.prototype.performAction = function (item) {
     'insert': function () {
       this.render(window.ModalFetch.getLink(item))
     },
+    'delete': function () {
+      this.render(window.ModalFetch.postForm(item))
+    },
+    'edit': function () {
+      this.render(window.ModalFetch.getLink(item))
+    },
+    'update': function () {
+      this.render(window.ModalFetch.postForm(item))
+    },
     'back': function () {
       this.render(window.ModalFetch.getLink(item))
     }

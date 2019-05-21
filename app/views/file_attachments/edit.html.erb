@@ -1,5 +1,6 @@
 <% content_for :title, t("file_attachments.edit.title", title: @edition.title_or_fallback) %>
-<% content_for :back_link, render_back_link(href: file_attachments_path(@edition.document)) %>
+<% content_for :back_link, render_back_link(href: file_attachments_path(@edition.document),
+                                            data_attributes: { "modal-action": "back" }) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -7,6 +8,9 @@
       update_file_attachment_path(@edition.document, @attachment.file_attachment_id),
       method: :patch,
       multipart: true,
+      data: {
+        "modal-action": "update",
+      },
     ) do %>
       <%= render "govuk_publishing_components/components/input", {
         label: {

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Replace a file attachment file" do
+RSpec.feature "Replace a file attachment file", js: true do
   scenario do
     given_there_is_an_edition_with_an_attachment
     when_i_click_to_insert_an_attachment
@@ -58,6 +58,8 @@ RSpec.feature "Replace a file attachment file" do
     expect(@create_new_file_request).to have_been_requested
 
     visit document_path(@edition.document)
+    click_on "Document history"
+
     within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!(
         "documents.history.entry_types.file_attachment_updated",

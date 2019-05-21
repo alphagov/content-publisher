@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Preview file attachment when Asset Manager is down" do
+RSpec.feature "Preview file attachment when Asset Manager is down", js: true do
   scenario do
     given_there_is_an_edition_with_attachments
     and_asset_manager_is_down
@@ -26,10 +26,14 @@ RSpec.feature "Preview file attachment when Asset Manager is down" do
     visit edit_document_path(@edition.document)
     find("markdown-toolbar details").click
     click_on "Attachment"
-    click_on "Preview"
+
+    expect(page).to have_selector(".gem-c-attachment__metadata")
+    @preview_window = window_opened_by { click_on "Preview" }
   end
 
   def then_i_should_see_a_pending_page
-    expect(page).to have_content I18n.t!("file_attachments.preview_pending.title")
+    within_window @preview_window do
+      expect(page).to have_content I18n.t!("file_attachments.preview_pending.title")
+    end
   end
 end

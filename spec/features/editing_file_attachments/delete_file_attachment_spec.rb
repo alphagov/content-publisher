@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Delete a file attachment" do
+RSpec.feature "Delete a file attachment", js: true do
   scenario do
     given_there_is_an_edition_with_attachments
     when_i_insert_an_attachment
@@ -28,6 +28,7 @@ RSpec.feature "Delete a file attachment" do
   def and_i_delete_the_attachment
     @put_content_request = stub_publishing_api_put_content(@edition.content_id, {})
     @delete_asset_request = stub_asset_manager_deletes_any_asset
+    expect(page).to have_selector(".gem-c-attachment__metadata")
     click_on "Delete attachment"
   end
 

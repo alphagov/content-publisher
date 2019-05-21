@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit a file attachment with requirements issues" do
+RSpec.feature "Edit a file attachment with requirements issues", js: true do
   scenario do
     given_there_is_an_edition_with_a_file_attachment
     when_i_go_to_insert_an_attachment
@@ -25,6 +25,7 @@ RSpec.feature "Edit a file attachment with requirements issues" do
   end
 
   def and_i_click_on_edit_file
+    expect(page).to have_selector(".gem-c-attachment__metadata")
     click_on "Edit file"
   end
 
