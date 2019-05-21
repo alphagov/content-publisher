@@ -12,6 +12,9 @@
       <%= form_tag(
         create_file_attachment_path(@edition.document),
         multipart: true,
+        data: {
+          "modal-action": "upload",
+        },
       ) do %>
         <%= render "govuk_publishing_components/components/file_upload", {
           label: {

@@ -4,6 +4,9 @@
   "Insert attachment",
   file_attachment_path(document, attachment.file_attachment),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
+  data: {
+    "modal-action": "insert",
+  },
 ) %>
 
 <% actions << link_to(

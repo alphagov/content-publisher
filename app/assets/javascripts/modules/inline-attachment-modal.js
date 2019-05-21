@@ -42,6 +42,15 @@ InlineAttachmentModal.prototype.performAction = function (item) {
       this.$modal.resize('narrow')
       this.$modal.open()
       this.render(window.ModalFetch.getLink(item))
+    },
+    'upload': function () {
+      this.render(window.ModalFetch.postForm(item))
+    },
+    'insert': function () {
+      this.render(window.ModalFetch.getLink(item))
+    },
+    'back': function () {
+      this.render(window.ModalFetch.getLink(item))
     }
   }
 

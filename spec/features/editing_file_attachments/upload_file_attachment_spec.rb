@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Upload file attachment" do
+RSpec.feature "Upload file attachment", js: true do
   scenario do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
@@ -63,6 +63,8 @@ RSpec.feature "Upload file attachment" do
     expect(@asset_manager_request).to have_been_requested.at_least_once
 
     visit document_path(@edition.document)
+    click_on "Document history"
+
     within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.file_attachment_uploaded")
     end
