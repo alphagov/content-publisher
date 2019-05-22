@@ -25,6 +25,7 @@
 //= require vendor/@alphagov/miller-columns-element/dist/index.umd.js
 
 //= require modal/modal-fetch.js
+//= require modal/modal-editor.js
 //= require modal/modal-workflow.js
 
 //= require modules/gtm-checked-inputs-listener.js

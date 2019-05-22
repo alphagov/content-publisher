@@ -12,6 +12,8 @@ InlineAttachmentModal.prototype.init = function () {
   this.$multiSectionViewer = this.$modal
     .querySelector('[data-module="multi-section-viewer"]')
 
+  this.editor = new window.ModalEditor(this.$module)
+
   this.$module.addEventListener('click', function (event) {
     event.preventDefault()
     this.performAction(this.$module)
@@ -34,16 +36,6 @@ InlineAttachmentModal.prototype.renderSuccess = function (result) {
   this.$multiSectionViewer.showDynamicSection(result.body)
   this.workflow.overrideActions(this.performAction.bind(this))
   this.workflow.initComponents()
-}
-
-InlineAttachmentModal.prototype.insertAttachmentBlockSnippet = function (item) {
-  var editor = this.$module.closest('[data-module="markdown-editor"]')
-  editor.selectionReplace(item.dataset.modalData, { surroundWithNewLines: true })
-}
-
-InlineAttachmentModal.prototype.insertAttachmentLinkSnippet = function (item) {
-  var editor = this.$module.closest('[data-module="markdown-editor"]')
-  editor.selectionReplace(item.dataset.modalData)
 }
 
 InlineAttachmentModal.prototype.performAction = function (item) {
@@ -73,11 +65,11 @@ InlineAttachmentModal.prototype.performAction = function (item) {
     },
     'insert-attachment-block': function () {
       this.$modal.close()
-      this.insertAttachmentBlockSnippet(item)
+      this.editor.insertBlock(item.dataset.modalData)
     },
     'insert-attachment-link': function () {
       this.$modal.close()
-      this.insertAttachmentLinkSnippet(item)
+      this.editor.insertInline(item.dataset.modalData)
     }
   }
 

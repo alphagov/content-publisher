@@ -12,6 +12,8 @@ VideoEmbedModal.prototype.init = function () {
   this.$multiSectionViewer = this.$modal
     .querySelector('[data-module="multi-section-viewer"]')
 
+  this.editor = new window.ModalEditor(this.$module)
+
   this.$module.addEventListener('click', function (event) {
     event.preventDefault()
     this.performAction(this.$module)
@@ -36,11 +38,6 @@ VideoEmbedModal.prototype.renderSuccess = function (result) {
   this.workflow.initComponents()
 }
 
-VideoEmbedModal.prototype.insertSnippet = function (text) {
-  var editor = this.$module.closest('[data-module="markdown-editor"]')
-  editor.selectionReplace(text, { surroundWithNewLines: true })
-}
-
 VideoEmbedModal.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
@@ -55,7 +52,7 @@ VideoEmbedModal.prototype.performAction = function (item) {
             this.renderSuccess(result)
           } else {
             this.$modal.close()
-            this.insertSnippet(result.body)
+            this.editor.insertBlock(result.body)
           }
         }.bind(this))
         .catch(this.renderError.bind(this))

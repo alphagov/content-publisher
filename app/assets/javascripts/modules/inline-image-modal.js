@@ -12,6 +12,8 @@ InlineImageModal.prototype.init = function () {
   this.$multiSectionViewer = this.$modal
     .querySelector('[data-module="multi-section-viewer"]')
 
+  this.editor = new window.ModalEditor(this.$module)
+
   this.$module.addEventListener('click', function (event) {
     event.preventDefault()
     this.performAction(this.$module)
@@ -36,11 +38,6 @@ InlineImageModal.prototype.renderSuccess = function (result) {
   this.workflow.initComponents()
 }
 
-InlineImageModal.prototype.insertSnippet = function (item) {
-  var editor = this.$module.closest('[data-module="markdown-editor"]')
-  editor.selectionReplace(item.dataset.modalData, { surroundWithNewLines: true })
-}
-
 InlineImageModal.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
@@ -50,7 +47,7 @@ InlineImageModal.prototype.performAction = function (item) {
     },
     'insert': function () {
       this.$modal.close()
-      this.insertSnippet(item)
+      this.editor.insertBlock(item.dataset.modalData)
     },
     'upload': function () {
       this.render(window.ModalFetch.postForm(item))
@@ -80,7 +77,7 @@ InlineImageModal.prototype.performAction = function (item) {
             this.renderSuccess(result)
           } else {
             this.$modal.close()
-            this.insertSnippet(item)
+            this.editor.insertBlock(item.dataset.modalData)
           }
         }.bind(this))
         .catch(this.renderError.bind(this))
