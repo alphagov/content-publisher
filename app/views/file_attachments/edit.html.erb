@@ -3,7 +3,7 @@
                                             data_attributes: { "modal-action": "back" }) %>
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-column-full">
     <%= form_tag(
       update_file_attachment_path(@edition.document, @attachment.file_attachment_id),
       method: :patch,
