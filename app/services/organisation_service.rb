@@ -22,6 +22,8 @@ class OrganisationService
     primary_org = self.class.by_content_id(primary_org_content_id)
     email = primary_org.dig("details", "alternative_format_contact_email")
     email.presence || DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
+  rescue GdsApi::HTTPNotFound
+    DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
   end
 
 private
