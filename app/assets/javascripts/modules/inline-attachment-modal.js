@@ -41,6 +41,11 @@ InlineAttachmentModal.prototype.insertAttachmentBlockSnippet = function (item) {
   editor.selectionReplace(item.dataset.modalData, { surroundWithNewLines: true })
 }
 
+InlineAttachmentModal.prototype.insertAttachmentLinkSnippet = function (item) {
+  var editor = this.$module.closest('[data-module="markdown-editor"]')
+  editor.selectionReplace(item.dataset.modalData)
+}
+
 InlineAttachmentModal.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
@@ -69,6 +74,10 @@ InlineAttachmentModal.prototype.performAction = function (item) {
     'insert-attachment-block': function () {
       this.$modal.close()
       this.insertAttachmentBlockSnippet(item)
+    },
+    'insert-attachment-link': function () {
+      this.$modal.close()
+      this.insertAttachmentLinkSnippet(item)
     }
   }
 

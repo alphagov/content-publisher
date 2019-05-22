@@ -10,6 +10,15 @@ RSpec.feature "Insert inline file attachment", js: true do
     then_i_see_the_attachment_snippet_is_inserted
   end
 
+  scenario "Attachment link" do
+    given_there_is_an_edition_with_file_attachments
+    when_i_go_to_edit_the_edition
+    and_i_click_to_insert_a_file_attachment
+    and_i_choose_one_of_the_file_attachments
+    and_i_click_on_insert_attachment_as_link
+    then_i_see_the_attachment_link_snippet_is_inserted
+  end
+
   def given_there_is_an_edition_with_file_attachments
     body_field = build(:field, id: "body", type: "govspeak")
     document_type = build(:document_type, contents: [body_field])
@@ -40,9 +49,20 @@ RSpec.feature "Insert inline file attachment", js: true do
     click_on "Insert attachment"
   end
 
+  def and_i_click_on_insert_attachment_as_link
+    click_on "Insert attachment as link"
+  end
+
   def then_i_see_the_attachment_snippet_is_inserted
     expect(page).to_not have_selector(".gem-c-modal-dialogue")
     snippet = I18n.t("file_attachments.show.attachment_markdown",
+                     filename: @file_attachment_revision.filename)
+    expect(find("#body").value).to match snippet
+  end
+
+  def then_i_see_the_attachment_link_snippet_is_inserted
+    expect(page).to_not have_selector(".gem-c-modal-dialogue")
+    snippet = I18n.t("file_attachments.show.attachment_link_markdown",
                      filename: @file_attachment_revision.filename)
     expect(find("#body").value).to match snippet
   end
