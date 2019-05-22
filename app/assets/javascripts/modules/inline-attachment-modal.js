@@ -36,6 +36,11 @@ InlineAttachmentModal.prototype.renderSuccess = function (result) {
   this.workflow.initComponents()
 }
 
+InlineAttachmentModal.prototype.insertAttachmentBlockSnippet = function (item) {
+  var editor = this.$module.closest('[data-module="markdown-editor"]')
+  editor.selectionReplace(item.dataset.modalData, { surroundWithNewLines: true })
+}
+
 InlineAttachmentModal.prototype.performAction = function (item) {
   var handlers = {
     'open': function () {
@@ -60,6 +65,10 @@ InlineAttachmentModal.prototype.performAction = function (item) {
     },
     'back': function () {
       this.render(window.ModalFetch.getLink(item))
+    },
+    'insert-attachment-block': function () {
+      this.$modal.close()
+      this.insertAttachmentBlockSnippet(item)
     }
   }
 
