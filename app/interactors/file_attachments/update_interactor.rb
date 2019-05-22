@@ -55,7 +55,7 @@ private
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.update_file_attachment(file_attachment_revision)
 
-    context.fail! unless updater.changed?
+    context.fail!(unchanged: true) unless updater.changed?
 
     edition.assign_revision(updater.next_revision, user).save!
   end

@@ -70,6 +70,7 @@ class FileAttachmentsController < ApplicationController
     edition = result.edition
     attachment_revision = result.file_attachment_revision
     issues = result.issues
+    unchanged = result.unchanged
 
     if issues
       flash.now["alert_with_items"] = {
@@ -83,6 +84,8 @@ class FileAttachmentsController < ApplicationController
                         issues: issues,
                         attachment: attachment_revision },
              status: :unprocessable_entity
+    elsif unchanged
+      redirect_to file_attachments_path(edition.document)
     else
       flash[:notice] = I18n.t!("file_attachments.edit.flashes.update_confirmation")
       redirect_to file_attachments_path(edition.document)
