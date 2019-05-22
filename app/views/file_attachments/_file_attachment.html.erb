@@ -6,6 +6,7 @@
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     "modal-action": "insert",
+    gtm: "insert-attachment",
   },
 ) %>
 
@@ -14,6 +15,9 @@
   preview_file_attachment_path(document, attachment.file_attachment),
   target: :_blank,
   class: "govuk-link govuk-link--no-visited-state app-link--button",
+  data: {
+    gtm: "preview-attachment"
+  }
 ) %>
 
 <% actions << link_to(
@@ -22,6 +26,7 @@
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     "modal-action": "edit",
+    gtm: "edit-attachment",
   },
 ) %>
 
@@ -32,6 +37,7 @@
     class: "app-inline-block",
     data: {
       "modal-action": "delete",
+      gtm: "delete-attachment",
     },
   ) do %>
     <button class="govuk-link app-link--button app-link--destructive">Delete attachment</button>

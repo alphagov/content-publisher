@@ -36,6 +36,9 @@
           } %>
         <%= render "govuk_publishing_components/components/button", {
           text: "Upload",
+          data_attributes: {
+            gtm: "upload-attachment",
+          }
         } %>
       <% end %>
     </div>
