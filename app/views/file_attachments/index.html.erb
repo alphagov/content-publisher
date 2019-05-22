@@ -1,7 +1,7 @@
 <% content_for :title, t("file_attachments.index.title", title: @edition.title_or_fallback) %>
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-column-full">
     <div class="app-pane">
       <% upload_attachment_heading = capture do %>
         <h2 class="govuk-heading-m">
@@ -12,6 +12,9 @@
       <%= form_tag(
         create_file_attachment_path(@edition.document),
         multipart: true,
+        data: {
+          "modal-action": "upload",
+        },
       ) do %>
         <%= render "govuk_publishing_components/components/file_upload", {
           label: {

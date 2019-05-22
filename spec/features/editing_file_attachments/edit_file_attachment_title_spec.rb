@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Edit a file attachment title" do
+RSpec.feature "Edit a file attachment title", js: true do
   scenario do
     given_there_is_an_edition_with_attachments
     when_i_click_to_insert_an_attachment
@@ -28,6 +28,7 @@ RSpec.feature "Edit a file attachment title" do
   end
 
   def and_i_click_on_edit_file
+    expect(page).to have_selector(".gem-c-attachment__metadata")
     click_on "Edit file"
   end
 
@@ -52,6 +53,8 @@ RSpec.feature "Edit a file attachment title" do
     expect(@put_content_request).to have_been_requested
 
     visit document_path(@edition.document)
+    click_on "Document history"
+
     within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!(
         "documents.history.entry_types.file_attachment_updated",

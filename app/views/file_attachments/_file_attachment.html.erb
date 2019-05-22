@@ -4,6 +4,9 @@
   "Insert attachment",
   file_attachment_path(document, attachment.file_attachment),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
+  data: {
+    "modal-action": "insert",
+  },
 ) %>
 
 <% actions << link_to(
@@ -17,6 +20,9 @@
   "Edit file",
   edit_file_attachment_path(document, attachment.file_attachment_id),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
+  data: {
+    "modal-action": "edit",
+  },
 ) %>
 
 <% actions << capture do %>
@@ -24,6 +30,9 @@
     destroy_file_attachment_path(document, attachment.file_attachment_id),
     method: :delete,
     class: "app-inline-block",
+    data: {
+      "modal-action": "delete",
+    },
   ) do %>
     <button class="govuk-link app-link--button app-link--destructive">Delete attachment</button>
   <% end %>

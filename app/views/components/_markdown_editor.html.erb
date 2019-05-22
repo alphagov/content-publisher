@@ -53,6 +53,10 @@
           text: "Attachment",
           href: file_attachments_path(edition.document),
           target: "_blank",
+          data_attributes: {
+            module: "inline-attachment-modal",
+            "modal-action": "open",
+          }
         }
       )
     end

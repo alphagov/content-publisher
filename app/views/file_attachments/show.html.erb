@@ -1,8 +1,9 @@
 <% content_for :title, t("file_attachments.show.title") %>
-<% content_for :back_link, render_back_link(href: file_attachments_path(@edition.document)) %>
+<% content_for :back_link, render_back_link(href: file_attachments_path(@edition.document),
+                                            data_attributes: { "modal-action": "back" }) %>
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-column-full">
     <%= render "govuk_publishing_components/components/attachment", {
       attachment: file_attachment_attributes(@attachment, @edition.document),
       target: "_blank",
