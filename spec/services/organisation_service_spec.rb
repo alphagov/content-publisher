@@ -40,6 +40,17 @@ RSpec.describe OrganisationService do
           expect(email).to eq OrganisationService::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
         end
       end
+
+      context "when the primary org is not found" do
+        before do
+          stub_any_publishing_api_call_to_return_not_found
+        end
+
+        it "returns the default alt email" do
+          email = OrganisationService.new(edition).alternative_format_contact_email
+          expect(email).to eq OrganisationService::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
+        end
+      end
     end
 
     context "when the edition has no primary org" do
