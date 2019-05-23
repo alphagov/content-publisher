@@ -6,8 +6,7 @@ RSpec.feature "Upload file attachment", js: true do
     when_i_go_to_edit_the_edition
     and_i_go_to_insert_an_attachment
     and_i_upload_a_file_attachment
-    then_i_can_see_the_attachment_markdown
-    and_i_can_see_previews_of_the_attachment
+    then_i_can_see_previews_of_the_attachment
     and_the_attachment_has_been_uploaded_successfully
   end
 
@@ -39,12 +38,7 @@ RSpec.feature "Upload file attachment", js: true do
     click_on "Upload"
   end
 
-  def then_i_can_see_the_attachment_markdown
-    expect(page).to have_content("[Attachment: #{@attachment_filename}]")
-    expect(page).to have_content("[AttachmentLink: #{@attachment_filename}]")
-  end
-
-  def and_i_can_see_previews_of_the_attachment
+  def then_i_can_see_previews_of_the_attachment
     metadata = "PDF, 13 KB, 1 page"
 
     within(".gem-c-attachment") do

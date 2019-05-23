@@ -9,18 +9,28 @@
       target: "_blank",
     } %>
 
-    <%= render "components/metadata", {
-      items: [
-        {
-          field: t("file_attachments.show.markdown_code"),
-          value: t("file_attachments.show.attachment_markdown", filename: @attachment.filename)
-        },
-      ],
-      inline: true,
-      margin_bottom: 3,
-    } %>
-    <p class="govuk-body"><%= t("file_attachments.show.attachment_instructions") %></p>
-
+    <% if rendering_context == "modal" %>
+      <%= render "govuk_publishing_components/components/button", {
+            text: "Insert attachment",
+            data_attributes: { "modal-action": "insert-attachment-block",
+                               "modal-data": I18n.t(
+                                 "file_attachments.show.attachment_markdown",
+                                 filename: @attachment.filename
+                               ) },
+      } %>
+    <% else %>
+      <%= render "components/metadata", {
+        items: [
+          {
+            field: t("file_attachments.show.markdown_code"),
+            value: t("file_attachments.show.attachment_markdown", filename: @attachment.filename)
+          },
+        ],
+        inline: true,
+        margin_bottom: 3,
+      } %>
+      <p class="govuk-body"><%= t("file_attachments.show.attachment_instructions") %></p>
+    <% end %>
     <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--l"/>
 
     <div class="govuk-body">
@@ -29,16 +39,28 @@
         target: "_blank"
       } %>
     </div>
-    <%= render "components/metadata", {
-      items: [
-        {
-          field: t("file_attachments.show.markdown_code"),
-          value: t("file_attachments.show.attachment_link_markdown", filename: @attachment.filename)
-        },
-      ],
-      inline: true,
-      margin_bottom: 3,
-    } %>
-    <p class="govuk-body"><%= t("file_attachments.show.attachment_link_instructions") %></p>
+    <% if rendering_context == "modal" %>
+      <%= render "govuk_publishing_components/components/button", {
+            text: "Insert attachment as link",
+            data_attributes: { "modal-action": "insert-attachment-link",
+                               "modal-data": I18n.t(
+                                 "file_attachments.show.attachment_link_markdown",
+                                 filename: @attachment.filename
+                               ) },
+            margin_bottom: true,
+      } %>
+    <% else %>
+      <%= render "components/metadata", {
+        items: [
+          {
+            field: t("file_attachments.show.markdown_code"),
+            value: t("file_attachments.show.attachment_link_markdown", filename: @attachment.filename)
+          },
+        ],
+        inline: true,
+        margin_bottom: 3,
+      } %>
+      <p class="govuk-body"><%= t("file_attachments.show.attachment_link_instructions") %></p>
+    <% end %>
   </div>
 </div>

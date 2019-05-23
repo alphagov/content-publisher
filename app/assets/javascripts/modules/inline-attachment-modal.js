@@ -12,6 +12,8 @@ InlineAttachmentModal.prototype.init = function () {
   this.$multiSectionViewer = this.$modal
     .querySelector('[data-module="multi-section-viewer"]')
 
+  this.editor = new window.ModalEditor(this.$module)
+
   this.$module.addEventListener('click', function (event) {
     event.preventDefault()
     this.performAction(this.$module)
@@ -60,6 +62,14 @@ InlineAttachmentModal.prototype.performAction = function (item) {
     },
     'back': function () {
       this.render(window.ModalFetch.getLink(item))
+    },
+    'insert-attachment-block': function () {
+      this.$modal.close()
+      this.editor.insertBlock(item.dataset.modalData)
+    },
+    'insert-attachment-link': function () {
+      this.$modal.close()
+      this.editor.insertInline(item.dataset.modalData)
     }
   }
 
