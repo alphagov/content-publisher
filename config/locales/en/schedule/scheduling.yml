@@ -1,0 +1,10 @@
+en:
+  schedule:
+    scheduling:
+      title: Set a date and time to publish
+      date: Date
+      date_hint_text: For example, 01 08 2027
+      time: Time
+      action:
+        save: Save proposed date and time
+        schedule: Schedule to publish

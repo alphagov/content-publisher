@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     post "/clear-scheduled-publishing-datetime" => "schedule#clear_scheduled_publishing_datetime", as: :clear_scheduled_publishing_datetime
 
     get "/schedule" => "schedule#confirmation", as: :scheduling_confirmation
+    get "/scheduling" => "schedule#scheduling", as: :scheduling
     post "/schedule" => "schedule#schedule"
     get "/scheduled" => "schedule#scheduled", as: :scheduled
 

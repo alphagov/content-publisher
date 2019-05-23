@@ -21,6 +21,20 @@
   </div>
 
   <div class="govuk-grid-column-one-third">
+    <% if @edition.scheduled_publishing_datetime.present? %>
+      <% datetime = @edition.scheduled_publishing_datetime %>
+      <% time = datetime&.strftime("%l:%M%P")&.strip %>
+      <% date = datetime&.strftime("%-d %B %Y") %>
+      <%= render "govuk_publishing_components/components/notice", {
+        description_govspeak: govspeak_to_html(
+          t("documents.show.scheduling.notice.proposed_govspeak",
+            href: scheduling_path(@edition.document),
+            time: time,
+            date: date)
+        ),
+      } %>
+    <% end %>
+
     <%= render "documents/show/actions" %>
     <%= render "documents/show/document_metadata" %>
     <% if current_user.has_permission?(User::DEBUG_PERMISSION) %>

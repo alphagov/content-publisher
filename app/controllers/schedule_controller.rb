@@ -81,10 +81,14 @@ class ScheduleController < ApplicationController
     @edition = Edition.find_current(document: params[:document])
   end
 
+  def scheduling
+    @edition = Edition.find_current(document: params[:document])
+  end
+
 private
 
   def permitted_params
-    params.require(:scheduled).permit(:year, :month, :day, :time)
+    params.require(:schedule).permit(:year, :month, :day, :time, :action)
   end
 
   def review_status_issues

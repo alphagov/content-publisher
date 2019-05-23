@@ -42,6 +42,12 @@ en:
         created_by: Document created by
         last_edited_by: Last edited by
         withdrawn_by: Withdrawn by
+      scheduling:
+        notice:
+          proposed_govspeak: |
+            Proposed to publish at %{time} on %{date}
+
+            [Change date](%{href})
       flashes:
         pre_preview_issues:
           warning: To preview this document you need to

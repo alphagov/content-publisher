@@ -22,22 +22,18 @@
       <%= undo_withdraw_button(@edition) %>
     <% elsif @edition.scheduled? %>
       <%= preview_button(@edition) %>
-      <%= unschedule_button(@edition) %>
-      <%= delete_draft_link(@edition) %>
     <% else %>
       <%= submit_for_2i_button(@edition) %>
       <%= preview_button(@edition, secondary: true) %>
-      <% if @edition.schedulable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-        <%= schedule_link(@edition) %>
-      <% else %>
-        <%= publish_link(@edition) %>
+      <% if @edition.schedulable? %>
+        <%= schedule_confirmation_link(@edition) %>
+      <% elsif @edition.editable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+        <p class="govuk-body govuk-!-margin-bottom-3">
+          <%= publish_link(@edition) %>
+          <%= create_schedule_date_link(@edition, "app-link--right") %>
+        </p>
+        <%= delete_draft_link(@edition) %>
       <% end %>
-      <%= delete_draft_link(@edition, "app-link--right") %>
-    <% end %>
-
-    <% if (@edition.editable? || @edition.scheduled?) && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
-      <%= render "documents/show/scheduling_form" %>
     <% end %>
 
     <% if @edition.document.live_edition %>

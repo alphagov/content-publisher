@@ -1,0 +1,74 @@
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, t("schedule.scheduling.title") %>
+
+<% current_scheduled_publish_datetime = @edition.revision.scheduled_publishing_datetime %>
+<% default_date = Time.zone.now.tomorrow %>
+<% publish_date = current_scheduled_publish_datetime || default_date %>
+<% submitted_values = flash[:scheduled_publishing_params] %>
+<% selected_time = submitted_values&.fetch("time") ||  current_scheduled_publish_datetime&.strftime("%l:%M%P")&.strip %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document),
+                 id: "scheduled_publishing_datetime") do %>
+      <% date_input_id = "input-#{SecureRandom.hex(4)}" %>
+      <%= render "govuk_publishing_components/components/label", {
+        bold: true,
+        text: t("schedule.scheduling.date"),
+        html_for: date_input_id,
+      } %>
+      <%= render "govuk_publishing_components/components/date_input", {
+        name: "schedule",
+        hint: t("schedule.scheduling.date_hint_text"),
+        id: date_input_id,
+        items: [
+          {
+            name: "day",
+            width: 2,
+            value: submitted_values&.fetch("day") || publish_date&.day
+          },
+          {
+            name: "month",
+            width: 2,
+            value: submitted_values&.fetch("month") || publish_date&.month,
+          },
+          {
+            name: "year",
+            width: 4,
+            value: submitted_values&.fetch("year") || publish_date&.year,
+          }
+        ]
+      } %>
+      <% time_options = time_options(selected_time) %>
+      <%= render "components/autocomplete", {
+        id: "schedule[time]",
+        name: "schedule[time]",
+        label: {
+          text: t("schedule.scheduling.time"),
+          bold: true,
+        },
+        options: time_options[:options],
+        selected_options: time_options[:selected_options],
+        type: "without-narrowing-results",
+        size: 5,
+        width: "narrow",
+      } %>
+      <%= render "govuk_publishing_components/components/radio", {
+        name: "schedule[action]",
+        items: [
+          {
+            value: "save",
+            text: t("schedule.scheduling.action.save"),
+          },
+          {
+            value: "schedule",
+            text: t("schedule.scheduling.action.schedule"),
+          },
+        ]
+      } %>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Continue"
+      } %>
+    <% end %>
+  </div>
+</div>

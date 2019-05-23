@@ -38,11 +38,18 @@ module ActionsHelper
             data: { gtm: "remove" }
   end
 
-  def schedule_link(edition)
+  def schedule_confirmation_link(edition)
     link_to "Schedule",
             scheduling_confirmation_path(edition.document),
             class: "govuk-link govuk-link--no-visited-state",
-            data: { gtm: "schedule" }
+            data: { gtm: "schedule-confirm" }
+  end
+
+  def create_schedule_date_link(edition, extra_classes = [])
+    link_to "Schedule",
+            scheduling_path(edition.document),
+            class: %w(govuk-link govuk-link--no-visited-state) + Array(extra_classes),
+            data: { gtm: "schedule-date" }
   end
 
   def publish_link(edition)
