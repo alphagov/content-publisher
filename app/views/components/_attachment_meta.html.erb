@@ -1,11 +1,13 @@
 <%
   id ||= nil
   actions ||= []
+  data_attributes ||= {}
 %>
 
 <%= tag.div class: "app-c-attachment-meta", id: id do %>
   <%= render "govuk_publishing_components/components/attachment", {
     attachment: attachment,
+    data_attributes: data_attributes,
     hide_help_text: true,
     target: "_blank",
   } %>
