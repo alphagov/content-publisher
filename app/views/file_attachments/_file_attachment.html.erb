@@ -46,5 +46,8 @@
 
 <%= render "components/attachment_meta", {
   attachment: file_attachment_attributes(attachment, document),
+  data_attributes: {
+    gtm: "preview-attachment-block"
+  },
   actions: actions,
 } %>

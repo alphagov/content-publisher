@@ -7,16 +7,22 @@
     <%= render "govuk_publishing_components/components/attachment", {
       attachment: file_attachment_attributes(@attachment, @edition.document),
       target: "_blank",
+      data_attributes: {
+        gtm: "preview-attachment-block"
+      }
     } %>
 
     <% if rendering_context == "modal" %>
       <%= render "govuk_publishing_components/components/button", {
             text: "Insert attachment",
-            data_attributes: { "modal-action": "insert-attachment-block",
-                               "modal-data": I18n.t(
-                                 "file_attachments.show.attachment_markdown",
-                                 filename: @attachment.filename
-                               ) },
+            data_attributes: {
+              "modal-action": "insert-attachment-block",
+              "modal-data": I18n.t(
+                "file_attachments.show.attachment_markdown",
+                filename: @attachment.filename
+              ),
+              gtm: "insert-attachment-block"
+            },
       } %>
     <% else %>
       <%= render "components/metadata", {
@@ -36,17 +42,23 @@
     <div class="govuk-body">
       <%= render "govuk_publishing_components/components/attachment_link", {
         attachment: file_attachment_attributes(@attachment, @edition.document),
-        target: "_blank"
+        target: "_blank",
+        data_attributes: {
+          gtm: "preview-attachment-link"
+        }
       } %>
     </div>
     <% if rendering_context == "modal" %>
       <%= render "govuk_publishing_components/components/button", {
             text: "Insert attachment as link",
-            data_attributes: { "modal-action": "insert-attachment-link",
-                               "modal-data": I18n.t(
-                                 "file_attachments.show.attachment_link_markdown",
-                                 filename: @attachment.filename
-                               ) },
+            data_attributes: {
+              "modal-action": "insert-attachment-link",
+              "modal-data": I18n.t(
+                "file_attachments.show.attachment_link_markdown",
+                filename: @attachment.filename
+              ),
+              gtm: "insert-attachment-link"
+            },
             margin_bottom: true,
       } %>
     <% else %>
