@@ -19,8 +19,14 @@ class ScheduleController < ApplicationController
         render :scheduling,
                assigns: { edition: edition, issues: issues },
                status: :unprocessable_entity
+        next
       else
         set_scheduled_publishing_datetime(edition, checker.parsed_datetime)
+      end
+
+      if permitted_params[:action] == "schedule"
+        redirect_to scheduling_confirmation_path(edition.document)
+      else
         redirect_to document_path(edition.document)
       end
     end
