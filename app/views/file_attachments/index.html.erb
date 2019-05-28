@@ -14,6 +14,7 @@
         multipart: true,
         data: {
           "modal-action": "upload",
+          gtm: "upload-attachment",
         },
       ) do %>
         <%= render "govuk_publishing_components/components/file_upload", {
@@ -34,12 +35,8 @@
           hint: t("file_attachments.index.attachment_title.hint_text"),
           error_items: @issues&.items_for(:file_attachment_title),
           } %>
-        <%= render "govuk_publishing_components/components/button", {
-          text: "Upload",
-          data_attributes: {
-            gtm: "upload-attachment",
-          }
-        } %>
+
+        <%= render "govuk_publishing_components/components/button", { text: "Upload" } %>
       <% end %>
     </div>
 
