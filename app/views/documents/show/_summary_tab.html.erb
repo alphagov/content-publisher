@@ -21,10 +21,20 @@
   </div>
 
   <div class="govuk-grid-column-one-third">
-    <% if @edition.scheduled_publishing_datetime.present? %>
-      <% datetime = @edition.scheduled_publishing_datetime %>
-      <% time = datetime&.strftime("%l:%M%P")&.strip %>
-      <% date = datetime&.strftime("%-d %B %Y") %>
+    <% datetime = @edition.scheduled_publishing_datetime %>
+    <% time = datetime&.strftime("%l:%M%P")&.strip %>
+    <% date = datetime&.strftime("%-d %B %Y") %>
+
+    <% if @edition.scheduled? %>
+      <%= render "govuk_publishing_components/components/notice", {
+        description_govspeak: govspeak_to_html(
+          t("documents.show.scheduling.notice.scheduled_govspeak",
+            change_path: scheduling_path(@edition.document),
+            time: time,
+            date: date)
+        ),
+      } %>
+    <% elsif @edition.scheduled_publishing_datetime.present? %>
       <%= render "govuk_publishing_components/components/notice", {
         description_govspeak: govspeak_to_html(
           t("documents.show.scheduling.notice.proposed_govspeak",

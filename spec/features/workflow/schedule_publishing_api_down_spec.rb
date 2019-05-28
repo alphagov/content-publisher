@@ -26,7 +26,7 @@ RSpec.feature "Schedule a document when Publishing API is down" do
   def and_i_try_to_schedule_the_edition
     click_on "Schedule"
     choose I18n.t!("schedule.confirmation.review_status.reviewed")
-    click_on "Publish"
+    click_on "Schedule"
   end
 
   def then_i_see_an_error_message

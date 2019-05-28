@@ -26,7 +26,8 @@
       <%= submit_for_2i_button(@edition) %>
       <%= preview_button(@edition, secondary: true) %>
       <% if @edition.schedulable? %>
-        <%= schedule_confirmation_link(@edition) %>
+        <%= delete_draft_link(@edition) %>
+        <%= schedule_confirmation_link(@edition, "app-link--right") %>
       <% elsif @edition.editable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <p class="govuk-body govuk-!-margin-bottom-3">
           <%= publish_link(@edition) %>

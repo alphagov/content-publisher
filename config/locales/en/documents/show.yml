@@ -48,6 +48,10 @@ en:
             Proposed to publish at %{time} on %{date}
 
             [Change date](%{href})
+          scheduled_govspeak: |
+            Scheduled to publish at %{time} on %{date}
+
+            [Change date](%{change_path})  
       flashes:
         pre_preview_issues:
           warning: To preview this document you need to

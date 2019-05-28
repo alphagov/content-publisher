@@ -2,9 +2,7 @@ en:
   schedule:
     confirmation:
       title: Schedule to publish
-      hint_text: "This content will be automatically published at %{time} on %{date}."
+      hint_text: "Publish at %{time} on %{date}."
       review_status:
-        reviewed: This content has been reviewed and approved for publication.
-        not_reviewed: This content needs to be published urgently but should be reviewed as soon as possible.
-      flashes:
-        requirements: You must
+        reviewed: This content has been reviewed and approved for publication
+        not_reviewed: This content needs to be reviewed after it has been published
