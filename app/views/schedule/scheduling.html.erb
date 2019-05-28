@@ -54,23 +54,30 @@
         size: 5,
         width: "narrow",
       } %>
-      <%= render "govuk_publishing_components/components/radio", {
-        name: "schedule[action]",
-        error_message: action_not_selected && action_not_selected[:text],
-        items: [
-          {
-            value: "save",
-            text: t("schedule.scheduling.action.save"),
-          },
-          {
-            value: "schedule",
-            text: t("schedule.scheduling.action.schedule"),
-          },
-        ]
-      } %>
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Continue"
-      } %>
+      <% if @edition.scheduled_publishing_datetime.present? %>
+        <%= hidden_field_tag("schedule[update]", true) %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Save date"
+        } %>
+      <% else %>
+        <%= render "govuk_publishing_components/components/radio", {
+          name: "schedule[action]",
+          error_message: action_not_selected && action_not_selected[:text],
+          items: [
+            {
+              value: "save",
+              text: t("schedule.scheduling.action.save"),
+            },
+            {
+              value: "schedule",
+              text: t("schedule.scheduling.action.schedule"),
+            },
+          ]
+        } %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Continue"
+        } %>
+      <% end %>
     <% end %>
   </div>
 </div>

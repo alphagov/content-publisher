@@ -12,7 +12,7 @@ module Requirements
       @month = params[:month]
       @year = params[:year]
       @time = params[:time]
-      @action = params[:action]
+      @action = params[:action] || params[:update]
     end
 
     def pre_submit_issues

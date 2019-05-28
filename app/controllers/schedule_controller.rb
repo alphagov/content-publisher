@@ -88,7 +88,7 @@ class ScheduleController < ApplicationController
 private
 
   def permitted_params
-    params.require(:schedule).permit(:year, :month, :day, :time, :action)
+    params.require(:schedule).permit(:year, :month, :day, :time, :action, :update)
   end
 
   def review_status_issues
