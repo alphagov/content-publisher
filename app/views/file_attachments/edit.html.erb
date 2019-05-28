@@ -10,6 +10,7 @@
       multipart: true,
       data: {
         "modal-action": "update",
+        gtm: "save-attachment"
       },
     ) do %>
       <%= render "govuk_publishing_components/components/input", {
@@ -45,9 +46,6 @@
       <%= render "govuk_publishing_components/components/button", {
         margin_bottom: true,
         text: "Save",
-        data_attributes: {
-          gtm: "save-attachment"
-        }
       } %>
     <% end %>
   </div>

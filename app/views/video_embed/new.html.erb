@@ -5,7 +5,8 @@
 <%= form_tag(
   video_embed_path,
   data: {
-    modal_action: "insert"
+    modal_action: "insert",
+    gtm: "insert-video-embed",
   }
 ) do %>
   <%= render "govuk_publishing_components/components/input", {
@@ -31,9 +32,6 @@
 
   <%= render "govuk_publishing_components/components/button", {
     margin_bottom: true,
-    data_attributes: {
-      gtm: "insert-video-embed"
-    },
     text: "Embed video",
   } %>
 <% end %>
