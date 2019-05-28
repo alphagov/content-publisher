@@ -47,13 +47,17 @@ class ScheduleController < ApplicationController
   def schedule
     Edition.find_and_lock_current(document: params[:document]) do |edition|
       if params[:review_status].blank?
+        issues = Requirements::CheckerIssues.new([
+          Requirements::Issue.new(:scheduling, :not_selected),
+        ])
+
         flash.now["alert_with_items"] = {
-          "title" => I18n.t!("schedule.confirmation.flashes.requirements"),
-          "items" => review_status_issues.items,
+          "title" => I18n.t!("requirements.scheduled_datetime.title"),
+          "items" => issues.items,
         }
 
         render :confirmation,
-               assigns: { issues: review_status_issues, edition: edition },
+               assigns: { review_status_issues: issues.items.first[:text], edition: edition },
                status: :unprocessable_entity
         next
       end
@@ -89,12 +93,6 @@ private
 
   def permitted_params
     params.require(:schedule).permit(:year, :month, :day, :time, :action, :update)
-  end
-
-  def review_status_issues
-    @review_status_issues ||= Requirements::CheckerIssues.new([
-      Requirements::Issue.new(:review_status, :not_selected),
-    ])
   end
 
   def set_scheduled_publishing_datetime(edition, datetime = nil)

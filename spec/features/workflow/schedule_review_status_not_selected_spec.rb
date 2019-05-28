@@ -17,13 +17,12 @@ RSpec.feature "Schedule without confirming a review status" do
   end
 
   def and_try_and_schedule_without_selecting_a_review_status
-    click_on "Schedule"
-    click_on "Publish"
+    2.times { click_on "Schedule" }
   end
 
   def then_an_error_is_displayed
-    within(".gem-c-error-summary") do
-      expect(page).to have_content(I18n.t!("requirements.review_status.not_selected.form_message"))
-    end
+    expect(page).to have_content(
+      I18n.t!("requirements.scheduling.not_selected.form_message"),
+    )
   end
 end
