@@ -45,6 +45,26 @@ Read full [guidance on markdown](https://www.gov.uk/guidance/how-to-publish-on-g
 
 ---
 
+##Attachments
+
+Attachments are files the user can download. You can upload file attachments and add link to them from the body text. The link can be either a simple text link or a larger icon.
+
+Use the Insert menu to upload files and add markdown which creates a link to the file. 
+
+All file attachments [must be accessible](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/accessible-pdfs), or there must be an accessible version available.
+
+All file attachments must be published in an [open standards file format](https://www.gov.uk/guidance/content-design/planning-content#open-formats). These are file types which do not require specific software. 
+
+For example, publish .odt (OpenDocument text) files instead of .docx (Word) files. Most documents can be saved in an open standards file format using the Save As or Export menu in the editing software.
+
+Open standards file types:
+.csv .odp .ods .odt .pdf 
+
+Other supported file types: 
+.doc .docx .dxf .gif .jpg .png .ppt .pptx .eps .rtf .txt .xls . xlsm .xlsx .xlm .zip
+
+---
+
 ##Lead image
 
 News content has a lead image which appears at the top of the page and is used as the thumbnail image on some links to the content.
