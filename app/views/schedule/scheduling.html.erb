@@ -57,8 +57,9 @@
       <% if @edition.scheduled_publishing_datetime.present? %>
         <%= hidden_field_tag("schedule[update]", true) %>
         <%= render "govuk_publishing_components/components/button", {
-          text: "Save date"
-        } %>
+          text: "Save date",
+          margin_bottom: true
+        } %>,
       <% else %>
         <%= render "govuk_publishing_components/components/radio", {
           name: "schedule[action]",
@@ -77,6 +78,12 @@
         <%= render "govuk_publishing_components/components/button", {
           text: "Continue"
         } %>
+      <% end %>
+    <% end %>
+
+    <% if @edition.scheduled_publishing_datetime.present? && !@edition.scheduled? %>
+      <%= form_tag clear_scheduled_publishing_datetime_path(@edition.document) do %>
+        <button class="govuk-link app-link--button govuk-link--no-visited-state">Clear schedule date</button>
       <% end %>
     <% end %>
   </div>
