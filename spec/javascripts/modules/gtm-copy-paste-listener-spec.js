@@ -7,7 +7,7 @@ describe('Gtm copy paste listener', function () {
 
   beforeEach(function () {
     container = document.createElement('div')
-    container.innerHTML = '<input data-gtm-copy-paste-tracking="my-input">'
+    container.innerHTML = '<input data-gtm-copy-paste-tracking=true>'
 
     document.body.appendChild(container)
     window.dataLayer = []
@@ -23,8 +23,7 @@ describe('Gtm copy paste listener', function () {
 
     expect(window.dataLayer).toContain(
       {
-        'event': 'text-copied',
-        'element': 'my-input'
+        'event': 'text-copied'
       }
     )
   })
@@ -35,8 +34,7 @@ describe('Gtm copy paste listener', function () {
 
     expect(window.dataLayer).toContain(
       {
-        'event': 'text-pasted',
-        'element': 'my-input'
+        'event': 'text-pasted'
       }
     )
   })
