@@ -8,8 +8,7 @@ GtmCopyPasteListener.handleCopy = function (event) {
   }
 
   window.dataLayer.push({
-    'event': 'text-copied',
-    'element': element.dataset.gtmCopyPasteTracking
+    'event': 'text-copied'
   })
 }
 
@@ -21,8 +20,7 @@ GtmCopyPasteListener.handlePaste = function (event) {
   }
 
   window.dataLayer.push({
-    'event': 'text-pasted',
-    'element': element.dataset.gtmCopyPasteTracking
+    'event': 'text-pasted'
   })
 }
 
