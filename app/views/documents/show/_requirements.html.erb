@@ -5,9 +5,18 @@
     summary: { href: edit_document_path(@edition.document, anchor: "summary") },
     body: { href: edit_document_path(@edition.document, anchor: "body") },
     change_note: { href: edit_document_path(@edition.document, anchor: "change-note") },
-    alt_text: { href: "#lead-image" },
-    credit: { href: "#lead-image" },
-    caption: { href: "#lead-image" },
+    alt_text: -> (context) do
+      image_id = context[:image_revision].image_id
+      { href: edit_image_path(@edition.document, image_id, anchor: "alt-text") }
+    end,
+    credit: -> (context) do
+      image_id = context[:image_revision].image_id
+      { href: edit_image_path(@edition.document, image_id, anchor: "credit") }
+    end,
+    caption: -> (context) do
+      image_id = context[:image_revision].image_id
+      { href: edit_image_path(@edition.document, image_id, anchor: "caption") }
+    end,
     topics: { href: update_topics_path(@edition.document) },
   }
 } %>

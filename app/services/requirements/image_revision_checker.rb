@@ -16,19 +16,34 @@ module Requirements
       issues = []
 
       if image_revision.alt_text.blank?
-        issues << Issue.new(:alt_text, :blank, filename: image_revision.filename)
+        issues << Issue.new(:alt_text,
+                            :blank,
+                            filename: image_revision.filename,
+                            image_revision: image_revision)
       end
 
       if image_revision.alt_text.to_s.length > ALT_TEXT_MAX_LENGTH
-        issues << Issue.new(:alt_text, :too_long, max_length: ALT_TEXT_MAX_LENGTH, filename: image_revision.filename)
+        issues << Issue.new(:alt_text,
+                            :too_long,
+                            max_length: ALT_TEXT_MAX_LENGTH,
+                            filename: image_revision.filename,
+                            image_revision: image_revision)
       end
 
       if image_revision.caption.to_s.length > CAPTION_MAX_LENGTH
-        issues << Issue.new(:caption, :too_long, max_length: CAPTION_MAX_LENGTH, filename: image_revision.filename)
+        issues << Issue.new(:caption,
+                            :too_long,
+                            max_length: CAPTION_MAX_LENGTH,
+                            filename: image_revision.filename,
+                            image_revision: image_revision)
       end
 
       if image_revision.credit.to_s.length > CREDIT_MAX_LENGTH
-        issues << Issue.new(:credit, :too_long, max_length: CREDIT_MAX_LENGTH, filename: image_revision.filename)
+        issues << Issue.new(:credit,
+                            :too_long,
+                            max_length: CREDIT_MAX_LENGTH,
+                            filename: image_revision.filename,
+                            image_revision: image_revision)
       end
 
       CheckerIssues.new(issues)
