@@ -8,6 +8,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
       month: valid_datetime.month,
       year: valid_datetime.year,
       time: "11:00am",
+      action: "schedule",
     }
   end
 
@@ -15,6 +16,16 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
     it "returns no issues if there are none" do
       issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
       expect(issues.items).to be_empty
+    end
+
+    it "returns an issue if an action hasn't been selected" do
+      datetime_params[:action] = nil
+
+      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
+      datetime_issue = I18n.t!("requirements.scheduled_datetime.action_not_selected.form_message")
+
+      expect(issues.items_for(:scheduled_datetime))
+        .to include(a_hash_including(text: datetime_issue))
     end
 
     it "returns an issue if the datetime is in the past" do

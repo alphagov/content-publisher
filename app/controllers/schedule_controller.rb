@@ -8,21 +8,21 @@ class ScheduleController < ApplicationController
 
       if issues.any?
         flash["alert_with_items"] = {
-          title: I18n.t!("requirements.scheduled_datetime.title"),
-          items: issues.items(
+          "title" => I18n.t!("requirements.scheduled_datetime.title"),
+          "items" => issues.items(
             link_options: {
               scheduled_datetime: { href: "#scheduled_publishing_datetime" },
             },
           ),
         }
-        flash[:scheduled_publishing_params] = permitted_params
+
+        render :scheduling,
+               assigns: { edition: edition, issues: issues },
+               status: :unprocessable_entity
+      else
+        set_scheduled_publishing_datetime(edition, checker.parsed_datetime)
         redirect_to document_path(edition.document)
-        next
       end
-
-      set_scheduled_publishing_datetime(edition, checker.parsed_datetime)
-
-      redirect_to document_path(edition.document)
     end
   end
 

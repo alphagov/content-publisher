@@ -4,8 +4,9 @@
 <% current_scheduled_publish_datetime = @edition.revision.scheduled_publishing_datetime %>
 <% default_date = Time.zone.now.tomorrow %>
 <% publish_date = current_scheduled_publish_datetime || default_date %>
-<% submitted_values = flash[:scheduled_publishing_params] %>
-<% selected_time = submitted_values&.fetch("time") ||  current_scheduled_publish_datetime&.strftime("%l:%M%P")&.strip %>
+<% schedule_param = params["schedule"] ? params["schedule"] : {} %>
+<% selected_time = schedule_param["time"] ||  current_scheduled_publish_datetime&.strftime("%l:%M%P")&.strip %>
+<% action_not_selected = @issues&.select { |i| i.issue_key == :action_not_selected }&.first&.to_item %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -25,17 +26,17 @@
           {
             name: "day",
             width: 2,
-            value: submitted_values&.fetch("day") || publish_date&.day
+            value: schedule_param["day"] || publish_date&.day
           },
           {
             name: "month",
             width: 2,
-            value: submitted_values&.fetch("month") || publish_date&.month,
+            value: schedule_param["month"] || publish_date&.month,
           },
           {
             name: "year",
             width: 4,
-            value: submitted_values&.fetch("year") || publish_date&.year,
+            value: schedule_param["year"] || publish_date&.year,
           }
         ]
       } %>
@@ -55,6 +56,7 @@
       } %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "schedule[action]",
+        error_message: action_not_selected && action_not_selected[:text],
         items: [
           {
             value: "save",
