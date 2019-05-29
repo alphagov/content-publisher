@@ -14,8 +14,8 @@ module Requirements
       I18n.t("requirements.#{field}.#{issue_key}.#{style}_message", context)
     end
 
-    def to_item(hrefs: {}, style: "form")
-      { text: message(style: style), href: hrefs[field] }
+    def to_item(link_options: {}, style: "form")
+      { text: message(style: style), href: link_options.dig(field, :href) }
     end
   end
 end
