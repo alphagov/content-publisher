@@ -88,6 +88,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
         },
         name: "image_revision[credit]",
         value: @image_revision.credit,
+        error_items: @issues&.items_for(:credit),
         data: {
           "contextual-guidance": "credit-guidance"
         }
