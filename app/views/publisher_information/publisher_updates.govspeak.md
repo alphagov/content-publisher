@@ -1,4 +1,9 @@
 
+### Attachments <span class="govuk-caption-m">29 May 2019</span>
+You can now upload file attachments and link to them in the body text of content using the Insert menu.
+
+Attachments can be displayed as icons or as simple links. Attachment titles can be edited and files can be replaced.
+
 ### Email links, content data, and guidance updates <span class="govuk-caption-m">17 May 2019</span>
 Added a link to [Content Data](https://content-data.publishing.service.gov.uk/content) from the edit screen so you can easily check the performance of published content.
 
