@@ -1,23 +1,33 @@
 @import "vendor/accessible-autocomplete/dist/accessible-autocomplete.min";
 
 .autocomplete__wrapper {
-  background: govuk-colour('white');
+  background: govuk-colour("white");
 }
 
-.autocomplete__hint,
 .autocomplete__input {
   @include govuk-font(19);
-  color: $govuk-text-colour;
   z-index: 1;
+  color: $govuk-text-colour;
+}
+
+.autocomplete__hint {
+  @include govuk-font(19);
+  z-index: 1;
+  color: $govuk-secondary-text-colour;
 }
 
 .autocomplete__dropdown-arrow-down {
   z-index: 0;
 }
 
-.autocomplete__option {
+.autocomplete__option,
+.autocomplete__selected-option {
   @include govuk-font(19);
   color: $govuk-text-colour;
+}
+
+.autocomplete__list {
+  margin-top: govuk-spacing(3);
 }
 
 .autocomplete__list .autocomplete__option,
@@ -31,6 +41,10 @@
   }
 }
 
+.autocomplete__list .autocomplete__remove-option {
+  @include govuk-font(16);
+}
+
 .autocomplete__option-hint {
   display: block;
   @include govuk-font(16);
@@ -39,10 +53,10 @@
 
 .autocomplete__option--focused,
 .autocomplete__option:hover {
-  color: govuk-colour('white');
+  color: govuk-colour("white");
 
   .autocomplete__option-hint {
-    color: govuk-colour('white');
+    color: govuk-colour("white");
   }
 }
 
