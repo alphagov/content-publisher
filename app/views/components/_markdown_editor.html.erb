@@ -19,6 +19,16 @@
   if edition
     insert_items = [
       {
+        text: "Attachment",
+        href: file_attachments_path(edition.document),
+        target: "_blank",
+        data_attributes: {
+          module: "inline-attachment-modal",
+          "modal-action": "open",
+          gtm: "open-inline-attachment-modal",
+        }
+      },
+      {
         text: "Contact",
         button_options: {
           value: "add_contact",
@@ -46,23 +56,6 @@
         }
       }
     ]
-
-    if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
-      insert_items.prepend(
-        {
-          text: "Attachment",
-          href: file_attachments_path(edition.document),
-          target: "_blank",
-          data_attributes: {
-            module: "inline-attachment-modal",
-            "modal-action": "open",
-            gtm: "open-inline-attachment-modal",
-          }
-        }
-      )
-    end
-
-    insert_items
   end
 %>
 <%= tag.div class: component_classes,
