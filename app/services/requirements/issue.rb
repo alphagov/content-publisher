@@ -17,8 +17,8 @@ module Requirements
     def to_item(link_options: {}, style: "form")
       {
         text: message(style: style),
-        href: link_options.dig(field, :href),
-        target: link_options.dig(field, :target),
+        href: link_options[:href],
+        target: link_options[:target],
       }
     end
   end
