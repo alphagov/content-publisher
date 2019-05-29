@@ -39,7 +39,12 @@ class FileAttachmentsController < ApplicationController
     if issues
       flash.now["alert_with_items"] = {
         "title" => I18n.t!("file_attachments.index.flashes.upload_requirements"),
-        "items" => issues.items,
+        "items" => issues.items(
+          link_options: {
+            file_attachment_upload: { href: how_to_use_publisher_path(anchor: "attachments"),
+                                      target: :blank },
+          },
+        ),
       }
 
       render :index,
@@ -80,7 +85,12 @@ class FileAttachmentsController < ApplicationController
     if issues
       flash.now["alert_with_items"] = {
         "title" => I18n.t!("file_attachments.index.flashes.upload_requirements"),
-        "items" => issues.items,
+        "items" => issues.items(
+          link_options: {
+            file_attachment_upload: { href: how_to_use_publisher_path(anchor: "attachments"),
+                                      target: :blank },
+          },
+        ),
       }
 
       render :edit,

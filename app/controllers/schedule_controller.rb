@@ -7,10 +7,13 @@ class ScheduleController < ApplicationController
       issues = checker.pre_submit_issues
 
       if issues.any?
-        href = { scheduled_datetime: "#scheduled_publishing_datetime" }
         flash["alert_with_items"] = {
           title: I18n.t!("requirements.scheduled_datetime.title"),
-          items: issues.items(hrefs: href),
+          items: issues.items(
+            link_options: {
+              scheduled_datetime: { href: "#scheduled_publishing_datetime" },
+            },
+          ),
         }
         flash[:scheduled_publishing_params] = permitted_params
         redirect_to document_path(edition.document)
