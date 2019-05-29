@@ -1,0 +1,15 @@
+<ul class="govuk-list govuk-!-margin-0">
+  <li>
+    <%= link_to "View on GOV.UK", edition_public_url(@edition.document.live_edition), class: "govuk-link govuk-link--no-visited-state" %>
+  </li>
+  <% content_data_url = ContentDataUrl.new(@edition.document) %>
+  <% if content_data_url.displayable? %>
+    <li>
+      <%= link_to "View data about this page",
+                  content_data_url.url,
+                  target: "_blank",
+                  class: "govuk-link govuk-link--no-visited-state",
+                  data: { gtm: "content-data-app-clickthrough" } %>
+    </li>
+  <% end %>
+</ul>
