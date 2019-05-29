@@ -1,77 +1,38 @@
 <div class="app-side">
   <div class="app-side__actions">
-    <%
-      def delete_draft_link(extra_class = [])
-        link_to("Delete draft",
-                delete_draft_path(@edition.document),
-                class: %w(govuk-link app-link--destructive) + Array(extra_class),
-                data: { gtm: "delete-draft" })
-      end
-    %>
     <% if @edition.status.published_but_needs_2i? %>
-      <%= form_tag approve_document_path(@edition.document) do %>
-        <%= render "govuk_publishing_components/components/button", text: "Approve" %>
-      <% end %>
-
-      <%= form_tag create_edition_path(@edition.document), data: { gtm: "create-new-edition" } do %>
-        <%= render "govuk_publishing_components/components/button", text: "Create new edition", secondary: true %>
-      <% end %>
-
-      <%= link_to "Withdraw", withdraw_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
-      <%= link_to "Remove", remove_path(@edition.document), class: "govuk-link app-link--destructive app-link--right" %>
+      <%= approve_button(@edition) %>
+      <%= create_edition_button(@edition, secondary: true) %>
+      <%= withdraw_link(@edition) %>
+      <%= remove_link(@edition) %>
     <% elsif @edition.status.published? %>
-      <%= form_tag create_edition_path(@edition.document), data: { gtm: "create-new-edition" } do %>
-        <%= render "govuk_publishing_components/components/button", text: "Create new edition" %>
-      <% end %>
-      <%= link_to "Withdraw", withdraw_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
-      <%= link_to "Remove", remove_path(@edition.document), class: "govuk-link app-link--destructive app-link--right" %>
+      <%= create_edition_button(@edition) %>
+      <%= withdraw_link(@edition) %>
+      <%= remove_link(@edition) %>
     <% elsif @edition.status.removed? %>
-      <%= form_tag create_edition_path(@edition.document), data: { gtm: "create-new-edition" } do %>
-        <%= render "govuk_publishing_components/components/button", text: "Create new edition" %>
-      <% end %>
+      <%= create_edition_button(@edition) %>
     <% elsif @edition.status.submitted_for_review? %>
-      <%= render "govuk_publishing_components/components/button",
-                 text: "Publish",
-                 href: publish_confirmation_path(@edition.document) %>
-      <%= render "govuk_publishing_components/components/button",
-                 text: "Preview",
-                 href: preview_document_path(@edition.document),
-                 secondary: true %>
-
-      <%= delete_draft_link("app-link--right") %>
+      <%= publish_button(@edition) %>
+      <%= preview_button(@edition, secondary: true) %>
+      <%= delete_draft_link(@edition, "app-link--right") %>
     <% elsif !@edition.revision_synced? %>
-      <%= form_tag create_preview_path(@edition.document) do %>
-        <%= render "govuk_publishing_components/components/button", text: "Preview" %>
-      <% end %>
-
-      <%= delete_draft_link %>
+      <%= create_preview_button(@edition) %>
+      <%= delete_draft_link(@edition) %>
     <% elsif @edition.withdrawn? %>
-      <%= render "govuk_publishing_components/components/button",
-                 text: "Undo withdrawal",
-                 data_attributes: { gtm: "undo-withdraw" },
-                 href: unwithdraw_path(@edition.document) %>
+      <%= undo_withdraw_button(@edition) %>
     <% elsif @edition.scheduled? %>
-      <%= form_tag create_preview_path(@edition.document) do %>
-        <%= render "govuk_publishing_components/components/button", text: "Preview" %>
-      <% end %>
-      <%= form_tag unschedule_path(@edition.document) do %>
-        <%= render "govuk_publishing_components/components/button", text: "Stop scheduled publishing", secondary: true
-      %>
-      <% end %>
-      <%= delete_draft_link %>
+      <%= preview_button(@edition) %>
+      <%= unschedule_button(@edition) %>
+      <%= delete_draft_link(@edition) %>
     <% else %>
-      <%= form_tag submit_document_for_2i_path(@edition.document) do %>
-        <%= render "govuk_publishing_components/components/button", text: "Submit for 2i review" %>
-      <% end %>
-
-      <%= render "govuk_publishing_components/components/button", text: "Preview", href: preview_document_path(@edition.document), secondary: true %>
-
+      <%= submit_for_2i_button(@edition) %>
+      <%= preview_button(@edition, secondary: true) %>
       <% if @edition.schedulable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-        <%= link_to "Schedule", scheduling_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+        <%= schedule_link(@edition) %>
       <% else %>
-        <%= link_to "Publish", publish_confirmation_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+        <%= publish_link(@edition) %>
       <% end %>
-      <%= delete_draft_link("app-link--right") %>
+      <%= delete_draft_link(@edition, "app-link--right") %>
     <% end %>
 
     <% if (@edition.editable? || @edition.scheduled?) && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
@@ -81,21 +42,7 @@
 
     <% if @edition.document.live_edition %>
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
-      <ul class="govuk-list govuk-!-margin-0">
-        <li>
-          <%= link_to "View on GOV.UK", edition_public_url(@edition.document.live_edition), class: "govuk-link govuk-link--no-visited-state" %>
-        </li>
-        <% content_data_url = ContentDataUrl.new(@edition.document) %>
-        <% if content_data_url.displayable? %>
-          <li>
-            <%= link_to "View data about this page",
-                        content_data_url.url,
-                        target: "_blank",
-                        class: "govuk-link govuk-link--no-visited-state",
-                        data: { gtm: "content-data-app-clickthrough" } %>
-          </li>
-        <% end %>
-      </ul>
+      <%= render "documents/show/external_links" %>
     <% end %>
   </div>
 </div>
