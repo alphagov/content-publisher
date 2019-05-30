@@ -6,6 +6,10 @@ class ScheduleController < ApplicationController
       checker = Requirements::ScheduledDatetimeChecker.new(permitted_params)
       issues = checker.pre_submit_issues
 
+      unless edition.draft? || edition.submitted_for_review?
+        raise "Can't save a scheduling date unless edition is a draft or has been submitted for 2i"
+      end
+
       if issues.any?
         flash["alert_with_items"] = {
           "title" => I18n.t!("requirements.scheduled_datetime.title"),
@@ -68,10 +72,10 @@ class ScheduleController < ApplicationController
         next
       end
 
-      if edition.scheduled_publishing_datetime.blank?
+      unless edition.schedulable?
         # FIXME: this shouldn't be an exception but we've not worked out the
         # right response - maybe bad request or a redirect with flash?
-        raise "Cannot schedule an edition to be published without setting a publishing date and time."
+        raise "Can't schedule an edition which isn't schedulable"
       end
 
       datetime = edition.scheduled_publishing_datetime
