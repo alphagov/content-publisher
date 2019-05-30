@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_01_145759) do
+ActiveRecord::Schema.define(version: 2019_05_30_175303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,14 +91,12 @@ ActiveRecord::Schema.define(version: 2019_05_01_145759) do
 
   create_table "file_attachment_assets", force: :cascade do |t|
     t.bigint "blob_revision_id", null: false
-    t.string "variant", default: "file", null: false
     t.string "file_url"
     t.string "state", default: "absent", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "superseded_by_id"
-    t.index ["blob_revision_id", "variant"], name: "index_file_attachment_assets_on_blob_revision_id_and_variant", unique: true
-    t.index ["blob_revision_id"], name: "index_file_attachment_assets_on_blob_revision_id"
+    t.index ["blob_revision_id"], name: "index_file_attachment_assets_on_blob_revision_id", unique: true
     t.index ["file_url"], name: "index_file_attachment_assets_on_file_url", unique: true
   end
 
