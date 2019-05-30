@@ -3,7 +3,7 @@
 module Versioning
   class FileAttachmentRevisionUpdater < BaseUpdater
     def column_names
-      sub_updaters.keys
+      sub_updaters.keys + %i[blob_revision]
     end
 
     def assign(fields)
@@ -31,7 +31,6 @@ module Versioning
     def sub_updaters
       @sub_updaters ||= {
         metadata_revision: SubRevisionUpdater.new(revision.metadata_revision, user),
-        blob_revision: SubRevisionUpdater.new(revision.blob_revision, user),
       }
     end
   end
