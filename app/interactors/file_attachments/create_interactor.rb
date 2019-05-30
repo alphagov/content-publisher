@@ -34,11 +34,14 @@ private
   end
 
   def upload_attachment
-    context.attachment_revision = FileAttachmentUploadService.new(
-      params[:file],
-      edition.revision,
+    blob_attributes = FileAttachmentBlobAttributesService.new(file: params[:file],
+                                                              revision: edition.revision)
+                                                         .call
+    context.attachment_revision = FileAttachment::Revision.create_initial(
+      blob_attributes,
       params[:title],
-    ).call(user)
+      user
+    )
   end
 
   def create_timeline_entry

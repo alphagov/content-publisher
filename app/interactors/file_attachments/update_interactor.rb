@@ -76,14 +76,9 @@ private
   def blob_attributes(file_attachment_revision)
     return {} unless attachment_params[:file]
 
-    blob_service = FileAttachmentBlobService.new(file: attachment_params[:file],
-                                                 revision: edition.revision,
-                                                 replacement: file_attachment_revision)
-
-    {
-      blob_id: blob_service.blob_id,
-      filename: blob_service.filename,
-      number_of_pages: blob_service.number_of_pages,
-    }
+    FileAttachmentBlobAttributesService.new(file: attachment_params[:file],
+                                            revision: edition.revision,
+                                            replacement: file_attachment_revision)
+                                       .call
   end
 end

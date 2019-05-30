@@ -28,4 +28,22 @@ class FileAttachment::Revision < ApplicationRecord
   def readonly?
     !new_record?
   end
+
+  def self.create_initial(blob_attributes, title, user)
+    file_attachment = FileAttachment.create!(created_by: user)
+
+    blob_revision = FileAttachment::BlobRevision.create!(
+      blob_attributes.merge(created_by: user)
+    )
+
+    metadata_revision = FileAttachment::MetadataRevision.create!(created_by: user,
+                                                                 title: title)
+
+    FileAttachment::Revision.create!(
+      file_attachment: file_attachment,
+      created_by: user,
+      blob_revision: blob_revision,
+      metadata_revision: metadata_revision,
+    )
+  end
 end

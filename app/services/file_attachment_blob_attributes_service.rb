@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FileAttachmentBlobService
+class FileAttachmentBlobAttributesService
   attr_reader :file, :revision, :replacement
 
   def initialize(file:, revision:, replacement: nil)
@@ -9,9 +9,15 @@ class FileAttachmentBlobService
     @replacement = replacement
   end
 
-  def blob_id
-    blob.id
+  def call
+    {
+      blob_id: blob.id,
+      filename: filename,
+      number_of_pages: number_of_pages,
+    }
   end
+
+private
 
   def filename
     @filename ||= begin
@@ -28,8 +34,6 @@ class FileAttachmentBlobService
   rescue PDF::Reader::MalformedPDFError, PDF::Reader::UnsupportedFeatureError, OpenSSL::Cipher::CipherError
     nil
   end
-
-private
 
   def blob
     @blob ||= ActiveStorage::Blob.create_after_upload!(
