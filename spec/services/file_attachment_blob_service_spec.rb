@@ -2,50 +2,45 @@
 
 RSpec.describe FileAttachmentBlobService do
   let(:file) { fixture_file_upload("files/text-file.txt") }
-  let(:revision) do
-    build(:revision, file_attachment_revisions: [file_attachment_revision])
-  end
-  let(:file_attachment_revision) do
-    build(:file_attachment_revision, filename: "text-file.txt")
-  end
+  let(:revision) { build(:revision) }
+  let(:user) { build(:user) }
+  let(:instance) { FileAttachmentBlobService.new(revision, user) }
 
-  describe "#blob_id" do
-    it "returns the id for the newly created blob" do
-      service = FileAttachmentBlobService.new(file: file, revision: revision)
-      expect(service.blob_id).to be(ActiveStorage::Blob.last.id)
+  describe "#create_blob_revision" do
+    it "creates a file attachment blob revision" do
+      expect(instance.create_blob_revision(file))
+        .to be_a(FileAttachment::BlobRevision)
     end
-  end
 
-  describe "#filename" do
-    context "the file is a replacement for an existing file attachment file" do
-      it "returns the file's filename" do
-        service = FileAttachmentBlobService.new(
-          file: file,
-          revision: revision,
-          replacement: file_attachment_revision,
-        )
-        expect(service.filename).to eq(file.original_filename)
+    context "when the filename is used by an attachment for this revision" do
+      let(:existing_attachment) { build(:file_attachment_revision, filename: "text-file.txt") }
+      let(:revision) { build(:revision, file_attachment_revisions: [existing_attachment]) }
+
+      it "creates a unique filename" do
+        blob_revision = instance.create_blob_revision(file)
+        expect(blob_revision.filename).to eql("text-file-1.txt")
+      end
+
+      it "allows keeping the name if this is a replacement for the attachment with the same name" do
+        blob_revision = instance.create_blob_revision(file, replacing: existing_attachment)
+        expect(blob_revision.filename).to eql("text-file.txt")
       end
     end
 
-    context "the file is not a replacement for an existing file attachment file" do
-      it "returns a unique filename if the file has existing file attachments" do
-        service = FileAttachmentBlobService.new(file: file, revision: revision)
-        expect(service.filename).to eq("text-file-1.txt")
+    context "when the upload is a pdf" do
+      let(:file) { fixture_file_upload("files/13kb-1-page-attachment.pdf", "application/pdf") }
+
+      it "calculates the number of pages" do
+        blob_revision = instance.create_blob_revision(file)
+        expect(blob_revision.number_of_pages).to eql(1)
       end
     end
-  end
 
-  describe "#number_of_pages" do
-    it "returns the number of pages for a PDF" do
-      pdf = fixture_file_upload("files/13kb-1-page-attachment.pdf", "application/pdf")
-      service = FileAttachmentBlobService.new(file: pdf, revision: revision)
-      expect(service.number_of_pages).to eq(1)
-    end
-
-    it "returns nil if the file is not a PDF" do
-      service = FileAttachmentBlobService.new(file: file, revision: revision)
-      expect(service.number_of_pages).to be nil
+    context "when the upload is not a pdf" do
+      it "sets nil for the number of pages" do
+        blob_revision = instance.create_blob_revision(file)
+        expect(blob_revision.number_of_pages).to be_nil
+      end
     end
   end
 end
