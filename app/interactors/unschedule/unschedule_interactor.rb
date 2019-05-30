@@ -33,6 +33,9 @@ private
 
   def destroy_publishing_intent
     GdsApi.publishing_api.destroy_intent(edition.base_path)
+  rescue GdsApi::BaseError => e
+    GovukError.notify(e)
+    context.fail!(api_error: true)
   end
 
   def create_timeline_entry

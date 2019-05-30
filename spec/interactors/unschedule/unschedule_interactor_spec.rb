@@ -30,6 +30,13 @@ RSpec.describe Unschedule::UnscheduleInteractor do
       expect(@destroy_intent_request).to have_been_requested
     end
 
+    it "returns an api_error flag when Publishing API is down" do
+      stub_publishing_api_isnt_available
+      result = Unschedule::UnscheduleInteractor.call(params: params, user: user)
+
+      expect(result.api_error).to be_truthy
+    end
+
     context "when the scheduling reviewed state is set to true" do
       it "sets the edition's status to 'submitted_for_review'" do
         scheduling = build(:scheduling, reviewed: true)
