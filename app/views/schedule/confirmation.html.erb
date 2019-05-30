@@ -10,7 +10,7 @@
       <%= render_govspeak(t("schedule.confirmation.hint_text", time: time, date: date)) %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "review_status",
-        error_message: @review_status_issues,
+        error_items: @issues&.items,
         items: [
           {
             value: "reviewed",

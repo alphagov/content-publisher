@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     post "/publish" => "publish#publish"
     get "/published" => "publish#published", as: :published
 
-    post "/save-scheduled-publishing-datetime" => "schedule#save_scheduled_publishing_datetime", as: :save_scheduled_publishing_datetime
+    post "/save-scheduled-publishing-datetime" => "schedule#save_datetime", as: :save_scheduled_publishing_datetime
     post "/clear-scheduled-publishing-datetime" => "schedule#clear_scheduled_publishing_datetime", as: :clear_scheduled_publishing_datetime
 
     get "/schedule" => "schedule#confirmation", as: :scheduling_confirmation

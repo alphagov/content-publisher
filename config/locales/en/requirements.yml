@@ -93,7 +93,7 @@ en:
         form_message: "Please select a time more than %{time_period} from now"
       action_not_selected:
         form_message: Select an option
-    scheduling:
+    schedule_review:
       not_selected:
         form_message: Select an option
     document_type:

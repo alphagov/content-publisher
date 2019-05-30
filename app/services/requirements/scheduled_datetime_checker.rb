@@ -2,7 +2,7 @@
 
 module Requirements
   class ScheduledDatetimeChecker
-    attr_reader :day, :month, :year, :time, :action
+    attr_reader :day, :month, :year, :time
 
     MAXIMUM_FUTURE_TIME_PERIOD = { months: 14 }.freeze
     MINIMUM_FUTURE_TIME_PERIOD = { minutes: 15 }.freeze
@@ -12,15 +12,10 @@ module Requirements
       @month = params[:month]
       @year = params[:year]
       @time = params[:time]
-      @action = params[:action] || params[:update]
     end
 
     def pre_submit_issues
       issues = []
-
-      if action.blank?
-        issues << Issue.new(:scheduled_datetime, :action_not_selected)
-      end
 
       if day.blank? || month.blank? || year.blank?
         issues << Issue.new(:scheduled_datetime, :invalid, field: "Date")

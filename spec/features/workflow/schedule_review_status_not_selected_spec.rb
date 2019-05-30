@@ -22,7 +22,7 @@ RSpec.feature "Schedule without confirming a review status" do
 
   def then_an_error_is_displayed
     expect(page).to have_content(
-      I18n.t!("requirements.scheduling.not_selected.form_message"),
+      I18n.t!("requirements.schedule_review.not_selected.form_message"),
     )
   end
 end

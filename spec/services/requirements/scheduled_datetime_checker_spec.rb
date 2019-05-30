@@ -18,16 +18,6 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
       expect(issues.items).to be_empty
     end
 
-    it "returns an issue if an action hasn't been selected" do
-      datetime_params[:action] = nil
-
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
-      datetime_issue = I18n.t!("requirements.scheduled_datetime.action_not_selected.form_message")
-
-      expect(issues.items_for(:scheduled_datetime))
-        .to include(a_hash_including(text: datetime_issue))
-    end
-
     it "returns an issue if the datetime is in the past" do
       past_datetime = valid_datetime - 2.days
       datetime_params[:day] = past_datetime.day
