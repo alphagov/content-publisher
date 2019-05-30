@@ -14,8 +14,7 @@ class PreviewAssetService
     end
 
     edition.file_attachment_revisions.each do |file_attachment_revision|
-      file_attachment_revision.ensure_assets
-      file_attachment_revision.assets.each { |asset| upload_asset(asset) }
+      upload_asset(file_attachment_revision.asset)
     end
   end
 
