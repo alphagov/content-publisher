@@ -18,8 +18,6 @@ class FileAttachment::Revision < ApplicationRecord
   delegate :filename,
            :asset,
            :asset_url,
-           :assets,
-           :ensure_assets,
            :content_type,
            :byte_size,
            :number_of_pages,

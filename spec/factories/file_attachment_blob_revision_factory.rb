@@ -8,7 +8,7 @@ FactoryBot.define do
 
     transient do
       fixture { "text-file.txt" }
-      assets { nil }
+      asset { nil }
     end
 
     after(:build) do |blob_revision, evaluator|
@@ -19,11 +19,7 @@ FactoryBot.define do
         filename: blob_revision.filename,
       )
 
-      if evaluator.assets
-        blob_revision.assets = evaluator.assets
-      else
-        blob_revision.ensure_assets
-      end
+      blob_revision.asset = FileAttachment::Asset.new unless blob_revision.asset
     end
 
     trait :on_asset_manager do
@@ -32,11 +28,9 @@ FactoryBot.define do
       end
 
       after(:build) do |blob_revision, evaluator|
-        blob_revision.assets.each do |asset|
-          url = "https://asset-manager.test.gov.uk/media/" +
-            "asset-id#{SecureRandom.hex(8)}/#{blob_revision.filename}"
-          asset.assign_attributes(state: evaluator.state, file_url: url)
-        end
+        url = "https://asset-manager.test.gov.uk/media/" +
+          "asset-id#{SecureRandom.hex(8)}/#{blob_revision.filename}"
+        blob_revision.asset.assign_attributes(state: evaluator.state, file_url: url)
       end
     end
   end

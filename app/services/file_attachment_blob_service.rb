@@ -21,6 +21,7 @@ class FileAttachmentBlobService
       filename: filename,
       number_of_pages: number_of_pages(file, mime_type),
       created_by: user,
+      asset: FileAttachment::Asset.new,
     )
   end
 
