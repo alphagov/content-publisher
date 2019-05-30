@@ -9,6 +9,7 @@ class Unschedule::UnscheduleInteractor
     Edition.transaction do
       find_and_lock_edition
       set_edition_status
+      destroy_publishing_intent
       create_timeline_entry
     end
   end
@@ -28,6 +29,10 @@ private
     scheduling = edition.status.details
     state = scheduling.reviewed? ? :submitted_for_review : :draft
     edition.assign_status(state, user).save!
+  end
+
+  def destroy_publishing_intent
+    GdsApi.publishing_api.destroy_intent(edition.base_path)
   end
 
   def create_timeline_entry

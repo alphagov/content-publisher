@@ -18,6 +18,7 @@ RSpec.feature "Unschedule an edition" do
   end
 
   def and_i_click_stop_scheduled_publishing
+    stub_publishing_api_destroy_intent(@edition.base_path)
     click_on "Stop scheduled publishing"
   end
 

@@ -7,6 +7,10 @@ RSpec.describe Unschedule::UnscheduleInteractor do
   let(:params) { { document: edition.document.to_param } }
 
   describe "#call" do
+    before do
+      @destroy_intent_request = stub_publishing_api_destroy_intent(edition.base_path)
+    end
+
     it "sets an edition's scheduled publishing datetime to nil" do
       result = Unschedule::UnscheduleInteractor.call(params: params, user: user)
 
@@ -20,10 +24,18 @@ RSpec.describe Unschedule::UnscheduleInteractor do
       expect(timeline_entry.entry_type).to eq("unscheduled")
     end
 
+    it "makes a request to Publishing API to destroy the existing publishing intent" do
+      Unschedule::UnscheduleInteractor.call(params: params, user: user)
+
+      expect(@destroy_intent_request).to have_been_requested
+    end
+
     context "when the scheduling reviewed state is set to true" do
       it "sets the edition's status to 'submitted_for_review'" do
         scheduling = build(:scheduling, reviewed: true)
         edition = create(:edition, :scheduled, scheduling: scheduling)
+        stub_publishing_api_destroy_intent(edition.base_path)
+
         result = Unschedule::UnscheduleInteractor.call(
           params: { document: edition.document.to_param }, user: user,
         )
