@@ -28,7 +28,7 @@ module Requirements
       return true if uri.host.to_s.end_with?(YOUTU_HOST)
 
       uri.host.to_s.end_with?(YOUTUBE_HOST) &&
-        uri.path == "/watch" && uri.query.match(/v=/)
+        uri.path == "/watch" && uri.query.to_s.match(/v=/)
     end
   end
 end
