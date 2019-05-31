@@ -6,11 +6,16 @@ RSpec.feature "Unschedule an edition" do
     when_i_visit_the_summary_page
     and_i_click_stop_scheduled_publishing
     then_the_document_is_no_longer_scheduled
+    and_the_proposed_scheduled_publishing_datetime_is_still_set
   end
 
   def given_there_is_a_scheduled_document
     schedule = create(:scheduling, reviewed: true)
-    @edition = create(:edition, :scheduled, scheduling: schedule)
+    @datetime = Time.current.tomorrow.change(hour: 23)
+    @edition = create(:edition,
+                      :scheduled,
+                      scheduled_publishing_datetime: @datetime,
+                      scheduling: schedule)
   end
 
   def when_i_visit_the_summary_page
@@ -28,5 +33,10 @@ RSpec.feature "Unschedule an edition" do
     within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.unscheduled")
     end
+  end
+
+  def and_the_proposed_scheduled_publishing_datetime_is_still_set
+    scheduled_date = @datetime.strftime("%-d %B %Y - 11:00pm")
+    expect(page).to have_content("Publish date: #{scheduled_date}")
   end
 end

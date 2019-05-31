@@ -22,10 +22,6 @@ private
   end
 
   def set_edition_status
-    updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(scheduled_publishing_datetime: nil)
-    edition.assign_revision(updater.next_revision, user).save!
-
     scheduling = edition.status.details
     state = scheduling.reviewed? ? :submitted_for_review : :draft
     edition.assign_status(state, user).save!

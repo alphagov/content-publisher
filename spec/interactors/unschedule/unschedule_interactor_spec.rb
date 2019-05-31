@@ -11,12 +11,6 @@ RSpec.describe Unschedule::UnscheduleInteractor do
       @destroy_intent_request = stub_publishing_api_destroy_intent(edition.base_path)
     end
 
-    it "sets an edition's scheduled publishing datetime to nil" do
-      result = Unschedule::UnscheduleInteractor.call(params: params, user: user)
-
-      expect(result.edition.scheduled_publishing_datetime).to be nil
-    end
-
     it "creates a timeline entry" do
       result = Unschedule::UnscheduleInteractor.call(params: params, user: user)
       timeline_entry = result.edition.timeline_entries.last
