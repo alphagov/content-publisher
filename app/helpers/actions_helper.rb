@@ -45,6 +45,13 @@ module ActionsHelper
             data: { gtm: "schedule-confirm" }
   end
 
+  def schedule_confirmation_button(edition)
+    render "govuk_publishing_components/components/button",
+           text: "Schedule to publish",
+           data_attributes: { gtm: "schedule-confirm" },
+           href: scheduling_confirmation_path(edition.document)
+  end
+
   def create_schedule_date_link(edition, extra_classes = [])
     link_to "Schedule",
             scheduling_path(edition.document),

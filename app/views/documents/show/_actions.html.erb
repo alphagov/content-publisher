@@ -12,9 +12,16 @@
     <% elsif @edition.status.removed? %>
       <%= create_edition_button(@edition) %>
     <% elsif @edition.status.submitted_for_review? %>
-      <%= publish_button(@edition) %>
-      <%= preview_button(@edition, secondary: true) %>
-      <%= delete_draft_link(@edition, "app-link--right") %>
+      <% if @edition.schedulable? %>
+        <%= schedule_confirmation_button(@edition) %>
+        <%= preview_button(@edition, secondary: true) %>
+        <%= delete_draft_link(@edition, "app-link--right") %>
+      <% else %>
+        <%= publish_button(@edition) %>
+        <%= preview_button(@edition, secondary: true) %>
+        <%= delete_draft_link(@edition) %>
+        <%= create_schedule_date_link(@edition, "app-link--right") %>
+      <% end %>
     <% elsif !@edition.revision_synced? %>
       <%= create_preview_button(@edition) %>
       <%= delete_draft_link(@edition) %>
