@@ -36,7 +36,11 @@ RSpec.feature "Unschedule an edition" do
   end
 
   def and_the_proposed_scheduled_publishing_datetime_is_still_set
-    scheduled_date = @datetime.strftime("%-d %B %Y - 11:00pm")
-    expect(page).to have_content("Publish date: #{scheduled_date}")
+    scheduled_date = @datetime.strftime("%-d %B %Y")
+    expect(page).to have_content(
+      I18n.t!("documents.show.scheduling.notice.proposed",
+              time: "11:00pm",
+              date: scheduled_date),
+    )
   end
 end

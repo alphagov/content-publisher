@@ -85,12 +85,6 @@ module ActionsHelper
     end
   end
 
-  def unschedule_button(edition)
-    form_tag unschedule_path(edition.document), data: { gtm: "unschedule" } do
-      render "govuk_publishing_components/components/button", text: "Stop scheduled publishing", secondary: true
-    end
-  end
-
   def submit_for_2i_button(edition)
     form_tag submit_document_for_2i_path(edition.document), data: { gtm: "submit-for-2i" } do
       render "govuk_publishing_components/components/button", text: "Submit for 2i review"
