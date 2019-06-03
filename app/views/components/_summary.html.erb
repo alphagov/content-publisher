@@ -8,11 +8,11 @@
 <%= tag.div class: "app-c-summary", id: id do %>
   <% if title %>
     <%= tag.h2 title[:text], class:"govuk-heading-m" %>
-    <% if title[:change_url] %>
-      <%= link_to title[:change_url], class: "app-c-summary__change-section-link",
-        title: "Change #{title[:text]}",
+    <% if title[:edit_url] %>
+      <%= link_to title[:edit_url], class: "app-c-summary__edit-section-link",
+        title: "Edit #{title[:text]}",
         data: { gtm: "content-change" } do %>
-        Change<span class="govuk-visually-hidden"> <%= title[:text] %></span>
+        Edit<span class="govuk-visually-hidden"> <%= title[:text] %></span>
       <% end %>
     <% end %>
   <% end %>
@@ -25,10 +25,10 @@
           <%= tag.dt item[:field], class:"app-c-summary__question" %>
           <%= tag.dd item[:value], class:"app-c-summary__answer" %>
 
-          <% if item[:change_url] %>
-            <%= tag.dd link_to, class:"app-c-summary__change" do %>
-              <%= link_to item[:change_url], class:"app-c-summary__change-link" do %>
-                Change<span class="govuk-visually-hidden"> <%= item[:field] %></span>
+          <% if item[:edit_url] %>
+            <%= tag.dd link_to, class:"app-c-summary__edit" do %>
+              <%= link_to item[:edit_url], class:"app-c-summary__edit-link" do %>
+                Edit<span class="govuk-visually-hidden"> <%= item[:field] %></span>
               <% end %>
             <% end %>
           <% end %>

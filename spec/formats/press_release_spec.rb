@@ -45,7 +45,7 @@ RSpec.feature "Create a press release", format: true do
     stub_publishing_api_has_linkables([linkable], document_type: "organisation")
     stub_publishing_api_has_linkables([linkable], document_type: "role_appointment")
 
-    click_on "Change Tags"
+    click_on "Edit Tags"
 
     select linkable["internal_name"], from: "tags[topical_events][]"
     select linkable["internal_name"], from: "tags[world_locations][]"

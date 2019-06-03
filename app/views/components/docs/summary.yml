@@ -6,7 +6,7 @@ part_of_admin_layout: true
 accessibility_criteria: |
   The links in this component must:
 
-  * indicate which item or section refers to (e.g. Change title)
+  * indicate which item or section refers to (e.g. Edit title)
 shared_accessibility_criteria:
 - link
 examples:
@@ -14,7 +14,7 @@ examples:
     data:
       title:
         text: "Title, summary and body"
-        change_url: "#change-title-summary-body"
+        edit_url: "#edit-title-summary-body"
       items:
       - field: "Title"
         value: "Ethical standards for public service providers"
@@ -30,10 +30,10 @@ examples:
       items:
       - field: "Title"
         value: "Ethical standards for public service providers"
-        change_url: "#change-title"
+        edit_url: "#edit-title"
       - field: "Summary"
         value: "Find out more about our reviews on the subject of ethical standards for public service providers, including our 2014 report, 2015 guidance and 2018 follow-up publication."
-        change_url: "#change-summary"
+        edit_url: "#edit-summary"
       - field: "Body"
         value: "After the government decided in 2013 to expand the remit of the Committee to include public service providers, the Committee on Standards in Public Life produced our first report on the issue: Ethical Standards for Providers of Public Services in 2014."
-        change_url: "#change-body"
+        edit_url: "#edit-body"

@@ -44,7 +44,7 @@ RSpec.feature "Submit for 2i" do
 
   def when_i_edit_the_edition
     stub_any_publishing_api_put_content
-    click_on "Change Content"
+    click_on "Edit Content"
     fill_in "revision[title]", with: "a new title"
     click_on "Save"
   end

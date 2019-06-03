@@ -15,7 +15,7 @@
     id: "tags",
     title: {
       text: t("documents.show.tags.title"),
-      change_url: @edition.editable? && tags_path(@edition.document)
+      edit_url: @edition.editable? && tags_path(@edition.document)
     },
     items: tags
   } %>

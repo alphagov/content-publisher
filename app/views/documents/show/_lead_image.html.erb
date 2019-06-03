@@ -34,7 +34,7 @@
   id: "lead-image",
   title: {
     text: t("documents.show.lead_image.title"),
-    change_url: @edition.editable? && images_path(@edition.document),
+    edit_url: @edition.editable? && images_path(@edition.document),
   },
   block: lead_image_block
 } %>
