@@ -13,10 +13,12 @@
 
   <%= render "components/summary", {
     id: "tags",
-    title: {
-      text: t("documents.show.tags.title"),
-      edit_url: @edition.editable? && tags_path(@edition.document)
-    },
+    title: t("documents.show.tags.title"),
+    edit: (
+      if @edition.editable?
+        { href: tags_path(@edition.document) }
+      end
+    ),
     items: tags
   } %>
 <% rescue GdsApi::BaseError => e %>
@@ -24,9 +26,7 @@
 
   <%= render "components/summary", {
     id: "tags",
-    title: {
-      text: t("documents.show.tags.title")
-    },
+    title: t("documents.show.tags.title"),
     block: t("documents.show.tags.api_down")
   } %>
 <% end %>

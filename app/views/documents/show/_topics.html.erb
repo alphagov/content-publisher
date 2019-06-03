@@ -17,9 +17,9 @@
 
   <%= render "components/summary", {
     id: "topics",
-    title: {
-      text: t("documents.show.topics.title"),
-      edit_url: topics_path(@edition.document)
+    title: t("documents.show.topics.title"),
+    edit: {
+      href: topics_path(@edition.document),
     },
     block: breadcrumbs
   } %>
@@ -28,9 +28,7 @@
 
   <%= render "components/summary", {
     id: "topics",
-    title: {
-      text: t("documents.show.topics.title")
-    },
+    title: t("documents.show.topics.title"),
     block: t("documents.show.topics.api_down")
   } %>
 <% end %>
