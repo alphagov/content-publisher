@@ -4,7 +4,7 @@
 
 <% change_date_link = capture do %>
   <%= link_to "Change date",
-              scheduling_path(@edition.document),
+              scheduled_publishing_datetime_path(@edition.document),
               class: "govuk-link govuk-link--no-visited-state" %>
 <% end %>
 

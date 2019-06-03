@@ -1,5 +1,5 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
-<% content_for :title, t("schedule.scheduling.title") %>
+<% content_for :title, t("schedule.scheduled_publishing_datetime.title") %>
 
 <% current_scheduled_publish_datetime = @edition.revision.scheduled_publishing_datetime %>
 <% default_date = Time.zone.now.tomorrow %>
@@ -15,12 +15,12 @@
       <% date_input_id = "input-#{SecureRandom.hex(4)}" %>
       <%= render "govuk_publishing_components/components/label", {
         bold: true,
-        text: t("schedule.scheduling.date"),
+        text: t("schedule.scheduled_publishing_datetime.date"),
         html_for: date_input_id,
       } %>
       <%= render "govuk_publishing_components/components/date_input", {
         name: "schedule",
-        hint: t("schedule.scheduling.date_hint_text"),
+        hint: t("schedule.scheduled_publishing_datetime.date_hint_text"),
         id: date_input_id,
         items: [
           {
@@ -45,7 +45,7 @@
         id: "schedule[time]",
         name: "schedule[time]",
         label: {
-          text: t("schedule.scheduling.time"),
+          text: t("schedule.scheduled_publishing_datetime.time"),
           bold: true,
         },
         options: time_options[:options],
@@ -67,11 +67,11 @@
           items: [
             {
               value: "save",
-              text: t("schedule.scheduling.action.save"),
+              text: t("schedule.scheduled_publishing_datetime.action.save"),
             },
             {
               value: "schedule",
-              text: t("schedule.scheduling.action.schedule"),
+              text: t("schedule.scheduled_publishing_datetime.action.schedule"),
             },
           ]
         } %>

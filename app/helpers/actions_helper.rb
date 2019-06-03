@@ -54,7 +54,7 @@ module ActionsHelper
 
   def create_schedule_date_link(edition, extra_classes = [])
     link_to "Schedule",
-            scheduling_path(edition.document),
+            scheduled_publishing_datetime_path(edition.document),
             class: %w(govuk-link govuk-link--no-visited-state) + Array(extra_classes),
             data: { gtm: "schedule-date" }
   end

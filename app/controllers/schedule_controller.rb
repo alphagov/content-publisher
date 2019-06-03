@@ -15,7 +15,7 @@ class ScheduleController < ApplicationController
         ),
       }
 
-      render :scheduling,
+      render :scheduled_publishing_datetime,
              assigns: { edition: edition, issues: issues },
              status: :unprocessable_entity
     elsif params[:schedule][:action] == "schedule"
@@ -74,7 +74,7 @@ class ScheduleController < ApplicationController
     @edition = Edition.find_current(document: params[:document])
   end
 
-  def scheduling
+  def scheduled_publishing_datetime
     @edition = Edition.find_current(document: params[:document])
   end
 
