@@ -110,6 +110,10 @@ en:
     review_status:
       not_selected:
         form_message: Select an option
+    primary_publishing_organisation:
+      blank:
+        summary_message: Select a primary organisation
+        form_message: Select a primary organisation
     video_embed_title:
       blank:
         form_message: Enter a title

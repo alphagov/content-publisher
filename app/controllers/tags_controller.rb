@@ -8,20 +8,23 @@ class TagsController < ApplicationController
 
   def edit
     @edition = Edition.find_current(document: params[:document])
+    @revision = @edition.revision
   end
 
   def update
-    Tags::UpdateInteractor.call(params: params, user: current_user)
-    redirect_to document_path(params[:document])
-  end
+    results = Tags::UpdateInteractor.call(params: params, user: current_user)
+    edition, revision, issues, = results.to_h.values_at(:edition, :revision, :issues)
 
-private
-
-  def update_params(edition)
-    permits = edition.document_type.tags.map do |tag_field|
-      [tag_field.id, []]
+    if issues
+      flash.now["alert_with_items"] = {
+        "title" => I18n.t!("documents.edit.flashes.requirements"),
+        "items" => issues.items,
+      }
+      render :edit,
+             assigns: { edition: edition, revision: revision },
+             status: :unprocessable_entity
+    else
+      redirect_to document_path(params[:document])
     end
-
-    params.fetch(:tags, {}).permit(Hash[permits])
   end
 end

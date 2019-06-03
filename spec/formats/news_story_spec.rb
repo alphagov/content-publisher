@@ -49,6 +49,7 @@ RSpec.feature "Create a news story", format: true do
 
     select linkable["internal_name"], from: "tags[topical_events][]"
     select linkable["internal_name"], from: "tags[world_locations][]"
+    select linkable["internal_name"], from: "tags[primary_publishing_organisation][]"
     select linkable["internal_name"], from: "tags[organisations][]"
     select linkable["internal_name"], from: "tags[role_appointments][]"
 
