@@ -7,7 +7,6 @@ class Publish::PublishInteractor
            :user,
            :edition,
            :issues,
-           :publish_failed,
            to: :context
 
   def call

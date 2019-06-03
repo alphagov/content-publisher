@@ -7,7 +7,6 @@ class LeadImage::RemoveInteractor
            :user,
            :edition,
            :image_revision,
-           :no_lead_image,
            to: :context
 
   def call

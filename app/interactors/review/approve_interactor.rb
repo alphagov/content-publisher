@@ -6,7 +6,6 @@ class Review::ApproveInteractor
   delegate :params,
            :user,
            :edition,
-           :wrong_status,
            to: :context
 
   def call

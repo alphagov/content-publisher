@@ -7,7 +7,6 @@ class Review::SubmitFor2iInteractor
            :user,
            :edition,
            :issues,
-           :api_error,
            to: :context
 
   def call

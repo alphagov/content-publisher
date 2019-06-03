@@ -5,7 +5,6 @@ class Documents::DestroyInteractor
   delegate :params,
            :user,
            :edition,
-           :api_error,
            to: :context
 
   def call

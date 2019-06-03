@@ -6,7 +6,6 @@ class Editions::CreateInteractor
            :user,
            :live_edition,
            :next_edition,
-           :draft_current_edition,
            :discarded_edition,
            to: :context
 

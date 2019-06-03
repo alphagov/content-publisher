@@ -6,8 +6,6 @@ class Topics::UpdateInteractor
   delegate :params,
            :user,
            :document,
-           :api_conflict,
-           :api_error,
            to: :context
 
   def call

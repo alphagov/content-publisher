@@ -7,7 +7,6 @@ class Preview::CreateInteractor
            :user,
            :edition,
            :issues,
-           :preview_failed,
            to: :context
 
   def call

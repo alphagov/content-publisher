@@ -6,7 +6,6 @@ class Images::DestroyInteractor
            :user,
            :edition,
            :image_revision,
-           :removed_lead_image,
            to: :context
 
   def call

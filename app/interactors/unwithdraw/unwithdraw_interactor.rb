@@ -3,7 +3,10 @@
 class Unwithdraw::UnwithdrawInteractor
   include Interactor
 
-  delegate :params, :user, :edition, :api_error, to: :context
+  delegate :params,
+           :user,
+           :edition,
+           to: :context
 
   def call
     Edition.transaction do

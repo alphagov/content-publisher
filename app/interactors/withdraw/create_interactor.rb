@@ -6,9 +6,7 @@ class Withdraw::CreateInteractor
   delegate :params,
            :user,
            :edition,
-           :no_permission,
            :issues,
-           :api_error,
            to: :context
 
   def call
