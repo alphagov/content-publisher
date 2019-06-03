@@ -12,7 +12,7 @@ RSpec.feature "Preview file attachment", js: true do
     body_field = build(:field, id: "body", type: "govspeak")
     document_type = build(:document_type, contents: [body_field])
     @attachment_revision = create(:file_attachment_revision, :on_asset_manager)
-    @asset = @attachment_revision.asset("file")
+    @asset = @attachment_revision.asset
 
     @edition = create(:edition,
                       document_type_id: document_type.id,

@@ -104,7 +104,7 @@ RSpec.describe RemoveService do
 
         expect(delete_request).to have_been_requested.at_least_once
         expect(image_revision.assets.map(&:state).uniq).to eq(%w[absent])
-        expect(file_attachment_revision.assets.map(&:state).uniq).to eq(%w[absent])
+        expect(file_attachment_revision.asset).to be_absent
       end
 
       it "copes with assets that 404" do
@@ -121,7 +121,7 @@ RSpec.describe RemoveService do
 
         expect(delete_request).to have_been_requested.at_least_once
         expect(image_revision.assets.map(&:state).uniq).to eq(%w[absent])
-        expect(file_attachment_revision.assets.map(&:state).uniq).to eq(%w[absent])
+        expect(file_attachment_revision.asset).to be_absent
       end
 
       it "ignores assets that are absent" do

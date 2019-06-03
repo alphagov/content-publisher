@@ -29,8 +29,7 @@ private
   end
 
   def find_or_upload_asset
-    attachment_revision.ensure_assets
-    context.asset = attachment_revision.asset("file")
+    context.asset = attachment_revision.asset
 
     if asset.absent?
       PreviewAssetService.new(edition).upload_asset(asset)

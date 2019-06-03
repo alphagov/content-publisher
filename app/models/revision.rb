@@ -84,6 +84,6 @@ class Revision < ApplicationRecord
   end
 
   def assets
-    image_revisions.flat_map(&:assets) + file_attachment_revisions.flat_map(&:assets)
+    image_revisions.flat_map(&:assets) + file_attachment_revisions.map(&:asset)
   end
 end

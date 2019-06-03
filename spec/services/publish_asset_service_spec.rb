@@ -12,8 +12,8 @@ RSpec.describe PublishAssetService do
 
       stub_asset_manager_updates_any_asset
       PublishAssetService.new.publish_assets(edition, nil)
-      expect(file_attachment_revision.assets.map(&:state).uniq).to eq(%w[live])
       expect(image_revision.assets.map(&:state).uniq).to eq(%w[live])
+      expect(file_attachment_revision.asset).to be_live
     end
 
     it "doesn't republish the assets that are already live" do
@@ -61,8 +61,8 @@ RSpec.describe PublishAssetService do
       delete_request = stub_asset_manager_deletes_any_asset
 
       PublishAssetService.new.publish_assets(edition, live_edition)
-      expect(file_attachment_revision_to_remove.assets.map(&:state).uniq).to eq(%w[absent])
       expect(image_revision_to_remove.assets.map(&:state).uniq).to eq(%w[absent])
+      expect(file_attachment_revision_to_remove.asset).to be_absent
       expect(delete_request).to have_been_requested.at_least_once
     end
   end
@@ -84,7 +84,7 @@ RSpec.describe PublishAssetService do
     PublishAssetService.new.publish_assets(edition, live_edition)
 
     expect(image_revision_to_keep.assets.map(&:state).uniq).to eq(%w[live])
-    expect(file_attachment_revision_to_keep.assets.map(&:state).uniq).to eq(%w[live])
+    expect(file_attachment_revision_to_keep.asset).to be_live
   end
 
   it "redirects and supersedes the old asset to the new asset" do
@@ -108,8 +108,8 @@ RSpec.describe PublishAssetService do
 
     PublishAssetService.new.publish_assets(edition, live_edition)
 
-    expect(old_file_attachment_revision.assets.map(&:state).uniq).to eq(%w[superseded])
     expect(old_image_revision.assets.map(&:state).uniq).to eq(%w[superseded])
+    expect(old_file_attachment_revision.asset).to be_superseded
     expect(request).to have_been_requested.at_least_once
   end
 end

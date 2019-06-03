@@ -41,7 +41,7 @@ RSpec.describe DeleteDraftService do
 
       expect(delete_request).to have_been_requested.at_least_once
       expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
-      expect(file_attachment_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
+      expect(file_attachment_revision.reload.asset).to be_absent
     end
 
     it "attempts to delete path reservations for a first draft" do
@@ -121,7 +121,7 @@ RSpec.describe DeleteDraftService do
 
       expect(edition.reload.status).to be_discarded
       expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
-      expect(file_attachment_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
+      expect(file_attachment_revision.reload.asset).to be_absent
     end
 
     it "copes if the base path is not reserved" do
@@ -150,7 +150,7 @@ RSpec.describe DeleteDraftService do
                        lead_image_revision: image_revision,
                        file_attachment_revisions: [file_attachment_revision])
 
-      (image_revision.assets + file_attachment_revision.assets).map do |asset|
+      (image_revision.assets + [file_attachment_revision.asset]).map do |asset|
         stub_asset_manager_delete_asset(asset.asset_manager_id)
       end
 
@@ -160,7 +160,7 @@ RSpec.describe DeleteDraftService do
 
       expect(edition.reload.status).to be_discarded
       expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
-      expect(file_attachment_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
+      expect(file_attachment_revision.reload.asset).to be_absent
     end
 
     it "raises an error when a base path cannot be deleted" do

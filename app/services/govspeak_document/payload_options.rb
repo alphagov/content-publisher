@@ -38,7 +38,7 @@ private
     attributes = file_attachment_attributes(attachment_revision, edition.document)
 
     attributes.merge(
-      url: attachment_revision.asset_url("file"),
+      url: attachment_revision.asset_url,
       alternative_format_contact_email: alt_email,
     )
   end

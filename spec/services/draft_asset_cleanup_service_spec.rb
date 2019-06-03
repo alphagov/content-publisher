@@ -20,7 +20,7 @@ RSpec.describe DraftAssetCleanupService do
 
         expect(request).to have_been_requested.at_least_once
         expect(image_revision.assets.map(&:state).uniq).to match(%w[absent])
-        expect(file_attachment_revision.assets.map(&:state).uniq).to match(%w[absent])
+        expect(file_attachment_revision.asset).to be_absent
       end
     end
 
@@ -46,7 +46,7 @@ RSpec.describe DraftAssetCleanupService do
 
         expect(request).not_to have_been_requested
         expect(image_revision.assets.map(&:state).uniq).to match(%w[draft])
-        expect(file_attachment_revision.assets.map(&:state).uniq).to match(%w[draft])
+        expect(file_attachment_revision.asset).to be_draft
       end
     end
 
@@ -68,7 +68,7 @@ RSpec.describe DraftAssetCleanupService do
 
         expect(request).not_to have_been_requested
         expect(image_revision.assets.map(&:state).uniq).to match(%w[live])
-        expect(file_attachment_revision.assets.map(&:state).uniq).to match(%w[live])
+        expect(file_attachment_revision.asset).to be_live
       end
     end
 
@@ -99,7 +99,7 @@ RSpec.describe DraftAssetCleanupService do
         DraftAssetCleanupService.new.call(edition)
 
         expect(image_revision.assets.map(&:state).uniq).to match(%w[absent])
-        expect(file_attachment_revision.assets.map(&:state).uniq).to match(%w[absent])
+        expect(file_attachment_revision.asset).to be_absent
       end
     end
   end

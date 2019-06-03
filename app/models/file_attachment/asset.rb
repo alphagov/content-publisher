@@ -18,8 +18,6 @@ class FileAttachment::Asset < ApplicationRecord
                 live: "live",
                 superseded: "superseded" }
 
-  enum variant: { file: "file", thumbnail: "thumbnail" }
-
   delegate :filename, :content_type, to: :blob_revision
 
   def asset_manager_id
@@ -29,6 +27,6 @@ class FileAttachment::Asset < ApplicationRecord
   end
 
   def bytes
-    blob_revision.bytes_for_asset(variant)
+    blob_revision.bytes_for_asset
   end
 end

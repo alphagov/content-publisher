@@ -23,9 +23,9 @@ private
       current_revision = find_file_attachment_revision(edition, live_revision)
 
       if current_revision
-        redirect_assets(live_revision, current_revision)
+        redirect_asset(live_revision.asset, current_revision.asset)
       else
-        live_revision.assets.each { |a| delete_asset(a) }
+        delete_asset(live_revision.asset)
       end
     end
   end

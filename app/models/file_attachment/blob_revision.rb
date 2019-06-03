@@ -6,7 +6,10 @@ class FileAttachment::BlobRevision < ApplicationRecord
 
   belongs_to :created_by, class_name: "User", optional: true
 
-  has_many :assets, class_name: "FileAttachment::Asset"
+  has_one :asset,
+          class_name: "FileAttachment::Asset",
+          inverse_of: :blob_revision,
+          required: true
 
   delegate :content_type, :byte_size, to: :blob
 
@@ -14,25 +17,11 @@ class FileAttachment::BlobRevision < ApplicationRecord
     !new_record?
   end
 
-  def asset(variant)
-    assets.find { |v| v.variant == variant }
+  def asset_url
+    asset.file_url
   end
 
-  def asset_url(variant)
-    asset(variant)&.file_url
-  end
-
-  def bytes_for_asset(variant)
-    if variant == "file"
-      blob.download
-    else
-      raise RuntimeError, "Unsupported blob revision variant #{variant}"
-    end
-  end
-
-  def ensure_assets
-    unless asset("file")
-      assets << FileAttachment::Asset.new(blob_revision: self, variant: "file")
-    end
+  def bytes_for_asset
+    blob.download
   end
 end

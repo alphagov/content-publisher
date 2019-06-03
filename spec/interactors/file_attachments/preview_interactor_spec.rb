@@ -46,7 +46,7 @@ RSpec.describe FileAttachments::PreviewInteractor do
 
     context "when the asset is absent from Asset Manager" do
       let(:attachment_revision) do
-        create :file_attachment_revision, file_attachment: file_attachment, assets: []
+        create :file_attachment_revision, file_attachment: file_attachment
       end
 
       before do
@@ -62,11 +62,6 @@ RSpec.describe FileAttachments::PreviewInteractor do
       it "returns a can_preview flag" do
         result = FileAttachments::PreviewInteractor.call(params: params)
         expect(result.can_preview).to be_falsey
-      end
-
-      it "saves the new asset(s)" do
-        FileAttachments::PreviewInteractor.call(params: params)
-        expect(attachment_revision.reload.assets.any?).to be_truthy
       end
 
       it "returns an api_error flag when Asset Manager is down" do

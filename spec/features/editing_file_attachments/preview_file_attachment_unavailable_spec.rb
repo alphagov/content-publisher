@@ -11,8 +11,8 @@ RSpec.feature "Preview file attachment when unavailable", js: true do
   def given_there_is_an_edition_with_attachments
     body_field = build(:field, id: "body", type: "govspeak")
     document_type = build(:document_type, contents: [body_field])
-    @attachment_revision = create(:file_attachment_revision, assets: [])
-    @asset = @attachment_revision.asset("file")
+    @attachment_revision = create(:file_attachment_revision)
+    @asset = @attachment_revision.asset
 
     @edition = create(:edition,
                       document_type_id: document_type.id,

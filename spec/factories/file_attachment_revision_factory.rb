@@ -10,7 +10,7 @@ FactoryBot.define do
       number_of_pages { nil }
       fixture { "text-file.txt" }
       title { SecureRandom.hex(8) }
-      assets { nil }
+      asset { nil }
     end
 
     after(:build) do |revision, evaluator|
@@ -20,7 +20,7 @@ FactoryBot.define do
           filename: evaluator.filename,
           number_of_pages: evaluator.number_of_pages,
           fixture: evaluator.fixture,
-          assets: evaluator.assets,
+          asset: evaluator.asset,
         )
       end
 
@@ -45,7 +45,7 @@ FactoryBot.define do
           number_of_pages: evaluator.number_of_pages,
           fixture: evaluator.fixture,
           state: evaluator.state,
-          assets: evaluator.assets,
+          asset: evaluator.asset,
         )
 
         revision.metadata_revision = evaluator.association(
