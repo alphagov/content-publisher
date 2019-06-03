@@ -78,3 +78,6 @@ en:
         unwithdraw_error:
           title: Something has gone wrong
           description_govspeak: Something went wrong when trying to republish the withdrawn document. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+        unschedule_error:
+          title: Something has gone wrong
+          description_govspeak: Something went wrong when stopping the scheduling of this document. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
