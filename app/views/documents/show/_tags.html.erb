@@ -16,7 +16,8 @@
     title: t("documents.show.tags.title"),
     edit: (
       if @edition.editable?
-        { href: tags_path(@edition.document) }
+        { href: tags_path(@edition.document),
+          data_attributes: { gtm: "edit-tags" } }
       end
     ),
     items: tags
