@@ -85,7 +85,7 @@ RSpec.feature "Upload an image", js: true do
   def then_i_see_the_snippet_is_inserted
     expect(page).to_not have_selector(".gem-c-modal-dialogue")
     snippet = I18n.t("images.index.meta.inline_code.value", filename: @image_filename)
-    expect(find("#body").value).to match snippet
+    expect(find("#revision_body").value).to match snippet
   end
 
   def and_the_preview_creation_succeeded
