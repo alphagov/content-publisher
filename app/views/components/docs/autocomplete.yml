@@ -123,3 +123,19 @@ examples:
         -
           - United Kingdom
           - uk
+  autocomplete_narrow_width:
+    data:
+      id: autocomplete-narrow
+      name: autocomplete-narrow
+      type: without-narrowing-results
+      label:
+        text: Status
+      data_module: autocomplete
+      width: narrow
+      options:
+        -
+          - Draft
+        -
+          - Published
+        -
+          - Removed

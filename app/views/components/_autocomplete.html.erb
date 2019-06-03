@@ -6,21 +6,20 @@
   type ||= nil
   size ||= nil
   hint ||= nil
+  width ||= nil
+  css_classes = %w(app-c-autocomplete govuk-form-group)
+  css_classes << "app-c-autocomplete--#{width}" if width
 %>
 
-<div class="app-c-autocomplete govuk-form-group" data-module="autocomplete" data-autocomplete-type="<%= type %>">
+<%= tag.div class: css_classes, data: { module: "autocomplete", "autocomplete-type": type } do %>
   <%= render "govuk_publishing_components/components/label", {
     html_for: id
   }.merge(label.symbolize_keys) %>
 
   <% if options.any? %>
-    <% if multiple %>
-      <span class="govuk-hint app-c-autocomplete__multiselect-instructions">To select multiple items in a list, hold down Ctrl (PC) or Command (Mac) key.</span>
-    <% end %>
+    <%= tag.span "To select multiple items in a list, hold down Ctrl (PC) or Command (Mac) key.", class: "govuk-hint app-c-autocomplete__multiselect-instructions" if multiple %>
 
-    <% if hint %>
-      <span class="govuk-hint"><%= hint %></span>
-    <% end %>
+    <%= tag.span hint, class: "govuk-hint" if hint %>
 
     <%= select_tag name,
       options_for_select(options, selected_options),
@@ -29,8 +28,7 @@
       size: size,
       multiple: multiple
     %>
-
   <% else %>
-    <p class="govuk-hint">No options available</p>
+    <%= tag.p "No options available", class: "govuk-hint" %>
   <% end %>
-</div>
+<% end %>
