@@ -1,18 +1,20 @@
 <%
   id ||= nil
   title ||= nil
+  edit ||= {}
   block ||= nil
   items ||= []
 %>
 
 <%= tag.div class: "app-c-summary", id: id do %>
   <% if title %>
-    <%= tag.h2 title[:text], class:"govuk-heading-m" %>
-    <% if title[:edit_url] %>
-      <%= link_to title[:edit_url], class: "app-c-summary__edit-section-link",
-        title: "Edit #{title[:text]}",
-        data: { gtm: "content-change" } do %>
-        Edit<span class="govuk-visually-hidden"> <%= title[:text] %></span>
+    <%= tag.h2 title, class: "govuk-heading-m" %>
+    <% if edit.any? %>
+      <%= link_to edit.fetch(:href),
+                  class: "app-c-summary__edit-section-link",
+                  title: "Edit #{title}",
+                  data: edit.fetch(:data_attributes, {}) do %>
+        Edit<span class="govuk-visually-hidden"> <%= title %></span>
       <% end %>
     <% end %>
   <% end %>
@@ -25,14 +27,16 @@
           <%= tag.dt item[:field], class:"app-c-summary__question" %>
           <%= tag.dd item[:value], class:"app-c-summary__answer" %>
 
-          <% if item[:edit_url] %>
+          <% if item.fetch(:edit, {}).any? %>
             <%= tag.dd link_to, class:"app-c-summary__edit" do %>
-              <%= link_to item[:edit_url], class:"app-c-summary__edit-link" do %>
+              <%= link_to item[:edit].fetch(:href),
+                          class: "app-c-summary__edit-link",
+                          title: "Edit #{item[:field]}",
+                          data: item[:edit].fetch(:data_attributes, {}) do %>
                 Edit<span class="govuk-visually-hidden"> <%= item[:field] %></span>
               <% end %>
             <% end %>
           <% end %>
-
         <% end %>
       <% end %>
     <% end %>
