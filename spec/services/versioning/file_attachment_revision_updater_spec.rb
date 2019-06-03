@@ -26,38 +26,22 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
     end
 
     it "updates and reports changes to the fields" do
-      new_blob = create(:file_attachment_blob_revision)
       updater = Versioning::FileAttachmentRevisionUpdater.new(revision, user)
 
-      new_fields = {
-        title: "Another title",
-        blob_id: new_blob.blob_id,
-        number_of_pages: rand(1..10),
-      }
+      new_fields = { title: "Another title" }
 
       updater.assign(new_fields)
       next_revision = updater.next_revision
 
       expect(updater.changed?).to be_truthy
       expect(updater.changes).to include(new_fields)
-
-      new_fields.each do |name, value|
-        expect(updater.changed?(name)).to be_truthy
-        next if name == :blob_id
-
-        expect(next_revision.public_send(name)).to eq value
-      end
-
-      expect(next_revision.blob_revision.blob_id).to eq(new_fields[:blob_id])
+      expect(updater.changed?(:title)).to be_truthy
+      expect(next_revision.public_send(:title)).to eq "Another title"
     end
 
     it "preserves the current revision if no change" do
       updater = Versioning::FileAttachmentRevisionUpdater.new(revision, user)
-      new_fields = {
-        title: revision.title,
-        blob_id: revision.blob_revision.blob_id,
-        number_of_pages: revision.number_of_pages,
-      }
+      new_fields = { title: revision.title }
 
       updater.assign(new_fields)
       expect(updater.changed?).to be_falsey
@@ -79,6 +63,16 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
       expect(next_revision).to_not eq revision
       expect(next_revision.blob_revision.blob_id).to eq(old_fields[:blob_id])
       expect(next_revision.number_of_pages).to eq(old_fields[:number_of_pages])
+    end
+
+    it "can accept a blob_revision as an attribute" do
+      updater = Versioning::FileAttachmentRevisionUpdater.new(revision, user)
+      blob_revision = create(:file_attachment_blob_revision, filename: "new-file.txt")
+      updater.assign(blob_revision: blob_revision)
+
+      expect(updater.next_revision.blob_revision).to eq(blob_revision)
+      expect(updater.next_revision).to_not eq(revision)
+      expect(updater.changes).to match(a_hash_including(blob_revision: blob_revision))
     end
   end
 end

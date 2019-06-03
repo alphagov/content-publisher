@@ -30,8 +30,9 @@ private
   end
 
   def create_image_revision
-    context.image_revision = ImageUploadService.new(params[:image], edition.revision)
-                                               .call(user)
+    blob_revision = ImageBlobService.new(edition.revision, user)
+                                    .create_blob_revision(params[:image])
+    context.image_revision = Image::Revision.create_initial(blob_revision: blob_revision)
   end
 
   def update_edition
