@@ -23,7 +23,7 @@ RSpec.feature "Upload an image with requirements issues", js: true do
 
   def when_i_visit_the_images_page
     visit document_path(@edition.document)
-    click_on "Change Lead image"
+    click_on "Edit Lead image"
   end
 
   def when_i_insert_an_inline_image

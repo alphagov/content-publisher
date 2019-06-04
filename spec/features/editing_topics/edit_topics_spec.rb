@@ -31,7 +31,7 @@ RSpec.feature "Edit topics" do
   end
 
   def and_i_click_on_edit_topics
-    click_on "Change Topics"
+    click_on "Edit Topics"
   end
 
   def then_i_see_the_current_selections

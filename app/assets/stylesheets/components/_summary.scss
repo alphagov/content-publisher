@@ -16,12 +16,12 @@
   }
 }
 
-.app-c-summary__change-link {
+.app-c-summary__edit-link {
   @include govuk-link-common;
   @include govuk-link-style-no-visited-state;
 }
 
-.app-c-summary__change-section-link {
+.app-c-summary__edit-section-link {
   @include govuk-link-common;
   @include govuk-link-style-no-visited-state;
 
@@ -85,7 +85,7 @@
 
 .app-c-summary__question,
 .app-c-summary__answer,
-.app-c-summary__change {
+.app-c-summary__edit {
   display: block;
   margin: 0;
 
@@ -106,7 +106,7 @@
   padding-bottom: govuk-em(9, 19);
 }
 
-.app-c-summary__change {
+.app-c-summary__edit {
   position: absolute;
   top: 0;
   right: 0;

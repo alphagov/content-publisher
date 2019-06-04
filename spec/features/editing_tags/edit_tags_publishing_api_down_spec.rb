@@ -25,7 +25,7 @@ RSpec.feature "Edit tags when the API is down" do
   end
 
   def and_i_try_to_change_the_tags
-    click_on "Change Tags"
+    click_on "Edit Tags"
   end
 
   def then_i_should_see_an_error_message

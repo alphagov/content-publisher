@@ -32,9 +32,12 @@
 
 <%= render "components/summary", {
   id: "lead-image",
-  title: {
-    text: t("documents.show.lead_image.title"),
-    change_url: @edition.editable? && images_path(@edition.document),
-  },
+  title: t("documents.show.lead_image.title"),
+  edit: (
+    if @edition.editable?
+      { href: images_path(@edition.document),
+        data_attributes: { gtm: "edit-lead-image" } }
+    end
+  ),
   block: lead_image_block
 } %>

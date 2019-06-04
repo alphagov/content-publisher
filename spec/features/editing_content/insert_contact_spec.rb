@@ -33,7 +33,7 @@ RSpec.feature "Insert contact", js: true do
 
   def when_i_go_to_edit_the_edition
     visit document_path(@edition.document)
-    click_on "Change Content"
+    click_on "Edit Content"
   end
 
   def and_i_go_to_add_a_contact

@@ -39,7 +39,7 @@ RSpec.feature "Edit tags" do
   end
 
   def and_i_click_on_edit_tags
-    click_on "Change Tags"
+    click_on "Edit Tags"
   end
 
   def then_i_see_the_current_selections

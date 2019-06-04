@@ -23,10 +23,13 @@
 
 <%= render "components/summary", {
   id: "content",
-  title: {
-    text: t("documents.show.contents.title"),
-    change_url: @edition.editable? && edit_document_path(@edition.document)
-  },
+  title: t("documents.show.contents.title"),
+  edit: (
+    if @edition.editable?
+      { href: edit_document_path(@edition.document),
+        data_attributes: { gtm: "edit-summary" } }
+    end
+  ),
   items: [
     {
       field: t("documents.show.contents.items.title"),
