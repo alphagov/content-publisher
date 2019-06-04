@@ -15,10 +15,12 @@ module Requirements
     end
 
     def to_item(link_options: {}, style: "form")
+      link_options = link_options.call(context) if link_options.is_a?(Proc)
+
       {
         text: message(style: style),
-        href: link_options.dig(field, :href),
-        target: link_options.dig(field, :target),
+        href: link_options[:href],
+        target: link_options[:target],
       }
     end
   end

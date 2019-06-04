@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.feature "Preview requirements" do
-  include TopicsHelper
-
   scenario do
     given_there_is_an_edition_with_issues_to_fix
     when_i_view_the_summary_page

@@ -28,7 +28,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
   }
 ) do %>
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds" id="alt-text">
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: t("images.edit.form_labels.alt_text"),
@@ -54,7 +54,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
   </div>
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds" id="caption">
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: t("images.edit.form_labels.caption"),
@@ -80,7 +80,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
   </div>
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds" id="credit">
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: t("images.edit.form_labels.credit"),
@@ -88,6 +88,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
         },
         name: "image_revision[credit]",
         value: @image_revision.credit,
+        error_items: @issues&.items_for(:credit),
         data: {
           "contextual-guidance": "credit-guidance"
         }
