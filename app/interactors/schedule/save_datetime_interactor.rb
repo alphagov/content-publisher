@@ -39,7 +39,7 @@ private
   end
 
   def schedule_params
-    params.require(:schedule).permit(:day, :month, :year, :time)
+    params.require(:schedule).permit(:time, date: %i[day month year])
   end
 
   def set_scheduled_publishing_datetime

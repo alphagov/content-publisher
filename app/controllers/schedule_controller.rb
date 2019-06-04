@@ -10,7 +10,8 @@ class ScheduleController < ApplicationController
         "title" => I18n.t!("schedule.scheduled_publishing_datetime.flashes.requirements"),
         "items" => issues.items(
           link_options: {
-            scheduled_datetime: { href: "#scheduled_publishing_datetime" },
+            scheduled_date: { href: "#date" },
+            scheduled_time: { href: "#time" },
           },
         ),
       }

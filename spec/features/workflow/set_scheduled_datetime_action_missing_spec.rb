@@ -23,10 +23,10 @@ RSpec.feature "Set scheduled publishing datetime without selecting scheduling ac
   end
 
   def and_i_choose_a_scheduled_date_and_time
-    @date = Time.zone.now.advance(days: 2)
-    fill_in "schedule[day]", with: @date.day
-    fill_in "schedule[month]", with: @date.month
-    fill_in "schedule[year]", with: @date.year
+    @date = Time.current.advance(days: 2)
+    fill_in "schedule[date][day]", with: @date.day
+    fill_in "schedule[date][month]", with: @date.month
+    fill_in "schedule[date][year]", with: @date.year
     select "11:00pm", from: "schedule[time]"
   end
 

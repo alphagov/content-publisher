@@ -1,48 +1,52 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 <% content_for :title, t("schedule.scheduled_publishing_datetime.title") %>
-
-<% current_scheduled_publish_datetime = @edition.revision.scheduled_publishing_datetime %>
-<% default_date = Time.zone.now.tomorrow %>
-<% publish_date = current_scheduled_publish_datetime || default_date %>
-<% schedule_param = params["schedule"] ? params["schedule"] : {} %>
-<% selected_time = schedule_param["time"] || scheduled_time(current_scheduled_publish_datetime) %>
-<% action_not_selected = @issues&.select { |i| i.issue_key == :action_not_selected }&.first&.to_item %>
-
+<%
+  current_scheduled_publish_datetime = @edition.scheduled_publishing_datetime
+  default_datetime = Time.current.tomorrow
+  publish_datetime = current_scheduled_publish_datetime || default_datetime
+  action_not_selected = @issues&.select { |i| i.issue_key == :action_not_selected }&.first&.to_item
+%>
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document),
-                 id: "scheduled_publishing_datetime") do %>
-      <% date_input_id = "input-#{SecureRandom.hex(4)}" %>
+    <%= form_tag save_scheduled_publishing_datetime_path(@edition.document) do %>
       <%= render "govuk_publishing_components/components/label", {
         bold: true,
         text: t("schedule.scheduled_publishing_datetime.date"),
-        html_for: date_input_id,
+        html_for: "date",
       } %>
+      <%
+        errors = (@issues&.items_for(:scheduled_date) || [])
+        error_message = errors.map { |item| item[:text] }.join("<br/>").html_safe
+      %>
       <%= render "govuk_publishing_components/components/date_input", {
-        name: "schedule",
+        name: "schedule[date]",
         hint: t("schedule.scheduled_publishing_datetime.date_hint_text"),
-        id: date_input_id,
+        id: "date",
+        error_message: error_message.presence,
         items: [
           {
             name: "day",
             width: 2,
-            value: schedule_param["day"] || publish_date&.day
+            value: params.dig(:schedule, :date, :day) || publish_datetime&.day
           },
           {
             name: "month",
             width: 2,
-            value: schedule_param["month"] || publish_date&.month,
+            value: params.dig(:schedule, :date, :month) || publish_datetime&.month,
           },
           {
             name: "year",
             width: 4,
-            value: schedule_param["year"] || publish_date&.year,
+            value: params.dig(:schedule, :date, :year) || publish_datetime&.year,
           }
         ]
       } %>
-      <% time_options = time_options(selected_time) %>
+      <%
+        selected_time = params.dig(:schedule, :time) || publish_datetime.strftime("%l:%M%P")
+        time_options = time_options(selected_time)
+      %>
       <%= render "components/autocomplete", {
-        id: "schedule[time]",
+        id: "time",
         name: "schedule[time]",
         label: {
           text: t("schedule.scheduled_publishing_datetime.time"),

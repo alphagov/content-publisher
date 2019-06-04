@@ -9,7 +9,7 @@ RSpec.feature "Set scheduled publishing date and time passes before scheduling" 
   end
 
   def given_there_is_an_edition_with_past_scheduled_publishing_datetime
-    datetime = Time.zone.now - 1
+    datetime = Time.current - 1
     @edition = create(:edition, scheduled_publishing_datetime: datetime)
   end
 

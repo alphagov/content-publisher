@@ -8,7 +8,7 @@ RSpec.feature "Set scheduled publishing date and time passes is too close to now
   end
 
   def given_there_is_an_edition_with_a_scheduled_publishing_date_and_time_set_too_close_to_now
-    datetime = Time.zone.now.advance(Edition::MINIMUM_SCHEDULING_TIME)
+    datetime = Time.current.advance(Edition::MINIMUM_SCHEDULING_TIME)
     @edition = create(:edition, scheduled_publishing_datetime: datetime)
   end
 
