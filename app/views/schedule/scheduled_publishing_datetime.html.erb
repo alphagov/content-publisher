@@ -55,7 +55,6 @@
         width: "narrow",
       } %>
       <% if @edition.scheduled_publishing_datetime.present? %>
-        <%= hidden_field_tag("schedule[update]", true) %>
         <%= render "govuk_publishing_components/components/button", {
           text: "Save date",
           margin_bottom: true

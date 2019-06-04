@@ -52,12 +52,16 @@ private
   end
 
   def action_issues
-    action = params[:schedule][:action] || params[:schedule][:update]
+    return [] if scheduled_datetime_already_exists?
 
-    if action.blank?
+    if params[:schedule][:action].blank?
       [Requirements::Issue.new(:scheduled_datetime, :action_not_selected)]
     else
       []
     end
+  end
+
+  def scheduled_datetime_already_exists?
+    edition.scheduled_publishing_datetime.present?
   end
 end
