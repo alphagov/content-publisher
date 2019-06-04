@@ -18,11 +18,11 @@ module Requirements
       issues = []
 
       if day.blank? || month.blank? || year.blank?
-        issues << Issue.new(:scheduled_datetime, :invalid, field: "Date")
+        issues << Issue.new(:scheduled_datetime, :invalid, field: "date")
       end
 
       if time.blank?
-        issues << Issue.new(:scheduled_datetime, :invalid, field: "Time")
+        issues << Issue.new(:scheduled_datetime, :invalid, field: "time")
       end
 
       if issues.any?

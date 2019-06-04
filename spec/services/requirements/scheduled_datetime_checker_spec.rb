@@ -70,12 +70,12 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
 
       date_issue = I18n.t!(
         "requirements.scheduled_datetime.invalid.form_message",
-        field: "Date",
+        field: "date",
       )
 
       time_issue = I18n.t!(
         "requirements.scheduled_datetime.invalid.form_message",
-        field: "Time",
+        field: "time",
       )
 
       issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues

@@ -7,7 +7,7 @@ class ScheduleController < ApplicationController
 
     if issues
       flash.now["alert_with_items"] = {
-        "title" => I18n.t!("requirements.scheduled_datetime.title"),
+        "title" => I18n.t!("schedule.scheduled_publishing_datetime.flashes.requirements"),
         "items" => issues.items(
           link_options: {
             scheduled_datetime: { href: "#scheduled_publishing_datetime" },
@@ -55,7 +55,7 @@ class ScheduleController < ApplicationController
 
     if issues
       flash.now["alert_with_items"] = {
-        "title" => I18n.t!("requirements.scheduled_datetime.title"),
+        "title" => I18n.t!("schedule.scheduled_publishing_datetime.flashes.requirements"),
         "items" => issues.items,
       }
 
