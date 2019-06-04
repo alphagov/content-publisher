@@ -61,8 +61,5 @@ RSpec.feature "Set scheduled publishing datetime" do
     scheduled_date = @date.strftime("%-d %B %Y")
     expect(page).to have_content("Proposed to publish at 11:00pm on #{scheduled_date}")
     expect(page).to have_link("Change date")
-    within first(".app-timeline-entry") do
-      expect(page).to have_content I18n.t!("documents.history.entry_types.scheduled_publishing_datetime_set")
-    end
   end
 end
