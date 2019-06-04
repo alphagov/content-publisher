@@ -1,101 +1,118 @@
 # frozen_string_literal: true
 
 RSpec.describe Requirements::ScheduledDatetimeChecker do
-  let(:valid_datetime) { Time.zone.now.tomorrow }
-  let(:datetime_params) do
-    {
-      day: valid_datetime.day,
-      month: valid_datetime.month,
-      year: valid_datetime.year,
-      time: "11:00am",
-      action: "schedule",
-    }
-  end
+  include ActiveSupport::Testing::TimeHelpers
 
   describe "#pre_submit_issues" do
     it "returns no issues if there are none" do
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
+      tomorrow = Time.zone.tomorrow
+      issues = Requirements::ScheduledDatetimeChecker.new(
+        date: { day: tomorrow.day, month: tomorrow.month, year: tomorrow.year },
+        time: "11:00am",
+      ).pre_submit_issues
+
       expect(issues.items).to be_empty
     end
 
-    it "returns an issue if the datetime is in the past" do
-      past_datetime = valid_datetime - 2.days
-      datetime_params[:day] = past_datetime.day
-      datetime_params[:month] = past_datetime.month
-      datetime_params[:year] = past_datetime.year
+    it "returns an issue if the date or time fields are blank" do
+      issues = Requirements::ScheduledDatetimeChecker.new({}).pre_submit_issues
 
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
-      datetime_issue = I18n.t!("requirements.scheduled_datetime.in_the_past.form_message")
+      invalid_date = I18n.t!("requirements.scheduled_date.invalid.form_message")
+      invalid_time = I18n.t!("requirements.scheduled_time.invalid.form_message")
 
-      expect(issues.items_for(:scheduled_datetime))
-        .to include(a_hash_including(text: datetime_issue))
+      expect(issues.items_for(:scheduled_date))
+        .to include(a_hash_including(text: invalid_date))
+
+      expect(issues.items_for(:scheduled_time))
+        .to include(a_hash_including(text: invalid_time))
     end
 
-    it "returns an issue if the datetime is more than 14 months in the future" do
-      time_period = { day: 1, months: 14 }
-      future_date_time = valid_datetime.advance(time_period)
+    it "returns an issue if a date is invalid" do
+      issues = Requirements::ScheduledDatetimeChecker.new(
+        date: { day: 10, month: 60, year: 11 },
+        time: "11:00am",
+      ).pre_submit_issues
 
-      datetime_params[:day] = future_date_time.day.to_i
-      datetime_params[:month] = future_date_time.month.to_i
-      datetime_params[:year] = future_date_time.year.to_i
+      invalid_date = I18n.t!("requirements.scheduled_date.invalid.form_message")
 
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
-      datetime_issue = I18n.t!("requirements.scheduled_datetime.too_far_in_future.form_message",
-                               time_period: "14 months")
+      expect(issues.items_for(:scheduled_date))
+        .to include(a_hash_including(text: invalid_date))
+    end
 
-      expect(issues.items_for(:scheduled_datetime))
-        .to include(a_hash_including(text: datetime_issue))
+    it "returns an issue if a time is invalid" do
+      tomorrow = Time.zone.tomorrow
+      issues = Requirements::ScheduledDatetimeChecker.new(
+        date: { day: tomorrow.day, month: tomorrow.month, year: tomorrow.year },
+        time: "1223456",
+      ).pre_submit_issues
+
+      invalid_time = I18n.t!("requirements.scheduled_time.invalid.form_message")
+
+      expect(issues.items_for(:scheduled_time))
+        .to include(a_hash_including(text: invalid_time))
+    end
+
+    it "returns a date issue if the date is in the past" do
+      two_days_ago = Time.current - 2.days
+
+      issues = Requirements::ScheduledDatetimeChecker.new(
+        date: { day: two_days_ago.day,
+                month: two_days_ago.month,
+                year: two_days_ago.year },
+        time: "10:00am",
+      ).pre_submit_issues
+
+      past_date = I18n.t!("requirements.scheduled_date.in_the_past.form_message")
+
+      expect(issues.items_for(:scheduled_date))
+        .to include(a_hash_including(text: past_date))
+    end
+
+    it "returns a time issue if the date is present but time in the past" do
+      travel_to('2019-01-01 11:00am') do
+        issues = Requirements::ScheduledDatetimeChecker.new(
+          date: { day: 1, month: 1, year: 2019 },
+          time: "10:45am",
+        ).pre_submit_issues
+
+        past_time = I18n.t!("requirements.scheduled_time.in_the_past.form_message")
+
+        expect(issues.items_for(:scheduled_time))
+          .to include(a_hash_including(text: past_time))
+      end
     end
 
     it "returns an issue if the datetime is too close to now" do
-      time_period = { minutes: 15 }
-      future_datetime = Time.zone.now.advance(time_period)
+      travel_to('2019-01-01 11:00am') do
+        issues = Requirements::ScheduledDatetimeChecker.new(
+          date: { day: 1, month: 1, year: 2019 },
+          time: "11:10am",
+        ).pre_submit_issues
 
-      datetime_params[:day] = future_datetime.day
-      datetime_params[:month] = future_datetime.month
-      datetime_params[:year] = future_datetime.year
-      datetime_params[:time] = future_datetime.strftime("%l:%M%P").strip
+        close_time = I18n.t!("requirements.scheduled_time.too_close_to_now.form_message",
+                             time_period: "15 minutes")
 
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
-      datetime_issue = I18n.t!("requirements.scheduled_datetime.too_close_to_now.form_message",
-                               time_period: "15 minutes")
-
-      expect(issues.items_for(:scheduled_datetime))
-        .to include(a_hash_including(text: datetime_issue))
+        expect(issues.items_for(:scheduled_time))
+          .to include(a_hash_including(text: close_time))
+      end
     end
 
-    it "returns an issue if the date or time fields are blank" do
-      datetime_params[:day] = ""
-      datetime_params[:time] = ""
+    it "returns an issue if the datetime is too far into the future" do
+      time_period = { days: 1, months: 14 }
+      future_date = Time.current.advance(time_period)
 
-      date_issue = I18n.t!(
-        "requirements.scheduled_datetime.invalid.form_message",
-        field: "date",
-      )
+      issues = Requirements::ScheduledDatetimeChecker.new(
+        date: { day: future_date.day,
+                month: future_date.month,
+                year: future_date.year },
+        time: "10:50am",
+      ).pre_submit_issues
 
-      time_issue = I18n.t!(
-        "requirements.scheduled_datetime.invalid.form_message",
-        field: "time",
-      )
+      too_far_in_future = I18n.t!("requirements.scheduled_date.too_far_in_future.form_message",
+                               time_period: "14 months")
 
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
-
-      expect(issues.items_for(:scheduled_datetime))
-      .to include(a_hash_including(text: date_issue))
-
-      expect(issues.items_for(:scheduled_datetime))
-        .to include(a_hash_including(text: time_issue))
-    end
-
-    it "returns an issue if non-numerical characters entered in date and time fields" do
-      datetime_params[:day] = "abc"
-      datetime_params[:time] = "def"
-
-      issue = I18n.t!("requirements.scheduled_datetime.invalid_input.form_message")
-      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
-
-      expect(issues.items_for(:scheduled_datetime))
-        .to include(a_hash_including(text: issue))
+      expect(issues.items_for(:scheduled_date))
+        .to include(a_hash_including(text: too_far_in_future))
     end
   end
 end

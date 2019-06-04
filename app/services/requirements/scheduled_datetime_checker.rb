@@ -2,76 +2,87 @@
 
 module Requirements
   class ScheduledDatetimeChecker
-    attr_reader :day, :month, :year, :time
+    attr_reader :params
 
+    DATE_FORMAT = "%d-%m-%Y"
+    TIME_FORMAT = "%l:%M%P"
     MAXIMUM_FUTURE_TIME_PERIOD = { months: 14 }.freeze
     MINIMUM_FUTURE_TIME_PERIOD = { minutes: 15 }.freeze
 
     def initialize(params)
-      @day = params[:day]
-      @month = params[:month]
-      @year = params[:year]
-      @time = params[:time]
+      @params = params
     end
 
     def pre_submit_issues
       issues = []
 
-      if day.blank? || month.blank? || year.blank?
-        issues << Issue.new(:scheduled_datetime, :invalid, field: "date")
-      end
+      issues += input_issues
+      return CheckerIssues.new(issues) if issues.any?
 
-      if time.blank?
-        issues << Issue.new(:scheduled_datetime, :invalid, field: "time")
-      end
-
-      if issues.any?
-        return CheckerIssues.new(issues)
-      end
-
-      begin
-        if in_the_past?
-          issues << Issue.new(:scheduled_datetime, :in_the_past)
-          return CheckerIssues.new(issues)
-        end
-
-        if too_far_in_the_future?
-          issues << Issue.new(:scheduled_datetime,
-                              :too_far_in_future,
-                              time_period: time_period_for_issue(MAXIMUM_FUTURE_TIME_PERIOD))
-        end
-
-        if too_close_to_now?
-          issues << Issue.new(:scheduled_datetime,
-                              :too_close_to_now,
-                              time_period: time_period_for_issue(MINIMUM_FUTURE_TIME_PERIOD))
-        end
-      rescue ArgumentError
-        issues << Issue.new(:scheduled_datetime, :invalid_input)
-      end
-
+      issues += scheduled_in_the_past_issues
+      issues += scheduled_too_close_to_now_issues
+      issues += scheduled_too_far_in_future_issues
       CheckerIssues.new(issues)
     end
 
     def parsed_datetime
-      @parsed_datetime ||= Time.zone.parse("#{year}-#{month}-#{day} #{time}")
+      @parsed_datetime ||= begin
+                             day, month, year = params[:date]&.values_at(:day, :month, :year)
+                             Time.zone.strptime(
+                               "#{day}-#{month}-#{year} #{params[:time]}",
+                               "#{DATE_FORMAT} #{TIME_FORMAT}",
+                             )
+                           end
     end
 
   private
 
-    def in_the_past?
-      now = Time.zone.now
-      parsed_datetime <= now
+    def input_issues
+      issues = []
+
+      begin
+        day, month, year = params[:date]&.values_at(:day, :month, :year)
+        Date.strptime("#{day}-#{month}-#{year}", DATE_FORMAT)
+      rescue ArgumentError
+        issues << Issue.new(:scheduled_date, :invalid)
+      end
+
+      begin
+        Time.strptime(params[:time].to_s, TIME_FORMAT)
+      rescue ArgumentError
+        issues << Issue.new(:scheduled_time, :invalid)
+      end
+
+      issues
     end
 
-    def too_far_in_the_future?
-      now = Time.zone.now
-      parsed_datetime > now.advance(MAXIMUM_FUTURE_TIME_PERIOD).end_of_day
+    def scheduled_in_the_past_issues
+      return [] unless parsed_datetime < Time.current
+
+      field = parsed_datetime.today? ? :scheduled_time : :scheduled_date
+      [Issue.new(field, :in_the_past)]
     end
 
-    def too_close_to_now?
-      now = Time.zone.now
-      parsed_datetime < now.advance(MINIMUM_FUTURE_TIME_PERIOD)
+    def scheduled_too_close_to_now_issues
+      minimum_time = Time.current.advance(MINIMUM_FUTURE_TIME_PERIOD)
+      return [] unless parsed_datetime.between?(Time.current, minimum_time)
+
+      [
+        Issue.new(:scheduled_time,
+                  :too_close_to_now,
+                  time_period: time_period_for_issue(MINIMUM_FUTURE_TIME_PERIOD)),
+      ]
+    end
+
+    def scheduled_too_far_in_future_issues
+      maximum_future_time = Time.current.advance(MAXIMUM_FUTURE_TIME_PERIOD).end_of_day
+      return [] unless parsed_datetime > maximum_future_time
+
+      [
+        Issue.new(:scheduled_date,
+                  :too_far_in_future,
+                  time_period: time_period_for_issue(MAXIMUM_FUTURE_TIME_PERIOD)),
+      ]
     end
 
     def time_period_for_issue(time_period)
