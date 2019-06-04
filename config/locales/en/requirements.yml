@@ -92,6 +92,8 @@ en:
         form_message: "Enter a time more than %{time_period} from now"
       action_not_selected:
         form_message: Select an option
+      invalid_input:
+        form_message: Enter a valid date and time
     schedule_review:
       not_selected:
         form_message: Select an option
