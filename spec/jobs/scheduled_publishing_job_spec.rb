@@ -10,12 +10,16 @@ RSpec.describe ScheduledPublishingJob, inline: true do
       publish_service = double(:publish_service, publish: nil)
 
       expect(PublishService).to receive(:new).with(edition) { publish_service }
+      message_delivery = double(ActionMailer::MessageDelivery, deliver_later: nil)
 
       expect(publish_service)
         .to receive(:publish)
         .with(user: user, with_review: edition.status.details.reviewed)
 
-      ScheduledPublishingJob.new.perform(edition.id)
+      expect(ScheduledPublishMailer).to receive(:success_email).with(edition, user)
+                                                               .and_return(message_delivery)
+
+      ScheduledPublishingJob.perform_now(edition.id)
     end
 
     it "aborts the job if the edition does not exist (e.g. env sync)" do

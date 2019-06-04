@@ -1,0 +1,35 @@
+<%= @edition.document_type.label %> ‘<%= @edition.title %>’
+
+<% if @edition.number > 1 -%>
+<%= t("scheduled_publish_mailer.success_email.details.update",
+  time: @status.created_at.strftime("%-l:%M%P"),
+  date: @status.created_at.strftime("%d %B %Y")
+) %>
+<% else -%>
+<%= t("scheduled_publish_mailer.success_email.details.publish",
+  time: @status.created_at.strftime("%-l:%M%P"),
+  date: @status.created_at.strftime("%d %B %Y")
+) %>
+<% end -%>
+<%= t("scheduled_publish_mailer.success_email.scheduled_by", name: @user.name) %>
+
+<%= t("scheduled_publish_mailer.success_email.delay_warning") %>
+
+<%= t("scheduled_publish_mailer.success_email.page_address") %>
+<%= edition_public_url(@edition) %>
+
+<% if @edition.number > 1 -%>
+<% if @edition.major? -%>
+<%= t("scheduled_publish_mailer.success_email.change_note") %>
+<%= @edition.change_note %>
+<% else -%>
+<%= t("scheduled_publish_mailer.success_email.minor_update") %>
+<% end -%>
+<% end -%>
+
+<% if @edition.published_but_needs_2i? -%>
+<%= t("scheduled_publish_mailer.success_email.2i_warning") %>
+<% end -%>
+
+<%= t("scheduled_publish_mailer.success_email.edit_in_app") %>
+<%= document_url(@edition.document, utm_content: "publish-email-link") %>

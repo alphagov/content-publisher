@@ -9,15 +9,16 @@ class ScheduledPublishingJob < ApplicationJob
   discard_and_log(ActiveRecord::RecordNotFound)
 
   def perform(id)
-    Edition.find_and_lock_current(id: id) do |edition|
-      next if no_longer_schedulable?(edition)
+    published_edition = Edition.find_and_lock_current(id: id) do |edition|
+      return if no_longer_schedulable?(edition) # rubocop:disable Lint/NonLocalExitFromIterator
 
       user = edition.status.created_by
       reviewed = edition.status.details.reviewed
-
       PublishService.new(edition)
                     .publish(user: user, with_review: reviewed)
     end
+
+    ScheduledPublishMailer.success_email(published_edition, user).deliver_later
   end
 
 private
