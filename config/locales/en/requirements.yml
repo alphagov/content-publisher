@@ -81,20 +81,23 @@ en:
         form_message: Enter a public explanation
       invalid_govspeak:
         form_message: Remove invalid HTML or any JavaScript from the public explanation
-    scheduled_date:
+    schedule_date:
       invalid:
         form_message: Enter a valid date
       in_the_past:
         form_message: Enter a date that is not in the past
       too_far_in_future:
         form_message: "Enter a date within the next %{time_period}"
-    scheduled_time:
+    schedule_time:
       invalid:
         form_message: Enter a valid time
       in_the_past:
         form_message: Enter a time that is not in the past
       too_close_to_now:
         form_message: "Enter a time more than %{time_period} from now"
+    schedule_action:
+      not_selected:
+        form_message: Select an option
     schedule_review:
       not_selected:
         form_message: Select an option

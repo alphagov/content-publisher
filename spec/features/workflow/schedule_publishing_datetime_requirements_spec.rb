@@ -34,7 +34,7 @@ RSpec.feature "Scheduled publishing datetime requirements" do
 
   def then_i_see_an_error_about_the_date_being_invalid
     expect(page).to have_content(
-      I18n.t!("requirements.scheduled_date.invalid.form_message"),
+      I18n.t!("requirements.schedule_date.invalid.form_message"),
     )
   end
 end

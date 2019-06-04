@@ -39,7 +39,7 @@ private
   end
 
   def schedule_params
-    params.require(:schedule).permit(:time, date: %i[day month year])
+    params.require(:schedule).permit(:time, :action, date: %i[day month year])
   end
 
   def set_scheduled_publishing_datetime
@@ -54,8 +54,8 @@ private
   def action_issues
     return [] if scheduled_datetime_already_exists?
 
-    if params[:schedule][:action].blank?
-      [Requirements::Issue.new(:scheduled_datetime, :action_not_selected)]
+    if schedule_params[:action].blank?
+      [Requirements::Issue.new(:schedule_action, :not_selected)]
     else
       []
     end

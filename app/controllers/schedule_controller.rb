@@ -10,8 +10,9 @@ class ScheduleController < ApplicationController
         "title" => I18n.t!("schedule.scheduled_publishing_datetime.flashes.requirements"),
         "items" => issues.items(
           link_options: {
-            scheduled_date: { href: "#date" },
-            scheduled_time: { href: "#time" },
+            schedule_date: { href: "#date" },
+            schedule_time: { href: "#time" },
+            schedule_action: { href: "#action" },
           },
         ),
       }
@@ -19,7 +20,7 @@ class ScheduleController < ApplicationController
       render :scheduled_publishing_datetime,
              assigns: { edition: edition, issues: issues },
              status: :unprocessable_entity
-    elsif params[:schedule][:action] == "schedule"
+    elsif params.dig(:schedule, :action) == "schedule"
       redirect_to scheduling_confirmation_path(edition.document)
     else
       redirect_to document_path(edition.document)

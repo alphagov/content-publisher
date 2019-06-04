@@ -44,13 +44,13 @@ module Requirements
         day, month, year = params[:date]&.values_at(:day, :month, :year)
         Date.strptime("#{day}-#{month}-#{year}", DATE_FORMAT)
       rescue ArgumentError
-        issues << Issue.new(:scheduled_date, :invalid)
+        issues << Issue.new(:schedule_date, :invalid)
       end
 
       begin
         Time.strptime(params[:time].to_s, TIME_FORMAT)
       rescue ArgumentError
-        issues << Issue.new(:scheduled_time, :invalid)
+        issues << Issue.new(:schedule_time, :invalid)
       end
 
       issues
@@ -59,7 +59,7 @@ module Requirements
     def scheduled_in_the_past_issues
       return [] unless parsed_datetime < Time.current
 
-      field = parsed_datetime.today? ? :scheduled_time : :scheduled_date
+      field = parsed_datetime.today? ? :schedule_time : :schedule_date
       [Issue.new(field, :in_the_past)]
     end
 
@@ -68,7 +68,7 @@ module Requirements
       return [] unless parsed_datetime.between?(Time.current, minimum_time)
 
       [
-        Issue.new(:scheduled_time,
+        Issue.new(:schedule_time,
                   :too_close_to_now,
                   time_period: time_period_for_issue(MINIMUM_FUTURE_TIME_PERIOD)),
       ]
@@ -79,7 +79,7 @@ module Requirements
       return [] unless parsed_datetime > maximum_future_time
 
       [
-        Issue.new(:scheduled_date,
+        Issue.new(:schedule_date,
                   :too_far_in_future,
                   time_period: time_period_for_issue(MAXIMUM_FUTURE_TIME_PERIOD)),
       ]

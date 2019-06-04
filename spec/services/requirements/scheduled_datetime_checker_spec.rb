@@ -17,13 +17,13 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
     it "returns an issue if the date or time fields are blank" do
       issues = Requirements::ScheduledDatetimeChecker.new({}).pre_submit_issues
 
-      invalid_date = I18n.t!("requirements.scheduled_date.invalid.form_message")
-      invalid_time = I18n.t!("requirements.scheduled_time.invalid.form_message")
+      invalid_date = I18n.t!("requirements.schedule_date.invalid.form_message")
+      invalid_time = I18n.t!("requirements.schedule_time.invalid.form_message")
 
-      expect(issues.items_for(:scheduled_date))
+      expect(issues.items_for(:schedule_date))
         .to include(a_hash_including(text: invalid_date))
 
-      expect(issues.items_for(:scheduled_time))
+      expect(issues.items_for(:schedule_time))
         .to include(a_hash_including(text: invalid_time))
     end
 
@@ -33,9 +33,9 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
         time: "11:00am",
       ).pre_submit_issues
 
-      invalid_date = I18n.t!("requirements.scheduled_date.invalid.form_message")
+      invalid_date = I18n.t!("requirements.schedule_date.invalid.form_message")
 
-      expect(issues.items_for(:scheduled_date))
+      expect(issues.items_for(:schedule_date))
         .to include(a_hash_including(text: invalid_date))
     end
 
@@ -46,9 +46,9 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
         time: "1223456",
       ).pre_submit_issues
 
-      invalid_time = I18n.t!("requirements.scheduled_time.invalid.form_message")
+      invalid_time = I18n.t!("requirements.schedule_time.invalid.form_message")
 
-      expect(issues.items_for(:scheduled_time))
+      expect(issues.items_for(:schedule_time))
         .to include(a_hash_including(text: invalid_time))
     end
 
@@ -62,37 +62,37 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
         time: "10:00am",
       ).pre_submit_issues
 
-      past_date = I18n.t!("requirements.scheduled_date.in_the_past.form_message")
+      past_date = I18n.t!("requirements.schedule_date.in_the_past.form_message")
 
-      expect(issues.items_for(:scheduled_date))
+      expect(issues.items_for(:schedule_date))
         .to include(a_hash_including(text: past_date))
     end
 
     it "returns a time issue if the date is present but time in the past" do
-      travel_to('2019-01-01 11:00am') do
+      travel_to("2019-01-01 11:00am") do
         issues = Requirements::ScheduledDatetimeChecker.new(
           date: { day: 1, month: 1, year: 2019 },
           time: "10:45am",
         ).pre_submit_issues
 
-        past_time = I18n.t!("requirements.scheduled_time.in_the_past.form_message")
+        past_time = I18n.t!("requirements.schedule_time.in_the_past.form_message")
 
-        expect(issues.items_for(:scheduled_time))
+        expect(issues.items_for(:schedule_time))
           .to include(a_hash_including(text: past_time))
       end
     end
 
     it "returns an issue if the datetime is too close to now" do
-      travel_to('2019-01-01 11:00am') do
+      travel_to("2019-01-01 11:00am") do
         issues = Requirements::ScheduledDatetimeChecker.new(
           date: { day: 1, month: 1, year: 2019 },
           time: "11:10am",
         ).pre_submit_issues
 
-        close_time = I18n.t!("requirements.scheduled_time.too_close_to_now.form_message",
+        close_time = I18n.t!("requirements.schedule_time.too_close_to_now.form_message",
                              time_period: "15 minutes")
 
-        expect(issues.items_for(:scheduled_time))
+        expect(issues.items_for(:schedule_time))
           .to include(a_hash_including(text: close_time))
       end
     end
@@ -108,10 +108,10 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
         time: "10:50am",
       ).pre_submit_issues
 
-      too_far_in_future = I18n.t!("requirements.scheduled_date.too_far_in_future.form_message",
-                               time_period: "14 months")
+      too_far_in_future = I18n.t!("requirements.schedule_date.too_far_in_future.form_message",
+                                  time_period: "14 months")
 
-      expect(issues.items_for(:scheduled_date))
+      expect(issues.items_for(:schedule_date))
         .to include(a_hash_including(text: too_far_in_future))
     end
   end

@@ -4,7 +4,6 @@
   current_scheduled_publish_datetime = @edition.scheduled_publishing_datetime
   default_datetime = Time.current.tomorrow
   publish_datetime = current_scheduled_publish_datetime || default_datetime
-  action_not_selected = @issues&.select { |i| i.issue_key == :action_not_selected }&.first&.to_item
 %>
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -15,7 +14,7 @@
         html_for: "date",
       } %>
       <%
-        errors = (@issues&.items_for(:scheduled_date) || [])
+        errors = (@issues&.items_for(:schedule_date) || [])
         error_message = errors.map { |item| item[:text] }.join("<br/>").html_safe
       %>
       <%= render "govuk_publishing_components/components/date_input", {
@@ -27,7 +26,7 @@
           {
             name: "day",
             width: 2,
-            value: params.dig(:schedule, :date, :day) || publish_datetime&.day
+            value: params.dig(:schedule, :date, :day) || publish_datetime&.day,
           },
           {
             name: "month",
@@ -66,9 +65,10 @@
       <% else %>
         <%= render "govuk_publishing_components/components/radio", {
           name: "schedule[action]",
-          error_message: action_not_selected && action_not_selected[:text],
+          error_items: @issues&.items_for(:schedule_action),
           items: [
             {
+              id: "action",
               value: "save",
               text: t("schedule.scheduled_publishing_datetime.action.save"),
             },
