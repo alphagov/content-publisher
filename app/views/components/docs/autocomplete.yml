@@ -44,6 +44,24 @@ examples:
       selected_options:
           - de
 
+  with_error:
+    data:
+      name: autocomplete-with-error
+      label:
+        text: Autocomplete with error
+      options:
+        -
+          - France
+          - fr
+        -
+          - Germany
+          - de
+        -
+          - United Kingdom
+          - uk
+      error_items:
+        - text: There is a problem with this input
+
   multiselect:
     data:
       id: autocomplete-multiselect
