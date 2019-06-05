@@ -199,3 +199,11 @@ $transition-time: 400ms;
     border-width: 0 0 3px 3px;
   }
 }
+
+.miller-columns {
+  .govuk-list {
+    .govuk-list {
+      margin-left: govuk-spacing(6);
+    }
+  }
+}

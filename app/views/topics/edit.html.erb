@@ -39,7 +39,6 @@
       class: "govuk-checkboxes__input",
       name: "topics[]",
       value: topic.content_id,
-      tabindex: "-1",
       checked: @topics.include?(topic) %>
 
     <%= tag.label for: "topic-#{topic.content_id}", class:"govuk-label govuk-checkboxes__label" do %>
@@ -48,7 +47,7 @@
     </div>
 
     <% if topic.children.any? %>
-      <ul>
+      <ul class="govuk-list">
         <% topic.children.each do |child_topic| %>
           <% unroll(child_topic) %>
         <% end %>
@@ -61,8 +60,20 @@
   <h2 class="govuk-heading-m"><%= t("topics.edit.selected_title") %></h2>
   <miller-columns-selected class="miller-columns-selected" id="selected-items" for="miller-columns"></miller-columns-selected>
 
+  <div class="app-js-only">
+    <%= render "components/autocomplete", {
+      id: "topics-autocomplete",
+      name: "topics-autocomplete",
+      label: {
+        text: "Search topics",
+        bold: true
+      },
+      type: "topics"
+    } %>
+  </div>
+
   <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items">
-  <ul id="taxonomy">
+  <ul id="taxonomy" class="govuk-list">
     <% Topic.govuk_homepage(@edition.document_topics.index).children.each do |topic| %>
       <% unroll(topic) %>
     <% end %>

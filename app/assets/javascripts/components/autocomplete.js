@@ -13,6 +13,8 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       this.initAutoCompleteWithHintOnOptions()
     } else if (type === 'without-narrowing-results') {
       this.initAutoCompleteWithoutNarrowingResults()
+    } else if (type === 'topics') {
+      this.initAutoCompleteSearchTopics()
     } else {
       this.initAutoComplete()
     }
@@ -131,6 +133,68 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     })
 
     $select.parentNode.removeChild($select)
+  }
+
+  Autocomplete.prototype.initAutoCompleteSearchTopics = function () {
+    var millerColumns = document.querySelector('miller-columns')
+    var topics = millerColumns.taxonomy.flattenedTopics
+
+    var topicSuggestions = []
+
+    topics.forEach((topic, index) => {
+      topicSuggestions.push({
+        topic: topic,
+        highlightedTopicName: topic.topicName.replace(/<\/?mark>/gm, ''), // strip existing <mark> tags
+        breadcrumbs: topic.topicNames
+      })
+    })
+
+    if (!topicSuggestions) {
+      return
+    }
+
+    new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
+      id: 'topics-autocomplete',
+      name: 'topics-autocomplete',
+      element: this.$module,
+      minLength: 3,
+      autoselect: false,
+      source: function (query, syncResults) {
+        var results = topicSuggestions
+
+        syncResults(query
+          ? results.filter(function (result) {
+            var topicName = result.topic.topicName
+            var indexOf = topicName.toLowerCase().indexOf(query.toLowerCase())
+            var resultContainsQuery = indexOf !== -1
+            if (resultContainsQuery) {
+              // Wrap query in <mark> tags
+              var queryRegex = new RegExp('(' + query + ')', 'ig')
+              result.highlightedTopicName = topicName.replace(queryRegex, '<mark>$1</mark>')
+            }
+            return resultContainsQuery
+          }) : []
+        )
+      },
+      templates: {
+        inputValue: function (result) {
+          return ''
+        },
+        suggestion: function (result) {
+          var suggestionsBreadcrumbs
+          if (result && result.breadcrumbs) {
+            result.breadcrumbs[result.breadcrumbs.length - 1] = result.highlightedTopicName
+            suggestionsBreadcrumbs = result.breadcrumbs.join(' › ')
+          }
+          return suggestionsBreadcrumbs
+        }
+      },
+      onConfirm: function (result) {
+        if (result && !result.topic.selected) {
+          millerColumns.taxonomy.topicClicked(result.topic)
+        }
+      }
+    })
   }
 
   Modules.Autocomplete = Autocomplete

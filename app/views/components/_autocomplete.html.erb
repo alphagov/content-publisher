@@ -44,7 +44,7 @@
         multiple: multiple
       %>
     <% else %>
-      <%= tag.p "No options available", class: "govuk-hint" %>
+      <%= tag.p "No options available", class: "govuk-hint" unless type=='search-topics' %>
     <% end %>
   <% end %>
 <% end %>
