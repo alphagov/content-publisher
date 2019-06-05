@@ -26,17 +26,17 @@
           {
             name: "day",
             width: 2,
-            value: params.dig(:schedule, :date, :day) || publish_datetime&.day,
+            value: params.dig(:schedule, :date, :day) || publish_datetime.day,
           },
           {
             name: "month",
             width: 2,
-            value: params.dig(:schedule, :date, :month) || publish_datetime&.month,
+            value: params.dig(:schedule, :date, :month) || publish_datetime.month,
           },
           {
             name: "year",
             width: 4,
-            value: params.dig(:schedule, :date, :year) || publish_datetime&.year,
+            value: params.dig(:schedule, :date, :year) || publish_datetime.year,
           }
         ]
       } %>
