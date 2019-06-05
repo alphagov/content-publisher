@@ -6,6 +6,6 @@ module SchedulingHelper
   end
 
   def format_scheduled_time(datetime)
-    datetime&.strftime("%l:%M%P")
+    datetime&.strftime("%-l:%M%P")
   end
 end
