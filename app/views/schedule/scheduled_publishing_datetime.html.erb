@@ -72,10 +72,12 @@
               id: "action",
               value: "save",
               text: t("schedule.scheduled_publishing_datetime.action.save"),
+              checked: params.dig(:schedule, :action) == "save",
             },
             {
               value: "schedule",
               text: t("schedule.scheduled_publishing_datetime.action.schedule"),
+              checked: params.dig(:schedule, :action) == "schedule",
             },
           ]
         } %>
