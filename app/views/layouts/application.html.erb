@@ -7,7 +7,8 @@
   <script>
     var dataLayer = [{
       'user-organisation': '<%= current_user.organisation_slug %>',
-      'cp-uid': '<%= current_user.uid %>'
+      'cp-uid': '<%= current_user.uid %>',
+      'page-name': '<%= "#{controller_name}-#{action_name}" %>'
     }];
     dataLayer.push({ 'gtm.blacklist': ['html', 'customScripts', 'nonGoogleScripts', 'customPixels'] });
   </script>
