@@ -52,6 +52,32 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
         .to include(a_hash_including(text: invalid_time))
     end
 
+    it "accepts times formatted different from how we present them" do
+      travel_to("2019-01-01 11:00am") do
+        date_options = { day: 2, month: 1, year: 2019 }
+
+        checker = Requirements::ScheduledDatetimeChecker.new(time: "9:34",
+                                                             date: date_options)
+        expect(checker.pre_submit_issues.items).to be_empty
+        expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 09:34"))
+
+        checker = Requirements::ScheduledDatetimeChecker.new(time: "12:00",
+                                                             date: date_options)
+        expect(checker.pre_submit_issues.items).to be_empty
+        expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 12:00"))
+
+        checker = Requirements::ScheduledDatetimeChecker.new(time: "6:00 pm",
+                                                             date: date_options)
+        expect(checker.pre_submit_issues.items).to be_empty
+        expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 18:00"))
+
+        checker = Requirements::ScheduledDatetimeChecker.new(time: "23:32",
+                                                             date: date_options)
+        expect(checker.pre_submit_issues.items).to be_empty
+        expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 23:32"))
+      end
+    end
+
     it "returns a date issue if the date is in the past" do
       two_days_ago = Time.current - 2.days
 

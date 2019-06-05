@@ -4,8 +4,6 @@ module Requirements
   class ScheduledDatetimeChecker
     attr_reader :params
 
-    DATE_FORMAT = "%d-%m-%Y"
-    TIME_FORMAT = "%l:%M%P"
     MAXIMUM_FUTURE_TIME_PERIOD = { months: 14 }.freeze
     MINIMUM_FUTURE_TIME_PERIOD = { minutes: 15 }.freeze
 
@@ -27,10 +25,13 @@ module Requirements
 
     def parsed_datetime
       @parsed_datetime ||= begin
-                             day, month, year = params[:date]&.values_at(:day, :month, :year)
-                             Time.zone.strptime(
-                               "#{day}-#{month}-#{year} #{params[:time]}",
-                               "#{DATE_FORMAT} #{TIME_FORMAT}",
+                             time = time_grouping(params[:time])
+                             Time.current.change(
+                               day: params.dig(:date, :day).to_i,
+                               month: params.dig(:date, :month).to_i,
+                               year: params.dig(:date, :year).to_i,
+                               hour: time[:hour].to_i + (time[:period]&.downcase == "pm" ? 12 : 0),
+                               min: time[:minute].to_i,
                              )
                            end
     end
@@ -42,14 +43,13 @@ module Requirements
 
       begin
         day, month, year = params[:date]&.values_at(:day, :month, :year)
-        Date.strptime("#{day}-#{month}-#{year}", DATE_FORMAT)
+        Date.strptime("#{day}-#{month}-#{year}", "%d-%m-%Y")
       rescue ArgumentError
         issues << Issue.new(:schedule_date, :invalid)
       end
 
-      begin
-        Time.strptime(params[:time].to_s, TIME_FORMAT)
-      rescue ArgumentError
+      time = time_grouping(params[:time])
+      if !time || (time[:period] && time[:hour].to_i > 12)
         issues << Issue.new(:schedule_time, :invalid)
       end
 
@@ -83,6 +83,17 @@ module Requirements
                   :too_far_in_future,
                   time_period: time_period_for_issue(MAXIMUM_FUTURE_TIME_PERIOD)),
       ]
+    end
+
+    def time_grouping(time)
+      time.to_s.match(%r{
+        \A
+        (?<hour>(2[0-3]|1[0-9]|0?[0-9]))
+        :
+        (?<minute>[0-5][0-9])
+        (\s?(?<period>(am|pm)))?
+        \Z
+      }ix)
     end
 
     def time_period_for_issue(time_period)
