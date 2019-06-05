@@ -154,3 +154,26 @@ examples:
           - Published
         -
           - Removed
+  autocomplete_without_narrowing_results_and_initial_value:
+    description: |
+      This is used to display a value that a user has entered erroneously
+      without altering the underlying select. This only makes sense for the
+      without narrowing results variant as this removes the select element.
+    data:
+      id: autocomplete-with-initial-value
+      name: autocomplete-with-initial-value
+      type: without-narrowing-results
+      label:
+        text: Select your country
+      data_attributes:
+        initial_value: "Invalid Country"
+      options:
+        -
+          - France
+          - fr
+        -
+          - United Arab Emirates
+          - uae
+        -
+          - United Kingdom
+          - uk

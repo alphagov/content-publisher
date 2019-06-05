@@ -10,13 +10,15 @@
   hint ||= nil
   width ||= nil
   aria = error_id if error_items.any?
+  data_attributes ||= {}
 
   root_classes = %w(app-c-autocomplete govuk-form-group)
   root_classes << "app-c-autocomplete--#{width}" if width
   root_classes << "govuk-form-group--error" if error_items.any?
 %>
 
-<%= tag.div class: root_classes, data: { module: "autocomplete", "autocomplete-type": type } do %>
+<%= tag.div class: root_classes,
+            data: data_attributes.merge(module: "autocomplete", "autocomplete-type": type) do %>
   <%= tag.fieldset class: "govuk-fieldset", "aria-describedby": aria do %>
     <%= render "govuk_publishing_components/components/label", {
       html_for: id
