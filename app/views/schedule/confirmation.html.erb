@@ -1,30 +1,30 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 <% content_for :title, t("schedule.confirmation.title") %>
-
-<% scheduled_time = @edition.scheduled_publishing_datetime.strftime("%l:%M%P").strip %>
-<% scheduled_date = @edition.scheduled_publishing_datetime.strftime("%-d %B %Y") %>
+<% datetime = @edition.scheduled_publishing_datetime %>
+<% time = scheduled_time(datetime) %>
+<% date = scheduled_date(datetime) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag(scheduling_confirmation_path(@edition.document)) do %>
+    <%= form_tag schedule_path(@edition.document) do %>
+      <%= render_govspeak(t("schedule.confirmation.hint_text", time: time, date: date)) %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "review_status",
-        is_page_heading: true,
-        error_items: @issues&.items_for(:review_status),
-        hint: t("schedule.confirmation.hint_text", time: scheduled_time, date: scheduled_date),
+        error_items: @issues&.items,
         items: [
           {
             value: "reviewed",
-            text: t("schedule.confirmation.review_status.reviewed"),
+            text: t("schedule.confirmation.review_status.reviewed")
           },
           {
             value: "not_reviewed",
-            text: t("schedule.confirmation.review_status.not_reviewed"),
+            text: t("schedule.confirmation.review_status.not_reviewed")
           },
         ]
       } %>
+
       <%= render "govuk_publishing_components/components/button", {
-        text: "Publish"
+        text: "Schedule",
       } %>
     <% end %>
   </div>

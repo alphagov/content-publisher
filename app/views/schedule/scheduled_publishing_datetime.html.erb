@@ -1,0 +1,89 @@
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, t("schedule.scheduled_publishing_datetime.title") %>
+
+<% current_scheduled_publish_datetime = @edition.revision.scheduled_publishing_datetime %>
+<% default_date = Time.zone.now.tomorrow %>
+<% publish_date = current_scheduled_publish_datetime || default_date %>
+<% schedule_param = params["schedule"] ? params["schedule"] : {} %>
+<% selected_time = schedule_param["time"] || scheduled_time(current_scheduled_publish_datetime) %>
+<% action_not_selected = @issues&.select { |i| i.issue_key == :action_not_selected }&.first&.to_item %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document),
+                 id: "scheduled_publishing_datetime") do %>
+      <% date_input_id = "input-#{SecureRandom.hex(4)}" %>
+      <%= render "govuk_publishing_components/components/label", {
+        bold: true,
+        text: t("schedule.scheduled_publishing_datetime.date"),
+        html_for: date_input_id,
+      } %>
+      <%= render "govuk_publishing_components/components/date_input", {
+        name: "schedule",
+        hint: t("schedule.scheduled_publishing_datetime.date_hint_text"),
+        id: date_input_id,
+        items: [
+          {
+            name: "day",
+            width: 2,
+            value: schedule_param["day"] || publish_date&.day
+          },
+          {
+            name: "month",
+            width: 2,
+            value: schedule_param["month"] || publish_date&.month,
+          },
+          {
+            name: "year",
+            width: 4,
+            value: schedule_param["year"] || publish_date&.year,
+          }
+        ]
+      } %>
+      <% time_options = time_options(selected_time) %>
+      <%= render "components/autocomplete", {
+        id: "schedule[time]",
+        name: "schedule[time]",
+        label: {
+          text: t("schedule.scheduled_publishing_datetime.time"),
+          bold: true,
+        },
+        options: time_options[:options],
+        selected_options: time_options[:selected_options],
+        type: "without-narrowing-results",
+        size: 5,
+        width: "narrow",
+      } %>
+      <% if @edition.scheduled_publishing_datetime.present? %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Save date",
+          margin_bottom: true
+        } %>,
+      <% else %>
+        <%= render "govuk_publishing_components/components/radio", {
+          name: "schedule[action]",
+          error_message: action_not_selected && action_not_selected[:text],
+          items: [
+            {
+              value: "save",
+              text: t("schedule.scheduled_publishing_datetime.action.save"),
+            },
+            {
+              value: "schedule",
+              text: t("schedule.scheduled_publishing_datetime.action.schedule"),
+            },
+          ]
+        } %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Continue"
+        } %>
+      <% end %>
+    <% end %>
+
+    <% if @edition.scheduled_publishing_datetime.present? && !@edition.scheduled? %>
+      <%= form_tag clear_scheduled_publishing_datetime_path(@edition.document) do %>
+        <button class="govuk-link app-link--button govuk-link--no-visited-state">Clear schedule date</button>
+      <% end %>
+    <% end %>
+  </div>
+</div>

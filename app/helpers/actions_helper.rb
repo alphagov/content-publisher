@@ -38,11 +38,25 @@ module ActionsHelper
             data: { gtm: "remove" }
   end
 
-  def schedule_link(edition)
+  def schedule_confirmation_link(edition, extra_classes = [])
     link_to "Schedule",
             scheduling_confirmation_path(edition.document),
-            class: "govuk-link govuk-link--no-visited-state",
-            data: { gtm: "schedule" }
+            class: %w(govuk-link govuk-link--no-visited-state) + Array(extra_classes),
+            data: { gtm: "schedule-confirm" }
+  end
+
+  def schedule_confirmation_button(edition)
+    render "govuk_publishing_components/components/button",
+           text: "Schedule to publish",
+           data_attributes: { gtm: "schedule-confirm" },
+           href: scheduling_confirmation_path(edition.document)
+  end
+
+  def create_schedule_date_link(edition, extra_classes = [])
+    link_to "Schedule",
+            scheduled_publishing_datetime_path(edition.document),
+            class: %w(govuk-link govuk-link--no-visited-state) + Array(extra_classes),
+            data: { gtm: "schedule-date" }
   end
 
   def publish_link(edition)
@@ -75,12 +89,6 @@ module ActionsHelper
   def approve_button(edition)
     form_tag approve_document_path(edition.document), data: { gtm: "approve" } do
       render "govuk_publishing_components/components/button", text: "Approve"
-    end
-  end
-
-  def unschedule_button(edition)
-    form_tag unschedule_path(edition.document), data: { gtm: "unschedule" } do
-      render "govuk_publishing_components/components/button", text: "Stop scheduled publishing", secondary: true
     end
   end
 

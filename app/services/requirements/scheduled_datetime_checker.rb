@@ -18,32 +18,36 @@ module Requirements
       issues = []
 
       if day.blank? || month.blank? || year.blank?
-        issues << Issue.new(:scheduled_datetime, :invalid, field: "Date")
+        issues << Issue.new(:scheduled_datetime, :invalid, field: "date")
       end
 
       if time.blank?
-        issues << Issue.new(:scheduled_datetime, :invalid, field: "Time")
+        issues << Issue.new(:scheduled_datetime, :invalid, field: "time")
       end
 
       if issues.any?
         return CheckerIssues.new(issues)
       end
 
-      if in_the_past?
-        issues << Issue.new(:scheduled_datetime, :in_the_past)
-        return CheckerIssues.new(issues)
-      end
+      begin
+        if in_the_past?
+          issues << Issue.new(:scheduled_datetime, :in_the_past)
+          return CheckerIssues.new(issues)
+        end
 
-      if too_far_in_the_future?
-        issues << Issue.new(:scheduled_datetime,
-                            :too_far_in_future,
-                            time_period: time_period_for_issue(MAXIMUM_FUTURE_TIME_PERIOD))
-      end
+        if too_far_in_the_future?
+          issues << Issue.new(:scheduled_datetime,
+                              :too_far_in_future,
+                              time_period: time_period_for_issue(MAXIMUM_FUTURE_TIME_PERIOD))
+        end
 
-      if too_close_to_now?
-        issues << Issue.new(:scheduled_datetime,
-                            :too_close_to_now,
-                            time_period: time_period_for_issue(MINIMUM_FUTURE_TIME_PERIOD))
+        if too_close_to_now?
+          issues << Issue.new(:scheduled_datetime,
+                              :too_close_to_now,
+                              time_period: time_period_for_issue(MINIMUM_FUTURE_TIME_PERIOD))
+        end
+      rescue ArgumentError
+        issues << Issue.new(:scheduled_datetime, :invalid_input)
       end
 
       CheckerIssues.new(issues)

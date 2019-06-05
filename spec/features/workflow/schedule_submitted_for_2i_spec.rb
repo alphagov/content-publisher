@@ -1,49 +1,38 @@
 # frozen_string_literal: true
 
-RSpec.feature "Schedule an edition" do
-  include ActiveJob::TestHelper
-
-  background do
-    Sidekiq::Testing.fake!
-  end
-
+RSpec.feature "Schedule an edition that has been submitted for 2i" do
   scenario do
-    given_there_is_an_edition_ready_to_schedule
+    given_there_is_an_edition_submitted_for_2i
     when_i_visit_the_summary_page
-    and_i_click_schedule
+    and_i_click_schedule_to_publish
     and_i_select_the_reviewed_option
     then_i_see_the_edition_has_been_scheduled
     and_i_can_no_longer_edit_the_content
   end
 
-  def given_there_is_an_edition_ready_to_schedule
+  def given_there_is_an_edition_submitted_for_2i
     @datetime = Time.current.tomorrow.change(hour: 10)
-    @edition = create(:edition, scheduled_publishing_datetime: @datetime)
-    @request = stub_default_publishing_api_put_intent
+    @edition = create(:edition,
+                      scheduled_publishing_datetime: @datetime,
+                      state: "submitted_for_review")
   end
 
   def when_i_visit_the_summary_page
     visit document_path(@edition.document)
   end
 
-  def and_i_click_schedule
-    click_on "Schedule"
+  def and_i_click_schedule_to_publish
+    click_on "Schedule to publish"
   end
 
   def and_i_select_the_reviewed_option
+    stub_default_publishing_api_put_intent
     choose I18n.t!("schedule.confirmation.review_status.reviewed")
     click_on "Schedule"
   end
 
   def then_i_see_the_edition_has_been_scheduled
     expect(page).to have_content(I18n.t!("schedule.scheduled.title"))
-    expect(enqueued_jobs.count).to eq 1
-
-    job = enqueued_jobs.first
-    expect(job[:args].first).to eq @edition.id
-    expect(job[:at].to_i).to eq @datetime.to_i
-
-    assert_requested @request
 
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))

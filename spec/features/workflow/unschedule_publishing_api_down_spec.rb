@@ -12,7 +12,10 @@ RSpec.feature "Unschedule a document when Publishing API is down" do
 
   def given_there_is_a_scheduled_document
     schedule = create(:scheduling, reviewed: true)
-    @edition = create(:edition, :scheduled, scheduling: schedule)
+    @edition = create(:edition,
+                      :scheduled,
+                      scheduling: schedule,
+                      scheduled_publishing_datetime: Time.zone.now)
   end
 
   def and_the_publishing_api_is_down

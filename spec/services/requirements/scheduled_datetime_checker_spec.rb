@@ -8,6 +8,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
       month: valid_datetime.month,
       year: valid_datetime.year,
       time: "11:00am",
+      action: "schedule",
     }
   end
 
@@ -69,12 +70,12 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
 
       date_issue = I18n.t!(
         "requirements.scheduled_datetime.invalid.form_message",
-        field: "Date",
+        field: "date",
       )
 
       time_issue = I18n.t!(
         "requirements.scheduled_datetime.invalid.form_message",
-        field: "Time",
+        field: "time",
       )
 
       issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
@@ -84,6 +85,17 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
 
       expect(issues.items_for(:scheduled_datetime))
         .to include(a_hash_including(text: time_issue))
+    end
+
+    it "returns an issue if non-numerical characters entered in date and time fields" do
+      datetime_params[:day] = "abc"
+      datetime_params[:time] = "def"
+
+      issue = I18n.t!("requirements.scheduled_datetime.invalid_input.form_message")
+      issues = Requirements::ScheduledDatetimeChecker.new(datetime_params).pre_submit_issues
+
+      expect(issues.items_for(:scheduled_datetime))
+        .to include(a_hash_including(text: issue))
     end
   end
 end

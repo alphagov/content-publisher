@@ -21,6 +21,9 @@
   </div>
 
   <div class="govuk-grid-column-one-third">
+    <% if @edition.scheduled_publishing_datetime.present? %>
+      <%= render "documents/show/scheduling_notice" %>
+    <% end %>
     <%= render "documents/show/actions" %>
     <%= render "documents/show/document_metadata" %>
     <% if current_user.has_permission?(User::DEBUG_PERMISSION) %>
