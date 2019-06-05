@@ -2,7 +2,7 @@
 <% content_for :title, t("schedule.scheduled_publishing_datetime.title") %>
 <%
   current_scheduled_publish_datetime = @edition.scheduled_publishing_datetime
-  default_datetime = Time.current.tomorrow
+  default_datetime = Time.current.tomorrow.change(hour: 9)
   publish_datetime = current_scheduled_publish_datetime || default_datetime
 %>
 <div class="govuk-grid-row">
@@ -40,10 +40,8 @@
           }
         ]
       } %>
-      <%
-        selected_time = params.dig(:schedule, :time) || publish_datetime.strftime("%l:%M%P")
-        time_options = time_options(selected_time)
-      %>
+      <% persistent_time = publish_datetime.strftime("%-l:%M%P") %>
+      <% selected_time = params.dig(:schedule, :time) || persistent_time %>
       <%= render "components/autocomplete", {
         id: "time",
         name: "schedule[time]",
@@ -52,8 +50,11 @@
           bold: true,
         },
         error_items: @issues&.items_for(:schedule_time),
-        options: time_options[:options],
-        selected_options: time_options[:selected_options],
+        options: time_options(persistent_time),
+        selected_options: [persistent_time],
+        data_attributes: {
+          initial_value: selected_time,
+        },
         type: "without-narrowing-results",
         size: 5,
         width: "narrow",
