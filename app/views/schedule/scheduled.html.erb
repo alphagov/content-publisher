@@ -1,8 +1,8 @@
 <% content_for :back_link, render_back_link(text: "Return to dashboard", href: document_path(@edition.document)) %>
 <% content_for :browser_title, t("schedule.scheduled.title") %>
 <% datetime = @edition.scheduled_publishing_datetime %>
-<% scheduled_time = scheduled_time(datetime) %>
-<% scheduled_date = scheduled_date(datetime) %>
+<% time = format_scheduled_time(datetime) %>
+<% date = format_scheduled_date(datetime) %>
 <% public_url = edition_public_url(@edition) %>
 
 <div class="govuk-grid-row">
@@ -11,7 +11,7 @@
       title: t("schedule.scheduled.title")
     } %>
     <%= render "govuk_publishing_components/components/govspeak" do %>
-      <%= govspeak_to_html t("schedule.scheduled.body_govspeak", title: @edition.title, time: scheduled_time, date: scheduled_date) %>
+      <%= govspeak_to_html t("schedule.scheduled.body_govspeak", title: @edition.title, time: time, date: date) %>
     <% end %>
     <%= render "govuk_publishing_components/components/inset_text", {
       text: strip_scheme_from_url(public_url)
