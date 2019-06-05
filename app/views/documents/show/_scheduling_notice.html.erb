@@ -1,6 +1,6 @@
 <% datetime = @edition.scheduled_publishing_datetime %>
-<% time = datetime&.strftime("%l:%M%P") %>
-<% date = datetime&.strftime("%-d %B %Y") %>
+<% time = scheduled_time(datetime) %>
+<% date = scheduled_date(datetime) %>
 
 <% change_date_link = capture do %>
   <%= link_to "Change date",

@@ -5,7 +5,7 @@
 <% default_date = Time.zone.now.tomorrow %>
 <% publish_date = current_scheduled_publish_datetime || default_date %>
 <% schedule_param = params["schedule"] ? params["schedule"] : {} %>
-<% selected_time = schedule_param["time"] ||  current_scheduled_publish_datetime&.strftime("%l:%M%P")&.strip %>
+<% selected_time = schedule_param["time"] || scheduled_time(current_scheduled_publish_datetime) %>
 <% action_not_selected = @issues&.select { |i| i.issue_key == :action_not_selected }&.first&.to_item %>
 
 <div class="govuk-grid-row">
