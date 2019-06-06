@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Schedule an edition" do
+RSpec.feature "Schedule an edition to publish" do
   include ActiveJob::TestHelper
 
   background do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Unschedule an edition" do
+RSpec.feature "Unschedule a scheduled edition" do
   scenario do
     given_there_is_a_scheduled_document
     when_i_visit_the_summary_page

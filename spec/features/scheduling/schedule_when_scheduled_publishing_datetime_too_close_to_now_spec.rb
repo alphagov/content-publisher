@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Set scheduled publishing date and time passes is too close to now" do
+RSpec.feature "Schedule when scheduled publishing datetime is too close to now" do
   scenario do
     given_there_is_an_edition_with_a_scheduled_publishing_date_and_time_set_too_close_to_now
     when_i_visit_the_summary_page

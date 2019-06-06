@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Set scheduled publishing date and time passes before scheduling" do
+RSpec.feature "Schedule when scheduled publishing datetime has passed" do
   scenario do
     given_there_is_an_edition_with_past_scheduled_publishing_datetime
     when_i_visit_the_summary_page
