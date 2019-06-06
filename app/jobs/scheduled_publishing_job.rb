@@ -18,7 +18,7 @@ class ScheduledPublishingJob < ApplicationJob
                     .publish(user: user, with_review: reviewed)
     end
 
-    ScheduledPublishMailer.success_email(published_edition, user).deliver_later
+    send_notifications(published_edition)
   end
 
 private
@@ -34,6 +34,12 @@ private
     if schedule > Time.zone.now
       Rails.logger.warn("Cannot publish an edition (\##{edition.id}) scheduled in the future")
       return true
+    end
+  end
+
+  def send_notifications(edition)
+    edition.editors.each do |editor|
+      ScheduledPublishMailer.success_email(edition, editor).deliver_later
     end
   end
 end
