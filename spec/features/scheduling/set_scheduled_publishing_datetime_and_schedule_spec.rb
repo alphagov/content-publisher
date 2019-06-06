@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Set scheduled publishing datetime and schedule" do
+RSpec.feature "Set scheduled publishing datetime and schedule for publishing" do
   scenario do
     given_there_is_an_edition
     when_i_visit_the_summary_page

@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
-RSpec.feature "Set scheduled publishing date and time passes is too close to now" do
+RSpec.feature "Schedule when scheduled publishing datetime has passed" do
   scenario do
-    given_there_is_an_edition_with_a_scheduled_publishing_date_and_time_set_too_close_to_now
+    given_there_is_an_edition_with_past_scheduled_publishing_datetime
     when_i_visit_the_summary_page
     then_i_cannot_see_a_schedule_link
+    and_i_can_see_a_change_date_link
   end
 
-  def given_there_is_an_edition_with_a_scheduled_publishing_date_and_time_set_too_close_to_now
-    datetime = Time.current.advance(Edition::MINIMUM_SCHEDULING_TIME)
+  def given_there_is_an_edition_with_past_scheduled_publishing_datetime
+    datetime = Time.current - 1
     @edition = create(:edition, scheduled_publishing_datetime: datetime)
   end
 
@@ -18,5 +19,9 @@ RSpec.feature "Set scheduled publishing date and time passes is too close to now
 
   def then_i_cannot_see_a_schedule_link
     expect(page).not_to have_button("Schedule")
+  end
+
+  def and_i_can_see_a_change_date_link
+    expect(page).to have_link("Change date")
   end
 end
