@@ -1,8 +1,10 @@
 en:
   schedule:
-    confirmation:
+    new:
       title: Schedule to publish
       hint_text: "Publish at %{time} on %{date}."
       review_status:
         reviewed: This content has been reviewed and approved for publication
         not_reviewed: This content needs to be reviewed after it has been published
+      flashes:
+        requirements: You need to

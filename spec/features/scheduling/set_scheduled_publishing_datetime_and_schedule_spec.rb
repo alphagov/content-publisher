@@ -38,7 +38,7 @@ RSpec.feature "Set scheduled publishing datetime and schedule for publishing" do
 
   def and_i_select_a_review_option
     stub_default_publishing_api_put_intent
-    choose I18n.t!("schedule.confirmation.review_status.reviewed")
+    choose I18n.t!("schedule.new.review_status.reviewed")
     click_on "Schedule"
   end
 

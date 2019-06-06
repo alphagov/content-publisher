@@ -1,22 +1,23 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
-<% content_for :title, t("schedule.scheduled_publishing_datetime.title") %>
+<% content_for :title, t("schedule_proposal.edit.title") %>
+
 <%
-  current_scheduled_publish_datetime = @edition.scheduled_publishing_datetime
+  current_schedule_datetime = @edition.scheduled_publishing_datetime
   default_datetime = Time.current.tomorrow.change(hour: 9)
-  publish_datetime = current_scheduled_publish_datetime || default_datetime
+  publish_datetime = current_schedule_datetime || default_datetime
 %>
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag save_scheduled_publishing_datetime_path(@edition.document) do %>
+    <%= form_tag schedule_proposal_path(@edition.document) do %>
       <% legend = capture do %>
         <span class="govuk-heading-s govuk-!-margin-bottom-0">
-          <%= t("schedule.scheduled_publishing_datetime.date") %>
+          <%= t("schedule_proposal.edit.date") %>
         </span>
       <% end %>
       <%= render "govuk_publishing_components/components/date_input", {
         legend_text: legend,
         name: "schedule[date]",
-        hint: t("schedule.scheduled_publishing_datetime.date_hint_text"),
+        hint: t("schedule_proposal.edit.date_hint_text"),
         id: "date",
         error_items: @issues&.items_for(:schedule_date),
         items: [
@@ -43,7 +44,7 @@
         id: "time",
         name: "schedule[time]",
         label: {
-          text: t("schedule.scheduled_publishing_datetime.time"),
+          text: t("schedule_proposal.edit.time"),
           bold: true,
         },
         error_items: @issues&.items_for(:schedule_time),
@@ -56,6 +57,7 @@
         size: 5,
         width: "narrow",
       } %>
+
       <% if @edition.scheduled_publishing_datetime.present? %>
         <%= render "govuk_publishing_components/components/button", {
           text: "Save date",
@@ -69,24 +71,26 @@
             {
               id: "action",
               value: "save",
-              text: t("schedule.scheduled_publishing_datetime.action.save"),
+              text: t("schedule_proposal.edit.actions.save"),
               checked: params.dig(:schedule, :action) == "save",
             },
             {
               value: "schedule",
-              text: t("schedule.scheduled_publishing_datetime.action.schedule"),
+              text: t("schedule_proposal.edit.actions.schedule"),
               checked: params.dig(:schedule, :action) == "schedule",
             },
           ]
         } %>
+
         <%= render "govuk_publishing_components/components/button", {
           text: "Continue"
         } %>
+
       <% end %>
     <% end %>
 
     <% if @edition.scheduled_publishing_datetime.present? && !@edition.scheduled? %>
-      <%= form_tag clear_scheduled_publishing_datetime_path(@edition.document) do %>
+      <%= form_tag schedule_proposal_path(@edition.document), method: :delete do %>
         <button class="govuk-link app-link--button govuk-link--no-visited-state">Clear schedule date</button>
       <% end %>
     <% end %>

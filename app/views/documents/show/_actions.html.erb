@@ -13,7 +13,7 @@
       <%= create_edition_button(@edition) %>
     <% elsif @edition.status.submitted_for_review? %>
       <% if @edition.schedulable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-        <%= schedule_confirmation_button(@edition) %>
+        <%= schedule_button(@edition) %>
         <%= preview_button(@edition, secondary: true) %>
         <%= delete_draft_link(@edition) %>
       <% else %>
@@ -21,14 +21,14 @@
         <%= preview_button(@edition, secondary: true) %>
         <%= delete_draft_link(@edition) %>
         <% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-          <%= create_schedule_date_link(@edition, "app-link--right") %>
+          <%= schedule_proposal_link(@edition, "app-link--right") %>
         <% end %>
       <% end %>
     <% elsif !@edition.revision_synced? %>
       <%= create_preview_button(@edition) %>
       <%= delete_draft_link(@edition) %>
       <% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-        <%= create_schedule_date_link(@edition, "app-link--right") %>
+        <%= schedule_proposal_link(@edition, "app-link--right") %>
       <% end %>
     <% elsif @edition.withdrawn? %>
       <%= undo_withdraw_button(@edition) %>
@@ -39,11 +39,11 @@
       <%= preview_button(@edition, secondary: true) %>
       <% if @edition.schedulable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <%= delete_draft_link(@edition) %>
-        <%= schedule_confirmation_link(@edition, "app-link--right") %>
+        <%= schedule_link(@edition, "app-link--right") %>
       <% elsif @edition.editable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <p class="govuk-body govuk-!-margin-bottom-3">
           <%= publish_link(@edition) %>
-          <%= create_schedule_date_link(@edition, "app-link--right") %>
+          <%= schedule_proposal_link(@edition, "app-link--right") %>
         </p>
         <%= delete_draft_link(@edition) %>
       <% end %>

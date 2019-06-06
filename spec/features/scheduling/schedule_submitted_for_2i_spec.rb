@@ -27,7 +27,7 @@ RSpec.feature "Schedule an edition that has been submitted for 2i" do
 
   def and_i_select_the_reviewed_option
     stub_default_publishing_api_put_intent
-    choose I18n.t!("schedule.confirmation.review_status.reviewed")
+    choose I18n.t!("schedule.new.review_status.reviewed")
     click_on "Schedule"
   end
 
