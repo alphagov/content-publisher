@@ -3,8 +3,8 @@
 RSpec.feature "Schedule an edition" do
   include ActiveJob::TestHelper
 
-  background do
-    Sidekiq::Testing.fake!
+  around do |example|
+    Sidekiq::Testing.fake! { example.run }
   end
 
   scenario do
