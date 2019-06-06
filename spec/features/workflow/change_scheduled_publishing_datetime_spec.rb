@@ -27,13 +27,13 @@ RSpec.feature "Change scheduled publishing datetime" do
 
   def then_i_see_the_current_date_and_time_selected
     expect(page).to have_selector(
-      "[@name='schedule[day]'][@value='#{@current_datetime.day}']",
+      "[@name='schedule[date][day]'][@value='#{@current_datetime.day}']",
     )
     expect(page).to have_selector(
-      "[@name='schedule[month]'][@value='#{@current_datetime.month}']",
+      "[@name='schedule[date][month]'][@value='#{@current_datetime.month}']",
     )
     expect(page).to have_selector(
-      "[@name='schedule[year]'][@value='#{@current_datetime.year}']",
+      "[@name='schedule[date][year]'][@value='#{@current_datetime.year}']",
     )
     expect(page).to have_field(
       "schedule[time]", text: "10:00am"
@@ -41,10 +41,10 @@ RSpec.feature "Change scheduled publishing datetime" do
   end
 
   def when_i_choose_a_new_scheduled_date_and_time
-    @new_date = Time.zone.now.advance(days: 2)
-    fill_in "schedule[day]", with: @new_date.day
-    fill_in "schedule[month]", with: @new_date.month
-    fill_in "schedule[year]", with: @new_date.year
+    @new_date = Time.current.advance(days: 2)
+    fill_in "schedule[date][day]", with: @new_date.day
+    fill_in "schedule[date][month]", with: @new_date.month
+    fill_in "schedule[date][year]", with: @new_date.year
     select "11:00pm", from: "schedule[time]"
   end
 

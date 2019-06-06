@@ -1,55 +1,61 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 <% content_for :title, t("schedule.scheduled_publishing_datetime.title") %>
-
-<% current_scheduled_publish_datetime = @edition.revision.scheduled_publishing_datetime %>
-<% default_date = Time.zone.now.tomorrow %>
-<% publish_date = current_scheduled_publish_datetime || default_date %>
-<% schedule_param = params["schedule"] ? params["schedule"] : {} %>
-<% selected_time = schedule_param["time"] || scheduled_time(current_scheduled_publish_datetime) %>
-<% action_not_selected = @issues&.select { |i| i.issue_key == :action_not_selected }&.first&.to_item %>
-
+<%
+  current_scheduled_publish_datetime = @edition.scheduled_publishing_datetime
+  default_datetime = Time.current.tomorrow.change(hour: 9)
+  publish_datetime = current_scheduled_publish_datetime || default_datetime
+%>
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag(save_scheduled_publishing_datetime_path(@edition.document),
-                 id: "scheduled_publishing_datetime") do %>
-      <% date_input_id = "input-#{SecureRandom.hex(4)}" %>
-      <%= render "govuk_publishing_components/components/label", {
-        bold: true,
-        text: t("schedule.scheduled_publishing_datetime.date"),
-        html_for: date_input_id,
-      } %>
+    <%= form_tag save_scheduled_publishing_datetime_path(@edition.document) do %>
+      <%
+        errors = (@issues&.items_for(:schedule_date) || [])
+        error_message = errors.map { |item| item[:text] }.join("<br/>").html_safe
+      %>
+      <% legend = capture do %>
+        <span class="govuk-heading-s govuk-!-margin-bottom-0">
+          <%= t("schedule.scheduled_publishing_datetime.date") %>
+        </span>
+      <% end %>
       <%= render "govuk_publishing_components/components/date_input", {
-        name: "schedule",
+        legend_text: legend,
+        name: "schedule[date]",
         hint: t("schedule.scheduled_publishing_datetime.date_hint_text"),
-        id: date_input_id,
+        id: "date",
+        error_message: error_message.presence,
         items: [
           {
             name: "day",
             width: 2,
-            value: schedule_param["day"] || publish_date&.day
+            value: params.dig(:schedule, :date, :day) || publish_datetime.day,
           },
           {
             name: "month",
             width: 2,
-            value: schedule_param["month"] || publish_date&.month,
+            value: params.dig(:schedule, :date, :month) || publish_datetime.month,
           },
           {
             name: "year",
             width: 4,
-            value: schedule_param["year"] || publish_date&.year,
+            value: params.dig(:schedule, :date, :year) || publish_datetime.year,
           }
         ]
       } %>
-      <% time_options = time_options(selected_time) %>
+      <% persistent_time = publish_datetime.strftime("%-l:%M%P") %>
+      <% selected_time = params.dig(:schedule, :time) || persistent_time %>
       <%= render "components/autocomplete", {
-        id: "schedule[time]",
+        id: "time",
         name: "schedule[time]",
         label: {
           text: t("schedule.scheduled_publishing_datetime.time"),
           bold: true,
         },
-        options: time_options[:options],
-        selected_options: time_options[:selected_options],
+        error_items: @issues&.items_for(:schedule_time),
+        options: time_options(persistent_time),
+        selected_options: [persistent_time],
+        data_attributes: {
+          initial_value: selected_time,
+        },
         type: "without-narrowing-results",
         size: 5,
         width: "narrow",
@@ -62,15 +68,18 @@
       <% else %>
         <%= render "govuk_publishing_components/components/radio", {
           name: "schedule[action]",
-          error_message: action_not_selected && action_not_selected[:text],
+          error_items: @issues&.items_for(:schedule_action),
           items: [
             {
+              id: "action",
               value: "save",
               text: t("schedule.scheduled_publishing_datetime.action.save"),
+              checked: params.dig(:schedule, :action) == "save",
             },
             {
               value: "schedule",
               text: t("schedule.scheduled_publishing_datetime.action.schedule"),
+              checked: params.dig(:schedule, :action) == "schedule",
             },
           ]
         } %>

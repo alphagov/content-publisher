@@ -11,7 +11,7 @@ RSpec.feature "Clear scheduled publishing datetime" do
   end
 
   def given_there_is_an_edition_with_a_set_scheduled_publishing_datetime
-    @datetime = Time.zone.now.advance(days: 2).midday
+    @datetime = Time.current.advance(days: 2).midday
     @scheduled_date = @datetime.strftime("%-d %B %Y")
     @edition = create(:edition, scheduled_publishing_datetime: @datetime)
   end
@@ -27,13 +27,13 @@ RSpec.feature "Clear scheduled publishing datetime" do
 
   def then_i_see_the_existing_scheduled_publishing_date_and_time
     expect(page).to have_selector(
-      "[@name='schedule[day]'][@value='#{@datetime.day}']",
+      "[@name='schedule[date][day]'][@value='#{@datetime.day}']",
     )
     expect(page).to have_selector(
-      "[@name='schedule[month]'][@value='#{@datetime.month}']",
+      "[@name='schedule[date][month]'][@value='#{@datetime.month}']",
     )
     expect(page).to have_selector(
-      "[@name='schedule[year]'][@value='#{@datetime.year}']",
+      "[@name='schedule[date][year]'][@value='#{@datetime.year}']",
     )
     expect(page).to have_field("schedule[time]", text: "12:00pm")
   end

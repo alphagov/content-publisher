@@ -1,8 +1,8 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 <% content_for :title, t("schedule.confirmation.title") %>
 <% datetime = @edition.scheduled_publishing_datetime %>
-<% time = scheduled_time(datetime) %>
-<% date = scheduled_date(datetime) %>
+<% time = format_scheduled_time(datetime) %>
+<% date = format_scheduled_date(datetime) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">

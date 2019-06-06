@@ -99,7 +99,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     if (!$selectedOption) {
       $selectedOption = $options[0]
     }
-    var defaultValue = $selectedOption.textContent
+    var defaultValue = this.$module.dataset.initialValue || $selectedOption.textContent
 
     new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
       id: $select.id,

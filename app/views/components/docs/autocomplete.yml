@@ -44,6 +44,24 @@ examples:
       selected_options:
           - de
 
+  with_error:
+    data:
+      name: autocomplete-with-error
+      label:
+        text: Autocomplete with error
+      options:
+        -
+          - France
+          - fr
+        -
+          - Germany
+          - de
+        -
+          - United Kingdom
+          - uk
+      error_items:
+        - text: There is a problem with this input
+
   multiselect:
     data:
       id: autocomplete-multiselect
@@ -89,7 +107,6 @@ examples:
       type: with-hint-on-options
       label:
         text: Select your country
-      data_module: autocomplete
       options:
         -
           -
@@ -112,7 +129,6 @@ examples:
       type: without-narrowing-results
       label:
         text: Select your country
-      data_module: autocomplete
       options:
         -
           - France
@@ -130,7 +146,6 @@ examples:
       type: without-narrowing-results
       label:
         text: Status
-      data_module: autocomplete
       width: narrow
       options:
         -
@@ -139,3 +154,26 @@ examples:
           - Published
         -
           - Removed
+  autocomplete_without_narrowing_results_and_initial_value:
+    description: |
+      This is used to display a value that a user has entered erroneously
+      without altering the underlying select. This only makes sense for the
+      without narrowing results variant as this removes the select element.
+    data:
+      id: autocomplete-with-initial-value
+      name: autocomplete-with-initial-value
+      type: without-narrowing-results
+      label:
+        text: Select your country
+      data_attributes:
+        initial_value: "Invalid Country"
+      options:
+        -
+          - France
+          - fr
+        -
+          - United Arab Emirates
+          - uae
+        -
+          - United Kingdom
+          - uk

@@ -23,9 +23,9 @@ RSpec.feature "Scheduled publishing datetime requirements" do
   end
 
   def and_i_enter_invalid_date_fields
-    fill_in "schedule[day]", with: ""
-    fill_in "schedule[month]", with: ""
-    fill_in "schedule[year]", with: ""
+    fill_in "schedule[date][day]", with: ""
+    fill_in "schedule[date][month]", with: ""
+    fill_in "schedule[date][year]", with: ""
   end
 
   def and_i_click_continue
@@ -34,8 +34,7 @@ RSpec.feature "Scheduled publishing datetime requirements" do
 
   def then_i_see_an_error_about_the_date_being_invalid
     expect(page).to have_content(
-      I18n.t!("requirements.scheduled_datetime.invalid.form_message",
-              field: "date"),
+      I18n.t!("requirements.schedule_date.invalid.form_message"),
     )
   end
 end
