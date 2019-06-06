@@ -136,12 +136,13 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
   }
 
   Autocomplete.prototype.initAutoCompleteSearchTopics = function () {
+    var $input = this.$module.querySelector('input')
     var millerColumns = document.querySelector('miller-columns')
     var topics = millerColumns.taxonomy.flattenedTopics
 
     var topicSuggestions = []
 
-    topics.forEach((topic, index) => {
+    topics.forEach(function (topic) {
       topicSuggestions.push({
         topic: topic,
         highlightedTopicName: topic.topicName.replace(/<\/?mark>/gm, ''), // strip existing <mark> tags
@@ -154,8 +155,8 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     }
 
     new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
-      id: 'topics-autocomplete',
-      name: 'topics-autocomplete',
+      id: $input.id,
+      name: $input.name,
       element: this.$module,
       minLength: 3,
       autoselect: false,
@@ -195,6 +196,8 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         }
       }
     })
+
+    $input.parentNode.parentNode.removeChild($input.parentNode)
   }
 
   Modules.Autocomplete = Autocomplete
