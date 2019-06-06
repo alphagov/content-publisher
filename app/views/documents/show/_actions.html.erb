@@ -15,7 +15,7 @@
       <% if @edition.schedulable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <%= schedule_confirmation_button(@edition) %>
         <%= preview_button(@edition, secondary: true) %>
-        <%= delete_draft_link(@edition, "app-link--right") %>
+        <%= delete_draft_link(@edition) %>
       <% else %>
         <%= publish_button(@edition) %>
         <%= preview_button(@edition, secondary: true) %>
