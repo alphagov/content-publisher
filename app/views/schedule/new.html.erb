@@ -1,24 +1,25 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
-<% content_for :title, t("schedule.confirmation.title") %>
+<% content_for :title, t("schedule.new.title") %>
+
 <% datetime = @edition.scheduled_publishing_datetime %>
 <% time = format_scheduled_time(datetime) %>
 <% date = format_scheduled_date(datetime) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag schedule_path(@edition.document) do %>
-      <%= render_govspeak(t("schedule.confirmation.hint_text", time: time, date: date)) %>
+    <%= form_tag create_schedule_path(@edition.document) do %>
+      <%= render_govspeak(t("schedule.new.hint_text", time: time, date: date)) %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "review_status",
         error_items: @issues&.items,
         items: [
           {
             value: "reviewed",
-            text: t("schedule.confirmation.review_status.reviewed")
+            text: t("schedule.new.review_status.reviewed")
           },
           {
             value: "not_reviewed",
-            text: t("schedule.confirmation.review_status.not_reviewed")
+            text: t("schedule.new.review_status.not_reviewed")
           },
         ]
       } %>

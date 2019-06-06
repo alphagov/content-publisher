@@ -2,12 +2,6 @@
 <% time = format_scheduled_time(datetime) %>
 <% date = format_scheduled_date(datetime) %>
 
-<% change_date_link = capture do %>
-  <%= link_to "Change date",
-              scheduled_publishing_datetime_path(@edition.document),
-              class: "govuk-link govuk-link--no-visited-state" %>
-<% end %>
-
 <% scheduled_description = capture do %>
   <p class="govuk-body govuk-!-margin-bottom-1">
     <%= t("documents.show.scheduling.notice.scheduled",
@@ -15,9 +9,10 @@
           date: date) %>
   </p>
   <ul class="govuk-list govuk-!-margin-0">
-    <li><%= change_date_link %></li>
     <li>
-      <%= form_tag unschedule_path(@edition.document), data: { gtm: "unschedule" } do %>
+      <%= form_tag schedule_path(@edition.document),
+          method: :delete,
+          data: { gtm: "unschedule" } do %>
         <button class="govuk-link app-link--button govuk-link--no-visited-state">
           Stop scheduled publishing
         </button>
@@ -32,7 +27,10 @@
           time: time,
           date: date) %>
   </p>
-  <%= change_date_link %>
+
+  <%= link_to "Change date",
+              schedule_proposal_path(@edition.document),
+              class: "govuk-link govuk-link--no-visited-state" %>
 <% end %>
 
 <% if @edition.scheduled? %>

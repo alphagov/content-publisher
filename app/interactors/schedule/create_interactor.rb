@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Schedule::ScheduleInteractor
+class Schedule::CreateInteractor
   include Interactor
   delegate :params,
            :user,
@@ -32,7 +32,7 @@ private
 
     if params[:review_status].blank?
       issues = Requirements::CheckerIssues.new([
-        Requirements::Issue.new(:schedule_review, :not_selected),
+        Requirements::Issue.new(:schedule_review_status, :not_selected),
       ])
     end
 

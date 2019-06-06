@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Schedule::ClearDatetimeInteractor
+class ScheduleProposal::DestroyInteractor
   include Interactor
   delegate :params,
            :edition,

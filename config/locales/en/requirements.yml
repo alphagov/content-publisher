@@ -98,7 +98,7 @@ en:
     schedule_action:
       not_selected:
         form_message: Select an option
-    schedule_review:
+    schedule_review_status:
       not_selected:
         form_message: Select an option
     document_type:

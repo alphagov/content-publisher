@@ -22,15 +22,14 @@ Rails.application.routes.draw do
     post "/publish" => "publish#publish"
     get "/published" => "publish#published", as: :published
 
-    post "/save-scheduled-publishing-datetime" => "schedule#save_datetime", as: :save_scheduled_publishing_datetime
-    post "/clear-scheduled-publishing-datetime" => "schedule#clear_scheduled_publishing_datetime", as: :clear_scheduled_publishing_datetime
+    get "/schedule-proposal" => "schedule_proposal#edit"
+    post "/schedule-proposal" => "schedule_proposal#update"
+    delete "/schedule-proposal" => "schedule_proposal#destroy"
 
-    get "/schedule" => "schedule#confirmation", as: :scheduling_confirmation
-    get "/scheduling" => "schedule#scheduled_publishing_datetime", as: :scheduled_publishing_datetime
-    post "/schedule" => "schedule#schedule"
+    get "/schedule/new" => "schedule#new", as: :new_schedule
+    post "/schedule/new" => "schedule#create", as: :create_schedule
+    delete "/schedule" => "schedule#destroy"
     get "/scheduled" => "schedule#scheduled", as: :scheduled
-
-    post "/unschedule" => "unschedule#unschedule", as: :unschedule
 
     post "/internal_notes" => "internal_notes#create", as: :create_internal_note
 

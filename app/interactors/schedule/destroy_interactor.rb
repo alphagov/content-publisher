@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Unschedule::UnscheduleInteractor
+class Schedule::DestroyInteractor
   include Interactor
 
   delegate :params, :edition, :user, to: :context

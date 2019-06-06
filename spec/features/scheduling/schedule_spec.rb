@@ -31,7 +31,7 @@ RSpec.feature "Schedule an edition" do
   end
 
   def and_i_select_the_reviewed_option
-    choose I18n.t!("schedule.confirmation.review_status.reviewed")
+    choose I18n.t!("schedule.new.review_status.reviewed")
     click_on "Schedule"
   end
 

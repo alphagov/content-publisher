@@ -38,23 +38,23 @@ module ActionsHelper
             data: { gtm: "remove" }
   end
 
-  def schedule_confirmation_link(edition, extra_classes = [])
+  def schedule_link(edition, extra_classes = [])
     link_to "Schedule",
-            scheduling_confirmation_path(edition.document),
+            new_schedule_path(edition.document),
             class: %w(govuk-link govuk-link--no-visited-state) + Array(extra_classes),
             data: { gtm: "schedule-confirm" }
   end
 
-  def schedule_confirmation_button(edition)
+  def schedule_button(edition)
     render "govuk_publishing_components/components/button",
            text: "Schedule to publish",
            data_attributes: { gtm: "schedule-confirm" },
-           href: scheduling_confirmation_path(edition.document)
+           href: new_schedule_path(edition.document)
   end
 
-  def create_schedule_date_link(edition, extra_classes = [])
+  def schedule_proposal_link(edition, extra_classes = [])
     link_to "Schedule",
-            scheduled_publishing_datetime_path(edition.document),
+            schedule_proposal_path(edition.document),
             class: %w(govuk-link govuk-link--no-visited-state) + Array(extra_classes),
             data: { gtm: "schedule-date" }
   end

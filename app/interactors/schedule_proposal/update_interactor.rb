@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Schedule::SaveDatetimeInteractor
+class ScheduleProposal::UpdateInteractor
   include Interactor
   delegate :params,
            :edition,
@@ -13,7 +13,7 @@ class Schedule::SaveDatetimeInteractor
     Edition.transaction do
       find_and_lock_edition
       check_for_issues
-      set_scheduled_publishing_datetime
+      update_edition
     end
   end
 
@@ -42,7 +42,7 @@ private
     params.require(:schedule).permit(:time, :action, date: %i[day month year])
   end
 
-  def set_scheduled_publishing_datetime
+  def update_edition
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(scheduled_publishing_datetime: datetime)
 

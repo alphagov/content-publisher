@@ -25,7 +25,7 @@ RSpec.feature "Schedule an edition when Publishing API is down" do
 
   def and_i_try_to_schedule_the_edition
     click_on "Schedule"
-    choose I18n.t!("schedule.confirmation.review_status.reviewed")
+    choose I18n.t!("schedule.new.review_status.reviewed")
     click_on "Schedule"
   end
 
