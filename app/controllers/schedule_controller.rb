@@ -28,17 +28,10 @@ class ScheduleController < ApplicationController
   end
 
   def clear_scheduled_publishing_datetime
-    Edition.find_and_lock_current(document: params[:document]) do |edition|
-      updater = Versioning::RevisionUpdater.new(edition.revision, current_user)
-      updater.assign(scheduled_publishing_datetime: nil)
+    result = Schedule::ClearDatetimeInteractor.call(params: params, user: current_user)
+    edition = result.edition
 
-      if updater.changed?
-        edition.assign_revision(updater.next_revision, current_user).save!
-        create_datetime_cleared_timeline_entry(edition)
-      end
-
-      redirect_to document_path(edition.document)
-    end
+    redirect_to document_path(edition.document)
   end
 
   def confirmation
@@ -78,11 +71,5 @@ class ScheduleController < ApplicationController
 
   def scheduled_publishing_datetime
     @edition = Edition.find_current(document: params[:document])
-  end
-
-private
-
-  def create_datetime_cleared_timeline_entry(edition)
-    TimelineEntry.create_for_revision(entry_type: :scheduled_publishing_datetime_cleared, edition: edition)
   end
 end

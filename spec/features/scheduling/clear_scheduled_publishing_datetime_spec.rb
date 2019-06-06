@@ -45,9 +45,5 @@ RSpec.feature "Clear scheduled publishing datetime" do
   def then_the_content_no_longer_has_a_scheduled_publishing_date_and_time
     scheduled_date = @datetime.strftime("%-d %B %Y")
     expect(page).to_not have_content("Proposed to publish at 12:00pm on #{scheduled_date}")
-
-    within first(".app-timeline-entry") do
-      expect(page).to have_content I18n.t!("documents.history.entry_types.scheduled_publishing_datetime_cleared")
-    end
   end
 end
