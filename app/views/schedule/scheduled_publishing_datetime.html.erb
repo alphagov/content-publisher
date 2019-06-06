@@ -8,10 +8,6 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_tag save_scheduled_publishing_datetime_path(@edition.document) do %>
-      <%
-        errors = (@issues&.items_for(:schedule_date) || [])
-        error_message = errors.map { |item| item[:text] }.join("<br/>").html_safe
-      %>
       <% legend = capture do %>
         <span class="govuk-heading-s govuk-!-margin-bottom-0">
           <%= t("schedule.scheduled_publishing_datetime.date") %>
@@ -22,7 +18,7 @@
         name: "schedule[date]",
         hint: t("schedule.scheduled_publishing_datetime.date_hint_text"),
         id: "date",
-        error_message: error_message.presence,
+        error_items: @issues&.items_for(:schedule_date),
         items: [
           {
             name: "day",

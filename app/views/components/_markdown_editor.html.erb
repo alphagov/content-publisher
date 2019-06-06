@@ -70,7 +70,7 @@
 
   <% if error_items.any? %>
     <%= render "govuk_publishing_components/components/error_message", {
-      text: error_items.map { |item| html_escape(item[:text]) }.join("<br/>").html_safe
+      items: error_items,
     } %>
   <% end %>
 
