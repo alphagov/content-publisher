@@ -94,7 +94,7 @@
       <% end %>
     <% end %>
 
-    <% if @edition.scheduled_publishing_datetime.present? && !@edition.scheduled? %>
+    <% if @edition.scheduled_publishing_datetime.present? %>
       <%= form_tag schedule_proposal_path(@edition.document), method: :delete do %>
         <button class="govuk-link app-link--button govuk-link--no-visited-state">Clear schedule date</button>
       <% end %>
