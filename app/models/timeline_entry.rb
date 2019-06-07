@@ -44,6 +44,7 @@ class TimelineEntry < ApplicationRecord
                      draft_discarded: "draft_discarded",
                      draft_reset: "draft_reset",
                      scheduled: "scheduled",
+                     schedule_updated: "schedule_updated",
                      unscheduled: "unscheduled",
                      file_attachment_uploaded: "file_attachment_uploaded",
                      file_attachment_deleted: "file_attachment_deleted",
