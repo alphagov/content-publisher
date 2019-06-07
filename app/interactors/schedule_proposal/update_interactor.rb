@@ -28,7 +28,7 @@ private
       raise "Can't save a scheduling date unless edition is a draft or has been submitted for 2i"
     end
 
-    checker = Requirements::ScheduledDatetimeChecker.new(schedule_params)
+    checker = Requirements::ScheduleDatetimeChecker.new(schedule_params)
     issues = checker.pre_submit_issues.to_a
     issues += action_issues if params[:wizard] == "schedule"
 
