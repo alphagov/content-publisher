@@ -43,10 +43,11 @@ RSpec.feature "Schedule an edition" do
     expect(job[:args].first).to eq @edition.id
     expect(job[:at].to_i).to eq @datetime.to_i
 
-    assert_requested @request
+    expect(@request).to have_been_requested
 
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.scheduled"))
 
     scheduled_date = @datetime.strftime("%-d %B %Y")
     expect(page).to have_content("Scheduled to publish at 10:00am on #{scheduled_date}")
