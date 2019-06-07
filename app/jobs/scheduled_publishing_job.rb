@@ -9,15 +9,16 @@ class ScheduledPublishingJob < ApplicationJob
   discard_and_log(ActiveRecord::RecordNotFound)
 
   def perform(id)
-    Edition.find_and_lock_current(id: id) do |edition|
-      next if no_longer_schedulable?(edition)
+    published_edition = Edition.find_and_lock_current(id: id) do |edition|
+      return if no_longer_schedulable?(edition) # rubocop:disable Lint/NonLocalExitFromIterator
 
       user = edition.status.created_by
       reviewed = edition.status.details.reviewed
-
       PublishService.new(edition)
                     .publish(user: user, with_review: reviewed)
     end
+
+    send_notifications(published_edition)
   end
 
 private
@@ -33,6 +34,12 @@ private
     if schedule > Time.zone.now
       Rails.logger.warn("Cannot publish an edition (\##{edition.id}) scheduled in the future")
       return true
+    end
+  end
+
+  def send_notifications(edition)
+    edition.editors.each do |editor|
+      ScheduledPublishMailer.success_email(edition, editor).deliver_later
     end
   end
 end
