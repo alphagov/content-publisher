@@ -1,4 +1,9 @@
-<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% if params[:wizard] == "schedule" %>
+  <% content_for :back_link, render_back_link(href: schedule_proposal_path(@edition.document, wizard: "schedule")) %>
+<% else %>
+  <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% end %>
+
 <% content_for :title, t("schedule.new.title") %>
 
 <% datetime = @edition.scheduled_publishing_datetime %>
