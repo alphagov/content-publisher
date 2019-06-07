@@ -9,11 +9,14 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_tag schedule_proposal_path(@edition.document) do %>
+      <%= hidden_field_tag(:wizard, params[:wizard]) %>
+
       <% legend = capture do %>
         <span class="govuk-heading-s govuk-!-margin-bottom-0">
           <%= t("schedule_proposal.edit.date") %>
         </span>
       <% end %>
+
       <%= render "govuk_publishing_components/components/date_input", {
         legend_text: legend,
         name: "schedule[date]",
@@ -38,8 +41,10 @@
           }
         ]
       } %>
+
       <% persistent_time = publish_datetime.strftime("%-l:%M%P") %>
       <% selected_time = params.dig(:schedule, :time) || persistent_time %>
+
       <%= render "components/autocomplete", {
         id: "time",
         name: "schedule[time]",
@@ -58,12 +63,7 @@
         width: "narrow",
       } %>
 
-      <% if @edition.scheduled_publishing_datetime.present? %>
-        <%= render "govuk_publishing_components/components/button", {
-          text: "Save date",
-          margin_bottom: true
-        } %>,
-      <% else %>
+      <% if params[:wizard] == "schedule" %>
         <%= render "govuk_publishing_components/components/radio", {
           name: "schedule[action]",
           error_items: @issues&.items_for(:schedule_action),
@@ -83,13 +83,18 @@
         } %>
 
         <%= render "govuk_publishing_components/components/button", {
-          text: "Continue"
+          text: "Continue",
+          margin_bottom: true
         } %>
-
+      <% else %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Save date",
+          margin_bottom: true
+        } %>,
       <% end %>
     <% end %>
 
-    <% if @edition.scheduled_publishing_datetime.present? && !@edition.scheduled? %>
+    <% if @edition.scheduled_publishing_datetime.present? %>
       <%= form_tag schedule_proposal_path(@edition.document), method: :delete do %>
         <button class="govuk-link app-link--button govuk-link--no-visited-state">Clear schedule date</button>
       <% end %>

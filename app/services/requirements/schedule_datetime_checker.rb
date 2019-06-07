@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Requirements
-  class ScheduledDatetimeChecker
+  class ScheduleDatetimeChecker
     attr_reader :params
 
     MAXIMUM_FUTURE_TIME_PERIOD = { months: 14 }.freeze

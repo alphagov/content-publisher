@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-RSpec.describe Requirements::ScheduledDatetimeChecker do
+RSpec.describe Requirements::ScheduleDatetimeChecker do
   include ActiveSupport::Testing::TimeHelpers
 
   describe "#pre_submit_issues" do
     it "returns no issues if there are none" do
       tomorrow = Time.zone.tomorrow
-      issues = Requirements::ScheduledDatetimeChecker.new(
+      issues = Requirements::ScheduleDatetimeChecker.new(
         date: { day: tomorrow.day, month: tomorrow.month, year: tomorrow.year },
         time: "11:00am",
       ).pre_submit_issues
@@ -15,7 +15,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
     end
 
     it "returns an issue if the date or time fields are blank" do
-      issues = Requirements::ScheduledDatetimeChecker.new({}).pre_submit_issues
+      issues = Requirements::ScheduleDatetimeChecker.new({}).pre_submit_issues
 
       invalid_date = I18n.t!("requirements.schedule_date.invalid.form_message")
       invalid_time = I18n.t!("requirements.schedule_time.invalid.form_message")
@@ -28,7 +28,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
     end
 
     it "returns an issue if a date is invalid" do
-      issues = Requirements::ScheduledDatetimeChecker.new(
+      issues = Requirements::ScheduleDatetimeChecker.new(
         date: { day: 10, month: 60, year: 11 },
         time: "11:00am",
       ).pre_submit_issues
@@ -41,7 +41,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
 
     it "returns an issue if a time is invalid" do
       tomorrow = Time.zone.tomorrow
-      issues = Requirements::ScheduledDatetimeChecker.new(
+      issues = Requirements::ScheduleDatetimeChecker.new(
         date: { day: tomorrow.day, month: tomorrow.month, year: tomorrow.year },
         time: "1223456",
       ).pre_submit_issues
@@ -56,22 +56,22 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
       travel_to("2019-01-01 11:00am") do
         date_options = { day: 2, month: 1, year: 2019 }
 
-        checker = Requirements::ScheduledDatetimeChecker.new(time: "9:34",
+        checker = Requirements::ScheduleDatetimeChecker.new(time: "9:34",
                                                              date: date_options)
         expect(checker.pre_submit_issues.items).to be_empty
         expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 09:34"))
 
-        checker = Requirements::ScheduledDatetimeChecker.new(time: "12:00",
+        checker = Requirements::ScheduleDatetimeChecker.new(time: "12:00",
                                                              date: date_options)
         expect(checker.pre_submit_issues.items).to be_empty
         expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 12:00"))
 
-        checker = Requirements::ScheduledDatetimeChecker.new(time: "6:00 pm",
+        checker = Requirements::ScheduleDatetimeChecker.new(time: "6:00 pm",
                                                              date: date_options)
         expect(checker.pre_submit_issues.items).to be_empty
         expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 18:00"))
 
-        checker = Requirements::ScheduledDatetimeChecker.new(time: "23:32",
+        checker = Requirements::ScheduleDatetimeChecker.new(time: "23:32",
                                                              date: date_options)
         expect(checker.pre_submit_issues.items).to be_empty
         expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 23:32"))
@@ -81,7 +81,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
     it "returns a date issue if the date is in the past" do
       two_days_ago = Time.current - 2.days
 
-      issues = Requirements::ScheduledDatetimeChecker.new(
+      issues = Requirements::ScheduleDatetimeChecker.new(
         date: { day: two_days_ago.day,
                 month: two_days_ago.month,
                 year: two_days_ago.year },
@@ -96,7 +96,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
 
     it "returns a time issue if the date is present but time in the past" do
       travel_to("2019-01-01 11:00am") do
-        issues = Requirements::ScheduledDatetimeChecker.new(
+        issues = Requirements::ScheduleDatetimeChecker.new(
           date: { day: 1, month: 1, year: 2019 },
           time: "10:45am",
         ).pre_submit_issues
@@ -110,7 +110,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
 
     it "returns an issue if the datetime is too close to now" do
       travel_to("2019-01-01 11:00am") do
-        issues = Requirements::ScheduledDatetimeChecker.new(
+        issues = Requirements::ScheduleDatetimeChecker.new(
           date: { day: 1, month: 1, year: 2019 },
           time: "11:10am",
         ).pre_submit_issues
@@ -127,7 +127,7 @@ RSpec.describe Requirements::ScheduledDatetimeChecker do
       time_period = { days: 1, months: 14 }
       future_date = Time.current.advance(time_period)
 
-      issues = Requirements::ScheduledDatetimeChecker.new(
+      issues = Requirements::ScheduleDatetimeChecker.new(
         date: { day: future_date.day,
                 month: future_date.month,
                 year: future_date.year },

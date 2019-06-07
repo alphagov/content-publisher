@@ -28,13 +28,11 @@ private
       raise "Can't save a scheduling date unless edition is a draft or has been submitted for 2i"
     end
 
-    checker = Requirements::ScheduledDatetimeChecker.new(schedule_params)
-    pre_issues = checker.pre_submit_issues.issues
+    checker = Requirements::ScheduleDatetimeChecker.new(schedule_params)
+    issues = checker.pre_submit_issues.to_a
+    issues += action_issues if params[:wizard] == "schedule"
 
-    issues = Requirements::CheckerIssues.new(pre_issues + action_issues)
-
-    context.fail!(issues: issues) if issues.any?
-
+    context.fail!(issues: Requirements::CheckerIssues.new(issues)) if issues.any?
     context.datetime = checker.parsed_datetime
   end
 
@@ -52,13 +50,9 @@ private
   end
 
   def action_issues
-    return [] if scheduled_datetime_already_exists?
+    return [] if schedule_params[:action].present?
 
-    if schedule_params[:action].blank?
-      [Requirements::Issue.new(:schedule_action, :not_selected)]
-    else
-      []
-    end
+    [Requirements::Issue.new(:schedule_action, :not_selected)]
   end
 
   def scheduled_datetime_already_exists?

@@ -21,7 +21,7 @@ class ScheduleProposalController < ApplicationController
              assigns: { edition: edition, issues: issues },
              status: :unprocessable_entity
     elsif params.dig(:schedule, :action) == "schedule"
-      redirect_to new_schedule_path(edition.document)
+      redirect_to new_schedule_path(edition.document, wizard: params[:wizard])
     else
       redirect_to document_path(edition.document)
     end
