@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-RSpec.feature "Scheduled publishing datetime requirements" do
+RSpec.feature "Propose schedule with requirements issues" do
   scenario do
     given_there_is_an_edition
     when_i_visit_the_summary_page
     and_i_click_on_schedule
     and_i_enter_invalid_date_fields
-    and_i_click_continue
-    then_i_see_an_error_about_the_date_being_invalid
+    then_i_see_an_error_to_fix_the_issues
   end
 
   def given_there_is_an_edition
@@ -23,16 +22,11 @@ RSpec.feature "Scheduled publishing datetime requirements" do
   end
 
   def and_i_enter_invalid_date_fields
-    fill_in "schedule[date][day]", with: ""
-    fill_in "schedule[date][month]", with: ""
     fill_in "schedule[date][year]", with: ""
-  end
-
-  def and_i_click_continue
     click_on "Continue"
   end
 
-  def then_i_see_an_error_about_the_date_being_invalid
+  def then_i_see_an_error_to_fix_the_issues
     expect(page).to have_content(
       I18n.t!("requirements.schedule_date.invalid.form_message"),
     )
