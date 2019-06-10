@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Unschedule a document when Publishing API is down" do
+RSpec.feature "Unschedule when Publishing API is down" do
   scenario do
     given_there_is_a_scheduled_document
     and_the_publishing_api_is_down
