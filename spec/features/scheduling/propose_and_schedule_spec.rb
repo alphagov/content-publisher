@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-RSpec.feature "Set scheduled publishing datetime and schedule for publishing" do
+RSpec.feature "Propose and schedule" do
   scenario do
     given_there_is_an_edition
     when_i_visit_the_summary_page
     and_i_click_on_schedule
-    and_i_choose_a_scheduled_date_and_time
+    and_i_choose_a_schedule_datetime
     and_i_select_schedule_to_publish
     and_i_select_a_review_option
     then_i_see_the_edition_has_been_scheduled
@@ -23,7 +23,7 @@ RSpec.feature "Set scheduled publishing datetime and schedule for publishing" do
     click_on "Schedule"
   end
 
-  def and_i_choose_a_scheduled_date_and_time
+  def and_i_choose_a_schedule_datetime
     @date = Time.current.advance(days: 2)
     fill_in "schedule[date][day]", with: @date.day
     fill_in "schedule[date][month]", with: @date.month
