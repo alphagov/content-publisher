@@ -12,7 +12,7 @@
     <% elsif @edition.status.removed? %>
       <%= create_edition_button(@edition) %>
     <% elsif @edition.status.submitted_for_review? %>
-      <% if @edition.schedulable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <% if @edition.scheduled_publishing_datetime.present? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <%= schedule_button(@edition) %>
         <%= preview_button(@edition, secondary: true) %>
         <%= delete_draft_link(@edition) %>
@@ -37,7 +37,7 @@
     <% else %>
       <%= submit_for_2i_button(@edition) %>
       <%= preview_button(@edition, secondary: true) %>
-      <% if @edition.schedulable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <% if @edition.scheduled_publishing_datetime.present? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <%= delete_draft_link(@edition) %>
         <%= schedule_link(@edition, "app-link--right") %>
       <% elsif @edition.editable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>

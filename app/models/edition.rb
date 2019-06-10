@@ -130,13 +130,6 @@ class Edition < ApplicationRecord
     !live? && !scheduled?
   end
 
-  def schedulable?
-    return false unless editable?
-    return false if scheduled_publishing_datetime.nil?
-
-    scheduled_publishing_datetime > Time.zone.now.advance(MINIMUM_SCHEDULING_TIME)
-  end
-
   def resume_discarded(live_edition, user)
     updater = Versioning::RevisionUpdater.new(live_edition.revision, user)
     updater.assign(change_note: "", update_type: "major")
