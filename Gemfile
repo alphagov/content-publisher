@@ -44,7 +44,7 @@ group :development, :test do
   gem "factory_bot_rails", "~> 5"
   gem "govuk-lint", "~> 3"
   gem "govuk_schemas", "~> 3.2"
-  gem "govuk_test", "~> 0.4"
+  gem "govuk_test", "~> 0.5"
   gem "jasmine", "~> 3.4"
   gem "jasmine_selenium_runner", "~> 3", require: false
   gem "rspec-rails", "~> 3"
