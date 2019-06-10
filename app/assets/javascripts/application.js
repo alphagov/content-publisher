@@ -28,7 +28,6 @@
 //= require modal/modal-editor.js
 //= require modal/modal-workflow.js
 
-//= require modules/gtm-checked-inputs-listener.js
 //= require modules/gtm-copy-paste-listener.js
 //= require modules/gtm-selected-topics-listener.js
 //= require modules/inline-attachment-modal.js

@@ -3,22 +3,20 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag publish_confirmation_path(@edition.document),
-      data: {
-        "gtm-checked-inputs": "publish-document",
-        gtm: "confirm-publish"
-    } do %>
+    <%= form_tag publish_confirmation_path(@edition.document), data: { gtm: "confirm-publish" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "review_status",
         error_items: @issues&.items_for(:review_status),
         items: [
           {
             value: "reviewed",
-            text: t("publish.confirmation.has_been_reviewed")
+            text: t("publish.confirmation.has_been_reviewed"),
+            data_attributes: { gtm: "choose-publish-review-status" },
           },
           {
             value: "published_without_review",
-            text: t("publish.confirmation.should_be_reviewed")
+            text: t("publish.confirmation.should_be_reviewed"),
+            data_attributes: { gtm: "choose-publish-review-status" },
           },
         ]
       } %>
