@@ -24,6 +24,7 @@ en:
         draft_reset: "Draft reset to last published edition"
         unwithdrawn: "Unwithdrawn"
         scheduled: "Scheduled to publish"
+        schedule_updated: "Rescheduled to publish"
         unscheduled: "Unscheduled"
         scheduled_publishing_datetime_cleared: "Scheduled publishing date and time cleared"
         file_attachment_deleted: "Attachment deleted"

@@ -1,6 +1,26 @@
 # frozen_string_literal: true
 
 RSpec.describe PublishingApiPayload do
+  describe "#intent_payload" do
+    it "generates a payload for the publishing API" do
+      document_type = build(:document_type, rendering_app: "government-frontend")
+      publish_time = Time.current.tomorrow.at_noon
+
+      edition = build(:edition,
+                      document_type_id: document_type.id,
+                      scheduled_publishing_datetime: publish_time)
+
+      payload = PublishingApiPayload.new(edition).intent_payload
+
+      payload_hash = {
+        publish_time: publish_time,
+        publishing_app: "content-publisher",
+        rendering_app: "government-frontend",
+      }
+      expect(payload).to match a_hash_including(payload_hash)
+    end
+  end
+
   describe "#payload" do
     it "generates a payload for the publishing API" do
       document_type = build(:document_type)

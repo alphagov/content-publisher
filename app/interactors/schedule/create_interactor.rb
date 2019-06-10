@@ -12,8 +12,7 @@ class Schedule::CreateInteractor
     Edition.transaction do
       find_and_lock_edition
       check_for_issues
-      schedule_publishing
-      create_scheduling
+      schedule_to_publish
     end
   end
 
@@ -39,12 +38,7 @@ private
     context.fail!(issues: issues) if issues
   end
 
-  def schedule_publishing
-    datetime = edition.scheduled_publishing_datetime
-    ScheduledPublishingJob.set(wait_until: datetime).perform_later(edition.id)
-  end
-
-  def create_scheduling
+  def schedule_to_publish
     reviewed = params[:review_status] == "reviewed"
     ScheduleService.new(edition).schedule(user: user, reviewed: reviewed)
   end

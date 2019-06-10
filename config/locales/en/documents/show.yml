@@ -44,10 +44,8 @@ en:
         withdrawn_by: Withdrawn by
       scheduling:
         notice:
-          proposed: |
-            Proposed to publish at %{time} on %{date}
-          scheduled: |
-            Scheduled to publish at %{time} on %{date}
+          proposed: Proposed to publish at %{time} on %{date}
+          scheduled: Scheduled to publish at %{time} on %{date}
       flashes:
         pre_preview_issues:
           warning: To preview this document you need to

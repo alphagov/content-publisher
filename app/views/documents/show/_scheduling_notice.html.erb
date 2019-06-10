@@ -8,7 +8,13 @@
           time: time,
           date: date) %>
   </p>
+
   <ul class="govuk-list govuk-!-margin-0">
+    <li>
+      <%= link_to "Change date",
+                  edit_schedule_path(@edition.document),
+                  class: "govuk-link govuk-link--no-visited-state" %>
+    </li>
     <li>
       <%= form_tag schedule_path(@edition.document),
           method: :delete,
@@ -38,8 +44,7 @@
     description: scheduled_description,
     margin_bottom: 4,
   } %>
-<% end %>
-<% if @edition.editable? %>
+<% elsif @edition.editable? %>
   <%= render "govuk_publishing_components/components/notice", {
     description: proposed_scheduling_description,
     margin_bottom: 4,
