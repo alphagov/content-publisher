@@ -9,7 +9,7 @@ RSpec.describe ScheduledPublishMailer do
     @publish_date = published_at.strftime("%d %B %Y")
   end
 
-  describe "sending an email when scheduled edition is published" do
+  describe ".success_email" do
     it "renders non-specific mail content" do
       edition = create(:edition, :published, title: "yolo")
       mail = ScheduledPublishMailer.success_email(edition, @user).deliver_now
@@ -70,6 +70,26 @@ RSpec.describe ScheduledPublishMailer do
                time: @publish_time,
                date: @publish_date),
       )
+    end
+  end
+
+  describe ".failure_email" do
+    it "renders failed scheduled publishing mail content" do
+      edition = create(:edition, :scheduled, title: "yolo")
+      mail = ScheduledPublishMailer.failure_email(edition, @user).deliver_now
+      body = mail.body.encoded
+
+      expect(mail.to).to eq([@user.email])
+      expect(body).to include(I18n.t("scheduled_publish_mailer.failure_email.problem", title: edition.title))
+      expect(body).to include(
+        I18n.t("scheduled_publish_mailer.failure_email.schedule_date",
+               time: @publish_time,
+               date: @publish_date),
+      )
+      expect(body).to include(I18n.t("scheduled_publish_mailer.failure_email.try_again"))
+      expect(body).to include(document_path(edition.document))
+      expect(body).to include(I18n.t("scheduled_publish_mailer.failure_email.raise_ticket"))
+      expect(body).to include(I18n.t("scheduled_publish_mailer.failure_email.check_govuk_status"))
     end
   end
 end
