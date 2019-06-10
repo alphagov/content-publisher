@@ -14,12 +14,20 @@ class ScheduledPublishMailer < ApplicationMailer
       raise "Cannot send publish email with a non-published state"
     end
 
-    mail(to: user.email, subject: subject)
+    mail(to: user.email, subject: success_subject)
+  end
+
+  def failure_email(edition, user)
+    @edition = edition
+    @status = edition.status
+
+    mail(to: user.email,
+         subject: I18n.t("scheduled_publish_mailer.failure_email.subject"))
   end
 
 private
 
-  def subject
+  def success_subject
     if @edition.number > 1
       I18n.t("scheduled_publish_mailer.success_email.subject.update",
              title: @edition.title)

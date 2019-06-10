@@ -1,0 +1,15 @@
+<%= t("scheduled_publish_mailer.failure_email.problem", title: @edition.title) %>
+
+<%= t("scheduled_publish_mailer.failure_email.schedule_date",
+  time: @status.created_at.strftime("%-l:%M%P"),
+  date: @status.created_at.strftime("%d %B %Y")
+) %>
+
+<%= t("scheduled_publish_mailer.failure_email.try_again") %>
+
+<%= t("scheduled_publish_mailer.failure_email.edit_in_app") %>
+<%= document_url(@edition.document) %>
+
+<%= t("scheduled_publish_mailer.failure_email.raise_ticket") %>
+
+<%= t("scheduled_publish_mailer.failure_email.check_govuk_status") %>

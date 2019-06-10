@@ -2,9 +2,10 @@
 
 class ScheduledPublishingJob < ApplicationJob
   # retry at 3s, 18s, 83s, 258s, 627s
-  retry_on(StandardError,
-           wait: :exponentially_longer,
-           attempts: 5)
+  retry_on(StandardError, wait: :exponentially_longer, attempts: 5) do |job|
+    edition = Edition.find_current(id: job.arguments.first)
+    send_failure_notifications(edition)
+  end
 
   discard_and_log(ActiveRecord::RecordNotFound)
 
@@ -21,8 +22,16 @@ class ScheduledPublishingJob < ApplicationJob
                     .publish(user: user, with_review: reviewed)
     end
 
-    send_notifications(edition)
+    send_success_notifications(published_edition)
   end
+
+  def self.send_failure_notifications(edition)
+    edition.editors.each do |editor|
+      ScheduledPublishMailer.failure_email(edition, editor).deliver_later
+    end
+  end
+
+  private_class_method :send_failure_notifications
 
 private
 
@@ -42,7 +51,7 @@ private
     true
   end
 
-  def send_notifications(edition)
+  def send_success_notifications(edition)
     edition.editors.each do |editor|
       ScheduledPublishMailer.success_email(edition, editor).deliver_later
     end
