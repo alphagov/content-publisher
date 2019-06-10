@@ -27,13 +27,13 @@
             text: t("documents.edit.update_type.major_name"),
             conditional: textarea,
             checked: @revision.major?,
-            data_attributes: { "contextual-guidance": "change-note-guidance" }
+            data_attributes: { gtm: "choose-update-type", "contextual-guidance": "change-note-guidance" }
           },
           {
             value: "minor",
             text: t("documents.edit.update_type.minor_name"),
             checked: @revision.minor?,
-            data_attributes: { "contextual-guidance": "change-note-guidance", "contextual-guidance-hide-only": "true" }
+            data_attributes: { gtm: "choose-update-type", "contextual-guidance": "change-note-guidance", "contextual-guidance-hide-only": "true" }
           }
         ]
       } %>
