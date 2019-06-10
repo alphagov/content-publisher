@@ -28,6 +28,8 @@ Rails.application.routes.draw do
 
     get "/schedule/new" => "schedule#new", as: :new_schedule
     post "/schedule/new" => "schedule#create", as: :create_schedule
+    get "/schedule/edit" => "schedule#edit", as: :edit_schedule
+    post "/schedule/edit" => "schedule#update", as: :update_schedule
     delete "/schedule" => "schedule#destroy"
     get "/scheduled" => "schedule#scheduled", as: :scheduled
 

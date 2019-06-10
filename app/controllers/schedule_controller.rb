@@ -15,6 +15,29 @@ class ScheduleController < ApplicationController
     @edition = Edition.find_current(document: params[:document])
   end
 
+  def update
+    result = Schedule::UpdateInteractor.call(params: params, user: current_user)
+    edition, issues = result.to_h.values_at(:edition, :issues)
+
+    if issues
+      flash.now["alert_with_items"] = {
+        "title" => I18n.t!("schedule.edit.flashes.requirements"),
+        "items" => issues.items(
+          link_options: {
+            schedule_date: { href: "#date" },
+            schedule_time: { href: "#time" },
+          },
+        ),
+      }
+
+      render :edit,
+             assigns: { edition: edition, issues: issues },
+             status: :unprocessable_entity
+    else
+      redirect_to document_path(edition.document)
+    end
+  end
+
   def create
     result = Schedule::CreateInteractor.call(params: params, user: current_user)
     edition, issues = result.to_h.values_at(:edition, :issues)

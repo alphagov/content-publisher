@@ -1,0 +1,17 @@
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, t("schedule.edit.title") %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag edit_schedule_path(@edition.document) do %>
+      <%= hidden_field_tag(:wizard, params[:wizard]) %>
+
+      <%= render "schedule/datetime" %>
+
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save date",
+        margin_bottom: true
+      } %>,
+    <% end %>
+  </div>
+</div>

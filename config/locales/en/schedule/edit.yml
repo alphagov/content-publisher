@@ -1,0 +1,9 @@
+en:
+  schedule:
+    edit:
+      title: Set a date and time to publish
+      date: Date
+      date_hint_text: For example, 01 08 2027
+      time: Time
+      flashes:
+        requirements: You need to
