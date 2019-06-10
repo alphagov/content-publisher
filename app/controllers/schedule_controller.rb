@@ -36,6 +36,9 @@ class ScheduleController < ApplicationController
     else
       redirect_to document_path(edition.document)
     end
+  rescue GdsApi::BaseError => e
+    GovukError.notify(e)
+    redirect_to document_path(params[:document]), alert_with_description: t("documents.show.flashes.schedule_error")
   end
 
   def create
