@@ -9,7 +9,7 @@ class Schedule::DestroyInteractor
     Edition.transaction do
       find_and_lock_edition
       set_edition_status
-      destroy_publishing_intent
+      destroy_publish_intent
       create_timeline_entry
     end
   end
@@ -18,7 +18,10 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-    context.fail! unless edition.scheduled?
+
+    unless edition.scheduled?
+      raise "Cannot unschedule an edition that is not scheduled"
+    end
   end
 
   def set_edition_status
@@ -27,7 +30,7 @@ private
     edition.assign_status(state, user).save!
   end
 
-  def destroy_publishing_intent
+  def destroy_publish_intent
     GdsApi.publishing_api.destroy_intent(edition.base_path)
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
