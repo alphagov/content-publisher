@@ -23,7 +23,7 @@ private
   end
 
   def check_for_issues
-    unless edition.schedulable?
+    unless edition.editable? && edition.scheduled_publishing_datetime.present?
       # FIXME: this shouldn't be an exception but we've not worked out the
       # right response - maybe bad request or a redirect with flash?
       raise "Can't schedule an edition which isn't schedulable"

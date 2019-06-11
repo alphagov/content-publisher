@@ -3,12 +3,6 @@
 class ScheduleController < ApplicationController
   def new
     @edition = Edition.find_current(document: params[:document])
-
-    unless @edition.schedulable?
-      # FIXME: this shouldn't be an exception but we've not worked out the
-      # right response - maybe bad request or a redirect with flash?
-      raise "Document is not in a schedulable state."
-    end
   end
 
   def edit
