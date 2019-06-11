@@ -10,7 +10,7 @@ RSpec.feature "Propose schedule without selecting an action" do
   end
 
   def given_there_is_an_edition
-    @edition = create(:edition)
+    @edition = create(:edition, :publishable)
   end
 
   def when_i_visit_the_summary_page

@@ -111,8 +111,13 @@ FactoryBot.define do
       end
     end
 
+    trait :schedulable do
+      scheduled_publishing_datetime { Time.current.advance(days: 2) }
+    end
+
     trait :scheduled do
       summary { SecureRandom.alphanumeric(10) }
+      scheduled_publishing_datetime { Time.current.advance(days: 2) }
 
       transient do
         scheduling { nil }

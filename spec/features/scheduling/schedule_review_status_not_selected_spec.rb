@@ -9,7 +9,7 @@ RSpec.feature "Schedule without confirming a review status" do
   end
 
   def given_there_is_an_edition_ready_to_schedule
-    @edition = create(:edition, scheduled_publishing_datetime: Time.current.tomorrow)
+    @edition = create(:edition, :schedulable, :publishable)
   end
 
   def when_i_visit_the_summary_page
