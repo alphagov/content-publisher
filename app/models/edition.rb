@@ -65,7 +65,7 @@ class Edition < ApplicationRecord
            :lead_image_revision,
            :image_revisions,
            :image_revisions_without_lead,
-           :scheduled_publishing_datetime,
+           :proposed_publish_time,
            :file_attachment_revisions,
            :assets,
            :primary_publishing_organisation_id,

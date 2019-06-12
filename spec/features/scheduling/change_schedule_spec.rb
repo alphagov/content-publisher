@@ -18,7 +18,7 @@ RSpec.feature "Change schedule" do
 
   def given_there_is_a_scheduled_edition
     datetime = Time.current.tomorrow.change(hour: 10)
-    @edition = create(:edition, :scheduled, scheduled_publishing_datetime: datetime)
+    @edition = create(:edition, :scheduled, publish_time: datetime)
     @request = stub_default_publishing_api_put_intent
   end
 
