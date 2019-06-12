@@ -191,7 +191,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         }
       },
       onConfirm: function (result) {
-        if (result && !result.topic.selected) {
+        if (result && !result.topic.selected && !result.topic.selectedChildren.length) {
           millerColumns.taxonomy.topicClicked(result.topic)
         }
       }
