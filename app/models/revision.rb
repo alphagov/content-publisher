@@ -53,7 +53,7 @@ class Revision < ApplicationRecord
            :change_note,
            :major?,
            :minor?,
-           :scheduled_publishing_datetime,
+           :proposed_publish_time,
            to: :metadata_revision
 
   delegate :tags,

@@ -53,7 +53,7 @@ FactoryBot.define do
           tags: evaluator.tags,
           update_type: evaluator.update_type,
           change_note: evaluator.change_note,
-          scheduled_publishing_datetime: evaluator.scheduled_publishing_datetime,
+          proposed_publish_time: evaluator.proposed_publish_time,
           lead_image_revision: evaluator.lead_image_revision,
           image_revisions: image_revisions,
           file_attachment_revisions: evaluator.file_attachment_revisions,
@@ -112,12 +112,11 @@ FactoryBot.define do
     end
 
     trait :schedulable do
-      scheduled_publishing_datetime { Time.current.advance(days: 2) }
+      proposed_publish_time { Time.current.advance(days: 2) }
     end
 
     trait :scheduled do
       summary { SecureRandom.alphanumeric(10) }
-      scheduled_publishing_datetime { Time.current.advance(days: 2) }
 
       transient do
         scheduling { nil }

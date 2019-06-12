@@ -19,7 +19,7 @@ FactoryBot.define do
       end
       update_type { "major" }
       change_note { "First published." }
-      scheduled_publishing_datetime { nil }
+      proposed_publish_time { nil }
     end
   end
 
@@ -51,7 +51,7 @@ FactoryBot.define do
           update_type: evaluator.update_type,
           change_note: evaluator.change_note,
           created_by: revision.created_by,
-          scheduled_publishing_datetime: evaluator.scheduled_publishing_datetime,
+          proposed_publish_time: evaluator.proposed_publish_time,
         )
       end
 

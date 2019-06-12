@@ -15,7 +15,7 @@ RSpec.describe ScheduleService do
   end
 
   describe "#schedule" do
-    let(:edition) { create :edition, scheduled_publishing_datetime: Time.current.tomorrow }
+    let(:edition) { create :edition, proposed_publish_time: Time.current.tomorrow }
 
     it "sets an edition's state to 'scheduled'" do
       ScheduleService.new(edition).schedule
@@ -63,7 +63,11 @@ RSpec.describe ScheduleService do
   end
 
   describe "#reschedule" do
-    let(:edition) { create(:edition, :scheduled, scheduled_publishing_datetime: Time.current.tomorrow) }
+    let(:edition) do
+      create(:edition,
+             :scheduled,
+             scheduling: create(:scheduling, publish_time: Time.current.tomorrow))
+    end
 
     it "maintains the edition's state as 'scheduled'" do
       ScheduleService.new(edition).reschedule
