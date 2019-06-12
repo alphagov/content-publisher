@@ -11,8 +11,7 @@ RSpec.feature "Schedule an edition when Publishing API is down" do
   end
 
   def given_there_is_an_edition_ready_to_schedule
-    datetime = Time.current.tomorrow
-    @edition = create(:edition, scheduled_publishing_datetime: datetime)
+    @edition = create(:edition, :publishable, :schedulable)
   end
 
   def and_the_publishing_api_is_down

@@ -10,8 +10,7 @@ RSpec.feature "Change schedule with requirements issues" do
   end
 
   def given_there_is_a_scheduled_edition
-    datetime = Time.current.tomorrow.change(hour: 10)
-    @edition = create(:edition, :scheduled, scheduled_publishing_datetime: datetime)
+    @edition = create(:edition, :scheduled)
   end
 
   def when_i_visit_the_summary_page

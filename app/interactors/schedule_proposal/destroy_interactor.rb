@@ -10,7 +10,7 @@ class ScheduleProposal::DestroyInteractor
   def call
     Edition.transaction do
       find_and_lock_edition
-      clear_scheduled_publishing_datetime
+      clear_schedule_proposal
     end
   end
 
@@ -18,11 +18,13 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+
+    unless edition.editable?
+      raise "Cannot modify an edition that is not editable"
+    end
   end
 
-  def clear_scheduled_publishing_datetime
-    context.fail! unless edition.editable?
-
+  def clear_schedule_proposal
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(scheduled_publishing_datetime: nil)
 

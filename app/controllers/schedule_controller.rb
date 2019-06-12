@@ -3,6 +3,14 @@
 class ScheduleController < ApplicationController
   def new
     @edition = Edition.find_current(document: params[:document])
+
+    issues = Requirements::EditionChecker.new(@edition)
+                                         .pre_publish_issues(rescue_api_errors: false)
+
+    if issues.any?
+      redirect_to document_path(@edition.document), tried_to_publish: true
+      return
+    end
   end
 
   def edit

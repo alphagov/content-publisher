@@ -7,19 +7,34 @@ RSpec.feature "Schedule an edition" do
     Sidekiq::Testing.fake! { example.run }
   end
 
-  scenario do
+  scenario "draft" do
     given_there_is_an_edition_ready_to_schedule
     when_i_visit_the_summary_page
     and_i_click_schedule
     and_i_select_the_reviewed_option
-    then_i_see_the_edition_has_been_scheduled
+    then_i_see_the_edition_is_scheduled
+    and_the_edition_is_scheduled_to_publish
+    and_i_can_no_longer_edit_the_content
+  end
+
+  scenario "submitted for 2i" do
+    given_there_is_an_edition_ready_to_schedule
+    and_the_edition_is_submitted_for_2i
+    when_i_visit_the_summary_page
+    and_i_click_schedule_to_publish
+    and_i_select_the_reviewed_option
+    then_i_see_the_edition_is_scheduled
+    and_the_edition_is_scheduled_to_publish
     and_i_can_no_longer_edit_the_content
   end
 
   def given_there_is_an_edition_ready_to_schedule
     @datetime = Time.current.tomorrow.change(hour: 10)
-    @edition = create(:edition, scheduled_publishing_datetime: @datetime)
-    @request = stub_default_publishing_api_put_intent
+    @edition = create(:edition, :publishable, scheduled_publishing_datetime: @datetime)
+  end
+
+  def and_the_edition_is_submitted_for_2i
+    @edition.assign_status("submitted_for_review", current_user).save!
   end
 
   def when_i_visit_the_summary_page
@@ -30,13 +45,17 @@ RSpec.feature "Schedule an edition" do
     click_on "Schedule"
   end
 
+  def and_i_click_schedule_to_publish
+    click_on "Schedule to publish"
+  end
+
   def and_i_select_the_reviewed_option
+    @request = stub_default_publishing_api_put_intent
     choose I18n.t!("schedule.new.review_status.reviewed")
     click_on "Schedule"
   end
 
-  def then_i_see_the_edition_has_been_scheduled
-    expect(page).to have_content(I18n.t!("schedule.scheduled.title"))
+  def and_the_edition_is_scheduled_to_publish
     expect(enqueued_jobs.count).to eq 1
 
     job = enqueued_jobs.first
@@ -44,6 +63,10 @@ RSpec.feature "Schedule an edition" do
     expect(job[:at].to_i).to eq @datetime.to_i
 
     expect(@request).to have_been_requested
+  end
+
+  def then_i_see_the_edition_is_scheduled
+    expect(page).to have_content(I18n.t!("schedule.scheduled.title"))
 
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))

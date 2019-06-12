@@ -39,7 +39,7 @@
   <% end %>
 <% end %>
 
-<% if @edition.status.draft? || @edition.status.submitted_for_review? %>
+<% if @edition.editable? %>
   <% publish_issues = Requirements::EditionChecker.new(@edition).pre_publish_issues %>
 
   <% if publish_issues.any? %>

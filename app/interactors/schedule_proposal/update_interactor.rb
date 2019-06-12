@@ -24,8 +24,8 @@ private
   end
 
   def check_for_issues
-    unless edition.draft? || edition.submitted_for_review?
-      raise "Can't save a scheduling date unless edition is a draft or has been submitted for 2i"
+    unless edition.editable?
+      raise "Can't set a schedule date/time unless edition is editable"
     end
 
     checker = Requirements::ScheduleDatetimeChecker.new(schedule_params)
