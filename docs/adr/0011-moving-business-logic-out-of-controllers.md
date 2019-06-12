@@ -1,4 +1,4 @@
-# XX. Moving business logic out of controllers
+# 11. Moving business logic out of controllers
 
 Date: 2019-06-03
 
