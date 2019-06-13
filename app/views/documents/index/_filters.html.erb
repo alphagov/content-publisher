@@ -6,7 +6,12 @@
     },
     name: "title_or_url",
     value: params[:title_or_url],
-    type: "search"
+    type: "search",
+    data: {
+      gtm: "input-title-or-url",
+      "gtm-visibility-tracking": true,
+      "gtm-action": params[:title_or_url],
+    }
   } %>
 
   <div class="govuk-form-group">
@@ -27,7 +32,12 @@
       options_for_select(organisation_select, [params[:organisation]]),
       include_blank: true,
       id: "document-organisation-filter",
-      class: "govuk-select"
+      class: "govuk-select",
+      data: {
+        gtm: "select-organisation",
+        "gtm-visibility-tracking": true,
+        "gtm-action": params[:organisation]
+      }
     %>
   </div>
 
@@ -53,7 +63,12 @@
       options_for_select(state_select, [params[:status]]),
       include_blank: true,
       id: "document-status-filter",
-      class: "govuk-select"
+      class: "govuk-select",
+      data: {
+        gtm: "select-status",
+        "gtm-visibility-tracking": true,
+        "gtm-action": params[:status],
+      }
     %>
   </div>
 
@@ -73,7 +88,12 @@
       options_for_select(document_type_select, [params[:document_type]]),
       include_blank: true,
       id: "document-type-filter",
-      class: "govuk-select"
+      class: "govuk-select",
+      data: {
+        gtm: "select-document-type",
+        "gtm-visibility-tracking": true,
+        "gtm-action": params[:document_type]
+      }
     %>
   </div>
 
