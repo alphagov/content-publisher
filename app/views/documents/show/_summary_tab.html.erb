@@ -23,8 +23,12 @@
   </div>
 
   <div class="govuk-grid-column-one-third">
-    <% if @edition.scheduled_publishing_datetime.present? %>
-      <%= render "documents/show/scheduling_notice" %>
+    <% if @edition.scheduled? %>
+      <%= render "documents/show/scheduled_notice" %>
+    <% end %>
+
+    <% if @edition.editable? && @edition.proposed_publish_time %>
+      <%= render "documents/show/proposed_scheduling_notice" %>
     <% end %>
 
     <%= render "documents/show/actions" %>

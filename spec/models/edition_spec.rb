@@ -77,18 +77,18 @@ RSpec.describe Edition do
       expect(edition.number).to be 6
     end
 
-    it "resets the change note, update type and scheduled_publishing_datetime" do
+    it "resets the change note, update type and proposed publish time" do
       preceding = create(:edition,
                          change_note: "Changes",
                          update_type: :minor,
                          current: false,
-                         scheduled_publishing_datetime: Time.zone.now)
+                         proposed_publish_time: Time.zone.now)
 
       edition = Edition.create_next_edition(preceding, user)
 
       expect(edition.change_note).to be_empty
       expect(edition.update_type).to eq("major")
-      expect(edition.scheduled_publishing_datetime).to be nil
+      expect(edition.proposed_publish_time).to be_nil
     end
   end
 

@@ -11,9 +11,9 @@ RSpec.feature "Clear schedule proposal" do
   end
 
   def given_there_is_an_edition_with_a_proposed_schedule
-    @datetime = Time.current.advance(days: 2).midday
-    @scheduled_date = @datetime.strftime("%-d %B %Y")
-    @edition = create(:edition, scheduled_publishing_datetime: @datetime)
+    @publish_time = Time.current.advance(days: 2).midday
+    @scheduled_date = @publish_time.strftime("%-d %B %Y")
+    @edition = create(:edition, proposed_publish_time: @publish_time)
   end
 
   def when_i_visit_the_summary_page

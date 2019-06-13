@@ -15,9 +15,7 @@ class Schedule::UpdateInteractor
     Edition.transaction do
       find_and_lock_edition
       parse_publish_time
-      update_revision
       check_for_issues
-      update_edition
       reschedule_to_publish
     end
   end
@@ -34,32 +32,17 @@ private
     context.fail!(issues: parser.issues) if parser.issues.any?
   end
 
-  def update_revision
-    unless edition.scheduled?
-      # FIXME: this shouldn't be an exception but we've not worked out the
-      # right response - maybe bad request or a redirect with flash?
-      raise "Can't reschedule an edition which isn't scheduled"
-    end
-
-    updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(scheduled_publishing_datetime: publish_time)
-
-    context.fail! unless updater.changed?
-    context.revision = updater.next_revision
-  end
-
   def check_for_issues
-    checker = Requirements::ScheduleChecker.new(revision)
-    issues = checker.pre_schedule_issues
+    checker = Requirements::PublishTimeChecker.new(publish_time)
+    issues = checker.issues
     context.fail!(issues: issues) if issues.any?
   end
 
-  def update_edition
-    edition.assign_revision(revision, user).save!
-  end
-
   def reschedule_to_publish
-    ScheduleService.new(edition).reschedule(user: user)
+    scheduling = edition.status.details
+    context.fail! if publish_time == scheduling.publish_time
+
+    ScheduleService.new(edition).reschedule(publish_time: publish_time, user: user)
   end
 
   def schedule_params

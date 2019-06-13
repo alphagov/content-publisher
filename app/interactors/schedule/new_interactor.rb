@@ -27,7 +27,8 @@ class Schedule::NewInteractor
   end
 
   def check_for_schedule_issues
-    issues = Requirements::ScheduleChecker.new(edition.revision).pre_schedule_issues
+    issues = Requirements::PublishTimeChecker.new(edition.proposed_publish_time)
+                                             .issues
     context.fail!(schedule_issues: issues) if issues.any?
   end
 end

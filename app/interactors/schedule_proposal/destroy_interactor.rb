@@ -26,7 +26,7 @@ private
 
   def clear_schedule_proposal
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(scheduled_publishing_datetime: nil)
+    updater.assign(proposed_publish_time: nil)
 
     if updater.changed?
       edition.assign_revision(updater.next_revision, user).save!

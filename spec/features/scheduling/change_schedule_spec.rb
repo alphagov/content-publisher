@@ -44,7 +44,7 @@ RSpec.feature "Change schedule" do
     expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))
     expect(page).to have_content(I18n.t!("documents.history.entry_types.schedule_updated"))
 
-    expect(page).to have_content(I18n.t!("documents.show.scheduling.notice.scheduled",
+    expect(page).to have_content(I18n.t!("documents.show.scheduled_notice.title",
                                          time: "11:00pm",
                                          date: @new_datetime.strftime("%-d %B %Y")))
   end

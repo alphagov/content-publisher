@@ -30,7 +30,7 @@ RSpec.feature "Schedule an edition" do
 
   def given_there_is_an_edition_ready_to_schedule
     @datetime = Time.current.tomorrow.change(hour: 10)
-    @edition = create(:edition, :publishable, scheduled_publishing_datetime: @datetime)
+    @edition = create(:edition, :publishable, proposed_publish_time: @datetime)
   end
 
   def and_the_edition_is_submitted_for_2i

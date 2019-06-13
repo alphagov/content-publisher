@@ -1,0 +1,30 @@
+<% publish_time = @edition.status.details.publish_time %>
+<% scheduled_description = capture do %>
+  <p class="govuk-body govuk-!-margin-bottom-1">
+    <%= t("documents.show.scheduled_notice.title",
+          time: format_scheduled_time(publish_time),
+          date: format_scheduled_date(publish_time)) %>
+  </p>
+
+  <ul class="govuk-list govuk-!-margin-0">
+    <li>
+      <%= link_to "Change date",
+                  edit_schedule_path(@edition.document),
+                  class: "govuk-link govuk-link--no-visited-state" %>
+    </li>
+    <li>
+      <%= form_tag schedule_path(@edition.document),
+          method: :delete,
+          data: { gtm: "unschedule" } do %>
+        <button class="govuk-link app-link--button govuk-link--no-visited-state">
+          Stop scheduled publishing
+        </button>
+      <% end %>
+    </li>
+  </ul>
+<% end %>
+
+<%= render "govuk_publishing_components/components/notice", {
+  description: scheduled_description,
+  margin_bottom: 4,
+} %>

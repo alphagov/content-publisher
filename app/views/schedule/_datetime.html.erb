@@ -1,8 +1,6 @@
 <%
-  current_schedule_datetime = @edition.scheduled_publishing_datetime
-  default_datetime = Time.current.tomorrow.change(hour: 9)
-  publish_datetime = current_schedule_datetime || default_datetime
-  persistent_time = publish_datetime.strftime("%-l:%M%P")
+  publish_time ||= Time.current.tomorrow.change(hour: 9)
+  persistent_time = publish_time.strftime("%-l:%M%P")
   selected_time = params.dig(:schedule, :time) || persistent_time
 %>
 
@@ -17,22 +15,22 @@
   name: "schedule[date]",
   hint: t("schedule.edit.date_hint_text"),
   id: "date",
-  error_items: @issues&.items_for(:schedule_date),
+  error_items: issues&.items_for(:schedule_date),
   items: [
     {
       name: "day",
       width: 2,
-      value: params.dig(:schedule, :date, :day) || publish_datetime.day,
+      value: params.dig(:schedule, :date, :day) || publish_time.day,
     },
     {
       name: "month",
       width: 2,
-      value: params.dig(:schedule, :date, :month) || publish_datetime.month,
+      value: params.dig(:schedule, :date, :month) || publish_time.month,
     },
     {
       name: "year",
       width: 4,
-      value: params.dig(:schedule, :date, :year) || publish_datetime.year,
+      value: params.dig(:schedule, :date, :year) || publish_time.year,
     }
   ]
 } %>
@@ -45,7 +43,7 @@
     text: t("schedule.edit.time"),
     bold: true,
   },
-  error_items: @issues&.items_for(:schedule_time),
+  error_items: issues&.items_for(:schedule_time),
   options: time_options(persistent_time),
   selected_options: [persistent_time],
   data_attributes: {

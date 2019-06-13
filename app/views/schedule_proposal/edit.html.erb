@@ -6,7 +6,10 @@
     <%= form_tag schedule_proposal_path(@edition.document) do %>
       <%= hidden_field_tag(:wizard, params[:wizard]) %>
 
-      <%= render "schedule/datetime" %>
+      <%= render "schedule/datetime", {
+        issues: @issues,
+        publish_time: @edition.proposed_publish_time,
+      } %>
 
       <% if params[:wizard] == "schedule" %>
         <%= render "govuk_publishing_components/components/radio", {
@@ -39,7 +42,7 @@
       <% end %>
     <% end %>
 
-    <% if @edition.scheduled_publishing_datetime.present? %>
+    <% if @edition.proposed_publish_time.present? %>
       <%= form_tag schedule_proposal_path(@edition.document), method: :delete do %>
         <button class="govuk-link app-link--button govuk-link--no-visited-state">Clear schedule date</button>
       <% end %>

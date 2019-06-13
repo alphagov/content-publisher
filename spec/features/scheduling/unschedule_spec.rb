@@ -10,13 +10,10 @@ RSpec.feature "Unschedule an edition" do
   end
 
   def given_there_is_a_scheduled_document
-    scheduling = create(:scheduling, reviewed: true)
     @datetime = Time.current.tomorrow.change(hour: 23)
+    scheduling = create(:scheduling, reviewed: true, publish_time: @datetime)
 
-    @edition = create(:edition,
-                      :scheduled,
-                      scheduled_publishing_datetime: @datetime,
-                      scheduling: scheduling)
+    @edition = create(:edition, :scheduled, scheduling: scheduling)
   end
 
   def when_i_visit_the_summary_page
@@ -37,7 +34,7 @@ RSpec.feature "Unschedule an edition" do
   def and_the_proposed_schedule_is_still_set
     scheduled_date = @datetime.strftime("%-d %B %Y")
 
-    expect(page).to have_content(I18n.t!("documents.show.scheduling.notice.proposed",
+    expect(page).to have_content(I18n.t!("documents.show.proposed_scheduling_notice.title",
                                          time: "11:00pm",
                                          date: scheduled_date))
   end

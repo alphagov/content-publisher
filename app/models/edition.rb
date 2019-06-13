@@ -111,7 +111,7 @@ class Edition < ApplicationRecord
 
   def self.create_next_edition(preceding_edition, user)
     updater = Versioning::RevisionUpdater.new(preceding_edition.revision, user)
-    updater.assign(change_note: "", update_type: "major", scheduled_publishing_datetime: nil)
+    updater.assign(change_note: "", update_type: "major", proposed_publish_time: nil)
 
     status = Status.create!(created_by: user,
                             revision_at_creation: updater.next_revision,

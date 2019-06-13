@@ -1,0 +1,28 @@
+<%
+  publish_time = @edition.proposed_publish_time
+  issues = Requirements::PublishTimeChecker.new(publish_time).issues
+%>
+<% proposed_scheduling_description = capture do %>
+  <p class="govuk-body govuk-!-margin-bottom-1">
+    <%= t("documents.show.proposed_scheduling_notice.title",
+          time: format_scheduled_time(publish_time),
+          date: format_scheduled_date(publish_time)) %>
+  </p>
+
+  <%= link_to "Change date",
+              schedule_proposal_path(@edition.document),
+              class: "govuk-link govuk-link--no-visited-state" %>
+<% end %>
+
+<% if issues.any? %>
+  <%= render "govuk_publishing_components/components/error_summary", {
+    title: issues.items(style: "summary").first[:text],
+    description: proposed_scheduling_description,
+    margin_bottom: 4,
+  } %>
+<% else %>
+  <%= render "govuk_publishing_components/components/notice", {
+    description: proposed_scheduling_description,
+    margin_bottom: 4,
+  } %>
+<% end %>
