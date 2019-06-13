@@ -7,8 +7,9 @@ RSpec.describe PublishingApiPayload do
       publish_time = Time.current.tomorrow.at_noon
 
       edition = build(:edition,
+                      :scheduled,
                       document_type_id: document_type.id,
-                      scheduled_publishing_datetime: publish_time)
+                      publish_time: publish_time)
 
       payload = PublishingApiPayload.new(edition).intent_payload
 
