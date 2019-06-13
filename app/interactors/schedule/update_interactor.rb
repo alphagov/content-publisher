@@ -2,6 +2,7 @@
 
 class Schedule::UpdateInteractor
   include Interactor
+
   delegate :params,
            :user,
            :edition,

@@ -2,14 +2,13 @@
 
 class ScheduleController < ApplicationController
   def new
-    @edition = Edition.find_current(document: params[:document])
+    result = Schedule::NewInteractor.call(params: params)
+    @edition = result.edition
 
-    issues = Requirements::EditionChecker.new(@edition)
-                                         .pre_publish_issues(rescue_api_errors: false)
-
-    if issues.any?
+    if result.publish_issues
       redirect_to document_path(@edition.document), tried_to_publish: true
-      return
+    elsif result.schedule_issues
+      redirect_to document_path(@edition.document)
     end
   end
 
