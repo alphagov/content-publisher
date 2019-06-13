@@ -1,17 +1,17 @@
 <div class="app-side">
   <div class="app-side__actions">
-    <% if @edition.status.published_but_needs_2i? %>
+    <% if @edition.published_but_needs_2i? %>
       <%= approve_button(@edition) %>
       <%= create_edition_button(@edition, secondary: true) %>
       <%= withdraw_link(@edition) %>
       <%= remove_link(@edition) %>
-    <% elsif @edition.status.published? %>
+    <% elsif @edition.published? %>
       <%= create_edition_button(@edition) %>
       <%= withdraw_link(@edition) %>
       <%= remove_link(@edition) %>
-    <% elsif @edition.status.removed? %>
+    <% elsif @edition.removed? %>
       <%= create_edition_button(@edition) %>
-    <% elsif @edition.status.submitted_for_review? %>
+    <% elsif @edition.submitted_for_review? %>
       <% if @edition.scheduled_publishing_datetime.present? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <%= schedule_button(@edition) %>
         <%= preview_button(@edition, secondary: true) %>
@@ -27,20 +27,22 @@
     <% elsif !@edition.revision_synced? %>
       <%= create_preview_button(@edition) %>
       <%= delete_draft_link(@edition) %>
-      <% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <% if @edition.scheduled_publishing_datetime.present? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+        <%= schedule_link(@edition, "app-link--right") %>
+      <% elsif current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <%= schedule_proposal_link(@edition, "app-link--right") %>
       <% end %>
     <% elsif @edition.withdrawn? %>
       <%= undo_withdraw_button(@edition) %>
     <% elsif @edition.scheduled? %>
       <%= preview_button(@edition) %>
-    <% else %>
+    <% elsif @edition.draft? %>
       <%= submit_for_2i_button(@edition) %>
       <%= preview_button(@edition, secondary: true) %>
       <% if @edition.scheduled_publishing_datetime.present? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <%= delete_draft_link(@edition) %>
         <%= schedule_link(@edition, "app-link--right") %>
-      <% elsif @edition.editable? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <% elsif current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <p class="govuk-body govuk-!-margin-bottom-3">
           <%= publish_link(@edition) %>
           <%= schedule_proposal_link(@edition, "app-link--right") %>
