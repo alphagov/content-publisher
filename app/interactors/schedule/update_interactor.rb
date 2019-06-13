@@ -24,6 +24,10 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+
+    unless edition.scheduled?
+      raise "Can't reschedule an edition which isn't scheduled"
+    end
   end
 
   def parse_publish_time

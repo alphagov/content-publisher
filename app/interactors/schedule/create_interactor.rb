@@ -2,6 +2,7 @@
 
 class Schedule::CreateInteractor
   include Interactor
+
   delegate :params,
            :user,
            :edition,
@@ -20,15 +21,13 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+
+    unless edition.editable? && edition.proposed_publish_time.present?
+      raise "Can't schedule an edition which isn't schedulable"
+    end
   end
 
   def check_for_issues
-    unless edition.editable? && edition.proposed_publish_time.present?
-      # FIXME: this shouldn't be an exception but we've not worked out the
-      # right response - maybe bad request or a redirect with flash?
-      raise "Can't schedule an edition which isn't schedulable"
-    end
-
     if params[:review_status].blank?
       issues = Requirements::CheckerIssues.new([
         Requirements::Issue.new(:schedule_review_status, :not_selected),

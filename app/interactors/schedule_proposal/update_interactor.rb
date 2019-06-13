@@ -38,7 +38,6 @@ private
   def check_for_issues
     checker = Requirements::PublishTimeChecker.new(publish_time)
     issues = checker.issues.to_a
-
     issues += action_issues if params[:wizard] == "schedule"
 
     context.fail!(issues: Requirements::CheckerIssues.new(issues)) if issues.any?
