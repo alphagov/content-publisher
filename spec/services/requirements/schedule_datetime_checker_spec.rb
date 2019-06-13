@@ -40,16 +40,32 @@ RSpec.describe Requirements::ScheduleDatetimeChecker do
     end
 
     it "returns an issue if a time is invalid" do
-      tomorrow = Time.zone.tomorrow
-      issues = Requirements::ScheduleDatetimeChecker.new(
-        date: { day: tomorrow.day, month: tomorrow.month, year: tomorrow.year },
-        time: "1223456",
-      ).pre_submit_issues
+      travel_to("2019-01-01 11:00am") do
+        date_options = { day: 2, month: 1, year: 2019 }
+        invalid_time_message = I18n.t!("requirements.schedule_time.invalid.form_message")
 
-      invalid_time = I18n.t!("requirements.schedule_time.invalid.form_message")
+        invalid_time_issues = a_hash_including(text: invalid_time_message)
 
-      expect(issues.items_for(:schedule_time))
-        .to include(a_hash_including(text: invalid_time))
+        checker = Requirements::ScheduleDatetimeChecker.new(time: "123456",
+                                                             date: date_options)
+        expect(checker.pre_submit_issues.items_for(:schedule_time))
+          .to include(invalid_time_issues)
+
+        checker = Requirements::ScheduleDatetimeChecker.new(time: "12:34:56",
+                                                             date: date_options)
+        expect(checker.pre_submit_issues.items_for(:schedule_time))
+          .to include(invalid_time_issues)
+
+        checker = Requirements::ScheduleDatetimeChecker.new(time: "12:34 +0100",
+                                                             date: date_options)
+        expect(checker.pre_submit_issues.items_for(:schedule_time))
+          .to include(invalid_time_issues)
+
+        checker = Requirements::ScheduleDatetimeChecker.new(time: "2019-04-01",
+                                                             date: date_options)
+        expect(checker.pre_submit_issues.items_for(:schedule_time))
+          .to include(invalid_time_issues)
+      end
     end
 
     it "accepts times formatted different from how we present them" do
@@ -66,6 +82,11 @@ RSpec.describe Requirements::ScheduleDatetimeChecker do
         expect(checker.pre_submit_issues.items).to be_empty
         expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 12:00"))
 
+        checker = Requirements::ScheduleDatetimeChecker.new(time: "12:00am",
+                                                             date: date_options)
+        expect(checker.pre_submit_issues.items).to be_empty
+        expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 0:00"))
+
         checker = Requirements::ScheduleDatetimeChecker.new(time: "6:00 pm",
                                                              date: date_options)
         expect(checker.pre_submit_issues.items).to be_empty
@@ -75,6 +96,11 @@ RSpec.describe Requirements::ScheduleDatetimeChecker do
                                                              date: date_options)
         expect(checker.pre_submit_issues.items).to be_empty
         expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 23:32"))
+
+        checker = Requirements::ScheduleDatetimeChecker.new(time: "12:30pm",
+                                                             date: date_options)
+        expect(checker.pre_submit_issues.items).to be_empty
+        expect(checker.parsed_datetime).to eql(Time.zone.parse("2019-01-02 12:30"))
       end
     end
 
