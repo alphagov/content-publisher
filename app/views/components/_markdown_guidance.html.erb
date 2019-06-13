@@ -4,11 +4,13 @@
         data_attributes: { gtm: "markdown-guidance-details" },
         margin_bottom: 0
   } do %>
-    <p>Definitions for acronyms that will appear if the user hovers the mouse over it.</p>
-    <p>Add each definition in its own paragraph at the end of the body copy.</p>
-    <pre class="app-c-markdown-guidance__code-snippet">
-    *[TLA]:Three-letter acronym
-    </pre>
+    <div data-gtm="acronyms-guidance" data-gtm-action="Acronyms" data-gtm-visibility-tracking="true">
+      <p>Definitions for acronyms that will appear if the user hovers the mouse over it.</p>
+      <p>Add each definition in its own paragraph at the end of the body copy.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+      *[TLA]:Three-letter acronym
+      </pre>
+    </div>
   <% end %>
 
   <%= render "govuk_publishing_components/components/details", {
@@ -16,14 +18,16 @@
         data_attributes: { gtm: "markdown-guidance-details" },
         margin_bottom: 0
   } do %>
-    <p>Use the Insert menu to look up and add a saved Contact address.</p>
-    <p>Or you can add $A before and after an address to inset it.</p>
-    <pre class="app-c-markdown-guidance__code-snippet">
-    $A
-    Address
-    Here
-    $A
-    </pre>
+    <div data-gtm="address-guidance" data-gtm-action="Addresses" data-gtm-visibility-tracking="true">
+      <p>Use the Insert menu to look up and add a saved Contact address.</p>
+      <p>Or you can add $A before and after an address to inset it.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+      $A
+      Address
+      Here
+      $A
+      </pre>
+    </div>
   <% end %>
 
   <%= render "govuk_publishing_components/components/details", {
@@ -31,12 +35,14 @@
         data_attributes: { gtm: "markdown-guidance-details" },
         margin_bottom: 0
   } do %>
-    <p>Add $CTA before and after a paragraph to highlight an action for the user.</p>
-    <pre class="app-c-markdown-guidance__code-snippet">
-    $CTA
-    You must do this
-    $CTA
-    </pre>
+    <div data-gtm="call-to-action-guidance" data-gtm-action="Call to action" data-gtm-visibility-tracking="true">
+      <p>Add $CTA before and after a paragraph to highlight an action for the user.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+      $CTA
+      You must do this
+      $CTA
+      </pre>
+    </div>
   <% end %>
 
   <%= render "govuk_publishing_components/components/details", {
@@ -44,21 +50,23 @@
         data_attributes: { gtm: "markdown-guidance-details" },
         margin_bottom: 0
   } do %>
-    <p>Add | to separate data into columns and put each row on a new line.</p>
-    <pre class="app-c-markdown-guidance__code-snippet">
-    Name | Colour | Number
-    -|-|-
-    Apple | Green | 3
-    Banana | Yellow | 7
-    </pre>
-    <p>Add - | - after the first row to mark it as column headers.</p>
-    <p>You can right align a column by putting : in the header marker.</p>
-    <pre class="app-c-markdown-guidance__code-snippet">
-    Name | Number
-    -|-:
-    Apple | 0.3
-    Banana | 0.7
-    </pre>
+    <div data-gtm="tables-guidance" data-gtm-action="Tables" data-gtm-visibility-tracking="true">
+      <p>Add | to separate data into columns and put each row on a new line.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+      Name | Colour | Number
+      -|-|-
+      Apple | Green | 3
+      Banana | Yellow | 7
+      </pre>
+      <p>Add - | - after the first row to mark it as column headers.</p>
+      <p>You can right align a column by putting : in the header marker.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+      Name | Number
+      -|-:
+      Apple | 0.3
+      Banana | 0.7
+      </pre>
+    </div>
   <% end %>
 
   <%= render "govuk_publishing_components/components/details", {
@@ -66,25 +74,27 @@
         data_attributes: { gtm: "markdown-guidance-details" },
         margin_bottom: 0
   } do %>
-    <p>Add {barchart} at the end of numeric tables to display a simple bar chart.</p>
-    <pre class="app-c-markdown-guidance__code-snippet">
-    Name | Number | Number
-    -|-|-
-    Thing | 120 | 445
-    Thing | 154 | 228
-    {barchart}
-    </pre>
-    <p>If you include negative values, you must use {barchart negative}.</p>
-    <pre class="app-c-markdown-guidance__code-snippet">
-    {barchart negative}
-    </pre>
-    <p>Use {barchart compact} to save space by shrinking the chart.</p>
-    <pre class="app-c-markdown-guidance__code-snippet">
-    {barchart compact}
-    </pre>
-    <p>Use {barchart stacked} for stacked bars. The final column is used to display the total.</p>
-    <pre class="app-c-markdown-guidance__code-snippet">
-    {barchart stacked}
-    </pre>
-  <% end %>
+    <div data-gtm="bar-charts-guidance" data-gtm-action="Bar charts" data-gtm-visibility-tracking="true">
+      <p>Add {barchart} at the end of numeric tables to display a simple bar chart.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+      Name | Number | Number
+      -|-|-
+      Thing | 120 | 445
+      Thing | 154 | 228
+      {barchart}
+      </pre>
+      <p>If you include negative values, you must use {barchart negative}.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+      {barchart negative}
+      </pre>
+      <p>Use {barchart compact} to save space by shrinking the chart.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+      {barchart compact}
+      </pre>
+      <p>Use {barchart stacked} for stacked bars. The final column is used to display the total.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+      {barchart stacked}
+      </pre>
+    <% end %>
+  </div>
 </div>
