@@ -1,9 +1,9 @@
 <% content_for :back_link, render_back_link(text: "Return to dashboard", href: document_path(@edition.document)) %>
 <% content_for :title, t("schedule.scheduled.title") %>
 
-<% datetime = @edition.scheduled_publishing_datetime %>
-<% time = format_scheduled_time(datetime) %>
-<% date = format_scheduled_date(datetime) %>
+<% scheduling = @edition.status.details %>
+<% time = format_scheduled_time(scheduling.publish_time) %>
+<% date = format_scheduled_date(scheduling.publish_time) %>
 <% public_url = edition_public_url(@edition) %>
 
 <div class="govuk-grid-row">

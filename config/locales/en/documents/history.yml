@@ -26,7 +26,6 @@ en:
         scheduled: "Scheduled to publish"
         schedule_updated: "Rescheduled to publish"
         unscheduled: "Unscheduled"
-        scheduled_publishing_datetime_cleared: "Scheduled publishing date and time cleared"
         file_attachment_deleted: "Attachment deleted"
         file_attachment_uploaded: "Attachment uploaded"
         file_attachment_updated: "Attachment updated"

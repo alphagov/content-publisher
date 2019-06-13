@@ -6,14 +6,13 @@ class Schedule::UpdateInteractor
            :user,
            :edition,
            :issues,
-           :datetime,
+           :publish_time,
            to: :context
 
   def call
     Edition.transaction do
       find_and_lock_edition
       check_for_issues
-      update_edition
       reschedule_to_publish
     end
   end
@@ -35,18 +34,14 @@ private
     issues = checker.pre_submit_issues
     context.fail!(issues: issues) if issues.any?
 
-    context.datetime = checker.parsed_datetime
-  end
-
-  def update_edition
-    updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(scheduled_publishing_datetime: datetime)
-    context.fail! unless updater.changed?
-    edition.assign_revision(updater.next_revision, user).save!
+    context.publish_time = checker.parsed_datetime
   end
 
   def reschedule_to_publish
-    ScheduleService.new(edition).reschedule(user: user)
+    scheduling = edition.status.details
+    context.fail! if publish_time == scheduling.publish_time
+
+    ScheduleService.new(edition).reschedule(publish_time: publish_time, user: user)
   end
 
   def schedule_params

@@ -6,7 +6,7 @@
 
 <% content_for :title, t("schedule.new.title") %>
 
-<% datetime = @edition.scheduled_publishing_datetime %>
+<% datetime = @edition.proposed_publish_time %>
 <% time = format_scheduled_time(datetime) %>
 <% date = format_scheduled_date(datetime) %>
 

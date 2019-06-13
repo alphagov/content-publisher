@@ -6,7 +6,7 @@ class ScheduleProposal::UpdateInteractor
            :edition,
            :user,
            :issues,
-           :datetime,
+           :proposed_publish_time,
            to: :context
 
   def call
@@ -33,7 +33,7 @@ private
     issues += action_issues if params[:wizard] == "schedule"
 
     context.fail!(issues: Requirements::CheckerIssues.new(issues)) if issues.any?
-    context.datetime = checker.parsed_datetime
+    context.proposed_publish_time = checker.parsed_datetime
   end
 
   def schedule_params
@@ -42,7 +42,7 @@ private
 
   def update_edition
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(scheduled_publishing_datetime: datetime)
+    updater.assign(proposed_publish_time: proposed_publish_time)
 
     context.fail! unless updater.changed?
 
@@ -53,9 +53,5 @@ private
     return [] if schedule_params[:action].present?
 
     [Requirements::Issue.new(:schedule_action, :not_selected)]
-  end
-
-  def scheduled_datetime_already_exists?
-    edition.scheduled_publishing_datetime.present?
   end
 end

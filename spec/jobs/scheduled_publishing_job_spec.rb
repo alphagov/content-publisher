@@ -12,7 +12,7 @@ RSpec.describe ScheduledPublishingJob, inline: true do
       it "calls PublishService if edition can be published" do
         edition = create(:edition,
                          :scheduled,
-                         scheduled_publishing_datetime: Time.current)
+                         scheduling: build(:scheduling, publish_time: Time.current))
         user = edition.status.created_by
 
         expect(PublishService).to receive(:new).with(edition) { @publish_service }
@@ -26,12 +26,10 @@ RSpec.describe ScheduledPublishingJob, inline: true do
       it "calls ScheduledPublishMailer for each editor of the edition" do
         editor_one = create(:user, email: "someone@example.com")
         editor_two = create(:user, email: "someone-else@example.com")
-        revision = create(:revision,
-                          created_by: editor_two,
-                          scheduled_publishing_datetime: Time.current)
         edition = create(:edition,
                          :scheduled,
-                         revision: revision,
+                         revision: create(:revision, created_by: editor_two),
+                         scheduling: create(:scheduling, publish_time: Time.current),
                          created_by: editor_one)
 
         allow(PublishService).to receive(:new).with(edition) { @publish_service }
@@ -57,7 +55,7 @@ RSpec.describe ScheduledPublishingJob, inline: true do
     it "aborts the job if the user has rescheduled the edition" do
       edition = create(:edition,
                        :scheduled,
-                       scheduled_publishing_datetime: Time.current.tomorrow)
+                       scheduling: build(:scheduling, publish_time: Time.current.tomorrow))
 
       expect_any_instance_of(PublishService).not_to receive(:publish)
       expect { ScheduledPublishingJob.perform_now(edition.id) }.to_not raise_error
