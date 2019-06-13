@@ -2,6 +2,7 @@
 
 class Schedule::UpdateInteractor
   include Interactor
+
   delegate :params,
            :user,
            :edition,
@@ -21,15 +22,13 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+
+    unless edition.scheduled?
+      raise "Can't reschedule an edition which isn't scheduled"
+    end
   end
 
   def check_for_issues
-    unless edition.scheduled?
-      # FIXME: this shouldn't be an exception but we've not worked out the
-      # right response - maybe bad request or a redirect with flash?
-      raise "Can't reschedule an edition which isn't scheduled"
-    end
-
     checker = Requirements::ScheduleDatetimeChecker.new(schedule_params)
     issues = checker.pre_submit_issues
     context.fail!(issues: issues) if issues.any?

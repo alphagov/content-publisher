@@ -21,13 +21,13 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-  end
 
-  def check_for_issues
     unless edition.editable?
       raise "Can't set a schedule date/time unless edition is editable"
     end
+  end
 
+  def check_for_issues
     checker = Requirements::ScheduleDatetimeChecker.new(schedule_params)
     issues = checker.pre_submit_issues.to_a
     issues += action_issues if params[:wizard] == "schedule"
