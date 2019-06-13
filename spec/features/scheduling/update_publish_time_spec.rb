@@ -1,24 +1,27 @@
 # frozen_string_literal: true
 
-RSpec.feature "Change schedule" do
+RSpec.feature "Update publish time" do
   include ActiveJob::TestHelper
+  include ActiveSupport::Testing::TimeHelpers
 
   around do |example|
-    Sidekiq::Testing.fake! { example.run }
+    Sidekiq::Testing.fake! do
+      travel_to(Time.zone.parse("2019-06-13")) { example.run }
+    end
   end
 
   scenario do
     given_there_is_a_scheduled_edition
     when_i_visit_the_summary_page
     and_i_click_on_change_date
-    and_i_set_a_new_schedule_datetime
+    and_i_set_a_new_publish_time
     then_i_see_the_edition_is_rescheduled
-    and_the_edition_is_scheduled_to_publish
+    and_the_publish_intent_has_been_updated
+    and_a_new_job_is_queued
   end
 
   def given_there_is_a_scheduled_edition
-    datetime = Time.current.tomorrow.change(hour: 10)
-    @edition = create(:edition, :scheduled, publish_time: datetime)
+    @edition = create(:edition, :scheduled)
     @request = stub_default_publishing_api_put_intent
   end
 
@@ -30,29 +33,36 @@ RSpec.feature "Change schedule" do
     click_on "Change date"
   end
 
-  def and_i_set_a_new_schedule_datetime
-    @new_datetime = Time.current.advance(days: 2).change(hour: 23)
-    fill_in "schedule[date][day]", with: @new_datetime.day
-    fill_in "schedule[date][month]", with: @new_datetime.month
-    fill_in "schedule[date][year]", with: @new_datetime.year
+  def and_i_set_a_new_publish_time
+    @new_time = Time.zone.parse("2019-08-15 23:00")
+    @request = stub_default_publishing_api_put_intent.with(
+      body: hash_including(publish_time: @new_time),
+    )
+
+    fill_in "schedule[date][day]", with: "15"
+    fill_in "schedule[date][month]", with: "8"
+    fill_in "schedule[date][year]", with: "2019"
     select "11:00pm", from: "schedule[time]"
+
     click_on "Save date"
   end
 
   def then_i_see_the_edition_is_rescheduled
-    visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))
     expect(page).to have_content(I18n.t!("documents.history.entry_types.schedule_updated"))
 
     expect(page).to have_content(I18n.t!("documents.show.scheduled_notice.title",
                                          time: "11:00pm",
-                                         date: @new_datetime.strftime("%-d %B %Y")))
+                                         date: "15 August 2019"))
   end
 
-  def and_the_edition_is_scheduled_to_publish
+  def and_the_publish_intent_has_been_updated
+    expect(@request).to have_been_requested
+  end
+
+  def and_a_new_job_is_queued
     expect(enqueued_jobs.count).to eq 1
     expect(enqueued_jobs.first[:args].first).to eq @edition.id
-    expect(enqueued_jobs.first[:at].to_i).to eq @new_datetime.to_i
-    expect(@request).to have_been_requested
+    expect(enqueued_jobs.first[:at].to_i).to eq @new_time.to_i
   end
 end
