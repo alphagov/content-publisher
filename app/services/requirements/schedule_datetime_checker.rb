@@ -25,13 +25,13 @@ module Requirements
 
     def parsed_datetime
       @parsed_datetime ||= begin
-                             time = time_grouping(params[:time])
+                             time = parse_time(params[:time])
                              Time.current.change(
                                day: params.dig(:date, :day).to_i,
                                month: params.dig(:date, :month).to_i,
                                year: params.dig(:date, :year).to_i,
-                               hour: time[:hour].to_i + (time[:period]&.downcase == "pm" ? 12 : 0),
-                               min: time[:minute].to_i,
+                               hour: time[:hour],
+                               min: time[:minute],
                              )
                            end
     end
@@ -48,10 +48,8 @@ module Requirements
         issues << Issue.new(:schedule_date, :invalid)
       end
 
-      time = time_grouping(params[:time])
-      if !time || (time[:period] && time[:hour].to_i > 12)
-        issues << Issue.new(:schedule_time, :invalid)
-      end
+      time = parse_time(params[:time])
+      issues << Issue.new(:schedule_time, :invalid) unless time
 
       issues
     end
@@ -85,8 +83,8 @@ module Requirements
       ]
     end
 
-    def time_grouping(time)
-      time.to_s.match(%r{
+    def parse_time(time)
+      matches = time.to_s.match(%r{
         \A
         (?<hour>(2[0-3]|1[0-9]|0?[0-9]))
         :
@@ -94,6 +92,22 @@ module Requirements
         (\s?(?<period>(am|pm)))?
         \Z
       }ix)
+
+      return if !matches || (matches[:hour].to_i > 12 && matches[:period])
+
+      hour = matches[:hour].to_i
+      period = matches[:period]&.downcase
+
+      hour24 = case period
+               when "am"
+                 hour == 12 ? 0 : hour
+               when "pm"
+                 hour == 12 ? hour : hour + 12
+               else
+                 hour
+               end
+
+      hour24 < 24 ? { hour: hour24, minute: matches[:minute].to_i } : nil
     end
 
     def time_period_for_issue(time_period)
