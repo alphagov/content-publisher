@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-RSpec.feature "Change schedule with requirements issues" do
+RSpec.feature "Update publish time with requirements issues" do
   scenario do
     given_there_is_a_scheduled_edition
     when_i_visit_the_summary_page
     and_i_click_on_change_date
-    and_i_enter_invalid_date_fields
+    and_i_enter_an_invalid_date
     then_i_see_an_error_to_fix_the_issues
   end
 
@@ -21,7 +21,7 @@ RSpec.feature "Change schedule with requirements issues" do
     click_on "Change date"
   end
 
-  def and_i_enter_invalid_date_fields
+  def and_i_enter_an_invalid_date
     fill_in "schedule[date][day]", with: ""
     click_on "Save date"
   end

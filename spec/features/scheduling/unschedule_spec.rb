@@ -1,17 +1,24 @@
 # frozen_string_literal: true
 
-RSpec.feature "Unschedule an edition" do
-  scenario do
-    given_there_is_a_scheduled_document
-    when_i_visit_the_summary_page
-    and_i_click_stop_scheduled_publishing
-    then_the_document_is_no_longer_scheduled
-    and_the_proposed_schedule_is_still_set
+RSpec.feature "Unschedule" do
+  include ActiveSupport::Testing::TimeHelpers
+
+  around do |example|
+    travel_to("2019-06-13 11:00") { example.run }
   end
 
-  def given_there_is_a_scheduled_document
-    @datetime = Time.current.tomorrow.change(hour: 23)
-    scheduling = create(:scheduling, reviewed: true, publish_time: @datetime)
+  scenario do
+    given_there_is_a_scheduled_edition
+    when_i_visit_the_summary_page
+    and_i_click_stop_scheduled_publishing
+    then_the_edition_is_no_longer_scheduled
+    and_it_has_a_proposed_publish_time
+  end
+
+  def given_there_is_a_scheduled_edition
+    scheduling = create(:scheduling,
+                        reviewed: true,
+                        publish_time: Time.zone.parse("2019-06-14 23:00"))
 
     @edition = create(:edition, :scheduled, scheduling: scheduling)
   end
@@ -25,17 +32,15 @@ RSpec.feature "Unschedule an edition" do
     click_on "Stop scheduled publishing"
   end
 
-  def then_the_document_is_no_longer_scheduled
+  def then_the_edition_is_no_longer_scheduled
     expect(page).to have_content(I18n.t!("user_facing_states.submitted_for_review.name"))
     expect(page).to have_content I18n.t!("documents.history.entry_types.unscheduled")
     expect(@request).to have_been_requested
   end
 
-  def and_the_proposed_schedule_is_still_set
-    scheduled_date = @datetime.strftime("%-d %B %Y")
-
+  def and_it_has_a_proposed_publish_time
     expect(page).to have_content(I18n.t!("documents.show.scheduling.notice.proposed",
                                          time: "11:00pm",
-                                         date: scheduled_date))
+                                         date: "14 June 2019"))
   end
 end
