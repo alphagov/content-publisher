@@ -152,7 +152,7 @@ class Edition < ApplicationRecord
     status = Status.new(
       created_by: user,
       state: state,
-      revision_at_creation_id: revision_id,
+      revision_at_creation: revision,
       details: status_details,
     )
 

@@ -7,8 +7,9 @@ RSpec.describe PublishingApiPayload do
       publish_time = Time.current.tomorrow.at_noon
 
       edition = build(:edition,
+                      :scheduled,
                       document_type_id: document_type.id,
-                      scheduled_publishing_datetime: publish_time)
+                      scheduling: build(:scheduling, publish_time: publish_time))
 
       payload = PublishingApiPayload.new(edition).intent_payload
 
@@ -18,6 +19,12 @@ RSpec.describe PublishingApiPayload do
         rendering_app: "government-frontend",
       }
       expect(payload).to match a_hash_including(payload_hash)
+    end
+
+    it "raises an error if the edition isn't scheduled" do
+      edition = build(:edition)
+      expect { PublishingApiPayload.new(edition).intent_payload }
+        .to raise_error("Edition must be scheduled to create an intent")
     end
   end
 
