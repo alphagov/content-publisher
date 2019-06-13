@@ -3,7 +3,10 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag(choose_document_type_path, method: :get, enforce_utf8: false) do %>
+    <%= form_tag(choose_document_type_path,
+                 method: :get,
+                 enforce_utf8: false,
+                 data: { gtm: "confirm-supertype" }) do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "supertype",
         error_items: @issues&.items_for(:supertype),
@@ -13,7 +16,10 @@
             text: supertype.label,
             hint_text: supertype.description,
             bold: true,
-            data_attributes: { gtm: "choose-supertype" },
+            data_attributes: {
+              gtm: "choose-supertype",
+              "gtm-action": supertype.label,
+            },
             conditional: supertype.hint ? tag.p(supertype.hint, class: "govuk-body") : nil,
           }
         end

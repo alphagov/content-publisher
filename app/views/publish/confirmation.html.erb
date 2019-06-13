@@ -11,12 +11,18 @@
           {
             value: "reviewed",
             text: t("publish.confirmation.has_been_reviewed"),
-            data_attributes: { gtm: "choose-publish-review-status" },
+            data_attributes: {
+              gtm: "choose-publish-review-status",
+              "gtm-action": t("publish.confirmation.has_been_reviewed"),
+            },
           },
           {
             value: "published_without_review",
             text: t("publish.confirmation.should_be_reviewed"),
-            data_attributes: { gtm: "choose-publish-review-status" },
+            data_attributes: {
+              gtm: "choose-publish-review-status",
+              "gtm-action": t("publish.confirmation.should_be_reviewed"),
+            },
           },
         ]
       } %>
