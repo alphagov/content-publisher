@@ -82,22 +82,22 @@
       </div>
       <div class="app-c-markdown-editor__toolbar">
         <markdown-toolbar class="app-c-markdown-editor__toolbar-group" for="<%= textarea[:id] %>">
-          <md-header-2 class="app-c-markdown-editor__toolbar-button" title="Heading level 2" aria-label="Heading level 2" data-gtm="markdown-toolbar-h2">
+          <md-header-2 class="app-c-markdown-editor__toolbar-button" title="Heading level 2" aria-label="Heading level 2" data-gtm="markdown-toolbar-h2" data-gtm-click-tracking="true">
             <%= render "components/markdown_editor/heading_two.svg" %>
           </md-header-2>
-          <md-header-3 class="app-c-markdown-editor__toolbar-button" title="Heading level 3" aria-label="Heading level 3" data-gtm="markdown-toolbar-h3">
+          <md-header-3 class="app-c-markdown-editor__toolbar-button" title="Heading level 3" aria-label="Heading level 3" data-gtm="markdown-toolbar-h3" data-gtm-click-tracking="true">
             <%= render "components/markdown_editor/heading_three.svg" %>
           </md-header-3>
-          <md-link class="app-c-markdown-editor__toolbar-button" title="Link" aria-label="Link" data-gtm="markdown-toolbar-link">
+          <md-link class="app-c-markdown-editor__toolbar-button" title="Link" aria-label="Link" data-gtm="markdown-toolbar-link" data-gtm-click-tracking="true">
             <%= render "components/markdown_editor/link.svg" %>
           </md-link>
-          <md-quote class="app-c-markdown-editor__toolbar-button" title="Blockquote" aria-label="Blockquote" data-gtm="markdown-toolbar-blockquote">
+          <md-quote class="app-c-markdown-editor__toolbar-button" title="Blockquote" aria-label="Blockquote" data-gtm="markdown-toolbar-blockquote" data-gtm-click-tracking="true">
             <%= render "components/markdown_editor/blockquote.svg" %>
           </md-quote>
-          <md-ordered-list class="app-c-markdown-editor__toolbar-button" title="Numbered list" aria-label="Numbered list" data-gtm="markdown-toolbar-list">
+          <md-ordered-list class="app-c-markdown-editor__toolbar-button" title="Numbered list" aria-label="Numbered list" data-gtm="markdown-toolbar-list" data-gtm-click-tracking="true">
             <%= render "components/markdown_editor/numbered_list.svg" %>
           </md-ordered-list>
-          <md-unordered-list class="app-c-markdown-editor__toolbar-button" title="Bullets" aria-label="Bullets" data-gtm="markdown-toolbar-bullets">
+          <md-unordered-list class="app-c-markdown-editor__toolbar-button" title="Bullets" aria-label="Bullets" data-gtm="markdown-toolbar-bullets" data-gtm-click-tracking="true">
             <%= render "components/markdown_editor/bullets.svg" %>
           </md-unordered-list>
           <% if insert_items.any? %>
