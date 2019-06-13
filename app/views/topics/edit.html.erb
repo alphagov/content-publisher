@@ -60,6 +60,7 @@
   <h2 class="govuk-heading-m"><%= t("topics.edit.selected_title") %></h2>
   <miller-columns-selected class="miller-columns-selected" id="selected-items" for="miller-columns"></miller-columns-selected>
 
+  <% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
   <div class="app-js-only">
     <%= render "components/autocomplete", {
       id: "topics-autocomplete",
@@ -72,6 +73,7 @@
       search: true
     } %>
   </div>
+  <% end %>
 
   <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items">
   <ul id="taxonomy" class="govuk-list">
