@@ -23,5 +23,6 @@ class Status < ApplicationRecord
                 removed: "removed",
                 discarded: "discarded",
                 superseded: "superseded",
-                scheduled: "scheduled" }
+                scheduled: "scheduled",
+                failed_to_publish: "failed_to_publish" }
 end

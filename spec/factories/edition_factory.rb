@@ -135,5 +135,23 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :failed_to_publish do
+      summary { SecureRandom.alphanumeric(10) }
+
+      transient do
+        scheduling { nil }
+      end
+
+      after(:build) do |edition, evaluator|
+        edition.status = evaluator.association(
+          :status,
+          :failed_to_publish,
+          created_by: edition.created_by,
+          revision_at_creation: edition.revision,
+          scheduling: evaluator.scheduling,
+        )
+      end
+    end
   end
 end

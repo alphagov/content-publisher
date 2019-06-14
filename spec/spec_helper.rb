@@ -63,6 +63,6 @@ RSpec.configure do |config|
   end
 
   config.after :each, type: :feature, js: true do
-    Capybara::Chromedriver::Logger::TestHooks.after_example!
+    # Capybara::Chromedriver::Logger::TestHooks.after_example!
   end
 end
