@@ -48,6 +48,11 @@
                               published_but_needs_2i
                               withdrawn
                               removed]
+
+    if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
+      selectable_states += %w[scheduled failed_to_publish]
+    end
+
     state_select = selectable_states.map do |state|
       [t("user_facing_states.#{state}.name"), state]
     end
