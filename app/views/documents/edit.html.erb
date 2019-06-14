@@ -49,7 +49,6 @@
         base_path: @revision.base_path
       } do %>
       <% end %>
-
     </div>
 
     <% if @edition.document_type.guidance_for("title") %>
@@ -99,8 +98,8 @@
           <p class="govuk-body"><%= @edition.document_type.guidance_for("summary").body_govspeak %></p>
         <% end %>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 
   <% @edition.document_type.contents.each do |field| %>
     <%= render "documents/fields/#{field.type}_input",
