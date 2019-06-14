@@ -1,7 +1,10 @@
-name: Warning summary
-description: A summary of warnings
+name: Inset prompt
+description: A prompt to users represented as inset content
 body: |
-  Optional markdown providing further detail about the component
+  This is similar to the [inset text][] component, however it has more of an
+  emphasis of informing a user they need to take an action.
+
+  [inset text]: https://design-system.service.gov.uk/components/inset-text/
 shared_accessibility_criteria:
   - link
 examples:
