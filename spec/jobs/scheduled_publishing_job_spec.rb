@@ -1,86 +1,71 @@
 # frozen_string_literal: true
 
-RSpec.describe ScheduledPublishingJob, inline: true do
-  describe "#perform" do
-    context "scheduled publishing is successful" do
-      before do
-        @publish_service = instance_double(PublishService, publish: nil)
-        message_delivery = instance_double(ActionMailer::MessageDelivery, deliver_later: nil)
-        allow(ScheduledPublishMailer).to receive(:success_email).and_return(message_delivery)
-      end
+RSpec.describe ScheduledPublishingJob do
+  include ActiveJob::TestHelper
 
-      it "calls PublishService if edition can be published" do
-        edition = create(:edition,
-                         :scheduled,
-                         scheduling: build(:scheduling, publish_time: Time.current))
-        user = edition.status.created_by
+  before { stub_any_publishing_api_call }
 
-        expect(PublishService).to receive(:new).with(edition) { @publish_service }
-        expect(@publish_service)
-          .to receive(:publish)
-          .with(user: user, with_review: edition.status.details.reviewed)
+  let(:scheduled_edition) do
+    scheduling = create(:scheduling, reviewed: true, publish_time: Time.current.yesterday)
+    create(:edition, :scheduled, scheduling: scheduling)
+  end
 
-        ScheduledPublishingJob.perform_now(edition.id)
-      end
+  it "can publish a scheduled edition" do
+    expect { ScheduledPublishingJob.perform_now(scheduled_edition.id) }
+      .to change { scheduled_edition.reload.state }
+      .to("published")
+  end
 
-      it "calls ScheduledPublishMailer's success_email method for each editor of the edition" do
-        editor_one = create(:user, email: "someone@example.com")
-        editor_two = create(:user, email: "someone-else@example.com")
-        edition = create(:edition,
-                         :scheduled,
-                         revision: create(:revision, created_by: editor_two),
-                         scheduling: create(:scheduling, publish_time: Time.current),
-                         created_by: editor_one)
+  it "can notify the edition editors" do
+    expect(ScheduledPublishMailer)
+      .to receive(:success_email)
+      .with(scheduled_edition, scheduled_edition.created_by)
+      .and_call_original
 
-        allow(PublishService).to receive(:new).with(edition) { @publish_service }
+    ScheduledPublishingJob.perform_now(scheduled_edition.id)
+  end
 
-        expect(ScheduledPublishMailer).to receive(:success_email).with(edition, editor_one)
-        expect(ScheduledPublishMailer).to receive(:success_email).with(edition, editor_two)
+  context "when the edition isn't scheduled" do
+    it "doesn't publish the edition" do
+      edition = create(:edition)
 
-        ScheduledPublishingJob.perform_now(edition.id)
-      end
+      expect { ScheduledPublishingJob.perform_now(edition.id) }
+        .not_to change { edition.reload.state }
+        .from("draft")
+    end
+  end
+
+  context "when the publish time is in the future" do
+    it "doesn't publish the edition" do
+      scheduling = create(:scheduling, reviewed: true, publish_time: Time.current.tomorrow)
+      edition = create(:edition, :scheduled, scheduling: scheduling)
+
+      expect { ScheduledPublishingJob.perform_now(edition.id) }
+        .not_to change { edition.reload.state }
+        .from("scheduled")
+    end
+  end
+
+  context "when an exception is raised" do
+    before do
+      allow(PublishService).to receive(:new).and_raise(RuntimeError)
     end
 
-    context "scheduled publishing is unsuccessful" do
-      it "calls ScheduledPublishMailer's failure_email method for each editor of the edition" do
-        editor_one = create(:user, email: "someone@example.com")
-        editor_two = create(:user, email: "someone-else@example.com")
-        revision = create(:revision,
-                          created_by: editor_two,
-                          scheduled_publishing_datetime: Time.current)
-        edition = create(:edition,
-                         :scheduled,
-                         revision: revision,
-                         created_by: editor_one)
+    it "retries the job" do
+      ScheduledPublishingJob.perform_now(scheduled_edition.id)
 
-        message_delivery = instance_double(ActionMailer::MessageDelivery, deliver_later: nil)
-        allow(ScheduledPublishMailer).to receive(:failure_email).and_return(message_delivery)
-        allow(PublishService).to receive(:publish).and_raise(ArgumentError)
+      expect(ScheduledPublishingJob).to have_been_enqueued
+    end
 
-        expect(ScheduledPublishMailer).to receive(:failure_email).with(edition, editor_one)
-        expect(ScheduledPublishMailer).to receive(:failure_email).with(edition, editor_two)
+    it "when it is out of retries it calls the failed service" do
+      failed_service = instance_double(ScheduledPublishingFailedService)
+      allow(ScheduledPublishingFailedService)
+        .to receive(:new).and_return(failed_service)
 
-        ScheduledPublishingJob.perform_now(edition.id)
-      end
+      expect(failed_service).to receive(:call).with(scheduled_edition.id)
 
-      it "aborts the job if the edition does not exist (e.g. env sync)" do
-        expect_any_instance_of(PublishService).not_to receive(:publish)
-        expect { ScheduledPublishingJob.perform_now(100) }.to_not raise_error
-      end
-
-      it "aborts the job if the user has unscheduled the edition" do
-        edition = create(:edition)
-        expect_any_instance_of(PublishService).not_to receive(:publish)
-        expect { ScheduledPublishingJob.perform_now(edition.id) }.to_not raise_error
-      end
-
-      it "aborts the job if the user has rescheduled the edition" do
-        edition = create(:edition,
-                         :scheduled,
-                         scheduled_publishing_datetime: Time.current.tomorrow)
-
-        expect_any_instance_of(PublishService).not_to receive(:publish)
-        expect { ScheduledPublishingJob.perform_now(edition.id) }.to_not raise_error
+      perform_enqueued_jobs do
+        ScheduledPublishingJob.perform_later(scheduled_edition.id)
       end
     end
   end

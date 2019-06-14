@@ -26,6 +26,8 @@ private
   end
 
   def notify_editors(edition)
-    # TODO
+    edition.editors.each do |editor|
+      ScheduledPublishMailer.failure_email(edition, editor).deliver_later
+    end
   end
 end
