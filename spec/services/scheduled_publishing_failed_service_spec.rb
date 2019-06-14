@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe ScheduledPublishingFailedService do
+  around do |example|
+    Sidekiq::Testing.fake! { example.run }
+  end
+
   describe "#call" do
     let(:edition) { create(:edition, :scheduled) }
 
@@ -14,6 +18,19 @@ RSpec.describe ScheduledPublishingFailedService do
     it "maintains the scheduling details from the previous status" do
       expect { ScheduledPublishingFailedService.new.call(edition.id) }
         .not_to(change { edition.reload.status.details })
+    end
+
+    context "when an edition has editors" do
+      it "notifies the editors" do
+        edition = create(:edition, :scheduled)
+
+        expect(ScheduledPublishMailer)
+          .to receive(:failure_email)
+          .with(edition, edition.created_by)
+          .and_call_original
+
+        ScheduledPublishingFailedService.new.call(edition.id)
+      end
     end
 
     context "when an edition is not scheduled" do
