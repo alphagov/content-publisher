@@ -26,7 +26,7 @@ RSpec.feature "Publish requirements when the Publishing API is down" do
   end
 
   def then_i_do_not_see_warnings_that_require_it
-    within(".app-c-warning-summary") do
+    within(".app-c-inset-prompt") do
       expect(page).to_not have_content(I18n.t!("requirements.topics.none.summary_message"))
       expect(page).to have_content(I18n.t!("requirements.summary.blank.summary_message"))
     end

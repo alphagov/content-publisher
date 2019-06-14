@@ -1,7 +1,7 @@
 $govuk-notice-border-color: govuk-colour("grey-1");
 $govuk-notice-background-color: govuk-colour("grey-4");
 
-.app-c-warning-summary {
+.app-c-inset-prompt {
   @include govuk-text-colour;
   @include govuk-responsive-padding(4);
   @include govuk-responsive-margin(6, "bottom");
@@ -16,14 +16,14 @@ $govuk-notice-background-color: govuk-colour("grey-4");
   background-color: $govuk-notice-background-color;
 }
 
-.app-c-warning-summary__title {
+.app-c-inset-prompt__title {
   @include govuk-font($size: 24, $weight: bold);
 
   margin-top: 0;
   @include govuk-responsive-margin(4, "bottom");
 }
 
-.app-c-warning-summary__body {
+.app-c-inset-prompt__body {
   @include govuk-font($size: 19);
 
   p {
@@ -36,12 +36,12 @@ $govuk-notice-background-color: govuk-colour("grey-4");
   }
 }
 
-.app-c-warning-summary__list {
+.app-c-inset-prompt__list {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.app-c-warning-summary__list a {
+.app-c-inset-prompt__list a {
   @include govuk-focusable-fill;
 
   &:link,
