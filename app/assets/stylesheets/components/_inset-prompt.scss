@@ -16,6 +16,11 @@ $govuk-notice-background-color: govuk-colour("grey-4");
   background-color: $govuk-notice-background-color;
 }
 
+.app-c-inset-prompt--error {
+  background-color: govuk-tint($govuk-error-colour, 90%);
+  border-color: $govuk-error-colour;
+}
+
 .app-c-inset-prompt__title {
   @include govuk-font($size: 24, $weight: bold);
 

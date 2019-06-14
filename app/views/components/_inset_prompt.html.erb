@@ -3,9 +3,12 @@
   description ||= false
   items ||= []
   id ||= nil
+  error = false if error.nil?
+  root_classes = %w[app-c-inset-prompt]
+  root_classes << "app-c-inset-prompt--error" if error
 %>
 
-<%= tag.div class: "app-c-inset-prompt", id: id do %>
+<%= tag.div class: root_classes, id: id do %>
   <%= tag.h2 title, class: "app-c-inset-prompt__title" %>
 
   <%= tag.div class: "app-c-inset-prompt__body" do %>
