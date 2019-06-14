@@ -11,7 +11,7 @@
       <%= remove_link(@edition) %>
     <% elsif @edition.status.removed? %>
       <%= create_edition_button(@edition) %>
-    <% elsif @edition.status.submitted_for_review? %>
+    <% elsif @edition.status.submitted_for_review? || @edition.status.failed_to_publish? %>
       <% if @edition.proposed_publish_time.present? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
         <%= schedule_button(@edition) %>
         <%= preview_button(@edition, secondary: true) %>
