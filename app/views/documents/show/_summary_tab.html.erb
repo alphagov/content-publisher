@@ -3,10 +3,17 @@
     <% if flash[:submitted_for_review] %>
       <%= render "documents/show/submitted_for_review" %>
     <% end %>
+
     <% if @edition.withdrawn? %>
       <%= render "documents/show/withdrawn_notice" %>
     <% end %>
+
     <%= render "documents/show/requirements" %>
+
+    <% if @edition.failed_to_publish? %>
+      <%= render "documents/show/failed_to_publish_notice" %>
+    <% end %>
+
     <%= render "documents/show/contents" %>
 
     <% if @edition.document_type.images %>

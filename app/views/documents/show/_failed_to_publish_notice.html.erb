@@ -1,0 +1,13 @@
+<%
+  scheduling = @edition.status.details
+  description_govspeak = t("documents.show.failed_to_publish.description_govspeak",
+                           title: @edition.title,
+                           date: format_scheduled_date(scheduling.publish_time),
+                           time: format_scheduled_time(scheduling.publish_time))
+
+%>
+<%= render "components/inset_prompt", {
+  error: true,
+  title: t("documents.show.failed_to_publish.title"),
+  description: render_govspeak(description_govspeak),
+} %>

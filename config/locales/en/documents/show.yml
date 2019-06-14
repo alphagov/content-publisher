@@ -46,6 +46,13 @@ en:
         notice:
           proposed: Proposed to publish at %{time} on %{date}
           scheduled: Scheduled to publish at %{time} on %{date}
+      failed_to_publish:
+        title: There is a problem
+        description_govspeak: |
+          '%{title}' has not been published.<br>
+          It was scheduled to publish at %{time} on %{date}
+
+          You can publish it now, schedule it to publish later, or edit it.
       flashes:
         pre_preview_issues:
           warning: To preview this document you need to
