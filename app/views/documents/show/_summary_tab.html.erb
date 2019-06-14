@@ -9,6 +9,11 @@
     <% end %>
 
     <%= render "documents/show/requirements" %>
+
+    <% if @edition.failed_to_publish? %>
+      <%= render "documents/show/failed_to_publish_notice" %>
+    <% end %>
+
     <%= render "documents/show/contents" %>
 
     <% if @edition.document_type.images %>
