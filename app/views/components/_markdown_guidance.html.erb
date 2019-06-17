@@ -50,11 +50,13 @@
         data_attributes: { gtm: "markdown-guidance-details" },
         margin_bottom: 0
   } do %>
-    <p>Select an email address and use the Link button to make a Mailto link.</p>
-    <p>Or you can add < and > before and after an email address.</p>
-    <pre class="app-c-markdown-guidance__code-snippet">
-    &lt;example@gov.uk&gt;
-    </pre>
+    <div data-gtm="email-link-guidance" data-gtm-action="Email links" data-gtm-visibility-tracking="true">
+      <p>Select an email address and use the Link button to make a Mailto link.</p>
+      <p>Or you can add < and > before and after an email address.</p>
+      <pre class="app-c-markdown-guidance__code-snippet">
+      &lt;example@gov.uk&gt;
+      </pre>
+    </div>
   <% end %>
 
   <%= render "govuk_publishing_components/components/details", {
