@@ -4,14 +4,17 @@ class ScheduleProposal::UpdateInteractor
   include Interactor
   delegate :params,
            :edition,
+           :revision,
            :user,
            :issues,
-           :datetime,
+           :publish_time,
            to: :context
 
   def call
     Edition.transaction do
       find_and_lock_edition
+      parse_publish_time
+      update_revision
       check_for_issues
       update_edition
     end
@@ -23,39 +26,44 @@ private
     context.edition = Edition.lock.find_current(document: params[:document])
   end
 
-  def check_for_issues
+  def parse_publish_time
+    parser = DatetimeParser.new(**schedule_params.slice(:date, :time))
+    context.publish_time = parser.parse
+    context.fail!(issues: parser.issues) if parser.issues.any?
+  end
+
+  def update_revision
     unless edition.editable?
       raise "Can't set a schedule date/time unless edition is editable"
     end
 
-    checker = Requirements::ScheduleDatetimeChecker.new(schedule_params)
-    issues = checker.pre_submit_issues.to_a
-    issues += action_issues if params[:wizard] == "schedule"
+    updater = Versioning::RevisionUpdater.new(edition.revision, user)
+    updater.assign(scheduled_publishing_datetime: publish_time)
 
+    context.fail! unless updater.changed?
+    context.revision = updater.next_revision
+  end
+
+  def check_for_issues
+    checker = Requirements::ScheduleChecker.new(revision)
+    issues = checker.pre_schedule_issues.to_a
+
+    issues += action_issues if params[:wizard] == "schedule"
     context.fail!(issues: Requirements::CheckerIssues.new(issues)) if issues.any?
-    context.datetime = checker.parsed_datetime
   end
 
   def schedule_params
     params.require(:schedule).permit(:time, :action, date: %i[day month year])
+      .to_h.deep_symbolize_keys
   end
 
   def update_edition
-    updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(scheduled_publishing_datetime: datetime)
-
-    context.fail! unless updater.changed?
-
-    edition.assign_revision(updater.next_revision, user).save!
+    edition.assign_revision(revision, user).save!
   end
 
   def action_issues
     return [] if schedule_params[:action].present?
 
     [Requirements::Issue.new(:schedule_action, :not_selected)]
-  end
-
-  def scheduled_datetime_already_exists?
-    edition.scheduled_publishing_datetime.present?
   end
 end

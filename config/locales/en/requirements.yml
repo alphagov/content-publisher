@@ -86,15 +86,18 @@ en:
         form_message: Enter a valid date
       in_the_past:
         form_message: Enter a date that is not in the past
+        summary_message: Date is in the past
       too_far_in_future:
-        form_message: "Enter a date within the next %{time_period}"
+        form_message: "Enter a date within %{time_period} from now"
     schedule_time:
       invalid:
         form_message: Enter a valid time
       in_the_past:
         form_message: Enter a time that is not in the past
+        summary_message: Time is in the past
       too_close_to_now:
         form_message: "Enter a time more than %{time_period} from now"
+        summary_message: Time is too close to now
     schedule_action:
       not_selected:
         form_message: Select an option
