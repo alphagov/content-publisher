@@ -6,7 +6,7 @@ RSpec.feature "Schedule a publishing" do
 
   around do |example|
     Sidekiq::Testing.fake! do
-      travel_to("2019-06-13 11:00") { example.run }
+      travel_to(Time.zone.parse("2019-06-13 11:00")) { example.run }
     end
   end
 

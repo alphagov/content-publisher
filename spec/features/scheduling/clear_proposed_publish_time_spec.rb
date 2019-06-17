@@ -4,7 +4,7 @@ RSpec.feature "Clear proposed publish time" do
   include ActiveSupport::Testing::TimeHelpers
 
   around do |example|
-    travel_to("2019-06-13 11:00") { example.run }
+    travel_to(Time.zone.parse("2019-06-13 11:00")) { example.run }
   end
 
   scenario do

@@ -40,7 +40,7 @@ RSpec.describe Requirements::ScheduleDatetimeChecker do
     end
 
     it "returns an issue if a time is invalid" do
-      travel_to("2019-01-01 11:00am") do
+      travel_to(Time.zone.parse("2019-01-01 11:00")) do
         date_options = { day: 2, month: 1, year: 2019 }
         invalid_time_message = I18n.t!("requirements.schedule_time.invalid.form_message")
 
@@ -69,7 +69,7 @@ RSpec.describe Requirements::ScheduleDatetimeChecker do
     end
 
     it "accepts times formatted different from how we present them" do
-      travel_to("2019-01-01 11:00am") do
+      travel_to(Time.zone.parse("2019-01-01 11:00")) do
         date_options = { day: 2, month: 1, year: 2019 }
 
         checker = Requirements::ScheduleDatetimeChecker.new(time: "9:34",
@@ -121,7 +121,7 @@ RSpec.describe Requirements::ScheduleDatetimeChecker do
     end
 
     it "returns a time issue if the date is present but time in the past" do
-      travel_to("2019-01-01 11:00am") do
+      travel_to(Time.zone.parse("2019-01-01 11:00")) do
         issues = Requirements::ScheduleDatetimeChecker.new(
           date: { day: 1, month: 1, year: 2019 },
           time: "10:45am",
@@ -135,7 +135,7 @@ RSpec.describe Requirements::ScheduleDatetimeChecker do
     end
 
     it "returns an issue if the datetime is too close to now" do
-      travel_to("2019-01-01 11:00am") do
+      travel_to(Time.zone.parse("2019-01-01 11:00")) do
         issues = Requirements::ScheduleDatetimeChecker.new(
           date: { day: 1, month: 1, year: 2019 },
           time: "11:10am",
