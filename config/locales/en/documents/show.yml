@@ -35,6 +35,10 @@ en:
         alt_text: Alt text
         caption: Caption
         credit: Credit
+      content_settings:
+        title: Content settings
+        backdate:
+          title: Backdate
       metadata:
         status: Status
         updated_at: Last updated

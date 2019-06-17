@@ -1,0 +1,15 @@
+<%= render "components/summary", {
+  id: "content_settings",
+  title: t("documents.show.content_settings.title"),
+  items: [
+    {
+      field: t("documents.show.content_settings.backdate.title"),
+      edit: {
+        href: backdate_path,
+        data_attributes: {
+          gtm: "edit-backdate",
+        }
+      },
+    }
+  ],
+} %>
