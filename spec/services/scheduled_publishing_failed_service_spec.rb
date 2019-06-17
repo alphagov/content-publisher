@@ -26,7 +26,7 @@ RSpec.describe ScheduledPublishingFailedService do
 
         expect(ScheduledPublishMailer)
           .to receive(:failure_email)
-          .with(edition, edition.created_by)
+          .with(edition.created_by, edition, an_instance_of(Status))
           .and_call_original
 
         ScheduledPublishingFailedService.new.call(edition.id)
