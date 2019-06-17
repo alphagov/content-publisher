@@ -69,6 +69,7 @@ class Edition < ApplicationRecord
            :file_attachment_revisions,
            :assets,
            :primary_publishing_organisation_id,
+           :backdated_to,
            to: :revision
 
   MINIMUM_SCHEDULING_TIME = { minutes: 15 }.freeze
