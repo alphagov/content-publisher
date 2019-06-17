@@ -25,7 +25,10 @@
     <% end %>
 
     <%= render "documents/show/tags" %>
-    <%= render "documents/show/content_settings" %>
+
+    <% if @edition.number == 1 && @edition.editable? %>
+      <%= render "documents/show/content_settings" %>
+    <% end %>
   </div>
 
   <div class="govuk-grid-column-one-third">
