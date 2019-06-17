@@ -7,6 +7,7 @@ RSpec.feature "Backdate the first edition of a document" do
     and_i_click_to_backdate_the_content
     and_i_enter_a_date_to_backdate_the_content_to
     and_i_click_save
+    then_i_see_the_date_the_content_was_backdated_to
   end
 
   def given_there_is_a_document_with_a_first_edition
@@ -29,5 +30,9 @@ RSpec.feature "Backdate the first edition of a document" do
 
   def and_i_click_save
     click_on "Save"
+  end
+
+  def then_i_see_the_date_the_content_was_backdated_to
+    expect(page).to have_content("1 January 2019")
   end
 end

@@ -4,6 +4,7 @@
   items: [
     {
       field: t("documents.show.content_settings.backdate.title"),
+      value: @edition.backdated_to&.strftime("%-d %B %Y"),
       edit: {
         href: backdate_path,
         data_attributes: {
