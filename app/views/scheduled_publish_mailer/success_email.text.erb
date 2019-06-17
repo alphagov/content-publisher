@@ -2,16 +2,18 @@
 
 <% if @edition.number > 1 -%>
 <%= t("scheduled_publish_mailer.success_email.details.update",
-  time: @status.created_at.strftime("%-l:%M%P"),
-  date: @status.created_at.strftime("%d %B %Y")
-) %>
+      time: format_scheduled_time(@status.created_at),
+      date: format_scheduled_date(@status.created_at)) %>
 <% else -%>
 <%= t("scheduled_publish_mailer.success_email.details.publish",
-  time: @status.created_at.strftime("%-l:%M%P"),
-  date: @status.created_at.strftime("%d %B %Y")
-) %>
+      time: format_scheduled_time(@status.created_at),
+      date: format_scheduled_date(@status.created_at)) %>
 <% end -%>
-<%= t("scheduled_publish_mailer.success_email.scheduled_by", name: @user.name) %>
+
+<% if @status.created_by -%>
+<%= t("scheduled_publish_mailer.success_email.scheduled_by",
+      name: @status.created_by.name) %>
+<% end -%>
 
 <%= t("scheduled_publish_mailer.success_email.delay_warning") %>
 
@@ -27,7 +29,7 @@
 <% end -%>
 <% end -%>
 
-<% if @edition.published_but_needs_2i? -%>
+<% if @status.published_but_needs_2i? -%>
 <%= t("scheduled_publish_mailer.success_email.2i_warning") %>
 <% end -%>
 
