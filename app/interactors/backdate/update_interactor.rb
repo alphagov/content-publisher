@@ -10,6 +10,7 @@ class Backdate::UpdateInteractor
   def call
     Edition.transaction do
       find_and_lock_edition
+      check_for_issues
       update_edition
     end
   end
@@ -34,5 +35,13 @@ private
     Time.zone.local(backdate_params[:year].to_i,
                     backdate_params[:month].to_i,
                     backdate_params[:day].to_i)
+  end
+
+  def check_for_issues
+    unless edition.number == 1
+      # FIXME: this shouldn't be an exception but we've not worked out the
+      # right response - maybe bad request or a redirect with flash?
+      raise "Only first editions can be backdated."
+    end
   end
 end
