@@ -19,7 +19,7 @@ RSpec.describe ScheduledPublishingJob do
   it "can notify the edition editors" do
     expect(ScheduledPublishMailer)
       .to receive(:success_email)
-      .with(scheduled_edition, scheduled_edition.created_by)
+      .with(scheduled_edition.created_by, scheduled_edition, an_instance_of(Status))
       .and_call_original
 
     ScheduledPublishingJob.perform_now(scheduled_edition.id)

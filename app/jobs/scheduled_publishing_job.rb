@@ -44,7 +44,8 @@ private
 
   def notify_editors(edition)
     edition.editors.each do |editor|
-      ScheduledPublishMailer.success_email(edition, editor).deliver_later
+      ScheduledPublishMailer.success_email(editor, edition, edition.status)
+                            .deliver_later
     end
   end
 end
