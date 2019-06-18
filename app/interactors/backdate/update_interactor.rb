@@ -5,6 +5,7 @@ class Backdate::UpdateInteractor
   delegate :params,
            :user,
            :edition,
+           :date,
            to: :context
 
   def call
@@ -23,18 +24,12 @@ private
 
   def update_edition
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(backdated_to: submitted_date)
+    updater.assign(backdated_to: date)
     edition.assign_revision(updater.next_revision, user).save!
   end
 
   def backdate_params
-    params.require(:backdate).permit(:day, :month, :year)
-  end
-
-  def submitted_date
-    Time.zone.local(backdate_params[:year].to_i,
-                    backdate_params[:month].to_i,
-                    backdate_params[:day].to_i)
+    params.require(:backdate).permit(date: %i[day month year])
   end
 
   def check_for_issues
@@ -43,5 +38,12 @@ private
       # right response - maybe bad request or a redirect with flash?
       raise "Only first editions can be backdated."
     end
+
+    checker = Requirements::BackdateChecker.new(backdate_params[:date])
+    issues = checker.pre_submit_issues
+
+    context.fail!(issues: issues) if issues.any?
+
+    context.date = checker.parsed_date
   end
 end

@@ -19,6 +19,8 @@
         legend_text: legend,
         hint: t("backdate.edit.date_hint_text"),
         name: "backdate[date]",
+        id: "backdate-date",
+        error_items: @issues&.items_for(:backdate_date),
         items: [
           {
             name: "day",

@@ -7,8 +7,21 @@ class BackdateController < ApplicationController
 
   def update
     result = Backdate::UpdateInteractor.call(params: params, user: current_user)
-    edition = result[:edition]
+    edition, issues = result.to_h.values_at(:edition, :issues)
 
-    redirect_to document_path(edition.document)
+    if issues
+      flash.now["alert_with_items"] = {
+        "title" => I18n.t!("backdate.edit.flashes.requirements"),
+        "items" => issues.items(
+          link_options: { backdate_date: { href: "#backdate-date" } },
+        ),
+      }
+
+      render :edit,
+             assigns: { edition: edition, issues: issues },
+             status: :unprocessable_entity
+    else
+      redirect_to document_path(edition.document)
+    end
   end
 end
