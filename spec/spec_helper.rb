@@ -25,6 +25,7 @@ ActiveRecord::Migration.maintain_test_schema!
 Rails.application.load_tasks
 Sidekiq::Testing.inline!
 
+Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.server = :puma, { Silent: true }
 
 RSpec.configure do |config|
