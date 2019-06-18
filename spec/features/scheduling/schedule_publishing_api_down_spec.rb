@@ -1,38 +1,29 @@
 # frozen_string_literal: true
 
-RSpec.feature "Schedule an edition when Publishing API is down" do
+RSpec.feature "Schedule when Publishing API is down" do
   scenario do
-    given_there_is_an_edition_ready_to_schedule
+    given_there_is_a_schedulable_edition
+    when_i_try_to_schedule_the_edition
     and_the_publishing_api_is_down
-    when_i_visit_the_summary_page
-    and_i_try_to_schedule_the_edition
     then_i_see_an_error_message
-    and_the_document_has_not_been_scheduled
   end
 
-  def given_there_is_an_edition_ready_to_schedule
+  def given_there_is_a_schedulable_edition
     @edition = create(:edition, :publishable, :schedulable)
+  end
+
+  def when_i_try_to_schedule_the_edition
+    visit document_path(@edition.document)
+    click_on "Schedule"
+    choose I18n.t!("schedule.new.review_status.reviewed")
   end
 
   def and_the_publishing_api_is_down
     publishing_api_isnt_available
-  end
-
-  def when_i_visit_the_summary_page
-    visit document_path(@edition.document)
-  end
-
-  def and_i_try_to_schedule_the_edition
-    click_on "Schedule"
-    choose I18n.t!("schedule.new.review_status.reviewed")
     click_on "Schedule"
   end
 
   def then_i_see_an_error_message
     expect(page).to have_content(I18n.t!("documents.show.flashes.schedule_error.title"))
-  end
-
-  def and_the_document_has_not_been_scheduled
-    expect(page).to have_link "Schedule"
   end
 end

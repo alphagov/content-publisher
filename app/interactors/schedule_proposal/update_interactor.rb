@@ -14,7 +14,6 @@ class ScheduleProposal::UpdateInteractor
     Edition.transaction do
       find_and_lock_edition
       parse_publish_time
-      update_revision
       check_for_issues
       update_edition
     end
@@ -24,6 +23,10 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+
+    unless edition.editable?
+      raise "Can't set a schedule date/time unless edition is editable"
+    end
   end
 
   def parse_publish_time
@@ -32,32 +35,21 @@ private
     context.fail!(issues: parser.issues) if parser.issues.any?
   end
 
-  def update_revision
-    unless edition.editable?
-      raise "Can't set a schedule date/time unless edition is editable"
-    end
-
-    updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(scheduled_publishing_datetime: publish_time)
-
-    context.fail! unless updater.changed?
-    context.revision = updater.next_revision
-  end
-
   def check_for_issues
-    checker = Requirements::ScheduleChecker.new(revision)
-    issues = checker.pre_schedule_issues.to_a
-
+    checker = Requirements::PublishTimeChecker.new(publish_time)
+    issues = checker.issues.to_a
     issues += action_issues if params[:wizard] == "schedule"
+
     context.fail!(issues: Requirements::CheckerIssues.new(issues)) if issues.any?
   end
 
-  def schedule_params
-    params.require(:schedule).permit(:time, :action, date: %i[day month year])
-      .to_h.deep_symbolize_keys
-  end
-
   def update_edition
+    updater = Versioning::RevisionUpdater.new(edition.revision, user)
+    updater.assign(proposed_publish_time: publish_time)
+
+    context.fail! unless updater.changed?
+
+    context.revision = updater.next_revision
     edition.assign_revision(revision, user).save!
   end
 
@@ -65,5 +57,10 @@ private
     return [] if schedule_params[:action].present?
 
     [Requirements::Issue.new(:schedule_action, :not_selected)]
+  end
+
+  def schedule_params
+    params.require(:schedule).permit(:time, :action, date: %i[day month year])
+      .to_h.deep_symbolize_keys
   end
 end

@@ -38,11 +38,13 @@ class PublishingApiPayload
   end
 
   def intent_payload
+    raise "Edition must be scheduled to create an intent" unless edition.scheduled?
+
+    scheduling = edition.status.details
     rendering_app = publishing_metadata.rendering_app
-    publish_time = edition.scheduled_publishing_datetime
 
     {
-      publish_time: publish_time,
+      publish_time: scheduling.publish_time,
       publishing_app: PUBLISHING_APP,
       rendering_app: rendering_app,
     }

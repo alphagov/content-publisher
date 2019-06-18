@@ -65,7 +65,7 @@ class Edition < ApplicationRecord
            :lead_image_revision,
            :image_revisions,
            :image_revisions_without_lead,
-           :scheduled_publishing_datetime,
+           :proposed_publish_time,
            :file_attachment_revisions,
            :assets,
            :primary_publishing_organisation_id,
@@ -111,7 +111,7 @@ class Edition < ApplicationRecord
 
   def self.create_next_edition(preceding_edition, user)
     updater = Versioning::RevisionUpdater.new(preceding_edition.revision, user)
-    updater.assign(change_note: "", update_type: "major", scheduled_publishing_datetime: nil)
+    updater.assign(change_note: "", update_type: "major", proposed_publish_time: nil)
 
     status = Status.create!(created_by: user,
                             revision_at_creation: updater.next_revision,
@@ -152,7 +152,7 @@ class Edition < ApplicationRecord
     status = Status.new(
       created_by: user,
       state: state,
-      revision_at_creation_id: revision_id,
+      revision_at_creation: revision,
       details: status_details,
     )
 

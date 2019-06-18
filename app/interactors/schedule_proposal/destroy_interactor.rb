@@ -10,7 +10,7 @@ class ScheduleProposal::DestroyInteractor
   def call
     Edition.transaction do
       find_and_lock_edition
-      clear_schedule_proposal
+      clear_proposed_time
     end
   end
 
@@ -24,9 +24,9 @@ private
     end
   end
 
-  def clear_schedule_proposal
+  def clear_proposed_time
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(scheduled_publishing_datetime: nil)
+    updater.assign(proposed_publish_time: nil)
 
     if updater.changed?
       edition.assign_revision(updater.next_revision, user).save!

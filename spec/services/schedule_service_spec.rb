@@ -15,27 +15,32 @@ RSpec.describe ScheduleService do
   end
 
   describe "#schedule" do
-    let(:edition) { create :edition, scheduled_publishing_datetime: Time.current.tomorrow }
+    let(:edition) { create :edition, proposed_publish_time: Time.current.tomorrow }
 
     it "sets an edition's state to 'scheduled'" do
-      ScheduleService.new(edition).schedule
+      ScheduleService.new(edition).schedule(reviewed: true)
       expect(edition).to be_scheduled
     end
 
     it "saves the edition's pre-scheduling status" do
       pre_scheduling_status = edition.status
-      ScheduleService.new(edition).schedule
+      ScheduleService.new(edition).schedule(reviewed: true)
       expect(edition.status.details.pre_scheduled_status).to eq(pre_scheduling_status)
     end
 
+    it "clears the editions proposed publish time" do
+      ScheduleService.new(edition).schedule(reviewed: true)
+      expect(edition.reload.proposed_publish_time).to be_nil
+    end
+
     it "creates a timeline entry" do
-      ScheduleService.new(edition).schedule
+      ScheduleService.new(edition).schedule(reviewed: true)
       expect(edition.timeline_entries.first.entry_type).to eq("scheduled")
     end
 
     it "creates a publishing intent" do
       request = stub_publishing_api_put_intent(edition.base_path, '"payload"')
-      ScheduleService.new(edition).schedule
+      ScheduleService.new(edition).schedule(reviewed: true)
       expect(request).to have_been_requested
     end
 
@@ -54,8 +59,8 @@ RSpec.describe ScheduleService do
     end
 
     it "schedules the edition to publish" do
-      datetime = edition.scheduled_publishing_datetime
-      ScheduleService.new(edition).schedule
+      datetime = edition.proposed_publish_time
+      ScheduleService.new(edition).schedule(reviewed: false)
       expect(enqueued_jobs.count).to eq 1
       expect(enqueued_jobs.first[:args].first).to eq edition.id
       expect(enqueued_jobs.first[:at].to_i).to eq datetime.to_i
@@ -63,36 +68,44 @@ RSpec.describe ScheduleService do
   end
 
   describe "#reschedule" do
-    let(:edition) { create(:edition, :scheduled, scheduled_publishing_datetime: Time.current.tomorrow) }
+    let(:edition) do
+      create(:edition,
+             :scheduled,
+             scheduling: create(:scheduling, publish_time: Time.current.tomorrow))
+    end
+    let(:new_publish_time) { Time.current.advance(days: 2) }
 
     it "maintains the edition's state as 'scheduled'" do
-      ScheduleService.new(edition).reschedule
+      ScheduleService.new(edition).reschedule(publish_time: new_publish_time)
       expect(edition).to be_scheduled
     end
 
-    it "maintains the edition's scheduling status" do
-      scheduling = edition.status.details
-      ScheduleService.new(edition).reschedule
-      expect(edition.status.details).to eq scheduling
+    it "creates a new scheduling status using details from the previous" do
+      old_scheduling = edition.status.details
+      ScheduleService.new(edition).reschedule(publish_time: new_publish_time)
+      new_scheduling = edition.status.details
+
+      expect(new_scheduling.publish_time).to eq new_publish_time
+      expect(new_scheduling.slice(:reviewed, :pre_scheduled_status))
+        .to eql old_scheduling.slice(:reviewed, :pre_scheduled_status)
     end
 
     it "creates another timeline entry" do
-      ScheduleService.new(edition).reschedule
+      ScheduleService.new(edition).reschedule(publish_time: new_publish_time)
       expect(edition.timeline_entries.last.entry_type).to eq "schedule_updated"
     end
 
     it "updates the existing publishing intent" do
       request = stub_publishing_api_put_intent(edition.base_path, '"payload"')
-      ScheduleService.new(edition).schedule
+      ScheduleService.new(edition).reschedule(publish_time: new_publish_time)
       expect(request).to have_been_requested
     end
 
     it "schedules the edition to publish" do
-      datetime = edition.scheduled_publishing_datetime
-      ScheduleService.new(edition).reschedule
+      ScheduleService.new(edition).reschedule(publish_time: new_publish_time)
       expect(enqueued_jobs.count).to eq 1
       expect(enqueued_jobs.last[:args].first).to eq edition.id
-      expect(enqueued_jobs.last[:at].to_i).to eq datetime.to_i
+      expect(enqueued_jobs.last[:at].to_i).to eq new_publish_time.to_i
     end
   end
 end

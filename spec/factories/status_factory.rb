@@ -27,10 +27,13 @@ FactoryBot.define do
 
       transient do
         scheduling { nil }
+        publish_time { Time.current.advance(days: 2) }
       end
 
       after(:build) do |status, evaluator|
-        status.details = evaluator.scheduling || evaluator.association(:scheduling)
+        new_scheduling = evaluator.association(:scheduling,
+                                               publish_time: evaluator.publish_time)
+        status.details = evaluator.scheduling || new_scheduling
       end
     end
   end

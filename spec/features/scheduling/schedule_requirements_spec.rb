@@ -30,11 +30,13 @@ RSpec.feature "Schedule an edition with requirements issues" do
   end
 
   def given_there_is_an_edition_to_publish_too_soon
-    @edition = create(:edition, :publishable, scheduled_publishing_datetime: Time.current.advance(minutes: 5))
+    @edition = create(:edition,
+                      :publishable,
+                      proposed_publish_time: Time.current.advance(minutes: 5))
   end
 
   def given_there_is_an_edition_to_publish_in_the_past
-    @edition = create(:edition, :publishable, scheduled_publishing_datetime: 1.day.ago)
+    @edition = create(:edition, :publishable, proposed_publish_time: 1.day.ago)
   end
 
   def when_i_visit_the_summary_page

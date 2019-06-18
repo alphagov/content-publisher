@@ -1,18 +1,17 @@
 # frozen_string_literal: true
 
-RSpec.feature "Change schedule when Publishing API is down" do
+RSpec.feature "Update publish time when Publishing API is down" do
   scenario do
     given_there_is_a_scheduled_edition
     when_i_visit_the_summary_page
     and_the_publishing_api_is_down
     and_i_click_on_change_date
-    and_i_set_a_new_schedule_datetime
+    and_i_set_a_new_publish_time
     then_i_see_an_error_message
   end
 
   def given_there_is_a_scheduled_edition
-    datetime = Time.current.tomorrow.change(hour: 10)
-    @edition = create(:edition, :scheduled, scheduled_publishing_datetime: datetime)
+    @edition = create(:edition, :scheduled)
   end
 
   def and_the_publishing_api_is_down
@@ -27,9 +26,8 @@ RSpec.feature "Change schedule when Publishing API is down" do
     click_on "Change date"
   end
 
-  def and_i_set_a_new_schedule_datetime
-    new_datetime = Time.current.advance(days: 2)
-    fill_in "schedule[date][day]", with: new_datetime.day
+  def and_i_set_a_new_publish_time
+    fill_in "schedule[date][day]", with: Time.current.advance(days: 2)
     click_on "Save date"
   end
 

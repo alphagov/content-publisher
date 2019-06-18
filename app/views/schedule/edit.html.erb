@@ -6,7 +6,11 @@
     <%= form_tag edit_schedule_path(@edition.document) do %>
       <%= hidden_field_tag(:wizard, params[:wizard]) %>
 
-      <%= render "schedule/datetime" %>
+      <% scheduling = @edition.status.details %>
+      <%= render "schedule/datetime", {
+        issues: @issues,
+        publish_time: scheduling.publish_time,
+      } %>
 
       <%= render "govuk_publishing_components/components/button", {
         text: "Save date",

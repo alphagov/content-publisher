@@ -8,7 +8,7 @@ class Schedule::DestroyInteractor
   def call
     Edition.transaction do
       find_and_lock_edition
-      set_edition_status
+      update_edition
       destroy_publish_intent
       create_timeline_entry
     end
@@ -24,10 +24,17 @@ private
     end
   end
 
-  def set_edition_status
+  def update_edition
     scheduling = edition.status.details
+
+    updater = Versioning::RevisionUpdater.new(edition.revision, user)
+    updater.assign(proposed_publish_time: scheduling.publish_time)
+
     state = scheduling.reviewed? ? :submitted_for_review : :draft
-    edition.assign_status(state, user).save!
+
+    edition.assign_revision(updater.next_revision, user)
+           .assign_status(state, user)
+           .save!
   end
 
   def destroy_publish_intent
