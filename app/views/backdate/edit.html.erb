@@ -6,6 +6,7 @@
     <%= t("backdate.edit.date") %>
   </span>
 <% end %>
+<% date = @edition.backdated_to %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -25,14 +26,17 @@
           {
             name: "day",
             width: 2,
+            value: params.dig(:backdate, :day) || date&.day,
           },
           {
             name: "month",
             width: 2,
+            value: params.dig(:backdate, :month) || date&.month,
           },
           {
             name: "year",
             width: 4,
+            value: params.dig(:backdate, :year) || date&.year,
           }
         ]
       } %>
