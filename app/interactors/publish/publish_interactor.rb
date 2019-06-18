@@ -26,7 +26,14 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-    context.fail! if edition.live?
+
+    unless edition.editable?
+      raise "Can't publish an edition which isn't editable"
+    end
+
+    if Requirements::EditionChecker.new(edition).pre_publish_issues(rescue_api_errors: false).any?
+      raise "Can't publish an edition with requirements issues"
+    end
   end
 
   def check_for_issues

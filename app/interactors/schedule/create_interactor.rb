@@ -25,6 +25,10 @@ private
     unless edition.editable? && edition.proposed_publish_time.present?
       raise "Can't schedule an edition which isn't schedulable"
     end
+
+    if Requirements::EditionChecker.new(edition).pre_publish_issues(rescue_api_errors: false).any?
+      raise "Can't schedule an edition with requirements issues"
+    end
   end
 
   def check_for_issues
