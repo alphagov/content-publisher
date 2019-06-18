@@ -6,13 +6,18 @@ class Tags::UpdateInteractor
   delegate :params,
            :user,
            :edition,
+           :revision,
+           :revision_updater,
+           :issues,
            to: :context
 
   def call
     Edition.transaction do
       find_and_lock_edition
-      update_edition
+      update_revision
+      check_for_issues
 
+      update_edition
       create_timeline_entry
       update_preview
     end
@@ -24,12 +29,22 @@ private
     context.edition = Edition.lock.find_current(document: params[:document])
   end
 
-  def update_edition
-    updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(tags: update_params(edition))
+  def update_revision
+    context.revision_updater = Versioning::RevisionUpdater.new(edition.revision, user)
+    revision_updater.assign(tags: update_params(edition))
+    context.revision = revision_updater.next_revision
+  end
 
-    context.fail! unless updater.changed?
-    edition.assign_revision(updater.next_revision, user).save!
+  def check_for_issues
+    checker = Requirements::TagChecker.new(edition, revision)
+    issues = checker.pre_publish_issues
+
+    context.fail!(issues: issues) if issues.any?
+  end
+
+  def update_edition
+    context.fail! unless revision_updater.changed?
+    edition.assign_revision(revision, user).save!
   end
 
   def create_timeline_entry
@@ -45,6 +60,6 @@ private
       [tag_field.id, []]
     end
 
-    params.fetch(:tags, {}).permit(Hash[permits])
+    params.fetch(:tags, {}).permit(Hash[permits]).each { |_, v| v.reject!(&:empty?) }
   end
 end

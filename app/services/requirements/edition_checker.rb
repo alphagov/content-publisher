@@ -17,6 +17,7 @@ module Requirements
       end
 
       issues += ContentChecker.new(edition, revision).pre_preview_issues.to_a
+
       CheckerIssues.new(issues)
     end
 
@@ -24,6 +25,8 @@ module Requirements
       issues = []
       issues += ContentChecker.new(edition, revision).pre_publish_issues.to_a
       issues += TopicChecker.new(edition.document).pre_publish_issues(params).to_a
+      issues += TagChecker.new(edition, revision).pre_publish_issues.to_a
+
       CheckerIssues.new(issues)
     end
   end

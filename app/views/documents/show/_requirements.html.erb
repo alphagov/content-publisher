@@ -18,6 +18,9 @@
       { href: edit_image_path(@edition.document, image_id, anchor: "caption") }
     end,
     topics: { href: update_topics_path(@edition.document) },
+    primary_publishing_organisation: {
+      href: tags_path(@edition.document, anchor: "primary_publishing_organisation")
+    },
   }
 } %>
 
