@@ -13,6 +13,7 @@ class Backdate::UpdateInteractor
       find_and_lock_edition
       check_for_issues
       update_edition
+      create_timeline_entry
     end
   end
 
@@ -45,5 +46,14 @@ private
     context.fail!(issues: issues) if issues.any?
 
     context.date = checker.parsed_date
+  end
+
+  def create_timeline_entry
+    TimelineEntry.create_for_revision(
+      entry_type: :backdated,
+      revision: edition.revision,
+      edition: edition,
+      created_by: user,
+    )
   end
 end

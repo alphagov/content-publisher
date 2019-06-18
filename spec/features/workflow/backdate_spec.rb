@@ -7,7 +7,7 @@ RSpec.feature "Backdate content" do
     and_i_click_to_backdate_the_content
     and_i_enter_a_date_to_backdate_the_content_to
     and_i_click_save
-    then_i_see_the_date_the_content_was_backdated_to
+    then_i_see_the_content_has_been_backdated
   end
 
   scenario "subsequent edition" do
@@ -44,8 +44,10 @@ RSpec.feature "Backdate content" do
     click_on "Save"
   end
 
-  def then_i_see_the_date_the_content_was_backdated_to
+  def then_i_see_the_content_has_been_backdated
     expect(page).to have_content("1 January 2019")
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.backdated",
+                                         date: "01 January 2019"))
   end
 
   def given_there_is_a_document_with_a_second_edition

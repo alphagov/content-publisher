@@ -51,7 +51,8 @@ class TimelineEntry < ApplicationRecord
                      unscheduled: "unscheduled",
                      file_attachment_uploaded: "file_attachment_uploaded",
                      file_attachment_deleted: "file_attachment_deleted",
-                     file_attachment_updated: "file_attachment_updated" }
+                     file_attachment_updated: "file_attachment_updated",
+                     backdated: "backdated" }
 
   def self.create_for_status_change(entry_type:,
                                     status:,
