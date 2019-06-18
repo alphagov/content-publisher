@@ -104,6 +104,11 @@ en:
     schedule_review_status:
       not_selected:
         form_message: Select an option
+    backdate_date:
+      in_the_future:
+        form_message: Enter a date in the past
+      invalid:
+        form_message: Enter a valid date
     document_type:
       not_selected:
         form_message: Select an option
