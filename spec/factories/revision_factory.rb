@@ -20,6 +20,7 @@ FactoryBot.define do
       update_type { "major" }
       change_note { "First published." }
       proposed_publish_time { nil }
+      backdated_to { nil }
     end
   end
 
@@ -52,6 +53,7 @@ FactoryBot.define do
           change_note: evaluator.change_note,
           created_by: revision.created_by,
           proposed_publish_time: evaluator.proposed_publish_time,
+          backdated_to: evaluator.backdated_to,
         )
       end
 

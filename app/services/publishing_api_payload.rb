@@ -34,6 +34,7 @@ class PublishingApiPayload
       },
     }
     payload["change_note"] = edition.change_note if edition.major?
+    payload["first_published_at"] = edition.backdated_to if edition.backdated_to
     payload
   end
 
