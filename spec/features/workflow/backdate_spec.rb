@@ -4,7 +4,8 @@ RSpec.feature "Backdate content" do
   scenario "first edition" do
     given_there_is_a_document_with_a_first_edition
     when_i_visit_the_summary_page
-    and_i_click_to_backdate_the_content
+    then_i_see_that_the_content_has_not_been_backdated
+    when_i_click_to_backdate_the_content
     and_i_enter_a_date_to_backdate_the_content_to
     and_i_click_save
     then_i_see_the_content_has_been_backdated
@@ -30,7 +31,13 @@ RSpec.feature "Backdate content" do
     visit document_path(@edition.document)
   end
 
-  def and_i_click_to_backdate_the_content
+  def then_i_see_that_the_content_has_not_been_backdated
+    expect(page).to have_content(
+      I18n.t!("documents.show.content_settings.backdate.no_backdate"),
+    )
+  end
+
+  def when_i_click_to_backdate_the_content
     click_on "Edit Backdate"
   end
 
