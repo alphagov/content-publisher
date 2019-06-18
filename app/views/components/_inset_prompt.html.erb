@@ -3,18 +3,19 @@
   description ||= false
   items ||= []
   id ||= nil
+  error = false if error.nil?
+  root_classes = %w[app-c-inset-prompt]
+  root_classes << "app-c-inset-prompt--error" if error
 %>
 
-<%= tag.div class: "app-c-warning-summary", id: id do %>
-  <%= tag.h2 title, class: "app-c-warning-summary__title" %>
+<%= tag.div class: root_classes, id: id do %>
+  <%= tag.h2 title, class: "app-c-inset-prompt__title" %>
 
-  <%= tag.div class: "app-c-warning-summary__body" do %>
-    <% if description %>
-      <%= description %>
-    <% end %>
+  <%= tag.div class: "app-c-inset-prompt__body" do %>
+    <%= description if description %>
 
     <% if items.any? %>
-      <%= tag.ul class:"govuk-list app-c-warning-summary__list" do %>
+      <%= tag.ul class: "govuk-list inset-prompt__list" do %>
         <% items.each_with_index do |item, index| %>
           <% if item[:href] %>
             <%= tag.li link_to(item[:text], item[:href], class: "govuk-link govuk-link--no-visited-state") %>

@@ -36,5 +36,17 @@ FactoryBot.define do
         status.details = evaluator.scheduling || new_scheduling
       end
     end
+
+    trait :failed_to_publish do
+      state { :failed_to_publish }
+
+      transient do
+        scheduling { nil }
+      end
+
+      after(:build) do |status, evaluator|
+        status.details = evaluator.scheduling || evaluator.association(:scheduling, :failed)
+      end
+    end
   end
 end

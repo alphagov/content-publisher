@@ -8,6 +8,10 @@ en:
       name: Published but needs 2i review
     published:
       name: Published
+    scheduled:
+      name: Scheduled to publish
+    failed_to_publish:
+      name: Failed to publish
     withdrawn:
       name: Withdrawn
     removed:
@@ -16,5 +20,3 @@ en:
       name: Discarded
     superseded:
       name: Superseded
-    scheduled:
-      name: Scheduled to publish
