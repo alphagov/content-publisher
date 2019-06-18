@@ -177,3 +177,25 @@ examples:
         -
           - United Kingdom
           - uk
+  autocomplete_search:
+    description: |
+      This is used to display an autocomplete with a search input
+    data:
+      id: autocomplete-search
+      name: autocomplete-search
+      label:
+        text: Search
+      data_module: autocomplete
+      search: true
+      options:
+        -
+          -
+        -
+          - France
+          - fr
+        -
+          - Germany
+          - de
+        -
+          - United Kingdom
+          - uk

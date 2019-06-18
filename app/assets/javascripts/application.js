@@ -22,7 +22,7 @@
 //= require components/markdown-editor.js
 //= require components/multi-section-viewer.js
 //= require components/url-preview.js
-//= require vendor/@alphagov/miller-columns-element/dist/index.umd.js
+//= require miller-columns-element/dist/index.umd.js
 
 //= require modal/modal-fetch.js
 //= require modal/modal-editor.js

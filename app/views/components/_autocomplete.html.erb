@@ -9,11 +9,13 @@
   error_items ||= []
   hint ||= nil
   width ||= nil
+  search ||= nil
   aria = error_id if error_items.any?
   data_attributes ||= {}
 
   root_classes = %w(app-c-autocomplete govuk-form-group)
   root_classes << "app-c-autocomplete--#{width}" if width
+  root_classes << "app-c-autocomplete--search" if search
   root_classes << "govuk-form-group--error" if error_items.any?
 %>
 
@@ -44,7 +46,14 @@
         multiple: multiple
       %>
     <% else %>
-      <%= tag.p "No options available", class: "govuk-hint" %>
+      <%= tag.p "No options available", class: "govuk-hint" if multiple %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        id: id,
+        name: name,
+        type: "search",
+        search_icon: true
+      } if search %>
     <% end %>
   <% end %>
 <% end %>

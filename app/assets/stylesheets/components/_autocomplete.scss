@@ -1,5 +1,15 @@
 @import "vendor/accessible-autocomplete/dist/accessible-autocomplete.min";
 
+// TODO: Replace with $govuk-focus-colour when the new colour scheme is released
+$app-focus-colour: #ffdd00;
+
+.app-c-autocomplete--search {
+  .autocomplete__input {
+    // scss-lint:disable PlaceholderInExtend
+    @extend .gem-c-input--search-icon;
+  }
+}
+
 .autocomplete__wrapper {
   background: govuk-colour("white");
 }
@@ -24,6 +34,11 @@
 .autocomplete__selected-option {
   @include govuk-font(19);
   color: $govuk-text-colour;
+
+  mark {
+    border-bottom: 3px solid $govuk-focus-text-colour;
+    background: $app-focus-colour;
+  }
 }
 
 .autocomplete__list {

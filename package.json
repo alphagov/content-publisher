@@ -25,6 +25,7 @@
     "cropperjs": "^1.4.3",
     "es5-polyfill": "^0.0.6",
     "markdown-toolbar-element": "^0.2.0",
+    "miller-columns-element": "^0.1.0",
     "paste-html-to-govspeak": "^0.2.2",
     "raven-js": "^3.27.0",
     "url-polyfill": "^1.1.3",
