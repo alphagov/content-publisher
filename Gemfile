@@ -37,9 +37,6 @@ end
 
 group :development, :test do
   gem "byebug", "~> 11"
-  # Using this fork until https://github.com/dbalatero/capybara-chromedriver-logger/issues/6
-  # is resolved and released
-  gem "capybara-chromedriver-logger", git: "https://github.com/ThriveTRM/capybara-chromedriver-logger", ref: "77b9c9a"
   gem "climate_control"
   gem "factory_bot_rails", "~> 5"
   gem "govuk-lint", "~> 3"
