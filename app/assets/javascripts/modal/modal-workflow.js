@@ -15,7 +15,7 @@ ModalWorkflow.prototype.initComponents = function () {
 
 ModalWorkflow.prototype.overrideActions = function (actions) {
   var formItems = this.$modal.querySelectorAll('form[data-modal-action]')
-  var clickItems = document.querySelectorAll('a[data-modal-action], button[data-modal-action]')
+  var clickItems = this.$modal.querySelectorAll('a[data-modal-action], button[data-modal-action]')
 
   clickItems.forEach(function (item) {
     item.addEventListener('click', function (event) {
