@@ -77,7 +77,7 @@
 
 .app-c-summary__contents:first-child .app-c-summary__question,
 .app-c-summary__contents:first-child .app-c-summary__answer,
-.app-c-summary__contents:first-child .app-c-summary__change {
+.app-c-summary__contents:first-child .app-c-summary__edit {
   @include govuk-media-query($from: desktop) {
     padding-top: 0;
   }
@@ -99,7 +99,7 @@
   margin: govuk-em(12, 19) 4em govuk-em(4, 19) 0;
   font-weight: bold;
   vertical-align: top;
-  // using margin instead of padding because of easier absolutely positioning of .app-c-summary__change
+  // using margin instead of padding because of easier absolutely positioning of .app-c-summary__edit
 }
 
 .app-c-summary__answer {
