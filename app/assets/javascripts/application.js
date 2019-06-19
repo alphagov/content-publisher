@@ -40,6 +40,10 @@
 
 // raven (for Sentry)
 //= require raven-js/dist/raven.js
+
+// Service workers
+//= require serviceworker-companion
+
 var $sentryDsn = document.querySelector('meta[name=sentry-dsn]')
 var $sentryCurrentEnv = document.querySelector('meta[name=sentry-current-env]')
 

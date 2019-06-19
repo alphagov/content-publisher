@@ -393,6 +393,8 @@ GEM
       rubyzip (~> 1.2, >= 1.2.2)
     sentry-raven (2.7.4)
       faraday (>= 0.7.6, < 1.0)
+    serviceworker-rails (0.5.5)
+      railties (>= 3.1)
     sidekiq (5.2.5)
       connection_pool (~> 2.2, >= 2.2.2)
       rack (>= 1.5.0)
@@ -485,6 +487,7 @@ DEPENDENCIES
   rinku (~> 2)
   rspec-rails (~> 3)
   rubyzip (~> 1)
+  serviceworker-rails
   simplecov (~> 0.16)
   uglifier (~> 4)
   webmock (~> 3)
