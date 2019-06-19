@@ -25,7 +25,7 @@ en:
         unwithdrawn: "Unwithdrawn"
         scheduled: "Scheduled to publish"
         schedule_updated: "Rescheduled to publish"
-        unscheduled: "Unscheduled"
+        unscheduled: "Scheduled publishing stopped"
         file_attachment_deleted: "Attachment deleted"
         file_attachment_uploaded: "Attachment uploaded"
         file_attachment_updated: "Attachment updated"
