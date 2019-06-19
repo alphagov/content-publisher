@@ -131,6 +131,10 @@ class Edition < ApplicationRecord
     !live? && !scheduled?
   end
 
+  def first?
+    number == 1
+  end
+
   def resume_discarded(live_edition, user)
     updater = Versioning::RevisionUpdater.new(live_edition.revision, user)
     updater.assign(change_note: "", update_type: "major")

@@ -26,7 +26,7 @@
 
     <%= render "documents/show/tags" %>
 
-    <% if @edition.number == 1 && @edition.editable? %>
+    <% if @edition.first? && @edition.editable? %>
       <%= render "documents/show/content_settings" %>
     <% end %>
   </div>

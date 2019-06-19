@@ -82,7 +82,7 @@ class Document < ApplicationRecord
   end
 
   def newly_created?
-    return false if !current_edition || current_edition.number != 1
+    return false if !current_edition || !current_edition.first?
 
     current_edition.created_at == current_edition.updated_at
   end

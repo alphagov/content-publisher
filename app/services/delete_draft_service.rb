@@ -23,7 +23,7 @@ class DeleteDraftService
     end
 
     reset_live_edition if document.live_edition
-    discard_path_reservations(edition) if edition.number == 1
+    discard_path_reservations(edition) if edition.first?
   end
 
 private
