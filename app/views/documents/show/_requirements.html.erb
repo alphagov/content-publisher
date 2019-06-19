@@ -32,11 +32,19 @@
       <%= render "govuk_publishing_components/components/error_summary", {
         title: t("documents.show.flashes.pre_preview_issues.error"),
         items: draft_issues.items(issue_params),
+        data_attributes: {
+          gtm: "tried-to-preview",
+          "gtm-visibility-tracking" => true
+        }
       } %>
     <% else %>
       <%= render "/components/inset_prompt", {
         title: t("documents.show.flashes.pre_preview_issues.warning"),
         items: draft_issues.items(issue_params),
+        data_attributes: {
+          gtm: "pre-preview-issues",
+          "gtm-visibility-tracking" => true
+        }
       } %>
     <% end %>
   <% end %>
@@ -50,11 +58,19 @@
       <%= render "govuk_publishing_components/components/error_summary", {
         title: t("documents.show.flashes.pre_publish_issues.error"),
         items: publish_issues.items(issue_params),
+        data_attributes: {
+          gtm: "tried-to-publish",
+          "gtm-visibility-tracking" => true
+        }
       } %>
     <% else %>
       <%= render "/components/inset_prompt", {
         title: t("documents.show.flashes.pre_publish_issues.warning"),
         items: publish_issues.items(issue_params),
+        data_attributes: {
+          gtm: "pre-publish-issues",
+          "gtm-visibility-tracking" => true
+        }
       } %>
     <% end %>
   <% end %>
