@@ -24,6 +24,8 @@
           <%= schedule_proposal_link(@edition, "app-link--right") %>
         <% end %>
       <% end %>
+    <% elsif @edition.scheduled? %>
+      <%= @edition.revision_synced? ? preview_button(@edition) : create_preview_button(@edition) %>
     <% elsif !@edition.revision_synced? %>
       <%= create_preview_button(@edition) %>
       <%= delete_draft_link(@edition) %>
@@ -34,8 +36,6 @@
       <% end %>
     <% elsif @edition.withdrawn? %>
       <%= undo_withdraw_button(@edition) %>
-    <% elsif @edition.scheduled? %>
-      <%= preview_button(@edition) %>
     <% elsif @edition.draft? %>
       <%= submit_for_2i_button(@edition) %>
       <%= preview_button(@edition, secondary: true) %>
