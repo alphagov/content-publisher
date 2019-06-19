@@ -34,6 +34,6 @@ RSpec.describe "Insert video embed", js: true do
 
   def then_i_see_the_snippet_is_inserted
     snippet = "[A title](https://www.youtube.com/watch?v=G8KpPw303PY)"
-    expect(find("#revision_body").value).to match snippet
+    expect(find("#body-field").value).to match snippet
   end
 end

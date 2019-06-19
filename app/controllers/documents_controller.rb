@@ -44,11 +44,11 @@ class DocumentsController < ApplicationController
     if issues
       flash.now["alert_with_items"] = {
         "title" => I18n.t!("documents.edit.flashes.requirements"),
-        "items" => issues.items,
+        "items" => issues.items(link_options: issues_link_options(edition)),
       }
 
       render :edit,
-             assigns: { edition: edition, revision: revision },
+             assigns: { edition: edition, revision: revision, issues: issues },
              status: :unprocessable_entity
     elsif params[:submit] == "add_contact"
       redirect_to search_contacts_path(edition.document)
@@ -72,5 +72,16 @@ private
       page: params[:page],
       per_page: 50,
     }
+  end
+
+  def issues_link_options(edition)
+    format_specific_options = edition.document_type.contents.each_with_object({}) do |field, memo|
+      memo[field.id.to_sym] = { href: "##{field.id}-field" }
+    end
+
+    {
+      title: { href: "#title-field" },
+      summary: { href: "#summary-field" },
+    }.merge(Hash[format_specific_options])
   end
 end

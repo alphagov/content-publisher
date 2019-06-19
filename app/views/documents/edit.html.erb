@@ -22,7 +22,7 @@
           text: t("documents.edit.form_labels.title"),
           bold: true
         },
-        id: "revision_title",
+        id: "title-field",
         name: "revision[title]",
         value: @revision.title,
         error_items: @issues&.items_for(:title),
@@ -35,7 +35,7 @@
         }
       } do %>
         <%= render "components/input_length_suggester", {
-          for_id: "revision_title",
+          for_id: "title-field",
           show_from: 55,
           message: "Title should be under 65 characters. Current length: {count}",
         } %>
@@ -70,7 +70,7 @@
           text: t("documents.edit.form_labels.summary"),
           bold: true
         },
-        id: "revision_summary",
+        id: "summary-field",
         name: "revision[summary]",
         value: @revision.summary,
         error_items: @issues&.items_for(:summary),
@@ -82,7 +82,7 @@
         }
       } do %>
         <%= render "components/input_length_suggester", {
-          for_id: "revision_summary",
+          for_id: "summary-field",
           show_from: 120,
           message: "Summary should be under 160 characters. Current length: {count}",
         } %>
