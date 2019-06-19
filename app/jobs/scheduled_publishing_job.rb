@@ -17,8 +17,14 @@ class ScheduledPublishingJob < ApplicationJob
 
       user = edition.status.created_by
       reviewed = edition.status.details.reviewed
+
       PublishService.new(edition)
                     .publish(user: user, with_review: reviewed)
+
+      TimelineEntry.create_for_status_change(
+        entry_type: reviewed ? :scheduled_publishing_succeeded : :scheduled_publishing_without_review_succeeded,
+        status: edition.status,
+      )
     end
 
     notify_editors(edition)

@@ -16,6 +16,12 @@ RSpec.describe ScheduledPublishingJob do
       .to("published")
   end
 
+  it "creates a timeline entry" do
+    expect { ScheduledPublishingJob.perform_now(scheduled_edition.id) }
+      .to change { TimelineEntry.count }
+      .by(1)
+  end
+
   it "can notify the edition editors" do
     expect(ScheduledPublishMailer)
       .to receive(:success_email)
