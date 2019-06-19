@@ -64,7 +64,7 @@ private
 
   def send_notifications
     edition.editors.each do |editor|
-      PublishMailer.publish_email(edition, editor).deliver_later
+      PublishMailer.publish_email(editor, edition, edition.status).deliver_later
     end
   end
 end

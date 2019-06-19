@@ -79,12 +79,18 @@ FactoryBot.define do
       live { true }
       first_published_at { Time.current }
 
+      transient do
+        state { "published" }
+        published_at { Time.current }
+      end
+
       after(:build) do |edition, evaluator|
         edition.status = evaluator.association(
           :status,
           created_by: edition.created_by,
-          state: :published,
+          state: evaluator.state,
           revision_at_creation: edition.revision,
+          created_at: evaluator.published_at,
         )
       end
     end

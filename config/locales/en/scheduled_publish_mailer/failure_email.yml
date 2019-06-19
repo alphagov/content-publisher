@@ -1,0 +1,10 @@
+en:
+  scheduled_publish_mailer:
+    failure_email:
+      subject: "Error publishing ‘%{title}’"
+      problem: "There has been a problem publishing ‘%{title}’"
+      schedule_date: "Content was scheduled for %{time} on %{date} but has not gone live."
+      try_again: Please try again or raise a support request.
+      edit_in_app: Edit in Content Publisher
+      raise_ticket: "[Raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new)"
+      check_govuk_status: "[Check GOV.UK status](https://status.publishing.service.gov.uk)"
