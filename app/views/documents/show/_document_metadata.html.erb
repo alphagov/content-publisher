@@ -22,10 +22,6 @@
 
 <div class="app-side">
   <%= render "components/metadata", {
-    data_attributes: {
-      "gtm-document-type": @edition.document_type.label,
-      "gtm-document-status": t("user_facing_states.#{@edition.state}.name")
-    },
     items: [
       {
         field: t("documents.show.metadata.status"),
