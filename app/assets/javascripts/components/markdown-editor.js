@@ -1,3 +1,4 @@
+/* global $ */
 //= require markdown-toolbar-element/dist/index.umd.js
 //= require paste-html-to-govspeak/dist/paste-html-to-markdown.js
 
@@ -89,7 +90,8 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         this.$preview.innerHTML = text
         this.setTargetBlank(this.$preview)
         this.$preview.classList.add('app-c-markdown-editor__govspeak--rendered')
-        window.GOVUK.modules.start()
+        window.GOVUK.modules.start($(this.$preview))
+        window.GOVUKFrontend.initAll(this.$preview)
       }.bind(this))
       .catch(function () {
         this.$preview.innerHTML = 'Error previewing content'
