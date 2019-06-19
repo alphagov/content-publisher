@@ -46,6 +46,7 @@ class TimelineEntry < ApplicationRecord
                      scheduled: "scheduled",
                      scheduled_publishing_succeeded: "scheduled_publishing_succeeded",
                      scheduled_publishing_without_review_succeeded: "scheduled_publishing_without_review_succeeded",
+                     scheduled_publishing_failed: "scheduled_publishing_failed",
                      schedule_updated: "schedule_updated",
                      unscheduled: "unscheduled",
                      file_attachment_uploaded: "file_attachment_uploaded",
