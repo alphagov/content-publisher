@@ -17,7 +17,7 @@ class TagsController < ApplicationController
 
     if issues
       flash.now["alert_with_items"] = {
-        "title" => I18n.t!("documents.edit.flashes.requirements"),
+        "title" => I18n.t!("tags.edit.flashes.requirements"),
         "items" => issues.items,
       }
       render :edit,
