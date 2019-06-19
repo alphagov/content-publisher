@@ -9,7 +9,7 @@ RSpec.feature "Schedule when Publishing API is down" do
   end
 
   def given_there_is_a_schedulable_edition
-    @edition = create(:edition, :publishable, :schedulable)
+    @edition = create(:edition, :schedulable)
   end
 
   def when_i_try_to_schedule_the_edition

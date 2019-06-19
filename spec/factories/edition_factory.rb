@@ -118,6 +118,7 @@ FactoryBot.define do
     end
 
     trait :schedulable do
+      publishable
       proposed_publish_time { Time.current.advance(days: 2) }
     end
 

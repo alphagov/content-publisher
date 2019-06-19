@@ -9,7 +9,7 @@ RSpec.feature "Schedule with review status not selected" do
   end
 
   def given_there_is_a_schedulable_edition
-    @edition = create(:edition, :publishable, :schedulable)
+    @edition = create(:edition, :schedulable)
   end
 
   def when_i_go_to_schedule_the_edition

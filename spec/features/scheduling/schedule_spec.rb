@@ -27,7 +27,6 @@ RSpec.feature "Schedule to publish" do
   def given_there_is_a_schedulable_edition
     @publish_time = Time.zone.parse("2019-06-14 9:00")
     @edition = create(:edition,
-                      :publishable,
                       :schedulable,
                       proposed_publish_time: @publish_time)
   end
