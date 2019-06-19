@@ -18,11 +18,15 @@ examples:
       items:
       - text: Document needs a title before publishing (at least 10 characters)
         href: '#content'
+        data_attributes:
+          tracking: GTM-123AA
       - text: Document needs a summary before publishing (at least 10 characters)
-        href: '#content'
+        data_attributes:
+          tracking: GTM-123AB
   error:
     data:
       error: true
       title: There is a problem
       description: |
         <p class="govuk-body">&lsquo;Title here&rsquo; was not published</p>
+
