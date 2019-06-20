@@ -25,11 +25,8 @@ ActiveRecord::Migration.maintain_test_schema!
 Rails.application.load_tasks
 Sidekiq::Testing.inline!
 
+Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.server = :puma, { Silent: true }
-Capybara::Chromedriver::Logger.raise_js_errors = true
-Capybara::Chromedriver::Logger.filters = [
-  /the server responded with a status of 422/i,
-]
 
 RSpec.configure do |config|
   config.expose_dsl_globally = false
@@ -60,9 +57,5 @@ RSpec.configure do |config|
 
   config.after :each, type: :feature do
     reset_authentication
-  end
-
-  config.after :each, type: :feature, js: true do
-    # Capybara::Chromedriver::Logger::TestHooks.after_example!
   end
 end
