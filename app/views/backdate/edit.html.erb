@@ -26,17 +26,17 @@
           {
             name: "day",
             width: 2,
-            value: params.dig(:backdate, :day) || date&.day,
+            value: params.dig(:backdate, :date, :day) || date&.day,
           },
           {
             name: "month",
             width: 2,
-            value: params.dig(:backdate, :month) || date&.month,
+            value: params.dig(:backdate, :date, :month) || date&.month,
           },
           {
             name: "year",
             width: 4,
-            value: params.dig(:backdate, :year) || date&.year,
+            value: params.dig(:backdate, :date, :year) || date&.year,
           }
         ]
       } %>
