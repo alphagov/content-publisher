@@ -11,7 +11,10 @@ class Backdate::UpdateInteractor
   def call
     Edition.transaction do
       find_and_lock_edition
+
+      parse_date
       check_for_issues
+
       update_edition
       create_timeline_entry
     end
@@ -21,6 +24,12 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+
+    unless edition.first? && edition.editable?
+      # FIXME: this shouldn't be an exception but we've not worked out the
+      # right response - maybe bad request or a redirect with flash?
+      raise "Only editable first editions can be backdated."
+    end
   end
 
   def update_edition
@@ -33,19 +42,18 @@ private
     params.require(:backdate).permit(date: %i[day month year])
   end
 
-  def check_for_issues
-    unless edition.number == 1
-      # FIXME: this shouldn't be an exception but we've not worked out the
-      # right response - maybe bad request or a redirect with flash?
-      raise "Only first editions can be backdated."
-    end
+  def parse_date
+    parser = DateParser.new(date: backdate_params[:date], issue_prefix: :backdate)
+    context.date = parser.parse
 
-    checker = Requirements::BackdateChecker.new(backdate_params[:date])
+    context.fail!(issues: parser.issues) if parser.issues.any?
+  end
+
+  def check_for_issues
+    checker = Requirements::BackdateChecker.new(date)
     issues = checker.pre_submit_issues
 
     context.fail!(issues: issues) if issues.any?
-
-    context.date = checker.parsed_date
   end
 
   def create_timeline_entry
