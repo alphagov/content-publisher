@@ -2,6 +2,8 @@
 
 module Requirements
   class BackdateChecker
+    EARLIEST_DATE = Date.new(1995, 1, 1)
+
     def initialize(backdate)
       @backdate = backdate
     end
@@ -13,6 +15,11 @@ module Requirements
         issues << Issue.new(:backdate_date, :in_the_future)
       end
 
+      if too_long_ago?
+        date = EARLIEST_DATE.strftime("%-d %B %Y")
+        issues << Issue.new(:backdate_date, :too_long_ago, date: date)
+      end
+
       CheckerIssues.new(issues)
     end
 
@@ -22,6 +29,10 @@ module Requirements
 
     def in_the_future?
       backdate > Time.zone.today
+    end
+
+    def too_long_ago?
+      backdate < EARLIEST_DATE
     end
   end
 end

@@ -109,6 +109,8 @@ en:
         form_message: Enter a date in the past
       invalid:
         form_message: Enter a valid date
+      too_long_ago:
+        form_message: Enter a date from %{date} onwards
     document_type:
       not_selected:
         form_message: Select an option

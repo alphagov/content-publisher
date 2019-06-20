@@ -17,5 +17,17 @@ RSpec.describe Requirements::BackdateChecker do
       expect(issues.items_for(:backdate_date))
         .to include(a_hash_including(text: future_date_issue))
     end
+
+    it "returns an issue if the date is too long ago" do
+      earliest_date = Requirements::BackdateChecker::EARLIEST_DATE
+      issues = Requirements::BackdateChecker.new(earliest_date - 1).pre_submit_issues
+      distant_past_issue = I18n.t!(
+        "requirements.backdate_date.too_long_ago.form_message",
+        date: earliest_date.strftime("%-d %B %Y"),
+      )
+
+      expect(issues.items_for(:backdate_date))
+        .to include(a_hash_including(text: distant_past_issue))
+    end
   end
 end
