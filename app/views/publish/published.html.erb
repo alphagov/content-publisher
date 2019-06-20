@@ -27,10 +27,10 @@
         copyable_content: document_url(@edition.document, utm_content: "2i-link"),
         button_text: "Copy link",
         button_data_attributes: {
-          gtm: "published-content-copy-link-cta"
+          gtm: "copy-published-content-link"
         },
         input_data_attributes: {
-          gtm: "published-content-copy-link-manual",
+          "gtm-suffix": "published-content-link-input",
           "gtm-copy-paste-tracking": true
         }
       %>
