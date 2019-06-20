@@ -30,7 +30,7 @@ RSpec.feature "Propose publish time and schedule" do
     fill_in "schedule[date][day]", with: "20"
     fill_in "schedule[date][month]", with: "8"
     fill_in "schedule[date][year]", with: "2019"
-    select "3:30pm", from: "schedule[time]"
+    fill_in "schedule[time]", with: "3:30pm"
   end
 
   def and_i_select_schedule_to_publish

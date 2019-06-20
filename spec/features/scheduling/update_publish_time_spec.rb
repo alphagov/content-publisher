@@ -42,7 +42,7 @@ RSpec.feature "Update publish time" do
     fill_in "schedule[date][day]", with: "15"
     fill_in "schedule[date][month]", with: "8"
     fill_in "schedule[date][year]", with: "2019"
-    select "11:00pm", from: "schedule[time]"
+    fill_in "schedule[time]", with: "11:00pm"
 
     click_on "Save date"
   end

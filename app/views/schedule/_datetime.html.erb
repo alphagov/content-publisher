@@ -1,7 +1,5 @@
 <%
   publish_time ||= Time.current.tomorrow.change(hour: 9)
-  persistent_time = publish_time.strftime("%-l:%M%P")
-  selected_time = params.dig(:schedule, :time) || persistent_time
 %>
 
 <% legend = capture do %>
@@ -35,7 +33,6 @@
   ]
 } %>
 
-
 <%= render "components/autocomplete", {
   id: "time",
   name: "schedule[time]",
@@ -44,12 +41,12 @@
     bold: true,
   },
   error_items: issues&.items_for(:schedule_time),
-  options: time_options(persistent_time),
-  selected_options: [persistent_time],
-  data_attributes: {
-    initial_value: selected_time,
+  input: {
+    value: params.dig(:schedule, :time) || publish_time.strftime("%-l:%M%P"),
+    options: time_options,
   },
-  type: "without-narrowing-results",
-  size: 5,
+  data_attributes: {
+    "autocomplete-without-narrowing-results": true,
+  },
   width: "narrow",
 } %>
