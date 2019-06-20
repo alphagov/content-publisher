@@ -3,7 +3,7 @@
 RSpec.feature "Publishing an edition" do
   include ActiveSupport::Testing::TimeHelpers
 
-  scenario "first edition" do
+  scenario do
     given_there_is_an_edition_in_draft
     when_i_visit_the_summary_page
     and_i_publish_the_edition
@@ -11,20 +11,6 @@ RSpec.feature "Publishing an edition" do
     and_the_content_is_shown_as_published
     and_there_is_a_history_entry
     and_i_receive_a_confirmation_email
-  end
-
-  scenario "major change" do
-    given_there_is_a_major_change_to_a_live_edition
-    when_i_visit_the_summary_page
-    and_i_publish_the_edition
-    then_i_receive_an_email_about_the_major_change
-  end
-
-  scenario "minor change" do
-    given_there_is_a_minor_change_to_a_live_edition
-    when_i_visit_the_summary_page
-    and_i_publish_the_edition
-    then_i_receive_an_email_about_the_minor_change
   end
 
   def given_there_is_a_major_change_to_a_live_edition
@@ -96,27 +82,5 @@ RSpec.feature "Publishing an edition" do
                                            time: publish_time,
                                            date: publish_date,
                                            user: publish_user))
-  end
-
-  def then_i_receive_an_email_about_the_major_change
-    message = ActionMailer::Base.deliveries.first
-
-    publish_time = @publish_date.strftime("%l:%M%P").strip
-    publish_date = @publish_date.strftime("%d %B %Y")
-    publish_user = current_user.name
-    expect(message.body).to include(@edition.change_note)
-
-    expect(message.subject).to eq(I18n.t("publish_mailer.publish_email.subject.update",
-                                         title: @edition.title))
-
-    expect(message.body).to include(I18n.t("publish_mailer.publish_email.details.update",
-                                           time: publish_time,
-                                           date: publish_date,
-                                           user: publish_user))
-  end
-
-  def then_i_receive_an_email_about_the_minor_change
-    message = ActionMailer::Base.deliveries.first
-    expect(message.body).to include(I18n.t!("publish_mailer.publish_email.minor_update"))
   end
 end
