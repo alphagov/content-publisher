@@ -1,20 +1,22 @@
 # frozen_string_literal: true
 
 class DatetimeParser
-  def initialize(date:, time:)
+  def initialize(date:, time:, issue_prefix:)
     @raw_date = date.to_h
     @raw_time = time.to_s
-    @issue_items = []
+    @issue_prefix = issue_prefix
   end
 
   def issues
-    Requirements::CheckerIssues.new(issue_items)
+    Requirements::CheckerIssues.new(issue_items || [])
   end
 
   def parse
+    @issue_items = []
+
     check_date_is_valid
     check_time_is_valid
-    return if issues.any?
+    return if issue_items.any?
 
     Time.current.change(
       day: raw_date[:day].to_i,
@@ -27,28 +29,31 @@ class DatetimeParser
 
 private
 
-  attr_reader :raw_date, :raw_time, :issue_items
+  attr_reader :raw_date, :raw_time, :issue_items, :issue_prefix
 
   def check_date_is_valid
     day, month, year = raw_date.values_at(:day, :month, :year)
     Date.strptime("#{day}-#{month}-#{year}", "%d-%m-%Y")
   rescue ArgumentError
-    issue_items << Requirements::Issue.new(:schedule_date, :invalid)
+    field_name = "#{issue_prefix}_date".to_sym
+    issue_items << Requirements::Issue.new(field_name, :invalid)
   end
 
   def check_time_is_valid
+    field_name = "#{issue_prefix}_time".to_sym
+
     if !parsed_time_values
-      issue_items << Requirements::Issue.new(:schedule_time, :invalid)
+      issue_items << Requirements::Issue.new(field_name, :invalid)
       return
     end
 
     if parsed_time_values[:hour].to_i > 12 && parsed_time_values[:period]
-      issue_items << Requirements::Issue.new(:schedule_time, :invalid)
+      issue_items << Requirements::Issue.new(field_name, :invalid)
       return
     end
 
     if time[:hour] > 23
-      issue_items << Requirements::Issue.new(:schedule_time, :invalid)
+      issue_items << Requirements::Issue.new(field_name, :invalid)
       return
     end
   end

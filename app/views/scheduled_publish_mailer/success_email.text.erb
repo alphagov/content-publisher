@@ -1,13 +1,13 @@
 <%= @edition.document_type.label %> ‘<%= @edition.title %>’
 
-<% if @edition.number > 1 -%>
-<%= t("scheduled_publish_mailer.success_email.details.update",
-      time: format_scheduled_time(@status.created_at),
-      date: format_scheduled_date(@status.created_at)) %>
+<% if @edition.first? -%>
+  <%= t("scheduled_publish_mailer.success_email.details.publish",
+        time: format_scheduled_time(@status.created_at),
+        date: format_scheduled_date(@status.created_at)) %>
 <% else -%>
-<%= t("scheduled_publish_mailer.success_email.details.publish",
-      time: format_scheduled_time(@status.created_at),
-      date: format_scheduled_date(@status.created_at)) %>
+  <%= t("scheduled_publish_mailer.success_email.details.update",
+        time: format_scheduled_time(@status.created_at),
+        date: format_scheduled_date(@status.created_at)) %>
 <% end -%>
 
 <% if @status.created_by -%>
@@ -20,7 +20,7 @@
 <%= t("scheduled_publish_mailer.success_email.page_address") %>
 <%= edition_public_url(@edition) %>
 
-<% if @edition.number > 1 -%>
+<% unless @edition.first? -%>
 <% if @edition.major? -%>
 <%= t("scheduled_publish_mailer.success_email.change_note") %>
 <%= @edition.change_note %>

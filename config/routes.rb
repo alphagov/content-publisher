@@ -72,6 +72,9 @@ Rails.application.routes.draw do
     get "/topics" => "topics#edit", as: :topics
     patch "/topics" => "topics#update", as: :update_topics
 
+    get "/backdate" => "backdate#edit", as: :backdate
+    post "/backdate" => "backdate#update"
+
     post "/editions" => "editions#create", as: :create_edition
 
     post "/govspeak-preview" => "govspeak_preview#to_html", as: :govspeak_preview

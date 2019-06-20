@@ -34,11 +34,11 @@ class ScheduledPublishMailer < ApplicationMailer
 private
 
   def success_subject
-    if @edition.number > 1
-      I18n.t("scheduled_publish_mailer.success_email.subject.update",
+    if @edition.first?
+      I18n.t("scheduled_publish_mailer.success_email.subject.#{@status.state}",
              title: @edition.title)
     else
-      I18n.t("scheduled_publish_mailer.success_email.subject.#{@status.state}",
+      I18n.t("scheduled_publish_mailer.success_email.subject.update",
              title: @edition.title)
     end
   end

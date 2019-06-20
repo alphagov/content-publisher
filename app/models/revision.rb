@@ -54,6 +54,7 @@ class Revision < ApplicationRecord
            :major?,
            :minor?,
            :proposed_publish_time,
+           :backdated_to,
            to: :metadata_revision
 
   delegate :tags,

@@ -1,0 +1,49 @@
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, t("backdate.edit.title") %>
+
+<% legend = capture do %>
+  <span class="govuk-heading-s govuk-!-margin-bottom-0">
+    <%= t("backdate.edit.date") %>
+  </span>
+<% end %>
+<% date = @edition.backdated_to %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render_govspeak(t("backdate.edit.description_govspeak")) %>
+  </div>
+</div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag backdate_path(@edition.document) do %>
+      <%= render "govuk_publishing_components/components/date_input", {
+        legend_text: legend,
+        hint: t("backdate.edit.date_hint_text"),
+        name: "backdate[date]",
+        id: "backdate-date",
+        error_items: @issues&.items_for(:backdate_date),
+        items: [
+          {
+            name: "day",
+            width: 2,
+            value: params.dig(:backdate, :day) || date&.day,
+          },
+          {
+            name: "month",
+            width: 2,
+            value: params.dig(:backdate, :month) || date&.month,
+          },
+          {
+            name: "year",
+            width: 4,
+            value: params.dig(:backdate, :year) || date&.year,
+          }
+        ]
+      } %>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save",
+        margin_bottom: true
+      } %>
+    <% end %>
+  </div>
+</div>

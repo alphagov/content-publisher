@@ -46,6 +46,7 @@ RSpec.describe PublishingApiPayload do
         "title" => "Some title",
       }
       expect(payload).to match a_hash_including(payload_hash)
+      expect(payload).not_to include("first_published_at")
     end
 
     it "includes primary_publishing_organisation in organisations links" do
@@ -163,6 +164,15 @@ RSpec.describe PublishingApiPayload do
       payload = PublishingApiPayload.new(edition).payload
 
       expect(payload).not_to match a_hash_including("change_note" => "A change note")
+    end
+
+    it "includes first_published_at if the edition has a backdated_to value" do
+      date = Time.current.yesterday
+      revision = build(:revision, backdated_to: date)
+      edition = create(:edition, revision: revision)
+      payload = PublishingApiPayload.new(edition).payload
+
+      expect(payload).to match a_hash_including("first_published_at" => date)
     end
   end
 end

@@ -7,14 +7,14 @@
 
 <% edition_metadata = [] %>
 
-<% if @edition.number > 1 %>
+<% unless @edition.first? %>
   <% edition_metadata << {
       field: t("documents.show.contents.items.update_type"),
       value: t("documents.show.contents.update_type.#{@edition.update_type}"),
   } %>
 <% end %>
 
-<% if @edition.number > 1 && @edition.major? %>
+<% if !@edition.first? && @edition.major? %>
   <% edition_metadata << {
     field: t("documents.show.contents.items.change_note"),
     value: @edition.change_note,

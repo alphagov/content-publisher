@@ -1,0 +1,12 @@
+en:
+  backdate:
+    edit:
+      title: Backdate content
+      description_govspeak: |
+        If this content has previously been published on another webpage you must
+        provide the date for when it was first published online. This prevents old
+        information being presented as new.
+      date: Date
+      date_hint_text: For example, 01 08 2016
+      flashes:
+        requirements: You need to
