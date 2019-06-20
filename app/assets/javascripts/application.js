@@ -29,7 +29,6 @@
 //= require modal/modal-workflow.js
 
 //= require modules/gtm-copy-paste-listener.js
-//= require modules/gtm-selected-topics-listener.js
 //= require modules/inline-attachment-modal.js
 //= require modules/inline-image-modal.js
 //= require modules/video-embed-modal.js
