@@ -1,5 +1,5 @@
 <%= render "components/autocomplete", {
-  id: tag_field.id,
+  id: "#{tag_field.id}-field",
   name: "tags[#{tag_field.id}][]",
   label: {
     text: tag_field.label,
@@ -8,4 +8,5 @@
   hint: tag_field.hint,
   options: [""] + LinkablesService.new(tag_field.document_type).select_options,
   selected_options: tags[tag_field.id],
+  error_items: issues&.items_for(tag_field.id.to_sym),
 } %>

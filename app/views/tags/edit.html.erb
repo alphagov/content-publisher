@@ -13,7 +13,8 @@
       <div class="govuk-grid-column-two-thirds" id="<%= tag_field.id %>">
         <%= render "tags/tags/#{tag_field.type}_input",
           tag_field: tag_field,
-          tags: @revision.tags %>
+          tags: @revision.tags,
+          issues: @issues %>
       </div>
     </div>
   <% end %>
