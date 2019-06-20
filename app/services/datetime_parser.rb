@@ -5,17 +5,18 @@ class DatetimeParser
     @raw_date = date.to_h
     @raw_time = time.to_s
     @issue_prefix = issue_prefix
-    @issue_items = []
   end
 
   def issues
-    Requirements::CheckerIssues.new(issue_items)
+    Requirements::CheckerIssues.new(issue_items || [])
   end
 
   def parse
+    @issue_items = []
+
     check_date_is_valid
     check_time_is_valid
-    return if issues.any?
+    return if issue_items.any?
 
     Time.current.change(
       day: raw_date[:day].to_i,

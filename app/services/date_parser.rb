@@ -4,7 +4,6 @@ class DateParser
   def initialize(date:, issue_prefix:)
     @raw_date = date.to_h
     @issue_prefix = issue_prefix
-    @issue_items = []
   end
 
   def issues
@@ -12,8 +11,10 @@ class DateParser
   end
 
   def parse
+    @issue_items = []
+
     check_date_is_valid
-    issues.any? ? return : parsed_date
+    issue_items.any? ? return : parsed_date
   end
 
 private
