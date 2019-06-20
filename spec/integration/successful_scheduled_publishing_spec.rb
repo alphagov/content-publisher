@@ -12,6 +12,7 @@ RSpec.describe "Successful scheduled publishing" do
     given_there_is_a_scheduled_edition
     when_the_scheduled_publishing_job_runs
     then_the_edition_is_published
+    and_a_timeline_entry_is_created
     and_the_editors_are_sent_a_success_notification
   end
 
@@ -36,6 +37,11 @@ RSpec.describe "Successful scheduled publishing" do
   def then_the_edition_is_published
     expect(@request).to have_been_requested
     expect(@edition.reload).to be_published
+  end
+
+  def and_a_timeline_entry_is_created
+    timeline_entry = @edition.timeline_entries.last
+    expect(timeline_entry.entry_type).to eq("scheduled_publishing_succeeded")
   end
 
   def and_the_editors_are_sent_a_success_notification

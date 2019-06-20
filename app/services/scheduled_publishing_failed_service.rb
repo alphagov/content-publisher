@@ -7,6 +7,7 @@ class ScheduledPublishingFailedService
     Edition.transaction do
       edition = Edition.lock.find_current(id: edition_id)
       update_status(edition)
+      create_timeline_entry(edition)
     end
 
     notify_editors(edition)
@@ -23,6 +24,13 @@ private
                           status_details: edition.status.details)
 
     edition.save!
+  end
+
+  def create_timeline_entry(edition)
+    TimelineEntry.create_for_status_change(
+      entry_type: :scheduled_publishing_failed,
+      status: edition.status,
+    )
   end
 
   def notify_editors(edition)

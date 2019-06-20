@@ -13,6 +13,7 @@ RSpec.describe "Failed scheduled publishing" do
     and_the_publishing_api_is_down
     when_the_scheduled_publishing_job_runs
     then_the_edition_is_set_to_failed_to_publish
+    and_a_timeline_entry_is_created
     and_the_editors_are_sent_a_failure_notification
   end
 
@@ -34,6 +35,11 @@ RSpec.describe "Failed scheduled publishing" do
 
   def then_the_edition_is_set_to_failed_to_publish
     expect(@edition.reload).to be_failed_to_publish
+  end
+
+  def and_a_timeline_entry_is_created
+    timeline_entry = @edition.timeline_entries.last
+    expect(timeline_entry.entry_type).to eq("scheduled_publishing_failed")
   end
 
   def and_the_editors_are_sent_a_failure_notification
