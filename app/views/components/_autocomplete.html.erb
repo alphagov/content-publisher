@@ -1,17 +1,15 @@
 <%
   id ||= "autocomplete-#{SecureRandom.hex(4)}"
-  options ||= []
-  selected_options ||= []
-  multiple ||= nil
   type ||= nil
-  size ||= nil
   error_id = "error-#{SecureRandom.hex(4)}"
   error_items ||= []
   hint ||= nil
   width ||= nil
-  search ||= nil
   aria = error_id if error_items.any?
   data_attributes ||= {}
+  select ||= {}
+  input ||= {}
+  search ||= false
 
   root_classes = %w(app-c-autocomplete govuk-form-group)
   root_classes << "app-c-autocomplete--#{width}" if width
@@ -33,27 +31,38 @@
       } %>
     <% end %>
 
-    <% if options.any? %>
-      <%= tag.span "To select multiple items in a list, hold down Ctrl (PC) or Command (Mac) key.", class: "govuk-hint app-c-autocomplete__multiselect-instructions" if multiple %>
+    <%= tag.span hint, class: "govuk-hint" if hint %>
 
-      <%= tag.span hint, class: "govuk-hint" if hint %>
+    <% if select.any? %>
+      <% if select[:multiple] %>
+        <%= tag.span "To select multiple items in a list, hold down Ctrl (PC) or Command (Mac) key.",
+                     class: "govuk-hint app-c-autocomplete__multiselect-instructions" %>
+      <% end %>
 
       <%= select_tag name,
-        options_for_select(options, selected_options),
+        options_for_select(select[:options], select[:selected]),
         id: id,
         class: "govuk-select",
-        size: size,
-        multiple: multiple
+        size: select[:size],
+        multiple: select[:multiple]
       %>
     <% else %>
-      <%= tag.p "No options available", class: "govuk-hint" if multiple %>
+      <% options = Array(input[:options]) %>
 
-      <%= render "govuk_publishing_components/components/input", {
-        id: id,
-        name: name,
-        type: "search",
-        search_icon: true
-      } if search %>
+      <%= tag.input name: name,
+                    value: input[:value],
+                    class: "govuk-input",
+                    id: id,
+                    list: options.any? ? "#{id}-list" : nil,
+                    type: search ? "search" : "text" %>
+
+      <% if options.any? %>
+        <%= tag.datalist id: "#{id}-list" do %>
+          <% options.each do |option| %>
+            <%= tag.option(value: option) %>
+          <% end %>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>
