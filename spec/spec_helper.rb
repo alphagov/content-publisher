@@ -25,9 +25,6 @@ ActiveRecord::Migration.maintain_test_schema!
 Rails.application.load_tasks
 Sidekiq::Testing.inline!
 
-Capybara.javascript_driver = :selenium_chrome_headless
-Capybara.server = :puma, { Silent: true }
-
 RSpec.configure do |config|
   config.expose_dsl_globally = false
   config.infer_spec_type_from_file_location!
