@@ -71,7 +71,7 @@ GEM
     brakeman (4.5.1)
     builder (3.2.3)
     byebug (11.0.1)
-    capybara (3.22.0)
+    capybara (3.24.0)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -160,10 +160,10 @@ GEM
       sidekiq (>= 5, < 6)
       sidekiq-logging-json (~> 0.0)
       sidekiq-statsd (~> 0.1)
-    govuk_test (0.5.0)
+    govuk_test (1.0.0)
       capybara
       puma
-      selenium-webdriver
+      selenium-webdriver (>= 3.142)
       webdrivers
     hashdiff (0.4.0)
     hashery (2.1.2)
@@ -426,10 +426,10 @@ GEM
       rack (>= 2.0.6)
     warden-oauth2 (0.0.1)
       warden
-    webdrivers (4.0.0)
+    webdrivers (4.0.1)
       nokogiri (~> 1.6)
       rubyzip (~> 1.0)
-      selenium-webdriver (~> 3.0)
+      selenium-webdriver (>= 3.0, < 4.0)
     webmock (3.6.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -458,7 +458,7 @@ DEPENDENCIES
   govuk_publishing_components (~> 17.5)
   govuk_schemas (~> 3.2)
   govuk_sidekiq (~> 3)
-  govuk_test (~> 0.5)
+  govuk_test (~> 1.0)
   hashdiff (~> 0.4)
   image_processing (~> 1)
   interactor (~> 3)
