@@ -1,28 +1,26 @@
 var GtmCopyPasteListener = {}
 
-GtmCopyPasteListener.handleCopy = function (event) {
-  var element = event.target
+GtmCopyPasteListener.handleCopyPaste = function (prefix) {
+  return function (event) {
+    var element = event.target
 
-  if (!element.hasAttribute('data-gtm-copy-paste-tracking')) {
-    return
+    if (!element) {
+      return
+    }
+
+    var suffix = element.dataset.gtmSuffix
+    var tracked = element.dataset.gtmCopyPasteTracking
+
+    if (!suffix || !tracked) {
+      return
+    }
+
+    window.dataLayer.push({
+      event: prefix,
+      dataGtm: prefix.toLowerCase() + '-' + suffix
+    })
   }
-
-  window.dataLayer.push({
-    'event': 'text-copied'
-  })
 }
 
-GtmCopyPasteListener.handlePaste = function (event) {
-  var element = event.target
-
-  if (!element.hasAttribute('data-gtm-copy-paste-tracking')) {
-    return
-  }
-
-  window.dataLayer.push({
-    'event': 'text-pasted'
-  })
-}
-
-window.addEventListener('copy', GtmCopyPasteListener.handleCopy)
-window.addEventListener('paste', GtmCopyPasteListener.handlePaste)
+window.addEventListener('copy', GtmCopyPasteListener.handleCopyPaste('Copy'))
+window.addEventListener('paste', GtmCopyPasteListener.handleCopyPaste('Paste'))
