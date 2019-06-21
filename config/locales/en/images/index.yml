@@ -15,7 +15,6 @@ en:
           label: Markdown code
           value: "[Image: %{filename}]"
       flashes:
-        upload_requirements: You need to
         deleted: "Image ‘%{file}’ has been deleted"
         lead_image:
           removed: "Image ‘%{file}’ has been deselected. Document will now use the default lead image"

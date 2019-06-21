@@ -15,4 +15,3 @@ en:
       other_attachments: Other attachments
       flashes:
         deleted: "Attachment ‘%{file}’ has been deleted"
-        upload_requirements: You need to

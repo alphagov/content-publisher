@@ -6,8 +6,7 @@ class ScheduleProposalController < ApplicationController
     edition, issues = result.to_h.values_at(:edition, :issues)
 
     if issues
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("schedule_proposal.edit.flashes.requirements"),
+      flash.now["requirements"] = {
         "items" => issues.items(
           link_options: {
             schedule_date: { href: "#date" },

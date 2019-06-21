@@ -25,10 +25,7 @@ class VideoEmbedController < ApplicationController
       .pre_embed_issues(title: title, url: url)
 
     if issues.any?
-      flash.now["alert_with_items"] = {
-        "title" => t("video_embed.new.flashes.requirements"),
-        "items" => issues.items,
-      }
+      flash.now["requirements"] = { "items" => issues.items }
 
       render :new,
              assigns: { issues: issues },

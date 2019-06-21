@@ -7,10 +7,7 @@ class NewDocumentController < ApplicationController
 
   def choose_document_type
     if params[:supertype].blank?
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("new_document.choose_supertype.flashes.requirements"),
-        "items" => supertype_issues.items,
-      }
+      flash.now["requirements"] = { "items" => supertype_issues.items }
 
       render :choose_supertype,
              assigns: { issues: supertype_issues, supertypes: Supertype.all },
@@ -28,10 +25,7 @@ class NewDocumentController < ApplicationController
 
   def create
     if params[:document_type].blank?
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("new_document.choose_document_type.flashes.requirements"),
-        "items" => document_type_issues.items,
-      }
+      flash.now["requirements"] = { "items" => document_type_issues.items }
 
       render :choose_document_type,
              assigns: { issues: document_type_issues,

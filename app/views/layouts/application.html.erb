@@ -67,7 +67,11 @@
       <% if flash["alert_with_description"] %>
         <%= render "govuk_publishing_components/components/error_alert", {
           message: flash["alert_with_description"].fetch("title"),
-          data_attributes: { gtm: "global-alert" },
+          data_attributes: {
+            gtm: "alert-with-description",
+            "gtm-action" => flash["alert_with_description"]["title"],
+            "gtm-visibility-tracking" => true
+          },
           description: capture do
             render "govuk_publishing_components/components/govspeak" do
               govspeak_to_html(flash["alert_with_description"].fetch("description_govspeak"))
@@ -76,15 +80,18 @@
         } %>
       <% end %>
 
-      <% if flash["alert_with_items"] %>
-        <% items = flash["alert_with_items"]["message"] ?
-          [{ text: flash["alert_with_items"]["message"] }] :
-          flash["alert_with_items"]["items"].map(&:symbolize_keys) %>
+      <% if flash["requirements"] %>
+        <% items = flash["requirements"]["message"] ?
+          [{ text: flash["requirements"]["message"] }] :
+          flash["requirements"]["items"].map(&:symbolize_keys) %>
 
         <%= render "govuk_publishing_components/components/error_summary", {
-          title: flash["alert_with_items"]["title"],
-          items: items,
-          data_attributes: { gtm: "global-alert" },
+          title: t("documents.flashes.requirements"),
+          items: track_requirements(items),
+          data_attributes: {
+            gtm: "alert-requirements",
+            "gtm-visibility-tracking" => true
+          },
         } %>
       <% end %>
 

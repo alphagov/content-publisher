@@ -24,10 +24,7 @@ class PublishController < ApplicationController
                                                             :issues,
                                                             :publish_failed)
     if issues
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("publish.confirmation.flashes.requirements"),
-        "items" => issues.items,
-      }
+      flash.now["requirements"] = { "items" => issues.items }
 
       render :confirmation,
              assigns: { issues: issues, edition: edition },
