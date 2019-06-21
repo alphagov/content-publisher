@@ -11,9 +11,11 @@
     <%= render "govuk_publishing_components/components/panel", {
       title: t("schedule.scheduled.title")
     } %>
+
     <%= render "govuk_publishing_components/components/govspeak" do %>
       <%= govspeak_to_html t("schedule.scheduled.body_govspeak", title: @edition.title, time: time, date: date) %>
     <% end %>
+
     <%= render "govuk_publishing_components/components/inset_text", {
       text: strip_scheme_from_url(public_url)
     } %>

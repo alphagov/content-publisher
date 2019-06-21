@@ -3,7 +3,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag edit_schedule_path(@edition.document) do %>
+    <%= form_tag edit_schedule_path(@edition.document), data: { gtm: "confirm-proposed-schedule" } do %>
       <%= hidden_field_tag(:wizard, params[:wizard]) %>
 
       <% scheduling = @edition.status.details %>

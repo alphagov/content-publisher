@@ -3,7 +3,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag schedule_proposal_path(@edition.document) do %>
+    <%= form_tag schedule_proposal_path(@edition.document), data: { gtm: "confirm-schedule-proposal" } do %>
       <%= hidden_field_tag(:wizard, params[:wizard]) %>
 
       <%= render "schedule/datetime", {
@@ -21,11 +21,19 @@
               value: "save",
               text: t("schedule_proposal.edit.actions.save"),
               checked: params.dig(:schedule, :action) == "save",
+              data_attributes: {
+                gtm: "schedule-action",
+                "gtm-action": t("schedule_proposal.edit.actions.save")
+              }
             },
             {
               value: "schedule",
               text: t("schedule_proposal.edit.actions.schedule"),
               checked: params.dig(:schedule, :action) == "schedule",
+              data_attributes: {
+                gtm: "schedule-action",
+                "gtm-action": t("schedule_proposal.edit.actions.schedule")
+              }
             },
           ]
         } %>
@@ -43,7 +51,9 @@
     <% end %>
 
     <% if @edition.proposed_publish_time.present? %>
-      <%= form_tag schedule_proposal_path(@edition.document), method: :delete do %>
+      <%= form_tag schedule_proposal_path(@edition.document),
+          method: :delete,
+          data: { gtm: "clear-schedule-proposal" } do %>
         <button class="govuk-link app-link--button govuk-link--no-visited-state">Clear schedule date</button>
       <% end %>
     <% end %>
