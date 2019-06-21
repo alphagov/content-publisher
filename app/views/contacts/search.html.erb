@@ -19,8 +19,11 @@
       text: %{<h1 class="govuk-heading-l">#{t("contacts.search.title")}</h1>}.html_safe,
     },
     id: "contact-id",
-    options: [["", ""]] + contact_options,
-    type: "with-hint-on-options"
+    select: {
+      options: [""] + contact_options,
+    },
+    type: "with-hint-on-options",
+    search: true,
   } %>
 
   <%= render "govuk_publishing_components/components/button", {

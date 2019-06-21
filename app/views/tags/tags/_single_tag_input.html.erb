@@ -6,7 +6,9 @@
     bold: true,
   },
   hint: tag_field.hint,
-  options: [""] + LinkablesService.new(tag_field.document_type).select_options,
-  selected_options: tags[tag_field.id],
+  select: {
+    options: [""] + LinkablesService.new(tag_field.document_type).select_options,
+    selected: tags[tag_field.id],
+  },
   error_items: issues&.items_for(tag_field.id.to_sym),
 } %>

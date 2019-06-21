@@ -39,7 +39,7 @@ RSpec.feature "Update publish time with requirements issues" do
     fill_in "schedule[date][day]", with: date.day
     fill_in "schedule[date][month]", with: date.month
     fill_in "schedule[date][year]", with: date.year
-    select "11:00pm", from: "schedule[time]"
+    fill_in "schedule[time]", with: "11:00pm"
     click_on "Save date"
   end
 
