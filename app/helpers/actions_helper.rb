@@ -42,13 +42,13 @@ module ActionsHelper
     link_to "Schedule",
             new_schedule_path(edition.document),
             class: %w(govuk-link govuk-link--no-visited-state) + Array(extra_classes),
-            data: { gtm: "schedule-confirm" }
+            data: { gtm: "schedule" }
   end
 
   def schedule_button(edition)
     render "govuk_publishing_components/components/button",
            text: "Schedule to publish",
-           data_attributes: { gtm: "schedule-confirm" },
+           data_attributes: { gtm: "schedule" },
            href: new_schedule_path(edition.document)
   end
 
@@ -56,7 +56,7 @@ module ActionsHelper
     link_to "Schedule",
             schedule_proposal_path(edition.document, wizard: "schedule"),
             class: %w(govuk-link govuk-link--no-visited-state) + Array(extra_classes),
-            data: { gtm: "schedule-date" }
+            data: { gtm: "propose-schedule" }
   end
 
   def publish_link(edition)

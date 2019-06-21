@@ -1,4 +1,5 @@
 <% publish_time = @edition.status.details.publish_time %>
+
 <% scheduled_description = capture do %>
   <p class="govuk-body govuk-!-margin-bottom-1">
     <%= t("documents.show.scheduled_notice.title",
@@ -10,7 +11,8 @@
     <li>
       <%= link_to "Change date",
                   edit_schedule_path(@edition.document),
-                  class: "govuk-link govuk-link--no-visited-state" %>
+                  class: "govuk-link govuk-link--no-visited-state",
+                  data: { gtm: "change-schedule" } %>
     </li>
     <li>
       <%= form_tag schedule_path(@edition.document),
