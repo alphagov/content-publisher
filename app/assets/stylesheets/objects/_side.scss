@@ -7,15 +7,17 @@
 }
 
 .app-side__actions {
-  @include govuk-responsive-margin(3, "bottom");
-
   .govuk-button {
     width: 100%;
     margin-bottom: govuk-spacing(3);
   }
 
-  .govuk-link {
-    margin-bottom: govuk-spacing(3);
+  > .govuk-button:last-child {
+    margin-bottom: 0;
+  }
+
+  > .app-side__form:last-child .govuk-button {
+    margin-bottom: 0;
   }
 
   .govuk-section-break {
