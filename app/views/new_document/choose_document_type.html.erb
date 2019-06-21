@@ -14,7 +14,7 @@
             hint_text: document_type.description,
             data_attributes: {
               gtm: "choose-document-type",
-              "gtm-action": document_type.label,
+              "gtm-value": document_type.label,
             },
             conditional: document_type.hint ? tag.div(govspeak_to_html(document_type.hint_govspeak), class: "govuk-body") : nil,
             bold: true,
