@@ -42,8 +42,7 @@ class DocumentsController < ApplicationController
     edition, revision, issues, = result.to_h.values_at(:edition, :revision, :issues)
 
     if issues
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("documents.edit.flashes.requirements"),
+      flash.now["requirements"] = {
         "items" => issues.items(link_options: issues_link_options(edition)),
       }
 

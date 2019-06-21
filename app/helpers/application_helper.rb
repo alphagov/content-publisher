@@ -28,4 +28,16 @@ module ApplicationHelper
   def name_or_fallback(user)
     user&.name || I18n.t("documents.unknown_user")
   end
+
+  def track_requirements(issue_items)
+    issue_items.map do |issue_item|
+      issue_item.merge(
+        data_attributes: {
+          "gtm" => "requirements-issue",
+          "gtm-action" => issue_item[:text],
+          "gtm-visibility-tracking" => true,
+        },
+      )
+    end
+  end
 end

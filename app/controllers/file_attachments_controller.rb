@@ -37,8 +37,7 @@ class FileAttachmentsController < ApplicationController
     issues = result.issues
 
     if issues
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("file_attachments.index.flashes.upload_requirements"),
+      flash.now["requirements"] = {
         "items" => issues.items(
           link_options: {
             file_attachment_upload: { href: how_to_use_publisher_path(anchor: "attachments"),
@@ -83,8 +82,7 @@ class FileAttachmentsController < ApplicationController
     unchanged = result.unchanged
 
     if issues
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("file_attachments.index.flashes.upload_requirements"),
+      flash.now["requirements"] = {
         "items" => issues.items(
           link_options: {
             file_attachment_upload: { href: how_to_use_publisher_path(anchor: "attachments"),

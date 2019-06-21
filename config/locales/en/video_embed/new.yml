@@ -3,8 +3,6 @@ en:
     new:
       title: Embed YouTube video
       guidance_markdown: Only YouTube videos can be embedded on GOV.UK. [Full guidance on videos on GOV.UK](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown#video){:target="_blank"}.
-      flashes:
-        requirements: You must
       form_labels:
         title: Video title
         url: YouTube video web address

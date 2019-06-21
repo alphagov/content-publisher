@@ -8,8 +8,6 @@ en:
         caption: Image caption
         credit: Image credit
         lead_image: Select as lead image
-      flashes:
-        requirements: You need to
       guidance:
         alt_text_govspeak: A simple and specific description of what the image shows. This helps screen-readers and search engines.
         caption_govspeak: Optional. A description of what the image shows. Caption appears next to the image.

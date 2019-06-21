@@ -6,11 +6,18 @@
   } %>
 <% end %>
 
-<% if flash["alert_with_items"] %>
+<% if flash["requirements"] %>
+  <% items = flash["requirements"]["message"] ?
+    [{ text: flash["requirements"]["message"] }] :
+    flash["requirements"]["items"].map(&:symbolize_keys) %>
+
   <%= render "govuk_publishing_components/components/error_summary", {
-    title: flash["alert_with_items"]["title"],
-    items: flash["alert_with_items"]["items"].map(&:symbolize_keys),
-    data_attributes: { gtm: "global-alert" },
+    title: t("documents.flashes.requirements"),
+    items: track_requirements(items),
+    data_attributes: {
+      gtm: "alert-requirements",
+      "gtm-visibility-tracking" => true
+    },
   } %>
 <% end %>
 

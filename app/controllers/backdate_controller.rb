@@ -10,8 +10,7 @@ class BackdateController < ApplicationController
     edition, issues = result.to_h.values_at(:edition, :issues)
 
     if issues
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("backdate.edit.flashes.requirements"),
+      flash.now["requirements"] = {
         "items" => issues.items(
           link_options: { backdate_date: { href: "#backdate-date" } },
         ),

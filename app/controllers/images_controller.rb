@@ -13,10 +13,7 @@ class ImagesController < ApplicationController
                                                             :issues)
 
     if issues
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("images.index.flashes.upload_requirements"),
-        "items" => issues.items,
-      }
+      flash.now["requirements"] = { "items" => issues.items }
 
       render :index,
              assigns: { edition: edition },
@@ -59,10 +56,7 @@ class ImagesController < ApplicationController
     lead_removed = result.removed_lead_image
 
     if issues
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("images.edit.flashes.requirements"),
-        "items" => issues.items,
-      }
+      flash.now["requirements"] = { "items" => issues.items }
 
       render :edit,
              assigns: { edition: edition,

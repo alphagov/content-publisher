@@ -25,5 +25,3 @@ en:
         title: Is the content change significant to users?
         minor_name: No - a minor style update
         major_name: Yes - information has been added or updated
-      flashes:
-        requirements: You need to

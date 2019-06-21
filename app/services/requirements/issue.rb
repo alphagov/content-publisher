@@ -21,11 +21,6 @@ module Requirements
         text: message(style: style),
         href: link_options[:href],
         target: link_options[:target],
-        data_attributes: {
-          "gtm" => "requirements-issue",
-          "gtm-action" => message(style: style),
-          "gtm-visibility-tracking" => true,
-        },
       }
     end
   end

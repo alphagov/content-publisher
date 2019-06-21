@@ -21,8 +21,7 @@ class ScheduleController < ApplicationController
     edition, issues = result.to_h.values_at(:edition, :issues)
 
     if issues
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("schedule.edit.flashes.requirements"),
+      flash.now["requirements"] = {
         "items" => issues.items(
           link_options: {
             schedule_date: { href: "#date" },
@@ -47,10 +46,7 @@ class ScheduleController < ApplicationController
     edition, issues = result.to_h.values_at(:edition, :issues)
 
     if issues
-      flash.now["alert_with_items"] = {
-        "title" => I18n.t!("schedule.new.flashes.requirements"),
-        "items" => issues.items,
-      }
+      flash.now["requirements"] = { "items" => issues.items }
 
       render :new,
              assigns: { issues: issues, edition: edition },
