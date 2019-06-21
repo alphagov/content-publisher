@@ -27,11 +27,6 @@
     <% elsif !@edition.revision_synced? %>
       <%= create_preview_button(@edition) %>
       <%= delete_draft_link(@edition) %>
-      <% if @edition.proposed_publish_time.present? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-        <%= schedule_link(@edition, "app-link--right") %>
-      <% elsif current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-        <%= schedule_proposal_link(@edition, "app-link--right") %>
-      <% end %>
     <% elsif @edition.withdrawn? %>
       <%= undo_withdraw_button(@edition) %>
     <% elsif @edition.scheduled? %>
