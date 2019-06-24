@@ -67,8 +67,8 @@ RSpec.feature "Publishing an edition" do
     tos = ActionMailer::Base.deliveries.map(&:to)
     message = ActionMailer::Base.deliveries.first
 
-    publish_time = @publish_date.strftime("%l:%M%P").strip
-    publish_date = @publish_date.strftime("%d %B %Y")
+    publish_time = @publish_date.strftime("%-l:%M%P").strip
+    publish_date = @publish_date.strftime("%-d %B %Y")
     publish_user = current_user.name
 
     expect(tos).to match_array [[@creator.email], [current_user.email]]

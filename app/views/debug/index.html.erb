@@ -19,7 +19,7 @@
       Revision <%= revision.number %><%= edition_text %>
     </h2>
     <p class="govuk-caption-m govuk-!-margin-top-0">
-      Created at <%= revision.created_at.strftime("%d %B %Y at %l:%M%P") %>
+      Created at <%= format_date_at_time(revision.created_at) %>
       <% if revision.created_by %>
         by <%= name_or_fallback(revision.created_by) %>
       <% end %>
@@ -43,7 +43,7 @@
 
       status_change_summary = if status_changes.any?
                                 list = status_changes.map do |s|
-                                  "<li><code>#{s.state}</code> - created at #{s.created_at.strftime('%d %B %Y at %l:%M%P')}</li>"
+                                  "<li><code>#{s.state}</code> - created at #{format_date_at_time(s.created_at)}</li>"
                                 end
                                 [
                                   {
@@ -57,7 +57,7 @@
 
       inherited_status_summary = if inherited_statuses.any?
                                    list = inherited_statuses.map do |s|
-                                     "<li><code>#{s.state}</code> - created at #{s.created_at.strftime('%d %B %Y at %l:%M%P')}</li>"
+                                     "<li><code>#{s.state}</code> - created at #{format_date_at_time(s.created_at)}</li>"
                                    end
                                    [
                                      {

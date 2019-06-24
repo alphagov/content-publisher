@@ -25,8 +25,8 @@ RSpec.feature "Showing a document summary" do
     expect(page).to have_content(@edition.summary)
 
     within("div.app-c-metadata") do
-      expect(page).to have_content(@edition.document.created_at.strftime("%l:%M%P on %d %B %Y"))
-      expect(page).to have_content(@edition.last_edited_at.strftime("%l:%M%P on %d %B %Y"))
+      expect(page).to have_content(@edition.document.created_at.strftime("%-l:%M%P on %-d %B %Y"))
+      expect(page).to have_content(@edition.last_edited_at.strftime("%-l:%M%P on %-d %B %Y"))
       expect(page).to have_content(@edition.last_edited_by.name)
       expect(page).to have_content(@edition.created_by.name)
     end

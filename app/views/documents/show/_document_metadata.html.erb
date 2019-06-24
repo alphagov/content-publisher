@@ -7,7 +7,7 @@
   <% metadata = [
     {
       field: t("documents.show.metadata.created_at"),
-      value: @edition.document.created_at.strftime("%l:%M%P on %d %B %Y")
+      value: format_time_on_date(@edition.document.created_at)
     },
     {
       field: t("documents.show.metadata.created_by"),
@@ -29,7 +29,7 @@
       },
       {
         field: t("documents.show.metadata.updated_at"),
-        value: @edition.last_edited_at.strftime("%l:%M%P on %d %B %Y")
+        value: format_time_on_date(@edition.last_edited_at)
       },
     ] + metadata
   } %>
