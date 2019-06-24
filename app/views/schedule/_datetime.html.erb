@@ -42,7 +42,7 @@
   },
   error_items: issues&.items_for(:schedule_time),
   input: {
-    value: params.dig(:schedule, :time) || publish_time.strftime("%-l:%M%P"),
+    value: params.dig(:schedule, :time) || format_time(publish_time),
     options: time_options,
   },
   data_attributes: {

@@ -2,13 +2,13 @@
 
 <% if @edition.first? -%>
   <%= t("publish_mailer.publish_email.details.publish",
-        time: format_scheduled_time(@status.created_at),
-        date: format_scheduled_date(@status.created_at),
+        time: format_time(@status.created_at),
+        date: format_date(@status.created_at),
         user: @status.created_by&.name || I18n.t!("documents.unknown_user")) %>
 <% else -%>
   <%= t("publish_mailer.publish_email.details.update",
-        time: format_scheduled_time(@status.created_at),
-        date: format_scheduled_date(@status.created_at),
+        time: format_time(@status.created_at),
+        date: format_date(@status.created_at),
         user: @status.created_by&.name || I18n.t!("documents.unknown_user")) %>
 <% end -%>
 

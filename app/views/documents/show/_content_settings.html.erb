@@ -1,6 +1,6 @@
 <% backdating_status = capture do %>
   <% if @edition.backdated_to.present? %>
-    <% @edition.backdated_to.strftime("%-d %B %Y") %>
+    <% format_date(@edition.backdated_to) %>
   <% else %>
     <% t("documents.show.content_settings.backdate.no_backdate") %>
   <% end %>

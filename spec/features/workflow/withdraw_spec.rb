@@ -53,7 +53,7 @@ RSpec.feature "Withdraw a document" do
     expect(page).to have_content(I18n.t!("user_facing_states.withdrawn.name"))
     expect(page).to have_content(I18n.t!("documents.show.withdrawn.title",
                                          document_type: document_type,
-                                         withdrawn_date: withdrawal.created_at.strftime("%d %B %Y")))
+                                         withdrawn_date: withdrawal.created_at.strftime("%-d %B %Y")))
     expect(page).to have_content(@explanation)
     expect(page).to have_content(I18n.t!("documents.show.metadata.withdrawn_by") + ": #{status.created_by.name}")
   end

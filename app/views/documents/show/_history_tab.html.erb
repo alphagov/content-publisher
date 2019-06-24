@@ -29,7 +29,7 @@
         <% end %>
 
         <% if entry.backdated? %>
-          <% date = entry.edition.backdated_to.strftime("%d %B %Y") %>
+          <% date = format_date(entry.edition.backdated_to) %>
           <%= t "documents.history.entry_content.backdated", date: date %>
         <% end %>
 

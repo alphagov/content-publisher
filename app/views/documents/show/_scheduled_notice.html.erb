@@ -3,8 +3,8 @@
 <% scheduled_description = capture do %>
   <p class="govuk-body govuk-!-margin-bottom-1">
     <%= t("documents.show.scheduled_notice.title",
-          time: format_scheduled_time(publish_time),
-          date: format_scheduled_date(publish_time)) %>
+          time: format_time(publish_time),
+          date: format_date(publish_time)) %>
   </p>
 
   <ul class="govuk-list govuk-!-margin-0">

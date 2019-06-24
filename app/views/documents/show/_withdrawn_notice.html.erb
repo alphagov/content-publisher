@@ -3,7 +3,7 @@
 <%= render "govuk_publishing_components/components/notice", {
   title: I18n.t("documents.show.withdrawn.title",
                 document_type: @edition.document_type.label.downcase,
-                withdrawn_date: withdrawal.withdrawn_at.strftime("%d %B %Y"))
+                withdrawn_date: format_date(withdrawal.withdrawn_at))
 } do %>
   <%= render_govspeak(withdrawal.public_explanation) %>
   <br>
