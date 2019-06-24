@@ -34,4 +34,7 @@
 <% end -%>
 
 <%= t("scheduled_publish_mailer.success_email.edit_in_app") %>
-<%= document_url(@edition.document, utm_content: "scheduled-publish-email-link") %>
+[<%= document_url(@edition.document) %>](<%= document_url(@edition.document,
+                                                          utm_source: "scheduled-publish-email",
+                                                          utm_medium: "email",
+                                                          utm_campaign: "govuk-publishing") %>)
