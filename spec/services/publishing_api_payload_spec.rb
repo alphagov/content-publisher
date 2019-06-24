@@ -174,5 +174,14 @@ RSpec.describe PublishingApiPayload do
 
       expect(payload).to match a_hash_including("first_published_at" => date)
     end
+
+    it "include public_updated_at if the edition has backdated_to and is a first edition" do
+      date = Time.current.yesterday
+      revision = build(:revision, backdated_to: date)
+      edition = create(:edition, revision: revision, number: 1)
+      payload = PublishingApiPayload.new(edition).payload
+
+      expect(payload).to match a_hash_including("public_updated_at" => date)
+    end
   end
 end
