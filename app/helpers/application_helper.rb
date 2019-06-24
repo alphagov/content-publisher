@@ -34,7 +34,7 @@ module ApplicationHelper
       issue_item.merge(
         data_attributes: {
           "gtm" => "requirements-issue",
-          "gtm-action" => issue_item[:text],
+          "gtm-value" => issue_item[:text],
           "gtm-visibility-tracking" => true,
         },
       )
