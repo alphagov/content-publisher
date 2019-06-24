@@ -1,3 +1,5 @@
+### Topic search added <span class="govuk-caption-m">24 Jun 2019</span>
+You can now search for topics. This will help you find the topics that best describe what your content is about.
 
 ### Attachments <span class="govuk-caption-m">29 May 2019</span>
 You can now upload file attachments and link to them in the body text of content using the Insert menu.
