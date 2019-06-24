@@ -18,8 +18,8 @@
 }
 
 .app-link--inline {
-  padding: govuk-spacing(3) 0;
   display: inline-block;
+  padding: govuk-spacing(3) 0;
 
   @include govuk-media-query($from: tablet) {
     padding: 8px govuk-spacing(3);
