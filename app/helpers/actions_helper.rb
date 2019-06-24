@@ -2,7 +2,9 @@
 
 module ActionsHelper
   def create_edition_button(edition, secondary: false)
-    form_tag create_edition_path(edition.document), data: { gtm: "create-new-edition" } do
+    form_tag create_edition_path(edition.document),
+             class: "app-side__form",
+             data: { gtm: "create-new-edition" } do
       render "govuk_publishing_components/components/button",
              text: "Create new edition",
              data_attributes: { gtm: "create-edition" },
@@ -81,19 +83,25 @@ module ActionsHelper
   end
 
   def create_preview_button(edition)
-    form_tag create_preview_path(edition.document), data: { gtm: "preview" } do
+    form_tag create_preview_path(edition.document),
+             class: "app-side__form",
+             data: { gtm: "preview" } do
       render "govuk_publishing_components/components/button", text: "Preview"
     end
   end
 
   def approve_button(edition)
-    form_tag approve_document_path(edition.document), data: { gtm: "approve" } do
+    form_tag approve_document_path(edition.document),
+             class: "app-side__form",
+             data: { gtm: "approve" } do
       render "govuk_publishing_components/components/button", text: "Approve"
     end
   end
 
   def submit_for_2i_button(edition)
-    form_tag submit_document_for_2i_path(edition.document), data: { gtm: "submit-for-2i" } do
+    form_tag submit_document_for_2i_path(edition.document),
+             class: "app-side__form",
+             data: { gtm: "submit-for-2i" } do
       render "govuk_publishing_components/components/button", text: "Submit for 2i review"
     end
   end
