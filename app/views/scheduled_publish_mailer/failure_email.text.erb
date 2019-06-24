@@ -7,7 +7,10 @@
 <%= t("scheduled_publish_mailer.failure_email.try_again") %>
 
 <%= t("scheduled_publish_mailer.failure_email.edit_in_app") %>
-<%= document_url(@edition.document, utm_content: "failed-publish-email-link") %>
+[<%= document_url(@edition.document) %>](<%= document_url(@edition.document,
+                                                          utm_source: "failed-publish-email",
+                                                          utm_medium: "email",
+                                                          utm_campaign: "govuk-publishing") %>)
 
 <%= t("scheduled_publish_mailer.failure_email.raise_ticket") %>
 
