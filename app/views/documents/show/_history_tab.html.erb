@@ -14,7 +14,7 @@
         </h4>
 
         <div class="app-timeline-entry__dateline">
-          <%= entry.created_at.strftime("%d %B %Y at %l:%M%P") %>
+          <%= format_date_at_time(entry.created_at) %>
           <% if entry.created_by %>
             by <%= name_or_fallback(entry.created_by) %>
           <% end %>
