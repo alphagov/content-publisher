@@ -23,4 +23,15 @@ class BackdateController < ApplicationController
       redirect_to document_path(edition.document)
     end
   end
+
+  def destroy
+    result = Backdate::DestroyInteractor.call(params: params, user: current_user)
+
+    if result.api_error
+      redirect_to document_path(params[:document]),
+                  alert_with_description: t("documents.show.flashes.backdate_error")
+    else
+      redirect_to document_path(params[:document])
+    end
+  end
 end

@@ -74,6 +74,7 @@ Rails.application.routes.draw do
 
     get "/backdate" => "backdate#edit", as: :backdate
     post "/backdate" => "backdate#update"
+    delete "/backdate" => "backdate#destroy", as: :destroy_backdate
 
     post "/editions" => "editions#create", as: :create_edition
 
