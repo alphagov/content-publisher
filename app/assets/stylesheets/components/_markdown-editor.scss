@@ -1,8 +1,8 @@
-$toolbar-button-size: 50px;
+$app-toolbar-button-size: 50px;
 
 .app-c-markdown-editor {
   .govuk-textarea {
-    border-top: none;
+    border-top: 0;
     resize: vertical;
 
     &:focus {
@@ -44,8 +44,8 @@ $toolbar-button-size: 50px;
   cursor: pointer;
 
   &:focus {
-    outline-offset: -$govuk-focus-width;
     border-color: transparent;
+    outline-offset: -$govuk-focus-width;
     background-color: transparent;
   }
 }
@@ -76,8 +76,8 @@ $toolbar-button-size: 50px;
   color: $govuk-text-colour;
 
   .govuk-textarea {
-    overflow: scroll;
     padding: govuk-spacing(6);
+    overflow: scroll;
     background-color: govuk-colour("grey-4");
   }
 
@@ -101,35 +101,35 @@ $toolbar-button-size: 50px;
 .app-c-markdown-editor__toolbar-button {
   @include govuk-focusable-fill;
   display: inline-block;
+  width: $app-toolbar-button-size;
+  height: $app-toolbar-button-size;
   background: none;
-  width: $toolbar-button-size;
-  height: $toolbar-button-size;
 
   &:focus {
     outline-offset: -$govuk-focus-width;
   }
 
   &:hover {
-    cursor: pointer;
     background-color: govuk-colour("grey-3");
+    cursor: pointer;
   }
 }
 
 .app-c-markdown-editor__toolbar-icon {
   display: inline-block;
-  fill: currentColor;
   background: inherit;
+  fill: currentColor;
   pointer-events: none;
 }
 
 .app-c-markdown-editor__toolbar-button--text {
   @include govuk-font($size: 16, $weight: bold);
-  border: none;
-  border-left: 4px solid govuk-colour('white');
   width: auto;
-  vertical-align: top;
-  background: transparent;
   padding: govuk-spacing(3);
+  border: 0;
+  border-left: 4px solid govuk-colour("white");
+  background: transparent;
+  vertical-align: top;
 }
 
 .app-c-markdown-editor__toolbar-button--end {

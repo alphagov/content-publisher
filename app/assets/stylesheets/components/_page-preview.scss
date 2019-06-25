@@ -1,10 +1,10 @@
-$google-link-colour: #1a0dab;
-$google-url-colour: #006621;
-$google-description-colour: #545454;
-$mobile-frame-width: 320px;
-$mobile-frame-height: 585px;
-$mobile-border-width: 17px;
-$mobile-border-bottom-width: 68px;
+$app-google-link-colour: #1a0dab;
+$app-google-url-colour: #006621;
+$app-google-description-colour: #545454;
+$app-mobile-frame-width: 320px;
+$app-mobile-frame-height: 585px;
+$app-mobile-border-width: 17px;
+$app-mobile-border-bottom-width: 68px;
 
 .app-c-preview {
   .govuk-tabs__list {
@@ -25,18 +25,18 @@ $mobile-border-bottom-width: 68px;
 
   @include govuk-media-query($from: tablet) {
     display: block;
-    width: $mobile-frame-width + 2 * $mobile-border-width;
-    height: $mobile-frame-height + $mobile-border-width + $mobile-border-bottom-width;
+    width: $app-mobile-frame-width + 2 * $app-mobile-border-width;
+    height: $app-mobile-frame-height + $app-mobile-border-width + $app-mobile-border-bottom-width;
     background-image: image-url("components/preview-mobile.svg");
     background-repeat: no-repeat;
   }
 }
 
 .app-c-preview__mobile-iframe {
-  width: $mobile-frame-width;
-  height: $mobile-frame-height;
-  margin: $mobile-border-width;
-  margin-bottom: $mobile-border-bottom-width;
+  width: $app-mobile-frame-width;
+  height: $app-mobile-frame-height;
+  margin: $app-mobile-border-width;
+  margin-bottom: $app-mobile-border-bottom-width;
   border: 0;
 }
 
@@ -58,14 +58,14 @@ $mobile-border-bottom-width: 68px;
 }
 
 .app-c-preview__google-title {
-  color: $google-link-colour;
+  color: $app-google-link-colour;
   font-family: arial, sans-serif;
   font-size: 18px;
   text-decoration: none;
 }
 
 .app-c-preview__google-url {
-  color: $google-url-colour;
+  color: $app-google-url-colour;
   font-family: arial, sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -73,7 +73,7 @@ $mobile-border-bottom-width: 68px;
 }
 
 .app-c-preview__google-description {
-  color: $google-description-colour;
+  color: $app-google-description-colour;
   font-family: arial, sans-serif;
   font-size: 13px;
   line-height: 1.4;

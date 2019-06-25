@@ -1,5 +1,6 @@
 @import url(asset-path("cropperjs/dist/cropper.min.css"));
-$cropper-point-size: 20px;
+
+$app-cropper-point-size: 20px;
 
 .app-c-image-cropper {
   @include govuk-font($size: 19);
@@ -17,49 +18,49 @@ $cropper-point-size: 20px;
   }
 
   .cropper-point {
-    width: $cropper-point-size;
-    height: $cropper-point-size;
+    width: $app-cropper-point-size;
+    height: $app-cropper-point-size;
     opacity: 1;
   }
 
   .cropper-point.point-n {
-    top: -$cropper-point-size / 2;
-    margin-left: -$cropper-point-size / 2;
+    top: -$app-cropper-point-size / 2;
+    margin-left: -$app-cropper-point-size / 2;
   }
 
   .cropper-point.point-ne {
-    top: -$cropper-point-size / 2;
-    right: -$cropper-point-size / 2;
+    top: -$app-cropper-point-size / 2;
+    right: -$app-cropper-point-size / 2;
   }
 
   .cropper-point.point-e {
-    right: -$cropper-point-size / 2;
-    margin-top: -$cropper-point-size / 2;
+    right: -$app-cropper-point-size / 2;
+    margin-top: -$app-cropper-point-size / 2;
   }
 
   .cropper-point.point-se {
-    right: -$cropper-point-size / 2;
-    bottom: -$cropper-point-size / 2;
+    right: -$app-cropper-point-size / 2;
+    bottom: -$app-cropper-point-size / 2;
   }
 
   .cropper-point.point-s {
-    bottom: -$cropper-point-size / 2;
-    margin-left: -$cropper-point-size / 2;
+    bottom: -$app-cropper-point-size / 2;
+    margin-left: -$app-cropper-point-size / 2;
   }
 
   .cropper-point.point-sw {
-    bottom: -$cropper-point-size / 2;
-    left: -$cropper-point-size / 2;
+    bottom: -$app-cropper-point-size / 2;
+    left: -$app-cropper-point-size / 2;
   }
 
   .cropper-point.point-w {
-    left: -$cropper-point-size / 2;
-    margin-top: -$cropper-point-size / 2;
+    left: -$app-cropper-point-size / 2;
+    margin-top: -$app-cropper-point-size / 2;
   }
 
   .cropper-point.point-nw {
-    top: -$cropper-point-size / 2;
-    left: -$cropper-point-size / 2;
+    top: -$app-cropper-point-size / 2;
+    left: -$app-cropper-point-size / 2;
   }
 }
 
