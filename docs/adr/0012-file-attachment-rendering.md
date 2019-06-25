@@ -1,4 +1,4 @@
-# XX. Rendering File Attachments outside of Govspeak
+# 12. Rendering File Attachments outside of Govspeak
 
 Date: 2019-06-24
 
