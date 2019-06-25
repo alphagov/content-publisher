@@ -1,4 +1,4 @@
-@import "vendor/accessible-autocomplete/dist/accessible-autocomplete.min";
+@import url(asset-path("accessible-autocomplete/dist/accessible-autocomplete.min.css"));
 
 // TODO: Replace with $govuk-focus-colour when the new colour scheme is released
 $app-focus-colour: #ffdd00;

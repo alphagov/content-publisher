@@ -1,4 +1,4 @@
-//= require vendor/accessible-autocomplete/dist/accessible-autocomplete.min.js
+//= require accessible-autocomplete/dist/accessible-autocomplete.min.js
 window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
