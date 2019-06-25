@@ -9,7 +9,7 @@
     type: "search",
     data: {
       gtm: "input-title-or-url",
-      "gtm-visibility-tracking": params[:title_or_url].present?,
+      "gtm-visibility-tracking": params[:title_or_url].present? || nil,
       "gtm-value": params[:title_or_url],
     }
   } %>
@@ -35,7 +35,7 @@
       class: "govuk-select",
       data: {
         gtm: "select-organisation",
-        "gtm-visibility-tracking": params[:organisation].present?,
+        "gtm-visibility-tracking": params[:organisation].present? || nil,
         "gtm-value": params[:organisation]
       }
     %>
@@ -71,7 +71,7 @@
       class: "govuk-select",
       data: {
         gtm: "select-status",
-        "gtm-visibility-tracking": params[:status].present?,
+        "gtm-visibility-tracking": params[:status].present? || nil,
         "gtm-value": params[:status],
       }
     %>
@@ -96,7 +96,7 @@
       class: "govuk-select",
       data: {
         gtm: "select-document-type",
-        "gtm-visibility-tracking": params[:document_type].present?,
+        "gtm-visibility-tracking": params[:document_type].present? || nil,
         "gtm-value": params[:document_type]
       }
     %>
