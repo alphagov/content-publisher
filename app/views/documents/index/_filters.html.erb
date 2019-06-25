@@ -44,14 +44,12 @@
   <div class="govuk-form-group">
     <% selectable_states = %w[draft
                               submitted_for_review
+                              scheduled
                               published
                               published_but_needs_2i
                               withdrawn
-                              removed]
-
-    if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
-      selectable_states += %w[scheduled failed_to_publish]
-    end
+                              removed
+                              failed_to_publish]
 
     state_select = selectable_states.map do |state|
       [t("user_facing_states.#{state}.name"), state]
