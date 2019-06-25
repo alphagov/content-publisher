@@ -66,11 +66,12 @@ Pros:
 
 - single place for file attachment presentation logic;
 - HTML of file attachment can be customised for different scenarios;
-- allows wider use of the component beyond Content Publisher.
+- allows wider use of the components beyond Content Publisher.
 
 Cons:
 
-- most complex approach;
+- most complex approach for implementation, as GOV.UK Publishing Component
+  releases and integration need to be managed;
 - additional dependency for Govspeak.
 
 ## Decision
@@ -89,27 +90,25 @@ Accepted
 
 ## Consequences
 
-Govspeak now has a dependency on GOV.UK Publishing Components. In doing so
-this has introduced a [new approach to rendering a Govspeak markdown
-extension][govspeak-approach], which may cause confusion as there were
-already multiple. On the positive side, this will allow other components to be
-rendered through Govspeak which may allow future consolidation of presentation
-logic.
-
-GOV.UK Publishing Components no longer has a dependency on Govspeak. This
-needed to be removed to avoid a cyclic dependency. GOV.UK Publishing Components
-no longer has the means to render Govspeak, this functionality was previously
-used to render markdown and was not used for any specific Govspeak extensions.
-To allow rendering markdown the [Kramdown](https://kramdown.gettalong.org/)
-library is used (which is the same library Govspeak uses).
-
-The rendering of attachments for [publication][publication-schema] documents
-could now be done on the frontend by using the file attachment components.
-This was previously impossible and the rendering of attachments has been
-achieved by Whitehall providing the Publishing API with [an array of HTML
-strings][attachment-html] to represent the attachments. This HTML based approach
-has made it very difficult for teams to extract attachment data from the
-[GOV.UK Content API][govuk-content-api].
+1. Govspeak now has a dependency on GOV.UK Publishing Components. In doing so
+   this has introduced a [new approach to rendering a Govspeak markdown
+   extension][govspeak-approach], which may cause confusion as there were
+   already multiple. On the positive side, this will allow other components to
+   be rendered through Govspeak which may allow future consolidation of
+   presentation logic.
+2. GOV.UK Publishing Components had been using Govspeak to render markdown.
+   However we needed to remove Govspeak as a dependency in order to avoid a
+   cyclic dependency. Since GOV.UK Publishing Components wasn't using any
+   specific Govspeak extensions we decided to replace Govspeak with
+   [Kramdown](https://kramdown.gettalong.org), which incidentally is the
+   library that Govspeak uses.
+3. This introduces a means to render attachments for
+   [publication][publication-schema] documents on the frontend of GOV.UK.
+   Currently HTML is rendered by Whitehall for attachments and
+   [included][attachment-html] in the [GOV.UK Content API][govuk-content-api].
+   This approach has meant that data for file attachments is not extractable
+   from Content API. These changes provide the foundation to replace this HTML
+   with data and then convert that data into HTML when rendering the document.
 
 [attachment-example]: https://www.gov.uk/government/publications/direct-earnings-attachments-an-employers-guide#documents-title
 [govspeak]: https://github.com/alphagov/govspeak
