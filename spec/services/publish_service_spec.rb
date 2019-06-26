@@ -52,4 +52,15 @@ RSpec.describe PublishService do
         .publish(user: create(:user), with_review: true)
     end
   end
+
+  context "when the edition is access limited" do
+    it "removes the access limit" do
+      edition = create(:edition, :access_limited)
+
+      PublishService.new(edition)
+                    .publish(user: create(:user), with_review: true)
+
+      expect(edition.access_limit).to be_nil
+    end
+  end
 end

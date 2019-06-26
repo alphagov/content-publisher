@@ -41,6 +41,7 @@ private
 
   def set_new_live_edition(user, with_review)
     status = with_review ? :published : :published_but_needs_2i
+    edition.remove_access_limit(user) if edition.access_limit
     edition.assign_status(status, user)
     edition.live = true
     edition.save!
