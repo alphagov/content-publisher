@@ -25,7 +25,8 @@
             {
               link: {
                 text: edition.title_or_fallback,
-                path: edition.document
+                path: edition.document,
+                data_attributes: { gtm: "view-edition" }
               },
               metadata: {
                 document_type: edition.document_type.label,
@@ -34,6 +35,7 @@
             }
           ]
         } %>
+
         <%= t.cell t("user_facing_states.#{edition.state}.name") %>
         <%= t.cell format_date(edition.last_edited_at) %>
       <% end %>

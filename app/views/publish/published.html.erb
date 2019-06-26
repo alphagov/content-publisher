@@ -17,7 +17,9 @@
 
       <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html t("publish.published.published_without_review.body_govspeak", title: @edition.title) %>
-        <%= link_to(strip_scheme_from_url(public_url), public_url, class: "govuk-link govuk-link--no-visited-state") %>
+        <%= link_to(strip_scheme_from_url(public_url), public_url,
+                    class: "govuk-link govuk-link--no-visited-state",
+                    data: { gtm: "view-published-edition" }) %>
 
         <%= govspeak_to_html t("publish.published.published_without_review.what_to_do_govspeak") %>
       <% end %>
@@ -42,7 +44,9 @@
       <%= render "govuk_publishing_components/components/govspeak" do %>
         <%= govspeak_to_html t("publish.published.reviewed.body_govspeak", title: @edition.title) %>
 
-        <%= link_to(strip_scheme_from_url(public_url), public_url, class: "govuk-link govuk-link--no-visited-state") %>
+        <%= link_to(strip_scheme_from_url(public_url), public_url,
+                    class: "govuk-link govuk-link--no-visited-state",
+                    data: { gtm: "view-published-edition" }) %>
       <% end %>
     <% end %>
   </div>

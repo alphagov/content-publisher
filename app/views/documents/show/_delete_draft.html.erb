@@ -1,19 +1,17 @@
 <% confirmation = capture do %>
-  <%= form_tag(
-    document_path(@edition.document),
-    method: :delete,
-    data: { gtm: "delete-draft-submit" },
-  ) do %>
+  <%= form_tag document_path(@edition.document),
+               method: :delete,
+               data: { gtm: "delete-draft-submit" } do %>
     <%= render "govuk_publishing_components/components/button", {
       text: "Yes, delete draft",
       destructive: true
     } %>
 
-  <%= link_to "Cancel",
-              document_path(@edition.document),
-              class: "govuk-link govuk-link--no-visited-state app-link--inline" %>
+    <%= link_to "Cancel",
+                document_path(@edition.document),
+                class: "govuk-link govuk-link--no-visited-state app-link--inline",
+                data: { gtm: "cancel-delete-draft" } %>
   <% end %>
-
 <% end %>
 
 <%= render "govuk_publishing_components/components/error_alert", {

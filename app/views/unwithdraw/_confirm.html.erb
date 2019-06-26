@@ -1,6 +1,7 @@
 <% confirmation = capture do %>
-  <%= form_tag(unwithdraw_path(@edition.document), method: :post) do %>
-
+  <%= form_tag(unwithdraw_path(@edition.document),
+               method: :post,
+               data: { gtm: "confirm-unwithdraw" }) do %>
     <p><%= t("documents.show.unwithdraw.description") %></p>
 
     <%= render "govuk_publishing_components/components/button", {
@@ -10,7 +11,8 @@
 
     <%= link_to "Cancel",
                 document_path(@edition.document),
-                class: "govuk-link govuk-link--no-visited-state app-link--inline" %>
+                class: "govuk-link govuk-link--no-visited-state app-link--inline",
+                data: { gtm: "cancel-unwithdraw" } %>
 
   <% end %>
 <% end %>

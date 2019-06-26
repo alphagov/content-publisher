@@ -6,15 +6,15 @@
   <% content_for :title, t("documents.edit.title", title: @edition.title_or_fallback) %>
 <% end %>
 
-<%= form_for(
-  @edition.document,
+<%= form_for @edition.document,
   html: { class: "app-c-contextual-guidance__form" },
   data: {
     module: "edit-document-form",
     "url-preview-path": generate_path_path,
     "warn-before-unload": "true",
-    gtm: "edit-document-submit",
-  }) do |f| %>
+    gtm: "edit-document-submit"
+  } do |f| %>
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds" id="title">
       <%= render "govuk_publishing_components/components/textarea", {

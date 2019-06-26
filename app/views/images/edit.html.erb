@@ -5,9 +5,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
 
 <% content_for :back_link, render_back_link(
   href: crop_image_path(@edition.document, @image_revision.image_id, wizard: params[:wizard]),
-  data_attributes: {
-    "modal-action": "metaBack"
-  }
+  data_attributes: { "modal-action": "metaBack" }
 ) %>
 
 <%= render "components/image_meta", {
@@ -25,6 +23,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
     "warn-before-unload": true,
     "modal-action": (params[:wizard] == "upload") ? "metaInsert": "meta",
     "modal-data": I18n.t("images.index.meta.inline_code.value", filename: @image_revision.filename),
+    gtm: "save-image-metadata"
   }
 ) do %>
   <div class="govuk-grid-row">

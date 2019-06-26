@@ -43,9 +43,7 @@
       <%= render "govuk_publishing_components/components/attachment_link", {
         attachment: file_attachment_attributes(@attachment, @edition.document),
         target: "_blank",
-        data_attributes: {
-          gtm: "preview-attachment-link"
-        }
+        data_attributes: { gtm: "preview-attachment-link" }
       } %>
     </div>
     <% if rendering_context == "modal" %>

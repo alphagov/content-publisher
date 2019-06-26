@@ -15,6 +15,7 @@ content_for :title,t(title_key, title: @edition.title_or_fallback)
   method: :patch,
   data: {
     "modal-action": "crop",
+    gtm: "confirm-crop-image"
   }
 ) do %>
   <%= hidden_field_tag(:wizard, params[:wizard]) %>

@@ -11,7 +11,7 @@
         item_classes << "app-c-side-navigation__list-item--current" if item[:current]
       %>
       <%= tag.li class: item_classes do %>
-        <%= link_to item[:label], item[:href], class: "govuk-link govuk-link--no-visited-state" %>
+        <%= link_to item[:label], item[:href], class: "govuk-link govuk-link--no-visited-state", data: item[:data_attributes] %>
       <% end %>
     <% end %>
   <% end %>

@@ -9,21 +9,21 @@
   <div class="govuk-grid-column-one-third">
     <div class="gem-c-related-navigation">
       <nav role="navigation" class="gem-c-related-navigation__nav-section">
-        <ul class="gem-c-related-navigation__link-list" data-module="track-click">
+        <ul class="gem-c-related-navigation__link-list">
           <li class="gem-c-related-navigation__link">
-            <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/creating-and-updating-pages#add-topic-tagging" class="gem-c-related-navigation__section-link gem-c-related-navigation__section-link--other">
-              <%= t("topics.edit.link_guidance") %>
-            </a>
+            <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/creating-and-updating-pages#add-topic-tagging"
+               class="gem-c-related-navigation__section-link gem-c-related-navigation__section-link--other"
+               data-gtm="topic-tagging-guidance"><%= t("topics.edit.link_guidance") %></a>
           </li>
           <li class="gem-c-related-navigation__link">
-            <a href="<%= Plek.new.external_url_for('support') + '/taxonomy_new_topic_request/new' %>" class="gem-c-related-navigation__section-link gem-c-related-navigation__section-link--other">
-              <%= t("topics.edit.link_suggest_new") %>
-            </a>
+            <a href="<%= Plek.new.external_url_for('support') + '/taxonomy_new_topic_request/new' %>"
+               class="gem-c-related-navigation__section-link gem-c-related-navigation__section-link--other"
+               data-gtm="new-topic-request"><%= t("topics.edit.link_suggest_new") %></a>
           </li>
           <li class="gem-c-related-navigation__link">
-            <a href="<%= Plek.new.external_url_for('support') + '/taxonomy_change_topic_request/new' %>" class="gem-c-related-navigation__section-link gem-c-related-navigation__section-link--other">
-              <%= t("topics.edit.link_suggest_change") %>
-            </a>
+            <a href="<%= Plek.new.external_url_for('support') + '/taxonomy_change_topic_request/new' %>"
+               class="gem-c-related-navigation__section-link gem-c-related-navigation__section-link--other"
+               data-gtm="change-topic-request"><%= t("topics.edit.link_suggest_change") %></a>
           </li>
         </ul>
       </nav>
@@ -56,7 +56,7 @@
   </li>
 <% end %>
 
-<%= form_tag update_topics_path(@edition.document), data: { "gtm-selected-topics": "" }, method: :patch do %>
+<%= form_tag update_topics_path(@edition.document), data: { gtm: "confirm-edit-topics" }, method: :patch do %>
   <h2 class="govuk-heading-m"><%= t("topics.edit.selected_title") %></h2>
   <miller-columns-selected class="miller-columns-selected" id="selected-items" for="miller-columns"></miller-columns-selected>
 
@@ -88,7 +88,9 @@
       <%= render "govuk_publishing_components/components/details", {
         title: t("topics.edit.warning_title")
       } do %>
-        <%= t("topics.edit.warning_description") %>
+        <div data-gtm="topic-edit-warning" data-gtm-visibility-tracking="true">
+          <%= t("topics.edit.warning_description") %>
+        </div>
       <% end %>
     </div>
   </div>

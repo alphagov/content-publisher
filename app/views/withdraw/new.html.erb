@@ -9,7 +9,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag(withdraw_path(@edition.document)) do %>
+    <%= form_tag withdraw_path(@edition.document), data: { gtm: "confirm-withdraw" } do %>
       <%= render "govuk_publishing_components/components/textarea", {
         label: {
           text: t("withdraw.new.public_explanation.title"),
@@ -36,7 +36,9 @@
       <% end %>
 
       <p class="govuk-body">
-        <%= link_to "Cancel", document_path(@edition.document), class: "govuk-link govuk-link--no-visited-state" %>
+        <%= link_to "Cancel", document_path(@edition.document),
+                    class: "govuk-link govuk-link--no-visited-state",
+                    data: { gtm: "cancel-withdraw" } %>
       </p>
     <% end %>
   </div>

@@ -26,7 +26,8 @@
     <%= t("documents.show.lead_image.no_lead_image") %>
     <% link_to t("documents.show.lead_image.upload_image"),
                images_path(@edition.document),
-               class: "govuk-link" %>
+               class: "govuk-link",
+               data: { gtm: "upload-lead-image" } %>
   <% end %>
 <% end %>
 

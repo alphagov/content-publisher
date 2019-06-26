@@ -1,4 +1,4 @@
-<%= form_tag({}, method: :get) do %>
+<%= form_tag({}, method: :get, data: { gtm: "filter-documents" }) do %>
   <%= render "govuk_publishing_components/components/input", {
     label: {
       text: t("documents.index.filter.title_or_url"),
@@ -110,6 +110,7 @@
   <p class="govuk-body">
     <%= link_to "Clear all filters",
                 documents_path(organisation: ""),
-                class: "govuk-link govuk-link--no-visited-state" %>
+                class: "govuk-link govuk-link--no-visited-state",
+                data: { gtm: "clear-edition-filters" } %>
   </p>
 <% end %>
