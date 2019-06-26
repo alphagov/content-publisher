@@ -54,15 +54,15 @@ RSpec.describe PublishingApiPayload do
       document_type = build(:document_type, tags: [organisation])
       edition = build(:edition,
                       document_type_id: document_type.id,
-                      tags: { primary_publishing_organisation: ["my-org-id"],
-                              organisations: ["other-org-id"] })
+                      tags: { primary_publishing_organisation: %w[my-org-id],
+                              organisations: %w[other-org-id] })
 
       payload = PublishingApiPayload.new(edition).payload
 
       payload_hash = {
         "links" => {
-          "primary_publishing_organisation" => ["my-org-id"],
-          "organisations" => ["my-org-id", "other-org-id"],
+          "primary_publishing_organisation" => %w[my-org-id],
+          "organisations" => %w[my-org-id other-org-id],
         },
       }
       expect(payload).to match a_hash_including(payload_hash)
@@ -73,15 +73,15 @@ RSpec.describe PublishingApiPayload do
       document_type = build(:document_type, tags: [organisation])
       edition = build(:edition,
                       document_type_id: document_type.id,
-                      tags: { primary_publishing_organisation: ["my-org-id"],
-                              organisations: ["my-org-id"] })
+                      tags: { primary_publishing_organisation: %w[my-org-id],
+                              organisations: %w[my-org-id] })
 
       payload = PublishingApiPayload.new(edition).payload
 
       payload_hash = {
         "links" => {
-          "primary_publishing_organisation" => ["my-org-id"],
-          "organisations" => ["my-org-id"],
+          "primary_publishing_organisation" => %w[my-org-id],
+          "organisations" => %w[my-org-id],
         },
       }
       expect(payload).to match a_hash_including(payload_hash)
