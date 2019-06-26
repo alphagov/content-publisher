@@ -17,6 +17,8 @@ class Backdate::UpdateInteractor
 
       update_edition
       create_timeline_entry
+
+      update_preview
     end
   end
 
@@ -63,5 +65,9 @@ private
       edition: edition,
       created_by: user,
     )
+  end
+
+  def update_preview
+    PreviewService.new(edition).try_create_preview
   end
 end
