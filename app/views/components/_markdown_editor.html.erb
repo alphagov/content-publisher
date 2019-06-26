@@ -30,6 +30,9 @@
       },
       {
         text: "Contact",
+        data_attributes: {
+          gtm: "insert-contact"
+        },
         button_options: {
           value: "add_contact",
           name: "submit",
@@ -40,6 +43,7 @@
         href: images_path(edition.document),
         target: "_blank",
         data_attributes: {
+          gtm: "open-inline-image-modal",
           module: "inline-image-modal",
           "modal-action": "open",
         }
