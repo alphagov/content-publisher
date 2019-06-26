@@ -45,5 +45,13 @@
         margin_bottom: true
       } %>
     <% end %>
+
+    <% if @edition.backdated_to %>
+      <%= form_tag backdate_path(@edition.document),
+          method: :delete,
+          data: { gtm: "clear-backdate" } do %>
+        <button class="govuk-link app-link--button govuk-link--no-visited-state">Clear backdate</button>
+      <% end %>
+    <% end %>
   </div>
 </div>

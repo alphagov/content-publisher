@@ -54,6 +54,7 @@ FactoryBot.define do
           update_type: evaluator.update_type,
           change_note: evaluator.change_note,
           proposed_publish_time: evaluator.proposed_publish_time,
+          backdated_to: evaluator.backdated_to,
           lead_image_revision: evaluator.lead_image_revision,
           image_revisions: image_revisions,
           file_attachment_revisions: evaluator.file_attachment_revisions,

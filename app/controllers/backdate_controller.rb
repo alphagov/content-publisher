@@ -23,4 +23,11 @@ class BackdateController < ApplicationController
       redirect_to document_path(edition.document)
     end
   end
+
+  def destroy
+    result = Backdate::DestroyInteractor.call(params: params, user: current_user)
+    edition = result.edition
+
+    redirect_to document_path(edition.document)
+  end
 end
