@@ -38,6 +38,8 @@ class Edition < ApplicationRecord
 
   belongs_to :status
 
+  belongs_to :access_limit, optional: true
+
   has_many :timeline_entries
 
   has_and_belongs_to_many :revisions

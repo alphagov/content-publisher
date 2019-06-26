@@ -160,5 +160,21 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :access_limited do
+      transient do
+        limit_type { :all_organisations }
+      end
+
+      after(:build) do |edition, evaluator|
+        edition.access_limit = evaluator.association(
+          :access_limit,
+          limit_type: evaluator.limit_type,
+          edition: edition,
+          created_by: edition.created_by,
+          revision_at_creation: edition.revision,
+        )
+      end
+    end
   end
 end

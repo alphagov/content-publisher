@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_17_142340) do
+ActiveRecord::Schema.define(version: 2019_06_26_155821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_limits", force: :cascade do |t|
+    t.datetime "created_at"
+    t.bigint "created_by_id"
+    t.bigint "edition_id", null: false
+    t.bigint "revision_at_creation_id", null: false
+    t.string "limit_type", null: false
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -70,6 +78,8 @@ ActiveRecord::Schema.define(version: 2019_06_17_142340) do
     t.bigint "status_id", null: false
     t.bigint "revision_id", null: false
     t.boolean "revision_synced", default: false, null: false
+    t.bigint "access_limit_id"
+    t.index ["access_limit_id"], name: "index_editions_on_access_limit_id"
     t.index ["created_by_id"], name: "index_editions_on_created_by_id"
     t.index ["document_id", "current"], name: "index_editions_on_document_id_and_current", unique: true, where: "(current = true)"
     t.index ["document_id", "live"], name: "index_editions_on_document_id_and_live", unique: true, where: "(live = true)"
@@ -318,8 +328,12 @@ ActiveRecord::Schema.define(version: 2019_06_17_142340) do
     t.datetime "withdrawn_at", null: false
   end
 
+  add_foreign_key "access_limits", "editions", on_delete: :restrict
+  add_foreign_key "access_limits", "revisions", column: "revision_at_creation_id", on_delete: :restrict
+  add_foreign_key "access_limits", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "content_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "documents", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "editions", "access_limits", on_delete: :restrict
   add_foreign_key "editions", "documents", on_delete: :restrict
   add_foreign_key "editions", "revisions", on_delete: :restrict
   add_foreign_key "editions", "statuses", on_delete: :restrict
