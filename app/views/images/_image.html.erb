@@ -6,6 +6,7 @@
   class: "govuk-link",
   data: {
     "modal-action": "edit",
+    gtm: "edit-image"
   }
 ) %>
 
@@ -15,6 +16,7 @@
     method: :delete,
     data: {
       "modal-action": "delete",
+      gtm: "delete-image"
     },
     class: "app-inline-block"
   ) do %>
@@ -24,12 +26,17 @@
 
 <% if rendering_context == "modal" %>
   <% actions << link_to("Insert image markdown", "#",
-                        data: { "modal-action": "insert",
-                                "modal-data": I18n.t("images.index.meta.inline_code.value", filename: image.filename) },
+                        data: {
+                          "modal-action": "insert",
+                          "modal-data": I18n.t("images.index.meta.inline_code.value", filename: image.filename),
+                          gtm: "insert-image-markdown"
+                        },
                         class: "govuk-link govuk-link--no-visited-state") %>
 <% else %>
   <% actions << capture do %>
-    <%= form_tag choose_lead_image_path(document, image.image_id), class: "app-inline-block" do %>
+    <%= form_tag choose_lead_image_path(document, image.image_id),
+                 class: "app-inline-block",
+                 data: { gtm: "select-lead-image" } do %>
       <button class="govuk-link app-link--button">Select as lead image</button>
     <% end %>
   <% end %>

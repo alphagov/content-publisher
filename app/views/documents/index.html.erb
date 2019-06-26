@@ -1,7 +1,10 @@
 <% content_for :title, t("documents.index.title") %>
 
 <% content_for :title_side, render("govuk_publishing_components/components/button", {
-  text: "Create new document", href: new_document_path, margin_bottom: true
+  text: "Create new document",
+  href: new_document_path,
+  margin_bottom: true,
+  data_attributes: { gtm: "new-document" }
 }) %>
 
 <div class="govuk-grid-row">
@@ -11,7 +14,12 @@
     <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--l">
 
     <p class="govuk-heading-s"> <%= t("documents.index.guidance.title") %></p>
-    <p class="govuk-body"><%= link_to "Planning, writing and managing content", "https://www.gov.uk/topic/government-digital-guidance/content-publishing", class: "govuk-link", target: "_blank" %></p>
+    <p class="govuk-body">
+      <%= link_to "Planning, writing and managing content", "https://www.gov.uk/topic/government-digital-guidance/content-publishing",
+        class: "govuk-link",
+        target: "_blank",
+        data: { gtm: "content-publishing-guidance" } %>
+    </p>
   </div>
 
   <div class="govuk-grid-column-three-quarters">

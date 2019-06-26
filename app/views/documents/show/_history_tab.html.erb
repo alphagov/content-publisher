@@ -62,7 +62,9 @@
   </div>
 
   <div class="govuk-grid-column-one-third">
-    <%= form_tag(create_internal_note_path(@edition.document), method: :post) do %>
+    <%= form_tag(create_internal_note_path(@edition.document),
+                 method: :post,
+                 data: { gtm: "create-internal-note" }) do %>
       <%= render "govuk_publishing_components/components/textarea", {
         label: {
           text: t("documents.history.entry_types.internal_note"),

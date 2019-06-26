@@ -77,8 +77,12 @@
   <div class="app-c-markdown-editor__container js-markdown-editor__container">
     <div class="app-c-markdown-editor__head js-markdown-editor__head">
       <div class="app-c-markdown-editor__preview-toggle">
-        <button type="button" class="app-c-markdown-editor__button app-c-markdown-editor__button--muted js-markdown-edit-button"><%= edit_button_text %></button>
-        <button type="button" class="app-c-markdown-editor__button js-markdown-preview-button"><%= preview_button_text %></button>
+        <button type="button"
+                class="app-c-markdown-editor__button app-c-markdown-editor__button--muted js-markdown-edit-button"
+                data-gtm="edit-markdown"><%= edit_button_text %></button>
+        <button type="button"
+                class="app-c-markdown-editor__button js-markdown-preview-button"
+                data-gtm="preview-markdown"><%= preview_button_text %></button>
       </div>
       <div class="app-c-markdown-editor__toolbar">
         <markdown-toolbar class="app-c-markdown-editor__toolbar-group" for="<%= textarea[:id] %>">

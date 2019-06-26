@@ -5,16 +5,19 @@
         label: "What the Beta can and cannot do",
         href: beta_capabilities_path,
         current: current_page == beta_capabilities_path,
+        data_attributes: { gtm: "sidebar-view-beta-capabilities" }
       },
       {
         label: "How to use Content Publisher",
         href: how_to_use_publisher_path,
-        current: current_page == how_to_use_publisher_path
+        current: current_page == how_to_use_publisher_path,
+        data_attributes: { gtm: "sidebar-how-to-use-app" }
       },
       {
         label: "What's new in Content Publisher",
         href: publisher_updates_path,
-        current: current_page == publisher_updates_path
+        current: current_page == publisher_updates_path,
+        data_attributes: { gtm: "sidebar-view-whats-new" }
       },
     ]
   } %>

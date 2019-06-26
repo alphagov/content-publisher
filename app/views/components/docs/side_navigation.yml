@@ -14,7 +14,11 @@ examples:
         - label: What the Beta can and cannot do
           href: /beta-capabilities
           current: true
+          data_attributes:
+            tracking: UTM-1235
         - label: How to use Content Publisher
           href: /how-to-use-publisher
+          data_attributes:
+            tracking: UTM-1234
         - label: What's new in Content Publisher
           href: /publisher-updates

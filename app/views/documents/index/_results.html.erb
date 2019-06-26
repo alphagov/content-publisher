@@ -6,13 +6,18 @@
 
     updated_sort_direction = "descending" if updated_active && updated_link_to_asc
     updated_sort_direction = "ascending" if updated_active && !updated_link_to_asc
+    updated_sort_param = "#{updated_link_to_asc ? '' : '-'}last_updated"
   %>
 
   <%= t.head do %>
     <%= t.header t("documents.index.search_results.headings.title") %>
     <%= t.header t("documents.index.search_results.headings.status") %>
     <%= t.header t("documents.index.search_results.headings.last_updated"), {
-        href: documents_path(@filter_params.merge(sort: "#{updated_link_to_asc ? '' : '-'}last_updated", page: nil)),
+        href: documents_path(@filter_params.merge(sort: updated_sort_param, page: nil)),
+        data_attributes: {
+          gtm: "sort-last-updated",
+          "gtm-value": updated_sort_direction
+        },
         sort_direction: updated_sort_direction
       } %>
   <% end %>
@@ -25,7 +30,8 @@
             {
               link: {
                 text: edition.title_or_fallback,
-                path: edition.document
+                path: edition.document,
+                data_attributes: { gtm: "view-edition" }
               },
               metadata: {
                 document_type: edition.document_type.label,
@@ -34,6 +40,7 @@
             }
           ]
         } %>
+
         <%= t.cell t("user_facing_states.#{edition.state}.name") %>
         <%= t.cell format_date(edition.last_edited_at) %>
       <% end %>
