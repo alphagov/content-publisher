@@ -36,6 +36,10 @@ RSpec.feature "Clear backdate" do
 
   def then_i_see_the_content_is_no_longer_backdated
     expect(@request).to have_been_requested
+
     expect(page).not_to have_content(@backdated_to.strftime("%-d %B %Y"))
+    expect(page).to have_content(
+      I18n.t!("documents.history.entry_types.backdate_cleared"),
+    )
   end
 end

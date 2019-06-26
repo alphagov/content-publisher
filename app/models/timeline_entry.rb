@@ -52,7 +52,8 @@ class TimelineEntry < ApplicationRecord
                      file_attachment_uploaded: "file_attachment_uploaded",
                      file_attachment_deleted: "file_attachment_deleted",
                      file_attachment_updated: "file_attachment_updated",
-                     backdated: "backdated" }
+                     backdated: "backdated",
+                     backdate_cleared: "backdate_cleared" }
 
   def self.create_for_status_change(entry_type:,
                                     status:,

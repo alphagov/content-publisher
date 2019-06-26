@@ -33,5 +33,6 @@ en:
         file_attachment_uploaded: "Attachment uploaded"
         file_attachment_updated: "Attachment updated"
         backdated: "Backdated document"
+        backdate_cleared: "Backdate cleared"
       entry_content:
         backdated: "First published date backdated to %{date}"
