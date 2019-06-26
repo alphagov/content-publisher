@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe PublishService do
+  before { stub_any_publishing_api_publish }
+
   describe "#publish" do
     context "when there is no live edition" do
       let(:edition) { create(:edition, :publishable) }
-      let!(:publish_request) do
-        stub_publishing_api_publish(edition.content_id,
-                                    update_type: nil,
-                                    locale: edition.locale)
-      end
 
       it "publishes the current_edition" do
+        publish_request = stub_publishing_api_publish(edition.content_id,
+                                                      update_type: nil,
+                                                      locale: edition.locale)
         PublishService.new(edition)
                       .publish(user: create(:user), with_review: true)
 
@@ -24,7 +24,6 @@ RSpec.describe PublishService do
         PublishService.new(edition)
                       .publish(user: create(:user), with_review: false)
 
-        expect(publish_request).to have_been_requested
         expect(edition).to be_published_but_needs_2i
       end
     end
@@ -34,9 +33,6 @@ RSpec.describe PublishService do
         document = create(:document, :with_current_and_live_editions)
         current_edition = document.current_edition
         live_edition = document.live_edition
-        stub_publishing_api_publish(document.content_id,
-                                    update_type: nil,
-                                    locale: document.locale)
 
         PublishService.new(current_edition)
                       .publish(user: create(:user), with_review: true)
@@ -49,9 +45,6 @@ RSpec.describe PublishService do
     it "calls the PublishAssetService" do
       document = create(:document, :with_current_and_live_editions)
       current_edition = document.current_edition
-      stub_publishing_api_publish(document.content_id,
-                                  update_type: nil,
-                                  locale: document.locale)
 
       expect_any_instance_of(PublishAssetService).to receive(:publish_assets)
 
