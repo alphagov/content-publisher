@@ -1,5 +1,5 @@
 <% content_for :back_link, render_back_link(text: "Return to dashboard", href: document_path(@edition.document)) %>
-<% content_for :title, t("schedule.scheduled.title") %>
+<% content_for :browser_title, t("schedule.scheduled.title") %>
 
 <% scheduling = @edition.status.details %>
 <% time = format_time(scheduling.publish_time) %>
