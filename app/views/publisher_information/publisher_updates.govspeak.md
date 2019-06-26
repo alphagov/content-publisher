@@ -1,3 +1,8 @@
+### Scheduling <span class="govuk-caption-m">26 June 2019</span>
+You can now schedule content to automatically go live at a later date and time.
+
+Or you can save a proposed date and time to inform colleagues when content should go live.
+
 ### Topic search added <span class="govuk-caption-m">24 Jun 2019</span>
 You can now search for topics. This will help you find the topics that best describe what your content is about.
 

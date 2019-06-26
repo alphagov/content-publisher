@@ -12,7 +12,7 @@
     <% elsif @edition.removed? %>
       <%= create_edition_button(@edition) %>
     <% elsif @edition.submitted_for_review? || @edition.failed_to_publish? %>
-      <% if @edition.proposed_publish_time.present? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <% if @edition.proposed_publish_time.present? %>
         <%= schedule_button(@edition) %>
         <%= preview_button(@edition, secondary: true) %>
         <%= delete_draft_link(@edition) %>
@@ -20,9 +20,7 @@
         <%= publish_button(@edition) %>
         <%= preview_button(@edition, secondary: true) %>
         <%= delete_draft_link(@edition) %>
-        <% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-          <%= schedule_proposal_link(@edition, "app-link--right") %>
-        <% end %>
+        <%= schedule_proposal_link(@edition, "app-link--right") %>
       <% end %>
     <% elsif !@edition.revision_synced? %>
       <%= create_preview_button(@edition) %>
@@ -34,10 +32,10 @@
     <% elsif @edition.draft? %>
       <%= submit_for_2i_button(@edition) %>
       <%= preview_button(@edition, secondary: true) %>
-      <% if @edition.proposed_publish_time.present? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <% if @edition.proposed_publish_time.present? %>
         <%= delete_draft_link(@edition) %>
         <%= schedule_link(@edition, "app-link--right") %>
-      <% elsif current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+      <% else %>
         <p class="govuk-body govuk-!-margin-bottom-3">
           <%= publish_link(@edition) %>
           <%= schedule_proposal_link(@edition, "app-link--right") %>

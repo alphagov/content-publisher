@@ -129,7 +129,7 @@ The person you share it with can then ask you to make any corrections or changes
 
 All content should be reviewed by another person before it's published. This is to make sure the content is easy to understand and there are no mistakes.
 
-(2i is short for ‘2nd pair of eyes’, which means getting another person to review work.)
+2i is short for ‘2nd pair of eyes’, which means getting another person to review work.
 
 When you think content is ready to publish you should select ‘Submit for 2i review’. This will mark it as being ready to be checked and it will have the status ‘Submitted for 2i review’.
 
@@ -141,9 +141,9 @@ When it has been reviewed and any improvements made, then either you or they can
 
 Select the ‘Publish’ button, and then confirm that it has been reviewed.
 
-###2i review before Content publisher
+###2i review before Content Publisher
 
-The text may have been thoroughly reviewed before the document is created in Content publisher and the page prepared without any changes. If so it is possible to publish content without needing further review.
+The text may have been thoroughly reviewed before the document is created in Content Publisher and the page prepared without any changes. If so it is possible to publish content without needing further review.
 
 Select the ‘Publish’ button, and then confirm that it has been reviewed.
 
@@ -153,23 +153,35 @@ Some content needs to be published urgently before it can be reviewed. This used
 
 To publish urgently select the ‘Publish’ button, and then confirm that it should go live now but will still need review.
 
-The content will go live on GOV.UK but will be marked in Content publisher with the status ‘Published but needs 2i review’.
+The content will go live on GOV.UK but will be marked in Content Publisher with the status ‘Published but needs 2i review’.
 
-You should send the Content publisher link to someone and ask them to review it.
+You should send the Content Publisher link to someone and ask them to review it.
 
 If they find mistakes then they or you can update the content to fix them.
 
 If there are no mistakes then they or you can select the ‘Approve’ button to confirm that the content has been reviewed. The content will then get the status ‘Published’.
 
+###Scheduling
+
+You can schedule content to automatically go live at a later date and time. 
+
+Or you can save a proposed date and time to inform colleagues when content should go live. They can then schedule it.
+
+If content has been scheduled but has not yet gone live you can stop the automatic scheduled publishing if you need to make changes.
+
+Once content has gone live you will recieve a confirmation email. 
+
+If there are any problems you will recieve an alert email.
+
 ---
 
 ##Featured documents
 
-You can feature Content Publisher documents on organisation homepages.
+You can feature Content Publisher documents on organisation homepages using Whitehall publisher.
 
-They will not appear in the main content search in Whitehall.
+However, Content Publisher documents will not appear in the main content search in Whitehall.
 
-You need to use the option to 'Feature non-GOV.UK government link'. It is at the end of the page. This is the same way blog posts are featured.
+You need to use the option in Whitehall to 'Feature non-GOV.UK government link'. It is at the end of the page. This is the same way blog posts are featured.
 
 We have added document types for Content Publisher documents so that they appear just like Whitehall content.
 
