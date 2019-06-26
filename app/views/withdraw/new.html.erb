@@ -7,9 +7,11 @@
   </div>
 </div>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <%= form_tag withdraw_path(@edition.document), data: { gtm: "confirm-withdraw" } do %>
+<%= form_tag withdraw_path(@edition.document),
+             class: "app-c-contextual-guidance__form",
+             data: { gtm: "confirm-withdraw" } do %>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/textarea", {
         label: {
           text: t("withdraw.new.public_explanation.title"),
@@ -24,33 +26,34 @@
           "contextual_guidance": "withdrawal-public-explanation-guidance",
         }
       } %>
+    </div>
 
-      <% if @edition.withdrawn? %>
-        <%= render "govuk_publishing_components/components/button", {
-          text: "Update explanation", margin_bottom: true
-        } %>
-      <% else %>
-        <%= render "govuk_publishing_components/components/button", {
-          text: "Withdraw document", margin_bottom: true
-        } %>
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual_guidance", {
+        id: "withdrawal-public-explanation-guidance",
+        title: t("withdraw.new.public_explanation.guidance_title"),
+      } do %>
+        <p>Explain to users why the page has been withdrawn. You can link to alternative content with markdown.</p>
+        <pre class="app-c-markdown-guidance__code-snippet">
+          [linktext](https://www.gov.uk/example)
+        </pre>
       <% end %>
+    </div>
+  </div>
 
-      <p class="govuk-body">
-        <%= link_to "Cancel", document_path(@edition.document),
-                    class: "govuk-link govuk-link--no-visited-state",
-                    data: { gtm: "cancel-withdraw" } %>
-      </p>
-    <% end %>
-  </div>
-  <div class="govuk-grid-column-one-third">
-    <%= render "components/contextual_guidance", {
-      id: "withdrawal-public-explanation-guidance",
-      title: t("withdraw.new.public_explanation.guidance_title"),
-    } do %>
-      <p>Explain to users why the page has been withdrawn. You can link to alternative content with markdown.</p>
-      <pre class="app-c-markdown-guidance__code-snippet">
-        [linktext](https://www.gov.uk/example)
-      </pre>
-    <% end %>
-  </div>
-</div>
+  <% if @edition.withdrawn? %>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Update explanation", margin_bottom: true
+    } %>
+  <% else %>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Withdraw document", margin_bottom: true
+    } %>
+  <% end %>
+
+  <p class="govuk-body">
+    <%= link_to "Cancel", document_path(@edition.document),
+                class: "govuk-link govuk-link--no-visited-state",
+                data: { gtm: "cancel-withdraw" } %>
+  </p>
+<% end %>
