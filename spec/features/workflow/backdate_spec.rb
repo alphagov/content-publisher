@@ -48,6 +48,7 @@ RSpec.feature "Backdate content" do
   end
 
   def and_i_click_save
+    @request = stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Save"
   end
 
@@ -55,6 +56,7 @@ RSpec.feature "Backdate content" do
     expect(page).to have_content("1 January 2019")
     expect(page).to have_content(I18n.t!("documents.history.entry_types.backdated",
                                          date: "01 January 2019"))
+    expect(@request).to have_been_requested
   end
 
   def given_there_is_a_document_with_a_second_edition
