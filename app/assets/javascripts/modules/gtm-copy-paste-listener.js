@@ -1,6 +1,6 @@
 var GtmCopyPasteListener = {}
 
-GtmCopyPasteListener.handleCopyPaste = function (prefix) {
+GtmCopyPasteListener.handleCopyPaste = function (eventName) {
   return function (event) {
     var element = event.target
 
@@ -8,16 +8,16 @@ GtmCopyPasteListener.handleCopyPaste = function (prefix) {
       return
     }
 
-    var suffix = element.dataset.gtmSuffix
+    var dataGtm = element.dataset.gtm
     var tracked = element.dataset.gtmCopyPasteTracking
 
-    if (!suffix || !tracked) {
+    if (!dataGtm || !tracked) {
       return
     }
 
     window.dataLayer.push({
-      event: prefix,
-      dataGtm: prefix.toLowerCase() + '-' + suffix
+      event: eventName,
+      dataGtm: dataGtm
     })
   }
 }

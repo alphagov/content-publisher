@@ -8,7 +8,7 @@ describe('Gtm copy paste listener', function () {
   describe('when all attributes are specified', function () {
     beforeEach(function () {
       container = document.createElement('div')
-      container.innerHTML = '<input data-gtm-copy-paste-tracking=true data-gtm-suffix="my-input">'
+      container.innerHTML = '<input data-gtm-copy-paste-tracking=true data-gtm="my-input">'
 
       document.body.appendChild(container)
       window.dataLayer = []
@@ -24,12 +24,12 @@ describe('Gtm copy paste listener', function () {
       input.dispatchEvent(new window.Event('copy', { bubbles: true }))
       input.dispatchEvent(new window.Event('paste', { bubbles: true }))
 
-      expect(window.dataLayer).toContain({ dataGtm: 'copy-my-input', event: 'Copy' })
-      expect(window.dataLayer).toContain({ dataGtm: 'paste-my-input', event: 'Paste' })
+      expect(window.dataLayer).toContain({ dataGtm: 'my-input', event: 'Copy' })
+      expect(window.dataLayer).toContain({ dataGtm: 'my-input', event: 'Paste' })
     })
   })
 
-  describe('when no suffix is specified', function () {
+  describe('when no data-gtm is specified', function () {
     beforeEach(function () {
       container = document.createElement('div')
       container.innerHTML = '<input data-gtm-copy-paste-tracking=true>'
@@ -55,7 +55,7 @@ describe('Gtm copy paste listener', function () {
   describe('when listener attribute is specified', function () {
     beforeEach(function () {
       container = document.createElement('div')
-      container.innerHTML = '<input data-gtm-suffix="my-input">'
+      container.innerHTML = '<input data-gtm="my-input">'
 
       document.body.appendChild(container)
       window.dataLayer = []
