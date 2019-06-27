@@ -36,6 +36,8 @@ private
   def remove_lead_image
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(lead_image_revision: nil)
+    context.fail! unless updater.changed?
+
     edition.assign_revision(updater.next_revision, user).save!
   end
 

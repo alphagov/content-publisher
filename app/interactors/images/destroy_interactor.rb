@@ -28,6 +28,8 @@ private
     context.image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.remove_image(image_revision)
+    context.fail! unless updater.changed?
+
     edition.assign_revision(updater.next_revision, user).save!
     context.removed_lead_image = updater.removed_lead_image?
   end

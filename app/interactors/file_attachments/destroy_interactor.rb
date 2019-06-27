@@ -30,6 +30,8 @@ private
 
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.remove_file_attachment(attachment_revision)
+    context.fail! unless updater.changed?
+
     edition.assign_revision(updater.next_revision, user).save!
   end
 
