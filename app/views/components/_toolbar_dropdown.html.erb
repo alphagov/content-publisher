@@ -20,7 +20,8 @@
                 class: "app-c-toolbar-dropdown__button",
                 type: "submit",
                 name: item[:button_options][:name],
-                value: item[:button_options][:value]
+                value: item[:button_options][:value],
+                data: item[:data_attributes]
               %>
             <% else %>
               <%= link_to item[:text], item[:href],
