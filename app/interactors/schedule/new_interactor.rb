@@ -17,6 +17,10 @@ class Schedule::NewInteractor
 
   def find_edition
     context.edition = Edition.find_current(document: params[:document])
+
+    unless edition.editable? && edition.proposed_publish_time.present?
+      raise "Can't schedule an edition which isn't schedulable"
+    end
   end
 
   def check_for_publish_issues
