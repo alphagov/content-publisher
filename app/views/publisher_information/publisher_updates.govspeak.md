@@ -1,3 +1,8 @@
+### Backdating <span class="govuk-caption-m">27 June 2019</span>
+You can now backdate on content if it has previously been available on another web page.
+
+The public First Published date will tell users when the information was first available rather than when the new page was published. It is important that old information is not presented as new.
+
 ### Scheduling <span class="govuk-caption-m">26 June 2019</span>
 You can now schedule content to automatically go live at a later date and time.
 

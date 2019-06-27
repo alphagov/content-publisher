@@ -101,6 +101,16 @@ Changes to topics are applied to a live page as soon as you save. If the content
 
 ---
 
+##Backdating
+
+If content has previously been available on another web page you must enter the date for when it was first published online. 
+
+The public First Published date will show the date the content was first made available rather than when it was first published in Content Publisher. This prevents old information being presented as new. 
+
+You can only backdate content before it is first published. Updates cannot be backdated.
+
+---
+
 ##How to update content
 
 You can search for existing content using the document search.
