@@ -90,7 +90,7 @@ app.
 To enable these permissions in a development environment run:
 
 ```
-bundle exec rake developer_permissions
+bundle exec rake development_permissions
 ```
 
 To enable them for your GOV.UK account add them to your account in

@@ -24,7 +24,7 @@ class WithdrawController < ApplicationController
       # right response - maybe bad request or a redirect with flash?
       raise "Can't withdraw an edition without managing editor permissions"
     elsif issues
-      flash["requirements"] = { "items" => issues.items }
+      flash.now["requirements"] = { "items" => issues.items }
 
       render :new,
              assigns: { edition: edition,
