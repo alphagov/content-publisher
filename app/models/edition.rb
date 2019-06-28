@@ -38,6 +38,8 @@ class Edition < ApplicationRecord
 
   belongs_to :status
 
+  belongs_to :access_limit, optional: true
+
   has_many :timeline_entries
 
   has_and_belongs_to_many :revisions
@@ -177,6 +179,31 @@ class Edition < ApplicationRecord
     raise "cannot update revision on a live edition" if live?
 
     assign_attributes(revision: revision,
+                      last_edited_by: user,
+                      last_edited_at: Time.current)
+
+    self
+  end
+
+  def assign_access_limit(limit_type, user)
+    raise "cannot access limit a live edition" if live?
+
+    access_limit = AccessLimit.new(created_by: user,
+                                   edition: self,
+                                   revision_at_creation: revision,
+                                   limit_type: limit_type)
+
+    assign_attributes(access_limit: access_limit,
+                      last_edited_by: user,
+                      last_edited_at: Time.current)
+
+    self
+  end
+
+  def remove_access_limit(user)
+    raise "no access limit to remove" unless access_limit
+
+    assign_attributes(access_limit: nil,
                       last_edited_by: user,
                       last_edited_at: Time.current)
 
