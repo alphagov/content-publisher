@@ -4,7 +4,7 @@ GtmCopyPasteListener.handleCopyPaste = function (eventName) {
   return function (event) {
     var element = event.target
 
-    if (!element) {
+    if (!element || !element.dataset) {
       return
     }
 
