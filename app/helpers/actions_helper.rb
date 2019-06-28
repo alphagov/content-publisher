@@ -7,7 +7,6 @@ module ActionsHelper
              data: { gtm: "create-new-edition" } do
       render "govuk_publishing_components/components/button",
              text: "Create new edition",
-             data_attributes: { gtm: "create-edition" },
              secondary: secondary
     end
   end
