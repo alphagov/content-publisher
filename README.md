@@ -82,12 +82,7 @@ listen to the sidekiq processes.
 
 ### Permissions
 
-Functionality of this application is enabled with permissions. There is a
-`pre_release_features` permission, for using functionality not yet available to
-users, and there is a `debug` permission, to access debug and documentation in
-app.
-
-To enable these permissions in a development environment run:
+To enable development permissions (`debug` and `pre_release_features`) in a development environment run:
 
 ```
 bundle exec rake development_permissions
@@ -95,29 +90,6 @@ bundle exec rake development_permissions
 
 To enable them for your GOV.UK account add them to your account in
 [signon](https://github.com/alphagov/signon).
-
-### Importing Whitehall news documents
-
-To populate your local database with [Whitehall][whitehall-repo] content there
-is a task in Whitehall to export data and a task in Content Publisher to
-import that output.
-
-To export from Whitehall, you need to have a cloned copy of Whitehall with a
-populated database, cd into the whitehall directory and run:
-
-```
-bundle exec rake export:news_documents 2>&1 | grep created_at > /tmp/whitehall-export.json
-```
-
-This will take a while to run (~30 mins), this can be reduced by limiting the
-output with [filters][export-filters]
-
-To import this exported file into Content Publisher, you need to cd into the
-content publisher directory and run:
-
-```
-bundle exec rake import:whitehall_news INPUT=/tmp/whitehall-export.json
-```
 
 ### User support
 
