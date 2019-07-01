@@ -3,13 +3,14 @@
   color: $govuk-error-colour;
 
   &:link,
-  &:visited {
+  &:visited,
+  &:hover,
+  &:active {
     color: $govuk-error-colour;
   }
 
-  &:hover,
-  &:active {
-    color: govuk-colour("bright-red");
+  &:focus {
+    color: $govuk-text-colour;
   }
 }
 
