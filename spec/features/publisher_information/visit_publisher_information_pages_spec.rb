@@ -17,7 +17,7 @@ RSpec.feature "User can view the publisher information pages" do
 
   def when_i_click_on_the_publisher_updates_link_in_footer
     within(".govuk-footer") do
-      click_on "What's new in Content Publisher"
+      click_on "What’s new in Content Publisher"
     end
   end
 
