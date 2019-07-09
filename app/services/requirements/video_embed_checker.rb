@@ -29,6 +29,8 @@ module Requirements
 
       uri.host.to_s.end_with?(YOUTUBE_HOST) &&
         uri.path == "/watch" && uri.query.to_s.match(/v=/)
+    rescue URI::InvalidURIError
+      false
     end
   end
 end

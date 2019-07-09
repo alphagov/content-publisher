@@ -34,6 +34,12 @@ RSpec.describe Requirements::VideoEmbedChecker do
       expect(form_message).to eq(I18n.t!("requirements.video_embed_url.blank.form_message"))
     end
 
+    it "returns an issue for an invalid URI" do
+      issues = Requirements::VideoEmbedChecker.new.pre_embed_issues(url: "http: youtube com")
+      form_message = issues.items_for(:video_embed_url).first[:text]
+      expect(form_message).to eq(I18n.t!("requirements.video_embed_url.non_youtube.form_message"))
+    end
+
     it "returns an issue for non-YouTube URLs" do
       issues = Requirements::VideoEmbedChecker.new.pre_embed_issues(url: "http://vimeo.com")
       form_message = issues.items_for(:video_embed_url).first[:text]
