@@ -38,6 +38,8 @@ private
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(backdated_to: date)
     edition.assign_revision(updater.next_revision, user).save!
+
+    context.fail! unless updater.changed?
   end
 
   def backdate_params
