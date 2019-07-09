@@ -63,7 +63,7 @@ InlineImageModal.prototype.actionCallback = function (item) {
             this.editor.insertBlock(item.dataset.modalData)
           }
         }.bind(this))
-        .catch(this.workflow.renderError.bind(this))
+        .catch(this.workflow.renderError)
     }
   }
 
