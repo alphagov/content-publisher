@@ -6,6 +6,9 @@ function ModalWorkflow ($modal, actionCallback) {
 
   this.$multiSectionViewer = this.$modal
     .querySelector('[data-module="multi-section-viewer"]')
+
+  this.renderSuccess = this.renderSuccess.bind(this)
+  this.renderError = this.renderError.bind(this)
 }
 
 ModalWorkflow.prototype.initComponents = function () {
@@ -34,8 +37,8 @@ ModalWorkflow.prototype.overrideActions = function (actions) {
 
 ModalWorkflow.prototype.render = function (response) {
   response
-    .then(this.renderSuccess.bind(this))
-    .catch(this.renderError.bind(this))
+    .then(this.renderSuccess)
+    .catch(this.renderError)
 }
 
 ModalWorkflow.prototype.renderError = function (result) {

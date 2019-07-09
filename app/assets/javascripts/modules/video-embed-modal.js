@@ -38,7 +38,7 @@ VideoEmbedModal.prototype.actionCallback = function (item) {
             this.editor.insertBlock(result.body)
           }
         }.bind(this))
-        .catch(this.workflow.renderError.bind(this))
+        .catch(this.workflow.renderError)
     }
   }
 
