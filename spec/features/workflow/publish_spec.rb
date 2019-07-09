@@ -11,6 +11,7 @@ RSpec.feature "Publishing an edition" do
     and_the_content_is_shown_as_published
     and_there_is_a_history_entry
     and_i_receive_a_confirmation_email
+    and_i_see_a_link_to_the_content_data_page_for_the_document
   end
 
   def given_there_is_a_major_change_to_a_live_edition
@@ -82,5 +83,13 @@ RSpec.feature "Publishing an edition" do
                                            time: publish_time,
                                            date: publish_date,
                                            user: publish_user))
+  end
+
+  def and_i_see_a_link_to_the_content_data_page_for_the_document
+    content_data_url_prefix = "https://content-data.test.gov.uk/metrics"
+    expect(page).to have_link(
+      "View data about this page",
+      href: content_data_url_prefix + @edition.base_path,
+    )
   end
 end

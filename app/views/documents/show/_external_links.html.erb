@@ -5,12 +5,10 @@
                 data: { gtm: "view-on-govuk" } %>
   </li>
 
-  <% content_data_url = ContentDataUrl.new(@edition.document) %>
-
-  <% if content_data_url.displayable? %>
+  <% if @edition.document.live_edition %>
     <li>
       <%= link_to "View data about this page",
-                  content_data_url.url,
+                  content_data_url(@edition.document),
                   target: "_blank",
                   class: "govuk-link govuk-link--no-visited-state",
                   data: { gtm: "content-data-app-clickthrough" } %>
