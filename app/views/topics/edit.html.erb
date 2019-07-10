@@ -34,16 +34,20 @@
 <% def unroll(topic) %>
   <li>
     <div class="govuk-checkboxes__item">
-    <%= tag.input type: "checkbox",
-      id: "topic-#{topic.content_id}",
-      class: "govuk-checkboxes__input",
-      name: "topics[]",
-      value: topic.content_id,
-      checked: @topics.include?(topic) %>
+      <%= tag.input type: "checkbox",
+        id: "topic-#{topic.content_id}",
+        class: "govuk-checkboxes__input",
+        name: "topics[]",
+        value: topic.content_id,
+        checked: @topics.include?(topic),
+        data: {
+          gtm: "choose-topics",
+          "gtm-value": topic.title
+        } %>
 
-    <%= tag.label for: "topic-#{topic.content_id}", class:"govuk-label govuk-checkboxes__label" do %>
-      <%= topic.title %>
-    <% end %>
+      <%= tag.label for: "topic-#{topic.content_id}", class:"govuk-label govuk-checkboxes__label" do %>
+        <%= topic.title %>
+      <% end %>
     </div>
 
     <% if topic.children.any? %>

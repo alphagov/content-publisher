@@ -113,6 +113,10 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
               label: t("images.edit.form_labels.lead_image"),
               checked: @edition.lead_image_revision == @image_revision,
               name: "lead_image",
+              data_attributes: {
+                gtm: "is-lead-image",
+                "gtm-value": t("images.edit.form_labels.lead_image")
+              }
             }
           ]
         } %>
