@@ -25,7 +25,7 @@ private
 
   def check_permission
     unless user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
-      context.fail!(no_permission: true)
+      raise "Can't withdraw an edition without managing editor permissions"
     end
   end
 

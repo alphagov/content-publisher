@@ -17,13 +17,7 @@ class ReviewController < ApplicationController
   end
 
   def approve
-    result = Review::ApproveInteractor.call(params: params, user: current_user)
-
-    if result.wrong_status
-      # FIXME: this shouldn't be an exception but we've not worked out the
-      # right response - maybe bad request or a redirect with flash?
-      raise "Can't approve a document that doesn't need 2i"
-    end
+    Review::ApproveInteractor.call(params: params, user: current_user)
 
     redirect_to document_path(params[:document]),
                 notice: t("documents.show.flashes.approved")

@@ -15,15 +15,9 @@ class WithdrawController < ApplicationController
 
   def create
     result = Withdraw::CreateInteractor.call(params: params, user: current_user)
-    edition, no_permission, issues, api_error = result.to_h.values_at(:edition,
-                                                                      :no_permission,
-                                                                      :issues,
-                                                                      :api_error)
-    if no_permission
-      # FIXME: this shouldn't be an exception but we've not worked out the
-      # right response - maybe bad request or a redirect with flash?
-      raise "Can't withdraw an edition without managing editor permissions"
-    elsif issues
+    edition, issues, api_error = result.to_h.values_at(:edition, :issues, :api_error)
+
+    if issues
       flash.now["requirements"] = { "items" => issues.items }
 
       render :new,

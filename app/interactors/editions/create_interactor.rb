@@ -23,7 +23,10 @@ private
 
   def find_and_lock_live_edition
     edition = Edition.lock.find_current(document: params[:document])
-    context.fail!(draft_current_edition: true) unless edition.live?
+
+    unless edition.live?
+      raise "Can't create a new edition when the current edition is a draft"
+    end
 
     context.live_edition = edition
   end
