@@ -74,8 +74,6 @@ class Edition < ApplicationRecord
            :backdated_to,
            to: :revision
 
-  MINIMUM_SCHEDULING_TIME = { minutes: 15 }.freeze
-
   scope :find_current, ->(id: nil, document: nil) do
     find_by = {}.tap do |criteria|
       criteria[:id] = id if id
