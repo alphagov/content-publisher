@@ -20,3 +20,4 @@ GtmTopicsListener.handleTopicClick = function (dataGtm) {
 }
 
 window.addEventListener('search-topic', GtmTopicsListener.handleTopicClick('select-topic-from-search-results'))
+window.addEventListener('remove-topic', GtmTopicsListener.handleTopicClick('remove-topic'))
