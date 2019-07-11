@@ -1,4 +1,4 @@
-<span class="govuk-hint">Last updated: 26 June 2019</span>
+<span class="govuk-hint">Last updated: 18 July 2019</span>
 
 Content Publisher beta can be used to publish the following document types:
 
