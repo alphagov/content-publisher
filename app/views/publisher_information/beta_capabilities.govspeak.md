@@ -11,11 +11,6 @@ Content created in Content Publisher can be featured on organisation homepages i
 
 It is possible to remove (unpublish) pages on request.
 
-Some features are not available yet:
-
-* access limiting
-* translations
-
-If you need to publish a document that requires any of these features you should use Whitehall publisher.
+Content Publisher cannot be used to publish any translations. If content needs a translated version you need to use Whitehall.
 
 If you use Whitehall to publish News content please send feedback to explain why.
