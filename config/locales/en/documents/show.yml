@@ -9,7 +9,6 @@ en:
       unwithdraw:
         title: Are you sure you want to undo withdraw?
         description: This will remove the withdrawn banner and republish the content immediately. It will not send an email alert to users.
-        confirm: Yes, undo withdrawal
       topics:
         title: Topics
         no_topics: No topics.

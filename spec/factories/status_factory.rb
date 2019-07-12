@@ -22,6 +22,10 @@ FactoryBot.define do
       state { :published }
     end
 
+    trait :published_but_needs_2i do
+      state { :published_but_needs_2i }
+    end
+
     trait :scheduled do
       state { :scheduled }
 
