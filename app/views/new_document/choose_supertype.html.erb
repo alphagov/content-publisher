@@ -10,7 +10,7 @@
       <%= render "govuk_publishing_components/components/radio", {
         name: "supertype",
         error_items: @issues&.items_for(:supertype),
-        items: @supertypes.map do |supertype|
+        items: Supertype.all.map do |supertype|
           {
             value: supertype.id,
             text: supertype.label,
