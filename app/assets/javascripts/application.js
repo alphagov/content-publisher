@@ -16,11 +16,12 @@
 //= require whatwg-fetch/dist/fetch.umd.js
 
 //= require components/autocomplete.js
-//= require components/toolbar-dropdown.js
 //= require components/image-cropper.js
 //= require components/input-length-suggester.js
 //= require components/markdown-editor.js
 //= require components/multi-section-viewer.js
+//= require components/page-preview.js
+//= require components/toolbar-dropdown.js
 //= require components/url-preview.js
 //= require miller-columns-element/dist/index.umd.js
 
