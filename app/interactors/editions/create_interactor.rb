@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Editions::CreateInteractor
-  include Interactor
+class Editions::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :live_edition,

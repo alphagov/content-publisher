@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Preview::CreateInteractor
-  include Interactor
-
+class Preview::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

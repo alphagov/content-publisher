@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Images::UpdateCropInteractor
-  include Interactor
+class Images::UpdateCropInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

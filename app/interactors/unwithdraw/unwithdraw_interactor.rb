@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-class Unwithdraw::UnwithdrawInteractor
-  include Interactor
-
-  delegate :params, :user, :edition, :api_error, to: :context
+class Unwithdraw::UnwithdrawInteractor < ApplicationInteractor
+  delegate :params,
+           :user,
+           :edition,
+           :api_error,
+           to: :context
 
   def call
     Edition.transaction do

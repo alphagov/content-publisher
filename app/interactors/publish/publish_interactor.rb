@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Publish::PublishInteractor
-  include Interactor
-
+class Publish::PublishInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

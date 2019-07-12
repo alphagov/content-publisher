@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Review::ApproveInteractor
-  include Interactor
-
+class Review::ApproveInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Images::UpdateInteractor
-  include Interactor
-
+class Images::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

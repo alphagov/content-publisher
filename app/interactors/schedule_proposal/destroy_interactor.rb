@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class ScheduleProposal::DestroyInteractor
-  include Interactor
+class ScheduleProposal::DestroyInteractor < ApplicationInteractor
   delegate :params,
            :edition,
            :user,

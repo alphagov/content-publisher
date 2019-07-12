@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class NewDocument::CreateInteractor
-  include Interactor
-
+class NewDocument::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :document_type,

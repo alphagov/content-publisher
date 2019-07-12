@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class FileAttachments::PreviewInteractor
-  include Interactor
-
+class FileAttachments::PreviewInteractor < ApplicationInteractor
   delegate :params,
            :edition,
            :attachment_revision,

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class LeadImage::RemoveInteractor
-  include Interactor
-
+class LeadImage::RemoveInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

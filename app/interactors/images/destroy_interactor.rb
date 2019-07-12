@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Images::DestroyInteractor
-  include Interactor
+class Images::DestroyInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

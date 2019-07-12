@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class FileAttachments::DestroyInteractor
-  include Interactor
-
+class FileAttachments::DestroyInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

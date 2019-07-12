@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Review::SubmitFor2iInteractor
-  include Interactor
-
+class Review::SubmitFor2iInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class LeadImage::ChooseInteractor
-  include Interactor
+class LeadImage::ChooseInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

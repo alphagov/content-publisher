@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Withdraw::CreateInteractor
-  include Interactor
-
+class Withdraw::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class FileAttachments::UpdateInteractor
-  include Interactor
-
+class FileAttachments::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

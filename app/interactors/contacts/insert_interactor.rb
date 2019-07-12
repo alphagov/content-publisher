@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Contacts::InsertInteractor
-  include Interactor
+class Contacts::InsertInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

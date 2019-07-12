@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Backdate::UpdateInteractor
-  include Interactor
+class Backdate::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

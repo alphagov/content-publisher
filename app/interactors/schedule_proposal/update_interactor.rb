@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class ScheduleProposal::UpdateInteractor
-  include Interactor
+class ScheduleProposal::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :edition,
            :revision,

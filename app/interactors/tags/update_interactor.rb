@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Tags::UpdateInteractor
-  include Interactor
-
+class Tags::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

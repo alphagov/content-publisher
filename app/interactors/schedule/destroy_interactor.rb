@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-class Schedule::DestroyInteractor
-  include Interactor
-
-  delegate :params, :edition, :user, to: :context
+class Schedule::DestroyInteractor < ApplicationInteractor
+  delegate :params,
+           :edition,
+           :user,
+           to: :context
 
   def call
     Edition.transaction do

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Schedule::NewInteractor
-  include Interactor
-
+class Schedule::NewInteractor < ApplicationInteractor
   delegate :params,
            :edition,
            :publish_issues,
