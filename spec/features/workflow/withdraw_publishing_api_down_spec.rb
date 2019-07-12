@@ -4,10 +4,9 @@ RSpec.feature "Withdraw a document when Publishing API is down" do
   scenario do
     given_there_is_a_published_edition
     and_i_am_a_managing_editor
-    when_i_visit_the_withdraw_document_page
     and_the_publishing_api_is_down
-    when_i_fill_in_the_public_explanation
-    and_click_on_withdraw_document
+    when_i_visit_the_summary_page
+    and_i_try_to_withdraw_an_edition
     then_i_see_a_withdrawal_error_message
     and_the_document_has_not_been_withdrawn
   end
@@ -16,23 +15,21 @@ RSpec.feature "Withdraw a document when Publishing API is down" do
     @edition = create(:edition, :published)
   end
 
-  def and_i_am_a_managing_editor
-    login_as(create(:user, :managing_editor))
-  end
-
-  def when_i_visit_the_withdraw_document_page
-    visit withdraw_path(@edition.document)
-  end
-
   def and_the_publishing_api_is_down
     publishing_api_isnt_available
   end
 
-  def when_i_fill_in_the_public_explanation
-    fill_in "public_explanation", with: "An explanation"
+  def and_i_am_a_managing_editor
+    login_as(create(:user, :managing_editor))
   end
 
-  def and_click_on_withdraw_document
+  def when_i_visit_the_summary_page
+    visit document_path(@edition.document)
+  end
+
+  def and_i_try_to_withdraw_an_edition
+    click_on "Withdraw"
+    fill_in "public_explanation", with: "An explanation"
     click_on "Withdraw document"
   end
 
@@ -41,7 +38,7 @@ RSpec.feature "Withdraw a document when Publishing API is down" do
   end
 
   def and_the_document_has_not_been_withdrawn
-    @edition.reload
-    expect(@edition.state).not_to eq("withdrawn")
+    visit document_path(@edition.document)
+    expect(page).to have_content(I18n.t!("user_facing_states.published.name"))
   end
 end

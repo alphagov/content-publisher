@@ -6,9 +6,8 @@ RSpec.feature "Withdraw a document" do
     and_i_am_a_managing_editor
     when_i_visit_the_summary_page
     and_i_click_on_withdraw
-    then_i_see_that_i_can_withdraw_the_document
-    when_i_fill_in_the_public_explanation
-    and_click_on_withdraw_document
+    and_i_fill_in_the_explanation
+    and_i_confirm_the_withdrawal
     then_i_see_the_document_has_been_withdrawn
   end
 
@@ -28,17 +27,12 @@ RSpec.feature "Withdraw a document" do
     click_on "Withdraw"
   end
 
-  def then_i_see_that_i_can_withdraw_the_document
-    expect(page).to have_content "Withdraw '#{@edition.title}'"
-  end
-
-  def when_i_fill_in_the_public_explanation
+  def and_i_fill_in_the_explanation
     @explanation = "An explanation using [markdown](https://www.gov.uk)"
     fill_in "public_explanation", with: @explanation
-    expect(page).to have_content(I18n.t!("withdraw.new.public_explanation.guidance_title"))
   end
 
-  def and_click_on_withdraw_document
+  def and_i_confirm_the_withdrawal
     converted_explanation = GovspeakDocument.new(@explanation, @edition).payload_html
     body = { type: "withdrawal", explanation: converted_explanation, locale: @edition.locale }
     stub_publishing_api_unpublish(@edition.content_id, body: body)
@@ -54,6 +48,7 @@ RSpec.feature "Withdraw a document" do
     expect(page).to have_content(I18n.t!("documents.show.withdrawn.title",
                                          document_type: document_type,
                                          withdrawn_date: withdrawal.created_at.strftime("%-d %B %Y")))
+
     expect(page).to have_content(@explanation)
     expect(page).to have_content(I18n.t!("documents.show.metadata.withdrawn_by") + ": #{status.created_by.name}")
   end
