@@ -19,12 +19,8 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-
-    unless edition.editable? && edition.first?
-      # FIXME: this shouldn't be an exception but we've not worked out the
-      # right response - maybe bad request or a redirect with flash?
-      raise "Only editable backdated first editions can have their backdated date cleared."
-    end
+    assert_edition_state(edition, &:editable?)
+    assert_edition_state(edition, &:first?)
   end
 
   def update_edition

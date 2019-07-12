@@ -16,7 +16,9 @@ class Topics::UpdateInteractor < ApplicationInteractor
 private
 
   def find_document
-    context.document = Document.with_current_edition.find_by_param(params[:document])
+    edition = Edition.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
+    context.document = edition.document
   end
 
   def update_topics

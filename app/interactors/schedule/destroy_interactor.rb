@@ -19,10 +19,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-
-    unless edition.scheduled?
-      raise "Cannot unschedule an edition that is not scheduled"
-    end
+    assert_edition_state(edition, &:scheduled?)
   end
 
   def update_edition

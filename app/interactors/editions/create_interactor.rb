@@ -22,9 +22,11 @@ private
 
   def find_and_lock_live_edition
     edition = Edition.lock.find_current(document: params[:document])
-    context.fail!(draft_current_edition: true) unless edition.live?
-
     context.live_edition = edition
+
+    assert_edition_state(edition, assertion: "can create new edition") do
+      edition.published? || edition.published_but_needs_2i? || edition.removed?
+    end
   end
 
   def create_next_edition

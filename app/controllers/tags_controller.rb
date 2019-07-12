@@ -8,6 +8,7 @@ class TagsController < ApplicationController
 
   def edit
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
     @revision = @edition.revision
   end
 

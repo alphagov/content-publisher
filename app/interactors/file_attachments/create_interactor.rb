@@ -21,14 +21,15 @@ class FileAttachments::CreateInteractor < ApplicationInteractor
 
 private
 
+  def find_and_lock_edition
+    context.edition = Edition.lock.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
+  end
+
   def check_for_issues
     issues = Requirements::FileAttachmentChecker.new(file: params[:file], title: params[:title])
                                                 .pre_upload_issues
     context.fail!(issues: issues) if issues.any?
-  end
-
-  def find_and_lock_edition
-    context.edition = Edition.lock.find_current(document: params[:document])
   end
 
   def upload_attachment

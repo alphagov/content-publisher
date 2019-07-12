@@ -14,6 +14,7 @@ class ScheduleController < ApplicationController
 
   def edit
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:scheduled?)
   end
 
   def update
@@ -72,5 +73,6 @@ class ScheduleController < ApplicationController
 
   def scheduled
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:scheduled?)
   end
 end

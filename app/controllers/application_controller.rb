@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
+  include EditionAssertions
 
   helper_method :rendering_context
 

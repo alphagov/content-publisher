@@ -3,8 +3,11 @@
 class WithdrawController < ApplicationController
   def new
     @edition = Edition.find_current(document: params[:document])
-    @public_explanation =
-      @edition.withdrawn? ? @edition.status.details.public_explanation : nil
+    @public_explanation = @edition.withdrawn? ? @edition.status.details.public_explanation : nil
+
+    assert_edition_state(@edition, assertion: "is published or withdrawn") do
+      @edition.published? || @edition.published_but_needs_2i? || @edition.withdrawn?
+    end
 
     if current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
       render :new
