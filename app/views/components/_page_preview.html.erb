@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div class="app-c-preview">
+<div class="app-c-preview" data-module="page-preview">
   <% mobile_preview = capture do %>
     <%= tag.div class: "app-c-preview__mobile" do %>
       <%= tag.iframe class: "app-c-preview__mobile-iframe", src: url, title: "Preview of the page on mobile" %>
@@ -29,7 +29,7 @@
   <% end %>
 
   <% desktop_and_tablet = capture do %>
-    <%= tag.iframe class: "app-c-preview__desktop-preview", src: url, title: "Preview of the page on desktop or tablet" %>
+    <%= tag.iframe class: "app-c-preview__desktop-iframe", src: url, title: "Preview of the page on desktop or tablet" %>
   <% end %>
 
   <% snippet_preview = capture do %>
