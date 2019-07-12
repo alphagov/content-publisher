@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Editions::CreateInteractor
-  include Interactor
+class Editions::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :live_edition,
@@ -23,8 +22,7 @@ private
 
   def find_and_lock_live_edition
     edition = Edition.lock.find_current(document: params[:document])
-    context.fail!(draft_current_edition: true) unless edition.live?
-
+    assert_with_edition(edition, &:live?)
     context.live_edition = edition
   end
 

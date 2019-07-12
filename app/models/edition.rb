@@ -214,4 +214,37 @@ class Edition < ApplicationRecord
     user_ids = statuses.pluck(:created_by_id) + revisions.pluck(:created_by_id)
     User.where(id: user_ids.uniq)
   end
+
+  #class AssertionError < StandardError
+    #def initialize(assertion)
+      #super("Assertion failed: #{assertion}")
+    #end
+  #end
+
+  #class IntegrityAssertionError < AssertionError
+    #attr_reader :edition
+
+    #def initialize(edition, assertion)
+      #@edition = edition
+      #super(assertion)
+    #end
+  #end
+
+  #class StateAssertionError < IntegrityAssertionError
+    #def initialize(edition, method)
+      #super(edition, "{ edition.#{method} }")
+    #end
+  #end
+
+  #class BlockAssertionError < IntegrityAssertionError; end
+
+  #def assert_state(method)
+    #return if public_send(method)
+    #raise StateAssertionError.new(self, method)
+  #end
+
+  #def assert_block(message:, &block)
+    #return if block.call
+    #raise BlockAssertionError.new(self, message)
+  #end
 end

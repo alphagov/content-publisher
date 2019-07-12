@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Withdraw::CreateInteractor
-  include Interactor
-
+class Withdraw::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,
@@ -12,9 +10,8 @@ class Withdraw::CreateInteractor
            to: :context
 
   def call
-    check_permission
-
     Edition.transaction do
+      check_permissions
       find_and_lock_edition
       check_for_issues
       withdraw
@@ -23,10 +20,8 @@ class Withdraw::CreateInteractor
 
 private
 
-  def check_permission
-    unless user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
-      context.fail!(no_permission: true)
-    end
+  def check_permissions
+    assert_permission(user, User::MANAGING_EDITOR_PERMISSION)
   end
 
   def find_and_lock_edition

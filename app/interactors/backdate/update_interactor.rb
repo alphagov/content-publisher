@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Backdate::UpdateInteractor
-  include Interactor
+class Backdate::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,
@@ -26,12 +25,9 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-
-    unless edition.first? && edition.editable?
-      # FIXME: this shouldn't be an exception but we've not worked out the
-      # right response - maybe bad request or a redirect with flash?
-      raise "Only editable first editions can be backdated."
-    end
+    assert_with_edition(edition, &:first?)
+    assert_with_edition(edition, &:editable?)
+    assert_access(edition, user)
   end
 
   def update_edition

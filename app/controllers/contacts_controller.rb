@@ -3,6 +3,7 @@
 class ContactsController < ApplicationController
   def search
     @edition = Edition.find_current(document: params[:document])
+    assert_with_edition(@edition, &:editable?)
     @contacts_by_organisation = ContactsService.new.all_by_organisation
   rescue GdsApi::BaseError => e
     GovukError.notify(e)

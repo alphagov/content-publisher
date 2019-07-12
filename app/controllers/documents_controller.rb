@@ -15,6 +15,7 @@ class DocumentsController < ApplicationController
 
   def edit
     @edition = Edition.find_current(document: params[:document])
+    assert_with_edition(@edition, &:editable?)
     @revision = @edition.revision
   end
 
@@ -24,17 +25,21 @@ class DocumentsController < ApplicationController
 
   def confirm_delete_draft
     edition = Edition.find_current(document: params[:document])
+    assert_with_edition(@edition, &:editable?)
     redirect_to document_path(edition.document), confirmation: "documents/show/delete_draft"
   end
 
   def destroy
     result = Documents::DestroyInteractor.call(params: params, user: current_user)
+
     if result.api_error
       redirect_to document_path(params[:document]),
                   alert_with_description: t("documents.show.flashes.delete_draft_error")
     else
       redirect_to documents_path
     end
+  rescue Assertions::ErrorWithEdition
+    redirect_to documents_path
   end
 
   def update

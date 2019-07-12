@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Schedule::CreateInteractor
-  include Interactor
-
+class Schedule::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,
@@ -21,13 +19,14 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+    assert_with_edition(edition, &:editable)
 
-    unless edition.editable? && edition.proposed_publish_time.present?
-      raise "Can't schedule an edition which isn't schedulable"
+    assert_with_edition(edition, assertion: "Edition has proposed publish time") do
+      edition.proposed_publish_time.present?
     end
 
-    if Requirements::EditionChecker.new(edition).pre_publish_issues(rescue_api_errors: false).any?
-      raise "Can't schedule an edition with requirements issues"
+    assert_with_edition(edition, assertion: "Edition has no requirements issues") do
+      Requirements::EditionChecker.new(edition).pre_publish_issues(rescue_api_errors: false).any?
     end
   end
 

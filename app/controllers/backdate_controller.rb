@@ -3,6 +3,8 @@
 class BackdateController < ApplicationController
   def edit
     @edition = Edition.find_current(document: params[:document])
+    assert_with_edition(@edition, &:editable?)
+    assert_access(@edition, current_user)
   end
 
   def update
