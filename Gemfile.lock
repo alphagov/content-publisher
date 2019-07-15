@@ -166,7 +166,7 @@ GEM
       puma
       selenium-webdriver (>= 3.142)
       webdrivers
-    hashdiff (0.4.0)
+    hashdiff (1.0.0)
     hashery (2.1.2)
     hashie (3.6.0)
     htmlentities (4.3.4)
@@ -463,7 +463,7 @@ DEPENDENCIES
   govuk_schemas (~> 3.3)
   govuk_sidekiq (~> 3)
   govuk_test (~> 1.0)
-  hashdiff (~> 0.4)
+  hashdiff (~> 1.0)
   image_processing (~> 1)
   interactor (~> 3)
   jasmine (~> 3.4)

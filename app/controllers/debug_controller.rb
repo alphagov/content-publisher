@@ -38,7 +38,7 @@ class DebugController < ApplicationController
   def revision_diff(revision)
     old = revision.preceded_by ? revision_hash(revision.preceded_by) : {}
     new = revision_hash(revision)
-    HashDiff.diff(old, new, use_lcs: false)
+    Hashdiff.diff(old, new, use_lcs: false)
   end
 
   def revision_hash(revision)
