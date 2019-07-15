@@ -33,11 +33,6 @@ RSpec.describe ScheduleService do
       expect(edition.reload.proposed_publish_time).to be_nil
     end
 
-    it "creates a timeline entry" do
-      ScheduleService.new(edition).schedule(reviewed: true)
-      expect(edition.timeline_entries.first.entry_type).to eq("scheduled")
-    end
-
     it "creates a publishing intent" do
       request = stub_publishing_api_put_intent(edition.base_path, '"payload"')
       ScheduleService.new(edition).schedule(reviewed: true)
@@ -88,11 +83,6 @@ RSpec.describe ScheduleService do
       expect(new_scheduling.publish_time).to eq new_publish_time
       expect(new_scheduling.slice(:reviewed, :pre_scheduled_status))
         .to eql old_scheduling.slice(:reviewed, :pre_scheduled_status)
-    end
-
-    it "creates another timeline entry" do
-      ScheduleService.new(edition).reschedule(publish_time: new_publish_time)
-      expect(edition.timeline_entries.last.entry_type).to eq "schedule_updated"
     end
 
     it "updates the existing publishing intent" do

@@ -15,6 +15,7 @@ class Schedule::UpdateInteractor < ApplicationInteractor
       parse_publish_time
       check_for_issues
       reschedule_to_publish
+      create_timeline_entry
     end
   end
 
@@ -42,6 +43,14 @@ private
     context.fail! if publish_time == scheduling.publish_time
 
     ScheduleService.new(edition).reschedule(publish_time: publish_time, user: user)
+  end
+
+  def create_timeline_entry
+    TimelineEntry.create_for_status_change(
+      entry_type: :schedule_updated,
+      status: edition.status,
+      details: edition.status.details,
+    )
   end
 
   def schedule_params
