@@ -55,7 +55,7 @@ Rails.application.routes.draw do
     get "/unwithdraw" => "unwithdraw#confirm", as: :confirm_unwithdraw
     post "/unwithdraw" => "unwithdraw#unwithdraw", as: :unwithdraw
 
-    get "/remove" => "unpublish#remove", as: :remove
+    get "/remove" => "remove#remove", as: :remove
 
     get "/images" => "images#index", as: :images
     post "/images" => "images#create", as: :create_image

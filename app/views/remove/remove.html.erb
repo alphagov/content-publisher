@@ -1,8 +1,8 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
-<% content_for :title, t("unpublish.remove.title") %>
+<% content_for :title, t("remove.remove.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= render_govspeak(File.read("app/views/unpublish/unpublish.govspeak.md")) %>
+    <%= render_govspeak(File.read("app/views/remove/remove.govspeak.md")) %>
   </div>
 </div>
