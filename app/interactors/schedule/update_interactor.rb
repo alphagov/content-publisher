@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Schedule::UpdateInteractor
-  include Interactor
-
+class Schedule::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,
@@ -24,10 +22,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-
-    unless edition.scheduled?
-      raise "Can't reschedule an edition which isn't scheduled"
-    end
+    assert_edition_state(edition, &:scheduled?)
   end
 
   def parse_publish_time

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Documents::UpdateInteractor
-  include Interactor
+class Documents::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,
@@ -24,6 +23,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
   end
 
   def update_revision

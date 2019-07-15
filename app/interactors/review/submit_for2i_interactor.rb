@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Review::SubmitFor2iInteractor
-  include Interactor
-
+class Review::SubmitFor2iInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,
@@ -24,6 +22,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+    assert_edition_state(edition, &:draft?)
   end
 
   def check_for_issues

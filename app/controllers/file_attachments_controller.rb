@@ -5,11 +5,14 @@ class FileAttachmentsController < ApplicationController
 
   def index
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
     render layout: rendering_context
   end
 
   def show
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
+
     @attachment = @edition.file_attachment_revisions
       .find_by!(file_attachment_id: params[:file_attachment_id])
 
@@ -67,6 +70,8 @@ class FileAttachmentsController < ApplicationController
 
   def edit
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
+
     @attachment = @edition.file_attachment_revisions
       .find_by!(file_attachment_id: params[:file_attachment_id])
 
@@ -74,8 +79,7 @@ class FileAttachmentsController < ApplicationController
   end
 
   def update
-    result = FileAttachments::UpdateInteractor.call(params: params,
-                                                    user: current_user)
+    result = FileAttachments::UpdateInteractor.call(params: params, user: current_user)
     edition = result.edition
     attachment_revision = result.file_attachment_revision
     issues = result.issues

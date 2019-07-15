@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class FileAttachments::DestroyInteractor
-  include Interactor
-
+class FileAttachments::DestroyInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,
@@ -22,6 +20,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
   end
 
   def find_and_remove_attachment

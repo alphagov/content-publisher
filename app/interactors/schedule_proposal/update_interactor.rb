@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class ScheduleProposal::UpdateInteractor
-  include Interactor
+class ScheduleProposal::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :edition,
            :revision,
@@ -23,10 +22,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-
-    unless edition.editable?
-      raise "Can't set a schedule date/time unless edition is editable"
-    end
+    assert_edition_state(edition, &:editable?)
   end
 
   def parse_publish_time

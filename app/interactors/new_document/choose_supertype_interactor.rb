@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class NewDocument::ChooseSupertypeInteractor
-  include Interactor
-
+class NewDocument::ChooseSupertypeInteractor < ApplicationInteractor
   delegate :user,
            :params,
            :supertype,

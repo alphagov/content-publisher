@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-class Schedule::DestroyInteractor
-  include Interactor
-
-  delegate :params, :edition, :user, to: :context
+class Schedule::DestroyInteractor < ApplicationInteractor
+  delegate :params,
+           :edition,
+           :user,
+           to: :context
 
   def call
     Edition.transaction do
@@ -18,10 +19,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-
-    unless edition.scheduled?
-      raise "Cannot unschedule an edition that is not scheduled"
-    end
+    assert_edition_state(edition, &:scheduled?)
   end
 
   def update_edition

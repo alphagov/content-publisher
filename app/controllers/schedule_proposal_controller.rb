@@ -29,11 +29,11 @@ class ScheduleProposalController < ApplicationController
   def destroy
     result = ScheduleProposal::DestroyInteractor.call(params: params, user: current_user)
     edition = result.edition
-
     redirect_to document_path(edition.document)
   end
 
   def edit
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
   end
 end

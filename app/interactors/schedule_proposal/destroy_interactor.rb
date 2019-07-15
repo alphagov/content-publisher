@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class ScheduleProposal::DestroyInteractor
-  include Interactor
+class ScheduleProposal::DestroyInteractor < ApplicationInteractor
   delegate :params,
            :edition,
            :user,
@@ -18,10 +17,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-
-    unless edition.editable?
-      raise "Cannot modify an edition that is not editable"
-    end
+    assert_edition_state(edition, &:editable?)
   end
 
   def clear_proposed_time

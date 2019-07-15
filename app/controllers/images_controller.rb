@@ -3,6 +3,7 @@
 class ImagesController < ApplicationController
   def index
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
     render layout: rendering_context
   end
 
@@ -28,6 +29,7 @@ class ImagesController < ApplicationController
 
   def crop
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
     @image_revision = @edition.image_revisions.find_by!(image_id: params[:image_id])
     render layout: rendering_context
   end
@@ -42,6 +44,7 @@ class ImagesController < ApplicationController
 
   def edit
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
     @image_revision = @edition.image_revisions.find_by!(image_id: params[:image_id])
     render layout: rendering_context
   end
@@ -92,6 +95,7 @@ class ImagesController < ApplicationController
 
   def download
     edition = Edition.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
     image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
     variant = image_revision.crop_variant("960x640!").processed
 

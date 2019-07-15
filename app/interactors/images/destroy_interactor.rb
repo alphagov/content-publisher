@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Images::DestroyInteractor
-  include Interactor
+class Images::DestroyInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,
@@ -22,6 +21,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
   end
 
   def find_and_remove_image

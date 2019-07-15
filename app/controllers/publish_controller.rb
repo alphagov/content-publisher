@@ -3,6 +3,7 @@
 class PublishController < ApplicationController
   def confirmation
     @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
 
     issues = Requirements::EditionChecker.new(@edition)
                                          .pre_publish_issues(rescue_api_errors: false)

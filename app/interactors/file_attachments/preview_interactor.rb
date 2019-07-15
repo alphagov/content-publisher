@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class FileAttachments::PreviewInteractor
-  include Interactor
-
+class FileAttachments::PreviewInteractor < ApplicationInteractor
   delegate :params,
            :edition,
            :attachment_revision,
@@ -21,6 +19,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
   end
 
   def find_attachment

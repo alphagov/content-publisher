@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Publish::PublishInteractor
-  include Interactor
-
+class Publish::PublishInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,
@@ -26,13 +24,10 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
 
-    unless edition.editable?
-      raise "Can't publish an edition which isn't editable"
-    end
-
-    if Requirements::EditionChecker.new(edition).pre_publish_issues(rescue_api_errors: false).any?
-      raise "Can't publish an edition with requirements issues"
+    assert_edition_state(edition, assertion: "has no requirements issues") do
+      Requirements::EditionChecker.new(edition).pre_publish_issues(rescue_api_errors: false).none?
     end
   end
 
@@ -42,6 +37,7 @@ private
     issues = Requirements::CheckerIssues.new([
       Requirements::Issue.new(:review_status, :not_selected),
     ])
+
     context.fail!(issues: issues)
   end
 

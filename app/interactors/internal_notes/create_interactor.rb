@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class InternalNotes::CreateInteractor
-  include Interactor
-
+class InternalNotes::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

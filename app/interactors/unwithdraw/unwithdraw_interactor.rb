@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-class Unwithdraw::UnwithdrawInteractor
-  include Interactor
-
-  delegate :params, :user, :edition, :api_error, to: :context
+class Unwithdraw::UnwithdrawInteractor < ApplicationInteractor
+  delegate :params,
+           :user,
+           :edition,
+           :api_error,
+           to: :context
 
   def call
     Edition.transaction do
@@ -18,6 +20,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
+    assert_edition_state(edition, &:withdrawn?)
   end
 
   def update_edition

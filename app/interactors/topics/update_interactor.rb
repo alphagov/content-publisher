@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Topics::UpdateInteractor
-  include Interactor
-
+class Topics::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :document,
@@ -18,7 +16,9 @@ class Topics::UpdateInteractor
 private
 
   def find_document
-    context.document = Document.with_current_edition.find_by_param(params[:document])
+    edition = Edition.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
+    context.document = edition.document
   end
 
   def update_topics
