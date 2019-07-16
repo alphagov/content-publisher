@@ -13,8 +13,6 @@ class ScheduleService
                                 publish_time: edition.proposed_publish_time)
 
     update_edition(scheduling, user)
-    create_timeline_entry(:scheduled, scheduling)
-
     create_publish_intent
     schedule_to_publish(scheduling)
   end
@@ -28,8 +26,6 @@ class ScheduleService
     new_scheduling = previous_scheduling.dup.tap { |s| s.publish_time = publish_time }
 
     update_edition(new_scheduling, user)
-    create_timeline_entry(:schedule_updated, new_scheduling)
-
     update_publish_intent
     schedule_to_publish(new_scheduling)
   end
@@ -43,14 +39,6 @@ private
     edition.assign_revision(updater.next_revision, user)
            .assign_status(:scheduled, user, status_details: scheduling)
            .save!
-  end
-
-  def create_timeline_entry(entry_type, scheduling)
-    TimelineEntry.create_for_status_change(
-      entry_type: entry_type,
-      status: edition.status,
-      details: scheduling,
-    )
   end
 
   def create_publish_intent

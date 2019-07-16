@@ -50,11 +50,13 @@ RSpec.feature "Scheduled publishing" do
 
   def then_i_see_the_edition_is_scheduled
     expect(page).to have_content(I18n.t!("schedule.scheduled.title"))
-
     visit document_path(@edition.document)
-    expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))
-    expect(page).to have_content(I18n.t!("documents.history.entry_types.scheduled"))
 
+    within(".app-timeline-entry") do
+      expect(page).to have_content(I18n.t!("documents.history.entry_types.scheduled"))
+    end
+
+    expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))
     expect(page).to have_content("Scheduled to publish at 9:00am on 22 June 2019")
   end
 

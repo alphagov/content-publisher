@@ -12,6 +12,7 @@ class Schedule::CreateInteractor < ApplicationInteractor
       find_and_lock_edition
       check_for_issues
       schedule_to_publish
+      create_timeline_entry
     end
   end
 
@@ -43,5 +44,13 @@ private
   def schedule_to_publish
     reviewed = params[:review_status] == "reviewed"
     ScheduleService.new(edition).schedule(user: user, reviewed: reviewed)
+  end
+
+  def create_timeline_entry
+    TimelineEntry.create_for_status_change(
+      entry_type: :scheduled,
+      status: edition.status,
+      details: edition.status.details,
+    )
   end
 end
