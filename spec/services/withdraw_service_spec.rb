@@ -22,15 +22,6 @@ RSpec.describe WithdrawService do
     end
 
 
-    it "adds an entry in the timeline of the document" do
-      expect { WithdrawService.new.call(edition, public_explanation, user) }
-        .to change { edition.reload.timeline_entries.count }
-        .by(1)
-
-      timeline_entry = edition.timeline_entries.last
-      expect(timeline_entry.entry_type).to eq("withdrawn")
-    end
-
     it "updates the edition status to withdrawn" do
       travel_to(Time.current) do
         WithdrawService.new.call(edition, public_explanation, user)
@@ -96,29 +87,6 @@ RSpec.describe WithdrawService do
       end
     end
 
-    context "when an edition is already withdrawn and public_explanation is the same" do
-      let!(:withdrawn_edition) do
-        withdrawal = build(:withdrawal, public_explanation: public_explanation)
-        create(:edition, :withdrawn, withdrawal: withdrawal)
-      end
-
-      it "doesn't update the Publishing API" do
-        request = stub_any_publishing_api_unpublish
-        WithdrawService.new.call(withdrawn_edition, public_explanation, user)
-        expect(request).not_to have_been_requested
-      end
-
-      it "doesn't create a Withdrawal" do
-        expect { WithdrawService.new.call(withdrawn_edition, public_explanation, user) }
-          .not_to(change { Withdrawal.count })
-      end
-
-      it "doesn't create a TimelineEntry" do
-        expect { WithdrawService.new.call(withdrawn_edition, public_explanation, user) }
-          .not_to(change { withdrawn_edition.reload.timeline_entries.count })
-      end
-    end
-
     context "when an edition is already withdrawn and public_explanation differs" do
       it "updates public_explanation" do
         withdrawn_edition = create(:edition, :withdrawn)
@@ -134,16 +102,6 @@ RSpec.describe WithdrawService do
         expect { WithdrawService.new.call(withdrawn_edition, public_explanation, user) }
           .not_to change { withdrawn_edition.reload.status.details.withdrawn_at }
           .from(withdrawn_at)
-      end
-
-      it "creates a withdrawn_updated timeline entry" do
-        withdrawn_edition = create(:edition, :withdrawn)
-        expect { WithdrawService.new.call(withdrawn_edition, public_explanation, user) }
-          .to change { withdrawn_edition.reload.timeline_entries.count }
-          .by(1)
-
-        timeline_entry = withdrawn_edition.timeline_entries.last
-        expect(timeline_entry.entry_type).to eq("withdrawn_updated")
       end
     end
   end

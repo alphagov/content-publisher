@@ -7,6 +7,7 @@ class Withdraw::CreateInteractor < ApplicationInteractor
            :no_permission,
            :issues,
            :api_error,
+           :already_withdrawn,
            to: :context
 
   def call
@@ -15,7 +16,9 @@ class Withdraw::CreateInteractor < ApplicationInteractor
     Edition.transaction do
       find_and_lock_edition
       check_for_issues
-      withdraw
+      check_previous_withdrawal
+      withdraw_edition
+      create_timeline_entry
     end
   end
 
@@ -41,10 +44,26 @@ private
     context.fail!(issues: issues) if issues.any?
   end
 
-  def withdraw
+  def check_previous_withdrawal
+    context.already_withdrawn = edition.withdrawn?
+    return unless already_withdrawn
+
+    previous_explanation = edition.status.details.public_explanation
+    context.fail! if previous_explanation == params[:public_explanation]
+  end
+
+  def withdraw_edition
     WithdrawService.new.call(edition, params[:public_explanation], user)
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     context.fail!(api_error: true)
+  end
+
+  def create_timeline_entry
+    TimelineEntry.create_for_status_change(
+      entry_type: already_withdrawn ? :withdrawn_updated : :withdrawn,
+      status: edition.status,
+      details: edition.status.details,
+    )
   end
 end
