@@ -39,15 +39,6 @@
           message: "Title should be under 65 characters. Current length: {count}",
         } %>
       <% end %>
-
-      <%= render "components/url_preview", {
-        title: t("documents.edit.url_preview.available"),
-        default_message: t("documents.edit.url_preview.no_title"),
-        error_message: t("documents.edit.url_preview.error"),
-        website_root: Plek.new.website_root,
-        base_path: @revision.base_path
-      } do %>
-      <% end %>
     </div>
 
     <% if @edition.document_type.guidance_for("title") %>
@@ -60,6 +51,18 @@
         <% end %>
       </div>
     <% end %>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <%= render "components/url_preview", {
+        title: t("documents.edit.url_preview.available"),
+        default_message: t("documents.edit.url_preview.no_title"),
+        error_message: t("documents.edit.url_preview.error"),
+        website_root: Plek.new.website_root,
+        base_path: @revision.base_path
+      } %>
+    </div>
   </div>
 
   <div class="govuk-grid-row">
