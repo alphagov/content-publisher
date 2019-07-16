@@ -2,20 +2,17 @@
 
 class PublishController < ApplicationController
   def confirmation
-    @edition = Edition.find_current(document: params[:document])
-    assert_edition_state(@edition, &:editable?)
+    result = Publish::ConfirmationInteractor.call(params: params, user: current_user)
+    issues, edition, api_error = result.to_h.values_at(:issues, :edition, :api_error)
 
-    issues = Requirements::EditionChecker.new(@edition)
-                                         .pre_publish_issues(rescue_api_errors: false)
-
-    if issues.any?
-      redirect_to document_path(@edition.document), tried_to_publish: true
-      return
+    if issues
+      redirect_to document_path(edition.document), tried_to_publish: true
+    elsif api_error
+      redirect_to edition.document,
+                  alert_with_description: t("documents.show.flashes.publish_error")
+    else
+      @edition = edition
     end
-  rescue GdsApi::BaseError => e
-    GovukError.notify(e)
-    redirect_to @edition.document,
-                alert_with_description: t("documents.show.flashes.publish_error")
   end
 
   def publish
