@@ -91,9 +91,10 @@ bundle exec rake development_permissions
 To enable them for your GOV.UK account add them to your account in
 [signon](https://github.com/alphagov/signon).
 
-### User support
+### Further documentation
 
 - [Removing documents](docs/removing-documents.md)
+- [Approach to analytics](docs/approach-to-analytics.md)
 
 ## Licence
 
