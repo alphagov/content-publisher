@@ -16,6 +16,12 @@ module EditionAssertions
     end
   end
 
+  class AccessError < Error
+    def initialize(edition, limit_type)
+      super(edition, "user is in #{limit_type}")
+    end
+  end
+
   def assert_edition_state(edition, options = {}, &block)
     return if block.call(edition)
 
@@ -24,7 +30,17 @@ module EditionAssertions
     raise StateError.new(edition, assertion)
   end
 
-  def assert_edition_access(_edition, _user)
-    raise "not implemented"
+  def assert_edition_access(edition, user)
+    return unless edition.access_limit
+
+    org_id = user.organisation_content_id
+    access_limit = edition.access_limit
+
+    return if org_id == edition.primary_publishing_organisation_id
+
+    return if access_limit.all_organisations? &&
+      edition.organisations.include?(org_id)
+
+    raise AccessError.new(edition, access_limit.limit_type)
   end
 end

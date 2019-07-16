@@ -1,0 +1,5 @@
+en:
+  documents:
+    forbidden:
+      title: Forbidden
+      description: You do not have permission to access this page.
