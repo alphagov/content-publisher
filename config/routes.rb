@@ -76,6 +76,9 @@ Rails.application.routes.draw do
     post "/backdate" => "backdate#update"
     delete "/backdate" => "backdate#destroy"
 
+    get "/access-limit" => "access_limit#edit", as: :access_limit
+    post "/access-limit" => "access_limit#update"
+
     post "/editions" => "editions#create", as: :create_edition
 
     post "/govspeak-preview" => "govspeak_preview#to_html", as: :govspeak_preview

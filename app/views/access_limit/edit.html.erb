@@ -1,0 +1,43 @@
+<% content_for :title, t("access_limit.edit.title") %>
+<% content_for :browser_title, t("access_limit.edit.browser_title") %>
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-body" %>
+      <%= t("access_limit.edit.description") %>
+    </div>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag access_limit_path(@edition.document), data: { gtm: "confirm-access-limit" } do %>
+      <%= render "govuk_publishing_components/components/radio", {
+        name: "limit_type",
+        items: [
+          {
+            value: "primary_organisation",
+            text: t("access_limit.edit.type.primary_organisation"),
+            checked: @edition.access_limit&.primary_organisation?,
+            data_attributes: {
+              gtm: "choose-access-limit",
+              "gtm-value": t("access_limit.edit.type.primary_organisation")
+            }
+          },
+          {
+            value: "all_organisations",
+            text: t("access_limit.edit.type.all_organisations"),
+            checked: @edition.access_limit&.all_organisations?,
+            data_attributes: {
+              gtm: "choose-access-limit",
+              "gtm-value": t("access_limit.edit.type.all_organisations")
+            }
+          }
+        ]
+      } %>
+
+      <%= render "govuk_publishing_components/components/button", { text: "Save" } %>
+    <% end %>
+  </div>
+</div>

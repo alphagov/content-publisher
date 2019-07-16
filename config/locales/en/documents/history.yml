@@ -34,5 +34,7 @@ en:
         file_attachment_updated: "Attachment updated"
         backdated: "Backdated document"
         backdate_cleared: "Backdate cleared"
+        access_limit_created: "Access limit created"
+        access_limit_updated: "Access limit updated"
       entry_content:
         backdated: "First published date backdated to %{date}"
