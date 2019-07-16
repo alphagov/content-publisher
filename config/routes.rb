@@ -101,6 +101,13 @@ Rails.application.routes.draw do
   get "/video-embed" => "video_embed#new", as: :video_embed
   post "/video-embed" => "video_embed#create", as: :create_video_embed
 
+  scope via: :all do
+    match "/400" => "errors#bad_request"
+    match "/404" => "errors#not_found"
+    match "/422" => "errors#unprocessable_entity"
+    match "/500" => "errors#internal_server_error"
+  end
+
   mount GovukPublishingComponents::Engine, at: "/component-guide"
 
   if Rails.env.test?

@@ -1,0 +1,7 @@
+en:
+  errors:
+    unprocessable_entity:
+      title: Request rejected
+      body_govspeak: |
+        The form you submitted may be out of date, returning to the page and
+        reloading the form before submission may resolve this.

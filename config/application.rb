@@ -34,6 +34,8 @@ module ContentPublisher
     config.active_job.queue_adapter = :sidekiq
     config.time_zone = "London"
 
+    config.exceptions_app = self.routes
+
     unless Rails.application.secrets.jwt_auth_secret
       raise "JWT auth secret is not configured. See config/secrets.yml"
     end

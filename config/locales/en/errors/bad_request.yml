@@ -1,0 +1,10 @@
+en:
+  errors:
+    bad_request:
+      title: Sorry, there was a problem
+      body_govspeak: |
+        The request couldn't be processed.
+
+        Please try again later or [raise a support request][support-request].
+
+        [support-request]: https://support.publishing.service.gov.uk/technical_fault_report/new
