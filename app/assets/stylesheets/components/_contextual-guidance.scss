@@ -33,7 +33,14 @@
 }
 
 .app-c-contextual-guidance {
-  padding-top: govuk-spacing(5);
-  border-top: 5px solid $govuk-focus-colour;
+  padding-left: govuk-spacing(3);
+  border-left: 4px solid $govuk-focus-colour;
   background: govuk-colour("white");
+
+  @include govuk-media-query($from: tablet) {
+    padding-top: govuk-spacing(5);
+    padding-left: 0;
+    border-top: 5px solid $govuk-focus-colour;
+    border-left: 0;
+  }
 }
