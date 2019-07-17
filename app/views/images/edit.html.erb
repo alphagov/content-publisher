@@ -27,7 +27,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
   }
 ) do %>
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds" id="alt-text">
+    <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: t("images.edit.form_labels.alt_text"),
@@ -53,7 +53,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
   </div>
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds" id="caption">
+    <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: t("images.edit.form_labels.caption"),
@@ -79,7 +79,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
   </div>
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds" id="credit">
+    <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: t("images.edit.form_labels.credit"),
