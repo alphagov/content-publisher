@@ -16,7 +16,7 @@
   } do |f| %>
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds" id="title">
       <%= render "govuk_publishing_components/components/textarea", {
         label: {
           text: t("documents.edit.form_labels.title"),
@@ -63,7 +63,7 @@
   </div>
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds" id="summary">
       <%= render "govuk_publishing_components/components/textarea", {
         label: {
           text: t("documents.edit.form_labels.summary"),
