@@ -92,10 +92,6 @@ class Edition < ApplicationRecord
       .find_by!(find_by)
   end
 
-  def self.find_and_lock_current(*args, &block)
-    transaction { lock.find_current(*args).tap(&block) }
-  end
-
   def self.create_initial(document, user = nil, tags = {})
     revision = Revision.create_initial(document, user, tags)
     status = Status.create!(created_by: user,

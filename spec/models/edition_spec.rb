@@ -25,17 +25,6 @@ RSpec.describe Edition do
     end
   end
 
-  describe ".find_and_lock_current" do
-    it "passes a found and locked edition to a block" do
-      edition = create(:edition)
-      param = "#{edition.content_id}:#{edition.locale}"
-
-      expect(Edition).to receive(:lock).and_call_original
-      expect { |block| Edition.find_and_lock_current(document: param, &block) }
-        .to yield_with_args(edition)
-    end
-  end
-
   describe ".create_initial" do
     let(:document) { build(:document) }
     let(:user) { build(:user) }
