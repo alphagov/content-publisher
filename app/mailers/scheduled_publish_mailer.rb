@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ScheduledPublishMailer < ApplicationMailer
-  helper :date_time, :edition_url
+  helper :date_time, :external_url
 
   self.delivery_job = EmailDeliveryJob
 

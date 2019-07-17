@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EditionUrlHelper
+module ExternalUrlHelper
   def edition_public_url(edition)
     return unless edition.base_path
 
@@ -10,9 +10,12 @@ module EditionUrlHelper
   def edition_preview_url(edition)
     return unless edition.base_path
 
-    host = Plek.new.external_url_for("draft-origin")
     service = PreviewAuthBypassService.new(edition.document)
     params = { token: service.preview_token }.to_query
-    host + edition.base_path + "?" + params
+    draft_host_url + edition.base_path + "?" + params
+  end
+
+  def draft_host_url
+    Plek.new.external_url_for("draft-origin")
   end
 end
