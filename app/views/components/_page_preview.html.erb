@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div class="app-c-preview" data-module="page-preview">
+<div class="app-c-preview" data-module="page-preview" data-iframe-origin-url="<%= draft_host_url %>">
   <% mobile_preview = capture do %>
     <%= tag.div class: "app-c-preview__mobile" do %>
       <%= tag.iframe class: "app-c-preview__mobile-iframe", src: url, title: "Preview of the page on mobile" %>

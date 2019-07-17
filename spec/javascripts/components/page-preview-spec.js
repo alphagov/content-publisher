@@ -6,13 +6,14 @@ describe('Page preview component', function () {
 
   var container
   var pagePreview
+  var draftUrl = 'https://draft-origin.publishing.service.gov.uk'
 
   beforeEach(function () {
     container = document.createElement('div')
     container.innerHTML =
-      '<div class="app-c-preview" data-module="page-preview">' +
-        '<iframe class="app-c-preview__mobile-iframe" src="http://localhost:3221/component-guide/cookie_banner/default/preview" title="Preview of the page on mobile"></iframe>' +
-        '<iframe class="app-c-preview__desktop-iframe" src="http://localhost:3221/component-guide/cookie_banner/default/preview" title="Preview of the page on desktop or tablet"></iframe>' +
+      '<div class="app-c-preview" data-module="page-preview"  data-iframe-origin-url="' + draftUrl + '">' +
+        '<iframe class="app-c-preview__mobile-iframe" src="' + draftUrl + '/government/news/foreign-secretary-heads-to-brussels-to-discuss-iran" title="Preview of the page on mobile"></iframe>' +
+        '<iframe class="app-c-preview__desktop-iframe" src="' + draftUrl + '/government/news/foreign-secretary-heads-to-brussels-to-discuss-iran" title="Preview of the page on mobile"></iframe>' +
       '</div>'
 
     document.body.appendChild(container)
@@ -29,7 +30,7 @@ describe('Page preview component', function () {
     var mobileIframe = container.querySelector('.app-c-preview__mobile-iframe')
     spyOn(mobileIframe.contentWindow, 'postMessage')
 
-    pagePreview.sendMessage(mobileIframe, {'hideCookieBanner': 'true'})
+    pagePreview.sendMessage(mobileIframe, {'hideCookieBanner': 'true'}, draftUrl)
 
     expect(mobileIframe.contentWindow.postMessage).toHaveBeenCalled()
   })
