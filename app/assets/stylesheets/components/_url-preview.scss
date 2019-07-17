@@ -9,6 +9,10 @@
   margin: 0;
 }
 
+.app-c-url-preview__url {
+  word-wrap: break-word;
+}
+
 .app-c-url-preview__default-message,
 .app-c-url-preview__error-message,
 .app-c-url-preview__url {
