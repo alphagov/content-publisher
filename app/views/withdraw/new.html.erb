@@ -1,15 +1,16 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 <% content_for :title, t("withdraw.new.title", title: @edition.title) %>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <%= render_govspeak(t("withdraw.new.intro_paragraph")) %>
-  </div>
-</div>
 
 <%= form_tag withdraw_path(@edition.document),
              class: "app-c-contextual-guidance__form",
              data: { gtm: "confirm-withdraw" } do %>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <%= render_govspeak(t("withdraw.new.intro_paragraph")) %>
+    </div>
+  </div>
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "govuk_publishing_components/components/textarea", {
@@ -41,19 +42,23 @@
     </div>
   </div>
 
-  <% if @edition.withdrawn? %>
-    <%= render "govuk_publishing_components/components/button", {
-      text: "Update explanation", margin_bottom: true
-    } %>
-  <% else %>
-    <%= render "govuk_publishing_components/components/button", {
-      text: "Withdraw document", margin_bottom: true
-    } %>
-  <% end %>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <% if @edition.withdrawn? %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Update explanation", margin_bottom: true
+        } %>
+      <% else %>
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Withdraw document", margin_bottom: true
+        } %>
+      <% end %>
 
-  <p class="govuk-body">
-    <%= link_to "Cancel", document_path(@edition.document),
-                class: "govuk-link govuk-link--no-visited-state",
-                data: { gtm: "cancel-withdraw" } %>
-  </p>
+      <p class="govuk-body">
+        <%= link_to "Cancel", document_path(@edition.document),
+                    class: "govuk-link govuk-link--no-visited-state",
+                    data: { gtm: "cancel-withdraw" } %>
+      </p>
+    </div>
+  </div>
 <% end %>
