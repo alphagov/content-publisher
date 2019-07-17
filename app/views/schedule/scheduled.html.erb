@@ -12,12 +12,12 @@
       title: t("schedule.scheduled.title")
     } %>
 
-    <%= render "govuk_publishing_components/components/govspeak" do %>
-      <%= govspeak_to_html t("schedule.scheduled.body_govspeak", title: @edition.title, time: time, date: date) %>
-    <% end %>
+    <%= render_govspeak(t("schedule.scheduled.body_govspeak", title: @edition.title, time: time, date: date)) %>
 
     <%= render "govuk_publishing_components/components/inset_text", {
-      text: strip_scheme_from_url(public_url)
+      text: link_to(strip_scheme_from_url(public_url), public_url,
+      class: "govuk-link govuk-link--no-visited-state",
+      data: { gtm: "view-scheduled-edition" })
     } %>
   </div>
 </div>
