@@ -53,7 +53,9 @@ class TimelineEntry < ApplicationRecord
                      file_attachment_deleted: "file_attachment_deleted",
                      file_attachment_updated: "file_attachment_updated",
                      backdated: "backdated",
-                     backdate_cleared: "backdate_cleared" }
+                     backdate_cleared: "backdate_cleared",
+                     access_limit_created: "access_limit_created",
+                     access_limit_updated: "access_limit_updated" }
 
   def self.create_for_status_change(entry_type:,
                                     status:,
@@ -63,6 +65,17 @@ class TimelineEntry < ApplicationRecord
             status: status,
             edition: status.edition,
             document: status.edition.document,
+            details: details)
+  end
+
+  def self.create_for_edition(entry_type:,
+                              edition:,
+                              created_by:,
+                              details: nil)
+    create!(entry_type: entry_type,
+            created_by: created_by,
+            edition: edition,
+            document: edition.document,
             details: details)
   end
 

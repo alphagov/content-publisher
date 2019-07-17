@@ -1,0 +1,9 @@
+en:
+  access_limit:
+    edit:
+      browser_title: Access limit content
+      title: Who can access this document
+      description: You can limit who is able to find and edit this document before it is published. Select an option that includes the organisation associated with your account.
+      type:
+        primary_organisation: Only publishers in the primary organisation have access
+        all_organisations: Only publishers in tagged organistions have access

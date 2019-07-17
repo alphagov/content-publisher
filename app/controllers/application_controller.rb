@@ -23,6 +23,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from EditionAssertions::AccessError do |e|
+    Rails.logger.warn(e.message)
+    render "documents/forbidden", status: :forbidden, assigns: { edition: e.edition }
+  end
+
   def rendering_context
     request.headers["Content-Publisher-Rendering-Context"] || "application"
   end

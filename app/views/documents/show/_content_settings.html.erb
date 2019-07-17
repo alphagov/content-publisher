@@ -6,19 +6,40 @@
   <% end %>
 <% end %>
 
+<% access_limit = capture do %>
+  <% if @edition.access_limit.present? %>
+    <% t("documents.show.content_settings.access_limit.type.#{@edition.access_limit.limit_type}") %>
+  <% else %>
+    <% t("documents.show.content_settings.access_limit.no_access_limit") %>
+  <% end %>
+<% end %>
+
+<% items = [] %>
+
+<% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+  <% items << {
+    field: t("documents.show.content_settings.access_limit.title"),
+    value: access_limit,
+    edit: {
+      href: access_limit_path,
+      data_attributes: { gtm: "edit-access-limit" }
+    }
+  } %>
+<% end %>
+
+<% if @edition.first? %>
+  <% items << {
+    field: t("documents.show.content_settings.backdate.title"),
+    value: backdating_status,
+    edit: {
+      href: backdate_path,
+      data_attributes: { gtm: "edit-backdate" }
+    }
+  } %>
+<% end %>
+
 <%= render "components/summary", {
   id: "content_settings",
   title: t("documents.show.content_settings.title"),
-  items: [
-    {
-      field: t("documents.show.content_settings.backdate.title"),
-      value: backdating_status,
-      edit: {
-        href: backdate_path,
-        data_attributes: {
-          gtm: "edit-backdate",
-        }
-      },
-    }
-  ],
+  items: items
 } %>
