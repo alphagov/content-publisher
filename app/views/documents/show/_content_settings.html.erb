@@ -14,16 +14,18 @@
   <% end %>
 <% end %>
 
-<% items = [
-  {
+<% items = [] %>
+
+<% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+  <% items << {
     field: t("documents.show.content_settings.access_limit.title"),
     value: access_limit,
     edit: {
       href: access_limit_path,
       data_attributes: { gtm: "edit-access-limit" }
     }
-  }
-] %>
+  } %>
+<% end %>
 
 <% if @edition.first? %>
   <% items << {
