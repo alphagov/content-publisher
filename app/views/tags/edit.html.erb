@@ -12,10 +12,12 @@
                  },
                  class: "app-c-contextual-guidance__form" do %>
       <% @edition.document_type.tags.each do |tag_field| %>
-        <%= render "tags/tags/#{tag_field.type}_input",
-          tag_field: tag_field,
-          tags: @revision.tags,
-          issues: @issues %>
+        <div id="<%= tag_field.id %>">
+          <%= render "tags/tags/#{tag_field.type}_input",
+            tag_field: tag_field,
+            tags: @revision.tags,
+            issues: @issues %>
+        </div>
       <% end %>
 
       <%= render "govuk_publishing_components/components/button", {
