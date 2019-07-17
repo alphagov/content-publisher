@@ -2,7 +2,7 @@
 
 class ScheduleController < ApplicationController
   def new
-    result = Schedule::NewInteractor.call(params: params)
+    result = Schedule::NewInteractor.call(params: params, user: current_user)
     @edition = result.edition
 
     if result.publish_issues
@@ -15,6 +15,7 @@ class ScheduleController < ApplicationController
   def edit
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:scheduled?)
+    assert_edition_access(@edition, current_user)
   end
 
   def update
@@ -74,5 +75,6 @@ class ScheduleController < ApplicationController
   def scheduled
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:scheduled?)
+    assert_edition_access(@edition, current_user)
   end
 end
