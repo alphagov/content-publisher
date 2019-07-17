@@ -22,12 +22,21 @@ private
   end
 
   def update_edition
-    context.fail! if edition.access_limit&.limit_type == params[:limit_type]
-    edition.assign_access_limit(params[:limit_type], user).save!
+    limit_type = params.require(:limit_type)
+
+    if limit_type == "none"
+      context.fail! if edition.access_limit.nil?
+      edition.remove_access_limit(user).save!
+    else
+      context.fail! if edition.access_limit&.limit_type == params[:limit_type]
+      edition.assign_access_limit(limit_type, user).save!
+    end
   end
 
   def create_timeline_entry
-    entry_type = if edition.access_limit_id_before_last_save.nil?
+    entry_type = if edition.access_limit.nil?
+                   :access_limit_removed
+                 elsif edition.access_limit_id_before_last_save.nil?
                    :access_limit_created
                  else
                    :access_limit_updated

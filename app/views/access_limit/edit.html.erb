@@ -17,6 +17,15 @@
         name: "limit_type",
         items: [
           {
+            value: "none",
+            text: t("access_limit.edit.no_access_limit"),
+            checked: @edition.access_limit.nil?,
+            data_attributes: {
+              gtm: "choose-access-limit",
+              "gtm-value": t("access_limit.edit.no_access_limit")
+            }
+          },
+          {
             value: "primary_organisation",
             text: t("access_limit.edit.type.primary_organisation"),
             checked: @edition.access_limit&.primary_organisation?,
