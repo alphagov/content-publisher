@@ -9,20 +9,23 @@ class EditionFilter
   SORT_KEYS = %w[last_updated].freeze
   DEFAULT_SORT = "-last_updated"
 
-  attr_reader :filters, :sort, :page, :per_page
+  attr_reader :filters, :sort, :page, :per_page, :user
 
-  def initialize(params)
+  def initialize(user, **params)
     @filters = params[:filters].to_h.symbolize_keys
     @sort = allowed_sort?(params[:sort]) ? params[:sort] : DEFAULT_SORT
     @page = params.fetch(:page, 1).to_i
     @per_page = params[:per_page]
+    @user = user
   end
 
   def editions
     revision_joins = { revision: %i[content_revision tags_revision] }
     scope = Edition.where(current: true)
+                   .left_joins(:access_limit)
                    .joins(revision_joins, :status, :document)
                    .preload(revision_joins, :status, :document, :last_edited_by)
+    scope = access_limited_scope(scope)
     scope = filtered_scope(scope)
     scope = ordered_scope(scope)
     scope.page(page).per(per_page)
@@ -39,6 +42,22 @@ private
 
   def allowed_sort?(sort)
     SORT_KEYS.flat_map { |item| [item, "-#{item}"] }.include?(sort)
+  end
+
+  def access_limited_scope(scope)
+    scope.where(
+      "access_limit_id IS NULL" + " OR " +
+      "(
+         access_limits.limit_type = 'primary_organisation' AND
+         #{TAG_CONTAINS_QUERY % { tag: 'primary_publishing_organisation' }}
+       )" + " OR " +
+      "(
+         access_limits.limit_type = 'tagged_organisations' AND
+         (#{TAG_CONTAINS_QUERY % { tag: 'primary_publishing_organisation' }} OR
+          #{TAG_CONTAINS_QUERY % { tag: 'organisations' }})
+       )",
+      value: user.organisation_content_id,
+    )
   end
 
   def filtered_scope(scope)
