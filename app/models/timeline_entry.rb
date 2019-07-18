@@ -55,7 +55,8 @@ class TimelineEntry < ApplicationRecord
                      backdated: "backdated",
                      backdate_cleared: "backdate_cleared",
                      access_limit_created: "access_limit_created",
-                     access_limit_updated: "access_limit_updated" }
+                     access_limit_updated: "access_limit_updated",
+                     access_limit_removed: "access_limit_removed" }
 
   def self.create_for_status_change(entry_type:,
                                     status:,
