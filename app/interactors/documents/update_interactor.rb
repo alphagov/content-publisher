@@ -28,8 +28,14 @@ private
   end
 
   def update_revision
+    update_params = params.require(:revision)
+
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(update_params(edition))
+    updater.assign(update_params.permit(:update_type, :change_note))
+
+    content_params = update_params.require(:contents)
+    content_fields = edition.document_type.contents
+    content_fields.each { |field| field.update(content_params, updater) }
 
     context.fail! unless updater.changed?
     context.revision = updater.next_revision
@@ -50,17 +56,5 @@ private
 
   def update_preview
     PreviewService.new(edition).try_create_preview
-  end
-
-  def update_params(edition)
-    contents_params = edition.document_type.contents.map(&:id)
-
-    params.require(:revision)
-      .permit(:update_type, :change_note, :title, :summary, contents: contents_params)
-      .tap do |p|
-        p[:title] = p[:title]&.strip
-        p[:summary] = p[:summary]&.strip
-        p[:base_path] = PathGeneratorService.new.path(edition.document, p[:title])
-      end
   end
 end

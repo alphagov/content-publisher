@@ -30,9 +30,12 @@
 
         [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
   contents:
+    - id: title_and_base_path
+      label: Title
+    - id: summary
+      label: Summary
     - id: body
       label: Body
-      type: govspeak
   tags:
     - id: primary_publishing_organisation
       label: Primary organisation

@@ -1,7 +1,7 @@
 <% contents = @edition.document_type.contents.map { |field|
   {
     field: field.label,
-    value: render("documents/fields/#{field.type}", field: field, edition: @edition)
+    value: render("documents/fields/#{field.id}", field: field, edition: @edition)
   }
 } %>
 
@@ -30,14 +30,5 @@
         data_attributes: { gtm: "edit-summary" } }
     end
   ),
-  items: [
-    {
-      field: t("documents.show.contents.items.title"),
-      value: @edition.title
-    },
-    {
-      field: t("documents.show.contents.items.summary"),
-      value: @edition.summary
-    }
-  ] + contents + edition_metadata
+  items: contents + edition_metadata
 } %>

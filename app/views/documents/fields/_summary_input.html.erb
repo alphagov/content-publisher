@@ -1,0 +1,36 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds" id="summary">
+    <%= render "govuk_publishing_components/components/textarea", {
+      label: {
+        text: t("documents.edit.form_labels.summary"),
+        bold: true
+      },
+      id: "summary-field",
+      name: "revision[contents][summary]",
+      value: @revision.summary,
+      error_items: @issues&.items_for(:summary),
+      rows: 4,
+      maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH,
+      data: {
+        "contextual-guidance": "document-summary-guidance",
+      }
+    } do %>
+      <%= render "components/input_length_suggester", {
+        for_id: "summary-field",
+        show_from: 120,
+        message: "Summary should be under 160 characters. Current length: {count}",
+      } %>
+    <% end %>
+  </div>
+
+  <% if @edition.document_type.guidance_for("summary") %>
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual_guidance", {
+        id: "document-summary-guidance",
+        title: @edition.document_type.guidance_for("summary").title
+      } do %>
+        <p class="govuk-body"><%= @edition.document_type.guidance_for("summary").body_govspeak %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

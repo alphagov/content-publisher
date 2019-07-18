@@ -1,0 +1,50 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds" id="title">
+    <%= render "govuk_publishing_components/components/textarea", {
+      label: {
+        text: t("documents.edit.form_labels.title"),
+        bold: true
+      },
+      id: "title-field",
+      name: "revision[contents][title]",
+      value: @revision.title,
+      error_items: @issues&.items_for(:title),
+      rows: 2,
+      maxlength: Requirements::ContentChecker::TITLE_MAX_LENGTH,
+      data: {
+        "url-preview": "input",
+        "contextual-guidance": "revision-title-guidance",
+      }
+    } do %>
+      <%= render "components/input_length_suggester", {
+        for_id: "title-field",
+        show_from: 55,
+        message: "Title should be under 65 characters. Current length: {count}",
+      } %>
+    <% end %>
+  </div>
+
+  <% if @edition.document_type.guidance_for("title") %>
+    <div class="govuk-grid-column-one-third">
+      <%= render "components/contextual_guidance", {
+        id: "revision-title-guidance",
+        title: @edition.document_type.guidance_for("title").title
+      } do %>
+        <p class="govuk-body"><%= @edition.document_type.guidance_for("title").body_govspeak %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "components/url_preview", {
+      title: t("documents.edit.url_preview.available"),
+      default_message: t("documents.edit.url_preview.no_title"),
+      error_message: t("documents.edit.url_preview.error"),
+      website_root: Plek.new.website_root,
+      base_path: @revision.base_path
+    } %>
+  </div>
+</div>
+

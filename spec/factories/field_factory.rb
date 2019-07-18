@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :field, class: DocumentType::Field do
+  factory :field do
     skip_create
 
     id { SecureRandom.hex(4) }

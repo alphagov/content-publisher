@@ -17,7 +17,7 @@ class DocumentType
       hashes = YAML.load_file(Rails.root.join("app", "formats", "document_types.yml"))
 
       hashes.map do |hash|
-        hash["contents"] = hash["contents"].to_a.map(&Field.method(:new))
+        hash["contents"] = hash["contents"].to_a.map(&Formats::Field.method(:for))
         hash["tags"] = hash["tags"].to_a.map(&TagField.method(:new))
         hash["publishing_metadata"] = PublishingMetadata.new(hash["publishing_metadata"].to_h)
         hash["guidance"] = hash["guidance"].to_a.map(&Guidance.method(:new))
@@ -47,10 +47,5 @@ class DocumentType
   class PublishingMetadata
     include InitializeWithHash
     attr_reader :schema_name, :rendering_app
-  end
-
-  class Field
-    include InitializeWithHash
-    attr_reader :id, :label, :type
   end
 end
