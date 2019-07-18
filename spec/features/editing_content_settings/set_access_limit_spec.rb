@@ -31,9 +31,15 @@ RSpec.feature "Set access limit" do
     @supporting_org = SecureRandom.uuid
     primary_org = current_user.organisation_content_id
 
+    stub_publishing_api_has_linkables(
+      [{ "content_id" => primary_org, "internal_name" => "Primary org" },
+       { "content_id" => @supporting_org, "internal_name" => "Supporting org" }],
+      document_type: "organisation",
+    )
+
     @edition = create(:edition, tags: {
       primary_publishing_organisation: [primary_org],
-      organisations: [primary_org, @supporting_org],
+      organisations: [@supporting_org],
     })
   end
 
@@ -58,11 +64,20 @@ RSpec.feature "Set access limit" do
   end
 
   def and_i_limit_to_my_organisation
+    within ".govuk-radios" do
+      expect(page).to have_content("Primary org")
+    end
+
     choose I18n.t!("access_limit.edit.type.primary_organisation")
     click_on "Save"
   end
 
   def and_i_limit_to_tagged_organisations
+    within ".govuk-radios" do
+      expect(page).to have_content("Primary org", count: 2)
+      expect(page).to have_content("Supporting org")
+    end
+
     choose I18n.t!("access_limit.edit.type.tagged_organisations")
     click_on "Save"
   end

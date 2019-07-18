@@ -13,6 +13,12 @@ RSpec.feature "Remove access limit" do
 
   def given_there_is_an_access_limited_edition
     @edition = create(:edition, :access_limited, created_by: current_user)
+    primary_org = current_user.organisation_content_id
+
+    stub_publishing_api_has_linkables(
+      [{ "content_id" => primary_org, "internal_name" => "Primary org" }],
+      document_type: "organisation",
+    )
   end
 
   def and_there_is_a_user_in_some_other_org
