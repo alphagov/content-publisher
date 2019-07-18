@@ -3,3 +3,8 @@
 <div class="govuk-body">
   <%= t("documents.forbidden.description") %>
 </div>
+
+<% primary_org = LinkablesService.new("organisation")
+ .by_content_id(@edition.primary_publishing_organisation_id) %>
+
+<%= t("documents.forbidden.owner", primary_org: primary_org["internal_name"]) %>

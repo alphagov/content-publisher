@@ -93,6 +93,7 @@ RSpec.feature "Set access limit" do
   end
 
   def and_i_can_still_edit_the_edition
+    visit document_path(@edition.document)
     expect(page).to have_content("Edit Access limiting")
     visit edit_document_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.edit.title", title: @edition.title_or_fallback))
@@ -100,25 +101,25 @@ RSpec.feature "Set access limit" do
 
   def and_the_supporting_user_can_also
     login_as(@supporting_org_user)
-    visit document_path(@edition.document)
-    expect(page).to have_content("Edit Access limiting")
-    visit edit_document_path(@edition.document)
-    expect(page).to have_content(I18n.t!("documents.edit.title", title: @edition.title_or_fallback))
+    and_i_can_still_edit_the_edition
   end
 
   def and_the_supporting_user_cannot
     login_as(@supporting_org_user)
-    visit document_path(@edition.document)
-    expect(page).to have_content("You do not have permission to access this page.")
-    visit edit_document_path(@edition.document)
-    expect(page).to have_content("You do not have permission to access this page.")
+    i_cannot_edit_the_edition
   end
 
   def and_someone_in_another_org_cannot
     login_as(@other_org_user)
+    i_cannot_edit_the_edition
+  end
+
+  def i_cannot_edit_the_edition
     visit document_path(@edition.document)
-    expect(page).to have_content("You do not have permission to access this page.")
+    expect(page).to have_content(I18n.t!("documents.forbidden.description"))
+    expect(page).to have_content(I18n.t!("documents.forbidden.owner", primary_org: "Primary org"))
     visit edit_document_path(@edition.document)
-    expect(page).to have_content("You do not have permission to access this page.")
+    expect(page).to have_content(I18n.t!("documents.forbidden.description"))
+    expect(page).to have_content(I18n.t!("documents.forbidden.owner", primary_org: "Primary org"))
   end
 end
