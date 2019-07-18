@@ -4,7 +4,11 @@
   <%= t("documents.forbidden.description") %>
 </div>
 
-<% primary_org = LinkablesService.new("organisation")
- .by_content_id(@edition.primary_publishing_organisation_id) %>
+<div class="govuk-body">
+  <% begin %>
+   <% primary_org = LinkablesService.new("organisation")
+     .by_content_id(@edition.primary_publishing_organisation_id) %>
 
-<%= t("documents.forbidden.owner", primary_org: primary_org["internal_name"]) %>
+   <%= t("documents.forbidden.owner", primary_org: primary_org["internal_name"]) %>
+  <% rescue GdsApi::BaseError; end %>
+</div>

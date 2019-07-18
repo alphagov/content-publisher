@@ -1,0 +1,6 @@
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, t("access_limit.edit.title", title: @edition.title_or_fallback) %>
+
+<p class="govuk-body">
+  <%= t("access_limit.edit.api_down") %>
+</p>
