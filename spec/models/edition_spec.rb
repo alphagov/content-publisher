@@ -202,9 +202,9 @@ RSpec.describe Edition do
       edition = build(:edition)
       user = build(:user)
 
-      edition.assign_access_limit(:all_organisations, user)
+      edition.assign_access_limit(:tagged_organisations, user)
 
-      expect(edition.access_limit).to be_all_organisations
+      expect(edition.access_limit).to be_tagged_organisations
       expect(edition.access_limit.created_by).to eq(user)
       expect(edition.access_limit.revision_at_creation).to eq(edition.revision)
     end
@@ -214,7 +214,7 @@ RSpec.describe Edition do
       user = build(:user)
 
       travel_to(Time.current) do
-        expect { edition.assign_access_limit(:all_organisations, user) }
+        expect { edition.assign_access_limit(:tagged_organisations, user) }
           .to change { edition.last_edited_by }.to(user)
           .and change { edition.last_edited_at }.to(Time.current)
       end

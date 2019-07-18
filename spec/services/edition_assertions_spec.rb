@@ -38,6 +38,13 @@ RSpec.describe EditionAssertions do
         expect { assert_edition_access(edition, user) }.to_not raise_error
       end
 
+      it "raises an error when the user is in a supporting org" do
+        supporting_user = build :user, organisation_content_id: "supporting-org-id"
+
+        expect { assert_edition_access(edition, supporting_user) }
+          .to raise_error(EditionAssertions::AccessError)
+      end
+
       it "raises an error when the user is in another org" do
         another_user = build :user, organisation_content_id: "another-org"
 
@@ -46,11 +53,11 @@ RSpec.describe EditionAssertions do
       end
     end
 
-    context "when access is limited to supporting orgs" do
+    context "when access is limited to tagged orgs" do
       let(:edition) do
         build :edition,
               :access_limited,
-              limit_type: :all_organisations,
+              limit_type: :tagged_organisations,
               tags: {
                 primary_publishing_organisation: %w[primary-org-id],
                 organisations: %w[primary-org-id supporting-org-id],

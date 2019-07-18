@@ -23,7 +23,7 @@ RSpec.feature "Edit access limit" do
   end
 
   def then_i_see_the_current_access_limit
-    radio_text = I18n.t!("access_limit.edit.type.all_organisations")
+    radio_text = I18n.t!("access_limit.edit.type.tagged_organisations")
     expect(find_field(radio_text)).to be_checked
   end
 
