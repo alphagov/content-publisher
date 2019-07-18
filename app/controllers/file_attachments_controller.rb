@@ -6,12 +6,14 @@ class FileAttachmentsController < ApplicationController
   def index
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
+    assert_edition_access(@edition, current_user)
     render layout: rendering_context
   end
 
   def show
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
+    assert_edition_access(@edition, current_user)
 
     @attachment = @edition.file_attachment_revisions
       .find_by!(file_attachment_id: params[:file_attachment_id])
@@ -20,7 +22,7 @@ class FileAttachmentsController < ApplicationController
   end
 
   def preview
-    result = FileAttachments::PreviewInteractor.call(params: params)
+    result = FileAttachments::PreviewInteractor.call(params: params, user: current_user)
     attachment_revision, edition, can_preview, api_error = result.to_h.values_at(:attachment_revision,
                                                                                  :edition,
                                                                                  :can_preview,

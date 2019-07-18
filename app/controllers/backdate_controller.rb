@@ -5,6 +5,7 @@ class BackdateController < ApplicationController
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
     assert_edition_state(@edition, &:first?)
+    assert_edition_access(@edition, current_user)
   end
 
   def update

@@ -9,6 +9,7 @@ class TopicsController < ApplicationController
   def edit
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
+    assert_edition_access(@edition, current_user)
     @version = @edition.document_topics.version
     @topics = @edition.topics
   end
