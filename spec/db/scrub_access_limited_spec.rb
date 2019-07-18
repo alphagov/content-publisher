@@ -56,4 +56,73 @@ RSpec.describe "Scrub Access Limited SQL Script" do
 
     expect { timeline_entry.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
+
+  it "removes revision and status models" do
+    edition = create(:edition, :access_limited)
+    revision = edition.revision
+    status = edition.status
+
+    execute_sql
+
+    expect { revision.content_revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { revision.tags_revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { revision.metadata_revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { status.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it "removes previous revisions and statuses" do
+    edition = create(:edition, :access_limited)
+    user = edition.created_by
+    old_revision = edition.revision
+    old_status = edition.status
+    edition.assign_revision(build(:revision), user).save!
+    edition.assign_status(:submitted_for_review, user).save!
+
+    execute_sql
+
+    expect { old_revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { old_status.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it "doesn't delete a revision that is associated with a non access limited edition" do
+    access_limited_edition = create(:edition, :access_limited)
+    revision = access_limited_edition.revision
+    non_access_limited_edition = create(:edition, revision: revision)
+
+    execute_sql
+
+    expect { access_limited_edition.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { revision.reload }.not_to raise_error
+    expect { non_access_limited_edition.reload }.not_to raise_error
+  end
+
+  it "deletes image revisions with associated assets and blobs" do
+    image_revision = create(:image_revision, :on_asset_manager)
+    create(:edition, :access_limited, image_revisions: [image_revision])
+    assets = image_revision.assets
+    blob = image_revision.blob_revision.blob
+
+    execute_sql
+
+    expect { image_revision.blob_revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { image_revision.metadata_revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { image_revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { blob.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect(assets.reload).to be_empty
+  end
+
+  it "deletes file attachment revisions with associated assets and blobs" do
+    file_attachment_revision = create(:file_attachment_revision, :on_asset_manager)
+    create(:edition, :access_limited, file_attachment_revisions: [file_attachment_revision])
+    blob = file_attachment_revision.blob_revision.blob
+
+    execute_sql
+
+    expect { file_attachment_revision.asset.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { file_attachment_revision.blob_revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { file_attachment_revision.metadata_revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { file_attachment_revision.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { blob.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
 end
