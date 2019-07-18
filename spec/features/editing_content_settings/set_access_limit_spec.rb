@@ -20,8 +20,8 @@ RSpec.feature "Set access limit" do
   scenario "all organisations" do
     when_i_visit_the_summary_page
     and_i_edit_the_access_limit
-    and_i_limit_to_all_organisations
-    then_i_see_all_orgs_have_access
+    and_i_limit_to_tagged_organisations
+    then_i_see_tagged_orgs_have_access
     and_i_can_still_edit_the_edition
     and_the_supporting_user_can_also
     and_someone_in_another_org_cannot
@@ -62,8 +62,8 @@ RSpec.feature "Set access limit" do
     click_on "Save"
   end
 
-  def and_i_limit_to_all_organisations
-    choose I18n.t!("access_limit.edit.type.all_organisations")
+  def and_i_limit_to_tagged_organisations
+    choose I18n.t!("access_limit.edit.type.tagged_organisations")
     click_on "Save"
   end
 
@@ -72,8 +72,8 @@ RSpec.feature "Set access limit" do
     expect(page).to have_content(I18n.t!("documents.history.entry_types.access_limit_created"))
   end
 
-  def then_i_see_all_orgs_have_access
-    expect(page).to have_content(I18n.t!("documents.show.content_settings.access_limit.type.all_organisations"))
+  def then_i_see_tagged_orgs_have_access
+    expect(page).to have_content(I18n.t!("documents.show.content_settings.access_limit.type.tagged_organisations"))
     expect(page).to have_content(I18n.t!("documents.history.entry_types.access_limit_created"))
   end
 

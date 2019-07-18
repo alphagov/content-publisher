@@ -11,7 +11,7 @@ class AccessLimit < ApplicationRecord
   belongs_to :revision_at_creation, class_name: "Revision"
 
   enum limit_type: { primary_organisation: "primary_organisation",
-                     all_organisations: "all_organisations" }
+                     tagged_organisations: "tagged_organisations" }
 
   def readonly?
     !new_record?

@@ -38,7 +38,7 @@ module EditionAssertions
 
     return if org_id == edition.primary_publishing_organisation_id
 
-    return if access_limit.all_organisations? &&
+    return if access_limit.tagged_organisations? &&
       edition.organisations.include?(org_id)
 
     raise AccessError.new(edition, access_limit.limit_type)

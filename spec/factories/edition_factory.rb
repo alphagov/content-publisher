@@ -164,7 +164,7 @@ FactoryBot.define do
 
     trait :access_limited do
       transient do
-        limit_type { :all_organisations }
+        limit_type { :tagged_organisations }
       end
 
       after(:build) do |edition, evaluator|

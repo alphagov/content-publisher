@@ -35,12 +35,12 @@
             }
           },
           {
-            value: "all_organisations",
-            text: t("access_limit.edit.type.all_organisations"),
-            checked: @edition.access_limit&.all_organisations?,
+            value: "tagged_organisations",
+            text: t("access_limit.edit.type.tagged_organisations"),
+            checked: @edition.access_limit&.tagged_organisations?,
             data_attributes: {
               gtm: "choose-access-limit",
-              "gtm-value": t("access_limit.edit.type.all_organisations")
+              "gtm-value": t("access_limit.edit.type.tagged_organisations")
             }
           }
         ]
