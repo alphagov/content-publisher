@@ -5,24 +5,26 @@
 <% end %>
 
 <% content_for :browser_title, t("publish.published.title") %>
+<% public_url = edition_public_url(@edition) %>
+<% published_edition_link = render("govuk_publishing_components/components/inset_text", {
+    text: link_to(strip_scheme_from_url(public_url), public_url,
+                  class: "govuk-link govuk-link--no-visited-state",
+                  data: { gtm: "view-published-edition" })
+}) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <% public_url = edition_public_url(@edition) %>
 
     <% if @edition.status.published_but_needs_2i? %>
       <%= render "govuk_publishing_components/components/panel", {
         title: t("publish.published.published_without_review.title")
       } %>
 
-      <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("publish.published.published_without_review.body_govspeak", title: @edition.title) %>
-        <%= link_to(strip_scheme_from_url(public_url), public_url,
-                    class: "govuk-link govuk-link--no-visited-state",
-                    data: { gtm: "view-published-edition" }) %>
+      <%= render_govspeak(t("publish.published.published_without_review.body_govspeak", title: @edition.title)) %>
 
-        <%= govspeak_to_html t("publish.published.published_without_review.what_to_do_govspeak") %>
-      <% end %>
+      <%= published_edition_link %>
+
+      <%= render_govspeak(t("publish.published.published_without_review.what_to_do_govspeak")) %>
 
       <%= render "govuk_publishing_components/components/copy_to_clipboard",
         label: t("publish.published.published_without_review.send_label"),
@@ -44,13 +46,9 @@
         title: t("publish.published.reviewed.title")
       } %>
 
-      <%= render "govuk_publishing_components/components/govspeak" do %>
-        <%= govspeak_to_html t("publish.published.reviewed.body_govspeak", title: @edition.title) %>
+      <%= render_govspeak(t("publish.published.reviewed.body_govspeak", title: @edition.title)) %>
 
-        <%= link_to(strip_scheme_from_url(public_url), public_url,
-                    class: "govuk-link govuk-link--no-visited-state",
-                    data: { gtm: "view-published-edition" }) %>
-      <% end %>
+      <%= published_edition_link %>
     <% end %>
   </div>
 </div>
