@@ -6,6 +6,11 @@
 
 <% content_for :browser_title, t("publish.published.title") %>
 <% public_url = edition_public_url(@edition) %>
+<% published_edition_link = render("govuk_publishing_components/components/inset_text", {
+    text: link_to(strip_scheme_from_url(public_url), public_url,
+                  class: "govuk-link govuk-link--no-visited-state",
+                  data: { gtm: "view-published-edition" })
+}) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -17,11 +22,7 @@
 
       <%= render_govspeak(t("publish.published.published_without_review.body_govspeak", title: @edition.title)) %>
 
-      <%= render "govuk_publishing_components/components/inset_text", {
-        text: link_to(strip_scheme_from_url(public_url), public_url,
-                      class: "govuk-link govuk-link--no-visited-state",
-                      data: { gtm: "view-published-edition" })
-      } %>
+      <%= published_edition_link %>
 
       <%= render_govspeak(t("publish.published.published_without_review.what_to_do_govspeak")) %>
 
@@ -47,11 +48,7 @@
 
       <%= render_govspeak(t("publish.published.reviewed.body_govspeak", title: @edition.title)) %>
 
-      <%= render "govuk_publishing_components/components/inset_text", {
-        text: link_to(strip_scheme_from_url(public_url), public_url,
-                      class: "govuk-link govuk-link--no-visited-state",
-                      data: { gtm: "view-published-edition" })
-      } %>
+      <%= published_edition_link %>
     <% end %>
   </div>
 </div>
