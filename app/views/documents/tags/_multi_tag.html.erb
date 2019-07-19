@@ -1,7 +1,7 @@
 <% if values.any? %>
   <ul class="govuk-list">
     <% values.each do |value| %>
-      <li><%= value["internal_name"] %></li>
+      <li><%= value&.fetch("internal_name") %></li>
     <% end %>
   </ul>
 <% else %>

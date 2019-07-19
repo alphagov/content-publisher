@@ -6,11 +6,12 @@
 
 <% if @edition.primary_publishing_organisation_id %>
   <% primary_org_id = @edition.primary_publishing_organisation_id %>
-  <% primary_org = service.by_content_id(primary_org_id)["internal_name"] %>
+  <% primary_org = service.by_content_id(primary_org_id)&.fetch("internal_name") %>
 <% end %>
 
 <% supporting_orgs = @edition.organisations
-  .map { |org_id| service.by_content_id(org_id)["internal_name"] } %>
+  .map { |org_id| service.by_content_id(org_id)&.fetch("internal_name") }
+  .compact %>
 
 <% tagged_orgs = ([primary_org] + supporting_orgs).compact %>
 

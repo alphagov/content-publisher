@@ -6,9 +6,12 @@
 
 <div class="govuk-body">
   <% begin %>
-   <% primary_org = LinkablesService.new("organisation")
-     .by_content_id(@edition.primary_publishing_organisation_id) %>
+    <% primary_org = LinkablesService.new("organisation")
+      .by_content_id(@edition.primary_publishing_organisation_id) %>
 
-   <%= t("documents.forbidden.owner", primary_org: primary_org["internal_name"]) %>
+    <% if primary_org %>
+      <%= t("documents.forbidden.owner",
+            primary_org: primary_org.fetch("internal_name")) %>
+    <% end %>
   <% rescue GdsApi::BaseError; end %>
 </div>
