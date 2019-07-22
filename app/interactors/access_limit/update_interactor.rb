@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AccessLimit::UpdateInteractor < ApplicationInteractor
+  LIMIT_TYPES = AccessLimit.limit_types.keys
+
   delegate :params,
            :user,
            :edition,
@@ -24,12 +26,12 @@ private
   def update_edition
     limit_type = params.require(:limit_type)
 
-    if limit_type == "none"
+    if LIMIT_TYPES.include?(limit_type)
+      context.fail! if edition.access_limit&.limit_type == limit_type
+      edition.assign_access_limit(limit_type, user).save!
+    else
       context.fail! if edition.access_limit.nil?
       edition.remove_access_limit(user).save!
-    else
-      context.fail! if edition.access_limit&.limit_type == params[:limit_type]
-      edition.assign_access_limit(limit_type, user).save!
     end
   end
 
