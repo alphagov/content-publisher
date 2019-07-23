@@ -52,9 +52,16 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         })
         syncResults(query
           ? results.filter(function (result) {
-            var valueContains = result.text.toLowerCase().indexOf(query.toLowerCase()) !== -1
-            var hintContains = result.hint.toLowerCase().indexOf(query.toLowerCase()) !== -1
-            return valueContains || hintContains
+            var queryLowerCase = query.toLowerCase().trim()
+            var resultTextLowerCase = result.text.toLowerCase()
+            var resultHintLowerCase = result.hint.toLowerCase()
+            var textAndHintLowerCase = resultTextLowerCase + ' ' + resultHintLowerCase
+            var hintAndTextLowerCase = resultHintLowerCase + ' ' + resultTextLowerCase
+
+            var textAndHintContains = textAndHintLowerCase.indexOf(queryLowerCase) !== -1
+            var hintAndTextContains = hintAndTextLowerCase.indexOf(queryLowerCase) !== -1
+
+            return textAndHintContains || hintAndTextContains
           }) : []
         )
       },
