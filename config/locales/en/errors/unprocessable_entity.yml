@@ -1,7 +1,8 @@
 en:
   errors:
     unprocessable_entity:
-      title: Request rejected
+      title: Sorry, there was a problem
       body_govspeak: |
-        The form you submitted may be out of date, returning to the page and
-        reloading the form before submission may resolve this.
+        Please try again or [raise a support request][support-request].
+
+        [support-request]: https://support.publishing.service.gov.uk/technical_fault_report/new
