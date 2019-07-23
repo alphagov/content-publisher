@@ -1,9 +1,4 @@
 .app-c-contextual-guidance__form {
-  .govuk-grid-column-one-third,
-  .govuk-grid-column-two-thirds {
-    position: relative;
-  }
-
   .govuk-grid-row:last-of-type .app-c-contextual-guidance__wrapper {
     position: relative;
   }
@@ -28,7 +23,7 @@
 
     @include govuk-media-query($from: tablet) {
       position: absolute;
-      margin-right: govuk-spacing(3);
+      width: calc(100% - #{govuk-spacing(6)});
     }
   }
 }
