@@ -1,9 +1,3 @@
-.app-timeline-heading {
-  @include govuk-media-query($from: tablet) {
-    @include govuk-visually-hidden;
-  }
-}
-
 .app-timeline-entry__dateline {
   color: $govuk-secondary-text-colour;
 }
