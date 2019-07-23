@@ -13,7 +13,30 @@
     <% if @edition.failed_to_publish? %>
       <%= render "documents/show/failed_to_publish_notice" %>
     <% end %>
+  </div>
 
+  <div class="govuk-grid-column-one-third app-grid-column--float-right">
+    <aside class="app-side__wrapper">
+      <% if @edition.scheduled? %>
+        <%= render "documents/show/scheduled_notice" %>
+      <% end %>
+
+      <% if @edition.editable? && @edition.proposed_publish_time %>
+        <%= render "documents/show/proposed_scheduling_notice" %>
+      <% end %>
+
+      <%= render "documents/show/actions" %>
+      <%= render "documents/show/document_metadata" %>
+
+      <% if current_user.has_permission?(User::DEBUG_PERMISSION) %>
+        <%= render "documents/show/debug" %>
+      <% end %>
+    </aside>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
     <%= render "documents/show/contents" %>
 
     <% if @edition.document_type.images %>
@@ -28,23 +51,6 @@
 
     <% if @edition.editable? %>
       <%= render "documents/show/content_settings" %>
-    <% end %>
-  </div>
-
-  <div class="govuk-grid-column-one-third">
-    <% if @edition.scheduled? %>
-      <%= render "documents/show/scheduled_notice" %>
-    <% end %>
-
-    <% if @edition.editable? && @edition.proposed_publish_time %>
-      <%= render "documents/show/proposed_scheduling_notice" %>
-    <% end %>
-
-    <%= render "documents/show/actions" %>
-    <%= render "documents/show/document_metadata" %>
-
-    <% if current_user.has_permission?(User::DEBUG_PERMISSION) %>
-      <%= render "documents/show/debug" %>
     <% end %>
   </div>
 </div>
