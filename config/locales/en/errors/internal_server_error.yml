@@ -1,0 +1,10 @@
+en:
+  errors:
+    internal_server_error:
+      title: Sorry, an error occurred
+      body_govspeak: |
+        The error has been logged in our system.
+
+        Please try again or [raise a support request][support-request].
+
+        [support-request]: https://support.publishing.service.gov.uk/technical_fault_report/new

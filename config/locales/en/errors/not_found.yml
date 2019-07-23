@@ -1,0 +1,8 @@
+en:
+  errors:
+    not_found:
+      title: Page not found
+      body_govspeak: |
+        If you typed the web address, check it is correct.
+
+        If you pasted the web address, check you copied the entire address.
