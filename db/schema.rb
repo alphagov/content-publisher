@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_26_155821) do
+ActiveRecord::Schema.define(version: 2019_07_17_203348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -328,7 +328,7 @@ ActiveRecord::Schema.define(version: 2019_06_26_155821) do
     t.datetime "withdrawn_at", null: false
   end
 
-  add_foreign_key "access_limits", "editions", on_delete: :restrict
+  add_foreign_key "access_limits", "editions", on_delete: :cascade
   add_foreign_key "access_limits", "revisions", column: "revision_at_creation_id", on_delete: :restrict
   add_foreign_key "access_limits", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "content_revisions", "users", column: "created_by_id", on_delete: :restrict
@@ -339,10 +339,10 @@ ActiveRecord::Schema.define(version: 2019_06_26_155821) do
   add_foreign_key "editions", "statuses", on_delete: :restrict
   add_foreign_key "editions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "editions", "users", column: "last_edited_by_id", on_delete: :restrict
-  add_foreign_key "editions_revisions", "editions", on_delete: :restrict
+  add_foreign_key "editions_revisions", "editions", on_delete: :cascade
   add_foreign_key "editions_revisions", "revisions", on_delete: :restrict
-  add_foreign_key "file_attachment_assets", "file_attachment_assets", column: "superseded_by_id", on_delete: :restrict
-  add_foreign_key "file_attachment_assets", "file_attachment_blob_revisions", column: "blob_revision_id", on_delete: :restrict
+  add_foreign_key "file_attachment_assets", "file_attachment_assets", column: "superseded_by_id", on_delete: :nullify
+  add_foreign_key "file_attachment_assets", "file_attachment_blob_revisions", column: "blob_revision_id", on_delete: :cascade
   add_foreign_key "file_attachment_blob_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
   add_foreign_key "file_attachment_blob_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "file_attachment_metadata_revisions", "users", column: "created_by_id", on_delete: :restrict
@@ -351,8 +351,8 @@ ActiveRecord::Schema.define(version: 2019_06_26_155821) do
   add_foreign_key "file_attachment_revisions", "file_attachments", on_delete: :restrict
   add_foreign_key "file_attachment_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "file_attachments", "users", column: "created_by_id", on_delete: :restrict
-  add_foreign_key "image_assets", "image_assets", column: "superseded_by_id", on_delete: :restrict
-  add_foreign_key "image_assets", "image_blob_revisions", column: "blob_revision_id", on_delete: :restrict
+  add_foreign_key "image_assets", "image_assets", column: "superseded_by_id", on_delete: :nullify
+  add_foreign_key "image_assets", "image_blob_revisions", column: "blob_revision_id", on_delete: :cascade
   add_foreign_key "image_blob_revisions", "active_storage_blobs", column: "blob_id", on_delete: :restrict
   add_foreign_key "image_blob_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "image_metadata_revisions", "users", column: "created_by_id", on_delete: :restrict
@@ -361,7 +361,7 @@ ActiveRecord::Schema.define(version: 2019_06_26_155821) do
   add_foreign_key "image_revisions", "images", on_delete: :restrict
   add_foreign_key "image_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "images", "users", column: "created_by_id", on_delete: :restrict
-  add_foreign_key "internal_notes", "editions", on_delete: :restrict
+  add_foreign_key "internal_notes", "editions", on_delete: :cascade
   add_foreign_key "internal_notes", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "metadata_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "revisions", "content_revisions", on_delete: :restrict
@@ -372,18 +372,18 @@ ActiveRecord::Schema.define(version: 2019_06_26_155821) do
   add_foreign_key "revisions", "tags_revisions", on_delete: :restrict
   add_foreign_key "revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "revisions_file_attachment_revisions", "file_attachment_revisions", on_delete: :restrict
-  add_foreign_key "revisions_file_attachment_revisions", "revisions", on_delete: :restrict
+  add_foreign_key "revisions_file_attachment_revisions", "revisions", on_delete: :cascade
   add_foreign_key "revisions_image_revisions", "image_revisions", on_delete: :restrict
-  add_foreign_key "revisions_image_revisions", "revisions", on_delete: :restrict
+  add_foreign_key "revisions_image_revisions", "revisions", on_delete: :cascade
   add_foreign_key "revisions_statuses", "revisions", on_delete: :restrict
-  add_foreign_key "revisions_statuses", "statuses", on_delete: :restrict
+  add_foreign_key "revisions_statuses", "statuses", on_delete: :cascade
   add_foreign_key "schedulings", "statuses", column: "pre_scheduled_status_id", on_delete: :restrict
-  add_foreign_key "statuses", "editions", on_delete: :restrict
+  add_foreign_key "statuses", "editions", on_delete: :cascade
   add_foreign_key "statuses", "revisions", column: "revision_at_creation_id", on_delete: :restrict
   add_foreign_key "statuses", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "tags_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "timeline_entries", "documents", on_delete: :restrict
-  add_foreign_key "timeline_entries", "editions", on_delete: :restrict
+  add_foreign_key "timeline_entries", "editions", on_delete: :cascade
   add_foreign_key "timeline_entries", "revisions", on_delete: :restrict
   add_foreign_key "timeline_entries", "statuses", on_delete: :restrict
   add_foreign_key "timeline_entries", "users", column: "created_by_id", on_delete: :restrict
