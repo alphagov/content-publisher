@@ -2,6 +2,27 @@
 <% content_for :browser_title, t("access_limit.edit.browser_title") %>
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 
+<% service = LinkablesService.new("organisation") %>
+
+<% if @edition.primary_publishing_organisation_id %>
+  <% primary_org_id = @edition.primary_publishing_organisation_id %>
+  <% primary_org = service.by_content_id(primary_org_id)&.fetch("internal_name") %>
+<% end %>
+
+<% supporting_orgs = @edition.organisations
+  .map { |org_id| service.by_content_id(org_id)&.fetch("internal_name") }
+  .compact %>
+
+<% tagged_orgs = ([primary_org] + supporting_orgs).compact %>
+
+<% tagged_orgs_ul = capture do %>
+  <ul class="govuk-list">
+    <% tagged_orgs.each do |org| %>
+      <%= tag.li org %>
+    <% end %>
+  </ul>
+<% end %>
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <div class="govuk-body" %>
@@ -32,7 +53,8 @@
             data_attributes: {
               gtm: "choose-access-limit",
               "gtm-value": t("access_limit.edit.type.primary_organisation")
-            }
+            },
+            hint_text: primary_org
           },
           {
             value: "tagged_organisations",
@@ -41,7 +63,8 @@
             data_attributes: {
               gtm: "choose-access-limit",
               "gtm-value": t("access_limit.edit.type.tagged_organisations")
-            }
+            },
+            hint_text: tagged_orgs.any? && tagged_orgs_ul
           }
         ]
       } %>

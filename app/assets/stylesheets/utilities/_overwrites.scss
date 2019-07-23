@@ -81,3 +81,9 @@
     word-wrap: break-word;
   }
 }
+
+.govuk-hint {
+  .govuk-list {
+    color: $govuk-secondary-text-colour;
+  }
+}

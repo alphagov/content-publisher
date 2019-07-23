@@ -31,9 +31,15 @@ RSpec.feature "Set access limit" do
     @supporting_org = SecureRandom.uuid
     primary_org = current_user.organisation_content_id
 
+    stub_publishing_api_has_linkables(
+      [{ "content_id" => primary_org, "internal_name" => "Primary org" },
+       { "content_id" => @supporting_org, "internal_name" => "Supporting org" }],
+      document_type: "organisation",
+    )
+
     @edition = create(:edition, tags: {
       primary_publishing_organisation: [primary_org],
-      organisations: [primary_org, @supporting_org],
+      organisations: [@supporting_org],
     })
   end
 
@@ -58,11 +64,20 @@ RSpec.feature "Set access limit" do
   end
 
   def and_i_limit_to_my_organisation
+    within ".govuk-radios" do
+      expect(page).to have_content("Primary org")
+    end
+
     choose I18n.t!("access_limit.edit.type.primary_organisation")
     click_on "Save"
   end
 
   def and_i_limit_to_tagged_organisations
+    within ".govuk-radios" do
+      expect(page).to have_content("Primary org", count: 2)
+      expect(page).to have_content("Supporting org")
+    end
+
     choose I18n.t!("access_limit.edit.type.tagged_organisations")
     click_on "Save"
   end
@@ -78,6 +93,7 @@ RSpec.feature "Set access limit" do
   end
 
   def and_i_can_still_edit_the_edition
+    visit document_path(@edition.document)
     expect(page).to have_content("Edit Access limiting")
     visit edit_document_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.edit.title", title: @edition.title_or_fallback))
@@ -85,25 +101,25 @@ RSpec.feature "Set access limit" do
 
   def and_the_supporting_user_can_also
     login_as(@supporting_org_user)
-    visit document_path(@edition.document)
-    expect(page).to have_content("Edit Access limiting")
-    visit edit_document_path(@edition.document)
-    expect(page).to have_content(I18n.t!("documents.edit.title", title: @edition.title_or_fallback))
+    and_i_can_still_edit_the_edition
   end
 
   def and_the_supporting_user_cannot
     login_as(@supporting_org_user)
-    visit document_path(@edition.document)
-    expect(page).to have_content("You do not have permission to access this page.")
-    visit edit_document_path(@edition.document)
-    expect(page).to have_content("You do not have permission to access this page.")
+    i_cannot_edit_the_edition
   end
 
   def and_someone_in_another_org_cannot
     login_as(@other_org_user)
+    i_cannot_edit_the_edition
+  end
+
+  def i_cannot_edit_the_edition
     visit document_path(@edition.document)
-    expect(page).to have_content("You do not have permission to access this page.")
+    expect(page).to have_content(I18n.t!("documents.forbidden.description"))
+    expect(page).to have_content(I18n.t!("documents.forbidden.owner", primary_org: "Primary org"))
     visit edit_document_path(@edition.document)
-    expect(page).to have_content("You do not have permission to access this page.")
+    expect(page).to have_content(I18n.t!("documents.forbidden.description"))
+    expect(page).to have_content(I18n.t!("documents.forbidden.owner", primary_org: "Primary org"))
   end
 end

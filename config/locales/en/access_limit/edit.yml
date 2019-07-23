@@ -3,6 +3,7 @@ en:
     edit:
       browser_title: Access limit content
       title: Who can access this document
+      api_down: This content can't be edited right now. We're having trouble getting the data we need for you to make changes on this page.
       description: You can limit who is able to find and edit this document before it is published. Select an option that includes the organisation associated with your account.
       no_access_limit: All publishers have access
       type:
