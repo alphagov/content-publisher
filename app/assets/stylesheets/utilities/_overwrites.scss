@@ -87,3 +87,16 @@
     color: $govuk-secondary-text-colour;
   }
 }
+
+.govuk-grid-column-one-third,
+.govuk-grid-column-two-thirds {
+  position: relative;
+}
+
+.govuk-tabs {
+  .govuk-heading-l {
+    @include govuk-media-query($from: tablet) {
+      @include govuk-visually-hidden;
+    }
+  }
+}

@@ -8,7 +8,7 @@
 
 <%= tag.div class: "app-c-summary", id: id do %>
   <% if title %>
-    <%= tag.h2 title, class: "govuk-heading-m" %>
+    <%= tag.h3 title, class: "govuk-heading-m" %>
     <% if edit.any? %>
       <%= link_to edit.fetch(:href),
                   class: "app-c-summary__edit-section-link",

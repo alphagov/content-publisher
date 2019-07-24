@@ -1,3 +1,10 @@
+.app-side__wrapper {
+  @include govuk-media-query($from: tablet) {
+    position: absolute;
+    width: calc(100% - #{govuk-spacing(6)});
+  }
+}
+
 .app-side {
   @include govuk-responsive-margin(6, "bottom");
   @include govuk-clearfix;
