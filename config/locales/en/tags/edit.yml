@@ -4,3 +4,4 @@ en:
       title: "Tags for ‘%{title}’"
       description: Add tags which describe what the content is about. Content will appear in lists on GOV.UK based on each tag.
       api_down: This content can't be edited right now. We're having trouble getting the data we need for you to make changes on this page.
+      organisation_warning: Access to this document is restricted. Adding or removing organisation tags will change who can access it.
