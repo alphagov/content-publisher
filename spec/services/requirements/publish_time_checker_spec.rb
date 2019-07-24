@@ -6,7 +6,7 @@ RSpec.describe Requirements::PublishTimeChecker do
   describe "#issues" do
     it "returns no issues if there are none" do
       issues = Requirements::PublishTimeChecker.new(1.day.from_now).issues
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns a date issue if the date is in the past" do

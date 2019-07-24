@@ -7,7 +7,7 @@ RSpec.describe Requirements::PathChecker do
         document_type = build :document_type
         edition = build :edition, document_type_id: document_type.id
         issues = Requirements::PathChecker.new(edition).pre_preview_issues
-        expect(issues.items).to be_empty
+        expect(issues).to be_empty
       end
     end
 
@@ -17,7 +17,7 @@ RSpec.describe Requirements::PathChecker do
         edition = build :edition, document_type_id: document_type.id
         stub_publishing_api_has_lookups(edition.base_path => nil)
         issues = Requirements::PathChecker.new(edition).pre_preview_issues
-        expect(issues.items).to be_empty
+        expect(issues).to be_empty
       end
 
       it "returns no issues if the document owns the path" do
@@ -25,7 +25,7 @@ RSpec.describe Requirements::PathChecker do
         edition = build :edition, document_type_id: document_type.id
         stub_publishing_api_has_lookups(edition.base_path => edition.content_id)
         issues = Requirements::PathChecker.new(edition).pre_preview_issues
-        expect(issues.items).to be_empty
+        expect(issues).to be_empty
       end
 
       it "returns an issue if the base_path conflicts" do
@@ -48,11 +48,11 @@ RSpec.describe Requirements::PathChecker do
         stub_publishing_api_has_lookups(edition.base_path => nil,
                                    revision.base_path => SecureRandom.uuid)
         issues = Requirements::PathChecker.new(edition).pre_preview_issues
-        expect(issues.items).to be_empty
+        expect(issues).to be_empty
 
         issues = Requirements::PathChecker.new(edition, revision)
                                                      .pre_preview_issues
-        expect(issues.items).not_to be_empty
+        expect(issues).not_to be_empty
       end
     end
 

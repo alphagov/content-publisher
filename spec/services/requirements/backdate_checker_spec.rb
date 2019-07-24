@@ -6,7 +6,7 @@ RSpec.describe Requirements::BackdateChecker do
       date = Time.current.change(day: 1, month: 1, year: 2019)
       issues = Requirements::BackdateChecker.new(date).pre_submit_issues
 
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns an issue if the date is in the future" do

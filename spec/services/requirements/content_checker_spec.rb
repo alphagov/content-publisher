@@ -5,7 +5,7 @@ RSpec.describe Requirements::ContentChecker do
     it "returns no issues if there are none" do
       edition = build :edition
       issues = Requirements::ContentChecker.new(edition).pre_preview_issues
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns an issue if there is no title" do
@@ -96,7 +96,7 @@ RSpec.describe Requirements::ContentChecker do
     it "returns no issues if there are none" do
       edition = build :edition, :publishable
       issues = Requirements::ContentChecker.new(edition).pre_publish_issues
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns an issue if the summary is blank" do

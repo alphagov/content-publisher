@@ -9,7 +9,7 @@ module Requirements
     end
 
     def pre_submit_issues
-      issues = []
+      issues = CheckerIssues.new
 
       if in_the_future?
         issues << Issue.new(:backdate_date, :in_the_future)
@@ -20,7 +20,7 @@ module Requirements
         issues << Issue.new(:backdate_date, :too_long_ago, date: date)
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
 
   private

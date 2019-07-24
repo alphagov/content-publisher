@@ -5,7 +5,7 @@ RSpec.describe Requirements::ImageRevisionChecker do
     it "returns no issues if there are none" do
       image_revision = build :image_revision, alt_text: "something"
       issues = Requirements::ImageRevisionChecker.new(image_revision).pre_preview_issues
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns an issue if there is no alt text" do
