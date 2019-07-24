@@ -36,6 +36,7 @@
     <%= form_tag access_limit_path(@edition.document), data: { gtm: "confirm-access-limit" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "limit_type",
+        error_items: @issues&.items_for(:access_limit),
         items: [
           {
             value: "none",

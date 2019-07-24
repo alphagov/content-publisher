@@ -11,6 +11,8 @@ class AccessLimit::UpdateInteractor < ApplicationInteractor
   def call
     Edition.transaction do
       find_and_lock_edition
+      update_access_limit
+      check_for_issues
       update_edition
       create_timeline_entry
     end
@@ -23,16 +25,26 @@ private
     assert_edition_state(edition, &:editable?)
   end
 
-  def update_edition
+  def update_access_limit
     limit_type = params.require(:limit_type)
 
     if LIMIT_TYPES.include?(limit_type)
       context.fail! if edition.access_limit&.limit_type == limit_type
-      edition.assign_access_limit(limit_type, user).save!
-    else
-      context.fail! if edition.access_limit.nil?
-      edition.remove_access_limit(user).save!
+      edition.assign_access_limit(limit_type, user)
+      return
     end
+
+    context.fail! if edition.access_limit.nil?
+    edition.remove_access_limit(user)
+  end
+
+  def check_for_issues
+    issues = Requirements::AccessLimitChecker.new(edition, user).pre_update_issues
+    context.fail!(issues: issues) if issues.any?
+  end
+
+  def update_edition
+    edition.save!
   end
 
   def create_timeline_entry
