@@ -10,10 +10,11 @@ RSpec.describe PublishAssetService do
                        file_attachment_revisions: [file_attachment_revision],
                        image_revisions: [image_revision])
 
-      stub_asset_manager_updates_any_asset
+      request = stub_asset_manager_updates_any_asset
       PublishAssetService.new.publish_assets(edition, nil)
       expect(image_revision.assets.map(&:state).uniq).to eq(%w[live])
       expect(file_attachment_revision.asset).to be_live
+      expect(request).to have_been_requested.at_least_once
     end
 
     it "doesn't republish the assets that are already live" do
