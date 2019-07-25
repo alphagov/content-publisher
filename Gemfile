@@ -40,7 +40,7 @@ group :development, :test do
   gem "climate_control"
   gem "factory_bot_rails", "~> 5"
   gem "govuk-lint", "~> 3"
-  gem "govuk_schemas", "~> 3.3"
+  gem "govuk_schemas", "~> 4.0"
   gem "govuk_test", "~> 1.0"
   gem "jasmine", "~> 3.4"
   gem "jasmine_selenium_runner", "~> 3", require: false
