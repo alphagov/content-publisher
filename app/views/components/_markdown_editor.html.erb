@@ -30,13 +30,13 @@
       },
       {
         text: "Contact",
+        href: search_contacts_path(edition.document),
+        target: "_blank",
         data_attributes: {
-          gtm: "insert-contact"
-        },
-        button_options: {
-          value: "add_contact",
-          name: "submit",
-        },
+          module: "contacts-modal",
+          "modal-action": "open",
+          gtm: "open-insert-contact-modal"
+        }
       },
       {
         text: "Image",

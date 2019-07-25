@@ -1,5 +1,4 @@
-<% content_for :back_link, render_back_link(href: edit_document_path(@edition.document)) %>
-<% content_for :browser_title, t("contacts.search.title") %>
+<% content_for :title, t("contacts.search.title") %>
 
 <%
   contact_options = @contacts_by_organisation.flat_map do |org|
@@ -10,14 +9,19 @@
 %>
 
 <%= form_tag(
-  insert_contact_path(@edition.document),
-  data: { gtm: "insert-contact-submit" },
+  search_contacts_path(@edition.document),
+  data: {
+    modal_action: "insert",
+    gtm: "insert-contact-embed"
+  },
 ) do %>
   <%= render "components/autocomplete", {
     name: "contact_id",
     label: {
-      text: %{<h1 class="govuk-heading-l">#{t("contacts.search.title")}</h1>}.html_safe,
+      text: t("contacts.search.label"),
+      bold: true
     },
+    hint: t("contacts.search.hint_text"),
     id: "contact-id",
     select: {
       options: [""] + contact_options,
@@ -27,6 +31,15 @@
   } %>
 
   <%= render "govuk_publishing_components/components/button", {
-    text: "Insert contact", margin_bottom: true
+    text: "Insert contact",
+    data_attributes: {
+      "modal-action": "insert",
+      gtm: "insert-contact"
+    },
+    margin_bottom: true
   } %>
+
+  <%= tag.p class: "govuk-body" do %>
+    <%= link_to t("contacts.search.edit_or_add_contact"), Plek.new.external_url_for("whitehall") + "/government/admin/organisations/", class: "govuk-link", target: "_blank" %>
+  <% end %>
 <% end %>

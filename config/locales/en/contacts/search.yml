@@ -1,5 +1,9 @@
 en:
   contacts:
     search:
-      title: Search contacts
+      title: Insert contact address
+      label: Search saved contact
+      hint_text: Select a contact address from the GOV.UK contacts list
       api_down: Contacts can't be selected right now. We're having trouble getting the data we need for you to make changes on this page.
+      markdown_code: Markdown code
+      edit_or_add_contact: Edit or add new contact

@@ -6,6 +6,7 @@ class ContactsController < ApplicationController
     assert_edition_state(@edition, &:editable?)
     assert_edition_access(@edition, current_user)
     @contacts_by_organisation = ContactsService.new.all_by_organisation
+    render layout: rendering_context
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     render "search_api_down", status: :service_unavailable
