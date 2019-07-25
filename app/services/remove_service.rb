@@ -46,7 +46,7 @@ private
       next if asset.absent?
 
       begin
-        AssetManagerService.new.delete(asset)
+        GdsApi.asset_manager.delete_asset(asset.asset_manager_id)
       rescue GdsApi::HTTPNotFound
         Rails.logger.warn("No asset to delete for id #{asset.asset_manager_id}")
       end
