@@ -10,15 +10,12 @@ module Requirements
     end
 
     def pre_update_issues
-      issues = []
-
-      if edition.access_limit.nil?
-        return CheckerIssues.new([])
-      end
+      issues = CheckerIssues.new
+      return issues if edition.access_limit.nil?
 
       if edition.primary_publishing_organisation_id.blank?
         issues << Issue.new(:access_limit, :no_primary_org)
-        return CheckerIssues.new(issues)
+        return issues
       end
 
       if edition.access_limit.primary_organisation? &&
@@ -31,7 +28,7 @@ module Requirements
         issues << Issue.new(:access_limit, :not_in_orgs)
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
 
   private
