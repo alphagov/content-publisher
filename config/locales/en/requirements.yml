@@ -132,3 +132,8 @@ en:
         form_message: Enter a web address
       non_youtube:
         form_message: Enter a valid YouTube web address
+    access_limit:
+      no_primary_org:
+        form_message: Select a primary organisation before you can limit access
+      not_in_orgs:
+        form_message: Select an access option that includes the organisation your account is a member of so that you will still have access
