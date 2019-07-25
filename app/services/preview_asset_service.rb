@@ -7,12 +7,12 @@ class PreviewAssetService
     @edition = edition
   end
 
-  def upload_assets
+  def put_all
     edition.image_revisions.each(&:ensure_assets)
-    edition.assets.each { |asset| upload_asset(asset) }
+    edition.assets.each { |asset| put(asset) }
   end
 
-  def upload_asset(asset)
+  def put(asset)
     if asset.draft?
       update(asset)
     elsif asset.absent?

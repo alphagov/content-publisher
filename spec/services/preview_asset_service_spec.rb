@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
 RSpec.describe PreviewAssetService do
-  describe "#upload_assets" do
+  describe "#put_all" do
     it "uploads the image assets" do
       image_revision = create(:image_revision)
       edition = create(:edition, image_revisions: [image_revision])
-      expect_any_instance_of(PreviewAssetService).to receive(:upload_asset).at_least(:once)
-      PreviewAssetService.new(edition).upload_assets
+      expect_any_instance_of(PreviewAssetService).to receive(:put).at_least(:once)
+      PreviewAssetService.new(edition).put_all
     end
 
     it "uploads the file attachment assets" do
       file_attachment_revision = create(:file_attachment_revision)
       edition = create(:edition, file_attachment_revisions: [file_attachment_revision])
-      expect_any_instance_of(PreviewAssetService).to receive(:upload_asset).at_least(:once)
-      PreviewAssetService.new(edition).upload_assets
+      expect_any_instance_of(PreviewAssetService).to receive(:put).at_least(:once)
+      PreviewAssetService.new(edition).put_all
     end
   end
 
-  describe "#upload_asset" do
+  describe "#put" do
     let(:edition) { create :edition }
 
     let(:asset) do
@@ -46,7 +46,7 @@ RSpec.describe PreviewAssetService do
         expect(asset).to receive(:update!)
           .with a_hash_including(state: :draft, file_url: file_url)
 
-        PreviewAssetService.new(edition).upload_asset(asset)
+        PreviewAssetService.new(edition).put(asset)
         expect(request).to have_been_requested.at_least_once
       end
 
@@ -60,7 +60,7 @@ RSpec.describe PreviewAssetService do
           expect(req.body).to include("auth_bypass_ids")
         end
 
-        PreviewAssetService.new(edition).upload_asset(asset)
+        PreviewAssetService.new(edition).put(asset)
         expect(request).to have_been_requested
       end
     end
@@ -70,7 +70,7 @@ RSpec.describe PreviewAssetService do
         request = stub_asset_manager_update_asset("id")
         allow(asset).to receive(:draft?) { true }
         allow(asset).to receive(:absent?) { false }
-        PreviewAssetService.new(edition).upload_asset(asset)
+        PreviewAssetService.new(edition).put(asset)
         expect(request).to have_been_requested
       end
     end
@@ -80,7 +80,7 @@ RSpec.describe PreviewAssetService do
         request = stub_asset_manager_update_asset("id")
         allow(asset).to receive(:draft?) { false }
         allow(asset).to receive(:absent?) { false }
-        PreviewAssetService.new(edition).upload_asset(asset)
+        PreviewAssetService.new(edition).put(asset)
         expect(request).to_not have_been_requested
       end
     end
