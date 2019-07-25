@@ -1,38 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe AssetManagerService do
-  describe "#upload" do
-    it "uploads a byte stream to Asset Manager and returns the asset URL" do
-      asset = double(:asset,
-                     content_type: "type",
-                     filename: "foo/bar.jpg",
-                     bytes: "bytes")
-      stub_asset_manager_receives_an_asset("response_asset_manager_file_url")
-
-      response = AssetManagerService.new.upload(asset, "auth_bypass_id")
-      expect(response).to eq("response_asset_manager_file_url")
-    end
-
-    it "uploads like a Rack::Multipart::UploadedFile to preserve metadata" do
-      asset = double(:asset,
-                     content_type: "type",
-                     filename: "foo/bar.jpg",
-                     bytes: "bytes")
-      stub_asset_manager_receives_an_asset("response_asset_manager_file_url")
-
-      AssetManagerService.new.upload(asset, "auth_bypass_id")
-
-      request = a_request(:post, /.*/).with do |req|
-        expect(req.body).to include("filename=\"bar.jpg")
-        expect(req.body).to include("Content-Type: type")
-        expect(req.body).to include("bytes")
-        expect(req.body).to include("auth_bypass_ids")
-      end
-
-      expect(request).to have_been_requested
-    end
-  end
-
   describe "#publish" do
     it "updates an asset's draft status to false in Asset Manager" do
       asset = double(:asset, asset_manager_id: "id")
