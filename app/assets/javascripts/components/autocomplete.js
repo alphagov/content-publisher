@@ -35,19 +35,18 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
   Autocomplete.prototype.initAutoCompleteWithHintOnOptions = function () {
     // Read options and associated data attributes and feed that as results for inputValueTemplate
     var $select = this.$module.querySelector('select')
+    var $insertButton = this.$module.parentNode.querySelector('button[data-modal-action="insert"]')
 
     if (!$select) {
       return
     }
-
-    var $options = $select.querySelectorAll('option')
 
     new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
       element: this.$module,
       id: $select.id,
       source: function (query, syncResults) {
         var results = []
-        $options.forEach(function ($el) {
+        $select.options.forEach(function ($el) {
           results.push({text: $el.textContent, hint: $el.dataset.hint || '', value: $el.value})
         })
         syncResults(query
@@ -66,7 +65,6 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         )
       },
       minLength: 3,
-      autoselect: true,
       showNoOptionsFound: true,
       templates: {
         inputValue: function (result) {
@@ -84,6 +82,10 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
         if (options.length) {
           options[0].selected = true
+        }
+
+        if ($insertButton && value) {
+          $insertButton.dataset.modalData = '[Contact: ' + value + ']'
         }
       }
     })
