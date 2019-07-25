@@ -12,6 +12,12 @@
                  },
                  class: "app-c-contextual-guidance__form" do %>
       <% @edition.document_type.tags.each do |tag_field| %>
+        <% if @edition.access_limit.present? && tag_field.id == "primary_publishing_organisation" %>
+          <%= render "govuk_publishing_components/components/warning_text", {
+            text: t("tags.edit.organisation_warning"),
+          } %>
+        <% end %>
+
         <div id="<%= tag_field.id %>">
           <%= render "tags/tags/#{tag_field.type}_input",
             tag_field: tag_field,
