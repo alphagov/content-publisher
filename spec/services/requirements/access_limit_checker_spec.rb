@@ -7,7 +7,7 @@ RSpec.describe Requirements::AccessLimitChecker do
     it "returns no issues when there is no access limit" do
       edition = build(:edition)
       issues = Requirements::AccessLimitChecker.new(edition, user).pre_update_issues
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns an issue when the edition has no primary org" do
@@ -41,7 +41,7 @@ RSpec.describe Requirements::AccessLimitChecker do
                         })
 
         issues = Requirements::AccessLimitChecker.new(edition, user).pre_update_issues
-        expect(issues.items).to be_empty
+        expect(issues).to be_empty
       end
     end
 
@@ -70,7 +70,7 @@ RSpec.describe Requirements::AccessLimitChecker do
                         })
 
         issues = Requirements::AccessLimitChecker.new(edition, user).pre_update_issues
-        expect(issues.items).to be_empty
+        expect(issues).to be_empty
       end
 
       it "returns no issues when the user is in the primary org" do
@@ -83,7 +83,7 @@ RSpec.describe Requirements::AccessLimitChecker do
                         })
 
         issues = Requirements::AccessLimitChecker.new(edition, user).pre_update_issues
-        expect(issues.items).to be_empty
+        expect(issues).to be_empty
       end
     end
   end
