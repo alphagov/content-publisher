@@ -6,7 +6,7 @@ module Requirements
     YOUTU_HOST = "youtu.be"
 
     def pre_embed_issues(title: nil, url: nil)
-      issues = []
+      issues = CheckerIssues.new
 
       if title.blank?
         issues << Issue.new(:video_embed_title, :blank)
@@ -18,7 +18,7 @@ module Requirements
         issues << Issue.new(:video_embed_url, :non_youtube)
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
 
   private

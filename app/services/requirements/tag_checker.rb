@@ -10,14 +10,15 @@ module Requirements
     end
 
     def pre_publish_issues
-      issues = []
+      issues = CheckerIssues.new
+
       if edition.document_type.tags.map(&:id).include?("primary_publishing_organisation")
         if revision.primary_publishing_organisation_id.blank?
           issues << Issue.new(:primary_publishing_organisation, :blank)
         end
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
   end
 end

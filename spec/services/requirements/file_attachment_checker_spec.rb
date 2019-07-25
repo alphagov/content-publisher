@@ -7,7 +7,7 @@ RSpec.describe Requirements::FileAttachmentChecker do
 
       issues = Requirements::FileAttachmentChecker.new(file: file, title: "Cool title")
                                                   .pre_upload_issues
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns no upload issues for a text file when it has no extension" do
@@ -87,7 +87,7 @@ RSpec.describe Requirements::FileAttachmentChecker do
 
       issues = Requirements::FileAttachmentChecker.new(file: file, title: "Cool title")
                                                   .pre_update_issues
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns title issues when only the title is provided" do

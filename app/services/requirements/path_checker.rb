@@ -10,7 +10,7 @@ module Requirements
     end
 
     def pre_preview_issues
-      issues = []
+      issues = CheckerIssues.new
 
       begin
         if edition.document_type.check_path_conflict && base_path_conflict?
@@ -20,7 +20,7 @@ module Requirements
         GovukError.notify(e)
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
 
   private

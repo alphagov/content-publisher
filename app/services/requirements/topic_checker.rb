@@ -9,7 +9,7 @@ module Requirements
     end
 
     def pre_publish_issues(rescue_api_errors: true)
-      issues = []
+      issues = CheckerIssues.new
 
       begin
         if document.document_type.topics && document.topics.none?
@@ -20,7 +20,7 @@ module Requirements
         raise unless rescue_api_errors
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
   end
 end

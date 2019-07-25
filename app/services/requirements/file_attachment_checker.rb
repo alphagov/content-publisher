@@ -36,17 +36,13 @@ module Requirements
     end
 
     def pre_upload_issues
-      issues = title_issues + file_issues
-
-      CheckerIssues.new(issues)
+      title_issues + file_issues
     end
 
     def pre_update_issues
-      issues = []
-      issues += title_issues if title_issues.any?
-      issues += file_issues if file.present? && file_issues.any?
-
-      CheckerIssues.new(issues)
+      issues = title_issues
+      issues += file_issues if file.present?
+      issues
     end
 
   private
@@ -75,7 +71,7 @@ module Requirements
     end
 
     def title_issues
-      issues = []
+      issues = CheckerIssues.new
 
       if title.blank?
         issues << Issue.new(:file_attachment_title, :blank)
@@ -91,7 +87,7 @@ module Requirements
     end
 
     def file_issues
-      issues = []
+      issues = CheckerIssues.new
 
       unless file
         issues << Issue.new(:file_attachment_upload, :no_file)

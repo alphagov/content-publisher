@@ -4,11 +4,15 @@ module Requirements
   class CheckerIssues
     include Enumerable
 
+    delegate :each, :<<, :empty?, to: :issues
     attr_reader :issues
-    delegate :each, to: :issues
 
-    def initialize(issues)
+    def initialize(issues = [])
       @issues = issues
+    end
+
+    def +(other)
+      CheckerIssues.new(issues + other.issues)
     end
 
     def items(params = {})

@@ -7,7 +7,7 @@ RSpec.describe Requirements::TopicChecker do
     it "returns no issues if there are none" do
       edition = build :edition, :publishable
       issues = Requirements::TopicChecker.new(edition.document).pre_publish_issues
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     context "when the Publishing API is available" do

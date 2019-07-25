@@ -13,7 +13,7 @@ module Requirements
     end
 
     def pre_preview_metadata_issues
-      issues = []
+      issues = CheckerIssues.new
 
       if image_revision.alt_text.blank?
         issues << Issue.new(:alt_text,
@@ -46,7 +46,7 @@ module Requirements
                             image_revision: image_revision)
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
 
     def pre_preview_issues

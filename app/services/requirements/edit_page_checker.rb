@@ -10,10 +10,10 @@ module Requirements
     end
 
     def pre_preview_issues
-      issues = []
-      issues += PathChecker.new(edition, revision).pre_preview_issues.to_a
-      issues += ContentChecker.new(edition, revision).pre_preview_issues.to_a
-      CheckerIssues.new(issues)
+      issues = CheckerIssues.new
+      issues += PathChecker.new(edition, revision).pre_preview_issues
+      issues += ContentChecker.new(edition, revision).pre_preview_issues
+      issues
     end
   end
 end

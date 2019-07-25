@@ -13,7 +13,7 @@ module Requirements
     end
 
     def pre_preview_issues
-      issues = []
+      issues = CheckerIssues.new
 
       if revision.title.blank?
         issues << Issue.new(:title, :blank)
@@ -43,11 +43,11 @@ module Requirements
         end
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
 
     def pre_publish_issues
-      issues = []
+      issues = CheckerIssues.new
 
       if revision.summary.blank?
         issues << Issue.new(:summary, :blank)
@@ -59,11 +59,13 @@ module Requirements
         end
       end
 
-      if edition.document.live_edition && revision.update_type == "major" && revision.change_note.blank?
+      if edition.document.live_edition &&
+          revision.update_type == "major" &&
+          revision.change_note.blank?
         issues << Issue.new(:change_note, :blank)
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
   end
 end

@@ -14,7 +14,7 @@ module Requirements
     end
 
     def issues
-      issues = []
+      issues = CheckerIssues.new
 
       if publish_time > MAX_PUBLISH_DELAY.from_now
         issues << Issue.new(:schedule_date,
@@ -33,7 +33,7 @@ module Requirements
         issues << Issue.new(field, :in_the_past)
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
   end
 end

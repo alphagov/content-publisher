@@ -7,13 +7,13 @@ RSpec.describe Requirements::VideoEmbedChecker do
         title: "A title", url: "https://www.youtube.com/watch?v=hY7m5jjJ9mM",
       )
 
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
 
       issues = Requirements::VideoEmbedChecker.new.pre_embed_issues(
         title: "A title", url: "https://youtu.be/FdeioVndUhs",
       )
 
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns an issue when the title is blank" do

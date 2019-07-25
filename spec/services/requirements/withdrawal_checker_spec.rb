@@ -6,7 +6,7 @@ RSpec.describe Requirements::WithdrawalChecker do
       public_explanation = SecureRandom.alphanumeric
       issues = Requirements::WithdrawalChecker.new(public_explanation, build(:edition))
                                               .pre_withdrawal_issues
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns an issue if there is no public explanation" do

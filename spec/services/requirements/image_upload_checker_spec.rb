@@ -5,7 +5,7 @@ RSpec.describe Requirements::ImageUploadChecker do
     it "returns no issues if there are none" do
       file = fixture_file_upload("files/960x640.jpg", "image/jpeg")
       issues = Requirements::ImageUploadChecker.new(file).issues
-      expect(issues.items).to be_empty
+      expect(issues).to be_empty
     end
 
     it "returns an issue when no image is specified" do

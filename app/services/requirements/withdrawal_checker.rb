@@ -10,7 +10,7 @@ module Requirements
     end
 
     def pre_withdrawal_issues
-      issues = []
+      issues = CheckerIssues.new
 
       if public_explanation.blank?
         issues << Issue.new(:public_explanation, :blank)
@@ -20,7 +20,7 @@ module Requirements
         issues << Issue.new(:public_explanation, :invalid_govspeak)
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
   end
 end

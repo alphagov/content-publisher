@@ -16,7 +16,7 @@ module Requirements
     end
 
     def issues
-      issues = []
+      issues = CheckerIssues.new
 
       unless file
         issues << Issue.new(:image_upload, :no_file)
@@ -41,7 +41,7 @@ module Requirements
         issues << Issue.new(:image_upload, :too_small, width: Image::WIDTH, height: Image::HEIGHT)
       end
 
-      CheckerIssues.new(issues)
+      issues
     end
 
   private

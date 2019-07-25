@@ -10,24 +10,22 @@ module Requirements
     end
 
     def pre_preview_issues
-      issues = []
+      issues = CheckerIssues.new
 
       revision.image_revisions.each do |image|
-        issues += ImageRevisionChecker.new(image).pre_preview_issues.to_a
+        issues += ImageRevisionChecker.new(image).pre_preview_issues
       end
 
-      issues += ContentChecker.new(edition, revision).pre_preview_issues.to_a
-
-      CheckerIssues.new(issues)
+      issues += ContentChecker.new(edition, revision).pre_preview_issues
+      issues
     end
 
     def pre_publish_issues(params = {})
-      issues = []
-      issues += ContentChecker.new(edition, revision).pre_publish_issues.to_a
-      issues += TopicChecker.new(edition.document).pre_publish_issues(params).to_a
-      issues += TagChecker.new(edition, revision).pre_publish_issues.to_a
-
-      CheckerIssues.new(issues)
+      issues = CheckerIssues.new
+      issues += ContentChecker.new(edition, revision).pre_publish_issues
+      issues += TopicChecker.new(edition.document).pre_publish_issues(params)
+      issues += TagChecker.new(edition, revision).pre_publish_issues
+      issues
     end
   end
 end
