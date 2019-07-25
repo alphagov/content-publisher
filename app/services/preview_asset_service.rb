@@ -19,10 +19,12 @@ class PreviewAssetService
   end
 
   def upload_asset(asset)
-    return unless asset.absent?
-
-    file_url = AssetManagerService.new.upload(asset, auth_bypass_id)
-    asset.update!(file_url: file_url, state: :draft)
+    if asset.absent?
+      file_url = AssetManagerService.new.upload(asset, auth_bypass_id)
+      asset.update!(file_url: file_url, state: :draft)
+    elsif asset.draft?
+      GdsApi.asset_manager.update_asset(asset.asset_manager_id, draft: true)
+    end
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     raise

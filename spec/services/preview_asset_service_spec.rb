@@ -21,8 +21,7 @@ RSpec.describe PreviewAssetService do
     let(:edition) { create :edition }
 
     let(:asset) do
-      double(absent?: true,
-             asset_manager_id: "id",
+      double(asset_manager_id: "id",
              update!: false,
              bytes: "0x123",
              filename: "abc.png",
@@ -32,18 +31,30 @@ RSpec.describe PreviewAssetService do
     context "when the asset is not on Asset Manager" do
       it "uploads the asset" do
         request = stub_asset_manager_receives_an_asset
+        allow(asset).to receive(:absent?) { true }
+        allow(asset).to receive(:draft?) { false }
         expect(asset).to receive(:update!).with a_hash_including(state: :draft)
         PreviewAssetService.new(edition).upload_asset(asset)
         expect(request).to have_been_requested.at_least_once
       end
     end
 
-    context "when the asset is on Asset Manager" do
-      it "doesn't upload the asset" do
+    context "when a draft asset is on Asset Manager" do
+      it "updates the asset" do
+        request = stub_asset_manager_update_asset("id")
         allow(asset).to receive(:absent?) { false }
-        request = stub_asset_manager_receives_an_asset
+        allow(asset).to receive(:draft?) { true }
         PreviewAssetService.new(edition).upload_asset(asset)
-        expect(asset).to_not have_received(:update!)
+        expect(request).to have_been_requested
+      end
+    end
+
+    context "when a live asset is on Asset Manager" do
+      it "does not update the asset" do
+        request = stub_asset_manager_update_an_asset("id")
+        allow(asset).to receive(:absent?) { false }
+        allow(asset).to receive(:draft?) { false }
+        PreviewAssetService.new(edition).upload_asset(asset)
         expect(request).to_not have_been_requested
       end
     end

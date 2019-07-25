@@ -38,6 +38,7 @@ RSpec.feature "Edit a file attachment title", js: true do
 
   def when_i_enter_a_new_attachment_title_and_click_save
     @put_content_request = stub_publishing_api_put_content(@edition.content_id, {})
+    stub_asset_manager_updates_any_asset
 
     fill_in "file_attachment[title]", with: "Another title"
     click_on "Save"
