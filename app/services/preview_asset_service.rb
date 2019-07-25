@@ -30,13 +30,6 @@ class PreviewAssetService
     raise
   end
 
-  def can_preview_asset?(asset)
-    AssetManagerService.new.get(asset)["state"] == "uploaded"
-  rescue GdsApi::BaseError => e
-    GovukError.notify(e)
-    raise
-  end
-
 private
 
   def auth_bypass_id

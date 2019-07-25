@@ -18,27 +18,31 @@ RSpec.describe FileAttachments::PreviewInteractor do
     end
 
     context "when the asset is present on Asset Manager" do
+      let(:attachment_revision) do
+        create :file_attachment_revision, :on_asset_manager, file_attachment: file_attachment
+      end
+
+      let(:asset) { attachment_revision.asset }
+
       before do
-        attachment_revision = create :file_attachment_revision, :on_asset_manager, file_attachment: file_attachment
         edition.file_attachment_revisions << attachment_revision
       end
 
       it "returns the asset when it's available to download" do
-        allow(preview_asset_service).to receive(:can_preview_asset?) { true }
+        stub_asset_manager_has_an_asset(asset.asset_manager_id, "state": "uploaded")
         result = FileAttachments::PreviewInteractor.call(params: params)
-        expect(result.asset).to be_a FileAttachment::Asset
         expect(result.can_preview).to be_truthy
         expect(result.api_error).to be_falsey
       end
 
       it "returns a can_preview flag when the asset is unavailable" do
-        allow(preview_asset_service).to receive(:can_preview_asset?) { false }
+        stub_asset_manager_has_an_asset(asset.asset_manager_id, "state": "unscanned")
         result = FileAttachments::PreviewInteractor.call(params: params)
         expect(result.can_preview).to be_falsey
       end
 
       it "returns an api_error flag when Asset Manager is down" do
-        allow(preview_asset_service).to receive(:can_preview_asset?).and_raise(GdsApi::BaseError)
+        stub_asset_manager_isnt_available
         result = FileAttachments::PreviewInteractor.call(params: params)
         expect(result.api_error).to be_truthy
       end

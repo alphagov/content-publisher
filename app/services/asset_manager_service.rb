@@ -19,10 +19,6 @@ class AssetManagerService
     )
   end
 
-  def get(asset)
-    GdsApi.asset_manager.asset(asset.asset_manager_id).to_h
-  end
-
   def redirect(asset, to:)
     GdsApi.asset_manager.update_asset(
       asset.asset_manager_id,

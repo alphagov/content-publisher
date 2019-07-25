@@ -59,29 +59,4 @@ RSpec.describe PreviewAssetService do
       end
     end
   end
-
-  describe "#can_preview_asset?" do
-    let(:edition) { create :edition }
-
-    let(:asset) do
-      double(absent?: true,
-             asset_manager_id: "id",
-             update!: false,
-             bytes: "0x123",
-             filename: "abc.png",
-             content_type: "image/png")
-    end
-
-    it "returns true when the asset is uploaded" do
-      stub_asset_manager_has_an_asset("id", "state": "uploaded")
-      result = PreviewAssetService.new(edition).can_preview_asset?(asset)
-      expect(result).to be_truthy
-    end
-
-    it "returns false when the asset is being scanned" do
-      stub_asset_manager_has_an_asset("id", "state": "unscanned")
-      result = PreviewAssetService.new(edition).can_preview_asset?(asset)
-      expect(result).to be_falsey
-    end
-  end
 end
