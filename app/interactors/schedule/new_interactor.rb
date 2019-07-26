@@ -17,7 +17,6 @@ class Schedule::NewInteractor < ApplicationInteractor
   def find_edition
     context.edition = Edition.find_current(document: params[:document])
     assert_edition_state(edition, &:editable?)
-    assert_edition_access(edition, user)
 
     assert_edition_state(edition, assertion: "has proposed publish time") do
       edition.proposed_publish_time.present?

@@ -24,7 +24,6 @@ private
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
     assert_edition_state(edition, &:scheduled?)
-    assert_edition_access(edition, user)
   end
 
   def parse_publish_time

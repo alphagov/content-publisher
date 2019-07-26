@@ -8,7 +8,6 @@ class AccessLimitController < ApplicationController
 
   def edit
     @edition = Edition.find_current(document: params[:document])
-    assert_edition_access(@edition, current_user)
   end
 
   def update

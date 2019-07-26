@@ -4,7 +4,6 @@ class ImagesController < ApplicationController
   def index
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
-    assert_edition_access(@edition, current_user)
     render layout: rendering_context
   end
 

@@ -17,7 +17,6 @@ private
 
   def find_document
     edition = Edition.find_current(document: params[:document])
-    assert_edition_access(edition, user)
     context.document = edition.document
   end
 

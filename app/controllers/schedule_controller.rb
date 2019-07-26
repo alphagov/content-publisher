@@ -15,7 +15,6 @@ class ScheduleController < ApplicationController
   def edit
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:scheduled?)
-    assert_edition_access(@edition, current_user)
   end
 
   def update
@@ -75,6 +74,5 @@ class ScheduleController < ApplicationController
   def scheduled
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:scheduled?)
-    assert_edition_access(@edition, current_user)
   end
 end

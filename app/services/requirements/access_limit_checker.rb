@@ -28,7 +28,7 @@ module Requirements
   private
 
     def user_is_not_in_access_limit_orgs?
-      edition.access_limit.organisation_ids
+      edition.access_limit_organisation_ids
         .exclude?(user.organisation_content_id)
     end
   end

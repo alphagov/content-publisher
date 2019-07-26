@@ -27,7 +27,6 @@ private
     context.edition = Edition.lock.find_current(document: params[:document])
     assert_edition_state(edition, &:first?)
     assert_edition_state(edition, &:editable?)
-    assert_edition_access(edition, user)
   end
 
   def update_edition

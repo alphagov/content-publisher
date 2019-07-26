@@ -8,8 +8,13 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user!
   before_action { Raven.user_context(id: current_user&.uid) }
+  before_action :check_user_access
 
-  add_flash_types :alert_with_description, :alert_with_items, :confirmation, :tried_to_publish, :tried_to_preview
+  add_flash_types :alert_with_description,
+                  :alert_with_items,
+                  :confirmation,
+                  :tried_to_publish,
+                  :tried_to_preview
 
   rescue_from EditionAssertions::StateError do |e|
     Rails.logger.warn(e.message)
@@ -23,12 +28,23 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  rescue_from EditionAssertions::AccessError do |e|
-    Rails.logger.warn(e.message)
-    render "documents/forbidden", status: :forbidden, assigns: { edition: e.edition }
-  end
-
   def rendering_context
     request.headers["Content-Publisher-Rendering-Context"] || "application"
+  end
+
+  def check_user_access
+    document_param = request.path_parameters[:document]
+    return if document_param.blank?
+
+    edition = Edition
+      .includes(:access_limit, revision: [:tags_revision])
+      .find_current(document: document_param)
+
+    return unless edition
+      .access_limit_organisation_ids
+      &.exclude?(current_user.organisation_content_id)
+
+    render "documents/forbidden", status: :forbidden,
+      assigns: { edition: edition }
   end
 end

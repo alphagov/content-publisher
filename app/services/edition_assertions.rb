@@ -29,13 +29,4 @@ module EditionAssertions
     assertion ||= block.to_s if block.to_s =~ /&:/ # &:editable?
     raise StateError.new(edition, assertion)
   end
-
-  def assert_edition_access(edition, user)
-    return unless edition.access_limit
-
-    return if edition.access_limit.organisation_ids
-      .include?(user.organisation_content_id)
-
-    raise AccessError.new(edition, edition.access_limit.limit_type)
-  end
 end
