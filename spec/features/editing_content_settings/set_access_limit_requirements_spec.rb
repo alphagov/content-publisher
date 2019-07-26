@@ -2,13 +2,16 @@
 
 RSpec.feature "Set access limit with requirements issues" do
   scenario do
-    given_there_is_an_edition_with_no_orgs
+    given_there_is_an_edition_in_another_org
     when_i_try_to_set_an_access_limit
     then_i_see_an_error_to_fix_the_issue
   end
 
-  def given_there_is_an_edition_with_no_orgs
-    @edition = create(:edition)
+  def given_there_is_an_edition_in_another_org
+    @edition = create(:edition,
+                      tags: {
+                        primary_publishing_organisation: %w[another-org],
+                      })
   end
 
   def when_i_try_to_set_an_access_limit
@@ -18,6 +21,6 @@ RSpec.feature "Set access limit with requirements issues" do
   end
 
   def then_i_see_an_error_to_fix_the_issue
-    expect(page).to have_content(I18n.t!("requirements.access_limit.no_primary_org.form_message"))
+    expect(page).to have_content(I18n.t!("requirements.access_limit.not_in_orgs.form_message"))
   end
 end

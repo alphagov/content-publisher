@@ -16,4 +16,9 @@ class AccessLimit < ApplicationRecord
   def readonly?
     !new_record?
   end
+
+  def organisation_ids
+    orgs = [edition.primary_publishing_organisation_id]
+    primary_organisation? ? orgs : orgs + edition.organisations
+  end
 end
