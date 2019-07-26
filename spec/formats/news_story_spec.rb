@@ -58,7 +58,7 @@ RSpec.feature "Create a news story", format: true do
 
   def then_i_can_publish_the_document
     expect(a_request(:put, /content/).with { |req|
-             expect(req.body).to be_valid_against_schema("news_article")
+             expect(req.body).to be_valid_against_publisher_schema("news_article")
              expect(JSON.parse(req.body)).to match a_hash_including(content_body)
            }).to have_been_requested
   end
