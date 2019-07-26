@@ -23,6 +23,6 @@ RSpec.feature "Schedule with review status not selected" do
 
   def then_an_error_is_displayed
     expect(page)
-      .to have_content(I18n.t!("requirements.schedule_action.not_selected.form_message"))
+      .to have_content(I18n.t!("requirements.schedule_review_status.not_selected.form_message"))
   end
 end
