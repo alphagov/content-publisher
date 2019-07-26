@@ -62,6 +62,6 @@
   <% end %>
 
   <%= tag.p class: "govuk-body" do %>
-    <%= link_to t("contacts.search.edit_or_add_contact"), Plek.new.external_url_for("whitehall") + "/government/admin/organisations/", class: "govuk-link", target: "_blank" %>
+    <%= render_govspeak(t("contacts.search.contact_not_available_govspeak")) %>
   <% end %>
 <% end %>
