@@ -19,6 +19,7 @@ class AccessLimit < ApplicationRecord
 
   def organisation_ids
     orgs = [edition.primary_publishing_organisation_id]
-    primary_organisation? ? orgs : orgs + edition.organisations
+    orgs += edition.supporting_organisation_ids if tagged_organisations?
+    orgs
   end
 end

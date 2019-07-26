@@ -15,7 +15,7 @@ class TagsRevision < ApplicationRecord
     tags["primary_publishing_organisation"].to_a.first
   end
 
-  def organisations
+  def supporting_organisation_ids
     tags["organisations"].to_a
   end
 end
