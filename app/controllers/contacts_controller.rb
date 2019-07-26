@@ -11,10 +11,4 @@ class ContactsController < ApplicationController
     GovukError.notify(e)
     render "search_api_down", status: :service_unavailable
   end
-
-  def insert
-    Contacts::InsertInteractor.call(params: params, user: current_user)
-
-    redirect_to edit_document_path(params[:document], anchor: "body")
-  end
 end

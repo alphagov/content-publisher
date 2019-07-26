@@ -30,14 +30,36 @@
     search: true,
   } %>
 
-  <%= render "govuk_publishing_components/components/button", {
-    text: "Insert contact",
-    data_attributes: {
-      "modal-action": "insert",
-      gtm: "insert-contact"
-    },
-    margin_bottom: true
-  } %>
+  <% if rendering_context == "modal" %>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Insert contact",
+      data_attributes: {
+        "modal-action": "insert",
+        gtm: "insert-contact"
+      },
+      margin_bottom: true
+    } %>
+  <% else %>
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Show markdown code",
+      margin_bottom: true
+    } %>
+
+    <% if params[:contact_id] %>
+      <%= render "components/metadata", {
+        items: [
+          {
+            field: t("contacts.search.markdown_code"),
+            value: t("contacts.search.contact_markdown", id: params[:contact_id])
+          },
+        ],
+        inline: true,
+        margin_bottom: 3,
+      } %>
+      <p class="govuk-body"><%= t("contacts.search.contact_instructions") %></p>
+
+    <% end %>
+  <% end %>
 
   <%= tag.p class: "govuk-body" do %>
     <%= link_to t("contacts.search.edit_or_add_contact"), Plek.new.external_url_for("whitehall") + "/government/admin/organisations/", class: "govuk-link", target: "_blank" %>

@@ -6,4 +6,8 @@ en:
       hint_text: Select a contact address from the GOV.UK contacts list
       api_down: Contacts can't be selected right now. We're having trouble getting the data we need for you to make changes on this page.
       markdown_code: Markdown code
+      contact_markdown: "[Contact: %{id}]"
+      contact_instructions: |
+        Copy the markdown code and paste it into the text in a new paragraph
+        where you want the file to appear.
       edit_or_add_contact: Edit or add new contact
