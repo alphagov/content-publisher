@@ -8,7 +8,7 @@ class PreviewService
   end
 
   def create_preview
-    PreviewAssetService.new(edition).upload_assets
+    PreviewAssetService.new(edition).put_all
     publish_draft
     DraftAssetCleanupService.new.call(edition)
   rescue GdsApi::BaseError

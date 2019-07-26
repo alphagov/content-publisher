@@ -6,7 +6,7 @@ RSpec.describe PreviewService do
   end
 
   let(:preview_asset_service) do
-    instance_double(PreviewAssetService, upload_assets: nil)
+    instance_double(PreviewAssetService, put_all: nil)
   end
 
   before do
@@ -37,7 +37,7 @@ RSpec.describe PreviewService do
 
     it "delegates previewing assets" do
       edition = create(:edition)
-      expect(preview_asset_service).to receive(:upload_assets)
+      expect(preview_asset_service).to receive(:put_all)
       PreviewService.new(edition).create_preview
     end
 
@@ -54,7 +54,7 @@ RSpec.describe PreviewService do
 
     context "when the asset upload fails" do
       it "sets revision_synced to false on the edition" do
-        allow(preview_asset_service).to receive(:upload_assets).and_raise(GdsApi::BaseError)
+        allow(preview_asset_service).to receive(:put_all).and_raise(GdsApi::BaseError)
         edition = create(:edition, revision_synced: true)
         expect { PreviewService.new(edition).create_preview }.to raise_error(GdsApi::BaseError)
         expect(edition.revision_synced).to be(false)

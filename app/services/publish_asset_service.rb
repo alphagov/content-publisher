@@ -2,19 +2,26 @@
 
 class PublishAssetService
   def publish_assets(edition, live_edition)
-    edition.assets.each do |asset|
-      raise "Expected asset to be on asset manager" if asset.absent?
-      next unless asset.draft?
-
-      AssetManagerService.new.publish(asset)
-      asset.live!
-    end
-
+    edition.assets.each { |asset| publish_asset(asset) }
     retire_old_file_attachments(edition, live_edition)
     retire_old_images(edition, live_edition)
   end
 
 private
+
+  def publish_asset(asset)
+    raise "Expected asset to be on asset manager" if asset.absent?
+    return unless asset.draft?
+
+    GdsApi.asset_manager.update_asset(
+      asset.asset_manager_id,
+      draft: false,
+      auth_bypass_ids: [],
+      redirect_url: nil,
+    )
+
+    asset.live!
+  end
 
   def retire_old_file_attachments(edition, live_edition)
     return unless live_edition
@@ -61,7 +68,9 @@ private
     return if live_asset == current_asset
 
     begin
-      AssetManagerService.new.redirect(live_asset, to: current_asset.file_url)
+      GdsApi.asset_manager.update_asset(live_asset.asset_manager_id,
+                                        redirect_url: current_asset.file_url)
+
       live_asset.update!(state: :superseded, superseded_by: current_asset)
     rescue GdsApi::HTTPNotFound
       Rails.logger.warn("No asset to supersede for id #{live_asset.asset_manager_id}")
@@ -73,7 +82,7 @@ private
     return if live_asset.absent?
 
     begin
-      AssetManagerService.new.delete(live_asset)
+      GdsApi.asset_manager.delete_asset(live_asset.asset_manager_id)
     rescue GdsApi::HTTPNotFound
       Rails.logger.warn("No asset to delete for id #{live_asset.asset_manager_id}")
     end

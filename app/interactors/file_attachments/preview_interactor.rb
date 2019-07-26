@@ -5,7 +5,6 @@ class FileAttachments::PreviewInteractor < ApplicationInteractor
            :user,
            :edition,
            :attachment_revision,
-           :asset,
            to: :context
 
   def call
@@ -30,17 +29,18 @@ private
   end
 
   def find_or_upload_asset
-    context.asset = attachment_revision.asset
+    asset = attachment_revision.asset
 
     if asset.absent?
-      PreviewAssetService.new(edition).upload_asset(asset)
+      PreviewAssetService.new(edition).put(asset)
       context.can_preview = false
       return
     end
 
-    service = PreviewAssetService.new(edition)
-    context.can_preview = service.can_preview_asset?(asset)
-  rescue GdsApi::BaseError
+    response = GdsApi.asset_manager.asset(asset.asset_manager_id).to_h
+    context.can_preview = response["state"] == "uploaded"
+  rescue GdsApi::BaseError => e
+    GovukError.notify(e)
     context.fail!(api_error: true)
   end
 end

@@ -68,6 +68,7 @@ RSpec.feature "Edit image", js: true do
     @publishing_api_request = stub_any_publishing_api_put_content
     @new_asset_requests = stub_asset_manager_receives_an_asset
     @old_asset_requests = stub_asset_manager_deletes_any_asset
+    stub_asset_manager_updates_any_asset
 
     click_on "Crop image"
   end
