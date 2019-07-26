@@ -71,7 +71,7 @@ class Edition < ApplicationRecord
            :file_attachment_revisions,
            :assets,
            :primary_publishing_organisation_id,
-           :organisations,
+           :supporting_organisation_ids,
            :backdated_to,
            to: :revision
 

@@ -29,54 +29,18 @@ RSpec.describe EditionAssertions do
       expect { assert_edition_access(edition, user) }.to_not raise_error
     end
 
-    context "when access is limited to the primary org" do
-      let(:edition) do
-        build :edition, :access_limited, limit_type: :primary_organisation, created_by: user
-      end
+    context "when the edition is access limited to some orgs" do
+      let(:edition) { build(:edition, :access_limited) }
 
-      it "does nothing when the user is in the primary org" do
+      it "does nothing when the user is in the orgs" do
+        allow(edition.access_limit).to receive(:organisation_ids) { %w[primary-org-id] }
         expect { assert_edition_access(edition, user) }.to_not raise_error
       end
 
-      it "raises an error when the user is in a supporting org" do
-        supporting_user = build :user, organisation_content_id: "supporting-org-id"
+      it "raises an error when the user is not in the orgs" do
+        allow(edition.access_limit).to receive(:organisation_ids) { %w[another-org-id] }
 
-        expect { assert_edition_access(edition, supporting_user) }
-          .to raise_error(EditionAssertions::AccessError)
-      end
-
-      it "raises an error when the user is in another org" do
-        another_user = build :user, organisation_content_id: "another-org"
-
-        expect { assert_edition_access(edition, another_user) }
-          .to raise_error(EditionAssertions::AccessError)
-      end
-    end
-
-    context "when access is limited to tagged orgs" do
-      let(:edition) do
-        build :edition,
-              :access_limited,
-              limit_type: :tagged_organisations,
-              tags: {
-                primary_publishing_organisation: %w[primary-org-id],
-                organisations: %w[primary-org-id supporting-org-id],
-              }
-      end
-
-      it "does nothing when the user is in the primary org" do
-        expect { assert_edition_access(edition, user) }.to_not raise_error
-      end
-
-      it "does nothing when the user is in a supporting org" do
-        supporting_user = build :user, organisation_content_id: "supporting-org-id"
-        expect { assert_edition_access(edition, supporting_user) }.to_not raise_error
-      end
-
-      it "raises an error when the user is in another org" do
-        another_user = build :user, organisation_content_id: "another-org"
-
-        expect { assert_edition_access(edition, another_user) }
+        expect { assert_edition_access(edition, user) }
           .to raise_error(EditionAssertions::AccessError)
       end
     end

@@ -59,7 +59,7 @@ class Revision < ApplicationRecord
 
   delegate :tags,
            :primary_publishing_organisation_id,
-           :organisations,
+           :supporting_organisation_ids,
            to: :tags_revision
 
   def self.create_initial(document, user = nil, tags = {})

@@ -9,7 +9,7 @@
   <% primary_org = service.by_content_id(primary_org_id)&.fetch("internal_name") %>
 <% end %>
 
-<% supporting_orgs = @edition.organisations
+<% supporting_orgs = @edition.supporting_organisation_ids
   .map { |org_id| service.by_content_id(org_id)&.fetch("internal_name") }
   .compact %>
 
