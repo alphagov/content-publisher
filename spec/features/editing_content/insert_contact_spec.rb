@@ -47,7 +47,7 @@ RSpec.feature "Insert contact", js: true do
   end
 
   def then_i_see_the_snippet_is_inserted
-    snippet = I18n.t("contacts.search.contact_markdown", id: @contact["content_id"])
+    snippet = I18n.t("contacts.index.contact_markdown", id: @contact["content_id"])
     expect(find("#body-field").value).to match snippet
   end
 end

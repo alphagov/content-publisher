@@ -1,6 +1,6 @@
 en:
   contacts:
-    search:
+    index:
       title: Insert contact address
       label: Search saved contact
       hint_text: Select a contact address from the GOV.UK contacts list

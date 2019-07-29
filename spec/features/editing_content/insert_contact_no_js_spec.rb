@@ -45,7 +45,7 @@ RSpec.feature "Insert contact without Javascript" do
   end
 
   def then_i_see_the_contact_markdown_snippet
-    snippet = I18n.t("contacts.search.contact_markdown", id: @contact["content_id"])
+    snippet = I18n.t("contacts.index.contact_markdown", id: @contact["content_id"])
     expect(page).to have_content(snippet)
   end
 end

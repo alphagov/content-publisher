@@ -1,4 +1,4 @@
-<% content_for :title, t("contacts.search.title") %>
+<% content_for :title, t("contacts.index.title") %>
 
 <%
   contact_options = @contacts_by_organisation.flat_map do |org|
@@ -18,10 +18,10 @@
   <%= render "components/autocomplete", {
     name: "contact_id",
     label: {
-      text: t("contacts.search.label"),
+      text: t("contacts.index.label"),
       bold: true
     },
-    hint: t("contacts.search.hint_text"),
+    hint: t("contacts.index.hint_text"),
     id: "contact-id",
     select: {
       options: [""] + contact_options,
@@ -35,7 +35,7 @@
       text: "Insert contact",
       data_attributes: {
         "modal-action": "insert",
-        "autocomplete-contacts-snippet-template": I18n.t("contacts.search.contact_markdown", id: "#"),
+        "autocomplete-contacts-snippet-template": I18n.t("contacts.index.contact_markdown", id: "#"),
         gtm: "insert-contact"
       },
       margin_bottom: true
@@ -50,19 +50,19 @@
       <%= render "components/metadata", {
         items: [
           {
-            field: t("contacts.search.markdown_code"),
-            value: t("contacts.search.contact_markdown", id: params[:contact_id])
+            field: t("contacts.index.markdown_code"),
+            value: t("contacts.index.contact_markdown", id: params[:contact_id])
           },
         ],
         inline: true,
         margin_bottom: 3,
       } %>
-      <p class="govuk-body"><%= t("contacts.search.contact_instructions") %></p>
+      <p class="govuk-body"><%= t("contacts.index.contact_instructions") %></p>
 
     <% end %>
   <% end %>
 
   <%= tag.p class: "govuk-body" do %>
-    <%= render_govspeak(t("contacts.search.contact_not_available_govspeak")) %>
+    <%= render_govspeak(t("contacts.index.contact_not_available_govspeak")) %>
   <% end %>
 <% end %>
