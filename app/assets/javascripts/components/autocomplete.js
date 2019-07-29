@@ -23,15 +23,6 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     }
   }
 
-  Autocomplete.prototype.initAutoCompleteSelect = function ($select) {
-    // disabled eslint because we can not control the name of the constructor (expected to be EnhanceSelectElement)
-    new window.accessibleAutocomplete.enhanceSelectElement({ // eslint-disable-line no-new, new-cap
-      selectElement: $select,
-      minLength: 3,
-      showNoOptionsFound: true
-    })
-  }
-
   Autocomplete.prototype.initAutoCompleteContacts = function () {
     // Read options and associated data attributes and feed that as results for inputValueTemplate
     var $select = this.$module.querySelector('select')
@@ -92,46 +83,6 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
     $select.style.display = 'none'
     $select.id = $select.id + '-select'
-  }
-
-  Autocomplete.prototype.initAutoCompleteInput = function ($input) {
-    var withoutNarrowingResults = this.$module.dataset.autocompleteWithoutNarrowingResults
-
-    var list = document.getElementById($input.getAttribute('list'))
-    var options = []
-
-    if (list) {
-      options = [].map.call(list.querySelectorAll('option'), function (option) {
-        return option.value
-      })
-    }
-
-    if (!options.length) {
-      return
-    }
-
-    new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
-      id: $input.id,
-      name: $input.name,
-      element: this.$module,
-      showAllValues: withoutNarrowingResults,
-      defaultValue: $input.value,
-      autoselect: !withoutNarrowingResults,
-      dropdownArrow: withoutNarrowingResults ? this.dropdownArrow : null,
-      source: function (query, syncResults) {
-        if (withoutNarrowingResults) {
-          syncResults(options)
-        } else {
-          syncResults(query
-            ? options.filter(function (option) {
-              return option.toLowerCase().indexOf(query.toLowerCase()) !== -1
-            }) : []
-          )
-        }
-      }
-    })
-
-    $input.parentNode.removeChild($input)
   }
 
   Autocomplete.prototype.initAutoCompleteSearchTopics = function () {
@@ -199,6 +150,55 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     })
 
     $input.parentNode.parentNode.removeChild($input.parentNode)
+  }
+
+  Autocomplete.prototype.initAutoCompleteSelect = function ($select) {
+    // disabled eslint because we can not control the name of the constructor (expected to be EnhanceSelectElement)
+    new window.accessibleAutocomplete.enhanceSelectElement({ // eslint-disable-line no-new, new-cap
+      selectElement: $select,
+      minLength: 3,
+      showNoOptionsFound: true
+    })
+  }
+
+  Autocomplete.prototype.initAutoCompleteInput = function ($input) {
+    var withoutNarrowingResults = this.$module.dataset.autocompleteWithoutNarrowingResults
+
+    var list = document.getElementById($input.getAttribute('list'))
+    var options = []
+
+    if (list) {
+      options = [].map.call(list.querySelectorAll('option'), function (option) {
+        return option.value
+      })
+    }
+
+    if (!options.length) {
+      return
+    }
+
+    new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
+      id: $input.id,
+      name: $input.name,
+      element: this.$module,
+      showAllValues: withoutNarrowingResults,
+      defaultValue: $input.value,
+      autoselect: !withoutNarrowingResults,
+      dropdownArrow: withoutNarrowingResults ? this.dropdownArrow : null,
+      source: function (query, syncResults) {
+        if (withoutNarrowingResults) {
+          syncResults(options)
+        } else {
+          syncResults(query
+            ? options.filter(function (option) {
+              return option.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            }) : []
+          )
+        }
+      }
+    })
+
+    $input.parentNode.removeChild($input)
   }
 
   Autocomplete.prototype.dropdownArrow = function (config) {

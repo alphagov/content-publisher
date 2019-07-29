@@ -106,33 +106,6 @@ examples:
           -
             - Removed
 
-  autocomplete_with_hint_on_options:
-    description: |
-      Used to enhance a select element. A data attribute on each option provides
-      a second piece of information, which is also matched against user input.
-    data:
-      id: autocomplete-with-hint-on-options
-      name: autocomplete-with-hint-on-options
-      type: with-hint-on-options
-      label:
-        text: Select your country
-      select:
-        options:
-          -
-            - ""
-          -
-            - France
-            - fr
-            - data-hint: Paris
-          -
-            - United Arab Emirates
-            - uae
-            - data-hint: Abu Dhabi
-          -
-            - United Kingdom
-            - uk
-            - data-hint: London
-
   autocomplete_input:
     description: |
       An enhancement to an input element. Options are provided via a datalist.
