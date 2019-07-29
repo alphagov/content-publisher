@@ -9,6 +9,6 @@ class ContactsController < ApplicationController
     render layout: rendering_context
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
-    render "index_api_down", status: :service_unavailable
+    render "index_api_down", layout: rendering_context
   end
 end
