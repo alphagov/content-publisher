@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ContactsController < ApplicationController
-  def search
+  def index
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
     assert_edition_access(@edition, current_user)
@@ -9,6 +9,6 @@ class ContactsController < ApplicationController
     render layout: rendering_context
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
-    render "search_api_down", status: :service_unavailable
+    render "index_api_down", status: :service_unavailable
   end
 end
