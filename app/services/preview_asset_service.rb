@@ -25,20 +25,14 @@ class PreviewAssetService
 
 private
 
-  def payload
-    auth_bypass_id = PreviewAuthBypassService.new(edition).auth_bypass_id
-    { draft: true, auth_bypass_ids: [auth_bypass_id] }
-  end
-
   def update(asset)
+    payload = Payload.new(edition).for_update
     GdsApi.asset_manager.update_asset(asset.asset_manager_id, payload)
   end
 
   def upload(asset)
-    upload = GdsApi.asset_manager.create_asset(
-      payload.merge(file: UploadedFile.new(asset)),
-    )
-
+    payload = Payload.new(edition).for_upload(asset)
+    upload = GdsApi.asset_manager.create_asset(payload)
     asset.update!(file_url: upload["file_url"], state: :draft)
   end
 
@@ -68,6 +62,23 @@ private
 
     def filename
       File.basename(asset.filename)
+    end
+  end
+
+  class Payload
+    attr_reader :edition
+
+    def initialize(edition)
+      @edition = edition
+    end
+
+    def for_update
+      auth_bypass_id = PreviewAuthBypassService.new(edition).auth_bypass_id
+      { draft: true, auth_bypass_ids: [auth_bypass_id] }
+    end
+
+    def for_upload(asset)
+      for_update.merge(file: UploadedFile.new(asset))
     end
   end
 end
