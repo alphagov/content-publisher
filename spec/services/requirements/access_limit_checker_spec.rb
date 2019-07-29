@@ -34,5 +34,16 @@ RSpec.describe Requirements::AccessLimitChecker do
         expect(issues).to be_empty
       end
     end
+
+    context "when user has no organisation associated with account" do
+      let(:user) { build(:user, organisation_content_id: nil) }
+
+      it "returns an issue when the user is not in the orgs" do
+        edition = build(:edition, :access_limited, created_by: user)
+        issues = Requirements::AccessLimitChecker.new(edition, user).pre_update_issues
+        form_message = issues.items_for(:access_limit).first[:text]
+        expect(form_message).to eq(I18n.t!("requirements.access_limit.user_has_no_org.form_message"))
+      end
+    end
   end
 end

@@ -13,6 +13,11 @@ module Requirements
       issues = CheckerIssues.new
       return issues if edition.access_limit.nil?
 
+      if user.organisation_content_id.blank?
+        issues << Issue.new(:access_limit, :user_has_no_org)
+        return issues
+      end
+
       if edition.primary_publishing_organisation_id.blank?
         issues << Issue.new(:access_limit, :no_primary_org)
         return issues
