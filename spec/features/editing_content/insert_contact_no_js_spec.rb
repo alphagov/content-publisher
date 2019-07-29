@@ -11,20 +11,6 @@ RSpec.feature "Insert contact without Javascript" do
     then_i_see_the_contact_markdown_snippet
   end
 
-  let(:organisation) { { "content_id" => SecureRandom.uuid, "internal_name" => "Organisation" } }
-  let(:contact) do
-    {
-      "content_id" => SecureRandom.uuid,
-      "title" => "Contact",
-      "links" => { "organisations" => [organisation["content_id"]] },
-    }
-  end
-
-  before do
-    stub_publishing_api_has_linkables([organisation], document_type: "organisation")
-    stub_publishing_api_get_editions([contact], ContactsService::EDITION_PARAMS)
-  end
-
   def given_there_is_an_edition
     body_field = build(:field, id: "body", type: "govspeak")
     document_type = build(:document_type, contents: [body_field])
@@ -37,7 +23,18 @@ RSpec.feature "Insert contact without Javascript" do
   end
 
   def and_i_go_to_add_a_contact
-    @request = stub_publishing_api_put_content(@edition.content_id, {})
+    organisation = {
+      "content_id" => SecureRandom.uuid,
+      "internal_name" => "Organisation",
+    }
+    @contact = {
+      "content_id" => SecureRandom.uuid,
+      "title" => "Contact",
+      "links" => { "organisations" => [organisation["content_id"]] },
+    }
+    stub_publishing_api_has_linkables([organisation], document_type: "organisation")
+    stub_publishing_api_get_editions([@contact], ContactsService::EDITION_PARAMS)
+    stub_publishing_api_put_content(@edition.content_id, {})
     find("markdown-toolbar details").click
     click_on "Contact"
   end
@@ -48,7 +45,7 @@ RSpec.feature "Insert contact without Javascript" do
   end
 
   def then_i_see_the_contact_markdown_snippet
-    snippet = I18n.t("contacts.search.contact_markdown", id: contact["content_id"])
+    snippet = I18n.t("contacts.search.contact_markdown", id: @contact["content_id"])
     expect(page).to have_content(snippet)
   end
 end
