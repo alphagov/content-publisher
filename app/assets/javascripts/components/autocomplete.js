@@ -12,8 +12,8 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     var $select = this.$module.querySelector('select')
     var $input = this.$module.querySelector('input')
 
-    if (type === 'with-hint-on-options') {
-      this.initAutoCompleteWithHintOnOptions()
+    if (type === 'contacts') {
+      this.initAutoCompleteContacts()
     } else if (type === 'topics') {
       this.initAutoCompleteSearchTopics()
     } else if ($select) {
@@ -32,7 +32,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     })
   }
 
-  Autocomplete.prototype.initAutoCompleteWithHintOnOptions = function () {
+  Autocomplete.prototype.initAutoCompleteContacts = function () {
     // Read options and associated data attributes and feed that as results for inputValueTemplate
     var $select = this.$module.querySelector('select')
     var $insertButton = this.$module.parentNode.querySelector('button[data-modal-action="insert"]')
