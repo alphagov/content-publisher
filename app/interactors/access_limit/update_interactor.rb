@@ -28,14 +28,20 @@ private
   def update_access_limit
     limit_type = params.require(:limit_type)
 
-    if LIMIT_TYPES.include?(limit_type)
-      context.fail! if edition.access_limit&.limit_type == limit_type
-      edition.assign_access_limit(limit_type, user)
+    if LIMIT_TYPES.exclude?(limit_type)
+      context.fail! if edition.access_limit.nil?
+      edition.assign_as_edit(user, access_limit: nil)
       return
     end
 
-    context.fail! if edition.access_limit.nil?
-    edition.remove_access_limit(user)
+    context.fail! if edition.access_limit&.limit_type == limit_type
+
+    access_limit = AccessLimit.new(created_by: user,
+                                   edition: edition,
+                                   limit_type: limit_type,
+                                   revision_at_creation: edition.revision)
+
+    edition.assign_as_edit(user, access_limit: access_limit)
   end
 
   def check_for_issues

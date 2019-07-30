@@ -3,7 +3,7 @@
 class Editions::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,
-           :live_edition,
+           :edition,
            :next_edition,
            :discarded_edition,
            :next_revision,
@@ -11,7 +11,7 @@ class Editions::CreateInteractor < ApplicationInteractor
 
   def call
     Edition.transaction do
-      find_and_lock_live_edition
+      find_and_lock_edition
       create_next_revision
       create_next_edition
       create_timeline_entry
@@ -20,9 +20,8 @@ class Editions::CreateInteractor < ApplicationInteractor
 
 private
 
-  def find_and_lock_live_edition
-    edition = Edition.lock.find_current(document: params[:document])
-    context.live_edition = edition
+  def find_and_lock_edition
+    context.edition = Edition.lock.find_current(document: params[:document])
 
     assert_edition_state(edition, assertion: "can create new edition") do
       edition.live || edition.discarded?
@@ -30,7 +29,7 @@ private
   end
 
   def create_next_revision
-    updater = Versioning::RevisionUpdater.new(live_edition.revision, user)
+    updater = Versioning::RevisionUpdater.new(edition.revision, user)
 
     updater.assign(change_note: "",
                    update_type: "major",
@@ -40,16 +39,16 @@ private
   end
 
   def create_next_edition
-    live_edition.update!(current: false)
+    edition.update!(current: false)
 
     context.discarded_edition = Edition.find_by(
-      document: live_edition.document,
-      number: live_edition.number + 1,
+      document: edition.document,
+      number: edition.number + 1,
     )
 
     context.next_edition = discarded_edition ||
-      Edition.new(document: live_edition.document,
-                  number: live_edition.document.next_edition_number,
+      Edition.new(document: edition.document,
+                  number: edition.document.next_edition_number,
                   created_by: user)
 
     next_edition.assign_as_edit(user, current: true, revision: next_revision)

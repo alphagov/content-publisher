@@ -150,24 +150,6 @@ class Edition < ApplicationRecord
     assign_as_edit(user, revision: revision)
   end
 
-  def assign_access_limit(limit_type, user)
-    raise "cannot access limit a live edition" if live?
-
-    access_limit = AccessLimit.new(created_by: user,
-                                   edition: self,
-                                   revision_at_creation: revision,
-                                   limit_type: limit_type)
-
-
-    assign_as_edit(user, access_limit: access_limit)
-  end
-
-  def remove_access_limit(user)
-    raise "no access limit to remove" unless access_limit
-
-    assign_as_edit(user, access_limit: nil)
-  end
-
   def editors
     user_ids = statuses.pluck(:created_by_id) + revisions.pluck(:created_by_id)
     User.where(id: user_ids.uniq)

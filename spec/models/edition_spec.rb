@@ -159,51 +159,6 @@ RSpec.describe Edition do
     end
   end
 
-  describe "#assign_access_limit" do
-    it "assigns an access limit" do
-      edition = build(:edition)
-      user = build(:user)
-
-      edition.assign_access_limit(:tagged_organisations, user)
-
-      expect(edition.access_limit).to be_tagged_organisations
-      expect(edition.access_limit.created_by).to eq(user)
-      expect(edition.access_limit.revision_at_creation).to eq(edition.revision)
-    end
-
-    it "updates the edition last edited information" do
-      edition = build(:edition)
-      user = build(:user)
-
-      travel_to(Time.current) do
-        expect { edition.assign_access_limit(:tagged_organisations, user) }
-          .to change { edition.last_edited_by }.to(user)
-          .and change { edition.last_edited_at }.to(Time.current)
-      end
-    end
-  end
-
-  describe "#remove_access_limit" do
-    it "removes an access limit" do
-      edition = build(:edition, :access_limited)
-
-      expect { edition.remove_access_limit(build(:user)) }
-        .to change { edition.access_limit }
-        .to(nil)
-    end
-
-    it "updates the edition last edited information" do
-      edition = build(:edition, :access_limited)
-      user = build(:user)
-
-      travel_to(Time.current) do
-        expect { edition.remove_access_limit(user) }
-          .to change { edition.last_edited_by }.to(user)
-          .and change { edition.last_edited_at }.to(Time.current)
-      end
-    end
-  end
-
   describe "#access_limit_organisation_ids" do
     context "when there is no access limit" do
       it "returns nil" do

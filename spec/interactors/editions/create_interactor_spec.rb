@@ -6,7 +6,7 @@ RSpec.describe Editions::CreateInteractor do
 
     it "resets the edition metadata" do
       edition = create(:edition,
-                       :published,
+                       live: true,
                        change_note: "note",
                        proposed_publish_time: Time.current,
                        update_type: :minor)
@@ -55,8 +55,8 @@ RSpec.describe Editions::CreateInteractor do
       end
     end
 
-    context "when the edition was published" do
-      let(:edition) { create(:edition, :published, number: 2) }
+    context "when the edition is live" do
+      let(:edition) { create(:edition, live: true, number: 2) }
       let(:params) { { document: edition.document.to_param } }
 
       it "creates a new edition" do
