@@ -133,6 +133,9 @@ en:
       non_youtube:
         form_message: Enter a valid YouTube web address
     access_limit:
+      user_has_no_org:
+        form_message: |
+          Associate your Signon account with an organisation or you will not be able to limit access to this document. Please ask your managing editor to raise a support request.
       no_primary_org:
         form_message: Select a primary organisation before you can limit access
       not_in_orgs:
