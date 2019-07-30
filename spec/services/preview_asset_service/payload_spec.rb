@@ -23,7 +23,7 @@ RSpec.describe PreviewAssetService::Payload do
     context "when the edition is access limited" do
       it "returns a payload with the permitted org ids" do
         edition = build :edition, :access_limited
-        allow(edition.access_limit).to receive(:organisation_ids) { "ids" }
+        allow(edition).to receive(:access_limit_organisation_ids) { "ids" }
         payload = PreviewAssetService::Payload.new(edition).for_update
         expect(payload[:access_limited_organisation_ids]).to eq "ids"
       end
@@ -47,7 +47,7 @@ RSpec.describe PreviewAssetService::Payload do
     context "when the edition is access limited" do
       it "returns a payload with the permitted org ids" do
         edition = build :edition, :access_limited
-        allow(edition.access_limit).to receive(:organisation_ids) { "ids" }
+        allow(edition).to receive(:access_limit_organisation_ids) { "ids" }
         payload = PreviewAssetService::Payload.new(edition).for_upload(asset)
         expect(payload[:access_limited_organisation_ids]).to eq "ids"
       end

@@ -24,6 +24,6 @@ private
   end
 
   def access_limited
-    edition.access_limit&.organisation_ids
+    edition.access_limit_organisation_ids
   end
 end

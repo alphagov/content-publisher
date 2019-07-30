@@ -49,6 +49,20 @@ RSpec.describe PublishingApiPayload do
       expect(payload).not_to include("first_published_at")
     end
 
+    it "specifies an auth bypass ID for anonymous previews" do
+      edition = build(:edition)
+      allow_any_instance_of(PreviewAuthBypassService).to receive(:auth_bypass_id) { "id" }
+      payload = PublishingApiPayload.new(edition).payload
+      expect(payload["access_limited"]).to eq("auth_bypass_ids" => %w[id])
+    end
+
+    it "specifies organistions when the edition is access limited" do
+      edition = build(:edition, :access_limited)
+      allow(edition).to receive(:access_limit_organisation_ids) { %w[org-id] }
+      payload = PublishingApiPayload.new(edition).payload
+      expect(payload["access_limited"]["organisations"]).to eq %w[org-id]
+    end
+
     it "includes primary_publishing_organisation in organisations links" do
       organisation = build(:tag_field, type: "single_tag", id: "primary_publishing_organisation")
       document_type = build(:document_type, tags: [organisation])
