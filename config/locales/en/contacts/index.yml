@@ -1,0 +1,14 @@
+en:
+  contacts:
+    index:
+      title: Insert contact address
+      label: Search saved contact
+      hint_text: Select a contact address from the GOV.UK contacts list
+      api_down: Contacts can't be selected right now. We're having trouble getting the data we need for you to make changes on this page.
+      markdown_code: Markdown code
+      contact_markdown: "[Contact: %{id}]"
+      contact_instructions: |
+        Copy the markdown code and paste it into the text in a new paragraph
+        where you want the file to appear.
+      contact_not_available_govspeak: |
+        If the contact you need is not available or is out of date, contact your managing editor. [Full guidance on adding or editing contacts](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/organisation-pages){:target="_blank"}.

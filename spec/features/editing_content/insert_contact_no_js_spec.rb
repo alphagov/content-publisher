@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-RSpec.feature "Insert contact", js: true do
+RSpec.feature "Insert contact without Javascript" do
   include AccessibleAutocompleteHelper
 
   scenario do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
-    and_i_click_to_insert_a_contact
-    and_i_select_a_contact
-    then_i_see_the_snippet_is_inserted
+    and_i_go_to_add_a_contact
+    when_i_select_a_contact
+    then_i_see_the_contact_markdown_snippet
   end
 
   def given_there_is_an_edition
@@ -22,7 +22,7 @@ RSpec.feature "Insert contact", js: true do
     click_on "Edit Content"
   end
 
-  def and_i_click_to_insert_a_contact
+  def and_i_go_to_add_a_contact
     organisation = {
       "content_id" => SecureRandom.uuid,
       "internal_name" => "Organisation",
@@ -39,15 +39,13 @@ RSpec.feature "Insert contact", js: true do
     click_on "Contact"
   end
 
-  def and_i_select_a_contact
-    accessible_autocomplete_select "Contact",
-                                   for_id: "contact-id",
-                                   value: @contact["content_id"]
-    click_on "Insert contact"
+  def when_i_select_a_contact
+    select "Contact", from: "contact-id"
+    click_on "Show markdown code"
   end
 
-  def then_i_see_the_snippet_is_inserted
+  def then_i_see_the_contact_markdown_snippet
     snippet = I18n.t("contacts.index.contact_markdown", id: @contact["content_id"])
-    expect(find("#body-field").value).to match snippet
+    expect(page).to have_content(snippet)
   end
 end

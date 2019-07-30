@@ -12,8 +12,8 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     var $select = this.$module.querySelector('select')
     var $input = this.$module.querySelector('input')
 
-    if (type === 'with-hint-on-options') {
-      this.initAutoCompleteWithHintOnOptions()
+    if (type === 'contacts') {
+      this.initAutoCompleteContacts()
     } else if (type === 'topics') {
       this.initAutoCompleteSearchTopics()
     } else if ($select) {
@@ -23,31 +23,24 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     }
   }
 
-  Autocomplete.prototype.initAutoCompleteSelect = function ($select) {
-    // disabled eslint because we can not control the name of the constructor (expected to be EnhanceSelectElement)
-    new window.accessibleAutocomplete.enhanceSelectElement({ // eslint-disable-line no-new, new-cap
-      selectElement: $select,
-      minLength: 3,
-      showNoOptionsFound: true
-    })
-  }
-
-  Autocomplete.prototype.initAutoCompleteWithHintOnOptions = function () {
+  Autocomplete.prototype.initAutoCompleteContacts = function () {
     // Read options and associated data attributes and feed that as results for inputValueTemplate
     var $select = this.$module.querySelector('select')
+    var $insertButton = this.$module.parentNode.querySelector('button[data-modal-action="insert"]')
+    if ($insertButton) {
+      var contactSnippetTemplate = $insertButton.dataset.autocompleteContactsSnippetTemplate // [Contact: #]
+    }
 
     if (!$select) {
       return
     }
-
-    var $options = $select.querySelectorAll('option')
 
     new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
       element: this.$module,
       id: $select.id,
       source: function (query, syncResults) {
         var results = []
-        $options.forEach(function ($el) {
+        $select.options.forEach(function ($el) {
           results.push({text: $el.textContent, hint: $el.dataset.hint || '', value: $el.value})
         })
         syncResults(query
@@ -66,7 +59,6 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         )
       },
       minLength: 3,
-      autoselect: true,
       showNoOptionsFound: true,
       templates: {
         inputValue: function (result) {
@@ -85,51 +77,15 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         if (options.length) {
           options[0].selected = true
         }
+
+        if ($insertButton && contactSnippetTemplate && value) {
+          $insertButton.dataset.modalData = contactSnippetTemplate.replace('#', value)
+        }
       }
     })
 
     $select.style.display = 'none'
     $select.id = $select.id + '-select'
-  }
-
-  Autocomplete.prototype.initAutoCompleteInput = function ($input) {
-    var withoutNarrowingResults = this.$module.dataset.autocompleteWithoutNarrowingResults
-
-    var list = document.getElementById($input.getAttribute('list'))
-    var options = []
-
-    if (list) {
-      options = [].map.call(list.querySelectorAll('option'), function (option) {
-        return option.value
-      })
-    }
-
-    if (!options.length) {
-      return
-    }
-
-    new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
-      id: $input.id,
-      name: $input.name,
-      element: this.$module,
-      showAllValues: withoutNarrowingResults,
-      defaultValue: $input.value,
-      autoselect: !withoutNarrowingResults,
-      dropdownArrow: withoutNarrowingResults ? this.dropdownArrow : null,
-      source: function (query, syncResults) {
-        if (withoutNarrowingResults) {
-          syncResults(options)
-        } else {
-          syncResults(query
-            ? options.filter(function (option) {
-              return option.toLowerCase().indexOf(query.toLowerCase()) !== -1
-            }) : []
-          )
-        }
-      }
-    })
-
-    $input.parentNode.removeChild($input)
   }
 
   Autocomplete.prototype.initAutoCompleteSearchTopics = function () {
@@ -197,6 +153,55 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     })
 
     $input.parentNode.parentNode.removeChild($input.parentNode)
+  }
+
+  Autocomplete.prototype.initAutoCompleteSelect = function ($select) {
+    // disabled eslint because we can not control the name of the constructor (expected to be EnhanceSelectElement)
+    new window.accessibleAutocomplete.enhanceSelectElement({ // eslint-disable-line no-new, new-cap
+      selectElement: $select,
+      minLength: 3,
+      showNoOptionsFound: true
+    })
+  }
+
+  Autocomplete.prototype.initAutoCompleteInput = function ($input) {
+    var withoutNarrowingResults = this.$module.dataset.autocompleteWithoutNarrowingResults
+
+    var list = document.getElementById($input.getAttribute('list'))
+    var options = []
+
+    if (list) {
+      options = [].map.call(list.querySelectorAll('option'), function (option) {
+        return option.value
+      })
+    }
+
+    if (!options.length) {
+      return
+    }
+
+    new window.accessibleAutocomplete({ // eslint-disable-line no-new, new-cap
+      id: $input.id,
+      name: $input.name,
+      element: this.$module,
+      showAllValues: withoutNarrowingResults,
+      defaultValue: $input.value,
+      autoselect: !withoutNarrowingResults,
+      dropdownArrow: withoutNarrowingResults ? this.dropdownArrow : null,
+      source: function (query, syncResults) {
+        if (withoutNarrowingResults) {
+          syncResults(options)
+        } else {
+          syncResults(query
+            ? options.filter(function (option) {
+              return option.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            }) : []
+          )
+        }
+      }
+    })
+
+    $input.parentNode.removeChild($input)
   }
 
   Autocomplete.prototype.dropdownArrow = function (config) {

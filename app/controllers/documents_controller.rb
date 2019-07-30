@@ -55,8 +55,6 @@ class DocumentsController < ApplicationController
       render :edit,
              assigns: { edition: edition, revision: revision, issues: issues },
              status: :unprocessable_entity
-    elsif params[:submit] == "add_contact"
-      redirect_to search_contacts_path(edition.document)
     else
       redirect_to edition.document
     end
