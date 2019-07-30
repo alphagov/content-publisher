@@ -53,59 +53,21 @@ RSpec.describe Edition do
     end
   end
 
-  describe ".create_next_edition" do
+  describe "#assign_as_edit" do
+    let(:edition) { build(:edition) }
     let(:user) { build(:user) }
 
-    it "creates a draft edition with next edition number" do
-      preceding = create(:edition, number: 5, current: false)
-
-      edition = Edition.create_next_edition(preceding, user)
-
-      expect(edition).to be_a(Edition)
-      expect(edition).to be_draft
-      expect(edition.number).to be 6
+    it "assigns the given attributes" do
+      edition.assign_as_edit(user, number: 2)
+      expect(edition.number).to eq 2
     end
 
-    it "resets the change note, update type and proposed publish time" do
-      preceding = create(:edition,
-                         change_note: "Changes",
-                         update_type: :minor,
-                         current: false,
-                         proposed_publish_time: Time.zone.now)
-
-      edition = Edition.create_next_edition(preceding, user)
-
-      expect(edition.change_note).to be_empty
-      expect(edition.update_type).to eq("major")
-      expect(edition.proposed_publish_time).to be_nil
-    end
-  end
-
-  describe "#resume_discarded" do
-    let(:live_edition) { create(:edition, :published, current: false) }
-    let(:user) { build(:user) }
-
-    it "sets the edition to be a draft" do
-      edition = create(:edition,
-                       state: :discarded,
-                       document: live_edition.document)
-
-      edition.resume_discarded(live_edition, user)
-
-      expect(edition).to be_draft
-    end
-
-    it "resets the change note and update type" do
-      edition = create(:edition,
-                       state: :discarded,
-                       document: live_edition.document,
-                       change_note: "Changes",
-                       update_type: :minor)
-
-      edition.resume_discarded(live_edition, user)
-
-      expect(edition.change_note).to be_empty
-      expect(edition.update_type).to eq("major")
+    it "updates the edition metadata" do
+      freeze_time do
+        edition.assign_as_edit(user, {})
+        expect(edition.last_edited_by).to eq user
+        expect(edition.last_edited_at).to eq Time.current
+      end
     end
   end
 

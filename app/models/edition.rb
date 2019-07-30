@@ -107,44 +107,12 @@ class Edition < ApplicationRecord
             status: status)
   end
 
-  def self.create_next_edition(preceding_edition, user)
-    updater = Versioning::RevisionUpdater.new(preceding_edition.revision, user)
-    updater.assign(change_note: "", update_type: "major", proposed_publish_time: nil)
-
-    status = Status.create!(created_by: user,
-                            revision_at_creation: updater.next_revision,
-                            state: :draft)
-
-    create!(created_by: user,
-            current: true,
-            document: preceding_edition.document,
-            last_edited_by: user,
-            number: preceding_edition.document.next_edition_number,
-            revision: updater.next_revision,
-            status: status)
-  end
-
   def editable?
     !live? && !scheduled?
   end
 
   def first?
     number == 1
-  end
-
-  def resume_discarded(live_edition, user)
-    updater = Versioning::RevisionUpdater.new(live_edition.revision, user)
-    updater.assign(change_note: "", update_type: "major")
-
-    status = Status.create!(created_by: user,
-                            revision_at_creation: updater.next_revision,
-                            state: :draft)
-
-    update!(current: true,
-            last_edited_by: user,
-            last_edited_at: Time.current,
-            revision: updater.next_revision,
-            status: status)
   end
 
   def assign_status(state,
@@ -161,11 +129,17 @@ class Edition < ApplicationRecord
     attributes = { status: status }
 
     if update_last_edited
-      attributes[:last_edited_at] = Time.current
-      attributes[:last_edited_by] = user
+      assign_as_edit(user, attributes)
+    else
+      assign_attributes(attributes)
+      self
     end
+  end
 
-    assign_attributes(attributes)
+  def assign_as_edit(user, attributes)
+    assign_attributes(
+      attributes.merge(last_edited_by: user, last_edited_at: Time.current),
+    )
 
     self
   end
@@ -173,11 +147,7 @@ class Edition < ApplicationRecord
   def assign_revision(revision, user)
     raise "cannot update revision on a live edition" if live?
 
-    assign_attributes(revision: revision,
-                      last_edited_by: user,
-                      last_edited_at: Time.current)
-
-    self
+    assign_as_edit(user, revision: revision)
   end
 
   def assign_access_limit(limit_type, user)
@@ -188,21 +158,14 @@ class Edition < ApplicationRecord
                                    revision_at_creation: revision,
                                    limit_type: limit_type)
 
-    assign_attributes(access_limit: access_limit,
-                      last_edited_by: user,
-                      last_edited_at: Time.current)
 
-    self
+    assign_as_edit(user, access_limit: access_limit)
   end
 
   def remove_access_limit(user)
     raise "no access limit to remove" unless access_limit
 
-    assign_attributes(access_limit: nil,
-                      last_edited_by: user,
-                      last_edited_at: Time.current)
-
-    self
+    assign_as_edit(user, access_limit: nil)
   end
 
   def editors
