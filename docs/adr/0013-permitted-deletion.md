@@ -1,4 +1,4 @@
-# XX. Permitted Deletion
+# 13. Permitted Deletion
 
 Date: 2019-07-24
 
