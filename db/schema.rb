@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_17_203348) do
+ActiveRecord::Schema.define(version: 2019_07_29_145805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -317,6 +317,16 @@ ActiveRecord::Schema.define(version: 2019_07_17_203348) do
     t.text "permissions"
     t.boolean "remotely_signed_out", default: false
     t.boolean "disabled", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "whitehall_imports", force: :cascade do |t|
+    t.bigint "whitehall_document_id", null: false
+    t.json "payload", null: false
+    t.uuid "content_id", null: false
+    t.string "state", null: false
+    t.text "error_log"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
