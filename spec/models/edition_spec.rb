@@ -160,13 +160,6 @@ RSpec.describe Edition do
   end
 
   describe "#access_limit_organisation_ids" do
-    context "when there is no access limit" do
-      it "returns nil" do
-        edition = build :edition
-        expect(edition.access_limit_organisation_ids).to be_nil
-      end
-    end
-
     context "when the limit is to primary orgs" do
       let(:edition) do
         build(:edition,

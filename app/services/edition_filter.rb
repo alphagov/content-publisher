@@ -45,6 +45,10 @@ private
   end
 
   def access_limited_scope(scope)
+    return scope if user.has_permission?(
+      User::ACCESS_LIMIT_OVERRIDE_PERMISSION,
+    )
+
     scope.where(
       "access_limit_id IS NULL" + " OR " +
       "(

@@ -40,11 +40,9 @@ class ApplicationController < ActionController::Base
       .includes(:access_limit, revision: [:tags_revision])
       .find_current(document: document_param)
 
-    return unless edition
-      .access_limit_organisation_ids
-      &.exclude?(current_user.organisation_content_id)
-
-    render "documents/forbidden", status: :forbidden,
-      assigns: { edition: edition }
+    unless current_user.can_access?(edition)
+      render "documents/forbidden", status: :forbidden,
+        assigns: { edition: edition }
+    end
   end
 end
