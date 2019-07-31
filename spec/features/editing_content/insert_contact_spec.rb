@@ -8,6 +8,8 @@ RSpec.feature "Insert contact", js: true do
     when_i_go_to_edit_the_edition
     and_i_click_to_insert_a_contact
     and_i_select_a_contact
+    then_i_see_the_contact_preview
+    when_i_click_insert_contact
     then_i_see_the_snippet_is_inserted
   end
 
@@ -43,6 +45,15 @@ RSpec.feature "Insert contact", js: true do
     accessible_autocomplete_select "Contact",
                                    for_id: "contact-id",
                                    value: @contact["content_id"]
+  end
+
+  def then_i_see_the_contact_preview
+    within(".gem-c-modal-dialogue .govuk-inset-text") do
+      expect(page).to have_content(@contact["title"])
+    end
+  end
+
+  def when_i_click_insert_contact
     click_on "Insert contact"
   end
 

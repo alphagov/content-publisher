@@ -25,6 +25,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
   Autocomplete.prototype.initAutoCompleteContacts = function () {
     // Read options and associated data attributes and feed that as results for inputValueTemplate
+    var $module = this.$module
     var $select = this.$module.querySelector('select')
     var $insertButton = this.$module.parentNode.querySelector('button[data-modal-action="insert"]')
     if ($insertButton) {
@@ -73,13 +74,42 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         var options = [].filter.call($select.options, function (option) {
           return option.value === value
         })
+        var $previewContainer = $module.querySelector('.govuk-inset-text')
 
         if (options.length) {
           options[0].selected = true
-        }
 
-        if ($insertButton && contactSnippetTemplate && value) {
-          $insertButton.dataset.modalData = contactSnippetTemplate.replace('#', value)
+          // Prepare snippet for insertion
+          if ($insertButton && contactSnippetTemplate && value) {
+            var contactSnippet = contactSnippetTemplate.replace('#', value)
+            $insertButton.dataset.modalData = contactSnippet
+          }
+
+          // Generate/update contact preview
+          var govspeakPath = document.querySelector('[data-govspeak-path]').dataset.govspeakPath
+          if (contactSnippet && govspeakPath) {
+            // FIXME: move this to a shared area
+            window.GOVUK.Modules.MarkdownEditor.prototype.fetchGovspeakPreview(contactSnippet, govspeakPath)
+              .then(function (text) {
+                if (!$previewContainer) {
+                  $previewContainer = document.createElement('div')
+                  $previewContainer.classList.add('govuk-inset-text')
+                  $module.appendChild($previewContainer)
+                }
+                $previewContainer.innerHTML = text
+              })
+              .catch(function () {
+                $previewContainer.innerHTML = 'Error previewing contact'
+              })
+          }
+        } else {
+          // Remove snippet
+          $insertButton.dataset.modalData = null
+
+          // Remove contact preview
+          if ($previewContainer) {
+            $module.removeChild($previewContainer)
+          }
         }
       }
     })
