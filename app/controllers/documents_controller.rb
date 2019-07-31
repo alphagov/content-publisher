@@ -16,19 +16,16 @@ class DocumentsController < ApplicationController
   def edit
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
-    assert_edition_access(@edition, current_user)
     @revision = @edition.revision
   end
 
   def show
     @edition = Edition.find_current(document: params[:document])
-    assert_edition_access(@edition, current_user)
   end
 
   def confirm_delete_draft
     edition = Edition.find_current(document: params[:document])
     assert_edition_state(edition, &:editable?)
-    assert_edition_access(edition, current_user)
     redirect_to document_path(edition.document), confirmation: "documents/show/delete_draft"
   end
 
@@ -62,7 +59,6 @@ class DocumentsController < ApplicationController
 
   def generate_path
     edition = Edition.find_current(document: params[:document])
-    assert_edition_access(edition, current_user)
     base_path = PathGeneratorService.new.path(edition.document, params[:title])
     render plain: base_path
   end
