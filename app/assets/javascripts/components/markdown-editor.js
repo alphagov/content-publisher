@@ -85,7 +85,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       return
     }
 
-    this.fetchGovspeakPreview(this.$input.value)
+    this.fetchGovspeakPreview(this.$input.value, this.$module.getAttribute('data-govspeak-path'))
       .then(function (text) {
         this.$preview.innerHTML = text
         this.setTargetBlank(this.$preview)
@@ -101,8 +101,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.toggleElements()
   }
 
-  MarkdownEditor.prototype.fetchGovspeakPreview = function (text) {
-    var path = this.$module.getAttribute('data-govspeak-path')
+  MarkdownEditor.prototype.fetchGovspeakPreview = function (text, path) {
     if (!path) {
       return window.Promise.reject('Govspeak path not set')
     }
