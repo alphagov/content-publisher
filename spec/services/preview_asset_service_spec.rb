@@ -36,12 +36,14 @@ RSpec.describe PreviewAssetService do
       before do
         allow(asset).to receive(:draft?) { false }
         allow(asset).to receive(:absent?) { true }
+        file = PreviewAssetService::UploadedFile.new(asset)
+
+        allow_any_instance_of(PreviewAssetService::Payload)
+          .to receive(:for_upload) { { file: file, foo: "bar" } }
       end
 
-      it "uploads the asset" do
+      it "uploads and updates the asset" do
         request = stub_asset_manager_receives_an_asset(file_url)
-        allow(asset).to receive(:absent?) { true }
-        allow(asset).to receive(:draft?) { false }
 
         expect(asset).to receive(:update!)
           .with a_hash_including(state: :draft, file_url: file_url)
@@ -56,8 +58,7 @@ RSpec.describe PreviewAssetService do
         request = a_request(:post, /.*/).with do |req|
           expect(req.body).to include("filename=\"bar.jpg")
           expect(req.body).to include("Content-Type: type")
-          expect(req.body).to include("bytes")
-          expect(req.body).to include("auth_bypass_ids")
+          expect(req.body).to include("foo")
         end
 
         PreviewAssetService.new(edition).put(asset)
@@ -66,10 +67,27 @@ RSpec.describe PreviewAssetService do
     end
 
     context "when a draft asset is on Asset Manager" do
-      it "updates the asset" do
-        request = stub_asset_manager_update_asset("id")
+      before do
         allow(asset).to receive(:draft?) { true }
         allow(asset).to receive(:absent?) { false }
+
+        allow_any_instance_of(PreviewAssetService::Payload)
+          .to receive(:for_update) { { foo: "bar" } }
+      end
+
+      it "updates the asset" do
+        request = stub_asset_manager_update_asset("id")
+        PreviewAssetService.new(edition).put(asset)
+        expect(request).to have_been_requested
+      end
+
+      it "updates the asset with metadata" do
+        stub_asset_manager_updates_any_asset
+
+        request = a_request(:put, /.*/).with do |req|
+          expect(req.body).to include("foo")
+        end
+
         PreviewAssetService.new(edition).put(asset)
         expect(request).to have_been_requested
       end
