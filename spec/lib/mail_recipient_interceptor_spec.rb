@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "mail_recipient_interceptor"
-
 RSpec.describe MailRecipientInterceptor do
   describe "#delivering_email" do
     let(:original_recipient) { "not-allowed@example.com" }
