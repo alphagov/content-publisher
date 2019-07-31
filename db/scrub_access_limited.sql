@@ -92,4 +92,4 @@ DELETE FROM active_storage_blobs WHERE NOT EXISTS (
   SELECT 1
   FROM file_attachment_blob_revisions
   WHERE file_attachment_blob_revisions.blob_id = active_storage_blobs.id
-)
+);
