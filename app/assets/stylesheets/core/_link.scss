@@ -1,6 +1,7 @@
 // TODO: support this modifier in govuk-frontend
-.govuk-link.app-link--destructive {
+.app-link--destructive {
   color: $govuk-error-colour;
+  @include govuk-font(19);
 
   &:link,
   &:visited,
@@ -15,6 +16,7 @@
 }
 
 .app-link--right {
+  @include govuk-font(19);
   float: right;
 }
 
@@ -22,6 +24,7 @@
   display: inline-block;
   padding: govuk-spacing(3) 0;
 
+  @include govuk-font(19);
   @include govuk-media-query($from: tablet) {
     padding: 8px govuk-spacing(3);
   }
