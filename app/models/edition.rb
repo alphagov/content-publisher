@@ -156,7 +156,7 @@ class Edition < ApplicationRecord
   end
 
   def access_limit_organisation_ids
-    return unless access_limit
+    raise "no access limit" unless access_limit
 
     orgs = [primary_publishing_organisation_id]
     orgs += supporting_organisation_ids if access_limit.tagged_organisations?
