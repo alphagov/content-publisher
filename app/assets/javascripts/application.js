@@ -14,6 +14,7 @@
 //= require abortcontroller-polyfill/dist/abortcontroller-polyfill-only.js
 //= require url-polyfill/url-polyfill.js
 //= require whatwg-fetch/dist/fetch.umd.js
+//= require helpers/fetch-content.js
 
 //= require components/autocomplete.js
 //= require components/toolbar-dropdown.js

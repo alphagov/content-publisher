@@ -87,15 +87,15 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
           // Generate/update contact preview
           var govspeakPath = document.querySelector('[data-govspeak-path]').dataset.govspeakPath
-          if (contactSnippet && govspeakPath) {
-            // FIXME: move this to a shared area
-            window.GOVUK.Modules.MarkdownEditor.prototype.fetchGovspeakPreview(contactSnippet, govspeakPath)
+          if (contactSnippet && govspeakPath && window.FetchContent) {
+            if (!$previewContainer) {
+              $previewContainer = document.createElement('div')
+              $previewContainer.classList.add('govuk-inset-text')
+              $module.appendChild($previewContainer)
+            }
+
+            window.FetchContent.govspeak(contactSnippet, govspeakPath)
               .then(function (text) {
-                if (!$previewContainer) {
-                  $previewContainer = document.createElement('div')
-                  $previewContainer.classList.add('govuk-inset-text')
-                  $module.appendChild($previewContainer)
-                }
                 $previewContainer.innerHTML = text
               })
               .catch(function () {

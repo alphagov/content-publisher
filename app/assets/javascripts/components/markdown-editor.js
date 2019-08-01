@@ -85,36 +85,22 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       return
     }
 
-    this.fetchGovspeakPreview(this.$input.value, this.$module.getAttribute('data-govspeak-path'))
-      .then(function (text) {
-        this.$preview.innerHTML = text
-        this.setTargetBlank(this.$preview)
-        this.$preview.classList.add('app-c-markdown-editor__govspeak--rendered')
-        window.GOVUK.modules.start($(this.$preview))
-        window.GOVUKFrontend.initAll(this.$preview)
-      }.bind(this))
-      .catch(function () {
-        this.$preview.innerHTML = 'Error previewing content'
-        this.$preview.classList.add('app-c-markdown-editor__govspeak--rendered')
-      }.bind(this))
+    if (window.FetchContent) {
+      window.FetchContent.govspeak(this.$input.value, this.$module.getAttribute('data-govspeak-path'))
+        .then(function (text) {
+          this.$preview.innerHTML = text
+          this.setTargetBlank(this.$preview)
+          this.$preview.classList.add('app-c-markdown-editor__govspeak--rendered')
+          window.GOVUK.modules.start($(this.$preview))
+          window.GOVUKFrontend.initAll(this.$preview)
+        }.bind(this))
+        .catch(function () {
+          this.$preview.innerHTML = 'Error previewing content'
+          this.$preview.classList.add('app-c-markdown-editor__govspeak--rendered')
+        }.bind(this))
+    }
 
     this.toggleElements()
-  }
-
-  MarkdownEditor.prototype.fetchGovspeakPreview = function (text, path) {
-    if (!path) {
-      return window.Promise.reject('Govspeak path not set')
-    }
-    var url = new URL(document.location.origin + path)
-
-    var formData = new window.FormData()
-    formData.append('govspeak', text)
-
-    var controller = new window.AbortController()
-    var options = { credentials: 'include', signal: controller.signal, method: 'POST', body: formData }
-    setTimeout(function () { controller.abort() }, 5000)
-
-    return window.fetch(url, options).then(function (response) { return response.text() })
   }
 
   MarkdownEditor.prototype.handleEditButton = function (event) {
