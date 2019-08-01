@@ -14,7 +14,12 @@
 //= require abortcontroller-polyfill/dist/abortcontroller-polyfill-only.js
 //= require url-polyfill/url-polyfill.js
 //= require whatwg-fetch/dist/fetch.umd.js
+
+// load before components (as they depend on them)
 //= require helpers/fetch-content.js
+//= require helpers/modal-editor.js
+//= require helpers/modal-fetch.js
+//= require helpers/modal-workflow.js
 
 //= require components/autocomplete.js
 //= require components/toolbar-dropdown.js
@@ -24,10 +29,6 @@
 //= require components/multi-section-viewer.js
 //= require components/url-preview.js
 //= require miller-columns-element/dist/index.umd.js
-
-//= require modal/modal-fetch.js
-//= require modal/modal-editor.js
-//= require modal/modal-workflow.js
 
 //= require modules/gtm-copy-paste-listener.js
 //= require modules/gtm-topics-listener.js
