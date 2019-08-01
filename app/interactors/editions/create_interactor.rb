@@ -3,42 +3,56 @@
 class Editions::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,
-           :live_edition,
+           :edition,
            :next_edition,
-           :draft_current_edition,
            :discarded_edition,
+           :next_revision,
            to: :context
 
   def call
     Edition.transaction do
-      find_and_lock_live_edition
+      find_and_lock_edition
+      create_next_revision
       create_next_edition
       create_timeline_entry
-      update_preview
     end
   end
 
 private
 
-  def find_and_lock_live_edition
-    edition = Edition.lock.find_current(document: params[:document])
-    context.live_edition = edition
+  def find_and_lock_edition
+    context.edition = Edition.lock.find_current(document: params[:document])
 
     assert_edition_state(edition, assertion: "can create new edition") do
-      edition.published? || edition.published_but_needs_2i? || edition.removed?
+      edition.live || edition.discarded?
     end
   end
 
+  def create_next_revision
+    updater = Versioning::RevisionUpdater.new(edition.revision, user)
+
+    updater.assign(change_note: "",
+                   update_type: "major",
+                   proposed_publish_time: nil)
+
+    context.next_revision = updater.next_revision
+  end
+
   def create_next_edition
-    live_edition.update!(current: false)
+    edition.update!(current: false)
 
     context.discarded_edition = Edition.find_by(
-      document: live_edition.document,
-      number: live_edition.number + 1,
+      document: edition.document,
+      number: edition.number + 1,
     )
 
-    discarded_edition.resume_discarded(live_edition, user) if discarded_edition
-    context.next_edition = discarded_edition || Edition.create_next_edition(live_edition, user)
+    context.next_edition = discarded_edition ||
+      Edition.new(document: edition.document,
+                  number: edition.document.next_edition_number,
+                  created_by: user)
+
+    next_edition.assign_as_edit(user, current: true, revision: next_revision)
+    next_edition.assign_status(:draft, user).save!
   end
 
   def create_timeline_entry
@@ -49,9 +63,5 @@ private
       TimelineEntry.create_for_status_change(entry_type: :new_edition,
                                              status: next_edition.status)
     end
-  end
-
-  def update_preview
-    PreviewService.new(live_edition).try_create_preview
   end
 end
