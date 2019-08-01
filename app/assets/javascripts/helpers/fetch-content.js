@@ -11,7 +11,7 @@ window.FetchContent.govspeak = function (text, path) {
 
   var controller = new window.AbortController()
   var options = { credentials: 'include', signal: controller.signal, method: 'POST', body: formData }
-  setTimeout(function () { controller.abort() }, 5000)
+  setTimeout(function () { controller.abort() }, 15000)
 
   return window.fetch(url, options).then(function (response) { return response.text() })
 }
