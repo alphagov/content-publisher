@@ -100,3 +100,12 @@
     }
   }
 }
+
+// Enhance the way contacts are presented in the contacts autocomplete preview
+.govuk-inset-text {
+  .contact {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+}
