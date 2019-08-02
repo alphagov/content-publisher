@@ -10,9 +10,9 @@ abortcontroller-polyfill@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.2.1.tgz#4e88847513a4ed691d5e4899d8b3a3af6f7d90ee"
 
-"accessible-autocomplete@git://github.com/alphagov/accessible-autocomplete.git#content-publisher":
+"accessible-autocomplete@git://github.com/kevindew/accessible-autocomplete.git":
   version "1.6.2"
-  resolved "git://github.com/alphagov/accessible-autocomplete.git#8e3f43bfac2e81881026993a24f8db2900559e56"
+  resolved "git://github.com/kevindew/accessible-autocomplete.git#8e3f43bfac2e81881026993a24f8db2900559e56"
   dependencies:
     preact "^8.3.1"
 
