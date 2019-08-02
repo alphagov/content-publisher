@@ -28,10 +28,11 @@ class PublishingApiPayload
       ],
       "links" => links,
       "access_limited" => {
+        "organisations" => edition.access_limit_organisation_ids,
         "auth_bypass_ids" => [
           PreviewAuthBypassService.new(edition).auth_bypass_id,
         ],
-      },
+      }.compact,
     }
     payload["change_note"] = edition.change_note if edition.major?
 

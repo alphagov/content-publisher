@@ -15,6 +15,7 @@ class AccessLimit::UpdateInteractor < ApplicationInteractor
       check_for_issues
       update_edition
       create_timeline_entry
+      update_preview
     end
   end
 
@@ -68,5 +69,9 @@ private
       edition: edition,
       details: edition.access_limit,
     )
+  end
+
+  def update_preview
+    PreviewService.new(edition).try_create_preview
   end
 end

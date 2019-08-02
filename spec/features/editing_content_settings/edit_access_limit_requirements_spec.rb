@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Set access limit with requirements issues" do
+RSpec.feature "Edit access limit with requirements issues" do
   scenario do
     given_there_is_an_edition_in_another_org
     when_i_try_to_set_an_access_limit
