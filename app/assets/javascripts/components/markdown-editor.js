@@ -85,7 +85,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       return
     }
 
-    window.GovspeakFetch.getBody(this.$input.value, this.$module.getAttribute('data-govspeak-path'))
+    window.GovspeakFetch.getBody(this.$input.value)
       .then(function (text) {
         this.$preview.innerHTML = text
         this.setTargetBlank(this.$preview)

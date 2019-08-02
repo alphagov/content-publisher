@@ -86,8 +86,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
           }
 
           // Generate/update contact preview
-          var govspeakPath = document.querySelector('[data-govspeak-path]').dataset.govspeakPath
-          window.GovspeakFetch.getBody(contactSnippet, govspeakPath)
+          window.GovspeakFetch.getBody(contactSnippet)
             .then(function (text) {
               if (!$previewContainer) {
                 $previewContainer = document.createElement('div')

@@ -1,10 +1,13 @@
 window.GovspeakFetch = { }
 
-window.GovspeakFetch.getBody = function (text, path) {
-  if (!path) {
-    return window.Promise.reject('Govspeak path not set')
-  }
-  var url = new URL(document.location.origin + path)
+window.GovspeakFetch.getBody = function (text) {
+  var path = document.location.pathname
+  var segments = path.split('/')
+  var documentSegment = segments[1]
+  var editionSegment = segments[2]
+  path = [documentSegment, editionSegment, 'govspeak-preview'].join('/')
+
+  var url = new URL(document.location.origin + '/' + path)
 
   var formData = new window.FormData()
   formData.append('govspeak', text)
