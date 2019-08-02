@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class EditionFilter
-  TAG_CONTAINS_QUERY = "exists(select 1 from json_array_elements(tags_revisions.tags->'%<tag>s')
-                        where array_to_json(array[value])->>0 = :value)"
-
   include ActiveRecord::Sanitization::ClassMethods
 
   SORT_KEYS = %w[last_updated].freeze
@@ -45,23 +42,16 @@ private
   end
 
   def access_limited_scope(scope)
-    return scope if user.has_permission?(
-      User::ACCESS_LIMIT_OVERRIDE_PERMISSION,
-    )
+    return scope if user.has_permission?(User::ACCESS_LIMIT_OVERRIDE_PERMISSION)
 
-    scope.where(
-      "access_limit_id IS NULL" + " OR " +
-      "(
-         access_limits.limit_type = 'primary_organisation' AND
-         #{TAG_CONTAINS_QUERY % { tag: 'primary_publishing_organisation' }}
-       )" + " OR " +
-      "(
-         access_limits.limit_type = 'tagged_organisations' AND
-         (#{TAG_CONTAINS_QUERY % { tag: 'primary_publishing_organisation' }} OR
-          #{TAG_CONTAINS_QUERY % { tag: 'organisations' }})
-       )",
-      value: user.organisation_content_id,
-    )
+    organisation_id = user.organisation_content_id
+    no_access_limit = scope.where(access_limit: nil)
+    primary_org_access = scope.merge(AccessLimit.primary_organisation)
+                              .merge(TagsRevision.primary_organisation_is(organisation_id))
+    tagged_orgs_access = scope.merge(AccessLimit.tagged_organisations)
+                              .merge(TagsRevision.tagged_organisations_include(organisation_id))
+
+    no_access_limit.or(primary_org_access).or(tagged_orgs_access)
   end
 
   def filtered_scope(scope)
@@ -82,9 +72,7 @@ private
           memo.where("statuses.state": value)
         end
       when :organisation
-        memo.where(TAG_CONTAINS_QUERY % { tag: "organisations" } + " OR " +
-                   TAG_CONTAINS_QUERY % { tag: "primary_publishing_organisation" },
-                   value: value)
+        memo.merge(TagsRevision.tagged_organisations_include(value))
       else
         memo
       end

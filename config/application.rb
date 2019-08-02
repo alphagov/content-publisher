@@ -33,6 +33,7 @@ module ContentPublisher
     config.action_view.raise_on_missing_translations = true
     config.active_job.queue_adapter = :sidekiq
     config.time_zone = "London"
+    config.eager_load_paths << Rails.root.join("lib")
 
     config.exceptions_app = self.routes
 
