@@ -1,6 +1,6 @@
-window.FetchContent = { }
+window.GovspeakFetch = { }
 
-window.FetchContent.govspeak = function (text, path) {
+window.GovspeakFetch.getBody = function (text, path) {
   if (!path) {
     return window.Promise.reject('Govspeak path not set')
   }

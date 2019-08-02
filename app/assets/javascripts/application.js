@@ -16,7 +16,7 @@
 //= require whatwg-fetch/dist/fetch.umd.js
 
 // load before components (as they depend on them)
-//= require helpers/fetch-content.js
+//= require helpers/govspeak-fetch.js
 //= require helpers/modal-editor.js
 //= require helpers/modal-fetch.js
 //= require helpers/modal-workflow.js

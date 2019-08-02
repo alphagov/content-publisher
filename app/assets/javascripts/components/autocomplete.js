@@ -87,7 +87,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
           // Generate/update contact preview
           var govspeakPath = document.querySelector('[data-govspeak-path]').dataset.govspeakPath
-          window.FetchContent.govspeak(contactSnippet, govspeakPath)
+          window.GovspeakFetch.getBody(contactSnippet, govspeakPath)
             .then(function (text) {
               if (!$previewContainer) {
                 $previewContainer = document.createElement('div')
