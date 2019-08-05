@@ -6,35 +6,26 @@ class VideoEmbedController < ApplicationController
   def new
     if rendering_context != "modal"
       head :bad_request
-      return
+    else
+      render :new, layout: rendering_context
     end
-
-    render :new, layout: rendering_context
   end
 
   def create
+    result = VideoEmbed::CreateInteractor.call(params: params)
+    issues, markdown_code = result.to_h.values_at(:issues, :markdown_code)
+
     if rendering_context != "modal"
       head :bad_request
-      return
-    end
-
-    title = strip_tags(params[:title])
-    url = strip_tags(params[:url])
-
-    issues = Requirements::VideoEmbedChecker.new
-      .pre_embed_issues(title: title, url: url)
-
-    if issues.any?
+    elsif issues
       flash.now["requirements"] = { "items" => issues.items }
 
       render :new,
              assigns: { issues: issues },
              layout: rendering_context,
              status: :unprocessable_entity
-
-      return
+    else
+      render inline: markdown_code
     end
-
-    render inline: "[#{title}](#{url})"
   end
 end
