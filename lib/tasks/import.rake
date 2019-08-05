@@ -1,24 +1,18 @@
 # frozen_string_literal: true
 
-require "tasks/whitehall_news_importer"
-
 namespace :import do
-  desc "Import news documents from JSON e.g. import:whitehall_news INPUT=export_file"
-  task whitehall_news: :environment do
-    importer = Tasks::WhitehallNewsImporter.new
-    imported = 0
-
-    input = ENV["INPUT"] ? File.open(ENV["INPUT"]) : STDIN
-
-    input.each_line do |line|
-      next if line.include?("government_response")
-      next if line.include?("world_news_story")
-
-      importer.import(JSON.parse(line))
-      imported += 1
-      puts "Imported #{imported} documents" if (imported % 500).zero?
+  desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall[123]"
+  task :whitehall, [:document_id] => :environment do |_, args|
+    document_id = args.document_id
+    host = Plek.new.external_url_for("whitehall-admin")
+    whitehall_export = JSON.parse(URI.parse("#{host}/government/admin/export/document/#{document_id}").open.read)
+    importer = Tasks::WhitehallImporter.new(document_id, whitehall_export)
+    begin
+      importer.import
+      importer.update_state("completed")
+    rescue StandardError => e
+      importer.log_error(e.message)
+      importer.update_state("failed")
     end
-
-    puts "Completed importing #{imported} Whitehall news documents"
   end
 end
