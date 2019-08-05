@@ -1,0 +1,56 @@
+<% content_for :title, t("contact_embed.new.title") %>
+
+<%
+  contact_options = Contacts.new.all_by_organisation.flat_map do |org|
+    org["contacts"].map do |contact|
+      [contact['title'], contact["content_id"], {"data-hint": org['name']}]
+    end
+  end
+%>
+
+<%= form_tag(
+  contact_embed_path,
+  data: {
+    gtm: "insert-contact",
+    "modal-action": "insert"
+  }
+) do %>
+  <%= render "components/autocomplete", {
+    name: "contact_id",
+    label: {
+      text: t("contact_embed.new.label"),
+      bold: true
+    },
+    hint: t("contact_embed.new.hint_text"),
+    id: "contact-id",
+    select: {
+      options: [""] + contact_options,
+    },
+    type: "contacts",
+    search: true,
+  } %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: rendering_context == "modal" ? "Insert contact" : "Show markdown code",
+    margin_bottom: true
+  } %>
+<% end %>
+
+<% if params[:contact_id].present? %>
+  <%= render "components/metadata", {
+    items: [
+      {
+        field: t("contact_embed.new.markdown_code"),
+        value: t("contact_embed.new.contact_markdown", id: params[:contact_id])
+      },
+    ],
+    inline: true,
+    margin_bottom: 3,
+  } %>
+
+  <p class="govuk-body"><%= t("contact_embed.new.contact_instructions") %></p>
+<% end %>
+
+<%= tag.p class: "govuk-body" do %>
+  <%= render_govspeak(t("contact_embed.new.contact_not_available_govspeak")) %>
+<% end %>

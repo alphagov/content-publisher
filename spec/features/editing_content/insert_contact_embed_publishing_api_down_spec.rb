@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Insert contact without Javascript when the Publishing API is down" do
+RSpec.feature "Insert contact embed when the Publishing API is down", js: true do
   scenario do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
@@ -31,6 +31,8 @@ RSpec.feature "Insert contact without Javascript when the Publishing API is down
   end
 
   def then_i_should_see_an_error_message
-    expect(page).to have_content(I18n.t("contacts.index.api_down"))
+    within(".gem-c-modal-dialogue") do
+      expect(page).to have_content(I18n.t("contact_embed.new.api_down"))
+    end
   end
 end

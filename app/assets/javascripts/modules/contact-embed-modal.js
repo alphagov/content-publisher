@@ -1,9 +1,9 @@
-function ContactsModal ($module) {
+function ContactEmbedModal ($module) {
   this.$module = $module
   this.$modal = document.getElementById('modal')
 }
 
-ContactsModal.prototype.init = function () {
+ContactEmbedModal.prototype.init = function () {
   if (!this.$module || !this.$modal) {
     return
   }
@@ -21,7 +21,7 @@ ContactsModal.prototype.init = function () {
   }.bind(this))
 }
 
-ContactsModal.prototype.actionCallback = function (item) {
+ContactEmbedModal.prototype.actionCallback = function (item) {
   var handlers = {
     'open': function () {
       this.$modal.resize('narrow')
@@ -29,13 +29,21 @@ ContactsModal.prototype.actionCallback = function (item) {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
     'insert': function () {
-      this.$modal.close()
-      this.editor.insertBlock(item.dataset.modalData)
+      window.ModalFetch.postForm(item)
+        .then(function (result) {
+          if (result.unprocessableEntity) {
+            this.workflow.renderSuccess(result)
+          } else {
+            this.$modal.close()
+            this.editor.insertBlock(result.body)
+          }
+        }.bind(this))
+        .catch(this.workflow.renderError)
     }
   }
 
   handlers[item.dataset.modalAction].bind(this)()
 }
 
-var element = document.querySelector('[data-module="contacts-modal"]')
-new ContactsModal(element).init()
+var element = document.querySelector('[data-module="contact-embed-modal"]')
+new ContactEmbedModal(element).init()

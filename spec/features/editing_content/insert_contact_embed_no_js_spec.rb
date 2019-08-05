@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Insert contact without Javascript" do
+RSpec.feature "Insert contact embed without Javascript" do
   include AccessibleAutocompleteHelper
 
   scenario do
@@ -45,7 +45,7 @@ RSpec.feature "Insert contact without Javascript" do
   end
 
   def then_i_see_the_contact_markdown_snippet
-    snippet = I18n.t("contacts.index.contact_markdown", id: @contact["content_id"])
+    snippet = I18n.t("contact_embed.new.contact_markdown", id: @contact["content_id"])
     expect(page).to have_content(snippet)
   end
 end
