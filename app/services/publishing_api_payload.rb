@@ -27,12 +27,7 @@ class PublishingApiPayload
         { "path" => edition.base_path, "type" => "exact" },
       ],
       "links" => links,
-      "access_limited" => {
-        "organisations" => edition.access_limit_organisation_ids,
-        "auth_bypass_ids" => [
-          PreviewAuthBypassService.new(edition).auth_bypass_id,
-        ],
-      }.compact,
+      "access_limited" => access_limited,
     }
     payload["change_note"] = edition.change_note if edition.major?
 
@@ -58,6 +53,17 @@ class PublishingApiPayload
   end
 
 private
+
+  def access_limited
+    auth_bypass_id = PreviewAuthBypassService.new(edition).auth_bypass_id
+    access_limited_ids = { "auth_bypass_ids" => [auth_bypass_id] }
+
+    if edition.access_limit
+      access_limited_ids["organisations"] = edition.access_limit_organisation_ids
+    end
+
+    access_limited_ids
+  end
 
   def links
     links = edition.tags["primary_publishing_organisation"].to_a +
