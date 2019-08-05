@@ -1,13 +1,16 @@
 window.GovspeakFetch = { }
 
 window.GovspeakFetch.getBody = function (text) {
-  var path = document.location.pathname
-  var segments = path.split('/')
-  var documentSegment = segments[1]
-  var editionSegment = segments[2]
-  path = [documentSegment, editionSegment, 'govspeak-preview'].join('/')
+  var documentId = document.location.pathname.match('/documents/([^/]*)/')[1]
 
-  var url = new URL(document.location.origin + '/' + path)
+  if (!documentId) {
+    console.error('Could not find document ID in pathname')
+    return
+  }
+
+  var path = '/documents/' + documentId + '/govspeak-preview'
+
+  var url = new URL(document.location.origin + path)
 
   var formData = new window.FormData()
   formData.append('govspeak', text)
