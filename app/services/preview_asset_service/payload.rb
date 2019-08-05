@@ -8,9 +8,14 @@ class PreviewAssetService::Payload
   end
 
   def for_update
-    { draft: true,
-      auth_bypass_ids: [auth_bypass_id],
-      access_limited_organisation_ids: access_limited }.compact
+    payload = { draft: true, auth_bypass_ids: [auth_bypass_id] }
+
+    if edition.access_limit
+      org_ids = edition.access_limit_organisation_ids
+      payload[:access_limited_organisation_ids] = org_ids
+    end
+
+    payload
   end
 
   def for_upload(asset)
@@ -21,9 +26,5 @@ private
 
   def auth_bypass_id
     PreviewAuthBypassService.new(edition).auth_bypass_id
-  end
-
-  def access_limited
-    edition.access_limit_organisation_ids
   end
 end
