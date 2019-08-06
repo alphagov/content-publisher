@@ -8,9 +8,14 @@
                       data: { gtm: "download-lead-image" }) %>
 
 <% unless rendering_context == "modal" %>
-  <% actions << link_to("Edit image", crop_image_path(document, lead_image.image_id),
+
+  <% actions << link_to("Edit details", edit_image_path(document, lead_image.image_id),
                         class: "govuk-link",
-                        data: { gtm: "edit-lead-image" }) %>
+                        data: { "modal-action": "edit", gtm: "edit-lead-image" }) %>
+
+  <% actions << link_to("Crop image", crop_image_path(document, lead_image.image_id),
+                        class: "govuk-link",
+                        data: { gtm: "crop-lead-image" }) %>
 
   <% actions << capture do %>
     <%= form_tag remove_lead_image_path(document),

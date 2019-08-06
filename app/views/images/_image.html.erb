@@ -1,14 +1,12 @@
 <% actions = [] %>
 
-<% actions << link_to(
-  "Edit image",
-  crop_image_path(document, image.image_id),
-  class: "govuk-link",
-  data: {
-    "modal-action": "edit",
-    gtm: "edit-image"
-  }
-) %>
+<% actions << link_to("Edit details", edit_image_path(document, image.image_id),
+                      class: "govuk-link",
+                      data: { "modal-action": "edit", gtm: "edit-image" }) %>
+
+<% actions << link_to("Crop image", crop_image_path(document, image.image_id),
+                      class: "govuk-link",
+                      data: { "modal-action": "edit", gtm: "crop-image" }) %>
 
 <% actions << capture do %>
   <%= form_tag(

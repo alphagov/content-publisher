@@ -56,7 +56,7 @@ RSpec.feature "Edit image", js: true do
   end
 
   def and_i_edit_the_image_crop
-    click_on "Edit image"
+    click_on "Crop image"
 
     # drag towards the top of the page where the page header is located
     crop_box = find(".cropper-crop-box")
@@ -74,6 +74,8 @@ RSpec.feature "Edit image", js: true do
   end
 
   def when_i_edit_the_image_metadata
+    click_on "Edit details"
+
     fill_in "image_revision[alt_text]", with: "Some alt text"
     fill_in "image_revision[caption]", with: "A caption"
     fill_in "image_revision[credit]", with: "A credit"
