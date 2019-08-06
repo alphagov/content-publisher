@@ -17,7 +17,7 @@ RSpec.describe DocumentTopics do
           "version" => 1,
         )
 
-        document_topics = DocumentTopics.find_by_document(document, TopicIndexService.new)
+        document_topics = DocumentTopics.find_by_document(document, TopicIndex.new)
 
         expect(document_topics.version).to eq(1)
         expect(document_topics.document).to be(document)
@@ -29,7 +29,7 @@ RSpec.describe DocumentTopics do
       it "returns an empty object" do
         document = build(:document)
         stub_publishing_api_does_not_have_links(document.content_id)
-        document_topics = DocumentTopics.find_by_document(document, TopicIndexService.new)
+        document_topics = DocumentTopics.find_by_document(document, TopicIndex.new)
 
         expect(document_topics.version).to be_nil
         expect(document_topics.document).to be(document)

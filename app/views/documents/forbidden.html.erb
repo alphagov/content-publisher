@@ -6,7 +6,7 @@
 
 <div class="govuk-body">
   <% begin %>
-    <% primary_org = LinkablesService.new("organisation")
+    <% primary_org = Linkables.new("organisation")
       .by_content_id(@edition.primary_publishing_organisation_id) %>
 
     <% if primary_org %>

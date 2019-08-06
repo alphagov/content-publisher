@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe GovspeakDocument::PayloadOptions do
-  let(:organisation_service) { instance_double(OrganisationService) }
+  let(:organisation_service) { instance_double(Organisations) }
 
   before do
-    allow(OrganisationService).to receive(:new) { organisation_service }
+    allow(Organisations).to receive(:new) { organisation_service }
   end
 
   describe "#to_h" do

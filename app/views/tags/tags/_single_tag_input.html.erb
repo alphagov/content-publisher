@@ -7,7 +7,7 @@
   },
   hint: tag_field.hint,
   select: {
-    options: [""] + LinkablesService.new(tag_field.document_type).select_options,
+    options: [""] + Linkables.new(tag_field.document_type).select_options,
     selected: tags[tag_field.id],
   },
   error_items: issues&.items_for(tag_field.id.to_sym),

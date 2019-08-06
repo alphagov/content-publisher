@@ -2,7 +2,7 @@
 <% content_for :browser_title, t("access_limit.edit.browser_title") %>
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 
-<% service = LinkablesService.new("organisation") %>
+<% service = Linkables.new("organisation") %>
 
 <% if @edition.primary_publishing_organisation_id %>
   <% primary_org_id = @edition.primary_publishing_organisation_id %>

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe GovspeakDocument::Options do
-  let(:contacts_service) { instance_double(ContactsService) }
+  let(:contacts_service) { instance_double(Contacts) }
 
   before do
-    allow(ContactsService).to receive(:new).and_return(contacts_service)
+    allow(Contacts).to receive(:new).and_return(contacts_service)
   end
 
   context "when an unknown contact is referenced" do

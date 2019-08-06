@@ -3,10 +3,10 @@
 RSpec.describe GovspeakDocument::InAppOptions do
   include Rails.application.routes.url_helpers
 
-  let(:organisation_service) { instance_double(OrganisationService) }
+  let(:organisation_service) { instance_double(Organisations) }
 
   before do
-    allow(OrganisationService).to receive(:new) { organisation_service }
+    allow(Organisations).to receive(:new) { organisation_service }
   end
 
   describe "#to_h" do
