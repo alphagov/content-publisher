@@ -1,4 +1,4 @@
-### Access limiting <span class="govuk-caption-m">18 July 2019</span>
+### Access limiting <span class="govuk-caption-m">6 August 2019</span>
 You can now limit who is able to find and edit a document. You can only limit access before it is published. You can limit it to just publishers in the primary organisation, or to publishers in any tagged organisation. 
 
 ### Backdating <span class="govuk-caption-m">27 June 2019</span>
