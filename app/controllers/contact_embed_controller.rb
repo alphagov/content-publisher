@@ -11,9 +11,18 @@ class ContactEmbedController < ApplicationController
   end
 
   def create
-    if rendering_context == "modal"
-      render inline: I18n.t!("contact_embed.new.contact_markdown",
-                             id: params[:contact_id])
+    result = ContactEmbed::CreateInteractor.call(params: params)
+    markdown_code, issues = result.to_h.values_at(:markdown_code, :issues)
+
+    if issues
+      flash.now["requirements"] = { "items" => issues.items }
+
+      render :new,
+             assigns: { issues: issues },
+             layout: rendering_context,
+             status: :unprocessable_entity
+    elsif rendering_context == "modal"
+      render inline: markdown_code
     else
       render "new", layout: rendering_context
     end

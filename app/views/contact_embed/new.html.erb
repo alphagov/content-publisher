@@ -21,6 +21,7 @@
       text: t("contact_embed.new.label"),
       bold: true
     },
+    error_items: @issues&.items_for(:contact_embed),
     hint: t("contact_embed.new.hint_text"),
     id: "contact-id",
     select: {

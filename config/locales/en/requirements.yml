@@ -140,3 +140,6 @@ en:
         form_message: Select a primary organisation before you can limit access
       not_in_orgs:
         form_message: Select an access option that includes the organisation your account is a member of so that you will still have access
+    contact_embed:
+      blank:
+        form_message: Select a contact
