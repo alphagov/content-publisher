@@ -26,12 +26,7 @@ RSpec.describe Requirements::TopicChecker do
 
       it "returns an issue if there are no topics" do
         issues = Requirements::TopicChecker.new(document).pre_publish_issues
-
-        form_message = issues.items_for(:topics).first[:text]
-        expect(form_message).to eq(I18n.t!("requirements.topics.none.form_message"))
-
-        summary_message = issues.items_for(:topics, style: "summary").first[:text]
-        expect(summary_message).to eq(I18n.t!("requirements.topics.none.summary_message"))
+        expect(issues).to have_issue(:topics, :none, styles: %i[form summary])
       end
     end
 

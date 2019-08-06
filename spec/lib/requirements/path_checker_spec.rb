@@ -33,25 +33,16 @@ RSpec.describe Requirements::PathChecker do
         edition = build :edition, document_type_id: document_type.id
         stub_publishing_api_has_lookups(edition.base_path => SecureRandom.uuid)
         issues = Requirements::PathChecker.new(edition).pre_preview_issues
-
-        form_message = issues.items_for(:title).first[:text]
-        expect(form_message).to eq(I18n.t!("requirements.title.conflict.form_message"))
-
-        summary_message = issues.items_for(:title, style: "summary").first[:text]
-        expect(summary_message).to eq(I18n.t!("requirements.title.conflict.summary_message"))
+        expect(issues).to have_issue(:title, :conflict, styles: %i[form summary])
       end
 
       it "can check a revision" do
         document_type = build :document_type, check_path_conflict: true
         edition = build :edition, document_type_id: document_type.id
         revision = build :revision
-        stub_publishing_api_has_lookups(edition.base_path => nil,
-                                   revision.base_path => SecureRandom.uuid)
-        issues = Requirements::PathChecker.new(edition).pre_preview_issues
-        expect(issues).to be_empty
 
-        issues = Requirements::PathChecker.new(edition, revision)
-                                                     .pre_preview_issues
+        stub_publishing_api_has_lookups(edition.base_path => nil, revision.base_path => SecureRandom.uuid)
+        issues = Requirements::PathChecker.new(edition, revision).pre_preview_issues
         expect(issues).not_to be_empty
       end
     end

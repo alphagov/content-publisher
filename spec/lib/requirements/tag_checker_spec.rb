@@ -21,21 +21,9 @@ RSpec.describe Requirements::TagChecker do
         edition = build(:edition, document_type_id: document_type.id)
         issues = Requirements::TagChecker.new(edition).pre_publish_issues
 
-        form_message = issues
-          .items_for(:primary_publishing_organisation)
-          .first[:text]
-
-        expect(form_message).to eq(
-          I18n.t!("requirements.primary_publishing_organisation.blank.form_message"),
-        )
-
-        summary_message = issues
-          .items_for(:primary_publishing_organisation, style: :summary)
-          .first[:text]
-
-        expect(summary_message).to eq(
-          I18n.t!("requirements.primary_publishing_organisation.blank.summary_message"),
-        )
+        expect(issues).to have_issue(:primary_publishing_organisation,
+                                     :blank,
+                                     styles: %i[form summary])
       end
 
       it "returns no issues when there is a primary org" do
