@@ -22,9 +22,7 @@ RSpec.feature "Remove access limit" do
   end
 
   def and_there_is_a_user_in_some_other_org
-    @other_org_user = create(:user,
-                             permissions: [User::PRE_RELEASE_FEATURES_PERMISSION],
-                             organisation_content_id: SecureRandom.uuid)
+    @other_org_user = create(:user, organisation_content_id: SecureRandom.uuid)
   end
 
   def when_i_visit_the_summary_page
