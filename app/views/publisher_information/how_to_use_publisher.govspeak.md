@@ -111,6 +111,14 @@ You can only backdate content before it is first published. Updates cannot be ba
 
 ---
 
+##Access limiting
+
+You can limit who is able to find and edit a document before it is published. 
+
+You can choose if only publishers in the primary organisation will have access, or if publishers in any tagged organisation will have access.
+
+---
+
 ##How to update content
 
 You can search for existing content using the document search.
