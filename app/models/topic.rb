@@ -4,7 +4,7 @@ class Topic
   include ActiveModel::Model
 
   def self.govuk_homepage(index)
-    find(TopicIndexService::GOVUK_HOMEPAGE_CONTENT_ID, index)
+    find(TopicIndex::GOVUK_HOMEPAGE_CONTENT_ID, index)
   end
 
   def self.find(topic_content_id, index)

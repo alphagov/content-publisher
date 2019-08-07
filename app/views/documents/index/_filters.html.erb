@@ -16,7 +16,7 @@
 
   <div class="govuk-form-group">
     <% organisation_select = begin
-      LinkablesService.new("organisation").select_options
+      Linkables.new("organisation").select_options
     rescue GdsApi::BaseError => e
       GovukError.notify(e)
       []

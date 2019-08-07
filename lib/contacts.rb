@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ContactsService
+class Contacts
   CACHE_OPTIONS = { expires_in: 15.minutes, race_condition_ttl: 30.seconds }.freeze
   EDITION_PARAMS = {
     document_types: %w[contact].freeze,
@@ -36,7 +36,7 @@ private
   end
 
   def organisation_select_options
-    @organisation_select_options ||= LinkablesService.new("organisation").select_options
+    @organisation_select_options ||= Linkables.new("organisation").select_options
   end
 
   def load_contacts_by_organisation

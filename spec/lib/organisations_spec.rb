@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe OrganisationService do
+RSpec.describe Organisations do
   describe "#alternative_format_contact_email" do
     context "when the edition has a primary org" do
       let(:org_content_id) { SecureRandom.uuid }
@@ -20,7 +20,7 @@ RSpec.describe OrganisationService do
         end
 
         it "returns the specified email" do
-          email = OrganisationService.new(edition).alternative_format_contact_email
+          email = Organisations.new(edition).alternative_format_contact_email
           expect(email).to eq "foo@bar.com"
         end
       end
@@ -36,8 +36,8 @@ RSpec.describe OrganisationService do
         end
 
         it "returns the default alt email" do
-          email = OrganisationService.new(edition).alternative_format_contact_email
-          expect(email).to eq OrganisationService::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
+          email = Organisations.new(edition).alternative_format_contact_email
+          expect(email).to eq Organisations::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
         end
       end
 
@@ -47,8 +47,8 @@ RSpec.describe OrganisationService do
         end
 
         it "returns the default alt email" do
-          email = OrganisationService.new(edition).alternative_format_contact_email
-          expect(email).to eq OrganisationService::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
+          email = Organisations.new(edition).alternative_format_contact_email
+          expect(email).to eq Organisations::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
         end
       end
     end
@@ -57,8 +57,8 @@ RSpec.describe OrganisationService do
       let(:edition) { build :edition }
 
       it "returns the default alt email" do
-        email = OrganisationService.new(edition).alternative_format_contact_email
-        expect(email).to eq OrganisationService::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
+        email = Organisations.new(edition).alternative_format_contact_email
+        expect(email).to eq Organisations::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
       end
     end
   end

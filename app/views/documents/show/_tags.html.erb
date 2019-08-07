@@ -1,6 +1,6 @@
 <% begin %>
   <% tags = @edition.document_type.tags.map { |tag_field|
-    service = LinkablesService.new(tag_field.document_type)
+    service = Linkables.new(tag_field.document_type)
 
     values = @edition.tags[tag_field.id].to_a
       .map { |content_id| service.by_content_id(content_id) }

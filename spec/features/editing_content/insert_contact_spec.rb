@@ -33,7 +33,7 @@ RSpec.feature "Insert contact", js: true do
       "links" => { "organisations" => [organisation["content_id"]] },
     }
     stub_publishing_api_has_linkables([organisation], document_type: "organisation")
-    stub_publishing_api_get_editions([@contact], ContactsService::EDITION_PARAMS)
+    stub_publishing_api_get_editions([@contact], Contacts::EDITION_PARAMS)
     stub_publishing_api_put_content(@edition.content_id, {})
     find("markdown-toolbar details").click
     click_on "Contact"
