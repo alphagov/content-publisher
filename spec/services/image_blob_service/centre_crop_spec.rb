@@ -4,7 +4,7 @@ RSpec.describe ImageBlobService::CentreCrop do
   describe ".new" do
     context "when no desired aspect ratio is specified" do
       it "uses a default aspect ratio" do
-        cropper = ImageBlobService::CentreCrop.new(500, 250, 2.0)
+        cropper = ImageBlobService::CentreCrop.new(500, 250)
         default_ratio = Image::WIDTH.to_f / Image::HEIGHT
         expect(cropper.desired_aspect_ratio).to eq(default_ratio)
       end
