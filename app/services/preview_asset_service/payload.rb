@@ -25,6 +25,6 @@ class PreviewAssetService::Payload
 private
 
   def auth_bypass_id
-    PreviewAuthBypassService.new(edition).auth_bypass_id
+    PreviewAuthBypass.new(edition).auth_bypass_id
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # For more info, see https://docs.publishing.service.gov.uk/manual/content-preview.html#authentication
-class PreviewAuthBypassService
+class PreviewAuthBypass
   attr_reader :document
 
   def initialize(document)
