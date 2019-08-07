@@ -37,9 +37,14 @@ class ImagesController < ApplicationController
   def update_crop
     result = Images::UpdateCropInteractor.call(params: params, user: current_user)
     image_revision = result.image_revision
-    redirect_to edit_image_path(params[:document],
-                                image_revision.image_id,
-                                wizard: params[:wizard])
+
+    if params[:wizard] == "upload"
+      redirect_to edit_image_path(params[:document],
+                                  image_revision.image_id,
+                                  wizard: params[:wizard])
+    else
+      redirect_to images_path(params[:document])
+    end
   end
 
   def edit

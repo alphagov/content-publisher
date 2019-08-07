@@ -43,8 +43,7 @@ RSpec.feature "Edit image metadata with requirements issues", js: true do
     stub_asset_manager_receives_an_asset
     stub_asset_manager_deletes_any_asset
 
-    click_on "Edit image"
-    click_on "Crop image"
+    click_on "Edit details"
 
     expect(page).to have_selector(".app-c-image-meta")
     fill_in "image_revision[alt_text]", with: ""
