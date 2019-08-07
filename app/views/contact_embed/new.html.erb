@@ -49,9 +49,7 @@
     margin_bottom: 3,
   } %>
 
-  <p class="govuk-body"><%= t("contact_embed.new.contact_instructions") %></p>
+  <%= tag.p t("contact_embed.new.contact_instructions"), class: "govuk-body" %>
 <% end %>
 
-<%= tag.p class: "govuk-body" do %>
-  <%= render_govspeak(t("contact_embed.new.contact_not_available_govspeak")) %>
-<% end %>
+<%= render_govspeak(t("contact_embed.new.contact_not_available_govspeak")) %>
