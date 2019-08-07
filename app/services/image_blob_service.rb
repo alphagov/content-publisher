@@ -33,18 +33,18 @@ private
 
   def blob_revision(blob, filename, image_normaliser)
     dimensions = image_normaliser.dimensions
-    cropper = ImageCentreCropper.new(dimensions[:width],
-                                     dimensions[:height],
-                                     Image::WIDTH.to_f / Image::HEIGHT)
+
+    centre_crop = CentreCrop.new(dimensions[:width],
+                                 dimensions[:height]).dimensions
 
     Image::BlobRevision.create!(
       blob: blob,
       width: dimensions[:width],
       height: dimensions[:height],
-      crop_x: cropper.dimensions[:x],
-      crop_y: cropper.dimensions[:y],
-      crop_width: cropper.dimensions[:width],
-      crop_height: cropper.dimensions[:height],
+      crop_x: centre_crop[:x],
+      crop_y: centre_crop[:y],
+      crop_width: centre_crop[:width],
+      crop_height: centre_crop[:height],
       filename: filename,
       created_by: user,
     )
