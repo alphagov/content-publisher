@@ -37,6 +37,6 @@ private
   end
 
   def update_preview
-    PreviewService.new(edition).try_create_preview
+    FailsafePreviewService.new(edition).create_preview
   end
 end

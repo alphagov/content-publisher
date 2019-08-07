@@ -16,23 +16,7 @@ class PreviewService
     raise
   end
 
-  def try_create_preview
-    if has_issues?
-      DraftAssetCleanupService.new.call(edition)
-      edition.update!(revision_synced: false)
-    else
-      create_preview
-    end
-  rescue GdsApi::BaseError => e
-    edition.update!(revision_synced: false)
-    GovukError.notify(e)
-  end
-
 private
-
-  def has_issues?
-    Requirements::EditionChecker.new(edition).pre_preview_issues.any?
-  end
 
   def publish_draft
     payload = Payload.new(edition).payload
