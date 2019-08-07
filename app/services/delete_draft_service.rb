@@ -30,7 +30,7 @@ private
 
   def discard_path_reservations(edition)
     paths = edition.revisions.map(&:base_path).uniq.compact
-    publishing_app = PublishingApiPayload::PUBLISHING_APP
+    publishing_app = PreviewService::Payload::PUBLISHING_APP
 
     paths.each do |path|
       GdsApi.publishing_api.unreserve_path(path, publishing_app)

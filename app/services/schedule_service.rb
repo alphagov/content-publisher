@@ -42,7 +42,7 @@ private
   end
 
   def create_publish_intent
-    payload = PublishingApiPayload.new(edition).intent_payload
+    payload = Payload.new(edition).intent_payload
     GdsApi.publishing_api.put_intent(edition.base_path, payload)
   end
 
