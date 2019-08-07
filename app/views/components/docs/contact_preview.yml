@@ -1,0 +1,27 @@
+name: Contact preview
+description: Generates a preview of a given govspeak contact snippet from a select element
+body: |
+  This component uses a select element to get the contact ID, converts the ID to a govspeak contact snippet
+  and sends it to a server endpoint to get the appropriate response.
+
+  It also supports the a static approach, where the preview is passed to the `html` option.
+accessibility_criteria: |
+  The component must:
+
+  * update its content to reflect changes in the referenced select element
+examples:
+  default:
+    data:
+      html: |
+        <div class="gem-c-govspeak">
+          <div class="contact">
+            <div class="content">
+              <h3>Government Legal Department</h3>
+              <div class="vcard contact-inner">
+                <p class="adr">Croydon, CR90 9QU</p>
+              </div>
+              <p class="comments">Find contact details and the opening hours.</p>
+            </div>
+          </div>
+        </div>
+      error_message: Unable to generate preview

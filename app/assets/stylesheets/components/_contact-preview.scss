@@ -1,0 +1,26 @@
+.app-c-contact-preview {
+  @include govuk-font(19);
+
+  @include govuk-responsive-margin(6, "bottom");
+
+  .govuk-inset-text {
+    margin-top: 0;
+
+    .contact {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+  }
+}
+
+.app-c-contact-preview__error-message,
+.app-c-contact-preview__html {
+  margin: 0;
+}
+
+.app-c-contact-preview--hidden,
+.app-c-contact-preview__error-message--hidden,
+.app-c-contact-preview__html--hidden {
+  display: none;
+}

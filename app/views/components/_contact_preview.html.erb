@@ -1,0 +1,17 @@
+<%
+  error_message ||= nil
+  html ||= nil
+  data_attributes ||= {}
+  root_classes = %w[app-c-contact-preview]
+  root_classes << "app-c-contact-preview--hidden" unless html
+%>
+<%= tag.div class: root_classes, data: data_attributes.merge(module: "contact-preview") do %>
+  <% contact_preview = capture do %>
+    <%= tag.p error_message, class: "app-c-contact-preview__error-message app-c-contact-preview__error-message--hidden js-contact-preview-error-message" %>
+    <%= tag.div html, class: "app-c-contact-preview__html js-contact-preview-html" %>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/inset_text", {
+    text: contact_preview
+  } %>
+<% end %>
