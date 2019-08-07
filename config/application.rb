@@ -34,6 +34,7 @@ module ContentPublisher
     config.active_job.queue_adapter = :sidekiq
     config.time_zone = "London"
     config.eager_load_paths << Rails.root.join("lib")
+    config.autoload_paths << Rails.root.join("lib")
 
     config.exceptions_app = self.routes
 
