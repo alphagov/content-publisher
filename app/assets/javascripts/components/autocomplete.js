@@ -24,12 +24,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
   }
 
   Autocomplete.prototype.initAutoCompleteContacts = function () {
-    // Read options and associated data attributes and feed that as results for inputValueTemplate
     var $select = this.$module.querySelector('select')
-    var $insertButton = this.$module.parentNode.querySelector('button[data-modal-action="insert"]')
-    if ($insertButton) {
-      var contactSnippetTemplate = $insertButton.dataset.autocompleteContactsSnippetTemplate // [Contact: #]
-    }
 
     if (!$select) {
       return
@@ -76,10 +71,6 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
         if (options.length) {
           options[0].selected = true
-        }
-
-        if ($insertButton && contactSnippetTemplate && value) {
-          $insertButton.dataset.modalData = contactSnippetTemplate.replace('#', value)
         }
       }
     })

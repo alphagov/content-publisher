@@ -37,9 +37,6 @@ Rails.application.routes.draw do
 
     get "/debug" => "debug#index", as: :debug_document
 
-    get "/contacts" => "contacts#index"
-    post "/contacts" => "contacts#index"
-
     post "/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
     post "/approve" => "review#approve", as: :approve_document
 
@@ -100,6 +97,9 @@ Rails.application.routes.draw do
 
   get "/video-embed" => "video_embed#new", as: :video_embed
   post "/video-embed" => "video_embed#create", as: :create_video_embed
+
+  get "/contact-embed" => "contact_embed#new"
+  post "/contact-embed" => "contact_embed#create"
 
   scope via: :all do
     match "/400" => "errors#bad_request"
