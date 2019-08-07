@@ -70,8 +70,12 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         })
 
         if (options.length) {
-          options[0].selected = true
+          options[0].selected = true // mirror selection
+        } else {
+          $select.selectedIndex = -1 // no option selected
         }
+
+        $select.dispatchEvent(new window.Event('change'))
       }
     })
 
