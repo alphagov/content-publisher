@@ -3,7 +3,7 @@
 RSpec.describe FailsafePreviewService do
   before do
     allow(PreviewService).to receive(:call)
-    allow(DraftAssetCleanupService).to receive(:call)
+    allow(AssetCleanupJob).to receive(:perform_later)
   end
 
   describe ".call" do
@@ -37,7 +37,7 @@ RSpec.describe FailsafePreviewService do
       end
 
       it "delegates cleaning up draft assets" do
-        expect(DraftAssetCleanupService).to receive(:call)
+        expect(AssetCleanupJob).to receive(:perform_later)
         FailsafePreviewService.call(edition)
       end
     end

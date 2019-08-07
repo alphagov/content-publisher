@@ -30,6 +30,6 @@ private
   end
 
   def cleanup_draft_assets
-    DraftAssetCleanupService.call(edition)
+    AssetCleanupJob.perform_later
   end
 end

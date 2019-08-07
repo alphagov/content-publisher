@@ -7,7 +7,7 @@ class FailsafePreviewService < ApplicationService
 
   def call
     if has_issues?
-      DraftAssetCleanupService.call(edition)
+      AssetCleanupJob.perform_later
       edition.update!(revision_synced: false)
     else
       PreviewService.call(edition)

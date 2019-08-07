@@ -4,7 +4,7 @@ RSpec.describe PreviewService do
   before do
     stub_any_publishing_api_put_content
     allow(PreviewAssetService).to receive(:call)
-    allow(DraftAssetCleanupService).to receive(:call)
+    allow(AssetCleanupJob).to receive(:perform_later)
   end
 
   describe ".call" do
@@ -21,9 +21,9 @@ RSpec.describe PreviewService do
       expect(edition.reload.revision_synced).to be(true)
     end
 
-    it "delegates cleaning up draft assets" do
+    it "delegates cleaning up assets" do
       edition = create(:edition)
-      expect(DraftAssetCleanupService).to receive(:call).with(edition)
+      expect(AssetCleanupJob).to receive(:perform_later)
       PreviewService.call(edition)
     end
 
