@@ -31,6 +31,16 @@
     search: true,
   } %>
 
+  <% contact_preview = render_govspeak(t("contact_embed.new.contact_markdown", id: params[:contact_id])) if params[:contact_id].present? %>
+  <%= render "components/contact_preview", {
+    error_message: t("contact_embed.new.preview_error"),
+    data_attributes: {
+      "for": "contact-id-select",
+      "contact-snippet-template": t("contact_embed.new.contact_markdown", id: "#")
+    },
+    html: contact_preview
+  } %>
+
   <%= render "govuk_publishing_components/components/button", {
     text: rendering_context == "modal" ? "Insert contact" : "Show markdown code",
     margin_bottom: true
