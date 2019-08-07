@@ -1,31 +1,27 @@
 # frozen_string_literal: true
 
 class DateParser
+  attr_reader :raw_date, :issue_prefix, :issues
+
   def initialize(date:, issue_prefix:)
     @raw_date = date.to_h
     @issue_prefix = issue_prefix
-  end
-
-  def issues
-    Requirements::CheckerIssues.new(issue_items)
+    @issues = Requirements::CheckerIssues.new
   end
 
   def parse
-    @issue_items = []
-
+    @issues = Requirements::CheckerIssues.new
     check_date_is_valid
-    issue_items.any? ? return : parsed_date
+    parsed_date if issues.none?
   end
 
 private
-
-  attr_reader :raw_date, :issue_prefix, :issue_items
 
   def check_date_is_valid
     parsed_date
   rescue ArgumentError
     field_name = "#{issue_prefix}_date".to_sym
-    issue_items << Requirements::Issue.new(field_name, :invalid)
+    issues << Requirements::Issue.new(field_name, :invalid)
   end
 
   def parsed_date

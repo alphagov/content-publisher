@@ -77,15 +77,8 @@ RSpec.describe DatetimeParser do
       parser = DatetimeParser.new(date: nil, time: nil, issue_prefix: :schedule)
       parser.parse
 
-      date_form_message = parser.issues.items_for(:schedule_date).first[:text]
-      expect(date_form_message).to eq(
-        I18n.t!("requirements.schedule_date.invalid.form_message"),
-      )
-
-      time_form_message = parser.issues.items_for(:schedule_time).first[:text]
-      expect(time_form_message).to eq(
-        I18n.t!("requirements.schedule_time.invalid.form_message"),
-      )
+      expect(parser.issues).to have_issue(:schedule_date, :invalid)
+      expect(parser.issues).to have_issue(:schedule_time, :invalid)
     end
 
     it "returns an issue when the date is invalid" do
@@ -94,11 +87,7 @@ RSpec.describe DatetimeParser do
                  issue_prefix: :schedule }
       parser = DatetimeParser.new(params)
       parser.parse
-
-      form_message = parser.issues.items_for(:schedule_date).first[:text]
-      expect(form_message).to eq(
-        I18n.t!("requirements.schedule_date.invalid.form_message"),
-      )
+      expect(parser.issues).to have_issue(:schedule_date, :invalid)
     end
 
     it "returns an issue when the time is invalid" do
@@ -107,11 +96,7 @@ RSpec.describe DatetimeParser do
                  issue_prefix: :schedule }
       parser = DatetimeParser.new(params)
       parser.parse
-
-      form_message = parser.issues.items_for(:schedule_time).first[:text]
-      expect(form_message).to eq(
-        I18n.t!("requirements.schedule_time.invalid.form_message"),
-      )
+      expect(parser.issues).to have_issue(:schedule_time, :invalid)
     end
   end
 end
