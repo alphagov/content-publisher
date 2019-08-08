@@ -7,27 +7,10 @@ class ScheduleService
     @edition = edition
   end
 
-  def schedule(reviewed:, user: nil)
-    scheduling = Scheduling.new(pre_scheduled_status: edition.status,
-                                reviewed: reviewed,
-                                publish_time: edition.proposed_publish_time)
-
+  def schedule(scheduling, user)
     update_edition(scheduling, user)
-    create_publish_intent
+    create_or_update_publish_intent
     schedule_to_publish(scheduling)
-  end
-
-  def reschedule(publish_time:, user: nil)
-    unless edition.scheduled?
-      raise "Edition must be scheduled in order to reschedule"
-    end
-
-    previous_scheduling = edition.status.details
-    new_scheduling = previous_scheduling.dup.tap { |s| s.publish_time = publish_time }
-
-    update_edition(new_scheduling, user)
-    update_publish_intent
-    schedule_to_publish(new_scheduling)
   end
 
 private
@@ -41,12 +24,10 @@ private
            .save!
   end
 
-  def create_publish_intent
+  def create_or_update_publish_intent
     payload = Payload.new(edition).intent_payload
     GdsApi.publishing_api.put_intent(edition.base_path, payload)
   end
-
-  alias_method :update_publish_intent, :create_publish_intent
 
   def schedule_to_publish(scheduling)
     ScheduledPublishingJob.set(wait_until: scheduling.publish_time)
