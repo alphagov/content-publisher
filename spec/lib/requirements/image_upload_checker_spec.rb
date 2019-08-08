@@ -25,17 +25,5 @@ RSpec.describe Requirements::ImageUploadChecker do
       issues = Requirements::ImageUploadChecker.new(file).issues
       expect(issues).to have_issue(:image_upload, :too_big, max_size: "20 MB")
     end
-
-    it "returns an issue when a file smaller than the minimum dimensions is provided" do
-      file = fixture_file_upload("files/100x100.jpg", "image/jpeg")
-      issues = Requirements::ImageUploadChecker.new(file).issues
-      expect(issues).to have_issue(:image_upload, :too_small, width: Image::WIDTH, height: Image::HEIGHT)
-    end
-
-    it "returns an issues when a file with multiple frames is provided (animated gif)" do
-      file = fixture_file_upload("files/animated-gif.gif", "image/gif")
-      issues = Requirements::ImageUploadChecker.new(file).issues
-      expect(issues).to have_issue(:image_upload, :animated_image)
-    end
   end
 end

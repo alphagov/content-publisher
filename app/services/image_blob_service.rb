@@ -3,50 +3,45 @@
 require "mini_magick"
 
 class ImageBlobService
-  def initialize(revision, user)
+  def initialize(revision, user, temp_image)
     @revision = revision
     @user = user
+    @temp_image = temp_image
   end
 
-  def create_blob_revision(file)
-    mime_type = Marcel::MimeType.for(file)
-    filename = unique_filename(file)
-    image_normaliser = ImageNormaliser.new(file.path)
-
+  def call
     blob = ActiveStorage::Blob.create_after_upload!(
-      io: image_normaliser.normalised_file,
-      filename: filename,
-      content_type: mime_type,
+      io: temp_image.file,
+      filename: unique_filename,
+      content_type: temp_image.mime_type,
     )
 
-    blob_revision(blob, filename, image_normaliser)
+    Image::BlobRevision.create!(
+      blob: blob,
+      width: temp_image.width,
+      height: temp_image.height,
+      crop_x: centre_crop[:x],
+      crop_y: centre_crop[:y],
+      crop_width: centre_crop[:width],
+      crop_height: centre_crop[:height],
+      filename: unique_filename,
+      created_by: user,
+    )
   end
 
 private
 
-  attr_reader :revision, :user
+  attr_reader :revision, :user, :temp_image
 
-  def unique_filename(file)
+  def unique_filename
     filenames = revision.image_revisions.map(&:filename)
-    UniqueFilenameService.new(filenames).call(file.original_filename)
+
+    @unique_filename ||= UniqueFilenameService.new(filenames)
+      .call(temp_image.original_filename)
   end
 
-  def blob_revision(blob, filename, image_normaliser)
-    dimensions = image_normaliser.dimensions
-    cropper = ImageCentreCropper.new(dimensions[:width],
-                                     dimensions[:height],
-                                     Image::WIDTH.to_f / Image::HEIGHT)
-
-    Image::BlobRevision.create!(
-      blob: blob,
-      width: dimensions[:width],
-      height: dimensions[:height],
-      crop_x: cropper.dimensions[:x],
-      crop_y: cropper.dimensions[:y],
-      crop_width: cropper.dimensions[:width],
-      crop_height: cropper.dimensions[:height],
-      filename: filename,
-      created_by: user,
-    )
+  def centre_crop
+    @centre_crop ||= CentreCrop.new(temp_image.width,
+                                    temp_image.height).dimensions
   end
 end

@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 RSpec.describe ImageBlobService do
-  let(:file) { fixture_file_upload("files/1000x1000.jpg") }
   let(:revision) { build(:revision) }
   let(:user) { build(:user) }
   let(:instance) { ImageBlobService.new(revision, user) }
 
-  describe "#create_blob_revision" do
+  let(:temp_image) do
+    ImageNormaliser::TempImage.new(fixture_file_upload("files/1000x1000.jpg"))
+  end
+
+  describe "#call" do
     it "creates a image blob revision" do
-      expect(instance.create_blob_revision(file))
+      expect(ImageBlobService.new(revision, user, temp_image).call)
         .to be_a(Image::BlobRevision)
     end
 
@@ -17,7 +20,7 @@ RSpec.describe ImageBlobService do
       let(:revision) { build(:revision, image_revisions: [existing_image]) }
 
       it "creates a unique filename" do
-        blob_revision = instance.create_blob_revision(file)
+        blob_revision = ImageBlobService.new(revision, user, temp_image).call
         expect(blob_revision.filename).to eql("1000x1000-1.jpg")
       end
     end
