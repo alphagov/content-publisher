@@ -53,12 +53,12 @@ RSpec.describe DeleteDraftService do
 
       unreserve_request1 = stub_publishing_api_unreserve_path(
         edition.base_path,
-        PublishingApiPayload::PUBLISHING_APP,
+        PreviewService::Payload::PUBLISHING_APP,
       )
 
       unreserve_request2 = stub_publishing_api_unreserve_path(
         previous_revision.base_path,
-        PublishingApiPayload::PUBLISHING_APP,
+        PreviewService::Payload::PUBLISHING_APP,
       )
 
       DeleteDraftService.new(edition.document, user).delete

@@ -35,7 +35,7 @@ private
   end
 
   def publish_draft
-    payload = PublishingApiPayload.new(edition).payload
+    payload = Payload.new(edition).payload
     GdsApi.publishing_api_v2.put_content(edition.content_id, payload)
     edition.update!(revision_synced: true)
   end

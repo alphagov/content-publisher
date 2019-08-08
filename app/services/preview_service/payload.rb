@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PublishingApiPayload
+class PreviewService::Payload
   PUBLISHING_APP = "content-publisher"
 
   attr_reader :edition, :document_type, :publishing_metadata
@@ -37,19 +37,6 @@ class PublishingApiPayload
     end
 
     payload
-  end
-
-  def intent_payload
-    raise "Edition must be scheduled to create an intent" unless edition.scheduled?
-
-    scheduling = edition.status.details
-    rendering_app = publishing_metadata.rendering_app
-
-    {
-      publish_time: scheduling.publish_time,
-      publishing_app: PUBLISHING_APP,
-      rendering_app: rendering_app,
-    }
   end
 
 private

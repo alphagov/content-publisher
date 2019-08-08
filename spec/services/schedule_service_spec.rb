@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe ScheduleService do
-  let(:publishing_api_payload) { instance_double(PublishingApiPayload, intent_payload: "payload") }
+  let(:payload) do
+    instance_double(ScheduleService::Payload, intent_payload: "payload")
+  end
 
   include ActiveJob::TestHelper
 
@@ -11,7 +13,7 @@ RSpec.describe ScheduleService do
 
   before(:each) do
     stub_default_publishing_api_put_intent
-    allow(PublishingApiPayload).to receive(:new) { publishing_api_payload }
+    allow(ScheduleService::Payload).to receive(:new) { payload }
   end
 
   describe "#schedule" do

@@ -1,27 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe PublishingApiPayload do
-  describe "#intent_payload" do
-    it "generates a payload for the publishing API" do
-      document_type = build(:document_type, rendering_app: "government-frontend")
-      publish_time = Time.current.tomorrow.at_noon
-
-      edition = build(:edition,
-                      :scheduled,
-                      document_type_id: document_type.id,
-                      publish_time: publish_time)
-
-      payload = PublishingApiPayload.new(edition).intent_payload
-
-      payload_hash = {
-        publish_time: publish_time,
-        publishing_app: "content-publisher",
-        rendering_app: "government-frontend",
-      }
-      expect(payload).to match a_hash_including(payload_hash)
-    end
-  end
-
+RSpec.describe PreviewService::Payload do
   describe "#payload" do
     it "generates a payload for the publishing API" do
       document_type = build(:document_type)
@@ -31,7 +10,7 @@ RSpec.describe PublishingApiPayload do
                       summary: "document summary",
                       base_path: "/foo/bar/baz")
 
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
 
       payload_hash = {
         "base_path" => "/foo/bar/baz",
@@ -52,14 +31,14 @@ RSpec.describe PublishingApiPayload do
     it "specifies an auth bypass ID for anonymous previews" do
       edition = build(:edition)
       allow_any_instance_of(PreviewAuthBypass).to receive(:auth_bypass_id) { "id" }
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
       expect(payload["access_limited"]).to eq("auth_bypass_ids" => %w[id])
     end
 
     it "specifies organistions when the edition is access limited" do
       edition = build(:edition, :access_limited)
       allow(edition).to receive(:access_limit_organisation_ids) { %w[org-id] }
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
       expect(payload["access_limited"]["organisations"]).to eq %w[org-id]
     end
 
@@ -71,7 +50,7 @@ RSpec.describe PublishingApiPayload do
                       tags: { primary_publishing_organisation: %w[my-org-id],
                               organisations: %w[other-org-id] })
 
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
 
       payload_hash = {
         "links" => {
@@ -90,7 +69,7 @@ RSpec.describe PublishingApiPayload do
                       tags: { primary_publishing_organisation: %w[my-org-id],
                               organisations: %w[my-org-id] })
 
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
 
       payload_hash = {
         "links" => {
@@ -116,7 +95,7 @@ RSpec.describe PublishingApiPayload do
         "links" => { "person" => [person_id], "role" => [role_id] },
       )
 
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
 
       expect(payload["links"]).to match a_hash_including(
         "roles" => [role_id],
@@ -131,7 +110,7 @@ RSpec.describe PublishingApiPayload do
                       document_type_id: document_type.id,
                       contents: { body: "Hey **buddy**!" })
 
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
 
       expect(payload["details"]["body"]).to eq("<p>Hey <strong>buddy</strong>!</p>\n")
     end
@@ -149,7 +128,7 @@ RSpec.describe PublishingApiPayload do
                       document_type_id: document_type.id,
                       lead_image_revision: image_revision)
 
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
 
       payload_hash = {
         "url" => image_revision.asset_url("300"),
@@ -166,7 +145,7 @@ RSpec.describe PublishingApiPayload do
       edition = create(:edition,
                        update_type: "major",
                        change_note: "A change note")
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
 
       expect(payload).to match a_hash_including("change_note" => "A change note")
     end
@@ -175,7 +154,7 @@ RSpec.describe PublishingApiPayload do
       edition = create(:edition,
                        update_type: "minor",
                        change_note: "A change note")
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
 
       expect(payload).not_to match a_hash_including("change_note" => "A change note")
     end
@@ -184,7 +163,7 @@ RSpec.describe PublishingApiPayload do
       date = Time.current.yesterday
       revision = build(:revision, backdated_to: date)
       edition = create(:edition, revision: revision)
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
 
       expect(payload).to match a_hash_including("first_published_at" => date)
     end
@@ -193,7 +172,7 @@ RSpec.describe PublishingApiPayload do
       date = Time.current.yesterday
       revision = build(:revision, backdated_to: date)
       edition = create(:edition, revision: revision, number: 1)
-      payload = PublishingApiPayload.new(edition).payload
+      payload = PreviewService::Payload.new(edition).payload
 
       expect(payload).to match a_hash_including("public_updated_at" => date)
     end
