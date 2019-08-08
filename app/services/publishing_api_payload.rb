@@ -55,7 +55,7 @@ class PublishingApiPayload
 private
 
   def access_limited
-    auth_bypass_id = PreviewAuthBypassService.new(edition).auth_bypass_id
+    auth_bypass_id = PreviewAuthBypass.new(edition).auth_bypass_id
     access_limited_ids = { "auth_bypass_ids" => [auth_bypass_id] }
 
     if edition.access_limit

@@ -22,11 +22,11 @@ RSpec.describe EditionUrlHelper, type: :helper do
 
   describe "#preview_url" do
     let(:preview_auth_bypass_service) do
-      instance_double(PreviewAuthBypassService, preview_token: "secret")
+      instance_double(PreviewAuthBypass, preview_token: "secret")
     end
 
     before do
-      allow(PreviewAuthBypassService).to receive(:new) { preview_auth_bypass_service }
+      allow(PreviewAuthBypass).to receive(:new) { preview_auth_bypass_service }
     end
 
     it "returns the URL" do

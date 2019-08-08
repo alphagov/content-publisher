@@ -2,7 +2,7 @@
 
 module FileAttachmentHelper
   def file_attachment_preview_url(attachment_revision, document)
-    service = PreviewAuthBypassService.new(document)
+    service = PreviewAuthBypass.new(document)
     params = { token: service.preview_token }.to_query
     attachment_revision.asset_url + "?" + params
   end

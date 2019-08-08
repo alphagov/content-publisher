@@ -51,7 +51,7 @@ RSpec.describe PublishingApiPayload do
 
     it "specifies an auth bypass ID for anonymous previews" do
       edition = build(:edition)
-      allow_any_instance_of(PreviewAuthBypassService).to receive(:auth_bypass_id) { "id" }
+      allow_any_instance_of(PreviewAuthBypass).to receive(:auth_bypass_id) { "id" }
       payload = PublishingApiPayload.new(edition).payload
       expect(payload["access_limited"]).to eq("auth_bypass_ids" => %w[id])
     end

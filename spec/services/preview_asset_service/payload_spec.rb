@@ -2,11 +2,11 @@
 
 RSpec.describe PreviewAssetService::Payload do
   let(:auth_bypass) do
-    instance_double PreviewAuthBypassService, auth_bypass_id: "bypass-id"
+    instance_double PreviewAuthBypass, auth_bypass_id: "bypass-id"
   end
 
   before do
-    allow(PreviewAuthBypassService).to receive(:new) { auth_bypass }
+    allow(PreviewAuthBypass).to receive(:new) { auth_bypass }
   end
 
   describe "#for_update" do
