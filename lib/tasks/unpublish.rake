@@ -15,7 +15,7 @@ namespace :unpublish do
     removal = Removal.new(explanatory_note: explanatory_note,
                           alternative_path: alternative_path)
 
-    RemoveService.new.call(document.live_edition, removal)
+    RemoveService.call(document.live_edition, removal)
   end
 
   desc "Remove and redirect a document on GOV.UK e.g. unpublish:remove_and_redirect['a-content-id'] NEW_PATH='/redirect-to-here'"
@@ -34,6 +34,6 @@ namespace :unpublish do
                           explanatory_note: explanatory_note,
                           alternative_path: redirect_path)
 
-    RemoveService.new.call(document.live_edition, removal)
+    RemoveService.call(document.live_edition, removal)
   end
 end

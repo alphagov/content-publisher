@@ -2,7 +2,7 @@
 
 require "mini_magick"
 
-class ImageBlobService
+class ImageBlobService < ApplicationService
   def initialize(revision, user, temp_image)
     @revision = revision
     @user = user
@@ -36,8 +36,8 @@ private
   def unique_filename
     filenames = revision.image_revisions.map(&:filename)
 
-    @unique_filename ||= UniqueFilenameService.new(filenames)
-      .call(temp_image.original_filename)
+    @unique_filename ||= UniqueFilenameService
+      .call(filenames, temp_image.original_filename)
   end
 
   def centre_crop

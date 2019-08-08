@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-class PreviewAssetService
-  attr_reader :edition
-
-  def initialize(edition)
+class PreviewAssetService < ApplicationService
+  def initialize(edition, asset)
     @edition = edition
+    @asset = asset
   end
 
-  def put(asset)
+  def call
     if asset.draft?
       update(asset)
     elsif asset.absent?
@@ -19,6 +18,8 @@ class PreviewAssetService
   end
 
 private
+
+  attr_reader :edition, :asset
 
   def update(asset)
     payload = Payload.new(edition).for_update

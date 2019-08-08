@@ -33,8 +33,8 @@ private
   end
 
   def upload_attachment
-    blob_revision = FileAttachmentBlobService.new(edition.revision, user)
-                                             .create_blob_revision(params[:file])
+    blob_revision = FileAttachmentBlobService.call(edition.revision, user, params[:file])
+
     context.attachment_revision = FileAttachment::Revision.create_initial(
       blob_revision: blob_revision,
       title: params[:title],
@@ -52,6 +52,6 @@ private
   end
 
   def update_preview
-    FailsafePreviewService.new(edition).create_preview
+    FailsafePreviewService.call(edition)
   end
 end

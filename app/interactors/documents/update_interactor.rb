@@ -48,7 +48,7 @@ private
   end
 
   def update_preview
-    FailsafePreviewService.new(edition).create_preview
+    FailsafePreviewService.call(edition)
   end
 
   def update_params(edition)
@@ -59,7 +59,7 @@ private
       .tap do |p|
         p[:title] = p[:title]&.strip
         p[:summary] = p[:summary]&.strip
-        p[:base_path] = PathGeneratorService.new.path(edition.document, p[:title])
+        p[:base_path] = PathGeneratorService.call(edition.document, p[:title])
       end
   end
 end

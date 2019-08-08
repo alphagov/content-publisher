@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-class DraftAssetCleanupService
-  def call(edition)
+class DraftAssetCleanupService < ApplicationService
+  def initialize(edition)
+    @edition = edition
+  end
+
+  def call
     current_revision = edition.revision
     previous_revision = current_revision.preceded_by
 
@@ -11,6 +15,8 @@ class DraftAssetCleanupService
   end
 
 private
+
+  attr_reader :edition
 
   def delete_assets(assets)
     assets.each do |asset|

@@ -1,25 +1,22 @@
 # frozen_string_literal: true
 
-class FileAttachmentBlobService
-  def initialize(revision, user)
+class FileAttachmentBlobService < ApplicationService
+  def initialize(revision, user, file, replacing: nil)
     @revision = revision
     @user = user
+    @file = file
+    @replacing = replacing
   end
 
-  def create_blob_revision(file, replacing: nil)
-    mime_type = Marcel::MimeType.for(file,
-                                     declared_type: file.content_type,
-                                     name: file.original_filename)
-
-    filename = unique_filename(file, replacing)
+  def call
     blob = ActiveStorage::Blob.create_after_upload!(io: file,
-                                                    filename: filename,
+                                                    filename: unique_filename,
                                                     content_type: mime_type)
 
     FileAttachment::BlobRevision.create!(
       blob: blob,
-      filename: filename,
-      number_of_pages: number_of_pages(file, mime_type),
+      filename: unique_filename,
+      number_of_pages: number_of_pages,
       created_by: user,
       asset: FileAttachment::Asset.new,
     )
@@ -27,15 +24,21 @@ class FileAttachmentBlobService
 
 private
 
-  attr_reader :revision, :user
+  attr_reader :revision, :user, :file, :replacing
 
-  def unique_filename(file, replacement)
-    existing_filenames = revision.file_attachment_revisions.map(&:filename)
-    existing_filenames.delete(replacement.filename) if replacement
-    UniqueFilenameService.new(existing_filenames).call(file.original_filename)
+  def mime_type
+    @mime_type ||= Marcel::MimeType.for(file,
+                                        declared_type: file.content_type,
+                                        name: file.original_filename)
   end
 
-  def number_of_pages(file, mime_type)
+  def unique_filename
+    existing_filenames = revision.file_attachment_revisions.map(&:filename)
+    existing_filenames.delete(replacing.filename) if replacing
+    UniqueFilenameService.call(existing_filenames, file.original_filename)
+  end
+
+  def number_of_pages
     return unless mime_type == "application/pdf"
 
     PDF::Reader.new(file.tempfile).page_count

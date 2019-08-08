@@ -9,12 +9,8 @@ RSpec.describe FileAttachments::PreviewInteractor do
       { document: edition.document.to_param, file_attachment_id: file_attachment.id }
     end
 
-    let(:preview_asset_service) do
-      instance_double(PreviewAssetService)
-    end
-
     before do
-      allow(PreviewAssetService).to receive(:new) { preview_asset_service }
+      allow(PreviewAssetService).to receive(:call)
     end
 
     context "when the asset is present on Asset Manager" do
@@ -54,12 +50,11 @@ RSpec.describe FileAttachments::PreviewInteractor do
       end
 
       before do
-        allow(preview_asset_service).to receive(:put)
         edition.file_attachment_revisions << attachment_revision
       end
 
       it "uploads the asset" do
-        expect(preview_asset_service).to receive(:put)
+        expect(PreviewAssetService).to receive(:call)
         FileAttachments::PreviewInteractor.call(params: params)
       end
 
@@ -69,7 +64,7 @@ RSpec.describe FileAttachments::PreviewInteractor do
       end
 
       it "returns an api_error flag when Asset Manager is down" do
-        allow(preview_asset_service).to receive(:put).and_raise(GdsApi::BaseError)
+        allow(PreviewAssetService).to receive(:call).and_raise(GdsApi::BaseError)
         result = FileAttachments::PreviewInteractor.call(params: params)
         expect(result.api_error).to be_truthy
       end

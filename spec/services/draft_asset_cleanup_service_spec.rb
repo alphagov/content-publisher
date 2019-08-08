@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe DraftAssetCleanupService do
-  describe "#call" do
+  describe ".call" do
     context "when the previous revision has draft assets that aren't used" do
       it "deletes the assets that aren't used" do
         image_revision = create(:image_revision, :on_asset_manager, state: :draft)
@@ -16,7 +16,7 @@ RSpec.describe DraftAssetCleanupService do
 
         request = stub_asset_manager_deletes_any_asset
 
-        DraftAssetCleanupService.new.call(edition)
+        DraftAssetCleanupService.call(edition)
 
         expect(request).to have_been_requested.at_least_once
         expect(image_revision.assets.map(&:state).uniq).to match(%w[absent])
@@ -42,7 +42,7 @@ RSpec.describe DraftAssetCleanupService do
 
         request = stub_asset_manager_deletes_any_asset
 
-        DraftAssetCleanupService.new.call(edition)
+        DraftAssetCleanupService.call(edition)
 
         expect(request).not_to have_been_requested
         expect(image_revision.assets.map(&:state).uniq).to match(%w[draft])
@@ -64,7 +64,7 @@ RSpec.describe DraftAssetCleanupService do
 
         request = stub_asset_manager_deletes_any_asset
 
-        DraftAssetCleanupService.new.call(edition)
+        DraftAssetCleanupService.call(edition)
 
         expect(request).not_to have_been_requested
         expect(image_revision.assets.map(&:state).uniq).to match(%w[live])
@@ -77,7 +77,7 @@ RSpec.describe DraftAssetCleanupService do
         revision = create(:revision, preceded_by: nil)
         edition = create(:edition, revision: revision)
 
-        expect { DraftAssetCleanupService.new.call(edition) }
+        expect { DraftAssetCleanupService.call(edition) }
           .not_to raise_error
       end
     end
@@ -96,7 +96,7 @@ RSpec.describe DraftAssetCleanupService do
 
         stub_asset_manager_deletes_any_asset.to_return(status: 404)
 
-        DraftAssetCleanupService.new.call(edition)
+        DraftAssetCleanupService.call(edition)
 
         expect(image_revision.assets.map(&:state).uniq).to match(%w[absent])
         expect(file_attachment_revision.asset).to be_absent

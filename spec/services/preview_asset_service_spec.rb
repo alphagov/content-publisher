@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe PreviewAssetService do
-  describe "#put" do
+  describe ".call" do
     let(:edition) { create :edition }
 
     let(:asset) do
@@ -32,7 +32,7 @@ RSpec.describe PreviewAssetService do
         expect(asset).to receive(:update!)
           .with a_hash_including(state: :draft, file_url: file_url)
 
-        PreviewAssetService.new(edition).put(asset)
+        PreviewAssetService.call(edition, asset)
         expect(request).to have_been_requested.at_least_once
       end
 
@@ -45,7 +45,7 @@ RSpec.describe PreviewAssetService do
           expect(req.body).to include("foo")
         end
 
-        PreviewAssetService.new(edition).put(asset)
+        PreviewAssetService.call(edition, asset)
         expect(request).to have_been_requested
       end
     end
@@ -61,7 +61,7 @@ RSpec.describe PreviewAssetService do
 
       it "updates the asset" do
         request = stub_asset_manager_update_asset("id")
-        PreviewAssetService.new(edition).put(asset)
+        PreviewAssetService.call(edition, asset)
         expect(request).to have_been_requested
       end
 
@@ -72,7 +72,7 @@ RSpec.describe PreviewAssetService do
           expect(req.body).to include("foo")
         end
 
-        PreviewAssetService.new(edition).put(asset)
+        PreviewAssetService.call(edition, asset)
         expect(request).to have_been_requested
       end
     end
@@ -82,7 +82,7 @@ RSpec.describe PreviewAssetService do
         request = stub_asset_manager_update_asset("id")
         allow(asset).to receive(:draft?) { false }
         allow(asset).to receive(:absent?) { false }
-        PreviewAssetService.new(edition).put(asset)
+        PreviewAssetService.call(edition, asset)
         expect(request).to_not have_been_requested
       end
     end

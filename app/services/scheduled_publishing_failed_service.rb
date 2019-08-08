@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-class ScheduledPublishingFailedService
-  def call(edition_id)
+class ScheduledPublishingFailedService < ApplicationService
+  def initialize(edition_id)
+    @edition_id = edition_id
+  end
+
+  def call
     edition = nil
 
     Edition.transaction do
@@ -14,6 +18,8 @@ class ScheduledPublishingFailedService
   end
 
 private
+
+  attr_reader :edition_id
 
   def update_status(edition)
     raise "Expected edition to be scheduled" unless edition.scheduled?

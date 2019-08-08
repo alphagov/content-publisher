@@ -1,14 +1,25 @@
 # frozen_string_literal: true
 
-class WithdrawService
-  def call(edition, public_explanation, user = nil)
+class WithdrawService < ApplicationService
+  def initialize(edition, public_explanation, user = nil)
+    @edition = edition
+    @public_explanation = public_explanation
+    @user = user
+  end
+
+  def call
     edition.document.lock!
-    check_withdrawable(edition)
+    check_withdrawable
+    withdrawal = build_withdrawal
+    update_edition(withdrawal)
+    unpublish_edition
+  end
 
-    withdrawal = build_withdrawal(edition, public_explanation)
-    edition.assign_status(:withdrawn, user, status_details: withdrawal)
-    edition.save!
+private
 
+  attr_reader :edition, :public_explanation, :user
+
+  def unpublish_edition
     GdsApi.publishing_api_v2.unpublish(
       edition.content_id,
       type: "withdrawal",
@@ -17,9 +28,12 @@ class WithdrawService
     )
   end
 
-private
+  def update_edition(withdrawal)
+    edition.assign_status(:withdrawn, user, status_details: withdrawal)
+    edition.save!
+  end
 
-  def check_withdrawable(edition)
+  def check_withdrawable
     document = edition.document
 
     if edition != document.live_edition
@@ -31,7 +45,7 @@ private
     end
   end
 
-  def build_withdrawal(edition, public_explanation)
+  def build_withdrawal
     if edition.withdrawn?
       withdrawal = edition.status.details.dup
       withdrawal.tap do |w|

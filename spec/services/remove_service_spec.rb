@@ -11,14 +11,14 @@ RSpec.describe RemoveService do
         edition.content_id,
         body: hash_including(locale: edition.locale),
       )
-      RemoveService.new.call(edition, build(:removal))
+      RemoveService.call(edition, build(:removal))
       expect(request).to have_been_requested
     end
 
     it "creates a timeline entry" do
       removal = build(:removal)
 
-      expect { RemoveService.new.call(edition, removal) }
+      expect { RemoveService.call(edition, removal) }
         .to change { TimelineEntry.count }
         .by(1)
 
@@ -30,7 +30,7 @@ RSpec.describe RemoveService do
     it "updates the edition status" do
       removal = build(:removal)
 
-      expect { RemoveService.new.call(edition, removal) }
+      expect { RemoveService.call(edition, removal) }
         .to change { edition.reload.state }
         .to("removed")
 
@@ -53,7 +53,7 @@ RSpec.describe RemoveService do
             type: "redirect",
           },
         )
-        RemoveService.new.call(edition, removal)
+        RemoveService.call(edition, removal)
         expect(request).to have_been_requested
       end
     end
@@ -74,7 +74,7 @@ RSpec.describe RemoveService do
             type: "gone",
           },
         )
-        RemoveService.new.call(edition, removal)
+        RemoveService.call(edition, removal)
         expect(request).to have_been_requested
       end
     end
@@ -83,7 +83,7 @@ RSpec.describe RemoveService do
       before { stub_publishing_api_isnt_available }
 
       it "doesn't change the editions state" do
-        expect { RemoveService.new.call(edition, build(:removal)) }
+        expect { RemoveService.call(edition, build(:removal)) }
           .to raise_error(GdsApi::BaseError)
         expect(edition.reload.state).to eq("published")
       end
@@ -100,7 +100,7 @@ RSpec.describe RemoveService do
 
         delete_request = stub_asset_manager_deletes_any_asset
 
-        RemoveService.new.call(edition, build(:removal))
+        RemoveService.call(edition, build(:removal))
 
         expect(delete_request).to have_been_requested.at_least_once
         expect(image_revision.assets.map(&:state).uniq).to eq(%w[absent])
@@ -117,7 +117,7 @@ RSpec.describe RemoveService do
 
         delete_request = stub_asset_manager_deletes_any_asset.to_return(status: 404)
 
-        RemoveService.new.call(edition, build(:removal))
+        RemoveService.call(edition, build(:removal))
 
         expect(delete_request).to have_been_requested.at_least_once
         expect(image_revision.assets.map(&:state).uniq).to eq(%w[absent])
@@ -134,7 +134,7 @@ RSpec.describe RemoveService do
 
         delete_request = stub_asset_manager_deletes_any_asset
 
-        RemoveService.new.call(edition, build(:removal))
+        RemoveService.call(edition, build(:removal))
 
         expect(delete_request).not_to have_been_requested
       end
@@ -151,7 +151,7 @@ RSpec.describe RemoveService do
                          lead_image_revision: image_revision,
                          file_attachment_revisions: [file_attachment_revision])
 
-        expect { RemoveService.new.call(edition, build(:removal)) }
+        expect { RemoveService.call(edition, build(:removal)) }
           .to raise_error(GdsApi::BaseError)
 
         expect(edition.reload.state).to eq("removed")
@@ -161,8 +161,8 @@ RSpec.describe RemoveService do
     context "when the given edition is a draft" do
       it "raises an error" do
         draft_edition = create(:edition)
-        expect { RemoveService.new.call(draft_edition, build(:removal)) }
-          .to raise_error RuntimeError, "attempted to remove an edition other than the live edition"
+        expect { RemoveService.call(draft_edition, build(:removal)) }
+          .to raise_error "attempted to remove an edition other than the live edition"
       end
     end
 
@@ -174,8 +174,8 @@ RSpec.describe RemoveService do
                               current: false,
                               document: draft_edition.document)
 
-        expect { RemoveService.new.call(live_edition, build(:removal)) }
-          .to raise_error RuntimeError, "Publishing API does not support unpublishing while there is a draft"
+        expect { RemoveService.call(live_edition, build(:removal)) }
+          .to raise_error "Publishing API does not support unpublishing while there is a draft"
       end
     end
   end

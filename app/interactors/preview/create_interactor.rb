@@ -29,7 +29,7 @@ private
   end
 
   def create_preview
-    PreviewService.new(edition).create_preview
+    PreviewService.call(edition)
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     context.fail!(preview_failed: true)

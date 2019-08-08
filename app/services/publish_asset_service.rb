@@ -1,13 +1,20 @@
 # frozen_string_literal: true
 
-class PublishAssetService
-  def publish_assets(edition, live_edition)
+class PublishAssetService < ApplicationService
+  def initialize(edition, live_edition)
+    @edition = edition
+    @live_edition = live_edition
+  end
+
+  def call
     edition.assets.each { |asset| publish_asset(asset) }
-    retire_old_file_attachments(edition, live_edition)
-    retire_old_images(edition, live_edition)
+    retire_old_file_attachments
+    retire_old_images
   end
 
 private
+
+  attr_reader :edition, :live_edition
 
   def publish_asset(asset)
     raise "Expected asset to be on asset manager" if asset.absent?
@@ -23,7 +30,7 @@ private
     asset.live!
   end
 
-  def retire_old_file_attachments(edition, live_edition)
+  def retire_old_file_attachments
     return unless live_edition
 
     live_edition.file_attachment_revisions.each do |live_revision|
@@ -37,7 +44,7 @@ private
     end
   end
 
-  def retire_old_images(edition, live_edition)
+  def retire_old_images
     return unless live_edition
 
     live_edition.image_revisions.each do |live_revision|

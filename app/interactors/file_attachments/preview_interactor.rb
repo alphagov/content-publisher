@@ -31,7 +31,7 @@ private
     asset = attachment_revision.asset
 
     if asset.absent?
-      PreviewAssetService.new(edition).put(asset)
+      PreviewAssetService.call(edition, asset)
       context.can_preview = false
       return
     end
