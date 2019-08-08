@@ -1,22 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe PreviewAssetService do
-  describe "#put_all" do
-    it "uploads the image assets" do
-      image_revision = create(:image_revision)
-      edition = create(:edition, image_revisions: [image_revision])
-      expect_any_instance_of(PreviewAssetService).to receive(:put).at_least(:once)
-      PreviewAssetService.new(edition).put_all
-    end
-
-    it "uploads the file attachment assets" do
-      file_attachment_revision = create(:file_attachment_revision)
-      edition = create(:edition, file_attachment_revisions: [file_attachment_revision])
-      expect_any_instance_of(PreviewAssetService).to receive(:put).at_least(:once)
-      PreviewAssetService.new(edition).put_all
-    end
-  end
-
   describe "#put" do
     let(:edition) { create :edition }
 

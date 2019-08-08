@@ -6,7 +6,7 @@ RSpec.describe PreviewService do
   end
 
   let(:preview_asset_service) do
-    instance_double(PreviewAssetService, put_all: nil)
+    instance_double(PreviewAssetService, put: nil)
   end
 
   before do
@@ -35,70 +35,42 @@ RSpec.describe PreviewService do
       PreviewService.new(edition).create_preview
     end
 
-    it "delegates previewing assets" do
-      edition = create(:edition)
-      expect(preview_asset_service).to receive(:put_all)
+    it "uploads any image assets" do
+      image_revision = create(:image_revision)
+      edition = create(:edition, image_revisions: [image_revision])
+      expect(preview_asset_service).to receive(:put).at_least(:once)
+      PreviewService.new(edition).create_preview
+    end
+
+    it "uploads any file attachment assets" do
+      file_attachment_revision = create(:file_attachment_revision)
+      edition = create(:edition, file_attachment_revisions: [file_attachment_revision])
+      expect(preview_asset_service).to receive(:put).at_least(:once)
       PreviewService.new(edition).create_preview
     end
 
     context "when Publishing API is down" do
-      it "sets revision_synced to false on the edition" do
+      before do
         stub_publishing_api_isnt_available
-        edition = create(:edition, revision_synced: true)
-
-        expect { PreviewService.new(edition).create_preview }
-          .to raise_error(GdsApi::BaseError)
-        expect(edition.revision_synced).to be(false)
       end
-    end
 
-    context "when the asset upload fails" do
       it "sets revision_synced to false on the edition" do
-        allow(preview_asset_service).to receive(:put_all).and_raise(GdsApi::BaseError)
         edition = create(:edition, revision_synced: true)
         expect { PreviewService.new(edition).create_preview }.to raise_error(GdsApi::BaseError)
         expect(edition.revision_synced).to be(false)
       end
     end
-  end
 
-  describe "#try_create_preview" do
-    it "delegates to create_preview" do
-      edition = create(:edition)
-      service = PreviewService.new(edition)
-      expect(service).to receive(:create_preview)
-      service.try_create_preview
-    end
-
-    context "when an external service is down" do
-      it "sets revision_synced to false on the edition" do
-        stub_publishing_api_isnt_available
-        edition = create(:edition, revision_synced: true)
-        PreviewService.new(edition).try_create_preview
-        expect(edition.revision_synced).to be(false)
+    context "when the asset upload fails" do
+      before do
+        allow(preview_asset_service).to receive(:put).and_raise(GdsApi::BaseError)
       end
-    end
-
-    context "when there are pre-preview issues" do
-      let(:edition) { create(:edition, title: "", revision_synced: true) }
 
       it "sets revision_synced to false on the edition" do
-        PreviewService.new(edition).try_create_preview
-
+        image_revision = create(:image_revision)
+        edition = create(:edition, image_revisions: [image_revision], revision_synced: true)
+        expect { PreviewService.new(edition).create_preview }.to raise_error(GdsApi::BaseError)
         expect(edition.revision_synced).to be(false)
-      end
-
-      it "doesn't send to the Publishing API" do
-        request = stub_publishing_api_put_content(edition.content_id, {})
-
-        PreviewService.new(edition).try_create_preview
-
-        expect(request).not_to have_been_requested
-      end
-
-      it "delegates cleaning up draft assets" do
-        expect(draft_asset_cleanup_service).to receive(:call).with(edition)
-        PreviewService.new(edition).try_create_preview
       end
     end
   end
