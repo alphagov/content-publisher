@@ -47,7 +47,8 @@ private
   def update_edition
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
 
-    updater.update_image(image_revision, false)
+    selected = (context.edition.lead_image_revision == context.image_revision)
+    updater.update_image(image_revision, selected)
 
     context.fail! unless updater.changed?
 

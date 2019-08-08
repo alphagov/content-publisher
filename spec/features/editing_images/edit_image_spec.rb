@@ -2,7 +2,7 @@
 
 RSpec.feature "Edit image", js: true do
   scenario "lead image" do
-    given_there_is_an_edition_with_images
+    given_there_is_an_edition_with_a_lead_image
 
     when_i_visit_the_images_page
     and_i_edit_the_image_crop
@@ -10,7 +10,9 @@ RSpec.feature "Edit image", js: true do
 
     when_i_edit_the_image_metadata
     then_i_see_the_image_is_updated
+    and_i_see_the_lead_image_is_updated
     and_the_preview_creation_succeeded
+    and_i_see_the_document_history_has_been_updated
   end
 
   scenario "inline image" do
@@ -23,6 +25,19 @@ RSpec.feature "Edit image", js: true do
     when_i_edit_the_image_metadata
     then_i_see_the_image_is_updated
     and_the_preview_creation_succeeded
+    and_i_see_the_document_history_has_been_updated
+  end
+
+  def given_there_is_an_edition_with_a_lead_image
+    @image_revision = create(:image_revision,
+                             :on_asset_manager,
+                             crop_x: 0,
+                             crop_y: 167,
+                             crop_width: 1000,
+                             crop_height: 666,
+                             fixture: "1000x1000.jpg")
+    @edition = create(:edition,
+                      lead_image_revision: @image_revision)
   end
 
   def given_there_is_an_edition_with_images
@@ -36,7 +51,6 @@ RSpec.feature "Edit image", js: true do
                             crop_width: 1000,
                             crop_height: 666,
                             fixture: "1000x1000.jpg")
-
     @edition = create(:edition,
                       document_type_id: document_type.id,
                       image_revisions: [image_revision])
@@ -102,14 +116,15 @@ RSpec.feature "Edit image", js: true do
     expect(@new_asset_requests).to have_been_requested.at_least_once
     expect(@old_asset_requests).to have_been_requested.at_least_once
 
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"].keys).to_not include("image")
-    }).to have_been_requested.at_least_once
-
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-    expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
+  end
 
+  def and_i_see_the_lead_image_is_updated
+    within(".app-c-image-meta") { then_i_see_the_image_is_updated }
+  end
+
+  def and_i_see_the_document_history_has_been_updated
     click_on "Document history"
     expect(page).to have_content I18n.t!("documents.history.entry_types.image_updated")
   end
