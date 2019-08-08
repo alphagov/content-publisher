@@ -24,26 +24,23 @@ RSpec.describe DateParser do
     it "returns no issues when there are none" do
       params = { day: "10", month: "1", year: "2019" }
       parser = DateParser.new(date: params, issue_prefix: :backdate)
-      parser.parse
 
+      parser.parse
       expect(parser.issues.items).to be_empty
     end
 
     it "returns issues when the date is blank" do
       parser = DateParser.new(date: nil, issue_prefix: :backdate)
       parser.parse
-
-      date_form_message = parser.issues.items_for(:backdate_date).first[:text]
-      expect(date_form_message).to eq(I18n.t!("requirements.backdate_date.invalid.form_message"))
+      expect(parser.issues).to have_issue(:backdate_date, :invalid)
     end
 
     it "returns an issue when the date is invalid" do
       params = { day: "10", month: "60", year: "11" }
       parser = DateParser.new(date: params, issue_prefix: :backdate)
-      parser.parse
 
-      form_message = parser.issues.items_for(:backdate_date).first[:text]
-      expect(form_message).to eq(I18n.t!("requirements.backdate_date.invalid.form_message"))
+      parser.parse
+      expect(parser.issues).to have_issue(:backdate_date, :invalid)
     end
   end
 end
