@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
 class UnwithdrawController < ApplicationController
+  before_action :check_permission
+
   def confirm
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:withdrawn?)
-
-    if current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
-      redirect_to document_path(@edition.document), confirmation: "unwithdraw/confirm"
-    else
-      render :non_managing_editor
-    end
+    redirect_to document_path(@edition.document), confirmation: "unwithdraw/confirm"
   end
 
   def unwithdraw
@@ -21,5 +18,14 @@ class UnwithdrawController < ApplicationController
     else
       redirect_to document_path(params[:document])
     end
+  end
+
+private
+
+  def check_permission
+    return if current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
+
+    @edition = Edition.find_current(document: params[:document])
+    render :non_managing_editor, status: :forbidden
   end
 end
