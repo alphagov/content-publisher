@@ -8,20 +8,6 @@
                       class: "govuk-link",
                       data: { "modal-action": "edit", gtm: "crop-image" }) %>
 
-<% actions << capture do %>
-  <%= form_tag(
-    destroy_image_path(document, image.image_id),
-    method: :delete,
-    data: {
-      "modal-action": "delete",
-      gtm: "delete-image"
-    },
-    class: "app-inline-block"
-  ) do %>
-    <button class="govuk-link app-link--button app-link--destructive">Delete image</button>
-  <% end %>
-<% end %>
-
 <% if rendering_context == "modal" %>
   <% actions << link_to("Insert image markdown", "#",
                         data: {
@@ -39,6 +25,20 @@
     <% end %>
   <% end %>
 
+<% end %>
+
+<% actions << capture do %>
+  <%= form_tag(
+    destroy_image_path(document, image.image_id),
+    method: :delete,
+    data: {
+      "modal-action": "delete",
+      gtm: "delete-image"
+    },
+    class: "app-inline-block"
+  ) do %>
+    <button class="govuk-link app-link--button app-link--destructive">Delete image</button>
+  <% end %>
 <% end %>
 
 <% metadata_items = [
