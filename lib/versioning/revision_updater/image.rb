@@ -11,22 +11,28 @@ module Versioning
         assign(image_revisions: revision.image_revisions + [image_revision])
       end
 
-      def update_image(image_revision, selected = false)
+      def assign_lead_image(image_revision, selected)
+        if selected
+          assign(lead_image_revision: image_revision)
+        elsif currently_lead?(image_revision)
+          assign(lead_image_revision: nil)
+        end
+      end
+
+      def update_image(image_revision)
         unless image_exists?(image_revision)
           raise "Cannot update an image that doesn't exist"
         end
 
         assign(
           image_revisions: other_images(image_revision) + [image_revision],
-          lead_image_revision: next_lead_image(image_revision, selected),
+          lead_image_revision: next_lead_image(image_revision),
         )
       end
 
       def remove_image(image_revision)
-        assign(
-          image_revisions: other_images(image_revision),
-          lead_image_revision: next_lead_image(image_revision),
-        )
+        assign(image_revisions: other_images(image_revision))
+        assign_lead_image(image_revision, false)
       end
 
       def selected_lead_image?
@@ -48,12 +54,12 @@ module Versioning
         revision.image_revisions.find { |ir| ir.image_id == image_revision.image_id }
       end
 
-      def next_lead_image(image_revision, selected = false)
-        currently_lead = revision.lead_image_revision&.image_id == image_revision.image_id
-        return image_revision if selected
-        return if currently_lead
+      def currently_lead?(image_revision)
+        revision.lead_image_revision&.image_id == image_revision.image_id
+      end
 
-        revision.lead_image_revision
+      def next_lead_image(image_revision)
+        currently_lead?(image_revision) ? image_revision : revision.lead_image_revision
       end
     end
   end
