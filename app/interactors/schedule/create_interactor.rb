@@ -46,7 +46,7 @@ private
                                 reviewed: params[:review_status] == "reviewed",
                                 publish_time: edition.proposed_publish_time)
 
-    ScheduleService.new(edition).schedule(scheduling, user)
+    ScheduleService.call(edition, user, scheduling)
   end
 
   def create_timeline_entry

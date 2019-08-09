@@ -73,6 +73,6 @@ private
   end
 
   def update_preview
-    FailsafePreviewService.new(edition).create_preview
+    FailsafePreviewService.call(edition)
   end
 end

@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-class DeleteDraftService
-  attr_reader :document, :user
-
+class DeleteDraftService < ApplicationService
   def initialize(document, user)
     @document = document
     @user = user
   end
 
-  def delete
+  def call
     edition = document.current_edition
 
     raise "Trying to delete a document without a current edition" unless edition
@@ -27,6 +25,8 @@ class DeleteDraftService
   end
 
 private
+
+  attr_reader :document, :user
 
   def discard_path_reservations(edition)
     paths = edition.revisions.map(&:base_path).uniq.compact

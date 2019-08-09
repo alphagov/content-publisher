@@ -1,35 +1,51 @@
 # frozen_string_literal: true
 
-class RemoveService
-  def call(edition, removal)
+class RemoveService < ApplicationService
+  def initialize(edition, removal)
+    @edition = edition
+    @removal = removal
+  end
+
+  def call
     Document.transaction do
       edition.document.lock!
-      check_removeable(edition)
-
-      GdsApi.publishing_api_v2.unpublish(
-        edition.content_id,
-        type: removal.redirect? ? "redirect" : "gone",
-        explanation: removal.explanatory_note,
-        alternative_path: removal.alternative_path,
-        locale: edition.locale,
-      )
-
-      edition.assign_status(:removed, nil, status_details: removal)
-      edition.save!
-
-      TimelineEntry.create_for_status_change(
-        entry_type: :removed,
-        status: edition.status,
-        details: removal,
-      )
+      check_removeable
+      unpublish_edition
+      update_edition_status
+      create_timeline_entry
     end
 
-    delete_assets(edition.assets)
+    delete_assets
   end
 
 private
 
-  def check_removeable(edition)
+  attr_reader :edition, :removal
+
+  def unpublish_edition
+    GdsApi.publishing_api_v2.unpublish(
+      edition.content_id,
+      type: removal.redirect? ? "redirect" : "gone",
+      explanation: removal.explanatory_note,
+      alternative_path: removal.alternative_path,
+      locale: edition.locale,
+    )
+  end
+
+  def update_edition_status
+    edition.assign_status(:removed, nil, status_details: removal)
+    edition.save!
+  end
+
+  def create_timeline_entry
+    TimelineEntry.create_for_status_change(
+      entry_type: :removed,
+      status: edition.status,
+      details: removal,
+    )
+  end
+
+  def check_removeable
     document = edition.document
 
     if edition != document.live_edition
@@ -41,8 +57,8 @@ private
     end
   end
 
-  def delete_assets(assets)
-    assets.each do |asset|
+  def delete_assets
+    edition.assets.each do |asset|
       next if asset.absent?
 
       begin

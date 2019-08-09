@@ -43,7 +43,7 @@ private
     context.fail! if publish_time == scheduling.publish_time
 
     new_scheduling = scheduling.dup.tap { |s| s.publish_time = publish_time }
-    ScheduleService.new(edition).schedule(new_scheduling, user)
+    ScheduleService.call(edition, user, new_scheduling)
   end
 
   def create_timeline_entry

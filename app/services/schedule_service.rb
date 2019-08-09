@@ -1,19 +1,21 @@
 # frozen_string_literal: true
 
-class ScheduleService
-  attr_reader :edition
-
-  def initialize(edition)
+class ScheduleService < ApplicationService
+  def initialize(edition, user, scheduling)
     @edition = edition
+    @user = user
+    @scheduling = scheduling
   end
 
-  def schedule(scheduling, user)
+  def call
     update_edition(scheduling, user)
     create_or_update_publish_intent
     schedule_to_publish(scheduling)
   end
 
 private
+
+  attr_reader :edition, :user, :scheduling
 
   def update_edition(scheduling, user)
     updater = Versioning::RevisionUpdater.new(edition.revision, user)

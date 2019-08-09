@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-class PreviewService
-  attr_reader :edition
-
+class PreviewService < ApplicationService
   def initialize(edition)
     @edition = edition
   end
 
-  def create_preview
+  def call
     put_draft_assets
     put_draft_content
     cleanup_draft_assets
@@ -18,6 +16,8 @@ class PreviewService
 
 private
 
+  attr_reader :edition
+
   def put_draft_content
     payload = Payload.new(edition).payload
     GdsApi.publishing_api_v2.put_content(edition.content_id, payload)
@@ -26,11 +26,10 @@ private
 
   def put_draft_assets
     edition.image_revisions.each(&:ensure_assets)
-    service = PreviewAssetService.new(edition)
-    edition.assets.each { |asset| service.put(asset) }
+    edition.assets.each { |asset| PreviewAssetService.call(edition, asset) }
   end
 
   def cleanup_draft_assets
-    DraftAssetCleanupService.new.call(edition)
+    DraftAssetCleanupService.call(edition)
   end
 end

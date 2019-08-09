@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
-class FailsafePreviewService
-  attr_reader :edition
-
+class FailsafePreviewService < ApplicationService
   def initialize(edition)
     @edition = edition
   end
 
-  def create_preview
+  def call
     if has_issues?
-      DraftAssetCleanupService.new.call(edition)
+      DraftAssetCleanupService.call(edition)
       edition.update!(revision_synced: false)
     else
-      PreviewService.new(edition).create_preview
+      PreviewService.call(edition)
     end
   rescue GdsApi::BaseError => e
     edition.update!(revision_synced: false)
@@ -20,6 +18,8 @@ class FailsafePreviewService
   end
 
 private
+
+  attr_reader :edition
 
   def has_issues?
     Requirements::EditionChecker.new(edition).pre_preview_issues.any?

@@ -1,28 +1,19 @@
 # frozen_string_literal: true
 
-class PublishService
-  attr_reader :edition
-  delegate :document, to: :edition
-
-  def initialize(edition)
+class PublishService < ApplicationService
+  def initialize(edition, user, with_review:)
     @edition = edition
+    @user = user
+    @with_review = with_review
   end
 
-  def publish(user:, with_review:)
+  def call
     live_edition = document.live_edition
-
-    PublishAssetService.new.publish_assets(edition, live_edition)
-
-    GdsApi.publishing_api_v2.publish(
-      document.content_id,
-      nil, # Sending update_type is deprecated (now in payload)
-      locale: document.locale,
-    )
-
-    supersede_live_edition(live_edition, user)
-    set_new_live_edition(user, with_review)
+    publish_assets(live_edition)
+    publish_current_edition
+    supersede_live_edition(live_edition)
+    set_new_live_edition
     set_first_published_at
-
     document.reload
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
@@ -31,7 +22,22 @@ class PublishService
 
 private
 
-  def supersede_live_edition(live_edition, user)
+  attr_reader :edition, :user, :with_review
+  delegate :document, to: :edition
+
+  def publish_assets(live_edition)
+    PublishAssetService.call(edition, live_edition)
+  end
+
+  def publish_current_edition
+    GdsApi.publishing_api_v2.publish(
+      document.content_id,
+      nil, # Sending update_type is deprecated (now in payload)
+      locale: document.locale,
+    )
+  end
+
+  def supersede_live_edition(live_edition)
     return unless live_edition
 
     live_edition.assign_status(:superseded, user, update_last_edited: false)
@@ -39,7 +45,7 @@ private
     live_edition.save!
   end
 
-  def set_new_live_edition(user, with_review)
+  def set_new_live_edition
     status = with_review ? :published : :published_but_needs_2i
     edition.assign_as_edit(user, access_limit: nil)
     edition.assign_status(status, user)

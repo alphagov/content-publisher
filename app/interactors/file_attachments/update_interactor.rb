@@ -65,7 +65,7 @@ private
   end
 
   def update_preview
-    FailsafePreviewService.new(edition).create_preview
+    FailsafePreviewService.call(edition)
   end
 
   def attachment_params
@@ -73,7 +73,6 @@ private
   end
 
   def blob_revision(file)
-    FileAttachmentBlobService.new(edition.revision, user)
-                             .create_blob_revision(file, replacing: file_attachment_revision)
+    FileAttachmentBlobService.call(edition.revision, user, file, replacing: file_attachment_revision)
   end
 end

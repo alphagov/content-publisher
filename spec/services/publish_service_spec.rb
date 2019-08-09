@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe PublishService do
-  before { stub_any_publishing_api_publish }
+  describe ".call" do
+    let(:user) { create(:user) }
 
-  describe "#publish" do
+    before do
+      stub_any_publishing_api_publish
+      allow(PublishAssetService).to receive(:call)
+    end
+
     context "when there is no live edition" do
       let(:edition) { create(:edition, :publishable) }
 
@@ -11,9 +16,8 @@ RSpec.describe PublishService do
         publish_request = stub_publishing_api_publish(edition.content_id,
                                                       update_type: nil,
                                                       locale: edition.locale)
-        PublishService.new(edition)
-                      .publish(user: create(:user), with_review: true)
 
+        PublishService.call(edition, user, with_review: true)
         expect(publish_request).to have_been_requested
         expect(edition.document.live_edition).to eq(edition)
         expect(edition).to be_published
@@ -21,9 +25,7 @@ RSpec.describe PublishService do
       end
 
       it "can specify if edition is reviewed" do
-        PublishService.new(edition)
-                      .publish(user: create(:user), with_review: false)
-
+        PublishService.call(edition, user, with_review: false)
         expect(edition).to be_published_but_needs_2i
       end
     end
@@ -34,9 +36,7 @@ RSpec.describe PublishService do
         current_edition = document.current_edition
         live_edition = document.live_edition
 
-        PublishService.new(current_edition)
-                      .publish(user: create(:user), with_review: true)
-
+        PublishService.call(current_edition, user, with_review: true)
         expect(document.live_edition).to eq(current_edition)
         expect(live_edition).to be_superseded
       end
@@ -45,22 +45,16 @@ RSpec.describe PublishService do
     it "calls the PublishAssetService" do
       document = create(:document, :with_current_and_live_editions)
       current_edition = document.current_edition
-
-      expect_any_instance_of(PublishAssetService).to receive(:publish_assets)
-
-      PublishService.new(current_edition)
-        .publish(user: create(:user), with_review: true)
+      expect(PublishAssetService).to receive(:call)
+      PublishService.call(current_edition, user, with_review: true)
     end
-  end
 
-  context "when the edition is access limited" do
-    it "removes the access limit" do
-      edition = create(:edition, :access_limited)
-
-      PublishService.new(edition)
-                    .publish(user: create(:user), with_review: true)
-
-      expect(edition.access_limit).to be_nil
+    context "when the edition is access limited" do
+      it "removes the access limit" do
+        edition = create(:edition, :access_limited)
+        PublishService.call(edition, user, with_review: true)
+        expect(edition.access_limit).to be_nil
+      end
     end
   end
 end

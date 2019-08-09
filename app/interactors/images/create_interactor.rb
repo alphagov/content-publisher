@@ -38,7 +38,7 @@ private
   end
 
   def create_image_revision
-    blob_revision = ImageBlobService.new(edition.revision, user, temp_image).call
+    blob_revision = ImageBlobService.call(edition.revision, user, temp_image)
     context.image_revision = Image::Revision.create_initial(blob_revision: blob_revision)
   end
 

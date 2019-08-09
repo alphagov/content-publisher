@@ -55,6 +55,7 @@ RSpec.describe ScheduledPublishingJob do
   context "when an exception is raised" do
     before do
       allow(PublishService).to receive(:new).and_raise(RuntimeError)
+      allow(ScheduledPublishingFailedService).to receive(:call)
     end
 
     it "retries the job" do
@@ -64,11 +65,7 @@ RSpec.describe ScheduledPublishingJob do
     end
 
     it "when it is out of retries it calls the failed service" do
-      failed_service = instance_double(ScheduledPublishingFailedService)
-      allow(ScheduledPublishingFailedService)
-        .to receive(:new).and_return(failed_service)
-
-      expect(failed_service).to receive(:call).with(scheduled_edition.id)
+      expect(ScheduledPublishingFailedService).to receive(:call).with(scheduled_edition.id)
 
       perform_enqueued_jobs do
         ScheduledPublishingJob.perform_later(scheduled_edition.id)
