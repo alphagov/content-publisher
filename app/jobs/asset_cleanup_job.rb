@@ -2,33 +2,39 @@
 
 class AssetCleanupJob < ApplicationJob
   def perform
-    active_revision_ids = Edition
-      .where(current: true)
-      .or(Edition.where(live: true))
-      .pluck(:revision_id)
-
-    active_file_attachment_asset_ids = FileAttachment::Revision
-      .joins(:revisions, blob_revision: [:asset])
-      .where("revisions.id" => active_revision_ids)
-      .pluck("file_attachment_assets.id")
-
-    active_image_asset_ids = Image::Revision
-      .joins(:revisions, blob_revision: [:assets])
-      .where("revisions.id" => active_revision_ids)
-      .pluck("image_assets.id")
-
-    FileAttachment::Asset
-      .where.not(id: active_file_attachment_asset_ids)
-      .where.not(state: "absent")
-      .each { |asset| delete_asset(asset) }
-
-    Image::Asset
-      .where.not(id: active_image_asset_ids)
-      .where.not(state: "absent")
-      .each { |asset| delete_asset(asset) }
+    clean_image_assets
+    clean_file_attachment_assets
   end
 
 private
+
+  def clean_image_assets
+    image_asset_used =
+      Edition.where(current: true)
+             .or(Edition.where(live: true))
+             .joins(revision: { image_revisions: :blob_revision })
+             .where("image_assets.blob_revision_id = image_blob_revisions.id")
+             .arel
+             .exists
+
+    Image::Asset.where.not(state: :absent)
+                .where.not(image_asset_used)
+                .find_each { |asset| delete_asset(asset) }
+  end
+
+  def clean_file_attachment_assets
+    file_attachment_asset_used =
+      Edition.where(current: true)
+             .or(Edition.where(live: true))
+             .joins(revision: { file_attachment_revisions: :blob_revision })
+             .where("file_attachment_assets.blob_revision_id = file_attachment_blob_revisions.id")
+             .arel
+             .exists
+
+    FileAttachment::Asset.where.not(state: :absent)
+                         .where.not(file_attachment_asset_used)
+                         .find_each { |asset| delete_asset(asset) }
+  end
 
   def delete_asset(asset)
     GdsApi.asset_manager.delete_asset(asset.asset_manager_id)
