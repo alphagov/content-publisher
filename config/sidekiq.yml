@@ -8,3 +8,7 @@ development:
 :queues:
   - default
   - mailers
+:schedule:
+  asset_cleanup:
+    interval: '30m'
+    class: AssetCleanupJob

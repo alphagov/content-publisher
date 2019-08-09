@@ -36,8 +36,6 @@ RSpec.feature "Replace a file attachment file", js: true do
 
   def and_i_upload_a_replacement_attachment_file
     @put_content_request = stub_publishing_api_put_content(@edition.content_id, {})
-    existing_asset = @attachment_revision.asset
-    @delete_current_file_request = stub_asset_manager_delete_asset(existing_asset.asset_manager_id)
     @create_new_file_request = stub_asset_manager_receives_an_asset(filename: attachment_filename)
 
     find('form input[type="file"]').set(Rails.root.join(file_fixture(attachment_filename)))
@@ -54,7 +52,6 @@ RSpec.feature "Replace a file attachment file", js: true do
 
   def and_the_preview_creation_succeeded
     expect(@put_content_request).to have_been_requested
-    expect(@delete_current_file_request).to have_been_requested
     expect(@create_new_file_request).to have_been_requested
 
     visit document_path(@edition.document)

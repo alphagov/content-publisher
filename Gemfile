@@ -24,7 +24,9 @@ gem "pg", "~> 1"
 gem "plek", "~> 3"
 gem "rinku", "~> 2"
 gem "rubyzip", "~> 1", require: "zip"
+gem "sidekiq-scheduler", "~> 3"
 gem "uglifier", "~> 4"
+gem "with_advisory_lock", "~> 4"
 
 group :development do
   gem "brakeman", "~> 4"

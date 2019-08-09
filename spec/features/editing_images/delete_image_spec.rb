@@ -42,7 +42,6 @@ RSpec.feature "Delete an image", js: true do
 
   def and_i_delete_the_non_lead_image
     @put_content_request = stub_publishing_api_put_content(@edition.content_id, {})
-    @delete_asset_request = stub_asset_manager_deletes_any_asset
     click_on "Delete image"
   end
 
@@ -53,7 +52,6 @@ RSpec.feature "Delete an image", js: true do
 
   def and_the_preview_creation_succeeded
     expect(@put_content_request).to have_been_requested
-    expect(@delete_asset_request).to have_been_requested.at_least_once
 
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))

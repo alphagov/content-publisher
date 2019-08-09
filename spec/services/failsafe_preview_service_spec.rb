@@ -35,11 +35,6 @@ RSpec.describe FailsafePreviewService do
         FailsafePreviewService.call(edition)
         expect(request).not_to have_been_requested
       end
-
-      it "delegates cleaning up draft assets" do
-        expect(AssetCleanupJob).to receive(:perform_later)
-        FailsafePreviewService.call(edition)
-      end
     end
   end
 end

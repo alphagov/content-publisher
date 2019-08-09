@@ -8,7 +8,6 @@ class PreviewService < ApplicationService
   def call
     put_draft_assets
     put_draft_content
-    cleanup_draft_assets
   rescue GdsApi::BaseError
     edition.update!(revision_synced: false)
     raise
@@ -27,9 +26,5 @@ private
   def put_draft_assets
     edition.image_revisions.each(&:ensure_assets)
     edition.assets.each { |asset| PreviewAssetService.call(edition, asset) }
-  end
-
-  def cleanup_draft_assets
-    AssetCleanupJob.perform_later
   end
 end
