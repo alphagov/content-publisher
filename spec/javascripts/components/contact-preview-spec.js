@@ -14,7 +14,7 @@ describe('Contact preview component', function () {
         '<option value="63e37a39-aa4a-417a-9844-5aa308c7bf0d">Government Legal Department</option>' +
       '</select>' +
 
-      '<div class="app-c-contact-preview app-c-contact-preview--hidden" data-module="contact-preview" data-for="contact-id-select" data-contact-snippet-template="[Contact: #]">' +
+      '<div class="app-c-contact-preview app-c-contact-preview--hidden" data-module="contact-preview" data-for="contact-id-select" data-contact-snippet-template="[Contact: #]" data-govspeak-path="/">' +
         '<div class="gem-c-inset-text govuk-inset-text">' +
           '<p class="app-c-contact-preview__error-message app-c-contact-preview__error-message--hidden js-contact-preview-error-message">Unable to generate preview</p>' +
           '<div class="app-c-contact-preview__html js-contact-preview-html"></div>' +

@@ -9,6 +9,7 @@ RSpec.feature "Insert contact embed without Javascript" do
     and_i_go_to_add_a_contact
     when_i_select_a_contact
     then_i_see_the_contact_markdown_snippet
+    and_i_see_a_preview_of_the_contact
   end
 
   def given_there_is_an_edition
@@ -47,5 +48,11 @@ RSpec.feature "Insert contact embed without Javascript" do
   def then_i_see_the_contact_markdown_snippet
     snippet = I18n.t("contact_embed.new.contact_markdown", id: @contact["content_id"])
     expect(page).to have_content(snippet)
+  end
+
+  def and_i_see_a_preview_of_the_contact
+    within(".app-c-contact-preview") do
+      expect(page).to have_content(@contact["title"])
+    end
   end
 end

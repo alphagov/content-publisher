@@ -31,12 +31,16 @@
     search: true,
   } %>
 
-  <% contact_preview = render_govspeak(t("contact_embed.new.contact_markdown", id: params[:contact_id])) if params[:contact_id].present? %>
+  <% if @markdown_code.present? %>
+    <% contact_preview = raw(GovspeakDocument.new(@markdown_code, @edition).in_app_html) %>
+  <% end %>
+
   <%= render "components/contact_preview", {
     error_message: t("contact_embed.new.preview_error"),
     data_attributes: {
       "for": "contact-id-select",
-      "contact-snippet-template": t("contact_embed.new.contact_markdown", id: "#")
+      "contact-snippet-template": t("contact_embed.new.contact_markdown", id: "#"),
+      "govspeak-path": govspeak_preview_path(@edition.document)
     },
     html: contact_preview
   } %>

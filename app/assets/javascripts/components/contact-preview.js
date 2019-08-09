@@ -7,36 +7,20 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
   ContactPreview.prototype.start = function ($module) {
     this.$module = $module[0]
 
-    this.path = this.getContactPreviewPath()
     this.errorMessage = this.$module.querySelector('.js-contact-preview-error-message')
     this.contactPreview = this.$module.querySelector('.js-contact-preview-html')
     this.selectId = this.$module.dataset.for
     this.contactSnippetTemplate = this.$module.dataset.contactSnippetTemplate
+    this.path = this.$module.dataset.govspeakPath
     this.$select = document.querySelector('#' + this.selectId)
-    if (!this.$select) {
+    if (!this.$select || !this.path || !this.contactSnippetTemplate) {
       return
     }
     this.$select.addEventListener('change', this.handleChange.bind(this))
   }
 
-  ContactPreview.prototype.getContactPreviewPath = function () {
-    var documentIdRegex = document.location.pathname.match('/documents/([^/]*)/')
-    if (!documentIdRegex) {
-      return
-    }
-
-    var documentId = documentIdRegex[1]
-    if (!documentId) {
-      console.error('Could not find document ID in pathname')
-      return
-    }
-
-    var path = '/documents/' + documentId + '/govspeak-preview'
-    return path
-  }
-
   ContactPreview.prototype.getContactSnippet = function () {
-    if (this.contactSnippetTemplate && this.$select.value) {
+    if (this.$select.value) {
       return this.contactSnippetTemplate.replace('#', this.$select.value)
     }
   }
@@ -61,10 +45,6 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
   }
 
   ContactPreview.prototype.fetchContactPreview = function (contactId) {
-    if (!this.path) {
-      throw Error('Invalid fetch path.')
-    }
-
     var url = new URL(document.location.origin + this.path)
 
     var formData = new window.FormData()
