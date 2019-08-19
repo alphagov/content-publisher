@@ -3,7 +3,7 @@
 RSpec.describe FailsafePreviewService do
   before do
     allow(PreviewService).to receive(:call)
-    allow(DraftAssetCleanupService).to receive(:call)
+    allow(AssetCleanupJob).to receive(:perform_later)
   end
 
   describe ".call" do
@@ -34,11 +34,6 @@ RSpec.describe FailsafePreviewService do
         request = stub_publishing_api_put_content(edition.content_id, {})
         FailsafePreviewService.call(edition)
         expect(request).not_to have_been_requested
-      end
-
-      it "delegates cleaning up draft assets" do
-        expect(DraftAssetCleanupService).to receive(:call)
-        FailsafePreviewService.call(edition)
       end
     end
   end
