@@ -1,3 +1,8 @@
+### Adding to Document Collections <span class="govuk-caption-m">4 September 2019</span>
+You can now add content created in Content Publisher to document collections in Whitehall publisher.
+
+This can be done by editing the document collection in Whitehall and selecting the 'Add GOV.UK content created outside of Whitehall to a group' option on the 'Collection documents' screen.
+
 ### Access limiting <span class="govuk-caption-m">6 August 2019</span>
 You can now limit who is able to find and edit a document. You can only limit access before it is published. You can limit it to just publishers in the primary organisation, or to publishers in any tagged organisation. 
 

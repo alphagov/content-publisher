@@ -203,3 +203,12 @@ You need to use the option in Whitehall to 'Feature non-GOV.UK government link'.
 
 We have added document types for Content Publisher documents so that they appear just like Whitehall content.
 
+---
+
+##Document Collections
+
+You can add Content Publisher to document collections that are managed in Whitehall publisher.
+
+When editing a document collection in Whitehall you need to select the 'Add GOV.UK content created outside of Whitehall to a group' option on the 'Collection documents' screen. You will then need to paste in the public URL of the document to add it to the collection.
+
+You can add any documents created outside Whitehall this way.
