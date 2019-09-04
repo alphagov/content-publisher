@@ -48,7 +48,7 @@ When you paste text into the body field Content Publisher will try to convert it
 You can now embed YouTube videos in the body text of content using the Insert menu.
 
 ### Email notification when content is published <span class="govuk-caption-m">8 April 2019</span>
-You will now recieve an email notification when a content edition you have worked on is published on GOV.UK.
+You will now receive an email notification when a content edition you have worked on is published on GOV.UK.
 
 ### Document list defaults to your organisation <span class="govuk-caption-m">21 March 2019</span>
 The document search list will now only show content tagged to your organisation. You can clear filters to see all content tagged to any organisation.

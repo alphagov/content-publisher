@@ -187,9 +187,9 @@ Or you can save a proposed date and time to inform colleagues when content shoul
 
 If content has been scheduled but has not yet gone live you can stop the automatic scheduled publishing if you need to make changes.
 
-Once content has gone live you will recieve a confirmation email. 
+Once content has gone live you will receive a confirmation email. 
 
-If there are any problems you will recieve an alert email.
+If there are any problems you will receive an alert email.
 
 ---
 
