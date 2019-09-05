@@ -7,6 +7,16 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
   min-width: 120px;
   background: inherit;
   text-align: left;
+
+  .app-c-toolbar-dropdown__container {
+    display: none;
+  }
+
+  &[open] {
+    .app-c-toolbar-dropdown__container {
+      display: block;
+    }
+  }
 }
 
 .app-c-toolbar-dropdown--end {
