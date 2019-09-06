@@ -9,6 +9,8 @@ Content created in Content Publisher cannot be edited in Whitehall publisher. Wh
 
 Content created in Content Publisher can be featured on organisation homepages in Whitehall using the option to 'Feature non-GOV.UK government link'.
 
+Content created in Content Publisher can be added to document collections in Whitehall using the option to 'Add GOV.UK content created outside of Whitehall to a group'.
+
 It is possible to remove (unpublish) pages on request.
 
 Content Publisher cannot be used to publish any translations. If content needs a translated version you need to use Whitehall.

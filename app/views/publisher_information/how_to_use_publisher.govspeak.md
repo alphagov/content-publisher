@@ -187,9 +187,9 @@ Or you can save a proposed date and time to inform colleagues when content shoul
 
 If content has been scheduled but has not yet gone live you can stop the automatic scheduled publishing if you need to make changes.
 
-Once content has gone live you will recieve a confirmation email. 
+Once content has gone live you will receive a confirmation email. 
 
-If there are any problems you will recieve an alert email.
+If there are any problems you will receive an alert email.
 
 ---
 
@@ -203,3 +203,12 @@ You need to use the option in Whitehall to 'Feature non-GOV.UK government link'.
 
 We have added document types for Content Publisher documents so that they appear just like Whitehall content.
 
+---
+
+##Document Collections
+
+You can add Content Publisher to document collections that are managed in Whitehall publisher.
+
+When editing a document collection in Whitehall you need to select the 'Add GOV.UK content created outside of Whitehall to a group' option on the 'Collection documents' screen. You will then need to paste in the public URL of the document to add it to the collection.
+
+You can add any documents created outside Whitehall this way.
