@@ -108,6 +108,38 @@ RSpec.describe DeleteDraftService do
       expect(document.reload.current_edition).to be_nil
     end
 
+    it "copes if the publishing API has a live but not draft edition of the document" do
+      document = create :document, :with_current_edition
+      stub_publishing_api_unreserve_path(document.current_edition.base_path)
+      discard_draft_error = {
+        error: {
+          code: 422,
+          message: "There is not a draft edition of this document to discard",
+        },
+      }
+      stub_any_publishing_api_discard_draft
+        .to_return(status: 422, body: discard_draft_error.to_json)
+
+      DeleteDraftService.call(document, user)
+      expect(document.reload.current_edition).to be_nil
+    end
+
+    it "doesn't capture all Publishing API unprocessable entity issues" do
+      document = create :document, :with_current_edition
+      stub_publishing_api_unreserve_path(document.current_edition.base_path)
+      discard_draft_error = {
+        error: {
+          code: 422,
+          message: "New Publishing API problem",
+        },
+      }
+      stub_any_publishing_api_discard_draft
+        .to_return(status: 422, body: discard_draft_error.to_json)
+
+      expect { DeleteDraftService.call(document, user) }
+        .to raise_error(GdsApi::HTTPUnprocessableEntity)
+    end
+
     it "copes if an asset is not in Asset Manager" do
       image_revision = create :image_revision
       file_attachment_revision = create :file_attachment_revision

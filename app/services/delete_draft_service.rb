@@ -48,6 +48,14 @@ private
       GdsApi.publishing_api_v2.discard_draft(document.content_id)
     rescue GdsApi::HTTPNotFound
       Rails.logger.warn("No draft to discard for content id #{document.content_id}")
+    rescue GdsApi::HTTPUnprocessableEntity => e
+      no_draft_message = "There is not a draft edition of this document to discard"
+
+      if e.error_details.respond_to?(:dig) && e.error_details.dig("error", "message") == no_draft_message
+        Rails.logger.warn("No draft to discard for content id #{document.content_id}")
+      else
+        raise
+      end
     end
 
     edition.assign_status(:discarded, user).update!(current: false)
