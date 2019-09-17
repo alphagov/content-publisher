@@ -8,11 +8,11 @@
           time: format_time(publish_time),
           date: format_date(publish_time)) %>
   </p>
-
-  <%= link_to "Change date",
+  <%= tag.p link_to("Change date",
               schedule_proposal_path(@edition.document),
               class: "govuk-link govuk-link--no-visited-state",
-              data: { gtm: "change-proposed-schedule" } %>
+              data: { gtm: "change-proposed-schedule" }),
+            class: "govuk-body" %>
 <% end %>
 
 <% if issues.any? %>
