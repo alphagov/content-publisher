@@ -41,7 +41,7 @@ group :development, :test do
   gem "byebug", "~> 11"
   gem "climate_control"
   gem "factory_bot_rails", "~> 5"
-  gem "govuk-lint", "~> 3"
+  gem "govuk-lint", "~> 4"
   gem "govuk_schemas", "~> 4.0"
   gem "govuk_test", "~> 1.0"
   gem "jasmine", "~> 3.5"
