@@ -44,7 +44,7 @@ group :development, :test do
   gem "govuk-lint", "~> 3"
   gem "govuk_schemas", "~> 4.0"
   gem "govuk_test", "~> 1.0"
-  gem "jasmine", "~> 3.4"
+  gem "jasmine", "~> 3.5"
   gem "jasmine_selenium_runner", "~> 3", require: false
   gem "rspec-rails", "~> 3"
   gem "webmock", "~> 3"
