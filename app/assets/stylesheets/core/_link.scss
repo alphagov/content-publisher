@@ -1,3 +1,14 @@
+.app-link--button {
+  @extend %govuk-body-m;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: $govuk-link-colour;
+  background: transparent;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 // TODO: support this modifier in govuk-frontend
 .app-link--destructive {
   color: $govuk-error-colour;
@@ -32,15 +43,4 @@
   &:focus {
     outline: none;
   }
-}
-
-.app-link--button {
-  @extend %govuk-body-m;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  color: $govuk-link-colour;
-  background: transparent;
-  text-decoration: underline;
-  cursor: pointer;
 }
