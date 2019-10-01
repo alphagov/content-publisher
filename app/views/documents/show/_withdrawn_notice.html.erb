@@ -6,8 +6,8 @@
                 withdrawn_date: format_date(withdrawal.withdrawn_at))
 } do %>
   <%= render_govspeak(withdrawal.public_explanation) %>
-  <br>
-  <%= link_to "Change public explanation", withdraw_path(@edition.document),
+  <%= tag.p link_to("Change public explanation", withdraw_path(@edition.document),
               class: "govuk-link govuk-link--no-visited-state",
-              data: { gtm: "change-withdrawal-explanation" } %>
+              data: { gtm: "change-withdrawal-explanation" }),
+            class: "govuk-body" %>
 <% end %>

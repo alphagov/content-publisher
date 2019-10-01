@@ -11,9 +11,10 @@
     }
   } %>
 
-  <%= render "components/summary", {
+  <%= render "govuk_publishing_components/components/summary_list", {
     id: "tags",
     title: t("documents.show.tags.title"),
+    borderless: true,
     edit: (
       if @edition.editable?
         { href: tags_path(@edition.document),
@@ -25,9 +26,10 @@
 <% rescue GdsApi::BaseError => e %>
   <% GovukError.notify(e) %>
 
-  <%= render "components/summary", {
+  <%= render "govuk_publishing_components/components/summary_list", {
     id: "tags",
     title: t("documents.show.tags.title"),
+    borderless: true,
     block: t("documents.show.tags.api_down")
   } %>
 <% end %>

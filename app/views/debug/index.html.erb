@@ -70,7 +70,7 @@
                                  end
       summary = difference + edition_summary + status_change_summary + inherited_status_summary
     %>
-    <%= render "components/summary", { items: summary } %>
+    <%= render "govuk_publishing_components/components/summary_list", { borderless: true, items: summary } %>
   </div>
 <% end %>
 

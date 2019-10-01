@@ -15,9 +15,10 @@
     <% end %>
   <% end %>
 
-  <%= render "components/summary", {
+  <%= render "govuk_publishing_components/components/summary_list", {
     id: "topics",
     title: t("documents.show.topics.title"),
+    borderless: true,
     edit: {
       href: topics_path(@edition.document),
       data_attributes: { gtm: "edit-topics" },
@@ -27,9 +28,10 @@
 <% rescue GdsApi::BaseError => e %>
   <% GovukError.notify(e) %>
 
-  <%= render "components/summary", {
+  <%= render "govuk_publishing_components/components/summary_list", {
     id: "topics",
     title: t("documents.show.topics.title"),
+    borderless: true,
     block: t("documents.show.topics.api_down")
   } %>
 <% end %>

@@ -1,7 +1,10 @@
 .app-c-loading-spinner {
-  @include govuk-focusable;
   text-align: center;
   padding: govuk-spacing(8) * 2;
+
+  &:focus {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+  }
 }
 
 @keyframes app-loading-spinner-opacity-0 {

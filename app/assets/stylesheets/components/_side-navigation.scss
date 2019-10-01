@@ -8,7 +8,7 @@
   .app-c-side-navigation__list-item {
     @include govuk-font(16);
     padding: govuk-spacing(2) 0;
-    border-bottom: 1px solid govuk-colour("grey-3");
+    border-bottom: 1px solid govuk-colour("light-grey");
 
     .govuk-link {
       font-size: inherit;

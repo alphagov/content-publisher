@@ -36,8 +36,9 @@
   } %>
 <% end %>
 
-<%= render "components/summary", {
+<%= render "govuk_publishing_components/components/summary_list", {
   id: "content_settings",
   title: t("documents.show.content_settings.title"),
+  borderless: true,
   items: items
 } %>

@@ -7,6 +7,16 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
   min-width: 120px;
   background: inherit;
   text-align: left;
+
+  .app-c-toolbar-dropdown__container {
+    display: none;
+  }
+
+  &[open] {
+    .app-c-toolbar-dropdown__container {
+      display: block;
+    }
+  }
 }
 
 .app-c-toolbar-dropdown--end {
@@ -16,7 +26,6 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
 
 .app-c-toolbar-dropdown__title {
   @include govuk-font($size: 16, $weight: bold);
-  @include govuk-focusable;
   display: block;
   padding: govuk-spacing(3);
   border: 0;
@@ -25,10 +34,11 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
   user-select: none;
 
   &:hover {
-    background-color: govuk-colour("grey-3");
+    background-color: govuk-colour("light-grey");
   }
 
   &:focus {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
     outline-offset: -$govuk-focus-width;
   }
 
@@ -64,21 +74,21 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
 
 .app-c-toolbar-dropdown__link {
   @include govuk-font($size: 16);
-  @include govuk-focusable;
 
   display: block;
   padding: govuk-spacing(3);
   color: $govuk-text-colour;
-  background: govuk-colour("grey-4");
+  background: govuk-colour("light-grey");
   text-decoration: none;
   -webkit-appearance: none;
   appearance: none;
 
   &:hover {
-    background-color: govuk-colour("grey-3");
+    background-color: govuk-colour("light-grey");
   }
 
   &:focus {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
     outline-offset: -$govuk-focus-width;
   }
 
@@ -90,23 +100,23 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
 
 .app-c-toolbar-dropdown__button {
   @include govuk-font($size: 16);
-  @include govuk-focusable;
   display: block;
   width: 100%;
   padding: govuk-spacing(3);
   border: 0;
   color: $govuk-text-colour;
-  background: govuk-colour("grey-4");
+  background: govuk-colour("light-grey");
   text-align: inherit;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
 
   &:hover {
-    background-color: govuk-colour("grey-3");
+    background-color: govuk-colour("light-grey");
   }
 
   &:focus {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
     outline-offset: -$govuk-focus-width;
   }
 

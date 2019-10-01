@@ -13,12 +13,17 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     var $buttons = this.$module.querySelectorAll('.app-c-toolbar-dropdown__button')
     var $links = this.$module.querySelectorAll('.app-c-toolbar-dropdown__link')
 
+    if (!this.hasDetailsSupport()) {
+      this.closeToolbarDropdown()
+      this.$title.addEventListener('click', ToolbarDropdown.prototype.handleTitleClick.bind(this), true)
+    }
+
     $buttons.forEach(function ($button) {
-      $button.addEventListener('click', ToolbarDropdown.prototype.handleClick.bind(this), true)
+      $button.addEventListener('click', ToolbarDropdown.prototype.handleListItemClick.bind(this), true)
     }, this)
 
     $links.forEach(function ($link) {
-      $link.addEventListener('click', ToolbarDropdown.prototype.handleClick.bind(this), true)
+      $link.addEventListener('click', ToolbarDropdown.prototype.handleListItemClick.bind(this), true)
     }, this)
   }
 
@@ -32,14 +37,32 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     }
   }
 
-  ToolbarDropdown.prototype.handleClick = function (event) {
+  ToolbarDropdown.prototype.handleTitleClick = function (event) {
+    this.toggleDropdownContainer()
+  }
+
+  ToolbarDropdown.prototype.handleListItemClick = function (event) {
     this.closeToolbarDropdown()
   }
 
   ToolbarDropdown.prototype.closeToolbarDropdown = function (event) {
-    if (this.$module.hasAttribute('open')) {
-      this.$title.click()
+    this.$module.removeAttribute('open')
+  }
+
+  ToolbarDropdown.prototype.toggleDropdownContainer = function (event) {
+    if (!this.$module.hasAttribute('open')) {
+      this.$module.setAttribute('open', 'open')
+    } else {
+      this.$module.removeAttribute('open')
     }
+  }
+
+  ToolbarDropdown.prototype.hasDetailsSupport = function () {
+    // calling `createElement('DETAILS')` in a browser with support for the <details> element it returns
+    // an HTMLDetailsElement object which has an `open` attribute inhertited from the prototype, otherwise it returns
+    // an HTMLUnknownElementPrototype object which does not have the `open` attribute
+    var el = document.createElement('DETAILS')
+    if ('open' in el) return true
   }
 
   Modules.ToolbarDropdown = ToolbarDropdown

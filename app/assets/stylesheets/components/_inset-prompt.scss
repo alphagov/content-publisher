@@ -2,15 +2,17 @@
   @include govuk-text-colour;
   @include govuk-responsive-padding(4);
   @include govuk-responsive-margin(6, "bottom");
-  @include govuk-focusable;
 
-  border-left: $govuk-border-width-mobile solid govuk-colour("grey-1");
+  border-left: $govuk-border-width-narrow solid govuk-colour("dark-grey");
+  background-color: govuk-colour("light-grey");
 
   @include govuk-media-query($from: tablet) {
-    border-left: $govuk-border-width solid govuk-colour("grey-1");
+    border-left: $govuk-border-width solid govuk-colour("dark-grey");
   }
 
-  background-color: govuk-colour("grey-4");
+  &:focus {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+  }
 }
 
 .app-c-inset-prompt--error {
@@ -44,8 +46,6 @@
 }
 
 .app-c-inset-prompt__list a {
-  @include govuk-focusable-fill;
-
   &:link,
   &:visited,
   &:hover,
@@ -53,5 +53,9 @@
   &:focus {
     color: $govuk-link-colour;
     text-decoration: underline;
+  }
+
+  &:focus {
+    @include govuk-focused-text;
   }
 }

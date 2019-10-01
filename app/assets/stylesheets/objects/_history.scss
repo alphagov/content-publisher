@@ -1,3 +1,7 @@
+.app-timeline-entry {
+  @include govuk-font(19);
+}
+
 .app-timeline-entry__dateline {
   color: $govuk-secondary-text-colour;
 }

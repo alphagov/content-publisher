@@ -21,9 +21,10 @@
   } %>
 <% end %>
 
-<%= render "components/summary", {
+<%= render "govuk_publishing_components/components/summary_list", {
   id: "content",
   title: t("documents.show.contents.title"),
+  borderless: true,
   edit: (
     if @edition.editable?
       { href: edit_document_path(@edition.document),
