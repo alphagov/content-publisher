@@ -11,49 +11,45 @@
       }
     } %>
 <% end %>
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds" id="change-note">
-    <% legend_text = tag.p(
-      tag.strong(t("documents.edit.update_type.title")),
-      class: "govuk-!-margin-bottom-3")
-    %>
-    <%= render "govuk_publishing_components/components/fieldset", legend_text: legend_text, data: { "contextual-guidance": "change-note-guidance" } do %>
-      <%= render "govuk_publishing_components/components/radio", {
-        name: "revision[update_type]",
-        id: "update-type",
-        items: [
-          {
-            value: "major",
-            text: t("documents.edit.update_type.major_name"),
-            conditional: textarea,
-            checked: @revision.major?,
-            data_attributes: {
-              gtm: "choose-update-type",
-              "gtm-value": t("documents.edit.update_type.major_name"),
-              "contextual-guidance": "change-note-guidance"
-            }
-          },
-          {
-            value: "minor",
-            text: t("documents.edit.update_type.minor_name"),
-            checked: @revision.minor?,
-            data_attributes: {
-              gtm: "choose-update-type",
-              "gtm-value": t("documents.edit.update_type.minor_name"),
-              "contextual-guidance": "change-note-guidance",
-              "contextual-guidance-hide-only": "true"
-            }
-          }
-        ]
-      } %>
-    <% end %>
-  </div>
-  <div class="govuk-grid-column-one-third">
-    <%= render "components/contextual_guidance", {
+<div id="change-note">
+    <%= render "govuk_publishing_components/components/contextual_guidance", {
       id: "change-note-guidance",
       title: t("documents.edit.change_note.guidance_title"),
+      content: render_govspeak(t("documents.edit.change_note.guidance"))
     } do %>
-      <%= render_govspeak(t("documents.edit.change_note.guidance")) %>
+      <% legend_text = tag.p(
+        tag.strong(t("documents.edit.update_type.title")),
+        class: "govuk-!-margin-bottom-3")
+      %>
+      <%= render "govuk_publishing_components/components/fieldset", legend_text: legend_text, data: { "contextual-guidance": "change-note-guidance" } do %>
+        <%= render "govuk_publishing_components/components/radio", {
+          name: "revision[update_type]",
+          id: "update-type",
+          items: [
+            {
+              value: "major",
+              text: t("documents.edit.update_type.major_name"),
+              conditional: textarea,
+              checked: @revision.major?,
+              data_attributes: {
+                gtm: "choose-update-type",
+                "gtm-value": t("documents.edit.update_type.major_name"),
+                "contextual-guidance": "change-note-guidance"
+              }
+            },
+            {
+              value: "minor",
+              text: t("documents.edit.update_type.minor_name"),
+              checked: @revision.minor?,
+              data_attributes: {
+                gtm: "choose-update-type",
+                "gtm-value": t("documents.edit.update_type.minor_name"),
+                "contextual-guidance": "change-note-guidance",
+                "contextual-guidance-hide-only": "true"
+              }
+            }
+          ]
+        } %>
+      <% end %>
     <% end %>
-  </div>
 </div>

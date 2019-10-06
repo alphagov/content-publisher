@@ -11,36 +11,33 @@
     </div>
   </div>
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <%= render "govuk_publishing_components/components/textarea", {
-        label: {
-          text: t("withdraw.new.public_explanation.title"),
-          bold: true
-        },
-        id: "withdrawal_public_explanation",
-        value: @public_explanation,
-        error_items: @issues&.items_for(:public_explanation),
-        name: "public_explanation",
-        rows: 6,
-        data: {
-          "contextual_guidance": "withdrawal-public-explanation-guidance",
-        }
-      } %>
-    </div>
+  <% withdrawal_public_explanation_guidance = capture do %>
+    <p>Explain to users why the page has been withdrawn. You can link to alternative content with markdown.</p>
+    <pre class="app-c-markdown-guidance__code-snippet">
+      [linktext](https://www.gov.uk/example)
+    </pre>
+  <% end %>
 
-    <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual_guidance", {
-        id: "withdrawal-public-explanation-guidance",
-        title: t("withdraw.new.public_explanation.guidance_title"),
-      } do %>
-        <p>Explain to users why the page has been withdrawn. You can link to alternative content with markdown.</p>
-        <pre class="app-c-markdown-guidance__code-snippet">
-          [linktext](https://www.gov.uk/example)
-        </pre>
-      <% end %>
-    </div>
-  </div>
+  <%= render "govuk_publishing_components/components/contextual_guidance", {
+    id: "withdrawal-public-explanation-guidance",
+    title: t("withdraw.new.public_explanation.guidance_title"),
+    content: withdrawal_public_explanation_guidance
+  } do %>
+    <%= render "govuk_publishing_components/components/textarea", {
+      label: {
+        text: t("withdraw.new.public_explanation.title"),
+        bold: true
+      },
+      id: "withdrawal_public_explanation",
+      value: @public_explanation,
+      error_items: @issues&.items_for(:public_explanation),
+      name: "public_explanation",
+      rows: 6,
+      data: {
+        "contextual_guidance": "withdrawal-public-explanation-guidance",
+      }
+    } %>
+  <% end %>
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
