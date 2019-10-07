@@ -32,50 +32,45 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
     gtm: "save-image-metadata"
   }
 ) do %>
-  <div id="alt-text">
-    <%= render "govuk_publishing_components/components/contextual_guidance", {
-      id: "alt-text-guidance",
-      title: t("images.edit.form_labels.alt_text"),
-      content: render_govspeak(t("images.edit.guidance.alt_text_govspeak"))
-    } do %>
-      <%= render "govuk_publishing_components/components/input", {
-        label: {
-          text: t("images.edit.form_labels.alt_text"),
-          bold: true
-        },
-        name: "image_revision[alt_text]",
-        value: @image_revision.alt_text,
-        error_items: @issues&.items_for(:alt_text),
-        data: {
-          "contextual-guidance": "alt-text-guidance"
-        }
-      } %>
-    <% end %>
-  </div>
-
-  <div id="caption">
-    <%= render "govuk_publishing_components/components/contextual_guidance", {
-      id: "caption-guidance",
-      title: t("images.edit.form_labels.caption"),
-      content: render_govspeak(t("images.edit.guidance.caption_govspeak"))
-    } do %>
-      <%= render "govuk_publishing_components/components/input", {
-        label: {
-          text: t("images.edit.form_labels.caption"),
-          bold: true
-        },
-        name: "image_revision[caption]",
-        value: @image_revision.caption,
-        error_items: @issues&.items_for(:caption),
-        data: {
-          "contextual-guidance": "caption-guidance"
-        }
-      } %>
-    <% end %>
-  </div>
+  <%= render "govuk_publishing_components/components/contextual_guidance", {
+    id: "alt-text",
+    html_for: "image-alt-text",
+    title: t("images.edit.form_labels.alt_text"),
+    content: render_govspeak(t("images.edit.guidance.alt_text_govspeak"))
+  } do %>
+    <%= render "govuk_publishing_components/components/input", {
+      label: {
+        text: t("images.edit.form_labels.alt_text"),
+        bold: true
+      },
+      id: "image-alt-text",
+      name: "image_revision[alt_text]",
+      value: @image_revision.alt_text,
+      error_items: @issues&.items_for(:alt_text)
+    } %>
+  <% end %>
 
   <%= render "govuk_publishing_components/components/contextual_guidance", {
-    id: "credit-guidance",
+    id: "caption",
+    html_for: "image-caption",
+    title: t("images.edit.form_labels.caption"),
+    content: render_govspeak(t("images.edit.guidance.caption_govspeak"))
+  } do %>
+    <%= render "govuk_publishing_components/components/input", {
+      label: {
+        text: t("images.edit.form_labels.caption"),
+        bold: true
+      },
+      id: "image-caption",
+      name: "image_revision[caption]",
+      value: @image_revision.caption,
+      error_items: @issues&.items_for(:caption)
+    } %>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/contextual_guidance", {
+    id: "credit",
+    html_for: "image-credit",
     title: t("images.edit.form_labels.credit"),
     content: render_govspeak(t("images.edit.guidance.credit_govspeak"))
   } do %>
@@ -84,12 +79,10 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
         text: t("images.edit.form_labels.credit"),
         bold: true
       },
+      id: "image-credit",
       name: "image_revision[credit]",
       value: @image_revision.credit,
-      error_items: @issues&.items_for(:credit),
-      data: {
-        "contextual-guidance": "credit-guidance"
-      }
+      error_items: @issues&.items_for(:credit)
     } %>
   <% end %>
 

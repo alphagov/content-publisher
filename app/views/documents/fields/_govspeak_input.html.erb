@@ -1,40 +1,38 @@
-<div id="<%= field.id %>">
-  <% document_contents_guidance = capture do %>
-    <%= render_govspeak(edition.document_type.guidance_for(field.id).body_govspeak) %>
-    <h3 class="govuk-heading-s"><%= t("documents.edit.fields.govspeak.title") %></h3>
-    <p class="govuk-body">
-      <%= link_to t("documents.edit.fields.govspeak.guidance"), "https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown", class: "govuk-link", target: "_blank" %>
-    </p>
-    <%= render "components/markdown_guidance" %>
-  <% end %>
+<% document_contents_guidance = capture do %>
+  <%= render_govspeak(edition.document_type.guidance_for(field.id).body_govspeak) %>
+  <h3 class="govuk-heading-s"><%= t("documents.edit.fields.govspeak.title") %></h3>
+  <p class="govuk-body">
+    <%= link_to t("documents.edit.fields.govspeak.guidance"), "https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown", class: "govuk-link", target: "_blank" %>
+  </p>
+  <%= render "components/markdown_guidance" %>
+<% end %>
 
-  <%= render "govuk_publishing_components/components/contextual_guidance", {
-    id: "document-contents-guidance",
-    title: edition.document_type.guidance_for(field.id).title,
-    content: document_contents_guidance
-  } do %>
-    <%= render "components/markdown_editor", {
-      label: {
-        text: field.label,
-        bold: true
+<%= render "govuk_publishing_components/components/contextual_guidance", {
+  id: field.id,
+  html_for: "#{field.id}-field",
+  title: edition.document_type.guidance_for(field.id).title,
+  content: document_contents_guidance
+} do %>
+  <%= render "components/markdown_editor", {
+    label: {
+      text: field.label,
+      bold: true
+    },
+    textarea: {
+      data: {
+        gramm: "false", # Disables grammerly plugin for markdown editor
+        gtm: "#{field.id}-input",
+        "gtm-copy-paste-tracking": true,
       },
-      textarea: {
-        data: {
-          gramm: "false", # Disables grammerly plugin for markdown editor
-          gtm: "#{field.id}-input",
-          "gtm-copy-paste-tracking": true,
-        },
-        id: "#{field.id}-field",
-        name: "revision[contents][#{field.id}]",
-        value: revision.contents[field.id],
-        rows: 20,
-        spellcheck: "false"
-      },
-      contextual_guidance: "document-contents-guidance",
-      govspeak_path: govspeak_preview_path(edition.document),
-      edition: edition,
-      error_items: issues&.items_for(field.id.to_sym),
-      paste_html_to_govspeak: true
-    } %>
-  <% end %>
-</div>
+      id: "#{field.id}-field",
+      name: "revision[contents][#{field.id}]",
+      value: revision.contents[field.id],
+      rows: 20,
+      spellcheck: "false"
+    },
+    govspeak_path: govspeak_preview_path(edition.document),
+    edition: edition,
+    error_items: issues&.items_for(field.id.to_sym),
+    paste_html_to_govspeak: true
+  } %>
+<% end %>

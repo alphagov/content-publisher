@@ -20,6 +20,7 @@
 
   <%= render "govuk_publishing_components/components/contextual_guidance", {
     id: "withdrawal-public-explanation-guidance",
+    html_for: "withdrawal_public_explanation",
     title: t("withdraw.new.public_explanation.guidance_title"),
     content: withdrawal_public_explanation_guidance
   } do %>
@@ -32,10 +33,7 @@
       value: @public_explanation,
       error_items: @issues&.items_for(:public_explanation),
       name: "public_explanation",
-      rows: 6,
-      data: {
-        "contextual_guidance": "withdrawal-public-explanation-guidance",
-      }
+      rows: 6
     } %>
   <% end %>
 
