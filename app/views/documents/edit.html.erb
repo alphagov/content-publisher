@@ -15,12 +15,20 @@
     gtm: "edit-document-submit"
   } do |f| %>
 
-  <%= render "govuk_publishing_components/components/contextual_guidance", {
-    id: "title",
-    html_for: "title-field",
-    title: @edition.document_type.guidance_for("title").title,
-    content: @edition.document_type.guidance_for("title").body_govspeak
-  } do %>
+  <%
+    title_contextual_guidance = {
+      id: "title",
+      html_for: "title-field"
+    }
+    if @edition.document_type.guidance_for("title")
+      title_contextual_guidance.merge!({
+        title: @edition.document_type.guidance_for("title").title,
+        content: @edition.document_type.guidance_for("title").body_govspeak
+      })
+    end
+  %>
+
+  <%= render "govuk_publishing_components/components/contextual_guidance", title_contextual_guidance do %>
     <%= render "govuk_publishing_components/components/textarea", {
       label: {
         text: t("documents.edit.form_labels.title"),
@@ -54,12 +62,20 @@
     </div>
   </div>
 
-  <%= render "govuk_publishing_components/components/contextual_guidance", {
-    id: "summary",
-    html_for: "summary-field",
-    title: @edition.document_type.guidance_for("summary").title,
-    content: @edition.document_type.guidance_for("summary").body_govspeak
-  } do %>
+  <%
+    summary_contextual_guidance = {
+      id: "summary",
+      html_for: "summary-field"
+    }
+    if @edition.document_type.guidance_for("title")
+      summary_contextual_guidance.merge!({
+        title: @edition.document_type.guidance_for("summary").title,
+        content: @edition.document_type.guidance_for("summary").body_govspeak
+      })
+    end
+  %>
+
+  <%= render "govuk_publishing_components/components/contextual_guidance", summary_contextual_guidance do %>
     <%= render "govuk_publishing_components/components/textarea", {
       label: {
         text: t("documents.edit.form_labels.summary"),

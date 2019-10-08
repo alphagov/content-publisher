@@ -1,5 +1,5 @@
 <% document_contents_guidance = capture do %>
-  <%= render_govspeak(edition.document_type.guidance_for(field.id).body_govspeak) %>
+  <%= edition.document_type.guidance_for(field.id) ? render_govspeak(edition.document_type.guidance_for(field.id).body_govspeak) : nil %>
   <h3 class="govuk-heading-s"><%= t("documents.edit.fields.govspeak.title") %></h3>
   <p class="govuk-body">
     <%= link_to t("documents.edit.fields.govspeak.guidance"), "https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown", class: "govuk-link", target: "_blank" %>
@@ -7,12 +7,20 @@
   <%= render "components/markdown_guidance" %>
 <% end %>
 
-<%= render "govuk_publishing_components/components/contextual_guidance", {
-  id: field.id,
-  html_for: "#{field.id}-field",
-  title: edition.document_type.guidance_for(field.id).title,
-  content: document_contents_guidance
-} do %>
+<%
+  field_contextual_guidance = {
+    id: field.id,
+    html_for: "#{field.id}-field"
+  }
+  if edition.document_type.guidance_for(field.id)
+    field_contextual_guidance.merge!({
+      title: edition.document_type.guidance_for(field.id).title,
+      content: document_contents_guidance
+    })
+  end
+%>
+
+<%= render "govuk_publishing_components/components/contextual_guidance", field_contextual_guidance do %>
   <%= render "components/markdown_editor", {
     label: {
       text: field.label,
