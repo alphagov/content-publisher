@@ -32,83 +32,59 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
     gtm: "save-image-metadata"
   }
 ) do %>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds" id="alt-text">
-      <%= render "govuk_publishing_components/components/input", {
-        label: {
-          text: t("images.edit.form_labels.alt_text"),
-          bold: true
-        },
-        name: "image_revision[alt_text]",
-        value: @image_revision.alt_text,
-        error_items: @issues&.items_for(:alt_text),
-        data: {
-          "contextual-guidance": "alt-text-guidance"
-        }
-      } %>
-    </div>
+  <%= render "govuk_publishing_components/components/contextual_guidance", {
+    id: "alt-text",
+    html_for: "image-alt-text",
+    title: t("images.edit.form_labels.alt_text"),
+    content: render_govspeak(t("images.edit.guidance.alt_text_govspeak"))
+  } do %>
+    <%= render "govuk_publishing_components/components/input", {
+      label: {
+        text: t("images.edit.form_labels.alt_text"),
+        bold: true
+      },
+      id: "image-alt-text",
+      name: "image_revision[alt_text]",
+      value: @image_revision.alt_text,
+      error_items: @issues&.items_for(:alt_text)
+    } %>
+  <% end %>
 
-    <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual_guidance", {
-        id: "alt-text-guidance",
-        title: t("images.edit.form_labels.alt_text"),
-      } do %>
-        <%= render_govspeak(t("images.edit.guidance.alt_text_govspeak")) %>
-      <% end %>
-    </div>
-  </div>
+  <%= render "govuk_publishing_components/components/contextual_guidance", {
+    id: "caption",
+    html_for: "image-caption",
+    title: t("images.edit.form_labels.caption"),
+    content: render_govspeak(t("images.edit.guidance.caption_govspeak"))
+  } do %>
+    <%= render "govuk_publishing_components/components/input", {
+      label: {
+        text: t("images.edit.form_labels.caption"),
+        bold: true
+      },
+      id: "image-caption",
+      name: "image_revision[caption]",
+      value: @image_revision.caption,
+      error_items: @issues&.items_for(:caption)
+    } %>
+  <% end %>
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds" id="caption">
-      <%= render "govuk_publishing_components/components/input", {
-        label: {
-          text: t("images.edit.form_labels.caption"),
-          bold: true
-        },
-        name: "image_revision[caption]",
-        value: @image_revision.caption,
-        error_items: @issues&.items_for(:caption),
-        data: {
-          "contextual-guidance": "caption-guidance"
-        }
-      } %>
-    </div>
-
-    <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual_guidance", {
-        id: "caption-guidance",
-        title: t("images.edit.form_labels.caption"),
-      } do %>
-        <%= render_govspeak(t("images.edit.guidance.caption_govspeak")) %>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds" id="credit">
-      <%= render "govuk_publishing_components/components/input", {
-        label: {
-          text: t("images.edit.form_labels.credit"),
-          bold: true
-        },
-        name: "image_revision[credit]",
-        value: @image_revision.credit,
-        error_items: @issues&.items_for(:credit),
-        data: {
-          "contextual-guidance": "credit-guidance"
-        }
-      } %>
-    </div>
-
-    <div class="govuk-grid-column-one-third">
-      <%= render "components/contextual_guidance", {
-        id: "credit-guidance",
-        title: t("images.edit.form_labels.credit")
-      } do %>
-        <%= render_govspeak(t("images.edit.guidance.credit_govspeak")) %>
-      <% end %>
-    </div>
-  </div>
+  <%= render "govuk_publishing_components/components/contextual_guidance", {
+    id: "credit",
+    html_for: "image-credit",
+    title: t("images.edit.form_labels.credit"),
+    content: render_govspeak(t("images.edit.guidance.credit_govspeak"))
+  } do %>
+    <%= render "govuk_publishing_components/components/input", {
+      label: {
+        text: t("images.edit.form_labels.credit"),
+        bold: true
+      },
+      id: "image-credit",
+      name: "image_revision[credit]",
+      value: @image_revision.credit,
+      error_items: @issues&.items_for(:credit)
+    } %>
+  <% end %>
 
   <% unless rendering_context == "modal" %>
     <div class="govuk-grid-row">

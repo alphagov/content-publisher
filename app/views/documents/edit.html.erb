@@ -15,43 +15,40 @@
     gtm: "edit-document-submit"
   } do |f| %>
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds" id="title">
-      <%= render "govuk_publishing_components/components/textarea", {
-        label: {
-          text: t("documents.edit.form_labels.title"),
-          bold: true
-        },
-        id: "title-field",
-        name: "revision[title]",
-        value: @revision.title,
-        error_items: @issues&.items_for(:title),
-        rows: 2,
-        maxlength: Requirements::ContentChecker::TITLE_MAX_LENGTH,
-        data: {
-          "url-preview": "input",
-          "contextual-guidance": "revision-title-guidance",
-        }
-      } do %>
-        <%= render "components/input_length_suggester", {
-          for_id: "title-field",
-          show_from: 55,
-          message: "Title should be under 65 characters. Current length: {count}",
-        } %>
-      <% end %>
-    </div>
+  <%
+    title_contextual_guidance = {
+      id: "title",
+      html_for: "title-field"
+    }
+    if @edition.document_type.guidance_for("title")
+      title_contextual_guidance.merge!({
+        title: @edition.document_type.guidance_for("title").title,
+        content: @edition.document_type.guidance_for("title").body_govspeak
+      })
+    end
+  %>
 
-    <% if @edition.document_type.guidance_for("title") %>
-      <div class="govuk-grid-column-one-third">
-        <%= render "components/contextual_guidance", {
-          id: "revision-title-guidance",
-          title: @edition.document_type.guidance_for("title").title
-        } do %>
-          <p class="govuk-body"><%= @edition.document_type.guidance_for("title").body_govspeak %></p>
-        <% end %>
-      </div>
+  <%= render "govuk_publishing_components/components/contextual_guidance", title_contextual_guidance do %>
+    <%= render "govuk_publishing_components/components/textarea", {
+      label: {
+        text: t("documents.edit.form_labels.title"),
+        bold: true
+      },
+      id: "title-field",
+      name: "revision[title]",
+      value: @revision.title,
+      error_items: @issues&.items_for(:title),
+      rows: 2,
+      maxlength: Requirements::ContentChecker::TITLE_MAX_LENGTH,
+      data: { "url-preview": "input" }
+    } do %>
+      <%= render "components/input_length_suggester", {
+        for_id: "title-field",
+        show_from: 55,
+        message: "Title should be under 65 characters. Current length: {count}",
+      } %>
     <% end %>
-  </div>
+  <% end %>
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -65,42 +62,39 @@
     </div>
   </div>
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds" id="summary">
-      <%= render "govuk_publishing_components/components/textarea", {
-        label: {
-          text: t("documents.edit.form_labels.summary"),
-          bold: true
-        },
-        id: "summary-field",
-        name: "revision[summary]",
-        value: @revision.summary,
-        error_items: @issues&.items_for(:summary),
-        rows: 4,
-        maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH,
-        data: {
-          "contextual-guidance": "document-summary-guidance",
-        }
-      } do %>
-        <%= render "components/input_length_suggester", {
-          for_id: "summary-field",
-          show_from: 120,
-          message: "Summary should be under 160 characters. Current length: {count}",
-        } %>
-      <% end %>
-    </div>
+  <%
+    summary_contextual_guidance = {
+      id: "summary",
+      html_for: "summary-field"
+    }
+    if @edition.document_type.guidance_for("title")
+      summary_contextual_guidance.merge!({
+        title: @edition.document_type.guidance_for("summary").title,
+        content: @edition.document_type.guidance_for("summary").body_govspeak
+      })
+    end
+  %>
 
-    <% if @edition.document_type.guidance_for("summary") %>
-      <div class="govuk-grid-column-one-third">
-        <%= render "components/contextual_guidance", {
-          id: "document-summary-guidance",
-          title: @edition.document_type.guidance_for("summary").title
-        } do %>
-          <p class="govuk-body"><%= @edition.document_type.guidance_for("summary").body_govspeak %></p>
-        <% end %>
-      </div>
+  <%= render "govuk_publishing_components/components/contextual_guidance", summary_contextual_guidance do %>
+    <%= render "govuk_publishing_components/components/textarea", {
+      label: {
+        text: t("documents.edit.form_labels.summary"),
+        bold: true
+      },
+      id: "summary-field",
+      name: "revision[summary]",
+      value: @revision.summary,
+      error_items: @issues&.items_for(:summary),
+      rows: 4,
+      maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH
+    } do %>
+      <%= render "components/input_length_suggester", {
+        for_id: "summary-field",
+        show_from: 120,
+        message: "Summary should be under 160 characters. Current length: {count}",
+      } %>
     <% end %>
-  </div>
+  <% end %>
 
   <% @edition.document_type.contents.each do |field| %>
     <%= render "documents/fields/#{field.type}_input",

@@ -36,9 +36,6 @@
 //= require modules/video-embed-modal.js
 //= require modules/warn-before-unload.js
 
-// load after other components (esp. autocomplete)
-//= require components/contextual-guidance.js
-
 // raven (for Sentry)
 //= require raven-js/dist/raven.js
 var $sentryDsn = document.querySelector('meta[name=sentry-dsn]')
