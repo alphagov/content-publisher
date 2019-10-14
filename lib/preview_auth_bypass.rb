@@ -28,6 +28,6 @@ private
     ary = Digest::SHA256.hexdigest(string).unpack("NnnnnN")
     ary[2] = (ary[2] & 0x0fff) | 0x4000
     ary[3] = (ary[3] & 0x3fff) | 0x8000
-    "%08x-%04x-%04x-%04x-%04x%08x" % ary
+    "%08x-%04x-%04x-%04x-%04x%08x" % ary # rubocop:disable Style/FormatStringToken
   end
 end
