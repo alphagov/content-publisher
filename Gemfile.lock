@@ -159,7 +159,8 @@ GEM
       sidekiq (>= 5, < 6)
       sidekiq-logging-json (~> 0.0)
       sidekiq-statsd (~> 0.1)
-    govuk_test (1.0.2)
+    govuk_test (1.0.3)
+      brakeman (~> 4.6)
       capybara
       puma
       selenium-webdriver (>= 3.142)
