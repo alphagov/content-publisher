@@ -28,6 +28,7 @@ class PreviewService::Payload
       ],
       "links" => links,
       "access_limited" => access_limited,
+      "auth_bypass_ids" => auth_bypass_ids,
     }
     payload["change_note"] = edition.change_note if edition.major?
 
@@ -42,14 +43,14 @@ class PreviewService::Payload
 private
 
   def access_limited
+    return {} unless edition.access_limit
+
+    { "organisations" => edition.access_limit_organisation_ids }
+  end
+
+  def auth_bypass_ids
     auth_bypass_id = PreviewAuthBypass.new(edition).auth_bypass_id
-    access_limited_ids = { "auth_bypass_ids" => [auth_bypass_id] }
-
-    if edition.access_limit
-      access_limited_ids["organisations"] = edition.access_limit_organisation_ids
-    end
-
-    access_limited_ids
+    [auth_bypass_id]
   end
 
   def links
