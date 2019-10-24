@@ -5,6 +5,7 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
   display: inline-block;
   position: relative;
   min-width: 120px;
+  min-height: 50px;
   background: inherit;
   text-align: left;
 
@@ -38,8 +39,9 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
   }
 
   &:focus {
-    outline: $govuk-focus-width solid $govuk-focus-colour;
-    outline-offset: -$govuk-focus-width;
+    @include govuk-focused-text;
+    outline: none;
+    box-shadow: none;
   }
 
   &::after {
@@ -88,8 +90,9 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
   }
 
   &:focus {
-    outline: $govuk-focus-width solid $govuk-focus-colour;
-    outline-offset: -$govuk-focus-width;
+    @include govuk-focused-text;
+    outline: none;
+    box-shadow: none;
   }
 
   &::-moz-focus-inner {
@@ -116,8 +119,9 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
   }
 
   &:focus {
-    outline: $govuk-focus-width solid $govuk-focus-colour;
-    outline-offset: -$govuk-focus-width;
+    @include govuk-focused-text;
+    outline: none;
+    box-shadow: none;
   }
 
   &::-moz-focus-inner {
