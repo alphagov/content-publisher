@@ -32,7 +32,7 @@ class DocumentTopics
     GdsApi.publishing_api_v2.patch_links(
       document.content_id,
       links: {
-        taxons: leaf_topic_content_ids(topics),
+        taxons: leaf_topic_content_ids(topics) + unknown_taxon_content_ids,
         topics: legacy_topic_content_ids(topics),
       },
       previous_version: version,
@@ -49,5 +49,14 @@ private
   def legacy_topic_content_ids(topics)
     breadcrumbs = topics.map(&:breadcrumb).flatten
     breadcrumbs.map(&:legacy_topic_content_ids).flatten.uniq
+  end
+
+  def unknown_taxon_content_ids
+    links = GdsApi.publishing_api_v2.get_links(document.content_id)
+    previous_topic_content_ids = links.dig("links", "taxons").to_a
+
+    previous_topic_content_ids.reject { |topic_content_id| index.lookup(topic_content_id) }
+  rescue GdsApi::HTTPNotFound
+    []
   end
 end
