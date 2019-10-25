@@ -57,4 +57,52 @@ RSpec.describe DocumentTopics do
       end
     end
   end
+
+  describe ".patch" do
+    before { stub_any_publishing_api_patch_links }
+
+    context "when the document is not tagged to a taxon" do
+      it "sets the new selected value" do
+        document = build(:document)
+        stub_publishing_api_does_not_have_links(document.content_id)
+
+        document.document_topics.patch(%w(level_one_topic), 1)
+
+        expected_links = {
+          links: {
+            taxons: %w(level_one_topic),
+            topics: %w(specialist_sector_1),
+          },
+          previous_version: 1,
+        }
+
+        assert_publishing_api_patch_links(document.content_id, expected_links, 1)
+      end
+    end
+
+    context "when a document is already tagged to a taxon" do
+      it "replaces the taxon with the new selection" do
+        document = build(:document)
+        stub_publishing_api_has_links(
+          "content_id" => document.content_id,
+          "links" => {
+            "taxons" => %w(level_one_topic),
+          },
+          "version" => 1,
+        )
+
+        document.document_topics.patch(%w(level_two_topic), 1)
+
+        expected_links = {
+          links: {
+            taxons: %w(level_two_topic),
+            topics: %w(specialist_sector_1 specialist_sector_2),
+          },
+          previous_version: 1,
+        }
+
+        assert_publishing_api_patch_links(document.content_id, expected_links, 1)
+      end
+    end
+  end
 end
