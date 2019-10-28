@@ -77,6 +77,7 @@ RSpec.describe DocumentTopics do
         }
 
         assert_publishing_api_patch_links(document.content_id, expected_links, 1)
+        expect(document.document_topics.topic_content_ids).to eq(%w(level_one_topic))
       end
     end
 
@@ -102,6 +103,7 @@ RSpec.describe DocumentTopics do
         }
 
         assert_publishing_api_patch_links(document.content_id, expected_links, 1)
+        expect(document.document_topics.topic_content_ids).to eq(%w(level_two_topic))
       end
     end
 
@@ -127,6 +129,7 @@ RSpec.describe DocumentTopics do
         }
 
         assert_publishing_api_patch_links(document.content_id, expected_links, 1)
+        expect(document.document_topics.topic_content_ids).to eq(%w(level_two_topic unknown_taxon_content_id))
       end
     end
   end

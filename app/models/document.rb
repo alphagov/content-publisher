@@ -77,8 +77,7 @@ class Document < ApplicationRecord
   end
 
   def document_topics
-    @document_topics_index ||= TopicIndex.new
-    DocumentTopics.find_by_document(self, @document_topics_index)
+    @document_topics ||= DocumentTopics.find_by_document(self, TopicIndex.new)
   end
 
   def newly_created?
