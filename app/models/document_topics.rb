@@ -55,11 +55,6 @@ private
   end
 
   def unknown_taxon_content_ids
-    links = GdsApi.publishing_api_v2.get_links(document.content_id)
-    previous_topic_content_ids = links.dig("links", "taxons").to_a
-
-    previous_topic_content_ids.reject { |topic_content_id| index.lookup(topic_content_id) }
-  rescue GdsApi::HTTPNotFound
-    []
+    topic_content_ids.reject { |topic_content_id| index.lookup(topic_content_id) }
   end
 end
