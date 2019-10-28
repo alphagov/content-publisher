@@ -25,8 +25,8 @@ class DocumentTopics
     )
   end
 
-  def patch(topic_content_ids, version)
-    topics = topic_content_ids.map { |topic_content_id| Topic.find(topic_content_id, index) }.compact
+  def patch(updated_topic_content_ids, version)
+    topics = updated_topic_content_ids.map { |topic_content_id| Topic.find(topic_content_id, index) }.compact
     self.version = version
 
     GdsApi.publishing_api_v2.patch_links(
