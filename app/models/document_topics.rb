@@ -3,25 +3,24 @@
 class DocumentTopics
   include ActiveModel::Model
 
-  attr_accessor :document, :version, :topics, :index
+  attr_accessor :document, :version, :topic_content_ids, :index
 
   def self.find_by_document(document, index)
     publishing_api = GdsApi.publishing_api_v2
     links = publishing_api.get_links(document.content_id)
-    topic_content_ids = links.dig("links", "taxons").to_a
 
     new(
       index: index,
       document: document,
       version: links["version"],
-      topics: topic_content_ids.map { |topic_content_id| Topic.find(topic_content_id, index) }.compact,
+      topic_content_ids: links.dig("links", "taxons").to_a,
     )
   rescue GdsApi::HTTPNotFound
     new(
       index: index,
       document: document,
       version: nil,
-      topics: [],
+      topic_content_ids: [],
     )
   end
 
@@ -37,6 +36,10 @@ class DocumentTopics
       },
       previous_version: version,
     )
+  end
+
+  def topics
+    @topics ||= topic_content_ids.map { |topic_content_id| Topic.find(topic_content_id, index) }.compact
   end
 
 private
