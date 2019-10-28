@@ -26,14 +26,14 @@ class DocumentTopics
   end
 
   def patch(updated_topic_content_ids, version)
-    topics = updated_topic_content_ids.map { |topic_content_id| Topic.find(topic_content_id, index) }.compact
+    valid_user_topics = updated_topic_content_ids.map { |topic_content_id| Topic.find(topic_content_id, index) }.compact
     self.version = version
 
     GdsApi.publishing_api_v2.patch_links(
       document.content_id,
       links: {
-        taxons: leaf_topic_content_ids(topics) + unknown_taxon_content_ids,
-        topics: legacy_topic_content_ids(topics),
+        taxons: leaf_topic_content_ids(valid_user_topics) + unknown_taxon_content_ids,
+        topics: legacy_topic_content_ids(valid_user_topics),
       },
       previous_version: version,
     )
