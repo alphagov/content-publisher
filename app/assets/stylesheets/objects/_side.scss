@@ -34,4 +34,8 @@
   .govuk-details__text {
     padding: govuk-spacing(3);
   }
+
+  .govuk-link {
+    @include govuk-font(19);
+  }
 }
