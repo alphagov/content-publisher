@@ -1,11 +1,19 @@
 # frozen_string_literal: true
 
+require "gds_api/json_client"
+
 namespace :import do
   desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall[123]"
   task :whitehall, [:document_id] => :environment do |_, args|
     document_id = args.document_id
     host = Plek.new.external_url_for("whitehall-admin")
-    whitehall_export = JSON.parse(URI.parse("#{host}/government/admin/export/document/#{document_id}").open.read)
+    endpoint = "#{host}/government/admin/export/document/#{document_id}"
+    options = {
+      "bearer_token": ENV["WHITEHALL_BEARER_TOKEN"] || "example",
+    }
+    client = GdsApi::JsonClient.new(options)
+    response = client.get_json(endpoint)
+    whitehall_export = response.to_hash
     importer = Tasks::WhitehallImporter.new(document_id, whitehall_export)
     begin
       importer.import
