@@ -58,6 +58,7 @@ module Tasks
         document_type_id: "news_story", ## To be updated once Whitehall exports this value
         created_at: whitehall_document["document"]["created_at"],
         updated_at: whitehall_document["document"]["updated_at"],
+        imported_from: "whitehall",
       )
     end
 
