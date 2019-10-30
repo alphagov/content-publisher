@@ -31,6 +31,11 @@ RSpec.describe Tasks::WhitehallImporter do
               "lead" => true,
               "lead_ordering" => 1,
             },
+            {
+              "id" => 2,
+              "content_id" => SecureRandom.uuid,
+              "lead" => false,
+            },
           ],
         },
       ],
@@ -160,6 +165,16 @@ RSpec.describe Tasks::WhitehallImporter do
       importer = Tasks::WhitehallImporter.new(123, import_data)
 
       expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    end
+
+    it "sets other supporting organisations" do
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+      importer.import
+
+      imported_organisation = import_data["editions"][0]["organisations"][1]
+      edition = Edition.last
+
+      expect(edition.supporting_organisation_ids.first).to eq(imported_organisation["content_id"])
     end
   end
 
