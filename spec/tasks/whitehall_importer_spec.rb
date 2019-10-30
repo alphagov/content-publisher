@@ -48,7 +48,13 @@ RSpec.describe Tasks::WhitehallImporter do
               "id" => 1,
               "content_id" => SecureRandom.uuid,
             },
-          ]
+          ],
+          "world_locations" => [
+            {
+              "id" => 1,
+              "content_id" => SecureRandom.uuid,
+            },
+          ],
         },
       ],
     }
@@ -208,6 +214,16 @@ RSpec.describe Tasks::WhitehallImporter do
     edition = Edition.last
 
     expect(edition.tags["topical_events"].first).to eq(imported_topical_events["content_id"])
+  end
+
+  it "sets world locations" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    imported_world_locations = import_data["editions"][0]["world_locations"][0]
+    edition = Edition.last
+
+    expect(edition.tags["world_locations"].first).to eq(imported_world_locations["content_id"])
   end
 
   context "when an imported document has more than one edition" do

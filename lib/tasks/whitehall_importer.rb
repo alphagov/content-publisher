@@ -85,6 +85,7 @@ module Tasks
             "organisations" => supporting_organisations(whitehall_edition["organisations"]),
             "role_appointments" => tags(whitehall_edition["role_appointments"]),
             "topical_events" => tags(whitehall_edition["topical_events"]),
+            "world_locations" => tags(whitehall_edition["world_locations"]),
           },
         ),
         created_at: whitehall_edition["created_at"],
