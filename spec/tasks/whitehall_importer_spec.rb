@@ -191,5 +191,12 @@ RSpec.describe Tasks::WhitehallImporter do
       expect(Edition.last.status).to be_draft
       expect(Edition.last).not_to be_live
     end
+
+    it "sets imported to true on revision" do
+      importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
+      importer.import
+
+      expect(Revision.last.imported).to be true
+    end
   end
 end

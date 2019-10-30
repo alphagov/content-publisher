@@ -66,6 +66,7 @@ module Tasks
       revision = Revision.create!(
         document: document,
         number: document.next_revision_number,
+        imported: true,
         content_revision: ContentRevision.new(
           title: translation["title"],
           base_path: "/government/news/" + whitehall_document["document"]["slug"],
