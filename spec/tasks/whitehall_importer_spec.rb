@@ -57,6 +57,16 @@ RSpec.describe Tasks::WhitehallImporter do
           ],
         },
       ],
+      "users" => [
+        {
+          "id" => 1,
+          "name" => "A Person",
+          "uid" => "36d5154e-d3b7-4e3e-aad8-32a50fc9430e",
+          "email" => "a-publisher@department.gov.uk",
+          "organisation_slug" => "a-government-department",
+          "organisation_content_id" => "01892f23-b069-43f5-8404-d082f8dffcb9",
+        },
+      ],
     }
   end
 
@@ -74,6 +84,24 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(edition.number).to eql(1)
     expect(edition.status).to be_draft
     expect(edition.update_type).to eq("major")
+  end
+
+  it "adds users who have never logged into Content Publisher" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    expect(User.last.uid).to eq "36d5154e-d3b7-4e3e-aad8-32a50fc9430e"
+    expect(User.last.name).to eq "A Person"
+    expect(User.last.email).to eq "a-publisher@department.gov.uk"
+    expect(User.last.organisation_slug).to eq "a-government-department"
+    expect(User.last.organisation_content_id).to eq "01892f23-b069-43f5-8404-d082f8dffcb9"
+  end
+
+  it "does not add users who have logged into Content Publisher" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    User.create!(uid: "36d5154e-d3b7-4e3e-aad8-32a50fc9430e")
+
+    expect { importer.import }.not_to(change { User.count })
   end
 
   it "sets import_from as Whitehall" do
@@ -286,6 +314,16 @@ RSpec.describe Tasks::WhitehallImporter do
                 "lead_ordering" => 1,
               },
             ],
+          },
+        ],
+        "users" => [
+          {
+            "id" => 1,
+            "name" => "A Person",
+            "uid" => "36d5154e-d3b7-4e3e-aad8-32a50fc9430e",
+            "email" => "a-publisher@department.gov.uk",
+            "organisation_slug" => "a-government-department",
+            "organisation_content_id" => "01892f23-b069-43f5-8404-d082f8dffcb9",
           },
         ],
       }

@@ -16,6 +16,7 @@ module Tasks
     def import
       ActiveRecord::Base.transaction do
         document = create_or_update_document
+        create_users(whitehall_document["users"])
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           edition["translations"].each do |translation|
@@ -46,6 +47,15 @@ module Tasks
     end
 
   private
+
+    def create_users(users)
+      users.each do |user|
+        next if User.exists?(uid: user["uid"])
+
+        user_keys = %w[uid name email organisation_slug organisation_content_id]
+        User.create!(user.slice(*user_keys).merge("permissions" => []))
+      end
+    end
 
     def most_recent_edition
       whitehall_document["editions"].max_by { |e| e["created_at"] }

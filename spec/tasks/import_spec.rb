@@ -38,6 +38,16 @@ RSpec.describe "Import tasks" do
             ],
           },
         ],
+        "users" => [
+          {
+            "id" => 1,
+            "name" => "A Person",
+            "uid" => "36d5154e-d3b7-4e3e-aad8-32a50fc9430e",
+            "email" => "a-publisher@department.gov.uk",
+            "organisation_slug" => "a-government-department",
+            "organisation_content_id" => "01892f23-b069-43f5-8404-d082f8dffcb9",
+          },
+        ],
       }
     end
 
