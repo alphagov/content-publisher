@@ -79,7 +79,7 @@ module Tasks
           update_type: whitehall_edition["minor_change"] ? "minor" : "major",
           change_note: whitehall_edition["change_note"],
         ),
-        tags_revision: TagsRevision.new(tags: {}),
+        tags_revision: tags(whitehall_edition),
         created_at: whitehall_edition["created_at"],
       )
 
@@ -120,6 +120,22 @@ module Tasks
         embed = contacts.select { |x| x["id"] == id }.first["content_id"]
         "[Contact:#{embed}]"
       end
+    end
+
+    def tags(edition)
+      organisations = edition["organisations"]
+
+      primary_publishing_organisations = organisations.select do |organisation|
+        organisation["lead"]
+      end
+
+      primary_publishing_organisation = primary_publishing_organisations.min { |o| o["lead_ordering"] }
+
+      TagsRevision.new(
+        tags: {
+          "primary_publishing_organisation" => [primary_publishing_organisation["content_id"]],
+        },
+      )
     end
   end
 end

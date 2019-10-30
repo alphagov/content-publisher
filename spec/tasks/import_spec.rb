@@ -28,6 +28,14 @@ RSpec.describe "Import tasks" do
                 "body" => "Body",
               },
             ],
+            "organisations" => [
+              {
+                "id" => 1,
+                "content_id" => SecureRandom.uuid,
+                "lead" => true,
+                "lead_ordering" => 1,
+              },
+            ],
           },
         ],
       }

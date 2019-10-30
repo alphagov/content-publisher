@@ -24,6 +24,14 @@ RSpec.describe Tasks::WhitehallImporter do
               "body" => "Body",
             },
           ],
+          "organisations" => [
+            {
+              "id" => 1,
+              "content_id" => SecureRandom.uuid,
+              "lead" => true,
+              "lead_ordering" => 1,
+            },
+          ],
         },
       ],
     }
@@ -116,6 +124,18 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(Edition.last.contents["body"]).to eq("[Contact:#{content_id}]")
   end
 
+  context "when importing organisation associations" do
+    it "sets a primary_publishing_organisation" do
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+      importer.import
+
+      imported_organisation = import_data["editions"][0]["organisations"][0]
+      edition = Edition.last
+
+      expect(edition.primary_publishing_organisation_id).to eq(imported_organisation["content_id"])
+    end
+  end
+
   context "when an imported document has more than one edition" do
     let(:import_published_then_drafted_data) do
       {
@@ -142,6 +162,14 @@ RSpec.describe Tasks::WhitehallImporter do
                 "body" => "Body",
               },
             ],
+            "organisations" => [
+              {
+                "id" => 1,
+                "content_id" => SecureRandom.uuid,
+                "lead" => true,
+                "lead_ordering" => 1,
+              },
+            ],
           },
           {
             "id" => 2,
@@ -158,6 +186,14 @@ RSpec.describe Tasks::WhitehallImporter do
                 "title" => "Title",
                 "summary" => "Summary",
                 "body" => "Body",
+              },
+            ],
+            "organisations" => [
+              {
+                "id" => 1,
+                "content_id" => SecureRandom.uuid,
+                "lead" => true,
+                "lead_ordering" => 1,
               },
             ],
           },
