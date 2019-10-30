@@ -79,7 +79,12 @@ module Tasks
           update_type: whitehall_edition["minor_change"] ? "minor" : "major",
           change_note: whitehall_edition["change_note"],
         ),
-        tags_revision: tags(whitehall_edition),
+        tags_revision: TagsRevision.new(
+          tags: {
+            "primary_publishing_organisation" => primary_publishing_organisation(whitehall_edition["organisations"]),
+            "organisations" => supporting_organisations(whitehall_edition["organisations"]),
+          },
+        ),
         created_at: whitehall_edition["created_at"],
       )
 
@@ -122,9 +127,7 @@ module Tasks
       end
     end
 
-    def tags(edition)
-      organisations = edition["organisations"]
-
+    def primary_publishing_organisation(organisations)
       unless organisations
         raise AbortImportError, "Must have at least one organisation"
       end
@@ -143,16 +146,15 @@ module Tasks
 
       primary_publishing_organisation = primary_publishing_organisations.min { |o| o["lead_ordering"] }
 
+      [primary_publishing_organisation["content_id"]]
+    end
+
+    def supporting_organisations(organisations)
       supporting_organisations = organisations.reject do |organisation|
         organisation["lead"]
       end
 
-      TagsRevision.new(
-        tags: {
-          "primary_publishing_organisation" => [primary_publishing_organisation["content_id"]],
-          "organisations" => supporting_organisations.map { |organisation| organisation["content_id"] },
-        },
-      )
+      supporting_organisations.map { |organisation| organisation["content_id"] }
     end
   end
 
