@@ -37,6 +37,12 @@ RSpec.describe Tasks::WhitehallImporter do
               "lead" => false,
             },
           ],
+          "role_appointments" => [
+             {
+               "id" => 1,
+               "content_id" => SecureRandom.uuid,
+             },
+           ],
         },
       ],
     }
@@ -176,6 +182,16 @@ RSpec.describe Tasks::WhitehallImporter do
 
       expect(edition.supporting_organisation_ids.first).to eq(imported_organisation["content_id"])
     end
+  end
+
+  it "sets role appointments" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    imported_role_appointment = import_data["editions"][0]["role_appointments"][0]
+    edition = Edition.last
+
+    expect(edition.tags["role_appointments"].first).to eq(imported_role_appointment["content_id"])
   end
 
   context "when an imported document has more than one edition" do
