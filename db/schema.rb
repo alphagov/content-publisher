@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_30_085853) do
+ActiveRecord::Schema.define(version: 2019_10_30_093601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -228,6 +228,7 @@ ActiveRecord::Schema.define(version: 2019_10_30_085853) do
     t.bigint "tags_revision_id", null: false
     t.bigint "preceded_by_id"
     t.integer "number", null: false
+    t.boolean "imported", default: false
     t.index ["content_revision_id"], name: "index_revisions_on_content_revision_id"
     t.index ["created_by_id"], name: "index_revisions_on_created_by_id"
     t.index ["document_id"], name: "index_revisions_on_document_id"

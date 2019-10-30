@@ -27,7 +27,7 @@ class Document < ApplicationRecord
 
   has_many :timeline_entries
 
-  enum imported_from: { whitehall: "whitehall" }, _prefix: :imported_from
+  enum imported_from: { whitehall: "whitehall" }, _prefix: true
 
   delegate :topics, to: :document_topics
 
