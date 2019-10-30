@@ -83,7 +83,8 @@ module Tasks
           tags: {
             "primary_publishing_organisation" => primary_publishing_organisation(whitehall_edition["organisations"]),
             "organisations" => supporting_organisations(whitehall_edition["organisations"]),
-            "role_appointments" => role_appointments(whitehall_edition["role_appointments"]),
+            "role_appointments" => tags(whitehall_edition["role_appointments"]),
+            "topical_events" => tags(whitehall_edition["topical_events"]),
           },
         ),
         created_at: whitehall_edition["created_at"],
@@ -158,10 +159,10 @@ module Tasks
       supporting_organisations.map { |organisation| organisation["content_id"] }
     end
 
-    def role_appointments(role_appointments)
-      return [] unless role_appointments
+    def tags(associations)
+      return [] unless associations
 
-      role_appointments.map { |appointment| appointment["content_id"] }
+      associations.map { |association| association["content_id"] }
     end
   end
 
