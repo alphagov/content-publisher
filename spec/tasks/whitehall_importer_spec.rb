@@ -134,6 +134,33 @@ RSpec.describe Tasks::WhitehallImporter do
 
       expect(edition.primary_publishing_organisation_id).to eq(imported_organisation["content_id"])
     end
+
+    it "rejects the import if there are no organisations" do
+      import_data["editions"][0].delete("organisations")
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+
+      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    end
+
+    it "rejects the import if there are no lead organisations" do
+      import_data["editions"][0]["organisations"].shift
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+
+      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    end
+
+    it "rejects the import if there is more than one lead organisation" do
+      import_data["editions"][0]["organisations"].push(
+        "id" => 3,
+        "content_id" => SecureRandom.uuid,
+        "lead" => true,
+        "lead_ordering" => 2,
+      )
+
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+
+      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    end
   end
 
   context "when an imported document has more than one edition" do

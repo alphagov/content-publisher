@@ -125,8 +125,20 @@ module Tasks
     def tags(edition)
       organisations = edition["organisations"]
 
+      unless organisations
+        raise AbortImportError, "Must have at least one organisation"
+      end
+
       primary_publishing_organisations = organisations.select do |organisation|
         organisation["lead"]
+      end
+
+      unless primary_publishing_organisations.any?
+        raise AbortImportError, "Lead organisation missing"
+      end
+
+      if primary_publishing_organisations.count > 1
+        raise AbortImportError, "Cannot have more than one lead organisation"
       end
 
       primary_publishing_organisation = primary_publishing_organisations.min { |o| o["lead_ordering"] }
@@ -138,4 +150,6 @@ module Tasks
       )
     end
   end
+
+  class AbortImportError < RuntimeError; end
 end
