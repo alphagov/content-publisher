@@ -27,6 +27,8 @@ class Document < ApplicationRecord
 
   has_many :timeline_entries
 
+  enum imported_from: { whitehall: "whitehall" }, _prefix: true
+
   delegate :topics, to: :document_topics
 
   scope :with_current_edition, -> do

@@ -53,6 +53,14 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(edition.update_type).to eq("major")
   end
 
+  it "sets import_from as Whitehall" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    document = Document.last
+    expect(document.imported_from_whitehall?).to be true
+  end
+
   it "sets the correct states when Whitehall document state is 'published'" do
     import_data["editions"][0]["edition"]["state"] = "published"
     importer = Tasks::WhitehallImporter.new(123, import_data)
@@ -182,6 +190,13 @@ RSpec.describe Tasks::WhitehallImporter do
 
       expect(Edition.last.status).to be_draft
       expect(Edition.last).not_to be_live
+    end
+
+    it "sets imported to true on revision" do
+      importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
+      importer.import
+
+      expect(Revision.last.imported).to be true
     end
   end
 end
