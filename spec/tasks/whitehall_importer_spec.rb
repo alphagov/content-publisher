@@ -3,35 +3,27 @@
 RSpec.describe Tasks::WhitehallImporter do
   let(:import_data) do
     {
-      "document" => {
-        "id" => 1,
-        "created_at" => Time.current,
-        "updated_at" => Time.current,
-        "slug" => "some-news-document",
-        "content_id" => SecureRandom.uuid,
-      },
+      "id" => 1,
+      "created_at" => Time.current,
+      "updated_at" => Time.current,
+      "slug" => "some-news-document",
+      "content_id" => SecureRandom.uuid,
       "editions" => [
         {
-          "edition" => {
-            "id" => 1,
-            "created_at" => Time.current,
-            "updated_at" => Time.current,
-            "title" => "Title",
-            "summary" => "Summary",
-            "change_note" => "First published",
-            "state" => "draft",
-          },
-          "associations" => {
-            "translations" => [
-              {
-                "id" => 1,
-                "locale" => "en",
-                "title" => "Title",
-                "summary" => "Summary",
-                "body" => "Body",
-              },
-            ],
-          },
+          "id" => 1,
+          "created_at" => Time.current,
+          "updated_at" => Time.current,
+          "change_note" => "First published",
+          "state" => "draft",
+          "translations" => [
+            {
+              "id" => 1,
+              "locale" => "en",
+              "title" => "Title",
+              "summary" => "Summary",
+              "body" => "Body",
+            },
+          ],
         },
       ],
     }
@@ -46,7 +38,7 @@ RSpec.describe Tasks::WhitehallImporter do
     edition = Edition.last
 
     expect(edition.summary)
-      .to eq(imported_edition["associations"]["translations"][0]["summary"])
+      .to eq(imported_edition["translations"][0]["summary"])
 
     expect(edition.number).to eql(1)
     expect(edition.status).to be_draft
@@ -62,7 +54,7 @@ RSpec.describe Tasks::WhitehallImporter do
   end
 
   it "sets the correct states when Whitehall document state is 'published'" do
-    import_data["editions"][0]["edition"]["state"] = "published"
+    import_data["editions"][0]["state"] = "published"
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 
@@ -71,7 +63,7 @@ RSpec.describe Tasks::WhitehallImporter do
   end
 
   it "can set minor update type" do
-    import_data["editions"][0]["edition"]["minor_change"] = true
+    import_data["editions"][0]["minor_change"] = true
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 
@@ -80,8 +72,8 @@ RSpec.describe Tasks::WhitehallImporter do
 
 
   it "sets the correct states when Whitehall document is force published" do
-    import_data["editions"][0]["edition"]["state"] = "published"
-    import_data["editions"][0]["edition"]["force_published"] = true
+    import_data["editions"][0]["state"] = "published"
+    import_data["editions"][0]["force_published"] = true
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 
@@ -90,7 +82,7 @@ RSpec.describe Tasks::WhitehallImporter do
   end
 
   it "sets the correct states when Whitehall document state is 'rejected'" do
-    import_data["editions"][0]["edition"]["state"] = "rejected"
+    import_data["editions"][0]["state"] = "rejected"
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 
@@ -99,7 +91,7 @@ RSpec.describe Tasks::WhitehallImporter do
   end
 
   it "sets the correct states when Whitehall document state is 'submitted'" do
-    import_data["editions"][0]["edition"]["state"] = "submitted"
+    import_data["editions"][0]["state"] = "submitted"
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 
@@ -108,16 +100,16 @@ RSpec.describe Tasks::WhitehallImporter do
   end
 
   it "skips importing editions with Whitehall states that are not supported" do
-    import_data["editions"][0]["edition"]["state"] = "not_supported"
+    import_data["editions"][0]["state"] = "not_supported"
     importer = Tasks::WhitehallImporter.new(123, import_data)
 
     expect { importer.import }.not_to(change { Edition.count })
   end
 
   it "changes the ids of embedded contacts" do
-    import_data["editions"][0]["associations"]["translations"][0]["body"] = "[Contact:123]"
+    import_data["editions"][0]["translations"][0]["body"] = "[Contact:123]"
     content_id = SecureRandom.uuid
-    import_data["editions"][0]["associations"]["depended_upon_contacts"] = [{ "id" => 123, "content_id" => content_id }]
+    import_data["editions"][0]["depended_upon_contacts"] = [{ "id" => 123, "content_id" => content_id }]
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 
@@ -127,57 +119,47 @@ RSpec.describe Tasks::WhitehallImporter do
   context "when an imported document has more than one edition" do
     let(:import_published_then_drafted_data) do
       {
-        "document" => {
-          "id" => 1,
-          "created_at" => Time.current,
-          "updated_at" => Time.current,
-          "slug" => "some-news-document",
-          "content_id" => SecureRandom.uuid,
-        },
+        "id" => 1,
+        "created_at" => Time.current,
+        "updated_at" => Time.current,
+        "slug" => "some-news-document",
+        "content_id" => SecureRandom.uuid,
         "editions" => [
           {
-            "edition" => {
-              "id" => 1,
-              "created_at" => Time.current,
-              "updated_at" => Time.current,
-              "title" => "Title",
-              "summary" => "Summary",
-              "change_note" => "First published",
-              "state" => "published",
-            },
-            "associations" => {
-              "translations" => [
-                {
-                  "id" => 1,
-                  "locale" => "en",
-                  "title" => "Title",
-                  "summary" => "Summary",
-                  "body" => "Body",
-                },
-              ],
-            },
+            "id" => 1,
+            "created_at" => Time.current,
+            "updated_at" => Time.current,
+            "title" => "Title",
+            "summary" => "Summary",
+            "change_note" => "First published",
+            "state" => "published",
+            "translations" => [
+              {
+                "id" => 1,
+                "locale" => "en",
+                "title" => "Title",
+                "summary" => "Summary",
+                "body" => "Body",
+              },
+            ],
           },
           {
-            "edition" => {
-              "id" => 2,
-              "created_at" => Time.current,
-              "updated_at" => Time.current,
-              "title" => "Title",
-              "summary" => "Summary",
-              "change_note" => "First published",
-              "state" => "draft",
-            },
-            "associations" => {
-              "translations" => [
-                {
-                  "id" => 2,
-                  "locale" => "en",
-                  "title" => "Title",
-                  "summary" => "Summary",
-                  "body" => "Body",
-                },
-              ],
-            },
+            "id" => 2,
+            "created_at" => Time.current,
+            "updated_at" => Time.current,
+            "title" => "Title",
+            "summary" => "Summary",
+            "change_note" => "First published",
+            "state" => "draft",
+            "translations" => [
+              {
+                "id" => 2,
+                "locale" => "en",
+                "title" => "Title",
+                "summary" => "Summary",
+                "body" => "Body",
+              },
+            ],
           },
         ],
       }
