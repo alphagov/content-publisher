@@ -5,35 +5,29 @@ RSpec.describe "Import tasks" do
     let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
     let(:import_data) do
       {
-        "document" => {
-          "id" => 1,
-          "created_at" => Time.current,
-          "updated_at" => Time.current,
-          "slug" => "some-news-document",
-          "content_id" => SecureRandom.uuid,
-        },
+        "id" => 1,
+        "created_at" => Time.current,
+        "updated_at" => Time.current,
+        "slug" => "some-news-document",
+        "content_id" => SecureRandom.uuid,
         "editions" => [
           {
-            "edition" => {
-              "id" => 1,
-              "created_at" => Time.current,
-              "updated_at" => Time.current,
-              "title" => "Title",
-              "summary" => "Summary",
-              "change_note" => "First published",
-              "state" => "draft",
-            },
-            "associations" => {
-              "translations" => [
-                {
-                  "id" => 1,
-                  "locale" => "en",
-                  "title" => "Title",
-                  "summary" => "Summary",
-                  "body" => "Body",
-                },
-              ],
-            },
+            "id" => 1,
+            "created_at" => Time.current,
+            "updated_at" => Time.current,
+            "title" => "Title",
+            "summary" => "Summary",
+            "change_note" => "First published",
+            "state" => "draft",
+            "translations" => [
+              {
+                "id" => 1,
+                "locale" => "en",
+                "title" => "Title",
+                "summary" => "Summary",
+                "body" => "Body",
+              },
+            ],
           },
         ],
       }

@@ -18,8 +18,8 @@ module Tasks
         document = create_or_update_document
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
-          edition["associations"]["translations"].each do |translation|
-            next unless SUPPORTED_WHITEHALL_STATES.include?(edition["edition"]["state"])
+          edition["translations"].each do |translation|
+            next unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
             next unless SUPPORTED_LOCALES.include?(translation["locale"])
 
             create_edition(document, translation, edition, edition_number + 1)
@@ -32,7 +32,7 @@ module Tasks
       WhitehallImport.create(
         whitehall_document_id: whitehall_document_id,
         payload: whitehall_document,
-        content_id: whitehall_document["document"]["content_id"],
+        content_id: whitehall_document["content_id"],
         state: "importing",
       )
     end
@@ -48,16 +48,16 @@ module Tasks
   private
 
     def most_recent_edition
-      whitehall_document["editions"].max_by { |e| e["edition"]["created_at"] }
+      whitehall_document["editions"].max_by { |e| e["created_at"] }
     end
 
     def create_or_update_document
       Document.find_or_create_by(
-        content_id: whitehall_document["document"]["content_id"],
+        content_id: whitehall_document["content_id"],
         locale: "en",
         document_type_id: "news_story", ## To be updated once Whitehall exports this value
-        created_at: whitehall_document["document"]["created_at"],
-        updated_at: whitehall_document["document"]["updated_at"],
+        created_at: whitehall_document["created_at"],
+        updated_at: whitehall_document["updated_at"],
         imported_from: "whitehall",
       )
     end
@@ -69,18 +69,18 @@ module Tasks
         imported: true,
         content_revision: ContentRevision.new(
           title: translation["title"],
-          base_path: "/government/news/" + whitehall_document["document"]["slug"],
+          base_path: "/government/news/" + whitehall_document["slug"],
           summary: translation["summary"],
           contents: {
-            body: embed_contacts(translation["body"], whitehall_edition["associations"].fetch("depended_upon_contacts", [])),
+            body: embed_contacts(translation["body"], whitehall_edition.fetch("contacts", [])),
           },
         ),
         metadata_revision: MetadataRevision.new(
-          update_type: whitehall_edition["edition"]["minor_change"] ? "minor" : "major",
-          change_note: whitehall_edition["edition"]["change_note"],
+          update_type: whitehall_edition["minor_change"] ? "minor" : "major",
+          change_note: whitehall_edition["change_note"],
         ),
         tags_revision: TagsRevision.new(tags: {}),
-        created_at: whitehall_edition["edition"]["created_at"],
+        created_at: whitehall_edition["created_at"],
       )
 
       Edition.create!(
@@ -92,26 +92,26 @@ module Tasks
           state: state(whitehall_edition),
           revision_at_creation: revision,
         ),
-        current: whitehall_edition["edition"]["id"] == most_recent_edition["edition"]["id"],
+        current: whitehall_edition["id"] == most_recent_edition["id"],
         live: live?(whitehall_edition),
-        created_at: whitehall_edition["edition"]["created_at"],
-        updated_at: whitehall_edition["edition"]["updated_at"],
+        created_at: whitehall_edition["created_at"],
+        updated_at: whitehall_edition["updated_at"],
       )
     end
 
     def state(whitehall_edition)
-      case whitehall_edition["edition"]["state"]
+      case whitehall_edition["state"]
       when "draft" then "draft"
       when "superseded" then "superseded"
       when "published"
-        whitehall_edition["edition"]["force_published"] ? "published_but_needs_2i" : "published"
+        whitehall_edition["force_published"] ? "published_but_needs_2i" : "published"
       else
         "submitted_for_review"
       end
     end
 
     def live?(whitehall_edition)
-      whitehall_edition["edition"]["state"] == "published"
+      whitehall_edition["state"] == "published"
     end
 
     def embed_contacts(body, contacts)
