@@ -109,7 +109,7 @@ RSpec.describe Tasks::WhitehallImporter do
   it "changes the ids of embedded contacts" do
     import_data["editions"][0]["translations"][0]["body"] = "[Contact:123]"
     content_id = SecureRandom.uuid
-    import_data["editions"][0]["depended_upon_contacts"] = [{ "id" => 123, "content_id" => content_id }]
+    import_data["editions"][0]["contacts"] = [{ "id" => 123, "content_id" => content_id }]
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 

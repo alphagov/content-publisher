@@ -72,7 +72,7 @@ module Tasks
           base_path: "/government/news/" + whitehall_document["slug"],
           summary: translation["summary"],
           contents: {
-            body: embed_contacts(translation["body"], whitehall_edition.fetch("depended_upon_contacts", [])),
+            body: embed_contacts(translation["body"], whitehall_edition.fetch("contacts", [])),
           },
         ),
         metadata_revision: MetadataRevision.new(
