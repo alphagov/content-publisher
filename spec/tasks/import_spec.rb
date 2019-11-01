@@ -1,55 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe "Import tasks" do
+  include FixturesHelper
+
   describe "import:whitehall" do
     let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
-    let(:import_data) do
-      {
-        "id" => 1,
-        "created_at" => Time.current,
-        "updated_at" => Time.current,
-        "slug" => "some-news-document",
-        "content_id" => SecureRandom.uuid,
-        "editions" => [
-          {
-            "id" => 1,
-            "created_at" => Time.current,
-            "updated_at" => Time.current,
-            "title" => "Title",
-            "summary" => "Summary",
-            "change_note" => "First published",
-            "state" => "draft",
-            "translations" => [
-              {
-                "id" => 1,
-                "locale" => "en",
-                "title" => "Title",
-                "summary" => "Summary",
-                "body" => "Body",
-              },
-            ],
-            "organisations" => [
-              {
-                "id" => 1,
-                "content_id" => SecureRandom.uuid,
-                "lead" => true,
-                "lead_ordering" => 1,
-              },
-            ],
-          },
-        ],
-        "users" => [
-          {
-            "id" => 1,
-            "name" => "A Person",
-            "uid" => "36d5154e-d3b7-4e3e-aad8-32a50fc9430e",
-            "email" => "a-publisher@department.gov.uk",
-            "organisation_slug" => "a-government-department",
-            "organisation_content_id" => "01892f23-b069-43f5-8404-d082f8dffcb9",
-          },
-        ],
-      }
-    end
+    let(:import_data) { whitehall_export_with_one_edition }
 
     before do
       Rake::Task["import:whitehall"].reenable

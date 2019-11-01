@@ -1,74 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe Tasks::WhitehallImporter do
-  let(:import_data) do
-    {
-      "id" => 1,
-      "created_at" => Time.current,
-      "updated_at" => Time.current,
-      "slug" => "some-news-document",
-      "content_id" => SecureRandom.uuid,
-      "editions" => [
-        {
-          "id" => 1,
-          "created_at" => Time.current,
-          "updated_at" => Time.current,
-          "change_note" => "First published",
-          "state" => "draft",
-          "translations" => [
-            {
-              "id" => 1,
-              "locale" => "en",
-              "title" => "Title",
-              "summary" => "Summary",
-              "body" => "Body",
-            },
-          ],
-          "organisations" => [
-            {
-              "id" => 1,
-              "content_id" => SecureRandom.uuid,
-              "lead" => true,
-              "lead_ordering" => 1,
-            },
-            {
-              "id" => 2,
-              "content_id" => SecureRandom.uuid,
-              "lead" => false,
-            },
-          ],
-          "role_appointments" => [
-             {
-               "id" => 1,
-               "content_id" => SecureRandom.uuid,
-             },
-           ],
-          "topical_events" => [
-            {
-              "id" => 1,
-              "content_id" => SecureRandom.uuid,
-            },
-          ],
-          "world_locations" => [
-            {
-              "id" => 1,
-              "content_id" => SecureRandom.uuid,
-            },
-          ],
-        },
-      ],
-      "users" => [
-        {
-          "id" => 1,
-          "name" => "A Person",
-          "uid" => "36d5154e-d3b7-4e3e-aad8-32a50fc9430e",
-          "email" => "a-publisher@department.gov.uk",
-          "organisation_slug" => "a-government-department",
-          "organisation_content_id" => "01892f23-b069-43f5-8404-d082f8dffcb9",
-        },
-      ],
-    }
-  end
+  include FixturesHelper
+
+  let(:import_data) { whitehall_export_with_one_edition }
 
   it "can import JSON data from Whitehall" do
     importer = Tasks::WhitehallImporter.new(123, import_data)
@@ -255,80 +190,7 @@ RSpec.describe Tasks::WhitehallImporter do
   end
 
   context "when an imported document has more than one edition" do
-    let(:import_published_then_drafted_data) do
-      {
-        "id" => 1,
-        "created_at" => Time.current,
-        "updated_at" => Time.current,
-        "slug" => "some-news-document",
-        "content_id" => SecureRandom.uuid,
-        "editions" => [
-          {
-            "id" => 1,
-            "created_at" => Time.current,
-            "updated_at" => Time.current,
-            "title" => "Title",
-            "summary" => "Summary",
-            "change_note" => "First published",
-            "state" => "published",
-            "translations" => [
-              {
-                "id" => 1,
-                "locale" => "en",
-                "title" => "Title",
-                "summary" => "Summary",
-                "body" => "Body",
-              },
-            ],
-            "organisations" => [
-              {
-                "id" => 1,
-                "content_id" => SecureRandom.uuid,
-                "lead" => true,
-                "lead_ordering" => 1,
-              },
-            ],
-          },
-          {
-            "id" => 2,
-            "created_at" => Time.current,
-            "updated_at" => Time.current,
-            "title" => "Title",
-            "summary" => "Summary",
-            "change_note" => "First published",
-            "state" => "draft",
-            "translations" => [
-              {
-                "id" => 2,
-                "locale" => "en",
-                "title" => "Title",
-                "summary" => "Summary",
-                "body" => "Body",
-              },
-            ],
-            "organisations" => [
-              {
-                "id" => 1,
-                "content_id" => SecureRandom.uuid,
-                "lead" => true,
-                "lead_ordering" => 1,
-              },
-            ],
-          },
-        ],
-        "users" => [
-          {
-            "id" => 1,
-            "name" => "A Person",
-            "uid" => "36d5154e-d3b7-4e3e-aad8-32a50fc9430e",
-            "email" => "a-publisher@department.gov.uk",
-            "organisation_slug" => "a-government-department",
-            "organisation_content_id" => "01892f23-b069-43f5-8404-d082f8dffcb9",
-          },
-        ],
-      }
-    end
-
+    let(:import_published_then_drafted_data) { whitehall_export_with_two_editions }
 
     it "only creates the latest edition" do
       importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
