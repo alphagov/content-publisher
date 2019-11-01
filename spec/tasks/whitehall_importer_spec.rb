@@ -24,6 +24,37 @@ RSpec.describe Tasks::WhitehallImporter do
               "body" => "Body",
             },
           ],
+          "organisations" => [
+            {
+              "id" => 1,
+              "content_id" => SecureRandom.uuid,
+              "lead" => true,
+              "lead_ordering" => 1,
+            },
+            {
+              "id" => 2,
+              "content_id" => SecureRandom.uuid,
+              "lead" => false,
+            },
+          ],
+          "role_appointments" => [
+             {
+               "id" => 1,
+               "content_id" => SecureRandom.uuid,
+             },
+           ],
+          "topical_events" => [
+            {
+              "id" => 1,
+              "content_id" => SecureRandom.uuid,
+            },
+          ],
+          "world_locations" => [
+            {
+              "id" => 1,
+              "content_id" => SecureRandom.uuid,
+            },
+          ],
         },
       ],
     }
@@ -116,6 +147,85 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(Edition.last.contents["body"]).to eq("[Contact:#{content_id}]")
   end
 
+  context "when importing organisation associations" do
+    it "sets a primary_publishing_organisation" do
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+      importer.import
+
+      imported_organisation = import_data["editions"][0]["organisations"][0]
+      edition = Edition.last
+
+      expect(edition.primary_publishing_organisation_id).to eq(imported_organisation["content_id"])
+    end
+
+    it "rejects the import if there are no organisations" do
+      import_data["editions"][0].delete("organisations")
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+
+      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    end
+
+    it "rejects the import if there are no lead organisations" do
+      import_data["editions"][0]["organisations"].shift
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+
+      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    end
+
+    it "rejects the import if there is more than one lead organisation" do
+      import_data["editions"][0]["organisations"].push(
+        "id" => 3,
+        "content_id" => SecureRandom.uuid,
+        "lead" => true,
+        "lead_ordering" => 2,
+      )
+
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+
+      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    end
+
+    it "sets other supporting organisations" do
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+      importer.import
+
+      imported_organisation = import_data["editions"][0]["organisations"][1]
+      edition = Edition.last
+
+      expect(edition.supporting_organisation_ids.first).to eq(imported_organisation["content_id"])
+    end
+  end
+
+  it "sets role appointments" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    imported_role_appointment = import_data["editions"][0]["role_appointments"][0]
+    edition = Edition.last
+
+    expect(edition.tags["role_appointments"].first).to eq(imported_role_appointment["content_id"])
+  end
+
+  it "sets topical events" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    imported_topical_events = import_data["editions"][0]["topical_events"][0]
+    edition = Edition.last
+
+    expect(edition.tags["topical_events"].first).to eq(imported_topical_events["content_id"])
+  end
+
+  it "sets world locations" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    imported_world_locations = import_data["editions"][0]["world_locations"][0]
+    edition = Edition.last
+
+    expect(edition.tags["world_locations"].first).to eq(imported_world_locations["content_id"])
+  end
+
   context "when an imported document has more than one edition" do
     let(:import_published_then_drafted_data) do
       {
@@ -142,6 +252,14 @@ RSpec.describe Tasks::WhitehallImporter do
                 "body" => "Body",
               },
             ],
+            "organisations" => [
+              {
+                "id" => 1,
+                "content_id" => SecureRandom.uuid,
+                "lead" => true,
+                "lead_ordering" => 1,
+              },
+            ],
           },
           {
             "id" => 2,
@@ -158,6 +276,14 @@ RSpec.describe Tasks::WhitehallImporter do
                 "title" => "Title",
                 "summary" => "Summary",
                 "body" => "Body",
+              },
+            ],
+            "organisations" => [
+              {
+                "id" => 1,
+                "content_id" => SecureRandom.uuid,
+                "lead" => true,
+                "lead_ordering" => 1,
               },
             ],
           },

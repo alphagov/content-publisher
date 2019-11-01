@@ -79,7 +79,15 @@ module Tasks
           update_type: whitehall_edition["minor_change"] ? "minor" : "major",
           change_note: whitehall_edition["change_note"],
         ),
-        tags_revision: TagsRevision.new(tags: {}),
+        tags_revision: TagsRevision.new(
+          tags: {
+            "primary_publishing_organisation" => primary_publishing_organisation(whitehall_edition["organisations"]),
+            "organisations" => supporting_organisations(whitehall_edition["organisations"]),
+            "role_appointments" => tags(whitehall_edition["role_appointments"]),
+            "topical_events" => tags(whitehall_edition["topical_events"]),
+            "world_locations" => tags(whitehall_edition["world_locations"]),
+          },
+        ),
         created_at: whitehall_edition["created_at"],
       )
 
@@ -121,5 +129,43 @@ module Tasks
         "[Contact:#{embed}]"
       end
     end
+
+    def primary_publishing_organisation(organisations)
+      unless organisations
+        raise AbortImportError, "Must have at least one organisation"
+      end
+
+      primary_publishing_organisations = organisations.select do |organisation|
+        organisation["lead"]
+      end
+
+      unless primary_publishing_organisations.any?
+        raise AbortImportError, "Lead organisation missing"
+      end
+
+      if primary_publishing_organisations.count > 1
+        raise AbortImportError, "Cannot have more than one lead organisation"
+      end
+
+      primary_publishing_organisation = primary_publishing_organisations.min { |o| o["lead_ordering"] }
+
+      [primary_publishing_organisation["content_id"]]
+    end
+
+    def supporting_organisations(organisations)
+      supporting_organisations = organisations.reject do |organisation|
+        organisation["lead"]
+      end
+
+      supporting_organisations.map { |organisation| organisation["content_id"] }
+    end
+
+    def tags(associations)
+      return [] unless associations
+
+      associations.map { |association| association["content_id"] }
+    end
   end
+
+  class AbortImportError < RuntimeError; end
 end
