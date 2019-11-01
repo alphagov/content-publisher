@@ -1,64 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe Tasks::WhitehallImporter do
-  let(:import_data) do
-    {
-      "id" => 1,
-      "created_at" => Time.current,
-      "updated_at" => Time.current,
-      "slug" => "some-news-document",
-      "content_id" => SecureRandom.uuid,
-      "editions" => [
-        {
-          "id" => 1,
-          "created_at" => Time.current,
-          "updated_at" => Time.current,
-          "change_note" => "First published",
-          "state" => "draft",
-          "translations" => [
-            {
-              "id" => 1,
-              "locale" => "en",
-              "title" => "Title",
-              "summary" => "Summary",
-              "body" => "Body",
-            },
-          ],
-          "organisations" => [
-            {
-              "id" => 1,
-              "content_id" => SecureRandom.uuid,
-              "lead" => true,
-              "lead_ordering" => 1,
-            },
-            {
-              "id" => 2,
-              "content_id" => SecureRandom.uuid,
-              "lead" => false,
-            },
-          ],
-          "role_appointments" => [
-             {
-               "id" => 1,
-               "content_id" => SecureRandom.uuid,
-             },
-           ],
-          "topical_events" => [
-            {
-              "id" => 1,
-              "content_id" => SecureRandom.uuid,
-            },
-          ],
-          "world_locations" => [
-            {
-              "id" => 1,
-              "content_id" => SecureRandom.uuid,
-            },
-          ],
-        },
-      ],
-    }
-  end
+  include FixturesHelper
+
+  let(:import_data) { whitehall_export_with_one_edition }
 
   it "can import JSON data from Whitehall" do
     importer = Tasks::WhitehallImporter.new(123, import_data)
@@ -74,6 +19,24 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(edition.number).to eql(1)
     expect(edition.status).to be_draft
     expect(edition.update_type).to eq("major")
+  end
+
+  it "adds users who have never logged into Content Publisher" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    expect(User.last.uid).to eq "36d5154e-d3b7-4e3e-aad8-32a50fc9430e"
+    expect(User.last.name).to eq "A Person"
+    expect(User.last.email).to eq "a-publisher@department.gov.uk"
+    expect(User.last.organisation_slug).to eq "a-government-department"
+    expect(User.last.organisation_content_id).to eq "01892f23-b069-43f5-8404-d082f8dffcb9"
+  end
+
+  it "does not add users who have logged into Content Publisher" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    User.create!(uid: "36d5154e-d3b7-4e3e-aad8-32a50fc9430e")
+
+    expect { importer.import }.not_to(change { User.count })
   end
 
   it "sets import_from as Whitehall" do
@@ -227,70 +190,7 @@ RSpec.describe Tasks::WhitehallImporter do
   end
 
   context "when an imported document has more than one edition" do
-    let(:import_published_then_drafted_data) do
-      {
-        "id" => 1,
-        "created_at" => Time.current,
-        "updated_at" => Time.current,
-        "slug" => "some-news-document",
-        "content_id" => SecureRandom.uuid,
-        "editions" => [
-          {
-            "id" => 1,
-            "created_at" => Time.current,
-            "updated_at" => Time.current,
-            "title" => "Title",
-            "summary" => "Summary",
-            "change_note" => "First published",
-            "state" => "published",
-            "translations" => [
-              {
-                "id" => 1,
-                "locale" => "en",
-                "title" => "Title",
-                "summary" => "Summary",
-                "body" => "Body",
-              },
-            ],
-            "organisations" => [
-              {
-                "id" => 1,
-                "content_id" => SecureRandom.uuid,
-                "lead" => true,
-                "lead_ordering" => 1,
-              },
-            ],
-          },
-          {
-            "id" => 2,
-            "created_at" => Time.current,
-            "updated_at" => Time.current,
-            "title" => "Title",
-            "summary" => "Summary",
-            "change_note" => "First published",
-            "state" => "draft",
-            "translations" => [
-              {
-                "id" => 2,
-                "locale" => "en",
-                "title" => "Title",
-                "summary" => "Summary",
-                "body" => "Body",
-              },
-            ],
-            "organisations" => [
-              {
-                "id" => 1,
-                "content_id" => SecureRandom.uuid,
-                "lead" => true,
-                "lead_ordering" => 1,
-              },
-            ],
-          },
-        ],
-      }
-    end
-
+    let(:import_published_then_drafted_data) { whitehall_export_with_two_editions }
 
     it "only creates the latest edition" do
       importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
