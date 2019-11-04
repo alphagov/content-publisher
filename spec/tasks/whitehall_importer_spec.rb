@@ -39,6 +39,24 @@ RSpec.describe Tasks::WhitehallImporter do
     expect { importer.import }.not_to(change { User.count })
   end
 
+  it "creates a user map" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    expected_user_ids = {
+      1 => User.last.id,
+    }
+
+    expect(importer.user_ids).to eq(expected_user_ids)
+  end
+
+  it "sets created_by_id as the original author" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    expect(Document.last.created_by_id).to eq(User.last.id)
+  end
+
   it "sets import_from as Whitehall" do
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
@@ -205,6 +223,22 @@ RSpec.describe Tasks::WhitehallImporter do
       importer.import
 
       expect(Revision.last.imported).to be true
+    end
+
+    it "sets created_by_id on each edition as the original edition author" do
+      importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
+      importer.import
+
+      expect(Edition.second_to_last.created_by_id).to eq(User.second_to_last.id)
+      expect(Edition.last.created_by_id).to eq(User.last.id)
+    end
+
+    it "sets last_edited_by_id on each edition as the most recent author" do
+      importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
+      importer.import
+
+      expect(Edition.second_to_last.last_edited_by_id).to eq(User.second_to_last.id)
+      expect(Edition.last.last_edited_by_id).to eq(User.second_to_last.id)
     end
   end
 end

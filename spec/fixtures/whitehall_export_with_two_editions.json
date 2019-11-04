@@ -20,6 +20,13 @@
           "body": "Body"
         }
       ],
+      "history": [
+        {
+          "event": "create",
+          "state": "draft",
+          "whodunnit": 1
+        }
+      ],
       "organisations": [
         {
           "id": 1,
@@ -69,6 +76,19 @@
           "body": "Body"
         }
       ],
+      "history": [
+        {
+          "event": "create",
+          "state": "draft",
+          "whodunnit": 2
+        },
+        {
+          "event": "update",
+          "state": "draft",
+          "whodunnit": 1
+        }
+
+      ],
       "organisations": [
         {
           "id": 1,
@@ -108,6 +128,14 @@
       "name": "A Person",
       "uid": "36d5154e-d3b7-4e3e-aad8-32a50fc9430e",
       "email": "a-publisher@department.gov.uk",
+      "organisation_slug": "a-government-department",
+      "organisation_content_id": "01892f23-b069-43f5-8404-d082f8dffcb9"
+    },
+    {
+      "id": 2,
+      "name": "A Second Person",
+      "uid": "52303743-6d34-4974-93c3-914bdf92d645",
+      "email": "a-second-publisher@department.gov.uk",
       "organisation_slug": "a-government-department",
       "organisation_content_id": "01892f23-b069-43f5-8404-d082f8dffcb9"
     }

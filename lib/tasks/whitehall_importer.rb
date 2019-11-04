@@ -2,7 +2,7 @@
 
 module Tasks
   class WhitehallImporter
-    attr_reader :whitehall_document_id, :whitehall_document, :whitehall_import
+    attr_reader :whitehall_document_id, :whitehall_document, :whitehall_import, :user_ids
 
     SUPPORTED_WHITEHALL_STATES = %w(draft published rejected submitted superseded).freeze
     SUPPORTED_LOCALES = %w(en).freeze
@@ -11,12 +11,13 @@ module Tasks
       @whitehall_document_id = whitehall_document_id
       @whitehall_document = whitehall_document
       @whitehall_import = store_json_blob
+      @user_ids = {}
     end
 
     def import
       ActiveRecord::Base.transaction do
-        document = create_or_update_document
         create_users(whitehall_document["users"])
+        document = create_or_update_document
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           edition["translations"].each do |translation|
@@ -50,10 +51,9 @@ module Tasks
 
     def create_users(users)
       users.each do |user|
-        next if User.exists?(uid: user["uid"])
-
         user_keys = %w[uid name email organisation_slug organisation_content_id]
-        User.create!(user.slice(*user_keys).merge("permissions" => []))
+        content_publisher_user = User.create_with(user.slice(*user_keys).merge("permissions" => [])).find_or_create_by!(uid: user["uid"])
+        user_ids[user["id"]] = content_publisher_user["id"]
       end
     end
 
@@ -62,17 +62,24 @@ module Tasks
     end
 
     def create_or_update_document
-      Document.find_or_create_by(
+      first_edition = whitehall_document["editions"].first
+      first_author = first_edition["history"].select { |h| h["event"] == "create" }.first
+
+      Document.find_or_create_by!(
         content_id: whitehall_document["content_id"],
         locale: "en",
         document_type_id: "news_story", ## To be updated once Whitehall exports this value
         created_at: whitehall_document["created_at"],
         updated_at: whitehall_document["updated_at"],
+        created_by_id: user_ids[first_author["whodunnit"]],
         imported_from: "whitehall",
       )
     end
 
     def create_edition(document, translation, whitehall_edition, edition_number)
+      first_author = whitehall_edition["history"].select { |h| h["event"] == "create" }.first
+      last_author = whitehall_edition["history"].last
+
       revision = Revision.create!(
         document: document,
         number: document.next_revision_number,
@@ -114,6 +121,8 @@ module Tasks
         live: live?(whitehall_edition),
         created_at: whitehall_edition["created_at"],
         updated_at: whitehall_edition["updated_at"],
+        created_by_id: user_ids[first_author["whodunnit"]],
+        last_edited_by_id: user_ids[last_author["whodunnit"]],
       )
     end
 
