@@ -77,6 +77,8 @@ module Tasks
     end
 
     def create_edition(document, translation, whitehall_edition, edition_number)
+      first_author = whitehall_edition["history"].select { |h| h["event"] == "create" }.first
+
       revision = Revision.create!(
         document: document,
         number: document.next_revision_number,
@@ -118,6 +120,7 @@ module Tasks
         live: live?(whitehall_edition),
         created_at: whitehall_edition["created_at"],
         updated_at: whitehall_edition["updated_at"],
+        created_by_id: user_ids[first_author["whodunnit"]],
       )
     end
 

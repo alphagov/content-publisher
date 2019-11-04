@@ -224,5 +224,13 @@ RSpec.describe Tasks::WhitehallImporter do
 
       expect(Revision.last.imported).to be true
     end
+
+    it "sets created_by_id on each edition as the original edition author" do
+      importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
+      importer.import
+
+      expect(Edition.second_to_last.created_by_id).to eq(User.second_to_last.id)
+      expect(Edition.last.created_by_id).to eq(User.last.id)
+    end
   end
 end
