@@ -232,5 +232,13 @@ RSpec.describe Tasks::WhitehallImporter do
       expect(Edition.second_to_last.created_by_id).to eq(User.second_to_last.id)
       expect(Edition.last.created_by_id).to eq(User.last.id)
     end
+
+    it "sets last_edited_by_id on each edition as the most recent author" do
+      importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
+      importer.import
+
+      expect(Edition.second_to_last.last_edited_by_id).to eq(User.second_to_last.id)
+      expect(Edition.last.last_edited_by_id).to eq(User.second_to_last.id)
+    end
   end
 end

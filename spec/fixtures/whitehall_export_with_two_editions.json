@@ -81,7 +81,13 @@
           "event": "create",
           "state": "draft",
           "whodunnit": 2
+        },
+        {
+          "event": "update",
+          "state": "draft",
+          "whodunnit": 1
         }
+
       ],
       "organisations": [
         {

@@ -78,6 +78,7 @@ module Tasks
 
     def create_edition(document, translation, whitehall_edition, edition_number)
       first_author = whitehall_edition["history"].select { |h| h["event"] == "create" }.first
+      last_author = whitehall_edition["history"].last
 
       revision = Revision.create!(
         document: document,
@@ -121,6 +122,7 @@ module Tasks
         created_at: whitehall_edition["created_at"],
         updated_at: whitehall_edition["updated_at"],
         created_by_id: user_ids[first_author["whodunnit"]],
+        last_edited_by_id: user_ids[last_author["whodunnit"]],
       )
     end
 
