@@ -92,8 +92,13 @@ class Edition < ApplicationRecord
       .find_by!(find_by)
   end
 
-  def self.create_initial(document, user = nil, tags = {})
-    revision = Revision.create_initial(document, user, tags)
+  def self.create_initial(document:, document_type_id:, user: nil, tags: {})
+    revision = Revision.create_initial(
+      document: document,
+      user: user,
+      tags: tags,
+      document_type_id: document_type_id,
+    )
     status = Status.create!(created_by: user,
                             revision_at_creation: revision,
                             state: :draft)

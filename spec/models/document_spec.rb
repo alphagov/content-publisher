@@ -17,6 +17,7 @@ RSpec.describe Document do
       expect(doc.content_id).to eq(content_id)
       expect(doc.current_edition).to be_a(Edition)
       expect(doc.current_edition.created_by).to eq(user)
+      expect(doc.editions.first.revisions.first.metadata_revision.document_type_id).to eq(document_type.id)
     end
   end
 

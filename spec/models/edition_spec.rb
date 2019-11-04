@@ -30,7 +30,11 @@ RSpec.describe Edition do
     let(:user) { build(:user) }
 
     it "creates a current edition" do
-      edition = Edition.create_initial(document, user)
+      edition = Edition.create_initial(
+        document: document,
+        document_type_id: document.document_type_id,
+        user: user,
+      )
 
       expect(edition).to be_a(Edition)
       expect(edition.created_by).to eq(user)
@@ -39,14 +43,22 @@ RSpec.describe Edition do
     end
 
     it "has a revision" do
-      edition = Edition.create_initial(document, user)
+      edition = Edition.create_initial(
+        document: document,
+        document_type_id: document.document_type_id,
+        user: user,
+      )
 
       expect(edition.revision).to be_a(Revision)
       expect(edition.created_by).to eq(user)
     end
 
     it "has a status which is draft" do
-      edition = Edition.create_initial(document, user)
+      edition = Edition.create_initial(
+        document: document,
+        document_type_id: document.document_type_id,
+        user: user,
+      )
 
       expect(edition.status).to be_a(Status)
       expect(edition.status).to be_draft

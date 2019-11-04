@@ -58,7 +58,14 @@ class Document < ApplicationRecord
                          document_type_id: document_type_id,
                          created_by: user)
 
-      document.tap { |d| Edition.create_initial(d, user, tags) }
+      document.tap do |d|
+        Edition.create_initial(
+          document: d,
+          user: user,
+          tags: tags,
+          document_type_id: document_type_id,
+        )
+      end
     end
   end
 
