@@ -2,7 +2,7 @@
 
 module Tasks
   class WhitehallImporter
-    attr_reader :whitehall_document_id, :whitehall_document, :whitehall_import
+    attr_reader :whitehall_document_id, :whitehall_document, :whitehall_import, :user_ids
 
     SUPPORTED_WHITEHALL_STATES = %w(draft published rejected submitted superseded).freeze
     SUPPORTED_LOCALES = %w(en).freeze
@@ -11,6 +11,7 @@ module Tasks
       @whitehall_document_id = whitehall_document_id
       @whitehall_document = whitehall_document
       @whitehall_import = store_json_blob
+      @user_ids = {}
     end
 
     def import
@@ -50,10 +51,9 @@ module Tasks
 
     def create_users(users)
       users.each do |user|
-        next if User.exists?(uid: user["uid"])
-
         user_keys = %w[uid name email organisation_slug organisation_content_id]
-        User.create!(user.slice(*user_keys).merge("permissions" => []))
+        content_publisher_user = User.create_with(user.slice(*user_keys).merge("permissions" => [])).find_or_create_by!(uid: user["uid"])
+        user_ids[user["id"]] = content_publisher_user["id"]
       end
     end
 

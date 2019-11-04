@@ -39,6 +39,17 @@ RSpec.describe Tasks::WhitehallImporter do
     expect { importer.import }.not_to(change { User.count })
   end
 
+  it "creates a user map" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    expected_user_ids = {
+      1 => User.last.id,
+    }
+
+    expect(importer.user_ids).to eq(expected_user_ids)
+  end
+
   it "sets import_from as Whitehall" do
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
