@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_30_093601) do
+ActiveRecord::Schema.define(version: 2019_11_04_131759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -209,6 +209,7 @@ ActiveRecord::Schema.define(version: 2019_10_30_093601) do
     t.bigint "created_by_id"
     t.datetime "proposed_publish_time"
     t.datetime "backdated_to"
+    t.string "document_type_id"
   end
 
   create_table "removals", force: :cascade do |t|
