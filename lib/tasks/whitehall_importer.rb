@@ -16,8 +16,8 @@ module Tasks
 
     def import
       ActiveRecord::Base.transaction do
-        document = create_or_update_document
         create_users(whitehall_document["users"])
+        document = create_or_update_document
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           edition["translations"].each do |translation|
@@ -62,12 +62,16 @@ module Tasks
     end
 
     def create_or_update_document
-      Document.find_or_create_by(
+      first_edition = whitehall_document["editions"].first
+      first_author = first_edition["history"].select { |h| h["event"] == "create" }.first
+
+      Document.find_or_create_by!(
         content_id: whitehall_document["content_id"],
         locale: "en",
         document_type_id: "news_story", ## To be updated once Whitehall exports this value
         created_at: whitehall_document["created_at"],
         updated_at: whitehall_document["updated_at"],
+        created_by_id: user_ids[first_author["whodunnit"]],
         imported_from: "whitehall",
       )
     end

@@ -20,6 +20,13 @@
           "body": "Body"
         }
       ],
+      "history": [
+        {
+          "event": "create",
+          "state": "draft",
+          "whodunnit": 1
+        }
+      ],
       "organisations": [
         {
           "id": 1,
@@ -67,6 +74,13 @@
           "title": "Title",
           "summary": "Summary",
           "body": "Body"
+        }
+      ],
+      "history": [
+        {
+          "event": "create",
+          "state": "draft",
+          "whodunnit": 1
         }
       ],
       "organisations": [

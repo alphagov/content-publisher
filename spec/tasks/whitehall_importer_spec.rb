@@ -50,6 +50,13 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(importer.user_ids).to eq(expected_user_ids)
   end
 
+  it "sets created_by_id as the original author" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    expect(Document.last.created_by_id).to eq(User.last.id)
+  end
+
   it "sets import_from as Whitehall" do
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
