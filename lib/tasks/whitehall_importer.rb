@@ -22,7 +22,7 @@ module Tasks
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           edition["translations"].each do |translation|
             raise AbortImportError, "Edition has an unsupported state" unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
-            next unless SUPPORTED_LOCALES.include?(translation["locale"])
+            raise AbortImportError, "Edition has an unsupported locale" unless SUPPORTED_LOCALES.include?(translation["locale"])
 
             create_edition(document, translation, edition, edition_number + 1)
           end

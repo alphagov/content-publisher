@@ -118,6 +118,13 @@ RSpec.describe Tasks::WhitehallImporter do
     expect { importer.import }.to raise_error(Tasks::AbortImportError)
   end
 
+  it "raises AbortImportError when edition has an unsupported locale" do
+    import_data["editions"][0]["translations"][0]["locale"] = "zz"
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+
+    expect { importer.import }.to raise_error(Tasks::AbortImportError)
+  end
+
   it "changes the ids of embedded contacts" do
     import_data["editions"][0]["translations"][0]["body"] = "[Contact:123]"
     content_id = SecureRandom.uuid
