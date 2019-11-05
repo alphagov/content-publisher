@@ -7,7 +7,10 @@ RSpec.describe Revision do
     let(:document) { build(:document) }
 
     it "creates an empty revision for the document" do
-      revision = Revision.create_initial(document)
+      revision = Revision.create_initial(
+        document: document,
+        document_type_id: document.document_type_id,
+      )
 
       expect(revision).to be_a(Revision)
       expect(revision).not_to be_new_record
@@ -16,7 +19,10 @@ RSpec.describe Revision do
     end
 
     it "sets default change note and update type" do
-      revision = Revision.create_initial(document)
+      revision = Revision.create_initial(
+        document: document,
+        document_type_id: document.document_type_id,
+      )
 
       expect(revision.change_note).to eq("First published.")
       expect(revision.update_type).to eq("major")
@@ -24,7 +30,11 @@ RSpec.describe Revision do
 
     it "can associate records with a user" do
       user = build(:user)
-      revision = Revision.create_initial(document, user)
+      revision = Revision.create_initial(
+        document: document,
+        document_type_id: document.document_type_id,
+        user: user,
+      )
 
       expect(revision.created_by).to eq(user)
       expect(revision.content_revision.created_by).to eq(user)
@@ -34,7 +44,12 @@ RSpec.describe Revision do
 
     it "can set tags" do
       tags = { "type" => %w[value1 value2] }
-      revision = Revision.create_initial(document, nil, tags)
+      revision = Revision.create_initial(
+        document: document,
+        document_type_id: document.document_type_id,
+        user: nil,
+        tags: tags,
+      )
 
       expect(revision.tags).to eq(tags)
     end
