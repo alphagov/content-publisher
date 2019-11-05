@@ -6,6 +6,14 @@ module Tasks
 
     SUPPORTED_WHITEHALL_STATES = %w(draft published rejected submitted superseded).freeze
     SUPPORTED_LOCALES = %w(en).freeze
+    SUPPORTED_DOCUMENT_TYPES = %w(news_story press_release).freeze
+    DOCUMENT_SUB_TYPES = %w[
+      news_article_type
+      publication_type
+      corporate_information_page_type
+      speech_type
+    ].freeze
+
 
     def initialize(whitehall_document_id, whitehall_document)
       @whitehall_document_id = whitehall_document_id
@@ -21,8 +29,8 @@ module Tasks
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           edition["translations"].each do |translation|
-            next unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
-            next unless SUPPORTED_LOCALES.include?(translation["locale"])
+            raise AbortImportError, "Edition has an unsupported state" unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
+            raise AbortImportError, "Edition has an unsupported locale" unless SUPPORTED_LOCALES.include?(translation["locale"])
 
             create_edition(document, translation, edition, edition_number + 1)
           end
@@ -68,7 +76,7 @@ module Tasks
       Document.find_or_create_by!(
         content_id: whitehall_document["content_id"],
         locale: "en",
-        document_type_id: "news_story", ## To be updated once Whitehall exports this value
+        document_type_id: "news_story", ## TODO: This is a placeholder, to be removed after document type is moved to revision
         created_at: whitehall_document["created_at"],
         updated_at: whitehall_document["updated_at"],
         created_by_id: user_ids[first_author["whodunnit"]],
@@ -79,6 +87,9 @@ module Tasks
     def create_edition(document, translation, whitehall_edition, edition_number)
       first_author = whitehall_edition["revision_history"].select { |h| h["event"] == "create" }.first
       last_author = whitehall_edition["revision_history"].last
+
+      document_type_key = DOCUMENT_SUB_TYPES.reject { |t| whitehall_edition[t].nil? }.first
+      raise AbortImportError, "Edition has an unsupported document type" unless SUPPORTED_DOCUMENT_TYPES.include?(whitehall_edition[document_type_key])
 
       revision = Revision.create!(
         document: document,
@@ -95,6 +106,7 @@ module Tasks
         metadata_revision: MetadataRevision.new(
           update_type: whitehall_edition["minor_change"] ? "minor" : "major",
           change_note: whitehall_edition["change_note"],
+          #document_type_id: whitehall_edition[document_type_key], # TODO: uncomment when document type is moved to revision
         ),
         tags_revision: TagsRevision.new(
           tags: {

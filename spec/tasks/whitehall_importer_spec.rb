@@ -111,11 +111,18 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(Edition.last).not_to be_live
   end
 
-  it "skips importing editions with Whitehall states that are not supported" do
+  it "raises AbortImportError when edition has an unsupported state" do
     import_data["editions"][0]["state"] = "not_supported"
     importer = Tasks::WhitehallImporter.new(123, import_data)
 
-    expect { importer.import }.not_to(change { Edition.count })
+    expect { importer.import }.to raise_error(Tasks::AbortImportError)
+  end
+
+  it "raises AbortImportError when edition has an unsupported locale" do
+    import_data["editions"][0]["translations"][0]["locale"] = "zz"
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+
+    expect { importer.import }.to raise_error(Tasks::AbortImportError)
   end
 
   it "changes the ids of embedded contacts" do
@@ -239,6 +246,13 @@ RSpec.describe Tasks::WhitehallImporter do
 
       expect(Edition.second_to_last.last_edited_by_id).to eq(User.second_to_last.id)
       expect(Edition.last.last_edited_by_id).to eq(User.second_to_last.id)
+    end
+
+    it "raises AbortImportError when an edition has an unsupported document type" do
+      import_published_then_drafted_data["editions"][0]["news_article_type"] = "unsupported_document"
+      importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
+
+      expect { importer.import }.to raise_error(Tasks::AbortImportError)
     end
   end
 end
