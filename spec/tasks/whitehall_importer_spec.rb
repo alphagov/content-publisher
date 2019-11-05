@@ -111,11 +111,11 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(Edition.last).not_to be_live
   end
 
-  it "skips importing editions with Whitehall states that are not supported" do
+  it "raises AbortImportError when edition has an unsupported state" do
     import_data["editions"][0]["state"] = "not_supported"
     importer = Tasks::WhitehallImporter.new(123, import_data)
 
-    expect { importer.import }.not_to(change { Edition.count })
+    expect { importer.import }.to raise_error(Tasks::AbortImportError)
   end
 
   it "changes the ids of embedded contacts" do
