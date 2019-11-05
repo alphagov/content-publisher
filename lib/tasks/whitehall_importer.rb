@@ -63,7 +63,7 @@ module Tasks
 
     def create_or_update_document
       first_edition = whitehall_document["editions"].first
-      first_author = first_edition["history"].select { |h| h["event"] == "create" }.first
+      first_author = first_edition["revision_history"].select { |h| h["event"] == "create" }.first
 
       Document.find_or_create_by!(
         content_id: whitehall_document["content_id"],
@@ -77,8 +77,8 @@ module Tasks
     end
 
     def create_edition(document, translation, whitehall_edition, edition_number)
-      first_author = whitehall_edition["history"].select { |h| h["event"] == "create" }.first
-      last_author = whitehall_edition["history"].last
+      first_author = whitehall_edition["revision_history"].select { |h| h["event"] == "create" }.first
+      last_author = whitehall_edition["revision_history"].last
 
       revision = Revision.create!(
         document: document,

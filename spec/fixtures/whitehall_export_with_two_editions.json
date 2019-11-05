@@ -20,7 +20,7 @@
           "body": "Body"
         }
       ],
-      "history": [
+      "revision_history": [
         {
           "event": "create",
           "state": "draft",
@@ -76,7 +76,7 @@
           "body": "Body"
         }
       ],
-      "history": [
+      "revision_history": [
         {
           "event": "create",
           "state": "draft",
