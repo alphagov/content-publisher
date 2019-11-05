@@ -247,5 +247,12 @@ RSpec.describe Tasks::WhitehallImporter do
       expect(Edition.second_to_last.last_edited_by_id).to eq(User.second_to_last.id)
       expect(Edition.last.last_edited_by_id).to eq(User.second_to_last.id)
     end
+
+    it "raises AbortImportError when an edition has an unsupported document type" do
+      import_published_then_drafted_data["editions"][0]["news_article_type"] = "unsupported_document"
+      importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
+
+      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    end
   end
 end

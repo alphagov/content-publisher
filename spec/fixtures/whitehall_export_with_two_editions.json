@@ -11,6 +11,7 @@
       "updated_at": "2019-11-01T12:21:16+00:00",
       "change_note": "First published",
       "state": "draft",
+      "news_article_type": "news_story",
       "translations": [
         {
           "id": 1,
@@ -67,6 +68,7 @@
       "summary": "Summary",
       "change_note": "First published",
       "state": "draft",
+      "news_article_type": "news_story",
       "translations": [
         {
           "id": 2,
