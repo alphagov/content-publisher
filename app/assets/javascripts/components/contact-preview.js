@@ -8,6 +8,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.$module = $module[0]
 
     this.errorMessage = this.$module.querySelector('.js-contact-preview-error-message')
+    this.loadingSpinner = this.$module.querySelector('.js-contact-preview-loading-spinner')
     this.contactPreview = this.$module.querySelector('.js-contact-preview-html')
     this.selectId = this.$module.dataset.for
     this.contactSnippetTemplate = this.$module.dataset.contactSnippetTemplate
@@ -28,12 +29,14 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
   ContactPreview.prototype.showErrorMessage = function () {
     this.$module.classList.add('app-c-contact-preview--hidden')
     this.contactPreview.classList.add('app-c-contact-preview__html--hidden')
+    this.loadingSpinner.classList.add('app-c-contact-preview__loading-spinner--hidden')
     this.errorMessage.classList.remove('app-c-contact-preview__error-message--hidden')
   }
 
   ContactPreview.prototype.hideContactPreview = function () {
     this.$module.classList.add('app-c-contact-preview--hidden')
     this.contactPreview.classList.add('app-c-contact-preview__html--hidden')
+    this.loadingSpinner.classList.add('app-c-contact-preview__loading-spinner--hidden')
     this.errorMessage.classList.add('app-c-contact-preview__error-message--hidden')
   }
 
@@ -41,7 +44,15 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.$module.classList.remove('app-c-contact-preview--hidden')
     this.contactPreview.classList.remove('app-c-contact-preview__html--hidden')
     this.errorMessage.classList.add('app-c-contact-preview__error-message--hidden')
+    this.loadingSpinner.classList.add('app-c-contact-preview__loading-spinner--hidden')
     this.contactPreview.innerHTML = html
+  }
+
+  ContactPreview.prototype.showLoadingSpinner = function (html) {
+    this.$module.classList.remove('app-c-contact-preview--hidden')
+    this.contactPreview.classList.add('app-c-contact-preview__html--hidden')
+    this.errorMessage.classList.add('app-c-contact-preview__error-message--hidden')
+    this.loadingSpinner.classList.remove('app-c-contact-preview__loading-spinner--hidden')
   }
 
   ContactPreview.prototype.fetchContactPreview = function (contactId) {
@@ -54,6 +65,8 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     var controller = new window.AbortController()
     var options = { credentials: 'include', signal: controller.signal, method: 'POST', body: formData }
     setTimeout(function () { controller.abort() }, 15000)
+
+    this.showLoadingSpinner()
 
     return window.fetch(url, options)
       .then(function (response) {

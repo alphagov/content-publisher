@@ -12,6 +12,10 @@
       border: 0;
     }
   }
+
+  .app-c-loading-spinner {
+    padding: govuk-spacing(8);
+  }
 }
 
 .app-c-contact-preview__error-message,
@@ -21,6 +25,7 @@
 
 .app-c-contact-preview--hidden,
 .app-c-contact-preview__error-message--hidden,
-.app-c-contact-preview__html--hidden {
+.app-c-contact-preview__html--hidden,
+.app-c-contact-preview__loading-spinner--hidden {
   display: none;
 }

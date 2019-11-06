@@ -17,6 +17,7 @@ describe('Contact preview component', function () {
       '<div class="app-c-contact-preview app-c-contact-preview--hidden" data-module="contact-preview" data-for="contact-id-select" data-contact-snippet-template="[Contact: #]" data-govspeak-path="/">' +
         '<div class="gem-c-inset-text govuk-inset-text">' +
           '<p class="app-c-contact-preview__error-message app-c-contact-preview__error-message--hidden js-contact-preview-error-message">Unable to generate preview</p>' +
+          '<div class="app-c-contact-preview__loading-spinner app-c-contact-preview__loading-spinner--hidden js-contact-preview-loading-spinner">Loading...</div>' +
           '<div class="app-c-contact-preview__html js-contact-preview-html"></div>' +
         '</div>' +
       '</div>'
@@ -60,6 +61,9 @@ describe('Contact preview component', function () {
 
     var errorMessage = document.querySelector('.js-contact-preview-error-message')
     expect(errorMessage).toBeHidden()
+
+    var loadingContainer = document.querySelector('.js-contact-preview-loading-spinner')
+    expect(loadingContainer).toBeHidden()
   })
 
   it('should remove the preview container if no option is selected', async function () {
