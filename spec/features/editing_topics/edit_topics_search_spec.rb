@@ -33,7 +33,7 @@ RSpec.feature "Edit topics using search", js: true do
   end
 
   def and_i_click_on_edit_topics
-    click_on "Edit Topics"
+    click_on "Change Topics"
   end
 
   def and_i_search_the_topics

@@ -18,7 +18,7 @@ RSpec.feature "Backdating requirements" do
   end
 
   def and_i_click_to_backdate_the_content
-    click_on "Edit Backdate"
+    click_on "Change Backdate"
   end
 
   def and_i_click_save

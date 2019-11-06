@@ -17,7 +17,7 @@ RSpec.feature "Upload a file attachment with requirements issues", js: true do
 
   def when_i_go_to_edit_the_edition
     visit document_path(@edition.document)
-    click_on "Edit Content"
+    click_on "Change Content"
   end
 
   def and_i_go_to_insert_an_attachment

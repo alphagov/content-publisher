@@ -38,7 +38,7 @@ RSpec.feature "Backdate content" do
   end
 
   def when_i_click_to_backdate_the_content
-    click_on "Edit Backdate"
+    click_on "Change Backdate"
   end
 
   def and_i_enter_a_date_to_backdate_the_content_to
@@ -67,7 +67,7 @@ RSpec.feature "Backdate content" do
     expect(page).not_to have_content(
       I18n.t!("documents.show.content_settings.backdate.title"),
     )
-    expect(page).not_to have_content("Edit Backdate")
+    expect(page).not_to have_content("Change Backdate")
   end
 
   def given_there_is_a_published_first_edition

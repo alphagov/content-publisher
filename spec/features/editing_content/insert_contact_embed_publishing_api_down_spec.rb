@@ -17,7 +17,7 @@ RSpec.feature "Insert contact embed when the Publishing API is down", js: true d
 
   def when_i_go_to_edit_the_edition
     visit document_path(@edition.document)
-    click_on "Edit Content"
+    click_on "Change Content"
   end
 
   def and_the_publishing_api_is_down
