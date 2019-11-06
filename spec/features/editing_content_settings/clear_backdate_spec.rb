@@ -26,7 +26,7 @@ RSpec.feature "Clear backdate" do
   end
 
   def when_i_click_to_edit_the_backdate
-    click_on "Edit Backdate"
+    click_on "Change Backdate"
   end
 
   def and_i_click_clear_backdate

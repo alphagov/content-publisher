@@ -36,7 +36,7 @@ RSpec.feature "Edit access limit when the Publishing API is down" do
   end
 
   def and_i_go_to_edit_the_access_limit
-    click_on "Edit Access limiting"
+    click_on "Change Access limiting"
   end
 
   def then_i_see_an_error_message

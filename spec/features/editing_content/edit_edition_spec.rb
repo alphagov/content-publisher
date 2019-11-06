@@ -21,7 +21,7 @@ RSpec.feature "Edit an edition" do
   def when_i_go_to_edit_the_edition
     visit document_path(@edition.document)
     expect(page).to have_content("Existing body")
-    click_on "Edit Content"
+    click_on "Change Content"
   end
 
   def and_i_fill_in_the_content_fields

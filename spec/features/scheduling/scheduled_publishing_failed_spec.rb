@@ -90,6 +90,6 @@ RSpec.feature "Scheduled publishing failed" do
   end
 
   def and_i_can_edit_the_edition
-    expect(page).to have_content("Edit Content")
+    expect(page).to have_content("Change Content")
   end
 end

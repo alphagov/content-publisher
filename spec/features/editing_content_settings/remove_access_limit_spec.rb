@@ -32,7 +32,7 @@ RSpec.feature "Remove access limit" do
   def and_i_go_to_edit_the_access_limit
     @asset_manager_request = stub_asset_manager_updates_any_asset
     @publishing_api_request = stub_any_publishing_api_put_content
-    click_on "Edit Access limit"
+    click_on "Change Access limit"
   end
 
   def and_i_remove_the_access_limit
@@ -48,7 +48,7 @@ RSpec.feature "Remove access limit" do
   def and_the_other_user_can_edit_the_edition
     login_as(@other_org_user)
     visit document_path(@edition.document)
-    expect(page).to have_content("Edit Access limiting")
+    expect(page).to have_content("Change Access limiting")
   end
 
   def and_the_preview_creation_succeeded

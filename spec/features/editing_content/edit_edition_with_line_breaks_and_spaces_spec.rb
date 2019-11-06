@@ -18,7 +18,7 @@ RSpec.feature "Edit an edition with fields containing line breaks and spaces" do
   def when_i_go_to_edit_the_edition
     visit document_path(@edition.document)
     expect(page).to have_content("Existing title")
-    click_on "Edit Content"
+    click_on "Change Content"
   end
 
   def and_i_fill_in_the_title_with_leading_and_trailing_line_breaks_and_spaces
