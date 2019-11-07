@@ -31,6 +31,20 @@
     search: true,
   } %>
 
+  <% if @markdown_code.present? %>
+    <% contact_preview = raw(GovspeakDocument.new(@markdown_code, @edition).in_app_html) %>
+  <% end %>
+
+  <%= render "components/contact_preview", {
+    error_message: t("contact_embed.new.preview_error"),
+    data_attributes: {
+      "for": "contact-id-select",
+      "contact-snippet-template": t("contact_embed.new.contact_markdown", id: "#"),
+      "govspeak-path": govspeak_preview_path(@edition.document)
+    },
+    html: contact_preview
+  } %>
+
   <%= render "govuk_publishing_components/components/button", {
     text: rendering_context == "modal" ? "Insert contact" : "Show markdown code",
     margin_bottom: true
@@ -49,9 +63,7 @@
     margin_bottom: 3,
   } %>
 
-  <p class="govuk-body"><%= t("contact_embed.new.contact_instructions") %></p>
+  <%= tag.p t("contact_embed.new.contact_instructions"), class: "govuk-body" %>
 <% end %>
 
-<%= tag.p class: "govuk-body" do %>
-  <%= render_govspeak(t("contact_embed.new.contact_not_available_govspeak")) %>
-<% end %>
+<%= render_govspeak(t("contact_embed.new.contact_not_available_govspeak")) %>

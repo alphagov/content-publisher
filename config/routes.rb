@@ -78,6 +78,9 @@ Rails.application.routes.draw do
 
     post "/editions" => "editions#create", as: :create_edition
 
+    get "/contact-embed" => "contact_embed#new"
+    post "/contact-embed" => "contact_embed#create"
+
     post "/govspeak-preview" => "govspeak_preview#to_html", as: :govspeak_preview
 
     get "/file-attachments" => "file_attachments#index", as: :file_attachments
@@ -97,9 +100,6 @@ Rails.application.routes.draw do
 
   get "/video-embed" => "video_embed#new", as: :video_embed
   post "/video-embed" => "video_embed#create", as: :create_video_embed
-
-  get "/contact-embed" => "contact_embed#new"
-  post "/contact-embed" => "contact_embed#create"
 
   scope via: :all do
     match "/400" => "errors#bad_request"

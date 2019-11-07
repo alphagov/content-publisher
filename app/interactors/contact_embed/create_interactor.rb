@@ -3,15 +3,21 @@
 class ContactEmbed::CreateInteractor < ApplicationInteractor
   delegate :params,
            :markdown_code,
+           :edition,
            :issues,
            to: :context
 
   def call
+    find_edition
     check_for_issues
     generate_markdown_code
   end
 
 private
+
+  def find_edition
+    context.edition = Edition.find_current(document: params[:document])
+  end
 
   def check_for_issues
     return if params[:contact_id].present?

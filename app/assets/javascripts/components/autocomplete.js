@@ -64,13 +64,20 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         }
       },
       onConfirm: function (result) {
+        var previouslySelectedIndex = $select.selectedIndex
         var value = result && result.value
         var options = [].filter.call($select.options, function (option) {
           return option.value === value
         })
 
         if (options.length) {
-          options[0].selected = true
+          options[0].selected = true // mirror selection
+        } else {
+          $select.selectedIndex = -1 // no option selected
+        }
+
+        if (previouslySelectedIndex !== $select.selectedIndex) {
+          $select.dispatchEvent(new window.Event('change'))
         }
       }
     })
