@@ -257,57 +257,111 @@ RSpec.describe Tasks::WhitehallImporter do
     let(:image) { Image.last }
     let(:image_metadata_revision) { Image::MetadataRevision.last }
     let(:image_blob_revision) { Image::BlobRevision.last }
-
-    before do
+    let(:importer) { Tasks::WhitehallImporter.new(123, import_data) }
+    let(:import_data) do
       img_url = "https://assets.publishing.service.gov.uk/government/uploads/valid-image.jpg"
       binary_image = File.open(File.join(fixtures_path, "files", "960x640.jpg"), "rb").read
       stub_request(:get, img_url).to_return(status: 200, body: binary_image)
 
-      import_data["editions"][0]["images"] = JSON.parse([
-        {
+      whitehall_export_with_one_edition.tap do |export|
+        export["editions"][0]["images"] = JSON.parse([
+          {
+            "id": 194072,
+            "alt_text": "Alt text for image",
+            "caption": "This is a caption",
+            "created_at": "2018-11-30T05:08:56.000+00:00",
+            "updated_at": "2018-11-30T05:19:53.000+00:00",
+            "url": img_url,
+            "variants": {}
+          }
+        ].to_json)
+      end
+    end
+
+    context "when there is one image" do
+      subject! do
+        importer.import
+        import_data["editions"][0]["images"][0]
+      end
+
+      it "creates an Image" do
+        expect(image.created_by_id).to be_nil
+        expect(image.created_at).to eq(subject["created_at"])
+      end
+
+      it "creates an Image::BlobRevision" do
+        expect(image_blob_revision.content_type).to eq("image/jpeg")
+        expect(image_blob_revision.blob.class.name).to eq("ActiveStorage::Blob")
+        expect(image_blob_revision.filename).to eq("valid-image.jpg")
+      end
+
+      it "creates an Image::MetadataRevision" do
+        expect(image_metadata_revision.caption).to eq(subject["caption"])
+        expect(image_metadata_revision.alt_text).to eq(subject["alt_text"])
+        expect(image_metadata_revision.created_at).to eq(subject["created_at"])
+        expect(image_metadata_revision.credit).to be_nil
+        expect(image_metadata_revision.created_by_id).to be_nil
+      end
+
+      it "creates an Image::MetadataRevision" do
+        expect(image_metadata_revision.caption).to eq(subject["caption"])
+        expect(image_metadata_revision.alt_text).to eq(subject["alt_text"])
+        expect(image_metadata_revision.created_at).to eq(subject["created_at"])
+        expect(image_metadata_revision.credit).to be_nil
+        expect(image_metadata_revision.created_by_id).to be_nil
+      end
+
+      it "creates an Image::Revision that references all the above" do
+        image_revision = edition.image_revisions.first
+        expect(edition.revisions.last).to eq(revision)
+        expect(image_revision.image).to eq(image)
+        expect(image_revision.blob_revision).to eq(image_blob_revision)
+        expect(image_revision.metadata_revision).to eq(image_metadata_revision)
+        expect(image_revision.revisions.last).to eq(revision)
+      end
+    end
+
+    context "there are multiple images to import" do
+      let(:import_data) do
+        img_url_1 = "https://assets.publishing.service.gov.uk/government/uploads/valid-image.jpg"
+        img_url_2 = "https://assets.publishing.service.gov.uk/government/uploads/another-valid-image.jpg"
+        
+        binary_image = File.open(File.join(fixtures_path, "files", "960x640.jpg"), "rb").read
+        stub_request(:get, img_url_1).to_return(status: 200, body: binary_image)
+        stub_request(:get, img_url_2).to_return(status: 200, body: binary_image)
+  
+        img_object = {
           "id": 194072,
           "alt_text": "Alt text for image",
           "caption": "This is a caption",
           "created_at": "2018-11-30T05:08:56.000+00:00",
           "updated_at": "2018-11-30T05:19:53.000+00:00",
-          "url": img_url,
+          "url": img_url_1,
           "variants": {}
         }
-      ].to_json)
-      importer = Tasks::WhitehallImporter.new(123, import_data)
-      importer.import
-    end
 
-    subject do
-      import_data["editions"][0]["images"][0]
-    end
+        whitehall_export_with_one_edition.tap do |export|
+          export["editions"][0]["images"][0] = JSON.parse(img_object.to_json)
+          export["editions"][0]["images"][1] = JSON.parse(img_object.tap { |img| img[:url] = img_url_2 }.to_json)
+        end
+      end
 
-    it "creates an Image" do
-      expect(image.created_by_id).to be_nil
-      expect(image.created_at).to eq(subject["created_at"])
-    end
+      before { importer.import }
 
-    it "creates an Image::BlobRevision" do
-      expect(image_blob_revision.content_type).to eq("image/jpeg")
-      expect(image_blob_revision.blob.class.name).to eq("ActiveStorage::Blob")
-      expect(image_blob_revision.filename).to eq("valid-image.jpg")
-    end
+      it "imports all images" do
+        expect(edition.image_revisions.count).to eq(2)
 
-    it "creates an Image::MetadataRevision" do
-      expect(image_metadata_revision.caption).to eq(subject["caption"])
-      expect(image_metadata_revision.alt_text).to eq(subject["alt_text"])
-      expect(image_metadata_revision.created_at).to eq(subject["created_at"])
-      expect(image_metadata_revision.credit).to be_nil
-      expect(image_metadata_revision.created_by_id).to be_nil
-    end
+        first_image = edition.image_revisions.first
+        second_image = edition.image_revisions.last
 
-    it "creates an Image::Revision that references all the above" do
-      image_revision = edition.image_revisions.last
-      expect(edition.revisions.last).to eq(revision)
-      expect(image_revision.image).to eq(image)
-      expect(image_revision.blob_revision).to eq(image_blob_revision)
-      expect(image_revision.metadata_revision).to eq(image_metadata_revision)
-      expect(image_revision.revisions.last).to eq(revision)
+        expect(first_image.image).to eq(Image.first)
+        expect(first_image.blob_revision).to eq(Image::BlobRevision.first)
+        expect(first_image.metadata_revision).to eq(Image::MetadataRevision.first)
+
+        expect(second_image.image).to eq(Image.last)
+        expect(second_image.blob_revision).to eq(Image::BlobRevision.last)
+        expect(second_image.metadata_revision).to eq(Image::MetadataRevision.last)
+      end
     end
   end
 
