@@ -87,7 +87,6 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(Edition.last.update_type).to eq("minor")
   end
 
-
   it "sets the correct states when Whitehall document is force published" do
     import_data["editions"][0]["state"] = "published"
     import_data["editions"][0]["force_published"] = true
