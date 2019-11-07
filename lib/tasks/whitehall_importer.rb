@@ -107,6 +107,7 @@ module Tasks
             body: embed_contacts(translation["body"], whitehall_edition.fetch("contacts", [])),
           },
         ),
+        image_revisions: create_image_revisions(whitehall_edition["images"]),
         metadata_revision: MetadataRevision.new(
           update_type: whitehall_edition["minor_change"] ? "minor" : "major",
           change_note: whitehall_edition["change_note"],
@@ -193,6 +194,45 @@ module Tasks
       raise AbortImportError, "Edition is missing a #{state} event" unless event
 
       event
+    end
+
+    def create_image_revisions(whitehall_images)
+      whitehall_images_added = []
+      add_filenames_to_images_hash(whitehall_images).map do |whitehall_image|
+        image_revision = Image::Revision.create!(
+          image: Image.create!(
+            created_at: whitehall_image["created_at"],
+          ),
+          metadata_revision: Image::MetadataRevision.create!(
+            caption: whitehall_image["caption"],
+            alt_text: whitehall_image["alt_text"],
+            credit: whitehall_image["credit"],
+            created_at: whitehall_image["created_at"],
+          ),
+          blob_revision: create_blob_from_image(
+            whitehall_image,
+            whitehall_images_added,
+          ),
+        )
+        whitehall_images_added << whitehall_image["filename"]
+        image_revision
+      end
+    end
+
+    def add_filenames_to_images_hash(whitehall_images)
+      whitehall_images.map do |memo|
+        memo["filename"] = File.basename(URI.parse(memo["url"]).path)
+        memo
+      end
+    end
+
+    def create_blob_from_image(whitehall_image, images_added_so_far)
+      raw_file = URI.parse(whitehall_image["url"]).open
+      blob_revision = ImageBlobService.call(
+        temp_image: ImageNormaliser.new(raw_file).normalise,
+        filename: UniqueFilenameService.call(images_added_so_far, whitehall_image["filename"]),
+      )
+      blob_revision
     end
 
     def state(whitehall_edition)

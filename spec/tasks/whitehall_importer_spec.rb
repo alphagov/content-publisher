@@ -251,6 +251,66 @@ RSpec.describe Tasks::WhitehallImporter do
     end
   end
 
+  context "when importing images" do
+    let(:edition) { Edition.last }
+    let(:revision) { Revision.last }
+    let(:image) { Image.last }
+    let(:image_metadata_revision) { Image::MetadataRevision.last }
+    let(:image_blob_revision) { Image::BlobRevision.last }
+
+    before do
+      img_url = "https://assets.publishing.service.gov.uk/government/uploads/valid-image.jpg"
+      binary_image = File.open(File.join(fixtures_path, "files", "960x640.jpg"), "rb").read
+      stub_request(:get, img_url).to_return(status: 200, body: binary_image)
+
+      import_data["editions"][0]["images"] = JSON.parse([
+        {
+          "id": 194072,
+          "alt_text": "Alt text for image",
+          "caption": "This is a caption",
+          "created_at": "2018-11-30T05:08:56.000+00:00",
+          "updated_at": "2018-11-30T05:19:53.000+00:00",
+          "url": img_url,
+          "variants": {}
+        }
+      ].to_json)
+      importer = Tasks::WhitehallImporter.new(123, import_data)
+      importer.import
+    end
+
+    subject do
+      import_data["editions"][0]["images"][0]
+    end
+
+    it "creates an Image" do
+      expect(image.created_by_id).to be_nil
+      expect(image.created_at).to eq(subject["created_at"])
+    end
+
+    it "creates an Image::BlobRevision" do
+      expect(image_blob_revision.content_type).to eq("image/jpeg")
+      expect(image_blob_revision.blob.class.name).to eq("ActiveStorage::Blob")
+      expect(image_blob_revision.filename).to eq("valid-image.jpg")
+    end
+
+    it "creates an Image::MetadataRevision" do
+      expect(image_metadata_revision.caption).to eq(subject["caption"])
+      expect(image_metadata_revision.alt_text).to eq(subject["alt_text"])
+      expect(image_metadata_revision.created_at).to eq(subject["created_at"])
+      expect(image_metadata_revision.credit).to be_nil
+      expect(image_metadata_revision.created_by_id).to be_nil
+    end
+
+    it "creates an Image::Revision that references all the above" do
+      image_revision = edition.image_revisions.last
+      expect(edition.revisions.last).to eq(revision)
+      expect(image_revision.image).to eq(image)
+      expect(image_revision.blob_revision).to eq(image_blob_revision)
+      expect(image_revision.metadata_revision).to eq(image_metadata_revision)
+      expect(image_revision.revisions.last).to eq(revision)
+    end
+  end
+
   context "when an imported document has more than one edition" do
     let(:import_published_then_drafted_data) { whitehall_export_with_two_editions }
 
