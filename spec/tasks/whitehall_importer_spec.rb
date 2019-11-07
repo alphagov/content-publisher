@@ -363,6 +363,16 @@ RSpec.describe Tasks::WhitehallImporter do
         expect(second_image.metadata_revision).to eq(Image::MetadataRevision.last)
       end
     end
+
+    context "there are multiple images to import, with the same name" do
+      let(:import_data) { whitehall_export_with_images("multiple_images_with_same_name.json") }
+
+      it "renames the file so that it's unique" do
+        expect(edition.image_revisions.count).to eq(2)
+        expect(Image::BlobRevision.first.filename).to eq("valid-image.jpg")
+        expect(Image::BlobRevision.last.filename).to eq("valid-image-1.jpg")
+      end
+    end
   end
 
   context "when an imported document has more than one edition" do
