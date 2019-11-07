@@ -172,6 +172,36 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(Edition.last.contents["body"]).to eq("[Contact:#{content_id}]")
   end
 
+  it "sets role appointments" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    imported_role_appointment = import_data["editions"][0]["role_appointments"][0]
+    edition = Edition.last
+
+    expect(edition.tags["role_appointments"].first).to eq(imported_role_appointment["content_id"])
+  end
+
+  it "sets topical events" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    imported_topical_events = import_data["editions"][0]["topical_events"][0]
+    edition = Edition.last
+
+    expect(edition.tags["topical_events"].first).to eq(imported_topical_events["content_id"])
+  end
+
+  it "sets world locations" do
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    imported_world_locations = import_data["editions"][0]["world_locations"][0]
+    edition = Edition.last
+
+    expect(edition.tags["world_locations"].first).to eq(imported_world_locations["content_id"])
+  end
+
   context "when importing organisation associations" do
     it "sets a primary_publishing_organisation" do
       importer = Tasks::WhitehallImporter.new(123, import_data)
@@ -219,36 +249,6 @@ RSpec.describe Tasks::WhitehallImporter do
 
       expect(edition.supporting_organisation_ids.first).to eq(imported_organisation["content_id"])
     end
-  end
-
-  it "sets role appointments" do
-    importer = Tasks::WhitehallImporter.new(123, import_data)
-    importer.import
-
-    imported_role_appointment = import_data["editions"][0]["role_appointments"][0]
-    edition = Edition.last
-
-    expect(edition.tags["role_appointments"].first).to eq(imported_role_appointment["content_id"])
-  end
-
-  it "sets topical events" do
-    importer = Tasks::WhitehallImporter.new(123, import_data)
-    importer.import
-
-    imported_topical_events = import_data["editions"][0]["topical_events"][0]
-    edition = Edition.last
-
-    expect(edition.tags["topical_events"].first).to eq(imported_topical_events["content_id"])
-  end
-
-  it "sets world locations" do
-    importer = Tasks::WhitehallImporter.new(123, import_data)
-    importer.import
-
-    imported_world_locations = import_data["editions"][0]["world_locations"][0]
-    edition = Edition.last
-
-    expect(edition.tags["world_locations"].first).to eq(imported_world_locations["content_id"])
   end
 
   context "when an imported document has more than one edition" do
