@@ -1,7 +1,6 @@
 @import url(asset-path("accessible-autocomplete/dist/accessible-autocomplete.min.css"));
 
-// TODO: Replace with $govuk-focus-colour when the new colour scheme is released
-$app-focus-colour: #ffdd00;
+$app-focus-colour: $govuk-focus-colour;
 
 .app-c-autocomplete {
   margin-bottom: govuk-spacing(6);
@@ -26,6 +25,13 @@ $app-focus-colour: #ffdd00;
   @include govuk-font(19);
   z-index: 1;
   color: $govuk-text-colour;
+}
+
+.autocomplete__input:focus,
+.autocomplete__input--focused {
+  outline: $govuk-focus-width solid $govuk-focus-colour;
+  outline-offset: $govuk-border-width-form-element;
+  box-shadow: $govuk-input-border-colour 0 0 0 $govuk-border-width-form-element;
 }
 
 .autocomplete__hint {
@@ -71,6 +77,7 @@ $app-focus-colour: #ffdd00;
 
   .autocomplete__remove-option {
     @include govuk-font(16);
+    @extend %govuk-link;
   }
 }
 
