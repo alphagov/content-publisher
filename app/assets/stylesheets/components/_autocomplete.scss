@@ -105,6 +105,12 @@ $app-focus-colour: $govuk-focus-colour;
 }
 
 .js-enabled {
+  .app-c-autocomplete {
+    .govuk-select[multiple] {
+      height: 40px;
+    }
+  }
+
   .app-c-autocomplete__multiselect-instructions {
     display: none;
   }
