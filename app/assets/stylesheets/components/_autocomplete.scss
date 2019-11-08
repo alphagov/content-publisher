@@ -1,7 +1,14 @@
 @import url(asset-path("accessible-autocomplete/dist/accessible-autocomplete.min.css"));
 
-// TODO: Replace with $govuk-focus-colour when the new colour scheme is released
-$app-focus-colour: #ffdd00;
+$app-focus-colour: $govuk-focus-colour;
+
+.app-c-autocomplete {
+  margin-bottom: govuk-spacing(6);
+
+  @include govuk-media-query($from: tablet) {
+    margin-bottom: govuk-spacing(4);
+  }
+}
 
 .app-c-autocomplete--search {
   .autocomplete__input {
@@ -20,6 +27,13 @@ $app-focus-colour: #ffdd00;
   color: $govuk-text-colour;
 }
 
+.autocomplete__input:focus,
+.autocomplete__input--focused {
+  outline: $govuk-focus-width solid $govuk-focus-colour;
+  outline-offset: $govuk-border-width-form-element;
+  box-shadow: $govuk-input-border-colour 0 0 0 $govuk-border-width-form-element;
+}
+
 .autocomplete__hint {
   @include govuk-font(19);
   z-index: 1;
@@ -30,8 +44,7 @@ $app-focus-colour: #ffdd00;
   z-index: 0;
 }
 
-.autocomplete__option,
-.autocomplete__selected-option {
+.autocomplete__option {
   @include govuk-font(19);
   color: $govuk-text-colour;
 
@@ -42,22 +55,30 @@ $app-focus-colour: #ffdd00;
 }
 
 .autocomplete__list {
-  margin-top: govuk-spacing(3);
-}
+  margin-top: 0;
 
-.autocomplete__list .autocomplete__option,
-.autocomplete__list .autocomplete__option:hover {
-  padding: 5px 6px;
+  .autocomplete__option,
+  .autocomplete__option:hover {
+    padding: 5px 6px;
 
-  &:before {
-    position: relative;
-    top: 3px;
-    padding-top: 2px;
+    &:before {
+      position: relative;
+      top: 3px;
+      padding-top: 2px;
+    }
   }
-}
 
-.autocomplete__list .autocomplete__remove-option {
-  @include govuk-font(16);
+  .autocomplete__selected-option,
+  .autocomplete__selected-option:hover {
+    @include govuk-font(19);
+    margin: govuk-spacing(2) 0 0;
+    color: $govuk-text-colour;
+  }
+
+  .autocomplete__remove-option {
+    @include govuk-font(16);
+    @extend %govuk-link;
+  }
 }
 
 .autocomplete__option-hint {
