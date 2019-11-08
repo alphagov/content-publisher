@@ -38,8 +38,7 @@ $app-focus-colour: #ffdd00;
   z-index: 0;
 }
 
-.autocomplete__option,
-.autocomplete__selected-option {
+.autocomplete__option {
   @include govuk-font(19);
   color: $govuk-text-colour;
 
@@ -50,22 +49,29 @@ $app-focus-colour: #ffdd00;
 }
 
 .autocomplete__list {
-  margin-top: govuk-spacing(3);
-}
+  margin-top: 0;
 
-.autocomplete__list .autocomplete__option,
-.autocomplete__list .autocomplete__option:hover {
-  padding: 5px 6px;
+  .autocomplete__option,
+  .autocomplete__option:hover {
+    padding: 5px 6px;
 
-  &:before {
-    position: relative;
-    top: 3px;
-    padding-top: 2px;
+    &:before {
+      position: relative;
+      top: 3px;
+      padding-top: 2px;
+    }
   }
-}
 
-.autocomplete__list .autocomplete__remove-option {
-  @include govuk-font(16);
+  .autocomplete__selected-option,
+  .autocomplete__selected-option:hover {
+    @include govuk-font(19);
+    margin: govuk-spacing(2) 0 0;
+    color: $govuk-text-colour;
+  }
+
+  .autocomplete__remove-option {
+    @include govuk-font(16);
+  }
 }
 
 .autocomplete__option-hint {
