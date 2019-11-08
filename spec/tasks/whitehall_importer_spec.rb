@@ -257,7 +257,6 @@ RSpec.describe Tasks::WhitehallImporter do
     let(:image) { Image.last }
     let(:image_metadata_revision) { Image::MetadataRevision.last }
     let(:image_blob_revision) { Image::BlobRevision.last }
-    let(:importer) { Tasks::WhitehallImporter.new(123, import_data) }
     let(:import_data) do
       img_url = "https://assets.publishing.service.gov.uk/government/uploads/valid-image.jpg"
       binary_image = File.open(File.join(fixtures_path, "files", "960x640.jpg"), "rb").read
@@ -277,10 +276,12 @@ RSpec.describe Tasks::WhitehallImporter do
         ].to_json)
       end
     end
+    let(:importer) { Tasks::WhitehallImporter.new(123, import_data) }
 
     context "when there is one image" do
-      subject! do
-        importer.import
+      before { importer.import }
+
+      subject do
         import_data["editions"][0]["images"][0]
       end
 
@@ -323,26 +324,13 @@ RSpec.describe Tasks::WhitehallImporter do
 
     context "there are multiple images to import" do
       let(:import_data) do
-        img_url_1 = "https://assets.publishing.service.gov.uk/government/uploads/valid-image.jpg"
-        img_url_2 = "https://assets.publishing.service.gov.uk/government/uploads/another-valid-image.jpg"
-        
-        binary_image = File.open(File.join(fixtures_path, "files", "960x640.jpg"), "rb").read
-        stub_request(:get, img_url_1).to_return(status: 200, body: binary_image)
-        stub_request(:get, img_url_2).to_return(status: 200, body: binary_image)
-  
-        img_object = {
-          "id": 194072,
-          "alt_text": "Alt text for image",
-          "caption": "This is a caption",
-          "created_at": "2018-11-30T05:08:56.000+00:00",
-          "updated_at": "2018-11-30T05:19:53.000+00:00",
-          "url": img_url_1,
-          "variants": {}
-        }
+        super().tap do |export|
+          another_img_url = "https://assets.publishing.service.gov.uk/government/uploads/another-valid-image.jpg"
+          binary_image = File.open(File.join(fixtures_path, "files", "960x640.jpg"), "rb").read
+          stub_request(:get, another_img_url).to_return(status: 200, body: binary_image)
 
-        whitehall_export_with_one_edition.tap do |export|
-          export["editions"][0]["images"][0] = JSON.parse(img_object.to_json)
-          export["editions"][0]["images"][1] = JSON.parse(img_object.tap { |img| img[:url] = img_url_2 }.to_json)
+          export["editions"][0]["images"][1] = export["editions"][0]["images"][0]
+          export["editions"][0]["images"][1]["url"] = another_img_url
         end
       end
 
@@ -365,12 +353,37 @@ RSpec.describe Tasks::WhitehallImporter do
     end
 
     context "there are multiple images to import, with the same name" do
-      let(:import_data) { whitehall_export_with_images("multiple_images_with_same_name.json") }
+      let(:import_data) do
+        super().tap do |export|
+          export["editions"][0]["images"][1] = export["editions"][0]["images"][0]
+        end
+      end
+
+      before { importer.import }
 
       it "renames the file so that it's unique" do
         expect(edition.image_revisions.count).to eq(2)
         expect(Image::BlobRevision.first.filename).to eq("valid-image.jpg")
         expect(Image::BlobRevision.last.filename).to eq("valid-image-1.jpg")
+      end
+    end
+
+    context "at least one of the images is an SVG" do
+      let(:svg_url) { "https://assets.publishing.service.gov.uk/government/uploads/vector.svg" }
+      let(:import_data) do
+        super().tap do |export|
+          svg_image = File.open(File.join(fixtures_path, "files", "coffee.svg"), "rb").read
+          stub_request(:get, svg_url).to_return(status: 200, body: svg_image)
+
+          export["editions"][0]["images"][0]["url"] = svg_url
+        end
+      end
+
+      it "aborts the import" do
+        expect { importer.import }.to raise_error(
+          Tasks::WhitehallImporter::AbortImportError,
+          "SVG detected: #{svg_url}",
+        )
       end
     end
   end

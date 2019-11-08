@@ -198,7 +198,7 @@ module Tasks
 
     def create_image_revisions(whitehall_images)
       whitehall_images_added = []
-      add_filenames_to_images_hash(whitehall_images).map do |whitehall_image|
+      validate_images_and_add_fields(whitehall_images).map do |whitehall_image|
         image_revision = Image::Revision.create!(
           image: Image.create!(
             created_at: whitehall_image["created_at"],
@@ -219,9 +219,13 @@ module Tasks
       end
     end
 
-    def add_filenames_to_images_hash(whitehall_images)
+    def validate_images_and_add_fields(whitehall_images)
       whitehall_images.map do |memo|
         memo["filename"] = File.basename(URI.parse(memo["url"]).path)
+        if memo["filename"].end_with?(".svg")
+          raise AbortImportError, "SVG detected: #{memo['url']}"
+        end
+
         memo
       end
     end
