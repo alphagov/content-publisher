@@ -150,6 +150,8 @@ module Tasks
                                  current_author_history_event(whitehall_edition)
                                end
 
+      raise AbortImportError, "Cannot create an initial status without a revision history event" unless revision_history_event
+
       Status.new(
         state: state(whitehall_edition),
         revision_at_creation: revision,
@@ -159,6 +161,8 @@ module Tasks
 
     def set_withdrawn_status(whitehall_edition, edition)
       revision_history_event = current_author_history_event(whitehall_edition)
+
+      raise AbortImportError, "Cannot set a withdrawn status without a revision history event" unless revision_history_event
 
       edition.status = Status.new(
         state: whitehall_edition["state"],

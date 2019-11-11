@@ -138,6 +138,13 @@ RSpec.describe Tasks::WhitehallImporter do
     expect { importer.import }.to raise_error(Tasks::AbortImportError)
   end
 
+  it "raises AbortImportError when revision history is missing for state" do
+    import_data["editions"][0]["state"] = "published"
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+
+    expect { importer.import }.to raise_error(Tasks::AbortImportError)
+  end
+
   it "raises AbortImportError when edition has an unsupported locale" do
     import_data["editions"][0]["translations"][0]["locale"] = "zz"
     importer = Tasks::WhitehallImporter.new(123, import_data)
@@ -307,6 +314,13 @@ RSpec.describe Tasks::WhitehallImporter do
 
       expect(Status.first.created_by_id).to eq(User.second_to_last.id)
       expect(Edition.last.status.created_by_id).to eq(User.last.id)
+    end
+
+    it "raises AbortImportError when revision history cannot be found for state" do
+      import_data_for_withdrawn_edition["editions"][0]["revision_history"].delete_at(1)
+      importer = Tasks::WhitehallImporter.new(123, import_data_for_withdrawn_edition)
+
+      expect { importer.import }.to raise_error(Tasks::AbortImportError)
     end
   end
 end
