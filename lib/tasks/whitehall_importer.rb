@@ -174,6 +174,7 @@ module Tasks
         revision_at_creation: edition.revision,
         created_by_id: user_ids[revision_history_event["whodunnit"]],
         created_at: revision_history_event["created_at"],
+        details: state_details(whitehall_edition, edition),
       )
 
       edition.save!
@@ -185,6 +186,16 @@ module Tasks
 
     def published_author_history_event(whitehall_edition)
       whitehall_edition["revision_history"].select { |h| h["state"] == "published" }.last
+    end
+
+    def state_details(whitehall_edition, edition)
+      return unless whitehall_edition["state"] == "withdrawn"
+
+      Withdrawal.new(
+        published_status: edition.status,
+        public_explanation: whitehall_edition["unpublishing"]["explanation"],
+        withdrawn_at: whitehall_edition["unpublishing"]["created_at"],
+      )
     end
 
     def state(whitehall_edition)

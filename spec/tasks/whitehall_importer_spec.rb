@@ -350,5 +350,17 @@ RSpec.describe Tasks::WhitehallImporter do
 
       expect { importer.import }.to raise_error(Tasks::AbortImportError)
     end
+
+    it "sets the Withdrawal details for a withdrawn document" do
+      importer = Tasks::WhitehallImporter.new(123, import_data_for_withdrawn_edition)
+      importer.import
+
+      import_unpublishing_data = import_data_for_withdrawn_edition["editions"][0]["unpublishing"]
+      details = Edition.last.status.details
+
+      expect(details.published_status_id).to eq(Status.first.id)
+      expect(details.public_explanation).to eq(import_unpublishing_data["explanation"])
+      expect(details.withdrawn_at).to eq(import_unpublishing_data["created_at"])
+    end
   end
 end
