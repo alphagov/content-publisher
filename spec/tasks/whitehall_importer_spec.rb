@@ -145,6 +145,17 @@ RSpec.describe Tasks::WhitehallImporter do
     expect { importer.import }.to raise_error(Tasks::AbortImportError)
   end
 
+  it "sets the created_at datetime of the document state" do
+    import_data["editions"][0]["revision_history"][0].merge!("created_at" => 3.days.ago)
+
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    imported_created_at = import_data["editions"][0]["revision_history"][0]["created_at"]
+
+    expect(Edition.last.status.created_at).to be_within(1.second).of imported_created_at
+  end
+
   it "raises AbortImportError when edition has an unsupported locale" do
     import_data["editions"][0]["translations"][0]["locale"] = "zz"
     importer = Tasks::WhitehallImporter.new(123, import_data)
@@ -321,6 +332,16 @@ RSpec.describe Tasks::WhitehallImporter do
       importer = Tasks::WhitehallImporter.new(123, import_data_for_withdrawn_edition)
 
       expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    end
+
+    it "sets the created_at datetime of the initial and current document states" do
+      importer = Tasks::WhitehallImporter.new(123, import_data_for_withdrawn_edition)
+      importer.import
+
+      import_revision_history = import_data_for_withdrawn_edition["editions"][0]["revision_history"]
+
+      expect(Status.first.created_at).to eq(import_revision_history[1]["created_at"])
+      expect(Edition.last.status.created_at).to eq(import_revision_history[2]["created_at"])
     end
   end
 end

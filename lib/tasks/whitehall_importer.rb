@@ -156,6 +156,7 @@ module Tasks
         state: state(whitehall_edition),
         revision_at_creation: revision,
         created_by_id: user_ids[revision_history_event["whodunnit"]],
+        created_at: revision_history_event["created_at"],
       )
     end
 
@@ -168,6 +169,7 @@ module Tasks
         state: whitehall_edition["state"],
         revision_at_creation: edition.revision,
         created_by_id: user_ids[revision_history_event["whodunnit"]],
+        created_at: revision_history_event["created_at"],
       )
 
       edition.save!
