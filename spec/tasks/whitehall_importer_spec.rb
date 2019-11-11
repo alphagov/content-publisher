@@ -280,5 +280,13 @@ RSpec.describe Tasks::WhitehallImporter do
       expect(Edition.last.status).to be_withdrawn
       expect(Edition.last).not_to be_live
     end
+
+    it "sets the created_by_id of each status if more than one state needs to be recorded" do
+      importer = Tasks::WhitehallImporter.new(123, import_data_for_withdrawn_edition)
+      importer.import
+
+      expect(Status.first.created_by_id).to eq(User.second_to_last.id)
+      expect(Edition.last.status.created_by_id).to eq(User.last.id)
+    end
   end
 end

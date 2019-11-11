@@ -144,19 +144,33 @@ module Tasks
     end
 
     def initial_status(whitehall_edition, revision)
+      revision_history_event = if whitehall_edition["state"] == "withdrawn"
+                                 published_author_history_event(whitehall_edition)
+                               else
+                                 whitehall_edition["revision_history"].last
+                               end
+
       Status.new(
         state: state(whitehall_edition),
         revision_at_creation: revision,
+        created_by_id: user_ids[revision_history_event["whodunnit"]],
       )
     end
 
     def set_withdrawn_status(whitehall_edition, edition)
+      revision_history_event = whitehall_edition["revision_history"].last
+
       edition.status = Status.new(
         state: whitehall_edition["state"],
         revision_at_creation: edition.revision,
+        created_by_id: user_ids[revision_history_event["whodunnit"]],
       )
 
       edition.save!
+    end
+
+    def published_author_history_event(whitehall_edition)
+      whitehall_edition["revision_history"].select { |h| h["state"] == "published" }.last
     end
 
     def state(whitehall_edition)
