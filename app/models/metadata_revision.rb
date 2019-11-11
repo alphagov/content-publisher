@@ -13,4 +13,8 @@ class MetadataRevision < ApplicationRecord
   def readonly?
     !new_record?
   end
+
+  def document_type
+    DocumentType.find(document_type_id)
+  end
 end
