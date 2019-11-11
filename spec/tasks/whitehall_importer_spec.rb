@@ -255,4 +255,16 @@ RSpec.describe Tasks::WhitehallImporter do
       expect { importer.import }.to raise_error(Tasks::AbortImportError)
     end
   end
+
+  context "when importing a withdrawn document" do
+    let(:import_data_for_withdrawn_edition) { whitehall_export_with_one_withdrawn_edition }
+
+    it "sets the correct state when Whitehall document state is withdrawn" do
+      importer = Tasks::WhitehallImporter.new(123, import_data_for_withdrawn_edition)
+      importer.import
+
+      expect(Edition.last.status).to be_withdrawn
+      expect(Edition.last).not_to be_live
+    end
+  end
 end

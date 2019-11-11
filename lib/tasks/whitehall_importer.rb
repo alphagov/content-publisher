@@ -4,7 +4,14 @@ module Tasks
   class WhitehallImporter
     attr_reader :whitehall_document_id, :whitehall_document, :whitehall_import, :user_ids
 
-    SUPPORTED_WHITEHALL_STATES = %w(draft published rejected submitted superseded).freeze
+    SUPPORTED_WHITEHALL_STATES = %w(
+      draft
+      published
+      rejected
+      submitted
+      superseded
+      withdrawn
+    ).freeze
     SUPPORTED_LOCALES = %w(en).freeze
     SUPPORTED_DOCUMENT_TYPES = %w(news_story press_release).freeze
     DOCUMENT_SUB_TYPES = %w[
@@ -143,6 +150,7 @@ module Tasks
       when "superseded" then "superseded"
       when "published"
         whitehall_edition["force_published"] ? "published_but_needs_2i" : "published"
+      when "withdrawn" then "withdrawn"
       else
         "submitted_for_review"
       end
