@@ -4,7 +4,7 @@ module Tasks
   class WhitehallImporter
     attr_reader :whitehall_document_id, :whitehall_document, :whitehall_import, :user_ids
 
-    SUPPORTED_WHITEHALL_STATES = %w(draft published rejected submitted superseded).freeze
+    SUPPORTED_IMPORT_STATES = %w(draft published rejected submitted superseded removed).freeze
     SUPPORTED_LOCALES = %w(en).freeze
     SUPPORTED_DOCUMENT_TYPES = %w(news_story press_release).freeze
     DOCUMENT_SUB_TYPES = %w[
@@ -26,10 +26,11 @@ module Tasks
       ActiveRecord::Base.transaction do
         create_users(whitehall_document["users"])
         document = create_or_update_document
+        amend_unpublished_edition(whitehall_document["editions"].last)
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           edition["translations"].each do |translation|
-            raise AbortImportError, "Edition has an unsupported state" unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
+            raise AbortImportError, "Edition has an unsupported state" unless SUPPORTED_IMPORT_STATES.include?(edition["state"])
             raise AbortImportError, "Edition has an unsupported locale" unless SUPPORTED_LOCALES.include?(translation["locale"])
 
             create_edition(document, translation, edition, edition_number + 1)
@@ -66,7 +67,7 @@ module Tasks
     end
 
     def most_recent_edition
-      whitehall_document["editions"].max_by { |e| e["created_at"] }
+      whitehall_document["editions"].max_by { |e| e["revision_history"].last["created_at"] }
     end
 
     def create_or_update_document
@@ -84,8 +85,58 @@ module Tasks
       )
     end
 
+    def amend_unpublished_edition(edition)
+      return unless removed_edition?(edition)
+
+      if unedited_removal?(edition)
+        edition["state"] = "removed"
+      else
+        whitehall_document["editions"].concat([removed_edition(edition), edited_removed_edition(edition)])
+        whitehall_document["editions"].reject! { |whitehall_edition| whitehall_edition == edition }
+      end
+    end
+
+    def removed_edition(edition)
+      removed_edition = edition.deep_dup
+      removed_version_index = last_published_history_index(edition) + 1
+
+      removed_edition.tap do |e|
+        e["state"] = "removed"
+        e["revision_history"] = e["revision_history"][0..removed_version_index]
+        e["updated_at"] = e["revision_history"].last["created_at"]
+      end
+    end
+
+    def edited_removed_edition(edition)
+      edited_removed_edition = edition.deep_dup
+      edited_version_index = last_published_history_index(edition) + 2
+
+      edited_removed_edition.tap do |e|
+        e["revision_history"] = e["revision_history"][edited_version_index..-1]
+        e["created_at"] = e["revision_history"].first["created_at"]
+        e["updated_at"] = e["revision_history"].last["created_at"]
+        e["unpublishing"] = nil
+      end
+    end
+
+    def last_published_history_index(edition)
+      published_indexes = edition["revision_history"].map.with_index do |historic_point, index|
+        index if historic_point["state"] == "published"
+      end
+
+      published_indexes.compact.last
+    end
+
+    def unedited_removal?(edition)
+      edition["revision_history"].second_to_last["state"] == "published"
+    end
+
+    def removed_edition?(edition)
+      edition["unpublishing"] && %w[submitted rejected draft].include?(edition["state"])
+    end
+
     def create_edition(document, translation, whitehall_edition, edition_number)
-      first_author = whitehall_edition["revision_history"].select { |h| h["event"] == "create" }.first
+      first_author = whitehall_edition["revision_history"].first
       last_author = whitehall_edition["revision_history"].last
 
       document_type_key = DOCUMENT_SUB_TYPES.reject { |t| whitehall_edition[t].nil? }.first
@@ -129,7 +180,7 @@ module Tasks
           state: state(whitehall_edition),
           revision_at_creation: revision,
         ),
-        current: whitehall_edition["id"] == most_recent_edition["id"],
+        current: whitehall_edition["revision_history"].last == most_recent_edition["revision_history"].last,
         live: live?(whitehall_edition),
         created_at: whitehall_edition["created_at"],
         updated_at: whitehall_edition["updated_at"],
@@ -144,6 +195,7 @@ module Tasks
       when "superseded" then "superseded"
       when "published"
         whitehall_edition["force_published"] ? "published_but_needs_2i" : "published"
+      when "removed" then "removed"
       else
         "submitted_for_review"
       end

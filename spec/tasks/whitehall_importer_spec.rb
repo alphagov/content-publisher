@@ -255,4 +255,77 @@ RSpec.describe Tasks::WhitehallImporter do
       expect { importer.import }.to raise_error(Tasks::AbortImportError)
     end
   end
+
+  context "when a unpublished edition has not been edited" do
+    before do
+      Tasks::WhitehallImporter.new(123, whitehall_export_with_unpublished_edition).import
+    end
+
+    it "creates an edition with a status of removed" do
+      expect(Edition.last.removed?).to be_truthy
+    end
+  end
+
+  context "when a unpublished edition has been edited" do
+    before do
+      time = Time.zone.now
+      export = whitehall_export_with_unpublished_edition.deep_dup
+      export["editions"].first.tap do |e|
+        e["updated_at"] = time
+        e["revision_history"] << {
+          "event" => "update",
+          "state" => "draft",
+          "created_at" => time,
+          "whodunnit" => 2,
+        }
+      end
+
+      Tasks::WhitehallImporter.new(123, export).import
+    end
+
+    it "creates two editions" do
+      expect(Edition.count).to eq(2)
+    end
+
+    it "creates an edition with a status of removed" do
+      expect(Edition.first.removed?).to be_truthy
+    end
+
+    it "creates a draft edition and assigns as current" do
+      expect(Edition.last.draft?).to be_truthy
+      expect(Edition.last.current).to be_truthy
+    end
+  end
+
+  context "when a unpublished edition has been submitted for 2i" do
+    before do
+      time = Time.zone.now
+      export = whitehall_export_with_unpublished_edition.deep_dup
+      export["editions"].first.tap do |e|
+        e["updated_at"] = time
+        e["state"] = "submitted"
+        e["revision_history"] << {
+          "event" => "update",
+          "state" => "submitted",
+          "created_at" => time,
+          "whodunnit" => 1,
+        }
+      end
+
+      Tasks::WhitehallImporter.new(123, export).import
+    end
+
+    it "creates two editions" do
+      expect(Edition.count).to eq(2)
+    end
+
+    it "creates an edition with a status of removed" do
+      expect(Edition.first.removed?).to be_truthy
+    end
+
+    it "creates a draft edition and assigns as current" do
+      expect(Edition.last.submitted_for_review?).to be_truthy
+      expect(Edition.last.current).to be_truthy
+    end
+  end
 end
