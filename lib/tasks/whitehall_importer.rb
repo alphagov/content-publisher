@@ -176,10 +176,7 @@ module Tasks
         number: edition_number,
         revision_synced: true,
         revision: revision,
-        status: Status.new(
-          state: state(whitehall_edition),
-          revision_at_creation: revision,
-        ),
+        status: status(whitehall_edition, revision),
         current: whitehall_edition["revision_history"].last == most_recent_edition["revision_history"].last,
         live: live?(whitehall_edition),
         created_at: whitehall_edition["created_at"],
@@ -187,6 +184,26 @@ module Tasks
         created_by_id: user_ids[first_author["whodunnit"]],
         last_edited_by_id: user_ids[last_author["whodunnit"]],
       )
+    end
+
+    def status(whitehall_edition, revision)
+      Status.new(
+        state: state(whitehall_edition),
+        revision_at_creation: revision,
+        details: details(whitehall_edition),
+      )
+    end
+
+    def details(whitehall_edition)
+      if whitehall_edition["state"] == "removed"
+        unpublishing = whitehall_edition["unpublishing"]
+
+        Removal.new(
+          explanatory_note: unpublishing["explanation"],
+          alternative_path: unpublishing["alternative_url"],
+          redirect: unpublishing["alternative_url"].present?,
+        )
+      end
     end
 
     def state(whitehall_edition)

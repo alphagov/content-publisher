@@ -264,6 +264,15 @@ RSpec.describe Tasks::WhitehallImporter do
     it "creates an edition with a status of removed" do
       expect(Edition.last.removed?).to be_truthy
     end
+
+    it "creates a removal record" do
+      removal = Edition.last.status.details
+      unpublishing_data = whitehall_export_with_unpublished_edition["editions"].first["unpublishing"]
+
+      expect(removal.explanatory_note).to eq(unpublishing_data["explanation"])
+      expect(removal.alternative_path).to eq(unpublishing_data["alternative_url"])
+      expect(removal.redirect).to be_truthy
+    end
   end
 
   context "when a unpublished edition has been edited" do
@@ -289,6 +298,15 @@ RSpec.describe Tasks::WhitehallImporter do
 
     it "creates an edition with a status of removed" do
       expect(Edition.first.removed?).to be_truthy
+    end
+
+    it "creates a removal record" do
+      removal = Edition.first.status.details
+      unpublishing_data = whitehall_export_with_unpublished_edition["editions"].first["unpublishing"]
+
+      expect(removal.explanatory_note).to eq(unpublishing_data["explanation"])
+      expect(removal.alternative_path).to eq(unpublishing_data["alternative_url"])
+      expect(removal.redirect).to be_truthy
     end
 
     it "creates a draft edition and assigns as current" do
@@ -321,6 +339,15 @@ RSpec.describe Tasks::WhitehallImporter do
 
     it "creates an edition with a status of removed" do
       expect(Edition.first.removed?).to be_truthy
+    end
+
+    it "creates a removal record" do
+      removal = Edition.first.status.details
+      unpublishing_data = whitehall_export_with_unpublished_edition["editions"].first["unpublishing"]
+
+      expect(removal.explanatory_note).to eq(unpublishing_data["explanation"])
+      expect(removal.alternative_path).to eq(unpublishing_data["alternative_url"])
+      expect(removal.redirect).to be_truthy
     end
 
     it "creates a draft edition and assigns as current" do
