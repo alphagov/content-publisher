@@ -131,16 +131,20 @@ module Tasks
         number: edition_number,
         revision_synced: true,
         revision: revision,
-        status: Status.new(
-          state: state(whitehall_edition),
-          revision_at_creation: revision,
-        ),
+        status: initial_status(whitehall_edition, revision),
         current: whitehall_edition["id"] == most_recent_edition["id"],
         live: live?(whitehall_edition),
         created_at: whitehall_edition["created_at"],
         updated_at: whitehall_edition["updated_at"],
         created_by_id: user_ids[first_author["whodunnit"]],
         last_edited_by_id: user_ids[last_author["whodunnit"]],
+      )
+    end
+
+    def initial_status(whitehall_edition, revision)
+      Status.new(
+        state: state(whitehall_edition),
+        revision_at_creation: revision,
       )
     end
 
