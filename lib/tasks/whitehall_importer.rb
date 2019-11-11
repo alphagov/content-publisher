@@ -165,6 +165,10 @@ module Tasks
 
       raise AbortImportError, "Cannot set a withdrawn status without a revision history event" unless revision_history_event
 
+      if whitehall_edition["unpublishing"].blank?
+        raise AbortImportError, "Cannot create withdrawn status without an unpublishing"
+      end
+
       edition.status = Status.new(
         state: whitehall_edition["state"],
         revision_at_creation: edition.revision,

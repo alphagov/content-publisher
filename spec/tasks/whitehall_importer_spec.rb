@@ -343,5 +343,12 @@ RSpec.describe Tasks::WhitehallImporter do
       expect(Status.first.created_at).to eq(import_revision_history[1]["created_at"])
       expect(Edition.last.status.created_at).to eq(import_revision_history[2]["created_at"])
     end
+
+    it "raises AbortImportError when document is withdrawn but has no unpublishing details" do
+      import_data_for_withdrawn_edition["editions"][0]["unpublishing"] = nil
+      importer = Tasks::WhitehallImporter.new(123, import_data_for_withdrawn_edition)
+
+      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    end
   end
 end
