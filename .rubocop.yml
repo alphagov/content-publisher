@@ -1,3 +1,8 @@
+inherit_gem:
+  rubocop-govuk:
+    - config/default.yml
+    - config/rails.yml
+
 AllCops:
   TargetRubyVersion: 2.5
   Exclude:
@@ -13,9 +18,6 @@ Metrics/BlockLength:
     - 'lib/tasks/**/*.rake'
     - 'spec/**/*.rb'
     - 'db/migrate/*.rb'
-
-Rails:
-  Enabled: true
 
 Rails/InverseOf:
   Enabled: false
