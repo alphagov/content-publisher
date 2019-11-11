@@ -16,3 +16,5 @@ en:
         topic_update_conflict:
           title: Somebody else changed the topics before you could
           description_govspeak:  Your changes have not been saved. Please try again.
+      suggestions:
+        description: Suggested topics for your document

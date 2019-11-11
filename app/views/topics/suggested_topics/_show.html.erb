@@ -1,0 +1,30 @@
+<ol class="topic-suggestions__list">
+  <li class="topic-suggestions__list-item topic-suggestions__list-item-suggestion">
+    <div>
+      <div class="govuk-breadcrumbs">
+        <%= render "govuk_publishing_components/components/checkboxes", {
+            name: "suggested_topics[]",
+            items: [
+                {
+                    id: "topic-suggestion-#{suggested_topic.topic.content_id}",
+                    value: suggested_topic.topic.content_id,
+                    label: suggested_topic.topic.breadcrumb.map { |breadcrumb| "<span class='govuk-breadcrumbs__list-item'>#{breadcrumb.title}</span>" }.join.html_safe
+                }
+            ]
+        } %>
+      </div>
+      <div class="topic-suggestions__list-item-more-info">
+        <span class="govuk-body topic-suggestions__list-item-more-info-text" data-toggle="modal" data-target="<%= suggested_topic.modal_id %>" style="">More info</span>
+      </div>
+    </div>
+  </li>
+</ol>
+<ol class="topic-suggestions__list-item topic-suggestions__list-item-suggestion-feedback">
+  <li class="">
+    <%= render "govuk_publishing_components/components/hint", {
+        text: "Help us improve, is this a good suggestion?
+                    <span class='topic-suggestions__feedback-link'>Yes</span> /
+                    <span class='topic-suggestions__feedback-link'>No</span>".html_safe
+    } %>
+  </li>
+</ol>

@@ -10,6 +10,7 @@ class TopicsController < ApplicationController
     @edition = Edition.find_current(document: params[:document])
     @version = @edition.document_topics.version
     @topics = @edition.topics
+    @suggested_topics = SuggestTopicsService.call(@edition)
   end
 
   def update

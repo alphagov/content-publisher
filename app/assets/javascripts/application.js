@@ -24,6 +24,7 @@
 //= require components/multi-section-viewer.js
 //= require components/url-preview.js
 //= require miller-columns-element/dist/index.umd.js
+//= require components/topic-suggestion.js
 
 //= require modal/modal-fetch.js
 //= require modal/modal-editor.js

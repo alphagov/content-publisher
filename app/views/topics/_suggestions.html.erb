@@ -1,0 +1,50 @@
+<div class="govuk-grid-column-two-thirds">
+  <p class="govuk-body"><%= t("topics.edit.suggestions.description") %></p>
+</div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full topic-suggestions">
+    <% @suggested_topics.reject(&:hidden?).each do |suggested_topic| %>
+      <%= render "topics/suggested_topics/show", suggested_topic: suggested_topic %>
+    <% end %>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full topic-suggestions">
+    <% if @suggested_topics.select(&:hidden?).any? %>
+      <%= render "govuk_publishing_components/components/details", {
+          title: "Show more"
+      } do %>
+        <% @suggested_topics.select(&:hidden?).each do |suggested_topic| %>
+          <%= render "topics/suggested_topics/show", suggested_topic: suggested_topic %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="govuk-grid-row govuk-!-margin-top-4">
+  <div class="govuk-grid-column-full">
+    <p class="govuk-body">If you <a href="https://forms.gle/yMKgfnUYSDAVQ7nn6" target="_blank">give us feedback</a>, we can improve the suggestions</p>
+  </div>
+</div>
+
+<%= content_for :below_footer do %>
+  <% @suggested_topics.each do |suggested_topic| %>
+    <%= render "govuk_publishing_components/components/modal_dialogue", {
+        id: suggested_topic.modal_id,
+        wide: true,
+    } do %>
+      <h3>Help us improve these suggestions</h3>
+      <p>
+        <%= "We suggested '#{suggested_topic.topic.title}' because of the #{"word".pluralize(suggested_topic.explanation.count)} #{suggested_topic.explanation.map{ |word| "'#{word}'"}.to_sentence}" %>
+      </p>
+      <p>Was this a good suggestion? <span class='topic-suggestions__feedback-link'>Yes</span> / <span class='topic-suggestions__feedback-link'>No</span></p>
+
+      <h3>Other content in this topic</h3>
+      <%= render "govuk_publishing_components/components/document_list", {
+          items: suggested_topic.content
+      } %>
+    <% end %>
+  <% end %>
+<% end %>

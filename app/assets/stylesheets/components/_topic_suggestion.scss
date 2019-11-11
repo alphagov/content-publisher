@@ -1,0 +1,56 @@
+.topic-suggestions__list {
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+}
+
+.topic-suggestions__list .govuk-breadcrumbs__list-item {
+  font-size: 16px;
+}
+
+.topic-suggestions__list .govuk-breadcrumbs {
+  display: inline-block;
+}
+
+.topic-suggestions__list .gem-c-checkboxes {
+  margin-bottom: 0px !important;
+}
+
+.topic-suggestions__list-item {
+  position: relative;
+  margin-bottom: 0px !important;
+  list-style-type: none;
+}
+
+.topic-suggestions__list-item-suggestion {
+  border-top: 1px solid #b1b4b6;
+}
+
+.topic-suggestions__list-item-more-info{
+  padding-top: 20px;
+  float: right;
+}
+
+.topic-suggestions__list-item .topic-suggestions__list-item-more-info-text {
+  text-decoration: underline;
+  color: #1d70b8;
+  cursor: pointer;
+}
+
+.topic-suggestions__list-item-suggestion-feedback {
+  margin-top: 0px;
+}
+
+.topic-suggestions__list-item-suggestion-feedback .govuk-hint {
+  font-size: 14px;
+}
+
+.topic-suggestions__feedback-link {
+  text-decoration: underline;
+  color: #1d70b8;
+  cursor: pointer;
+}
+
+.topic-suggestions__content-tag {
+  margin-left: 10px;
+}
+
