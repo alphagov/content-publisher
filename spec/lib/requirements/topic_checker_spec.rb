@@ -12,7 +12,7 @@ RSpec.describe Requirements::TopicChecker do
 
     context "when the Publishing API is available" do
       let(:document_type) { build :document_type, topics: true }
-      let(:document) { build :document, document_type_id: document_type.id }
+      let(:document) { build :document }
 
       before do
         stub_publishing_api_has_links(
@@ -32,7 +32,7 @@ RSpec.describe Requirements::TopicChecker do
 
     context "when the Publishing API is down" do
       let(:document_type) { build :document_type, topics: true }
-      let(:document) { build :document, document_type_id: document_type.id }
+      let(:document) { build :document }
 
       before do
         stub_publishing_api_isnt_available

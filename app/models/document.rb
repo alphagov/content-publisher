@@ -7,7 +7,7 @@
 #
 # This model is mutable
 class Document < ApplicationRecord
-  attr_readonly :content_id, :locale, :document_type_id
+  attr_readonly :content_id, :locale
 
   belongs_to :created_by, class_name: "User", optional: true
 
@@ -57,7 +57,6 @@ class Document < ApplicationRecord
     transaction do
       document = create!(content_id: content_id,
                          locale: locale,
-                         document_type_id: document_type_id,
                          created_by: user)
 
       document.tap do |d|
@@ -81,10 +80,6 @@ class Document < ApplicationRecord
 
   def to_param
     content_id + ":" + locale
-  end
-
-  def document_type
-    DocumentType.find(document_type_id)
   end
 
   def document_topics
