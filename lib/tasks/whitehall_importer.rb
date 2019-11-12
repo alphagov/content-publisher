@@ -187,9 +187,12 @@ module Tasks
     end
 
     def status(whitehall_edition, revision)
+      author_id = whitehall_edition["revision_history"].last["whodunnit"]
+
       Status.new(
         state: state(whitehall_edition),
         revision_at_creation: revision,
+        created_by_id: user_ids[author_id],
         details: details(whitehall_edition),
       )
     end

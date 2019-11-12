@@ -262,7 +262,10 @@ RSpec.describe Tasks::WhitehallImporter do
     end
 
     it "creates an edition with a status of removed" do
+      status = Edition.first.status
+
       expect(Edition.last.removed?).to be_truthy
+      expect(status.created_by_id).to eq(User.last.id)
     end
 
     it "creates a removal record" do
@@ -297,7 +300,10 @@ RSpec.describe Tasks::WhitehallImporter do
     end
 
     it "creates an edition with a status of removed" do
+      status = Edition.first.status
+
       expect(Edition.first.removed?).to be_truthy
+      expect(status.created_by_id).to eq(User.last.id)
     end
 
     it "creates a removal record" do
@@ -310,8 +316,11 @@ RSpec.describe Tasks::WhitehallImporter do
     end
 
     it "creates a draft edition and assigns as current" do
+      status = Edition.first.status
+
       expect(Edition.last.draft?).to be_truthy
       expect(Edition.last.current).to be_truthy
+      expect(status.created_by_id).to eq(User.last.id)
     end
   end
 
@@ -338,7 +347,10 @@ RSpec.describe Tasks::WhitehallImporter do
     end
 
     it "creates an edition with a status of removed" do
+      status = Edition.first.status
+
       expect(Edition.first.removed?).to be_truthy
+      expect(status.created_by_id).to eq(User.last.id)
     end
 
     it "creates a removal record" do
@@ -351,8 +363,11 @@ RSpec.describe Tasks::WhitehallImporter do
     end
 
     it "creates a draft edition and assigns as current" do
+      status = Edition.last.status
+
       expect(Edition.last.submitted_for_review?).to be_truthy
       expect(Edition.last.current).to be_truthy
+      expect(status.created_by_id).to eq(User.last.id)
     end
   end
 end
