@@ -28,7 +28,6 @@ FactoryBot.define do
           created_by: edition.created_by,
           content_id: evaluator.content_id,
           locale: evaluator.locale,
-          document_type_id: evaluator.document_type_id,
           first_published_at: evaluator.first_published_at,
         )
       end
@@ -46,6 +45,7 @@ FactoryBot.define do
           :revision,
           created_by: edition.created_by,
           document: edition.document,
+          document_type_id: evaluator.document_type_id,
           title: evaluator.title,
           summary: evaluator.summary,
           base_path: evaluator.base_path,

@@ -5,6 +5,7 @@ FactoryBot.define do
     transient do
       title { SecureRandom.alphanumeric(10) }
       base_path { title ? "/prefix/#{title.parameterize}" : nil }
+      document_type_id { build(:document_type, path_prefix: "/prefix").id }
       summary { nil }
       contents { {} }
       tags do
@@ -51,6 +52,7 @@ FactoryBot.define do
           created_by: revision.created_by,
           proposed_publish_time: evaluator.proposed_publish_time,
           backdated_to: evaluator.backdated_to,
+          document_type_id: evaluator.document_type_id,
         )
       end
 

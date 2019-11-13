@@ -17,7 +17,7 @@ class EditionFilter
   end
 
   def editions
-    revision_joins = { revision: %i[content_revision tags_revision] }
+    revision_joins = { revision: %i[content_revision tags_revision metadata_revision] }
     scope = Edition.where(current: true)
                    .left_joins(:access_limit)
                    .joins(revision_joins, :status, :document)
@@ -64,7 +64,7 @@ private
                    "%#{sanitize_sql_like(value)}%",
                    "%#{sanitize_sql_like(value)}%")
       when :document_type
-        memo.where("documents.document_type_id": value)
+        memo.where("metadata_revisions.document_type_id": value)
       when :status
         if value == "published"
           memo.where("statuses.state": %w[published published_but_needs_2i])
