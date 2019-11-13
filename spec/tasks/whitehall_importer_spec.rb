@@ -304,7 +304,7 @@ RSpec.describe Tasks::WhitehallImporter do
       expect(Status.count).to eq(2)
       expect(Status.first.state).to eq("published")
       expect(Edition.last.status).to be_withdrawn
-      expect(Edition.last).not_to be_live
+      expect(Edition.last).to be_live
     end
 
     it "sets the correct states when Whitehall document state is withdrawn and was force_published" do
@@ -316,7 +316,7 @@ RSpec.describe Tasks::WhitehallImporter do
       expect(Status.count).to eq(2)
       expect(Status.first.state).to eq("published_but_needs_2i")
       expect(Edition.last.status).to be_withdrawn
-      expect(Edition.last).not_to be_live
+      expect(Edition.last).to be_live
     end
 
     it "sets the created_by_id of each status if more than one state needs to be recorded" do

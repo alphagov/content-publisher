@@ -210,7 +210,7 @@ module Tasks
     end
 
     def live?(whitehall_edition)
-      whitehall_edition["state"] == "published"
+      whitehall_edition["state"].in?(%w(published withdrawn))
     end
 
     def embed_contacts(body, contacts)
