@@ -67,6 +67,11 @@ RSpec.describe Tasks::WhitehallImporter do
 
   it "sets the correct states when Whitehall document state is 'published'" do
     import_data["editions"][0]["state"] = "published"
+    import_data["editions"][0]["revision_history"] << {
+      "event" => "update",
+      "state" => "published",
+      "whodunnit" => 1,
+    }
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 
@@ -86,6 +91,11 @@ RSpec.describe Tasks::WhitehallImporter do
   it "sets the correct states when Whitehall document is force published" do
     import_data["editions"][0]["state"] = "published"
     import_data["editions"][0]["force_published"] = true
+    import_data["editions"][0]["revision_history"] << {
+      "event" => "update",
+      "state" => "published",
+      "whodunnit" => 1,
+    }
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 
@@ -95,6 +105,11 @@ RSpec.describe Tasks::WhitehallImporter do
 
   it "sets the correct states when Whitehall document state is 'rejected'" do
     import_data["editions"][0]["state"] = "rejected"
+    import_data["editions"][0]["revision_history"] << {
+      "event" => "update",
+      "state" => "rejected",
+      "whodunnit" => 1,
+    }
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 
@@ -104,6 +119,11 @@ RSpec.describe Tasks::WhitehallImporter do
 
   it "sets the correct states when Whitehall document state is 'submitted'" do
     import_data["editions"][0]["state"] = "submitted"
+    import_data["editions"][0]["revision_history"] << {
+      "event" => "update",
+      "state" => "submitted",
+      "whodunnit" => 1,
+    }
     importer = Tasks::WhitehallImporter.new(123, import_data)
     importer.import
 

@@ -147,7 +147,7 @@ module Tasks
       revision_history_event = if whitehall_edition["state"] == "withdrawn"
                                  published_author_history_event(whitehall_edition)
                                else
-                                 whitehall_edition["revision_history"].last
+                                 current_author_history_event(whitehall_edition)
                                end
 
       Status.new(
@@ -158,7 +158,7 @@ module Tasks
     end
 
     def set_withdrawn_status(whitehall_edition, edition)
-      revision_history_event = whitehall_edition["revision_history"].last
+      revision_history_event = current_author_history_event(whitehall_edition)
 
       edition.status = Status.new(
         state: whitehall_edition["state"],
@@ -167,6 +167,10 @@ module Tasks
       )
 
       edition.save!
+    end
+
+    def current_author_history_event(whitehall_edition)
+      whitehall_edition["revision_history"].select { |h| h["state"] == whitehall_edition["state"] }.last
     end
 
     def published_author_history_event(whitehall_edition)
