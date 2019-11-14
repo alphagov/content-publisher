@@ -401,6 +401,41 @@ RSpec.describe Tasks::WhitehallImporter do
         )
       end
     end
+
+    context "the same image is referenced across multiple editions" do
+      let(:import_data) do
+        img_url = "https://assets.publishing.service.gov.uk/government/uploads/valid-image.jpg"
+        binary_image = File.open(File.join(fixtures_path, "files", "960x640.jpg"), "rb").read
+        stub_request(:get, img_url).to_return(status: 200, body: binary_image)
+  
+        image = JSON.parse([
+          {
+            "id": 194072,
+            "alt_text": "Alt text for image",
+            "caption": "This is a caption",
+            "created_at": "2018-11-30T05:08:56.000+00:00",
+            "updated_at": "2018-11-30T05:19:53.000+00:00",
+            "url": img_url,
+            "variants": {}
+          }
+        ].to_json)
+
+        whitehall_export_with_two_editions.tap do |export|
+          export["editions"][0]["images"] = image
+          export["editions"][1]["images"] = image
+        end
+      end
+
+      before { importer.import }
+
+      it "should import the images twice - we don't mind" do
+        expect(Revision.count).to eq(2)
+        expect(Edition.count).to eq(2)
+        expect(Image.count).to eq(2)
+        expect(Image::BlobRevision.count).to eq(2)
+        expect(Image::MetadataRevision.count).to eq(2)
+      end
+    end
   end
 
   context "when an imported document has more than one edition" do
