@@ -1,0 +1,112 @@
+{
+  "id": 1,
+  "created_at": "2019-11-01T12:21:16+00:00",
+  "updated_at": "2019-11-01T12:21:16+00:00",
+  "slug": "some-news-document",
+  "content_id": "b98b768d-5393-4088-8a12-3f4a26cc20cc",
+  "editions": [
+    {
+      "id": 1,
+      "created_at": "2019-11-01T12:21:16+00:00",
+      "updated_at": "2019-11-03T12:21:16+00:00",
+      "change_note": "First published",
+      "state": "withdrawn",
+      "news_article_type": "news_story",
+      "translations": [
+        {
+          "id": 1,
+          "locale": "en",
+          "title": "Title",
+          "summary": "Summary",
+          "body": "Body"
+        }
+      ],
+      "revision_history": [
+        {
+          "event": "create",
+          "state": "draft",
+          "whodunnit": 1,
+          "created_at": "2019-11-01T12:21:16+00:00"
+        },
+        {
+          "event": "update",
+          "state": "published",
+          "whodunnit": 2,
+          "created_at": "2019-11-02T12:21:16+00:00"
+        },
+        {
+          "event": "update",
+          "state": "withdrawn",
+          "whodunnit": 3,
+          "created_at": "2019-11-03T12:21:16+00:00"
+        }
+      ],
+      "organisations": [
+        {
+          "id": 1,
+          "content_id": "424ba2bd-9d2e-4167-b05a-b9fb55d08a6f",
+          "lead": true,
+          "lead_ordering": 1
+        },
+        {
+          "id": 2,
+          "content_id": "bf88b646-9ef0-4303-8a17-5a529afa5274",
+          "lead": false
+        }
+      ],
+      "role_appointments": [
+        {
+          "id": 1,
+          "content_id": "a12d02cc-a753-451a-be23-d7089fc17bac"
+        }
+      ],
+      "topical_events": [
+        {
+          "id": 1,
+          "content_id": "22b08ca1-26cd-4565-bb47-f4c0b224970c"
+        }
+      ],
+      "world_locations": [
+        {
+          "id": 1,
+          "content_id": "9e80a56d-f9ee-4a15-8792-66e98be3dcd2"
+        }
+      ],
+      "unpublishing": {
+        "id": 1,
+        "explanation": "User facing explanation",
+        "alternative_url": "",
+        "created_at": "2019-11-07T16:12:52.000+00:00",
+        "updated_at": "2019-11-07T16:12:52.000+00:00",
+        "redirect": false,
+        "unpublishing_reason": "No longer current government policy/activity"
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "A Person",
+      "uid": "36d5154e-d3b7-4e3e-aad8-32a50fc9430e",
+      "email": "a-publisher@department.gov.uk",
+      "organisation_slug": "a-government-department",
+      "organisation_content_id": "01892f23-b069-43f5-8404-d082f8dffcb9"
+    },
+    {
+      "id": 2,
+      "name": "Another Person",
+      "uid": "b4a2ba47-5990-4456-b952-0a1d24b82c18",
+      "email": "another-publisher@department.gov.uk",
+      "organisation_slug": "a-government-department",
+      "organisation_content_id": "01892f23-b069-43f5-8404-d082f8dffcb9"
+    },
+    {
+      "id": 3,
+      "name": "An extra Person",
+      "uid": "2e1d3a3d-c44d-4a7e-a38a-ff62de3e4001",
+      "email": "an-extra-publisher@department.gov.uk",
+      "organisation_slug": "a-government-department",
+      "organisation_content_id": "01892f23-b069-43f5-8404-d082f8dffcb9"
+    }
+  ]
+}
