@@ -135,14 +135,14 @@ RSpec.describe Tasks::WhitehallImporter do
     import_data["editions"][0]["state"] = "not_supported"
     importer = Tasks::WhitehallImporter.new(123, import_data)
 
-    expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    expect { importer.import }.to raise_error(Tasks::WhitehallImporter::AbortImportError)
   end
 
   it "raises AbortImportError when revision history is missing for state" do
     import_data["editions"][0]["state"] = "published"
     importer = Tasks::WhitehallImporter.new(123, import_data)
 
-    expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    expect { importer.import }.to raise_error(Tasks::WhitehallImporter::AbortImportError)
   end
 
   it "sets the created_at datetime of the document state" do
@@ -160,7 +160,7 @@ RSpec.describe Tasks::WhitehallImporter do
     import_data["editions"][0]["translations"][0]["locale"] = "zz"
     importer = Tasks::WhitehallImporter.new(123, import_data)
 
-    expect { importer.import }.to raise_error(Tasks::AbortImportError)
+    expect { importer.import }.to raise_error(Tasks::WhitehallImporter::AbortImportError)
   end
 
   it "changes the ids of embedded contacts" do
@@ -188,14 +188,14 @@ RSpec.describe Tasks::WhitehallImporter do
       import_data["editions"][0].delete("organisations")
       importer = Tasks::WhitehallImporter.new(123, import_data)
 
-      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+      expect { importer.import }.to raise_error(Tasks::WhitehallImporter::AbortImportError)
     end
 
     it "rejects the import if there are no lead organisations" do
       import_data["editions"][0]["organisations"].shift
       importer = Tasks::WhitehallImporter.new(123, import_data)
 
-      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+      expect { importer.import }.to raise_error(Tasks::WhitehallImporter::AbortImportError)
     end
 
     it "rejects the import if there is more than one lead organisation" do
@@ -208,7 +208,7 @@ RSpec.describe Tasks::WhitehallImporter do
 
       importer = Tasks::WhitehallImporter.new(123, import_data)
 
-      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+      expect { importer.import }.to raise_error(Tasks::WhitehallImporter::AbortImportError)
     end
 
     it "sets other supporting organisations" do
@@ -290,7 +290,7 @@ RSpec.describe Tasks::WhitehallImporter do
       import_published_then_drafted_data["editions"][0]["news_article_type"] = "unsupported_document"
       importer = Tasks::WhitehallImporter.new(123, import_published_then_drafted_data)
 
-      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+      expect { importer.import }.to raise_error(Tasks::WhitehallImporter::AbortImportError)
     end
   end
 
@@ -331,7 +331,7 @@ RSpec.describe Tasks::WhitehallImporter do
       import_data_for_withdrawn_edition["editions"][0]["revision_history"].delete_at(1)
       importer = Tasks::WhitehallImporter.new(123, import_data_for_withdrawn_edition)
 
-      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+      expect { importer.import }.to raise_error(Tasks::WhitehallImporter::AbortImportError)
     end
 
     it "sets the created_at datetime of the initial and current document states" do
@@ -348,7 +348,7 @@ RSpec.describe Tasks::WhitehallImporter do
       import_data_for_withdrawn_edition["editions"][0]["unpublishing"] = nil
       importer = Tasks::WhitehallImporter.new(123, import_data_for_withdrawn_edition)
 
-      expect { importer.import }.to raise_error(Tasks::AbortImportError)
+      expect { importer.import }.to raise_error(Tasks::WhitehallImporter::AbortImportError)
     end
 
     it "sets the Withdrawal details for a withdrawn document" do

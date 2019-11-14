@@ -256,7 +256,11 @@ module Tasks
 
       associations.map { |association| association["content_id"] }
     end
-  end
 
-  class AbortImportError < RuntimeError; end
+    class AbortImportError < RuntimeError
+      def initialize(message)
+        super(message)
+      end
+    end
+  end
 end
