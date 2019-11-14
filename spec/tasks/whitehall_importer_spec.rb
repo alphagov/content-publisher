@@ -383,6 +383,34 @@ RSpec.describe Tasks::WhitehallImporter do
       end
     end
 
+    context "image does not exist" do
+      let(:import_data) do
+        img_url = "https://assets.publishing.service.gov.uk/government/uploads/gone.jpg"
+        stub_request(:get, img_url).to_return(status: 404)
+  
+        whitehall_export_with_one_edition.tap do |export|
+          export["editions"][0]["images"] = JSON.parse([
+            {
+              "id": 194072,
+              "alt_text": "Alt text for image",
+              "caption": "This is a caption",
+              "created_at": "2018-11-30T05:08:56.000+00:00",
+              "updated_at": "2018-11-30T05:19:53.000+00:00",
+              "url": img_url,
+              "variants": {}
+            }
+          ].to_json)
+        end
+      end
+
+      it "aborts the import" do
+        expect { importer.import }.to raise_error(
+          Tasks::AbortImportError,
+          "Image does not exist: https://assets.publishing.service.gov.uk/does/not/exist.jpg",
+        )
+      end
+    end
+
     context "image is not 960x640" do
       let(:import_data) do
         img_url = "https://assets.publishing.service.gov.uk/government/uploads/1000x1000.jpg"
