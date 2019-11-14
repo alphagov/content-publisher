@@ -5,11 +5,12 @@ RSpec.describe Revision do
 
   describe ".create_initial" do
     let(:document) { build(:document) }
+    let(:document_type_id) { build(:document_type, path_prefix: "/prefix").id }
 
     it "creates an empty revision for the document" do
       revision = Revision.create_initial(
         document: document,
-        document_type_id: document.document_type_id,
+        document_type_id: document_type_id,
       )
 
       expect(revision).to be_a(Revision)
@@ -21,7 +22,7 @@ RSpec.describe Revision do
     it "sets default change note and update type" do
       revision = Revision.create_initial(
         document: document,
-        document_type_id: document.document_type_id,
+        document_type_id: document_type_id,
       )
 
       expect(revision.change_note).to eq("First published.")
@@ -32,7 +33,7 @@ RSpec.describe Revision do
       user = build(:user)
       revision = Revision.create_initial(
         document: document,
-        document_type_id: document.document_type_id,
+        document_type_id: document_type_id,
         user: user,
       )
 
@@ -46,7 +47,7 @@ RSpec.describe Revision do
       tags = { "type" => %w[value1 value2] }
       revision = Revision.create_initial(
         document: document,
-        document_type_id: document.document_type_id,
+        document_type_id: document_type_id,
         user: nil,
         tags: tags,
       )

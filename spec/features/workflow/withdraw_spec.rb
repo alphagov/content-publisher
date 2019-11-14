@@ -42,7 +42,7 @@ RSpec.feature "Withdraw a document" do
   def then_i_see_the_document_has_been_withdrawn
     status = @edition.reload.status
     withdrawal = status.details
-    document_type = @edition.document.document_type.label.downcase
+    document_type = @edition.document_type.label.downcase
 
     expect(page).to have_content(I18n.t!("user_facing_states.withdrawn.name"))
     expect(page).to have_content(I18n.t!("documents.show.withdrawn.title",

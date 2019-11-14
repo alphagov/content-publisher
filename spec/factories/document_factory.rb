@@ -4,7 +4,6 @@ FactoryBot.define do
   factory :document do
     content_id { SecureRandom.uuid }
     locale { I18n.available_locales.sample }
-    document_type_id { build(:document_type, path_prefix: "/prefix").id }
     association :created_by, factory: :user
 
     trait :with_live_edition do

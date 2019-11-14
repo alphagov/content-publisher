@@ -76,7 +76,6 @@ module Tasks
       Document.find_or_create_by!(
         content_id: whitehall_document["content_id"],
         locale: "en",
-        document_type_id: "news_story", ## TODO: This is a placeholder, to be removed after document type is moved to revision
         created_at: whitehall_document["created_at"],
         updated_at: whitehall_document["updated_at"],
         created_by_id: user_ids[first_author["whodunnit"]],
@@ -106,7 +105,7 @@ module Tasks
         metadata_revision: MetadataRevision.new(
           update_type: whitehall_edition["minor_change"] ? "minor" : "major",
           change_note: whitehall_edition["change_note"],
-          #document_type_id: whitehall_edition[document_type_key], # TODO: uncomment when document type is moved to revision
+          document_type_id: whitehall_edition[document_type_key],
         ),
         tags_revision: TagsRevision.new(
           tags: {

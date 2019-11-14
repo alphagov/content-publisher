@@ -29,7 +29,7 @@ RSpec.feature "Create a press release", format: true do
     fill_in "revision[summary]", with: "A great summary"
 
     document = Document.first
-    base_path = document.document_type.path_prefix + "/a-great-title"
+    base_path = Edition.last.document_type.path_prefix + "/a-great-title"
     stub_publishing_api_has_lookups(base_path => document.content_id)
 
     click_on "Save"
@@ -39,7 +39,7 @@ RSpec.feature "Create a press release", format: true do
   def and_i_add_some_tags
     stub_publishing_api_has_links(role_appointment_links)
 
-    expect(Document.last.document_type.tags.count).to eq(5)
+    expect(Edition.last.document_type.tags.count).to eq(5)
     stub_publishing_api_has_linkables([linkable], document_type: "topical_event")
     stub_publishing_api_has_linkables([linkable], document_type: "world_location")
     stub_publishing_api_has_linkables([linkable], document_type: "organisation")
