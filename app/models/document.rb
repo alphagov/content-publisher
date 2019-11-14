@@ -7,7 +7,7 @@
 #
 # This model is mutable
 class Document < ApplicationRecord
-  attr_readonly :content_id, :locale
+  attr_readonly :content_id, :locale, :document_type_id
 
   belongs_to :created_by, class_name: "User", optional: true
 
@@ -30,8 +30,6 @@ class Document < ApplicationRecord
   enum imported_from: { whitehall: "whitehall" }, _prefix: true
 
   delegate :topics, to: :document_topics
-
-  self.ignored_columns = %w(document_type_id)
 
   scope :with_current_edition, -> do
     join_tables = { current_edition: %i[revision status] }
@@ -57,6 +55,7 @@ class Document < ApplicationRecord
     transaction do
       document = create!(content_id: content_id,
                          locale: locale,
+                         document_type_id: document_type_id,
                          created_by: user)
 
       document.tap do |d|
@@ -80,6 +79,10 @@ class Document < ApplicationRecord
 
   def to_param
     content_id + ":" + locale
+  end
+
+  def document_type
+    DocumentType.find(document_type_id)
   end
 
   def document_topics

@@ -8,7 +8,7 @@ class PathGeneratorService < ApplicationService
   end
 
   def call
-    prefix = document.current_edition.document_type.path_prefix
+    prefix = document.document_type.path_prefix
     slug = proposed_title.parameterize
     base_path = create_path(prefix, slug)
     return base_path unless path_in_use?(base_path)
