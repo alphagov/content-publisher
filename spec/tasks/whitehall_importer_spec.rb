@@ -368,6 +368,21 @@ RSpec.describe Tasks::WhitehallImporter do
       end
     end
 
+    context "image has no caption" do
+      let(:import_data) do
+        super().tap do |export|
+          export["editions"][0]["images"][0]["caption"] = ""
+        end
+      end
+
+      before { importer.import }
+
+      it "imports successfully, setting caption to empty string" do
+        expect(image_metadata_revision.caption).to eq("")
+        expect(image_blob_revision.filename).to eq("valid-image.jpg")
+      end
+    end
+
     context "at least one of the images is an SVG" do
       let(:svg_url) { "https://assets.publishing.service.gov.uk/government/uploads/vector.svg" }
       let(:import_data) do
