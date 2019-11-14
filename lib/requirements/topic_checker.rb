@@ -12,7 +12,7 @@ module Requirements
       issues = CheckerIssues.new
 
       begin
-        if document.current_edition.document_type.topics && document.topics.none?
+        if document.document_type.topics && document.topics.none?
           issues << Issue.new(:topics, :none)
         end
       rescue GdsApi::BaseError => e

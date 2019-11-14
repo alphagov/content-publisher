@@ -27,13 +27,12 @@ RSpec.describe Edition do
 
   describe ".create_initial" do
     let(:document) { build(:document) }
-    let(:document_type_id) { build(:document_type, path_prefix: "/prefix").id }
     let(:user) { build(:user) }
 
     it "creates a current edition" do
       edition = Edition.create_initial(
         document: document,
-        document_type_id: document_type_id,
+        document_type_id: document.document_type_id,
         user: user,
       )
 
@@ -46,7 +45,7 @@ RSpec.describe Edition do
     it "has a revision" do
       edition = Edition.create_initial(
         document: document,
-        document_type_id: document_type_id,
+        document_type_id: document.document_type_id,
         user: user,
       )
 
@@ -57,7 +56,7 @@ RSpec.describe Edition do
     it "has a status which is draft" do
       edition = Edition.create_initial(
         document: document,
-        document_type_id: document_type_id,
+        document_type_id: document.document_type_id,
         user: user,
       )
 
