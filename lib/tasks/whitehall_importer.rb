@@ -21,7 +21,6 @@ module Tasks
       speech_type
     ].freeze
 
-
     def initialize(whitehall_document_id, whitehall_document)
       @whitehall_document_id = whitehall_document_id
       @whitehall_document = whitehall_document
@@ -77,22 +76,21 @@ module Tasks
     end
 
     def create_or_update_document
-      first_edition = whitehall_document["editions"].first
-      first_author = first_edition["revision_history"].select { |h| h["event"] == "create" }.first
+      event = create_history_event(whitehall_document["editions"].first)
 
       Document.find_or_create_by!(
         content_id: whitehall_document["content_id"],
         locale: "en",
         created_at: whitehall_document["created_at"],
         updated_at: whitehall_document["updated_at"],
-        created_by_id: user_ids[first_author["whodunnit"]],
+        created_by_id: user_ids[event["whodunnit"]],
         imported_from: "whitehall",
       )
     end
 
     def create_edition(document, translation, whitehall_edition, edition_number)
-      first_author = whitehall_edition["revision_history"].select { |h| h["event"] == "create" }.first
-      last_author = whitehall_edition["revision_history"].last
+      create_event = create_history_event(whitehall_edition)
+      last_event = whitehall_edition["revision_history"].last
 
       document_type_key = DOCUMENT_SUB_TYPES.reject { |t| whitehall_edition[t].nil? }.first
       raise AbortImportError, "Edition has an unsupported document type" unless SUPPORTED_DOCUMENT_TYPES.include?(whitehall_edition[document_type_key])
@@ -136,56 +134,61 @@ module Tasks
         live: live?(whitehall_edition),
         created_at: whitehall_edition["created_at"],
         updated_at: whitehall_edition["updated_at"],
-        created_by_id: user_ids[first_author["whodunnit"]],
-        last_edited_by_id: user_ids[last_author["whodunnit"]],
+        created_by_id: user_ids[create_event["whodunnit"]],
+        last_edited_by_id: user_ids[last_event["whodunnit"]],
       )
 
       set_withdrawn_status(whitehall_edition, edition) if whitehall_edition["state"] == "withdrawn"
     end
 
     def initial_status(whitehall_edition, revision)
-      revision_history_event = if whitehall_edition["state"] == "withdrawn"
-                                 published_author_history_event(whitehall_edition)
-                               else
-                                 current_author_history_event(whitehall_edition)
-                               end
-
-      raise AbortImportError, "Cannot create an initial status without a revision history event" unless revision_history_event
+      event = if whitehall_edition["state"] == "withdrawn"
+                state_history_event(whitehall_edition, "published")
+              else
+                state_history_event(whitehall_edition, whitehall_edition["state"])
+              end
 
       Status.new(
         state: state(whitehall_edition),
         revision_at_creation: revision,
-        created_by_id: user_ids[revision_history_event["whodunnit"]],
-        created_at: revision_history_event["created_at"],
+        created_by_id: user_ids[event["whodunnit"]],
+        created_at: event["created_at"],
       )
     end
 
     def set_withdrawn_status(whitehall_edition, edition)
-      revision_history_event = current_author_history_event(whitehall_edition)
-
-      raise AbortImportError, "Cannot set a withdrawn status without a revision history event" unless revision_history_event
-
       if whitehall_edition["unpublishing"].blank?
         raise AbortImportError, "Cannot create withdrawn status without an unpublishing"
       end
 
+      event = state_history_event(whitehall_edition, "withdrawn")
+
       edition.status = Status.new(
-        state: whitehall_edition["state"],
+        state: "withdrawn",
         revision_at_creation: edition.revision,
-        created_by_id: user_ids[revision_history_event["whodunnit"]],
-        created_at: revision_history_event["created_at"],
+        created_by_id: user_ids[event["whodunnit"]],
+        created_at: event["created_at"],
         details: state_details(whitehall_edition, edition),
       )
 
       edition.save!
     end
 
-    def current_author_history_event(whitehall_edition)
-      whitehall_edition["revision_history"].select { |h| h["state"] == whitehall_edition["state"] }.last
+    def create_history_event(whitehall_edition)
+      event = whitehall_edition["revision_history"].select { |h| h["event"] == "create" }
+                                                   .first
+
+      raise AbortImportError, "Edition is missing a create event" unless event
+
+      event
     end
 
-    def published_author_history_event(whitehall_edition)
-      whitehall_edition["revision_history"].select { |h| h["state"] == "published" }.last
+    def state_history_event(whitehall_edition, state)
+      event = whitehall_edition["revision_history"].select { |h| h["state"] == state }.last
+
+      raise AbortImportError, "Edition is missing a #{state} event" unless event
+
+      event
     end
 
     def state_details(whitehall_edition, edition)
