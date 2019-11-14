@@ -232,8 +232,14 @@ module Tasks
 
     def create_blob_from_image(whitehall_image, images_added_so_far)
       raw_file = URI.parse(whitehall_image["url"]).open
+      image = ImageNormaliser.new(raw_file).normalise
+
+      unless image.width == 960 && image.height == 640
+        raise AbortImportError, "Image must be 960x640. Dimensions were #{image.width}x#{image.height}"
+      end
+
       blob_revision = ImageBlobService.call(
-        temp_image: ImageNormaliser.new(raw_file).normalise,
+        temp_image: image,
         filename: UniqueFilenameService.call(images_added_so_far, whitehall_image["filename"]),
       )
       blob_revision
