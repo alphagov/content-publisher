@@ -180,95 +180,6 @@ RSpec.describe WhitehallImporter do
     expect { importer.import }.to raise_error(WhitehallImporter::AbortImportError)
   end
 
-  it "changes the ids of embedded contacts" do
-    import_data["editions"][0]["translations"][0]["body"] = "[Contact:123]"
-    content_id = SecureRandom.uuid
-    import_data["editions"][0]["contacts"] = [{ "id" => 123, "content_id" => content_id }]
-    importer = WhitehallImporter.new(import_data)
-    importer.import
-
-    expect(Edition.last.contents["body"]).to eq("[Contact:#{content_id}]")
-  end
-
-  context "when importing organisation associations" do
-    it "sets a primary_publishing_organisation" do
-      importer = WhitehallImporter.new(import_data)
-      importer.import
-
-      imported_organisation = import_data["editions"][0]["organisations"][0]
-      edition = Edition.last
-
-      expect(edition.primary_publishing_organisation_id).to eq(imported_organisation["content_id"])
-    end
-
-    it "rejects the import if there are no organisations" do
-      import_data["editions"][0].delete("organisations")
-      importer = WhitehallImporter.new(import_data)
-
-      expect { importer.import }.to raise_error(WhitehallImporter::AbortImportError)
-    end
-
-    it "rejects the import if there are no lead organisations" do
-      import_data["editions"][0]["organisations"].shift
-      importer = WhitehallImporter.new(import_data)
-
-      expect { importer.import }.to raise_error(WhitehallImporter::AbortImportError)
-    end
-
-    it "rejects the import if there is more than one lead organisation" do
-      import_data["editions"][0]["organisations"].push(
-        "id" => 3,
-        "content_id" => SecureRandom.uuid,
-        "lead" => true,
-        "lead_ordering" => 2,
-      )
-
-      importer = WhitehallImporter.new(import_data)
-
-      expect { importer.import }.to raise_error(WhitehallImporter::AbortImportError)
-    end
-
-    it "sets other supporting organisations" do
-      importer = WhitehallImporter.new(import_data)
-      importer.import
-
-      imported_organisation = import_data["editions"][0]["organisations"][1]
-      edition = Edition.last
-
-      expect(edition.supporting_organisation_ids.first).to eq(imported_organisation["content_id"])
-    end
-  end
-
-  it "sets role appointments" do
-    importer = WhitehallImporter.new(import_data)
-    importer.import
-
-    imported_role_appointment = import_data["editions"][0]["role_appointments"][0]
-    edition = Edition.last
-
-    expect(edition.tags["role_appointments"].first).to eq(imported_role_appointment["content_id"])
-  end
-
-  it "sets topical events" do
-    importer = WhitehallImporter.new(import_data)
-    importer.import
-
-    imported_topical_events = import_data["editions"][0]["topical_events"][0]
-    edition = Edition.last
-
-    expect(edition.tags["topical_events"].first).to eq(imported_topical_events["content_id"])
-  end
-
-  it "sets world locations" do
-    importer = WhitehallImporter.new(import_data)
-    importer.import
-
-    imported_world_locations = import_data["editions"][0]["world_locations"][0]
-    edition = Edition.last
-
-    expect(edition.tags["world_locations"].first).to eq(imported_world_locations["content_id"])
-  end
-
   context "when an imported document has more than one edition" do
     let(:import_published_then_drafted_data) { whitehall_export_with_two_editions }
 
@@ -278,13 +189,6 @@ RSpec.describe WhitehallImporter do
 
       expect(Edition.last.status).to be_draft
       expect(Edition.last).not_to be_live
-    end
-
-    it "sets imported to true on revision" do
-      importer = WhitehallImporter.new(import_published_then_drafted_data)
-      importer.import
-
-      expect(Revision.last.imported).to be true
     end
 
     it "sets created_by_id on each edition as the original edition author" do
@@ -301,13 +205,6 @@ RSpec.describe WhitehallImporter do
 
       expect(Edition.second_to_last.last_edited_by_id).to eq(User.second_to_last.id)
       expect(Edition.last.last_edited_by_id).to eq(User.second_to_last.id)
-    end
-
-    it "raises AbortImportError when an edition has an unsupported document type" do
-      import_published_then_drafted_data["editions"][0]["news_article_type"] = "unsupported_document"
-      importer = WhitehallImporter.new(import_published_then_drafted_data)
-
-      expect { importer.import }.to raise_error(WhitehallImporter::AbortImportError)
     end
   end
 
