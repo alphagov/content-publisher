@@ -2,7 +2,7 @@
 
 module Tasks
   class WhitehallImporter
-    attr_reader :whitehall_document_id, :whitehall_document, :whitehall_import, :user_ids
+    attr_reader :whitehall_document, :whitehall_import, :user_ids
 
     SUPPORTED_WHITEHALL_STATES = %w(
       draft
@@ -21,8 +21,7 @@ module Tasks
       speech_type
     ].freeze
 
-    def initialize(whitehall_document_id, whitehall_document)
-      @whitehall_document_id = whitehall_document_id
+    def initialize(whitehall_document)
       @whitehall_document = whitehall_document
       @whitehall_import = store_json_blob
       @user_ids = {}
@@ -56,7 +55,7 @@ module Tasks
 
     def store_json_blob
       WhitehallImport.create(
-        whitehall_document_id: whitehall_document_id,
+        whitehall_document_id: whitehall_document["id"],
         payload: whitehall_document,
         content_id: whitehall_document["content_id"],
         state: "importing",
