@@ -67,5 +67,10 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
         expect(Image::BlobRevision.last.filename).to eq("whitehall-asset_-image.jpg")
       end
     end
+
+    it "should rename the file if duplicate filenames are passed" do
+      described_class.call(whitehall_image, ["valid-image.jpg"])
+      expect(Image::BlobRevision.last.filename).to eq("valid-image-1.jpg")
+    end
   end
 end

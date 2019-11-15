@@ -2,14 +2,15 @@
 
 module WhitehallImporter
   class CreateImageRevision
-    attr_reader :whitehall_image
+    attr_reader :whitehall_image, :filenames
 
     def self.call(*args)
       new(*args).call
     end
 
-    def initialize(whitehall_image)
+    def initialize(whitehall_image, filenames = [])
       @whitehall_image = whitehall_image
+      @filenames = filenames
     end
 
     def call
@@ -42,7 +43,10 @@ module WhitehallImporter
     def create_blob_revision(temp_image)
       ImageBlobService.call(
         temp_image: temp_image,
-        filename: UniqueFilenameService.call([], File.basename(whitehall_image["url"])),
+        filename: UniqueFilenameService.call(
+          filenames,
+          File.basename(whitehall_image["url"]),
+        ),
       )
     end
 
