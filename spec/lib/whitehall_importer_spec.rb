@@ -66,32 +66,4 @@ RSpec.describe WhitehallImporter do
     document = Document.last
     expect(document.imported_from_whitehall?).to be true
   end
-
-  context "when an imported document has more than one edition" do
-    let(:import_published_then_drafted_data) { whitehall_export_with_two_editions }
-
-    it "only creates the latest edition" do
-      importer = WhitehallImporter.new(import_published_then_drafted_data)
-      importer.import
-
-      expect(Edition.last.status).to be_draft
-      expect(Edition.last).not_to be_live
-    end
-
-    it "sets created_by_id on each edition as the original edition author" do
-      importer = WhitehallImporter.new(import_published_then_drafted_data)
-      importer.import
-
-      expect(Edition.second_to_last.created_by_id).to eq(User.second_to_last.id)
-      expect(Edition.last.created_by_id).to eq(User.last.id)
-    end
-
-    it "sets last_edited_by_id on each edition as the most recent author" do
-      importer = WhitehallImporter.new(import_published_then_drafted_data)
-      importer.import
-
-      expect(Edition.second_to_last.last_edited_by_id).to eq(User.second_to_last.id)
-      expect(Edition.last.last_edited_by_id).to eq(User.second_to_last.id)
-    end
-  end
 end
