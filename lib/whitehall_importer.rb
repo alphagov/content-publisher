@@ -3,15 +3,6 @@
 class WhitehallImporter
   attr_reader :whitehall_document, :whitehall_import, :user_ids
 
-  SUPPORTED_WHITEHALL_STATES = %w(
-      draft
-      published
-      rejected
-      submitted
-      superseded
-      withdrawn
-  ).freeze
-
   def initialize(whitehall_document)
     @whitehall_document = whitehall_document
     @whitehall_import = store_json_blob
@@ -24,8 +15,6 @@ class WhitehallImporter
       document = create_or_update_document
 
       whitehall_document["editions"].each_with_index do |edition, edition_number|
-        raise AbortImportError, "Edition has an unsupported state" unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
-
         WhitehallImporter::CreateEdition.new(
           document, whitehall_document, edition, edition_number + 1, user_ids
         ).call

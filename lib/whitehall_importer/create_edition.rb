@@ -3,6 +3,15 @@
 class WhitehallImporter::CreateEdition
   attr_reader :document, :whitehall_document, :whitehall_edition, :edition_number, :user_ids
 
+  SUPPORTED_WHITEHALL_STATES = %w(
+      draft
+      published
+      rejected
+      submitted
+      superseded
+      withdrawn
+  ).freeze
+
   def initialize(document, whitehall_document, whitehall_edition, edition_number, user_ids)
     @document = document
     @whitehall_document = whitehall_document
@@ -49,6 +58,8 @@ private
   end
 
   def initial_status(revision)
+    raise WhitehallImporter::AbortImportError, "Edition has an unsupported state" unless valid_state?
+
     event = if whitehall_edition["state"] == "withdrawn"
               state_history_event("published")
             else
@@ -61,6 +72,10 @@ private
       created_by_id: user_ids[event["whodunnit"]],
       created_at: event["created_at"],
     )
+  end
+
+  def valid_state?
+    SUPPORTED_WHITEHALL_STATES.include?(whitehall_edition["state"])
   end
 
   def set_withdrawn_status(edition)
