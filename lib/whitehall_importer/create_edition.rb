@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 class WhitehallImporter::CreateEdition
-  attr_reader :document, :whitehall_document, :whitehall_edition, :edition_number, :most_recent_edition_id, :user_ids
+  attr_reader :document, :whitehall_document, :whitehall_edition, :edition_number, :user_ids
 
-  def initialize(document, whitehall_document, whitehall_edition, edition_number, most_recent_edition_id, user_ids)
+  def initialize(document, whitehall_document, whitehall_edition, edition_number, user_ids)
     @document = document
     @whitehall_document = whitehall_document
     @whitehall_edition = whitehall_edition
     @edition_number = edition_number
-    @most_recent_edition_id = most_recent_edition_id
     @user_ids = user_ids
   end
 
@@ -26,7 +25,7 @@ class WhitehallImporter::CreateEdition
       revision_synced: true,
       revision: revision,
       status: initial_status(revision),
-      current: whitehall_edition["id"] == most_recent_edition_id,
+      current: whitehall_edition["id"] == most_recent_edition["id"],
       live: live?,
       created_at: whitehall_edition["created_at"],
       updated_at: whitehall_edition["updated_at"],
@@ -116,5 +115,9 @@ private
 
   def live?
     whitehall_edition["state"].in?(%w(published withdrawn))
+  end
+
+  def most_recent_edition
+    whitehall_document["editions"].max_by { |e| e["created_at"] }
   end
 end

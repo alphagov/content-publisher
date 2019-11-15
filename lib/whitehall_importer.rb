@@ -27,7 +27,7 @@ class WhitehallImporter
         raise AbortImportError, "Edition has an unsupported state" unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
 
         WhitehallImporter::CreateEdition.new(
-          document, whitehall_document, edition, edition_number + 1, most_recent_edition["id"], user_ids
+          document, whitehall_document, edition, edition_number + 1, user_ids
         ).call
       end
     end
@@ -58,10 +58,6 @@ private
       content_publisher_user = User.create_with(user.slice(*user_keys).merge("permissions" => [])).find_or_create_by!(uid: user["uid"])
       user_ids[user["id"]] = content_publisher_user["id"]
     end
-  end
-
-  def most_recent_edition
-    whitehall_document["editions"].max_by { |e| e["created_at"] }
   end
 
   def create_or_update_document

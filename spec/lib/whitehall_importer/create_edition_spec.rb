@@ -19,7 +19,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       }
 
       WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, 1, user_ids
+        document, whitehall_document, whitehall_edition, 1, user_ids
       ).call
 
       expect(Edition.last.status).to be_published
@@ -30,7 +30,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       whitehall_edition["minor_change"] = true
 
       WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, 1, user_ids
+        document, whitehall_document, whitehall_edition, 1, user_ids
       ).call
 
       expect(Edition.last.update_type).to eq("minor")
@@ -45,7 +45,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         "whodunnit" => 1,
       }
       WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, 1, user_ids
+        document, whitehall_document, whitehall_edition, 1, user_ids
       ).call
 
       expect(Edition.last.status).to be_published_but_needs_2i
@@ -60,7 +60,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         "whodunnit" => 1,
       }
       WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, 1, user_ids
+        document, whitehall_document, whitehall_edition, 1, user_ids
       ).call
 
       expect(Edition.last.status).to be_submitted_for_review
@@ -75,7 +75,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         "whodunnit" => 1,
       }
       WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, 1, user_ids
+        document, whitehall_document, whitehall_edition, 1, user_ids
       ).call
 
       expect(Edition.last.status).to be_submitted_for_review
@@ -85,7 +85,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
     it "raises AbortImportError when edition has an unsupported state" do
       whitehall_edition["state"] = "not_supported"
       create_edition = WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, 1, user_ids
+        document, whitehall_document, whitehall_edition, 1, user_ids
       )
 
       expect { create_edition.call }.to raise_error(WhitehallImporter::AbortImportError)
@@ -94,7 +94,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
     it "raises AbortImportError when revision history is missing for state" do
       whitehall_edition["state"] = "published"
       create_edition = WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, 1, user_ids
+        document, whitehall_document, whitehall_edition, 1, user_ids
       )
 
       expect { create_edition.call }.to raise_error(WhitehallImporter::AbortImportError)
@@ -104,7 +104,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       whitehall_edition["revision_history"][0].merge!("created_at" => 3.days.ago)
 
       WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, 1, user_ids
+        document, whitehall_document, whitehall_edition, 1, user_ids
       ).call
 
       imported_created_at = whitehall_edition["revision_history"][0]["created_at"]
@@ -116,10 +116,18 @@ RSpec.describe WhitehallImporter::CreateEdition do
       whitehall_edition["translations"][0]["locale"] = "zz"
 
       create_edition = WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, 1, user_ids
+        document, whitehall_document, whitehall_edition, 1, user_ids
       )
 
       expect { create_edition.call }.to raise_error(WhitehallImporter::AbortImportError)
+    end
+
+    it "sets the current edition" do
+      WhitehallImporter::CreateEdition.new(
+        document, whitehall_document, whitehall_edition, 1, user_ids
+      ).call
+
+      expect(Edition.last.current).to be true
     end
 
     context "when importing a withdrawn document" do
@@ -127,7 +135,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
       it "sets the correct states when Whitehall document state is withdrawn" do
         WhitehallImporter::CreateEdition.new(
-          document, whitehall_document, whitehall_edition, 1, 1, user_ids
+          document, whitehall_document, whitehall_edition, 1, user_ids
         ).call
 
         expect(Status.count).to eq(2)
@@ -140,7 +148,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         whitehall_edition["force_published"] = true
 
         WhitehallImporter::CreateEdition.new(
-          document, whitehall_document, whitehall_edition, 1, 1, user_ids
+          document, whitehall_document, whitehall_edition, 1, user_ids
         ).call
 
         expect(Status.count).to eq(2)
@@ -157,7 +165,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         }
 
         WhitehallImporter::CreateEdition.new(
-          document, whitehall_document, whitehall_edition, 1, 1, user_ids
+          document, whitehall_document, whitehall_edition, 1, user_ids
         ).call
 
         expect(Status.first.created_by_id).to eq(user_ids[2])
@@ -167,7 +175,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       it "raises AbortImportError when revision history cannot be found for state" do
         whitehall_edition["revision_history"].delete_at(1)
         create_edition = WhitehallImporter::CreateEdition.new(
-          document, whitehall_document, whitehall_edition, 1, 1, user_ids
+          document, whitehall_document, whitehall_edition, 1, user_ids
         )
 
         expect { create_edition.call }.to raise_error(WhitehallImporter::AbortImportError)
@@ -175,7 +183,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
       it "sets the created_at datetime of the initial and current document states" do
         WhitehallImporter::CreateEdition.new(
-          document, whitehall_document, whitehall_edition, 1, 1, user_ids
+          document, whitehall_document, whitehall_edition, 1, user_ids
         ).call
 
         expect(Status.first.created_at).to eq(whitehall_edition["revision_history"][1]["created_at"])
@@ -185,7 +193,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       it "raises AbortImportError when document is withdrawn but has no unpublishing details" do
         whitehall_edition["unpublishing"] = nil
         create_edition = WhitehallImporter::CreateEdition.new(
-          document, whitehall_document, whitehall_edition, 1, 1, user_ids
+          document, whitehall_document, whitehall_edition, 1, user_ids
         )
 
         expect { create_edition.call }.to raise_error(WhitehallImporter::AbortImportError)
@@ -193,7 +201,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
       it "sets the Withdrawal details for a withdrawn document" do
         WhitehallImporter::CreateEdition.new(
-          document, whitehall_document, whitehall_edition, 1, 1, user_ids
+          document, whitehall_document, whitehall_edition, 1, user_ids
         ).call
 
         details = Edition.last.status.details
