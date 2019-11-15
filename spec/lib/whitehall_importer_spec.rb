@@ -67,13 +67,6 @@ RSpec.describe WhitehallImporter do
     expect(document.imported_from_whitehall?).to be true
   end
 
-  it "raises AbortImportError when edition has an unsupported locale" do
-    import_data["editions"][0]["translations"][0]["locale"] = "zz"
-    importer = WhitehallImporter.new(import_data)
-
-    expect { importer.import }.to raise_error(WhitehallImporter::AbortImportError)
-  end
-
   context "when an imported document has more than one edition" do
     let(:import_published_then_drafted_data) { whitehall_export_with_two_editions }
 

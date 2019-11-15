@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class WhitehallImporter::CreateEdition
-  attr_reader :document, :translation, :whitehall_document, :whitehall_edition, :edition_number, :most_recent_edition_id, :user_ids
+  attr_reader :document, :whitehall_document, :whitehall_edition, :edition_number, :most_recent_edition_id, :user_ids
 
-  def initialize(document, translation, whitehall_document, whitehall_edition, edition_number, most_recent_edition_id, user_ids)
+  def initialize(document, whitehall_document, whitehall_edition, edition_number, most_recent_edition_id, user_ids)
     @document = document
-    @translation = translation
     @whitehall_document = whitehall_document
     @whitehall_edition = whitehall_edition
     @edition_number = edition_number
@@ -18,7 +17,7 @@ class WhitehallImporter::CreateEdition
     last_event = whitehall_edition["revision_history"].last
 
     revision = WhitehallImporter::CreateRevision.new(
-      document, whitehall_edition, translation
+      document, whitehall_edition, english_translation
     ).call
 
     edition = Edition.create!(
@@ -39,6 +38,16 @@ class WhitehallImporter::CreateEdition
   end
 
 private
+
+  def english_translation
+    raise WhitehallImporter::AbortImportError, "Edition has an unsupported locale" unless valid_translations?
+
+    whitehall_edition["translations"].last
+  end
+
+  def valid_translations?
+    whitehall_edition["translations"].count == 1 && whitehall_edition["translations"].last["locale"] == "en"
+  end
 
   def initial_status(whitehall_edition, revision)
     event = if whitehall_edition["state"] == "withdrawn"

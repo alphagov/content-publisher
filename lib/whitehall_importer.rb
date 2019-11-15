@@ -11,7 +11,6 @@ class WhitehallImporter
       superseded
       withdrawn
   ).freeze
-  SUPPORTED_LOCALES = %w(en).freeze
 
   def initialize(whitehall_document)
     @whitehall_document = whitehall_document
@@ -25,14 +24,11 @@ class WhitehallImporter
       document = create_or_update_document
 
       whitehall_document["editions"].each_with_index do |edition, edition_number|
-        edition["translations"].each do |translation|
-          raise AbortImportError, "Edition has an unsupported state" unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
-          raise AbortImportError, "Edition has an unsupported locale" unless SUPPORTED_LOCALES.include?(translation["locale"])
+        raise AbortImportError, "Edition has an unsupported state" unless SUPPORTED_WHITEHALL_STATES.include?(edition["state"])
 
-          WhitehallImporter::CreateEdition.new(
-            document, translation, whitehall_document, edition, edition_number + 1, most_recent_edition["id"], user_ids
-          ).call
-        end
+        WhitehallImporter::CreateEdition.new(
+          document, whitehall_document, edition, edition_number + 1, most_recent_edition["id"], user_ids
+        ).call
       end
     end
   end
