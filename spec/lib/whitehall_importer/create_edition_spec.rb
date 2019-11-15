@@ -9,6 +9,23 @@ RSpec.describe WhitehallImporter::CreateEdition do
     let(:document) { create(:document, imported_from: "whitehall") }
     let(:user_ids) { { 1 => create(:user).id } }
 
+    it "can import edition data from Whitehall" do
+      WhitehallImporter::CreateEdition.new(
+        document, whitehall_document, whitehall_edition, 1, user_ids
+      ).call
+
+      edition = Edition.last
+
+      expect(edition.summary)
+        .to eq(whitehall_edition["translations"][0]["summary"])
+
+      expect(edition.base_path)
+        .to eq(whitehall_edition["translations"][0]["base_path"])
+
+      expect(edition.number).to eql(1)
+      expect(edition.status).to be_draft
+      expect(edition.update_type).to eq("major")
+    end
 
     it "sets the correct states when Whitehall document state is 'published'" do
       whitehall_edition["state"] = "published"
