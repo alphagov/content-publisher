@@ -13,7 +13,7 @@ namespace :import do
     client = GdsApi::JsonClient.new(options)
     response = client.get_json(endpoint)
     whitehall_export = response.to_hash
-    importer = Tasks::WhitehallImporter.new(whitehall_export)
+    importer = ::WhitehallImporter.new(whitehall_export)
     begin
       importer.import
       importer.update_state("completed")
