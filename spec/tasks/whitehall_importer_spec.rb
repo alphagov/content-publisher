@@ -271,8 +271,8 @@ RSpec.describe Tasks::WhitehallImporter do
             "created_at": "2018-11-30T05:08:56.000+00:00",
             "updated_at": "2018-11-30T05:19:53.000+00:00",
             "url": img_url,
-            "variants": {}
-          }
+            "variants": {},
+          },
         ].to_json)
       end
     end
@@ -387,7 +387,7 @@ RSpec.describe Tasks::WhitehallImporter do
       let(:import_data) do
         img_url = "https://assets.publishing.service.gov.uk/government/uploads/gone.jpg"
         stub_request(:get, img_url).to_return(status: 404)
-  
+
         whitehall_export_with_one_edition.tap do |export|
           export["editions"][0]["images"] = JSON.parse([
             {
@@ -397,8 +397,8 @@ RSpec.describe Tasks::WhitehallImporter do
               "created_at": "2018-11-30T05:08:56.000+00:00",
               "updated_at": "2018-11-30T05:19:53.000+00:00",
               "url": img_url,
-              "variants": {}
-            }
+              "variants": {},
+            },
           ].to_json)
         end
       end
@@ -416,7 +416,7 @@ RSpec.describe Tasks::WhitehallImporter do
         img_url = "https://assets.publishing.service.gov.uk/government/uploads/1000x1000.jpg"
         binary_image = File.open(File.join(fixtures_path, "files", "1000x1000.jpg"), "rb").read
         stub_request(:get, img_url).to_return(status: 200, body: binary_image)
-  
+
         whitehall_export_with_one_edition.tap do |export|
           export["editions"][0]["images"] = JSON.parse([
             {
@@ -426,8 +426,8 @@ RSpec.describe Tasks::WhitehallImporter do
               "created_at": "2018-11-30T05:08:56.000+00:00",
               "updated_at": "2018-11-30T05:19:53.000+00:00",
               "url": img_url,
-              "variants": {}
-            }
+              "variants": {},
+            },
           ].to_json)
         end
       end
@@ -464,7 +464,7 @@ RSpec.describe Tasks::WhitehallImporter do
         img_url = "https://assets.publishing.service.gov.uk/government/uploads/valid-image.jpg"
         binary_image = File.open(File.join(fixtures_path, "files", "960x640.jpg"), "rb").read
         stub_request(:get, img_url).to_return(status: 200, body: binary_image)
-  
+
         image = JSON.parse([
           {
             "id": 194072,
@@ -473,8 +473,8 @@ RSpec.describe Tasks::WhitehallImporter do
             "created_at": "2018-11-30T05:08:56.000+00:00",
             "updated_at": "2018-11-30T05:19:53.000+00:00",
             "url": img_url,
-            "variants": {}
-          }
+            "variants": {},
+          },
         ].to_json)
 
         whitehall_export_with_two_editions.tap do |export|
