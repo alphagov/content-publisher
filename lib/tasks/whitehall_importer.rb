@@ -44,15 +44,6 @@ module Tasks
       end
     end
 
-    def store_json_blob
-      WhitehallImport.create(
-        whitehall_document_id: whitehall_document_id,
-        payload: whitehall_document,
-        content_id: whitehall_document["content_id"],
-        state: "importing",
-      )
-    end
-
     def update_state(state)
       whitehall_import.update_attribute(:state, state)
     end
@@ -62,6 +53,15 @@ module Tasks
     end
 
   private
+
+    def store_json_blob
+      WhitehallImport.create(
+        whitehall_document_id: whitehall_document_id,
+        payload: whitehall_document,
+        content_id: whitehall_document["content_id"],
+        state: "importing",
+      )
+    end
 
     def create_users(users)
       users.each do |user|
