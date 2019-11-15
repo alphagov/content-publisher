@@ -28,5 +28,26 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
         )
       end
     end
+
+    context "Image is wrong type" do
+      let(:whitehall_image) do
+        build(:whitehall_export_image, filename: "vector.svg", fixture_file: "coffee.svg")
+      end
+
+      it "should raise a WhitehallImporter::AbortImportError" do
+        expect { described_class.call(whitehall_image) }.to raise_error(
+          WhitehallImporter::AbortImportError,
+          I18n.t!("requirements.image_upload.unsupported_type.form_message"),
+        )
+      end
+
+      it "should be passed through the ImageUploadChecker class" do
+        begin
+          expect(Requirements::ImageUploadChecker).to receive(:new).and_call_original
+          described_class.call(whitehall_image)
+        rescue WhitehallImporter::AbortImportError
+        end
+      end
+    end
   end
 end

@@ -41,7 +41,15 @@ module WhitehallImporter
     end
 
     def normalise_image(file)
+      upload_checker = Requirements::ImageUploadChecker.new(file)
+      abort_on_issue(upload_checker.issues)
       ImageNormaliser.new(file).normalise
+    end
+
+    def abort_on_issue(issues)
+      return if issues.empty?
+
+      raise WhitehallImporter::AbortImportError, issues.first.message(style: "form")
     end
   end
 end
