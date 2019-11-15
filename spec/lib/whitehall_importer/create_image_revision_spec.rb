@@ -34,19 +34,26 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
         build(:whitehall_export_image, filename: "vector.svg", fixture_file: "coffee.svg")
       end
 
-      it "should raise a WhitehallImporter::AbortImportError" do
+      it "should pass through ImageUploadChecker and raise a WhitehallImporter::AbortImportError" do
+        expect(Requirements::ImageUploadChecker).to receive(:new).and_call_original
         expect { described_class.call(whitehall_image) }.to raise_error(
           WhitehallImporter::AbortImportError,
           I18n.t!("requirements.image_upload.unsupported_type.form_message"),
         )
       end
+    end
 
-      it "should be passed through the ImageUploadChecker class" do
-        begin
-          expect(Requirements::ImageUploadChecker).to receive(:new).and_call_original
-          described_class.call(whitehall_image)
-        rescue WhitehallImporter::AbortImportError
-        end
+    context "Image is too small" do
+      let(:whitehall_image) do
+        build(:whitehall_export_image, fixture_file: "100x100.jpg")
+      end
+
+      it "should pass through ImageNormaliser and raise a WhitehallImporter::AbortImportError" do
+        expect(ImageNormaliser).to receive(:new).and_call_original
+        expect { described_class.call(whitehall_image) }.to raise_error(
+          WhitehallImporter::AbortImportError,
+          I18n.t!("requirements.image_upload.too_small.form_message", width: 960, height: 640),
+        )
       end
     end
   end

@@ -28,7 +28,13 @@ module WhitehallImporter
   private
 
     def download_file
-      URI.parse(whitehall_image["url"]).open
+      file = URI.parse(whitehall_image["url"]).open
+      if file.is_a?(StringIO)
+        # files less than 10 KB return StringIO (we have to manually cast to a tempfile)
+        Tempfile.new.tap { |tmp| File.write(tmp.path, file.string) }
+      else
+        file
+      end
     rescue OpenURI::HTTPError
       raise WhitehallImporter::AbortImportError, "Image does not exist: #{whitehall_image['url']}"
     end
@@ -43,7 +49,11 @@ module WhitehallImporter
     def normalise_image(file)
       upload_checker = Requirements::ImageUploadChecker.new(file)
       abort_on_issue(upload_checker.issues)
-      ImageNormaliser.new(file).normalise
+      normaliser = ImageNormaliser.new(file)
+      image = normaliser.normalise
+      abort_on_issue(normaliser.issues)
+
+      image
     end
 
     def abort_on_issue(issues)
