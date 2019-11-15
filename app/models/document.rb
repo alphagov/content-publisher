@@ -31,8 +31,6 @@ class Document < ApplicationRecord
 
   delegate :topics, to: :document_topics
 
-  self.ignored_columns = %w(document_type_id)
-
   scope :with_current_edition, -> do
     join_tables = { current_edition: %i[revision status] }
     joins(join_tables).includes(join_tables)
