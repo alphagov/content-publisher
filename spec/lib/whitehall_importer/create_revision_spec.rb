@@ -31,6 +31,33 @@ RSpec.describe WhitehallImporter::CreateRevision do
       expect(revision.base_path).to eq("/a-path")
     end
 
+    context "when creating images" do
+      it "imports a single image" do
+        whitehall_image = build(:whitehall_export_image, filename: "foo.jpg")
+        whitehall_edition = build(:whitehall_export_edition, images: [whitehall_image])
+        revision = nil
+        expect { revision = described_class.call(document, whitehall_edition) }
+          .to change { Image::Revision.count }.by(1)
+        expect(revision.image_revisions.last.caption).to eq(whitehall_image["caption"])
+        expect(revision.image_revisions.last.alt_text).to eq(whitehall_image["alt_text"])
+        expect(revision.image_revisions.last.filename).to eq("foo.jpg")
+      end
+
+      it "ensures that every image filename is unique" do
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          images: [
+            build(:whitehall_export_image, filename: "image.jpg"),
+            build(:whitehall_export_image, filename: "subdir/image.jpg"),
+          ],
+        )
+        revision = described_class.call(document, whitehall_edition)
+
+        expect(revision.image_revisions.first.blob_revision.filename).to eq("image.jpg")
+        expect(revision.image_revisions.last.blob_revision.filename).to eq("image-1.jpg")
+      end
+    end
+
     it "changes the ids of embedded contacts" do
       translation = build(:whitehall_export_translation,
                           body: "[Contact:123]")

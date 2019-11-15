@@ -19,6 +19,7 @@ FactoryBot.define do
     topical_events { [] }
     world_locations { [] }
     contacts { [] }
+    images { [] }
     revision_history do
       [
         { "event" => "create", "state" => state, "whodunnit" => 1 },

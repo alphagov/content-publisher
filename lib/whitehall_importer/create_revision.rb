@@ -51,6 +51,7 @@ module WhitehallImporter
             "world_locations" => tags(whitehall_edition["world_locations"]),
           },
         ),
+        image_revisions: create_image_revisions(whitehall_edition["images"]),
         created_at: whitehall_edition["created_at"],
       )
     end
@@ -106,6 +107,12 @@ module WhitehallImporter
         id = Regexp.last_match[1].to_i
         embed = contacts.select { |x| x["id"] == id }.first["content_id"]
         "[Contact:#{embed}]"
+      end
+    end
+
+    def create_image_revisions(images)
+      images.reduce([]) do |memo, image|
+        memo << WhitehallImporter::CreateImageRevision.call(image, memo.map(&:filename))
       end
     end
   end
