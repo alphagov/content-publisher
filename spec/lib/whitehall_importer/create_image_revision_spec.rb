@@ -56,5 +56,16 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
         )
       end
     end
+
+    context "Original image filename is URL-unfriendly" do
+      let(:whitehall_image) do
+        build(:whitehall_export_image, filename: "Whitehall--Asset_-image.jpg")
+      end
+
+      it "should rename the file to something URL-friendly" do
+        described_class.call(whitehall_image)
+        expect(Image::BlobRevision.last.filename).to eq("whitehall-asset_-image.jpg")
+      end
+    end
   end
 end
