@@ -29,6 +29,8 @@ module WhitehallImporter
 
     def download_file
       URI.parse(whitehall_image["url"]).open
+    rescue OpenURI::HTTPError
+      raise WhitehallImporter::AbortImportError, "Image does not exist: #{whitehall_image['url']}"
     end
 
     def create_blob_revision(temp_image)
