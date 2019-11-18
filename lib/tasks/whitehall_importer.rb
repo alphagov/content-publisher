@@ -101,7 +101,7 @@ module Tasks
         imported: true,
         content_revision: ContentRevision.new(
           title: translation["title"],
-          base_path: "/government/news/" + whitehall_document["slug"],
+          base_path: translation["base_path"],
           summary: translation["summary"],
           contents: {
             body: embed_contacts(translation["body"], whitehall_edition.fetch("contacts", [])),

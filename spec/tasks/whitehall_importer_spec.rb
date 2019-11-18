@@ -16,6 +16,8 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(edition.summary)
       .to eq(imported_edition["translations"][0]["summary"])
 
+    expect(edition.base_path).to eq(imported_edition["translations"][0]["base_path"])
+
     expect(edition.number).to eql(1)
     expect(edition.status).to be_draft
     expect(edition.update_type).to eq("major")
