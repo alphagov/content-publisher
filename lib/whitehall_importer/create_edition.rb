@@ -21,6 +21,7 @@ class WhitehallImporter::CreateEdition
   end
 
   def call
+    check_supported_state
     create_event = create_history_event
     last_event = whitehall_edition["revision_history"].last
 
@@ -53,13 +54,19 @@ private
     whitehall_edition["translations"].last
   end
 
+  def check_supported_state
+    raise WhitehallImporter::AbortImportError, "Edition has an unsupported state" unless valid_state?
+  end
+
+  def valid_state?
+    SUPPORTED_WHITEHALL_STATES.include?(whitehall_edition["state"])
+  end
+
   def valid_translations?
     whitehall_edition["translations"].count == 1 && whitehall_edition["translations"].last["locale"] == "en"
   end
 
   def initial_status(revision)
-    raise WhitehallImporter::AbortImportError, "Edition has an unsupported state" unless valid_state?
-
     event = if whitehall_edition["state"] == "withdrawn"
               state_history_event("published")
             else
@@ -72,10 +79,6 @@ private
       created_by_id: user_ids[event["whodunnit"]],
       created_at: event["created_at"],
     )
-  end
-
-  def valid_state?
-    SUPPORTED_WHITEHALL_STATES.include?(whitehall_edition["state"])
   end
 
   def set_withdrawn_status(edition)
