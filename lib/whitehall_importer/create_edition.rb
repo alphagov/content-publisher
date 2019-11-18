@@ -3,15 +3,6 @@
 class WhitehallImporter::CreateEdition
   attr_reader :document, :whitehall_document, :whitehall_edition, :edition_number, :user_ids
 
-  SUPPORTED_WHITEHALL_STATES = %w(
-      draft
-      published
-      rejected
-      submitted
-      superseded
-      withdrawn
-  ).freeze
-
   def initialize(document, whitehall_document, whitehall_edition, edition_number, user_ids)
     @document = document
     @whitehall_document = whitehall_document
@@ -21,7 +12,6 @@ class WhitehallImporter::CreateEdition
   end
 
   def call
-    check_supported_state
     check_only_in_english
 
     if whitehall_edition["state"] == "withdrawn"
@@ -32,14 +22,6 @@ class WhitehallImporter::CreateEdition
   end
 
 private
-
-  def check_supported_state
-    raise WhitehallImporter::AbortImportError, "Edition has an unsupported state" unless valid_state?
-  end
-
-  def valid_state?
-    SUPPORTED_WHITEHALL_STATES.include?(whitehall_edition["state"])
-  end
 
   def check_only_in_english
     raise WhitehallImporter::AbortImportError, "Edition has an unsupported locale" unless only_english_translation?

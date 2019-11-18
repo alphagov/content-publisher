@@ -97,5 +97,14 @@ RSpec.describe WhitehallImporter::CreateStatus do
 
       expect(status.created_by_id).to eq(user_ids[1])
     end
+
+    it "raises AbortImportError when edition has an unsupported state" do
+      whitehall_edition["state"] = "not_supported"
+      create_status = WhitehallImporter::CreateStatus.new(
+        revision, whitehall_edition["state"], whitehall_edition, user_ids
+      )
+
+      expect { create_status.call }.to raise_error(WhitehallImporter::AbortImportError)
+    end
   end
 end

@@ -80,15 +80,6 @@ RSpec.describe WhitehallImporter::CreateEdition do
       expect(Edition.last).not_to be_live
     end
 
-    it "raises AbortImportError when edition has an unsupported state" do
-      whitehall_edition["state"] = "not_supported"
-      create_edition = WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      )
-
-      expect { create_edition.call }.to raise_error(WhitehallImporter::AbortImportError)
-    end
-
     it "raises AbortImportError when edition has an unsupported locale" do
       whitehall_edition["translations"][0]["locale"] = "zz"
 
