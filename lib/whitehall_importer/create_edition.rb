@@ -23,29 +23,7 @@ class WhitehallImporter::CreateEdition
   def call
     check_supported_state
     check_only_in_english
-
-    create_event = create_history_event
-    last_event = whitehall_edition["revision_history"].last
-
-    revision = WhitehallImporter::CreateRevision.new(
-      document, whitehall_edition, english_translation
-    ).call
-
-    edition = Edition.create!(
-      document: document,
-      number: edition_number,
-      revision_synced: true,
-      revision: revision,
-      status: initial_status(revision),
-      current: whitehall_edition["id"] == most_recent_edition["id"],
-      live: live?,
-      created_at: whitehall_edition["created_at"],
-      updated_at: whitehall_edition["updated_at"],
-      created_by_id: user_ids[create_event["whodunnit"]],
-      last_edited_by_id: user_ids[last_event["whodunnit"]],
-    )
-
-    set_withdrawn_status(edition) if whitehall_edition["state"] == "withdrawn"
+    create_edition
   end
 
 private
@@ -68,6 +46,31 @@ private
 
   def english_translation
     whitehall_edition["translations"].last
+  end
+
+  def create_edition
+    create_event = create_history_event
+    last_event = whitehall_edition["revision_history"].last
+
+    revision = WhitehallImporter::CreateRevision.new(
+      document, whitehall_edition, english_translation
+    ).call
+
+    edition = Edition.create!(
+      document: document,
+      number: edition_number,
+      revision_synced: true,
+      revision: revision,
+      status: initial_status(revision),
+      current: whitehall_edition["id"] == most_recent_edition["id"],
+      live: live?,
+      created_at: whitehall_edition["created_at"],
+      updated_at: whitehall_edition["updated_at"],
+      created_by_id: user_ids[create_event["whodunnit"]],
+      last_edited_by_id: user_ids[last_event["whodunnit"]],
+    )
+
+    set_withdrawn_status(edition) if whitehall_edition["state"] == "withdrawn"
   end
 
   def initial_status(revision)
