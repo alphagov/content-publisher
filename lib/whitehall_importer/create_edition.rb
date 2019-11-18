@@ -23,7 +23,12 @@ class WhitehallImporter::CreateEdition
   def call
     check_supported_state
     check_only_in_english
-    create_edition
+
+    if whitehall_edition["state"] == "withdrawn"
+      create_withdrawn_edition
+    else
+      create_edition
+    end
   end
 
 private
@@ -48,7 +53,12 @@ private
     whitehall_edition["translations"].last
   end
 
-  def create_edition
+  def create_withdrawn_edition
+    edition = create_edition("published")
+    set_withdrawn_status(edition)
+  end
+
+  def create_edition(initial_state = whitehall_edition["state"])
     create_event = create_history_event
     last_event = whitehall_edition["revision_history"].last
 
@@ -56,12 +66,12 @@ private
       document, whitehall_edition, english_translation
     ).call
 
-    edition = Edition.create!(
+    Edition.create!(
       document: document,
       number: edition_number,
       revision_synced: true,
       revision: revision,
-      status: initial_status(revision),
+      status: status(revision, initial_state),
       current: whitehall_edition["id"] == most_recent_edition["id"],
       live: live?,
       created_at: whitehall_edition["created_at"],
@@ -69,16 +79,10 @@ private
       created_by_id: user_ids[create_event["whodunnit"]],
       last_edited_by_id: user_ids[last_event["whodunnit"]],
     )
-
-    set_withdrawn_status(edition) if whitehall_edition["state"] == "withdrawn"
   end
 
-  def initial_status(revision)
-    event = if whitehall_edition["state"] == "withdrawn"
-              state_history_event("published")
-            else
-              state_history_event(whitehall_edition["state"])
-            end
+  def status(revision, initial_state)
+    event = state_history_event(initial_state)
 
     Status.new(
       state: state,
