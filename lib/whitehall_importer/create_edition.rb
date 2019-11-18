@@ -22,6 +22,8 @@ class WhitehallImporter::CreateEdition
 
   def call
     check_supported_state
+    check_only_in_english
+
     create_event = create_history_event
     last_event = whitehall_edition["revision_history"].last
 
@@ -48,12 +50,6 @@ class WhitehallImporter::CreateEdition
 
 private
 
-  def english_translation
-    raise WhitehallImporter::AbortImportError, "Edition has an unsupported locale" unless valid_translations?
-
-    whitehall_edition["translations"].last
-  end
-
   def check_supported_state
     raise WhitehallImporter::AbortImportError, "Edition has an unsupported state" unless valid_state?
   end
@@ -62,8 +58,16 @@ private
     SUPPORTED_WHITEHALL_STATES.include?(whitehall_edition["state"])
   end
 
-  def valid_translations?
+  def check_only_in_english
+    raise WhitehallImporter::AbortImportError, "Edition has an unsupported locale" unless only_english_translation?
+  end
+
+  def only_english_translation?
     whitehall_edition["translations"].count == 1 && whitehall_edition["translations"].last["locale"] == "en"
+  end
+
+  def english_translation
+    whitehall_edition["translations"].last
   end
 
   def initial_status(revision)
