@@ -106,5 +106,29 @@ RSpec.describe WhitehallImporter::CreateStatus do
 
       expect { create_status.call }.to raise_error(WhitehallImporter::AbortImportError)
     end
+
+    context "withdrawn documents" do
+      let(:whitehall_edition) { whitehall_export_with_one_withdrawn_edition["editions"].first }
+      let(:edition) { create(:edition, :published) }
+
+      it "raises AbortImportError when document is withdrawn but has no unpublishing details" do
+        whitehall_edition["unpublishing"] = nil
+        create_status = WhitehallImporter::CreateStatus.new(
+          revision, whitehall_edition["state"], whitehall_edition, user_ids, edition: edition
+        )
+
+        expect { create_status.call }.to raise_error(WhitehallImporter::AbortImportError)
+      end
+
+      it "sets the Withdrawal details for a withdrawn document" do
+        status = WhitehallImporter::CreateStatus.new(
+          revision, whitehall_edition["state"], whitehall_edition, user_ids, edition: edition
+        ).call
+
+        expect(status.details.published_status_id).to eq(edition.status.id)
+        expect(status.details.public_explanation).to eq(whitehall_edition["unpublishing"]["explanation"])
+        expect(status.details.withdrawn_at).to eq(whitehall_edition["unpublishing"]["created_at"])
+      end
+    end
   end
 end

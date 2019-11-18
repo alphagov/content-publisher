@@ -66,33 +66,14 @@ private
   end
 
   def set_withdrawn_status(edition)
-    if whitehall_edition["unpublishing"].blank?
-      raise WhitehallImporter::AbortImportError, "Cannot create withdrawn status without an unpublishing"
-    end
-
-    event = state_history_event("withdrawn")
-
-    edition.status = Status.new(
-      state: "withdrawn",
-      revision_at_creation: edition.revision,
-      created_by_id: user_ids[event["whodunnit"]],
-      created_at: event["created_at"],
-      details: Withdrawal.new(
-        published_status: edition.status,
-        public_explanation: whitehall_edition["unpublishing"]["explanation"],
-        withdrawn_at: whitehall_edition["unpublishing"]["created_at"],
-      ),
-    )
+    edition.status = WhitehallImporter::CreateStatus.new(
+      edition.revision,
+      whitehall_edition,
+      user_ids,
+      edition: edition,
+    ).call
 
     edition.save!
-  end
-
-  def state_history_event(state)
-    event = whitehall_edition["revision_history"].select { |h| h["state"] == state }.last
-
-    raise WhitehallImporter::AbortImportError, "Edition is missing a #{state} event" unless event
-
-    event
   end
 
   def create_history_event

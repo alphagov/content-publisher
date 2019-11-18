@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WhitehallImporter::CreateStatus
-  attr_reader :revision, :status, :whitehall_edition, :user_ids
+  attr_reader :revision, :status, :whitehall_edition, :user_ids, :edition
 
   SUPPORTED_WHITEHALL_STATES = %w(
     draft
@@ -12,11 +12,12 @@ class WhitehallImporter::CreateStatus
     withdrawn
   ).freeze
 
-  def initialize(revision, status, whitehall_edition, user_ids)
+  def initialize(revision, status, whitehall_edition, user_ids, edition: nil)
     @revision = revision
     @status = status
     @whitehall_edition = whitehall_edition
     @user_ids = user_ids
+    @edition = edition
   end
 
   def call
@@ -28,6 +29,7 @@ class WhitehallImporter::CreateStatus
       revision_at_creation: revision,
       created_by_id: user_ids[event["whodunnit"]],
       created_at: event["created_at"],
+      details: details,
     )
   end
 
@@ -50,13 +52,28 @@ private
   end
 
   def state
-    case whitehall_edition["state"]
+    case status
     when "draft" then "draft"
     when "superseded" then "superseded"
-    when "published", "withdrawn"
+    when "published"
       whitehall_edition["force_published"] ? "published_but_needs_2i" : "published"
+    when "withdrawn" then "withdrawn"
     else
       "submitted_for_review"
+    end
+  end
+
+  def details
+    if edition && status == "withdrawn"
+      if whitehall_edition["unpublishing"].blank?
+        raise WhitehallImporter::AbortImportError, "Cannot create withdrawn status without an unpublishing"
+      end
+
+      Withdrawal.new(
+        published_status: edition.status,
+        public_explanation: whitehall_edition["unpublishing"]["explanation"],
+        withdrawn_at: whitehall_edition["unpublishing"]["created_at"],
+      )
     end
   end
 end
