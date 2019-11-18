@@ -27,7 +27,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       expect(edition.update_type).to eq("major")
     end
 
-    it "sets the correct states when Whitehall document state is 'published'" do
+    it "sets live? to true when document state is 'published'" do
       whitehall_edition["state"] = "published"
       whitehall_edition["revision_history"] << {
         "event" => "update",
@@ -39,7 +39,6 @@ RSpec.describe WhitehallImporter::CreateEdition do
         document, whitehall_document, whitehall_edition, 1, user_ids
       ).call
 
-      expect(Edition.last.status).to be_published
       expect(Edition.last).to be_live
     end
 
@@ -53,23 +52,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       expect(Edition.last.update_type).to eq("minor")
     end
 
-    it "sets the correct states when Whitehall document is force published" do
-      whitehall_edition["state"] = "published"
-      whitehall_edition["force_published"] = true
-      whitehall_edition["revision_history"] << {
-        "event" => "update",
-        "state" => "published",
-        "whodunnit" => 1,
-      }
-      WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
-
-      expect(Edition.last.status).to be_published_but_needs_2i
-      expect(Edition.last).to be_live
-    end
-
-    it "sets the correct states when Whitehall document state is 'rejected'" do
+    it "sets live? to false when document state is 'rejected'" do
       whitehall_edition["state"] = "rejected"
       whitehall_edition["revision_history"] << {
         "event" => "update",
@@ -80,11 +63,10 @@ RSpec.describe WhitehallImporter::CreateEdition do
         document, whitehall_document, whitehall_edition, 1, user_ids
       ).call
 
-      expect(Edition.last.status).to be_submitted_for_review
       expect(Edition.last).not_to be_live
     end
 
-    it "sets the correct states when Whitehall document state is 'submitted'" do
+    it "sets live? to false when document state is 'submitted'" do
       whitehall_edition["state"] = "submitted"
       whitehall_edition["revision_history"] << {
         "event" => "update",
@@ -95,7 +77,6 @@ RSpec.describe WhitehallImporter::CreateEdition do
         document, whitehall_document, whitehall_edition, 1, user_ids
       ).call
 
-      expect(Edition.last.status).to be_submitted_for_review
       expect(Edition.last).not_to be_live
     end
 
@@ -106,27 +87,6 @@ RSpec.describe WhitehallImporter::CreateEdition do
       )
 
       expect { create_edition.call }.to raise_error(WhitehallImporter::AbortImportError)
-    end
-
-    it "raises AbortImportError when revision history is missing for state" do
-      whitehall_edition["state"] = "published"
-      create_edition = WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      )
-
-      expect { create_edition.call }.to raise_error(WhitehallImporter::AbortImportError)
-    end
-
-    it "sets the created_at datetime of the document state" do
-      whitehall_edition["revision_history"][0].merge!("created_at" => 3.days.ago)
-
-      WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
-
-      imported_created_at = whitehall_edition["revision_history"][0]["created_at"]
-
-      expect(Edition.last.status.created_at).to be_within(1.second).of imported_created_at
     end
 
     it "raises AbortImportError when edition has an unsupported locale" do

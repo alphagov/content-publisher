@@ -71,24 +71,15 @@ private
       number: edition_number,
       revision_synced: true,
       revision: revision,
-      status: status(revision, initial_state),
+      status: WhitehallImporter::CreateStatus.new(
+        revision, initial_state, whitehall_edition, user_ids
+      ).call,
       current: whitehall_edition["id"] == most_recent_edition["id"],
       live: live?,
       created_at: whitehall_edition["created_at"],
       updated_at: whitehall_edition["updated_at"],
       created_by_id: user_ids[create_event["whodunnit"]],
       last_edited_by_id: user_ids[last_event["whodunnit"]],
-    )
-  end
-
-  def status(revision, initial_state)
-    event = state_history_event(initial_state)
-
-    Status.new(
-      state: state,
-      revision_at_creation: revision,
-      created_by_id: user_ids[event["whodunnit"]],
-      created_at: event["created_at"],
     )
   end
 
@@ -129,17 +120,6 @@ private
     raise WhitehallImporter::AbortImportError, "Edition is missing a create event" unless event
 
     event
-  end
-
-  def state
-    case whitehall_edition["state"]
-    when "draft" then "draft"
-    when "superseded" then "superseded"
-    when "published", "withdrawn"
-      whitehall_edition["force_published"] ? "published_but_needs_2i" : "published"
-    else
-      "submitted_for_review"
-    end
   end
 
   def live?
