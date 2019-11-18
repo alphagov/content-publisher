@@ -21,5 +21,22 @@ RSpec.describe "Import tasks" do
       Rake::Task["import:whitehall"].invoke("123")
       expect(WhitehallImport.last.state).to eq("completed")
     end
+
+    it "logs an error but does not fail if the import is aborted" do
+      allow_any_instance_of(WhitehallImporter).to receive(:import).and_raise(WhitehallImporter::AbortImportError)
+
+      expect { Rake::Task["import:whitehall"].invoke("123") }.to_not raise_error
+      expect(WhitehallImport.last.state).to eq("failed")
+    end
+
+    it "creates a document" do
+      expect { Rake::Task["import:whitehall"].invoke("123") }.to change { Document.count }.by(1)
+      expect(Document.last.content_id).to eq(import_data["content_id"])
+    end
+
+    it "creates the users associated with the document" do
+      expect { Rake::Task["import:whitehall"].invoke("123") }.to change { User.count }.by(1)
+      expect(User.last.name).to eq(import_data["users"].first["name"])
+    end
   end
 end
