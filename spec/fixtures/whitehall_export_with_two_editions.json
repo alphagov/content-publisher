@@ -18,7 +18,8 @@
           "locale": "en",
           "title": "Title",
           "summary": "Summary",
-          "body": "Body"
+          "body": "Body",
+          "base_path": "/government/news/document-slug"
         }
       ],
       "revision_history": [
@@ -75,7 +76,8 @@
           "locale": "en",
           "title": "Title",
           "summary": "Summary",
-          "body": "Body"
+          "body": "Body",
+          "base_path": "/government/news/document-slug"
         }
       ],
       "revision_history": [
