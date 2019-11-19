@@ -14,11 +14,13 @@ class WhitehallImporter::CreateEdition
   def call
     check_only_in_english
 
-    if whitehall_edition["state"] == "withdrawn"
-      create_withdrawn_edition
-    else
-      create_edition
-    end
+    edition = if whitehall_edition["state"] == "withdrawn"
+                create_withdrawn_edition
+              else
+                create_edition
+              end
+
+    access_limit(edition)
   end
 
 private
@@ -36,8 +38,7 @@ private
   end
 
   def create_withdrawn_edition
-    edition = create_edition("published")
-    set_withdrawn_status(edition)
+    create_edition("published").tap { |edition| set_withdrawn_status(edition) }
   end
 
   def create_edition(initial_state = whitehall_edition["state"])
@@ -91,5 +92,18 @@ private
 
   def most_recent_edition
     whitehall_document["editions"].max_by { |e| e["created_at"] }
+  end
+
+  def access_limit(edition)
+    return unless whitehall_edition["access_limited"]
+
+    edition.access_limit = AccessLimit.new(
+      created_at: whitehall_edition["created_at"],
+      edition: edition,
+      revision_at_creation: edition.revision,
+      limit_type: "tagged_organisations",
+    )
+
+    edition.save!
   end
 end

@@ -98,6 +98,22 @@ RSpec.describe WhitehallImporter::CreateEdition do
       expect(Edition.last.current).to be true
     end
 
+    it "creates AccessLimit" do
+      whitehall_edition["access_limited"] = true
+      whitehall_edition["revision_history"][0].merge!("created_at" => 3.days.ago)
+
+      WhitehallImporter::CreateEdition.new(
+        document, whitehall_document, whitehall_edition, 1, user_ids
+      ).call
+
+      expect(Edition.last.access_limit).to eq(AccessLimit.last)
+      expect(AccessLimit.last.created_at).to eq(Edition.last.created_at)
+      expect(AccessLimit.last.created_by_id).to be nil
+      expect(AccessLimit.last.edition_id).to eq(Edition.last.id)
+      expect(AccessLimit.last.revision_at_creation_id).to eq(Revision.last.id)
+      expect(AccessLimit.last.limit_type).to eq("tagged_organisations")
+    end
+
     context "when importing a withdrawn document" do
       let(:whitehall_edition) { whitehall_export_with_one_withdrawn_edition["editions"].first }
 
@@ -110,6 +126,16 @@ RSpec.describe WhitehallImporter::CreateEdition do
         expect(Status.first.state).to eq("published")
         expect(Edition.last.status).to be_withdrawn
         expect(Edition.last).to be_live
+      end
+
+      it "access limits a withdrawn edition" do
+        whitehall_edition["access_limited"] = true
+
+        WhitehallImporter::CreateEdition.new(
+          document, whitehall_document, whitehall_edition, 1, user_ids
+        ).call
+
+        expect(Edition.last.access_limit).to eq(AccessLimit.last)
       end
     end
   end
