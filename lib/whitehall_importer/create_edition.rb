@@ -58,7 +58,7 @@ private
         revision, whitehall_edition, user_ids, whitehall_edition_state: whitehall_edition_state
       ).call,
       current: whitehall_edition["id"] == most_recent_edition["id"],
-      live: live?,
+      live: whitehall_edition["state"].in?(%w(published withdrawn)),
       created_at: whitehall_edition["created_at"],
       updated_at: whitehall_edition["updated_at"],
       created_by_id: user_ids[create_event["whodunnit"]],
@@ -84,10 +84,6 @@ private
     raise WhitehallImporter::AbortImportError, "Edition is missing a create event" unless event
 
     event
-  end
-
-  def live?
-    whitehall_edition["state"].in?(%w(published withdrawn))
   end
 
   def most_recent_edition
