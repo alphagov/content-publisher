@@ -17,7 +17,7 @@ RSpec.describe WhitehallImporter::CreateStatus do
       }
 
       status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition["state"], whitehall_edition, user_ids
+        revision, whitehall_edition, user_ids
       ).call
 
       expect(status.state).to eq("published")
@@ -33,7 +33,7 @@ RSpec.describe WhitehallImporter::CreateStatus do
       }
 
       status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition["state"], whitehall_edition, user_ids
+        revision, whitehall_edition, user_ids
       ).call
 
       expect(status.state).to eq("published_but_needs_2i")
@@ -48,7 +48,7 @@ RSpec.describe WhitehallImporter::CreateStatus do
       }
 
       status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition["state"], whitehall_edition, user_ids
+        revision, whitehall_edition, user_ids
       ).call
 
       expect(status.state).to eq("submitted_for_review")
@@ -63,7 +63,7 @@ RSpec.describe WhitehallImporter::CreateStatus do
       }
 
       status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition["state"], whitehall_edition, user_ids
+        revision, whitehall_edition, user_ids
       ).call
 
       expect(status.state).to eq("submitted_for_review")
@@ -72,7 +72,7 @@ RSpec.describe WhitehallImporter::CreateStatus do
     it "raises AbortImportError when revision history is missing for state" do
       whitehall_edition["state"] = "published"
       create_status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition["state"], whitehall_edition, user_ids
+        revision, whitehall_edition, user_ids
       )
 
       expect { create_status.call }.to raise_error(WhitehallImporter::AbortImportError)
@@ -82,7 +82,7 @@ RSpec.describe WhitehallImporter::CreateStatus do
       whitehall_edition["revision_history"][0].merge!("created_at" => 3.days.ago)
 
       status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition["state"], whitehall_edition, user_ids
+        revision, whitehall_edition, user_ids
       ).call
 
       imported_created_at = whitehall_edition["revision_history"][0]["created_at"]
@@ -92,7 +92,7 @@ RSpec.describe WhitehallImporter::CreateStatus do
 
     it "sets the created_by_id of the document state" do
       status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition["state"], whitehall_edition, user_ids
+        revision, whitehall_edition, user_ids
       ).call
 
       expect(status.created_by_id).to eq(user_ids[1])
@@ -101,10 +101,24 @@ RSpec.describe WhitehallImporter::CreateStatus do
     it "raises AbortImportError when edition has an unsupported state" do
       whitehall_edition["state"] = "not_supported"
       create_status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition["state"], whitehall_edition, user_ids
+        revision, whitehall_edition, user_ids
       )
 
       expect { create_status.call }.to raise_error(WhitehallImporter::AbortImportError)
+    end
+
+    it "allows the default state to be overwritten by a another valid whitehall state" do
+      whitehall_edition["revision_history"] << {
+        "event" => "update",
+        "state" => "superseded",
+        "whodunnit" => 1,
+      }
+
+      status = WhitehallImporter::CreateStatus.new(
+        revision, whitehall_edition, user_ids, status: "superseded"
+      ).call
+
+      expect(status.state).to eq("superseded")
     end
 
     context "withdrawn documents" do
@@ -114,7 +128,7 @@ RSpec.describe WhitehallImporter::CreateStatus do
       it "raises AbortImportError when document is withdrawn but has no unpublishing details" do
         whitehall_edition["unpublishing"] = nil
         create_status = WhitehallImporter::CreateStatus.new(
-          revision, whitehall_edition["state"], whitehall_edition, user_ids, edition: edition
+          revision, whitehall_edition, user_ids, edition: edition
         )
 
         expect { create_status.call }.to raise_error(WhitehallImporter::AbortImportError)
@@ -122,7 +136,7 @@ RSpec.describe WhitehallImporter::CreateStatus do
 
       it "sets the Withdrawal details for a withdrawn document" do
         status = WhitehallImporter::CreateStatus.new(
-          revision, whitehall_edition["state"], whitehall_edition, user_ids, edition: edition
+          revision, whitehall_edition, user_ids, edition: edition
         ).call
 
         expect(status.details.published_status_id).to eq(edition.status.id)

@@ -54,7 +54,7 @@ private
       revision_synced: true,
       revision: revision,
       status: WhitehallImporter::CreateStatus.new(
-        revision, initial_state, whitehall_edition, user_ids
+        revision, whitehall_edition, user_ids, status: initial_state
       ).call,
       current: whitehall_edition["id"] == most_recent_edition["id"],
       live: live?,

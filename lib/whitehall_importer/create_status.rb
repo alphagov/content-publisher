@@ -12,9 +12,9 @@ class WhitehallImporter::CreateStatus
     withdrawn
   ).freeze
 
-  def initialize(revision, status, whitehall_edition, user_ids, edition: nil)
+  def initialize(revision, whitehall_edition, user_ids, status: nil, edition: nil)
     @revision = revision
-    @status = status
+    @status = status || whitehall_edition["state"]
     @whitehall_edition = whitehall_edition
     @user_ids = user_ids
     @edition = edition
