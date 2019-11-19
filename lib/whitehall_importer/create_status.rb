@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WhitehallImporter::CreateStatus
-  attr_reader :revision, :status, :whitehall_edition, :user_ids, :edition
+  attr_reader :revision, :whitehall_edition_state, :whitehall_edition, :user_ids, :edition
 
   SUPPORTED_WHITEHALL_STATES = %w(
     draft
@@ -12,23 +12,22 @@ class WhitehallImporter::CreateStatus
     withdrawn
   ).freeze
 
-  def initialize(revision, whitehall_edition, user_ids, status: nil, edition: nil)
+  def initialize(revision, whitehall_edition, user_ids, whitehall_edition_state: nil, edition: nil)
     @revision = revision
-    @status = status || whitehall_edition["state"]
     @whitehall_edition = whitehall_edition
+    @whitehall_edition_state = whitehall_edition_state || whitehall_edition["state"]
     @user_ids = user_ids
     @edition = edition
   end
 
   def call
     check_supported_state
-    event = state_history_event(status)
 
     Status.new(
       state: state,
       revision_at_creation: revision,
-      created_by_id: user_ids[event["whodunnit"]],
-      created_at: event["created_at"],
+      created_by_id: user_ids[state_history_event["whodunnit"]],
+      created_at: state_history_event["created_at"],
       details: details,
     )
   end
@@ -40,19 +39,19 @@ private
   end
 
   def valid_state?
-    SUPPORTED_WHITEHALL_STATES.include?(status)
+    SUPPORTED_WHITEHALL_STATES.include?(whitehall_edition_state)
   end
 
-  def state_history_event(status)
-    event = whitehall_edition["revision_history"].select { |h| h["state"] == status }.last
+  def state_history_event
+    event = whitehall_edition["revision_history"].select { |h| h["state"] == whitehall_edition_state }.last
 
-    raise WhitehallImporter::AbortImportError, "Edition is missing a #{state} event" unless event
+    raise WhitehallImporter::AbortImportError, "Edition is missing a #{whitehall_edition_state} event" unless event
 
     event
   end
 
   def state
-    case status
+    case whitehall_edition_state
     when "draft" then "draft"
     when "superseded" then "superseded"
     when "published"
@@ -64,7 +63,7 @@ private
   end
 
   def details
-    if edition && status == "withdrawn"
+    if edition && whitehall_edition_state == "withdrawn"
       if whitehall_edition["unpublishing"].blank?
         raise WhitehallImporter::AbortImportError, "Cannot create withdrawn status without an unpublishing"
       end

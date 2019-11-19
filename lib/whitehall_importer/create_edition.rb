@@ -41,7 +41,7 @@ private
     create_edition("published").tap { |edition| set_withdrawn_status(edition) }
   end
 
-  def create_edition(initial_state = whitehall_edition["state"])
+  def create_edition(whitehall_edition_state = nil)
     create_event = create_history_event
     last_event = whitehall_edition["revision_history"].last
 
@@ -55,7 +55,7 @@ private
       revision_synced: true,
       revision: revision,
       status: WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids, status: initial_state
+        revision, whitehall_edition, user_ids, whitehall_edition_state: whitehall_edition_state
       ).call,
       current: whitehall_edition["id"] == most_recent_edition["id"],
       live: live?,

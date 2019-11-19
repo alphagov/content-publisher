@@ -115,7 +115,7 @@ RSpec.describe WhitehallImporter::CreateStatus do
       }
 
       status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids, status: "superseded"
+        revision, whitehall_edition, user_ids, whitehall_edition_state: "superseded"
       ).call
 
       expect(status.state).to eq("superseded")
