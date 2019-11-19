@@ -52,7 +52,7 @@ private
   def create_or_update_document
     event = whitehall_document["editions"].first["revision_history"].select { |h| h["event"] == "create" }.first
 
-    raise AbortImportError, "Edition is missing a create event" unless event
+    raise AbortImportError, "First edition is missing a create event" unless event
 
     Document.find_or_create_by!(
       content_id: whitehall_document["content_id"],
