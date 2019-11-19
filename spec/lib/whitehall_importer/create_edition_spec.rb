@@ -10,9 +10,9 @@ RSpec.describe WhitehallImporter::CreateEdition do
     let(:user_ids) { { 1 => create(:user).id } }
 
     it "can import edition data from Whitehall" do
-      WhitehallImporter::CreateEdition.new(
+      described_class.call(
         document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
+      )
 
       edition = Edition.last
 
@@ -35,9 +35,9 @@ RSpec.describe WhitehallImporter::CreateEdition do
         "whodunnit" => 1,
       }
 
-      WhitehallImporter::CreateEdition.new(
+      described_class.call(
         document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
+      )
 
       expect(Edition.last).to be_live
     end
@@ -45,9 +45,9 @@ RSpec.describe WhitehallImporter::CreateEdition do
     it "can set minor update type" do
       whitehall_edition["minor_change"] = true
 
-      WhitehallImporter::CreateEdition.new(
+      described_class.call(
         document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
+      )
 
       expect(Edition.last.update_type).to eq("minor")
     end
@@ -59,9 +59,9 @@ RSpec.describe WhitehallImporter::CreateEdition do
         "state" => "rejected",
         "whodunnit" => 1,
       }
-      WhitehallImporter::CreateEdition.new(
+      described_class.call(
         document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
+      )
 
       expect(Edition.last).not_to be_live
     end
@@ -73,9 +73,9 @@ RSpec.describe WhitehallImporter::CreateEdition do
         "state" => "submitted",
         "whodunnit" => 1,
       }
-      WhitehallImporter::CreateEdition.new(
+      described_class.call(
         document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
+      )
 
       expect(Edition.last).not_to be_live
     end
@@ -83,17 +83,14 @@ RSpec.describe WhitehallImporter::CreateEdition do
     it "raises AbortImportError when edition has an unsupported locale" do
       whitehall_edition["translations"][0]["locale"] = "zz"
 
-      create_edition = WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      )
-
-      expect { create_edition.call }.to raise_error(WhitehallImporter::AbortImportError)
+      expect { described_class.call(document, whitehall_document, whitehall_edition, 1, user_ids) }
+        .to raise_error(WhitehallImporter::AbortImportError)
     end
 
     it "sets the current edition" do
-      WhitehallImporter::CreateEdition.new(
+      described_class.call(
         document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
+      )
 
       expect(Edition.last.current).to be true
     end
@@ -102,9 +99,9 @@ RSpec.describe WhitehallImporter::CreateEdition do
       whitehall_edition["access_limited"] = true
       whitehall_edition["revision_history"][0].merge!("created_at" => 3.days.ago)
 
-      WhitehallImporter::CreateEdition.new(
+      described_class.call(
         document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
+      )
 
       expect(Edition.last.access_limit).to eq(AccessLimit.last)
       expect(AccessLimit.last.created_at).to eq(Edition.last.created_at)
@@ -118,9 +115,9 @@ RSpec.describe WhitehallImporter::CreateEdition do
       let(:whitehall_edition) { whitehall_export_with_one_withdrawn_edition["editions"].first }
 
       it "sets the correct states when Whitehall document state is withdrawn" do
-        WhitehallImporter::CreateEdition.new(
+        described_class.call(
           document, whitehall_document, whitehall_edition, 1, user_ids
-        ).call
+        )
 
         expect(Status.count).to eq(2)
         expect(Status.first.state).to eq("published")
@@ -131,9 +128,9 @@ RSpec.describe WhitehallImporter::CreateEdition do
       it "access limits a withdrawn edition" do
         whitehall_edition["access_limited"] = true
 
-        WhitehallImporter::CreateEdition.new(
+        described_class.call(
           document, whitehall_document, whitehall_edition, 1, user_ids
-        ).call
+        )
 
         expect(Edition.last.access_limit).to eq(AccessLimit.last)
       end

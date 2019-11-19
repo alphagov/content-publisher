@@ -3,55 +3,46 @@
 RSpec.describe WhitehallImporter do
   include FixturesHelper
 
-  let(:import_data) { whitehall_export_with_one_edition }
+  describe ".import" do
+    before { allow(WhitehallImporter::Import).to receive(:call) }
 
-  it "can import JSON data from Whitehall" do
-    importer = WhitehallImporter.new(import_data)
+    let(:import_data) { whitehall_export_with_one_edition }
 
-    expect { importer.import }.to change { Document.count }.by(1)
-  end
+    it "creates a WhitehallImport" do
+      expect { WhitehallImporter.import(import_data) }
+        .to change { WhitehallImport.count }
+        .by(1)
+    end
 
-  it "adds users who have never logged into Content Publisher" do
-    importer = WhitehallImporter.new(import_data)
-    importer.import
+    it "imports a document" do
+      expect(WhitehallImporter::Import).to receive(:call)
+      WhitehallImporter.import(import_data)
+    end
 
-    expect(User.last.uid).to eq "36d5154e-d3b7-4e3e-aad8-32a50fc9430e"
-    expect(User.last.name).to eq "A Person"
-    expect(User.last.email).to eq "a-publisher@department.gov.uk"
-    expect(User.last.organisation_slug).to eq "a-government-department"
-    expect(User.last.organisation_content_id).to eq "01892f23-b069-43f5-8404-d082f8dffcb9"
-  end
+    it "stores the payload" do
+      record = WhitehallImporter.import(import_data)
+      expect(record.payload).to eq(import_data)
+    end
 
-  it "does not add users who have logged into Content Publisher" do
-    importer = WhitehallImporter.new(import_data)
-    User.create!(uid: "36d5154e-d3b7-4e3e-aad8-32a50fc9430e")
+    context "when the import is successful" do
+      it "marks the import as completed" do
+        record = WhitehallImporter.import(import_data)
+        expect(record).to be_completed
+      end
+    end
 
-    expect { importer.import }.not_to(change { User.count })
-  end
+    context "when the import fails" do
+      before do
+        allow(WhitehallImporter::Import).to receive(:call).and_raise(message)
+      end
 
-  it "creates a user map" do
-    importer = WhitehallImporter.new(import_data)
-    importer.import
+      let(:message) { "Import failed" }
 
-    expected_user_ids = {
-      1 => User.last.id,
-    }
-
-    expect(importer.user_ids).to eq(expected_user_ids)
-  end
-
-  it "sets created_by_id as the original author" do
-    importer = WhitehallImporter.new(import_data)
-    importer.import
-
-    expect(Document.last.created_by_id).to eq(User.last.id)
-  end
-
-  it "sets import_from as Whitehall" do
-    importer = WhitehallImporter.new(import_data)
-    importer.import
-
-    document = Document.last
-    expect(document.imported_from_whitehall?).to be true
+      it "marks the import as failed and logs the error" do
+        record = WhitehallImporter.import(import_data)
+        expect(record).to be_failed
+        expect(record.error_log).to eq(message)
+      end
+    end
   end
 end
