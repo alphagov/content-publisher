@@ -133,6 +133,21 @@ RSpec.describe Tasks::WhitehallImporter do
     expect(Edition.last).not_to be_live
   end
 
+  it "creates AccessLimit" do
+    import_data["editions"][0]["access_limited"] = true
+    import_data["editions"][0]["revision_history"][0].merge!("created_at" => 3.days.ago)
+
+    importer = Tasks::WhitehallImporter.new(123, import_data)
+    importer.import
+
+    expect(Edition.last.access_limit).to eq(AccessLimit.last)
+    expect(AccessLimit.last.created_at).to eq(Edition.last.created_at)
+    expect(AccessLimit.last.created_by_id).to be nil
+    expect(AccessLimit.last.edition_id).to eq(Edition.last.id)
+    expect(AccessLimit.last.revision_at_creation_id).to eq(Revision.last.id)
+    expect(AccessLimit.last.limit_type).to eq("tagged_organisations")
+  end
+
   it "raises AbortImportError when edition has an unsupported state" do
     import_data["editions"][0]["state"] = "not_supported"
     importer = Tasks::WhitehallImporter.new(123, import_data)

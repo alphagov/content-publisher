@@ -138,6 +138,7 @@ module Tasks
         last_edited_by_id: user_ids[last_event["whodunnit"]],
       )
 
+      set_access_limit(whitehall_edition["created_at"], edition, revision) if whitehall_edition["access_limited"]
       set_withdrawn_status(whitehall_edition, edition) if whitehall_edition["state"] == "withdrawn"
     end
 
@@ -252,6 +253,17 @@ module Tasks
       return [] unless associations
 
       associations.map { |association| association["content_id"] }
+    end
+
+    def set_access_limit(created_at, edition, revision)
+      edition.access_limit = AccessLimit.new(
+        created_at: created_at,
+        edition: edition,
+        revision_at_creation: revision,
+        limit_type: "tagged_organisations",
+      )
+
+      edition.save!
     end
 
     class AbortImportError < RuntimeError
