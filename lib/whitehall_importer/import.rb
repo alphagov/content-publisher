@@ -16,7 +16,7 @@ module WhitehallImporter
     def call
       ActiveRecord::Base.transaction do
         create_users(whitehall_document["users"])
-        document = create_or_update_document
+        document = create_document
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           CreateEdition.call(
@@ -36,13 +36,18 @@ module WhitehallImporter
       end
     end
 
-    def create_or_update_document
+    def create_document
+      content_id = whitehall_document["content_id"]
+      if Document.exists?(content_id: content_id)
+        raise AbortImportError, "Document with content_id #{content_id} already exists"
+      end
+
       event = whitehall_document["editions"].first["revision_history"].select { |h| h["event"] == "create" }.first
 
       raise AbortImportError, "First edition is missing a create event" unless event
 
-      Document.find_or_create_by!(
-        content_id: whitehall_document["content_id"],
+      Document.create!(
+        content_id: content_id,
         locale: "en",
         created_at: whitehall_document["created_at"],
         updated_at: whitehall_document["updated_at"],

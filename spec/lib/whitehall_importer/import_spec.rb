@@ -6,8 +6,14 @@ RSpec.describe WhitehallImporter::Import do
   describe ".call" do
     let(:import_data) { whitehall_export_with_one_edition }
 
-    it "can import JSON data from Whitehall" do
+    it "creates a document" do
       expect { described_class.call(import_data) }.to change { Document.count }.by(1)
+    end
+
+    it "aborts if a document already exists" do
+      create(:document, content_id: import_data["content_id"])
+      expect { described_class.call(import_data) }
+        .to raise_error(WhitehallImporter::AbortImportError)
     end
 
     it "adds users who have never logged into Content Publisher" do
