@@ -4,7 +4,7 @@ ruby File.read(".ruby-version").strip
 
 source "https://rubygems.org"
 
-gem "rails", "~> 5.2"
+gem "rails", "~> 6.0"
 
 gem "aws-sdk-s3", "~> 1"
 gem "bootsnap", "~> 1"
