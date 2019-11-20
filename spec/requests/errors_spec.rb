@@ -32,4 +32,12 @@ RSpec.describe "Errors" do
       expect(response.body).to include(I18n.t!("errors.internal_server_error.title"))
     end
   end
+
+  describe "bypassing user access checks" do
+    it "returns a not found response when a document doesn't exist" do
+      get document_path("document-that-does-not-exist")
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 end
