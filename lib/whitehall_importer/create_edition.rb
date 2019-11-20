@@ -25,7 +25,7 @@ module WhitehallImporter
                   create_edition
                 end
 
-      access_limit(edition)
+      edition.tap { |e| access_limit(e) }
     end
 
   private

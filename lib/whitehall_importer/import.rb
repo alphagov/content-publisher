@@ -22,6 +22,8 @@ module WhitehallImporter
             document, whitehall_document, edition, edition_number + 1, user_ids
           )
         end
+
+        document
       end
     end
 

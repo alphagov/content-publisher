@@ -1,47 +1,63 @@
 # frozen_string_literal: true
 
 RSpec.describe WhitehallImporter::Import do
-  include FixturesHelper
-
   describe ".call" do
-    let(:import_data) { whitehall_export_with_one_edition }
-
     it "creates a document" do
-      expect { described_class.call(import_data) }.to change { Document.count }.by(1)
+      expect { described_class.call(build(:whitehall_export_document)) }
+        .to change { Document.count }.by(1)
     end
 
     it "aborts if a document already exists" do
-      create(:document, content_id: import_data["content_id"])
+      content_id = create(:document).content_id
+      import_data = build(:whitehall_export_document, content_id: content_id)
       expect { described_class.call(import_data) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
 
-    it "adds users who have never logged into Content Publisher" do
-      described_class.call(import_data)
+    it "sets the document as being imported from Whitehall" do
+      document = described_class.call(build(:whitehall_export_document))
 
-      expect(User.last.uid).to eq "36d5154e-d3b7-4e3e-aad8-32a50fc9430e"
-      expect(User.last.name).to eq "A Person"
-      expect(User.last.email).to eq "a-publisher@department.gov.uk"
-      expect(User.last.organisation_slug).to eq "a-government-department"
-      expect(User.last.organisation_content_id).to eq "01892f23-b069-43f5-8404-d082f8dffcb9"
+      expect(document).to be_imported_from_whitehall
+    end
+
+    it "creates users who have never logged into Content Publisher" do
+      user = build(:whitehall_export_user)
+      import_data = build(:whitehall_export_document, users: [user])
+
+      described_class.call(import_data)
+      expect(User.last.attributes).to match hash_including(
+        "uid" => user["uid"],
+        "name" => user["name"],
+        "email" => user["email"],
+        "organisation_slug" => user["organisation_slug"],
+        "organisation_content_id" => user["organisation_content_id"],
+      )
     end
 
     it "does not add users who have logged into Content Publisher" do
-      User.create!(uid: "36d5154e-d3b7-4e3e-aad8-32a50fc9430e")
+      user = build(:whitehall_export_user)
+      User.create!(uid: user["uid"])
+      import_data = build(:whitehall_export_document, users: [user])
 
       expect { described_class.call(import_data) }.not_to(change { User.count })
     end
 
     it "sets created_by_id as the original author" do
-      described_class.call(import_data)
+      whitehall_user = build(:whitehall_export_user)
+      user = User.create!(uid: whitehall_user["uid"])
+      edition = build(
+        :whitehall_export_edition,
+        revision_history: [
+          { "event" => "create", "state" => "draft", "whodunnit" => whitehall_user["id"] },
+        ],
+      )
 
-      expect(Document.last.created_by_id).to eq(User.last.id)
-    end
+      import_data = build(:whitehall_export_document,
+                          editions: [edition],
+                          users: [whitehall_user])
+      document = described_class.call(import_data)
 
-    it "sets import_from as Whitehall" do
-      described_class.call(import_data)
-
-      expect(Document.last.imported_from_whitehall?).to be true
+      expect(document.created_by).to eq(user)
     end
   end
 end
