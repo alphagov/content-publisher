@@ -32,7 +32,10 @@ class Government
 
   def covers?(date)
     return false if date < start_date
-    return false if end_date && date > end_date
+    # Most end dates in Whitehall are the last date of a government so we
+    # treat the date as going up to 23:59:59 on the day by appending 1 day to
+    # the date
+    return false if end_date && date >= (end_date + 1)
 
     true
   end

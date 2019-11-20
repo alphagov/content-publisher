@@ -31,7 +31,7 @@ RSpec.describe Government do
     let(:past_government) do
       build(:government,
             start_date: Date.parse("2018-01-31"),
-            end_date: Date.parse("2018-11-30"))
+            end_date: Date.parse("2018-12-01"))
     end
 
     before do
@@ -45,6 +45,10 @@ RSpec.describe Government do
 
     it "returns nil when there isn't a government for the date" do
       expect(Government.for_date(Date.parse("2017-06-01"))).to be_nil
+    end
+
+    it "opts for the more recent government when there is a date conflict" do
+      expect(Government.for_date(Date.parse("2018-12-01"))).to eq current_government
     end
   end
 
@@ -111,6 +115,11 @@ RSpec.describe Government do
 
       it "returns true on the end date" do
         expect(government.covers?(Date.parse("2019-11-20"))).to be true
+      end
+
+      it "returns true with a time within the end date" do
+        time = Time.zone.parse("2019-11-20 23:55")
+        expect(government.covers?(time)).to be true
       end
     end
   end
