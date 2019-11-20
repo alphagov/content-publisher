@@ -17,8 +17,10 @@ RSpec.describe Government do
       expect(Government.find(content_id)).to be government
     end
 
-    it "returns nil if there isn't a government for the id" do
-      expect(Government.find(SecureRandom.uuid)).to be_nil
+    it "raises an error if there isn't a government for the id" do
+      missing_content_id = SecureRandom.uuid
+      expect { Government.find(missing_content_id) }
+        .to raise_error(RuntimeError, "Government #{missing_content_id} not found")
     end
   end
 

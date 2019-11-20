@@ -4,7 +4,8 @@ class Government
   include ActiveModel::Model
 
   def self.find(content_id)
-    all.find { |government| government.content_id == content_id }
+    government = all.find { |g| g.content_id == content_id }
+    government || (raise "Government #{content_id} not found")
   end
 
   def self.for_date(date)
