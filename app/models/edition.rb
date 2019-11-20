@@ -94,6 +94,15 @@ class Edition < ApplicationRecord
       .find_by!(find_by)
   end
 
+  scope :political, ->(political = true) do
+    sql = "CASE WHEN metadata_revisions.editor_political IS NULL "\
+          "THEN editions.system_political = :political "\
+          "ELSE metadata_revisions.editor_political = :political "\
+          "END"
+
+    joins(revision: :metadata_revision).where(sql, political: political)
+  end
+
   def self.create_initial(document:, document_type_id:, user: nil, tags: {})
     revision = Revision.create_initial(
       document: document,

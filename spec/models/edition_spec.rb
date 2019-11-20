@@ -25,6 +25,23 @@ RSpec.describe Edition do
     end
   end
 
+  describe ".political" do
+    let!(:editor_political) { create(:edition, editor_political: true) }
+    let!(:editor_not_political) { create(:edition, editor_political: false) }
+    let!(:system_political) { create(:edition, system_political: true) }
+    let!(:system_not_political) { create(:edition, system_political: false) }
+
+    it "defaults to scoping to only political editions" do
+      expect(Edition.political)
+        .to contain_exactly(editor_political, system_political)
+    end
+
+    it "can be passed false to scope to non political editions" do
+      expect(Edition.political(false))
+        .to contain_exactly(editor_not_political, system_not_political)
+    end
+  end
+
   describe ".create_initial" do
     let(:document) { build(:document) }
     let(:document_type_id) { build(:document_type, path_prefix: "/prefix").id }
