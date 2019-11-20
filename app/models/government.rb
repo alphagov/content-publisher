@@ -26,9 +26,7 @@ class Government
     id == other.id
   end
 
-  def eql?(other)
-    self == other
-  end
+  alias_method :eql?, :==
 
   def covers?(date)
     return false if date < start_date
