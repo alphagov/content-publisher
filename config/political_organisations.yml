@@ -1,0 +1,66 @@
+# This list of content_ids is generated from Whitehall by running the following
+# code in the Rails console:
+# `puts Organisation.where(political: true).order(:name).map { |o| "- '#{o.content_id}' # #{o.name}" }.join("\n")`
+# This is hardcoded in Content Publisher as this data is currently not
+# represented in the Publishing API. This list will need to be updated if
+# the political status of organisations are edited and in the long term
+# should call the Publishing API
+#
+- 'a0f338c5-e94c-42f8-9c26-b9c2eb6850d3' # Accelerated Access Review
+- '25aacd68-dc0c-4041-9c3a-df59a5357c23' # Attorney General's Office
+- 'bb371e6d-6c48-495a-bc64-494856345e99' # Better Regulation Delivery Office
+- '96ae61d6-c2a1-48cb-8e67-da9d105ae381' # Cabinet Office
+- '2bde479a-97f2-42b5-986a-287a623c2a1c' # Department for Business, Energy & Industrial Strategy
+- 'a3773e86-b0b1-4c96-b1f4-5fff487cca39' # Department for Business, Enterprise and Regulatory Reform
+- '569a9ee5-c195-4b7f-b9dc-edc17a09113f' # Department for Business, Innovation & Skills
+- 'aaebe7e8-f73a-4f53-a20d-1a1caca4e289' # Department for Children, Schools and Families
+- 'e7c374b2-35c8-4b7d-a6d5-7f2e9f8f3556' # Department for Constitutional Affairs
+- 'fd62c5a4-714d-47fe-a612-595d1739251c' # Department for Digital, Culture, Media & Sport
+- 'ebd15ade-73b2-4eaf-b1c3-43034a42eb37' # Department for Education
+- '77c1621f-a392-4393-9d8c-9969cd98c1e7' # Department for Education and Skills
+- 'de4e9dc6-cca4-43af-a594-682023b84d6c' # Department for Environment, Food & Rural Affairs
+- 'f323e83c-868b-4bcb-b6e2-a8f9bb40397e' # Department for Exiting the European Union
+- '04b788e1-8d6a-412e-a15a-1c1390328e47' # Department for Innovation, Universities and Skills
+- 'db994552-7644-404d-a770-a2fe659c661f' # Department for International Development
+- '082092f1-656c-470e-b024-229dc6e750e9' # Department for International Trade
+- '4c717efc-f47b-478e-a76d-ce1ae0af1946' # Department for Transport
+- 'b548a09f-8b35-4104-89f4-f1a40bf3136d' # Department for Work and Pensions
+- '4c5f5a7b-c27d-4e73-9451-c955dd86face' # Department of Constitutional Affairs
+- 'd65d4203-01f5-4920-a3b1-f614bfd8e83e' # Department of Energy & Climate Change
+- '7cd6bf12-bbe9-4118-8523-f927b0442156' # Department of Health and Social Care
+- '364a9362-9244-476c-8a9b-c124a4e96bc6' # Department of National Heritage
+- 'e2768146-3fe2-4a81-b1b5-9c931deca22b' # Department of Social Security
+- '971eb79c-9236-47ff-9af1-b32c835a88fc' # Department of the Environment, Transport and the Regions
+- 'fc490b59-de8a-4fa8-b5cc-4d9de65b329b' # Department of Trade and Industry
+- '5a1467ef-2946-4d06-831d-8153d25d6ff4' # Deputy Prime Minister's Office
+- 'b9fc8528-81d1-419b-8748-6c00be71044b' # Education Funding Agency
+- '3f4622d2-15a1-4d57-b294-8a6d986e92fa' # English Partnerships
+- '9adfc4ed-9f6c-4976-a6d8-18d34356367c' # Foreign & Commonwealth Office
+- '3df55660-43a9-4494-8146-a0a492a975b6' # Government Equalities Office
+- '1994e0e4-bd19-4966-bbd7-f293d6e90a6b' # HM Treasury
+- '06056197-bc69-4147-aa28-070bca132178' # Home Office
+- '5ddb26f6-caad-4b14-97a7-fabcfa25d4bc' # Homes and Communities Agency
+- 'ad6f059a-f36c-48eb-a07f-4a6856f08f7f' # Homes England
+- '5208aede-165d-494e-b0fc-675bb2351d9b' # Housing Corporation
+- '9981b813-468f-414a-a468-28f5438811f4' # Immigration Enforcement
+- '697bf058-5764-467c-8969-32102447953b' # Infrastructure UK
+- 'dfa0264d-870c-49b4-91c9-d19b1ab8dbe0' # Lord Chancellor's Department
+- 'd994e55c-48c9-4795-b872-58d8ec98af12' # Ministry of Defence
+- '2e7868a8-38f5-4ff6-b62f-9a15d1c22d28' # Ministry of Housing, Communities & Local Government
+- 'dcc907d6-433c-42df-9ffb-d9c68be5dc4d' # Ministry of Justice
+- 'e1cbab66-b0d3-4186-917c-afd4f3fb6967' # National College for Teaching and Leadership
+- '234148b2-66d6-457c-9d06-2bf2b98533ca' # Northern Ireland Office
+- '889c12d3-4120-46a2-b6c9-d2c64a03adb3' # Office for Disability Issues
+- '767f262c-9c80-44c2-9614-53d505ecc34b' # Office for Low Emission Vehicles
+- '93f52ac4-7eb5-47bf-acfe-c11d1c8e8d76' # Office of the Advocate General for Scotland
+- '3cba3de4-da66-470b-ac4a-75a0bd05f7cc' # Office of the Leader of the House of Commons
+- '7f6b788d-1e91-4f87-b315-8a44fb773182' # Office of the Leader of the House of Lords
+- 'db674609-f9d6-4700-b5c7-31ae810a661b' # Office of the Secretary of State for Scotland
+- '4f9fe232-e7a2-48e8-99b1-8f7828680493' # Office of the Secretary of State for Wales
+- '83579fe6-c696-4bea-9eab-f33fedd4d277' # Open Public Services
+- '705dbea4-8bd7-422e-ba9c-254557f77f81' # Prime Minister's Office, 10 Downing Street
+- 'ab7f7e57-b064-49fb-b499-3fbde6dd9ddb' # Renewable Fuels Agency
+- '13670958-b893-46a7-8044-af0d6a873e7e' # Scottish Office
+- '80a4898c-0540-4f6b-9ad5-17b67faf058e' # The Shareholder Executive
+- 'c4e41647-ad69-4e96-843b-05fa7867bbc0' # UK Export Finance
+- '6cc81e25-a8a7-41ff-b328-5441ca39d57d' # Welsh Office
