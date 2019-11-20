@@ -38,10 +38,6 @@ module WhitehallImporter
       whitehall_edition["translations"].count == 1 && whitehall_edition["translations"].last["locale"] == "en"
     end
 
-    def english_translation
-      whitehall_edition["translations"].last
-    end
-
     def create_withdrawn_edition
       create_edition("published").tap { |edition| set_withdrawn_status(edition) }
     end
@@ -50,9 +46,7 @@ module WhitehallImporter
       create_event = create_history_event
       last_event = whitehall_edition["revision_history"].last
 
-      revision = CreateRevision.call(
-        document, whitehall_edition, english_translation
-      )
+      revision = CreateRevision.call(document, whitehall_edition)
 
       Edition.create!(
         document: document,

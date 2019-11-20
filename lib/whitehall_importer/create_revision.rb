@@ -2,7 +2,7 @@
 
 module WhitehallImporter
   class CreateRevision
-    attr_reader :document, :whitehall_edition, :translation
+    attr_reader :document, :whitehall_edition
 
     SUPPORTED_DOCUMENT_TYPES = %w(news_story press_release).freeze
     DOCUMENT_SUB_TYPES = %w[
@@ -16,10 +16,9 @@ module WhitehallImporter
       new(*args).call
     end
 
-    def initialize(document, whitehall_edition, translation)
+    def initialize(document, whitehall_edition)
       @document = document
       @whitehall_edition = whitehall_edition
-      @translation = translation
     end
 
     def call
@@ -57,6 +56,14 @@ module WhitehallImporter
     end
 
   private
+
+    def translation
+      @translation ||= whitehall_edition["translations"].find do |t|
+        t["locale"] == document.locale
+      end
+
+      @translation || raise(AbortImportError, "Translation #{document.locale} missing")
+    end
 
     def primary_publishing_organisation(organisations)
       unless organisations
