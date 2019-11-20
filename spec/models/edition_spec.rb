@@ -107,6 +107,26 @@ RSpec.describe Edition do
     end
   end
 
+  describe "#government" do
+    before { allow(Government).to receive(:all).and_return([government]) }
+    let(:government) { build(:government) }
+
+    it "returns nil when government_id isn't set" do
+      edition = build(:edition, government_id: nil)
+      expect(edition.government).to be_nil
+    end
+
+    it "returns a government when one matches the id" do
+      edition = build(:edition, government_id: government.content_id)
+      expect(edition.government).to eq(government)
+    end
+
+    it "raises an error when no government matches the id" do
+      edition = build(:edition, government_id: SecureRandom.uuid)
+      expect { edition.government }.to raise_error(RuntimeError)
+    end
+  end
+
   describe "#assign_as_edit" do
     let(:edition) { build(:edition) }
     let(:user) { build(:user) }

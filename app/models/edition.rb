@@ -135,6 +135,12 @@ class Edition < ApplicationRecord
     editor_political.nil? ? system_political : editor_political
   end
 
+  def government
+    return unless government_id
+
+    Government.find(government_id)
+  end
+
   def assign_status(state,
                     user,
                     update_last_edited: true,
