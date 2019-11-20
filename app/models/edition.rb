@@ -122,6 +122,10 @@ class Edition < ApplicationRecord
     number == 1
   end
 
+  def political?
+    editor_political.nil? ? system_political : editor_political
+  end
+
   def assign_status(state,
                     user,
                     update_last_edited: true,

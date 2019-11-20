@@ -66,6 +66,30 @@ RSpec.describe Edition do
     end
   end
 
+  describe "#political?" do
+    it "returns editor political when that is set" do
+      political_edition = build(:edition,
+                                editor_political: true,
+                                system_political: true)
+      not_political_edition = build(:edition,
+                                    editor_political: false,
+                                    system_political: true)
+      expect(political_edition).to be_political
+      expect(not_political_edition).not_to be_political
+    end
+
+    it "returns system political when editor political isn't set" do
+      political_edition = build(:edition,
+                                editor_political: nil,
+                                system_political: true)
+      not_political_edition = build(:edition,
+                                    editor_political: nil,
+                                    system_political: false)
+      expect(political_edition).to be_political
+      expect(not_political_edition).not_to be_political
+    end
+  end
+
   describe "#assign_as_edit" do
     let(:edition) { build(:edition) }
     let(:user) { build(:user) }
