@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_20_113230) do
+ActiveRecord::Schema.define(version: 2019_11_20_204541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_113230) do
     t.boolean "revision_synced", default: false, null: false
     t.bigint "access_limit_id"
     t.boolean "system_political", default: false, null: false
+    t.uuid "government_id"
     t.index ["access_limit_id"], name: "index_editions_on_access_limit_id"
     t.index ["created_by_id"], name: "index_editions_on_created_by_id"
     t.index ["document_id", "current"], name: "index_editions_on_document_id_and_current", unique: true, where: "(current = true)"
