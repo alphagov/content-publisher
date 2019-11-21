@@ -38,4 +38,16 @@ class Government
 
     true
   end
+
+  def current?
+    self == self.class.current
+  end
+
+  def publishing_api_payload
+    {
+      "title" => name,
+      "slug" => slug,
+      "current" => current?,
+    }
+  end
 end
