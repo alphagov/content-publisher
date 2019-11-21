@@ -13,16 +13,13 @@ class Topic
   end
 
   attr_accessor :title, :child_content_ids, :legacy_topic_content_ids, :parent_content_id, :content_id, :index
-
   delegate :hash, to: :content_id
 
   def ==(other)
     content_id == other.content_id
   end
 
-  def eql?(other)
-    self == other
-  end
+  alias_method :eql?, :==
 
   def breadcrumb
     ancestors + [self]

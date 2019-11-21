@@ -1,0 +1,285 @@
+# This list of governments is generated from Whitehall by running the following
+# code in the Rails console:
+# `puts Government.order(start_date: :desc).map { |g| g.as_json(only: %i[id slug name start_date end_date]) }.to_yaml`
+# This is included until government data is in the Publishing API and will
+# need to be updating each time governments change.
+- id: 56
+  slug: 2015-conservative-government
+  name: 2015 Conservative government
+  start_date: 2015-05-08
+  end_date:
+- id: 1
+  slug: 2010-to-2015-conservative-and-liberal-democrat-coalition-government
+  name: 2010 to 2015 Conservative and Liberal Democrat coalition government
+  start_date: 2010-05-12
+  end_date: 2015-05-08
+- id: 2
+  slug: 2005-to-2010-labour-government
+  name: 2005 to 2010 Labour government
+  start_date: 2005-05-06
+  end_date: 2010-05-11
+- id: 3
+  slug: 2001-to-2005-labour-government
+  name: 2001 to 2005 Labour government
+  start_date: 2001-06-08
+  end_date: 2005-05-05
+- id: 4
+  slug: 1997-to-2001-labour-government
+  name: 1997 to 2001 Labour government
+  start_date: 1997-05-02
+  end_date: 2001-06-07
+- id: 5
+  slug: 1992-to-1997-conservative-government
+  name: 1992 to 1997 Conservative government
+  start_date: 1992-04-10
+  end_date: 1997-05-01
+- id: 6
+  slug: 1987-to-1992-conservative-government
+  name: 1987 to 1992 Conservative government
+  start_date: 1987-06-12
+  end_date: 1992-04-09
+- id: 7
+  slug: 1983-to-1987-conservative-government
+  name: 1983 to 1987 Conservative government
+  start_date: 1983-06-10
+  end_date: 1987-06-11
+- id: 8
+  slug: 1979-to-1983-conservative-government
+  name: 1979 to 1983 Conservative government
+  start_date: 1979-05-04
+  end_date: 1983-06-09
+- id: 9
+  slug: 1974-to-1979-labour-government
+  name: 1974 to 1979 Labour government
+  start_date: 1974-10-11
+  end_date: 1979-05-03
+- id: 10
+  slug: 1974-to-1974-labour-minority-government
+  name: 1974 to 1974 Labour (minority) government
+  start_date: 1974-03-04
+  end_date: 1974-10-10
+- id: 11
+  slug: 1970-to-1974-conservative-government
+  name: 1970 to 1974 Conservative government
+  start_date: 1970-06-19
+  end_date: 1974-03-03
+- id: 12
+  slug: 1966-to-1970-labour-government
+  name: 1966 to 1970 Labour government
+  start_date: 1966-04-01
+  end_date: 1970-06-18
+- id: 13
+  slug: 1964-to-1966-labour-government
+  name: 1964 to 1966 Labour government
+  start_date: 1964-10-16
+  end_date: 1966-03-31
+- id: 14
+  slug: 1959-to-1964-conservative-government
+  name: 1959 to 1964 Conservative government
+  start_date: 1959-10-09
+  end_date: 1964-10-15
+- id: 15
+  slug: 1955-to-1959-conservative-government
+  name: 1955 to 1959 Conservative government
+  start_date: 1955-05-27
+  end_date: 1959-10-08
+- id: 16
+  slug: 1951-to-1955-conservative-government
+  name: 1951 to 1955 Conservative government
+  start_date: 1951-10-26
+  end_date: 1955-05-26
+- id: 17
+  slug: 1950-to-1951-labour-government
+  name: 1950 to 1951 Labour government
+  start_date: 1950-02-24
+  end_date: 1951-10-25
+- id: 18
+  slug: 1945-to-1950-labour-government
+  name: 1945 to 1950 Labour government
+  start_date: 1945-07-27
+  end_date: 1950-02-23
+- id: 19
+  slug: 1935-to-1945-national-government
+  name: 1935 to 1945 National government
+  start_date: 1935-11-15
+  end_date: 1945-07-26
+- id: 20
+  slug: 1931-to-1935-national-government
+  name: 1931 to 1935 National government
+  start_date: 1931-10-28
+  end_date: 1935-11-14
+- id: 21
+  slug: 1929-to-1931-labour-minority-government
+  name: 1929 to 1931 Labour (minority) government
+  start_date: 1929-06-05
+  end_date: 1931-10-27
+- id: 22
+  slug: 1924-to-1929-conservative-government
+  name: 1924 to 1929 Conservative government
+  start_date: 1924-10-30
+  end_date: 1929-06-04
+- id: 23
+  slug: 1924-to-1924-labour-minority-government
+  name: 1924 to 1924 Labour (minority) government
+  start_date: 1924-01-22
+  end_date: 1924-10-29
+- id: 24
+  slug: 1922-to-1924-conservative-government
+  name: 1922 to 1924 Conservative government
+  start_date: 1922-11-16
+  end_date: 1924-01-21
+- id: 25
+  slug: 1918-to-1922-conservative-and-liberal-coalition-government
+  name: 1918 to 1922 Conservative and Liberal coalition government
+  start_date: 1918-12-15
+  end_date: 1922-11-15
+- id: 26
+  slug: 1910-to-1918-liberal-minority-government
+  name: 1910 to 1918 Liberal (minority) government
+  start_date: 1910-12-19
+  end_date: 1918-12-14
+- id: 27
+  slug: 1910-to-1910-liberal-minority-government
+  name: 1910 to 1910 Liberal (minority) government
+  start_date: 1910-02-10
+  end_date: 1910-12-18
+- id: 28
+  slug: 1906-to-1910-liberal-government
+  name: 1906 to 1910 Liberal government
+  start_date: 1906-02-09
+  end_date: 1910-02-09
+- id: 29
+  slug: 1900-to-1906-conservative-government
+  name: 1900 to 1906 Conservative government
+  start_date: 1900-10-25
+  end_date: 1906-02-08
+- id: 30
+  slug: 1895-to-1900-conservative-government
+  name: 1895 to 1900 Conservative government
+  start_date: 1895-08-08
+  end_date: 1900-10-24
+- id: 31
+  slug: 1892-to-1895-liberal-minority-government
+  name: 1892 to 1895 Liberal (minority) government
+  start_date: 1892-08-15
+  end_date: 1895-08-07
+- id: 32
+  slug: 1886-to-1892-conservative-government
+  name: 1886 to 1892 Conservative government
+  start_date: 1886-08-25
+  end_date: 1892-08-14
+- id: 33
+  slug: 1885-to-1886-liberal-minority-government
+  name: 1885 to 1886 Liberal (minority) government
+  start_date: 1885-12-19
+  end_date: 1886-08-24
+- id: 34
+  slug: 1880-to-1885-liberal-government
+  name: 1880 to 1885 Liberal government
+  start_date: 1880-04-23
+  end_date: 1885-12-18
+- id: 35
+  slug: 1874-to-1880-conservative-government
+  name: 1874 to 1880 Conservative government
+  start_date: 1874-02-18
+  end_date: 1880-04-22
+- id: 36
+  slug: 1868-to-1874-liberal-government
+  name: 1868 to 1874 Liberal government
+  start_date: 1868-12-08
+  end_date: 1874-02-17
+- id: 37
+  slug: 1865-to-1868-liberal-government
+  name: 1865 to 1868 Liberal government
+  start_date: 1865-07-25
+  end_date: 1868-12-07
+- id: 38
+  slug: 1859-to-1865-liberal-government
+  name: 1859 to 1865 Liberal government
+  start_date: 1859-05-19
+  end_date: 1865-07-24
+- id: 39
+  slug: 1857-to-1859-whig-government
+  name: 1857 to 1859 Whig government
+  start_date: 1857-04-25
+  end_date: 1859-05-18
+- id: 40
+  slug: 1852-to-1857-conservative-government
+  name: 1852 to 1857 Conservative government
+  start_date: 1852-08-01
+  end_date: 1857-04-24
+- id: 41
+  slug: 1847-to-1852-whig-government
+  name: 1847 to 1852 Whig government
+  start_date: 1847-08-27
+  end_date: 1852-07-31
+- id: 42
+  slug: 1841-to-1847-conservative-government
+  name: 1841 to 1847 Conservative government
+  start_date: 1841-07-23
+  end_date: 1847-08-26
+- id: 43
+  slug: 1837-to-1841-whig-government
+  name: 1837 to 1841 Whig government
+  start_date: 1837-08-19
+  end_date: 1841-07-22
+- id: 44
+  slug: 1835-to-1837-whig-government
+  name: 1835 to 1837 Whig government
+  start_date: 1835-04-09
+  end_date: 1837-08-18
+- id: 45
+  slug: 1833-to-1835-whig-government
+  name: 1833 to 1835 Whig government
+  start_date: 1833-01-29
+  end_date: 1835-04-08
+- id: 46
+  slug: 1831-to-1833-whig-government
+  name: 1831 to 1833 Whig government
+  start_date: 1831-06-14
+  end_date: 1833-01-28
+- id: 47
+  slug: 1830-to-1831-whig-government
+  name: 1830 to 1831 Whig government
+  start_date: 1830-09-14
+  end_date: 1831-06-13
+- id: 48
+  slug: 1826-to-1830-tory-government
+  name: 1826 to 1830 Tory government
+  start_date: 1826-07-25
+  end_date: 1830-09-13
+- id: 49
+  slug: 1820-to-1826-tory-government
+  name: 1820 to 1826 Tory government
+  start_date: 1820-04-21
+  end_date: 1826-07-24
+- id: 50
+  slug: 1818-to-1820-tory-government
+  name: 1818 to 1820 Tory government
+  start_date: 1818-08-04
+  end_date: 1820-04-20
+- id: 51
+  slug: 1812-to-1818-tory-government
+  name: 1812 to 1818 Tory government
+  start_date: 1812-11-24
+  end_date: 1818-08-03
+- id: 52
+  slug: 1807-to-1812-tory-government
+  name: 1807 to 1812 Tory government
+  start_date: 1807-06-22
+  end_date: 1812-11-23
+- id: 53
+  slug: 1806-to-1807-whig-government
+  name: 1806 to 1807 Whig government
+  start_date: 1806-12-13
+  end_date: 1807-06-21
+- id: 54
+  slug: 1802-to-1806-tory-government
+  name: 1802 to 1806 Tory government
+  start_date: 1802-08-31
+  end_date: 1806-12-12
+- id: 55
+  slug: 1801-to-1802-tory-government
+  name: 1801 to 1802 Tory government
+  start_date: 1801-01-22
+  end_date: 1802-08-30
