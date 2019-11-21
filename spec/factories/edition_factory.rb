@@ -178,5 +178,13 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :political do
+      system_political { true }
+    end
+
+    trait :not_political do
+      system_political { false }
+    end
   end
 end
