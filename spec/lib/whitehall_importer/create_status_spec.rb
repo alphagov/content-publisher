@@ -1,147 +1,134 @@
 # frozen_string_literal: true
 
 RSpec.describe WhitehallImporter::CreateStatus do
-  include FixturesHelper
+  describe ".call" do
+    let(:user_ids) { {} }
+    let(:revision) { build(:revision) }
 
-  describe "#call" do
-    let(:whitehall_edition) { whitehall_export_with_one_edition["editions"].first }
-    let(:user_ids) { { 1 => create(:user).id } }
-    let(:revision) { create(:revision) }
-
-    it "sets the correct states when Whitehall document state is 'published'" do
-      whitehall_edition["state"] = "published"
-      whitehall_edition["revision_history"] << {
-        "event" => "update",
-        "state" => "published",
-        "whodunnit" => 1,
-      }
-
-      status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids
-      ).call
-
-      expect(status.state).to eq("published")
+    it "returns a status" do
+      status = described_class.call(revision,
+                                    build(:whitehall_export_edition),
+                                    user_ids)
+      expect(status).to be_a(Status)
     end
 
-    it "sets the correct states when Whitehall document is force published" do
-      whitehall_edition["state"] = "published"
-      whitehall_edition["force_published"] = true
-      whitehall_edition["revision_history"] << {
-        "event" => "update",
-        "state" => "published",
-        "whodunnit" => 1,
-      }
-
-      status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids
-      ).call
-
-      expect(status.state).to eq("published_but_needs_2i")
-    end
-
-    it "sets the correct states when Whitehall document state is 'rejected'" do
-      whitehall_edition["state"] = "rejected"
-      whitehall_edition["revision_history"] << {
-        "event" => "update",
-        "state" => "rejected",
-        "whodunnit" => 1,
-      }
-
-      status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids
-      ).call
-
-      expect(status.state).to eq("submitted_for_review")
-    end
-
-    it "sets the correct states when Whitehall document state is 'submitted'" do
-      whitehall_edition["state"] = "submitted"
-      whitehall_edition["revision_history"] << {
-        "event" => "update",
-        "state" => "submitted",
-        "whodunnit" => 1,
-      }
-
-      status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids
-      ).call
-
-      expect(status.state).to eq("submitted_for_review")
-    end
-
-    it "raises AbortImportError when revision history is missing for state" do
-      whitehall_edition["state"] = "published"
-      create_status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids
+    it "attributes the status to the user that created it and at the time that was done" do
+      created_at = Time.zone.parse("2019-01-01")
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        state: "draft",
+        revision_history: [
+          {
+            "event" => "create",
+            "state" => "draft",
+            "whodunnit" => 1,
+            "created_at" => created_at.rfc3339,
+          },
+        ],
       )
+      user = create(:user)
 
-      expect { create_status.call }.to raise_error(WhitehallImporter::AbortImportError)
+      status = described_class.call(revision, whitehall_edition, 1 => user.id)
+      expect(status.created_by).to eq(user)
+      expect(status.created_at).to eq(created_at)
     end
 
-    it "sets the created_at datetime of the document state" do
-      whitehall_edition["revision_history"][0].merge!("created_at" => 3.days.ago)
+    it "sets the correct state when Whitehall document state is 'published'" do
+      whitehall_edition = build(:whitehall_export_edition,
+                                state: "published")
 
-      status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids
-      ).call
+      status = described_class.call(revision, whitehall_edition, user_ids)
 
-      imported_created_at = whitehall_edition["revision_history"][0]["created_at"]
-
-      expect(status.created_at).to be_within(1.second).of imported_created_at
+      expect(status).to be_published
     end
 
-    it "sets the created_by_id of the document state" do
-      status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids
-      ).call
+    it "sets the correct state when Whitehall document is force published" do
+      whitehall_edition = build(:whitehall_export_edition,
+                                state: "published",
+                                force_published: true)
 
-      expect(status.created_by_id).to eq(user_ids[1])
+      status = described_class.call(revision, whitehall_edition, user_ids)
+
+      expect(status).to be_published_but_needs_2i
     end
 
-    it "raises AbortImportError when edition has an unsupported state" do
-      whitehall_edition["state"] = "not_supported"
-      create_status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids
-      )
+    it "sets the correct state when Whitehall document state is 'rejected'" do
+      whitehall_edition = build(:whitehall_export_edition, state: "rejected")
 
-      expect { create_status.call }.to raise_error(WhitehallImporter::AbortImportError)
+      status = described_class.call(revision, whitehall_edition, user_ids)
+
+      expect(status).to be_submitted_for_review
+    end
+
+    it "sets the correct state when Whitehall document state is 'submitted'" do
+      whitehall_edition = build(:whitehall_export_edition, state: "submitted")
+
+      status = described_class.call(revision, whitehall_edition, user_ids)
+
+      expect(status).to be_submitted_for_review
+    end
+
+    it "sets the correct state when Whitehall document state is 'superseded'" do
+      whitehall_edition = build(:whitehall_export_edition, state: "superseded")
+
+      status = described_class.call(revision, whitehall_edition, user_ids)
+
+      expect(status).to be_superseded
+    end
+
+    it "aborts when revision history is missing for state" do
+      whitehall_edition = build(:whitehall_export_edition, revision_history: [])
+
+      expect { described_class.call(revision, whitehall_edition, user_ids) }
+        .to raise_error(WhitehallImporter::AbortImportError)
+    end
+
+    it "raises WhitehallImporter::AbortImportError when edition has an unsupported state" do
+      whitehall_edition = build(:whitehall_export_edition, state: "unsupported")
+      expect { described_class.call(revision, whitehall_edition, user_ids) }
+        .to raise_error(WhitehallImporter::AbortImportError)
     end
 
     it "allows the default state to be overwritten by a another valid whitehall state" do
-      whitehall_edition["revision_history"] << {
-        "event" => "update",
-        "state" => "superseded",
-        "whodunnit" => 1,
-      }
+      whitehall_edition = build(:whitehall_export_edition,
+                                state: "superseded",
+                                revision_history: [
+                                  { "event" => "create", "state" => "published", "whodunnit" => 1 },
+                                  { "event" => "update", "state" => "superseded", "whodunnit" => 1 },
+                                ])
 
-      status = WhitehallImporter::CreateStatus.new(
-        revision, whitehall_edition, user_ids, whitehall_edition_state: "superseded"
-      ).call
+      status = described_class.call(
+        revision, whitehall_edition, user_ids, whitehall_edition_state: "published"
+      )
 
-      expect(status.state).to eq("superseded")
+      expect(status).to be_published
     end
 
-    context "withdrawn documents" do
-      let(:whitehall_edition) { whitehall_export_with_one_withdrawn_edition["editions"].first }
+    context "when the document is withdrawn" do
       let(:edition) { create(:edition, :published) }
 
-      it "raises AbortImportError when document is withdrawn but has no unpublishing details" do
-        whitehall_edition["unpublishing"] = nil
-        create_status = WhitehallImporter::CreateStatus.new(
-          revision, whitehall_edition, user_ids, edition: edition
-        )
+      it "aborts when there are no unpublishing details" do
+        whitehall_edition = build(:whitehall_export_edition,
+                                  state: "withdrawn",
+                                  unpublishing: nil)
 
-        expect { create_status.call }.to raise_error(WhitehallImporter::AbortImportError)
+        expect { described_class.call(revision, whitehall_edition, user_ids, edition: edition) }
+          .to raise_error(WhitehallImporter::AbortImportError)
       end
 
       it "sets the Withdrawal details for a withdrawn document" do
-        status = WhitehallImporter::CreateStatus.new(
-          revision, whitehall_edition, user_ids, edition: edition
-        ).call
+        unpublishing = build(:whitehall_export_unpublishing)
+        whitehall_edition = build(:whitehall_export_edition,
+                                  state: "withdrawn",
+                                  unpublishing: unpublishing)
+        published_status = edition.status
 
-        expect(status.details.published_status_id).to eq(edition.status.id)
-        expect(status.details.public_explanation).to eq(whitehall_edition["unpublishing"]["explanation"])
-        expect(status.details.withdrawn_at).to eq(whitehall_edition["unpublishing"]["created_at"])
+        status = described_class.call(revision, whitehall_edition, user_ids, edition: edition)
+
+        expect(status.details).to be_a(Withdrawal)
+        expect(status.details.published_status).to eq(published_status)
+        expect(status.details.withdrawn_at.rfc3339).to eq(unpublishing["created_at"])
+        expect(status.details.public_explanation).to eq(unpublishing["explanation"])
       end
     end
   end

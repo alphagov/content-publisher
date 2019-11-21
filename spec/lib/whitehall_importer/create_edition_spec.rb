@@ -1,141 +1,106 @@
 # frozen_string_literal: true
 
 RSpec.describe WhitehallImporter::CreateEdition do
-  include FixturesHelper
-
   describe "#call" do
-    let(:whitehall_document) { whitehall_export_with_one_edition }
-    let(:whitehall_edition) { whitehall_export_with_one_edition["editions"].first }
-    let(:document) { create(:document, imported_from: "whitehall") }
+    let(:document) { create(:document, imported_from: "whitehall", locale: "en") }
+    let(:whitehall_document) { build(:whitehall_export_document) }
     let(:user_ids) { { 1 => create(:user).id } }
 
-    it "can import edition data from Whitehall" do
-      WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
+    it "can import an edition" do
+      whitehall_edition = build(:whitehall_export_edition,
+                                state: "draft",
+                                minor_change: false)
+      edition = described_class.call(document,
+                                     whitehall_document,
+                                     whitehall_edition,
+                                     1,
+                                     user_ids)
 
-      edition = Edition.last
-
-      expect(edition.summary)
-        .to eq(whitehall_edition["translations"][0]["summary"])
-
-      expect(edition.base_path)
-        .to eq(whitehall_edition["translations"][0]["base_path"])
-
-      expect(edition.number).to eql(1)
-      expect(edition.status).to be_draft
+      expect(edition).to be_draft
+      expect(edition.number).to eq(1)
       expect(edition.update_type).to eq("major")
     end
 
-    it "sets live? to true when document state is 'published'" do
-      whitehall_edition["state"] = "published"
-      whitehall_edition["revision_history"] << {
-        "event" => "update",
-        "state" => "published",
-        "whodunnit" => 1,
-      }
-
-      WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
-
-      expect(Edition.last).to be_live
-    end
-
     it "can set minor update type" do
-      whitehall_edition["minor_change"] = true
+      whitehall_edition = build(:whitehall_export_edition, minor_change: true)
+      edition = described_class.call(document,
+                                     whitehall_document,
+                                     whitehall_edition,
+                                     1,
+                                     user_ids)
 
-      WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
-
-      expect(Edition.last.update_type).to eq("minor")
+      expect(edition.update_type).to eq("minor")
     end
 
-    it "sets live? to false when document state is 'rejected'" do
-      whitehall_edition["state"] = "rejected"
-      whitehall_edition["revision_history"] << {
-        "event" => "update",
-        "state" => "rejected",
-        "whodunnit" => 1,
-      }
-      WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
-
-      expect(Edition.last).not_to be_live
-    end
-
-    it "sets live? to false when document state is 'submitted'" do
-      whitehall_edition["state"] = "submitted"
-      whitehall_edition["revision_history"] << {
-        "event" => "update",
-        "state" => "submitted",
-        "whodunnit" => 1,
-      }
-      WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
-
-      expect(Edition.last).not_to be_live
-    end
-
-    it "raises AbortImportError when edition has an unsupported locale" do
-      whitehall_edition["translations"][0]["locale"] = "zz"
-
-      create_edition = WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
+    it "aborts when an edition has an unsupported locale" do
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        translations: [
+          build(:whitehall_export_translation, locale: "fr"),
+          build(:whitehall_export_translation, locale: "en"),
+        ],
       )
 
-      expect { create_edition.call }.to raise_error(WhitehallImporter::AbortImportError)
+      expect { described_class.call(document, whitehall_document, whitehall_edition, 1, user_ids) }
+        .to raise_error(WhitehallImporter::AbortImportError)
     end
 
-    it "sets the current edition" do
-      WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
+    it "defaults to an edition not being flagged as live" do
+      whitehall_edition = build(:whitehall_export_edition)
+      edition = described_class.call(document,
+                                     whitehall_document,
+                                     whitehall_edition,
+                                     1,
+                                     user_ids)
 
-      expect(Edition.last.current).to be true
+      expect(edition).not_to be_live
     end
 
-    it "creates AccessLimit" do
-      whitehall_edition["access_limited"] = true
-      whitehall_edition["revision_history"][0].merge!("created_at" => 3.days.ago)
+    it "flags published editions as live" do
+      whitehall_edition = build(:whitehall_export_edition, state: "published")
+      edition = described_class.call(document,
+                                     whitehall_document,
+                                     whitehall_edition,
+                                     1,
+                                     user_ids)
 
-      WhitehallImporter::CreateEdition.new(
-        document, whitehall_document, whitehall_edition, 1, user_ids
-      ).call
+      expect(edition).to be_live
+    end
 
-      expect(Edition.last.access_limit).to eq(AccessLimit.last)
-      expect(AccessLimit.last.created_at).to eq(Edition.last.created_at)
-      expect(AccessLimit.last.created_by_id).to be nil
-      expect(AccessLimit.last.edition_id).to eq(Edition.last.id)
-      expect(AccessLimit.last.revision_at_creation_id).to eq(Revision.last.id)
-      expect(AccessLimit.last.limit_type).to eq("tagged_organisations")
+    context "when importing an access limited edition" do
+      it "creates an access limit" do
+        whitehall_edition = build(:whitehall_export_edition, access_limited: true)
+        edition = described_class.call(document,
+                                       whitehall_document,
+                                       whitehall_edition,
+                                       1,
+                                       user_ids)
+
+        expect(edition.access_limit).to be_present
+        expect(edition.access_limit).to be_tagged_organisations
+      end
     end
 
     context "when importing a withdrawn document" do
-      let(:whitehall_edition) { whitehall_export_with_one_withdrawn_edition["editions"].first }
+      it "sets the correct status" do
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          state: "withdrawn",
+          revision_history: [
+            { "event" => "create", "state" => "published", "whodunnit" => 1 },
+            { "event" => "update", "state" => "withdrawn", "whodunnit" => 1 },
+          ],
+          unpublishing: build(:whitehall_export_unpublishing),
+        )
 
-      it "sets the correct states when Whitehall document state is withdrawn" do
-        WhitehallImporter::CreateEdition.new(
-          document, whitehall_document, whitehall_edition, 1, user_ids
-        ).call
-
-        expect(Status.count).to eq(2)
-        expect(Status.first.state).to eq("published")
-        expect(Edition.last.status).to be_withdrawn
-        expect(Edition.last).to be_live
-      end
-
-      it "access limits a withdrawn edition" do
-        whitehall_edition["access_limited"] = true
-
-        WhitehallImporter::CreateEdition.new(
-          document, whitehall_document, whitehall_edition, 1, user_ids
-        ).call
-
-        expect(Edition.last.access_limit).to eq(AccessLimit.last)
+        edition = described_class.call(document,
+                                       whitehall_document,
+                                       whitehall_edition,
+                                       1,
+                                       user_ids)
+        expect(edition).to be_withdrawn
+        expect(edition.statuses.count).to eq(2)
+        expect(edition.statuses.first).to be_published
       end
     end
   end
