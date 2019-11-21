@@ -2,6 +2,7 @@
 
 class ErrorsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  skip_before_action :check_user_access
 
   def bad_request
     render status: :bad_request, formats: :html
