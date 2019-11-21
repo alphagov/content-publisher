@@ -78,6 +78,15 @@ RSpec.describe Government do
     end
   end
 
+  describe ".past" do
+    it "returns the past governments" do
+      past = Government.past
+      expect(past).not_to be_empty
+      expect(past).to all be_a(Government)
+      expect(past).not_to include(Government.current)
+    end
+  end
+
   describe "#covers?" do
     let(:government) do
       build(:government, start_date: start_date, end_date: end_date)

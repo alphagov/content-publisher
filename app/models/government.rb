@@ -16,6 +16,10 @@ class Government
     for_date(Date.current)
   end
 
+  def self.past
+    all.reject(&:current?)
+  end
+
   def self.all
     @all ||= YAML.load_file(Rails.root.join("config", "governments.yml"))
                  .map { |hash| new(hash) }
