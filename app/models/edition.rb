@@ -135,6 +135,12 @@ class Edition < ApplicationRecord
     editor_political.nil? ? system_political : editor_political
   end
 
+  def history_mode?
+    return false unless government
+
+    political? && !government.current?
+  end
+
   def government
     return unless government_id
 

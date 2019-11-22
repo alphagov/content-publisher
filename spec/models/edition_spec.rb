@@ -107,6 +107,28 @@ RSpec.describe Edition do
     end
   end
 
+  describe "#history_mode?" do
+    it "returns true when political and associated with a previous government" do
+      edition = build(:edition, :political, :past_government)
+      expect(edition.history_mode?).to be(true)
+    end
+
+    it "returns false when the edition isn't political" do
+      edition = build(:edition, :not_political)
+      expect(edition.history_mode?).to be(false)
+    end
+
+    it "returns false when the edition isn't associated with a government" do
+      edition = build(:edition, :political, government_id: nil)
+      expect(edition.history_mode?).to be(false)
+    end
+
+    it "returns false when the edition is political and associated with the current government" do
+      edition = build(:edition, :political, :current_government)
+      expect(edition.history_mode?).to be(false)
+    end
+  end
+
   describe "#government" do
     before { allow(Government).to receive(:all).and_return([government]) }
     let(:government) { build(:government) }
