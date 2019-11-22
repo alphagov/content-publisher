@@ -7,9 +7,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
     let(:user_ids) { { 1 => create(:user).id } }
 
     it "can import an edition" do
-      whitehall_edition = build(:whitehall_export_edition,
-                                state: "draft",
-                                minor_change: false)
+      whitehall_edition = build(:whitehall_export_edition)
       edition = described_class.call(document: document,
                                      current: true,
                                      whitehall_edition: whitehall_edition,
@@ -93,28 +91,80 @@ RSpec.describe WhitehallImporter::CreateEdition do
       end
     end
 
-    context "when importing a withdrawn document" do
-      it "sets the correct status" do
-        whitehall_edition = build(
-          :whitehall_export_edition,
-          state: "withdrawn",
-          revision_history: [
-            { "event" => "create", "state" => "published", "whodunnit" => 1 },
-            { "event" => "update", "state" => "withdrawn", "whodunnit" => 1 },
-          ],
-          unpublishing: build(:whitehall_export_unpublishing),
-        )
+    it "attributes the status to the user that created it and at the time that was done" do
+      whitehall_edition = build(:whitehall_export_edition)
+      user = create(:user)
 
-        edition = described_class.call(document: document,
-                                       current: true,
-                                       whitehall_edition: whitehall_edition,
-                                       edition_number: 1,
-                                       user_ids: user_ids)
+      edition = described_class.call(document: document,
+                                     current: true,
+                                     whitehall_edition: whitehall_edition,
+                                     edition_number: 1,
+                                     user_ids: { 1 => user.id })
 
-        expect(edition).to be_withdrawn
+      expect(edition.status.created_by).to eq(user)
+      expect(edition.status.created_at).to eq(whitehall_edition["revision_history"].first["created_at"])
+    end
+
+    context "when the document is withdrawn" do
+      let(:whitehall_edition) do
+        build(:whitehall_export_edition,
+              state: "withdrawn",
+              revision_history: [
+                build(:revision_history_event),
+                build(:revision_history_event, event: "update", state: "published"),
+                build(:revision_history_event, event: "update", state: "withdrawn"),
+              ],
+              unpublishing: build(:whitehall_export_unpublishing))
+      end
+      let(:edition) do
+        described_class.call(document: document,
+                             current: true,
+                             whitehall_edition: whitehall_edition,
+                             edition_number: 1,
+                             user_ids: user_ids)
+      end
+
+      it "creates two statuses" do
         expect(edition.statuses.count).to eq(2)
+      end
+
+      it "sets the correct withdrawn status" do
+        expect(edition).to be_withdrawn
+      end
+
+      it "sets the correct previous status" do
         expect(edition.statuses.first).to be_published
       end
+
+      it "sets the correct withdrawal metadata" do
+        expect(edition.status.details.withdrawn_at.rfc3339).to eq(
+          whitehall_edition["unpublishing"]["created_at"],
+        )
+        expect(edition.status.details.public_explanation).to eq(
+          whitehall_edition["unpublishing"]["explanation"],
+        )
+      end
+    end
+
+    it "aborts when there are no unpublishing details" do
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        state: "withdrawn",
+        revision_history: [
+          build(:revision_history_event),
+          build(:revision_history_event, event: "update", state: "published"),
+          build(:revision_history_event, event: "update", state: "withdrawn"),
+        ],
+        unpublishing: nil,
+      )
+
+      expect {
+        described_class.call(document: document,
+                             current: true,
+                             whitehall_edition: whitehall_edition,
+                             edition_number: 1,
+                             user_ids: user_ids)
+      }.to raise_error(WhitehallImporter::AbortImportError)
     end
   end
 end

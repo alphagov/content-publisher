@@ -22,13 +22,19 @@ module WhitehallImporter
       edition = if whitehall_edition["state"] == "withdrawn"
                   create_withdrawn_edition
                 else
-                  create_edition
+                  state = MigrateState.call(whitehall_edition["state"], whitehall_edition["force_published"])
+                  status = build_status(state)
+                  create_edition(status)
                 end
 
       edition.tap { |e| access_limit(e) }
     end
 
   private
+
+    def revision
+      @revision ||= CreateRevision.call(document, whitehall_edition)
+    end
 
     def check_only_in_english
       raise AbortImportError, "Edition has an unsupported locale" unless only_english_translation?
@@ -39,23 +45,57 @@ module WhitehallImporter
     end
 
     def create_withdrawn_edition
-      create_edition("published").tap { |edition| set_withdrawn_status(edition) }
+      published_status = build_status("published")
+      create_edition(published_status).tap { |edition| set_withdrawn_status(edition) }
     end
 
-    def create_edition(whitehall_edition_state = nil)
+    def set_withdrawn_status(edition)
+      withdrawn_status = build_status(
+        MigrateState.call(whitehall_edition["state"], whitehall_edition["force_published"]),
+        build_withdrawal(edition),
+      )
+
+      edition.update!(status: withdrawn_status)
+    end
+
+    def build_withdrawal(edition)
+      raise AbortImportError, "Cannot create withdrawn status without an unpublishing" if whitehall_edition["unpublishing"].blank?
+
+      Withdrawal.new(
+        published_status: edition.status,
+        public_explanation: whitehall_edition["unpublishing"]["explanation"],
+        withdrawn_at: whitehall_edition["unpublishing"]["created_at"],
+      )
+    end
+
+    def build_status(state, details = nil)
+      Status.new(
+        state: state,
+        revision_at_creation: revision,
+        created_by_id: user_ids[state_history_event["whodunnit"]],
+        created_at: state_history_event["created_at"],
+        details: details,
+      )
+    end
+
+    def state_history_event
+      event = whitehall_edition["revision_history"].select { |h| h["state"] == whitehall_edition["state"] }.last
+
+      raise AbortImportError, "Edition is missing a #{whitehall_edition['state']} event" unless event
+
+      event
+    end
+
+    def create_edition(status)
       create_event = create_history_event
       last_event = whitehall_edition["revision_history"].last
-
-      revision = CreateRevision.call(document, whitehall_edition)
 
       Edition.create!(
         document: document,
         number: edition_number,
         revision_synced: true,
         revision: revision,
-        status: CreateStatus.call(
-          revision, whitehall_edition, user_ids, whitehall_edition_state: whitehall_edition_state
-        ),
+        status: status,
         current: current,
         live: whitehall_edition["state"].in?(%w(published withdrawn)),
         created_at: whitehall_edition["created_at"],
@@ -63,17 +103,6 @@ module WhitehallImporter
         created_by_id: user_ids[create_event["whodunnit"]],
         last_edited_by_id: user_ids[last_event["whodunnit"]],
       )
-    end
-
-    def set_withdrawn_status(edition)
-      edition.status = CreateStatus.call(
-        edition.revision,
-        whitehall_edition,
-        user_ids,
-        edition: edition,
-      )
-
-      edition.save!
     end
 
     def create_history_event
