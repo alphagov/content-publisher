@@ -19,7 +19,11 @@ module WhitehallImporter
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           CreateEdition.call(
-            document, whitehall_document, edition, edition_number + 1, user_ids
+            document: document,
+            whitehall_document: whitehall_document,
+            whitehall_edition: edition,
+            edition_number: edition_number + 1,
+            user_ids: user_ids,
           )
         end
 

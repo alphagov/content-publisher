@@ -8,7 +8,7 @@ module WhitehallImporter
       new(*args).call
     end
 
-    def initialize(document, whitehall_document, whitehall_edition, edition_number, user_ids)
+    def initialize(document:, whitehall_document:, whitehall_edition:, edition_number:, user_ids:)
       @document = document
       @whitehall_document = whitehall_document
       @whitehall_edition = whitehall_edition

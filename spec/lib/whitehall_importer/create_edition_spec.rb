@@ -10,11 +10,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
       whitehall_edition = build(:whitehall_export_edition,
                                 state: "draft",
                                 minor_change: false)
-      edition = described_class.call(document,
-                                     whitehall_document,
-                                     whitehall_edition,
-                                     1,
-                                     user_ids)
+      edition = described_class.call(document: document,
+                                     whitehall_document: whitehall_document,
+                                     whitehall_edition: whitehall_edition,
+                                     edition_number: 1,
+                                     user_ids: user_ids)
 
       expect(edition).to be_draft
       expect(edition.number).to eq(1)
@@ -23,11 +23,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
     it "can set minor update type" do
       whitehall_edition = build(:whitehall_export_edition, minor_change: true)
-      edition = described_class.call(document,
-                                     whitehall_document,
-                                     whitehall_edition,
-                                     1,
-                                     user_ids)
+      edition = described_class.call(document: document,
+                                     whitehall_document: whitehall_document,
+                                     whitehall_edition: whitehall_edition,
+                                     edition_number: 1,
+                                     user_ids: user_ids)
 
       expect(edition.update_type).to eq("minor")
     end
@@ -41,28 +41,31 @@ RSpec.describe WhitehallImporter::CreateEdition do
         ],
       )
 
-      expect { described_class.call(document, whitehall_document, whitehall_edition, 1, user_ids) }
-        .to raise_error(WhitehallImporter::AbortImportError)
+      expect { described_class.call(document: document,
+                                    whitehall_document: whitehall_document,
+                                    whitehall_edition: whitehall_edition,
+                                    edition_number: 1,
+                                    user_ids: user_ids) }.to raise_error(WhitehallImporter::AbortImportError)
     end
 
     it "defaults to an edition not being flagged as live" do
       whitehall_edition = build(:whitehall_export_edition)
-      edition = described_class.call(document,
-                                     whitehall_document,
-                                     whitehall_edition,
-                                     1,
-                                     user_ids)
+      edition = described_class.call(document: document,
+                                     whitehall_document: whitehall_document,
+                                     whitehall_edition: whitehall_edition,
+                                     edition_number: 1,
+                                     user_ids: user_ids)
 
       expect(edition).not_to be_live
     end
 
     it "flags published editions as live" do
       whitehall_edition = build(:whitehall_export_edition, state: "published")
-      edition = described_class.call(document,
-                                     whitehall_document,
-                                     whitehall_edition,
-                                     1,
-                                     user_ids)
+      edition = described_class.call(document: document,
+                                     whitehall_document: whitehall_document,
+                                     whitehall_edition: whitehall_edition,
+                                     edition_number: 1,
+                                     user_ids: user_ids)
 
       expect(edition).to be_live
     end
@@ -70,11 +73,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
     context "when importing an access limited edition" do
       it "creates an access limit" do
         whitehall_edition = build(:whitehall_export_edition, access_limited: true)
-        edition = described_class.call(document,
-                                       whitehall_document,
-                                       whitehall_edition,
-                                       1,
-                                       user_ids)
+        edition = described_class.call(document: document,
+                                       whitehall_document: whitehall_document,
+                                       whitehall_edition: whitehall_edition,
+                                       edition_number: 1,
+                                       user_ids: user_ids)
 
         expect(edition.access_limit).to be_present
         expect(edition.access_limit).to be_tagged_organisations
@@ -93,11 +96,12 @@ RSpec.describe WhitehallImporter::CreateEdition do
           unpublishing: build(:whitehall_export_unpublishing),
         )
 
-        edition = described_class.call(document,
-                                       whitehall_document,
-                                       whitehall_edition,
-                                       1,
-                                       user_ids)
+        edition = described_class.call(document: document,
+                                       whitehall_document: whitehall_document,
+                                       whitehall_edition: whitehall_edition,
+                                       edition_number: 1,
+                                       user_ids: user_ids)
+
         expect(edition).to be_withdrawn
         expect(edition.statuses.count).to eq(2)
         expect(edition.statuses.first).to be_published
