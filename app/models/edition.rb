@@ -103,6 +103,15 @@ class Edition < ApplicationRecord
     joins(revision: :metadata_revision).where(sql, political: political)
   end
 
+  scope :history_mode, ->(history_mode = true) do
+    if history_mode
+      political.where.not(government_id: [nil, Government.current.content_id])
+    else
+      political(false)
+        .or(political.where(government_id: [nil, Government.current.content_id]))
+    end
+  end
+
   def self.create_initial(document:, document_type_id:, user: nil, tags: {})
     revision = Revision.create_initial(
       document: document,

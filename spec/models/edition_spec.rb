@@ -42,6 +42,23 @@ RSpec.describe Edition do
     end
   end
 
+  describe ".history_mode" do
+    let!(:political_past_government) { create(:edition, :political, :past_government) }
+    let!(:political_current_government) { create(:edition, :political, :current_government) }
+    let!(:political_no_government) { create(:edition, :political, government_id: nil) }
+    let!(:not_political) { create(:edition, :not_political) }
+
+    it "defaults to scoping to only history mode editions" do
+      expect(Edition.history_mode)
+        .to contain_exactly(political_past_government)
+    end
+
+    it "can be passed false to scope to non history mode editions" do
+      expect(Edition.history_mode(false))
+        .to contain_exactly(political_current_government, political_no_government, not_political)
+    end
+  end
+
   describe ".create_initial" do
     let(:document) { build(:document) }
     let(:document_type_id) { build(:document_type, path_prefix: "/prefix").id }
