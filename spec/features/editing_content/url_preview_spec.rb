@@ -44,7 +44,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
 
   def and_i_fill_in_the_title
     fill_in("revision[title]", with: "A great title")
-    page.find("body").click
+    page.find("body").native.send_keys :tab
   end
 
   def then_i_see_a_preview_of_the_url_on_govuk
