@@ -3,16 +3,16 @@
 require "mini_magick"
 
 class ImageBlobService < ApplicationService
-  def initialize(revision, user, temp_image)
-    @revision = revision
-    @user = user
+  def initialize(temp_image:, filename:, user: nil)
     @temp_image = temp_image
+    @filename = filename
+    @user = user
   end
 
   def call
     blob = ActiveStorage::Blob.create_after_upload!(
       io: temp_image.file,
-      filename: unique_filename,
+      filename: filename,
       content_type: temp_image.mime_type,
     )
 
@@ -24,21 +24,14 @@ class ImageBlobService < ApplicationService
       crop_y: centre_crop[:y],
       crop_width: centre_crop[:width],
       crop_height: centre_crop[:height],
-      filename: unique_filename,
+      filename: filename,
       created_by: user,
     )
   end
 
 private
 
-  attr_reader :revision, :user, :temp_image
-
-  def unique_filename
-    filenames = revision.image_revisions.map(&:filename)
-
-    @unique_filename ||= UniqueFilenameService
-      .call(filenames, temp_image.original_filename)
-  end
+  attr_reader :temp_image, :filename, :user
 
   def centre_crop
     @centre_crop ||= CentreCrop.new(temp_image.width,
