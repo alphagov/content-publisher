@@ -21,6 +21,8 @@ module WhitehallImporter
 
       edition = if whitehall_edition["state"] == "withdrawn"
                   create_withdrawn_edition
+                elsif unpublished_edition?
+                  create_removed_edition
                 else
                   state = MigrateState.call(whitehall_edition["state"], whitehall_edition["force_published"])
                   status = build_status(state)
@@ -38,6 +40,23 @@ module WhitehallImporter
 
     def history
       @history ||= EditionHistory.new(whitehall_edition["revision_history"])
+    end
+
+    def unpublished_edition?
+      whitehall_edition["unpublishing"] && %w[submitted rejected draft].include?(whitehall_edition["state"])
+    end
+
+    def edited_unpublishing?
+      return false unless whitehall_edition["revision_history"].second_to_last
+
+      whitehall_edition["revision_history"].second_to_last["state"] != "published" && unpublished_edition?
+    end
+
+    def create_removed_edition
+      return if edited_unpublishing?
+
+      removed_status = build_status("removed", build_removal)
+      create_edition(removed_status)
     end
 
     def check_only_in_english
@@ -60,6 +79,17 @@ module WhitehallImporter
       )
 
       edition.update!(status: withdrawn_status)
+    end
+
+    def build_removal
+      unpublishing = whitehall_edition["unpublishing"]
+      raise AbortImportError, "Cannot create removal status without an unpublishing" if unpublishing.blank?
+
+      Removal.new(
+        explanatory_note: unpublishing["explanation"],
+        alternative_path: unpublishing["alternative_url"],
+        redirect: unpublishing["alternative_url"].present?,
+      )
     end
 
     def build_withdrawal(edition)
