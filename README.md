@@ -9,7 +9,6 @@ A unified publishing application for content on GOV.UK
   * Edition - A revision that is in the Publishing API
   * Document - All revisions of a piece of content in a particular locale
 
-
 ## Technical documentation
 
 This is a Ruby on Rails application.
@@ -23,23 +22,13 @@ This is a Ruby on Rails application.
 
 ### Running the application
 
-The first time you run this application you'll want to set you
-[permissions](#permissions).
-
-Then, if you are running on the [GOV.UK development VM][dev-vm]:
+The first time you run this application for development, enable `debug` and `pre_release_features` permissions:
 
 ```
-cd /var/govuk/govuk-puppet/development-vm
-bowl content-publisher
+bundle exec rake development_permissions
 ```
 
-You should be able to access the app at: http://content-publisher.dev.gov.uk/
-
-Otherwise, on your machine:
-
-```
-./startup.sh
-```
+To enable them for your GOV.UK account add them to your account in [Signon](https://github.com/alphagov/signon).
 
 ### Running the test suite
 
@@ -80,17 +69,6 @@ bundle exec byebug -R localhost:3237
 which will listen for the web application. Substitute port 3237 for 3238 to
 listen to the sidekiq processes.
 
-### Permissions
-
-To enable development permissions (`debug` and `pre_release_features`) in a development environment run:
-
-```
-bundle exec rake development_permissions
-```
-
-To enable them for your GOV.UK account add them to your account in
-[signon](https://github.com/alphagov/signon).
-
 ### Further documentation
 
 - [Removing documents](docs/removing-documents.md)
@@ -106,6 +84,5 @@ To enable them for your GOV.UK account add them to your account in
 [yarn]: https://yarnpkg.com/
 [jasmine]: https://github.com/jasmine/jasmine
 [imagemagick]: https://www.imagemagick.org/script/index.php
-[dev-vm]: https://github.com/alphagov/govuk-puppet/tree/master/development-vm
 [whitehall-repo]: https://github.com/alphagov/whitehall
 [export-filters]: https://github.com/alphagov/whitehall/blob/master/lib/tasks/export.rake#L153
