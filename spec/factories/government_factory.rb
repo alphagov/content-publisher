@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :government, class: Government do
     skip_create
 
-    sequence(:id)
+    content_id { SecureRandom.uuid }
     name { SecureRandom.alphanumeric(8) }
     slug { name.parameterize }
     start_date { Date.parse("2015-05-08") }

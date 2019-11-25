@@ -3,8 +3,8 @@
 class Government
   include ActiveModel::Model
 
-  def self.find(id)
-    all.find { |government| government.id == id }
+  def self.find(content_id)
+    all.find { |government| government.content_id == content_id }
   end
 
   def self.for_date(date)
@@ -20,10 +20,10 @@ class Government
                  .map { |hash| new(hash) }
   end
 
-  attr_accessor :id, :slug, :name, :start_date, :end_date
+  attr_accessor :content_id, :slug, :name, :start_date, :end_date
 
   def ==(other)
-    id == other.id
+    content_id == other.content_id
   end
 
   alias_method :eql?, :==

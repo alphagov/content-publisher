@@ -9,15 +9,16 @@ RSpec.describe Government do
   end
 
   describe ".find" do
-    let(:government) { build(:government, id: 1) }
+    let(:content_id) { SecureRandom.uuid }
+    let(:government) { build(:government, content_id: content_id) }
     before { allow(Government).to receive(:all).and_return([government]) }
 
-    it "finds a government by id" do
-      expect(Government.find(1)).to be government
+    it "finds a government by content id" do
+      expect(Government.find(content_id)).to be government
     end
 
     it "returns nil if there isn't a government for the id" do
-      expect(Government.find(2)).to be_nil
+      expect(Government.find(SecureRandom.uuid)).to be_nil
     end
   end
 
