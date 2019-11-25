@@ -36,6 +36,10 @@ module WhitehallImporter
       @revision ||= CreateRevision.call(document, whitehall_edition)
     end
 
+    def history
+      @history ||= EditionHistory.new(whitehall_edition["revision_history"])
+    end
+
     def check_only_in_english
       raise AbortImportError, "Edition has an unsupported locale" unless only_english_translation?
     end
@@ -69,25 +73,19 @@ module WhitehallImporter
     end
 
     def build_status(state, details = nil)
+      state_event = history.state_event(whitehall_edition["state"])
+
       Status.new(
         state: state,
         revision_at_creation: revision,
-        created_by_id: user_ids[state_history_event["whodunnit"]],
-        created_at: state_history_event["created_at"],
+        created_by_id: user_ids[state_event["whodunnit"]],
+        created_at: state_event["created_at"],
         details: details,
       )
     end
 
-    def state_history_event
-      event = whitehall_edition["revision_history"].select { |h| h["state"] == whitehall_edition["state"] }.last
-
-      raise AbortImportError, "Edition is missing a #{whitehall_edition['state']} event" unless event
-
-      event
-    end
-
     def create_edition(status)
-      create_event = create_history_event
+      create_event = history.create_event
       last_event = whitehall_edition["revision_history"].last
 
       Edition.create!(
@@ -103,15 +101,6 @@ module WhitehallImporter
         created_by_id: user_ids[create_event["whodunnit"]],
         last_edited_by_id: user_ids[last_event["whodunnit"]],
       )
-    end
-
-    def create_history_event
-      event = whitehall_edition["revision_history"].select { |h| h["event"] == "create" }
-        .first
-
-      raise AbortImportError, "Edition is missing a create event" unless event
-
-      event
     end
 
     def access_limit(edition)
