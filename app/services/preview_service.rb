@@ -6,6 +6,7 @@ class PreviewService < ApplicationService
   end
 
   def call
+    PoliticalAssociationService.call(edition)
     put_draft_assets
     put_draft_content
   rescue GdsApi::BaseError

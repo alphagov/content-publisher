@@ -4,9 +4,16 @@ RSpec.describe PreviewService do
   before do
     stub_any_publishing_api_put_content
     allow(PreviewAssetService).to receive(:call)
+    allow(PoliticalAssociationService).to receive(:call)
   end
 
   describe ".call" do
+    it "updates the political status of the edition" do
+      edition = create(:edition)
+      expect(PoliticalAssociationService).to receive(:call).with(edition)
+      PreviewService.call(edition)
+    end
+
     it "updates the Publishing API" do
       edition = create(:edition)
       request = stub_publishing_api_put_content(edition.content_id, {})
