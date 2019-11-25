@@ -60,7 +60,15 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     it "flags published editions as live" do
-      whitehall_edition = build(:whitehall_export_edition, state: "published")
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        state: "published",
+        revision_history: [
+          { "event" => "create", "state" => "draft", "whodunnit" => 1 },
+          { "event" => "update", "state" => "published", "whodunnit" => 1 },
+        ],
+      )
+
       edition = described_class.call(document: document,
                                      current: true,
                                      whitehall_edition: whitehall_edition,

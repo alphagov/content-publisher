@@ -21,7 +21,7 @@ FactoryBot.define do
     contacts { [] }
     revision_history do
       [
-        { "event" => "create", "state" => state, "whodunnit" => 1, "created_at" => Time.zone.now.rfc3339 },
+        { "event" => "create", "state" => "draft", "whodunnit" => 1, "created_at" => Time.zone.now.rfc3339 },
       ]
     end
     unpublishing { nil }
