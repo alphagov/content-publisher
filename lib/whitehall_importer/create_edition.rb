@@ -72,24 +72,13 @@ module WhitehallImporter
       Status.new(
         state: state,
         revision_at_creation: revision,
-        created_by_id: user_ids[state_history_event["whodunnit"]],
-        created_at: state_history_event["created_at"],
+        created_by_id: user_ids[state_event["whodunnit"]],
+        created_at: state_event["created_at"],
         details: details,
       )
     end
 
-    def state_history_event
-      event = whitehall_edition["revision_history"].select { |h| h["state"] == whitehall_edition["state"] }.last
-
-      raise AbortImportError, "Edition is missing a #{whitehall_edition['state']} event" unless event
-
-      event
-    end
-
     def create_edition(status)
-      create_event = create_history_event
-      last_event = whitehall_edition["revision_history"].last
-
       Edition.create!(
         document: document,
         number: edition_number,
@@ -100,18 +89,13 @@ module WhitehallImporter
         live: whitehall_edition["state"].in?(%w(published withdrawn)),
         created_at: whitehall_edition["created_at"],
         updated_at: whitehall_edition["updated_at"],
-        created_by_id: user_ids[create_event["whodunnit"]],
-        last_edited_by_id: user_ids[last_event["whodunnit"]],
+        created_by_id: user_ids[EditionHistory.create_event(whitehall_edition)["whodunnit"]],
+        last_edited_by_id: user_ids[state_event["whodunnit"]],
       )
     end
 
-    def create_history_event
-      event = whitehall_edition["revision_history"].select { |h| h["event"] == "create" }
-        .first
-
-      raise AbortImportError, "Edition is missing a create event" unless event
-
-      event
+    def state_event
+      @state_event ||= EditionHistory.state_event(whitehall_edition)
     end
 
     def access_limit(edition)
