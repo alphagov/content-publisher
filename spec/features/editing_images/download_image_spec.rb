@@ -26,6 +26,6 @@ RSpec.feature "Download a image" do
   end
 
   def then_the_image_should_have_been_downloaded
-    expect(page.response_headers["Content-Disposition"]).to eq("attachment; filename=\"#{@image_revision.filename}\"")
+    expect(page.response_headers["Content-Disposition"]).to eq("attachment; filename=\"#{@image_revision.filename}\"; filename*=UTF-8\'\'#{@image_revision.filename}")
   end
 end
