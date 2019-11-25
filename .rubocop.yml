@@ -14,6 +14,7 @@ AllCops:
 
 Metrics/BlockLength:
   Exclude:
+    - 'config/environments/*.rb'
     - 'config/routes.rb'
     - 'lib/tasks/**/*.rake'
     - 'spec/**/*.rb'
