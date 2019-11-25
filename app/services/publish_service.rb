@@ -10,6 +10,7 @@ class PublishService < ApplicationService
   def call
     live_edition = document.live_edition
     publish_assets(live_edition)
+    update_political_association
     publish_current_edition
     supersede_live_edition(live_edition)
     set_new_live_edition
@@ -25,11 +26,18 @@ private
   attr_reader :edition, :user, :with_review
   delegate :document, to: :edition
 
+  def update_political_association
+    PoliticalAssociationService.call(edition,
+                                     fallback_government: Government.current)
+  end
+
   def publish_assets(live_edition)
     PublishAssetService.call(edition, live_edition)
   end
 
   def publish_current_edition
+    PreviewService.call(edition) unless edition.revision_synced?
+
     GdsApi.publishing_api_v2.publish(
       document.content_id,
       nil, # Sending update_type is deprecated (now in payload)

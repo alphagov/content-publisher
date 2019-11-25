@@ -7,6 +7,7 @@ RSpec.describe PublishService do
     before do
       stub_any_publishing_api_publish
       allow(PublishAssetService).to receive(:call)
+      allow(PoliticalAssociationService).to receive(:call)
     end
 
     context "when there is no live edition" do
@@ -47,6 +48,28 @@ RSpec.describe PublishService do
       current_edition = document.current_edition
       expect(PublishAssetService).to receive(:call)
       PublishService.call(current_edition, user, with_review: true)
+    end
+
+    it "calls the PoliticalAssociationService" do
+      edition = create(:edition)
+      expect(PoliticalAssociationService)
+        .to receive(:call)
+        .with(edition, fallback_government: Government.current)
+      PublishService.call(edition, user, with_review: true)
+    end
+
+    context "when the PoliticalAssociationService marks the edition as needing to sync the revision" do
+      before do
+        allow(PoliticalAssociationService).to receive(:call) do |edition|
+          edition.update!(revision_synced: false)
+        end
+      end
+
+      it "updates the preview of the content" do
+        edition = create(:edition)
+        expect(PreviewService).to receive(:call)
+        PublishService.call(edition, user, with_review: true)
+      end
     end
 
     context "when the edition is access limited" do
