@@ -4,6 +4,7 @@ RSpec.describe FailsafePreviewService do
   before do
     allow(PreviewService).to receive(:call)
     allow(AssetCleanupJob).to receive(:perform_later)
+    allow(PoliticalAssociationService).to receive(:call)
   end
 
   describe ".call" do
@@ -28,6 +29,11 @@ RSpec.describe FailsafePreviewService do
       it "sets revision_synced to false on the edition" do
         FailsafePreviewService.call(edition)
         expect(edition.revision_synced).to be(false)
+      end
+
+      it "updates the political association of the content" do
+        expect(PoliticalAssociationService).to receive(:call).with(edition)
+        FailsafePreviewService.call(edition)
       end
 
       it "doesn't send to the Publishing API" do

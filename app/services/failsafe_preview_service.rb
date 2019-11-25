@@ -7,6 +7,7 @@ class FailsafePreviewService < ApplicationService
 
   def call
     if has_issues?
+      PoliticalAssociationService.call(edition)
       edition.update!(revision_synced: false)
     else
       PreviewService.call(edition)
