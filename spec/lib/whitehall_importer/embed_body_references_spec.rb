@@ -29,5 +29,14 @@ RSpec.describe WhitehallImporter::EmbedBodyReferences do
 
       expect(govspeak_body).to eq("[Attachment:file.pdf] test [Attachment:download.csv]")
     end
+
+    it "converts Whitehall inline attachment syntax to Content Publisher syntax" do
+      govspeak_body = described_class.call(
+        body: "[InlineAttachment:1] test [InlineAttachment:2]",
+        attachments: ["file.pdf", "download.csv"],
+      )
+
+      expect(govspeak_body).to eq("[AttachmentLink:file.pdf] test [AttachmentLink:download.csv]")
+    end
   end
 end

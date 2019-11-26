@@ -19,6 +19,7 @@ module WhitehallImporter
       body_with_embeds = embed_contacts(body, contacts)
       body_with_embeds = embed_images(body_with_embeds, images)
       body_with_embeds = embed_attachments(body_with_embeds, attachments)
+      body_with_embeds = embed_inline_attachments(body_with_embeds, attachments)
       body_with_embeds
     end
 
@@ -45,6 +46,14 @@ module WhitehallImporter
         whitehall_attachment_index = Regexp.last_match[1].to_i
         attachment_name = attachments[whitehall_attachment_index - 1]
         "[Attachment:#{attachment_name}]"
+      end
+    end
+
+    def embed_inline_attachments(body, attachments)
+      body&.gsub(/\[InlineAttachment:(\d+)\s*\]/) do
+        whitehall_attachment_index = Regexp.last_match[1].to_i
+        attachment_name = attachments[whitehall_attachment_index - 1]
+        "[AttachmentLink:#{attachment_name}]"
       end
     end
   end
