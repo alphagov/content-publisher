@@ -37,7 +37,7 @@ module WhitehallImporter
       body&.gsub(/!!(\d+)/) do
         whitehall_image_index = Regexp.last_match[1].to_i
         image_name = images[whitehall_image_index - 1]
-        "[Image:#{image_name}]"
+        image_name.present? ? "[Image:#{image_name}]" : ""
       end
     end
 
