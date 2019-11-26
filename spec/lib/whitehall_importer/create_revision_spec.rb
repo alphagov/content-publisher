@@ -63,10 +63,12 @@ RSpec.describe WhitehallImporter::CreateRevision do
       whitehall_edition = build(
         :whitehall_export_edition,
         translations: [build(:whitehall_export_translation, body: body)],
+        images: [build(:whitehall_export_image, filename: "foo.jpg")],
       )
       expect(WhitehallImporter::EmbedBodyReferences).to receive(:call).with(
         body: "Foo Bar",
         contacts: [],
+        images: ["foo.jpg"],
       )
       described_class.call(document, whitehall_edition)
     end

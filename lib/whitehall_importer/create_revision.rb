@@ -25,6 +25,7 @@ module WhitehallImporter
       document_type_key = DOCUMENT_SUB_TYPES.reject { |t| whitehall_edition[t].nil? }.first
       raise AbortImportError, "Edition has an unsupported document type" unless SUPPORTED_DOCUMENT_TYPES.include?(whitehall_edition[document_type_key])
 
+      image_revisions = create_image_revisions(whitehall_edition["images"])
       Revision.create!(
         document: document,
         number: document.next_revision_number,
@@ -37,6 +38,7 @@ module WhitehallImporter
             body: WhitehallImporter::EmbedBodyReferences.call(
               body: translation["body"],
               contacts: whitehall_edition.fetch("contacts", []),
+              images: image_revisions.map(&:filename),
             ),
           },
         ),
@@ -54,7 +56,7 @@ module WhitehallImporter
             "world_locations" => tags(whitehall_edition["world_locations"]),
           },
         ),
-        image_revisions: create_image_revisions(whitehall_edition["images"]),
+        image_revisions: image_revisions,
         created_at: whitehall_edition["created_at"],
       )
     end
