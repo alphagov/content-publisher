@@ -57,6 +57,7 @@ module WhitehallImporter
           },
         ),
         image_revisions: image_revisions,
+        lead_image_revision: image_revisions.first,
         created_at: whitehall_edition["created_at"],
       )
     end
