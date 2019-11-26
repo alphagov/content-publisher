@@ -34,7 +34,10 @@ module WhitehallImporter
           base_path: translation["base_path"],
           summary: translation["summary"],
           contents: {
-            body: embed_contacts(translation["body"], whitehall_edition.fetch("contacts", [])),
+            body: WhitehallImporter::EmbedBodyReferences.call(
+              body: translation["body"],
+              contacts: whitehall_edition.fetch("contacts", []),
+            ),
           },
         ),
         metadata_revision: MetadataRevision.new(
@@ -100,14 +103,6 @@ module WhitehallImporter
       return [] unless associations
 
       associations.map { |association| association["content_id"] }
-    end
-
-    def embed_contacts(body, contacts)
-      body&.gsub(/\[Contact:\s*(\d*)\s*\]/) do
-        id = Regexp.last_match[1].to_i
-        embed = contacts.select { |x| x["id"] == id }.first["content_id"]
-        "[Contact:#{embed}]"
-      end
     end
 
     def create_image_revisions(images)
