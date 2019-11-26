@@ -21,12 +21,14 @@ module WhitehallImporter
 
       edition = if whitehall_edition["state"] == "withdrawn"
                   create_withdrawn_edition
+                elsif unpublished_edition? && history.edited_after_unpublishing?
+                  split_unpublished_edition
                 elsif unpublished_edition?
                   create_removed_edition
                 else
                   state = MigrateState.call(whitehall_edition["state"], whitehall_edition["force_published"])
                   status = build_status(state)
-                  create_edition(status)
+                  create_edition(status: status, current: current, edition_number: edition_number)
                 end
 
       edition.tap { |e| access_limit(e) }
@@ -46,17 +48,26 @@ module WhitehallImporter
       whitehall_edition["unpublishing"] && %w[submitted rejected draft].include?(whitehall_edition["state"])
     end
 
-    def edited_unpublishing?
-      return false unless whitehall_edition["revision_history"].second_to_last
+    def split_unpublished_edition
+      unpublishing_event = history.last_unpublishing_event
+      create_edition(
+        status: build_status("removed", build_removal),
+        current: false,
+        edition_number: edition_number,
+        last_event: unpublishing_event,
+      )
 
-      whitehall_edition["revision_history"].second_to_last["state"] != "published" && unpublished_edition?
+      create_edition(
+        status: build_status(MigrateState.call(whitehall_edition["state"], whitehall_edition["force_published"])),
+        edition_number: edition_number + 1,
+        current: true,
+        create_event: history.next_event(unpublishing_event),
+      )
     end
 
     def create_removed_edition
-      return if edited_unpublishing?
-
       removed_status = build_status("removed", build_removal)
-      create_edition(removed_status)
+      create_edition(status: removed_status, current: current, edition_number: edition_number)
     end
 
     def check_only_in_english
@@ -68,8 +79,9 @@ module WhitehallImporter
     end
 
     def create_withdrawn_edition
-      published_status = build_status("published")
-      create_edition(published_status).tap { |edition| set_withdrawn_status(edition) }
+      create_edition(status: build_status("published"),
+                     current: current,
+                     edition_number: edition_number).tap { |edition| set_withdrawn_status(edition) }
     end
 
     def set_withdrawn_status(edition)
@@ -114,9 +126,9 @@ module WhitehallImporter
       )
     end
 
-    def create_edition(status)
-      create_event = history.create_event
-      last_event = whitehall_edition["revision_history"].last
+    def create_edition(status:, edition_number:, current:, create_event: nil, last_event: nil)
+      create_event ||= history.create_event
+      last_event ||= whitehall_edition["revision_history"].last
 
       Edition.create!(
         document: document,
@@ -126,8 +138,8 @@ module WhitehallImporter
         status: status,
         current: current,
         live: whitehall_edition["state"].in?(%w(published withdrawn)),
-        created_at: whitehall_edition["created_at"],
-        updated_at: whitehall_edition["updated_at"],
+        created_at: create_event["created_at"],
+        updated_at: last_event["created_at"],
         created_by_id: user_ids[create_event["whodunnit"]],
         last_edited_by_id: user_ids[last_event["whodunnit"]],
       )

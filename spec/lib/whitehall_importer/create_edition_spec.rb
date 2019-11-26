@@ -197,6 +197,78 @@ RSpec.describe WhitehallImporter::CreateEdition do
       end
     end
 
+    context "when an unpublished edition has been edited" do
+      let(:created_at) { Time.zone.now.rfc3339 }
+      let(:whitehall_edition) do
+        build(:whitehall_export_edition,
+              revision_history: [
+                build(:revision_history_event),
+                build(:revision_history_event, event: "update", state: "published"),
+                build(:revision_history_event, event: "update", state: "draft"),
+                build(:revision_history_event, event: "update", state: "draft", created_at: created_at),
+              ],
+              unpublishing: build(:whitehall_export_unpublishing,
+                                  alternative_url: "https://www.gov.uk/flextension",
+                                  unpublishing_reason: "Consolidated into another GOV.UK page",
+                                  explanation: "Brexit is being delayed again"))
+      end
+
+      it "creates two editions" do
+        expect {
+          described_class.call(document: document,
+                                       current: true,
+                                       whitehall_edition: whitehall_edition,
+                                       edition_number: 1,
+                                       user_ids: user_ids)
+        } .to change { Edition.count }.by(2)
+      end
+
+      it "creates an edition with a status of removed" do
+        described_class.call(document: document,
+                             current: true,
+                             whitehall_edition: whitehall_edition,
+                             edition_number: 1,
+                             user_ids: user_ids)
+
+        expect(document.editions.first.removed?).to be_truthy
+      end
+
+      it "sets the correct removal metadata" do
+        described_class.call(document: document,
+                             current: true,
+                             whitehall_edition: whitehall_edition,
+                             edition_number: 1,
+                             user_ids: user_ids)
+
+        removal = document.editions.first.status.details
+        expect(removal.explanatory_note).to eq(whitehall_edition["unpublishing"]["explanation"])
+        expect(removal.alternative_path).to eq(whitehall_edition["unpublishing"]["alternative_url"])
+        expect(removal.redirect).to be_truthy
+      end
+
+      it "creates a draft edition and assigns as current" do
+        edition = described_class.call(document: document,
+                                       current: true,
+                                       whitehall_edition: whitehall_edition,
+                                       edition_number: 1,
+                                       user_ids: user_ids)
+
+        expect(edition.draft?).to be_truthy
+        expect(edition.current).to be_truthy
+      end
+
+      it "sets the correct timestamps on the edition" do
+        edition = described_class.call(document: document,
+                                       current: true,
+                                       whitehall_edition: whitehall_edition,
+                                       edition_number: 1,
+                                       user_ids: user_ids)
+
+        expect(edition.created_at).to eq(created_at)
+        expect(edition.updated_at).to eq(created_at)
+      end
+    end
+
     it "aborts when there are no unpublishing details" do
       whitehall_edition = build(
         :whitehall_export_edition,
