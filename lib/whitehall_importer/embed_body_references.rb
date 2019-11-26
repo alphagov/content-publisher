@@ -2,21 +2,23 @@
 
 module WhitehallImporter
   class EmbedBodyReferences
-    attr_reader :body, :contacts, :images
+    attr_reader :body, :contacts, :images, :attachments
 
     def self.call(*args)
       new(*args).call
     end
 
-    def initialize(body:, contacts: [], images: [])
+    def initialize(body:, contacts: [], images: [], attachments: [])
       @body = body
       @contacts = contacts
       @images = images
+      @attachments = attachments
     end
 
     def call
       body_with_embeds = embed_contacts(body, contacts)
       body_with_embeds = embed_images(body_with_embeds, images)
+      body_with_embeds = embed_attachments(body_with_embeds, attachments)
       body_with_embeds
     end
 
@@ -35,6 +37,14 @@ module WhitehallImporter
         whitehall_image_index = Regexp.last_match[1].to_i
         image_name = images[whitehall_image_index - 1]
         "[Image:#{image_name}]"
+      end
+    end
+
+    def embed_attachments(body, attachments)
+      body&.gsub(/!@(\d+)/) do
+        whitehall_attachment_index = Regexp.last_match[1].to_i
+        attachment_name = attachments[whitehall_attachment_index - 1]
+        "[Attachment:#{attachment_name}]"
       end
     end
   end

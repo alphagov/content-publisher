@@ -20,5 +20,14 @@ RSpec.describe WhitehallImporter::EmbedBodyReferences do
 
       expect(govspeak_body).to eq("[Image:foo.png] test [Image:bar.jpg]")
     end
+
+    it "converts Whitehall attachment syntax to Content Publisher syntax" do
+      govspeak_body = described_class.call(
+        body: "!@1 test !@2",
+        attachments: ["file.pdf", "download.csv"],
+      )
+
+      expect(govspeak_body).to eq("[Attachment:file.pdf] test [Attachment:download.csv]")
+    end
   end
 end
