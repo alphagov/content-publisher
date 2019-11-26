@@ -20,6 +20,7 @@ RSpec.feature "Publishing an edition when Asset Manager is down" do
 
   def and_asset_manager_is_down
     stub_asset_manager_isnt_available
+    stub_any_publishing_api_put_content
     stub_any_publishing_api_publish
   end
 
