@@ -47,5 +47,14 @@ RSpec.describe WhitehallImporter::EmbedBodyReferences do
 
       expect(govspeak_body).to eq("[AttachmentLink:file.pdf] test [AttachmentLink:download.csv]")
     end
+
+    it "removes any attachment markdown that doesn't resolve to an attachment" do
+      govspeak_body = described_class.call(
+        body: "Bar !@2 Baz [InlineAttachment:3] << removed, but !@1 continues to work",
+        attachments: ["foo.pdf"],
+      )
+
+      expect(govspeak_body).to eq("Bar  Baz  << removed, but [Attachment:foo.pdf] continues to work")
+    end
   end
 end

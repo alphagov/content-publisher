@@ -45,7 +45,7 @@ module WhitehallImporter
       body&.gsub(/!@(\d+)/) do
         whitehall_attachment_index = Regexp.last_match[1].to_i
         attachment_name = attachments[whitehall_attachment_index - 1]
-        "[Attachment:#{attachment_name}]"
+        attachment_name.present? ? "[Attachment:#{attachment_name}]" : ""
       end
     end
 
@@ -53,7 +53,7 @@ module WhitehallImporter
       body&.gsub(/\[InlineAttachment:(\d+)\s*\]/) do
         whitehall_attachment_index = Regexp.last_match[1].to_i
         attachment_name = attachments[whitehall_attachment_index - 1]
-        "[AttachmentLink:#{attachment_name}]"
+        attachment_name.present? ? "[AttachmentLink:#{attachment_name}]" : ""
       end
     end
   end
