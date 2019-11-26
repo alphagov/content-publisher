@@ -44,6 +44,7 @@ RSpec.feature "Publishing an edition" do
     travel_to(@publish_date = Time.current) do
       click_on "Publish"
       choose I18n.t!("publish.confirmation.has_been_reviewed")
+      stub_any_publishing_api_put_content
       @content_request = stub_publishing_api_publish(@edition.content_id, update_type: nil, locale: @edition.locale)
       click_on "Confirm publish"
     end

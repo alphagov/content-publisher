@@ -16,8 +16,8 @@ RSpec.feature "Publishing an edition when the Publishing API is down" do
   end
 
   def and_the_publishing_api_is_down
-    @request = stub_publishing_api_publish(@edition.content_id, {})
-    publishing_api_isnt_available
+    stub_any_publishing_api_put_content
+    @request = stub_publishing_api_publish(@edition.content_id, {}, status: 503)
   end
 
   def when_i_try_to_publish_the_edition
