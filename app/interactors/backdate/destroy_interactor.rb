@@ -28,7 +28,8 @@ private
     updater.assign(backdated_to: nil)
     context.fail! unless updater.changed?
 
-    edition.assign_revision(updater.next_revision, user).save!
+    EditEditionService.call(edition, user, revision: updater.next_revision)
+    edition.save!
   end
 
   def create_timeline_entry

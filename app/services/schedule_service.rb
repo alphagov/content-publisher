@@ -21,9 +21,9 @@ private
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(proposed_publish_time: nil)
 
-    edition.assign_revision(updater.next_revision, user)
-           .assign_status(:scheduled, user, status_details: scheduling)
-           .save!
+    EditEditionService.call(edition, user, revision: updater.next_revision)
+    edition.assign_status(:scheduled, user, status_details: scheduling)
+    edition.save!
   end
 
   def create_or_update_publish_intent

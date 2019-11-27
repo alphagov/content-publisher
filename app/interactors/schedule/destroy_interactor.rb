@@ -30,9 +30,9 @@ private
 
     state = scheduling.reviewed? ? :submitted_for_review : :draft
 
-    edition.assign_revision(updater.next_revision, user)
-           .assign_status(state, user)
-           .save!
+    EditEditionService.call(edition, user, revision: updater.next_revision)
+    edition.assign_status(state, user)
+    edition.save!
   end
 
   def destroy_publish_intent

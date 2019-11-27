@@ -56,7 +56,8 @@ private
 
     context.fail!(unchanged: true) unless updater.changed?
 
-    edition.assign_revision(updater.next_revision, user).save!
+    EditEditionService.call(edition, user, revision: updater.next_revision)
+    edition.save!
   end
 
   def create_timeline_entry

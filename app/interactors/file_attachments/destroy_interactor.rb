@@ -29,7 +29,8 @@ private
 
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.remove_file_attachment(attachment_revision)
-    edition.assign_revision(updater.next_revision, user).save!
+    EditEditionService.call(edition, user, revision: updater.next_revision)
+    edition.save!
   end
 
   def create_timeline_entry

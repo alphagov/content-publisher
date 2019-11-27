@@ -51,7 +51,7 @@ private
                   number: edition.document.next_edition_number,
                   created_by: user)
 
-    next_edition.assign_as_edit(user, current: true, revision: next_revision)
+    EditEditionService.call(next_edition, user, current: true, revision: next_revision)
     next_edition.assign_status(:draft, user).save!
   end
 
