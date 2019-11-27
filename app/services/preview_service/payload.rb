@@ -62,6 +62,7 @@ private
       .except("role_appointments")
       .merge(roles_and_people(role_appointments))
       .merge("organisations" => links.uniq)
+      .merge("government" => [edition.government&.content_id].compact)
   end
 
   def image

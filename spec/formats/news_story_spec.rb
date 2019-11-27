@@ -65,14 +65,14 @@ RSpec.feature "Create a news story", format: true do
 
   def content_body
     {
-      "links" => {
+      "links" => hash_including(
         "topical_events" => [linkable["content_id"]],
         "world_locations" => [linkable["content_id"]],
         "organisations" => [linkable["content_id"]],
         "primary_publishing_organisation" => [linkable["content_id"]],
         "roles" => role_appointment_links["links"]["role"],
         "people" => role_appointment_links["links"]["person"],
-      },
+      ),
       "title" => "A great title",
       "document_type" => "news_story",
       "description" => "A great summary",

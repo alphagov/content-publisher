@@ -16,7 +16,7 @@ RSpec.describe PreviewService::Payload do
         "base_path" => "/foo/bar/baz",
         "description" => "document summary",
         "document_type" => document_type.id,
-        "links" => { "organisations" => [] },
+        "links" => { "government" => [], "organisations" => [] },
         "locale" => edition.locale,
         "publishing_app" => "content-publisher",
         "rendering_app" => nil,
@@ -52,13 +52,10 @@ RSpec.describe PreviewService::Payload do
 
       payload = PreviewService::Payload.new(edition).payload
 
-      payload_hash = {
-        "links" => {
-          "primary_publishing_organisation" => %w[my-org-id],
-          "organisations" => %w[my-org-id other-org-id],
-        },
-      }
-      expect(payload).to match a_hash_including(payload_hash)
+      expect(payload["links"]).to match a_hash_including(
+        "primary_publishing_organisation" => %w[my-org-id],
+        "organisations" => %w[my-org-id other-org-id],
+      )
     end
 
     it "ensures the organisation links are unique" do
@@ -71,13 +68,7 @@ RSpec.describe PreviewService::Payload do
 
       payload = PreviewService::Payload.new(edition).payload
 
-      payload_hash = {
-        "links" => {
-          "primary_publishing_organisation" => %w[my-org-id],
-          "organisations" => %w[my-org-id],
-        },
-      }
-      expect(payload).to match a_hash_including(payload_hash)
+      expect(payload["links"]["organisations"]).to eq %w[my-org-id]
     end
 
     it "converts role appointment links to role and person links" do
@@ -162,6 +153,8 @@ RSpec.describe PreviewService::Payload do
         "slug" => current_government.slug,
         "current" => true,
       )
+
+      expect(payload["links"]["government"]).to eq [current_government.content_id]
     end
 
     it "includes a change note if the update type is 'major'" do
