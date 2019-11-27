@@ -7,6 +7,7 @@ FactoryBot.define do
     live { false }
     revision_synced { true }
     association :created_by, factory: :user
+    current_government
 
     revision_fields
 
@@ -55,6 +56,7 @@ FactoryBot.define do
           change_note: evaluator.change_note,
           proposed_publish_time: evaluator.proposed_publish_time,
           backdated_to: evaluator.backdated_to,
+          editor_political: evaluator.editor_political,
           lead_image_revision: evaluator.lead_image_revision,
           image_revisions: image_revisions,
           file_attachment_revisions: evaluator.file_attachment_revisions,
@@ -176,6 +178,22 @@ FactoryBot.define do
           revision_at_creation: edition.revision,
         )
       end
+    end
+
+    trait :political do
+      system_political { true }
+    end
+
+    trait :not_political do
+      system_political { false }
+    end
+
+    trait :current_government do
+      government_id { Government.current.content_id }
+    end
+
+    trait :past_government do
+      government_id { Government.past.first.content_id }
     end
   end
 end

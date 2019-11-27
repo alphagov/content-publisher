@@ -3,8 +3,9 @@
 class Government
   include ActiveModel::Model
 
-  def self.find(id)
-    all.find { |government| government.id == id }
+  def self.find(content_id)
+    government = all.find { |g| g.content_id == content_id }
+    government || (raise "Government #{content_id} not found")
   end
 
   def self.for_date(date)
@@ -15,15 +16,19 @@ class Government
     for_date(Date.current)
   end
 
+  def self.past
+    all.reject(&:current?)
+  end
+
   def self.all
     @all ||= YAML.load_file(Rails.root.join("config", "governments.yml"))
                  .map { |hash| new(hash) }
   end
 
-  attr_accessor :id, :slug, :name, :start_date, :end_date
+  attr_accessor :content_id, :slug, :name, :start_date, :end_date
 
   def ==(other)
-    id == other.id
+    content_id == other.content_id
   end
 
   alias_method :eql?, :==
@@ -36,5 +41,17 @@ class Government
     return false if end_date && date >= (end_date + 1)
 
     true
+  end
+
+  def current?
+    self == self.class.current
+  end
+
+  def publishing_api_payload
+    {
+      "title" => name,
+      "slug" => slug,
+      "current" => current?,
+    }
   end
 end

@@ -9,15 +9,18 @@ RSpec.describe Government do
   end
 
   describe ".find" do
-    let(:government) { build(:government, id: 1) }
+    let(:content_id) { SecureRandom.uuid }
+    let(:government) { build(:government, content_id: content_id) }
     before { allow(Government).to receive(:all).and_return([government]) }
 
-    it "finds a government by id" do
-      expect(Government.find(1)).to be government
+    it "finds a government by content id" do
+      expect(Government.find(content_id)).to be government
     end
 
-    it "returns nil if there isn't a government for the id" do
-      expect(Government.find(2)).to be_nil
+    it "raises an error if there isn't a government for the id" do
+      missing_content_id = SecureRandom.uuid
+      expect { Government.find(missing_content_id) }
+        .to raise_error(RuntimeError, "Government #{missing_content_id} not found")
     end
   end
 
@@ -75,6 +78,15 @@ RSpec.describe Government do
     end
   end
 
+  describe ".past" do
+    it "returns the past governments" do
+      past = Government.past
+      expect(past).not_to be_empty
+      expect(past).to all be_a(Government)
+      expect(past).not_to include(Government.current)
+    end
+  end
+
   describe "#covers?" do
     let(:government) do
       build(:government, start_date: start_date, end_date: end_date)
@@ -121,6 +133,33 @@ RSpec.describe Government do
         time = Time.zone.parse("2019-11-20 23:55")
         expect(government.covers?(time)).to be true
       end
+    end
+  end
+
+  describe "#current?" do
+    let(:government) { build(:government) }
+
+    it "returns true when the government is the current one" do
+      allow(Government).to receive(:current).and_return(government)
+      expect(government.current?).to be true
+    end
+
+    it "returns false when the government is not the current one" do
+      expect(government.current?).to be false
+    end
+  end
+
+  describe "#publishing_api_payload" do
+    it "returns the fields needed for presenting to Publishing API" do
+      government = build(:government,
+                         name: "Past Government",
+                         slug: "past-government")
+
+      expect(government.publishing_api_payload).to eq(
+        "title" => "Past Government",
+        "slug" => "past-government",
+        "current" => false,
+      )
     end
   end
 end

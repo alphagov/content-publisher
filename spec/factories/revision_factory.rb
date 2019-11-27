@@ -19,6 +19,7 @@ FactoryBot.define do
       change_note { "First published." }
       proposed_publish_time { nil }
       backdated_to { nil }
+      editor_political { nil }
     end
   end
 
@@ -53,6 +54,7 @@ FactoryBot.define do
           proposed_publish_time: evaluator.proposed_publish_time,
           backdated_to: evaluator.backdated_to,
           document_type_id: evaluator.document_type_id,
+          editor_political: evaluator.editor_political,
         )
       end
 

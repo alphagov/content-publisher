@@ -56,6 +56,7 @@ class Revision < ApplicationRecord
            :proposed_publish_time,
            :backdated_to,
            :document_type,
+           :editor_political,
            to: :metadata_revision
 
   delegate :tags,

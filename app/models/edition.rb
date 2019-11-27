@@ -74,6 +74,7 @@ class Edition < ApplicationRecord
            :primary_publishing_organisation_id,
            :supporting_organisation_ids,
            :backdated_to,
+           :editor_political,
            to: :revision
 
   scope :find_current, ->(id: nil, document: nil) do
@@ -91,6 +92,24 @@ class Edition < ApplicationRecord
       .joins(join_tables)
       .includes(join_tables)
       .find_by!(find_by)
+  end
+
+  scope :political, ->(political = true) do
+    sql = "CASE WHEN metadata_revisions.editor_political IS NULL "\
+          "THEN editions.system_political = :political "\
+          "ELSE metadata_revisions.editor_political = :political "\
+          "END"
+
+    joins(revision: :metadata_revision).where(sql, political: political)
+  end
+
+  scope :history_mode, ->(history_mode = true) do
+    if history_mode
+      political.where.not(government_id: [nil, Government.current.content_id])
+    else
+      political(false)
+        .or(political.where(government_id: [nil, Government.current.content_id]))
+    end
   end
 
   def self.create_initial(document:, document_type_id:, user: nil, tags: {})
@@ -119,6 +138,22 @@ class Edition < ApplicationRecord
 
   def first?
     number == 1
+  end
+
+  def political?
+    editor_political.nil? ? system_political : editor_political
+  end
+
+  def history_mode?
+    return false unless government
+
+    political? && !government.current?
+  end
+
+  def government
+    return unless government_id
+
+    Government.find(government_id)
   end
 
   def assign_status(state,

@@ -141,19 +141,42 @@ RSpec.describe PreviewService::Payload do
       expect(payload["details"]["image"]).to match a_hash_including(payload_hash)
     end
 
+    it "includes the political status of the edition" do
+      political_edition = build(:edition, :political)
+      payload = PreviewService::Payload.new(political_edition).payload
+      expect(payload["details"]["political"]).to be true
+
+      not_political_edition = build(:edition, :not_political)
+      payload = PreviewService::Payload.new(not_political_edition).payload
+      expect(payload["details"]["political"]).to be false
+    end
+
+    it "includes government when one is present" do
+      current_government = Government.current
+      edition = build(:edition, government_id: current_government.content_id)
+
+      payload = PreviewService::Payload.new(edition).payload
+
+      expect(payload["details"]["government"]).to eq(
+        "title" => current_government.name,
+        "slug" => current_government.slug,
+        "current" => true,
+      )
+    end
+
     it "includes a change note if the update type is 'major'" do
-      edition = create(:edition,
-                       update_type: "major",
-                       change_note: "A change note")
+      edition = build(:edition,
+                      update_type: "major",
+                      change_note: "A change note")
       payload = PreviewService::Payload.new(edition).payload
 
       expect(payload).to match a_hash_including("change_note" => "A change note")
     end
 
     it "does not include a change note if the update type is 'minor'" do
-      edition = create(:edition,
-                       update_type: "minor",
-                       change_note: "A change note")
+      edition = build(:edition,
+                      update_type: "minor",
+                      change_note: "A change note")
       payload = PreviewService::Payload.new(edition).payload
 
       expect(payload).not_to match a_hash_including("change_note" => "A change note")
@@ -162,7 +185,7 @@ RSpec.describe PreviewService::Payload do
     it "includes first_published_at if the edition has a backdated_to value" do
       date = Time.current.yesterday
       revision = build(:revision, backdated_to: date)
-      edition = create(:edition, revision: revision)
+      edition = build(:edition, revision: revision)
       payload = PreviewService::Payload.new(edition).payload
 
       expect(payload).to match a_hash_including("first_published_at" => date)
@@ -171,7 +194,7 @@ RSpec.describe PreviewService::Payload do
     it "include public_updated_at if the edition has backdated_to and is a first edition" do
       date = Time.current.yesterday
       revision = build(:revision, backdated_to: date)
-      edition = create(:edition, revision: revision, number: 1)
+      edition = build(:edition, revision: revision, number: 1)
       payload = PreviewService::Payload.new(edition).payload
 
       expect(payload).to match a_hash_including("public_updated_at" => date)

@@ -25,6 +25,40 @@ RSpec.describe Edition do
     end
   end
 
+  describe ".political" do
+    let!(:editor_political) { create(:edition, editor_political: true) }
+    let!(:editor_not_political) { create(:edition, editor_political: false) }
+    let!(:system_political) { create(:edition, system_political: true) }
+    let!(:system_not_political) { create(:edition, system_political: false) }
+
+    it "defaults to scoping to only political editions" do
+      expect(Edition.political)
+        .to contain_exactly(editor_political, system_political)
+    end
+
+    it "can be passed false to scope to non political editions" do
+      expect(Edition.political(false))
+        .to contain_exactly(editor_not_political, system_not_political)
+    end
+  end
+
+  describe ".history_mode" do
+    let!(:political_past_government) { create(:edition, :political, :past_government) }
+    let!(:political_current_government) { create(:edition, :political, :current_government) }
+    let!(:political_no_government) { create(:edition, :political, government_id: nil) }
+    let!(:not_political) { create(:edition, :not_political) }
+
+    it "defaults to scoping to only history mode editions" do
+      expect(Edition.history_mode)
+        .to contain_exactly(political_past_government)
+    end
+
+    it "can be passed false to scope to non history mode editions" do
+      expect(Edition.history_mode(false))
+        .to contain_exactly(political_current_government, political_no_government, not_political)
+    end
+  end
+
   describe ".create_initial" do
     let(:document) { build(:document) }
     let(:document_type_id) { build(:document_type, path_prefix: "/prefix").id }
@@ -63,6 +97,72 @@ RSpec.describe Edition do
 
       expect(edition.status).to be_a(Status)
       expect(edition.status).to be_draft
+    end
+  end
+
+  describe "#political?" do
+    it "returns editor political when that is set" do
+      political_edition = build(:edition,
+                                editor_political: true,
+                                system_political: true)
+      not_political_edition = build(:edition,
+                                    editor_political: false,
+                                    system_political: true)
+      expect(political_edition).to be_political
+      expect(not_political_edition).not_to be_political
+    end
+
+    it "returns system political when editor political isn't set" do
+      political_edition = build(:edition,
+                                editor_political: nil,
+                                system_political: true)
+      not_political_edition = build(:edition,
+                                    editor_political: nil,
+                                    system_political: false)
+      expect(political_edition).to be_political
+      expect(not_political_edition).not_to be_political
+    end
+  end
+
+  describe "#history_mode?" do
+    it "returns true when political and associated with a previous government" do
+      edition = build(:edition, :political, :past_government)
+      expect(edition.history_mode?).to be(true)
+    end
+
+    it "returns false when the edition isn't political" do
+      edition = build(:edition, :not_political)
+      expect(edition.history_mode?).to be(false)
+    end
+
+    it "returns false when the edition isn't associated with a government" do
+      edition = build(:edition, :political, government_id: nil)
+      expect(edition.history_mode?).to be(false)
+    end
+
+    it "returns false when the edition is political and associated with the current government" do
+      edition = build(:edition, :political, :current_government)
+      expect(edition.history_mode?).to be(false)
+    end
+  end
+
+  describe "#government" do
+    before { allow(Government).to receive(:all).and_return([government]) }
+    let(:government) { build(:government) }
+
+    it "returns nil when government_id isn't set" do
+      edition = build(:edition, government_id: nil)
+      expect(edition.government).to be_nil
+    end
+
+    it "returns a government when one matches the id" do
+      edition = build(:edition, government_id: government.content_id)
+      expect(edition.government).to eq(government)
+    end
+
+    it "raises an error when no government matches the id" do
+      edition = build(:edition, government_id: SecureRandom.uuid)
+      expect { edition.government }.to raise_error(RuntimeError)
     end
   end
 
