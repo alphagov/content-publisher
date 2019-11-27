@@ -7,7 +7,6 @@ FactoryBot.define do
     live { false }
     revision_synced { true }
     association :created_by, factory: :user
-    current_government
 
     revision_fields
 
