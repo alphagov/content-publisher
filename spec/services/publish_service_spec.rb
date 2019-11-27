@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe PublishService do
+  include ActiveSupport::Testing::TimeHelpers
+
   describe ".call" do
     let(:user) { create(:user) }
 
     before do
       stub_any_publishing_api_publish
+      allow(PreviewService).to receive(:call)
       allow(PublishAssetService).to receive(:call)
     end
 
@@ -47,6 +50,78 @@ RSpec.describe PublishService do
       current_edition = document.current_edition
       expect(PublishAssetService).to receive(:call)
       PublishService.call(current_edition, user, with_review: true)
+    end
+
+    context "when the edition is not associated with a government" do
+      let(:government) { build(:government) }
+      let(:backdate) { Time.zone.parse("2018-11-11 10:00") }
+      let(:first_published_at) { Time.zone.parse("2019-11-11 10:00") }
+
+      it "tries to associate a government with edition backdate" do
+        edition = create(:edition,
+                         backdated_to: backdate,
+                         first_published_at: first_published_at)
+        expect(Government).to receive(:for_date).with(backdate)
+                          .and_return(government)
+
+        expect { PublishService.call(edition, user, with_review: true) }
+          .to change { edition.government_id }
+          .to(government.content_id)
+      end
+
+      it "tries to associate a government with first published date if there is no backdate" do
+        edition = create(:edition,
+                         backdated_to: nil,
+                         first_published_at: first_published_at)
+        expect(Government).to receive(:for_date).with(first_published_at)
+                          .and_return(government)
+
+        expect { PublishService.call(edition, user, with_review: true) }
+          .to change { edition.government_id }
+          .to(government.content_id)
+      end
+
+      it "associates with current government as a fallback" do
+        freeze_time do
+          edition = create(:edition)
+          expect(Government).to receive(:for_date).with(Time.current)
+                            .and_return(government)
+
+          expect { PublishService.call(edition, user, with_review: true) }
+            .to change { edition.government_id }
+            .to(government.content_id)
+        end
+      end
+
+      it "updates the preview when a government is associated" do
+        edition = create(:edition)
+        expect(PreviewService).to receive(:call).with(edition)
+        PublishService.call(edition, user, with_review: true)
+        expect(edition.government_id).to eq(Government.current.content_id)
+      end
+
+      it "doesn't update the preview when a government isn't associated" do
+        edition = create(:edition, backdated_to: backdate)
+        allow(Government).to receive(:for_date).with(backdate).and_return(nil)
+
+        expect(PreviewService).not_to receive(:call).with(edition)
+        PublishService.call(edition, user, with_review: true)
+        expect(edition.government_id).to be_nil
+      end
+    end
+
+    context "when the edition is associated with a government" do
+      let(:edition) { create(:edition, :past_government) }
+
+      it "doesn't change the government on the edition" do
+        expect { PublishService.call(edition, user, with_review: true) }
+          .not_to(change { edition.government_id })
+      end
+
+      it "doesn't update the preview of the edition" do
+        expect(PreviewService).not_to receive(:call)
+        PublishService.call(edition, user, with_review: true)
+      end
     end
 
     context "when the edition is access limited" do

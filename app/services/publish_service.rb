@@ -10,6 +10,7 @@ class PublishService < ApplicationService
   def call
     live_edition = document.live_edition
     publish_assets(live_edition)
+    associate_with_government
     publish_current_edition
     supersede_live_edition(live_edition)
     set_new_live_edition
@@ -27,6 +28,17 @@ private
 
   def publish_assets(live_edition)
     PublishAssetService.call(edition, live_edition)
+  end
+
+  def associate_with_government
+    return if edition.government
+
+    date = edition.backdated_to || edition.document.first_published_at || Time.current
+    government = Government.for_date(date)
+    edition.assign_attributes(government_id: government&.content_id)
+
+    # We need to update the Publishing API if we're changing the government
+    PreviewService.call(edition) if edition.government_id_changed?
   end
 
   def publish_current_edition
