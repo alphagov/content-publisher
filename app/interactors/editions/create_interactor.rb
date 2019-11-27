@@ -15,6 +15,7 @@ class Editions::CreateInteractor < ApplicationInteractor
       create_next_revision
       create_next_edition
       create_timeline_entry
+      preview_next_edition
     end
   end
 
@@ -63,5 +64,9 @@ private
       TimelineEntry.create_for_status_change(entry_type: :new_edition,
                                              status: next_edition.status)
     end
+  end
+
+  def preview_next_edition
+    FailsafePreviewService.call(next_edition)
   end
 end
