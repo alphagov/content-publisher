@@ -185,12 +185,6 @@ class Edition < ApplicationRecord
     self
   end
 
-  def assign_revision(revision, user)
-    raise "cannot update revision on a live edition" if live?
-
-    assign_as_edit(user, revision: revision)
-  end
-
   def editors
     user_ids = statuses.pluck(:created_by_id) + revisions.pluck(:created_by_id)
     User.where(id: user_ids.uniq)
