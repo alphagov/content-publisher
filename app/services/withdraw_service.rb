@@ -29,7 +29,7 @@ private
   end
 
   def update_edition(withdrawal)
-    edition.assign_status(:withdrawn, user, status_details: withdrawal)
+    AssignEditionStatusService.call(edition, user, :withdrawn, status_details: withdrawal)
     edition.save!
   end
 

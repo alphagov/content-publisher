@@ -31,7 +31,7 @@ private
     state = scheduling.reviewed? ? :submitted_for_review : :draft
 
     EditEditionService.call(edition, user, revision: updater.next_revision)
-    edition.assign_status(state, user)
+    AssignEditionStatusService.call(edition, user, state)
     edition.save!
   end
 

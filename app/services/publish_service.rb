@@ -40,15 +40,15 @@ private
   def supersede_live_edition(live_edition)
     return unless live_edition
 
-    live_edition.assign_status(:superseded, user, update_last_edited: false)
+    AssignEditionStatusService.call(live_edition, user, :superseded, update_last_edited: false)
     live_edition.live = false
     live_edition.save!
   end
 
   def set_new_live_edition
     status = with_review ? :published : :published_but_needs_2i
-    edition.assign_as_edit(user, access_limit: nil)
-    edition.assign_status(status, user)
+    AssignEditionStatusService.call(edition, user, status)
+    edition.access_limit = nil
     edition.live = true
     edition.save!
   end

@@ -52,7 +52,8 @@ private
                   created_by: user)
 
     EditEditionService.call(next_edition, user, current: true, revision: next_revision)
-    next_edition.assign_status(:draft, user).save!
+    AssignEditionStatusService.call(next_edition, user, :draft)
+    next_edition.save!
   end
 
   def create_timeline_entry

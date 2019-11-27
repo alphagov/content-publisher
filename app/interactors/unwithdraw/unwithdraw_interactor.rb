@@ -27,7 +27,7 @@ private
     withdrawal = edition.status.details
     published_status = withdrawal.published_status
 
-    edition.assign_status(published_status.state, user)
+    AssignEditionStatusService.call(edition, user, published_status.state)
     edition.save!
   end
 

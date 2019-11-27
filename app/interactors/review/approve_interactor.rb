@@ -23,7 +23,8 @@ private
   end
 
   def approve_edition
-    edition.assign_status(:published, user).save!
+    AssignEditionStatusService.call(edition, user, :published)
+    edition.save!
   end
 
   def create_timeline_entry
