@@ -9,11 +9,11 @@ class ResyncService < ApplicationService
 
   def call
     if document.live_edition.present?
-      republish_live_edition
-      update_draft_edition unless document.live_edition == document.current_edition
-    else
-      update_draft_edition
+      resync(document.live_edition)
+      return if document.current_edition == document.live_edition
     end
+
+    resync(document.current_edition)
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     raise
@@ -21,43 +21,43 @@ class ResyncService < ApplicationService
 
 private
 
-  def republish_live_edition
-    # Now we want to promote the content item and assets from
-    # the draft stack to the live stack. We can't use the
-    # PublishService here as it would promote `current_edition`
-    # to `live_edition`. (We just want to resync the two with
-    # Publishing API, not change their states). It also calls
-    # `publish` rather than `republish`.
-    # And we can't use PreviewService for presenting the doc
-    # to publishing API as there is no way of hooking the
-    # `update_type`/`bulk_publishing` into the payload.
-    # (We could - and possibly should - modify the
-    # PreviewService to allow us to pass this override)
+  def resync(edition)
+    if edition.withdrawn?
+      resync_live_withdrawn(edition)
+    elsif edition.published? || edition.published_but_needs_2i?
+      resync_live(edition)
+    elsif edition.draft? || edition.submitted_for_review?
+      resync_draft(edition)
+    end
+  end
 
-    payload = PreviewService::Payload.new(document.live_edition).payload
+  def resync_live_withdrawn(edition)
+    WithdrawService.call(edition, edition.status.details)
+  end
 
-    # Manually update live edition. Whether the latest edition
-    # is published or draft, this will create a new draft with
-    # an `update_type: "republish"`. We then need to publish it.
+  def resync_live(edition)
+    payload = PreviewService::Payload.new(edition).payload
+
+    # This will create a new draft with an `update_type: "republish"`.
     GdsApi.publishing_api_v2.put_content(
-      document.content_id,
+      edition.document.content_id,
       payload.merge(update_type: "republish", bulk_publishing: true),
     )
 
-    # Manually publish assets to live stack before we publish
-    # the document, otherwise we risk referencing assets that
-    # aren't visible yet.
-    PublishAssetService.call(document.live_edition, nil)
+    # Publish assets to live stack before we publish the document,
+    # otherwise we risk referencing assets that aren't visible yet.
+    PublishAssetService.call(edition, nil)
 
+    # Finally, publish the doc (promote from draft stack to live)
     GdsApi.publishing_api_v2.publish(
-      document.content_id,
+      edition.document.content_id,
       nil, # Sending update_type is deprecated (now in payload)
-      locale: document.locale,
+      locale: edition.document.locale,
     )
   end
 
-  def update_draft_edition
-    # Present to publishing API & Asset Manager draft stack
-    PreviewService.call(document.current_edition)
+  def resync_draft(edition)
+    # Present to publishing API and Asset Manager draft stack
+    PreviewService.call(edition)
   end
 end
