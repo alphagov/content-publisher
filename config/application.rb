@@ -7,12 +7,13 @@ require "active_job/railtie"
 require "active_record/railtie"
 require "active_storage/engine"
 require "action_controller/railtie"
-# require "action_mailer/railtie"
+require "action_mailer/railtie"
+require "action_mailbox/engine"
+require "action_text/engine"
 require "action_view/railtie"
 # require "action_cable/engine"
 require "sprockets/railtie"
 require "rails/test_unit/railtie"
-require "action_mailer/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -27,7 +28,6 @@ module ContentPublisher
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-
     config.action_view.raise_on_missing_translations = true
     config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.yml")]
     config.action_view.raise_on_missing_translations = true
@@ -35,7 +35,6 @@ module ContentPublisher
     config.time_zone = "London"
     config.eager_load_paths << Rails.root.join("lib")
     config.autoload_paths << Rails.root.join("lib")
-
     config.exceptions_app = self.routes
 
     unless Rails.application.secrets.jwt_auth_secret
