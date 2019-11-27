@@ -4,6 +4,8 @@ RSpec.describe Editions::CreateInteractor do
   describe ".call" do
     let(:user) { create :user }
 
+    before { stub_any_publishing_api_put_content }
+
     it "resets the edition metadata" do
       edition = create(:edition,
                        live: true,
@@ -22,6 +24,16 @@ RSpec.describe Editions::CreateInteractor do
       expect(next_edition.proposed_publish_time).to be_nil
       expect(next_edition).to be_draft
       expect(next_edition).to be_current
+    end
+
+    it "sends a preview of the new edition to the Publishing API" do
+      old_edition = create(:edition, :published)
+
+      expect(FailsafePreviewService).to receive(:call)
+      expect(FailsafePreviewService).not_to receive(:call).with(old_edition)
+
+      Editions::CreateInteractor
+        .call(params: { document: old_edition.document.to_param }, user: user)
     end
 
     context "when the edition was discarded" do
