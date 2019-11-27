@@ -56,20 +56,34 @@ RSpec.describe WhitehallImporter::CreateRevision do
         expect(revision.image_revisions.first.blob_revision.filename).to eq("image.jpg")
         expect(revision.image_revisions.last.blob_revision.filename).to eq("image-1.jpg")
       end
+
+      it "uses the first image as the lead image" do
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          images: [
+            build(:whitehall_export_image, filename: "first.jpg"),
+            build(:whitehall_export_image, filename: "second.jpg"),
+          ],
+        )
+        revision = described_class.call(document, whitehall_edition)
+
+        expect(revision.lead_image_revision.filename).to eq("first.jpg")
+      end
     end
 
-    it "changes the ids of embedded contacts" do
-      translation = build(:whitehall_export_translation,
-                          body: "[Contact:123]")
-      content_id = SecureRandom.uuid
+    it "passes body through the EmbedBodyReferences service" do
+      body = "Foo Bar"
       whitehall_edition = build(
         :whitehall_export_edition,
-        translations: [translation],
-        contacts: [{ "id" => 123, "content_id" => content_id }],
+        translations: [build(:whitehall_export_translation, body: body)],
+        images: [build(:whitehall_export_image, filename: "foo.jpg")],
       )
-      revision = described_class.call(document, whitehall_edition)
-
-      expect(revision.contents["body"]).to eq("[Contact:#{content_id}]")
+      expect(WhitehallImporter::EmbedBodyReferences).to receive(:call).with(
+        body: "Foo Bar",
+        contacts: [],
+        images: ["foo.jpg"],
+      )
+      described_class.call(document, whitehall_edition)
     end
 
     it "aborts when a translation isn't available for the documents locale" do

@@ -25,6 +25,7 @@ module WhitehallImporter
       document_type_key = DOCUMENT_SUB_TYPES.reject { |t| whitehall_edition[t].nil? }.first
       raise AbortImportError, "Edition has an unsupported document type" unless SUPPORTED_DOCUMENT_TYPES.include?(whitehall_edition[document_type_key])
 
+      image_revisions = create_image_revisions(whitehall_edition["images"])
       Revision.create!(
         document: document,
         number: document.next_revision_number,
@@ -34,7 +35,11 @@ module WhitehallImporter
           base_path: translation["base_path"],
           summary: translation["summary"],
           contents: {
-            body: embed_contacts(translation["body"], whitehall_edition.fetch("contacts", [])),
+            body: WhitehallImporter::EmbedBodyReferences.call(
+              body: translation["body"],
+              contacts: whitehall_edition.fetch("contacts", []),
+              images: image_revisions.map(&:filename),
+            ),
           },
         ),
         metadata_revision: MetadataRevision.new(
@@ -51,7 +56,8 @@ module WhitehallImporter
             "world_locations" => tags(whitehall_edition["world_locations"]),
           },
         ),
-        image_revisions: create_image_revisions(whitehall_edition["images"]),
+        image_revisions: image_revisions,
+        lead_image_revision: image_revisions.first,
         created_at: whitehall_edition["created_at"],
       )
     end
@@ -100,14 +106,6 @@ module WhitehallImporter
       return [] unless associations
 
       associations.map { |association| association["content_id"] }
-    end
-
-    def embed_contacts(body, contacts)
-      body&.gsub(/\[Contact:\s*(\d*)\s*\]/) do
-        id = Regexp.last_match[1].to_i
-        embed = contacts.select { |x| x["id"] == id }.first["content_id"]
-        "[Contact:#{embed}]"
-      end
     end
 
     def create_image_revisions(images)
