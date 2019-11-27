@@ -5,6 +5,8 @@ require "csv"
 namespace :csv_report do
   desc "A CSV report of political documents published by organisations"
   task political_status_by_organisation: :environment do
+    raise "csv_report:political_status_by_organisation rake task should be removed" unless Time.zone.today < Date.new(2020, 1, 1)
+
     live_editions = Edition.where(live: true).joins(revision: :tags_revision)
     org_content_ids = live_editions.pluck(Arel.sql("tags_revisions.tags->'primary_publishing_organisation'->0")).uniq
     links = Linkables.new("organisation")
