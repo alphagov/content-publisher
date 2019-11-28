@@ -19,7 +19,11 @@ module WhitehallImporter
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           CreateEdition.call(
-            document, whitehall_document, edition, edition_number + 1, user_ids
+            document: document,
+            current: current?(edition),
+            whitehall_edition: edition,
+            edition_number: edition_number + 1,
+            user_ids: user_ids,
           )
         end
 
@@ -28,6 +32,10 @@ module WhitehallImporter
     end
 
   private
+
+    def current?(edition)
+      edition["id"] == whitehall_document["editions"].max_by { |e| e["created_at"] }["id"]
+    end
 
     def create_users(users)
       users.each_with_object({}) do |user, memo|
