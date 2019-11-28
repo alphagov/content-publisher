@@ -13,6 +13,12 @@ namespace :import do
     client = GdsApi::JsonClient.new(options)
     response = client.get_json(endpoint)
     whitehall_export = response.to_hash
-    WhitehallImporter.import(whitehall_export)
+    import = WhitehallImporter.import(whitehall_export)
+
+    if import.failed?
+      puts "Import failed"
+      puts "Error: #{import.error_log}"
+      abort
+    end
   end
 end
