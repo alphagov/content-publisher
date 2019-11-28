@@ -8,8 +8,6 @@ class ResyncService < ApplicationService
   end
 
   def call
-    reserve_base_path(document.current_edition)
-
     if document.live_edition.present?
       resync(document.live_edition)
       return if document.current_edition == document.live_edition
@@ -35,6 +33,9 @@ private
   end
 
   def resync(edition)
+    # has to be done for each edition in case base_path differs
+    reserve_base_path(edition)
+
     if edition.withdrawn?
       resync_live_withdrawn(edition)
     elsif edition.published? || edition.published_but_needs_2i?
@@ -45,7 +46,15 @@ private
   end
 
   def resync_live_withdrawn(edition)
-    WithdrawService.call(edition, edition.status.details)
+    # Present to publishing API and Asset Manager draft stack
+    PreviewService.call(edition)
+
+    GdsApi.publishing_api_v2.unpublish(
+      edition.content_id,
+      type: "withdrawal",
+      explanation: GovspeakDocument.new(edition.status.details, edition).payload_html,
+      locale: edition.locale,
+    )
   end
 
   def resync_live(edition)
@@ -67,6 +76,8 @@ private
       nil, # Sending update_type is deprecated (now in payload)
       locale: edition.document.locale,
     )
+
+    edition.update!(revision_synced: true)
   end
 
   def resync_draft(edition)
