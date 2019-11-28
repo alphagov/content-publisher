@@ -2,15 +2,15 @@
 
 module WhitehallImporter
   class CreateEdition
-    attr_reader :document, :whitehall_document, :whitehall_edition, :edition_number, :user_ids
+    attr_reader :document, :current, :whitehall_edition, :edition_number, :user_ids
 
     def self.call(*args)
       new(*args).call
     end
 
-    def initialize(document:, whitehall_document:, whitehall_edition:, edition_number:, user_ids:)
+    def initialize(document:, current:, whitehall_edition:, edition_number:, user_ids:)
       @document = document
-      @whitehall_document = whitehall_document
+      @current = current
       @whitehall_edition = whitehall_edition
       @edition_number = edition_number
       @user_ids = user_ids
@@ -56,7 +56,7 @@ module WhitehallImporter
         status: CreateStatus.call(
           revision, whitehall_edition, user_ids, whitehall_edition_state: whitehall_edition_state
         ),
-        current: whitehall_edition["id"] == most_recent_edition["id"],
+        current: current,
         live: whitehall_edition["state"].in?(%w(published withdrawn)),
         created_at: whitehall_edition["created_at"],
         updated_at: whitehall_edition["updated_at"],
@@ -83,10 +83,6 @@ module WhitehallImporter
       raise AbortImportError, "Edition is missing a create event" unless event
 
       event
-    end
-
-    def most_recent_edition
-      whitehall_document["editions"].max_by { |e| e["created_at"] }
     end
 
     def access_limit(edition)
