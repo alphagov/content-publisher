@@ -8,9 +8,9 @@ class PreviewAssetService < ApplicationService
 
   def call
     if asset.draft?
-      update(asset)
+      update_asset(asset)
     elsif asset.absent?
-      upload(asset)
+      upload_asset(asset)
     end
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
@@ -21,12 +21,12 @@ private
 
   attr_reader :edition, :asset
 
-  def update(asset)
+  def update_asset(asset)
     payload = Payload.new(edition).for_update
     GdsApi.asset_manager.update_asset(asset.asset_manager_id, payload)
   end
 
-  def upload(asset)
+  def upload_asset(asset)
     payload = Payload.new(edition).for_upload(asset)
     upload = GdsApi.asset_manager.create_asset(payload)
     asset.update!(file_url: upload["file_url"], state: :draft)

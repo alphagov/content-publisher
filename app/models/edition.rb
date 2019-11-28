@@ -13,7 +13,7 @@ class Edition < ApplicationRecord
 
   after_save do
     # Store the edition on the status to keep a history
-    status.update(edition: self) unless status.edition_id
+    status.update!(edition: self) unless status.edition_id
 
     # Used to keep an audit trail of statuses a revision has held
     revision.statuses << status unless revision.statuses.include?(status)

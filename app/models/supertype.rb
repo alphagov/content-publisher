@@ -7,7 +7,7 @@ class Supertype
 
   def self.all
     @all ||= begin
-      hashes = YAML.load_file(Rails.root.join("app", "formats", "supertypes.yml"))
+      hashes = YAML.load_file(Rails.root.join("app/formats/supertypes.yml"))
 
       hashes.map do |hash|
         hash["document_types"] = hash["display_document_types"].to_a.map(&DocumentType.method(:find))

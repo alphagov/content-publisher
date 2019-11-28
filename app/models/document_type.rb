@@ -14,7 +14,7 @@ class DocumentType
 
   def self.all
     @all ||= begin
-      hashes = YAML.load_file(Rails.root.join("app", "formats", "document_types.yml"))
+      hashes = YAML.load_file(Rails.root.join("app/formats/document_types.yml"))
 
       hashes.map do |hash|
         hash["contents"] = hash["contents"].to_a.map(&Field.method(:new))

@@ -25,7 +25,7 @@ RSpec.describe "Political documents tasks" do
       ]
 
       expect(CSV).to receive(:open).with(
-        Rails.root.join("tmp", "org-1-political-status.csv"), "w",
+        Rails.root.join("tmp/org-1-political-status.csv"), "w",
         headers: csv_headers,
         write_headers: true
       ).and_yield(csv_file)
@@ -41,12 +41,12 @@ RSpec.describe "Political documents tasks" do
       create(:edition, :published, tags: { primary_publishing_organisation: [organisation2["content_id"]] })
 
       expect(CSV).to receive(:open).with(
-        Rails.root.join("tmp", "org-1-political-status.csv"), "w",
+        Rails.root.join("tmp/org-1-political-status.csv"), "w",
         headers: csv_headers,
         write_headers: true
       )
       expect(CSV).to receive(:open).with(
-        Rails.root.join("tmp", "org-2-political-status.csv"), "w",
+        Rails.root.join("tmp/org-2-political-status.csv"), "w",
         headers: csv_headers,
         write_headers: true
       )
