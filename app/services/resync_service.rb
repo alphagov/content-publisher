@@ -8,6 +8,8 @@ class ResyncService < ApplicationService
   end
 
   def call
+    reserve_base_path(document.current_edition)
+
     if document.live_edition.present?
       resync(document.live_edition)
       return if document.current_edition == document.live_edition
@@ -20,6 +22,17 @@ class ResyncService < ApplicationService
   end
 
 private
+
+  def reserve_base_path(edition)
+    # Reserves a path for a publishing application, in case it has
+    # been imported from Whitehall. There's no harm in calling
+    # this even if we already own the path.
+    GdsApi.publishing_api_v2.put_path(
+      edition.base_path,
+      publishing_app: "content-publisher",
+      override_existing: true,
+    )
+  end
 
   def resync(edition)
     if edition.withdrawn?

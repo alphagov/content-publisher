@@ -11,6 +11,7 @@ RSpec.describe ResyncService do
       let(:document) { create(:document, :with_current_edition) }
 
       it "synchronises the current edition, but does not publish" do
+        expect_path_reserved(document)
         expect(PreviewService).to receive(:call).with(document.current_edition)
         expect(GdsApi.publishing_api_v2).not_to receive(:publish)
         expect(GdsApi.publishing_api_v2).not_to receive(:republish)
@@ -36,6 +37,7 @@ RSpec.describe ResyncService do
       it "re-publishes the current_edition" do
         GdsApi.stub_chain(:publishing_api_v2, :put_content)
         GdsApi.stub_chain(:publishing_api_v2, :publish)
+        expect_path_reserved(document)
         expect(GdsApi.publishing_api_v2).to receive(:put_content).once.with(document.content_id, hash_including(update_type: "republish")).ordered
         expect(GdsApi.publishing_api_v2).to receive(:publish).once.with(document.content_id, nil, hash_including(:locale)).ordered
         ResyncService.call(document)
@@ -61,7 +63,7 @@ RSpec.describe ResyncService do
 
       it "re-publishes the live edition before synchronising the current edition without publishing it" do
         GdsApi.stub_chain(:publishing_api_v2, :put_content)
-
+        expect_path_reserved(document)
         expect(GdsApi.publishing_api_v2).to receive(:put_content).once.with(document.content_id, hash_including(update_type: "republish")).ordered
         expect(GdsApi.publishing_api_v2).to receive(:publish).once.with(document.content_id, nil, hash_including(:locale)).ordered
         # @TODO - test that PublishAssetService is called for live edition next
@@ -69,5 +71,13 @@ RSpec.describe ResyncService do
         ResyncService.call(document)
       end
     end
+  end
+
+  def expect_path_reserved(document)
+    GdsApi.stub_chain(:publishing_api_v2, :put_path)
+    expect(GdsApi.publishing_api_v2).to receive(:put_path).once.with(
+      document.editions.last.base_path,
+      hash_including(publishing_app: "content-publisher", override_existing: true),
+    ).ordered
   end
 end
