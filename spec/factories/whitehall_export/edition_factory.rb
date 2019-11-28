@@ -21,7 +21,7 @@ FactoryBot.define do
     contacts { [] }
     revision_history do
       [
-        { "event" => "create", "state" => state, "whodunnit" => 1 },
+        build(:revision_history_event, created_at: created_at),
       ]
     end
     unpublishing { nil }
