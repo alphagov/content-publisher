@@ -15,7 +15,7 @@ require "gds_api/test_helpers/publishing_api_v2"
 require "gds_api/test_helpers/asset_manager"
 require "govuk_sidekiq/testing"
 
-Dir[Rails.root.join("spec", "support", "**", "*.rb")].each { |f| require f }
+Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 SimpleCov.start
 GovukTest.configure
 I18nCov.start

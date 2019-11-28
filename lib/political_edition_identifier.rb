@@ -3,7 +3,7 @@
 class PoliticalEditionIdentifier
   def self.political_organisation_ids
     @political_organisation_ids ||= YAML.load_file(
-      Rails.root.join("config", "political_organisations.yml"),
+      Rails.root.join("config/political_organisations.yml"),
     )
   end
 

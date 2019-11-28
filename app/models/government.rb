@@ -21,7 +21,7 @@ class Government
   end
 
   def self.all
-    @all ||= YAML.load_file(Rails.root.join("config", "governments.yml"))
+    @all ||= YAML.load_file(Rails.root.join("config/governments.yml"))
                  .map { |hash| new(hash) }
   end
 

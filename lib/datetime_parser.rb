@@ -41,17 +41,10 @@ private
 
     if !parsed_time_values
       issues << Requirements::Issue.new(field_name, :invalid)
-      return
-    end
-
-    if parsed_time_values[:hour].to_i > 12 && parsed_time_values[:period]
+    elsif parsed_time_values[:hour].to_i > 12 && parsed_time_values[:period]
       issues << Requirements::Issue.new(field_name, :invalid)
-      return
-    end
-
-    if time[:hour] > 23
+    elsif time[:hour] > 23
       issues << Requirements::Issue.new(field_name, :invalid)
-      return
     end
   end
 

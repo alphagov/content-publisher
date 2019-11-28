@@ -3,8 +3,8 @@
 require "singleton"
 
 class I18nCov
-  REPORT_PATH = Rails.root.join("coverage", "i18n")
-  IN_APP_LOCALE_FILES = Dir.glob(Rails.root.join("config", "locales", "**", "*.yml"))
+  REPORT_PATH = Rails.root.join("coverage/i18n")
+  IN_APP_LOCALE_FILES = Dir.glob(Rails.root.join("config/locales/**/*.yml"))
 
   include Singleton
 
