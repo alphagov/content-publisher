@@ -156,41 +156,6 @@ class Edition < ApplicationRecord
     Government.find(government_id)
   end
 
-  def assign_status(state,
-                    user,
-                    update_last_edited: true,
-                    status_details: nil)
-    status = Status.new(
-      created_by: user,
-      state: state,
-      revision_at_creation: revision,
-      details: status_details,
-    )
-
-    attributes = { status: status }
-
-    if update_last_edited
-      assign_as_edit(user, attributes)
-    else
-      assign_attributes(attributes)
-      self
-    end
-  end
-
-  def assign_as_edit(user, attributes)
-    assign_attributes(
-      attributes.merge(last_edited_by: user, last_edited_at: Time.current),
-    )
-
-    self
-  end
-
-  def assign_revision(revision, user)
-    raise "cannot update revision on a live edition" if live?
-
-    assign_as_edit(user, revision: revision)
-  end
-
   def editors
     user_ids = statuses.pluck(:created_by_id) + revisions.pluck(:created_by_id)
     User.where(id: user_ids.uniq)

@@ -24,6 +24,7 @@ RSpec.feature "Delete draft after publishing" do
   end
 
   def and_i_publish_the_edition
+    stub_any_publishing_api_put_content
     stub_any_publishing_api_publish
     click_on "Publish"
     choose I18n.t!("publish.confirmation.should_be_reviewed")

@@ -66,6 +66,7 @@ RSpec.feature "Scheduled publishing" do
 
   def when_the_publishing_job_runs
     travel_to(Time.zone.parse("2019-6-22 9:00"))
+    stub_any_publishing_api_put_content
     @publish_request = stub_publishing_api_publish(@edition.content_id,
                                                    update_type: nil,
                                                    locale: @edition.locale)

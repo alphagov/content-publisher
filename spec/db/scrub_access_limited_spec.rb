@@ -73,11 +73,14 @@ RSpec.describe "Scrub Access Limited SQL Script" do
 
   it "removes previous revisions and statuses" do
     edition = create(:edition, :access_limited)
-    user = edition.created_by
     old_revision = edition.revision
     old_status = edition.status
-    edition.assign_revision(build(:revision), user).save!
-    edition.assign_status(:submitted_for_review, user).save!
+    new_revision = build(:revision, document: edition.document)
+    edition.assign_attributes(
+      revision: new_revision,
+      status: build(:status, state: :submitted_for_review, revision_at_creation: new_revision),
+    )
+    edition.save!
 
     execute_sql
 

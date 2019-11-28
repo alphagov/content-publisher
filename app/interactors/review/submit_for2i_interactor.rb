@@ -35,7 +35,8 @@ private
   end
 
   def update_status
-    edition.assign_status(:submitted_for_review, user).save!
+    AssignEditionStatusService.call(edition, user, :submitted_for_review)
+    edition.save!
   end
 
   def create_timeline_entry

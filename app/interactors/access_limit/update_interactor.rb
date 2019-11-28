@@ -31,7 +31,7 @@ private
 
     if LIMIT_TYPES.exclude?(limit_type)
       context.fail! if edition.access_limit.nil?
-      edition.assign_as_edit(user, access_limit: nil)
+      EditEditionService.call(edition, user, access_limit: nil)
       return
     end
 
@@ -42,7 +42,7 @@ private
                                    limit_type: limit_type,
                                    revision_at_creation: edition.revision)
 
-    edition.assign_as_edit(user, access_limit: access_limit)
+    EditEditionService.call(edition, user, access_limit: access_limit)
   end
 
   def check_for_issues

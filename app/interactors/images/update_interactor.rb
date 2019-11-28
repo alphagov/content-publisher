@@ -56,7 +56,9 @@ private
 
     context.fail! unless updater.changed?
 
-    edition.assign_revision(updater.next_revision, user).save!
+    EditEditionService.call(edition, user, revision: updater.next_revision)
+    edition.save!
+
     context.selected_lead_image = updater.selected_lead_image?
     context.removed_lead_image = updater.removed_lead_image?
   end

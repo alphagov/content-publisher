@@ -46,7 +46,8 @@ private
     context.fail! unless updater.changed?
 
     context.revision = updater.next_revision
-    edition.assign_revision(revision, user).save!
+    EditEditionService.call(edition, user, revision: updater.next_revision)
+    edition.save!
   end
 
   def action_issues

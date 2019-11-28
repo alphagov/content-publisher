@@ -43,7 +43,9 @@ private
 
   def update_edition
     context.fail! unless revision_updater.changed?
-    edition.assign_revision(revision, user).save!
+
+    EditEditionService.call(edition, user, revision: revision)
+    edition.save!
   end
 
   def create_timeline_entry

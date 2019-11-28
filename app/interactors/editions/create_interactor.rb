@@ -15,6 +15,7 @@ class Editions::CreateInteractor < ApplicationInteractor
       create_next_revision
       create_next_edition
       create_timeline_entry
+      preview_next_edition
     end
   end
 
@@ -51,8 +52,9 @@ private
                   number: edition.document.next_edition_number,
                   created_by: user)
 
-    next_edition.assign_as_edit(user, current: true, revision: next_revision)
-    next_edition.assign_status(:draft, user).save!
+    EditEditionService.call(next_edition, user, current: true, revision: next_revision)
+    AssignEditionStatusService.call(next_edition, user, :draft)
+    next_edition.save!
   end
 
   def create_timeline_entry
@@ -63,5 +65,9 @@ private
       TimelineEntry.create_for_status_change(entry_type: :new_edition,
                                              status: next_edition.status)
     end
+  end
+
+  def preview_next_edition
+    FailsafePreviewService.call(next_edition)
   end
 end

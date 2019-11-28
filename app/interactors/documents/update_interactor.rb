@@ -40,7 +40,8 @@ private
   end
 
   def update_edition
-    edition.assign_revision(revision, user).save!
+    EditEditionService.call(edition, user, revision: revision)
+    edition.save!
   end
 
   def create_timeline_entry

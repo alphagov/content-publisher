@@ -58,7 +58,8 @@ private
       end
     end
 
-    edition.assign_status(:discarded, user).update!(current: false)
+    AssignEditionStatusService.call(edition, user, :discarded)
+    edition.update!(current: false)
   end
 
   def delete_assets(assets)

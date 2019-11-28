@@ -32,7 +32,8 @@ private
   def update_edition
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(backdated_to: date)
-    edition.assign_revision(updater.next_revision, user).save!
+    EditEditionService.call(edition, user, revision: updater.next_revision)
+    edition.save!
 
     context.fail! unless updater.changed?
   end
