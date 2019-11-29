@@ -70,7 +70,7 @@ private
     removal = edition.status.details
     GdsApi.publishing_api_v2.unpublish(
       edition.content_id,
-      type: "redirect",
+      type: removal.redirect? ? "redirect" : "gone",
       explanation: removal.explanatory_note,
       alternative_path: removal.alternative_path,
       locale: edition.locale,
