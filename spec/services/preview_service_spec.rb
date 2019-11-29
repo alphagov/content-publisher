@@ -34,6 +34,16 @@ RSpec.describe PreviewService do
       PreviewService.call(edition)
     end
 
+    it "accepts parameter to merge arbitrary things into the payload" do
+      edition = create(:edition)
+      extra_params = { "bulk_publishing" => true }
+      GdsApi.stub_chain(:publishing_api_v2, :put_content)
+
+      expect(GdsApi.publishing_api_v2).to receive(:put_content).once.
+        with(edition.content_id, hash_including(extra_params))
+      PreviewService.call(edition, extra_params)
+    end
+
     context "when Publishing API is down" do
       before do
         stub_publishing_api_isnt_available

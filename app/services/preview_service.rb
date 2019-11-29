@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class PreviewService < ApplicationService
-  def initialize(edition)
+  def initialize(edition, optional_params = {})
     @edition = edition
+    @optional_params = optional_params
   end
 
   def call
@@ -15,11 +16,12 @@ class PreviewService < ApplicationService
 
 private
 
-  attr_reader :edition
+  attr_reader :edition, :optional_params
 
   def put_draft_content
     payload = Payload.new(edition).payload
-    GdsApi.publishing_api_v2.put_content(edition.content_id, payload)
+    GdsApi.publishing_api_v2.put_content(edition.content_id,
+                                         payload.merge(optional_params))
     edition.update!(revision_synced: true)
   end
 
