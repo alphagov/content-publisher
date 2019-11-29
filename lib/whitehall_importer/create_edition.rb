@@ -86,7 +86,7 @@ module WhitehallImporter
 
     def set_withdrawn_status(edition)
       withdrawn_status = build_status(
-        MigrateState.call(whitehall_edition["state"], whitehall_edition["force_published"]),
+        "withdrawn",
         build_withdrawal(edition),
       )
 
