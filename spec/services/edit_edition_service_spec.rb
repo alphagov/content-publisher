@@ -64,24 +64,12 @@ RSpec.describe EditEditionService do
     end
 
     describe "associates the edition with a government" do
-      it "sets the government for a backdated edition" do
-        backdate = Time.zone.parse("2018-01-01")
+      it "sets the government when there is a public first published at time" do
+        time = Time.zone.parse("2018-01-01")
         government = build(:government)
-        edition = create(:edition, backdated_to: backdate)
-        allow(Government).to receive(:for_date).with(edition.backdated_to)
-                         .and_return(government)
-
-        expect { EditEditionService.call(edition, user) }
-          .to change { edition.government_id }
-          .to(government.content_id)
-      end
-
-      it "sets the government for an edition of a published document" do
-        publish_date = Time.zone.parse("2019-11-01")
-        government = build(:government)
-        allow(Government).to receive(:for_date).with(publish_date)
-                         .and_return(government)
-        edition = build(:edition, first_published_at: publish_date)
+        edition = create(:edition)
+        allow(edition).to receive(:public_first_published_at).and_return(time)
+        allow(Government).to receive(:for_date).with(time).and_return(government)
 
         expect { EditEditionService.call(edition, user) }
           .to change { edition.government_id }

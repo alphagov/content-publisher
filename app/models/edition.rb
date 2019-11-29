@@ -156,6 +156,10 @@ class Edition < ApplicationRecord
     Government.find(government_id)
   end
 
+  def public_first_published_at
+    backdated_to || document.first_published_at
+  end
+
   def editors
     user_ids = statuses.pluck(:created_by_id) + revisions.pluck(:created_by_id)
     User.where(id: user_ids.uniq)

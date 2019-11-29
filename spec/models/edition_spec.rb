@@ -166,6 +166,27 @@ RSpec.describe Edition do
     end
   end
 
+  describe "#public_first_published_at" do
+    it "it returns backdate when that is set" do
+      freeze_time do
+        edition = build(:edition, backdated_to: 1.year.ago, first_published_at: 1.week.ago)
+        expect(edition.public_first_published_at).to eq(1.year.ago)
+      end
+    end
+
+    it "it returns first published date when backdate isn't set" do
+      freeze_time do
+        edition = build(:edition, backdated_to: nil, first_published_at: 1.week.ago)
+        expect(edition.public_first_published_at).to eq(1.week.ago)
+      end
+    end
+
+    it "returns nil when it is not backdated or first published" do
+      edition = build(:edition, backdated_to: nil, first_published_at: nil)
+      expect(edition.public_first_published_at).to be_nil
+    end
+  end
+
   describe "#access_limit_organisation_ids" do
     context "when the limit is to primary orgs" do
       let(:edition) do
