@@ -33,6 +33,8 @@ private
       nil, # Sending update_type is deprecated (now in payload)
       locale: edition.document.locale,
     )
+
+    edition.update!(revision_synced: true)
   end
 
   def update_current_edition(edition)

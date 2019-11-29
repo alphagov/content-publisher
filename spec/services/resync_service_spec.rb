@@ -35,6 +35,7 @@ RSpec.describe ResyncService do
         expect(GdsApi.publishing_api_v2).to receive(:publish).once.
           with(document.content_id, nil, hash_including(:locale)).ordered
         ResyncService.call(document)
+        expect(document.current_edition.revision_synced).to be true
       end
     end
 
