@@ -45,76 +45,73 @@ RSpec.describe ResyncService do
       end
     end
 
-    context "when the current edition is withdrawn" do
+    context "when the live edition has been unpublished" do
       let(:document) { create(:document, :with_live_edition) }
 
       before do
-        document.current_edition.stub(:withdrawn?).and_return(true)
         GdsApi.stub_chain(:publishing_api_v2, :put_content)
         GdsApi.stub_chain(:publishing_api_v2, :unpublish)
       end
 
-      it "unpublishes the edition as withdrawn" do
-        unpublish_params = hash_including(
-          type: "withdrawal",
-          locale: document.current_edition.locale,
-        )
-        expect(GdsApi.publishing_api_v2).to receive(:put_content).once.ordered
-        expect(GdsApi.publishing_api_v2).to receive(:unpublish).once.
-          with(document.content_id, unpublish_params).ordered
-        ResyncService.call(document)
-      end
-    end
+      context "when the live edition is withdrawn" do
+        before do
+          document.current_edition.stub(:withdrawn?).and_return(true)
+        end
 
-    context "when the current edition is unpublished with redirect" do
-      let(:document) { create(:document, :with_live_edition) }
-
-      before do
-        document.current_edition.stub(:removed?).and_return(true)
-        document.current_edition.status.details.stub(:redirect?).and_return(true)
-        document.current_edition.status.details.stub(:alternative_path).and_return("/foo/bar")
-        document.current_edition.status.details.stub(:explanatory_note).and_return("Explanation")
-        GdsApi.stub_chain(:publishing_api_v2, :put_content)
-        GdsApi.stub_chain(:publishing_api_v2, :unpublish)
+        it "unpublishes the edition as withdrawn" do
+          unpublish_params = hash_including(
+            type: "withdrawal",
+            locale: document.current_edition.locale,
+          )
+          expect(GdsApi.publishing_api_v2).to receive(:put_content).once.ordered
+          expect(GdsApi.publishing_api_v2).to receive(:unpublish).once.
+            with(document.content_id, unpublish_params).ordered
+          ResyncService.call(document)
+        end
       end
 
-      it "unpublishes the edition as redirected" do
-        unpublish_params = hash_including(
-          type: "redirect",
-          locale: document.current_edition.locale,
-          alternative_path: "/foo/bar",
-          explanation: "Explanation",
-        )
-        expect(GdsApi.publishing_api_v2).to receive(:put_content).once.ordered
-        expect(GdsApi.publishing_api_v2).to receive(:unpublish).once.
-          with(document.content_id, unpublish_params).ordered
-        ResyncService.call(document)
-      end
-    end
+      context "when the live edition is unpublished with redirect" do
+        before do
+          document.current_edition.stub(:removed?).and_return(true)
+          document.current_edition.status.details.stub(:redirect?).and_return(true)
+          document.current_edition.status.details.stub(:alternative_path).and_return("/foo/bar")
+          document.current_edition.status.details.stub(:explanatory_note).and_return("Explanation")
+        end
 
-    context "when the current edition is unpublished without a redirect" do
-      let(:document) { create(:document, :with_live_edition) }
-
-      before do
-        document.current_edition.stub(:removed?).and_return(true)
-        document.current_edition.status.details.stub(:redirect?).and_return(false)
-        document.current_edition.status.details.stub(:alternative_path).and_return("")
-        document.current_edition.status.details.stub(:explanatory_note).and_return("")
-        GdsApi.stub_chain(:publishing_api_v2, :put_content)
-        GdsApi.stub_chain(:publishing_api_v2, :unpublish)
+        it "unpublishes the edition as redirected" do
+          unpublish_params = hash_including(
+            type: "redirect",
+            locale: document.current_edition.locale,
+            alternative_path: "/foo/bar",
+            explanation: "Explanation",
+          )
+          expect(GdsApi.publishing_api_v2).to receive(:put_content).once.ordered
+          expect(GdsApi.publishing_api_v2).to receive(:unpublish).once.
+            with(document.content_id, unpublish_params).ordered
+          ResyncService.call(document)
+        end
       end
 
-      it "unpublishes the edition as redirected" do
-        unpublish_params = hash_including(
-          type: "gone",
-          locale: document.current_edition.locale,
-          alternative_path: "",
-          explanation: "",
-        )
-        expect(GdsApi.publishing_api_v2).to receive(:put_content).once.ordered
-        expect(GdsApi.publishing_api_v2).to receive(:unpublish).once.
-          with(document.content_id, unpublish_params).ordered
-        ResyncService.call(document)
+      context "when the live edition is unpublished without a redirect" do
+        before do
+          document.current_edition.stub(:removed?).and_return(true)
+          document.current_edition.status.details.stub(:redirect?).and_return(false)
+          document.current_edition.status.details.stub(:alternative_path).and_return("")
+          document.current_edition.status.details.stub(:explanatory_note).and_return("")
+        end
+
+        it "unpublishes the edition as redirected" do
+          unpublish_params = hash_including(
+            type: "gone",
+            locale: document.current_edition.locale,
+            alternative_path: "",
+            explanation: "",
+          )
+          expect(GdsApi.publishing_api_v2).to receive(:put_content).once.ordered
+          expect(GdsApi.publishing_api_v2).to receive(:unpublish).once.
+            with(document.content_id, unpublish_params).ordered
+          ResyncService.call(document)
+        end
       end
     end
 
