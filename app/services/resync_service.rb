@@ -27,6 +27,7 @@ private
       revision_synced: false,
       system_political: PoliticalEditionIdentifier.new(edition).political?,
     )
+    PreviewService.call(edition)
   end
 
   def government_id(edition, document)
