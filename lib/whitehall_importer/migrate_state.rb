@@ -10,7 +10,6 @@ module WhitehallImporter
       rejected
       submitted
       superseded
-      withdrawn
     ).freeze
 
     def self.call(*args)
@@ -30,7 +29,6 @@ module WhitehallImporter
       when "superseded" then "superseded"
       when "published"
         force_published ? "published_but_needs_2i" : "published"
-      when "withdrawn" then "withdrawn"
       else
         "submitted_for_review"
       end
