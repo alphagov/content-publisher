@@ -8,7 +8,13 @@ class ResyncService < ApplicationService
   end
 
   def call
-    edition = document.current_edition
+    update_live_edition(document.live_edition) if document.live_edition
+    update_current_edition(document.current_edition)
+  end
+
+private
+
+  def update_live_edition(edition)
     edition.update!(
       revision_synced: false,
       system_political: PoliticalEditionIdentifier.new(edition).political?,
@@ -16,7 +22,12 @@ class ResyncService < ApplicationService
     )
   end
 
-private
+  def update_current_edition(edition)
+    edition.update!(
+      revision_synced: false,
+      system_political: PoliticalEditionIdentifier.new(edition).political?,
+    )
+  end
 
   def government_id(edition, document)
     date = edition.backdated_to || document.first_published_at
