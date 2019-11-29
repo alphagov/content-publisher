@@ -20,6 +20,18 @@ private
       system_political: PoliticalEditionIdentifier.new(edition).political?,
       government_id: government_id(edition, document),
     )
+
+    PreviewService.call(
+      edition,
+      update_type: "republish",
+      bulk_publishing: true,
+    )
+
+    GdsApi.publishing_api_v2.publish(
+      edition.document.content_id,
+      nil, # Sending update_type is deprecated (now in payload)
+      locale: edition.document.locale,
+    )
   end
 
   def update_current_edition(edition)

@@ -3,6 +3,7 @@
 RSpec.describe ResyncService do
   describe ".call" do
     before do
+      stub_any_publishing_api_publish
       stub_any_publishing_api_put_content
       PoliticalEditionIdentifier.stub_chain(:new, :political?).and_return(true)
     end
@@ -15,6 +16,20 @@ RSpec.describe ResyncService do
         expect(GdsApi.publishing_api_v2).not_to receive(:publish)
         ResyncService.call(document)
         expect(document.current_edition.revision_synced).to be true
+      end
+    end
+
+    context "when the current edition is live" do
+      let(:document) { create(:document, :with_live_edition) }
+
+      it "re-publishes the live edition" do
+        GdsApi.stub_chain(:publishing_api_v2, :put_content)
+        GdsApi.stub_chain(:publishing_api_v2, :publish)
+        expect(GdsApi.publishing_api_v2).to receive(:put_content).once.
+          with(document.content_id, hash_including(update_type: "republish")).ordered
+        expect(GdsApi.publishing_api_v2).to receive(:publish).once.
+          with(document.content_id, nil, hash_including(:locale)).ordered
+        ResyncService.call(document)
       end
     end
 
