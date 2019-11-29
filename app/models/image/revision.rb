@@ -44,20 +44,6 @@ class Image::Revision < ApplicationRecord
            :at_exact_dimensions?,
            to: :blob_revision
 
-  def self.create_initial(blob_revision:)
-    user = blob_revision.created_by
-    image = Image.create!(created_by: user)
-
-    metadata_revision = Image::MetadataRevision.new(created_by: user)
-
-    create!(
-      image: image,
-      created_by: user,
-      blob_revision: blob_revision,
-      metadata_revision: metadata_revision,
-    )
-  end
-
   def readonly?
     !new_record?
   end
