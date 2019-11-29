@@ -35,9 +35,14 @@ private
   def upload_attachment
     blob_revision = FileAttachmentBlobService.call(edition.revision, user, params[:file])
 
-    context.attachment_revision = FileAttachment::Revision.create_initial(
+    context.attachment_revision = FileAttachment::Revision.create!(
+      created_by: user,
       blob_revision: blob_revision,
-      title: params[:title],
+      file_attachment: FileAttachment.create!(created_by: user),
+      metadata_revision: FileAttachment::MetadataRevision.create!(
+        created_by: user,
+        title: params[:title],
+      ),
     )
   end
 
