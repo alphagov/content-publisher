@@ -38,7 +38,7 @@ private
   end
 
   def create_document
-    context.document = Document.create_initial(
+    context.document = CreateDocumentService.call(
       document_type_id: params[:document_type], tags: default_tags, user: user,
     )
   end
