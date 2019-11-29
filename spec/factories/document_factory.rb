@@ -5,8 +5,11 @@ FactoryBot.define do
     content_id { SecureRandom.uuid }
     locale { I18n.available_locales.sample }
     association :created_by, factory: :user
+    first_published_at { nil }
 
     trait :with_live_edition do
+      first_published_at { Time.current }
+
       after(:build) do |document, evaluator|
         document.live_edition = evaluator.association(
           :edition,
@@ -29,6 +32,8 @@ FactoryBot.define do
     end
 
     trait :with_current_and_live_editions do
+      first_published_at { Time.current }
+
       after(:build) do |document, evaluator|
         document.live_edition = evaluator.association(
           :edition,
