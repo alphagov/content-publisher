@@ -32,6 +32,8 @@ private
 
     if edition.withdrawn?
       withdraw(edition)
+    elsif edition.removed?
+      redirect_or_remove(edition)
     else
       publish(edition)
     end
@@ -60,6 +62,17 @@ private
       edition.document.content_id,
       type: "withdrawal",
       explanation: GovspeakDocument.new(edition.status.details, edition).payload_html,
+      locale: edition.locale,
+    )
+  end
+
+  def redirect_or_remove(edition)
+    removal = edition.status.details
+    GdsApi.publishing_api_v2.unpublish(
+      edition.content_id,
+      type: "redirect",
+      explanation: removal.explanatory_note,
+      alternative_path: removal.alternative_path,
       locale: edition.locale,
     )
   end

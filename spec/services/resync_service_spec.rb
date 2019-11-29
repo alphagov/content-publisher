@@ -66,6 +66,32 @@ RSpec.describe ResyncService do
       end
     end
 
+    context "when the current edition is unpublished with redirect" do
+      let(:document) { create(:document, :with_live_edition) }
+
+      before do
+        document.current_edition.stub(:removed?).and_return(true)
+        document.current_edition.status.details.stub(:redirect?).and_return(true)
+        document.current_edition.status.details.stub(:alternative_path).and_return("/foo/bar")
+        document.current_edition.status.details.stub(:explanatory_note).and_return("Explanation")
+        GdsApi.stub_chain(:publishing_api_v2, :put_content)
+        GdsApi.stub_chain(:publishing_api_v2, :unpublish)
+      end
+
+      it "unpublishes the edition as redirected" do
+        unpublish_params = hash_including(
+          type: "redirect",
+          locale: document.current_edition.locale,
+          alternative_path: "/foo/bar",
+          explanation: "Explanation",
+        )
+        expect(GdsApi.publishing_api_v2).to receive(:put_content).once.ordered
+        expect(GdsApi.publishing_api_v2).to receive(:unpublish).once.
+          with(document.content_id, unpublish_params).ordered
+        ResyncService.call(document)
+      end
+    end
+
     context "when there are both live and current editions" do
       let(:document) { create(:document, :with_current_and_live_editions) }
 
