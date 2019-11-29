@@ -47,27 +47,6 @@ class Document < ApplicationRecord
     find_by!(content_id: content_id, locale: locale)
   end
 
-  def self.create_initial(content_id: SecureRandom.uuid,
-                          document_type_id:,
-                          locale: "en",
-                          user: nil,
-                          tags: {})
-    transaction do
-      document = create!(content_id: content_id,
-                         locale: locale,
-                         created_by: user)
-
-      document.tap do |d|
-        Edition.create_initial(
-          document: d,
-          user: user,
-          tags: tags,
-          document_type_id: document_type_id,
-        )
-      end
-    end
-  end
-
   def next_edition_number
     (editions.maximum(:number) || 0) + 1
   end

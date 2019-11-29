@@ -64,22 +64,6 @@ class Revision < ApplicationRecord
            :supporting_organisation_ids,
            to: :tags_revision
 
-  def self.create_initial(document:, document_type_id:, user: nil, tags: {})
-    Revision.create!(
-      created_by: user,
-      document: document,
-      number: document.next_revision_number,
-      content_revision: ContentRevision.new(created_by: user),
-      metadata_revision: MetadataRevision.new(
-        change_note: "First published.",
-        update_type: "major",
-        created_by: user,
-        document_type_id: document_type_id,
-      ),
-      tags_revision: TagsRevision.new(tags: tags, created_by: user),
-    )
-  end
-
   def readonly?
     !new_record?
   end

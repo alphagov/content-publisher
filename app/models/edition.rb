@@ -112,26 +112,6 @@ class Edition < ApplicationRecord
     end
   end
 
-  def self.create_initial(document:, document_type_id:, user: nil, tags: {})
-    revision = Revision.create_initial(
-      document: document,
-      user: user,
-      tags: tags,
-      document_type_id: document_type_id,
-    )
-    status = Status.create!(created_by: user,
-                            revision_at_creation: revision,
-                            state: :draft)
-
-    create!(created_by: user,
-            current: true,
-            document: document,
-            last_edited_by: user,
-            number: document.next_edition_number,
-            revision: revision,
-            status: status)
-  end
-
   def editable?
     !live? && !scheduled?
   end
