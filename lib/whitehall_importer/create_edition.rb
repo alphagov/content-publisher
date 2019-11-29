@@ -85,12 +85,15 @@ module WhitehallImporter
     end
 
     def set_withdrawn_status(edition)
-      withdrawn_status = build_status(
-        "withdrawn",
-        build_withdrawal(edition),
+      raise AbortImportError, "Cannot create withdrawn status without an unpublishing" if whitehall_edition["unpublishing"].blank?
+
+      withdrawal = Withdrawal.new(
+        published_status: edition.status,
+        public_explanation: whitehall_edition["unpublishing"]["explanation"],
+        withdrawn_at: whitehall_edition["unpublishing"]["created_at"],
       )
 
-      edition.update!(status: withdrawn_status)
+      edition.update!(status: build_status("withdrawn", withdrawal))
     end
 
     def build_removal
@@ -101,16 +104,6 @@ module WhitehallImporter
         explanatory_note: unpublishing["explanation"],
         alternative_path: unpublishing["alternative_url"],
         redirect: unpublishing["alternative_url"].present?,
-      )
-    end
-
-    def build_withdrawal(edition)
-      raise AbortImportError, "Cannot create withdrawn status without an unpublishing" if whitehall_edition["unpublishing"].blank?
-
-      Withdrawal.new(
-        published_status: edition.status,
-        public_explanation: whitehall_edition["unpublishing"]["explanation"],
-        withdrawn_at: whitehall_edition["unpublishing"]["created_at"],
       )
     end
 
