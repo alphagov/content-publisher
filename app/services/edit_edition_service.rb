@@ -28,10 +28,8 @@ private
   end
 
   def associate_with_government
-    date = edition.backdated_to || edition.document.first_published_at
-
-    edition.government_id = if date
-                              government = Government.for_date(date)
+    edition.government_id = if edition.public_first_published_at
+                              government = Government.for_date(edition.public_first_published_at)
                               government&.content_id
                             end
   end
