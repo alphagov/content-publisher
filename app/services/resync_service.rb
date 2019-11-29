@@ -8,6 +8,10 @@ class ResyncService < ApplicationService
   end
 
   def call
-    # TODO
+    edition = document.current_edition
+    edition.update!(
+      revision_synced: false,
+      system_political: PoliticalEditionIdentifier.new(edition).political?,
+    )
   end
 end
