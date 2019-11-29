@@ -22,6 +22,11 @@ RSpec.describe ResyncService do
     context "when the current edition is live" do
       let(:document) { create(:document, :with_live_edition) }
 
+      it "avoids synchronising the edition twice" do
+        expect(PreviewService).to receive(:call).once
+        ResyncService.call(document)
+      end
+
       it "re-publishes the live edition" do
         GdsApi.stub_chain(:publishing_api_v2, :put_content)
         GdsApi.stub_chain(:publishing_api_v2, :publish)

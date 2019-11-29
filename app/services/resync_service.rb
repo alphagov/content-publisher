@@ -9,7 +9,8 @@ class ResyncService < ApplicationService
 
   def call
     update_live_edition(document.live_edition) if document.live_edition
-    update_current_edition(document.current_edition)
+    update_current_edition(document.current_edition) unless
+      document.current_edition == document.live_edition
   end
 
 private
