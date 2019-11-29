@@ -28,6 +28,8 @@ private
       bulk_publishing: true,
     )
 
+    PublishAssetService.call(edition, nil)
+
     GdsApi.publishing_api_v2.publish(
       edition.document.content_id,
       nil, # Sending update_type is deprecated (now in payload)

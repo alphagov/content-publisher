@@ -37,6 +37,12 @@ RSpec.describe ResyncService do
         ResyncService.call(document)
         expect(document.current_edition.revision_synced).to be true
       end
+
+      it "publishes assets to the live stack" do
+        expect(PublishAssetService).to receive(:call).once.
+          with(document.live_edition, nil)
+        ResyncService.call(document)
+      end
     end
 
     context "when there are both live and current editions" do
