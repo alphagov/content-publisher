@@ -30,11 +30,11 @@ private
 
     PublishAssetService.call(edition, nil)
 
-    GdsApi.publishing_api_v2.publish(
-      edition.document.content_id,
-      nil, # Sending update_type is deprecated (now in payload)
-      locale: edition.document.locale,
-    )
+    if edition.withdrawn?
+      withdraw(edition)
+    else
+      publish(edition)
+    end
 
     edition.update!(revision_synced: true)
   end
@@ -45,6 +45,23 @@ private
       system_political: PoliticalEditionIdentifier.new(edition).political?,
     )
     PreviewService.call(edition)
+  end
+
+  def publish(edition)
+    GdsApi.publishing_api_v2.publish(
+      edition.document.content_id,
+      nil, # Sending update_type is deprecated (now in payload)
+      locale: edition.document.locale,
+    )
+  end
+
+  def withdraw(edition)
+    GdsApi.publishing_api_v2.unpublish(
+      edition.document.content_id,
+      type: "withdrawal",
+      explanation: GovspeakDocument.new(edition.status.details, edition).payload_html,
+      locale: edition.locale,
+    )
   end
 
   def government_id(edition, document)

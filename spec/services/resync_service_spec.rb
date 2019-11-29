@@ -45,6 +45,27 @@ RSpec.describe ResyncService do
       end
     end
 
+    context "when the current edition is withdrawn" do
+      let(:document) { create(:document, :with_live_edition) }
+
+      before do
+        document.current_edition.stub(:withdrawn?).and_return(true)
+        GdsApi.stub_chain(:publishing_api_v2, :put_content)
+        GdsApi.stub_chain(:publishing_api_v2, :unpublish)
+      end
+
+      it "unpublishes the edition as withdrawn" do
+        unpublish_params = hash_including(
+          type: "withdrawal",
+          locale: document.current_edition.locale,
+        )
+        expect(GdsApi.publishing_api_v2).to receive(:put_content).once.ordered
+        expect(GdsApi.publishing_api_v2).to receive(:unpublish).once.
+          with(document.content_id, unpublish_params).ordered
+        ResyncService.call(document)
+      end
+    end
+
     context "when there are both live and current editions" do
       let(:document) { create(:document, :with_current_and_live_editions) }
 
