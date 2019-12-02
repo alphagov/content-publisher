@@ -17,50 +17,47 @@
   root_classes << "govuk-form-group--error" if error_items.any?
 %>
 
-<%= tag.div class: root_classes,
-            data: data_attributes.merge(module: "autocomplete", "autocomplete-type": type) do %>
-  <%= tag.fieldset class: "govuk-fieldset", "aria-describedby": aria do %>
-    <%= render "govuk_publishing_components/components/label", {
-      html_for: id
-    }.merge(label.symbolize_keys) %>
+<%= tag.div class: root_classes, data: data_attributes.merge(module: "autocomplete", "autocomplete-type": type) do %>
+  <%= render "govuk_publishing_components/components/label", {
+    html_for: id
+  }.merge(label.symbolize_keys) %>
 
-    <% if error_items.any? %>
-      <%= render "govuk_publishing_components/components/error_message", {
-        id: error_id,
-        items: error_items,
-      } %>
+  <% if error_items.any? %>
+    <%= render "govuk_publishing_components/components/error_message", {
+      id: error_id,
+      items: error_items,
+    } %>
+  <% end %>
+
+  <%= tag.span hint, class: "govuk-hint" if hint %>
+
+  <% if select.any? %>
+    <% if select[:multiple] %>
+      <%= tag.span "To select multiple items in a list, hold down Ctrl (PC) or Command (Mac) key.",
+                   class: "govuk-hint app-c-autocomplete__multiselect-instructions" %>
     <% end %>
 
-    <%= tag.span hint, class: "govuk-hint" if hint %>
+    <%= select_tag name,
+      options_for_select(select[:options], select[:selected]),
+      id: id,
+      class: "govuk-select",
+      size: select[:size],
+      multiple: select[:multiple]
+    %>
+  <% else %>
+    <% options = Array(input[:options]) %>
 
-    <% if select.any? %>
-      <% if select[:multiple] %>
-        <%= tag.span "To select multiple items in a list, hold down Ctrl (PC) or Command (Mac) key.",
-                     class: "govuk-hint app-c-autocomplete__multiselect-instructions" %>
-      <% end %>
+    <%= tag.input name: name,
+                  value: input[:value],
+                  class: "govuk-input",
+                  id: id,
+                  list: options.any? ? "#{id}-list" : nil,
+                  type: search ? "search" : "text" %>
 
-      <%= select_tag name,
-        options_for_select(select[:options], select[:selected]),
-        id: id,
-        class: "govuk-select",
-        size: select[:size],
-        multiple: select[:multiple]
-      %>
-    <% else %>
-      <% options = Array(input[:options]) %>
-
-      <%= tag.input name: name,
-                    value: input[:value],
-                    class: "govuk-input",
-                    id: id,
-                    list: options.any? ? "#{id}-list" : nil,
-                    type: search ? "search" : "text" %>
-
-      <% if options.any? %>
-        <%= tag.datalist id: "#{id}-list" do %>
-          <% options.each do |option| %>
-            <%= tag.option(value: option) %>
-          <% end %>
+    <% if options.any? %>
+      <%= tag.datalist id: "#{id}-list" do %>
+        <% options.each do |option| %>
+          <%= tag.option(value: option) %>
         <% end %>
       <% end %>
     <% end %>
