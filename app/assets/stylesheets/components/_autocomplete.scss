@@ -114,4 +114,10 @@ $app-focus-colour: $govuk-focus-colour;
   .app-c-autocomplete__multiselect-instructions {
     display: none;
   }
+
+  .app-c-autocomplete--search {
+    .govuk-label {
+      @include govuk-visually-hidden;
+    }
+  }
 }
