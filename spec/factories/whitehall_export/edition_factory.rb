@@ -30,6 +30,10 @@ FactoryBot.define do
     initialize_with { attributes.stringify_keys }
 
     trait :scheduled do
+      transient do
+        previous_state { "submitted" }
+      end
+
       created_at { 3.days.ago.rfc3339 }
       scheduled_publication { Time.zone.now.tomorrow.rfc3339 }
       state { "scheduled" }
@@ -39,7 +43,7 @@ FactoryBot.define do
           build(:revision_history_event,
                 event: "update",
                 created_at: 2.days.ago.rfc3339,
-                state: "submitted"),
+                state: previous_state),
           build(:revision_history_event,
                 event: "update",
                 state: "scheduled",

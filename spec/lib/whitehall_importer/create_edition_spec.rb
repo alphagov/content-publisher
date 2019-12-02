@@ -241,13 +241,27 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     it "sets a previous submitted_for_review status when the whitehall edition was submitted" do
-      whitehall_edition = build(:whitehall_export_edition, :scheduled)
+      whitehall_edition = build(:whitehall_export_edition,
+                                :scheduled,
+                                previous_state: "submitted")
       edition = described_class.call(document: document,
                                      whitehall_edition: whitehall_edition)
 
       statuses = edition.statuses.map(&:state)
       expect(statuses).to eq(%w[submitted_for_review scheduled])
       expect(edition.status.details.pre_scheduled_status).to be_submitted_for_review
+    end
+
+    it "sets a previous submitted_for_review status when the whitehall edition was a draft" do
+      whitehall_edition = build(:whitehall_export_edition,
+                                :scheduled,
+                                previous_state: "draft")
+      edition = described_class.call(document: document,
+                                     whitehall_edition: whitehall_edition)
+
+      statuses = edition.statuses.map(&:state)
+      expect(statuses).to eq(%w[draft scheduled])
+      expect(edition.status.details.pre_scheduled_status).to be_draft
     end
 
     it "marks a non force published whitehall edition as reviewed" do

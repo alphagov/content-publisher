@@ -101,7 +101,8 @@ module WhitehallImporter
     def create_scheduled_edition
       raise AbortImportError, "Cannot create scheduled status without scheduled_publication" if whitehall_edition["scheduled_publication"].blank?
 
-      edition = create_edition(status: build_status("submitted_for_review"),
+      pre_scheduled_state = history.state_event("submitted") ? "submitted_for_review" : "draft"
+      edition = create_edition(status: build_status(pre_scheduled_state),
                                current: current,
                                edition_number: edition_number)
       scheduling = Scheduling.new(pre_scheduled_status: edition.status,
