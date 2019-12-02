@@ -28,5 +28,24 @@ FactoryBot.define do
     unpublishing { nil }
 
     initialize_with { attributes.stringify_keys }
+
+    trait :scheduled do
+      created_at { 3.days.ago.rfc3339 }
+      scheduled_publication { Time.zone.now.tomorrow.rfc3339 }
+      state { "scheduled" }
+      revision_history do
+        [
+          build(:revision_history_event, created_at: created_at),
+          build(:revision_history_event,
+                event: "update",
+                created_at: 2.days.ago.rfc3339,
+                state: "submitted"),
+          build(:revision_history_event,
+                event: "update",
+                state: "scheduled",
+                created_at: Time.zone.now.tomorrow.rfc3339),
+        ]
+      end
+    end
   end
 end

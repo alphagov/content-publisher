@@ -21,6 +21,8 @@ module WhitehallImporter
 
       edition = if whitehall_edition["state"] == "withdrawn"
                   create_withdrawn_edition
+                elsif whitehall_edition["state"] == "scheduled"
+                  create_scheduled_edition
                 elsif unpublished_edition? && history.edited_after_unpublishing?
                   split_unpublished_edition
                 elsif unpublished_edition?
@@ -94,6 +96,17 @@ module WhitehallImporter
       )
 
       edition.update!(status: build_status("withdrawn", withdrawal))
+    end
+
+    def create_scheduled_edition
+      edition = create_edition(status: build_status("submitted_for_review"),
+                               current: current,
+                               edition_number: edition_number)
+      scheduling = Scheduling.new(pre_scheduled_status: edition.status,
+                                  reviewed: !whitehall_edition["force_published"],
+                                  publish_time: whitehall_edition["scheduled_publication"])
+      edition.update!(status: build_status("scheduled", scheduling))
+      edition
     end
 
     def build_removal
