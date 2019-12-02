@@ -150,7 +150,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       }
     })
 
-    $input.parentNode.parentNode.removeChild($input.parentNode)
+    $input.parentNode.removeChild($input)
   }
 
   Autocomplete.prototype.initAutoCompleteSelect = function ($select) {
