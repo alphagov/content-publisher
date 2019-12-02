@@ -46,7 +46,13 @@ private
         temp_image.original_filename,
       ),
     )
-    context.image_revision = Image::Revision.create_initial(blob_revision: blob_revision)
+
+    context.image_revision = Image::Revision.create!(
+      image: Image.create!(created_by: user),
+      created_by: user,
+      blob_revision: blob_revision,
+      metadata_revision: Image::MetadataRevision.create!(created_by: user),
+    )
   end
 
   def update_edition

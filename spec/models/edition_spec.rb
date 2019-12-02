@@ -59,47 +59,6 @@ RSpec.describe Edition do
     end
   end
 
-  describe ".create_initial" do
-    let(:document) { build(:document) }
-    let(:document_type_id) { build(:document_type, path_prefix: "/prefix").id }
-    let(:user) { build(:user) }
-
-    it "creates a current edition" do
-      edition = Edition.create_initial(
-        document: document,
-        document_type_id: document_type_id,
-        user: user,
-      )
-
-      expect(edition).to be_a(Edition)
-      expect(edition.created_by).to eq(user)
-      expect(edition.current).to be true
-      expect(edition.number).to be 1
-    end
-
-    it "has a revision" do
-      edition = Edition.create_initial(
-        document: document,
-        document_type_id: document_type_id,
-        user: user,
-      )
-
-      expect(edition.revision).to be_a(Revision)
-      expect(edition.created_by).to eq(user)
-    end
-
-    it "has a status which is draft" do
-      edition = Edition.create_initial(
-        document: document,
-        document_type_id: document_type_id,
-        user: user,
-      )
-
-      expect(edition.status).to be_a(Status)
-      expect(edition.status).to be_draft
-    end
-  end
-
   describe "#political?" do
     it "returns editor political when that is set" do
       political_edition = build(:edition,
