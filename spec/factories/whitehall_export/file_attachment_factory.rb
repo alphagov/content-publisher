@@ -55,7 +55,7 @@ FactoryBot.define do
     end
 
     transient do
-      fixture_file { "text-file.txt" }
+      fixture_file { "text-file-74bytes.txt" }
       filename { "some-txt.txt" }
     end
 

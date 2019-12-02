@@ -7,7 +7,7 @@ FactoryBot.define do
     filename { SecureRandom.hex(8) }
 
     transient do
-      fixture { "text-file.txt" }
+      fixture { "text-file-74bytes.txt" }
       asset { nil }
     end
 

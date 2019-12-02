@@ -14,7 +14,7 @@ RSpec.describe Requirements::ImageUploadChecker do
     end
 
     it "returns an issue when an unsupported file type is provided" do
-      file = fixture_file_upload("files/text-file.txt", "text/plain")
+      file = fixture_file_upload("files/text-file-74bytes.txt", "text/plain")
       issues = Requirements::ImageUploadChecker.new(file).issues
       expect(issues).to have_issue(:image_upload, :unsupported_type)
     end

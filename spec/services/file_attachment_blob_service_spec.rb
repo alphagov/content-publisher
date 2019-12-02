@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe FileAttachmentBlobService do
-  let(:file) { fixture_file_upload("files/text-file.txt") }
+  let(:file) { fixture_file_upload("files/text-file-74bytes.txt") }
   let(:revision) { build(:revision) }
   let(:user) { build(:user) }
 
@@ -12,17 +12,17 @@ RSpec.describe FileAttachmentBlobService do
     end
 
     context "when the filename is used by an attachment for this revision" do
-      let(:existing_attachment) { build(:file_attachment_revision, filename: "text-file.txt") }
+      let(:existing_attachment) { build(:file_attachment_revision, filename: "files/text-file-74bytes.txt") }
       let(:revision) { build(:revision, file_attachment_revisions: [existing_attachment]) }
 
       it "creates a unique filename" do
         blob_revision = FileAttachmentBlobService.call(revision, user, file)
-        expect(blob_revision.filename).to eql("text-file-1.txt")
+        expect(blob_revision.filename).to eql("text-file-74bytes-1.txt")
       end
 
       it "allows keeping the name if this is a replacement for the attachment with the same name" do
         blob_revision = FileAttachmentBlobService.call(revision, user, file, replacing: existing_attachment)
-        expect(blob_revision.filename).to eql("text-file.txt")
+        expect(blob_revision.filename).to eql("text-file-74bytes.txt")
       end
     end
 

@@ -36,7 +36,7 @@ RSpec.feature "Upload an image with requirements issues", js: true do
   end
 
   def and_i_upload_an_invalid_image
-    find('form input[type="file"]').set(Rails.root.join(file_fixture("text-file.txt")))
+    find('form input[type="file"]').set(Rails.root.join(file_fixture("text-file-74bytes.txt")))
     click_on "Upload"
   end
 
