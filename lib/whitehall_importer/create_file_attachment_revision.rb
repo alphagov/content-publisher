@@ -14,6 +14,7 @@ module WhitehallImporter
     def call
       decorated_file = AttachmentFileDecorator.new(download_file, unique_filename)
 
+      check_file_requirements(decorated_file)
       create_blob_revision(decorated_file)
     end
 
@@ -39,6 +40,20 @@ module WhitehallImporter
         existing_filenames,
         File.basename(whitehall_file_attachment["url"]),
       )
+    end
+
+    def check_file_requirements(file)
+      upload_checker = Requirements::FileAttachmentChecker.new(
+        file: file, title: whitehall_file_attachment["title"],
+      ).pre_upload_issues
+
+      abort_on_issue(upload_checker.issues)
+    end
+
+    def abort_on_issue(issues)
+      return if issues.empty?
+
+      raise WhitehallImporter::AbortImportError, issues.first.message(style: "form")
     end
   end
 
