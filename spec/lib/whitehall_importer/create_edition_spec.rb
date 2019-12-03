@@ -267,5 +267,18 @@ RSpec.describe WhitehallImporter::CreateEdition do
                                      whitehall_edition: whitehall_edition)
       expect(edition.status.details.reviewed).to be false
     end
+
+    it "aborts when there is no scheduled publication date" do
+      whitehall_edition = build(:whitehall_export_edition,
+                                :scheduled,
+                                scheduled_publication: nil)
+
+      expect {
+        described_class.call(document: document, whitehall_edition: whitehall_edition)
+      }.to raise_error(
+        WhitehallImporter::AbortImportError,
+        "Cannot create scheduled status without scheduled_publication",
+      )
+    end
   end
 end

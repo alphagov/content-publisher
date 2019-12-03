@@ -99,6 +99,8 @@ module WhitehallImporter
     end
 
     def create_scheduled_edition
+      raise AbortImportError, "Cannot create scheduled status without scheduled_publication" if whitehall_edition["scheduled_publication"].blank?
+
       edition = create_edition(status: build_status("submitted_for_review"),
                                current: current,
                                edition_number: edition_number)
