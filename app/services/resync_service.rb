@@ -24,8 +24,7 @@ private
 
     PreviewService.call(
       edition,
-      update_type: "republish",
-      bulk_publishing: true,
+      republish: true,
     )
 
     PublishAssetService.call(edition, nil)

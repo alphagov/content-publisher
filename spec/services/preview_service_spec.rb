@@ -34,14 +34,22 @@ RSpec.describe PreviewService do
       PreviewService.call(edition)
     end
 
-    it "accepts parameter to merge arbitrary things into the payload" do
+    it "republishes the edition" do
       edition = create(:edition)
-      extra_params = { "bulk_publishing" => true }
-      GdsApi.stub_chain(:publishing_api_v2, :put_content)
 
-      expect(GdsApi.publishing_api_v2).to receive(:put_content).once.
-        with(edition.content_id, hash_including(extra_params))
-      PreviewService.call(edition, extra_params)
+      allow(PreviewService::Payload)
+        .to receive(:new)
+        .with(edition)
+        .and_return(instance_double(PreviewService::Payload, payload: {}))
+
+      expected_params = {
+        "update_type" => "republish",
+        "bulk_publishing" => true,
+      }
+
+      PreviewService.call(edition, republish: true)
+
+      assert_publishing_api_put_content(edition.content_id, expected_params, 1)
     end
 
     context "when Publishing API is down" do

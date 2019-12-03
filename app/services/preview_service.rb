@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class PreviewService < ApplicationService
-  def initialize(edition, optional_params = {})
+  def initialize(edition, republish: false)
     @edition = edition
-    @optional_params = optional_params
+    @republish = republish
   end
 
   def call
@@ -16,7 +16,7 @@ class PreviewService < ApplicationService
 
 private
 
-  attr_reader :edition, :optional_params
+  attr_reader :edition, :republish
 
   def put_draft_content
     payload = Payload.new(edition).payload
@@ -28,5 +28,14 @@ private
   def put_draft_assets
     edition.image_revisions.each(&:ensure_assets)
     edition.assets.each { |asset| PreviewAssetService.call(edition, asset) }
+  end
+
+  def optional_params
+    return {} unless republish
+
+    {
+      "update_type" => "republish",
+      "bulk_publishing" => true,
+    }
   end
 end
