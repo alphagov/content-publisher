@@ -20,6 +20,7 @@ FactoryBot.define do
     world_locations { [] }
     contacts { [] }
     images { [] }
+    attachments { [] }
     revision_history do
       [
         build(:revision_history_event, created_at: created_at),

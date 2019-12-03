@@ -25,6 +25,7 @@ module WhitehallImporter
       document_type_key = DOCUMENT_SUB_TYPES.reject { |t| whitehall_edition[t].nil? }.first
       raise AbortImportError, "Edition has an unsupported document type" unless SUPPORTED_DOCUMENT_TYPES.include?(whitehall_edition[document_type_key])
 
+      file_attachment_revisions = create_file_attachment_revisions(whitehall_edition["attachments"])
       image_revisions = create_image_revisions(whitehall_edition["images"])
       Revision.create!(
         document: document,
@@ -39,6 +40,7 @@ module WhitehallImporter
               body: translation["body"],
               contacts: whitehall_edition.fetch("contacts", []),
               images: image_revisions.map(&:filename),
+              attachments: file_attachment_revisions.map(&:filename),
             ),
           },
         ),
@@ -57,6 +59,7 @@ module WhitehallImporter
           },
         ),
         image_revisions: image_revisions,
+        file_attachment_revisions: file_attachment_revisions,
         lead_image_revision: image_revisions.first,
         created_at: whitehall_edition["created_at"],
       )
@@ -111,6 +114,12 @@ module WhitehallImporter
     def create_image_revisions(images)
       images.reduce([]) do |memo, image|
         memo << WhitehallImporter::CreateImageRevision.call(image, memo.map(&:filename))
+      end
+    end
+
+    def create_file_attachment_revisions(file_attachments)
+      file_attachments.reduce([]) do |memo, file_attachment|
+        memo << WhitehallImporter::CreateFileAttachmentRevision.call(file_attachment, memo.map(&:filename))
       end
     end
   end
