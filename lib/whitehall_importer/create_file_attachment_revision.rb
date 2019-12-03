@@ -24,4 +24,17 @@ module WhitehallImporter
       raise WhitehallImporter::AbortImportError, "File attachment does not exist: #{whitehall_file_attachment['url']}"
     end
   end
+
+  class AttachmentFileDecorator < SimpleDelegator
+    attr_reader :original_filename
+
+    def initialize(tmp_file, original_filename)
+      super(tmp_file)
+      @original_filename = original_filename
+    end
+
+    def content_type
+      nil
+    end
+  end
 end
