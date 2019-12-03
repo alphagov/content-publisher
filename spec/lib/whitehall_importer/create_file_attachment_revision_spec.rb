@@ -44,5 +44,14 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
         I18n.t!("requirements.title.too_long.form_message", max_length: Requirements::FileAttachmentChecker::TITLE_MAX_LENGTH),
       )
     end
+
+    it "for a whitehall attachment with unsupported type" do
+      whitehall_attachment = build(:whitehall_export_file_attachment, type: "ExternalAttachment")
+
+      expect { described_class.call(whitehall_attachment) }.to raise_error(
+        WhitehallImporter::AbortImportError,
+        "Unsupported file attachment: #{whitehall_attachment['type']}",
+      )
+    end
   end
 end
