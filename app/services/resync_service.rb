@@ -19,7 +19,7 @@ private
     edition.update!(
       revision_synced: false,
       system_political: PoliticalEditionIdentifier.new(edition).political?,
-      government_id: government_id(edition, document),
+      government_id: government_id(edition),
     )
 
     PreviewService.call(
@@ -77,10 +77,12 @@ private
     )
   end
 
-  def government_id(edition, document)
-    date = edition.backdated_to || document.first_published_at
-    return unless date
-
-    Government.for_date(date)&.content_id
+  def government_id(edition)
+    government = if edition.public_first_published_at
+                   Government.for_date(edition.public_first_published_at)
+                 else
+                   Government.current
+                 end
+    government.content_id
   end
 end
