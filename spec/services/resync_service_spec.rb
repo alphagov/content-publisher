@@ -132,10 +132,10 @@ RSpec.describe ResyncService do
         expect(document.live_edition.government_id).to eq "d4fbc1b9-d47d-4386-af04-ac909f868f92"
       end
 
-      it "does not set the government_id associated with the current edition" do
+      it "updates the government_id associated with the current edition" do
         expect(document.current_edition.government_id).to be nil
         ResyncService.call(document)
-        expect(document.current_edition.government_id).to be nil
+        expect(document.current_edition.government_id).to eq "d4fbc1b9-d47d-4386-af04-ac909f868f92"
       end
     end
   end

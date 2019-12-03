@@ -45,6 +45,7 @@ private
     edition.update!(
       revision_synced: false,
       system_political: PoliticalEditionIdentifier.new(edition).political?,
+      government_id: government_id(edition),
     )
     PreviewService.call(edition)
   end
