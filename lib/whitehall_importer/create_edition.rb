@@ -123,7 +123,7 @@ module WhitehallImporter
     end
 
     def build_status(state, details = nil)
-      state_event = history.state_event(whitehall_edition["state"])
+      state_event = history.state_event!(whitehall_edition["state"])
 
       Status.new(
         state: state,

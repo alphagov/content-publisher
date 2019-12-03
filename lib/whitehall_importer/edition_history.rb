@@ -6,7 +6,7 @@ module WhitehallImporter
       @revision_history = revision_history
     end
 
-    def state_event(state)
+    def state_event!(state)
       event = revision_history.select { |h| h["state"] == state }.last
 
       raise AbortImportError, "Edition is missing a #{state} event" unless event

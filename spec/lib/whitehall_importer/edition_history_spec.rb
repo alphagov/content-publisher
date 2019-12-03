@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe WhitehallImporter::EditionHistory do
-  describe "#state_event" do
+  describe "#state_event!" do
     it "returns the event associated with the state" do
       revision_history = [build(:revision_history_event)]
-      event = described_class.new(revision_history).state_event("draft")
+      event = described_class.new(revision_history).state_event!("draft")
 
       expect(event).to eq(revision_history.first)
     end
@@ -12,7 +12,7 @@ RSpec.describe WhitehallImporter::EditionHistory do
     it "aborts if the edition is missing a state event" do
       revision_history = [build(:revision_history_event)]
 
-      expect { described_class.new(revision_history).state_event("published") }
+      expect { described_class.new(revision_history).state_event!("published") }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
   end
