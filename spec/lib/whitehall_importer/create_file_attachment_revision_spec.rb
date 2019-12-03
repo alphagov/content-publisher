@@ -11,9 +11,13 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
       expect(create_revision.call).to have_requested(:get, whitehall_file_attachment["url"])
     end
 
-    it "creates a FileAttachment::BlobRevision" do
-      expect { described_class.call(whitehall_file_attachment) }
-        .to change { FileAttachment::BlobRevision.count }.by(1)
+    it "creates a FileAttachment::Revision and sets correct metadata" do
+      revision = nil
+      expect { revision = described_class.call(whitehall_file_attachment) }
+        .to change { FileAttachment::Revision.count }.by(1)
+
+      expect(revision.metadata_revision.title).to eq(whitehall_file_attachment["title"])
+      expect(revision.filename).to eq("some-txt.txt")
     end
   end
 

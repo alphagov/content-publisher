@@ -15,7 +15,15 @@ module WhitehallImporter
       decorated_file = AttachmentFileDecorator.new(download_file, unique_filename)
 
       check_file_requirements(decorated_file)
-      create_blob_revision(decorated_file)
+      blob_revision = create_blob_revision(decorated_file)
+
+      FileAttachment::Revision.create!(
+        blob_revision: blob_revision,
+        file_attachment: FileAttachment.create!,
+        metadata_revision: FileAttachment::MetadataRevision.create!(
+          title: whitehall_file_attachment["title"],
+        ),
+      )
     end
 
   private
@@ -28,13 +36,6 @@ module WhitehallImporter
       raise WhitehallImporter::AbortImportError, "File attachment does not exist: #{whitehall_file_attachment['url']}"
     end
 
-    def create_blob_revision(file)
-      FileAttachmentBlobService.call(
-        file: file,
-        filename: unique_filename,
-      )
-    end
-
     def unique_filename
       @unique_filename ||= UniqueFilenameService.call(
         existing_filenames,
@@ -42,9 +43,16 @@ module WhitehallImporter
       )
     end
 
-    def check_file_requirements(file)
+    def create_blob_revision(decorated_file)
+      FileAttachmentBlobService.call(
+        file: decorated_file,
+        filename: unique_filename,
+      )
+    end
+
+    def check_file_requirements(decorated_file)
       upload_checker = Requirements::FileAttachmentChecker.new(
-        file: file, title: whitehall_file_attachment["title"],
+        file: decorated_file, title: whitehall_file_attachment["title"],
       ).pre_upload_issues
 
       abort_on_issue(upload_checker.issues)
