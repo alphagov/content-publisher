@@ -17,6 +17,21 @@ RSpec.describe WhitehallImporter::EditionHistory do
     end
   end
 
+  describe "#state_event" do
+    it "returns the event associated with the state" do
+      revision_history = [build(:revision_history_event)]
+      event = described_class.new(revision_history).state_event("draft")
+
+      expect(event).to eq(revision_history.first)
+    end
+
+    it "returns nil if the edition is missing a state event" do
+      revision_history = [build(:revision_history_event)]
+
+      expect(described_class.new(revision_history).state_event("published")).to eq nil
+    end
+  end
+
   describe "#create_event" do
     it "returns the create event of the edition" do
       revision_history = [build(:revision_history_event)]

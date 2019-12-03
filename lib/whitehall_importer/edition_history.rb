@@ -14,6 +14,10 @@ module WhitehallImporter
       event
     end
 
+    def state_event(state)
+      revision_history.select { |h| h["state"] == state }.last
+    end
+
     def create_event
       event = revision_history.select { |h| h["event"] == "create" }.first
 
