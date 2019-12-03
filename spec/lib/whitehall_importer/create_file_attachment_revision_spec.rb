@@ -10,6 +10,11 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
       create_revision = described_class.new(whitehall_file_attachment)
       expect(create_revision.call).to have_requested(:get, whitehall_file_attachment["url"])
     end
+
+    it "creates a FileAttachment::BlobRevision" do
+      expect { described_class.call(whitehall_file_attachment) }
+        .to change { FileAttachment::BlobRevision.count }.by(1)
+    end
   end
 
   context "aborts creating a file attachment" do
