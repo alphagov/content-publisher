@@ -119,6 +119,27 @@ FactoryBot.define do
       end
     end
 
+    trait :removed do
+      live { true }
+
+      transient do
+        removal { nil }
+        redirect { true }
+        alternative_path { "/foo/bar" }
+        explanatory_note { "Explanation" }
+      end
+
+      after(:build) do |edition, evaluator|
+        edition.status = evaluator.association(
+          :status,
+          :removed,
+          created_by: edition.created_by,
+          state: :removed,
+          removal: evaluator.removal,
+        )
+      end
+    end
+
     trait :schedulable do
       publishable
       proposed_publish_time { Time.current.advance(days: 2) }

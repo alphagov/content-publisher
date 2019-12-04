@@ -88,40 +88,32 @@ RSpec.describe ResyncService do
           )
         end
 
-        before do
-          document.current_edition.stub(:removed?).and_return(true)
-          document.current_edition.status.stub(:details).and_return(removal)
-        end
+        let(:edition) { create(:edition, :removed, removal: removal) }
 
         it "unpublishes the edition as redirected" do
           unpublish_params = {
             "type" => "redirect",
             "explanation" => explanation,
             "alternative_path" => removal.alternative_path,
-            "locale" => document.current_edition.locale,
+            "locale" => edition.locale,
           }
 
-          ResyncService.call(document)
-          assert_publishing_api_unpublish(document.content_id, unpublish_params, 1)
+          ResyncService.call(edition.document)
+          assert_publishing_api_unpublish(edition.content_id, unpublish_params, 1)
         end
       end
 
       context "when the live edition is unpublished without a redirect" do
-        let(:removal) { build(:removal) }
-
-        before do
-          document.current_edition.stub(:removed?).and_return(true)
-          document.current_edition.status.stub(:details).and_return(removal)
-        end
+        let(:edition) { create(:edition, :removed) }
 
         it "unpublishes the edition as redirected" do
           unpublish_params = {
             "type" => "gone",
-            "locale" => document.current_edition.locale,
+            "locale" => edition.locale,
           }
 
-          ResyncService.call(document)
-          assert_publishing_api_unpublish(document.content_id, unpublish_params, 1)
+          ResyncService.call(edition.document)
+          assert_publishing_api_unpublish(edition.content_id, unpublish_params, 1)
         end
       end
     end
