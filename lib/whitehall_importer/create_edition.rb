@@ -87,7 +87,9 @@ module WhitehallImporter
     end
 
     def set_withdrawn_status(edition)
-      raise AbortImportError, "Cannot create withdrawn status without an unpublishing" if whitehall_edition["unpublishing"].blank?
+      unless whitehall_edition["unpublishing"]
+        raise AbortImportError, "Cannot create withdrawn status without an unpublishing"
+      end
 
       withdrawal = Withdrawal.new(
         published_status: edition.status,
@@ -99,7 +101,9 @@ module WhitehallImporter
     end
 
     def create_scheduled_edition
-      raise AbortImportError, "Cannot create scheduled status without scheduled_publication" if whitehall_edition["scheduled_publication"].blank?
+      unless whitehall_edition["scheduled_publication"]
+        raise AbortImportError, "Cannot create scheduled status without scheduled_publication"
+      end
 
       pre_scheduled_state = history.state_event("submitted") ? "submitted_for_review" : "draft"
       edition = create_edition(status: build_status(pre_scheduled_state),
@@ -114,7 +118,9 @@ module WhitehallImporter
 
     def build_removal
       unpublishing = whitehall_edition["unpublishing"]
-      raise AbortImportError, "Cannot create removal status without an unpublishing" if unpublishing.blank?
+      unless unpublishing
+        raise AbortImportError, "Cannot create removal status without an unpublishing"
+      end
 
       Removal.new(
         explanatory_note: unpublishing["explanation"],
