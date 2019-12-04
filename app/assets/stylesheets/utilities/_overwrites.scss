@@ -100,3 +100,13 @@
     }
   }
 }
+
+.govuk-fieldset {
+  .gem-c-title {
+    margin-bottom: 0;
+  }
+
+  .gem-c-title__text {
+    @extend %govuk-heading-l;
+  }
+}
