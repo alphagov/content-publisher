@@ -62,19 +62,17 @@ RSpec.describe ResyncService do
       end
 
       context "when the live edition is withdrawn" do
-        before do
-          document.current_edition.stub(:withdrawn?).and_return(true)
-        end
+        let(:edition) { create(:edition, :withdrawn) }
 
         it "unpublishes the edition as withdrawn" do
           unpublish_params = {
             "type" => "withdrawal",
             "explanation" => explanation,
-            "locale" => document.current_edition.locale,
+            "locale" => edition.locale,
           }
 
-          ResyncService.call(document)
-          assert_publishing_api_unpublish(document.content_id, unpublish_params, 1)
+          ResyncService.call(edition.document)
+          assert_publishing_api_unpublish(edition.content_id, unpublish_params, 1)
         end
       end
 
