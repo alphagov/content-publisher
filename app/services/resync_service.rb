@@ -16,17 +16,8 @@ private
 
   def sync_live_edition
     edition = document.live_edition
-    edition.update!(
-      revision_synced: false,
-      system_political: PoliticalEditionIdentifier.new(edition).political?,
-      government_id: government_id(edition),
-    )
-
-    PreviewService.call(
-      edition,
-      republish: true,
-    )
-
+    set_political_and_government(edition)
+    PreviewService.call(edition, republish: true)
     PublishAssetService.call(edition, nil)
 
     if edition.withdrawn?
@@ -42,12 +33,19 @@ private
 
   def sync_draft_edition
     edition = document.current_edition
-    edition.update!(
-      revision_synced: false,
-      system_political: PoliticalEditionIdentifier.new(edition).political?,
-      government_id: government_id(edition),
-    )
+    set_political_and_government(edition)
     PreviewService.call(edition)
+  end
+
+  def set_political_and_government(edition)
+    Edition.transaction do
+      Edition.lock.find(edition.id)
+      edition.update!(
+        revision_synced: false,
+        system_political: PoliticalEditionIdentifier.new(edition).political?,
+        government_id: government_id(edition),
+      )
+    end
   end
 
   def publish(edition)
