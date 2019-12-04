@@ -51,7 +51,7 @@ module WhitehallImporter
     end
 
     def split_unpublished_edition
-      unpublishing_event = history.last_unpublishing_event
+      unpublishing_event = history.last_unpublishing_event!
       create_edition(
         status: build_status("removed", build_removal),
         current: false,
@@ -63,7 +63,7 @@ module WhitehallImporter
         status: build_status(MigrateState.call(whitehall_edition["state"], whitehall_edition["force_published"])),
         edition_number: edition_number + 1,
         current: true,
-        create_event: history.next_event(unpublishing_event),
+        create_event: history.next_event!(unpublishing_event),
       )
     end
 
@@ -136,7 +136,7 @@ module WhitehallImporter
     end
 
     def create_edition(status:, edition_number:, current:, create_event: nil, last_event: nil)
-      create_event ||= history.create_event
+      create_event ||= history.create_event!
       last_event ||= whitehall_edition["revision_history"].last
 
       Edition.create!(
