@@ -1,5 +1,5 @@
+<% content_for :browser_title, t("new_document.choose_supertype.title") %>
 <% content_for :back_link, render_back_link(href: root_path) %>
-<% content_for :title, t("new_document.choose_supertype.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -8,6 +8,8 @@
                  enforce_utf8: false,
                  data: { gtm: "confirm-supertype" }) do %>
       <%= render "govuk_publishing_components/components/radio", {
+        heading: t("new_document.choose_supertype.title"),
+        is_page_heading: true,
         name: "supertype",
         error_items: @issues&.items_for(:supertype),
         items: Supertype.all.map do |supertype|
