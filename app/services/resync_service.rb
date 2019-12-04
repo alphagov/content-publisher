@@ -8,14 +8,14 @@ class ResyncService < ApplicationService
   end
 
   def call
-    update_live_edition(document.live_edition) if document.live_edition
-    update_current_edition(document.current_edition) unless
-      document.current_edition == document.live_edition
+    sync_live_edition if document.live_edition
+    sync_draft_edition if document.current_edition != document.live_edition
   end
 
 private
 
-  def update_live_edition(edition)
+  def sync_live_edition
+    edition = document.live_edition
     edition.update!(
       revision_synced: false,
       system_political: PoliticalEditionIdentifier.new(edition).political?,
@@ -40,7 +40,8 @@ private
     edition.update!(revision_synced: true)
   end
 
-  def update_current_edition(edition)
+  def sync_draft_edition
+    edition = document.current_edition
     edition.update!(
       revision_synced: false,
       system_political: PoliticalEditionIdentifier.new(edition).political?,
