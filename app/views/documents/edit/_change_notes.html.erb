@@ -19,34 +19,30 @@
   title: t("documents.edit.change_note.guidance_title"),
   content: render_govspeak(t("documents.edit.change_note.guidance"))
 } do %>
-  <% legend_text = tag.p(
-    tag.strong(t("documents.edit.update_type.title")),
-    class: "govuk-!-margin-bottom-3")
-  %>
-  <%= render "govuk_publishing_components/components/fieldset", legend_text: legend_text, data: { "contextual-guidance": "change-note-guidance" } do %>
-    <%= render "govuk_publishing_components/components/radio", {
-      name: "revision[update_type]",
-      items: [
-        {
-          value: "major",
-          text: t("documents.edit.update_type.major_name"),
-          conditional: textarea,
-          checked: @revision.major?,
-          data_attributes: {
-            gtm: "choose-update-type",
-            "gtm-value": t("documents.edit.update_type.major_name")
-          }
-        },
-        {
-          value: "minor",
-          text: t("documents.edit.update_type.minor_name"),
-          checked: @revision.minor?,
-          data_attributes: {
-            gtm: "choose-update-type",
-            "gtm-value": t("documents.edit.update_type.minor_name")
-          }
+  <%= render "govuk_publishing_components/components/radio", {
+    name: "revision[update_type]",
+    heading: t("documents.edit.update_type.title"),
+    heading_size: "s",
+    items: [
+      {
+        value: "major",
+        text: t("documents.edit.update_type.major_name"),
+        conditional: textarea,
+        checked: @revision.major?,
+        data_attributes: {
+          gtm: "choose-update-type",
+          "gtm-value": t("documents.edit.update_type.major_name")
         }
-      ]
-    } %>
-  <% end %>
+      },
+      {
+        value: "minor",
+        text: t("documents.edit.update_type.minor_name"),
+        checked: @revision.minor?,
+        data_attributes: {
+          gtm: "choose-update-type",
+          "gtm-value": t("documents.edit.update_type.minor_name")
+        }
+      }
+    ]
+  } %>
 <% end %>
