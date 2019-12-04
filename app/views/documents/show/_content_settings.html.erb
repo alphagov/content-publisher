@@ -36,6 +36,15 @@
   } %>
 <% end %>
 
+<% items << {
+  field: t("documents.show.content_settings.political.title"),
+  value: @edition.political? ? t("documents.show.content_settings.political.true_label") : t("documents.show.content_settings.political.false_label"),
+  edit: {
+    href: "placeholder",
+    data_attributes: { gtm: "edit-political" }
+  }
+} %>
+
 <%= render "govuk_publishing_components/components/summary_list", {
   id: "content_settings",
   title: t("documents.show.content_settings.title"),
