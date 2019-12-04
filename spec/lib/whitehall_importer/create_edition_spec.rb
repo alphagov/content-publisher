@@ -162,7 +162,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
               revision_history: [
                 build(:revision_history_event),
                 build(:revision_history_event, event: "update", state: "published"),
-                build(:revision_history_event, event: "update", state: "draft"),
+                build(:revision_history_event, event: "update", state: "draft", created_at: 5.minutes.ago.rfc3339),
                 build(:revision_history_event, event: "update", state: "draft", created_at: created_at),
               ],
               unpublishing: build(:whitehall_export_unpublishing,
