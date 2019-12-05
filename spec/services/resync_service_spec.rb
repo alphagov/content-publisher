@@ -57,20 +57,25 @@ RSpec.describe ResyncService do
         stub_any_publishing_api_unpublish
         allow(PreviewAssetService).to receive(:call)
         allow(PublishAssetService).to receive(:call)
-        allow(GovspeakDocument)
-          .to receive(:new)
-          .and_return(instance_double(GovspeakDocument, payload_html: explanation))
       end
 
       context "when the live edition is withdrawn" do
         let(:edition) { create(:edition, :withdrawn) }
 
         it "unpublishes the edition as withdrawn" do
+          allow(GovspeakDocument)
+            .to receive(:new)
+            .and_return(instance_double(GovspeakDocument, payload_html: explanation))
+
           unpublish_params = {
             "type" => "withdrawal",
             "explanation" => explanation,
             "locale" => edition.locale,
           }
+
+          expect(GovspeakDocument)
+            .to receive(:new)
+            .with(edition.status.details, edition)
 
           ResyncService.call(edition.document)
           assert_publishing_api_unpublish(edition.content_id, unpublish_params, 1)
