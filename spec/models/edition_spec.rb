@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Edition do
-  include ActiveSupport::Testing::TimeHelpers
-
   describe ".find_current" do
     it "finds an edition by id" do
       edition = create(:edition)

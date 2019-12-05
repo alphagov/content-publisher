@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe EditEditionService do
-  include ActiveSupport::Testing::TimeHelpers
-
   describe ".call" do
     let(:edition) { build(:edition) }
     let(:user) { build(:user) }

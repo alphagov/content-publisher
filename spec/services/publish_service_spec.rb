@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe PublishService do
-  include ActiveSupport::Testing::TimeHelpers
-
   describe ".call" do
     let(:user) { create(:user) }
 

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Requirements::PublishTimeChecker do
-  include ActiveSupport::Testing::TimeHelpers
-
   describe "#issues" do
     it "returns no issues if there are none" do
       issues = Requirements::PublishTimeChecker.new(1.day.from_now).issues
