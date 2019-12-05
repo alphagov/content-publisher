@@ -56,6 +56,8 @@ RSpec.describe ResyncService do
 
       before do
         stub_any_publishing_api_unpublish
+        allow(PreviewAssetService).to receive(:call)
+        allow(PublishAssetService).to receive(:call)
         allow(GovspeakDocument)
           .to receive(:new)
           .and_return(instance_double(GovspeakDocument, payload_html: explanation))
