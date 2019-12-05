@@ -124,17 +124,15 @@ FactoryBot.define do
 
       transient do
         removal { nil }
-        redirect { true }
-        alternative_path { "/foo/bar" }
-        explanatory_note { "Explanation" }
       end
 
       after(:build) do |edition, evaluator|
+        edition.revision = evaluator.association(:revision)
         edition.status = evaluator.association(
           :status,
           :removed,
           created_by: edition.created_by,
-          state: :removed,
+          revision_at_creation: edition.revision,
           removal: evaluator.removal,
         )
       end
