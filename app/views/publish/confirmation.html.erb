@@ -1,10 +1,12 @@
+<% content_for :browser_title, t("publish.confirmation.title") %>
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
-<% content_for :title, t("publish.confirmation.title") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_tag publish_confirmation_path(@edition.document), data: { gtm: "confirm-publish" } do %>
       <%= render "govuk_publishing_components/components/radio", {
+        heading: t("publish.confirmation.title"),
+        is_page_heading: true,
         name: "review_status",
         error_items: @issues&.items_for(:review_status),
         items: [

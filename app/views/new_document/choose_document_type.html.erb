@@ -1,10 +1,12 @@
+<% content_for :browser_title, @supertype.label %>
 <% content_for :back_link, render_back_link(href: new_document_path) %>
-<% content_for :title, @supertype.label %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_tag create_document_path, data: { gtm: "confirm-document-type" } do %>
       <%= render "govuk_publishing_components/components/radio", {
+        heading: @supertype.label,
+        is_page_heading: true,
         name: "document_type",
         error_items: @issues&.items_for(:document_type),
         items: @supertype.document_types.map { |document_type|

@@ -1,10 +1,10 @@
+<% content_for :browser_title, t("schedule.new.title") %>
+
 <% if params[:wizard] == "schedule" %>
   <% content_for :back_link, render_back_link(href: schedule_proposal_path(@edition.document, wizard: "schedule")) %>
 <% else %>
   <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 <% end %>
-
-<% content_for :title, t("schedule.new.title") %>
 
 <% datetime = @edition.proposed_publish_time %>
 <% time = format_time(datetime) %>
@@ -13,8 +13,10 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_tag create_schedule_path(@edition.document), data: { gtm: "confirm-schedule" } do %>
-      <%= render_govspeak(t("schedule.new.hint_text", time: time, date: date)) %>
       <%= render "govuk_publishing_components/components/radio", {
+        heading: t("schedule.new.title"),
+        is_page_heading: true,
+        description: render_govspeak(t("schedule.new.hint_text", time: time, date: date)),
         name: "review_status",
         error_items: @issues&.items,
         items: [
