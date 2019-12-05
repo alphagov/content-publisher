@@ -40,7 +40,6 @@ RSpec.describe ResyncService do
         ResyncService.call(document)
 
         assert_publishing_api_publish(document.content_id)
-        expect(document.current_edition.revision_synced).to be true
       end
 
       it "publishes assets to the live stack" do
