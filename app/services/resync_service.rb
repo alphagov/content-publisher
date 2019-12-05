@@ -3,38 +3,40 @@
 class ResyncService < ApplicationService
   attr_reader :document
 
+  delegate :live_edition,
+           :current_edition,
+           to: :document
+
   def initialize(document)
     @document = document
   end
 
   def call
-    sync_live_edition if document.live_edition
-    sync_draft_edition if document.current_edition != document.live_edition
+    sync_live_edition if live_edition
+    sync_draft_edition if current_edition != live_edition
   end
 
 private
 
   def sync_live_edition
-    edition = document.live_edition
-    set_political_and_government(edition)
-    PreviewService.call(edition, republish: true)
-    PublishAssetService.call(edition, nil)
+    set_political_and_government(live_edition)
+    PreviewService.call(live_edition, republish: true)
+    PublishAssetService.call(live_edition, nil)
 
-    if edition.withdrawn?
-      withdraw(edition)
-    elsif edition.removed?
-      redirect_or_remove(edition)
+    if live_edition.withdrawn?
+      withdraw
+    elsif live_edition.removed?
+      redirect_or_remove
     else
-      publish(edition)
+      publish
     end
 
-    edition.update!(revision_synced: true)
+    live_edition.update!(revision_synced: true)
   end
 
   def sync_draft_edition
-    edition = document.current_edition
-    set_political_and_government(edition)
-    PreviewService.call(edition)
+    set_political_and_government(current_edition)
+    PreviewService.call(current_edition)
   end
 
   def set_political_and_government(edition)
@@ -48,31 +50,31 @@ private
     end
   end
 
-  def publish(edition)
+  def publish
     GdsApi.publishing_api_v2.publish(
-      edition.document.content_id,
+      live_edition.document.content_id,
       nil, # Sending update_type is deprecated (now in payload)
-      locale: edition.document.locale,
+      locale: live_edition.document.locale,
     )
   end
 
-  def withdraw(edition)
+  def withdraw
     GdsApi.publishing_api_v2.unpublish(
-      edition.document.content_id,
+      live_edition.document.content_id,
       type: "withdrawal",
-      explanation: GovspeakDocument.new(edition.status.details, edition).payload_html,
-      locale: edition.locale,
+      explanation: GovspeakDocument.new(live_edition.status.details, live_edition).payload_html,
+      locale: live_edition.locale,
     )
   end
 
-  def redirect_or_remove(edition)
-    removal = edition.status.details
+  def redirect_or_remove
+    removal = live_edition.status.details
     GdsApi.publishing_api_v2.unpublish(
-      edition.content_id,
+      live_edition.content_id,
       type: removal.redirect? ? "redirect" : "gone",
       explanation: removal.explanatory_note,
       alternative_path: removal.alternative_path,
-      locale: edition.locale,
+      locale: live_edition.locale,
     )
   end
 
