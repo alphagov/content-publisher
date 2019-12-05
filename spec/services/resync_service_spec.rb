@@ -46,8 +46,8 @@ RSpec.describe ResyncService do
       end
     end
 
-    context "when the live edition has been unpublished" do
-      let(:document) { create(:document, :with_live_edition) }
+    context "when the live edition is withdrawn" do
+      let(:edition) { create(:edition, :withdrawn) }
       let(:explanation) { "explanation" }
 
       before do
@@ -56,30 +56,36 @@ RSpec.describe ResyncService do
         allow(PublishAssetService).to receive(:call)
       end
 
-      context "when the live edition is withdrawn" do
-        let(:edition) { create(:edition, :withdrawn) }
+      it "withdraws the edition" do
+        allow(GovspeakDocument)
+          .to receive(:new)
+          .and_return(instance_double(GovspeakDocument, payload_html: explanation))
 
-        it "unpublishes the edition as withdrawn" do
-          allow(GovspeakDocument)
-            .to receive(:new)
-            .and_return(instance_double(GovspeakDocument, payload_html: explanation))
+        withdraw_params = {
+          "type" => "withdrawal",
+          "explanation" => explanation,
+          "locale" => edition.locale,
+        }
 
-          unpublish_params = {
-            "type" => "withdrawal",
-            "explanation" => explanation,
-            "locale" => edition.locale,
-          }
+        expect(GovspeakDocument)
+          .to receive(:new)
+          .with(edition.status.details, edition)
 
-          expect(GovspeakDocument)
-            .to receive(:new)
-            .with(edition.status.details, edition)
+        ResyncService.call(edition.document)
+        assert_publishing_api_unpublish(edition.content_id, withdraw_params, 1)
+      end
+    end
 
-          ResyncService.call(edition.document)
-          assert_publishing_api_unpublish(edition.content_id, unpublish_params, 1)
-        end
+    context "when the live edition has been removed" do
+      let(:explanation) { "explanation" }
+
+      before do
+        stub_any_publishing_api_unpublish
+        allow(PreviewAssetService).to receive(:call)
+        allow(PublishAssetService).to receive(:call)
       end
 
-      context "when the live edition is unpublished with redirect" do
+      context "when the live edition is removed with a redirect" do
         let(:removal) do
           build(
             :removal,
@@ -91,8 +97,8 @@ RSpec.describe ResyncService do
 
         let(:edition) { create(:edition, :removed, removal: removal) }
 
-        it "unpublishes the edition as redirected" do
-          unpublish_params = {
+        it "removes and redirects the edition" do
+          remove_params = {
             "type" => "redirect",
             "explanation" => explanation,
             "alternative_path" => removal.alternative_path,
@@ -100,21 +106,21 @@ RSpec.describe ResyncService do
           }
 
           ResyncService.call(edition.document)
-          assert_publishing_api_unpublish(edition.content_id, unpublish_params, 1)
+          assert_publishing_api_unpublish(edition.content_id, remove_params, 1)
         end
       end
 
-      context "when the live edition is unpublished without a redirect" do
+      context "when the live edition is removed without a redirect" do
         let(:edition) { create(:edition, :removed) }
 
-        it "unpublishes the edition as redirected" do
-          unpublish_params = {
+        it "removes the edition" do
+          remove_params = {
             "type" => "gone",
             "locale" => edition.locale,
           }
 
           ResyncService.call(edition.document)
-          assert_publishing_api_unpublish(edition.content_id, unpublish_params, 1)
+          assert_publishing_api_unpublish(edition.content_id, remove_params, 1)
         end
       end
     end
