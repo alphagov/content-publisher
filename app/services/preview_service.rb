@@ -19,23 +19,13 @@ private
   attr_reader :edition, :republish
 
   def put_draft_content
-    payload = Payload.new(edition).payload
-    GdsApi.publishing_api_v2.put_content(edition.content_id,
-                                         payload.merge(optional_params))
+    payload = Payload.new(edition, republish: republish).payload
+    GdsApi.publishing_api_v2.put_content(edition.content_id, payload)
     edition.update!(revision_synced: true)
   end
 
   def put_draft_assets
     edition.image_revisions.each(&:ensure_assets)
     edition.assets.each { |asset| PreviewAssetService.call(edition, asset) }
-  end
-
-  def optional_params
-    return {} unless republish
-
-    {
-      "update_type" => "republish",
-      "bulk_publishing" => true,
-    }
   end
 end

@@ -34,22 +34,15 @@ RSpec.describe PreviewService do
       PreviewService.call(edition)
     end
 
-    it "republishes the edition" do
+    it "sets an update type of republish" do
       edition = create(:edition)
 
-      allow(PreviewService::Payload)
+      expect(PreviewService::Payload)
         .to receive(:new)
-        .with(edition)
-        .and_return(instance_double(PreviewService::Payload, payload: {}))
-
-      expected_params = {
-        "update_type" => "republish",
-        "bulk_publishing" => true,
-      }
+        .with(edition, republish: true)
+        .and_call_original
 
       PreviewService.call(edition, republish: true)
-
-      assert_publishing_api_put_content(edition.content_id, expected_params, 1)
     end
 
     context "when Publishing API is down" do
