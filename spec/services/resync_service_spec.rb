@@ -5,9 +5,6 @@ RSpec.describe ResyncService do
     before do
       stub_any_publishing_api_publish
       stub_any_publishing_api_put_content
-      allow(PoliticalEditionIdentifier)
-        .to receive(:new)
-        .and_return(instance_double(PoliticalEditionIdentifier, political?: true))
     end
 
     context "when there is no live edition" do
@@ -128,6 +125,9 @@ RSpec.describe ResyncService do
 
       before do
         allow(Government).to receive(:all).and_return([government])
+        allow(PoliticalEditionIdentifier)
+          .to receive(:new)
+          .and_return(instance_double(PoliticalEditionIdentifier, political?: true))
       end
 
       it "updates the system_political value associated with both editions" do
@@ -136,16 +136,10 @@ RSpec.describe ResyncService do
           .and change { document.current_edition.system_political }.to(true)
       end
 
-      it "updates the government_id associated with the live edition" do
-        expect(document.live_edition.government_id).to be nil
-        ResyncService.call(document)
-        expect(document.live_edition.government_id).to eq government.content_id
-      end
-
-      it "updates the government_id associated with the current edition" do
-        expect(document.current_edition.government_id).to be nil
-        ResyncService.call(document)
-        expect(document.current_edition.government_id).to eq government.content_id
+      it "updates the government_id associated with with both editions" do
+        expect { ResyncService.call(document) }
+          .to change { document.live_edition.government_id }.to(government.content_id)
+          .and change { document.current_edition.government_id }.to(government.content_id)
       end
     end
   end
