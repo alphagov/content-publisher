@@ -60,7 +60,7 @@ RSpec.describe WhitehallImporter::Import do
     it "sets current boolean on whether edition is current or not" do
       past_edition = build(
         :whitehall_export_edition,
-        created_at: Time.zone.now.yesterday.rfc3339,
+        created_at: Time.current.yesterday.rfc3339,
         revision_history: [build(:revision_history_event, whodunnit: whitehall_user["id"])],
       )
       current_edition = build(

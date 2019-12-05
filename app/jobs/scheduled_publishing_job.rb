@@ -45,7 +45,7 @@ private
 
     scheduling = edition.status.details
 
-    if scheduling.publish_time > Time.zone.now
+    if scheduling.publish_time > Time.current
       Rails.logger.warn("Cannot publish an edition (\##{edition.id}) scheduled in the future")
       return false
     end
