@@ -7,19 +7,30 @@ module WhitehallImporter
     end
 
     def state_event(state)
-      event = revision_history.select { |h| h["state"] == state }.last
+      revision_history.select { |h| h["state"] == state }.last
+    end
 
-      raise AbortImportError, "Edition is missing a #{state} event" unless event
+    def state_event!(state)
+      state_event(state) || raise(AbortImportError, "Edition is missing a #{state} event")
+    end
 
-      event
+    def next_event(event)
+      index = revision_history.index(event)
+      return unless index
+
+      revision_history[index + 1]
+    end
+
+    def next_event!(event)
+      next_event(event) || (raise AbortImportError, "Edition is missing next event for #{event}")
     end
 
     def create_event
-      event = revision_history.select { |h| h["event"] == "create" }.first
+      revision_history.select { |h| h["event"] == "create" }.first
+    end
 
-      raise AbortImportError, "Edition is missing a create event" unless event
-
-      event
+    def create_event!
+      create_event || (raise AbortImportError, "Edition is missing a create event")
     end
 
     def last_unpublishing_event
@@ -31,23 +42,18 @@ module WhitehallImporter
         previous_entry && previous_entry["state"] == "published"
       end
 
-      raise AbortImportError, "Edition is missing unpublishing event" if unpublishing_events.blank?
-
       unpublishing_events.last
     end
 
-    def next_event(event)
-      next_event_index = revision_history.index(event) + 1
-
-      raise AbortImportError, "Edition is missing next event for #{event}" unless revision_history[next_event_index]
-
-      revision_history[next_event_index]
+    def last_unpublishing_event!
+      last_unpublishing_event || (raise AbortImportError, "Edition is missing unpublishing event")
     end
 
     def edited_after_unpublishing?
-      return false unless revision_history.second_to_last
+      unpublishing_event = last_unpublishing_event
+      return false unless unpublishing_event
 
-      revision_history.second_to_last["state"] != "published"
+      revision_history.last != unpublishing_event
     end
 
   private

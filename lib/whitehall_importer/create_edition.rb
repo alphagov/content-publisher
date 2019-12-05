@@ -21,6 +21,8 @@ module WhitehallImporter
 
       edition = if whitehall_edition["state"] == "withdrawn"
                   create_withdrawn_edition
+                elsif whitehall_edition["state"] == "scheduled"
+                  create_scheduled_edition
                 elsif unpublished_edition? && history.edited_after_unpublishing?
                   split_unpublished_edition
                 elsif unpublished_edition?
@@ -49,7 +51,7 @@ module WhitehallImporter
     end
 
     def split_unpublished_edition
-      unpublishing_event = history.last_unpublishing_event
+      unpublishing_event = history.last_unpublishing_event!
       create_edition(
         status: build_status("removed", build_removal),
         current: false,
@@ -61,7 +63,7 @@ module WhitehallImporter
         status: build_status(MigrateState.call(whitehall_edition["state"], whitehall_edition["force_published"])),
         edition_number: edition_number + 1,
         current: true,
-        create_event: history.next_event(unpublishing_event),
+        create_event: history.next_event!(unpublishing_event),
       )
     end
 
@@ -85,7 +87,9 @@ module WhitehallImporter
     end
 
     def set_withdrawn_status(edition)
-      raise AbortImportError, "Cannot create withdrawn status without an unpublishing" if whitehall_edition["unpublishing"].blank?
+      unless whitehall_edition["unpublishing"]
+        raise AbortImportError, "Cannot create withdrawn status without an unpublishing"
+      end
 
       withdrawal = Withdrawal.new(
         published_status: edition.status,
@@ -96,9 +100,27 @@ module WhitehallImporter
       edition.update!(status: build_status("withdrawn", withdrawal))
     end
 
+    def create_scheduled_edition
+      unless whitehall_edition["scheduled_publication"]
+        raise AbortImportError, "Cannot create scheduled status without scheduled_publication"
+      end
+
+      pre_scheduled_state = history.state_event("submitted") ? "submitted_for_review" : "draft"
+      edition = create_edition(status: build_status(pre_scheduled_state),
+                               current: current,
+                               edition_number: edition_number)
+      scheduling = Scheduling.new(pre_scheduled_status: edition.status,
+                                  reviewed: !whitehall_edition["force_published"],
+                                  publish_time: whitehall_edition["scheduled_publication"])
+      edition.update!(status: build_status("scheduled", scheduling))
+      edition
+    end
+
     def build_removal
       unpublishing = whitehall_edition["unpublishing"]
-      raise AbortImportError, "Cannot create removal status without an unpublishing" if unpublishing.blank?
+      unless unpublishing
+        raise AbortImportError, "Cannot create removal status without an unpublishing"
+      end
 
       Removal.new(
         explanatory_note: unpublishing["explanation"],
@@ -108,7 +130,7 @@ module WhitehallImporter
     end
 
     def build_status(state, details = nil)
-      state_event = history.state_event(whitehall_edition["state"])
+      state_event = history.state_event!(whitehall_edition["state"])
 
       Status.new(
         state: state,
@@ -120,7 +142,7 @@ module WhitehallImporter
     end
 
     def create_edition(status:, edition_number:, current:, create_event: nil, last_event: nil)
-      create_event ||= history.create_event
+      create_event ||= history.create_event!
       last_event ||= whitehall_edition["revision_history"].last
 
       Edition.create!(

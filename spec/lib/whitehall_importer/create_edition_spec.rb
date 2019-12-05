@@ -162,7 +162,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
               revision_history: [
                 build(:revision_history_event),
                 build(:revision_history_event, event: "update", state: "published"),
-                build(:revision_history_event, event: "update", state: "draft"),
+                build(:revision_history_event, event: "update", state: "draft", created_at: 5.minutes.ago.rfc3339),
                 build(:revision_history_event, event: "update", state: "draft", created_at: created_at),
               ],
               unpublishing: build(:whitehall_export_unpublishing,
@@ -222,6 +222,77 @@ RSpec.describe WhitehallImporter::CreateEdition do
       expect {
         described_class.call(document: document, whitehall_edition: whitehall_edition)
       }.to raise_error(WhitehallImporter::AbortImportError)
+    end
+  end
+
+  context "when the document is scheduled" do
+    let(:document) { create(:document, imported_from: "whitehall", locale: "en") }
+
+    it "sets the edition as scheduled" do
+      publish_time = Date.tomorrow.beginning_of_day
+      whitehall_edition = build(:whitehall_export_edition,
+                                :scheduled,
+                                scheduled_publication: publish_time.rfc3339)
+      edition = described_class.call(document: document,
+                                     whitehall_edition: whitehall_edition)
+
+      expect(edition).to be_scheduled
+      expect(edition.status.details.publish_time).to eq(publish_time)
+    end
+
+    it "sets a previous submitted_for_review status when the whitehall edition was submitted" do
+      whitehall_edition = build(:whitehall_export_edition,
+                                :scheduled,
+                                previous_state: "submitted")
+      edition = described_class.call(document: document,
+                                     whitehall_edition: whitehall_edition)
+
+      statuses = edition.statuses.map(&:state)
+      expect(statuses).to eq(%w[submitted_for_review scheduled])
+      expect(edition.status.details.pre_scheduled_status).to be_submitted_for_review
+    end
+
+    it "sets a previous submitted_for_review status when the whitehall edition was a draft" do
+      whitehall_edition = build(:whitehall_export_edition,
+                                :scheduled,
+                                previous_state: "draft")
+      edition = described_class.call(document: document,
+                                     whitehall_edition: whitehall_edition)
+
+      statuses = edition.statuses.map(&:state)
+      expect(statuses).to eq(%w[draft scheduled])
+      expect(edition.status.details.pre_scheduled_status).to be_draft
+    end
+
+    it "marks a non force published whitehall edition as reviewed" do
+      whitehall_edition = build(:whitehall_export_edition,
+                                :scheduled,
+                                force_published: false)
+      edition = described_class.call(document: document,
+                                     whitehall_edition: whitehall_edition)
+      expect(edition.status.details.reviewed).to be true
+    end
+
+    it "marks a force published whitehall edition as needing review" do
+      whitehall_edition = build(:whitehall_export_edition,
+                                :scheduled,
+                                force_published: true)
+      edition = described_class.call(document: document,
+                                     whitehall_edition: whitehall_edition)
+      expect(edition.status.details.reviewed).to be false
+    end
+
+    it "aborts when there is no scheduled publication date" do
+      whitehall_edition = build(:whitehall_export_edition,
+                                :scheduled,
+                                scheduled_publication: nil)
+
+      expect {
+        described_class.call(document: document, whitehall_edition: whitehall_edition)
+      }.to raise_error(
+        WhitehallImporter::AbortImportError,
+        "Cannot create scheduled status without scheduled_publication",
+      )
     end
   end
 end
