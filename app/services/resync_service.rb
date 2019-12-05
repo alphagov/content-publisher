@@ -12,13 +12,16 @@ class ResyncService < ApplicationService
   end
 
   def call
-    sync_live_edition if live_edition
-    sync_draft_edition if current_edition != live_edition
+    Edition.transaction do
+      sync_live_edition if live_edition
+      sync_draft_edition if current_edition != live_edition
+    end
   end
 
 private
 
   def sync_live_edition
+    live_edition.lock!
     set_political_and_government(live_edition)
     PreviewService.call(live_edition, republish: true)
     PublishAssetService.call(live_edition, nil)
@@ -33,19 +36,17 @@ private
   end
 
   def sync_draft_edition
+    current_edition.lock!
     set_political_and_government(current_edition)
     PreviewService.call(current_edition)
   end
 
   def set_political_and_government(edition)
-    Edition.transaction do
-      Edition.lock.find(edition.id)
-      edition.update!(
-        revision_synced: false,
-        system_political: PoliticalEditionIdentifier.new(edition).political?,
-        government_id: government_id(edition),
-      )
-    end
+    edition.update!(
+      revision_synced: false,
+      system_political: PoliticalEditionIdentifier.new(edition).political?,
+      government_id: government_id(edition),
+    )
   end
 
   def publish
