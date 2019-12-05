@@ -8,6 +8,11 @@ class PoliticalController < ApplicationController
     assert_edition_state(@edition, &:editable?)
   end
 
+  def update
+    result = Political::UpdateInteractor.call(params: params, user: current_user)
+    redirect_to document_path(result.edition.document)
+  end
+
   def check_permission
     return if current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
 

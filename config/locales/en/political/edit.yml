@@ -1,0 +1,10 @@
+en:
+  political:
+    edit:
+      title: Do you want to tag this %{document_type} to history mode?
+      description: When the government ends, content tagged to history mode can only be edited by GDS and has a banner showing it is associated with a previous government.
+      labels:
+        political: "Yes"
+        not_political: "No"
+      guidance_link_govspeak: |
+        Read the [guidance about content from previous governments](https://www.gov.uk/guidance/content-design/gov-uk-content-retention-and-withdrawal-archiving-policy){:target="_blank"} (link opens in a new window).
