@@ -67,7 +67,7 @@ private
 
   def filter_params
     {
-      filters: params.slice(:title_or_url, :document_type, :status, :organisation).permit!,
+      filters: params.slice(:title_or_url, :document_type, :status, :organisation, :political).permit!,
       sort: params[:sort],
       page: params[:page],
       per_page: 50,
