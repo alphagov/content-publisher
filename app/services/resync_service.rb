@@ -30,8 +30,6 @@ private
     else
       publish
     end
-
-    live_edition.update!(revision_synced: true)
   end
 
   def sync_draft_edition

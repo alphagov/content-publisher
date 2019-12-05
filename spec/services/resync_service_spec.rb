@@ -13,11 +13,10 @@ RSpec.describe ResyncService do
     context "when there is no live edition" do
       let(:document) { create(:document, :with_current_edition) }
 
-      it "synchronises the current edition, but does not publish" do
-        expect(PreviewService).to receive(:call).with(document.current_edition).and_call_original
+      it "it does not publish the edition" do
+        expect(PreviewService).to receive(:call).with(document.current_edition)
         expect(GdsApi.publishing_api_v2).not_to receive(:publish)
         ResyncService.call(document)
-        expect(document.current_edition.revision_synced).to be true
       end
     end
 
@@ -36,6 +35,7 @@ RSpec.describe ResyncService do
             document.current_edition,
             republish: true,
           )
+          .and_call_original
 
         ResyncService.call(document)
 
