@@ -28,4 +28,20 @@ RSpec.describe "Documents" do
       end
     end
   end
+
+  describe "GET /documents/:document/political" do
+    it "returns a forbidden status for user without managing editor permission" do
+      @edition = create(:edition)
+      login_as(create(:user))
+      get political_path(@edition.document)
+      expect(response.status).to eq(403)
+    end
+
+    it "does not return a forbidden status for user with managing editor permission" do
+      @edition = create(:edition)
+      login_as(create(:user, managing_editor: true))
+      get political_path(@edition.document)
+      expect(response.status).to_not eq(403)
+    end
+  end
 end
