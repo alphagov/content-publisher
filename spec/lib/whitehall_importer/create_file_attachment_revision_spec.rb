@@ -21,37 +21,37 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
     end
   end
 
-  context "aborts creating a file attachment" do
-    it "for an invalid url" do
-      stub_request(:get, whitehall_file_attachment["url"]).to_return(status: 404)
+  shared_examples "rejected file attachment" do
+    it "raises an AbortImportError with an informative error" do
       create_revision = described_class.new(whitehall_file_attachment)
-
       expect { create_revision.call }.to raise_error(
         WhitehallImporter::AbortImportError,
-        "File attachment does not exist: #{whitehall_file_attachment['url']}",
+        error_message,
       )
     end
+  end
 
-    it "for a file attachment with requirements issues" do
-      too_long_title = ("A" * Requirements::FileAttachmentChecker::TITLE_MAX_LENGTH) + "A"
-      whitehall_file_attachment = build(
-        :whitehall_export_file_attachment,
-        title: too_long_title,
-      )
+  context "file attachment URL is invalid" do
+    let(:error_message) { "File attachment does not exist: #{whitehall_file_attachment['url']}" }
+    before { stub_request(:get, whitehall_file_attachment["url"]).to_return(status: 404) }
 
-      expect { described_class.call(whitehall_file_attachment) }.to raise_error(
-        WhitehallImporter::AbortImportError,
-        I18n.t!("requirements.title.too_long.form_message", max_length: Requirements::FileAttachmentChecker::TITLE_MAX_LENGTH),
-      )
+    it_behaves_like "rejected file attachment"
+  end
+
+  context "file attachment does not satisfy requirements" do
+    let(:too_long_title) { (("A" * Requirements::FileAttachmentChecker::TITLE_MAX_LENGTH) + "A") }
+    let(:whitehall_file_attachment) { build(:whitehall_export_file_attachment, title: too_long_title) }
+    let(:error_message) do
+      I18n.t!("requirements.title.too_long.form_message", max_length: Requirements::FileAttachmentChecker::TITLE_MAX_LENGTH)
     end
 
-    it "for a whitehall attachment with unsupported type" do
-      whitehall_attachment = build(:whitehall_export_file_attachment, type: "ExternalAttachment")
+    it_behaves_like "rejected file attachment"
+  end
 
-      expect { described_class.call(whitehall_attachment) }.to raise_error(
-        WhitehallImporter::AbortImportError,
-        "Unsupported file attachment: #{whitehall_attachment['type']}",
-      )
-    end
+  context "whitehall attachment is of an unsupported type" do
+    let(:whitehall_file_attachment) { build(:whitehall_export_file_attachment, type: "ExternalAttachment") }
+    let(:error_message) { "Unsupported file attachment: #{whitehall_file_attachment['type']}" }
+
+    it_behaves_like "rejected file attachment"
   end
 end
