@@ -45,7 +45,7 @@ private
     edition.update!(
       revision_synced: false,
       system_political: PoliticalEditionIdentifier.new(edition).political?,
-      government_id: government_id(edition),
+      government_id: Government.for_date(edition.public_first_published_at)&.content_id,
     )
   end
 
@@ -75,14 +75,5 @@ private
       alternative_path: removal.alternative_path,
       locale: live_edition.locale,
     )
-  end
-
-  def government_id(edition)
-    government = if edition.public_first_published_at
-                   Government.for_date(edition.public_first_published_at)
-                 else
-                   Government.current
-                 end
-    government.content_id
   end
 end

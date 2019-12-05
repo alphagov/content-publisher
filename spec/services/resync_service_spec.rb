@@ -117,7 +117,7 @@ RSpec.describe ResyncService do
     end
 
     context "when there are both live and current editions" do
-      let(:document) { create(:document, :with_current_and_live_editions) }
+      let(:document) { create(:document, :with_current_and_live_editions, first_published_at: Time.current) }
       let(:government) { build(:government) }
 
       before do
