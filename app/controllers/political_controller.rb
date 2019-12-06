@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class PoliticalController < ApplicationController
+  before_action { authorise_user!(User::PRE_RELEASE_FEATURES_PERMISSION) }
   before_action :check_permission
 
   def edit

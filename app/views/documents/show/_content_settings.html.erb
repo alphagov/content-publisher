@@ -36,14 +36,16 @@
   } %>
 <% end %>
 
-<% items << {
-  field: t("documents.show.content_settings.political.title"),
-  value: @edition.political? ? t("documents.show.content_settings.political.true_label") : t("documents.show.content_settings.political.false_label"),
-  edit: {
-    href: political_path,
-    data_attributes: { gtm: "edit-political" }
-  }
-} %>
+<% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+  <% items << {
+    field: t("documents.show.content_settings.political.title"),
+    value: @edition.political? ? t("documents.show.content_settings.political.true_label") : t("documents.show.content_settings.political.false_label"),
+    edit: {
+      href: political_path,
+      data_attributes: { gtm: "edit-political" }
+    }
+  } %>
+<% end %>
 
 <%= render "govuk_publishing_components/components/summary_list", {
   id: "content_settings",
