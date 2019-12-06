@@ -166,5 +166,29 @@ RSpec.describe ResyncService do
         end
       end
     end
+
+    context "when there are both live and current editions" do
+      let(:document) { create(:document, :with_current_and_live_editions, first_published_at: Time.current) }
+      let(:government) { build(:government) }
+
+      before do
+        allow(Government).to receive(:all).and_return([government])
+        allow(PoliticalEditionIdentifier)
+          .to receive(:new)
+          .and_return(instance_double(PoliticalEditionIdentifier, political?: true))
+      end
+
+      it "updates the system_political value associated with both editions" do
+        expect { ResyncService.call(document) }
+          .to change { document.live_edition.system_political }.to(true)
+          .and change { document.current_edition.system_political }.to(true)
+      end
+
+      it "updates the government_id associated with with both editions" do
+        expect { ResyncService.call(document) }
+          .to change { document.live_edition.government_id }.to(government.content_id)
+          .and change { document.current_edition.government_id }.to(government.content_id)
+      end
+    end
   end
 end

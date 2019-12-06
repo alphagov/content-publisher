@@ -22,6 +22,7 @@ private
 
   def sync_live_edition
     live_edition.lock!
+    set_political_and_government(live_edition)
     PreviewService.call(live_edition, republish: true)
     PublishAssetService.call(live_edition, nil)
 
@@ -36,9 +37,18 @@ private
 
   def sync_draft_edition
     current_edition.lock!
+    set_political_and_government(current_edition)
     FailsafePreviewService.call(current_edition)
 
     schedule if current_edition.scheduled?
+  end
+
+  def set_political_and_government(edition)
+    edition.update!(
+      revision_synced: false,
+      system_political: PoliticalEditionIdentifier.new(edition).political?,
+      government_id: Government.for_date(edition.public_first_published_at)&.content_id,
+    )
   end
 
   def publish
