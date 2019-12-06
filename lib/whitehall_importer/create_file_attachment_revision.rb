@@ -2,11 +2,14 @@
 
 module WhitehallImporter
   class CreateFileAttachmentRevision
+    delegate :document to: :record
+
     def self.call(*args)
       new(*args).call
     end
 
-    def initialize(whitehall_file_attachment, existing_filenames = [])
+    def initialize(record, whitehall_file_attachment, existing_filenames = [])
+      @record = record
       @whitehall_file_attachment = whitehall_file_attachment
       @existing_filenames = existing_filenames
     end
@@ -18,18 +21,24 @@ module WhitehallImporter
       check_file_requirements(decorated_file)
 
       blob_revision = create_blob_revision(decorated_file)
-      FileAttachment::Revision.create!(
+      revision = FileAttachment::Revision.create!(
         blob_revision: blob_revision,
         file_attachment: FileAttachment.create!,
         metadata_revision: FileAttachment::MetadataRevision.create!(
           title: whitehall_file_attachment["title"],
         ),
       )
+      WhitehallImportedAsset.new(
+        whitehall_import: record,
+        file_attachment_revision: revision,
+        original_asset_url: whitehall_file_attachment["url"],
+        variants: whitehall_file_attachment["variants"],
+      )
     end
 
   private
 
-    attr_reader :whitehall_file_attachment, :existing_filenames
+    attr_reader :record, :whitehall_file_attachment, :existing_filenames
 
     def download_file
       URI.parse(whitehall_file_attachment["url"]).open
