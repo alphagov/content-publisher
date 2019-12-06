@@ -27,6 +27,8 @@ private
 
     if live_edition.withdrawn?
       withdraw
+    elsif live_edition.removed?
+      redirect_or_remove
     else
       publish
     end
@@ -55,6 +57,19 @@ private
       explanation: explanation_html,
       locale: live_edition.locale,
       unpublished_at: withdrawal.withdrawn_at,
+      allow_draft: true,
+    )
+  end
+
+  def redirect_or_remove
+    removal = live_edition.status.details
+    GdsApi.publishing_api_v2.unpublish(
+      live_edition.content_id,
+      type: removal.redirect? ? "redirect" : "gone",
+      explanation: removal.explanatory_note,
+      alternative_path: removal.alternative_path,
+      locale: live_edition.locale,
+      unpublished_at: removal.created_at,
       allow_draft: true,
     )
   end

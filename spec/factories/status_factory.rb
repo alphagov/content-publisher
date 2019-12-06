@@ -26,6 +26,18 @@ FactoryBot.define do
       state { :published_but_needs_2i }
     end
 
+    trait :removed do
+      state { :removed }
+
+      transient do
+        removal { nil }
+      end
+
+      after(:build) do |status, evaluator|
+        status.details = evaluator.removal || evaluator.association(:removal)
+      end
+    end
+
     trait :scheduled do
       state { :scheduled }
 

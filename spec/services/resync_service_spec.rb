@@ -79,5 +79,60 @@ RSpec.describe ResyncService do
         expect(request).to have_been_requested
       end
     end
+
+    context "when the live edition has been removed" do
+      let(:explanation) { "explanation" }
+
+      before do
+        stub_any_publishing_api_unpublish
+      end
+
+      context "when the live edition is removed with a redirect" do
+        let(:removal) do
+          build(
+            :removal,
+            redirect: true,
+            alternative_path: "/foo/bar",
+            explanatory_note: explanation,
+          )
+        end
+
+        let(:edition) { create(:edition, :removed, removal: removal) }
+
+        it "removes and redirects the edition" do
+          remove_params = {
+            type: "redirect",
+            explanation: explanation,
+            alternative_path: removal.alternative_path,
+            locale: edition.locale,
+            unpublished_at: removal.created_at,
+            allow_draft: true,
+          }
+
+          request = stub_publishing_api_unpublish(edition.content_id, body: remove_params)
+          ResyncService.call(edition.document)
+
+          expect(request).to have_been_requested
+        end
+      end
+
+      context "when the live edition is removed without a redirect" do
+        let(:edition) { create(:edition, :removed) }
+
+        it "removes the edition" do
+          remove_params = {
+            type: "gone",
+            locale: edition.locale,
+            unpublished_at: edition.status.details.created_at,
+            allow_draft: true,
+          }
+
+          request = stub_publishing_api_unpublish(edition.content_id, body: remove_params)
+          ResyncService.call(edition.document)
+
+          expect(request).to have_been_requested
+        end
+      end
+    end
   end
 end
