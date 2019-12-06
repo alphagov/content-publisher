@@ -12,7 +12,8 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
-  config.hosts << "content-publisher.dev.gov.uk"
+  # Allow requests for all domains e.g. <app>.dev.gov.uk
+  config.hosts.clear
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
