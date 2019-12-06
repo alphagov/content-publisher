@@ -23,6 +23,7 @@ private
   def sync_live_edition
     live_edition.lock!
     set_political_and_government(live_edition)
+    reserve_path(live_edition.base_path)
     PreviewService.call(live_edition, republish: true)
     PublishAssetService.call(live_edition, nil)
 
@@ -38,6 +39,7 @@ private
   def sync_draft_edition
     current_edition.lock!
     set_political_and_government(current_edition)
+    reserve_path(current_edition.base_path)
     FailsafePreviewService.call(current_edition)
 
     schedule if current_edition.scheduled?
@@ -48,6 +50,14 @@ private
       revision_synced: false,
       system_political: PoliticalEditionIdentifier.new(edition).political?,
       government_id: Government.for_date(edition.public_first_published_at)&.content_id,
+    )
+  end
+
+  def reserve_path(base_path)
+    GdsApi.publishing_api_v2.put_path(
+      base_path,
+      publishing_app: "content-publisher",
+      override_existing: true,
     )
   end
 

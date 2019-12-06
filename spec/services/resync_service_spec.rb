@@ -8,6 +8,7 @@ RSpec.describe ResyncService do
       stub_any_publishing_api_publish
       stub_any_publishing_api_put_content
       stub_default_publishing_api_put_intent
+      stub_default_publishing_api_path_reservation
     end
 
     context "when there is no live edition" do
@@ -189,6 +190,26 @@ RSpec.describe ResyncService do
           .to change { document.live_edition.government_id }.to(government.content_id)
           .and change { document.current_edition.government_id }.to(government.content_id)
       end
+    end
+
+    it "reserves the path of the edition" do
+      edition = create(:edition)
+      reserve_path_params = {
+        publishing_app: "content-publisher",
+        override_existing: true,
+      }
+
+      request = stub_publishing_api_path_reservation(edition.base_path, reserve_path_params)
+      ResyncService.call(edition.document)
+
+      expect(request).to have_been_requested
+    end
+
+    def stub_publishing_api_path_reservation(base_path, params)
+      endpoint = GdsApi::TestHelpers::PublishingApi::PUBLISHING_API_ENDPOINT
+      url = endpoint + "/paths#{base_path}"
+
+      stub_request(:put, url).with(body: params)
     end
   end
 end
