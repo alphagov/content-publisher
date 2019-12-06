@@ -7,8 +7,8 @@ FactoryBot.define do
     sequence(:id)
     alt_text { "Alt text for image" }
     caption { "This is a caption" }
-    created_at { Time.zone.now.rfc3339 }
-    updated_at { Time.zone.now.rfc3339 }
+    created_at { Time.current.rfc3339 }
+    updated_at { Time.current.rfc3339 }
     variants { {} }
     url { "https://assets.publishing.service.gov.uk/government/uploads/#{filename}" }
 

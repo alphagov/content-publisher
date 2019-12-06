@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe WithdrawService do
-  include ActiveSupport::Testing::TimeHelpers
-
   describe "#call" do
     let(:edition) { create(:edition, :published) }
     let(:user) { create(:user) }

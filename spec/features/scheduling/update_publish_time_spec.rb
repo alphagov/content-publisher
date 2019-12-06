@@ -2,7 +2,6 @@
 
 RSpec.feature "Update publish time" do
   include ActiveJob::TestHelper
-  include ActiveSupport::Testing::TimeHelpers
 
   around do |example|
     Sidekiq::Testing.fake! do

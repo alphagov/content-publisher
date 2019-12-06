@@ -7,7 +7,7 @@ FactoryBot.define do
     event { "create" }
     state { "draft" }
     whodunnit { 1 }
-    created_at { Time.zone.now.rfc3339 }
+    created_at { Time.current.rfc3339 }
 
     initialize_with { attributes.stringify_keys }
   end

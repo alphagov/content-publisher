@@ -5,8 +5,8 @@ FactoryBot.define do
     skip_create
 
     sequence(:id)
-    created_at { Time.zone.now.rfc3339 }
-    updated_at { Time.zone.now.rfc3339 }
+    created_at { Time.current.rfc3339 }
+    updated_at { Time.current.rfc3339 }
     slug { SecureRandom.alphanumeric(10).parameterize }
     content_id { SecureRandom.uuid }
     editions { [build(:whitehall_export_edition)] }

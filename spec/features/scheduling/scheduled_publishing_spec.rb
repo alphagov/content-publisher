@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.feature "Scheduled publishing" do
-  include ActiveSupport::Testing::TimeHelpers
-
   around do |example|
     Sidekiq::Testing.fake! do
       travel_to(Time.zone.parse("2019-06-21"))

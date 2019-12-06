@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.feature "Publish without review" do
-  include ActiveSupport::Testing::TimeHelpers
-
   scenario do
     given_there_is_an_edition
     when_i_visit_the_summary_page

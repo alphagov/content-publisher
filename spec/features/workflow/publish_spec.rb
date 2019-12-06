@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.feature "Publishing an edition" do
-  include ActiveSupport::Testing::TimeHelpers
-
   scenario do
     given_there_is_an_edition_in_draft
     when_i_visit_the_summary_page

@@ -5,8 +5,8 @@ FactoryBot.define do
     skip_create
 
     sequence(:id)
-    created_at { Time.zone.now.rfc3339 }
-    updated_at { Time.zone.now.rfc3339 }
+    created_at { Time.current.rfc3339 }
+    updated_at { Time.current.rfc3339 }
     access_limited { false }
     change_note { "First published" }
     state { "draft" }
@@ -36,7 +36,7 @@ FactoryBot.define do
       end
 
       created_at { 3.days.ago.rfc3339 }
-      scheduled_publication { Time.zone.now.tomorrow.rfc3339 }
+      scheduled_publication { Time.current.tomorrow.rfc3339 }
       state { "scheduled" }
       revision_history do
         [
@@ -48,7 +48,7 @@ FactoryBot.define do
           build(:revision_history_event,
                 event: "update",
                 state: "scheduled",
-                created_at: Time.zone.now.tomorrow.rfc3339),
+                created_at: Time.current.tomorrow.rfc3339),
         ]
       end
     end
