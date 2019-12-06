@@ -19,4 +19,15 @@ module WhitehallImporter
 
     record
   end
+
+  def self.migrate_whitehall_content(document)
+    record_of_import = WhitehallImport.find_by(document: document)
+
+    raise AbortMigrateUpstreamError unless record_of_import
+
+    WhitehallImportedAsset.find_by(
+      whitehall_import: record_of_import,
+      state: "not_processed",
+    ).each(&:call)
+  end
 end
