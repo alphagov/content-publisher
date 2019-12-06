@@ -9,7 +9,7 @@ class Government
   end
 
   def self.for_date(date)
-    all.find { |government| government.covers?(date) }
+    all.find { |government| government.covers?(date) } if date
   end
 
   def self.current

@@ -28,9 +28,6 @@ private
   end
 
   def associate_with_government
-    edition.government_id = if edition.public_first_published_at
-                              government = Government.for_date(edition.public_first_published_at)
-                              government&.content_id
-                            end
+    edition.government_id = Government.for_date(edition.public_first_published_at)&.content_id
   end
 end

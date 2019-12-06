@@ -53,6 +53,10 @@ RSpec.describe Government do
     it "opts for the more recent government when there is a date conflict" do
       expect(Government.for_date(Date.parse("2018-12-01"))).to eq current_government
     end
+
+    it "accepts a nil date" do
+      expect(Government.for_date(nil)).to be_nil
+    end
   end
 
   describe ".current" do
