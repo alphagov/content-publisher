@@ -2,7 +2,9 @@
 
 module WhitehallImporter
   class CreateRevision
-    attr_reader :document, :whitehall_edition
+    attr_reader :record, :whitehall_edition
+
+    delegate :document to: :record
 
     SUPPORTED_DOCUMENT_TYPES = %w(news_story press_release).freeze
     DOCUMENT_SUB_TYPES = %w[
@@ -16,8 +18,8 @@ module WhitehallImporter
       new(*args).call
     end
 
-    def initialize(document, whitehall_edition)
-      @document = document
+    def initialize(record, whitehall_edition)
+      @record = record
       @whitehall_edition = whitehall_edition
     end
 

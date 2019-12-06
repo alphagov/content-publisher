@@ -21,7 +21,7 @@ module WhitehallImporter
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           CreateEdition.call(
-            document: document,
+            record: record,
             current: current?(edition),
             whitehall_edition: edition,
             edition_number: edition_number + 1,

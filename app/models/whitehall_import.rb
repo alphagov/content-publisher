@@ -6,4 +6,8 @@ class WhitehallImport < ApplicationRecord
   enum state: { importing: "importing",
                 completed: "completed",
                 failed: "failed" }
+
+  def document
+    @document ||= Document.find(created_document_id)
+  end
 end
