@@ -29,7 +29,7 @@ private
 
   def sync_draft_edition
     current_edition.lock!
-    PreviewService.call(current_edition)
+    FailsafePreviewService.call(current_edition)
   end
 
   def publish

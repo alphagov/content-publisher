@@ -11,7 +11,7 @@ RSpec.describe ResyncService do
       let(:document) { create(:document, :with_current_edition) }
 
       it "it does not publish the edition" do
-        expect(PreviewService).to receive(:call).with(document.current_edition)
+        expect(FailsafePreviewService).to receive(:call).with(document.current_edition)
         expect(GdsApi.publishing_api_v2).not_to receive(:publish)
         ResyncService.call(document)
       end
