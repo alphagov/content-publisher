@@ -192,5 +192,15 @@ RSpec.describe PreviewService::Payload do
 
       expect(payload).to match a_hash_including("public_updated_at" => date)
     end
+
+    it "includes bulk_publishing and sets the update to republish if the edition is being republished" do
+      edition = build(:edition)
+      payload = PreviewService::Payload.new(edition, republish: true).payload
+
+      expect(payload).to match a_hash_including(
+        "update_type" => "republish",
+        "bulk_publishing" => true,
+      )
+    end
   end
 end
