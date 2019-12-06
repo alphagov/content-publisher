@@ -50,5 +50,34 @@ RSpec.describe ResyncService do
         ResyncService.call(document)
       end
     end
+
+    context "when the live edition is withdrawn" do
+      let(:edition) { create(:edition, :withdrawn) }
+      let(:explanation) { "explanation" }
+
+      before do
+        stub_any_publishing_api_unpublish
+      end
+
+      it "withdraws the edition" do
+        withdraw_params = {
+          type: "withdrawal",
+          explanation: explanation,
+          locale: edition.locale,
+          unpublished_at: edition.status.details.withdrawn_at,
+          allow_draft: true,
+        }
+
+        expect(GovspeakDocument)
+          .to receive(:new)
+          .with(edition.status.details.public_explanation, edition)
+          .and_return(instance_double(GovspeakDocument, payload_html: explanation))
+
+        request = stub_publishing_api_unpublish(edition.content_id, body: withdraw_params)
+        ResyncService.call(edition.document)
+
+        expect(request).to have_been_requested
+      end
+    end
   end
 end

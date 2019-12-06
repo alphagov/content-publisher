@@ -24,7 +24,12 @@ private
     live_edition.lock!
     PreviewService.call(live_edition, republish: true)
     PublishAssetService.call(live_edition, nil)
-    publish
+
+    if live_edition.withdrawn?
+      withdraw
+    else
+      publish
+    end
   end
 
   def sync_draft_edition
@@ -37,6 +42,20 @@ private
       live_edition.document.content_id,
       nil, # Sending update_type is deprecated (now in payload)
       locale: live_edition.document.locale,
+    )
+  end
+
+  def withdraw
+    withdrawal = live_edition.status.details
+    explanation_html = GovspeakDocument.new(withdrawal.public_explanation, live_edition).payload_html
+
+    GdsApi.publishing_api_v2.unpublish(
+      live_edition.document.content_id,
+      type: "withdrawal",
+      explanation: explanation_html,
+      locale: live_edition.locale,
+      unpublished_at: withdrawal.withdrawn_at,
+      allow_draft: true,
     )
   end
 end

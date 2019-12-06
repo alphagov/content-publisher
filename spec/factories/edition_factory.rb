@@ -107,7 +107,6 @@ FactoryBot.define do
       end
 
       after(:build) do |edition, evaluator|
-        edition.revision = evaluator.association(:revision)
         edition.status = evaluator.association(
           :status,
           :withdrawn,
