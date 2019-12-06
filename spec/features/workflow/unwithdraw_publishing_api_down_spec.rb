@@ -16,7 +16,7 @@ RSpec.feature "Unwithdraw when Publishing API is down" do
   end
 
   def and_i_am_a_managing_editor
-    login_as(create(:user, :managing_editor))
+    login_as(create(:user, managing_editor: true))
   end
 
   def and_the_publishing_api_is_down

@@ -8,6 +8,7 @@ class User < ApplicationRecord
   DEBUG_PERMISSION = "debug"
   MANAGING_EDITOR_PERMISSION = "managing_editor"
   ACCESS_LIMIT_OVERRIDE_PERMISSION = "access_limit_override"
+  MANAGE_LIVE_HISTORY_MODE = "manage_live_history_mode"
 
   def can_access?(edition)
     return true unless edition.access_limit

@@ -16,7 +16,7 @@ RSpec.feature "Withdraw a document" do
   end
 
   def and_i_am_a_managing_editor
-    login_as(create(:user, :managing_editor))
+    login_as(create(:user, managing_editor: true))
   end
 
   def when_i_visit_the_summary_page
