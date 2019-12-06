@@ -1,21 +1,20 @@
 # frozen_string_literal: true
 
 class FileAttachmentBlobService < ApplicationService
-  def initialize(revision, user, file, replacing: nil)
-    @revision = revision
-    @user = user
+  def initialize(file:, filename:, user: nil)
     @file = file
-    @replacing = replacing
+    @filename = filename
+    @user = user
   end
 
   def call
     blob = ActiveStorage::Blob.create_after_upload!(io: file,
-                                                    filename: unique_filename,
+                                                    filename: filename,
                                                     content_type: mime_type)
 
     FileAttachment::BlobRevision.create!(
       blob: blob,
-      filename: unique_filename,
+      filename: filename,
       number_of_pages: number_of_pages,
       created_by: user,
       asset: FileAttachment::Asset.new,
@@ -24,18 +23,12 @@ class FileAttachmentBlobService < ApplicationService
 
 private
 
-  attr_reader :revision, :user, :file, :replacing
+  attr_reader :file, :filename, :user
 
   def mime_type
     @mime_type ||= Marcel::MimeType.for(file,
                                         declared_type: file.content_type,
                                         name: file.original_filename)
-  end
-
-  def unique_filename
-    existing_filenames = revision.file_attachment_revisions.map(&:filename)
-    existing_filenames.delete(replacing.filename) if replacing
-    UniqueFilenameService.call(existing_filenames, file.original_filename)
   end
 
   def number_of_pages

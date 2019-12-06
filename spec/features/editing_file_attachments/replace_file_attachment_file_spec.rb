@@ -27,7 +27,7 @@ RSpec.feature "Replace a file attachment file", js: true do
     visit edit_document_path(@edition.document)
     find("markdown-toolbar details").click
     click_on "Attachment"
-    expect(page).to have_content("0 Bytes")
+    expect(page).to have_content("74 Bytes")
   end
 
   def and_i_click_on_edit_file
@@ -47,7 +47,7 @@ RSpec.feature "Replace a file attachment file", js: true do
 
   def then_i_see_the_replacement_file_on_the_attachment_index_page
     expect(page).to have_content("58 Bytes")
-    expect(page).not_to have_content("0 Bytes")
+    expect(page).not_to have_content("74 Bytes")
   end
 
   def and_the_preview_creation_succeeded
@@ -65,6 +65,6 @@ RSpec.feature "Replace a file attachment file", js: true do
   end
 
   def attachment_filename
-    "replacement-text-file.txt"
+    "replacement-text-file-58bytes.txt"
   end
 end

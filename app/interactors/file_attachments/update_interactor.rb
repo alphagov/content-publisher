@@ -74,6 +74,14 @@ private
   end
 
   def blob_revision(file)
-    FileAttachmentBlobService.call(edition.revision, user, file, replacing: file_attachment_revision)
+    FileAttachmentBlobService.call(
+      file: file, filename: unique_filename(file), user: user,
+    )
+  end
+
+  def unique_filename(file)
+    existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
+    existing_filenames.delete(file_attachment_revision.filename)
+    UniqueFilenameService.call(existing_filenames, file.original_filename)
   end
 end

@@ -3,7 +3,7 @@
 RSpec.describe Requirements::FileAttachmentChecker do
   describe "#pre_upload_issues" do
     it "returns no issues if there are none" do
-      file = fixture_file_upload("files/text-file.txt", "text/plain")
+      file = fixture_file_upload("files/text-file-74bytes.txt", "text/plain")
       issues = Requirements::FileAttachmentChecker.new(file: file, title: "Cool title").pre_upload_issues
       expect(issues).to be_empty
     end
@@ -52,7 +52,7 @@ RSpec.describe Requirements::FileAttachmentChecker do
 
   describe "#pre_update_issues" do
     it "returns no issues if there are none" do
-      file = fixture_file_upload("files/text-file.txt", "text/plain")
+      file = fixture_file_upload("files/text-file-74bytes.txt", "text/plain")
       issues = Requirements::FileAttachmentChecker.new(file: file, title: "Cool title").pre_update_issues
       expect(issues).to be_empty
     end

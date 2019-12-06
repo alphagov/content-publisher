@@ -30,7 +30,14 @@ RSpec.describe FileAttachments::CreateInteractor do
 
       it "delegates saving the file to the FileAttachmentBlobService" do
         expect(FileAttachmentBlobService).to receive(:call)
-          .with(edition.revision, user, file)
+          .with(file: file, filename: file.original_filename, user: user)
+          .and_call_original
+        FileAttachments::CreateInteractor.call(**args)
+      end
+
+      it "delegates generating a unique filename to UniqueFilenameService" do
+        expect(UniqueFilenameService).to receive(:call)
+          .with(edition.revision.file_attachment_revisions.map(&:filename), file.original_filename)
           .and_call_original
         FileAttachments::CreateInteractor.call(**args)
       end

@@ -71,17 +71,47 @@ RSpec.describe WhitehallImporter::CreateRevision do
       end
     end
 
+    context "when creating file_attachments" do
+      it "imports a single file_attachment" do
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          attachments: [
+            build(:whitehall_export_file_attachment, filename: "attach.txt"),
+          ],
+        )
+
+        expect { described_class.call(document, whitehall_edition) }
+          .to change { FileAttachment::Revision.count }.by(1)
+      end
+
+      it "ensures that every file_attachment filename is unique" do
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          attachments: [
+            build(:whitehall_export_file_attachment, filename: "attach.txt"),
+            build(:whitehall_export_file_attachment, filename: "attach.txt"),
+          ],
+        )
+        revision = described_class.call(document, whitehall_edition)
+
+        expect(revision.file_attachment_revisions.first.blob_revision.filename).to eq("attach.txt")
+        expect(revision.file_attachment_revisions.last.blob_revision.filename).to eq("attach-1.txt")
+      end
+    end
+
     it "passes body through the EmbedBodyReferences service" do
       body = "Foo Bar"
       whitehall_edition = build(
         :whitehall_export_edition,
         translations: [build(:whitehall_export_translation, body: body)],
         images: [build(:whitehall_export_image, filename: "foo.jpg")],
+        attachments: [build(:whitehall_export_file_attachment, filename: "attach.txt")],
       )
       expect(WhitehallImporter::EmbedBodyReferences).to receive(:call).with(
         body: "Foo Bar",
         contacts: [],
         images: ["foo.jpg"],
+        attachments: ["attach.txt"],
       )
       described_class.call(document, whitehall_edition)
     end
