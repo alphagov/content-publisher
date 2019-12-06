@@ -37,6 +37,8 @@ private
   def sync_draft_edition
     current_edition.lock!
     FailsafePreviewService.call(current_edition)
+
+    schedule if current_edition.scheduled?
   end
 
   def publish
@@ -72,5 +74,14 @@ private
       unpublished_at: removal.created_at,
       allow_draft: true,
     )
+  end
+
+  def schedule
+    payload = ScheduleService::Payload.new(current_edition).intent_payload
+    GdsApi.publishing_api.put_intent(current_edition.base_path, payload)
+
+    scheduling = current_edition.status.details
+    ScheduledPublishingJob.set(wait_until: scheduling.publish_time)
+                          .perform_later(current_edition.id)
   end
 end

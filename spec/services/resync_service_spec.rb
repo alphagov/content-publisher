@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe ResyncService do
+  include ActiveJob::TestHelper
+
   describe ".call" do
     before do
       stub_any_publishing_api_publish
       stub_any_publishing_api_put_content
+      stub_default_publishing_api_put_intent
     end
 
     context "when there is no live edition" do
@@ -131,6 +134,35 @@ RSpec.describe ResyncService do
           ResyncService.call(edition.document)
 
           expect(request).to have_been_requested
+        end
+      end
+
+      context "when the current edition has been scheduled for publication" do
+        let(:edition) { create(:edition, :scheduled) }
+
+        before do
+          allow(ScheduleService::Payload)
+            .to receive(:new)
+            .and_return(instance_double(ScheduleService::Payload, intent_payload: "payload"))
+        end
+
+        it "notifies the publishing-api of the intent to publish" do
+          request = stub_publishing_api_put_intent(edition.base_path, '"payload"')
+
+          expect(ScheduleService::Payload)
+            .to receive(:new)
+            .with(edition)
+
+          ResyncService.call(edition.document)
+          expect(request).to have_been_requested
+        end
+
+        it "schedules the edition to publish" do
+          ResyncService.call(edition.document)
+          expect(ScheduledPublishingJob)
+            .to have_been_enqueued
+            .with(edition.id)
+            .at(edition.status.details.publish_time)
         end
       end
     end

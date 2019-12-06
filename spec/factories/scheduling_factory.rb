@@ -3,11 +3,11 @@
 FactoryBot.define do
   factory :scheduling do
     reviewed { false }
-    publish_time { Time.current.advance(days: 2) }
+    publish_time { Date.tomorrow.noon }
     association :pre_scheduled_status, factory: :status
 
     trait :failed do
-      publish_time { Time.current.advance(hour: -1) }
+      publish_time { Date.yesterday.noon }
     end
   end
 end

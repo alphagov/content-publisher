@@ -138,7 +138,7 @@ FactoryBot.define do
 
     trait :schedulable do
       publishable
-      proposed_publish_time { Time.current.advance(days: 2) }
+      proposed_publish_time { Date.tomorrow.noon }
     end
 
     trait :scheduled do
@@ -146,7 +146,7 @@ FactoryBot.define do
 
       transient do
         scheduling { nil }
-        publish_time { Time.current.advance(days: 2) }
+        publish_time { Date.tomorrow.noon }
       end
 
       after(:build) do |edition, evaluator|

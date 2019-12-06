@@ -43,7 +43,7 @@ FactoryBot.define do
 
       transient do
         scheduling { nil }
-        publish_time { Time.current.advance(days: 2) }
+        publish_time { Date.tomorrow.noon }
       end
 
       after(:build) do |status, evaluator|
