@@ -6,6 +6,7 @@ RSpec.describe PublishService do
 
     before do
       stub_any_publishing_api_publish
+      populate_default_government_bulk_data
       allow(PreviewService).to receive(:call)
       allow(PublishAssetService).to receive(:call)
     end
@@ -51,39 +52,46 @@ RSpec.describe PublishService do
     end
 
     context "when the edition is not associated with a government" do
-      let(:government) { build(:government) }
+      let(:past_government) do
+        build(:government, ended_on: Time.zone.today)
+      end
+
+      let(:current_government) do
+        build(:government, started_on: Time.zone.today, current: true)
+      end
+
+      before do
+        populate_government_bulk_data(past_government, current_government)
+      end
 
       it "tries to associate a government with edition public first published at" do
         edition = create(:edition)
-        time = Time.zone.parse("2019-11-11")
-        allow(edition).to receive(:public_first_published_at).and_return(time)
-        expect(Government).to receive(:for_date).with(time)
-                          .and_return(government)
+        allow(edition).to receive(:public_first_published_at)
+                      .and_return(Time.zone.yesterday)
 
         expect { PublishService.call(edition, user, with_review: true) }
           .to change { edition.government_id }
-          .to(government.content_id)
+          .to(past_government.content_id)
       end
 
       it "associates with current government when the edition hasn't been published" do
         edition = create(:edition)
-        expect(Government).to receive(:current).and_return(government)
 
         expect { PublishService.call(edition, user, with_review: true) }
           .to change { edition.government_id }
-          .to(government.content_id)
+          .to(current_government.content_id)
       end
 
       it "updates the preview when a government is associated" do
         edition = create(:edition)
         expect(PreviewService).to receive(:call).with(edition)
         PublishService.call(edition, user, with_review: true)
-        expect(edition.government_id).to eq(Government.current.content_id)
+        expect(edition.government_id).to eq(current_government.content_id)
       end
 
       it "doesn't update the preview when a government isn't associated" do
+        populate_government_bulk_data
         edition = create(:edition)
-        allow(Government).to receive(:current).and_return(nil)
 
         expect(PreviewService).not_to receive(:call).with(edition)
         PublishService.call(edition, user, with_review: true)
@@ -92,7 +100,7 @@ RSpec.describe PublishService do
     end
 
     context "when the edition is associated with a government" do
-      let(:edition) { create(:edition, :past_government) }
+      let(:edition) { create(:edition, government: past_government) }
 
       it "doesn't change the government on the edition" do
         expect { PublishService.call(edition, user, with_review: true) }

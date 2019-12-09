@@ -33,10 +33,11 @@ private
   def associate_with_government
     return if edition.government
 
+    repository = BulkData::GovernmentRepository.new
     government = if edition.public_first_published_at
-                   Government.for_date(edition.public_first_published_at)
+                   repository.for_date(edition.public_first_published_at)
                  else
-                   Government.current
+                   repository.current
                  end
     edition.assign_attributes(government_id: government&.content_id)
 
