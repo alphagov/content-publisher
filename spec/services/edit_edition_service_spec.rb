@@ -64,10 +64,9 @@ RSpec.describe EditEditionService do
     describe "associates the edition with a government" do
       it "sets the government when there is a public first published at time" do
         time = Time.zone.parse("2018-01-01")
-        government = build(:government)
-        edition = create(:edition)
+        government = build(:government, started_on: time)
+        populate_government_bulk_data(government)
         allow(edition).to receive(:public_first_published_at).and_return(time)
-        allow(Government).to receive(:for_date).with(time).and_return(government)
 
         expect { EditEditionService.call(edition, user) }
           .to change { edition.government_id }
@@ -76,8 +75,8 @@ RSpec.describe EditEditionService do
 
       it "sets the government to nil when there isn't a government for the date" do
         publish_date = Time.zone.parse("2019-11-01")
-        allow(Government).to receive(:for_date).with(publish_date)
-                         .and_return(nil)
+        government = build(:government, started_on: publish_date.advance(days: 1))
+        populate_government_bulk_data(government)
         edition = build(:edition, first_published_at: publish_date)
 
         expect { EditEditionService.call(edition, user) }
