@@ -3,9 +3,14 @@
 module InitializeWithHash
   include ActiveSupport::Concern
 
-  def initialize(params = {})
-    params.each do |key, value|
+  attr_reader :attributes
+
+  def initialize(attributes = {})
+    @attributes = attributes
+    @attributes.each do |key, value|
       instance_variable_set("@#{key}", value)
     end
   end
+
+  alias_method :to_h, :attributes
 end
