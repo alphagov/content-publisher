@@ -53,6 +53,7 @@ RSpec.feature "Scheduled publishing failed" do
 
   def and_the_scheduled_publishing_job_runs
     travel_to(Time.zone.parse("2019-6-20 15:00"))
+    populate_default_government_bulk_data
     Sidekiq::Worker.drain_all
   end
 

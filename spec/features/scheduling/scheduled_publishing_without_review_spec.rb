@@ -48,6 +48,7 @@ RSpec.feature "Scheduled publishing without review" do
 
   def when_the_publishing_job_runs
     travel_to(Time.zone.parse("2019-8-10 12:00"))
+    populate_default_government_bulk_data
     stub_any_publishing_api_put_content
     @publish_request = stub_publishing_api_publish(@edition.content_id,
                                                    update_type: nil,
