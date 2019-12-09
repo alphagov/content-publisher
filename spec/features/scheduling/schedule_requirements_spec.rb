@@ -26,7 +26,7 @@ RSpec.feature "Schedule an edition with requirements issues" do
   end
 
   def given_there_is_an_edition_with_publish_issues
-    @edition = create(:edition, proposed_publish_time: Time.current.advance(days: 2))
+    @edition = create(:edition, proposed_publish_time: Date.tomorrow.noon)
   end
 
   def given_there_is_an_edition_to_publish_too_soon

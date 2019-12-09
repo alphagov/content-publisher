@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :withdrawal do
     public_explanation { SecureRandom.alphanumeric }
-    withdrawn_at { Time.current }
+    withdrawn_at { Date.yesterday.noon }
 
     association :published_status, :published, factory: :status
   end

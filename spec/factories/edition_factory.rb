@@ -107,7 +107,6 @@ FactoryBot.define do
       end
 
       after(:build) do |edition, evaluator|
-        edition.revision = evaluator.association(:revision)
         edition.status = evaluator.association(
           :status,
           :withdrawn,
@@ -119,9 +118,27 @@ FactoryBot.define do
       end
     end
 
+    trait :removed do
+      live { true }
+
+      transient do
+        removal { nil }
+      end
+
+      after(:build) do |edition, evaluator|
+        edition.status = evaluator.association(
+          :status,
+          :removed,
+          created_by: edition.created_by,
+          revision_at_creation: edition.revision,
+          removal: evaluator.removal,
+        )
+      end
+    end
+
     trait :schedulable do
       publishable
-      proposed_publish_time { Time.current.advance(days: 2) }
+      proposed_publish_time { Date.tomorrow.noon }
     end
 
     trait :scheduled do
@@ -129,7 +146,7 @@ FactoryBot.define do
 
       transient do
         scheduling { nil }
-        publish_time { Time.current.advance(days: 2) }
+        publish_time { Date.tomorrow.noon }
       end
 
       after(:build) do |edition, evaluator|

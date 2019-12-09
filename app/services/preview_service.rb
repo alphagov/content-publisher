@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class PreviewService < ApplicationService
-  def initialize(edition)
+  def initialize(edition, republish: false)
     @edition = edition
+    @republish = republish
   end
 
   def call
@@ -15,10 +16,10 @@ class PreviewService < ApplicationService
 
 private
 
-  attr_reader :edition
+  attr_reader :edition, :republish
 
   def put_draft_content
-    payload = Payload.new(edition).payload
+    payload = Payload.new(edition, republish: republish).payload
     GdsApi.publishing_api_v2.put_content(edition.content_id, payload)
     edition.update!(revision_synced: true)
   end

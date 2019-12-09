@@ -3,12 +3,13 @@
 class PreviewService::Payload
   PUBLISHING_APP = "content-publisher"
 
-  attr_reader :edition, :document_type, :publishing_metadata
+  attr_reader :edition, :document_type, :publishing_metadata, :republish
 
-  def initialize(edition)
+  def initialize(edition, republish: false)
     @edition = edition
     @document_type = edition.document_type
     @publishing_metadata = document_type.publishing_metadata
+    @republish = republish
   end
 
   def payload
@@ -35,6 +36,11 @@ class PreviewService::Payload
     if edition.backdated_to.present?
       payload["first_published_at"] = edition.backdated_to
       payload["public_updated_at"] = edition.backdated_to if edition.first?
+    end
+
+    if republish
+      payload["update_type"] = "republish"
+      payload["bulk_publishing"] = true
     end
 
     payload
