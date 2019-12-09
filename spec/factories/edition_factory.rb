@@ -5,6 +5,7 @@ FactoryBot.define do
     last_edited_at { Time.current }
     current { true }
     live { false }
+    government_id { government&.content_id }
     revision_synced { true }
     association :created_by, factory: :user
 
@@ -19,6 +20,7 @@ FactoryBot.define do
       image_revisions { [] }
       file_attachment_revisions { [] }
       first_published_at { nil }
+      government { nil }
     end
 
     after(:build) do |edition, evaluator|
@@ -202,14 +204,6 @@ FactoryBot.define do
 
     trait :not_political do
       system_political { false }
-    end
-
-    trait :current_government do
-      government_id { Government.current.content_id }
-    end
-
-    trait :past_government do
-      government_id { Government.past.first.content_id }
     end
   end
 end
