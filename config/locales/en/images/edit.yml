@@ -3,6 +3,7 @@ en:
     edit:
       title: "Image details for ‘%{title}’"
       title_modal: "Image details"
+      alt_text_placeholder: Your uploaded image
       form_labels:
         alt_text: Alt text
         caption: Image caption
