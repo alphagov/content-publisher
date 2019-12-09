@@ -51,6 +51,7 @@ RSpec.configure do |config|
   config.before :each do
     Sidekiq::Worker.clear_all
     ActionMailer::Base.deliveries.clear
+    BulkData::Cache.clear
   end
 
   config.after :each, type: ->(spec) { spec.in?(%i[feature request]) } do
