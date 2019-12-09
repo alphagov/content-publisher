@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UnwithdrawController < ApplicationController
-  before_action :check_permission
+  before_action :check_permissions
 
   def confirm
     @edition = Edition.find_current(document: params[:document])
@@ -22,10 +22,16 @@ class UnwithdrawController < ApplicationController
 
 private
 
-  def check_permission
-    return if current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
-
+  def check_permissions
     @edition = Edition.find_current(document: params[:document])
-    render :non_managing_editor, status: :forbidden
+
+    if !current_user.has_permission?(User::MANAGE_LIVE_HISTORY_MODE) && @edition.history_mode?
+      render "missing_permissions/update_history_mode", status: :forbidden
+      return
+    end
+
+    if !current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
+      render :non_managing_editor, status: :forbidden
+    end
   end
 end
