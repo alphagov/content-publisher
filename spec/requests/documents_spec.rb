@@ -10,7 +10,7 @@ RSpec.describe "Documents" do
           title = I18n.t!("documents.show.historical.title",
                           document_type: edition.document_type.label.downcase)
           description = I18n.t!("documents.show.historical.description",
-                                government_name: edition.government.name)
+                                government_name: edition.government.title)
           expect(response.body).to include(title)
           expect(response.body).to include(description)
         end
