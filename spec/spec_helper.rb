@@ -44,15 +44,19 @@ RSpec.configure do |config|
     Rails.application.load_seed
   end
 
+  config.before :each do
+    Sidekiq::Worker.clear_all
+    ActionMailer::Base.deliveries.clear
+    BulkData::Cache.clear
+  end
+
   config.before :each, type: :feature do
     # This is required by lots of specs when visiting the index page
     stub_publishing_api_has_linkables([], document_type: "organisation")
   end
 
-  config.before :each do
-    Sidekiq::Worker.clear_all
-    ActionMailer::Base.deliveries.clear
-    BulkData::Cache.clear
+  config.before :each, type: ->(spec) { spec.in?(%i[feature request]) } do
+    populate_default_government_bulk_data
   end
 
   config.after :each, type: ->(spec) { spec.in?(%i[feature request]) } do

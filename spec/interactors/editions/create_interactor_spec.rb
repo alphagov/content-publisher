@@ -4,7 +4,10 @@ RSpec.describe Editions::CreateInteractor do
   describe ".call" do
     let(:user) { create :user }
 
-    before { stub_any_publishing_api_put_content }
+    before do
+      populate_default_government_bulk_data
+      stub_any_publishing_api_put_content
+    end
 
     it "resets the edition metadata" do
       edition = create(:edition,

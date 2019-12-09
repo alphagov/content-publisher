@@ -3,7 +3,10 @@
 RSpec.describe ScheduledPublishingJob do
   include ActiveJob::TestHelper
 
-  before { stub_any_publishing_api_call }
+  before do
+    populate_default_government_bulk_data
+    stub_any_publishing_api_call
+  end
 
   let(:scheduled_edition) do
     scheduling = create(:scheduling, reviewed: true, publish_time: Time.current.yesterday)
