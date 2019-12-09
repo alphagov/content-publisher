@@ -10,7 +10,7 @@ module WhitehallImporter
     )
 
     begin
-      Import.call(whitehall_document)
+      Import.call(record)
       record.update!(state: "completed")
     rescue StandardError => e
       record.update!(error_log: e.message,
