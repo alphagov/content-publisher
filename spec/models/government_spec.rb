@@ -1,104 +1,39 @@
 # frozen_string_literal: true
 
 RSpec.describe Government do
-  describe ".all" do
-    it "returns a collection of governments" do
-      expect(Government.all).not_to be_empty
-      expect(Government.all).to all be_a(Government)
-    end
-  end
+  describe "#==" do
+    it "returns true when content_id and locale are equal" do
+      government = build(:government, started_on: Time.zone.today)
+      other = build(:government,
+                    content_id: government.content_id,
+                    locale: government.locale,
+                    started_on: Time.zone.yesterday)
 
-  describe ".find" do
-    let(:content_id) { SecureRandom.uuid }
-    let(:government) { build(:government, content_id: content_id) }
-    before { allow(Government).to receive(:all).and_return([government]) }
-
-    it "finds a government by content id" do
-      expect(Government.find(content_id)).to be government
+      expect(government).to eq(other)
     end
 
-    it "raises an error if there isn't a government for the id" do
-      missing_content_id = SecureRandom.uuid
-      expect { Government.find(missing_content_id) }
-        .to raise_error(RuntimeError, "Government #{missing_content_id} not found")
-    end
-  end
-
-  describe ".for_date" do
-    let(:current_government) do
-      build(:government,
-            start_date: Date.parse("2018-12-01"),
-            end_date: nil)
+    it "returns false when content_id doesn't match" do
+      government = build(:government, content_id: SecureRandom.uuid, locale: "en")
+      other = build(:government, content_id: SecureRandom.uuid, locale: "en")
+      expect(government).not_to eq(other)
     end
 
-    let(:past_government) do
-      build(:government,
-            start_date: Date.parse("2018-01-31"),
-            end_date: Date.parse("2018-12-01"))
-    end
-
-    before do
-      allow(Government).to receive(:all)
-                       .and_return([current_government, past_government])
-    end
-
-    it "returns a government when there is one for the date" do
-      expect(Government.for_date(Date.parse("2019-06-01"))).to eq current_government
-    end
-
-    it "returns nil when there isn't a government for the date" do
-      expect(Government.for_date(Date.parse("2017-06-01"))).to be_nil
-    end
-
-    it "opts for the more recent government when there is a date conflict" do
-      expect(Government.for_date(Date.parse("2018-12-01"))).to eq current_government
-    end
-
-    it "accepts a nil date" do
-      expect(Government.for_date(nil)).to be_nil
-    end
-  end
-
-  describe ".current" do
-    let(:current_government) do
-      build(:government,
-            start_date: Date.parse("2018-12-01"),
-            end_date: nil)
-    end
-
-    let(:past_government) do
-      build(:government,
-            start_date: Date.parse("2018-01-31"),
-            end_date: Date.parse("2018-12-01"))
-    end
-
-    before do
-      allow(Government).to receive(:all)
-                       .and_return([current_government, past_government])
-    end
-
-    it "returns the current government" do
-      expect(Government.current).to eq current_government
-    end
-  end
-
-  describe ".past" do
-    it "returns the past governments" do
-      past = Government.past
-      expect(past).not_to be_empty
-      expect(past).to all be_a(Government)
-      expect(past).not_to include(Government.current)
+    it "returns false when locale doesn't match" do
+      content_id = SecureRandom.uuid
+      english = build(:government, content_id: content_id, locale: "en")
+      french = build(:government, content_id: content_id, locale: "fr")
+      expect(english).not_to eq(french)
     end
   end
 
   describe "#covers?" do
     let(:government) do
-      build(:government, start_date: start_date, end_date: end_date)
+      build(:government, started_on: started_on, ended_on: ended_on)
     end
 
     context "when there isn't an end date" do
-      let(:start_date) { Date.parse("2019-11-18") }
-      let(:end_date) { nil }
+      let(:started_on) { Date.parse("2019-11-18") }
+      let(:ended_on) { nil }
 
       it "returns false before the start date" do
         expect(government.covers?(Date.parse("2019-11-01"))).to be false
@@ -114,8 +49,8 @@ RSpec.describe Government do
     end
 
     context "when there is a start date and an end date" do
-      let(:start_date) { Date.parse("2019-11-18") }
-      let(:end_date) { Date.parse("2019-11-20") }
+      let(:started_on) { Date.parse("2019-11-18") }
+      let(:ended_on) { Date.parse("2019-11-20") }
 
       it "returns false before the start date" do
         expect(government.covers?(Date.parse("2019-11-17"))).to be false
@@ -140,16 +75,31 @@ RSpec.describe Government do
     end
   end
 
-  describe "#current?" do
-    let(:government) { build(:government) }
+  describe "#started_on" do
+    it "returns a date" do
+      expect(build(:government).started_on).to be_a(Date)
+    end
+  end
 
-    it "returns true when the government is the current one" do
-      allow(Government).to receive(:current).and_return(government)
-      expect(government.current?).to be true
+  describe "#ended_on" do
+    it "returns a date when ended on is set" do
+      government = build(:government, ended_on: Time.zone.yesterday)
+      expect(government.ended_on).to be_a(Date)
+    end
+
+    it "returns nil when an end date isn't set" do
+      government = build(:government, ended_on: nil)
+      expect(government.ended_on).to be_nil
+    end
+  end
+
+  describe "#current?" do
+    it "returns true when the government is marked as the current one" do
+      expect(build(:government, current: true).current?).to be true
     end
 
     it "returns false when the government is not the current one" do
-      expect(government.current?).to be false
+      expect(build(:government, current: false).current?).to be false
     end
   end
 end
