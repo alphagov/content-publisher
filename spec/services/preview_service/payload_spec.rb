@@ -143,12 +143,14 @@ RSpec.describe PreviewService::Payload do
     end
 
     it "includes government when one is present" do
-      current_government = Government.current
-      edition = build(:edition, government_id: current_government.content_id)
+      government = build(:government)
+      populate_government_bulk_data(government)
+
+      edition = build(:edition, government_id: government.content_id)
 
       payload = PreviewService::Payload.new(edition).payload
 
-      expect(payload["links"]["government"]).to eq [current_government.content_id]
+      expect(payload["links"]["government"]).to eq [government.content_id]
     end
 
     it "includes a change note if the update type is 'major'" do
