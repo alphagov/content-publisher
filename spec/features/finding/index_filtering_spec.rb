@@ -24,6 +24,14 @@ RSpec.feature "Index filtering" do
     and_i_filter_by_organisation
     then_i_see_just_the_ones_that_match
 
+    when_i_clear_the_filters
+    and_i_filter_by_political_status
+    then_i_see_just_the_ones_that_match
+
+    when_i_clear_the_filters
+    and_i_filter_by_history_mode
+    then_i_see_just_the_ones_that_match
+
     when_i_filter_too_much
     then_i_see_there_are_no_results
   end
@@ -35,6 +43,8 @@ RSpec.feature "Index filtering" do
                             "internal_name" => "Organisation 2" }
 
     @relevant_edition = create(:edition,
+                               :political,
+                               :past_government,
                                title: "Super relevant",
                                tags: {
                                  primary_publishing_organisation: [@primary_organisation["content_id"]],
@@ -102,6 +112,16 @@ RSpec.feature "Index filtering" do
 
   def and_i_filter_by_organisation
     select @other_organisation["internal_name"], from: "organisation"
+    click_on "Filter"
+  end
+
+  def and_i_filter_by_political_status
+    select "Yes", from: "political"
+    click_on "Filter"
+  end
+
+  def and_i_filter_by_history_mode
+    select "Yes", from: "history_mode"
     click_on "Filter"
   end
 

@@ -83,6 +83,28 @@ RSpec.describe EditionFilter do
       expect(editions).to match_array([edition1, edition2])
     end
 
+    it "filters the editions by political status" do
+      edition1 = create(:edition, :not_political)
+      edition2 = create(:edition, :political)
+
+      editions = EditionFilter.new(user, filters: { political: "yes" }).editions
+      expect(editions).to match_array([edition2])
+
+      editions = EditionFilter.new(user, filters: { political: "no" }).editions
+      expect(editions).to match_array([edition1])
+    end
+
+    it "filters the editions by history mode" do
+      edition1 = create(:edition, :political, :current_government)
+      edition2 = create(:edition, :political, :past_government)
+
+      editions = EditionFilter.new(user, filters: { history_mode: "yes" }).editions
+      expect(editions).to match_array([edition2])
+
+      editions = EditionFilter.new(user, filters: { history_mode: "no" }).editions
+      expect(editions).to match_array([edition1])
+    end
+
     it "ignores other kinds of filter" do
       edition1 = create(:edition)
 

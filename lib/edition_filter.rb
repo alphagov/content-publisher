@@ -73,6 +73,10 @@ private
         end
       when :organisation
         memo.merge(TagsRevision.tagged_organisations_include(value))
+      when :political
+        memo.political(value == "yes")
+      when :history_mode
+        memo.history_mode(value == "yes")
       else
         memo
       end
