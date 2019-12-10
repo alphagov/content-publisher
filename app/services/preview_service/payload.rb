@@ -83,7 +83,6 @@ private
 
   def details
     details = { "political" => edition.political? }
-    details["government"] = edition.government.publishing_api_payload if edition.government
 
     document_type.contents.each do |field|
       details[field.id] = perform_input_type_specific_transformations(field)

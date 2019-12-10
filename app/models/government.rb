@@ -46,12 +46,4 @@ class Government
   def current?
     self == self.class.current
   end
-
-  def publishing_api_payload
-    {
-      "title" => name,
-      "slug" => slug,
-      "current" => current?,
-    }
-  end
 end
