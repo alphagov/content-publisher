@@ -1,0 +1,4 @@
+en:
+  missing_permissions:
+    update_history_mode:
+      title: "You do not have permission to update ‘%{title}’"

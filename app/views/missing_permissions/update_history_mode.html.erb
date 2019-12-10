@@ -1,0 +1,8 @@
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, t("missing_permissions.update_history_mode.title", title: @edition.title) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render_govspeak(File.read("app/views/missing_permissions/update_history_mode.govspeak.md")) %>
+  </div>
+</div>
