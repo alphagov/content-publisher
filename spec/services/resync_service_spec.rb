@@ -9,6 +9,7 @@ RSpec.describe ResyncService do
       stub_any_publishing_api_put_content
       stub_default_publishing_api_put_intent
       stub_default_publishing_api_path_reservation
+      populate_default_government_bulk_data
     end
 
     context "when there is no live edition" do
@@ -173,7 +174,7 @@ RSpec.describe ResyncService do
       let(:government) { build(:government) }
 
       before do
-        allow(Government).to receive(:all).and_return([government])
+        populate_government_bulk_data(government)
         allow(PoliticalEditionIdentifier)
           .to receive(:new)
           .and_return(instance_double(PoliticalEditionIdentifier, political?: true))

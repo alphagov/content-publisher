@@ -46,10 +46,13 @@ private
   end
 
   def set_political_and_government(edition)
+    repository = BulkData::GovernmentRepository.new
+    government = repository.for_date(edition.public_first_published_at)
+
     edition.update!(
       revision_synced: false,
       system_political: PoliticalEditionIdentifier.new(edition).political?,
-      government_id: Government.for_date(edition.public_first_published_at)&.content_id,
+      government_id: government&.content_id,
     )
   end
 
