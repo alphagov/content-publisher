@@ -95,8 +95,10 @@ RSpec.describe EditionFilter do
     end
 
     it "filters the editions that are in history mode" do
-      edition1 = create(:edition, :political, :current_government)
-      edition2 = create(:edition, :political, :past_government)
+      populate_default_government_bulk_data
+
+      edition1 = create(:edition, :political, government: current_government)
+      edition2 = create(:edition, :political, government: past_government)
 
       editions = EditionFilter.new(user, filters: { in_history_mode: "yes" }).editions
       expect(editions).to match_array([edition2])
