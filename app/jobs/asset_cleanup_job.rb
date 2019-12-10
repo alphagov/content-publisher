@@ -2,7 +2,7 @@
 
 class AssetCleanupJob < ApplicationJob
   def perform
-    ApplicationRecord.with_advisory_lock("content-publisher_asset-cleanup", timeout_seconds: 0) do
+    run_exclusively do
       clean_image_assets
       clean_file_attachment_assets
     end
