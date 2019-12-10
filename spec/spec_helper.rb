@@ -23,7 +23,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 Capybara.automatic_label_click = true
 ActiveRecord::Migration.maintain_test_schema!
 Rails.application.load_tasks
-Sidekiq::Testing.inline!
+Sidekiq::Testing.fake!
 
 RSpec.configure do |config|
   config.expose_dsl_globally = false

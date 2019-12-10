@@ -2,11 +2,7 @@
 
 RSpec.feature "Scheduled publishing failed" do
   around do |example|
-    Sidekiq::Testing.fake! do
-      travel_to(Time.zone.parse("2019-06-19"))
-      example.run
-      travel_back
-    end
+    travel_to(Time.zone.parse("2019-06-19")) { example.run }
   end
 
   scenario do

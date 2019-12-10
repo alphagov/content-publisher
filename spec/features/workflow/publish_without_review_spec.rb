@@ -66,6 +66,7 @@ RSpec.feature "Publish without review" do
   end
 
   def and_the_editors_receive_an_email
+    Sidekiq::Worker.drain_all
     tos = ActionMailer::Base.deliveries.map(&:to)
     message = ActionMailer::Base.deliveries.first
 
