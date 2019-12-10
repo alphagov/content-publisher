@@ -25,13 +25,13 @@ FactoryBot.define do
 
     after(:build) do |edition, evaluator|
       unless edition.document
-        edition.document = evaluator.association(
-          :document,
-          created_by: edition.created_by,
-          content_id: evaluator.content_id,
-          locale: evaluator.locale,
-          first_published_at: evaluator.first_published_at,
-        )
+        args = [:document,
+                evaluator.live ? :live : nil,
+                created_by: edition.created_by,
+                content_id: evaluator.content_id,
+                locale: evaluator.locale,
+                first_published_at: evaluator.first_published_at]
+        edition.document = evaluator.association(*args.compact)
       end
 
       edition.number = edition.document&.next_edition_number unless edition.number

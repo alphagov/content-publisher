@@ -6,7 +6,13 @@ FactoryBot.define do
     locale { I18n.available_locales.sample }
     association :created_by, factory: :user
 
+    trait :live do
+      first_published_at { Time.current }
+    end
+
     trait :with_live_edition do
+      live
+
       after(:build) do |document, evaluator|
         document.live_edition = evaluator.association(
           :edition,
@@ -29,6 +35,8 @@ FactoryBot.define do
     end
 
     trait :with_current_and_live_editions do
+      live
+
       after(:build) do |document, evaluator|
         document.live_edition = evaluator.association(
           :edition,
