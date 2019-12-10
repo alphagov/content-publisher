@@ -12,47 +12,90 @@ RSpec.describe ResyncService do
       populate_default_government_bulk_data
     end
 
-    context "when there is no live edition" do
-      let(:document) { create(:document, :with_current_edition) }
+    it "reserves base paths" do
+      document = create(:document, :with_current_and_live_editions)
 
-      it "it does not publish the edition" do
-        expect(FailsafePreviewService).to receive(:call).with(document.current_edition)
+      reserve_path_params = {
+        publishing_app: "content-publisher",
+        override_existing: true,
+      }
+
+      draft_request = stub_publishing_api_path_reservation(
+        document.current_edition.base_path,
+        reserve_path_params,
+      )
+      live_request = stub_publishing_api_path_reservation(
+        document.live_edition.base_path,
+        reserve_path_params,
+      )
+
+      ResyncService.call(document)
+
+      expect(draft_request).to have_been_requested
+      expect(live_request).to have_been_requested
+    end
+
+    it "updates the system_political value of editions" do
+      document = create(:document, :with_current_and_live_editions)
+
+      expect(PoliticalEditionIdentifier)
+        .to receive(:new)
+        .twice
+        .and_return(instance_double(PoliticalEditionIdentifier, political?: true))
+
+      expect { ResyncService.call(document) }
+        .to change { document.live_edition.system_political }.to(true)
+        .and change { document.current_edition.system_political }.to(true)
+    end
+
+    it "updates the government_id of editions" do
+      document = create(:document, :with_current_and_live_editions)
+      government = build(:government)
+      populate_government_bulk_data(government)
+
+      expect { ResyncService.call(document) }
+        .to change { document.live_edition.government_id }.to(government.content_id)
+        .and change { document.current_edition.government_id }.to(government.content_id)
+    end
+
+    context "when there is no live edition" do
+      let(:edition) { create(:edition) }
+
+      it "doesn't publish the edition" do
+        expect(FailsafePreviewService).to receive(:call).with(edition)
         expect(GdsApi.publishing_api_v2).not_to receive(:publish)
-        ResyncService.call(document)
+        ResyncService.call(edition.document)
       end
     end
 
     context "when the current edition is live" do
-      let(:document) { create(:document, :with_live_edition) }
+      let(:edition) { create(:edition, :published) }
 
       it "avoids synchronising the edition twice" do
         expect(PreviewService).to receive(:call).once
-        ResyncService.call(document)
+        ResyncService.call(edition.document)
       end
 
       it "re-publishes the live edition" do
-        expect(PreviewService)
-          .to receive(:call)
-          .with(
-            document.current_edition,
-            republish: true,
-          )
-          .and_call_original
+        expect(PreviewService).to receive(:call)
+                              .with(edition, republish: true)
+                              .and_call_original
 
         request = stub_publishing_api_publish(
-          document.content_id,
+          edition.content_id,
           update_type: nil,
-          locale: document.locale,
+          locale: edition.locale,
         )
-        ResyncService.call(document)
+        ResyncService.call(edition.document)
 
         expect(request).to have_been_requested
       end
 
       it "publishes assets to the live stack" do
-        expect(PublishAssetService).to receive(:call).once.
-          with(document.live_edition, nil)
-        ResyncService.call(document)
+        expect(PublishAssetService)
+          .to receive(:call).once.with(edition, nil)
+
+        ResyncService.call(edition.document)
       end
     end
 
@@ -167,43 +210,6 @@ RSpec.describe ResyncService do
             .at(edition.status.details.publish_time)
         end
       end
-    end
-
-    context "when there are both live and current editions" do
-      let(:document) { create(:document, :with_current_and_live_editions, first_published_at: Time.current) }
-      let(:government) { build(:government) }
-
-      before do
-        populate_government_bulk_data(government)
-        allow(PoliticalEditionIdentifier)
-          .to receive(:new)
-          .and_return(instance_double(PoliticalEditionIdentifier, political?: true))
-      end
-
-      it "updates the system_political value associated with both editions" do
-        expect { ResyncService.call(document) }
-          .to change { document.live_edition.system_political }.to(true)
-          .and change { document.current_edition.system_political }.to(true)
-      end
-
-      it "updates the government_id associated with with both editions" do
-        expect { ResyncService.call(document) }
-          .to change { document.live_edition.government_id }.to(government.content_id)
-          .and change { document.current_edition.government_id }.to(government.content_id)
-      end
-    end
-
-    it "reserves the path of the edition" do
-      edition = create(:edition)
-      reserve_path_params = {
-        publishing_app: "content-publisher",
-        override_existing: true,
-      }
-
-      request = stub_publishing_api_path_reservation(edition.base_path, reserve_path_params)
-      ResyncService.call(edition.document)
-
-      expect(request).to have_been_requested
     end
 
     def stub_publishing_api_path_reservation(base_path, params)
