@@ -42,4 +42,14 @@ RSpec.describe WhitehallImporter do
       end
     end
   end
+
+  describe ".sync" do
+    it "syncs the imported document with publishing-api" do
+      record = WhitehallImporter.import(build(:whitehall_export_document))
+
+      expect(ResyncService).to receive(:call).with(record)
+      expect(WhitehallImporter::ClearLinksetLinks).to receive(:call).with(record.content_id)
+      WhitehallImporter.sync(record)
+    end
+  end
 end
