@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe BulkData::GovernmentRepository do
+  include ActiveJob::TestHelper
+
   let(:repository) { BulkData::GovernmentRepository.new }
   let(:cache_key) { BulkData::GovernmentRepository::CACHE_KEY }
 
@@ -99,9 +101,10 @@ RSpec.describe BulkData::GovernmentRepository do
       expect(repository.all).to eq([government_b, government_c, government_a])
     end
 
-    it "raises a LocalDataUnavailableError when there isn't data" do
+    it "raises an error and queues a job to populate date when there isn't data" do
       expect { repository.all }
         .to raise_error(BulkData::LocalDataUnavailableError)
+      expect(PopulateBulkDataJob).to have_been_enqueued
     end
   end
 

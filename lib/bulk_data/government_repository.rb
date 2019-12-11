@@ -26,6 +26,7 @@ module BulkData
                     .map { |data| Government.new(data) }
                     .sort_by(&:started_on)
     rescue Cache::NoEntryError
+      PopulateBulkDataJob.perform_later
       raise LocalDataUnavailableError
     end
 
