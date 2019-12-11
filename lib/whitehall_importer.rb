@@ -19,4 +19,9 @@ module WhitehallImporter
 
     record
   end
+
+  def self.sync(document)
+    ResyncService.call(document)
+    ClearLinksetLinks.call(document.content_id)
+  end
 end
