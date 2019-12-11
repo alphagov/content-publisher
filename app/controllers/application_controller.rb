@@ -28,6 +28,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from BulkData::LocalDataUnavailableError do |error|
+    GovukError.notify(error)
+
+    render "errors/local_data_unavailable",
+           locals: { error: error },
+           status: :service_unavailable
+  end
+
   def rendering_context
     request.headers["Content-Publisher-Rendering-Context"] || "application"
   end

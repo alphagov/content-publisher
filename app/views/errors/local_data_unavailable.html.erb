@@ -1,0 +1,22 @@
+<% if Rails.env.development? %>
+  <%
+  title = "Expected cached data missing"
+  backtrace = error.backtrace.map { |line| "- <code>#{line}</code>" }.join("\n")
+  body_govspeak = <<~GOVSPEAK
+    Content Publisher relies on background jobs to load data from other GOV.UK
+    applications. To resolve this error ensure that the worker process is
+    running for Content Publisher.
+
+    Alternatively or if you are experiencing issues with the worker, you can
+    run the job directly in a rails console which should tell you more:
+    `PopulateBulkDataJob.perform_now`.
+
+    ## Backtrace
+
+    #{backtrace}
+  GOVSPEAK
+  %>
+  <%= render partial: "errors/error", locals: { title: title, body_govspeak: body_govspeak } %>
+<% else %>
+  <%= render partial: "errors/error", locals: t("errors.local_data_unavailable") %>
+<% end %>
