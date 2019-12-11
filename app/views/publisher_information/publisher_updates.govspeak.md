@@ -1,3 +1,6 @@
+### History mode <span class="govuk-caption-m">12 December 2019</span>
+You can see if a document will go into history mode if there is a change of government. Managing Editors can changed this setting.
+
 ### Adding to Document Collections <span class="govuk-caption-m">6 September 2019</span>
 You can now add content created in Content Publisher to document collections in Whitehall publisher.
 
