@@ -12,6 +12,7 @@ RSpec.describe "Import tasks" do
     end
 
     it "creates a document" do
+      allow(WhitehallImporter).to receive(:sync)
       expect { Rake::Task["import:whitehall"].invoke("123") }.to change { Document.count }.by(1)
     end
 
@@ -20,6 +21,22 @@ RSpec.describe "Import tasks" do
 
       expect($stdout).to receive(:puts).with("Import failed")
       expect($stdout).to receive(:puts).with("Error: Error importing")
+      expect { Rake::Task["import:whitehall"].invoke("123") }
+        .to raise_error(SystemExit)
+    end
+
+    it "syncs the imported document with publishing-api" do
+      document = create(:document, :with_current_and_live_editions)
+      allow(Document).to receive(:find_by).and_return(document)
+
+      expect(WhitehallImporter).to receive(:sync).with(document)
+      Rake::Task["import:whitehall"].invoke("123")
+    end
+
+    it "doesn't sync the imported document if the import fails" do
+      allow(WhitehallImporter::Import).to receive(:call).and_raise("Error importing")
+
+      expect(WhitehallImporter).to_not receive(:sync)
       expect { Rake::Task["import:whitehall"].invoke("123") }
         .to raise_error(SystemExit)
     end
