@@ -152,18 +152,4 @@ RSpec.describe Government do
       expect(government.current?).to be false
     end
   end
-
-  describe "#publishing_api_payload" do
-    it "returns the fields needed for presenting to Publishing API" do
-      government = build(:government,
-                         name: "Past Government",
-                         slug: "past-government")
-
-      expect(government.publishing_api_payload).to eq(
-        "title" => "Past Government",
-        "slug" => "past-government",
-        "current" => false,
-      )
-    end
-  end
 end

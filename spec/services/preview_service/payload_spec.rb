@@ -148,12 +148,6 @@ RSpec.describe PreviewService::Payload do
 
       payload = PreviewService::Payload.new(edition).payload
 
-      expect(payload["details"]["government"]).to eq(
-        "title" => current_government.name,
-        "slug" => current_government.slug,
-        "current" => true,
-      )
-
       expect(payload["links"]["government"]).to eq [current_government.content_id]
     end
 
