@@ -1,7 +1,7 @@
 en:
   withdraw:
     new:
-      title: "Withdraw '%{title}'"
+      title: "Withdraw ‘%{title}’"
       public_explanation:
         title: "Public explanation"
         guidance_title: Writing public explanation
