@@ -4,7 +4,7 @@
       <%= render "documents/show/submitted_for_review" %>
     <% end %>
 
-    <% if @edition.history_mode? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
+    <% if @edition.history_mode? %>
       <%= render "documents/show/historical_notice" %>
     <% end %>
 

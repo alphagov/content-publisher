@@ -100,47 +100,45 @@
     %>
   </div>
 
-  <% if current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
-    <div class="govuk-form-group">
-      <%= render "govuk_publishing_components/components/label", {
-        text: t("documents.index.filter.political"),
-        html_for: "political-filter",
-        bold: true
-      } %>
+  <div class="govuk-form-group">
+    <%= render "govuk_publishing_components/components/label", {
+      text: t("documents.index.filter.political"),
+      html_for: "political-filter",
+      bold: true
+    } %>
 
-      <%= select_tag "political",
-        options_for_select([["Yes", "yes"], ["No", "no"]], [params[:political]]),
-        include_blank: true,
-        id: "political-filter",
-        class: "govuk-select",
-        data: {
-          gtm: "select-political",
-          "gtm-visibility-tracking": params[:political].present? || nil,
-          "gtm-value": params[:political]
-        }
-      %>
-    </div>
+    <%= select_tag "political",
+      options_for_select([["Yes", "yes"], ["No", "no"]], [params[:political]]),
+      include_blank: true,
+      id: "political-filter",
+      class: "govuk-select",
+      data: {
+        gtm: "select-political",
+        "gtm-visibility-tracking": params[:political].present? || nil,
+        "gtm-value": params[:political]
+      }
+    %>
+  </div>
 
-    <div class="govuk-form-group">
-      <%= render "govuk_publishing_components/components/label", {
-        text: t("documents.index.filter.history_mode"),
-        html_for: "history_mode-filter",
-        bold: true
-      } %>
+  <div class="govuk-form-group">
+    <%= render "govuk_publishing_components/components/label", {
+      text: t("documents.index.filter.history_mode"),
+      html_for: "history_mode-filter",
+      bold: true
+    } %>
 
-      <%= select_tag "history_mode",
-        options_for_select([["Yes", "yes"], ["No", "no"]], [params[:history_mode]]),
-        include_blank: true,
-        id: "history_mode-filter",
-        class: "govuk-select",
-        data: {
-          gtm: "select-history_mode",
-          "gtm-visibility-tracking": params[:history_mode].present? || nil,
-          "gtm-value": params[:history_mode]
-        }
-      %>
-    </div>
-  <% end %>
+    <%= select_tag "history_mode",
+      options_for_select([["Yes", "yes"], ["No", "no"]], [params[:history_mode]]),
+      include_blank: true,
+      id: "history_mode-filter",
+      class: "govuk-select",
+      data: {
+        gtm: "select-history_mode",
+        "gtm-visibility-tracking": params[:history_mode].present? || nil,
+        "gtm-value": params[:history_mode]
+      }
+    %>
+  </div>
 
   <%= hidden_field_tag "sort", @sort %>
 
