@@ -1,0 +1,10 @@
+en:
+  political:
+    no_managing_editor_permission:
+      title: Change the history mode tag for ‘%{title}’
+      body_govspeak: |
+        Only a managing editor can change the political status of a page. You do not have permission to do this.
+
+        If you think the history mode tag of this content is wrong, you need to ask the managing editor for your organisation.
+
+        Read the [guidance about content from previous governments](https://www.gov.uk/guidance/content-design/gov-uk-content-retention-and-withdrawal-archiving-policy){:target="_blank"} (link opens in a new window).

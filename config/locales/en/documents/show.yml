@@ -47,6 +47,10 @@ en:
           type:
             tagged_organisations: Only publishers in tagged organistions have access
             primary_organisation: Only publishers in the primary organisation have access
+        political:
+          title: Gets history mode
+          true_label: "Yes"
+          false_label: "No"
       metadata:
         status: Status
         updated_at: Last updated

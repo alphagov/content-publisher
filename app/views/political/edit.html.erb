@@ -1,0 +1,44 @@
+<% content_for :title, t("political.edit.title", document_type: @edition.document_type.label.downcase) %>
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-body" %>
+      <%= t("political.edit.description") %>
+    </div>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag political_path(@edition.document), data: { gtm: "confirm-political" } do %>
+      <%= render "govuk_publishing_components/components/radio", {
+        name: "political",
+        error_items: @issues&.items_for(:political),
+        items: [
+          {
+            value: "yes",
+            text: t("political.edit.labels.political"),
+            checked: @edition.political?,
+            data_attributes: {
+              gtm: "choose-political",
+              "gtm-value": t("political.edit.labels.political")
+            }
+          },
+          {
+            value: "no",
+            text: t("political.edit.labels.not_political"),
+            checked: @edition.political? == false,
+            data_attributes: {
+              gtm: "choose-political",
+              "gtm-value": t("political.edit.labels.not_political")
+            }
+          }
+        ]
+      } %>
+
+      <%= render "govuk_publishing_components/components/button", { text: "Save", margin_bottom: true } %>
+      <%= render_govspeak(t("political.edit.guidance_link_govspeak")) %>
+    <% end %>
+  </div>
+</div>

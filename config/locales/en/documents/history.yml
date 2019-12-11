@@ -37,5 +37,6 @@ en:
         access_limit_created: "Access limit created"
         access_limit_updated: "Access limit updated"
         access_limit_removed: "Access limit removed"
+        political_status_changed: "History mode criteria updated"
       entry_content:
         backdated: "First published date backdated to %{date}"

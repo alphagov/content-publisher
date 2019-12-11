@@ -1,0 +1,2 @@
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<%= render partial: "errors/error", locals: { title: t("political.no_managing_editor_permission.title", title: @edition.title), body_govspeak: t("political.no_managing_editor_permission.body_govspeak") } %>
