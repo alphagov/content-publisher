@@ -5,7 +5,7 @@ RSpec.describe "Documents" do
     describe "history mode banner" do
       context "when in history mode" do
         it "shows the history mode banner" do
-          edition = create(:edition, :political, :past_government)
+          edition = create(:edition, :political, government: past_government)
           get document_path(edition.document)
           title = I18n.t!("documents.show.historical.title",
                           document_type: edition.document_type.label.downcase)
@@ -16,7 +16,7 @@ RSpec.describe "Documents" do
         end
 
         it "won't show the history mode banner when the edition was created under the current government" do
-          edition = create(:edition, :political, :current_government)
+          edition = create(:edition, :political, government: current_government)
           get document_path(edition.document)
           title = I18n.t!("documents.show.historical.title",
                           document_type: edition.document_type.label.downcase)

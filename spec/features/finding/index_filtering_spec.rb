@@ -44,7 +44,7 @@ RSpec.feature "Index filtering" do
 
     @relevant_edition = create(:edition,
                                :political,
-                               :past_government,
+                               government: past_government,
                                title: "Super relevant",
                                tags: {
                                  primary_publishing_organisation: [@primary_organisation["content_id"]],

@@ -11,7 +11,7 @@ RSpec.describe "Editions" do
     end
 
     context "when the edition is in history mode" do
-      let(:edition) { create(:edition, :published, :political, :past_government) }
+      let(:edition) { create(:edition, :published, :political, government: past_government) }
 
       it "lets users holding the manage_live_history_mode permisssion create a new edition" do
         user = create(:user, manage_live_history_mode: true)
@@ -23,7 +23,6 @@ RSpec.describe "Editions" do
       end
 
       it "prevents users without the permission creating a new edition" do
-        edition = create(:edition, :published, :political, :past_government)
         post create_edition_path(edition.document)
 
         expect(response.body).to include(I18n.t!("missing_permissions.update_history_mode.title", title: edition.title))
