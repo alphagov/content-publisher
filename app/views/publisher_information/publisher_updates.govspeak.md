@@ -1,10 +1,13 @@
+### History mode <span class="govuk-caption-m">12 December 2019</span>
+You can see if a document will go into history mode if there is a change of government. Managing Editors can change this setting.
+
 ### Adding to Document Collections <span class="govuk-caption-m">6 September 2019</span>
 You can now add content created in Content Publisher to document collections in Whitehall publisher.
 
 This can be done by editing the document collection in Whitehall and selecting the 'Add GOV.UK content created outside of Whitehall to a group' option on the 'Collection documents' screen.
 
 ### Access limiting <span class="govuk-caption-m">6 August 2019</span>
-You can now limit who is able to find and edit a document. You can only limit access before it is published. You can limit it to just publishers in the primary organisation, or to publishers in any tagged organisation. 
+You can now limit who is able to find and edit a document. You can only limit access before it is published. You can limit it to just publishers in the primary organisation, or to publishers in any tagged organisation.
 
 ### Backdating <span class="govuk-caption-m">27 June 2019</span>
 You can now backdate on content if it has previously been available on another web page.

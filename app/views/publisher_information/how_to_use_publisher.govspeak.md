@@ -119,6 +119,16 @@ You can choose if only publishers in the primary organisation will have access, 
 
 ---
 
+##History mode
+
+If there is a change of government then content of a political nature will be put into history mode on GOV.UK. This explains to users that it was published by a previous government.
+
+Managing Editors can change the setting to decide if a document should go into history mode or not.
+
+[Find out more about history mode](https://www.gov.uk/guidance/content-design/gov-uk-content-retention-and-withdrawal-archiving-policy).
+
+---
+
 ##How to update content
 
 You can search for existing content using the document search.
