@@ -40,9 +40,9 @@
 <% end %>
 
 <% items << {
-  field: t("documents.show.content_settings.political.title"),
-  value: @edition.political? ? t("documents.show.content_settings.political.true_label") : t("documents.show.content_settings.political.false_label"),
-  edit: @edition.editable? ? { href: political_path, data_attributes: { gtm: "edit-political" } } : {}
+  field: t("documents.show.content_settings.gets_history_mode.title"),
+  value: @edition.political? ? t("documents.show.content_settings.gets_history_mode.true_label") : t("documents.show.content_settings.gets_history_mode.false_label"),
+  edit: @edition.editable? ? { href: history_mode_path, data_attributes: { gtm: "edit-history-mode" } } : {}
 } %>
 
 <%= render "govuk_publishing_components/components/summary_list", {

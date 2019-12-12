@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PoliticalController < ApplicationController
+class HistoryModeController < ApplicationController
   before_action :check_permission
 
   def edit
@@ -9,7 +9,7 @@ class PoliticalController < ApplicationController
   end
 
   def update
-    result = Political::UpdateInteractor.call(params: params, user: current_user)
+    result = HistoryMode::UpdateInteractor.call(params: params, user: current_user)
     redirect_to document_path(result.edition.document)
   end
 

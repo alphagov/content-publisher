@@ -1,44 +1,44 @@
-<% content_for :title, t("political.edit.title", document_type: @edition.document_type.label.downcase) %>
+<% content_for :title, t("history_mode.edit.title", document_type: @edition.document_type.label.downcase) %>
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <div class="govuk-body" %>
-      <%= t("political.edit.description") %>
+      <%= t("history_mode.edit.description") %>
     </div>
   </div>
 </div>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag political_path(@edition.document), data: { gtm: "confirm-political" } do %>
+    <%= form_tag history_mode_path(@edition.document), data: { gtm: "confirm-political" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "political",
         error_items: @issues&.items_for(:political),
         items: [
           {
             value: "yes",
-            text: t("political.edit.labels.political"),
+            text: t("history_mode.edit.labels.political"),
             checked: @edition.political?,
             data_attributes: {
               gtm: "choose-political",
-              "gtm-value": t("political.edit.labels.political")
+              "gtm-value": t("history_mode.edit.labels.political")
             }
           },
           {
             value: "no",
-            text: t("political.edit.labels.not_political"),
+            text: t("history_mode.edit.labels.not_political"),
             checked: @edition.political? == false,
             data_attributes: {
               gtm: "choose-political",
-              "gtm-value": t("political.edit.labels.not_political")
+              "gtm-value": t("history_mode.edit.labels.not_political")
             }
           }
         ]
       } %>
 
       <%= render "govuk_publishing_components/components/button", { text: "Save", margin_bottom: true } %>
-      <%= render_govspeak(t("political.edit.guidance_link_govspeak")) %>
+      <%= render_govspeak(t("history_mode.edit.guidance_link_govspeak")) %>
     <% end %>
   </div>
 </div>

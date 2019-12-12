@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Political::UpdateInteractor do
+RSpec.describe HistoryMode::UpdateInteractor do
   describe ".call" do
     let(:user) { create(:user, managing_editor: true) }
     let(:edition) { create(:edition, :not_political) }
@@ -17,7 +17,7 @@ RSpec.describe Political::UpdateInteractor do
     before { stub_any_publishing_api_put_content }
 
     it "sets the edition to political" do
-      Political::UpdateInteractor.call(**args)
+      HistoryMode::UpdateInteractor.call(**args)
       edition.reload
 
       expect(edition.political?).to be true
@@ -25,14 +25,14 @@ RSpec.describe Political::UpdateInteractor do
 
     it "sets the edition to not political" do
       args[:params][:political] = "no"
-      Political::UpdateInteractor.call(**args)
+      HistoryMode::UpdateInteractor.call(**args)
       edition.reload
 
       expect(edition.political?).to be false
     end
 
     it "creates a timeline entry" do
-      Political::UpdateInteractor.call(**args)
+      HistoryMode::UpdateInteractor.call(**args)
       edition.reload
 
       expect(edition.timeline_entries.last.entry_type).to eq("political_status_changed")
@@ -41,7 +41,7 @@ RSpec.describe Political::UpdateInteractor do
     it "sends a preview of the new edition to the Publishing API" do
       expect(FailsafePreviewService).to receive(:call)
 
-      Political::UpdateInteractor.call(**args)
+      HistoryMode::UpdateInteractor.call(**args)
     end
   end
 end
