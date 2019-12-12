@@ -2,7 +2,8 @@
 
 RSpec.feature "History mode" do
   scenario do
-    given_there_is_a_not_political_document
+    given_there_is_a_past_government
+    and_there_is_a_not_political_document
     and_i_am_a_managing_editor
     when_i_visit_the_summary_page
     then_i_see_that_the_content_doesnt_get_history_mode
@@ -17,7 +18,15 @@ RSpec.feature "History mode" do
     and_i_see_the_history_mode_banner
   end
 
-  def given_there_is_a_not_political_document
+  def given_there_is_a_past_government
+    @government = build(:government,
+                        started_on: Time.zone.parse("2006-01-01"),
+                        ended_on: Time.zone.parse("2010-01-01"))
+
+    populate_government_bulk_data(@government)
+  end
+
+  def and_there_is_a_not_political_document
     @edition = create(:edition, :not_political)
   end
 
@@ -69,9 +78,9 @@ RSpec.feature "History mode" do
 
   def and_i_enter_a_date_to_backdate_the_content_to
     @request = stub_publishing_api_put_content(@edition.content_id, {})
-    fill_in "backdate[date][day]", with: "1"
-    fill_in "backdate[date][month]", with: "1"
-    fill_in "backdate[date][year]", with: "1999"
+    fill_in "backdate[date][day]", with: @government.started_on.day
+    fill_in "backdate[date][month]", with: @government.started_on.month
+    fill_in "backdate[date][year]", with: @government.started_on.year
     click_on "Save"
   end
 
