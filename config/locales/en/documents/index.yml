@@ -25,5 +25,5 @@ en:
         document_type: Document type
         state: Status
         organisation: Organisation
-        political: Gets history mode
-        history_mode: In history mode
+        gets_history_mode: Gets history mode
+        in_history_mode: In history mode
