@@ -20,6 +20,16 @@ RSpec.describe "Withdraw" do
       )
     end
 
+    it "returns an error when publishing-api is down" do
+      publishing_api_isnt_available
+      login_as(managing_editor)
+
+      post withdraw_path(published_edition.document), params: { public_explanation: "Just cos" }
+      follow_redirect!
+
+      expect(response.body).to include(I18n.t!("withdraw.new.flashes.publishing_api_error.title"))
+    end
+
     context "when the edition is in history mode" do
       let(:published_history_mode_edition) { create(:edition, :published, :political, :past_government) }
 
