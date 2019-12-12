@@ -30,6 +30,13 @@ RSpec.describe "Withdraw" do
       expect(response.body).to include(I18n.t!("withdraw.new.flashes.publishing_api_error.title"))
     end
 
+    it "returns a requirements error when there is a requirements issue" do
+      login_as(managing_editor)
+      post withdraw_path(published_edition.document), params: { public_explanation: "" }
+
+      expect(response.body).to include(I18n.t!("requirements.public_explanation.blank.form_message"))
+    end
+
     it "prevents users without managing_editor permission from withdrawing the edition" do
       post withdraw_path(published_edition.document), params: { public_explanation: "just cos" }
 
