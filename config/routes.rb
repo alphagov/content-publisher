@@ -76,8 +76,8 @@ Rails.application.routes.draw do
     get "/access-limit" => "access_limit#edit", as: :access_limit
     post "/access-limit" => "access_limit#update"
 
-    get "/political" => "political#edit", as: :political
-    post "/political" => "political#update"
+    get "/history-mode" => "history_mode#edit", as: :history_mode
+    post "/history-mode" => "history_mode#update"
 
     post "/editions" => "editions#create", as: :create_edition
 

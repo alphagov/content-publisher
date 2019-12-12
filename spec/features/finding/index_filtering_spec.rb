@@ -25,11 +25,11 @@ RSpec.feature "Index filtering" do
     then_i_see_just_the_ones_that_match
 
     when_i_clear_the_filters
-    and_i_filter_by_political_status
+    and_i_filter_by_gets_history_mode
     then_i_see_just_the_ones_that_match
 
     when_i_clear_the_filters
-    and_i_filter_by_history_mode
+    and_i_filter_by_in_history_mode
     then_i_see_just_the_ones_that_match
 
     when_i_filter_too_much
@@ -115,13 +115,13 @@ RSpec.feature "Index filtering" do
     click_on "Filter"
   end
 
-  def and_i_filter_by_political_status
-    select "Yes", from: "political"
+  def and_i_filter_by_gets_history_mode
+    select "Yes", from: "gets_history_mode"
     click_on "Filter"
   end
 
-  def and_i_filter_by_history_mode
-    select "Yes", from: "history_mode"
+  def and_i_filter_by_in_history_mode
+    select "Yes", from: "in_history_mode"
     click_on "Filter"
   end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Political::UpdateInteractor < ApplicationInteractor
+class HistoryMode::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

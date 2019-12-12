@@ -73,9 +73,9 @@ private
         end
       when :organisation
         memo.merge(TagsRevision.tagged_organisations_include(value))
-      when :political
+      when :gets_history_mode
         memo.political(value == "yes")
-      when :history_mode
+      when :in_history_mode
         memo.history_mode(value == "yes")
       else
         memo
