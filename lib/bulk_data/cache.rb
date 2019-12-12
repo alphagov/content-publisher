@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bulk_data"
+
 module BulkData
   class Cache
     include Singleton
@@ -8,6 +10,7 @@ module BulkData
 
     class << self
       delegate :cache, to: :instance
+      delegate :clear, :middleware, to: :cache
     end
 
     attr_reader :cache
