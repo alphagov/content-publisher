@@ -30,6 +30,13 @@ RSpec.describe "Withdraw" do
       expect(response.body).to include(I18n.t!("withdraw.new.flashes.publishing_api_error.title"))
     end
 
+    it "prevents users without managing_editor permission from withdrawing the edition" do
+      post withdraw_path(published_edition.document), params: { public_explanation: "just cos" }
+
+      expect(response.body).to include(I18n.t!("withdraw.no_managing_editor_permission.title"))
+      expect(response).to have_http_status(:forbidden)
+    end
+
     context "when the edition is in history mode" do
       let(:published_history_mode_edition) { create(:edition, :published, :political, :past_government) }
 
@@ -79,6 +86,13 @@ RSpec.describe "Withdraw" do
       get withdraw_path(draft_edition.document)
 
       expect(response).to redirect_to(document_path(draft_edition.document))
+    end
+
+    it "prevents users without managing_editor permission from accessing withdraw page" do
+      get withdraw_path(published_edition.document)
+
+      expect(response.body).to include(I18n.t!("withdraw.no_managing_editor_permission.title"))
+      expect(response).to have_http_status(:forbidden)
     end
 
     context "when the edition is in history mode" do
