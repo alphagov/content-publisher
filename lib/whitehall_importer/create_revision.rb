@@ -115,13 +115,21 @@ module WhitehallImporter
 
     def create_image_revisions(images)
       images.reduce([]) do |memo, image|
-        memo << WhitehallImporter::CreateImageRevision.call(record, image, memo.map(&:filename))
+        already_imported = WhitehallImportedAsset.find_by(original_asset_url: image["url"])
+        unless already_imported
+          memo << WhitehallImporter::CreateImageRevision.call(record, image, memo.map(&:filename))
+        end
+        memo
       end
     end
 
     def create_file_attachment_revisions(file_attachments)
       file_attachments.reduce([]) do |memo, file_attachment|
-        memo << WhitehallImporter::CreateFileAttachmentRevision.call(record, file_attachment, memo.map(&:filename))
+        already_imported = WhitehallImportedAsset.find_by(original_asset_url: file_attachment["url"])
+        unless already_imported
+          memo << WhitehallImporter::CreateFileAttachmentRevision.call(record, file_attachment, memo.map(&:filename))
+        end
+        memo
       end
     end
   end
