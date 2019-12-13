@@ -10,6 +10,7 @@ shared_accessibility_criteria:
 examples:
   default:
     data:
+      aria_label: Publisher information
       items:
         - label: What the Beta can and cannot do
           href: /beta-capabilities
