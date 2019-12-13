@@ -61,29 +61,34 @@
 <% end %>
 
 <%= form_tag update_topics_path(@edition.document), data: { gtm: "confirm-edit-topics" }, method: :patch do %>
-  <h2 class="govuk-heading-m"><%= t("topics.edit.selected_title") %></h2>
-  <miller-columns-selected class="miller-columns-selected" id="selected-items" for="miller-columns"></miller-columns-selected>
+  <%= render "govuk_publishing_components/components/fieldset", {
+    legend_text: t("topics.edit.selected_title"),
+    heading_level: 2,
+    heading_size: "m"
+  } do %>
+    <miller-columns-selected class="miller-columns-selected" id="selected-items" for="miller-columns"></miller-columns-selected>
 
-  <div class="app-js-only">
-    <%= render "components/autocomplete", {
-      id: "topics-autocomplete",
-      name: "topics-autocomplete",
-      label: {
-        text: "Search topics",
-        bold: true
-      },
-      type: "topics",
-      search: true
-    } %>
-  </div>
+    <div class="app-js-only">
+      <%= render "components/autocomplete", {
+        id: "topics-autocomplete",
+        name: "topics-autocomplete",
+        label: {
+          text: "Search topics",
+          bold: true
+        },
+        type: "topics",
+        search: true
+      } %>
+    </div>
 
-  <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items">
-  <ul id="taxonomy" class="govuk-list">
-    <% Topic.govuk_homepage(@edition.document_topics.index).children.each do |topic| %>
-      <% unroll(topic) %>
-    <% end %>
-  </ul>
-  </miller-columns>
+    <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items">
+    <ul id="taxonomy" class="govuk-list">
+      <% Topic.govuk_homepage(@edition.document_topics.index).children.each do |topic| %>
+        <% unroll(topic) %>
+      <% end %>
+    </ul>
+    </miller-columns>
+  <% end %>
 
   <%= hidden_field_tag :version, @version %>
 
