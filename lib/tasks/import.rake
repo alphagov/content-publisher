@@ -15,7 +15,7 @@ namespace :import do
     whitehall_export = response.to_hash
     import = WhitehallImporter.import(whitehall_export)
 
-    if import.failed?
+    if import.import_failed?
       puts "Import failed"
       puts "Error: #{import.error_log}"
       abort

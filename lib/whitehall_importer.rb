@@ -14,7 +14,7 @@ module WhitehallImporter
       record.update!(state: "completed")
     rescue StandardError => e
       record.update!(error_log: e.message,
-                     state: "failed")
+                     state: "import_failed")
     end
 
     record

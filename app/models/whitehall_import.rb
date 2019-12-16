@@ -6,6 +6,10 @@ class WhitehallImport < ApplicationRecord
   belongs_to :document, optional: true
 
   enum state: { importing: "importing",
-                completed: "completed",
-                failed: "failed" }
+                imported: "imported",
+                import_aborted: "import_aborted",
+                import_failed: "import_failed",
+                syncing: "syncing",
+                sync_failed: "sync failed",
+                completed: "completed" }
 end
