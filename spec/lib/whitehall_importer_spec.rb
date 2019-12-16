@@ -62,6 +62,23 @@ RSpec.describe WhitehallImporter do
         expect(whitehall_import.error_log).to eq("#<RuntimeError: #{message}>")
       end
     end
+
+    context "when the import aborts" do
+      before do
+        allow(WhitehallImporter::Import).to receive(:call).and_raise(
+          WhitehallImporter::AbortImportError,
+          message,
+        )
+      end
+
+      let(:message) { "Import aborted" }
+
+      it "marks the import as aborted and logs the error" do
+        WhitehallImporter.import(whitehall_import)
+        expect(whitehall_import).to be_import_aborted
+        expect(whitehall_import.error_log).to eq("#<WhitehallImporter::AbortImportError: #{message}>")
+      end
+    end
   end
 
   describe ".sync" do

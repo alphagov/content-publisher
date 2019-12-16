@@ -19,6 +19,8 @@ module WhitehallImporter
   def self.import(whitehall_import)
     document = Import.call(whitehall_import.payload)
     whitehall_import.update!(document: document, state: "imported")
+  rescue AbortImportError => e
+    whitehall_import.update!(error_log: e.inspect, state: "import_aborted")
   rescue StandardError => e
     whitehall_import.update!(error_log: e.inspect, state: "import_failed")
   end
