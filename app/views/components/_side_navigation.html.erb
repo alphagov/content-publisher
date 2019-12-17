@@ -3,7 +3,7 @@
   items ||= []
 %>
 
-<%= tag.nav class: "app-c-side-navigation", id: id, role: 'navigation' do %>
+<%= tag.nav class: "app-c-side-navigation", id: id, role: 'navigation', aria: { label: aria_label } do %>
   <%= tag.ul class: "app-c-side-navigation__list" do %>
     <% items.each do |item| %>
       <%
