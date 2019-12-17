@@ -25,6 +25,8 @@ module BulkData
     end
 
     def self.written_at(key)
+      return unless cache.exist?(key)
+
       cache.read("#{key}:created")
     end
 

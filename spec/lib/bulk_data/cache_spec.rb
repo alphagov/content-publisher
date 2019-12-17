@@ -45,6 +45,12 @@ RSpec.describe BulkData::Cache do
     it "returns nil when the entry doesn't exist" do
       expect(BulkData::Cache.written_at("key")).to be_nil
     end
+
+    it "returns nil when only the created value exists but not the actual entry" do
+      BulkData::Cache.cache.write("key:created", Time.current)
+
+      expect(BulkData::Cache.written_at("key")).to be_nil
+    end
   end
 
   describe ".written_after?" do
