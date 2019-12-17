@@ -104,11 +104,12 @@ class Edition < ApplicationRecord
   end
 
   scope :history_mode, ->(history_mode = true) do
+    repository = BulkData::GovernmentRepository.new
     if history_mode
-      political.where.not(government_id: [nil, Government.current.content_id])
+      political.where.not(government_id: [nil, repository.current.content_id])
     else
       political(false)
-        .or(political.where(government_id: [nil, Government.current.content_id]))
+        .or(political.where(government_id: [nil, repository.current.content_id]))
     end
   end
 
@@ -133,7 +134,8 @@ class Edition < ApplicationRecord
   def government
     return unless government_id
 
-    Government.find(government_id)
+    @government_repository ||= BulkData::GovernmentRepository.new
+    @government_repository.find(government_id)
   end
 
   def public_first_published_at

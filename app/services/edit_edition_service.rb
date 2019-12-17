@@ -28,6 +28,8 @@ private
   end
 
   def associate_with_government
-    edition.government_id = Government.for_date(edition.public_first_published_at)&.content_id
+    repository = BulkData::GovernmentRepository.new
+    date = edition.public_first_published_at
+    edition.government_id = repository.for_date(date)&.content_id
   end
 end

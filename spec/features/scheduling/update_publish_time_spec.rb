@@ -4,9 +4,7 @@ RSpec.feature "Update publish time" do
   include ActiveJob::TestHelper
 
   around do |example|
-    Sidekiq::Testing.fake! do
-      travel_to(Time.zone.parse("2019-06-13")) { example.run }
-    end
+    travel_to(Time.zone.parse("2019-06-13")) { example.run }
   end
 
   scenario do

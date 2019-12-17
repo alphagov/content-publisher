@@ -41,9 +41,11 @@ RSpec.describe Edition do
   end
 
   describe ".history_mode" do
-    let!(:political_past_government) { create(:edition, :political, :past_government) }
-    let!(:political_current_government) { create(:edition, :political, :current_government) }
-    let!(:political_no_government) { create(:edition, :political, government_id: nil) }
+    before { populate_default_government_bulk_data }
+
+    let!(:political_past_government) { create(:edition, :political, government: past_government) }
+    let!(:political_current_government) { create(:edition, :political, government: current_government) }
+    let!(:political_no_government) { create(:edition, :political, government: nil) }
     let!(:not_political) { create(:edition, :not_political) }
 
     it "defaults to scoping to only history mode editions" do
@@ -82,8 +84,10 @@ RSpec.describe Edition do
   end
 
   describe "#history_mode?" do
+    before { populate_default_government_bulk_data }
+
     it "returns true when political and associated with a previous government" do
-      edition = build(:edition, :political, :past_government)
+      edition = build(:edition, :political, government: past_government)
       expect(edition.history_mode?).to be(true)
     end
 
@@ -93,26 +97,26 @@ RSpec.describe Edition do
     end
 
     it "returns false when the edition isn't associated with a government" do
-      edition = build(:edition, :political, government_id: nil)
+      edition = build(:edition, :political, government: nil)
       expect(edition.history_mode?).to be(false)
     end
 
     it "returns false when the edition is political and associated with the current government" do
-      edition = build(:edition, :political, :current_government)
+      edition = build(:edition, :political, government: current_government)
       expect(edition.history_mode?).to be(false)
     end
   end
 
   describe "#government" do
-    before { allow(Government).to receive(:all).and_return([government]) }
-    let(:government) { build(:government) }
-
     it "returns nil when government_id isn't set" do
       edition = build(:edition, government_id: nil)
       expect(edition.government).to be_nil
     end
 
     it "returns a government when one matches the id" do
+      government = build(:government)
+      populate_government_bulk_data(government)
+
       edition = build(:edition, government_id: government.content_id)
       expect(edition.government).to eq(government)
     end

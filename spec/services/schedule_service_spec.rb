@@ -7,10 +7,6 @@ RSpec.describe ScheduleService do
 
   include ActiveJob::TestHelper
 
-  around do |example|
-    Sidekiq::Testing.fake! { example.run }
-  end
-
   before(:each) do
     stub_default_publishing_api_put_intent
     allow(ScheduleService::Payload).to receive(:new) { payload }

@@ -40,4 +40,18 @@ RSpec.describe "Errors" do
       expect(response).to have_http_status(:not_found)
     end
   end
+
+  describe "local data unavailable" do
+    it "returns service unavailable" do
+      # This is a somewhat contrived example, hopefully this can be replaced
+      # when there's a simple way to trigger this error
+      expect(Edition).to receive(:find_current)
+        .and_raise(BulkData::LocalDataUnavailableError)
+
+      get document_path("#{SecureRandom.uuid}:en")
+
+      expect(response).to have_http_status(:service_unavailable)
+      expect(response.body).to include(I18n.t!("errors.local_data_unavailable.title"))
+    end
+  end
 end

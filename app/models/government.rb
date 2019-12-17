@@ -1,49 +1,35 @@
 # frozen_string_literal: true
 
 class Government
-  include ActiveModel::Model
+  include InitializeWithHash
 
-  def self.find(content_id)
-    government = all.find { |g| g.content_id == content_id }
-    government || (raise "Government #{content_id} not found")
-  end
-
-  def self.for_date(date)
-    all.find { |government| government.covers?(date) } if date
-  end
-
-  def self.current
-    for_date(Date.current)
-  end
-
-  def self.past
-    all.reject(&:current?)
-  end
-
-  def self.all
-    @all ||= YAML.load_file(Rails.root.join("config/governments.yml"))
-                 .map { |hash| new(hash) }
-  end
-
-  attr_accessor :content_id, :slug, :name, :start_date, :end_date
+  attr_accessor :content_id, :locale, :title, :details
 
   def ==(other)
-    content_id == other.content_id
+    content_id == other.content_id && locale == other.locale
   end
 
   alias_method :eql?, :==
 
   def covers?(date)
-    return false if date < start_date
+    return false if date < started_on
     # Most end dates in Whitehall are the last date of a government so we
     # treat the date as going up to 23:59:59 on the day by appending 1 day to
     # the date
-    return false if end_date && date >= (end_date + 1)
+    return false if ended_on && date >= (ended_on + 1)
 
     true
   end
 
+  def started_on
+    @started_on ||= Date.parse(details["started_on"])
+  end
+
+  def ended_on
+    @ended_on ||= Date.parse(details["ended_on"]) if details["ended_on"]
+  end
+
   def current?
-    self == self.class.current
+    details["current"] == true
   end
 end

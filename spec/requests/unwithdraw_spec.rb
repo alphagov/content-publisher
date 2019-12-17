@@ -33,7 +33,7 @@ RSpec.describe "Unwithdraw" do
     end
 
     context "when the edition is in history mode" do
-      let(:withdrawn_history_mode_edition) { create(:edition, :withdrawn, :political, :past_government) }
+      let(:withdrawn_history_mode_edition) { create(:edition, :withdrawn, :political, government: past_government) }
 
       it "lets users holding manage_live_history_mode permission unwithdraw the edition" do
         stub_publishing_api_republish(withdrawn_history_mode_edition.content_id, {})
@@ -87,7 +87,7 @@ RSpec.describe "Unwithdraw" do
     end
 
     context "when the edition is in history mode" do
-      let(:withdrawn_history_mode_edition) { create(:edition, :withdrawn, :political, :past_government) }
+      let(:withdrawn_history_mode_edition) { create(:edition, :withdrawn, :political, government: past_government) }
 
       it "lets managing_editors holding manage_live_history_mode permission to access unwithdraw page" do
         user = create(:user, managing_editor: true, manage_live_history_mode: true)

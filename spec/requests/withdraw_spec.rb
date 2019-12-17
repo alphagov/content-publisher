@@ -45,7 +45,7 @@ RSpec.describe "Withdraw" do
     end
 
     context "when the edition is in history mode" do
-      let(:published_history_mode_edition) { create(:edition, :published, :political, :past_government) }
+      let(:published_history_mode_edition) { create(:edition, :published, :political, government: past_government) }
 
       it "lets managing_editors holding manage_live_history_mode permission withdraw the edition" do
         stub_publishing_api_unpublish(published_history_mode_edition.content_id, body: {})
@@ -103,7 +103,7 @@ RSpec.describe "Withdraw" do
     end
 
     context "when the edition is in history mode" do
-      let(:published_history_mode_edition) { create(:edition, :published, :political, :past_government) }
+      let(:published_history_mode_edition) { create(:edition, :published, :political, government: past_government) }
 
       it "lets managing_editors holding manage_live_history_mode permission to access withdraw page" do
         stub_publishing_api_unpublish(published_history_mode_edition.content_id, body: {})
