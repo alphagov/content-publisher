@@ -62,4 +62,8 @@ Rails.application.configure do
   # Log Action Mailer emails instead of sending them to Notify
   config.action_mailer.delivery_method = :file
   config.action_mailer.default_options = { from: "test@example.com" }
+
+  # Send log notifications to the Sidekiq logger rather than using the Rails
+  # default
+  config.active_job.logger = Sidekiq.logger
 end
