@@ -9,5 +9,8 @@ class PopulateBulkDataJob < ApplicationJob
     run_exclusively do
       BulkData::GovernmentRepository.new.populate_cache(older_than: 5.minutes.ago)
     end
+  rescue BulkData::RemoteDataUnavailableError => e
+    logger.warn(e.cause ? e.cause.inspect : e.inspect)
+    raise
   end
 end

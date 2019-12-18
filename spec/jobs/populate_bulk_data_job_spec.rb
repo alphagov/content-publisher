@@ -29,6 +29,15 @@ RSpec.describe PopulateBulkDataJob do
     expect(PopulateBulkDataJob).to have_been_enqueued
   end
 
+  it "logs the cause of BulkData::RemoteDataUnavailableErrors" do
+    error = GdsApi::TimedOutException.new
+    stub_any_publishing_api_call.to_raise(error)
+
+    job = PopulateBulkDataJob.new
+    expect(job.logger).to receive(:warn).with(error.inspect)
+    expect { job.perform }.to raise_error(BulkData::RemoteDataUnavailableError)
+  end
+
   context "when it runs out of retries" do
     it "reports the error to GovukError if the cause is not a GdsApi::HTTPServerError" do
       stub_any_publishing_api_call.to_return(status: 429)
