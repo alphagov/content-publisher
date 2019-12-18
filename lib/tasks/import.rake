@@ -13,15 +13,13 @@ namespace :import do
     client = GdsApi::JsonClient.new(options)
     response = client.get_json(endpoint)
     whitehall_export = response.to_hash
-    import = WhitehallImporter.import(whitehall_export)
 
-    if import.import_failed?
-      puts "Import failed"
-      puts "Error: #{import.error_log}"
+    whitehall_import = WhitehallImporter.import_and_sync(whitehall_export)
+
+    unless whitehall_import.completed?
+      puts whitehall_import.state.humanize
+      puts "Error: #{whitehall_import.error_log}"
       abort
-    else
-      document = Document.find_by(content_id: import.content_id)
-      WhitehallImporter.sync(document)
     end
   end
 end
