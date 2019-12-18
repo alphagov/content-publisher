@@ -99,5 +99,22 @@ RSpec.describe WhitehallImporter do
       WhitehallImporter.sync(whitehall_import)
       expect(whitehall_import).to be_completed
     end
+
+    context "when the sync fails" do
+      before do
+        allow(ResyncService).to receive(:call)
+          .with(whitehall_import.document)
+          .and_raise(GdsApi::HTTPTooManyRequests.new(429, message))
+      end
+
+      let(:message) { "Ahhh too many requests" }
+
+      it "marks the import as failed due to sync issues and logs the error" do
+        WhitehallImporter.sync(whitehall_import)
+
+        expect(whitehall_import).to be_sync_failed
+        expect(whitehall_import.error_log).to eq("#<GdsApi::HTTPTooManyRequests: #{message}>")
+      end
+    end
   end
 end

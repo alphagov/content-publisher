@@ -26,8 +26,13 @@ module WhitehallImporter
   end
 
   def self.sync(whitehall_import)
+    whitehall_import.update!(state: "syncing")
+
     ResyncService.call(whitehall_import.document)
     ClearLinksetLinks.call(whitehall_import.document.content_id)
+
     whitehall_import.update!(state: "completed")
+  rescue StandardError => e
+    whitehall_import.update!(error_log: e.inspect, state: "sync_failed")
   end
 end
