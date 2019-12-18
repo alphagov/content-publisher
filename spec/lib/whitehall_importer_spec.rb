@@ -42,6 +42,12 @@ RSpec.describe WhitehallImporter do
       WhitehallImporter.import(whitehall_import)
     end
 
+    it "raises if the WhitehallImport doesn't have a state of importing" do
+      whitehall_import = create(:whitehall_import, state: "imported")
+      expect { WhitehallImporter.import(whitehall_import) }
+        .to raise_error(RuntimeError, "Cannot import with a state of imported")
+    end
+
     context "when the import is successful" do
       it "marks the import as imported" do
         WhitehallImporter.import(whitehall_import)
@@ -98,6 +104,12 @@ RSpec.describe WhitehallImporter do
     it "returns a completed WhitehallImport" do
       WhitehallImporter.sync(whitehall_import)
       expect(whitehall_import).to be_completed
+    end
+
+    it "raises if the WhitehallImport doesn't have a state of imported" do
+      whitehall_import = create(:whitehall_import, state: "importing")
+      expect { WhitehallImporter.sync(whitehall_import) }
+        .to raise_error(RuntimeError, "Cannot sync with a state of importing")
     end
 
     context "when the sync fails" do

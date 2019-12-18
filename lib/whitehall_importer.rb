@@ -17,22 +17,30 @@ module WhitehallImporter
   end
 
   def self.import(whitehall_import)
-    document = Import.call(whitehall_import.payload)
-    whitehall_import.update!(document: document, state: "imported")
-  rescue AbortImportError => e
-    whitehall_import.update!(error_log: e.inspect, state: "import_aborted")
-  rescue StandardError => e
-    whitehall_import.update!(error_log: e.inspect, state: "import_failed")
+    raise "Cannot import with a state of #{whitehall_import.state}" unless whitehall_import.importing?
+
+    begin
+      document = Import.call(whitehall_import.payload)
+      whitehall_import.update!(document: document, state: "imported")
+    rescue AbortImportError => e
+      whitehall_import.update!(error_log: e.inspect, state: "import_aborted")
+    rescue StandardError => e
+      whitehall_import.update!(error_log: e.inspect, state: "import_failed")
+    end
   end
 
   def self.sync(whitehall_import)
-    whitehall_import.update!(state: "syncing")
+    raise "Cannot sync with a state of #{whitehall_import.state}" unless whitehall_import.imported?
 
-    ResyncService.call(whitehall_import.document)
-    ClearLinksetLinks.call(whitehall_import.document.content_id)
+    begin
+      whitehall_import.update!(state: "syncing")
 
-    whitehall_import.update!(state: "completed")
-  rescue StandardError => e
-    whitehall_import.update!(error_log: e.inspect, state: "sync_failed")
+      ResyncService.call(whitehall_import.document)
+      ClearLinksetLinks.call(whitehall_import.document.content_id)
+
+      whitehall_import.update!(state: "completed")
+    rescue StandardError => e
+      whitehall_import.update!(error_log: e.inspect, state: "sync_failed")
+    end
   end
 end
