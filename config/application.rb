@@ -36,7 +36,6 @@ module ContentPublisher
     config.eager_load_paths << Rails.root.join("lib")
     config.autoload_paths << Rails.root.join("lib")
     config.exceptions_app = self.routes
-    config.active_job.logger = Sidekiq.logger
 
     unless Rails.application.secrets.jwt_auth_secret
       raise "JWT auth secret is not configured. See config/secrets.yml"

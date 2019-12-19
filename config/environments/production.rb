@@ -107,4 +107,8 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  # Send log notifications to the Sidekiq logger rather than using the Rails
+  # default
+  config.active_job.logger = Sidekiq.logger
 end
