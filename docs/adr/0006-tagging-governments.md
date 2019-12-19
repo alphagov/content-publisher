@@ -1,6 +1,7 @@
 # 6. Tagging Content to Governments
 
 Date: 2018-12-12
+Superseded: 2019-12-19 by [ADR XX](00XX-political-and-government-tagging.md)
 
 ## Context
 
@@ -49,7 +50,7 @@ Since manual intervention is required whether or not we implement the current ap
 
 ## Status
 
-Accepted
+Superseded
 
 ## Consequences
 
