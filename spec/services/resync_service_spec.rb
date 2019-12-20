@@ -63,7 +63,7 @@ RSpec.describe ResyncService do
 
       it "doesn't publish the edition" do
         expect(FailsafePreviewService).to receive(:call).with(edition)
-        expect(GdsApi.publishing_api_v2).not_to receive(:publish)
+        expect(GdsApi.publishing_api).not_to receive(:publish)
         ResyncService.call(edition.document)
       end
     end

@@ -73,6 +73,6 @@ private
   end
 
   def publishing_api
-    GdsApi.publishing_api_v2
+    GdsApi.publishing_api
   end
 end

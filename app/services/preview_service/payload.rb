@@ -100,7 +100,7 @@ private
 
     role_appointments
       .each_with_object("roles" => [], "people" => []) do |appointment_id, memo|
-        response = GdsApi.publishing_api_v2.get_links(appointment_id).to_hash
+        response = GdsApi.publishing_api.get_links(appointment_id).to_hash
 
         roles = response.dig("links", "role") || []
         people = response.dig("links", "person") || []

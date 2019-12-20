@@ -13,7 +13,7 @@ module WhitehallImporter
     end
 
     def call
-      GdsApi.publishing_api_v2.patch_links(
+      GdsApi.publishing_api.patch_links(
         content_id,
         links: {
           related_policies: [],

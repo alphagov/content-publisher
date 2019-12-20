@@ -8,7 +8,7 @@ class Organisations
 
   def self.by_content_id(content_id)
     Rails.cache.fetch("organisations.#{content_id}", CACHE_OPTIONS) do
-      GdsApi.publishing_api_v2.get_content(content_id).to_h
+      GdsApi.publishing_api.get_content(content_id).to_h
     end
   end
 

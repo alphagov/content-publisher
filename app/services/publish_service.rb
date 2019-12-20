@@ -46,7 +46,7 @@ private
   end
 
   def publish_current_edition
-    GdsApi.publishing_api_v2.publish(
+    GdsApi.publishing_api.publish(
       document.content_id,
       nil, # Sending update_type is deprecated (now in payload)
       locale: document.locale,

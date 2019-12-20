@@ -20,7 +20,7 @@ private
   attr_reader :edition, :public_explanation, :user
 
   def unpublish_edition
-    GdsApi.publishing_api_v2.unpublish(
+    GdsApi.publishing_api.unpublish(
       edition.content_id,
       type: "withdrawal",
       explanation: format_govspeak(public_explanation, edition),

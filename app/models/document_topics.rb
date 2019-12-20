@@ -6,7 +6,7 @@ class DocumentTopics
   attr_accessor :document, :version, :topic_content_ids, :index
 
   def self.find_by_document(document, index)
-    publishing_api = GdsApi.publishing_api_v2
+    publishing_api = GdsApi.publishing_api
     links = publishing_api.get_links(document.content_id)
 
     new(
@@ -40,7 +40,7 @@ class DocumentTopics
 
     @topics = nil
 
-    GdsApi.publishing_api_v2.patch_links(
+    GdsApi.publishing_api.patch_links(
       document.content_id,
       links: {
         taxons: leaf_topic_content_ids + unknown_taxon_content_ids,
