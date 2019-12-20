@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 class PopulateBulkDataJob < ApplicationJob
-  retry_on BulkData::RemoteDataUnavailableError do |_job, error|
-    GovukError.notify(error) unless error.cause.is_a?(GdsApi::HTTPServerError)
-  end
+  # The last retry will be 2 hours 46 mins later which should be an indication
+  # of a long running problem.
+  retry_on(
+    BulkData::RemoteDataUnavailableError,
+    wait: :exponentially_longer,
+    attempts: 10,
+  ) { |_job, error| GovukError.notify(error) }
 
   def perform
     run_exclusively do
