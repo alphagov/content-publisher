@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class AssignEditionStatusService < ApplicationService
-  def initialize(edition, user, state, update_last_edited: true, status_details: nil)
+  def initialize(edition, user, state, record_edit: true, status_details: nil)
     @edition = edition
     @user = user
     @state = state
-    @update_last_edited = update_last_edited
+    @record_edit = record_edit
     @status_details = status_details
   end
 
@@ -15,7 +15,7 @@ class AssignEditionStatusService < ApplicationService
                                 revision_at_creation: edition.revision,
                                 details: status_details)
 
-    if update_last_edited
+    if record_edit
       edition.last_edited_by = user
       edition.last_edited_at = Time.current
       edition.add_edition_editor(user)
@@ -24,5 +24,5 @@ class AssignEditionStatusService < ApplicationService
 
 private
 
-  attr_reader :edition, :user, :state, :update_last_edited, :status_details
+  attr_reader :edition, :user, :state, :record_edit, :status_details
 end

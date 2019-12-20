@@ -34,7 +34,7 @@ RSpec.describe AssignEditionStatusService do
         AssignEditionStatusService.call(edition,
                                         user,
                                         :submitted_for_review,
-                                        update_last_edited: false)
+                                        record_edit: false)
 
         expect(edition.last_edited_at).not_to eq(Time.current)
         expect(edition.last_edited_at).to eq(3.weeks.ago)

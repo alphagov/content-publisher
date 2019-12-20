@@ -56,7 +56,7 @@ private
   def supersede_live_edition(live_edition)
     return unless live_edition
 
-    AssignEditionStatusService.call(live_edition, user, :superseded, update_last_edited: false)
+    AssignEditionStatusService.call(live_edition, user, :superseded, record_edit: false)
     live_edition.live = false
     live_edition.save!
   end

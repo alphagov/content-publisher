@@ -27,7 +27,7 @@ private
     AssignEditionStatusService.call(edition,
                                     edition.status.created_by,
                                     :failed_to_publish,
-                                    update_last_edited: false,
+                                    record_edit: false,
                                     status_details: edition.status.details)
     edition.save!
   end
