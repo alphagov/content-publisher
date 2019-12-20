@@ -211,12 +211,5 @@ RSpec.describe ResyncService do
         end
       end
     end
-
-    def stub_publishing_api_path_reservation(base_path, params)
-      endpoint = GdsApi::TestHelpers::PublishingApi::PUBLISHING_API_ENDPOINT
-      url = endpoint + "/paths#{base_path}"
-
-      stub_request(:put, url).with(body: params)
-    end
   end
 end
