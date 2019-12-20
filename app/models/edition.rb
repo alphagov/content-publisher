@@ -158,4 +158,10 @@ class Edition < ApplicationRecord
     orgs += supporting_organisation_ids if access_limit.tagged_organisations?
     orgs
   end
+
+  def add_edition_editor(user)
+    return unless user
+
+    edition_editors << user unless edition_editors.include?(user)
+  end
 end
