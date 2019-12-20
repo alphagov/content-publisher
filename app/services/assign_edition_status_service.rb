@@ -18,6 +18,7 @@ class AssignEditionStatusService < ApplicationService
     if update_last_edited
       edition.last_edited_by = user
       edition.last_edited_at = Time.current
+      edition.add_edition_editor(user)
     end
   end
 
