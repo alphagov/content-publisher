@@ -33,7 +33,7 @@ module BulkData
     def populate_cache(older_than: nil)
       return if older_than && Cache.written_after?(CACHE_KEY, older_than)
 
-      data = GdsApi.publishing_api_v2(timeout: 30)
+      data = GdsApi.publishing_api(timeout: 30)
                    .get_paged_editions(document_types: %w[government],
                                        fields: %w[content_id locale title details],
                                        states: %w[published],

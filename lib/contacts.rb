@@ -30,7 +30,7 @@ private
 
   def load_all_contacts
     GdsApi
-      .publishing_api_v2
+      .publishing_api
       .get_paged_editions(EDITION_PARAMS)
       .inject([]) { |memo, page| memo + page["results"] }
   end

@@ -63,7 +63,7 @@ RSpec.describe ResyncService do
 
       it "doesn't publish the edition" do
         expect(FailsafePreviewService).to receive(:call).with(edition)
-        expect(GdsApi.publishing_api_v2).not_to receive(:publish)
+        expect(GdsApi.publishing_api).not_to receive(:publish)
         ResyncService.call(edition.document)
       end
     end
@@ -210,13 +210,6 @@ RSpec.describe ResyncService do
             .at(edition.status.details.publish_time)
         end
       end
-    end
-
-    def stub_publishing_api_path_reservation(base_path, params)
-      endpoint = GdsApi::TestHelpers::PublishingApi::PUBLISHING_API_ENDPOINT
-      url = endpoint + "/paths#{base_path}"
-
-      stub_request(:put, url).with(body: params)
     end
   end
 end

@@ -57,7 +57,7 @@ private
   end
 
   def reserve_path(base_path)
-    GdsApi.publishing_api_v2.put_path(
+    GdsApi.publishing_api.put_path(
       base_path,
       publishing_app: "content-publisher",
       override_existing: true,
@@ -65,7 +65,7 @@ private
   end
 
   def publish
-    GdsApi.publishing_api_v2.publish(
+    GdsApi.publishing_api.publish(
       live_edition.document.content_id,
       nil, # Sending update_type is deprecated (now in payload)
       locale: live_edition.document.locale,
@@ -76,7 +76,7 @@ private
     withdrawal = live_edition.status.details
     explanation_html = GovspeakDocument.new(withdrawal.public_explanation, live_edition).payload_html
 
-    GdsApi.publishing_api_v2.unpublish(
+    GdsApi.publishing_api.unpublish(
       live_edition.document.content_id,
       type: "withdrawal",
       explanation: explanation_html,
@@ -88,7 +88,7 @@ private
 
   def redirect_or_remove
     removal = live_edition.status.details
-    GdsApi.publishing_api_v2.unpublish(
+    GdsApi.publishing_api.unpublish(
       live_edition.content_id,
       type: removal.redirect? ? "redirect" : "gone",
       explanation: removal.explanatory_note,

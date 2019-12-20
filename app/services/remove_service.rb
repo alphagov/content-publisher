@@ -23,7 +23,7 @@ private
   attr_reader :edition, :removal
 
   def unpublish_edition
-    GdsApi.publishing_api_v2.unpublish(
+    GdsApi.publishing_api.unpublish(
       edition.content_id,
       type: removal.redirect? ? "redirect" : "gone",
       explanation: removal.explanatory_note,

@@ -26,7 +26,7 @@ module Requirements
   private
 
     def base_path_conflict?
-      base_path_owner = GdsApi.publishing_api_v2.lookup_content_id(
+      base_path_owner = GdsApi.publishing_api.lookup_content_id(
         base_path: revision.base_path,
         with_drafts: true,
         exclude_document_types: [],

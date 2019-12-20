@@ -45,7 +45,7 @@ private
 
   def discard_draft(edition)
     begin
-      GdsApi.publishing_api_v2.discard_draft(document.content_id)
+      GdsApi.publishing_api.discard_draft(document.content_id)
     rescue GdsApi::HTTPNotFound
       Rails.logger.warn("No draft to discard for content id #{document.content_id}")
     rescue GdsApi::HTTPUnprocessableEntity => e

@@ -32,7 +32,7 @@ private
   end
 
   def republish_edition
-    GdsApi.publishing_api_v2.republish(edition.content_id, locale: "en")
+    GdsApi.publishing_api.republish(edition.content_id, locale: "en")
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     context.fail!(api_error: true)
