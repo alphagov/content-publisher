@@ -32,7 +32,6 @@ RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   config.include FactoryBot::Syntax::Methods
   config.include GdsApi::TestHelpers::PublishingApi
-  config.include GdsApi::TestHelpers::PublishingApiV2
   config.include GdsApi::TestHelpers::AssetManager
   config.include GovukSchemas::RSpecMatchers
   config.include AuthenticationHelper, type: ->(spec) { spec.in?(%i[feature request]) }

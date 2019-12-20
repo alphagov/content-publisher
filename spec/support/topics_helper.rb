@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module TopicsHelper
-  ENDPOINT = GdsApi::TestHelpers::PublishingApiV2::PUBLISHING_API_V2_ENDPOINT
+  ENDPOINT = GdsApi::TestHelpers::PublishingApi::PUBLISHING_API_V2_ENDPOINT
 
   def stub_any_publishing_api_no_links
     stub_request(:get, %r(\A#{ENDPOINT}/links/[a-z0-9\-]+\Z))
