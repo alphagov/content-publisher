@@ -9,13 +9,13 @@ FactoryBot.define do
 
     trait :for_image do
       file_attachment_revision { nil }
-      image_revision { build(:image_revision) }
+      image_revision { build(:image_revision, :on_asset_manager, state: :live) }
       original_asset_url { "https://asset-manager.gov.uk/blah/847150/foo.jpg" }
     end
 
     trait :for_file_attachment do
       image_revision { nil }
-      file_attachment_revision { build(:file_attachment_revision) }
+      file_attachment_revision { build(:file_attachment_revision, :on_asset_manager, state: :live) }
       original_asset_url { "https://asset-manager.gov.uk/blah/847150/foo.pdf" }
     end
   end
