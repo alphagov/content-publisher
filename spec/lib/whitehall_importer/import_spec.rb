@@ -29,6 +29,13 @@ RSpec.describe WhitehallImporter::Import do
       expect(document).to be_imported_from_whitehall
     end
 
+    it "associates the created document with the import record" do
+      import_record = build(:whitehall_migration_document_import)
+      document = described_class.call(import_record)
+
+      expect(import_record.document).to eq(document)
+    end
+
     it "creates users who have never logged into Content Publisher" do
       import_data = build(:whitehall_export_document, users: [whitehall_user])
       document_import = build(:whitehall_migration_document_import, payload: import_data)

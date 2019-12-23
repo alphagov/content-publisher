@@ -17,6 +17,7 @@ module WhitehallImporter
       ActiveRecord::Base.transaction do
         user_ids = create_users(whitehall_document["users"])
         document = create_document(user_ids)
+        document_import.update!(document: document)
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           CreateEdition.call(
