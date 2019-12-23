@@ -71,6 +71,14 @@ RSpec.describe WhitehallImporter::MigrateAssets do
         expect(update_asset_request).to have_been_requested
       end
 
+      it "should delete live attachment variants" do
+        allow(asset.file_attachment_revision.asset).to receive(:state).and_return("live")
+        delete_request = stub_asset_manager_delete_asset("847151") # thumbnail
+
+        described_class.call(whitehall_import)
+        expect(delete_request).to have_been_requested
+      end
+
       it "should delete draft attachments" do
         allow(asset.file_attachment_revision.asset).to receive(:state).and_return("draft")
         delete_asset_request = stub_asset_manager_delete_asset(asset_id)

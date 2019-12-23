@@ -21,11 +21,12 @@ module WhitehallImporter
             whitehall_asset.asset_manager_id,
             redirect_url: whitehall_asset.main_asset.file_url,
           )
+          if whitehall_asset.file_attachment_revision.present?
+            delete_variants(whitehall_asset)
+          end
         else
           GdsApi.asset_manager.delete_asset(whitehall_asset.asset_manager_id)
-          whitehall_asset.variants.each do |_variant, url|
-            GdsApi.asset_manager.delete_asset(asset_manager_id(url))
-          end
+          delete_variants(whitehall_asset)
           # @TODO - do we want to delete the content publisher bits too?
         end
 
@@ -39,6 +40,12 @@ module WhitehallImporter
       url_array = file_url.to_s.split("/")
       # https://github.com/alphagov/asset-manager#create-an-asset
       url_array[url_array.length - 2]
+    end
+
+    def delete_variants(whitehall_asset)
+      whitehall_asset.variants.each do |_variant, url|
+        GdsApi.asset_manager.delete_asset(asset_manager_id(url))
+      end
     end
   end
 end
