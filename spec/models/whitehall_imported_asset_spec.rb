@@ -13,6 +13,17 @@ RSpec.describe WhitehallImportedAsset do
     end
   end
 
+  describe ".asset_manager_id" do
+    it "returns the asset manager ID of the original asset" do
+      asset_manager_id = "847150"
+      asset = build(
+        :whitehall_imported_asset,
+        original_asset_url: "https://asset-manager.gov.uk/blah/#{asset_manager_id}/foo.jpg",
+      )
+      expect(asset.asset_manager_id).to eq(asset_manager_id)
+    end
+  end
+
   describe ".associated_with_only_image_or_file_attachment" do
     it "raises a validation error if associated with an image and a file attachment" do
       expect { create(:whitehall_imported_asset, :image, :file_attachment) }
