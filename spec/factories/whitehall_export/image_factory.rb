@@ -9,7 +9,11 @@ FactoryBot.define do
     caption { "This is a caption" }
     created_at { Time.current.rfc3339 }
     updated_at { Time.current.rfc3339 }
-    variants { {} }
+    variants do
+      {
+        "s960" => "https://assets.publishing.service.gov.uk/government/uploads/s960_#{filename}",
+      }
+    end
     url { "https://assets.publishing.service.gov.uk/government/uploads/#{filename}" }
 
     transient do

@@ -3,15 +3,26 @@
 RSpec.describe WhitehallImporter::CreateImageRevision do
   describe "#call" do
     let(:whitehall_image) { build(:whitehall_export_image) }
-    let(:record) { nil }
+    let(:record) { build(:whitehall_import) }
 
-    it "should create an Image::Revision when a valid image is provided" do
-      image_revision = nil
-      expect { image_revision = described_class.call(record, whitehall_image) }
-        .to change { Image::Revision.count }.by(1)
-      expect(image_revision.caption).to eq(whitehall_image["caption"])
-      expect(image_revision.alt_text).to eq(whitehall_image["alt_text"])
-      expect(image_revision.filename).to eq("valid-image.jpg")
+    context "Valid image is provided" do
+      it "should create an Image::Revision" do
+        image_revision = nil
+        expect { image_revision = described_class.call(record, whitehall_image) }
+          .to change { Image::Revision.count }.by(1)
+        expect(image_revision.caption).to eq(whitehall_image["caption"])
+        expect(image_revision.alt_text).to eq(whitehall_image["alt_text"])
+        expect(image_revision.filename).to eq("valid-image.jpg")
+      end
+
+      it "should create a WhitehallImportedAsset record" do
+        image_revision = nil
+        expect { image_revision = described_class.call(record, whitehall_image) }
+          .to change { WhitehallImportedAsset.count }.by(1)
+        expect(WhitehallImportedAsset.last.image_revision).to eq(image_revision)
+        expect(WhitehallImportedAsset.last.original_asset_url).to eq(whitehall_image["url"])
+        expect(WhitehallImportedAsset.last.variants).to eq(whitehall_image["variants"])
+      end
     end
 
     context "Image is not available" do

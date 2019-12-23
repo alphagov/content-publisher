@@ -17,7 +17,7 @@ module WhitehallImporter
     def call
       temp_image = normalise_image(download_file)
       blob_revision = create_blob_revision(temp_image)
-      Image::Revision.create!(
+      revision = Image::Revision.create!(
         image: Image.new,
         metadata_revision: Image::MetadataRevision.new(
           caption: whitehall_image["caption"],
@@ -25,6 +25,13 @@ module WhitehallImporter
         ),
         blob_revision: blob_revision,
       )
+      WhitehallImportedAsset.create!(
+        whitehall_import: record,
+        image_revision: revision,
+        original_asset_url: whitehall_image["url"],
+        variants: whitehall_image["variants"],
+      )
+      revision
     end
 
   private
