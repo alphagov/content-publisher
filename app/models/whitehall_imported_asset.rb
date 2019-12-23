@@ -10,6 +10,14 @@ class WhitehallImportedAsset < ApplicationRecord
 
   validate :associated_with_only_image_or_file_attachment
 
+  def revision
+    if image_revision.present?
+      image_revision
+    elsif file_attachment_revision.present?
+      file_attachment_revision
+    end
+  end
+
 private
 
   def associated_with_only_image_or_file_attachment
