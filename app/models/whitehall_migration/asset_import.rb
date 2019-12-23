@@ -11,4 +11,14 @@ class WhitehallMigration::AssetImport < ApplicationRecord
                 removed: "removed",
                 migration_failed: "migration_failed",
                 pending: "pending" }
+
+  validate :associated_with_only_image_or_file_attachment
+
+private
+
+  def associated_with_only_image_or_file_attachment
+    if image_revision.present? && file_attachment_revision.present?
+      errors.add(:base, "Cannot be associated with both image revision AND file attachment revision")
+    end
+  end
 end
