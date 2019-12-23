@@ -344,6 +344,16 @@ ActiveRecord::Schema.define(version: 2019_12_23_091535) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "document_id"
+    t.bigint "whitehall_migration_id"
+  end
+
+  create_table "whitehall_migrations", force: :cascade do |t|
+    t.text "organisation_slug", null: false
+    t.text "document_type", null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "withdrawals", force: :cascade do |t|
@@ -416,5 +426,6 @@ ActiveRecord::Schema.define(version: 2019_12_23_091535) do
   add_foreign_key "timeline_entries", "statuses", on_delete: :restrict
   add_foreign_key "timeline_entries", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "whitehall_imports", "documents", on_delete: :restrict
+  add_foreign_key "whitehall_imports", "whitehall_migrations"
   add_foreign_key "withdrawals", "statuses", column: "published_status_id", on_delete: :restrict
 end
