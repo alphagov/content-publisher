@@ -100,6 +100,11 @@ RSpec.describe WhitehallImporter do
       WhitehallImporter.sync(whitehall_import)
     end
 
+    it "redirects or deletes the corresponding Whitehall assets" do
+      expect(WhitehallImporter::MigrateAssets).to receive(:call).with(whitehall_import)
+      WhitehallImporter.sync(whitehall_import)
+    end
+
     it "returns a completed WhitehallImport" do
       WhitehallImporter.sync(whitehall_import)
       expect(whitehall_import).to be_completed

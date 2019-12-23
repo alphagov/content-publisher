@@ -37,6 +37,7 @@ module WhitehallImporter
 
       ResyncService.call(whitehall_import.document)
       ClearLinksetLinks.call(whitehall_import.document.content_id)
+      MigrateAssets.call(whitehall_import)
 
       whitehall_import.update!(state: "completed")
     rescue StandardError => e
