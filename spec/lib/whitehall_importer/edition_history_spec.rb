@@ -133,4 +133,26 @@ RSpec.describe WhitehallImporter::EditionHistory do
       expect(instance.edited_after_unpublishing?).to be(false)
     end
   end
+
+  describe "#editors" do
+    it "returns all of the editors who have contributed to an edition" do
+      first_event = build(:revision_history_event, whodunnit: 1)
+      second_event = build(:revision_history_event, whodunnit: 2)
+
+      instance = described_class.new([first_event, second_event])
+
+      expect(instance.editors.count).to eq(2)
+      expect(instance.editors).to eq([1, 2])
+    end
+
+    it "doesn't return the same editor more than once" do
+      first_event = build(:revision_history_event, whodunnit: 1)
+      second_event = build(:revision_history_event, whodunnit: 1)
+
+      instance = described_class.new([first_event, second_event])
+
+      expect(instance.editors.count).to eq(1)
+      expect(instance.editors).to eq([1])
+    end
+  end
 end
