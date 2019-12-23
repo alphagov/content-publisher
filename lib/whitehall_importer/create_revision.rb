@@ -27,8 +27,8 @@ module WhitehallImporter
       document_type_key = DOCUMENT_SUB_TYPES.reject { |t| whitehall_edition[t].nil? }.first
       raise AbortImportError, "Edition has an unsupported document type" unless SUPPORTED_DOCUMENT_TYPES.include?(whitehall_edition[document_type_key])
 
-      file_attachment_revisions = create_file_attachment_revisions(whitehall_edition["attachments"])
-      image_revisions = create_image_revisions(whitehall_edition["images"])
+      file_attachment_revisions = find_or_create_file_attachment_revisions(whitehall_edition["attachments"])
+      image_revisions = find_or_create_image_revisions(whitehall_edition["images"])
       Revision.create!(
         document: document,
         number: document.next_revision_number,
@@ -118,15 +118,29 @@ module WhitehallImporter
       associations.map { |association| association["content_id"] }
     end
 
-    def create_image_revisions(images)
+    def find_or_create_image_revisions(images)
       images.reduce([]) do |memo, image|
-        memo << WhitehallImporter::CreateImageRevision.call(document_import, image, memo.map(&:filename))
+        already_imported = WhitehallMigration::AssetImport.find_by(original_asset_url: image["url"])
+        revision = if already_imported
+                     already_imported.image_revision
+                   else
+                     WhitehallImporter::CreateImageRevision
+                       .call(document_import, image, memo.map(&:filename))
+                   end
+        memo << revision
       end
     end
 
-    def create_file_attachment_revisions(file_attachments)
+    def find_or_create_file_attachment_revisions(file_attachments)
       file_attachments.reduce([]) do |memo, file_attachment|
-        memo << WhitehallImporter::CreateFileAttachmentRevision.call(document_import, file_attachment, memo.map(&:filename))
+        already_imported = WhitehallMigration::AssetImport.find_by(original_asset_url: file_attachment["url"])
+        revision = if already_imported
+                     already_imported.file_attachment_revision
+                   else
+                     WhitehallImporter::CreateFileAttachmentRevision
+                       .call(document_import, file_attachment, memo.map(&:filename))
+                   end
+        memo << revision
       end
     end
 
