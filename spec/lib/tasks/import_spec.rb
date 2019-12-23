@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe "Import tasks" do
-  describe "import:whitehall" do
+  describe "import:whitehall_document" do
     let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
     let(:whitehall_export) { build(:whitehall_export_document) }
 
     before do
       allow($stdout).to receive(:puts)
-      Rake::Task["import:whitehall"].reenable
+      Rake::Task["import:whitehall_document"].reenable
       allow(ResyncService).to receive(:call)
       allow(WhitehallImporter::ClearLinksetLinks).to receive(:call)
       stub_request(:get, "#{whitehall_host}/government/admin/export/document/123")
@@ -15,12 +15,12 @@ RSpec.describe "Import tasks" do
     end
 
     it "creates a document" do
-      expect { Rake::Task["import:whitehall"].invoke("123") }.to change { Document.count }.by(1)
+      expect { Rake::Task["import:whitehall_document"].invoke("123") }.to change { Document.count }.by(1)
     end
 
     it "imports the export and syncs with publishing-api" do
       expect(WhitehallImporter).to receive(:import_and_sync).with(whitehall_export).and_call_original
-      Rake::Task["import:whitehall"].invoke("123")
+      Rake::Task["import:whitehall_document"].invoke("123")
     end
 
     it "aborts if the import fails" do
@@ -28,7 +28,7 @@ RSpec.describe "Import tasks" do
 
       expect($stdout).to receive(:puts).with("Import failed")
       expect($stdout).to receive(:puts).with("Error: #<RuntimeError: Error importing>")
-      expect { Rake::Task["import:whitehall"].invoke("123") }
+      expect { Rake::Task["import:whitehall_document"].invoke("123") }
         .to raise_error(SystemExit)
     end
   end

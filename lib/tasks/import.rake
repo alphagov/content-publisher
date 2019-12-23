@@ -3,8 +3,8 @@
 require "gds_api/json_client"
 
 namespace :import do
-  desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall[123]"
-  task :whitehall, [:document_id] => :environment do |_, args|
+  desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall_document[123]"
+  task :whitehall_document, [:document_id] => :environment do |_, args|
     host = Plek.new.external_url_for("whitehall-admin")
     endpoint = "#{host}/government/admin/export/document/#{args.document_id}"
     options = {
