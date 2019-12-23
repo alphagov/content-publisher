@@ -118,13 +118,13 @@ module WhitehallImporter
 
     def create_image_revisions(images)
       images.reduce([]) do |memo, image|
-        memo << WhitehallImporter::CreateImageRevision.call(image, memo.map(&:filename))
+        memo << WhitehallImporter::CreateImageRevision.call(nil, image, memo.map(&:filename))
       end
     end
 
     def create_file_attachment_revisions(file_attachments)
       file_attachments.reduce([]) do |memo, file_attachment|
-        memo << WhitehallImporter::CreateFileAttachmentRevision.call(file_attachment, memo.map(&:filename))
+        memo << WhitehallImporter::CreateFileAttachmentRevision.call(nil, file_attachment, memo.map(&:filename))
       end
     end
 

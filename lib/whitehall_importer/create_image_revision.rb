@@ -2,13 +2,14 @@
 
 module WhitehallImporter
   class CreateImageRevision
-    attr_reader :whitehall_image, :filenames
+    attr_reader :document_import, :whitehall_image, :filenames
 
     def self.call(*args)
       new(*args).call
     end
 
-    def initialize(whitehall_image, filenames = [])
+    def initialize(document_import, whitehall_image, filenames = [])
+      @document_import = document_import
       @whitehall_image = whitehall_image
       @filenames = filenames
     end
