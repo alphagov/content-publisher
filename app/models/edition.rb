@@ -48,6 +48,10 @@ class Edition < ApplicationRecord
 
   has_many :internal_notes
 
+  has_and_belongs_to_many :edition_editors,
+                          class_name: "User",
+                          join_table: :edition_editors
+
   delegate :content_id, :locale, :topics, :document_topics, to: :document
 
   # delegate each state enum method
@@ -153,5 +157,11 @@ class Edition < ApplicationRecord
     orgs = [primary_publishing_organisation_id]
     orgs += supporting_organisation_ids if access_limit.tagged_organisations?
     orgs
+  end
+
+  def add_edition_editor(user)
+    return unless user
+
+    edition_editors << user unless edition_editors.include?(user)
   end
 end

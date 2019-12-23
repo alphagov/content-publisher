@@ -16,6 +16,7 @@ class EditEditionService < ApplicationService
 
     determine_political
     associate_with_government
+    edition.add_edition_editor(user)
   end
 
 private

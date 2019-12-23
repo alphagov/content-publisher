@@ -35,6 +35,16 @@ RSpec.describe EditEditionService do
         .to raise_error("cannot edit a live edition")
     end
 
+    describe "updates the edition editors" do
+      it "adds an edition user if they are not already listed as an editor" do
+        edition = build(:edition)
+
+        expect { EditEditionService.call(edition, user) }
+          .to change { edition.edition_editors.size }
+          .by(1)
+      end
+    end
+
     describe "marks an edition as political" do
       it "sets system_political to true when the edition is identified as political" do
         allow(PoliticalEditionIdentifier)

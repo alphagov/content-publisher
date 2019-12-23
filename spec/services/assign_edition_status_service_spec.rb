@@ -34,7 +34,7 @@ RSpec.describe AssignEditionStatusService do
         AssignEditionStatusService.call(edition,
                                         user,
                                         :submitted_for_review,
-                                        update_last_edited: false)
+                                        record_edit: false)
 
         expect(edition.last_edited_at).not_to eq(Time.current)
         expect(edition.last_edited_at).to eq(3.weeks.ago)
@@ -50,6 +50,16 @@ RSpec.describe AssignEditionStatusService do
                                       status_details: removal)
 
       expect(edition.status.details).to eq(removal)
+    end
+
+    describe "updates the edition editors" do
+      it "adds an edition user if they are not already listed as an editor" do
+        edition = build(:edition)
+
+        expect { AssignEditionStatusService.call(edition, user, :submitted_for_review) }
+          .to change { edition.edition_editors.size }
+          .by(1)
+      end
     end
   end
 end
