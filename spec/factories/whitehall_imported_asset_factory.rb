@@ -25,5 +25,9 @@ FactoryBot.define do
         }
       end
     end
+
+    trait :file_attachment do
+      file_attachment_revision { build(:file_attachment_revision) }
+    end
   end
 end

@@ -24,7 +24,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       described_class.call(whitehall_import)
     end
 
-    it "should redirect live assets" do
+    it "should redirect live images" do
       allow(asset.image_revision.asset("960")).to receive(:state).and_return("live")
       update_asset_request = stub_asset_manager_update_asset(
         asset_id,
@@ -35,12 +35,39 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       expect(update_asset_request).to have_been_requested
     end
 
-    it "should delete draft assets" do
+    it "should delete draft images" do
       allow(asset.image_revision.asset("960")).to receive(:state).and_return("draft")
       delete_asset_request = stub_asset_manager_delete_asset("847150")
 
       described_class.call(whitehall_import)
       expect(delete_asset_request).to have_been_requested
+    end
+
+    context "assets are attachments" do
+      let(:asset) do
+        build(:whitehall_imported_asset,
+              :file_attachment,
+              original_asset_url: "https://asset-manager.gov.uk/blah/#{asset_id}/foo.pdf")
+      end
+
+      it "should redirect live attachments" do
+        allow(asset.file_attachment_revision.asset).to receive(:state).and_return("live")
+        update_asset_request = stub_asset_manager_update_asset(
+          asset_id,
+          redirect_url: asset.file_attachment_revision.asset_url,
+        )
+
+        described_class.call(whitehall_import)
+        expect(update_asset_request).to have_been_requested
+      end
+
+      it "should delete draft attachments" do
+        allow(asset.file_attachment_revision.asset).to receive(:state).and_return("draft")
+        delete_asset_request = stub_asset_manager_delete_asset(asset_id)
+
+        described_class.call(whitehall_import)
+        expect(delete_asset_request).to have_been_requested
+      end
     end
   end
 end

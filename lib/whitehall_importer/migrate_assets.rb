@@ -15,13 +15,14 @@ module WhitehallImporter
     def call
       whitehall_import.assets.each do |whitehall_asset|
         whitehall_asset.update!(state: "processing")
+
         if whitehall_asset.main_asset.state == "live"
           GdsApi.asset_manager.update_asset(
             whitehall_asset.asset_manager_id,
             redirect_url: whitehall_asset.main_asset.file_url,
           )
         else
-          GdsApi.asset_manager.delete_asset(legacy_id)
+          GdsApi.asset_manager.delete_asset(whitehall_asset.asset_manager_id)
         end
 
         whitehall_asset.update!(state: "processed")
