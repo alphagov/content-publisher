@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_23_091535) do
+ActiveRecord::Schema.define(version: 2019_12_23_092938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -335,7 +335,7 @@ ActiveRecord::Schema.define(version: 2019_12_23_091535) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "whitehall_imports", force: :cascade do |t|
+  create_table "whitehall_migration_document_imports", force: :cascade do |t|
     t.bigint "whitehall_document_id", null: false
     t.json "payload", null: false
     t.uuid "content_id", null: false
@@ -425,7 +425,7 @@ ActiveRecord::Schema.define(version: 2019_12_23_091535) do
   add_foreign_key "timeline_entries", "revisions", on_delete: :restrict
   add_foreign_key "timeline_entries", "statuses", on_delete: :restrict
   add_foreign_key "timeline_entries", "users", column: "created_by_id", on_delete: :restrict
-  add_foreign_key "whitehall_imports", "documents", on_delete: :restrict
-  add_foreign_key "whitehall_imports", "whitehall_migrations"
+  add_foreign_key "whitehall_migration_document_imports", "documents", on_delete: :restrict
+  add_foreign_key "whitehall_migration_document_imports", "whitehall_migrations"
   add_foreign_key "withdrawals", "statuses", column: "published_status_id", on_delete: :restrict
 end

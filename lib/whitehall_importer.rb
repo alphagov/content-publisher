@@ -2,7 +2,7 @@
 
 module WhitehallImporter
   def self.import_and_sync(whitehall_document)
-    whitehall_import = WhitehallImport.create!(
+    whitehall_import = WhitehallMigration::DocumentImport.create!(
       whitehall_document_id: whitehall_document["id"],
       payload: whitehall_document,
       content_id: whitehall_document["content_id"],

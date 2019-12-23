@@ -2,7 +2,7 @@
 
 # Represents the raw import of a document from Whitehall Publisher and
 # the import status of the document into Content Publisher
-class WhitehallImport < ApplicationRecord
+class WhitehallMigration::DocumentImport < ApplicationRecord
   belongs_to :document, optional: true
 
   enum state: { importing: "importing",
