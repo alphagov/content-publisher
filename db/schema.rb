@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_13_094311) do
+ActiveRecord::Schema.define(version: 2019_12_13_123801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -326,6 +326,21 @@ ActiveRecord::Schema.define(version: 2019_12_13_094311) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "whitehall_imported_assets", force: :cascade do |t|
+    t.bigint "whitehall_import_id", null: false
+    t.bigint "file_attachment_revision_id"
+    t.bigint "image_revision_id"
+    t.string "original_asset_url", null: false
+    t.json "variants", default: {}, null: false
+    t.string "state", default: "not_processed", null: false
+    t.text "error_message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["file_attachment_revision_id"], name: "index_whitehall_imported_assets_on_file_attachment_revision_id"
+    t.index ["image_revision_id"], name: "index_whitehall_imported_assets_on_image_revision_id"
+    t.index ["whitehall_import_id"], name: "index_whitehall_imported_assets_on_whitehall_import_id"
+  end
+
   create_table "whitehall_imports", force: :cascade do |t|
     t.bigint "whitehall_document_id", null: false
     t.json "payload", null: false
@@ -404,6 +419,9 @@ ActiveRecord::Schema.define(version: 2019_12_13_094311) do
   add_foreign_key "timeline_entries", "revisions", on_delete: :restrict
   add_foreign_key "timeline_entries", "statuses", on_delete: :restrict
   add_foreign_key "timeline_entries", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "whitehall_imported_assets", "file_attachment_revisions", on_delete: :restrict
+  add_foreign_key "whitehall_imported_assets", "image_revisions", on_delete: :restrict
+  add_foreign_key "whitehall_imported_assets", "whitehall_imports", on_delete: :restrict
   add_foreign_key "whitehall_imports", "documents", on_delete: :restrict
   add_foreign_key "withdrawals", "statuses", column: "published_status_id", on_delete: :restrict
 end
