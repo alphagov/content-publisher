@@ -43,6 +43,16 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       expect(delete_asset_request).to have_been_requested
     end
 
+    it "should delete variants of draft images" do
+      allow(asset.image_revision.asset("960")).to receive(:state).and_return("draft")
+      delete_request1 = stub_asset_manager_delete_asset("847151") # s300
+      delete_request2 = stub_asset_manager_delete_asset("847152") # s960
+
+      described_class.call(whitehall_import)
+      expect(delete_request1).to have_been_requested
+      expect(delete_request2).to have_been_requested
+    end
+
     context "assets are attachments" do
       let(:asset) do
         build(:whitehall_imported_asset,
@@ -67,6 +77,14 @@ RSpec.describe WhitehallImporter::MigrateAssets do
 
         described_class.call(whitehall_import)
         expect(delete_asset_request).to have_been_requested
+      end
+
+      it "should delete variants of draft attachments" do
+        allow(asset.file_attachment_revision.asset).to receive(:state).and_return("draft")
+        delete_request = stub_asset_manager_delete_asset("847151") # thumbnail
+
+        described_class.call(whitehall_import)
+        expect(delete_request).to have_been_requested
       end
     end
   end

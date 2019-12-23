@@ -23,10 +23,22 @@ module WhitehallImporter
           )
         else
           GdsApi.asset_manager.delete_asset(whitehall_asset.asset_manager_id)
+          whitehall_asset.variants.each do |_variant, url|
+            GdsApi.asset_manager.delete_asset(asset_manager_id(url))
+          end
+          # @TODO - do we want to delete the content publisher bits too?
         end
 
         whitehall_asset.update!(state: "processed")
       end
+    end
+
+  private
+
+    def asset_manager_id(file_url)
+      url_array = file_url.to_s.split("/")
+      # https://github.com/alphagov/asset-manager#create-an-asset
+      url_array[url_array.length - 2]
     end
   end
 end
