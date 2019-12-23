@@ -4,7 +4,7 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
   let(:whitehall_file_attachment) do
     build(:whitehall_export_file_attachment)
   end
-  let(:record) { nil }
+  let(:record) { build(:whitehall_import) }
 
   context "creates a file attachment" do
     it "fetches file from asset-manager" do
@@ -19,6 +19,15 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
 
       expect(revision.metadata_revision.title).to eq(whitehall_file_attachment["title"])
       expect(revision.filename).to eq("some-txt.txt")
+    end
+
+    it "creates a WhitehallImportedAsset record" do
+      revision = nil
+      expect { revision = described_class.call(record, whitehall_file_attachment) }
+        .to change { WhitehallImportedAsset.count }.by(1)
+      expect(WhitehallImportedAsset.last.file_attachment_revision).to eq(revision)
+      expect(WhitehallImportedAsset.last.original_asset_url).to eq(whitehall_file_attachment["url"])
+      expect(WhitehallImportedAsset.last.variants).to eq(whitehall_file_attachment["variants"])
     end
   end
 

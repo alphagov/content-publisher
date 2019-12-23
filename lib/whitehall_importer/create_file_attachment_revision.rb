@@ -19,13 +19,20 @@ module WhitehallImporter
       check_file_requirements(decorated_file)
 
       blob_revision = create_blob_revision(decorated_file)
-      FileAttachment::Revision.create!(
+      revision = FileAttachment::Revision.create!(
         blob_revision: blob_revision,
         file_attachment: FileAttachment.create!,
         metadata_revision: FileAttachment::MetadataRevision.create!(
           title: whitehall_file_attachment["title"],
         ),
       )
+      WhitehallImportedAsset.create!(
+        whitehall_import: record,
+        file_attachment_revision: revision,
+        original_asset_url: whitehall_file_attachment["url"],
+        variants: whitehall_file_attachment["variants"],
+      )
+      revision
     end
 
   private

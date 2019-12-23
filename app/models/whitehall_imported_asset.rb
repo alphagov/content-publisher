@@ -5,5 +5,7 @@
 class WhitehallImportedAsset < ApplicationRecord
   belongs_to :whitehall_import
 
+  # belongs to one of these, not both
   belongs_to :image_revision, class_name: "Image::Revision", optional: true
+  belongs_to :file_attachment_revision, class_name: "FileAttachment::Revision", optional: true
 end
