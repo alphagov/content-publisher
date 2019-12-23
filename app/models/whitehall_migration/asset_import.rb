@@ -14,6 +14,18 @@ class WhitehallMigration::AssetImport < ApplicationRecord
 
   validate :associated_with_only_image_or_file_attachment
 
+  def content_publisher_asset
+    if image_revision.present?
+      if variant.nil? || variant == "s960"
+        image_revision.asset("960")
+      elsif variant == "s300"
+        image_revision.asset("300")
+      end
+    elsif variant.nil?
+      file_attachment_revision.asset
+    end
+  end
+
   def whitehall_asset_id
     url_array = original_asset_url.to_s.split("/")
     # https://github.com/alphagov/asset-manager#create-an-asset
