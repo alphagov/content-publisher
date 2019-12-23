@@ -57,7 +57,7 @@ RSpec.describe AssignEditionStatusService do
         edition = build(:edition)
 
         expect { AssignEditionStatusService.call(edition, user, :submitted_for_review) }
-          .to change { edition.edition_editors.size }
+          .to change { edition.editors.size }
           .by(1)
       end
     end

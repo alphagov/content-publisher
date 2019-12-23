@@ -31,7 +31,8 @@ RSpec.feature "Publishing an edition" do
 
     @edition = create(:edition, :publishable,
                       created_by: @creator,
-                      base_path: "/news/banana-pricing-updates")
+                      base_path: "/news/banana-pricing-updates",
+                      editors: [@creator])
   end
 
   def when_i_visit_the_summary_page

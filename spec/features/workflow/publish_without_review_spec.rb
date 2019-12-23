@@ -21,7 +21,8 @@ RSpec.feature "Publish without review" do
     @edition = create(:edition, :publishable,
                       created_by: @creator,
                       created_at: 1.day.ago,
-                      base_path: "/news/banana-pricing-updates")
+                      base_path: "/news/banana-pricing-updates",
+                      editors: [@creator])
   end
 
   def when_i_visit_the_summary_page

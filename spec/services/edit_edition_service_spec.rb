@@ -40,7 +40,7 @@ RSpec.describe EditEditionService do
         edition = build(:edition)
 
         expect { EditEditionService.call(edition, user) }
-          .to change { edition.edition_editors.size }
+          .to change { edition.editors.size }
           .by(1)
       end
     end
