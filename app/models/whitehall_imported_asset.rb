@@ -5,7 +5,16 @@
 class WhitehallImportedAsset < ApplicationRecord
   belongs_to :whitehall_import
 
-  # belongs to one of these, not both
   belongs_to :image_revision, class_name: "Image::Revision", optional: true
   belongs_to :file_attachment_revision, class_name: "FileAttachment::Revision", optional: true
+
+  validate :associated_with_only_image_or_file_attachment
+
+private
+
+  def associated_with_only_image_or_file_attachment
+    if image_revision.present? && file_attachment_revision.present?
+      errors.add(:base, "Cannot be associated with both image revision AND file attachment revision")
+    end
+  end
 end
