@@ -34,5 +34,13 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       described_class.call(whitehall_import)
       expect(update_asset_request).to have_been_requested
     end
+
+    it "should delete draft assets" do
+      allow(asset.image_revision.asset("960")).to receive(:state).and_return("draft")
+      delete_asset_request = stub_asset_manager_delete_asset("847150")
+
+      described_class.call(whitehall_import)
+      expect(delete_asset_request).to have_been_requested
+    end
   end
 end

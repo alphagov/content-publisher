@@ -20,7 +20,10 @@ module WhitehallImporter
             whitehall_asset.asset_manager_id,
             redirect_url: whitehall_asset.main_asset.file_url,
           )
+        else
+          GdsApi.asset_manager.delete_asset(legacy_id)
         end
+
         whitehall_asset.update!(state: "processed")
       end
     end
