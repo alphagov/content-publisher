@@ -1,6 +1,21 @@
 # frozen_string_literal: true
 
 RSpec.describe "Import tasks" do
+  describe "import:whitehall_migration" do
+    before do
+      Rake::Task["import:whitehall_migration"].reenable
+    end
+
+    it "creates a WhitehallMigration" do
+      freeze_time do
+        expect { Rake::Task["import:whitehall_migration"].invoke("cabinet-office", "news_story") }.to change { WhitehallMigration.count }.by(1)
+        expect(WhitehallMigration.last.organisation_slug).to eq("cabinet-office")
+        expect(WhitehallMigration.last.document_type).to eq("news_story")
+        expect(WhitehallMigration.last.start_time).to eq(Time.current)
+      end
+    end
+  end
+
   describe "import:whitehall_document" do
     let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
     let(:whitehall_export) { build(:whitehall_export_document) }
