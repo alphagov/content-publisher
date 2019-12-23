@@ -35,6 +35,17 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       expect(update_asset_request).to have_been_requested
     end
 
+    it "should redirect live image variants" do
+      allow(asset.image_revision.asset("960")).to receive(:state).and_return("live")
+      redirect_url = asset.image_revision.asset_url("960")
+      redirect_request1 = stub_asset_manager_update_asset("847151", redirect_url: redirect_url)
+      redirect_request2 = stub_asset_manager_update_asset("847152", redirect_url: redirect_url)
+
+      described_class.call(whitehall_import)
+      expect(redirect_request1).to have_been_requested
+      expect(redirect_request2).to have_been_requested
+    end
+
     it "should delete draft images" do
       allow(asset.image_revision.asset("960")).to receive(:state).and_return("draft")
       delete_asset_request = stub_asset_manager_delete_asset("847150")

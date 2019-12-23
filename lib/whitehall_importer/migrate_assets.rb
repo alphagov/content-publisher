@@ -21,7 +21,9 @@ module WhitehallImporter
             whitehall_asset.asset_manager_id,
             redirect_url: whitehall_asset.main_asset.file_url,
           )
-          if whitehall_asset.file_attachment_revision.present?
+          if whitehall_asset.image_revision.present?
+            redirect_variants(whitehall_asset, whitehall_asset.main_asset.file_url)
+          else
             delete_variants(whitehall_asset)
           end
         else
@@ -45,6 +47,15 @@ module WhitehallImporter
     def delete_variants(whitehall_asset)
       whitehall_asset.variants.each do |_variant, url|
         GdsApi.asset_manager.delete_asset(asset_manager_id(url))
+      end
+    end
+
+    def redirect_variants(whitehall_asset, redirect_url)
+      whitehall_asset.variants.each do |_variant, url|
+        GdsApi.asset_manager.update_asset(
+          asset_manager_id(url),
+          redirect_url: redirect_url,
+        )
       end
     end
   end
