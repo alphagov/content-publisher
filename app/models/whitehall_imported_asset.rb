@@ -18,6 +18,14 @@ class WhitehallImportedAsset < ApplicationRecord
     end
   end
 
+  def main_asset
+    if image_revision.present?
+      image_revision.asset("960")
+    else
+      file_attachment_revision.asset
+    end
+  end
+
   def asset_manager_id
     url_array = original_asset_url.to_s.split("/")
     # https://github.com/alphagov/asset-manager#create-an-asset

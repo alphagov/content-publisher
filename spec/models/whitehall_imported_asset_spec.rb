@@ -13,6 +13,19 @@ RSpec.describe WhitehallImportedAsset do
     end
   end
 
+  describe ".main_asset" do
+    it "returns the file attachment asset when associated with one" do
+      asset = build(:whitehall_imported_asset, :file_attachment)
+      expect(asset.main_asset).to be_kind_of(FileAttachment::Asset)
+    end
+
+    it "returns the 960 image asset when associated with an image" do
+      asset = build(:whitehall_imported_asset, :image)
+      expect(asset.main_asset).to be_kind_of(Image::Asset)
+      expect(asset.main_asset).to eq(asset.revision.asset("960"))
+    end
+  end
+
   describe ".asset_manager_id" do
     it "returns the asset manager ID of the original asset" do
       asset_manager_id = "847150"
