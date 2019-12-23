@@ -23,7 +23,8 @@
     if @edition.document_type.guidance_for("title")
       title_contextual_guidance.merge!({
         title: @edition.document_type.guidance_for("title").title,
-        content: @edition.document_type.guidance_for("title").body_govspeak
+        content: @edition.document_type.guidance_for("title").body_govspeak,
+        guidance_id: "title-guidance"
       })
     end
   %>
@@ -40,7 +41,8 @@
       error_items: @issues&.items_for(:title),
       rows: 2,
       maxlength: Requirements::ContentChecker::TITLE_MAX_LENGTH,
-      data: { "url-preview": "input" }
+      data: { "url-preview": "input" },
+      describedby: "title-guidance"
     } do %>
       <%= render "components/input_length_suggester", {
         for_id: "title-field",
@@ -70,7 +72,8 @@
     if @edition.document_type.guidance_for("title")
       summary_contextual_guidance.merge!({
         title: @edition.document_type.guidance_for("summary").title,
-        content: @edition.document_type.guidance_for("summary").body_govspeak
+        content: @edition.document_type.guidance_for("summary").body_govspeak,
+        guidance_id: "summary-guidance"
       })
     end
   %>
@@ -86,7 +89,8 @@
       value: @revision.summary,
       error_items: @issues&.items_for(:summary),
       rows: 4,
-      maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH
+      maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH,
+      describedby: "summary-guidance"
     } do %>
       <%= render "components/input_length_suggester", {
         for_id: "summary-field",

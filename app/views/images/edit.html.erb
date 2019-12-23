@@ -36,7 +36,8 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
     id: "alt-text",
     html_for: "image-alt-text",
     title: t("images.edit.form_labels.alt_text"),
-    content: render_govspeak(t("images.edit.guidance.alt_text_govspeak"))
+    content: render_govspeak(t("images.edit.guidance.alt_text_govspeak")),
+    guidance_id: "image-alt-text-guidance"
   } do %>
     <%= render "govuk_publishing_components/components/input", {
       label: {
@@ -46,7 +47,8 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
       id: "image-alt-text",
       name: "image_revision[alt_text]",
       value: @image_revision.alt_text,
-      error_items: @issues&.items_for(:alt_text)
+      error_items: @issues&.items_for(:alt_text),
+      describedby: "image-alt-text-guidance"
     } %>
   <% end %>
 
@@ -54,7 +56,8 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
     id: "caption",
     html_for: "image-caption",
     title: t("images.edit.form_labels.caption"),
-    content: render_govspeak(t("images.edit.guidance.caption_govspeak"))
+    content: render_govspeak(t("images.edit.guidance.caption_govspeak")),
+    guidance_id: "image-caption-guidance"
   } do %>
     <%= render "govuk_publishing_components/components/input", {
       label: {
@@ -64,7 +67,8 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
       id: "image-caption",
       name: "image_revision[caption]",
       value: @image_revision.caption,
-      error_items: @issues&.items_for(:caption)
+      error_items: @issues&.items_for(:caption),
+      describedby: "image-caption-guidance"
     } %>
   <% end %>
 
@@ -72,7 +76,8 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
     id: "credit",
     html_for: "image-credit",
     title: t("images.edit.form_labels.credit"),
-    content: render_govspeak(t("images.edit.guidance.credit_govspeak"))
+    content: render_govspeak(t("images.edit.guidance.credit_govspeak")),
+    guidance_id: "image-credit-guidance"
   } do %>
     <%= render "govuk_publishing_components/components/input", {
       label: {
@@ -82,7 +87,8 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
       id: "image-credit",
       name: "image_revision[credit]",
       value: @image_revision.credit,
-      error_items: @issues&.items_for(:credit)
+      error_items: @issues&.items_for(:credit),
+      describedby: "image-credit-guidance"
     } %>
   <% end %>
 
