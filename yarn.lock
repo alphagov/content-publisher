@@ -12,7 +12,8 @@ abortcontroller-polyfill@^1.2.1:
 
 "accessible-autocomplete@git://github.com/kevindew/accessible-autocomplete.git":
   version "1.6.2"
-  resolved "git://github.com/kevindew/accessible-autocomplete.git#8e3f43bfac2e81881026993a24f8db2900559e56"
+  uid "62b3992f9d3f2da6c7ea5bc0e302b9e453234271"
+  resolved "git://github.com/kevindew/accessible-autocomplete.git#62b3992f9d3f2da6c7ea5bc0e302b9e453234271"
   dependencies:
     preact "^8.3.1"
 
