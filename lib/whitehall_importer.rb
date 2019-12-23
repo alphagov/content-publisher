@@ -42,7 +42,7 @@ module WhitehallImporter
     raise "Cannot import with a state of #{whitehall_import.state}" unless whitehall_import.importing?
 
     begin
-      document = Import.call(whitehall_import.payload)
+      document = Import.call(whitehall_import)
       whitehall_import.update!(document: document, state: "imported")
       create_timeline_entry(document.current_edition)
     rescue AbortImportError => e

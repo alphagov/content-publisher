@@ -2,14 +2,15 @@
 
 module WhitehallImporter
   class Import
-    attr_reader :whitehall_document
+    attr_reader :document_import, :whitehall_document
 
     def self.call(*args)
       new(*args).call
     end
 
-    def initialize(whitehall_document)
-      @whitehall_document = whitehall_document
+    def initialize(document_import)
+      @document_import = document_import
+      @whitehall_document = document_import.payload
     end
 
     def call
