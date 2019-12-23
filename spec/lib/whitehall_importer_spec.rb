@@ -9,18 +9,18 @@ RSpec.describe WhitehallImporter do
 
     let(:whitehall_export_document) { build(:whitehall_export_document) }
 
-    it "creates and returns a WhitehallImport" do
-      whitehall_import = nil
-      expect { whitehall_import = WhitehallImporter.import_and_sync(whitehall_export_document) }
-        .to change { WhitehallImport.count }
+    it "creates and returns a WhitehallMigration::DocumentImport" do
+      whitehall_migration_document_import = nil
+      expect { whitehall_migration_document_import = WhitehallImporter.import_and_sync(whitehall_export_document) }
+        .to change { WhitehallMigration::DocumentImport.count }
         .by(1)
-      expect(whitehall_import).to be_an_instance_of(WhitehallImport)
+      expect(whitehall_migration_document_import).to be_an_instance_of(WhitehallMigration::DocumentImport)
     end
 
     it "stores the exported whitehall data" do
       WhitehallImporter.import_and_sync(whitehall_export_document)
-      whitehall_import = WhitehallImport.find_by(whitehall_document_id: whitehall_export_document["id"])
-      expect(whitehall_import.payload).to eq(whitehall_export_document)
+      whitehall_migration_document_import = WhitehallMigration::DocumentImport.find_by(whitehall_document_id: whitehall_export_document["id"])
+      expect(whitehall_migration_document_import.payload).to eq(whitehall_export_document)
     end
 
     it "doesn't sync if import fails" do
@@ -35,23 +35,23 @@ RSpec.describe WhitehallImporter do
 
   describe ".import" do
     before { allow(WhitehallImporter::Import).to receive(:call) }
-    let(:whitehall_import) { create(:whitehall_import) }
+    let(:whitehall_migration_document_import) { create(:whitehall_migration_document_import) }
 
     it "imports a document" do
       expect(WhitehallImporter::Import).to receive(:call)
-      WhitehallImporter.import(whitehall_import)
+      WhitehallImporter.import(whitehall_migration_document_import)
     end
 
-    it "raises if the WhitehallImport doesn't have a state of importing" do
-      whitehall_import = create(:whitehall_import, state: "imported")
-      expect { WhitehallImporter.import(whitehall_import) }
+    it "raises if the WhitehallMigration::DocumentImport doesn't have a state of importing" do
+      whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "imported")
+      expect { WhitehallImporter.import(whitehall_migration_document_import) }
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
     end
 
     context "when the import is successful" do
       it "marks the import as imported" do
-        WhitehallImporter.import(whitehall_import)
-        expect(whitehall_import).to be_imported
+        WhitehallImporter.import(whitehall_migration_document_import)
+        expect(whitehall_migration_document_import).to be_imported
       end
     end
 
@@ -63,9 +63,9 @@ RSpec.describe WhitehallImporter do
       let(:message) { "Import failed" }
 
       it "marks the import as failed and logs the error" do
-        WhitehallImporter.import(whitehall_import)
-        expect(whitehall_import).to be_import_failed
-        expect(whitehall_import.error_log).to eq("#<RuntimeError: #{message}>")
+        WhitehallImporter.import(whitehall_migration_document_import)
+        expect(whitehall_migration_document_import).to be_import_failed
+        expect(whitehall_migration_document_import.error_log).to eq("#<RuntimeError: #{message}>")
       end
     end
 
@@ -80,52 +80,52 @@ RSpec.describe WhitehallImporter do
       let(:message) { "Import aborted" }
 
       it "marks the import as aborted and logs the error" do
-        WhitehallImporter.import(whitehall_import)
-        expect(whitehall_import).to be_import_aborted
-        expect(whitehall_import.error_log).to eq("#<WhitehallImporter::AbortImportError: #{message}>")
+        WhitehallImporter.import(whitehall_migration_document_import)
+        expect(whitehall_migration_document_import).to be_import_aborted
+        expect(whitehall_migration_document_import.error_log).to eq("#<WhitehallImporter::AbortImportError: #{message}>")
       end
     end
   end
 
   describe ".sync" do
     before do
-      allow(ResyncService).to receive(:call).with(whitehall_import.document)
-      allow(WhitehallImporter::ClearLinksetLinks).to receive(:call).with(whitehall_import.document.content_id)
+      allow(ResyncService).to receive(:call).with(whitehall_migration_document_import.document)
+      allow(WhitehallImporter::ClearLinksetLinks).to receive(:call).with(whitehall_migration_document_import.document.content_id)
     end
 
-    let(:whitehall_import) { create(:whitehall_import, state: "imported") }
+    let(:whitehall_migration_document_import) { create(:whitehall_migration_document_import, state: "imported") }
 
     it "syncs the imported document with publishing-api" do
-      expect(ResyncService).to receive(:call).with(whitehall_import.document)
-      expect(WhitehallImporter::ClearLinksetLinks).to receive(:call).with(whitehall_import.document.content_id)
-      WhitehallImporter.sync(whitehall_import)
+      expect(ResyncService).to receive(:call).with(whitehall_migration_document_import.document)
+      expect(WhitehallImporter::ClearLinksetLinks).to receive(:call).with(whitehall_migration_document_import.document.content_id)
+      WhitehallImporter.sync(whitehall_migration_document_import)
     end
 
-    it "returns a completed WhitehallImport" do
-      WhitehallImporter.sync(whitehall_import)
-      expect(whitehall_import).to be_completed
+    it "returns a completed WhitehallMigration::DocumentImport" do
+      WhitehallImporter.sync(whitehall_migration_document_import)
+      expect(whitehall_migration_document_import).to be_completed
     end
 
-    it "raises if the WhitehallImport doesn't have a state of imported" do
-      whitehall_import = create(:whitehall_import, state: "importing")
-      expect { WhitehallImporter.sync(whitehall_import) }
+    it "raises if the WhitehallMigration::DocumentImport doesn't have a state of imported" do
+      whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "importing")
+      expect { WhitehallImporter.sync(whitehall_migration_document_import) }
         .to raise_error(RuntimeError, "Cannot sync with a state of importing")
     end
 
     context "when the sync fails" do
       before do
         allow(ResyncService).to receive(:call)
-          .with(whitehall_import.document)
+          .with(whitehall_migration_document_import.document)
           .and_raise(GdsApi::HTTPTooManyRequests.new(429, message))
       end
 
       let(:message) { "Ahhh too many requests" }
 
       it "marks the import as failed due to sync issues and logs the error" do
-        WhitehallImporter.sync(whitehall_import)
+        WhitehallImporter.sync(whitehall_migration_document_import)
 
-        expect(whitehall_import).to be_sync_failed
-        expect(whitehall_import.error_log).to eq("#<GdsApi::HTTPTooManyRequests: #{message}>")
+        expect(whitehall_migration_document_import).to be_sync_failed
+        expect(whitehall_migration_document_import.error_log).to eq("#<GdsApi::HTTPTooManyRequests: #{message}>")
       end
     end
   end
