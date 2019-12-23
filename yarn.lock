@@ -6,9 +6,10 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@webcomponents/custom-elements/-/custom-elements-1.2.1.tgz#0b9c8d06c6d8f059752ff389a6e4418f393338e7"
 
-abortcontroller-polyfill@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.2.1.tgz#4e88847513a4ed691d5e4899d8b3a3af6f7d90ee"
+abortcontroller-polyfill@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.4.0.tgz#0d5eb58e522a461774af8086414f68e1dda7a6c4"
+  integrity sha512-3ZFfCRfDzx3GFjO6RAkYx81lPGpUS20ISxux9gLxuKnqafNcFQo59+IoZqpO2WvQlyc287B62HDnDdNYRmlvWA==
 
 "accessible-autocomplete@git://github.com/kevindew/accessible-autocomplete.git":
   version "1.6.2"
