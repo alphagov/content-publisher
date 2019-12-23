@@ -4,7 +4,7 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
   let(:whitehall_file_attachment) do
     build(:whitehall_export_file_attachment)
   end
-  let(:document_import) { nil }
+  let(:document_import) { build(:whitehall_migration_document_import) }
 
   context "creates a file attachment" do
     it "fetches file from asset-manager" do
@@ -19,6 +19,21 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
 
       expect(revision.metadata_revision.title).to eq(whitehall_file_attachment["title"])
       expect(revision.filename).to eq("some-txt.txt")
+    end
+
+    it "should create a WhitehallMigration::AssetImport for each attachment variant" do
+      revision = described_class.call(document_import, whitehall_file_attachment)
+
+      expect(document_import.assets.size).to eq(2)
+      expect(document_import.assets.map(&:attributes).map(&:with_indifferent_access))
+        .to contain_exactly(
+          a_hash_including(variant: nil,
+                          file_attachment_revision_id: revision.id,
+                          original_asset_url: whitehall_file_attachment["url"]),
+          a_hash_including(variant: "thumbnail",
+                          file_attachment_revision_id: revision.id,
+                          original_asset_url: whitehall_file_attachment["variants"]["thumbnail"]["url"]),
+        )
     end
   end
 
