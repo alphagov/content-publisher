@@ -25,7 +25,6 @@ RSpec.describe WhitehallImporter do
 
     it "doesn't sync if import fails" do
       allow(WhitehallImporter::Import).to receive(:call)
-        .with(whitehall_export_document)
         .and_raise(WhitehallImporter::AbortImportError, "Booo, import failed")
 
       expect(WhitehallImporter).not_to receive(:sync)

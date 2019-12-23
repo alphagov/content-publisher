@@ -20,7 +20,7 @@ module WhitehallImporter
     raise "Cannot import with a state of #{whitehall_import.state}" unless whitehall_import.importing?
 
     begin
-      document = Import.call(whitehall_import.payload)
+      document = Import.call(whitehall_import)
       whitehall_import.update!(document: document, state: "imported")
     rescue AbortImportError => e
       whitehall_import.update!(error_log: e.inspect, state: "import_aborted")
