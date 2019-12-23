@@ -58,6 +58,15 @@ RSpec.describe WhitehallImporter::CreateRevision do
         expect(revision.image_revisions.last.blob_revision.filename).to eq("image-1.jpg")
       end
 
+      it "skips any image it has encountered before" do
+        image = build(:whitehall_export_image, filename: "image.jpg")
+        revision1 = described_class.call(record, build(:whitehall_export_edition, images: [image]))
+        revision2 = described_class.call(record, build(:whitehall_export_edition, images: [image]))
+        expect(revision1.image_revisions.count).to eq(1)
+        expect(revision2.image_revisions.count).to eq(1)
+        expect(revision1.image_revisions.first).to eq(revision2.image_revisions.first)
+      end
+
       it "uses the first image as the lead image" do
         whitehall_edition = build(
           :whitehall_export_edition,
@@ -90,13 +99,22 @@ RSpec.describe WhitehallImporter::CreateRevision do
           :whitehall_export_edition,
           attachments: [
             build(:whitehall_export_file_attachment, filename: "attach.txt"),
-            build(:whitehall_export_file_attachment, filename: "attach.txt"),
+            build(:whitehall_export_file_attachment, filename: "subdir/attach.txt"),
           ],
         )
         revision = described_class.call(record, whitehall_edition)
 
         expect(revision.file_attachment_revisions.first.blob_revision.filename).to eq("attach.txt")
         expect(revision.file_attachment_revisions.last.blob_revision.filename).to eq("attach-1.txt")
+      end
+
+      it "skips any attachment it has encountered before" do
+        attachment = build(:whitehall_export_file_attachment, filename: "attach.txt")
+        revision1 = described_class.call(record, build(:whitehall_export_edition, attachments: [attachment]))
+        revision2 = described_class.call(record, build(:whitehall_export_edition, attachments: [attachment]))
+        expect(revision1.file_attachment_revisions.count).to eq(1)
+        expect(revision2.file_attachment_revisions.count).to eq(1)
+        expect(revision1.file_attachment_revisions.first).to eq(revision2.file_attachment_revisions.first)
       end
     end
 
