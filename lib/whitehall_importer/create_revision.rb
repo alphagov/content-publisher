@@ -2,7 +2,9 @@
 
 module WhitehallImporter
   class CreateRevision
-    attr_reader :document, :whitehall_edition
+    attr_reader :document_import, :whitehall_edition
+
+    delegate :document, to: :document_import
 
     SUPPORTED_DOCUMENT_TYPES = %w(news_story press_release).freeze
     DOCUMENT_SUB_TYPES = %w[
@@ -16,8 +18,8 @@ module WhitehallImporter
       new(*args).call
     end
 
-    def initialize(document, whitehall_edition)
-      @document = document
+    def initialize(document_import, whitehall_edition)
+      @document_import = document_import
       @whitehall_edition = whitehall_edition
     end
 
@@ -118,13 +120,13 @@ module WhitehallImporter
 
     def create_image_revisions(images)
       images.reduce([]) do |memo, image|
-        memo << WhitehallImporter::CreateImageRevision.call(nil, image, memo.map(&:filename))
+        memo << WhitehallImporter::CreateImageRevision.call(document_import, image, memo.map(&:filename))
       end
     end
 
     def create_file_attachment_revisions(file_attachments)
       file_attachments.reduce([]) do |memo, file_attachment|
-        memo << WhitehallImporter::CreateFileAttachmentRevision.call(nil, file_attachment, memo.map(&:filename))
+        memo << WhitehallImporter::CreateFileAttachmentRevision.call(document_import, file_attachment, memo.map(&:filename))
       end
     end
 

@@ -119,8 +119,8 @@ RSpec.describe WhitehallImporter::Import do
 
       import_data = build(:whitehall_export_document,
                           editions: [first_edition, second_edition])
-
-      document = described_class.call(import_data)
+      document_import = build(:whitehall_migration_document_import, payload: import_data)
+      document = described_class.call(document_import)
 
       expect(document.first_published_at).to eq(first_publish_date)
     end
