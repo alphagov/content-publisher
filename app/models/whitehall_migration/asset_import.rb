@@ -14,6 +14,12 @@ class WhitehallMigration::AssetImport < ApplicationRecord
 
   validate :associated_with_only_image_or_file_attachment
 
+  def whitehall_asset_id
+    url_array = original_asset_url.to_s.split("/")
+    # https://github.com/alphagov/asset-manager#create-an-asset
+    url_array[url_array.length - 2]
+  end
+
 private
 
   def associated_with_only_image_or_file_attachment
