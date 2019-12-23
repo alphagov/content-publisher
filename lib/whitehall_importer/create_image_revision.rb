@@ -17,7 +17,7 @@ module WhitehallImporter
     def call
       temp_image = normalise_image(download_file)
       blob_revision = create_blob_revision(temp_image)
-      Image::Revision.create!(
+      revision = Image::Revision.create!(
         image: Image.new,
         metadata_revision: Image::MetadataRevision.new(
           caption: whitehall_image["caption"],
@@ -25,6 +25,8 @@ module WhitehallImporter
         ),
         blob_revision: blob_revision,
       )
+      record_assets(revision)
+      revision
     end
 
   private
@@ -59,6 +61,22 @@ module WhitehallImporter
       abort_on_issue(normaliser.issues)
 
       image
+    end
+
+    def record_assets(revision)
+      WhitehallMigration::AssetImport.create!(
+        document_import: document_import,
+        image_revision: revision,
+        original_asset_url: whitehall_image["url"],
+      )
+      whitehall_image["variants"].each do |variant, url|
+        WhitehallMigration::AssetImport.create!(
+          document_import: document_import,
+          image_revision: revision,
+          original_asset_url: url,
+          variant: variant,
+        )
+      end
     end
 
     def abort_on_issue(issues)
