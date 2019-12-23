@@ -6,7 +6,8 @@ module WhitehallImporter
       new(*args).call
     end
 
-    def initialize(whitehall_file_attachment, existing_filenames = [])
+    def initialize(record, whitehall_file_attachment, existing_filenames = [])
+      @record = record
       @whitehall_file_attachment = whitehall_file_attachment
       @existing_filenames = existing_filenames
     end
@@ -29,7 +30,7 @@ module WhitehallImporter
 
   private
 
-    attr_reader :whitehall_file_attachment, :existing_filenames
+    attr_reader :record, :whitehall_file_attachment, :existing_filenames
 
     def download_file
       URI.parse(whitehall_file_attachment["url"]).open
