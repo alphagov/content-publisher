@@ -19,10 +19,11 @@
   <% end %>
 
   <%= render "govuk_publishing_components/components/contextual_guidance", {
-    id: "withdrawal-public-explanation-guidance",
+    id: "withdrawal-public-explanation",
     html_for: "withdrawal_public_explanation",
     title: t("withdraw.new.public_explanation.guidance_title"),
-    content: withdrawal_public_explanation_guidance
+    content: withdrawal_public_explanation_guidance,
+    guidance_id: "withdrawal-public-explanation-guidance"
   } do %>
     <%= render "govuk_publishing_components/components/textarea", {
       label: {
@@ -33,7 +34,8 @@
       value: @public_explanation,
       error_items: @issues&.items_for(:public_explanation),
       name: "public_explanation",
-      rows: 6
+      rows: 6,
+      describedby: "withdrawal-public-explanation-guidance"
     } %>
   <% end %>
 

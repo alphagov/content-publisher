@@ -15,7 +15,8 @@
   if edition.document_type.guidance_for(field.id)
     field_contextual_guidance.merge!({
       title: edition.document_type.guidance_for(field.id).title,
-      content: document_contents_guidance
+      content: document_contents_guidance,
+      guidance_id: "#{field.id}-guidance"
     })
   end
 %>
@@ -36,7 +37,8 @@
       name: "revision[contents][#{field.id}]",
       value: revision.contents[field.id],
       rows: 20,
-      spellcheck: "false"
+      spellcheck: "false",
+      describedby: "#{field.id}-guidance"
     },
     govspeak_path: govspeak_preview_path(edition.document),
     edition: edition,
