@@ -3,16 +3,17 @@
 RSpec.describe WhitehallImporter::CreateRevision do
   describe ".call" do
     let(:document) { build(:document, imported_from: "whitehall", locale: "en") }
+    let(:record) { build(:whitehall_import, document: document) }
 
     it "creates a revision" do
       whitehall_edition = build(:whitehall_export_edition)
-      expect { described_class.call(document, whitehall_edition) }
+      expect { described_class.call(record, whitehall_edition) }
         .to change { Revision.count }
         .by(1)
     end
 
     it "marks the revision as imported" do
-      revision = described_class.call(document, build(:whitehall_export_edition))
+      revision = described_class.call(record, build(:whitehall_export_edition))
 
       expect(revision.imported).to be(true)
     end
@@ -25,7 +26,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
                           base_path: "/a-path")
       whitehall_edition = build(:whitehall_export_edition,
                                 translations: [translation])
-      revision = described_class.call(document, whitehall_edition)
+      revision = described_class.call(record, whitehall_edition)
       expect(revision.title).to eq("Revision title")
       expect(revision.summary).to eq("Revision summary")
       expect(revision.base_path).to eq("/a-path")
@@ -36,7 +37,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
         whitehall_image = build(:whitehall_export_image, filename: "foo.jpg")
         whitehall_edition = build(:whitehall_export_edition, images: [whitehall_image])
         revision = nil
-        expect { revision = described_class.call(document, whitehall_edition) }
+        expect { revision = described_class.call(record, whitehall_edition) }
           .to change { Image::Revision.count }.by(1)
         expect(revision.image_revisions.last.caption).to eq(whitehall_image["caption"])
         expect(revision.image_revisions.last.alt_text).to eq(whitehall_image["alt_text"])
@@ -51,7 +52,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
             build(:whitehall_export_image, filename: "subdir/image.jpg"),
           ],
         )
-        revision = described_class.call(document, whitehall_edition)
+        revision = described_class.call(record, whitehall_edition)
 
         expect(revision.image_revisions.first.blob_revision.filename).to eq("image.jpg")
         expect(revision.image_revisions.last.blob_revision.filename).to eq("image-1.jpg")
@@ -65,7 +66,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
             build(:whitehall_export_image, filename: "second.jpg"),
           ],
         )
-        revision = described_class.call(document, whitehall_edition)
+        revision = described_class.call(record, whitehall_edition)
 
         expect(revision.lead_image_revision.filename).to eq("first.jpg")
       end
@@ -80,7 +81,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
           ],
         )
 
-        expect { described_class.call(document, whitehall_edition) }
+        expect { described_class.call(record, whitehall_edition) }
           .to change { FileAttachment::Revision.count }.by(1)
       end
 
@@ -92,7 +93,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
             build(:whitehall_export_file_attachment, filename: "attach.txt"),
           ],
         )
-        revision = described_class.call(document, whitehall_edition)
+        revision = described_class.call(record, whitehall_edition)
 
         expect(revision.file_attachment_revisions.first.blob_revision.filename).to eq("attach.txt")
         expect(revision.file_attachment_revisions.last.blob_revision.filename).to eq("attach-1.txt")
@@ -113,7 +114,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
         images: ["foo.jpg"],
         attachments: ["attach.txt"],
       )
-      described_class.call(document, whitehall_edition)
+      described_class.call(record, whitehall_edition)
     end
 
     it "aborts when a translation isn't available for the documents locale" do
@@ -121,7 +122,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
       whitehall_edition = build(:whitehall_export_edition,
                                 translations: [translation])
 
-      expect { described_class.call(document, whitehall_edition) }
+      expect { described_class.call(record, whitehall_edition) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
 
@@ -129,7 +130,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
       whitehall_edition = build(:whitehall_export_edition,
                                 news_article_type: "unsupported")
 
-      expect { described_class.call(document, whitehall_edition) }
+      expect { described_class.call(record, whitehall_edition) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
 
@@ -140,7 +141,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
         organisations: [lead_organisation],
       )
 
-      revision = described_class.call(document, whitehall_edition)
+      revision = described_class.call(record, whitehall_edition)
 
       expect(revision.primary_publishing_organisation_id)
         .to eq(lead_organisation["content_id"])
@@ -154,7 +155,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
         organisations: [lead_organisation, supporting_organisation],
       )
 
-      revision = described_class.call(document, whitehall_edition)
+      revision = described_class.call(record, whitehall_edition)
 
       expect(revision.supporting_organisation_ids)
         .to eq([supporting_organisation["content_id"]])
@@ -163,7 +164,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
     it "aborts if there are no organisations" do
       whitehall_edition = build(:whitehall_export_edition, organisations: [])
 
-      expect { described_class.call(document, whitehall_edition) }
+      expect { described_class.call(record, whitehall_edition) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
 
@@ -173,7 +174,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
         organisations: [build(:whitehall_export_organisation)],
       )
 
-      expect { described_class.call(document, whitehall_edition) }
+      expect { described_class.call(record, whitehall_edition) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
 
@@ -185,7 +186,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
         organisations: [first_lead_organisation, second_lead_organisation],
       )
 
-      expect { described_class.call(document, whitehall_edition) }
+      expect { described_class.call(record, whitehall_edition) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
 
@@ -194,7 +195,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
       whitehall_edition = build(:whitehall_export_edition,
                                 role_appointments: [role_appointment])
 
-      revision = described_class.call(document, whitehall_edition)
+      revision = described_class.call(record, whitehall_edition)
 
       expect(revision.tags["role_appointments"])
         .to eq([role_appointment["content_id"]])
@@ -205,7 +206,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
       whitehall_edition = build(:whitehall_export_edition,
                                 topical_events: [topical_event])
 
-      revision = described_class.call(document, whitehall_edition)
+      revision = described_class.call(record, whitehall_edition)
 
       expect(revision.tags["topical_events"])
         .to eq([topical_event["content_id"]])
@@ -216,7 +217,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
       whitehall_edition = build(:whitehall_export_edition,
                                 world_locations: [world_location])
 
-      revision = described_class.call(document, whitehall_edition)
+      revision = described_class.call(record, whitehall_edition)
 
       expect(revision.tags["world_locations"].first)
         .to eq(world_location["content_id"])

@@ -16,12 +16,11 @@ module WhitehallImporter
     def call
       ActiveRecord::Base.transaction do
         user_ids = create_users(whitehall_document["users"])
-        document = create_document(user_ids)
-        record.update!(document: document)
+        record.update!(document: create_document(user_ids))
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           CreateEdition.call(
-            document: document,
+            record: record,
             current: current?(edition),
             whitehall_edition: edition,
             edition_number: edition_number + 1,
@@ -29,7 +28,7 @@ module WhitehallImporter
           )
         end
 
-        document
+        record.document
       end
     end
 
