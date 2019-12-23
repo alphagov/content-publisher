@@ -4,6 +4,8 @@
 # the import status of the document into Content Publisher
 class WhitehallImport < ApplicationRecord
   belongs_to :document, optional: true
+  has_many :whitehall_imported_assets
+  alias_attribute :assets, :whitehall_imported_assets
 
   enum state: { importing: "importing",
                 imported: "imported",
