@@ -190,16 +190,16 @@ RSpec.describe Edition do
       edition = build(:edition)
 
       edition.add_edition_editor(user)
-      expect(edition.edition_editors).to include(user)
+      expect(edition.editors).to include(user)
     end
 
     it "does not add an edition user if they are already listed as an editor" do
       user = build(:user)
-      edition = build(:edition, edition_editors: [user])
+      edition = build(:edition, editors: [user])
 
       expect do
         edition.add_edition_editor(user)
-          .not_to(change { edition.edition_editors })
+          .not_to(change { edition.editors })
       end
     end
   end

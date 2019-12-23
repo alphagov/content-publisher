@@ -48,7 +48,7 @@ class Edition < ApplicationRecord
 
   has_many :internal_notes
 
-  has_and_belongs_to_many :edition_editors,
+  has_and_belongs_to_many :editors,
                           class_name: "User",
                           join_table: :edition_editors
 
@@ -146,11 +146,6 @@ class Edition < ApplicationRecord
     backdated_to || document.first_published_at
   end
 
-  def editors
-    user_ids = statuses.pluck(:created_by_id) + revisions.pluck(:created_by_id)
-    User.where(id: user_ids.uniq)
-  end
-
   def access_limit_organisation_ids
     raise "no access limit" unless access_limit
 
@@ -162,6 +157,6 @@ class Edition < ApplicationRecord
   def add_edition_editor(user)
     return unless user
 
-    edition_editors << user unless edition_editors.include?(user)
+    editors << user unless editors.include?(user)
   end
 end
