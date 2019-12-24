@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 namespace :import do
-  desc "Import all documents matching an organisation and document type from Whitehall Publisher, e.g. import:whitehall_migration[organisation-slug, document-type]"
+  desc "Import all documents matching an organisation and document type from Whitehall Publisher, e.g. import:whitehall_migration[\"cabinet-office\",\"NewsArticle\"]"
   task :whitehall_migration, %i[organisation_slug document_type] => :environment do |_, args|
     ActiveRecord::Base.transaction do
-      whitehall_migration = WhitehallImporter.create_migration(args.organisation_slug, args.document_type)
+      organisation_content_id = GdsApi.publishing_api.lookup_content_id(
+        base_path: "/government/organisations/#{args.organisation_slug}",
+      )
+
+      whitehall_migration = WhitehallImporter.create_migration(organisation_content_id, args.document_type)
 
       documents_to_import = WhitehallMigration::DocumentImport.where(whitehall_migration_id: whitehall_migration.id).count
       puts "Identified #{documents_to_import} documents to import"

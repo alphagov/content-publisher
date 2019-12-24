@@ -7,12 +7,15 @@ RSpec.describe "Import tasks" do
     before do
       allow($stdout).to receive(:puts)
       Rake::Task["import:whitehall_migration"].reenable
+      stub_publishing_api_has_lookups(
+        "/government/organisations/cabinet-office" => "96ae61d6-c2a1-48cb-8e67-da9d105ae381",
+      )
       allow(WhitehallImporter).to receive(:create_migration).and_return(whitehall_migration_document_import)
     end
 
     it "calls WhitehallImport::create_migration with correct arguments" do
       Rake::Task["import:whitehall_migration"].invoke("cabinet-office", "NewsArticle")
-      WhitehallImporter.should have_received(:create_migration).with("cabinet-office", "NewsArticle")
+      WhitehallImporter.should have_received(:create_migration).with("96ae61d6-c2a1-48cb-8e67-da9d105ae381", "NewsArticle")
     end
   end
 
