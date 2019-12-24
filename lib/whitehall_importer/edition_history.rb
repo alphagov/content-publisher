@@ -56,6 +56,10 @@ module WhitehallImporter
       revision_history.last != unpublishing_event
     end
 
+    def editors
+      revision_history.pluck("whodunnit").uniq
+    end
+
   private
 
     attr_reader :revision_history

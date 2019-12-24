@@ -57,6 +57,27 @@ RSpec.describe WhitehallImporter::CreateEdition do
       expect(edition).to be_live
     end
 
+    it "sets the editors of an edition" do
+      user_ids = {
+        1 => create(:user).id,
+        2 => create(:user).id,
+      }
+
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        revision_history: [
+          build(:revision_history_event, whodunnit: 1),
+          build(:revision_history_event, whodunnit: 2),
+        ],
+      )
+
+      edition = described_class.call(document: document,
+                                     whitehall_edition: whitehall_edition,
+                                     user_ids: user_ids)
+
+      expect(edition.editors.count).to eq(2)
+    end
+
     context "when importing an access limited edition" do
       it "creates an access limit" do
         whitehall_edition = build(:whitehall_export_edition, access_limited: true)

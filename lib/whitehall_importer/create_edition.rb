@@ -145,6 +145,8 @@ module WhitehallImporter
       create_event ||= history.create_event!
       last_event ||= whitehall_edition["revision_history"].last
 
+      editor_ids = history.editors.map { |editor| user_ids[editor] }
+
       Edition.create!(
         document: document,
         number: edition_number,
@@ -157,6 +159,7 @@ module WhitehallImporter
         updated_at: last_event["created_at"],
         created_by_id: user_ids[create_event["whodunnit"]],
         last_edited_by_id: user_ids[last_event["whodunnit"]],
+        editor_ids: editor_ids,
       )
     end
 
