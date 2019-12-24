@@ -5,7 +5,8 @@
 class WhitehallMigration::DocumentImport < ApplicationRecord
   belongs_to :document, optional: true
 
-  enum state: { importing: "importing",
+  enum state: { pending: "pending",
+                importing: "importing",
                 imported: "imported",
                 import_aborted: "import_aborted",
                 import_failed: "import_failed",
