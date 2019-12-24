@@ -3,9 +3,12 @@
 namespace :import do
   desc "Import all documents matching an organisation and document type from Whitehall Publisher, e.g. import:whitehall_migration[organisation-slug, document-type]"
   task :whitehall_migration, %i[organisation_slug document_type] => :environment do |_, args|
-    WhitehallMigration.create!(organisation_slug: args.organisation_slug,
-                               document_type: args.document_type,
-                               start_time: Time.zone.now)
+    ActiveRecord::Base.transaction do
+      whitehall_migration = WhitehallImporter.create_migration(args.organisation_slug, args.document_type)
+
+      documents_to_import = WhitehallMigration::DocumentImport.where(whitehall_migration_id: whitehall_migration.id).count
+      puts "Identified #{documents_to_import} documents to import"
+    end
   end
 
   desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall_document[123]"

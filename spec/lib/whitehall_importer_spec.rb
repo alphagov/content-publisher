@@ -1,6 +1,33 @@
 # frozen_string_literal: true
 
 RSpec.describe WhitehallImporter do
+  describe ".create_migration" do
+    let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
+    let(:whitehall_export_page_1) { build(:whitehall_export_index, documents: build_list(:whitehall_export_index_document, 100)) }
+    let(:whitehall_export_page_2) { build(:whitehall_export_index, documents: build_list(:whitehall_export_index_document, 10)) }
+
+    before do
+      stub_request(:get, "#{whitehall_host}/government/admin/export/document?lead_organisation=cabinet-office&page_count=100&page_number=1&type=NewsArticle")
+        .to_return(status: 200, body: whitehall_export_page_1.to_json)
+      stub_request(:get, "#{whitehall_host}/government/admin/export/document?lead_organisation=cabinet-office&page_count=100&page_number=2&type=NewsArticle")
+        .to_return(status: 200, body: whitehall_export_page_2.to_json)
+    end
+
+    it "creates a WhitehallMigration" do
+      freeze_time do
+        expect { WhitehallImporter.create_migration("cabinet-office", "NewsArticle") }.to change { WhitehallMigration.count }.by(1)
+        expect(WhitehallMigration.last.organisation_slug).to eq("cabinet-office")
+        expect(WhitehallMigration.last.document_type).to eq("NewsArticle")
+        expect(WhitehallMigration.last.start_time).to eq(Time.current)
+      end
+    end
+
+    it "creates a pending WhitehallMigration::DocumentImport for each listed item" do
+      expect { WhitehallImporter.create_migration("123", "NewsArticle") }.to change { WhitehallMigration::DocumentImport.count }.by(110)
+      expect(WhitehallMigration::DocumentImport.all.pluck(:state).uniq).to eq(%w(pending))
+    end
+  end
+
   describe ".import_and_sync" do
     before do
       allow(ResyncService).to receive(:call)

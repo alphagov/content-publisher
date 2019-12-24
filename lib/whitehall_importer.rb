@@ -1,6 +1,25 @@
 # frozen_string_literal: true
 
 module WhitehallImporter
+  def self.create_migration(organisation_slug, document_type)
+    whitehall_migration = WhitehallMigration.create!(organisation_slug: organisation_slug,
+                               document_type: document_type,
+                               start_time: Time.current)
+
+    whitehall_export = Services.whitehall.document_list(organisation_slug, document_type)
+
+    whitehall_export.each_entry do |page|
+      page["documents"].each do |document|
+        WhitehallMigration::DocumentImport.create!(
+          whitehall_document_id: document["document_id"],
+          state: "pending",
+        )
+      end
+    end
+
+    whitehall_migration
+  end
+
   def self.import_and_sync(whitehall_document)
     whitehall_import = WhitehallMigration::DocumentImport.create!(
       whitehall_document_id: whitehall_document["id"],
