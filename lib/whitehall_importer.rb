@@ -22,6 +22,7 @@ module WhitehallImporter
     begin
       document = Import.call(whitehall_import.payload)
       whitehall_import.update!(document: document, state: "imported")
+      create_timeline_entry(document.current_edition)
     rescue AbortImportError => e
       whitehall_import.update!(error_log: e.inspect, state: "import_aborted")
     rescue StandardError => e
@@ -43,4 +44,14 @@ module WhitehallImporter
       whitehall_import.update!(error_log: e.inspect, state: "sync_failed")
     end
   end
+
+  def self.create_timeline_entry(edition)
+    TimelineEntry.create_for_revision(
+      entry_type: :imported_from_whitehall,
+      revision: edition.revision,
+      edition: edition,
+    )
+  end
+
+  private_class_method :create_timeline_entry
 end
