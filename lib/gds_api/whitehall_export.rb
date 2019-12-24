@@ -9,9 +9,9 @@ module GdsApi
   end
 
   class WhitehallExport < Base
-    def document_list(organisation_slug, document_type)
+    def document_list(organisation_content_id, document_type)
       params = {
-        lead_organisation: organisation_slug,
+        lead_organisation: organisation_content_id,
         type: document_type,
         page_number: 1,
         page_count: 100,

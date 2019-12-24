@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module WhitehallImporter
-  def self.create_migration(organisation_slug, document_type)
+  def self.create_migration(organisation_content_id, document_type)
     ActiveRecord::Base.transaction do
-      whitehall_migration = WhitehallMigration.create!(organisation_slug: organisation_slug,
+      whitehall_migration = WhitehallMigration.create!(organisation_content_id: organisation_content_id,
                                  document_type: document_type,
                                  start_time: Time.current)
 
-      whitehall_export = GdsApi.whitehall_export.document_list(organisation_slug, document_type)
+      whitehall_export = GdsApi.whitehall_export.document_list(organisation_content_id, document_type)
 
       whitehall_export.each do |page|
         page["documents"].each do |document|
