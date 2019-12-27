@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'damerau-levenshtein'
 
 class ResyncService < ApplicationService
   attr_reader :document
@@ -135,5 +136,11 @@ private
       edition_in_publishing_api["public_updated_at"] == proposed_edition["public_updated_at"] &&
       edition_in_publishing_api["document_type"] == proposed_edition["document_type"] &&
       edition_in_publishing_api["schema_name"] == proposed_edition["schema_name"] &&
+      body_text_similar_enough?(edition_in_publishing_api["details"]["body"],  proposed_edition["details"]["body"])
+  end
+
+  def body_text_similar_enough?(pub_api_body, proposed_body)
+    # See https://www.rubydoc.info/gems/damerau-levenshtein/1.1.0#API_Description
+    DamerauLevenshtein.distance(pub_api_body, proposed_body, 1, 100) < 100
   end
 end
