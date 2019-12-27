@@ -1,0 +1,23 @@
+name: Secondary navigation
+description: Displays a secondary navigation with the current page marked accordingly
+accessibility_criteria: |
+  The component must:
+
+  * indicate that it is navigation landmark
+  * indicate if a navigation item links to the currently-displayed page
+shared_accessibility_criteria:
+  - link
+examples:
+  default:
+    data:
+      aria_label: Document
+      items:
+        - label: Document summary
+          href: /document-summary
+          current: true
+          data_attributes:
+            gtm: summary-tab
+        - label: Document history
+          href: /document-history
+          data_attributes:
+            gtm: history-tab
