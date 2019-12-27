@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "damerau-levenshtein"
+require "sanitize"
 
 class PublishingApiComparisonService < ApplicationService
   attr_reader :edition, :published
@@ -45,7 +46,7 @@ private
 
   def body_text_similar_enough?(pub_api_body, proposed_body)
     # See https://www.rubydoc.info/gems/damerau-levenshtein/1.1.0#API_Description
-    DamerauLevenshtein.distance(pub_api_body, proposed_body, 1, 100) < 100
+    DamerauLevenshtein.distance(Sanitize.clean(pub_api_body), Sanitize.clean(proposed_body)).zero?
   end
 
   def images_match?(pub_api_images, proposed_images)
