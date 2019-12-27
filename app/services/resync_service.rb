@@ -24,6 +24,19 @@ private
     live_edition.lock!
     set_political_and_government(live_edition)
     reserve_path(live_edition.base_path)
+
+    proposed_edition = PreviewService::Payload.new(live_edition, republish: true).payload
+    edition_in_publishing_api = GdsApi.publishing_api.get_content(live_edition.content_id).to_h
+
+    if edition_in_publishing_api.publication_state != "published"
+      version = latest_content_item[:state_history].select { |_, hash| hash["published"] }
+      published_version = version.keys.first.to_i
+
+      edition_in_publishing_api = GdsApi.publishing_api.get_content(live_edition.content_id, version: published_version).to_h
+    end
+
+    raise WhitehallImporter::AbortImportError unless versions_match?(edition_in_publishing_api, proposed_edition)
+
     PreviewService.call(live_edition, republish: true)
     PublishAssetService.call(live_edition, nil)
 
@@ -40,6 +53,12 @@ private
     current_edition.lock!
     set_political_and_government(current_edition)
     reserve_path(current_edition.base_path)
+
+    proposed_edition = PreviewService::Payload.new(current_edition).payload
+    edition_in_publishing_api = GdsApi.publishing_api.get_content(current_edition.content_id).to_h
+
+    raise WhitehallImporter::AbortImportError unless versions_match?(edition_in_publishing_api, proposed_edition)
+
     FailsafePreviewService.call(current_edition)
 
     schedule if current_edition.scheduled?
@@ -106,5 +125,15 @@ private
     scheduling = current_edition.status.details
     ScheduledPublishingJob.set(wait_until: scheduling.publish_time)
                           .perform_later(current_edition.id)
+  end
+
+  def versions_match?(edition_in_publishing_api, proposed_edition)
+    edition_in_publishing_api["base_path"] == proposed_edition["base_path"] &&
+      edition_in_publishing_api["title"] == proposed_edition["title"] &&
+      edition_in_publishing_api["description"] == proposed_edition["description"] &&
+      edition_in_publishing_api["first_published_at"] == proposed_edition["first_published_at"] &&
+      edition_in_publishing_api["public_updated_at"] == proposed_edition["public_updated_at"] &&
+      edition_in_publishing_api["document_type"] == proposed_edition["document_type"] &&
+      edition_in_publishing_api["schema_name"] == proposed_edition["schema_name"] &&
   end
 end

@@ -8,6 +8,7 @@ gem "rails", "~> 6.0"
 
 gem "aws-sdk-s3", "~> 1"
 gem "bootsnap", "~> 1"
+gem "damerau-levenshtein"
 gem "gds-api-adapters", "~> 63"
 gem "gds-sso", "~> 14"
 gem "govspeak", "~> 6.5"
