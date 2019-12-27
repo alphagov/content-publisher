@@ -38,5 +38,6 @@ en:
         access_limit_updated: "Access limit updated"
         access_limit_removed: "Access limit removed"
         political_status_changed: "History mode criteria updated"
+        imported_from_whitehall: "Imported from Whitehall"
       entry_content:
         backdated: "First published date backdated to %{date}"

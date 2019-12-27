@@ -34,7 +34,6 @@ RSpec.describe WhitehallImporter do
   end
 
   describe ".import" do
-    before { allow(WhitehallImporter::Import).to receive(:call) }
     let(:whitehall_migration_document_import) { create(:whitehall_migration_document_import) }
 
     it "imports a document" do
@@ -52,6 +51,11 @@ RSpec.describe WhitehallImporter do
       it "marks the import as imported" do
         WhitehallImporter.import(whitehall_migration_document_import)
         expect(whitehall_migration_document_import).to be_imported
+      end
+
+      it "sets the timeline entry as Imported from Whitehall" do
+        WhitehallImporter.import(whitehall_migration_document_import)
+        expect(TimelineEntry.last).to be_imported_from_whitehall
       end
     end
 
