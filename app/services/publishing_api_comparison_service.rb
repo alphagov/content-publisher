@@ -40,12 +40,18 @@ private
 
   def details_match?(pub_api_details, proposed_details)
     body_text_similar_enough?(pub_api_details["body"], proposed_details["body"]) &&
-    images_match?()
+      images_match?(pub_api_details["images"], proposed_details["images"])
   end
 
   def body_text_similar_enough?(pub_api_body, proposed_body)
     # See https://www.rubydoc.info/gems/damerau-levenshtein/1.1.0#API_Description
     DamerauLevenshtein.distance(pub_api_body, proposed_body, 1, 100) < 100
+  end
+
+  def images_match?(pub_api_images, proposed_images)
+    pub_api_images["alt_text"] == proposed_images["alt_text"] &&
+      pub_api_images["caption"] == proposed_images["caption"] &&
+      pub_api_images["credit"] == proposed_images["credit"]
   end
 
   def links_match?(content_id, proposed_edition)
