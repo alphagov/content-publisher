@@ -23,7 +23,7 @@ private
   def sync_live_edition
     live_edition.lock!
     set_political_and_government(live_edition)
-    PublishingApiComparisionService.call(live_edition, published: true)
+    PublishingApiComparisonService.call(live_edition, published: true)
     reserve_path(live_edition.base_path)
     PreviewService.call(live_edition, republish: true)
     PublishAssetService.call(live_edition, nil)
@@ -40,7 +40,7 @@ private
   def sync_draft_edition
     current_edition.lock!
     set_political_and_government(current_edition)
-    PublishingApiComparisionService.call(current_edition)
+    PublishingApiComparisonService.call(current_edition)
     reserve_path(current_edition.base_path)
     FailsafePreviewService.call(current_edition)
 

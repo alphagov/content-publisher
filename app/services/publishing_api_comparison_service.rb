@@ -2,7 +2,7 @@
 
 require "damerau-levenshtein"
 
-class PublishingApiComparisionService < ApplicationService
+class PublishingApiComparisonService < ApplicationService
   attr_reader :edition, :published
 
   def initialize(edition, published: false)
