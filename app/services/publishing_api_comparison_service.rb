@@ -32,8 +32,6 @@ private
     edition_in_publishing_api["base_path"] == proposed_edition["base_path"] &&
       edition_in_publishing_api["title"] == proposed_edition["title"] &&
       edition_in_publishing_api["description"] == proposed_edition["description"] &&
-      edition_in_publishing_api["first_published_at"] == proposed_edition["first_published_at"] &&
-      edition_in_publishing_api["public_updated_at"] == proposed_edition["public_updated_at"] &&
       edition_in_publishing_api["document_type"]["id"] == proposed_edition["document_type"] &&
       edition_in_publishing_api["schema_name"] == proposed_edition["schema_name"] &&
       details_match?(edition_in_publishing_api["details"], proposed_edition["details"])
