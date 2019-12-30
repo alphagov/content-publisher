@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     delete "/schedule" => "schedule#destroy"
     get "/scheduled" => "schedule#scheduled", as: :scheduled
 
-    post "/internal_notes" => "internal_notes#create", as: :create_internal_note
+    post "/internal-notes" => "internal_notes#create", as: :create_internal_note
 
     get "/debug" => "debug#index", as: :debug_document
 
