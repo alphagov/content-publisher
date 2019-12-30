@@ -150,7 +150,7 @@ module WhitehallImporter
       Edition.create!(
         document: document,
         number: edition_number,
-        revision_synced: true,
+        revision_synced: false,
         revision: revision,
         status: status,
         current: current,
