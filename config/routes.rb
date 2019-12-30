@@ -37,8 +37,8 @@ Rails.application.routes.draw do
 
     get "/debug" => "debug#index", as: :debug_document
 
-    post "/submit-for-2i" => "review#submit_for_2i", as: :submit_document_for_2i
-    post "/approve" => "review#approve", as: :approve_document
+    post "/submit-for-2i" => "review#submit_for_2i", as: :submit_for_2i
+    post "/approve" => "review#approve", as: :approve
 
     get "/tags" => "tags#edit", as: :tags
     post "/tags" => "tags#update"
