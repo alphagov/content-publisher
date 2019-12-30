@@ -46,7 +46,7 @@ private
 
   def body_text_similar_enough?(pub_api_body, proposed_body)
     # See https://www.rubydoc.info/gems/damerau-levenshtein/1.1.0#API_Description
-    DamerauLevenshtein.distance(Sanitize.clean(pub_api_body), Sanitize.clean(proposed_body)).zero?
+    DamerauLevenshtein.distance(Sanitize.clean(pub_api_body).squish, Sanitize.clean(proposed_body).squish).zero?
   end
 
   def images_match?(pub_api_images, proposed_images)
