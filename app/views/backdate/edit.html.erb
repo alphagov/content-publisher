@@ -12,7 +12,9 @@
   <div class="govuk-grid-column-two-thirds">
     <%= render_govspeak(t("backdate.edit.description_govspeak")) %>
 
-    <%= form_tag backdate_path(@edition.document), data: { gtm: "confirm-backdate" } do %>
+    <%= form_tag backdate_path(@edition.document),
+                 method: :patch,
+                 data: { gtm: "confirm-backdate" } do %>
       <%= render "govuk_publishing_components/components/date_input", {
         legend_text: legend,
         hint: t("backdate.edit.date_hint_text"),

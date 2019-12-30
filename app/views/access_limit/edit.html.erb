@@ -24,7 +24,9 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag access_limit_path(@edition.document), data: { gtm: "confirm-access-limit" } do %>
+    <%= form_tag access_limit_path(@edition.document),
+                 method: :patch,
+                 data: { gtm: "confirm-access-limit" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         heading: t("access_limit.edit.title"),
         is_page_heading: true,

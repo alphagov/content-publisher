@@ -12,7 +12,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag create_schedule_path(@edition.document), data: { gtm: "confirm-schedule" } do %>
+    <%= form_tag new_schedule_path(@edition.document), data: { gtm: "confirm-schedule" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         heading: t("schedule.new.title"),
         is_page_heading: true,

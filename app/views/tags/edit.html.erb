@@ -6,6 +6,7 @@
     <p class="govuk-body"><%= t("tags.edit.description") %></p>
 
     <%= form_tag tags_path(@edition.document),
+                 method: :patch,
                  data: {
                    "warn-before-unload": "true",
                    gtm: "confirm-edit-tags"

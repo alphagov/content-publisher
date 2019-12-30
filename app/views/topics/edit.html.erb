@@ -60,7 +60,7 @@
   </li>
 <% end %>
 
-<%= form_tag update_topics_path(@edition.document), data: { gtm: "confirm-edit-topics" }, method: :patch do %>
+<%= form_tag topics_path(@edition.document), data: { gtm: "confirm-edit-topics" }, method: :patch do %>
   <%= render "govuk_publishing_components/components/fieldset", {
     legend_text: t("topics.edit.selected_title"),
     heading_level: 2,

@@ -10,7 +10,7 @@
       <% end %>
 
       <%= form_tag(
-        create_file_attachment_path(@edition.document),
+        file_attachments_path(@edition.document),
         multipart: true,
         data: {
           "modal-action": "upload",

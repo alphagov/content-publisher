@@ -11,7 +11,9 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag history_mode_path(@edition.document), data: { gtm: "confirm-political" } do %>
+    <%= form_tag history_mode_path(@edition.document),
+                 method: :patch,
+                 data: { gtm: "confirm-political" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         name: "political",
         error_items: @issues&.items_for(:political),

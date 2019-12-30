@@ -82,7 +82,7 @@ module ActionsHelper
   end
 
   def create_preview_button(edition)
-    form_tag create_preview_path(edition.document),
+    form_tag preview_document_path(edition.document),
              class: "app-side__form",
              data: { gtm: "preview" } do
       render "govuk_publishing_components/components/button", text: "Preview"
@@ -90,7 +90,7 @@ module ActionsHelper
   end
 
   def approve_button(edition)
-    form_tag approve_document_path(edition.document),
+    form_tag approve_path(edition.document),
              class: "app-side__form",
              data: { gtm: "approve" } do
       render "govuk_publishing_components/components/button", text: "Approve"
@@ -98,7 +98,7 @@ module ActionsHelper
   end
 
   def submit_for_2i_button(edition)
-    form_tag submit_document_for_2i_path(edition.document),
+    form_tag submit_for_2i_path(edition.document),
              class: "app-side__form",
              data: { gtm: "submit-for-2i" } do
       render "govuk_publishing_components/components/button", text: "Submit for 2i review"
