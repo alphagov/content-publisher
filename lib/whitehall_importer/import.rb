@@ -61,8 +61,18 @@ module WhitehallImporter
         created_at: whitehall_document["created_at"],
         updated_at: whitehall_document["updated_at"],
         created_by_id: user_ids[event["whodunnit"]],
+        first_published_at: first_publish_date,
         imported_from: "whitehall",
       )
+    end
+
+    def first_publish_date
+      first_publish_event = first_edition_history.first_state_event("published") || {}
+      first_publish_event["created_at"]
+    end
+
+    def first_edition_history
+      EditionHistory.new(whitehall_document["editions"].first["revision_history"])
     end
   end
 end
