@@ -44,7 +44,7 @@ Rails.application.routes.draw do
     post "/tags" => "tags#update"
 
     get "/preview" => "preview#show", as: :preview_document
-    post "/create-preview" => "preview#create", as: :create_preview
+    post "/preview" => "preview#create"
 
     get "/withdraw" => "withdraw#new", as: :withdraw
     post "/withdraw" => "withdraw#create"

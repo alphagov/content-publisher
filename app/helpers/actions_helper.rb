@@ -82,7 +82,7 @@ module ActionsHelper
   end
 
   def create_preview_button(edition)
-    form_tag create_preview_path(edition.document),
+    form_tag preview_document_path(edition.document),
              class: "app-side__form",
              data: { gtm: "preview" } do
       render "govuk_publishing_components/components/button", text: "Preview"
