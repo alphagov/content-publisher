@@ -48,6 +48,7 @@ module WhitehallImporter
           update_type: whitehall_edition["minor_change"] ? "minor" : "major",
           change_note: whitehall_edition["change_note"],
           document_type_id: whitehall_edition[document_type_key],
+          backdated_to: backdated? ? whitehall_edition["first_published_at"] : nil,
         ),
         tags_revision: TagsRevision.new(
           tags: {
@@ -66,6 +67,10 @@ module WhitehallImporter
     end
 
   private
+
+    def history
+      @history ||= EditionHistory.new(whitehall_edition["revision_history"])
+    end
 
     def translation
       @translation ||= whitehall_edition["translations"].find do |t|
@@ -121,6 +126,11 @@ module WhitehallImporter
       file_attachments.reduce([]) do |memo, file_attachment|
         memo << WhitehallImporter::CreateFileAttachmentRevision.call(file_attachment, memo.map(&:filename))
       end
+    end
+
+    def backdated?
+      first_publish_event = history.first_state_event("publish") || {}
+      whitehall_edition["first_published_at"] != first_publish_event["created_at"]
     end
   end
 end

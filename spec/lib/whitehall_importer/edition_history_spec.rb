@@ -38,6 +38,22 @@ RSpec.describe WhitehallImporter::EditionHistory do
     it_behaves_like "an event bang method", :last_state_event, %w[draft]
   end
 
+  describe "#first_state_event" do
+    it "returns the first event associated with the state" do
+      first_draft_event = build(:revision_history_event, state: "draft")
+      last_draft_event = build(:revision_history_event, state: "draft")
+      instance = described_class.new([first_draft_event, last_draft_event])
+
+      expect(instance.first_state_event("draft")).to be(first_draft_event)
+    end
+
+    it "returns nil if the edition is missing a state event" do
+      draft_event = build(:revision_history_event, state: "draft")
+      expect(described_class.new([draft_event]).first_state_event("published"))
+        .to be_nil
+    end
+  end
+
   describe "#next_event" do
     it "returns the event associated with the state" do
       first_event = build(:revision_history_event)
