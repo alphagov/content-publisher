@@ -13,7 +13,7 @@ FactoryBot.define do
     crop_height { 667 }
 
     transient do
-      fixture { "1000x1000.jpg" }
+      fixture { "1000x1000.png" }
       assets { nil }
     end
 
