@@ -22,7 +22,7 @@ class PublishingApiComparisonService < ApplicationService
       edition_in_publishing_api = GdsApi.publishing_api.get_content(edition.content_id, version: published_version).to_h
     end
 
-    raise WhitehallImporter::AbortImportError, "Versions don't match" unless versions_match?(edition_in_publishing_api, proposed_edition)
+    raise WhitehallImporter::AbortImportError, "Versions don't match: From publishing_api: #{edition_in_publishing_api}\n\n Proposed payload: #{proposed_edition}" unless versions_match?(edition_in_publishing_api, proposed_edition)
     raise WhitehallImporter::AbortImportError, "Links don't match" unless links_match?(content_id, proposed_edition)
   end
 
