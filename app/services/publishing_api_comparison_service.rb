@@ -39,7 +39,7 @@ private
 
   def details_match?(pub_api_details, proposed_details)
     body_text_similar_enough?(pub_api_details["body"], proposed_details["body"]) &&
-      images_match?(pub_api_details["images"], proposed_details["images"])
+      images_match?(pub_api_details["image"], proposed_details["image"])
   end
 
   def body_text_similar_enough?(pub_api_body, proposed_body)
