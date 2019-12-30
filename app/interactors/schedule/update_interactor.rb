@@ -7,6 +7,7 @@ class Schedule::UpdateInteractor < ApplicationInteractor
            :revision,
            :issues,
            :publish_time,
+           :api_error,
            to: :context
 
   def call
@@ -44,6 +45,9 @@ private
 
     new_scheduling = scheduling.dup.tap { |s| s.publish_time = publish_time }
     ScheduleService.call(edition, user, new_scheduling)
+  rescue GdsApi::BaseError => e
+    GovukError.notify(e)
+    context.fail!(api_error: true)
   end
 
   def create_timeline_entry
