@@ -53,7 +53,8 @@ private
   end
 
   def links_match?(proposed_edition)
-    links_in_publishing_api = GdsApi.publishing_api.get_links(edition.content_id).to_h
+    links_hash = GdsApi.publishing_api.get_links(edition.content_id).to_h
+    links_in_publishing_api = links_hash["links"]
     proposed_links = proposed_edition["links"]
 
     links_in_publishing_api["organisations"]&.sort == proposed_links["organisations"]&.sort &&
