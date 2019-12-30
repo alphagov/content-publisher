@@ -23,7 +23,7 @@ class PublishingApiComparisonService < ApplicationService
     end
 
     raise WhitehallImporter::AbortImportError, "Versions don't match: From publishing_api: #{edition_in_publishing_api}\n\n Proposed payload: #{proposed_edition}" unless versions_match?(edition_in_publishing_api, proposed_edition)
-    raise WhitehallImporter::AbortImportError, "Links don't match" unless links_match?(content_id, proposed_edition)
+    raise WhitehallImporter::AbortImportError, "Links don't match" unless links_match?(proposed_edition)
   end
 
 private
@@ -53,8 +53,8 @@ private
       pub_api_images["credit"] == proposed_images["credit"]
   end
 
-  def links_match?(content_id, proposed_edition)
-    links_in_publishing_api = GdsApi.publishing_api.get_links(content_id).to_h
+  def links_match?(proposed_edition)
+    links_in_publishing_api = GdsApi.publishing_api.get_links(edition.content_id).to_h
     proposed_links = proposed_edition["links"]
 
     links_in_publishing_api["government"].sort == proposed_links["government"].sort &&
