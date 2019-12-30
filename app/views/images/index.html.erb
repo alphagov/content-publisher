@@ -17,7 +17,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
       <% end %>
 
       <%= form_tag(
-        create_image_path(@edition.document),
+        images_path(@edition.document),
         multipart: true,
         data: {
           gtm: "image-upload-submit",

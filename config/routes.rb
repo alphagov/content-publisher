@@ -27,9 +27,9 @@ Rails.application.routes.draw do
     delete "/schedule-proposal" => "schedule_proposal#destroy"
 
     get "/schedule/new" => "schedule#new", as: :new_schedule
-    post "/schedule/new" => "schedule#create", as: :create_schedule
+    post "/schedule/new" => "schedule#create"
     get "/schedule/edit" => "schedule#edit", as: :edit_schedule
-    post "/schedule/edit" => "schedule#update", as: :update_schedule
+    post "/schedule/edit" => "schedule#update"
     delete "/schedule" => "schedule#destroy"
     get "/scheduled" => "schedule#scheduled", as: :scheduled
 
@@ -55,19 +55,19 @@ Rails.application.routes.draw do
     get "/remove" => "remove#remove", as: :remove
 
     get "/images" => "images#index", as: :images
-    post "/images" => "images#create", as: :create_image
+    post "/images" => "images#create"
     get "/images/:image_id/download" => "images#download", as: :download_image
     get "/images/:image_id/crop" => "images#crop", as: :crop_image
     patch "/images/:image_id/crop" => "images#update_crop"
     get "/images/:image_id/edit" => "images#edit", as: :edit_image
-    patch "/images/:image_id/edit" => "images#update", as: :update_image
+    patch "/images/:image_id/edit" => "images#update"
     delete "/images/:image_id" => "images#destroy", as: :destroy_image
 
     post "/lead-image/:image_id" => "lead_image#choose", as: :choose_lead_image
     delete "/lead-image" => "lead_image#remove", as: :remove_lead_image
 
     get "/topics" => "topics#edit", as: :topics
-    patch "/topics" => "topics#update", as: :update_topics
+    patch "/topics" => "topics#update"
 
     get "/backdate" => "backdate#edit", as: :backdate
     post "/backdate" => "backdate#update"
@@ -87,12 +87,12 @@ Rails.application.routes.draw do
     post "/govspeak-preview" => "govspeak_preview#to_html", as: :govspeak_preview
 
     get "/file-attachments" => "file_attachments#index", as: :file_attachments
-    post "/file-attachments" => "file_attachments#create", as: :create_file_attachment
+    post "/file-attachments" => "file_attachments#create"
     get "/file-attachments/:file_attachment_id" => "file_attachments#show", as: :file_attachment
     get "/file-attachments/:file_attachment_id/preview" => "file_attachments#preview", as: :preview_file_attachment
     get "/file-attachments/:file_attachment_id/edit" => "file_attachments#edit", as: :edit_file_attachment
-    patch "/file-attachments/:file_attachment_id/edit" => "file_attachments#update", as: :update_file_attachment
-    delete "/file-attachments/:file_attachment_id" => "file_attachments#destroy", as: :destroy_file_attachment
+    patch "/file-attachments/:file_attachment_id/edit" => "file_attachments#update"
+    delete "/file-attachments/:file_attachment_id" => "file_attachments#destroy"
   end
 
   get "/healthcheck", to: proc { [200, {}, %w[OK]] }
@@ -102,7 +102,7 @@ Rails.application.routes.draw do
   get "/publisher-updates" => "publisher_information#publisher_updates", as: :publisher_updates
 
   get "/video-embed" => "video_embed#new", as: :video_embed
-  post "/video-embed" => "video_embed#create", as: :create_video_embed
+  post "/video-embed" => "video_embed#create"
 
   scope via: :all do
     match "/400" => "errors#bad_request"
