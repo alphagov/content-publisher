@@ -145,7 +145,7 @@ module WhitehallImporter
       create_event ||= history.create_event!
       last_event ||= whitehall_edition["revision_history"].last
 
-      editor_ids = history.editors.map { |editor| user_ids[editor] }
+      editor_ids = history.editors.map { |editor| user_ids[editor] }.compact
 
       Edition.create!(
         document: document,
