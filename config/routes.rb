@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     get "/schedule/new" => "schedule#new", as: :new_schedule
     post "/schedule/new" => "schedule#create"
     get "/schedule/edit" => "schedule#edit", as: :edit_schedule
-    post "/schedule/edit" => "schedule#update"
+    patch "/schedule/edit" => "schedule#update"
     delete "/schedule" => "schedule#destroy"
     get "/scheduled" => "schedule#scheduled", as: :scheduled
 
@@ -41,7 +41,7 @@ Rails.application.routes.draw do
     post "/approve" => "review#approve", as: :approve
 
     get "/tags" => "tags#edit", as: :tags
-    post "/tags" => "tags#update"
+    patch "/tags" => "tags#update"
 
     get "/preview" => "preview#show", as: :preview_document
     post "/preview" => "preview#create"
@@ -70,14 +70,14 @@ Rails.application.routes.draw do
     patch "/topics" => "topics#update"
 
     get "/backdate" => "backdate#edit", as: :backdate
-    post "/backdate" => "backdate#update"
+    patch "/backdate" => "backdate#update"
     delete "/backdate" => "backdate#destroy"
 
     get "/access-limit" => "access_limit#edit", as: :access_limit
-    post "/access-limit" => "access_limit#update"
+    patch "/access-limit" => "access_limit#update"
 
     get "/history-mode" => "history_mode#edit", as: :history_mode
-    post "/history-mode" => "history_mode#update"
+    patch "/history-mode" => "history_mode#update"
 
     post "/editions" => "editions#create", as: :create_edition
 

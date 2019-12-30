@@ -18,11 +18,11 @@ RSpec.describe "History Mode" do
     end
   end
 
-  describe "POST /documents/:document/history-mode" do
+  describe "PATCH /documents/:document/history-mode" do
     it "returns a forbidden status for user without managing editor permission" do
       @edition = create(:edition)
       login_as(create(:user))
-      post history_mode_path(@edition.document)
+      patch history_mode_path(@edition.document)
       expect(response.status).to eq(403)
       expect(response.body).to include(I18n.t!("history_mode.non_managing_editor.title", title: @edition.title))
     end
@@ -30,7 +30,7 @@ RSpec.describe "History Mode" do
     it "does not return a forbidden status for user with managing editor permission" do
       @edition = create(:edition)
       login_as(create(:user, managing_editor: true))
-      post history_mode_path(@edition.document)
+      patch history_mode_path(@edition.document)
       expect(response.status).to_not eq(403)
     end
   end
