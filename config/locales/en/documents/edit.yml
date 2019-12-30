@@ -12,13 +12,13 @@ en:
         summary: Summary
       url_preview:
         available: Page address
-        no_title: You haven't entered a title yet.
+        no_title: You haven’t entered a title yet.
         error: Unable to preview address, please edit title and try again.
       change_note:
         title: Public change note
         guidance_title: Writing change notes
         guidance: |
-          Describe the change for users. Include or refer to any new or updated information. This change note will be published on the page and emailed to subscribers. The 'last updated' date will change.
+          Describe the change for users. Include or refer to any new or updated information. This change note will be published on the page and emailed to subscribers. The ‘last updated’ date will change.
 
           [Full guidance on change notes](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#change-notes)
       update_type:

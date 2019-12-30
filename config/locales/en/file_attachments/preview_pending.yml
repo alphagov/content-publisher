@@ -1,7 +1,7 @@
 en:
   file_attachments:
     preview_pending:
-      title: Sorry, you can't preview this file yet
+      title: Sorry, you can’t preview this file yet
       description_govspeak: |
         Your file is still being security scanned.
 
