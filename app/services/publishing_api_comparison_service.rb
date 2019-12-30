@@ -58,7 +58,6 @@ private
 
     links_in_publishing_api["government"]&.sort == proposed_links["government"]&.sort &&
       links_in_publishing_api["organisations"]&.sort == proposed_links["organisations"]&.sort &&
-      links_in_publishing_api["taxons"]&.sort == proposed_links["taxons"]&.sort &&
       links_in_publishing_api["primary_publishing_organisation"] == proposed_links["primary_publishing_organisation"]
   end
 end
