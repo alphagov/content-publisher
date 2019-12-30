@@ -32,7 +32,7 @@ private
     edition_in_publishing_api["base_path"] == proposed_edition["base_path"] &&
       edition_in_publishing_api["title"] == proposed_edition["title"] &&
       edition_in_publishing_api["description"] == proposed_edition["description"] &&
-      edition_in_publishing_api["document_type"]["id"] == proposed_edition["document_type"] &&
+      edition_in_publishing_api["document_type"] == proposed_edition["document_type"] &&
       edition_in_publishing_api["schema_name"] == proposed_edition["schema_name"] &&
       details_match?(edition_in_publishing_api["details"], proposed_edition["details"])
   end
