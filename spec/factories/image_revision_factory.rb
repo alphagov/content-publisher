@@ -13,7 +13,7 @@ FactoryBot.define do
       crop_y { 166 }
       crop_width { 1000 }
       crop_height { 667 }
-      fixture { "1000x1000.jpg" }
+      fixture { "1000x1000.png" }
       assets { nil }
       alt_text { nil }
       caption { nil }
