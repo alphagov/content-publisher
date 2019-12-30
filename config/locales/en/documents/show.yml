@@ -15,10 +15,10 @@ en:
       topics:
         title: Topics
         no_topics: No topics.
-        api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
+        api_down: This content isn’t available right now. We’re having trouble getting the data we need to show you this content.
       tags:
         title: Tags
-        api_down: This content isn't available right now. We're having trouble getting the data we need to show you this content.
+        api_down: This content isn’t available right now. We’re having trouble getting the data we need to show you this content.
         none: None
       contents:
         title: Content
@@ -65,7 +65,7 @@ en:
       failed_to_publish:
         title: There is a problem
         description_govspeak: |
-          '%{title}' has not been published.<br>
+          ‘%{title}’ has not been published.<br>
           It was scheduled to publish at %{time} on %{date}
 
           You can publish it now, schedule it to publish later, or edit it.
