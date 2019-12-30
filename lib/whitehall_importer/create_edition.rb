@@ -158,6 +158,7 @@ module WhitehallImporter
         created_at: create_event["created_at"],
         updated_at: last_event["created_at"],
         created_by_id: user_ids[create_event["whodunnit"]],
+        last_edited_at: last_event["created_at"],
         last_edited_by_id: user_ids[last_event["whodunnit"]],
         editor_ids: editor_ids,
       )

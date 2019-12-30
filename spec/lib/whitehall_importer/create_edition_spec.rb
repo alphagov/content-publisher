@@ -180,6 +180,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
         expect(edition.created_at).to eq(created_at)
         expect(edition.updated_at).to eq(updated_at)
+        expect(edition.last_edited_at).to eq(updated_at)
       end
     end
 
