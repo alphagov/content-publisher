@@ -49,8 +49,7 @@ private
 
   def images_match?(pub_api_images, proposed_images)
     pub_api_images["alt_text"] == proposed_images["alt_text"] &&
-      pub_api_images["caption"] == proposed_images["caption"] &&
-      pub_api_images["credit"] == proposed_images["credit"]
+      pub_api_images["caption"] == proposed_images["caption"]
   end
 
   def links_match?(proposed_edition)
