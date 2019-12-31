@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "gds_api/json_client"
+require "gds_api/whitehall_export"
 
 namespace :import do
   desc "Import all documents matching an organisation and document type from Whitehall Publisher, e.g. import:whitehall_migration[organisation-slug, document-type]"
@@ -12,16 +12,8 @@ namespace :import do
 
   desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall_document[123]"
   task :whitehall_document, [:document_id] => :environment do |_, args|
-    host = Plek.new.external_url_for("whitehall-admin")
-    endpoint = "#{host}/government/admin/export/document/#{args.document_id}"
-    options = {
-      "bearer_token": ENV["WHITEHALL_BEARER_TOKEN"] || "example",
-    }
-    client = GdsApi::JsonClient.new(options)
-    response = client.get_json(endpoint)
-    whitehall_export = response.to_hash
-
-    whitehall_import = WhitehallImporter.import_and_sync(whitehall_export)
+    whitehall_export = GdsApi.whitehall_export.document_export(args.document_id)
+    whitehall_import = WhitehallImporter.import_and_sync(whitehall_export.to_hash)
 
     unless whitehall_import.completed?
       puts whitehall_import.state.humanize
