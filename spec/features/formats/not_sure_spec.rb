@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "User is not sure about the supertype", format: true do
+RSpec.describe "User is not sure about the supertype" do
   scenario do
     when_i_click_on_create_a_document
     and_i_choose_i_am_not_sure_if_it_belongs_on_govuk

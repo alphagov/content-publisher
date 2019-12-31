@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Create a press release", format: true do
+RSpec.describe "Press release format" do
   include TopicsHelper
 
   before do
