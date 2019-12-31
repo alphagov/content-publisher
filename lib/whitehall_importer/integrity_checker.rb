@@ -57,12 +57,17 @@ module WhitehallImporter
     def organisation_problems
       problems = []
       problems << "primary_publishing_organisation doesn't match" unless primary_publishing_organisation_matches?
+      problems << "organisations don't match" unless organisations_match?
 
       problems
     end
 
     def primary_publishing_organisation_matches?
       proposed_payload.dig("links", "primary_publishing_organisation") == publishing_api_content.dig("links", "primary_publishing_organisation")
+    end
+
+    def organisations_match?
+      proposed_payload.dig("links", "organisations")&.sort == publishing_api_content.dig("links", "organisations")&.sort
     end
 
     def proposed_payload

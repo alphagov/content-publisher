@@ -7,6 +7,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         :edition,
         tags: {
           primary_publishing_organisation: [SecureRandom.uuid],
+          organisations: [SecureRandom.uuid],
         },
       )
     end
@@ -24,6 +25,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         },
         links: {
           primary_publishing_organisation: edition.tags["primary_publishing_organisation"].to_a,
+          organisations: edition.tags["organisations"].to_a + edition.tags["primary_publishing_organisation"].to_a,
         },
       )
 
@@ -120,6 +122,18 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
       expect(integrity_check.problems).to include("primary_publishing_organisation doesn't match")
+    end
+
+    it "returns a problem when the organisations don't match" do
+      stub_publishing_api_has_item(
+        content_id: edition.content_id,
+        links: {
+          organisations: [SecureRandom.uuid],
+        },
+      )
+
+      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      expect(integrity_check.problems).to include("organisations don't match")
     end
   end
 end
