@@ -19,7 +19,7 @@ class ScheduleController < ApplicationController
 
   def update
     result = Schedule::UpdateInteractor.call(params: params, user: current_user)
-    edition, issues = result.to_h.values_at(:edition, :issues)
+    edition, issues, api_error = result.to_h.values_at(:edition, :issues, :api_error)
 
     if issues
       flash.now["requirements"] = {
@@ -34,17 +34,17 @@ class ScheduleController < ApplicationController
       render :edit,
              assigns: { edition: edition, issues: issues },
              status: :unprocessable_entity
+    elsif api_error
+      redirect_to document_path(edition.document),
+                  alert_with_description: t("documents.show.flashes.schedule_error")
     else
       redirect_to document_path(edition.document)
     end
-  rescue GdsApi::BaseError => e
-    GovukError.notify(e)
-    redirect_to document_path(params[:document]), alert_with_description: t("documents.show.flashes.schedule_error")
   end
 
   def create
     result = Schedule::CreateInteractor.call(params: params, user: current_user)
-    edition, issues = result.to_h.values_at(:edition, :issues)
+    edition, issues, api_error = result.to_h.values_at(:edition, :issues, :api_error)
 
     if issues
       flash.now["requirements"] = { "items" => issues.items }
@@ -52,12 +52,12 @@ class ScheduleController < ApplicationController
       render :new,
              assigns: { issues: issues, edition: edition },
              status: :unprocessable_entity
+    elsif api_error
+      redirect_to document_path(edition.document),
+                  alert_with_description: t("documents.show.flashes.schedule_error")
     else
       redirect_to scheduled_path(edition.document)
     end
-  rescue GdsApi::BaseError => e
-    GovukError.notify(e)
-    redirect_to document_path(params[:document]), alert_with_description: t("documents.show.flashes.schedule_error")
   end
 
   def destroy

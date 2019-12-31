@@ -78,6 +78,10 @@ FactoryBot.define do
       summary { SecureRandom.alphanumeric(10) }
     end
 
+    trait :not_publishable do
+      summary { "" }
+    end
+
     trait :published do
       summary { SecureRandom.alphanumeric(10) }
       live { true }
