@@ -12,6 +12,9 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         description: edition.summary,
         document_type: edition.document_type.id,
         schema_name: edition.document_type.publishing_metadata.schema_name,
+        details: {
+          body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
+        },
       )
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
@@ -55,6 +58,18 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
       expect(integrity_check.problems).to include("schema_name doesn't match")
+    end
+
+    it "returns a problem when the body text doesn't match" do
+      stub_publishing_api_has_item(
+        content_id: edition.content_id,
+        details: {
+          body: "body text",
+        },
+      )
+
+      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      expect(integrity_check.problems).to include("body text doesn't match")
     end
   end
 end
