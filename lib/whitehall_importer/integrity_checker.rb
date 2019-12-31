@@ -13,7 +13,7 @@ module WhitehallImporter
     end
 
     def problems
-      content_problems + image_problems
+      content_problems + image_problems + organisation_problems
     end
 
   private
@@ -52,6 +52,17 @@ module WhitehallImporter
           problems << "image #{attribute} doesn't match"
         end
       end
+    end
+
+    def organisation_problems
+      problems = []
+      problems << "primary_publishing_organisation doesn't match" unless primary_publishing_organisation_matches?
+
+      problems
+    end
+
+    def primary_publishing_organisation_matches?
+      proposed_payload.dig("links", "primary_publishing_organisation") == publishing_api_content.dig("links", "primary_publishing_organisation")
     end
 
     def proposed_payload

@@ -2,7 +2,14 @@
 
 RSpec.describe WhitehallImporter::IntegrityChecker do
   describe "#valid?" do
-    let(:edition) { build(:edition) }
+    let(:edition) do
+      build(
+        :edition,
+        tags: {
+          primary_publishing_organisation: [SecureRandom.uuid],
+        },
+      )
+    end
 
     it "returns true if there aren't any problems" do
       stub_publishing_api_has_item(
@@ -14,6 +21,9 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         schema_name: edition.document_type.publishing_metadata.schema_name,
         details: {
           body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
+        },
+        links: {
+          primary_publishing_organisation: edition.tags["primary_publishing_organisation"].to_a,
         },
       )
 
@@ -98,6 +108,18 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
       expect(integrity_check.problems).to include("image caption doesn't match")
+    end
+
+    it "returns a problem when the primary_publishing_organisation doesn't match" do
+      stub_publishing_api_has_item(
+        content_id: edition.content_id,
+        links: {
+          primary_publishing_organisation: [SecureRandom.uuid],
+        },
+      )
+
+      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      expect(integrity_check.problems).to include("primary_publishing_organisation doesn't match")
     end
   end
 end
