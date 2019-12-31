@@ -85,5 +85,19 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
       expect(integrity_check.problems).to include("image alt_text doesn't match")
     end
+
+    it "returns a problem when the image caption doesn't match" do
+      stub_publishing_api_has_item(
+        content_id: edition.content_id,
+        details: {
+          image: {
+            caption: "caption",
+          },
+        },
+      )
+
+      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      expect(integrity_check.problems).to include("image caption doesn't match")
+    end
   end
 end

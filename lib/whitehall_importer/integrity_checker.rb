@@ -47,7 +47,7 @@ module WhitehallImporter
       proposed_image_payload = proposed_payload.dig("details", "image") || {}
       publishing_api_image = publishing_api_content.dig("details", "image") || {}
 
-      %w(alt_text).each_with_object([]) do |attribute, problems|
+      %w(alt_text caption).each_with_object([]) do |attribute, problems|
         if publishing_api_image[attribute] != proposed_image_payload[attribute]
           problems << "image #{attribute} doesn't match"
         end
