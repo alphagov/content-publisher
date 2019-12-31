@@ -61,4 +61,8 @@ RSpec.configure do |config|
   config.after :each, type: ->(spec) { spec.in?(%i[feature request]) } do
     reset_authentication
   end
+
+  config.before :each, type: :view do
+    allow(view).to receive(:current_user).and_return(User.first)
+  end
 end
