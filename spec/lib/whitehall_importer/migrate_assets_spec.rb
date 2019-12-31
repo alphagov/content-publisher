@@ -4,6 +4,14 @@ RSpec.describe WhitehallImporter::MigrateAssets do
   describe ".call" do
     before { stub_any_asset_manager_call }
 
+    it "should log errors and put into an aborted state" do
+      whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
+      allow(asset).to receive(:whitehall_asset_id).and_raise(StandardError.new("Some error"))
+      described_class.call(whitehall_import)
+      expect(asset.state).to eq("migration_failed")
+      expect(asset.error_message).to include("Some error")
+    end
+
     it "should delete draft assets" do
       image_revision = build(:image_revision, :on_asset_manager, state: :draft)
       asset = create(:whitehall_migration_asset_import, image_revision: image_revision)
