@@ -11,6 +11,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         title: edition.title,
         description: edition.summary,
         document_type: edition.document_type.id,
+        schema_name: edition.document_type.publishing_metadata.schema_name,
       )
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
@@ -47,6 +48,13 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
       expect(integrity_check.problems).to include("document_type doesn't match")
+    end
+
+    it "returns a problem when the schema names don't match" do
+      stub_publishing_api_has_item(content_id: edition.content_id, schema_name: "news_article")
+
+      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      expect(integrity_check.problems).to include("schema_name doesn't match")
     end
   end
 end
