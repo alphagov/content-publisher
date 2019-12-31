@@ -10,6 +10,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         base_path: edition.base_path,
         title: edition.title,
         description: edition.summary,
+        document_type: edition.document_type.id,
       )
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
@@ -39,6 +40,13 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
       expect(integrity_check.problems).to include("description doesn't match")
+    end
+
+    it "returns a problem when the document types don't match" do
+      stub_publishing_api_has_item(content_id: edition.content_id, document_type: "news_story")
+
+      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      expect(integrity_check.problems).to include("document_type doesn't match")
     end
   end
 end

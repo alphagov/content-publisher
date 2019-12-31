@@ -15,7 +15,7 @@ module WhitehallImporter
     def problems
       problems = []
 
-      %w(base_path title description).each do |attribute|
+      %w(base_path title description document_type).each do |attribute|
         if publishing_api_content[attribute] != proposed_payload[attribute]
           problems << "#{attribute} doesn't match"
         end
