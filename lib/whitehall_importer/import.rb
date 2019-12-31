@@ -52,8 +52,7 @@ module WhitehallImporter
         raise AbortImportError, "Document with content_id #{content_id} already exists"
       end
 
-      event = whitehall_document["editions"].first["revision_history"].select { |h| h["event"] == "create" }.first
-      raise AbortImportError, "First edition is missing a create event" unless event
+      event = first_edition_history.create_event!
 
       Document.create!(
         content_id: content_id,
