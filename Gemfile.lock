@@ -514,6 +514,7 @@ DEPENDENCIES
   rspec-rails (~> 3)
   rubocop-govuk (~> 2)
   rubyzip (~> 2)
+  sanitize (~> 5)
   sass-rails (< 6)
   scss_lint-govuk (~> 0)
   sidekiq-scheduler (~> 3)
