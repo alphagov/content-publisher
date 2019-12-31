@@ -18,24 +18,24 @@ RSpec.describe WhitehallImporter::EditionHistory do
     end
   end
 
-  describe "#state_event" do
+  describe "#last_state_event" do
     it "returns the last event associated with the state" do
       first_draft_event = build(:revision_history_event, state: "draft")
       last_draft_event = build(:revision_history_event, state: "draft")
       instance = described_class.new([first_draft_event, last_draft_event])
 
-      expect(instance.state_event("draft")).to be(last_draft_event)
+      expect(instance.last_state_event("draft")).to be(last_draft_event)
     end
 
     it "returns nil if the edition is missing a state event" do
       draft_event = build(:revision_history_event, state: "draft")
-      expect(described_class.new([draft_event]).state_event("published"))
+      expect(described_class.new([draft_event]).last_state_event("published"))
         .to be_nil
     end
   end
 
-  describe "#state_event!" do
-    it_behaves_like "an event bang method", :state_event, %w[draft]
+  describe "#last_state_event!" do
+    it_behaves_like "an event bang method", :last_state_event, %w[draft]
   end
 
   describe "#next_event" do
