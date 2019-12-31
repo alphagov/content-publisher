@@ -4,6 +4,37 @@ RSpec.describe "documents/show.html.erb" do
   include TopicsHelper
   before { populate_default_government_bulk_data }
 
+  describe "tags" do
+    let(:tag_field) { build(:tag_field, type: "single_tag", id: "tag_id") }
+    let(:document_type) { build(:document_type, tags: [tag_field]) }
+
+    it "shows the tags when a document has tags" do
+      tag = { "content_id" => SecureRandom.uuid, "internal_name" => "Tag name" }
+      stub_publishing_api_has_linkables([tag], document_type: tag_field.document_type)
+      edition = build(:edition,
+                      document_type_id: document_type.id,
+                      tags: { tag_field.id => [tag["content_id"]] })
+      assign(:edition, edition)
+
+      expect(render).to have_selector("#tags", text: "Tag name")
+    end
+
+    it "shows a message when a document doesn't have tags" do
+      edition = build(:edition, document_type_id: document_type.id, tags: {})
+      assign(:edition, edition)
+      expect(render).to include(I18n.t!("documents.show.tags.none"))
+    end
+
+    it "shows a message when tags can't be loaded" do
+      stub_publishing_api_isnt_available
+      edition = build(:edition,
+                      document_type_id: document_type.id,
+                      tags: { tag_field.id => [SecureRandom.uuid] })
+      assign(:edition, edition)
+      expect(render).to include(I18n.t!("documents.show.tags.api_down"))
+    end
+  end
+
   describe "topics" do
     let(:document_type) { build(:document_type, topics: true) }
     let(:edition) { build(:edition, document_type_id: document_type.id) }
