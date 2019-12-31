@@ -13,14 +13,19 @@ module WhitehallImporter
     end
 
     def problems
+      content_problems
+    end
+
+  private
+
+    def content_problems
       problems = []
 
       %w(base_path
          title
          description
          document_type
-         schema_name
-       ).each do |attribute|
+         schema_name).each do |attribute|
         if publishing_api_content[attribute] != proposed_payload[attribute]
           problems << "#{attribute} doesn't match"
         end
@@ -28,8 +33,6 @@ module WhitehallImporter
 
       problems
     end
-
-  private
 
     def proposed_payload
       @proposed_payload ||= PreviewService::Payload.new(edition, republish: edition.live?).payload
