@@ -13,7 +13,7 @@ module WhitehallImporter
     end
 
     def problems
-      content_problems
+      content_problems + image_problems
     end
 
   private
@@ -41,6 +41,17 @@ module WhitehallImporter
       publishing_api_body_text = publishing_api_content.dig("details", "body")
 
       Sanitize.clean(publishing_api_body_text).squish == Sanitize.clean(proposed_body_text).squish
+    end
+
+    def image_problems
+      proposed_image_payload = proposed_payload.dig("details", "image") || {}
+      publishing_api_image = publishing_api_content.dig("details", "image") || {}
+
+      %w(alt_text).each_with_object([]) do |attribute, problems|
+        if publishing_api_image[attribute] != proposed_image_payload[attribute]
+          problems << "image #{attribute} doesn't match"
+        end
+      end
     end
 
     def proposed_payload
