@@ -2,17 +2,17 @@
 
 module Requirements
   class TopicChecker
-    attr_reader :document
+    attr_reader :edition
 
-    def initialize(document)
-      @document = document
+    def initialize(edition)
+      @edition = edition
     end
 
     def pre_publish_issues(rescue_api_errors: true)
       issues = CheckerIssues.new
 
       begin
-        if document.current_edition.document_type.topics && document.topics.none?
+        if edition.document_type.topics && edition.topics.none?
           issues << Issue.new(:topics, :none)
         end
       rescue GdsApi::BaseError => e

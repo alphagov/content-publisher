@@ -23,7 +23,7 @@ module Requirements
     def pre_publish_issues(params = {})
       issues = CheckerIssues.new
       issues += ContentChecker.new(edition, revision).pre_publish_issues
-      issues += TopicChecker.new(edition.document).pre_publish_issues(params)
+      issues += TopicChecker.new(edition).pre_publish_issues(params)
       issues += TagChecker.new(edition, revision).pre_publish_issues
       issues
     end
