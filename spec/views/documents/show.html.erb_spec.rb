@@ -1,7 +1,35 @@
 # frozen_string_literal: true
 
 RSpec.describe "documents/show.html.erb" do
+  include TopicsHelper
   before { populate_default_government_bulk_data }
+
+  describe "topics" do
+    let(:document_type) { build(:document_type, topics: true) }
+    let(:edition) { build(:edition, document_type_id: document_type.id) }
+    before { assign(:edition, edition) }
+
+    it "shows the topics when a document has topics" do
+      stub_publishing_api_has_links(content_id: edition.content_id,
+                                    links: { "taxons" => %w(level_three_topic) })
+      stub_publishing_api_has_taxonomy
+
+      expect(render)
+        .to have_selector("#topics", text: "Level One Topic")
+        .and have_selector("#topics", text: "Level Two Topic")
+        .and have_selector("#topics", text: "Level Three Topic")
+    end
+
+    it "shows a message when a document doesn't have topics" do
+      stub_publishing_api_has_links(content_id: edition.content_id, links: {})
+      expect(render).to include(I18n.t!("documents.show.topics.no_topics"))
+    end
+
+    it "shows a message when topics can't be loaded" do
+      stub_publishing_api_isnt_available
+      expect(render).to include(I18n.t!("documents.show.topics.api_down"))
+    end
+  end
 
   describe "history mode banner" do
     it "shows a history mode banner for political content associated with past government" do
