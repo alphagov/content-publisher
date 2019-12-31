@@ -57,6 +57,13 @@ RSpec.describe WhitehallImporter::CreateEdition do
       expect(edition).to be_live
     end
 
+    it "does not mark the edition as synced with Publishing API" do
+      whitehall_edition = build(:whitehall_export_edition)
+      edition = described_class.call(document: document, whitehall_edition: whitehall_edition)
+
+      expect(edition.revision_synced).to be false
+    end
+
     it "sets the editors of an edition" do
       user_ids = {
         1 => create(:user).id,
@@ -173,6 +180,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
         expect(edition.created_at).to eq(created_at)
         expect(edition.updated_at).to eq(updated_at)
+        expect(edition.last_edited_at).to eq(updated_at)
       end
     end
 

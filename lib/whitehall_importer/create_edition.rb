@@ -105,7 +105,7 @@ module WhitehallImporter
         raise AbortImportError, "Cannot create scheduled status without scheduled_publication"
       end
 
-      pre_scheduled_state = history.state_event("submitted") ? "submitted_for_review" : "draft"
+      pre_scheduled_state = history.last_state_event("submitted") ? "submitted_for_review" : "draft"
       edition = create_edition(status: build_status(pre_scheduled_state),
                                current: current,
                                edition_number: edition_number)
@@ -130,13 +130,13 @@ module WhitehallImporter
     end
 
     def build_status(state, details = nil)
-      state_event = history.state_event!(whitehall_edition["state"])
+      last_state_event = history.last_state_event!(whitehall_edition["state"])
 
       Status.new(
         state: state,
         revision_at_creation: revision,
-        created_by_id: user_ids[state_event["whodunnit"]],
-        created_at: state_event["created_at"],
+        created_by_id: user_ids[last_state_event["whodunnit"]],
+        created_at: last_state_event["created_at"],
         details: details,
       )
     end
@@ -150,7 +150,7 @@ module WhitehallImporter
       Edition.create!(
         document: document,
         number: edition_number,
-        revision_synced: true,
+        revision_synced: false,
         revision: revision,
         status: status,
         current: current,
@@ -158,6 +158,7 @@ module WhitehallImporter
         created_at: create_event["created_at"],
         updated_at: last_event["created_at"],
         created_by_id: user_ids[create_event["whodunnit"]],
+        last_edited_at: last_event["created_at"],
         last_edited_by_id: user_ids[last_event["whodunnit"]],
         editor_ids: editor_ids,
       )

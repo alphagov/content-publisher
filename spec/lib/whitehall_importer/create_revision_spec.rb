@@ -31,6 +31,24 @@ RSpec.describe WhitehallImporter::CreateRevision do
       expect(revision.base_path).to eq("/a-path")
     end
 
+    it "sets backdated_to when edition has been backdated" do
+      backdated_to = Time.current.yesterday.rfc3339
+      whitehall_edition = build(:whitehall_export_edition,
+                                first_published_at: backdated_to)
+
+      revision = described_class.call(document, whitehall_edition)
+
+      expect(revision.backdated_to).to eq(backdated_to)
+    end
+
+    it "does not set backdated_to when edition has not been backdated" do
+      whitehall_edition = build(:whitehall_export_edition)
+
+      revision = described_class.call(document, whitehall_edition)
+
+      expect(revision.backdated_to).to be_nil
+    end
+
     context "when creating images" do
       it "imports a single image" do
         whitehall_image = build(:whitehall_export_image, filename: "foo.jpg")

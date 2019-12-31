@@ -82,5 +82,30 @@ RSpec.describe WhitehallImporter::Import do
 
       described_class.call(import_data)
     end
+
+    it "sets first_published_at date to publish time of first edition" do
+      first_publish_date = Time.current.yesterday.rfc3339
+      first_edition = build(
+        :whitehall_export_edition,
+        revision_history: [
+          build(:revision_history_event),
+          build(:revision_history_event, event: "update", state: "published", created_at: first_publish_date),
+        ],
+      )
+      second_edition = build(
+        :whitehall_export_edition,
+        revision_history: [
+          build(:revision_history_event),
+          build(:revision_history_event, event: "update", state: "published", created_at: Time.current),
+        ],
+      )
+
+      import_data = build(:whitehall_export_document,
+                          editions: [first_edition, second_edition])
+
+      document = described_class.call(import_data)
+
+      expect(document.first_published_at).to eq(first_publish_date)
+    end
   end
 end
