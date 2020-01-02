@@ -1,16 +1,25 @@
 # frozen_string_literal: true
 
-RSpec.feature "Insert contact embed", js: true do
+RSpec.feature "Insert contact embed" do
   include AccessibleAutocompleteHelper
 
-  scenario do
+  scenario "with javascript", js: true do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
     and_i_click_to_insert_a_contact
-    and_i_select_a_contact
+    and_i_select_a_contact_from_the_autcomplete
     then_i_see_the_contact_preview
     when_i_click_insert_contact
     then_i_see_the_snippet_is_inserted
+  end
+
+  scenario "without javascript", js: false do
+    given_there_is_an_edition
+    when_i_go_to_edit_the_edition
+    and_i_click_to_insert_a_contact
+    and_i_select_a_contact_without_javascript
+    then_i_see_the_contact_markdown_snippet
+    and_i_see_a_preview_of_the_contact
   end
 
   def given_there_is_an_edition
@@ -41,7 +50,7 @@ RSpec.feature "Insert contact embed", js: true do
     click_on "Contact"
   end
 
-  def and_i_select_a_contact
+  def and_i_select_a_contact_from_the_autcomplete
     accessible_autocomplete_select "Contact",
                                    for_id: "contact-id",
                                    value: @contact["content_id"]
@@ -60,5 +69,21 @@ RSpec.feature "Insert contact embed", js: true do
   def then_i_see_the_snippet_is_inserted
     snippet = I18n.t("contact_embed.new.contact_markdown", id: @contact["content_id"])
     expect(find("#body-field").value).to match snippet
+  end
+
+  def and_i_select_a_contact_without_javascript
+    select "Contact", from: "contact-id"
+    click_on "Show markdown code"
+  end
+
+  def then_i_see_the_contact_markdown_snippet
+    snippet = I18n.t("contact_embed.new.contact_markdown", id: @contact["content_id"])
+    expect(page).to have_content(snippet)
+  end
+
+  def and_i_see_a_preview_of_the_contact
+    within(".app-c-contact-preview") do
+      expect(page).to have_content(@contact["title"])
+    end
   end
 end
