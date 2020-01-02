@@ -5,14 +5,17 @@ RSpec.feature "History mode" do
     given_there_is_a_past_government
     and_there_is_a_not_political_document
     and_i_am_a_managing_editor
+
     when_i_visit_the_summary_page
     then_i_see_that_the_content_doesnt_get_history_mode
     and_i_do_not_see_the_history_mode_banner
+
     when_i_click_to_change_the_status
     then_i_enable_political_status
     and_i_see_that_the_content_gets_history_mode
     and_i_see_the_timeline_entry
     and_i_do_not_see_the_history_mode_banner
+
     when_i_click_to_backdate_the_content
     and_i_enter_a_date_to_backdate_the_content_to
     and_i_see_the_history_mode_banner
