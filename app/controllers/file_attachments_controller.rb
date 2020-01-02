@@ -27,7 +27,7 @@ class FileAttachmentsController < ApplicationController
                                                                                  :api_error)
 
     if api_error || !can_preview
-      render :preview_pending
+      render :preview_pending, status: :service_unavailable
     else
       redirect_to file_attachment_preview_url(attachment_revision, edition.document)
     end
