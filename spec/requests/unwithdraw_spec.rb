@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe "Unwithdraw" do
+  let(:managing_editor) { create(:user, managing_editor: true) }
+
+  it_behaves_like "requests that assert edition state",
+                  "unwithdrawing a non withdrawn edition",
+                  routes: { unwithdraw_path: %i[get post] } do
+    before { login_as(managing_editor) }
+    let(:edition) { create(:edition, :published) }
+  end
+
   describe "POST /documents/:document/unwithdraw" do
-    let(:managing_editor) { create(:user, managing_editor: true) }
     let(:withdrawn_edition) { create(:edition, :withdrawn) }
 
     it "unwithdraws the edition" do
@@ -56,7 +64,6 @@ RSpec.describe "Unwithdraw" do
   end
 
   describe "GET /documents/:document/unwithdraw" do
-    let(:managing_editor) { create(:user, managing_editor: true) }
     let(:withdrawn_edition) { create(:edition, :withdrawn) }
 
     it "fetches unwithdraw page" do
