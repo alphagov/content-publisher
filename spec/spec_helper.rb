@@ -36,6 +36,7 @@ RSpec.configure do |config|
   config.include GovukSchemas::RSpecMatchers
   config.include AuthenticationHelper, type: ->(spec) { spec.in?(%i[feature request]) }
   config.include BulkDataHelper
+  config.include Capybara::RSpecMatchers, type: :request
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
