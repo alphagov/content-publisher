@@ -65,14 +65,15 @@
       <% end %>
 
       <% if flash["alert_with_description"] %>
+        <% alert = flash["alert_with_description"].stringify_keys %>
         <%= render "govuk_publishing_components/components/error_alert", {
-          message: flash["alert_with_description"].fetch("title"),
+          message: alert.fetch("title"),
           data_attributes: {
             gtm: "alert-with-description",
-            "gtm-value" => flash["alert_with_description"]["title"],
+            "gtm-value" => alert.fetch("title"),
             "gtm-visibility-tracking" => true
           },
-          description: render_govspeak(flash["alert_with_description"].fetch("description_govspeak"))
+          description: render_govspeak(alert.fetch("description_govspeak"))
         } %>
       <% end %>
 
