@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Create a news story", format: true do
+RSpec.describe "News story format" do
   include TopicsHelper
 
   before do
