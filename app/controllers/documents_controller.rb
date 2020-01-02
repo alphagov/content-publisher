@@ -53,12 +53,13 @@ class DocumentsController < ApplicationController
              assigns: { edition: edition, revision: revision, issues: issues },
              status: :unprocessable_entity
     else
-      redirect_to edition.document
+      redirect_to document_path(edition.document)
     end
   end
 
   def generate_path
     edition = Edition.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
     base_path = PathGeneratorService.call(edition.document, params[:title])
     render plain: base_path
   end
