@@ -21,23 +21,22 @@ class FileAttachmentsController < ApplicationController
 
   def preview
     result = FileAttachments::PreviewInteractor.call(params: params, user: current_user)
-    attachment_revision, edition, can_preview, api_error = result.to_h.values_at(:attachment_revision,
-                                                                                 :edition,
-                                                                                 :can_preview,
-                                                                                 :api_error)
+    can_preview, api_error = result.to_h.values_at(:can_preview, :api_error)
 
     if api_error || !can_preview
       render :preview_pending, status: :service_unavailable
     else
+      attachment_revision, edition = result.to_h.values_at(:attachment_revision,
+                                                           :edition)
       redirect_to file_attachment_preview_url(attachment_revision, edition.document)
     end
   end
 
   def create
     result = FileAttachments::CreateInteractor.call(params: params, user: current_user)
-    edition = result.edition
-    attachment_revision = result.attachment_revision
-    issues = result.issues
+    edition, attachment_revision, issues = result.to_h.values_at(:edition,
+                                                                 :attachment_revision,
+                                                                 :issues)
 
     if issues
       flash.now["requirements"] = {
@@ -80,10 +79,8 @@ class FileAttachmentsController < ApplicationController
 
   def update
     result = FileAttachments::UpdateInteractor.call(params: params, user: current_user)
-    edition = result.edition
-    attachment_revision = result.file_attachment_revision
-    issues = result.issues
-    unchanged = result.unchanged
+    edition, attachment_revision, issues, unchanged =
+      result.to_h.values_at(:edition, :file_attachment_revision, :issues, :unchanged)
 
     if issues
       flash.now["requirements"] = {
