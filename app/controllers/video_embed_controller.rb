@@ -19,7 +19,7 @@ class VideoEmbedController < ApplicationController
              assigns: { issues: issues },
              status: :unprocessable_entity
     else
-      render inline: markdown_code
+      render plain: markdown_code
     end
   end
 end
