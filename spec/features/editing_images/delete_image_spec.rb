@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Delete an image", js: true do
+RSpec.feature "Delete an image" do
   scenario "lead image" do
     given_there_is_an_edition_with_images
     when_i_visit_the_images_page
@@ -9,7 +9,7 @@ RSpec.feature "Delete an image", js: true do
     and_the_preview_creation_succeeded
   end
 
-  scenario "inline image" do
+  scenario "inline image", js: true do
     given_there_is_an_edition_with_images
     when_i_insert_an_inline_image
     and_i_delete_the_non_lead_image
