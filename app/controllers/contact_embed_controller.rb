@@ -3,7 +3,7 @@
 class ContactEmbedController < ApplicationController
   rescue_from GdsApi::BaseError do |e|
     GovukError.notify(e)
-    render "new_api_down", layout: rendering_context
+    render "new_api_down", layout: rendering_context, status: :service_unavailable
   end
 
   def new
@@ -26,11 +26,9 @@ class ContactEmbedController < ApplicationController
              layout: rendering_context,
              status: :unprocessable_entity
     elsif rendering_context == "modal"
-      render inline: markdown_code
+      render plain: markdown_code
     else
-      render :new,
-             assigns: { markdown_code: markdown_code, edition: edition },
-             layout: rendering_context
+      render :new, assigns: { markdown_code: markdown_code, edition: edition }
     end
   end
 end
