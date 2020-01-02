@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe "Withdraw" do
+  let(:managing_editor) { create(:user, managing_editor: true) }
+
+  it_behaves_like "requests that assert edition state",
+                  "withdrawing a draft edition",
+                  routes: { withdraw_path: %i[get post] } do
+    before { login_as(managing_editor) }
+    let(:edition) { create(:edition) }
+  end
+
   describe "POST /documents/:document/withdraw" do
-    let(:managing_editor) { create(:user, managing_editor: true) }
     let(:published_edition) { create(:edition, :published) }
 
     it "withdraws the edition" do
@@ -75,7 +83,6 @@ RSpec.describe "Withdraw" do
   end
 
   describe "GET /documents/:document/withdraw" do
-    let(:managing_editor) { create(:user, managing_editor: true) }
     let(:published_edition) { create(:edition, :published) }
 
     it "fetches withdraw page" do
