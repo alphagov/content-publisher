@@ -27,11 +27,11 @@ RSpec.feature "Upload file attachment", js: true do
   end
 
   def and_i_upload_a_file_attachment
-    @asset_manager_request = stub_asset_manager_receives_an_asset(filename: @attachment_filename)
-    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
-
     @attachment_filename = "13kb-1-page-attachment.pdf"
     @title = "A title"
+
+    @asset_manager_request = stub_asset_manager_receives_an_asset(filename: @attachment_filename)
+    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
 
     find('form input[type="file"]').set(Rails.root.join(file_fixture(@attachment_filename)))
     fill_in "title", with: @title

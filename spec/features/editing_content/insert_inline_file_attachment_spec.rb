@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.feature "Insert inline file attachment", js: true do
-  scenario "Attachment" do
+RSpec.feature "Insert inline file attachment" do
+  scenario "Insert attachment with javascript", js: true do
     given_there_is_an_edition_with_file_attachments
     when_i_go_to_edit_the_edition
     and_i_click_to_insert_a_file_attachment
@@ -10,13 +10,22 @@ RSpec.feature "Insert inline file attachment", js: true do
     then_i_see_the_attachment_snippet_is_inserted
   end
 
-  scenario "Attachment link" do
+  scenario "Insert Attachment link with javascript", js: true do
     given_there_is_an_edition_with_file_attachments
     when_i_go_to_edit_the_edition
     and_i_click_to_insert_a_file_attachment
     and_i_choose_one_of_the_file_attachments
     and_i_click_on_insert_attachment_as_link
     then_i_see_the_attachment_link_snippet_is_inserted
+  end
+
+  scenario "Insert attachment without javascript", js: false do
+    given_there_is_an_edition_with_file_attachments
+    when_i_go_to_edit_the_edition
+    and_i_click_to_insert_a_file_attachment
+    and_i_choose_one_of_the_file_attachments
+    then_i_see_the_attachment_markdown_snippet
+    and_i_see_the_attachment_link_markdown_snippet
   end
 
   def given_there_is_an_edition_with_file_attachments
@@ -65,5 +74,17 @@ RSpec.feature "Insert inline file attachment", js: true do
     snippet = I18n.t("file_attachments.show.attachment_link_markdown",
                      filename: @file_attachment_revision.filename)
     expect(find("#body-field").value).to match snippet
+  end
+
+  def then_i_see_the_attachment_markdown_snippet
+    snippet = I18n.t("file_attachments.show.attachment_markdown",
+                     filename: @file_attachment_revision.filename)
+    expect(page).to have_content(snippet)
+  end
+
+  def and_i_see_the_attachment_link_markdown_snippet
+    snippet = I18n.t("file_attachments.show.attachment_link_markdown",
+                     filename: @file_attachment_revision.filename)
+    expect(page).to have_content(snippet)
   end
 end
