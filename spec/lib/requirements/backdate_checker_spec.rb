@@ -9,7 +9,7 @@ RSpec.describe Requirements::BackdateChecker do
     end
 
     it "returns an issue if the date is in the future" do
-      date = Time.current.change(day: 1, month: 1, year: 2020)
+      date = 1.year.from_now
       issues = Requirements::BackdateChecker.new(date).pre_submit_issues
       expect(issues).to have_issue(:backdate_date, :in_the_future)
     end
