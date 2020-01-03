@@ -10,19 +10,20 @@ module WhitehallImporter
 
     whitehall_export.each_entry do |page|
       page["documents"].each do |document|
-        WhitehallMigration::DocumentImport.create!(
+        document_import = WhitehallMigration::DocumentImport.create!(
           whitehall_document_id: document["document_id"],
           state: "pending",
         )
+        WhitehallDocumentImportJob.perform_later(document_import)
       end
     end
 
     whitehall_migration
   end
 
-  def self.import_and_sync(whitehall_document)
-    whitehall_import = WhitehallMigration::DocumentImport.create!(
-      whitehall_document_id: whitehall_document["id"],
+  def self.import_and_sync(whitehall_import)
+    whitehall_document = Services.whitehall.document_export(whitehall_import.whitehall_document_id)
+    whitehall_import.update!(
       payload: whitehall_document,
       content_id: whitehall_document["content_id"],
       state: "importing",

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe WhitehallImporter do
+  include ActiveJob::TestHelper
   describe ".create_migration" do
     let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
     let(:whitehall_export_page_1) { build(:whitehall_export_index, documents: build_list(:whitehall_export_index_document, 100)) }
@@ -26,28 +27,35 @@ RSpec.describe WhitehallImporter do
       expect { WhitehallImporter.create_migration("123", "NewsArticle") }.to change { WhitehallMigration::DocumentImport.count }.by(110)
       expect(WhitehallMigration::DocumentImport.all.pluck(:state).uniq).to eq(%w(pending))
     end
+
+    it "queues stuff up" do
+      WhitehallImporter.create_migration("123", "NewsArticle")
+      expect(WhitehallDocumentImportJob).to have_been_enqueued.exactly(110).times
+    end
   end
 
   describe ".import_and_sync" do
+    let(:whitehall_export_document) { build(:whitehall_export_document) }
+    let(:whitehall_migration_document_import) { build(:whitehall_migration_document_import, whitehall_document_id: "123") }
+    let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
+
     before do
       allow(ResyncService).to receive(:call)
       allow(WhitehallImporter::ClearLinksetLinks).to receive(:call)
+      stub_request(:get, "#{whitehall_host}/government/admin/export/document/123")
+        .to_return(status: 200, body: whitehall_export_document.to_json)
     end
 
-    let(:whitehall_export_document) { build(:whitehall_export_document) }
-
-    it "creates and returns a WhitehallMigration::DocumentImport" do
-      whitehall_migration_document_import = nil
-      expect { whitehall_migration_document_import = WhitehallImporter.import_and_sync(whitehall_export_document) }
+    it "returns a WhitehallMigration::DocumentImport" do
+      expect { WhitehallImporter.import_and_sync(whitehall_migration_document_import) }
         .to change { WhitehallMigration::DocumentImport.count }
         .by(1)
       expect(whitehall_migration_document_import).to be_an_instance_of(WhitehallMigration::DocumentImport)
     end
 
     it "stores the exported whitehall data" do
-      WhitehallImporter.import_and_sync(whitehall_export_document)
-      whitehall_migration_document_import = WhitehallMigration::DocumentImport.find_by(whitehall_document_id: whitehall_export_document["id"])
-      expect(whitehall_migration_document_import.payload).to eq(whitehall_export_document)
+      document_import = WhitehallImporter.import_and_sync(whitehall_migration_document_import)
+      expect(document_import.payload).to eq(whitehall_export_document)
     end
 
     it "doesn't sync if import fails" do
@@ -56,7 +64,7 @@ RSpec.describe WhitehallImporter do
         .and_raise(WhitehallImporter::AbortImportError, "Booo, import failed")
 
       expect(WhitehallImporter).not_to receive(:sync)
-      WhitehallImporter.import_and_sync(whitehall_export_document)
+      WhitehallImporter.import_and_sync(whitehall_migration_document_import)
     end
   end
 

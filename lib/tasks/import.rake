@@ -17,8 +17,11 @@ namespace :import do
 
   desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall_document[123]"
   task :whitehall_document, [:document_id] => :environment do |_, args|
-    whitehall_export = Services.whitehall.document_export(args.document_id)
-    whitehall_import = WhitehallImporter.import_and_sync(whitehall_export)
+    whitehall_migration_document_import = WhitehallMigration::DocumentImport.create(
+      whitehall_document_id: args.document_id,
+      state: "pending"
+    )
+    whitehall_import = WhitehallImporter.import_and_sync(whitehall_migration_document_import)
 
     unless whitehall_import.completed?
       puts whitehall_import.state.humanize

@@ -22,6 +22,15 @@ RSpec.describe "Import tasks" do
   describe "import:whitehall_document" do
     let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
     let(:whitehall_export) { build(:whitehall_export_document) }
+    let(:whitehall_migration_document_import) {
+      build(
+        :whitehall_migration_document_import,
+        whitehall_document_id: "123",
+        payload: nil,
+        content_id: nil,
+        state: "pending",
+      )
+    }
 
     before do
       allow($stdout).to receive(:puts)
@@ -36,8 +45,12 @@ RSpec.describe "Import tasks" do
       expect { Rake::Task["import:whitehall_document"].invoke("123") }.to change { Document.count }.by(1)
     end
 
+    it "creates a whitehall migration document import" do
+      expect { Rake::Task["import:whitehall_document"].invoke("123") }.to change { WhitehallMigration::DocumentImport.count }.by(1)
+    end
+
     it "imports the export and syncs with publishing-api" do
-      expect(WhitehallImporter).to receive(:import_and_sync).with(whitehall_export).and_call_original
+      expect(WhitehallImporter).to receive(:import_and_sync).and_call_original
       Rake::Task["import:whitehall_document"].invoke("123")
     end
 
