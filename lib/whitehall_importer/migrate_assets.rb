@@ -14,12 +14,15 @@ module WhitehallImporter
 
     def call
       whitehall_import.assets.each do |whitehall_asset|
-        if whitehall_asset.content_publisher_asset.present?
+        if whitehall_asset.content_publisher_asset.present? && whitehall_asset.content_publisher_asset.live?
           GdsApi.asset_manager.update_asset(
             whitehall_asset.whitehall_asset_id,
             redirect_url: whitehall_asset.content_publisher_asset.file_url,
           )
           whitehall_asset.update!(state: "redirected")
+        else
+          GdsApi.asset_manager.delete_asset(whitehall_asset.whitehall_asset_id)
+          whitehall_asset.update!(state: "removed")
         end
       end
     end
