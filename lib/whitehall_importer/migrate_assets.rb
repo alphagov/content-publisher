@@ -13,7 +13,7 @@ module WhitehallImporter
     end
 
     def call
-      whitehall_import.assets.each do |whitehall_asset|
+      whitehall_import.migratable_assets.each do |whitehall_asset|
         begin
           if whitehall_asset.content_publisher_asset.present? && whitehall_asset.content_publisher_asset.live?
             GdsApi.asset_manager.update_asset(

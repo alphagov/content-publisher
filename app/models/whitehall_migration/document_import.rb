@@ -14,4 +14,8 @@ class WhitehallMigration::DocumentImport < ApplicationRecord
                 syncing: "syncing",
                 sync_failed: "sync failed",
                 completed: "completed" }
+
+  def migratable_assets
+    assets.select { |a| a.pending? || a.migration_failed? }
+  end
 end
