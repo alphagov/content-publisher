@@ -15,20 +15,34 @@ module WhitehallImporter
     def call
       whitehall_import.migratable_assets.each do |whitehall_asset|
         begin
-          if whitehall_asset.content_publisher_asset.present? && whitehall_asset.content_publisher_asset.live?
-            GdsApi.asset_manager.update_asset(
-              whitehall_asset.whitehall_asset_id,
-              redirect_url: whitehall_asset.content_publisher_asset.file_url,
-            )
-            whitehall_asset.update!(state: "redirected")
-          else
-            GdsApi.asset_manager.delete_asset(whitehall_asset.whitehall_asset_id)
-            whitehall_asset.update!(state: "removed")
-          end
+          migrate_asset(whitehall_asset)
         rescue StandardError => e
           whitehall_asset.update!(state: "migration_failed", error_message: e.inspect)
         end
       end
+    end
+
+  private
+
+    def migrate_asset(whitehall_asset)
+      if whitehall_asset.content_publisher_asset&.live?
+        redirect_asset(whitehall_asset)
+      else
+        remove_asset(whitehall_asset)
+      end
+    end
+
+    def redirect_asset(whitehall_asset)
+      GdsApi.asset_manager.update_asset(
+        whitehall_asset.whitehall_asset_id,
+        redirect_url: whitehall_asset.content_publisher_asset.file_url,
+      )
+      whitehall_asset.update!(state: "redirected")
+    end
+
+    def remove_asset(whitehall_asset)
+      GdsApi.asset_manager.delete_asset(whitehall_asset.whitehall_asset_id)
+      whitehall_asset.update!(state: "removed")
     end
   end
 end
