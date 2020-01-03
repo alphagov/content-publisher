@@ -24,25 +24,34 @@ RSpec.describe "Import tasks" do
     let(:whitehall_export) { build(:whitehall_export_document) }
 
     before do
-      allow($stdout).to receive(:puts)
       Rake::Task["import:whitehall_document"].reenable
-      stub_request(:get, "#{whitehall_host}/government/admin/export/document/123")
-        .to_return(status: 200, body: whitehall_export.to_json)
     end
 
     it "imports the export and syncs with publishing-api" do
-      import = build(:whitehall_migration_document_import, state: :completed)
+      import = build(:whitehall_migration_document_import, state: "completed")
 
-      expect(WhitehallImporter).to receive(:import_and_sync)
-                               .with(whitehall_export)
-                               .and_return(import)
+      allow(WhitehallMigration::DocumentImport).to receive(:create!).and_return(import)
+      expect(WhitehallImporter).to receive(:import_and_sync).with(import)
+
       Rake::Task["import:whitehall_document"].invoke("123")
     end
 
+    it "creates a pending whitehall migration document import" do
+      allow(WhitehallImporter).to receive(:import_and_sync)
+      allow_any_instance_of(WhitehallMigration::DocumentImport).to receive(:completed?).and_return(true)
+
+      expect { Rake::Task["import:whitehall_document"].invoke("123") }
+        .to change { WhitehallMigration::DocumentImport.pending.exists?(whitehall_document_id: 123) }
+        .to(true)
+    end
+
     it "aborts if the import fails" do
+      allow($stdout).to receive(:puts)
+
       import = build(:whitehall_migration_document_import,
                      state: :import_failed,
                      error_log: "Error importing")
+      allow(WhitehallMigration::DocumentImport).to receive(:create!).and_return(import)
       expect(WhitehallImporter).to receive(:import_and_sync).and_return(import)
 
       expect($stdout).to receive(:puts).with("Import failed")
