@@ -123,5 +123,19 @@ RSpec.describe WhitehallImporter::Import do
 
       expect(WhitehallImporter::IntegrityChecker.new).to have_received(:valid?).twice
     end
+
+    it "aborts with a list of problems if the integrity check fails" do
+      problems = "base path doesn't match"
+      allow(WhitehallImporter::IntegrityChecker)
+        .to receive(:new)
+        .and_return(instance_double(
+                      WhitehallImporter::IntegrityChecker,
+                      valid?: false,
+                      problems: [problems],
+                    ))
+
+      expect { described_class.call(build(:whitehall_export_document)) }
+        .to raise_error(WhitehallImporter::AbortImportError, problems)
+    end
   end
 end
