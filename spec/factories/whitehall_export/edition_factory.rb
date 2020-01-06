@@ -52,5 +52,19 @@ FactoryBot.define do
         ]
       end
     end
+
+    trait :published do
+      created_at { 3.days.ago.rfc3339 }
+      state { "published" }
+      revision_history do
+        [
+          build(:revision_history_event, created_at: created_at),
+          build(:revision_history_event,
+                event: "update",
+                state: "published",
+                created_at: 2.days.ago.rfc3339),
+        ]
+      end
+    end
   end
 end

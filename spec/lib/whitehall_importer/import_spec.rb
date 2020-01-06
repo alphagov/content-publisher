@@ -114,9 +114,14 @@ RSpec.describe WhitehallImporter::Import do
       expect(document.first_published_at).to eq(first_publish_date)
     end
 
-    it "integrity checks the current edition of the imported document" do
-      document = described_class.call(build(:whitehall_export_document))
-      expect(WhitehallImporter::IntegrityChecker.new(document.current_edition)).to have_received(:valid?)
+    it "integrity checks the current and live editions of the imported document" do
+      editions = [
+        build(:whitehall_export_edition),
+        build(:whitehall_export_edition, :published),
+      ]
+      described_class.call(build(:whitehall_export_document, editions: editions))
+
+      expect(WhitehallImporter::IntegrityChecker.new).to have_received(:valid?).twice
     end
   end
 end

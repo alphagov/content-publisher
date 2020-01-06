@@ -76,7 +76,12 @@ module WhitehallImporter
     end
 
     def check_document_integrity(document)
-      IntegrityChecker.new(document.current_edition).valid?
+      check_edition_integrity(document.live_edition) if document.live_edition
+      check_edition_integrity(document.current_edition) if document.current_edition != document.live_edition
+    end
+
+    def check_edition_integrity(edition)
+      IntegrityChecker.new(edition).valid?
     end
   end
 end
