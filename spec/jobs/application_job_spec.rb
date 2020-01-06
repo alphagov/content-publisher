@@ -33,12 +33,12 @@ RSpec.describe ApplicationJob do
 
       expect(job.logger)
         .to receive(:info)
-        .with("Job skipped as exclusive lock 'content-publisher:ApplicationJob' could not be acuqired")
+        .with("Job skipped as exclusive lock 'content-publisher:ApplicationJob' could not be acquired")
 
       job.run_exclusively
     end
 
-    it "defaults to running within a transaction" do
+    it "runs within a transaction" do
       expect(ApplicationRecord).to receive(:transaction).and_yield
       expect(ApplicationRecord)
         .to receive(:with_advisory_lock_result)
@@ -46,16 +46,6 @@ RSpec.describe ApplicationJob do
         .and_return(result)
 
       ApplicationJob.new.run_exclusively
-    end
-
-    it "can be run outside a transaction" do
-      expect(ApplicationRecord).not_to receive(:transaction)
-      expect(ApplicationRecord)
-        .to receive(:with_advisory_lock_result)
-        .with(instance_of(String), a_hash_including(transaction: false))
-        .and_return(result)
-
-      ApplicationJob.new.run_exclusively(transaction: false)
     end
 
     it "defaults to using the class name for the lock name" do
