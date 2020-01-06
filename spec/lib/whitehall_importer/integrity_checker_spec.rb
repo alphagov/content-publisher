@@ -32,10 +32,39 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
       expect(integrity_check.valid?).to be true
     end
+
+    it "compares against organisations in linkset links if there no edition links" do
+      stub_publishing_api_has_item(
+        content_id: edition.content_id,
+        base_path: edition.base_path,
+        title: edition.title,
+        description: edition.summary,
+        document_type: edition.document_type.id,
+        schema_name: edition.document_type.publishing_metadata.schema_name,
+        details: {
+          body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
+        },
+      )
+
+      stub_publishing_api_has_links(
+        content_id: edition.content_id,
+        links: {
+          primary_publishing_organisation: edition.tags["primary_publishing_organisation"].to_a,
+          organisations: edition.tags["organisations"].to_a + edition.tags["primary_publishing_organisation"].to_a,
+        },
+      )
+
+      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      expect(integrity_check.valid?).to be true
+    end
   end
 
   describe "#problems" do
     let(:edition) { build(:edition) }
+
+    before do
+      stub_publishing_api_has_links(content_id: edition.content_id)
+    end
 
     it "returns a problem when the base paths don't match" do
       stub_publishing_api_has_item(content_id: edition.content_id, base_path: "base-path")
