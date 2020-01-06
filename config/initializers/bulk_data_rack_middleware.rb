@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# We need to explicitly 'require' the BulkData::Cache in development so that
+# the singleton instance here continues to be used in requests. Otherwise the
+# caching described below will only apply to the orphaned singleton. This has
+# the small risk of confusion that the BulkData::Cache class won't reload
+# automatically when its content changes.
+#
+# To verify: add a `puts BulkData::Cache.object_id` below and then see that
+# the `object_id` is (not) the same in a console.
+#
+# https://guides.rubyonrails.org/v5.2/autoloading_and_reloading_constants.html#autoloading-and-initializers
+# https://guides.rubyonrails.org/v5.2/autoloading_and_reloading_constants.html#autoloading-and-require
+require "bulk_data"
 require "bulk_data/cache"
 
 # This is used to set a local cache that runs on BulkData for the duration of
