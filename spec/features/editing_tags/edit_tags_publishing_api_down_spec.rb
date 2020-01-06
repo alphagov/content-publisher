@@ -12,7 +12,7 @@ RSpec.feature "Edit tags when the API is down" do
   def given_there_is_an_edition
     tag_field = build(:tag_field, type: "multi_tag")
     document_type = build(:document_type, tags: [tag_field])
-    publishing_api_has_linkables([], document_type: tag_field.document_type)
+    stub_publishing_api_has_linkables([], document_type: tag_field.document_type)
     @edition = create(:edition, document_type_id: document_type.id)
   end
 
