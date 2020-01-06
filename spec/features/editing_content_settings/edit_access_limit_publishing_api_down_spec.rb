@@ -23,7 +23,7 @@ RSpec.feature "Edit access limit when the Publishing API is down" do
   end
 
   def and_the_publishing_api_is_down
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
   end
 
   def given_i_am_a_user_in_some_other_org

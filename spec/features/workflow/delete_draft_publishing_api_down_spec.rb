@@ -27,7 +27,7 @@ RSpec.feature "Delete draft when the Publishing API is down" do
   end
 
   def and_the_publishing_api_is_down
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
   end
 
   def and_i_delete_the_draft

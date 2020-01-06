@@ -17,7 +17,7 @@ RSpec.feature "Edit tags when the API is down" do
   end
 
   def and_the_publishing_api_is_down
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
   end
 
   def when_i_visit_the_summary_page

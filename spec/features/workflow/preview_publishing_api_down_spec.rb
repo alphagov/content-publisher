@@ -24,7 +24,7 @@ RSpec.feature "Previewing an edition when the Publishing API is down" do
   end
 
   def and_the_publishing_api_is_down
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
   end
 
   def and_i_click_the_preview_button

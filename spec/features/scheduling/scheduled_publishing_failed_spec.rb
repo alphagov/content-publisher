@@ -44,7 +44,7 @@ RSpec.feature "Scheduled publishing failed" do
   end
 
   def when_the_publishing_api_is_down
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
   end
 
   def and_the_scheduled_publishing_job_runs
