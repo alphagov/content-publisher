@@ -4,6 +4,12 @@ RSpec.describe WhitehallImporter::Import do
   describe ".call" do
     let(:whitehall_user) { build(:whitehall_export_user) }
 
+    before do
+      allow(WhitehallImporter::IntegrityChecker)
+        .to receive(:new)
+        .and_return(instance_double(WhitehallImporter::IntegrityChecker, valid?: true))
+    end
+
     it "creates a document" do
       expect { described_class.call(build(:whitehall_export_document)) }
         .to change { Document.count }.by(1)
@@ -106,6 +112,11 @@ RSpec.describe WhitehallImporter::Import do
       document = described_class.call(import_data)
 
       expect(document.first_published_at).to eq(first_publish_date)
+    end
+
+    it "integrity checks the current edition of the imported document" do
+      document = described_class.call(build(:whitehall_export_document))
+      expect(WhitehallImporter::IntegrityChecker.new(document.current_edition)).to have_received(:valid?)
     end
   end
 end

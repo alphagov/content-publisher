@@ -27,6 +27,7 @@ module WhitehallImporter
           )
         end
 
+        check_document_integrity(document)
         document
       end
     end
@@ -72,6 +73,10 @@ module WhitehallImporter
 
     def first_edition_history
       EditionHistory.new(whitehall_document["editions"].first["revision_history"])
+    end
+
+    def check_document_integrity(document)
+      IntegrityChecker.new(document.current_edition).valid?
     end
   end
 end
