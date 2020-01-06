@@ -102,12 +102,12 @@ RSpec.describe BulkData::GovernmentRepository do
 
   describe "#populate_cache" do
     let(:governments) do
-      [build(:government).to_h, build(:government, :past).to_h]
+      [build(:government), build(:government, :past)]
     end
 
     let!(:get_editions_request) do
       stub_publishing_api_get_editions(
-        governments,
+        governments.map(&:to_h),
         document_types: %w[government],
         fields: %w[content_id locale title details],
         states: %w[published],
@@ -117,9 +117,9 @@ RSpec.describe BulkData::GovernmentRepository do
     end
 
     it "populates the cache with governments from the Publishing API" do
-      expect(BulkData::Cache).to receive(:write).with(cache_key, governments)
       repository.populate_cache
       expect(get_editions_request).to have_been_requested
+      expect(repository.all).to match_array(governments)
     end
 
     it "raises a RemoteDataUnavailableError when Publishing API is unavailable" do
@@ -136,18 +136,20 @@ RSpec.describe BulkData::GovernmentRepository do
         .to change { repository.all.count }.from(0).to(2)
     end
 
-    it "re-populates the cache when it was updated before the older_than time" do
+    it "repopulates the cache when it was updated before the older_than time" do
       travel_to(10.minutes.ago) { repository.populate_cache }
 
-      expect(BulkData::Cache).to receive(:write)
       repository.populate_cache(older_than: 5.minutes.ago)
+      expect(get_editions_request).to have_been_requested.twice
+      expect(repository.all).to match_array(governments)
     end
 
-    it "does nothing when cache was updated after the older_than time" do
+    it "doesn't repopulate the cache when it was updated after the older_than time" do
       travel_to(2.minutes.ago) { repository.populate_cache }
 
-      expect(BulkData::Cache).not_to receive(:write)
       repository.populate_cache(older_than: 5.minutes.ago)
+      expect(get_editions_request).to have_been_requested.once
+      expect(repository.all).to match_array(governments)
     end
   end
 end
