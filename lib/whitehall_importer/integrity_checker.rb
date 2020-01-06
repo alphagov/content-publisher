@@ -75,7 +75,11 @@ module WhitehallImporter
     end
 
     def publishing_api_content
-      @publishing_api_content ||= GdsApi.publishing_api.get_content(edition.content_id).to_h
+      @publishing_api_content ||= if edition.live?
+                                    GdsApi.publishing_api.get_live_content(edition.content_id).to_h
+                                  else
+                                    GdsApi.publishing_api.get_content(edition.content_id).to_h
+                                  end
     end
 
     def publishing_api_link(link_type)
