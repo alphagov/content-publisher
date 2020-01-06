@@ -8,7 +8,7 @@ RSpec.describe BulkData::GovernmentRepository do
 
   describe "#find" do
     let(:government) { build(:government) }
-    before { BulkData::Cache.write(cache_key, [government.to_h]) }
+    before { populate_government_bulk_data(government) }
 
     it "can find a government for a particular content id" do
       expect(repository.find(government.content_id)).to eq(government)
@@ -26,7 +26,7 @@ RSpec.describe BulkData::GovernmentRepository do
       build(:government, started_on: 3.weeks.ago, ended_on: 1.week.ago)
     end
 
-    before { BulkData::Cache.write(cache_key, [government.to_h]) }
+    before { populate_government_bulk_data(government) }
 
     it "returns the government for that date" do
       expect(repository.for_date(2.weeks.ago)).to eq(government)
@@ -44,13 +44,12 @@ RSpec.describe BulkData::GovernmentRepository do
   describe "#current" do
     it "returns the current government when there is one" do
       government = build(:government, ended_on: nil)
-      BulkData::Cache.write(cache_key, [government.to_h])
+      populate_government_bulk_data(government)
       expect(repository.current).to eq(government)
     end
 
     it "returns nil when there isn't a current government" do
-      government = build(:government, :past)
-      BulkData::Cache.write(cache_key, [government.to_h])
+      populate_government_bulk_data(build(:government, :past))
       expect(repository.current).to be_nil
     end
   end
@@ -66,18 +65,14 @@ RSpec.describe BulkData::GovernmentRepository do
       government_c = build(:government,
                            started_on: Date.parse("2012-11-11"),
                            ended_on: Date.parse("2015-11-11"))
-
-      BulkData::Cache.write(
-        cache_key,
-        [government_a.to_h, government_b.to_h, government_c.to_h],
-      )
+      populate_government_bulk_data(government_a, government_b, government_c)
 
       expect(repository.past).to eq([government_c, government_b])
     end
 
     it "returns empty if there are no past govenments" do
       government = build(:government, ended_on: nil)
-      BulkData::Cache.write(cache_key, [government.to_h])
+      populate_government_bulk_data(government)
       expect(repository.past).to be_empty
     end
   end
@@ -93,10 +88,7 @@ RSpec.describe BulkData::GovernmentRepository do
       government_c = build(:government,
                            started_on: Date.parse("2015-11-11"),
                            ended_on: Date.parse("2018-11-11"))
-      BulkData::Cache.write(
-        cache_key,
-        [government_a.to_h, government_b.to_h, government_c.to_h],
-      )
+      populate_government_bulk_data(government_a, government_b, government_c)
 
       expect(repository.all).to eq([government_b, government_c, government_a])
     end
@@ -138,7 +130,7 @@ RSpec.describe BulkData::GovernmentRepository do
     end
 
     it "resets the all data stored on the class" do
-      BulkData::Cache.write(cache_key, [])
+      populate_government_bulk_data
       expect { repository.populate_cache }
         .to change { repository.all.count }.from(0).to(2)
     end
