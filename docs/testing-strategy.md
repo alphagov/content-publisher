@@ -23,7 +23,7 @@ The principles we most value in testing are:
 This testing strategy was inspired by:
 [Whitehall Testing Guidelines][whitehall-tests],
 [Email Alert API Testing][email-alert-api-tests], and
-[Thoughtbots' How We Test Rails Applications][thoughtbot-rails-tests]
+[Thoughtbots' How We Test Rails Applications][thoughtbot-rails-tests].
 
 ## Tests directory structure
 
@@ -31,8 +31,8 @@ Tests for Content Publisher are stored in the [spec](../spec) directory with
 the Ruby tests written using [RSpec](https://rspec.info/) and JavaScript tests
 written using [Jasmine](https://jasmine.github.io/).
 
-As per common Rails conventions, most of the directories within the spec
-directory contain Ruby [unit tests](#unit-tests) with the directories matching
+As per Rails convention, most of the directories within the spec directory
+contain Ruby [unit tests](#unit-tests) with the directories matching
 those within the app directory. Code that is stored in the lib directory has
 corresponding tests in the spec/lib directory.
 
@@ -42,14 +42,14 @@ Directories within spec that don't contain Ruby unit tests are as follows:
   alternative;
 - fixtures - contains supporting files for tests (for example image files) which
   aren't easily produced by factories;
-- features - contains [feature tests](#feature-tests), which exercises
-  application features from a user perspective;
+- features - contains [feature tests](#feature-tests), which test that a user
+  can accomplish a task by interacting with the applications web interface;
 - javascripts - contains [unit tests](#unit-tests) for JavaScript files
   and configuration and helper files for Jasmine;
 - requests - contains [request tests](#request-tests), which test the HTTP API
   of the application;
 - support - contains helper files for shared test methods and logic;
-- views - contains [view tests](#view-tests), which are used to test
+- views - contains [view tests](#view-tests), which are used to test that
   [Rails views][rails-views] output expected HTML in a given scenario.
 
 ## Unit tests
@@ -58,7 +58,8 @@ The purpose of these tests is to test individual units of the system in
 isolation. They are intended to provide exhaustive tests of the code paths
 through a particular class or module through its public interface. As per
 the [test pyramid](https://martinfowler.com/bliki/TestPyramid.html) approach
-to software testing, these should provide the majority of test coverage.
+to software testing, these should provide the greatest volume of tests for
+the application.
 
 Characteristics of unit tests:
 
@@ -67,30 +68,33 @@ Characteristics of unit tests:
 - they may mock dependent objects and/or assert that particular external
   methods are called;
 - they should test all code paths through a class/module;
-- they should test that side effects intended by the code occur, for example writing
-  to the database or making API calls.
+- they should test that side effects intended by the code occur, for example
+  writing to the database or making API calls.
 
 ## Feature tests
 
-Feature tests are used to assert that Content Publisher behaves correctly from
-the perspective of someone using the application. This ensures we're testing
-the system in a way representative of expected user behaviour. This makes the
-tests some of the most valuable of the application, however they are slower
-than other tests to run and can be difficult to debug. Therefore they are not
-intended to exhaustively test all the scenarios that can occur.
+The purpose of these tests is to assert that a user can accomplish a task. A
+task being one of the distinguishing features of the application, such as
+schedule a document for publishing or add topics to a document. The means
+this is asserted is through interacting with the application's web interface
+via the same means (for example clicking links or submitting forms) that
+we'd anticipate a user to do so.
+
+This type of test provides a high level functional test and helps to
+validate that a user can use the application to complete the tasks they use
+it for. This makes these tests some of the most valuable of the application,
+however they are slower than other tests to run and can be difficult to debug.
+Therefore they are not intended to exhaustively test all the scenarios that
+can occur as part of a distinct feature.
 
 Characteristics of feature tests:
 
-- they should test across multiple requests - consider a
-  [request test](#request-tests) to test a single request;
-- they should navigate the application using the same means as a user, for
-  example clicking links or submitting forms;
-- they shouldn't test dead ends in a user flow (such as validation or
-  permission issues); these are simpler tested in
+- they should navigate the application through the web interface with a minimal
+  amount of set-up and direct visiting of links, for example most navigation
+  should be achieved by user clicking;
+- they shouldn't test dead-ends in a user flow (such as validation or
+  permission issues), these are simpler tested in
   [request tests](#request-tests);
-- incidental behaviour (for example flash messages) shouldn't be tested, this
-  can be tested at a higher granularity in [unit](#unit-tests) or
-  [request](#request-tests) tests;
 - they shouldn't test the effects a test has on the database, only user visible
   signs of success should be asserted on;
 - they shouldn't mock application code;
@@ -113,18 +117,21 @@ Characteristics of request tests:
 - they should test the variety of responses an endpoint returns, checking
   aspects of the response such as status code and any flash messages;
 - they shouldn't test responses where there isn't specific logic written for
-  the scenario;
+  the scenario, for example when relying on Rails' implicit rescue responses
+  for `ActiveRecord::RecordNotFound` or `ActionController::ParameterMissing`;
 - they should assert against the HTTP responses involved in the request, and
   not side-effects such as database changes, these are better suited to [unit
   testing](#unit-tests) an [interactor][interactors];
 - they should focus on the effects of a single endpoint with a single HTTP
   method at a time, for example `POST /documents`, for multiple endpoints
-  consider a [feature test](#feature-tests);
+  consider whether you are testing a [feature](#feature-tests);
+- they may test a subsequent redirect request when the effects of the endpoint
+  under test alter the redirect, for example inserting a flash message;
 - they act as integration tests and thus shouldn't mock application code;
 - they can mock external API calls, but these should not be asserted against -
   this is better suited to [unit tests](#unit-tests);
-- they shouldn't be used to extensively test HTML output, this is better suited
-  by [view tests](#view-tests);
+- they shouldn't be used to test logic in a rendered view, this is better
+  suited by [view tests](#view-tests);
 - they may not be necessary for places where a response doesn't have logic
   and already has coverage provided by a feature test.
 
@@ -138,8 +145,9 @@ us to test particular HTML output they are the most appropriate choice.
 
 Characteristics of view tests:
 
-- they should make assertions based on logic in the view and not be used to
-  assert that HTML is as we wrote it;
+- they should make assertions based on logic in the view, for example they
+  should test that certain HTML appears as a result of conditionals and input
+  rather than being used to determine exact responses of HTML;
 - inputs into tests and dependent objects can be mocks of the expected object;
 - they should follow the conventions of
 [RSpec Rails view tests][rspec-rails-views].
