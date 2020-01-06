@@ -7,7 +7,7 @@ RSpec.describe ResyncService do
     before do
       stub_any_publishing_api_publish
       stub_any_publishing_api_put_content
-      stub_default_publishing_api_put_intent
+      stub_any_publishing_api_put_intent
       stub_default_publishing_api_path_reservation
       populate_default_government_bulk_data
     end
