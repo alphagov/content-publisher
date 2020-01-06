@@ -129,8 +129,9 @@ RSpec.describe BulkData::GovernmentRepository do
         .to raise_error(BulkData::RemoteDataUnavailableError)
     end
 
-    it "resets the all data stored on the class" do
+    it "resets the all instance variable to clear memoisation" do
       populate_government_bulk_data
+
       expect { repository.populate_cache }
         .to change { repository.all.count }.from(0).to(2)
     end
