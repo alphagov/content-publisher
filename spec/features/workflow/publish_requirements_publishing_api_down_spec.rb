@@ -21,7 +21,7 @@ RSpec.feature "Publish requirements when the Publishing API is down" do
   end
 
   def when_the_publishing_api_is_down
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
     visit document_path(@edition.document)
   end
 

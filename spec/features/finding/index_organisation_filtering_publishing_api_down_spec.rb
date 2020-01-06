@@ -8,7 +8,7 @@ RSpec.feature "Index organisation filtering when the Publishing API is down" do
   end
 
   def given_the_publishing_api_is_down
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
   end
 
   def when_i_visit_the_index_page

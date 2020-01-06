@@ -18,7 +18,7 @@ RSpec.feature "Edit an edition when the Publishing API is down" do
   end
 
   def and_the_publishing_api_is_down
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
     click_on "Save"
   end
 

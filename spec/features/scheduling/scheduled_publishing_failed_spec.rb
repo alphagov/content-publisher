@@ -34,7 +34,7 @@ RSpec.feature "Scheduled publishing failed" do
   end
 
   def and_i_submit_a_review_option
-    stub_default_publishing_api_put_intent
+    stub_any_publishing_api_put_intent
     choose I18n.t!("schedule.new.review_status.reviewed")
     click_on "Schedule"
   end
@@ -44,7 +44,7 @@ RSpec.feature "Scheduled publishing failed" do
   end
 
   def when_the_publishing_api_is_down
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
   end
 
   def and_the_scheduled_publishing_job_runs

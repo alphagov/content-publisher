@@ -8,7 +8,7 @@ RSpec.describe ScheduleService do
   include ActiveJob::TestHelper
 
   before(:each) do
-    stub_default_publishing_api_put_intent
+    stub_any_publishing_api_put_intent
     allow(ScheduleService::Payload).to receive(:new) { payload }
   end
 

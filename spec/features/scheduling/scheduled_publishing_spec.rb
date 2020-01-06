@@ -35,7 +35,7 @@ RSpec.feature "Scheduled publishing" do
   end
 
   def and_i_submit_the_reviewed_option
-    @publish_intent_request = stub_default_publishing_api_put_intent.with(
+    @publish_intent_request = stub_any_publishing_api_put_intent.with(
       body: hash_including(publish_time: @edition.proposed_publish_time),
     )
     choose I18n.t!("schedule.new.review_status.reviewed")

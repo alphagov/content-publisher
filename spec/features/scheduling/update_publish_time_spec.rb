@@ -19,7 +19,7 @@ RSpec.feature "Update publish time" do
 
   def given_there_is_a_scheduled_edition
     @edition = create(:edition, :scheduled)
-    @request = stub_default_publishing_api_put_intent
+    @request = stub_any_publishing_api_put_intent
   end
 
   def when_i_visit_the_summary_page
@@ -32,7 +32,7 @@ RSpec.feature "Update publish time" do
 
   def and_i_set_a_new_publish_time
     @new_time = Time.zone.parse("2019-08-15 23:00")
-    @request = stub_default_publishing_api_put_intent.with(
+    @request = stub_any_publishing_api_put_intent.with(
       body: hash_including(publish_time: @new_time),
     )
 

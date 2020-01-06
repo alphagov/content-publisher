@@ -21,7 +21,7 @@ RSpec.feature "Insert contact embed without Javascript when the Publishing API i
   end
 
   def and_the_publishing_api_is_down
-    publishing_api_isnt_available
+    stub_publishing_api_isnt_available
   end
 
   def and_i_go_to_add_a_contact

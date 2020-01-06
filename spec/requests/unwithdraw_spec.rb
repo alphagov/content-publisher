@@ -16,7 +16,7 @@ RSpec.describe "Unwithdraw" do
     end
 
     it "returns an error when publishing-api is down" do
-      publishing_api_isnt_available
+      stub_publishing_api_isnt_available
       login_as(managing_editor)
 
       post unwithdraw_path(withdrawn_edition.document)

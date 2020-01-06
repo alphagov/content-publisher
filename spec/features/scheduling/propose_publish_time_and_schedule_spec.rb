@@ -46,7 +46,7 @@ RSpec.feature "Propose publish time and schedule" do
   end
 
   def when_i_submit_a_review_option
-    @request = stub_default_publishing_api_put_intent
+    @request = stub_any_publishing_api_put_intent
 
     choose I18n.t!("schedule.new.review_status.reviewed")
     click_on "Schedule"
