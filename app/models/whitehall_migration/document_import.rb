@@ -4,6 +4,9 @@
 # the import status of the document into Content Publisher
 class WhitehallMigration::DocumentImport < ApplicationRecord
   belongs_to :document, optional: true
+
+  belongs_to :whitehall_migration, optional: true
+
   has_many :assets, class_name: "WhitehallMigration::AssetImport"
 
   enum state: { pending: "pending",
@@ -14,6 +17,8 @@ class WhitehallMigration::DocumentImport < ApplicationRecord
                 syncing: "syncing",
                 sync_failed: "sync failed",
                 completed: "completed" }
+
+  scope :in_progress, -> { pending.or(importing).or(imported).or(syncing) }
 
   def migratable_assets
     assets.select { |a| a.pending? || a.migration_failed? }
