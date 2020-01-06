@@ -15,6 +15,6 @@
     }
 ) %>
 
-<%= render "govuk_publishing_components/components/success_alert",
-  message: t("documents.show.flashes.submitted_for_review.title"),
+<%= render "components/inset_prompt",
+  title: t("documents.show.flashes.submitted_for_review.title"),
   description: copy_to_clipboard %>
