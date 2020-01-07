@@ -1,0 +1,8 @@
+en:
+  documents:
+    confirm_delete_draft:
+      title: Delete the draft of '%{title}'
+      description_govspeak: |
+        Are you sure you want to delete this draft?
+
+        This will delete all content you have added and cannot be undone.

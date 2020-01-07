@@ -24,9 +24,8 @@ class DocumentsController < ApplicationController
   end
 
   def confirm_delete_draft
-    edition = Edition.find_current(document: params[:document])
-    assert_edition_state(edition, &:editable?)
-    redirect_to document_path(edition.document), confirmation: "documents/show/delete_draft"
+    @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
   end
 
   def destroy
