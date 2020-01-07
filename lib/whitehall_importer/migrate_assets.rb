@@ -20,6 +20,7 @@ module WhitehallImporter
           whitehall_asset.update!(state: "migration_failed", error_message: e.inspect)
         end
       end
+      raise "Failed migrating at least one Whitehall asset" if whitehall_import.assets.migration_failed.any?
     end
 
   private
