@@ -69,6 +69,9 @@ en:
           It was scheduled to publish at %{time} on %{date}
 
           You can publish it now, schedule it to publish later, or edit it.
+      submitted_for_review:
+        title: Content has been marked as ready for 2i review
+        label: Send the Content Publisher link to another publisher for them to review. When content is ready you or they can publish it.
       flashes:
         pre_preview_issues:
           warning: To preview this document you need to
@@ -86,9 +89,6 @@ en:
           title: Something has gone wrong
           description_govspeak: Something went wrong when submitting your content for 2i review. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
         approved: Content has been reviewed and approved
-        submitted_for_review:
-          title: Content has been marked as ready for 2i review
-          label: Send the Content Publisher link to another publisher for them to review. When content is ready you or they can publish it.
         schedule_error:
           title: Something has gone wrong
           description_govspeak: Something went wrong when scheduling your document. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).

@@ -11,7 +11,6 @@ class ReviewController < ApplicationController
     elsif issues
       redirect_to document_path(params[:document]), tried_to_publish: true
     else
-      flash[:submitted_for_review] = true
       redirect_to document_path(params[:document])
     end
   end
