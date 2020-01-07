@@ -216,10 +216,10 @@ contains-path@^0.1.0:
   resolved "https://registry.yarnpkg.com/contains-path/-/contains-path-0.1.0.tgz#fe8cf184ff6670b6baef01a9d4861a5cbec4120a"
   integrity sha1-/ozxhP9mcLa67wGp1IYaXL7EEgo=
 
-core-js-bundle@^3.6.1:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/core-js-bundle/-/core-js-bundle-3.6.1.tgz#420b18c3d56eab32f7e4546348e9775b89b4ddee"
-  integrity sha512-jMQuu9R/WLLgNw0LNSSFw4wmDqlP2b/d5IG2xQeevMN0gJbUKVRyArJIKOgbgE3Q0PWxzGQr01lecQl/yhjoxA==
+core-js-bundle@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/core-js-bundle/-/core-js-bundle-3.6.2.tgz#404d18b07f10dacda62a59756a26194e4dca094d"
+  integrity sha512-W1a9Uks77ZBboo7gHt7Gytd/zsIj4EL1Zfad01kJyCuodBY350S5v/9aoOEb+2ZDW8lKdcoeiZvx3FrC6GWN5Q==
 
 core-util-is@~1.0.0:
   version "1.0.2"
