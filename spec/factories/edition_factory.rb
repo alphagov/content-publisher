@@ -8,6 +8,7 @@ FactoryBot.define do
     government_id { government&.content_id }
     revision_synced { true }
     association :created_by, factory: :user
+    editors { [created_by] }
 
     revision_fields
 
