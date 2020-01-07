@@ -1,5 +1,11 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <% if @edition.failed_to_publish? %>
+      <%= render "documents/show/failed_to_publish_notice" %>
+    <% end %>
+
+    <%= render "documents/show/requirements" %>
+
     <% if @edition.submitted_for_review? %>
       <%= render "documents/show/submitted_for_review" %>
     <% end %>
@@ -10,12 +16,6 @@
 
     <% if @edition.withdrawn? %>
       <%= render "documents/show/withdrawn_notice" %>
-    <% end %>
-
-    <%= render "documents/show/requirements" %>
-
-    <% if @edition.failed_to_publish? %>
-      <%= render "documents/show/failed_to_publish_notice" %>
     <% end %>
   </div>
 
