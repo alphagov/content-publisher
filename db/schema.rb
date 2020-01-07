@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_23_092938) do
+ActiveRecord::Schema.define(version: 2019_12_24_112030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -337,8 +337,8 @@ ActiveRecord::Schema.define(version: 2019_12_23_092938) do
 
   create_table "whitehall_migration_document_imports", force: :cascade do |t|
     t.bigint "whitehall_document_id", null: false
-    t.json "payload", null: false
-    t.uuid "content_id", null: false
+    t.json "payload"
+    t.uuid "content_id"
     t.string "state", null: false
     t.text "error_log"
     t.datetime "created_at", null: false
@@ -348,7 +348,7 @@ ActiveRecord::Schema.define(version: 2019_12_23_092938) do
   end
 
   create_table "whitehall_migrations", force: :cascade do |t|
-    t.text "organisation_slug", null: false
+    t.text "organisation_content_id", null: false
     t.text "document_type", null: false
     t.datetime "start_time"
     t.datetime "end_time"

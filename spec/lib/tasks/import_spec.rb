@@ -2,17 +2,20 @@
 
 RSpec.describe "Import tasks" do
   describe "import:whitehall_migration" do
+    let(:whitehall_migration_document_import) { build(:whitehall_migration_document_import) }
+
     before do
+      allow($stdout).to receive(:puts)
       Rake::Task["import:whitehall_migration"].reenable
+      stub_publishing_api_has_lookups(
+        "/government/organisations/cabinet-office" => "96ae61d6-c2a1-48cb-8e67-da9d105ae381",
+      )
+      allow(WhitehallImporter).to receive(:create_migration).and_return(whitehall_migration_document_import)
     end
 
-    it "creates a WhitehallMigration" do
-      freeze_time do
-        expect { Rake::Task["import:whitehall_migration"].invoke("cabinet-office", "news_story") }.to change { WhitehallMigration.count }.by(1)
-        expect(WhitehallMigration.last.organisation_slug).to eq("cabinet-office")
-        expect(WhitehallMigration.last.document_type).to eq("news_story")
-        expect(WhitehallMigration.last.start_time).to eq(Time.current)
-      end
+    it "calls WhitehallImport::create_migration with correct arguments" do
+      Rake::Task["import:whitehall_migration"].invoke("cabinet-office", "NewsArticle")
+      expect(WhitehallImporter).to have_received(:create_migration).with("96ae61d6-c2a1-48cb-8e67-da9d105ae381", "NewsArticle")
     end
   end
 
