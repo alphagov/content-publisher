@@ -1,6 +1,6 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 <%= render partial: "errors/error",
            locals: {
-             title: t("history_mode.non_managing_editor.title", title: @edition.title),
+             title: t("history_mode.non_managing_editor.title", title: @edition.title_or_fallback),
              body_govspeak: t("history_mode.non_managing_editor.body_govspeak")
            } %>
