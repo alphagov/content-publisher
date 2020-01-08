@@ -1,0 +1,9 @@
+en:
+  unwithdraw:
+    confirm:
+      title: Undo the withdrawal of ‘%{title}’
+      description_govspeak: |
+        Are you sure you want to undo the withdrawal?
+
+        This will remove the withdrawn banner and republish
+        the content immediately. It will not send an email alert to users.

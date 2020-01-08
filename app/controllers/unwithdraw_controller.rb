@@ -6,7 +6,6 @@ class UnwithdrawController < ApplicationController
   def confirm
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:withdrawn?)
-    redirect_to document_path(@edition.document), confirmation: "unwithdraw/confirm"
   end
 
   def unwithdraw

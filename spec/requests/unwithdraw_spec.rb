@@ -65,9 +65,8 @@ RSpec.describe "Unwithdraw" do
       login_as(managing_editor)
 
       get unwithdraw_path(withdrawn_edition.document)
-      follow_redirect!
 
-      expect(response.body).to include(I18n.t!("documents.show.unwithdraw.title"))
+      expect(response.body).to include(I18n.t!("unwithdraw.confirm.title", title: withdrawn_edition.title_or_fallback))
     end
 
     it "redirects to document summary when the edition is in the wrong state" do
@@ -94,9 +93,8 @@ RSpec.describe "Unwithdraw" do
         login_as(user)
 
         get unwithdraw_path(withdrawn_history_mode_edition.document)
-        follow_redirect!
 
-        expect(response.body).to include(I18n.t!("documents.show.unwithdraw.title"))
+        expect(response.body).to include(I18n.t!("unwithdraw.confirm.title", title: withdrawn_history_mode_edition.title_or_fallback))
       end
 
       it "prevents users without manage_live_history_mode permission from accessing unwithdraw page" do
