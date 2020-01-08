@@ -27,11 +27,21 @@ module WhitehallImporter
          document_type
          schema_name).each do |attribute|
         if publishing_api_content[attribute] != proposed_payload[attribute]
-          problems << "#{attribute} doesn't match"
+          problems << <<~HEREDOC
+            #{attribute} doesn't match.
+            proposed value: **#{proposed_payload[attribute]}**
+            publishing-api value: **#{publishing_api_content[attribute]}**
+          HEREDOC
         end
       end
 
-      problems << "body text doesn't match" unless body_text_matches?
+      unless body_text_matches?
+        problems << <<~HEREDOC
+          body text doesn't match.
+          proposed value: **#{proposed_payload.dig('details', 'body')}**
+          publishing-api value: **#{publishing_api_content.dig('details', 'body')}**
+        HEREDOC
+      end
 
       problems
     end
@@ -49,15 +59,32 @@ module WhitehallImporter
 
       %w(alt_text caption).each_with_object([]) do |attribute, problems|
         if publishing_api_image[attribute] != proposed_image_payload[attribute]
-          problems << "image #{attribute} doesn't match"
+          problems << <<~HEREDOC
+            image #{attribute} doesn't match.
+            proposed value: **#{proposed_image_payload[attribute]}**
+            publishing-api value: **#{publishing_api_image[attribute]}**
+          HEREDOC
         end
       end
     end
 
     def organisation_problems
       problems = []
-      problems << "primary_publishing_organisation doesn't match" unless primary_publishing_organisation_matches?
-      problems << "organisations don't match" unless organisations_match?
+      unless primary_publishing_organisation_matches?
+        problems << <<~HEREDOC
+          primary_publishing_organisation doesn't match.
+          proposed value: **#{proposed_payload.dig('links', 'primary_publishing_organisation')}**
+          publishing-api value: **#{publishing_api_link('primary_publishing_organisation')}**
+        HEREDOC
+      end
+
+      unless organisations_match?
+        problems << <<~HEREDOC
+          organisations don't match.
+          proposed value: **#{proposed_payload.dig('links', 'organisations')}**
+          publishing-api value: **#{publishing_api_link('organisations')}**
+        HEREDOC
+      end
 
       problems
     end
