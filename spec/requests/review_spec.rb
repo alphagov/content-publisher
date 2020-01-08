@@ -14,7 +14,7 @@ RSpec.describe "Review" do
       expect(response).to redirect_to(document_path(edition.document))
       follow_redirect!
       expect(response.body).to have_content(
-        I18n.t!("documents.show.flashes.submitted_for_review.title"),
+        I18n.t!("documents.show.submitted_for_review.title"),
       )
     end
 
