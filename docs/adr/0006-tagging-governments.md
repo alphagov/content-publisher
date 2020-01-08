@@ -1,7 +1,7 @@
 # 6. Tagging Content to Governments
 
 Date: 2018-12-12
-Superseded: 2019-12-19 by [ADR XX](00XX-political-and-government-tagging.md)
+Superseded: 2019-12-19 by [ADR 14](0014-political-and-government-tagging.md)
 
 ## Context
 
