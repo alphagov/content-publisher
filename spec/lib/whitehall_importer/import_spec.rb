@@ -4,6 +4,12 @@ RSpec.describe WhitehallImporter::Import do
   describe ".call" do
     let(:whitehall_user) { build(:whitehall_export_user) }
 
+    before do
+      allow(WhitehallImporter::IntegrityChecker)
+        .to receive(:new)
+        .and_return(instance_double(WhitehallImporter::IntegrityChecker, valid?: true))
+    end
+
     it "creates a document" do
       expect { described_class.call(build(:whitehall_export_document)) }
         .to change { Document.count }.by(1)
@@ -106,6 +112,30 @@ RSpec.describe WhitehallImporter::Import do
       document = described_class.call(import_data)
 
       expect(document.first_published_at).to eq(first_publish_date)
+    end
+
+    it "integrity checks the current and live editions of the imported document" do
+      editions = [
+        build(:whitehall_export_edition),
+        build(:whitehall_export_edition, :published),
+      ]
+      described_class.call(build(:whitehall_export_document, editions: editions))
+
+      expect(WhitehallImporter::IntegrityChecker.new).to have_received(:valid?).twice
+    end
+
+    it "aborts with a list of problems if the integrity check fails" do
+      problems = "base path doesn't match"
+      allow(WhitehallImporter::IntegrityChecker)
+        .to receive(:new)
+        .and_return(instance_double(
+                      WhitehallImporter::IntegrityChecker,
+                      valid?: false,
+                      problems: [problems],
+                    ))
+
+      expect { described_class.call(build(:whitehall_export_document)) }
+        .to raise_error(WhitehallImporter::AbortImportError, problems)
     end
   end
 end

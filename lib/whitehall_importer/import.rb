@@ -27,6 +27,7 @@ module WhitehallImporter
           )
         end
 
+        check_document_integrity(document)
         document
       end
     end
@@ -72,6 +73,17 @@ module WhitehallImporter
 
     def first_edition_history
       EditionHistory.new(whitehall_document["editions"].first["revision_history"])
+    end
+
+    def check_document_integrity(document)
+      check_edition_integrity(document.live_edition) if document.live_edition
+      check_edition_integrity(document.current_edition) if document.current_edition != document.live_edition
+    end
+
+    def check_edition_integrity(edition)
+      integrity_checker = IntegrityChecker.new(edition)
+
+      raise AbortImportError, integrity_checker.problems.join(", ") unless integrity_checker.valid?
     end
   end
 end
