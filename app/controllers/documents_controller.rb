@@ -29,6 +29,8 @@ class DocumentsController < ApplicationController
                                      .includes(:created_by, :details)
                                      .order(created_at: :desc)
                                      .includes(:edition)
+                                     .page(params.fetch(:page, 1))
+                                     .per(50)
   end
 
   def confirm_delete_draft

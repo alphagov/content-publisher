@@ -73,6 +73,16 @@
         <% end %>
       </div>
     <% end %>
+
+    <%
+    pages = {}
+    pages[:previous_page] = { url: document_history_path(page: @timeline_entries.prev_page),
+                              title: "Previous page" } if @timeline_entries.prev_page
+    pages[:next_page] = { url: document_history_path(page: @timeline_entries.next_page),
+                          title: "Next page" } if @timeline_entries.next_page
+    %>
+
+    <%= render "govuk_publishing_components/components/previous_and_next_navigation", pages %>
   </div>
 
   <div class="govuk-grid-column-one-third">
