@@ -9,6 +9,7 @@ RSpec.feature "Create a document" do
     and_i_fill_in_the_contents
     then_i_see_the_document_summary
     and_the_preview_creation_was_successful
+    and_i_see_the_timeline_entry
   end
 
   def given_i_am_on_the_home_page
@@ -40,18 +41,19 @@ RSpec.feature "Create a document" do
   def then_i_see_the_document_summary
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
     expect(page).to have_content("A title")
-
-    within find("#document-history") do
-      expect(page).to have_content "1st edition"
-      expect(page).to have_content I18n.t!("documents.history.entry_types.created")
-      expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
-    end
   end
 
   def and_the_preview_creation_was_successful
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)).to match a_hash_including(content_body)
     }).to have_been_requested
+  end
+
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
+    expect(page).to have_content("1st edition")
+                .and have_content(I18n.t!("documents.history.entry_types.created"))
+                .and have_content(I18n.t!("documents.history.entry_types.updated_content"))
   end
 
   def content_body

@@ -15,6 +15,7 @@ RSpec.feature "Editions" do
     and_i_click_to_create_a_new_edition
     and_i_make_a_major_change
     then_i_see_there_is_a_new_major_edition
+    and_i_see_the_new_edition_timeline_entry
   end
 
   scenario "minor change" do
@@ -30,6 +31,7 @@ RSpec.feature "Editions" do
     and_i_click_to_create_a_new_edition
     and_i_make_a_minor_change
     then_i_see_the_draft_was_reset
+    and_i_see_the_draft_reset_timeline_entry
   end
 
   def given_there_is_a_published_edition
@@ -79,18 +81,21 @@ RSpec.feature "Editions" do
   def then_i_see_there_is_a_new_major_edition
     expect(page).to have_content(I18n.t!("documents.show.contents.update_type.major"))
     expect(page).to have_content("I made a change")
-    expect(page).to have_link "Change Content"
+    expect(page).to have_link("Change Content")
+  end
 
-    within find("#document-history") do
-      expect(page).to have_content "2nd edition"
-      expect(page).to have_content I18n.t!("documents.history.entry_types.new_edition")
-    end
+  def and_i_see_the_new_edition_timeline_entry
+    click_on "Document history"
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.new_edition"))
+    expect(page).to have_content("2nd edition")
   end
 
   def then_i_see_the_draft_was_reset
     expect(page).to have_content(@published_edition.title)
-    within find("#document-history") do
-      expect(page).to have_content I18n.t!("documents.history.entry_types.draft_reset")
-    end
+  end
+
+  def and_i_see_the_draft_reset_timeline_entry
+    click_on "Document history"
+    expect(page).to have_content I18n.t!("documents.history.entry_types.draft_reset")
   end
 end
