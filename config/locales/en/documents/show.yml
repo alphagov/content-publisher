@@ -1,9 +1,6 @@
 en:
   documents:
     show:
-      tabs:
-        summary: Document summary
-        history: Document history
       withdrawn:
         title: "This %{document_type} was withdrawn on %{withdrawn_date}"
       historical:
