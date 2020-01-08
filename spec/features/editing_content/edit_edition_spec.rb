@@ -5,10 +5,10 @@ RSpec.feature "Edit an edition" do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
     and_i_fill_in_the_content_fields
-
     then_i_see_the_edition_is_saved
     and_the_preview_creation_succeeded
     and_i_see_i_was_the_last_user_to_edit_the_edition
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_an_edition
@@ -32,10 +32,6 @@ RSpec.feature "Edit an edition" do
 
   def then_i_see_the_edition_is_saved
     expect(page).to have_content("Edited body.")
-
-    within first(".app-timeline-entry") do
-      expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
-    end
   end
 
   def and_the_preview_creation_succeeded
@@ -50,5 +46,12 @@ RSpec.feature "Edit an edition" do
     editor = current_user.name
     last_edited = I18n.t!("documents.show.metadata.last_edited_by") + ": #{editor}"
     expect(page).to have_content(last_edited)
+  end
+
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
+    within first(".app-timeline-entry") do
+      expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
+    end
   end
 end
