@@ -2,6 +2,8 @@
 <% content_for :title, @edition.title_or_fallback %>
 <% content_for :context, @edition.document_type.label %>
 
+<%= render("documents/secondary_navigation") %>
+
 <% displayed_edition_number = nil %>
 
 <div class="govuk-grid-row">

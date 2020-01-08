@@ -2,25 +2,7 @@
 <% content_for :title, @edition.title_or_fallback %>
 <% content_for :context, @edition.document_type.label %>
 
-<%= render "govuk_publishing_components/components/tabs", {
-  panel_border: false,
-  tabs: [
-    {
-      id: "edit-document",
-      label: t("documents.show.tabs.summary"),
-      title: t("documents.show.tabs.summary"),
-      content: render("documents/show/summary_tab"),
-      tab_data_attributes: { gtm: "summary-tab" }
-    },
-    {
-      id: "document-history",
-      label: t("documents.show.tabs.history"),
-      title: t("documents.show.tabs.history"),
-      content: render("documents/show/history_tab"),
-      tab_data_attributes: { gtm: "history-tab" }
-    }
-  ]
-} %>
+<%= render("documents/secondary_navigation") %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
