@@ -26,26 +26,27 @@ RSpec.describe "Import tasks" do
     before do
       allow($stdout).to receive(:puts)
       Rake::Task["import:whitehall_document"].reenable
-      allow(ResyncService).to receive(:call)
-      allow(WhitehallImporter::ClearLinksetLinks).to receive(:call)
       stub_request(:get, "#{whitehall_host}/government/admin/export/document/123")
         .to_return(status: 200, body: whitehall_export.to_json)
     end
 
-    it "creates a document" do
-      expect { Rake::Task["import:whitehall_document"].invoke("123") }.to change { Document.count }.by(1)
-    end
-
     it "imports the export and syncs with publishing-api" do
-      expect(WhitehallImporter).to receive(:import_and_sync).with(whitehall_export).and_call_original
+      import = build(:whitehall_migration_document_import, state: :completed)
+
+      expect(WhitehallImporter).to receive(:import_and_sync)
+                               .with(whitehall_export)
+                               .and_return(import)
       Rake::Task["import:whitehall_document"].invoke("123")
     end
 
     it "aborts if the import fails" do
-      expect(WhitehallImporter::Import).to receive(:call).and_raise("Error importing")
+      import = build(:whitehall_migration_document_import,
+                     state: :import_failed,
+                     error_log: "Error importing")
+      expect(WhitehallImporter).to receive(:import_and_sync).and_return(import)
 
       expect($stdout).to receive(:puts).with("Import failed")
-      expect($stdout).to receive(:puts).with("Error: #<RuntimeError: Error importing>")
+      expect($stdout).to receive(:puts).with("Error: Error importing")
       expect { Rake::Task["import:whitehall_document"].invoke("123") }
         .to raise_error(SystemExit)
     end
