@@ -7,6 +7,7 @@ RSpec.feature "Remove a lead image" do
     and_i_remove_the_lead_image
     then_the_edition_has_no_lead_image
     and_the_preview_creation_succeeded
+    and_i_see_the_timeline_entry
   end
 
   scenario "on the metadata page" do
@@ -16,6 +17,7 @@ RSpec.feature "Remove a lead image" do
     and_i_untick_the_image_is_the_lead_image
     then_the_edition_has_no_lead_image
     and_the_preview_creation_succeeded
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_an_edition_with_a_lead_image
@@ -59,10 +61,14 @@ RSpec.feature "Remove a lead image" do
   def and_the_preview_creation_succeeded
     expect(@publishing_api_request).to have_been_requested
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-    expect(page).to have_content(I18n.t!("documents.history.entry_types.lead_image_removed"))
 
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"].keys).to_not include("image")
     }).to have_been_requested
+  end
+
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.lead_image_removed"))
   end
 end
