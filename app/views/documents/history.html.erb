@@ -1,0 +1,3 @@
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, @edition.title_or_fallback %>
+<% content_for :context, @edition.document_type.label %>

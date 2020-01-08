@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     get "" => "documents#show", as: :document
     patch "" => "documents#update"
     delete "" => "documents#destroy"
+    get "/history" => "documents#history", as: :document_history
     get "/edit" => "documents#edit", as: :edit_document
     get "/generate-path" => "documents#generate_path", as: :generate_path
     get "/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft

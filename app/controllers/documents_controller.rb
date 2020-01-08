@@ -23,6 +23,10 @@ class DocumentsController < ApplicationController
     @edition = Edition.find_current(document: params[:document])
   end
 
+  def history
+    @edition = Edition.find_current(document: params[:document])
+  end
+
   def confirm_delete_draft
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
