@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_24_112030) do
+ActiveRecord::Schema.define(version: 2020_01_07_151448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -369,7 +369,7 @@ ActiveRecord::Schema.define(version: 2019_12_24_112030) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "content_revisions", "users", column: "created_by_id", on_delete: :restrict
   add_foreign_key "documents", "users", column: "created_by_id", on_delete: :restrict
-  add_foreign_key "edition_editors", "editions", on_delete: :restrict
+  add_foreign_key "edition_editors", "editions", on_delete: :cascade
   add_foreign_key "edition_editors", "users", on_delete: :restrict
   add_foreign_key "editions", "access_limits", on_delete: :restrict
   add_foreign_key "editions", "documents", on_delete: :restrict
