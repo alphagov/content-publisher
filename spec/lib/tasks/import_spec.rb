@@ -13,7 +13,7 @@ RSpec.describe "Import tasks" do
       allow(WhitehallImporter).to receive(:create_migration).and_return(whitehall_migration_document_import)
     end
 
-    it "calls WhitehallImport::create_migration with correct arguments" do
+    it "calls WhitehallImporter::create_migration with correct arguments" do
       Rake::Task["import:whitehall_migration"].invoke("cabinet-office", "NewsArticle")
       expect(WhitehallImporter).to have_received(:create_migration).with("96ae61d6-c2a1-48cb-8e67-da9d105ae381", "NewsArticle")
     end
