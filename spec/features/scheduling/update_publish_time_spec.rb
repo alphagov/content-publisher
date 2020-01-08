@@ -13,6 +13,7 @@ RSpec.feature "Update publish time" do
     and_i_click_on_change_date
     and_i_set_a_new_publish_time
     then_i_see_the_edition_is_rescheduled
+    and_i_see_the_timeline_entry
     and_the_publish_intent_has_been_updated
     and_a_new_job_is_queued
   end
@@ -32,7 +33,7 @@ RSpec.feature "Update publish time" do
 
   def and_i_set_a_new_publish_time
     @new_time = Time.zone.parse("2019-08-15 23:00")
-    @request = stub_any_publishing_api_put_intent.with(
+    @put_intent_request = stub_default_publishing_api_put_intent.with(
       body: hash_including(publish_time: @new_time),
     )
 
@@ -46,15 +47,18 @@ RSpec.feature "Update publish time" do
 
   def then_i_see_the_edition_is_rescheduled
     expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))
-    expect(page).to have_content(I18n.t!("documents.history.entry_types.schedule_updated"))
-
     expect(page).to have_content(I18n.t!("documents.show.scheduled_notice.title",
                                          time: "11:00pm",
                                          date: "15 August 2019"))
   end
 
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.schedule_updated"))
+  end
+
   def and_the_publish_intent_has_been_updated
-    expect(@request).to have_been_requested
+    expect(@put_intent_request).to have_been_requested
   end
 
   def and_a_new_job_is_queued

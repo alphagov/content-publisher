@@ -17,7 +17,7 @@ RSpec.feature "Scheduled publishing without review" do
 
     when_i_visit_the_summary_page
     then_i_can_see_the_publishing_succeeded
-    and_there_is_a_history_entry
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_a_schedulable_edition
@@ -73,7 +73,8 @@ RSpec.feature "Scheduled publishing without review" do
     expect(page).to have_content(I18n.t!("user_facing_states.published_but_needs_2i.name"))
   end
 
-  def and_there_is_a_history_entry
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
     expect(page).to have_content(
       I18n.t!("documents.history.entry_types.scheduled_publishing_without_review_succeeded"),
     )
