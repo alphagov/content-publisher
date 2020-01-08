@@ -25,6 +25,10 @@ class DocumentsController < ApplicationController
 
   def history
     @edition = Edition.find_current(document: params[:document])
+    @timeline_entries = TimelineEntry.where(document: @edition.document)
+                                     .includes(:created_by, :details)
+                                     .order(created_at: :desc)
+                                     .includes(:edition)
   end
 
   def confirm_delete_draft
