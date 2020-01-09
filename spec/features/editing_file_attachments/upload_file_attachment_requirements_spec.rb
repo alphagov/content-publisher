@@ -11,7 +11,7 @@ RSpec.feature "Upload a file attachment with requirements issues", js: true do
 
   def given_there_is_an_edition
     body_field = build(:field, id: "body", type: "govspeak")
-    document_type = build(:document_type, contents: [body_field], images: true)
+    document_type = build(:document_type, contents: [body_field])
     @edition = create(:edition, document_type_id: document_type.id)
   end
 
