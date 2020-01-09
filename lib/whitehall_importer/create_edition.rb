@@ -2,14 +2,14 @@
 
 module WhitehallImporter
   class CreateEdition
-    attr_reader :document, :current, :whitehall_edition, :edition_number, :user_ids
+    attr_reader :document_import, :current, :whitehall_edition, :edition_number, :user_ids
 
     def self.call(*args)
       new(*args).call
     end
 
-    def initialize(document:, whitehall_edition:, current: true, edition_number: 1, user_ids: {})
-      @document = document
+    def initialize(document_import:, whitehall_edition:, current: true, edition_number: 1, user_ids: {})
+      @document_import = document_import
       @current = current
       @whitehall_edition = whitehall_edition
       @edition_number = edition_number
@@ -39,7 +39,7 @@ module WhitehallImporter
   private
 
     def revision
-      @revision ||= CreateRevision.call(document, whitehall_edition)
+      @revision ||= CreateRevision.call(document_import, whitehall_edition)
     end
 
     def history
@@ -148,7 +148,7 @@ module WhitehallImporter
       editor_ids = history.editors.map { |editor| user_ids[editor] }.compact
 
       Edition.create!(
-        document: document,
+        document: document_import.document,
         number: edition_number,
         revision_synced: false,
         revision: revision,

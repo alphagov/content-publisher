@@ -6,7 +6,8 @@ module WhitehallImporter
       new(*args).call
     end
 
-    def initialize(whitehall_file_attachment, existing_filenames = [])
+    def initialize(document_import, whitehall_file_attachment, existing_filenames = [])
+      @document_import = document_import
       @whitehall_file_attachment = whitehall_file_attachment
       @existing_filenames = existing_filenames
     end
@@ -18,18 +19,20 @@ module WhitehallImporter
       check_file_requirements(decorated_file)
 
       blob_revision = create_blob_revision(decorated_file)
-      FileAttachment::Revision.create!(
+      revision = FileAttachment::Revision.create!(
         blob_revision: blob_revision,
         file_attachment: FileAttachment.create!,
         metadata_revision: FileAttachment::MetadataRevision.create!(
           title: whitehall_file_attachment["title"],
         ),
       )
+      record_assets(revision)
+      revision
     end
 
   private
 
-    attr_reader :whitehall_file_attachment, :existing_filenames
+    attr_reader :document_import, :whitehall_file_attachment, :existing_filenames
 
     def download_file
       URI.parse(whitehall_file_attachment["url"]).open
@@ -63,6 +66,22 @@ module WhitehallImporter
       return if whitehall_file_attachment["type"] == "FileAttachment"
 
       raise WhitehallImporter::AbortImportError, "Unsupported file attachment: #{whitehall_file_attachment['type']}"
+    end
+
+    def record_assets(revision)
+      WhitehallMigration::AssetImport.create!(
+        document_import: document_import,
+        file_attachment_revision: revision,
+        original_asset_url: whitehall_file_attachment["url"],
+      )
+      whitehall_file_attachment["variants"].each do |variant, metadata|
+        WhitehallMigration::AssetImport.create!(
+          document_import: document_import,
+          file_attachment_revision: revision,
+          original_asset_url: metadata["url"],
+          variant: variant,
+        )
+      end
     end
 
     def abort_on_issue(issues)

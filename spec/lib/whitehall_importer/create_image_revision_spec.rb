@@ -3,14 +3,32 @@
 RSpec.describe WhitehallImporter::CreateImageRevision do
   describe "#call" do
     let(:whitehall_image) { build(:whitehall_export_image) }
+    let(:document_import) { build(:whitehall_migration_document_import) }
 
-    it "should create an Image::Revision when a valid image is provided" do
-      image_revision = nil
-      expect { image_revision = described_class.call(whitehall_image) }
-        .to change { Image::Revision.count }.by(1)
-      expect(image_revision.caption).to eq(whitehall_image["caption"])
-      expect(image_revision.alt_text).to eq(whitehall_image["alt_text"])
-      expect(image_revision.filename).to eq("valid-image.jpg")
+    context "Valid image is provided" do
+      it "should create an Image::Revision" do
+        image_revision = nil
+        expect { image_revision = described_class.call(document_import, whitehall_image) }
+          .to change { Image::Revision.count }.by(1)
+        expect(image_revision.caption).to eq(whitehall_image["caption"])
+        expect(image_revision.alt_text).to eq(whitehall_image["alt_text"])
+        expect(image_revision.filename).to eq("valid-image.jpg")
+      end
+
+      it "should create a WhitehallMigration::AssetImport for each image variant" do
+        revision = described_class.call(document_import, whitehall_image)
+
+        expect(document_import.assets.size).to eq(2)
+        expect(document_import.assets.map(&:attributes).map(&:with_indifferent_access))
+          .to contain_exactly(
+            a_hash_including(variant: nil,
+                            image_revision_id: revision.id,
+                            original_asset_url: whitehall_image["url"]),
+            a_hash_including(variant: "s960",
+                            image_revision_id: revision.id,
+                            original_asset_url: whitehall_image["variants"]["s960"]),
+          )
+      end
     end
 
     context "Image is not available" do
@@ -22,7 +40,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
 
       it "should raise a WhitehallImporter::AbortImportError" do
-        expect { described_class.call(whitehall_image) }.to raise_error(
+        expect { described_class.call(document_import, whitehall_image) }.to raise_error(
           WhitehallImporter::AbortImportError,
           "Image does not exist: #{image_url}",
         )
@@ -36,7 +54,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
 
       it "should pass through ImageUploadChecker and raise a WhitehallImporter::AbortImportError" do
         expect(Requirements::ImageUploadChecker).to receive(:new).and_call_original
-        expect { described_class.call(whitehall_image) }.to raise_error(
+        expect { described_class.call(document_import, whitehall_image) }.to raise_error(
           WhitehallImporter::AbortImportError,
           I18n.t!("requirements.image_upload.unsupported_type.form_message"),
         )
@@ -50,7 +68,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
 
       it "should pass through ImageNormaliser and raise a WhitehallImporter::AbortImportError" do
         expect(ImageNormaliser).to receive(:new).and_call_original
-        expect { described_class.call(whitehall_image) }.to raise_error(
+        expect { described_class.call(document_import, whitehall_image) }.to raise_error(
           WhitehallImporter::AbortImportError,
           I18n.t!("requirements.image_upload.too_small.form_message", width: 960, height: 640),
         )
@@ -63,13 +81,13 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
 
       it "should rename the file to something URL-friendly" do
-        described_class.call(whitehall_image)
+        described_class.call(document_import, whitehall_image)
         expect(Image::BlobRevision.last.filename).to eq("whitehall-asset_-image.jpg")
       end
     end
 
     it "should rename the file if duplicate filenames are passed" do
-      described_class.call(whitehall_image, ["valid-image.jpg"])
+      described_class.call(document_import, whitehall_image, ["valid-image.jpg"])
       expect(Image::BlobRevision.last.filename).to eq("valid-image-1.jpg")
     end
   end

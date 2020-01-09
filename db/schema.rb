@@ -335,6 +335,19 @@ ActiveRecord::Schema.define(version: 2020_01_07_151448) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "whitehall_migration_asset_imports", force: :cascade do |t|
+    t.bigint "document_import_id", null: false
+    t.bigint "file_attachment_revision_id"
+    t.bigint "image_revision_id"
+    t.string "original_asset_url", null: false
+    t.string "state", default: "pending", null: false
+    t.string "variant"
+    t.text "error_message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["document_import_id"], name: "index_whitehall_migration_asset_on_document"
+  end
+
   create_table "whitehall_migration_document_imports", force: :cascade do |t|
     t.bigint "whitehall_document_id", null: false
     t.json "payload"
@@ -425,6 +438,9 @@ ActiveRecord::Schema.define(version: 2020_01_07_151448) do
   add_foreign_key "timeline_entries", "revisions", on_delete: :restrict
   add_foreign_key "timeline_entries", "statuses", on_delete: :restrict
   add_foreign_key "timeline_entries", "users", column: "created_by_id", on_delete: :restrict
+  add_foreign_key "whitehall_migration_asset_imports", "file_attachment_revisions", on_delete: :restrict
+  add_foreign_key "whitehall_migration_asset_imports", "image_revisions", on_delete: :restrict
+  add_foreign_key "whitehall_migration_asset_imports", "whitehall_migration_document_imports", column: "document_import_id", on_delete: :restrict
   add_foreign_key "whitehall_migration_document_imports", "documents", on_delete: :restrict
   add_foreign_key "whitehall_migration_document_imports", "whitehall_migrations"
   add_foreign_key "withdrawals", "statuses", column: "published_status_id", on_delete: :restrict

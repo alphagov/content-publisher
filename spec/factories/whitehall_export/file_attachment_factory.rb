@@ -48,8 +48,8 @@ FactoryBot.define do
     variants do
       {
         "thumbnail" => {
-          "content_type" => nil,
-          "url" => nil,
+          "content_type" => "image/png",
+          "url" => "https://asset-manager.gov.uk/blah/847150/thumb/#{filename}",
         },
       }
     end

@@ -4,26 +4,42 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
   let(:whitehall_file_attachment) do
     build(:whitehall_export_file_attachment)
   end
+  let(:document_import) { build(:whitehall_migration_document_import) }
 
   context "creates a file attachment" do
     it "fetches file from asset-manager" do
-      create_revision = described_class.new(whitehall_file_attachment)
+      create_revision = described_class.new(document_import, whitehall_file_attachment)
       expect(create_revision.call).to have_requested(:get, whitehall_file_attachment["url"])
     end
 
     it "creates a FileAttachment::Revision and sets correct metadata" do
       revision = nil
-      expect { revision = described_class.call(whitehall_file_attachment) }
+      expect { revision = described_class.call(document_import, whitehall_file_attachment) }
         .to change { FileAttachment::Revision.count }.by(1)
 
       expect(revision.metadata_revision.title).to eq(whitehall_file_attachment["title"])
       expect(revision.filename).to eq("some-txt.txt")
     end
+
+    it "should create a WhitehallMigration::AssetImport for each attachment variant" do
+      revision = described_class.call(document_import, whitehall_file_attachment)
+
+      expect(document_import.assets.size).to eq(2)
+      expect(document_import.assets.map(&:attributes).map(&:with_indifferent_access))
+        .to contain_exactly(
+          a_hash_including(variant: nil,
+                          file_attachment_revision_id: revision.id,
+                          original_asset_url: whitehall_file_attachment["url"]),
+          a_hash_including(variant: "thumbnail",
+                          file_attachment_revision_id: revision.id,
+                          original_asset_url: whitehall_file_attachment["variants"]["thumbnail"]["url"]),
+        )
+    end
   end
 
   shared_examples "rejected file attachment" do
     it "raises an AbortImportError with an informative error" do
-      create_revision = described_class.new(whitehall_file_attachment)
+      create_revision = described_class.new(document_import, whitehall_file_attachment)
       expect { create_revision.call }.to raise_error(
         WhitehallImporter::AbortImportError,
         error_message,

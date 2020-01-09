@@ -52,7 +52,6 @@ RSpec.describe WhitehallImporter do
 
     it "doesn't sync if import fails" do
       allow(WhitehallImporter::Import).to receive(:call)
-        .with(whitehall_export_document)
         .and_raise(WhitehallImporter::AbortImportError, "Booo, import failed")
 
       expect(WhitehallImporter).not_to receive(:sync)
@@ -133,6 +132,11 @@ RSpec.describe WhitehallImporter do
     it "syncs the imported document with publishing-api" do
       expect(ResyncService).to receive(:call).with(whitehall_migration_document_import.document)
       expect(WhitehallImporter::ClearLinksetLinks).to receive(:call).with(whitehall_migration_document_import.document.content_id)
+      WhitehallImporter.sync(whitehall_migration_document_import)
+    end
+
+    it "redirects or deletes the corresponding Whitehall assets" do
+      expect(WhitehallImporter::MigrateAssets).to receive(:call).with(whitehall_migration_document_import)
       WhitehallImporter.sync(whitehall_migration_document_import)
     end
 
