@@ -51,6 +51,13 @@ module WhitehallImporter
       document = Import.call(whitehall_import)
       whitehall_import.update!(document: document, state: "imported")
       create_timeline_entry(document.current_edition)
+    rescue IntegrityCheckError => e
+      whitehall_import.update!(
+        error_log: e.inspect,
+        state: "import_aborted",
+        integrity_check_problems: e.problems,
+        integrity_check_proposed_payload: e.payload,
+      )
     rescue AbortImportError => e
       whitehall_import.update!(error_log: e.inspect, state: "import_aborted")
     rescue StandardError => e
