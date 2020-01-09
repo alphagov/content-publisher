@@ -358,6 +358,8 @@ ActiveRecord::Schema.define(version: 2020_01_14_140323) do
     t.datetime "updated_at", null: false
     t.bigint "document_id"
     t.bigint "whitehall_migration_id"
+    t.string "integrity_check_problems", default: [], null: false, array: true
+    t.json "integrity_check_proposed_payload", default: "{}", null: false
   end
 
   create_table "whitehall_migrations", force: :cascade do |t|
