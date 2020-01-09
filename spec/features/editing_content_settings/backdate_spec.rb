@@ -41,33 +41,21 @@ RSpec.feature "Backdate content" do
   end
 
   def and_i_click_save
-    @set_request = stub_publishing_api_put_content(
-      @edition.content_id,
-      hash_including("first_published_at" => "2019-01-01T00:00:00.000+00:00"),
-    )
+    stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Save"
   end
 
   def then_i_see_the_content_has_been_backdated
-    expect(@set_request).to have_been_requested
-
     expect(page).to have_content("1 January 2019")
     expect(page).to have_content(I18n.t!("documents.history.entry_types.backdated",
                                          date: "01 January 2019"))
   end
 
   def and_i_click_clear_backdate
-    @clear_request = stub_publishing_api_put_content(
-      @edition.content_id,
-      # hash_excluding doesn't seem to work here
-      ->(body) { JSON.parse(body).exclude?("first_published_at") },
-    )
     click_on "Clear backdate"
   end
 
   def then_i_see_the_content_is_no_longer_backdated
-    expect(@clear_request).to have_been_requested
-
     expect(page).to have_content(
       I18n.t!("documents.show.content_settings.backdate.no_backdate"),
     )
