@@ -84,7 +84,9 @@ module WhitehallImporter
     def check_edition_integrity(edition)
       integrity_checker = IntegrityChecker.new(edition)
 
-      raise AbortImportError, integrity_checker.problems.join(", ") unless integrity_checker.valid?
+      unless integrity_checker.valid?
+        raise WhitehallImporter::IntegrityCheckError.new(integrity_checker)
+      end
     end
   end
 end

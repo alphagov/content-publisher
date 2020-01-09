@@ -16,6 +16,10 @@ module WhitehallImporter
       content_problems + image_problems + organisation_problems
     end
 
+    def proposed_payload
+      @proposed_payload ||= PreviewService::Payload.new(edition, republish: edition.live?).payload
+    end
+
   private
 
     def content_problems
@@ -94,10 +98,6 @@ module WhitehallImporter
 
     def organisations_match?
       proposed_payload.dig("links", "organisations")&.sort == publishing_api_link("organisations")&.sort
-    end
-
-    def proposed_payload
-      @proposed_payload ||= PreviewService::Payload.new(edition, republish: edition.live?).payload
     end
 
     def publishing_api_content
