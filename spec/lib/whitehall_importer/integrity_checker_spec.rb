@@ -70,35 +70,35 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       stub_publishing_api_has_item(content_id: edition.content_id, base_path: "base-path")
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include("base_path doesn't match")
+      expect(integrity_check.problems).to include(match("base_path doesn't match"))
     end
 
     it "returns a problem when the titles don't match" do
       stub_publishing_api_has_item(content_id: edition.content_id, title: "title")
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include("title doesn't match")
+      expect(integrity_check.problems).to include(match("title doesn't match"))
     end
 
     it "returns a problem when the descriptions don't match" do
       stub_publishing_api_has_item(content_id: edition.content_id, description: "description")
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include("description doesn't match")
+      expect(integrity_check.problems).to include(match("description doesn't match"))
     end
 
     it "returns a problem when the document types don't match" do
       stub_publishing_api_has_item(content_id: edition.content_id, document_type: "news_story")
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include("document_type doesn't match")
+      expect(integrity_check.problems).to include(match("document_type doesn't match"))
     end
 
     it "returns a problem when the schema names don't match" do
       stub_publishing_api_has_item(content_id: edition.content_id, schema_name: "news_article")
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include("schema_name doesn't match")
+      expect(integrity_check.problems).to include(match("schema_name doesn't match"))
     end
 
     it "returns a problem when the body text doesn't match" do
@@ -124,7 +124,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       )
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include("image alt_text doesn't match")
+      expect(integrity_check.problems).to include(match("image alt_text doesn't match"))
     end
 
     it "returns a problem when the image caption doesn't match" do
@@ -138,7 +138,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       )
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include("image caption doesn't match")
+      expect(integrity_check.problems).to include(match("image caption doesn't match"))
     end
 
     it "returns a problem when the primary_publishing_organisation doesn't match" do
@@ -150,7 +150,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       )
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include("primary_publishing_organisation doesn't match")
+      expect(integrity_check.problems).to include(match("primary_publishing_organisation doesn't match"))
     end
 
     it "returns a problem when the organisations don't match" do
@@ -162,7 +162,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       )
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include("organisations don't match")
+      expect(integrity_check.problems).to include(match("organisations don't match"))
     end
   end
 end

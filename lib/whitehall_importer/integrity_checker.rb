@@ -27,7 +27,11 @@ module WhitehallImporter
          document_type
          schema_name).each do |attribute|
         if publishing_api_content[attribute] != proposed_payload[attribute]
-          problems << "#{attribute} doesn't match"
+          problems << problem_description(
+            "#{attribute} doesn't match",
+            publishing_api_content[attribute],
+            proposed_payload[attribute],
+          )
         end
       end
 
@@ -49,17 +53,39 @@ module WhitehallImporter
 
       %w(alt_text caption).each_with_object([]) do |attribute, problems|
         if publishing_api_image[attribute] != proposed_image_payload[attribute]
-          problems << "image #{attribute} doesn't match"
+          problems << problem_description(
+            "image #{attribute} doesn't match",
+            publishing_api_image[attribute],
+            proposed_image_payload[attribute],
+          )
         end
       end
     end
 
     def organisation_problems
       problems = []
-      problems << "primary_publishing_organisation doesn't match" unless primary_publishing_organisation_matches?
-      problems << "organisations don't match" unless organisations_match?
+
+      unless primary_publishing_organisation_matches?
+        problems << problem_description(
+          "primary_publishing_organisation doesn't match",
+          publishing_api_link("primary_publishing_organisation"),
+          proposed_payload.dig("links", "primary_publishing_organisation"),
+        )
+      end
+
+      unless organisations_match?
+        problems << problem_description(
+          "organisations don't match",
+          publishing_api_link("organisations"),
+          proposed_payload.dig("links", "organisations"),
+        )
+      end
 
       problems
+    end
+
+    def problem_description(message, expected, actual)
+      "#{message}, expected: #{expected.inspect}, actual: #{actual.inspect}"
     end
 
     def primary_publishing_organisation_matches?
