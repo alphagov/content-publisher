@@ -11,7 +11,6 @@ require "govuk_schemas/rspec_matchers"
 require "simplecov"
 require "webmock/rspec"
 require "gds_api/test_helpers/publishing_api"
-require "gds_api/test_helpers/publishing_api_v2"
 require "gds_api/test_helpers/asset_manager"
 require "govuk_sidekiq/testing"
 
@@ -29,6 +28,7 @@ RSpec.configure do |config|
   config.expose_dsl_globally = false
   config.infer_spec_type_from_file_location!
   config.use_transactional_fixtures = true
+  config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include ActiveSupport::Testing::TimeHelpers
   config.include FactoryBot::Syntax::Methods
   config.include GdsApi::TestHelpers::PublishingApi
@@ -37,8 +37,6 @@ RSpec.configure do |config|
   config.include AuthenticationHelper, type: ->(spec) { spec.in?(%i[feature request]) }
   config.include BulkDataHelper
   config.include Capybara::RSpecMatchers, type: :request
-
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   config.before :suite do
     Rails.application.load_seed
