@@ -10,7 +10,7 @@ RSpec.feature "Insert inline image without Javascript" do
 
   def given_there_is_an_edition_with_images
     body_field = build(:field, id: "body", type: "govspeak")
-    document_type = build(:document_type, contents: [body_field], images: true)
+    document_type = build(:document_type, contents: [body_field])
     @image_revision = create(:image_revision,
                              :on_asset_manager,
                              filename: "foo.jpg")
