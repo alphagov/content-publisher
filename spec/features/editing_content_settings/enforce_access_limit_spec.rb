@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Set access limit" do
+RSpec.feature "Enforce access limit" do
   background do
     given_there_is_an_edition_in_multiple_orgs
     and_there_is_a_user_in_a_supporting_org
