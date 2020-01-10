@@ -321,6 +321,11 @@ ActiveRecord::Schema.define(version: 2020_01_14_163932) do
     t.index ["edition_id"], name: "index_timeline_entries_on_edition_id"
   end
 
+  create_table "timeline_entry_whitehall_imported_entries", force: :cascade do |t|
+    t.string "entry_type", null: false
+    t.datetime "created_at"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
