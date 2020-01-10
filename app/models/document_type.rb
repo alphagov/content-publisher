@@ -21,6 +21,7 @@ class DocumentType
         hash["tags"] = hash["tags"].to_a.map(&TagField.method(:new))
         hash["publishing_metadata"] = PublishingMetadata.new(hash["publishing_metadata"].to_h)
         hash["guidance"] = hash["guidance"].to_a.map(&Guidance.method(:new))
+        hash["topics"] = true # this feature is only disabled in tests
         new(hash)
       end
     end

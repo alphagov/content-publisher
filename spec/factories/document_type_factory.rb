@@ -14,6 +14,7 @@ FactoryBot.define do
     contents { [] }
     tags { [] }
     guidance { [] }
+    topics { false }
 
     publishing_metadata do
       DocumentType::PublishingMetadata.new(
