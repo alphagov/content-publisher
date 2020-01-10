@@ -7,7 +7,6 @@
     Read the full [guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story).
   path_prefix: /government/news
   images: true
-  topics: true
   check_path_conflict: true
   publishing_metadata:
     schema_name: news_article
@@ -68,7 +67,6 @@
     Read the full [guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release).
   path_prefix: /government/news
   images: true
-  topics: true
   check_path_conflict: true
   publishing_metadata:
     schema_name: news_article
