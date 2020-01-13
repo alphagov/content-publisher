@@ -58,7 +58,7 @@ window.ModalFetch._isFileUpload = function (form) {
 window.ModalFetch.debug = function (response) {
   var envMeta = document.querySelector('meta[name="app-environment"]')
 
-  if (envMeta.content !== 'production') {
+  if (envMeta && envMeta.content !== 'production') {
     return
   }
 
