@@ -9,7 +9,7 @@ node {
   govuk.buildProject(
     beforeTest: {
       stage("Lint Javascript") {
-        sh("yarn")
+        sh("yarn install --ignore-engines")
         sh("yarn run lint")
       }
     },
