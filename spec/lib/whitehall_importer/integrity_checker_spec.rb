@@ -60,109 +60,117 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
   end
 
   describe "#problems" do
-    let(:edition) { build(:edition) }
+    let(:edition) do
+      build(:edition,
+            image_revisions: [build(:image_revision)],
+            tags: { "organisations": [] })
+    end
+    let(:payload) do
+      {
+        content_id: edition.content_id,
+        base_path: "base-path",
+        title: "title",
+        description: "description",
+        document_type: "news_story",
+        schema_name: "news_article",
+        details: {
+          body: "body text",
+          image: {
+            alt_text: "alt text",
+            caption: "caption",
+          },
+        },
+        links: {
+          primary_publishing_organisation: [SecureRandom.uuid],
+          organisations: [SecureRandom.uuid],
+        },
+      }
+    end
+
+    let(:integrity_check) { WhitehallImporter::IntegrityChecker.new(edition) }
+
+    def problem_message(attribute, expected, actual)
+      "#{attribute} doesn't match, expected: #{expected.inspect}, actual: #{actual.inspect}"
+    end
 
     before do
       stub_publishing_api_has_links(content_id: edition.content_id)
+      stub_publishing_api_has_item(payload)
     end
 
     it "returns a problem when the base paths don't match" do
-      stub_publishing_api_has_item(content_id: edition.content_id, base_path: "base-path")
-
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include(match("base_path doesn't match"))
+      expect(integrity_check.problems).to include(
+        problem_message("base_path", payload[:base_path], edition.base_path),
+      )
     end
 
     it "returns a problem when the titles don't match" do
-      stub_publishing_api_has_item(content_id: edition.content_id, title: "title")
-
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include(match("title doesn't match"))
+      expect(integrity_check.problems).to include(
+        problem_message("title", payload[:title], edition.title),
+      )
     end
 
     it "returns a problem when the descriptions don't match" do
-      stub_publishing_api_has_item(content_id: edition.content_id, description: "description")
-
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include(match("description doesn't match"))
+      expect(integrity_check.problems).to include(
+        problem_message("description", payload[:description], edition.summary),
+      )
     end
 
     it "returns a problem when the document types don't match" do
-      stub_publishing_api_has_item(content_id: edition.content_id, document_type: "news_story")
-
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include(match("document_type doesn't match"))
+      expect(integrity_check.problems).to include(
+        problem_message("document_type",
+                        payload[:document_type],
+                        edition.document_type.id),
+      )
     end
 
     it "returns a problem when the schema names don't match" do
-      stub_publishing_api_has_item(content_id: edition.content_id, schema_name: "news_article")
-
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include(match("schema_name doesn't match"))
+      edition_schema_name = edition.document_type.publishing_metadata.schema_name
+      expect(integrity_check.problems).to include(
+        problem_message("schema_name", payload[:schema_name], edition_schema_name),
+      )
     end
 
     it "returns a problem when the body text doesn't match" do
-      stub_publishing_api_has_item(
-        content_id: edition.content_id,
-        details: {
-          body: "body text",
-        },
-      )
-
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
       expect(integrity_check.problems).to include("body text doesn't match")
     end
 
     it "returns a problem when the image alt_text doesn't match" do
-      stub_publishing_api_has_item(
-        content_id: edition.content_id,
-        details: {
-          image: {
-            alt_text: "alt text",
-          },
-        },
-      )
+      edition_image = edition.image_revisions.first
+      payload_image = payload[:details][:image]
 
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include(match("image alt_text doesn't match"))
+      expect(integrity_check.problems).to include(
+        problem_message("image alt_text",
+                        payload_image[:alt_text],
+                        edition_image.alt_text),
+      )
     end
 
     it "returns a problem when the image caption doesn't match" do
-      stub_publishing_api_has_item(
-        content_id: edition.content_id,
-        details: {
-          image: {
-            caption: "caption",
-          },
-        },
-      )
+      edition_image = edition.image_revisions.first
+      payload_image = payload[:details][:image]
 
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include(match("image caption doesn't match"))
+      expect(integrity_check.problems).to include(
+        problem_message("image caption",
+                        payload_image[:caption],
+                        edition_image.caption),
+      )
     end
 
     it "returns a problem when the primary_publishing_organisation doesn't match" do
-      stub_publishing_api_has_item(
-        content_id: edition.content_id,
-        links: {
-          primary_publishing_organisation: [SecureRandom.uuid],
-        },
+      expect(integrity_check.problems).to include(
+        problem_message("primary_publishing_organisation",
+                        payload[:links][:primary_publishing_organisation],
+                        edition.tags["primary_publishing_organisation"]),
       )
-
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include(match("primary_publishing_organisation doesn't match"))
     end
 
     it "returns a problem when the organisations don't match" do
-      stub_publishing_api_has_item(
-        content_id: edition.content_id,
-        links: {
-          organisations: [SecureRandom.uuid],
-        },
-      )
+      expected = payload[:links][:organisations].inspect
+      actual = edition.tags["organisations"].inspect
+      message = "organisations don't match, expected: #{expected}, actual: #{actual}"
 
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
-      expect(integrity_check.problems).to include(match("organisations don't match"))
+      expect(integrity_check.problems).to include(message)
     end
   end
 end
