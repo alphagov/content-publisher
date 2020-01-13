@@ -9,11 +9,12 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <% @timeline_entries.each do |entry| %>
+      <% if displayed_edition_number != entry.edition.number %>
+        <h3 class="govuk-heading-m"><%= t "documents.history.edition_header", number: entry.edition.number.ordinalize %></h3>
+        <% displayed_edition_number = entry.edition.number %>
+      <% end %>
+
       <div class="app-timeline-entry govuk-!-margin-bottom-6">
-        <% if displayed_edition_number != entry.edition.number %>
-          <h3 class="govuk-heading-m"><%= t "documents.history.edition_header", number: entry.edition.number.ordinalize %></h3>
-          <% displayed_edition_number = entry.edition.number %>
-        <% end %>
         <%= render partial: "documents/timeline_entry", locals: { entry: entry } %>
       </div>
     <% end %>
