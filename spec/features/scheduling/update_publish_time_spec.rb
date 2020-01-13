@@ -33,7 +33,7 @@ RSpec.feature "Update publish time" do
 
   def and_i_set_a_new_publish_time
     @new_time = Time.zone.parse("2019-08-15 23:00")
-    @put_intent_request = stub_default_publishing_api_put_intent.with(
+    @put_intent_request = stub_any_publishing_api_put_intent.with(
       body: hash_including(publish_time: @new_time),
     )
 
