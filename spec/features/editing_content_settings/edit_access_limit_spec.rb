@@ -9,10 +9,12 @@ RSpec.feature "Edit access limit" do
 
     when_i_edit_the_access_limit_type
     then_i_see_the_access_limit_is_updated
+    and_i_see_the_access_limit_updated_timeline_entry
 
     when_i_go_to_edit_the_access_limit
     and_i_remove_the_access_limit
     then_i_see_the_access_limit_is_removed
+    and_i_see_the_access_limit_removed_timeline_entry
   end
 
   def given_there_is_an_access_limited_edition
@@ -43,7 +45,6 @@ RSpec.feature "Edit access limit" do
   def and_i_go_to_edit_the_access_limit
     click_on "Change Access limiting"
   end
-  alias_method :when_i_go_to_edit_the_access_limit, :and_i_go_to_edit_the_access_limit
 
   def then_i_see_the_current_access_limit
     radio_text = I18n.t!("access_limit.edit.type.tagged_organisations")
@@ -63,7 +64,16 @@ RSpec.feature "Edit access limit" do
 
   def then_i_see_the_access_limit_is_updated
     expect(page).to have_content(I18n.t!("documents.show.content_settings.access_limit.type.primary_organisation"))
+  end
+
+  def and_i_see_the_access_limit_updated_timeline_entry
+    click_on "Document history"
     expect(page).to have_content(I18n.t!("documents.history.entry_types.access_limit_updated"))
+  end
+
+  def when_i_go_to_edit_the_access_limit
+    click_on "Document summary"
+    click_on "Change Access limiting"
   end
 
   def and_i_remove_the_access_limit
@@ -73,6 +83,10 @@ RSpec.feature "Edit access limit" do
 
   def then_i_see_the_access_limit_is_removed
     expect(page).to have_content(I18n.t!("documents.show.content_settings.access_limit.no_access_limit"))
+  end
+
+  def and_i_see_the_access_limit_removed_timeline_entry
+    click_on "Document history"
     expect(page).to have_content(I18n.t!("documents.history.entry_types.access_limit_removed"))
   end
 end

@@ -9,6 +9,7 @@ RSpec.feature "Withdraw a document" do
     and_i_fill_in_the_explanation
     and_i_confirm_the_withdrawal
     then_i_see_the_document_has_been_withdrawn
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_a_published_edition
@@ -49,7 +50,12 @@ RSpec.feature "Withdraw a document" do
                                          document_type: document_type,
                                          withdrawn_date: withdrawal.created_at.strftime("%-d %B %Y")))
 
-    expect(page).to have_content(@explanation)
     expect(page).to have_content(I18n.t!("documents.show.metadata.withdrawn_by") + ": #{status.created_by.name}")
+  end
+
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.withdrawn"))
+    expect(page).to have_content(@explanation)
   end
 end

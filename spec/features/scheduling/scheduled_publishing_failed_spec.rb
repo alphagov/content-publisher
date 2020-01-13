@@ -17,8 +17,8 @@ RSpec.feature "Scheduled publishing failed" do
 
     when_i_visit_the_summary_page
     then_i_can_see_the_publishing_failed
-    and_there_is_a_history_entry
     and_i_can_edit_the_edition
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_a_schedulable_edition
@@ -62,9 +62,9 @@ RSpec.feature "Scheduled publishing failed" do
     expect(message.subject).to eq(expected_subject)
 
     expect(message.body)
-      .to include(I18n.t("scheduled_publish_mailer.failure_email.schedule_date",
-                         time: "3:00pm",
-                         date: "20 June 2019"))
+      .to have_content(I18n.t("scheduled_publish_mailer.failure_email.schedule_date",
+                              time: "3:00pm",
+                              date: "20 June 2019"))
   end
 
   def when_i_visit_the_summary_page
@@ -78,7 +78,8 @@ RSpec.feature "Scheduled publishing failed" do
     end
   end
 
-  def and_there_is_a_history_entry
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
     expect(page).to have_content(
       I18n.t!("documents.history.entry_types.scheduled_publishing_failed"),
     )

@@ -13,6 +13,7 @@ RSpec.feature "Edit tags" do
     when_i_edit_the_tags
     then_i_can_see_the_tags
     and_the_preview_creation_succeeded
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_an_edition
@@ -62,7 +63,10 @@ RSpec.feature "Edit tags" do
       expect(page).to have_content("Tag to select 2")
       expect(page).not_to have_content("Initial tag")
     end
+  end
 
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
     within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.updated_tags")
     end

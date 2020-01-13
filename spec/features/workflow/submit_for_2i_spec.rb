@@ -7,6 +7,7 @@ RSpec.feature "Submit for 2i" do
     and_i_click_submit_for_2i
     then_i_see_the_edition_is_submitted
     and_i_see_a_link_to_the_edition
+    and_i_see_the_timeline_entry
 
     when_i_edit_the_edition
     then_i_see_it_is_still_in_review
@@ -27,7 +28,10 @@ RSpec.feature "Submit for 2i" do
   def then_i_see_the_edition_is_submitted
     expect(page).to have_content I18n.t!("documents.show.submitted_for_review.title")
     expect(page).to have_content I18n.t!("user_facing_states.submitted_for_review.name")
+  end
 
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
     within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.submitted")
     end
@@ -45,6 +49,8 @@ RSpec.feature "Submit for 2i" do
 
   def when_i_edit_the_edition
     stub_any_publishing_api_put_content
+    click_on "Document summary"
+
     click_on "Change Content"
     fill_in "revision[title]", with: "a new title"
     click_on "Save"

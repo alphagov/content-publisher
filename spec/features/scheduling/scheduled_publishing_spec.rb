@@ -11,6 +11,7 @@ RSpec.feature "Scheduled publishing" do
     and_i_submit_the_reviewed_option
     then_i_see_the_edition_is_scheduled
     and_a_publish_intent_is_created
+    and_there_is_a_scheduled_timeline_entry
 
     when_the_publishing_job_runs
     then_the_edition_is_published
@@ -18,7 +19,7 @@ RSpec.feature "Scheduled publishing" do
 
     when_i_visit_the_summary_page
     then_i_can_see_the_publishing_succeeded
-    and_there_is_a_history_entry
+    and_there_is_a_scheduled_publishing_timeline_entry
   end
 
   def given_there_is_a_schedulable_edition
@@ -46,12 +47,13 @@ RSpec.feature "Scheduled publishing" do
     expect(page).to have_content(I18n.t!("schedule.scheduled.title"))
     visit document_path(@edition.document)
 
-    within(".app-timeline-entry") do
-      expect(page).to have_content(I18n.t!("documents.history.entry_types.scheduled"))
-    end
-
     expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))
     expect(page).to have_content("Scheduled to publish at 9:00am on 22 June 2019")
+  end
+
+  def and_there_is_a_scheduled_timeline_entry
+    click_on "Document history"
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.scheduled"))
   end
 
   def and_a_publish_intent_is_created
@@ -80,11 +82,11 @@ RSpec.feature "Scheduled publishing" do
     expect(message.to).to include(current_user.email)
     expect(message.subject).to eq(expected_subject)
 
-    expect(message.body).to include("https://www.test.gov.uk/news/breaking-story")
+    expect(message.body).to have_content("https://www.test.gov.uk/news/breaking-story")
     expect(message.body)
-      .to include(I18n.t("scheduled_publish_mailer.success_email.details.publish",
-                         time: "9:00am",
-                         date: "22 June 2019"))
+      .to have_content(I18n.t("scheduled_publish_mailer.success_email.details.publish",
+                              time: "9:00am",
+                              date: "22 June 2019"))
   end
 
   def when_i_visit_the_summary_page
@@ -95,7 +97,8 @@ RSpec.feature "Scheduled publishing" do
     expect(page).to have_content(I18n.t!("user_facing_states.published.name"))
   end
 
-  def and_there_is_a_history_entry
+  def and_there_is_a_scheduled_publishing_timeline_entry
+    click_on "Document history"
     expect(page).to have_content(I18n.t!("documents.history.entry_types.scheduled_publishing_succeeded"))
   end
 end

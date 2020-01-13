@@ -9,6 +9,7 @@ RSpec.feature "Edit a withdrawal" do
     then_i_can_see_the_existing_public_explanation
     when_i_edit_the_public_explanation
     then_i_can_see_the_updated_explanation
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_a_withdrawn_edition
@@ -43,6 +44,10 @@ RSpec.feature "Edit a withdrawal" do
 
   def then_i_can_see_the_updated_explanation
     expect(page).to have_content(@new_explanation)
+  end
+
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
     expect(page).to have_content(I18n.t!("documents.history.entry_types.withdrawn_updated"))
   end
 end

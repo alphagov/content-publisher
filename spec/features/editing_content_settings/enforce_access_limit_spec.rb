@@ -10,6 +10,7 @@ RSpec.feature "Enforce access limit" do
   scenario "primary organisation" do
     when_i_limit_to_my_organisation
     then_i_see_the_primary_org_has_access
+    and_i_see_the_timeline_entry
     and_i_can_still_edit_the_edition
     and_the_supporting_user_cannot
     and_someone_in_another_org_cannot
@@ -19,6 +20,7 @@ RSpec.feature "Enforce access limit" do
   scenario "all organisations" do
     when_i_limit_to_tagged_organisations
     then_i_see_tagged_orgs_have_access
+    and_i_see_the_timeline_entry
     and_i_can_still_edit_the_edition
     and_the_supporting_user_can_also
     and_someone_in_another_org_cannot
@@ -71,12 +73,13 @@ RSpec.feature "Enforce access limit" do
 
   def then_i_see_the_primary_org_has_access
     expect(page).to have_content(I18n.t!("documents.show.content_settings.access_limit.type.primary_organisation"))
+
+    click_on "Document history"
     expect(page).to have_content(I18n.t!("documents.history.entry_types.access_limit_created"))
   end
 
   def then_i_see_tagged_orgs_have_access
     expect(page).to have_content(I18n.t!("documents.show.content_settings.access_limit.type.tagged_organisations"))
-    expect(page).to have_content(I18n.t!("documents.history.entry_types.access_limit_created"))
   end
 
   def and_i_can_still_edit_the_edition
@@ -122,5 +125,10 @@ RSpec.feature "Enforce access limit" do
       orgs = JSON.parse(req.body)["access_limited"]["organisations"]
       expect(orgs).to include @primary_org
     }).to have_been_requested.at_least_once
+  end
+
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.access_limit_created"))
   end
 end

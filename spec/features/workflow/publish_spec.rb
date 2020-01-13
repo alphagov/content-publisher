@@ -7,9 +7,9 @@ RSpec.feature "Publishing an edition" do
     and_i_publish_the_edition
     then_i_see_the_publish_succeeded
     and_the_content_is_shown_as_published
-    and_there_is_a_history_entry
     and_i_see_a_link_to_the_content_data_page_for_the_document
     and_i_receive_a_confirmation_email
+    and_i_see_there_is_a_timeline_entry
   end
 
   def given_there_is_a_major_change_to_a_live_edition
@@ -60,7 +60,8 @@ RSpec.feature "Publishing an edition" do
     expect(page).to have_link("View on GOV.UK", href: "https://www.test.gov.uk/news/banana-pricing-updates")
   end
 
-  def and_there_is_a_history_entry
+  def and_i_see_there_is_a_timeline_entry
+    click_on "Document history"
     expect(page).to have_content(I18n.t!("documents.history.entry_types.published"))
   end
 
@@ -82,15 +83,15 @@ RSpec.feature "Publishing an edition" do
     publish_user = current_user.name
 
     expect(tos).to match_array [[@creator.email], [current_user.email]]
-    expect(message.body).to include("https://www.test.gov.uk/news/banana-pricing-updates")
-    expect(message.body).to include(document_path(@edition.document))
+    expect(message.body).to have_content("https://www.test.gov.uk/news/banana-pricing-updates")
+    expect(message.body).to have_content(document_path(@edition.document))
 
     expect(message.subject).to eq(I18n.t("publish_mailer.publish_email.subject.published",
                                          title: @edition.title))
 
-    expect(message.body).to include(I18n.t("publish_mailer.publish_email.details.publish",
-                                           time: publish_time,
-                                           date: publish_date,
-                                           user: publish_user))
+    expect(message.body).to have_content(I18n.t("publish_mailer.publish_email.details.publish",
+                                                time: publish_time,
+                                                date: publish_date,
+                                                user: publish_user))
   end
 end

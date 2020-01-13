@@ -1,8 +1,14 @@
+<% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
+<% content_for :title, @edition.title_or_fallback %>
+<% content_for :context, @edition.document_type.label %>
+
+<%= render("documents/secondary_navigation") %>
+
 <% displayed_edition_number = nil %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <% @edition.document.timeline_entries.includes(:created_by, :details).order(created_at: :desc).includes(:edition).each do |entry| %>
+    <% @timeline_entries.each do |entry| %>
       <div class="app-timeline-entry govuk-!-margin-bottom-6">
         <% if displayed_edition_number != entry.edition.number %>
           <h3 class="govuk-heading-m"><%= t "documents.history.edition_header", number: entry.edition.number.ordinalize %></h3>
@@ -67,6 +73,16 @@
         <% end %>
       </div>
     <% end %>
+
+    <%
+    pages = {}
+    pages[:previous_page] = { url: document_history_path(page: @timeline_entries.prev_page),
+                              title: "Previous page" } if @timeline_entries.prev_page
+    pages[:next_page] = { url: document_history_path(page: @timeline_entries.next_page),
+                          title: "Next page" } if @timeline_entries.next_page
+    %>
+
+    <%= render "govuk_publishing_components/components/previous_and_next_navigation", pages %>
   </div>
 
   <div class="govuk-grid-column-one-third">

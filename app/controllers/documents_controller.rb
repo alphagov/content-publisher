@@ -23,6 +23,16 @@ class DocumentsController < ApplicationController
     @edition = Edition.find_current(document: params[:document])
   end
 
+  def history
+    @edition = Edition.find_current(document: params[:document])
+    @timeline_entries = TimelineEntry.where(document: @edition.document)
+                                     .includes(:created_by, :details)
+                                     .order(created_at: :desc)
+                                     .includes(:edition)
+                                     .page(params.fetch(:page, 1))
+                                     .per(50)
+  end
+
   def confirm_delete_draft
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)

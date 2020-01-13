@@ -24,14 +24,18 @@ RSpec.feature "Unwithdraw" do
   end
 
   def and_i_undo_the_withdrawal
-    @request = stub_publishing_api_republish(@edition.content_id, {})
+    @republish_request = stub_publishing_api_republish(@edition.content_id, {})
     click_on "Undo withdrawal"
     click_on "Yes, undo withdrawal"
   end
 
   def then_i_see_the_edition_is_unwithdrawn
-    expect(@request).to have_been_requested
+    expect(@republish_request).to have_been_requested
     expect(page).to have_content(I18n.t!("user_facing_states.published_but_needs_2i.name"))
+  end
+
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
     expect(page).to have_content(I18n.t!("documents.history.entry_types.unwithdrawn"))
   end
 end

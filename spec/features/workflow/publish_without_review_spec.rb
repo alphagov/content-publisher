@@ -7,12 +7,14 @@ RSpec.feature "Publish without review" do
     and_i_publish_without_review
     then_i_see_the_publish_succeeded
     and_the_editors_receive_an_email
+    and_i_see_the_published_without_review_timeline_entry
 
     when_i_visit_the_summary_page
     then_i_see_it_has_not_been_reviewed
 
     when_i_click_the_approve_button
     then_i_see_that_its_reviewed
+    and_i_see_the_approved_timeline_entry
   end
 
   def given_there_is_an_edition
@@ -51,16 +53,20 @@ RSpec.feature "Publish without review" do
 
   def then_i_see_it_has_not_been_reviewed
     expect(page).to have_content I18n.t!("user_facing_states.published_but_needs_2i.name")
+  end
 
-    within first(".app-timeline-entry") do
-      expect(page).to have_content I18n.t!("documents.history.entry_types.published_without_review")
-    end
+  def and_i_see_the_published_without_review_timeline_entry
+    visit document_history_path(@edition.document)
+    expect(page).to have_content I18n.t!("documents.history.entry_types.published_without_review")
   end
 
   def then_i_see_that_its_reviewed
-    expect(page).to have_content I18n.t!("documents.show.flashes.approved")
-    expect(page).to have_content I18n.t!("user_facing_states.published.name")
+    expect(page).to have_content(I18n.t!("documents.show.flashes.approved"))
+    expect(page).to have_content(I18n.t!("user_facing_states.published.name"))
+  end
 
+  def and_i_see_the_approved_timeline_entry
+    click_on "Document history"
     within first(".app-timeline-entry") do
       expect(page).to have_content I18n.t!("documents.history.entry_types.approved")
     end
@@ -76,15 +82,15 @@ RSpec.feature "Publish without review" do
     publish_user = current_user.name
 
     expect(tos).to match_array [[@creator.email], [current_user.email]]
-    expect(message.body).to include("https://www.test.gov.uk/news/banana-pricing-updates")
-    expect(message.body).to include(document_path(@edition.document))
+    expect(message.body).to have_content("https://www.test.gov.uk/news/banana-pricing-updates")
+    expect(message.body).to have_content(document_path(@edition.document))
 
     expect(message.subject).to eq(I18n.t("publish_mailer.publish_email.subject.published_but_needs_2i",
                                          title: @edition.title))
 
-    expect(message.body).to include(I18n.t("publish_mailer.publish_email.details.publish",
-                                           time: publish_time,
-                                           date: publish_date,
-                                           user: publish_user))
+    expect(message.body).to have_content(I18n.t("publish_mailer.publish_email.details.publish",
+                                                time: publish_time,
+                                                date: publish_date,
+                                                user: publish_user))
   end
 end

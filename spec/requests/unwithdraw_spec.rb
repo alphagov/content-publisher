@@ -10,9 +10,8 @@ RSpec.describe "Unwithdraw" do
       login_as(managing_editor)
 
       post unwithdraw_path(withdrawn_edition.document)
-      follow_redirect!
 
-      expect(response.body).to include(I18n.t!("documents.history.entry_types.unwithdrawn"))
+      expect(response).to redirect_to(document_path(withdrawn_edition.document))
     end
 
     it "returns an error when publishing-api is down" do
@@ -41,9 +40,8 @@ RSpec.describe "Unwithdraw" do
         login_as(user)
 
         post unwithdraw_path(withdrawn_history_mode_edition.document)
-        follow_redirect!
 
-        expect(response.body).to include(I18n.t!("documents.history.entry_types.unwithdrawn"))
+        expect(response).to redirect_to(document_path(withdrawn_history_mode_edition.document))
       end
 
       it "prevents users without manage_live_history_mode permission from unwithdrawing the edition" do

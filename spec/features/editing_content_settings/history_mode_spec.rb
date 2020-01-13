@@ -8,11 +8,13 @@ RSpec.feature "History mode" do
     when_i_visit_the_summary_page
     then_i_see_that_the_content_doesnt_get_history_mode
     and_i_do_not_see_the_history_mode_banner
+
     when_i_click_to_change_the_status
     then_i_enable_political_status
     and_i_see_that_the_content_gets_history_mode
     and_i_see_the_timeline_entry
     and_i_do_not_see_the_history_mode_banner
+
     when_i_click_to_backdate_the_content
     and_i_enter_a_date_to_backdate_the_content_to
     and_i_see_the_history_mode_banner
@@ -45,16 +47,12 @@ RSpec.feature "History mode" do
     )
   end
 
-  alias_method :and_i_see_that_the_content_doesnt_get_history_mode, :then_i_see_that_the_content_doesnt_get_history_mode
-
-  def then_i_see_that_the_content_gets_history_mode
+  def and_i_see_that_the_content_gets_history_mode
     row = page.find(".govuk-summary-list__row", text: I18n.t!("documents.show.content_settings.gets_history_mode.title"))
     expect(row).to have_content(
       I18n.t!("documents.show.content_settings.gets_history_mode.true_label"),
     )
   end
-
-  alias_method :and_i_see_that_the_content_gets_history_mode, :then_i_see_that_the_content_gets_history_mode
 
   def when_i_click_to_change_the_status
     click_on "Change Gets history mode"
@@ -67,12 +65,12 @@ RSpec.feature "History mode" do
   end
 
   def and_i_see_the_timeline_entry
-    within("#document-history") do
-      expect(page).to have_content(I18n.t!("documents.history.entry_types.political_status_changed"))
-    end
+    click_on "Document history"
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.political_status_changed"))
   end
 
   def when_i_click_to_backdate_the_content
+    click_on "Document summary"
     click_on "Change Backdate"
   end
 

@@ -7,6 +7,7 @@ RSpec.feature "Delete an image" do
     when_i_delete_the_lead_image
     then_i_see_the_document_has_no_lead_image
     and_the_preview_creation_succeeded
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_an_edition_with_images
@@ -32,7 +33,6 @@ RSpec.feature "Delete an image" do
 
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
-    expect(page).to have_content(I18n.t!("documents.history.entry_types.image_deleted"))
   end
 
   def and_the_preview_creation_succeeded
@@ -42,5 +42,10 @@ RSpec.feature "Delete an image" do
     expect(a_request(:put, /content/).with { |req|
       expect(JSON.parse(req.body)["details"].keys).to_not include("image")
     }).to have_been_requested
+  end
+
+  def and_i_see_the_timeline_entry
+    click_on "Document history"
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.image_deleted"))
   end
 end

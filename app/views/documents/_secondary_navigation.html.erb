@@ -1,0 +1,21 @@
+<%= render "components/secondary_navigation", {
+  aria_label: "Document",
+  items: [
+    {
+      label: "Document summary",
+      href: document_path(@edition.document),
+      current: current_page?(document_path(@edition.document)),
+      data_attributes: {
+        gtm: "summary-nav"
+      }
+    },
+    {
+      label: "Document history",
+      href: document_history_path(@edition.document),
+      current: current_page?(document_history_path(@edition.document)),
+      data_attributes: {
+        gtm: "history-nav"
+      }
+    }
+  ]
+} %>
