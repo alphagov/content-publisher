@@ -1,26 +1,19 @@
 # frozen_string_literal: true
 
 RSpec.feature "Backdate content" do
-  scenario "first edition" do
+  scenario do
     given_there_is_a_document_with_a_first_edition
     when_i_visit_the_summary_page
     then_i_see_that_the_content_has_not_been_backdated
+
     when_i_click_to_backdate_the_content
     and_i_enter_a_date_to_backdate_the_content_to
     and_i_click_save
     then_i_see_the_content_has_been_backdated
-  end
 
-  scenario "subsequent edition" do
-    given_there_is_a_document_with_a_second_edition
-    when_i_visit_the_summary_page
-    then_i_cannot_see_a_backdate_section
-  end
-
-  scenario "published edition" do
-    given_there_is_a_published_first_edition
-    when_i_visit_the_summary_page
-    then_i_cannot_see_a_backdate_section
+    when_i_click_to_backdate_the_content
+    and_i_click_clear_backdate
+    then_i_see_the_content_is_no_longer_backdated
   end
 
   def given_there_is_a_document_with_a_first_edition
@@ -48,7 +41,7 @@ RSpec.feature "Backdate content" do
   end
 
   def and_i_click_save
-    @request = stub_publishing_api_put_content(@edition.content_id, {})
+    stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Save"
   end
 
@@ -56,21 +49,18 @@ RSpec.feature "Backdate content" do
     expect(page).to have_content("1 January 2019")
     expect(page).to have_content(I18n.t!("documents.history.entry_types.backdated",
                                          date: "01 January 2019"))
-    expect(@request).to have_been_requested
   end
 
-  def given_there_is_a_document_with_a_second_edition
-    @edition = create(:edition, number: 2)
+  def and_i_click_clear_backdate
+    click_on "Clear backdate"
   end
 
-  def then_i_cannot_see_a_backdate_section
-    expect(page).not_to have_content(
-      I18n.t!("documents.show.content_settings.backdate.title"),
+  def then_i_see_the_content_is_no_longer_backdated
+    expect(page).to have_content(
+      I18n.t!("documents.show.content_settings.backdate.no_backdate"),
     )
-    expect(page).not_to have_content("Change Backdate")
-  end
-
-  def given_there_is_a_published_first_edition
-    @edition = create(:edition, :published, number: 1)
+    expect(page).to have_content(
+      I18n.t!("documents.history.entry_types.backdate_cleared"),
+    )
   end
 end
