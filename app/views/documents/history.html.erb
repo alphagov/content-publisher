@@ -8,8 +8,12 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <% @timeline_entries.each do |entry| %>
+    <% @timeline_entries.each_with_index do |entry, index| %>
+
       <% if displayed_edition_number != entry.edition.number %>
+        <% if index > 0 %>
+          <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
+        <% end %>
         <h3 class="govuk-heading-m"><%= t "documents.history.edition_header", number: entry.edition.number.ordinalize %></h3>
         <% displayed_edition_number = entry.edition.number %>
       <% end %>
