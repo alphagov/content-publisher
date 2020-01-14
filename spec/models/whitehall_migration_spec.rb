@@ -15,7 +15,7 @@ RSpec.describe WhitehallMigration do
       it "updates each of the end times" do
         freeze_time do
           whitehall_migration.check_migration_finished
-          expect(whitehall_migration.end_time).to eq(Time.current)
+          expect(whitehall_migration.finished_at).to eq(Time.current)
         end
       end
     end
@@ -29,7 +29,7 @@ RSpec.describe WhitehallMigration do
 
       it "does not update each of the end times" do
         whitehall_migration.check_migration_finished
-        expect(whitehall_migration.end_time).to be_nil
+        expect(whitehall_migration.finished_at).to be_nil
       end
     end
   end
