@@ -17,8 +17,11 @@ namespace :import do
 
   desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall_document[123]"
   task :whitehall_document, [:document_id] => :environment do |_, args|
-    whitehall_export = GdsApi.whitehall_export.document_export(args.document_id)
-    whitehall_import = WhitehallImporter.import_and_sync(whitehall_export.to_hash)
+    whitehall_import = WhitehallMigration::DocumentImport.create!(
+      whitehall_document_id: args.document_id,
+      state: "pending",
+    )
+    WhitehallImporter.import_and_sync(whitehall_import)
 
     unless whitehall_import.completed?
       puts whitehall_import.state.humanize
