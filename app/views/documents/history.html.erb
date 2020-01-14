@@ -14,7 +14,7 @@
         <% displayed_edition_number = entry.edition.number %>
       <% end %>
 
-      <div class="app-timeline-entry govuk-!-margin-bottom-6">
+      <div class="app-timeline-entry <%= "app-timeline-entry--highlighted" if entry.details %> govuk-!-margin-bottom-6">
         <%= render partial: "documents/timeline_entry", locals: { entry: entry } %>
       </div>
     <% end %>

@@ -2,6 +2,11 @@
   @include govuk-font(19);
 }
 
+.app-timeline-entry--highlighted {
+  background: govuk-colour("light-grey");
+  padding: govuk-spacing(3);
+}
+
 .app-timeline-entry__dateline {
   color: $govuk-secondary-text-colour;
 }
