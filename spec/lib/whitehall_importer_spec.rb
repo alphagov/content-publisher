@@ -19,7 +19,7 @@ RSpec.describe WhitehallImporter do
         expect { WhitehallImporter.create_migration("123", "NewsArticle") }.to change { WhitehallMigration.count }.by(1)
         expect(WhitehallMigration.last.organisation_content_id).to eq("123")
         expect(WhitehallMigration.last.document_type).to eq("NewsArticle")
-        expect(WhitehallMigration.last.start_time).to eq(Time.current)
+        expect(WhitehallMigration.last.created_at).to eq(Time.current)
       end
     end
 

@@ -6,8 +6,7 @@ module WhitehallImporter
   def self.create_migration(organisation_content_id, document_type)
     whitehall_migration = ActiveRecord::Base.transaction do
       record = WhitehallMigration.create!(organisation_content_id: organisation_content_id,
-                                 document_type: document_type,
-                                 start_time: Time.current)
+                                          document_type: document_type)
 
       whitehall_export = GdsApi.whitehall_export.document_list(organisation_content_id, document_type)
 

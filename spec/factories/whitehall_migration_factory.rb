@@ -5,7 +5,6 @@ FactoryBot.define do
     sequence(:id)
     organisation_content_id { "content_id" }
     document_type { "NewsArticle" }
-    start_time { Time.current }
     created_at { Time.current.rfc3339 }
     updated_at { Time.current.rfc3339 }
   end
