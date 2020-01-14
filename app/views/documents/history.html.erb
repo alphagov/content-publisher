@@ -15,9 +15,9 @@
           <% displayed_edition_number = entry.edition.number %>
         <% end %>
 
-        <% if entry.imported_from_whitehall? %>
+        <% if entry.whitehall_migration? && entry.details.imported_from_whitehall? %>
           <%= render "govuk_publishing_components/components/notice", {
-            title: "#{t "documents.history.entry_types.#{entry.entry_type}"}",
+            title: "#{t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"}",
             description_text: format_date(entry.created_at)
           } %>
         <% elsif entry.whitehall_migration? %>

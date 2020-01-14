@@ -58,7 +58,6 @@ class TimelineEntry < ApplicationRecord
                      access_limit_updated: "access_limit_updated",
                      access_limit_removed: "access_limit_removed",
                      political_status_changed: "political_status_changed",
-                     imported_from_whitehall: "imported_from_whitehall",
                      whitehall_migration: "whitehall_migration" }
 
   def self.create_for_status_change(entry_type:,
