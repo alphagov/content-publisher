@@ -4,7 +4,7 @@
     description_text: format_date(entry.created_at)
   } %>
 <% elsif entry.whitehall_migration? %>
-  <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
+  <h4 class="govuk-heading-s">
     <%= t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}" %>
   </h4>
 
@@ -15,7 +15,7 @@
     <% end %>
   </div>
 <% else %>
-  <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
+  <h4 class="govuk-heading-s">
     <%= t "documents.history.entry_types.#{entry.entry_type}" %>
   </h4>
 

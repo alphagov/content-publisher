@@ -1,5 +1,10 @@
 .app-timeline-entry {
   @include govuk-font(19);
+  margin-bottom: govuk-spacing(6);
+
+  .govuk-heading-s {
+    margin-bottom: govuk-spacing(1);
+  }
 }
 
 .app-timeline-entry--highlighted {
