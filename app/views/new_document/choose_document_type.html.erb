@@ -18,7 +18,7 @@
               gtm: "choose-document-type",
               "gtm-value": document_type.label,
             },
-            conditional: document_type.hint ? tag.div(govspeak_to_html(document_type.hint_govspeak), class: "govuk-body") : nil,
+            conditional: document_type.hint_govspeak ? tag.div(govspeak_to_html(document_type.hint_govspeak), class: "govuk-body") : nil,
             bold: true,
           }
         }
