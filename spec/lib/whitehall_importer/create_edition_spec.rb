@@ -278,7 +278,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
                                      whitehall_edition: whitehall_edition)
 
       statuses = edition.statuses.map(&:state)
-      expect(statuses).to eq(%w[submitted_for_review scheduled])
+      expect(statuses).to contain_exactly("submitted_for_review", "scheduled")
       expect(edition.status.details.pre_scheduled_status).to be_submitted_for_review
     end
 
@@ -290,7 +290,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
                                      whitehall_edition: whitehall_edition)
 
       statuses = edition.statuses.map(&:state)
-      expect(statuses).to eq(%w[draft scheduled])
+      expect(statuses).to contain_exactly("draft", "scheduled")
       expect(edition.status.details.pre_scheduled_status).to be_draft
     end
 
