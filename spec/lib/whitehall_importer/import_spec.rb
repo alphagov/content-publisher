@@ -137,18 +137,19 @@ RSpec.describe WhitehallImporter::Import do
       expect(WhitehallImporter::IntegrityChecker.new).to have_received(:valid?).twice
     end
 
-    it "aborts with a list of problems if the integrity check fails" do
-      problems = "base path doesn't match"
+    it "aborts if the integrity check fails" do
       allow(WhitehallImporter::IntegrityChecker)
         .to receive(:new)
         .and_return(instance_double(
                       WhitehallImporter::IntegrityChecker,
                       valid?: false,
-                      problems: [problems],
+                      problems: ["foo doesn't match"],
+                      proposed_payload: { "foo" => "bar" },
+                      edition: build(:edition),
                     ))
 
       expect { described_class.call(build(:whitehall_migration_document_import)) }
-        .to raise_error(WhitehallImporter::AbortImportError, problems)
+        .to raise_error(WhitehallImporter::IntegrityCheckError)
     end
   end
 end
