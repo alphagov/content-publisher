@@ -94,7 +94,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         },
         crop: function () {
           // Get crop data
-          var cropData = this.cropper.getData({rounded: true})
+          var cropData = this.cropper.getData({ rounded: true })
 
           // Ensure the crop size is not smaller than the minimum values
           if (cropData.width < minCropWidth) {

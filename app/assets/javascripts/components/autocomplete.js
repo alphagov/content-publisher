@@ -36,7 +36,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       source: function (query, syncResults) {
         var results = []
         $select.options.forEach(function ($el) {
-          results.push({text: $el.textContent, hint: $el.dataset.hint || '', value: $el.value})
+          results.push({ text: $el.textContent, hint: $el.dataset.hint || '', value: $el.value })
         })
         syncResults(query
           ? results.filter(function (result) {
@@ -207,7 +207,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
   }
 
   Autocomplete.prototype.triggerEvent = function (element, eventName, detail) {
-    var params = {bubbles: true, cancelable: true, detail: detail || null}
+    var params = { bubbles: true, cancelable: true, detail: detail || null }
     var event
 
     if (typeof window.CustomEvent === 'function') {
