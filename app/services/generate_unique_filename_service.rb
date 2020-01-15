@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UniqueFilenameService < ApplicationService
+class GenerateUniqueFilenameService < ApplicationService
   MAX_LENGTH = 65
 
   def initialize(existing_filenames, suggested_name)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class EditEditionService < ApplicationService
+class EditDraftEditionService < ApplicationService
   def initialize(edition, user, **attributes)
     @edition = edition
     @user = user

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ScheduledPublishingFailedService < ApplicationService
+class RescueScheduledPublishingService < ApplicationService
   def initialize(edition_id)
     @edition_id = edition_id
   end

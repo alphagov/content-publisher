@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PublishAssetService < ApplicationService
+class PublishAssetsService < ApplicationService
   def initialize(edition, live_edition)
     @edition = edition
     @live_edition = live_edition

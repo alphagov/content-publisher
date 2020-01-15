@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WithdrawService < ApplicationService
+class WithdrawDocumentService < ApplicationService
   def initialize(edition, public_explanation, user = nil)
     @edition = edition
     @public_explanation = public_explanation

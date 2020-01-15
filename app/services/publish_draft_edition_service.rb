@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PublishService < ApplicationService
+class PublishDraftEditionService < ApplicationService
   def initialize(edition, user, with_review:)
     @edition = edition
     @user = user

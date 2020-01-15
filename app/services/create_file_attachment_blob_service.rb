@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FileAttachmentBlobService < ApplicationService
+class CreateFileAttachmentBlobService < ApplicationService
   def initialize(file:, filename:, user: nil)
     @file = file
     @filename = filename

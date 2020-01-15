@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RemoveService < ApplicationService
+class RemoveDocumentService < ApplicationService
   def initialize(edition, removal)
     @edition = edition
     @removal = removal

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DeleteDraftService < ApplicationService
+class DeleteDraftEditionService < ApplicationService
   def initialize(document, user)
     @document = document
     @user = user

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ResyncService < ApplicationService
+class ResyncDocumentService < ApplicationService
   attr_reader :document
 
   delegate :live_edition,
