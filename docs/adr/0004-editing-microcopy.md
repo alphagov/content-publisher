@@ -54,7 +54,7 @@ We also configured Rails to raise an exception when we hit a page where a transl
 
 ## Status
 
-Pending
+Accepted
 
 The approach taken so far is primarily driven by the needs of developers, rather than the needs of the other roles in the team. We should avoid committing to this approach until other people in the team have made more use of it. For example, it may be easier to have fewer files (perhaps per collection of views, to keep things algorithmic), with more content in each file.
 
