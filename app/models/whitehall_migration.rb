@@ -4,6 +4,6 @@ class WhitehallMigration < ApplicationRecord
   has_many :document_imports
 
   def check_migration_finished
-    update!(end_time: Time.current) if document_imports.in_progress.empty?
+    update!(finished_at: Time.current) if document_imports.in_progress.empty?
   end
 end
