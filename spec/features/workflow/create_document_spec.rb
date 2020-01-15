@@ -22,7 +22,7 @@ RSpec.feature "Create a document" do
   end
 
   def and_i_select_a_supertype
-    choose Supertype.all.first.label
+    choose I18n.t("supertypes.news.label")
     click_on "Continue"
   end
 

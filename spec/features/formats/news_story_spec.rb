@@ -18,7 +18,7 @@ RSpec.describe "News story format" do
   def when_i_choose_this_document_type
     visit root_path
     click_on "Create new document"
-    choose Supertype.find("news").label
+    choose I18n.t!("supertypes.news.label")
     click_on "Continue"
     choose DocumentType.find("news_story").label
     click_on "Continue"

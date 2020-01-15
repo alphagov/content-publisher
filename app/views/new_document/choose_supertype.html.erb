@@ -13,16 +13,19 @@
         name: "supertype",
         error_items: @issues&.items_for(:supertype),
         items: Supertype.all.map do |supertype|
+          id = supertype.id
+          label = I18n.t("supertypes.#{id}.label")
+          hint = I18n.t("supertypes.#{id}.hint")
           {
-            value: supertype.id,
-            text: supertype.label,
-            hint_text: supertype.description,
+            value: id,
+            text: label,
+            hint_text: I18n.t("supertypes.#{id}.description"),
             bold: true,
             data_attributes: {
               gtm: "choose-supertype",
-              "gtm-value": supertype.label,
+              "gtm-value": label,
             },
-            conditional: supertype.hint ? tag.p(supertype.hint, class: "govuk-body") : nil,
+            conditional: hint ? tag.p(hint, class: "govuk-body") : nil,
           }
         end
       } %>

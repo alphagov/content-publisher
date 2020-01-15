@@ -9,7 +9,7 @@ RSpec.describe "Detailed guide format" do
   def when_i_choose_this_document_type
     visit "/"
     click_on "Create new document"
-    choose Supertype.find("guidance").label
+    choose I18n.t!("supertypes.guidance.label")
     click_on "Continue"
     choose DocumentType.find("detailed_guide").label
     click_on "Continue"

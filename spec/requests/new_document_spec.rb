@@ -6,7 +6,7 @@ RSpec.describe "New Document" do
       supertype = Supertype.all.reject(&:managed_elsewhere).first
       get choose_document_type_path, params: { supertype: supertype.id }
       expect(response).to have_http_status(:ok)
-      expect(response.body).to have_content(supertype.label)
+      expect(response.body).to have_content(I18n.t!("supertypes.#{supertype.id}.label"))
     end
 
     it "redirects when a supertype managed elsewhere is selected" do
