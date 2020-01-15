@@ -9,7 +9,7 @@ class FailsafeDraftPreviewService < ApplicationService
     if has_issues?
       edition.update!(revision_synced: false)
     else
-      PreviewService.call(edition)
+      PreviewDraftEditionService.call(edition)
     end
   rescue GdsApi::BaseError => e
     edition.update!(revision_synced: false)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ResyncService do
+RSpec.describe ResyncDocumentService do
   include ActiveJob::TestHelper
 
   describe ".call" do
@@ -29,7 +29,7 @@ RSpec.describe ResyncService do
         reserve_path_params,
       )
 
-      ResyncService.call(document)
+      ResyncDocumentService.call(document)
 
       expect(draft_request).to have_been_requested
       expect(live_request).to have_been_requested
@@ -43,7 +43,7 @@ RSpec.describe ResyncService do
         .twice
         .and_return(instance_double(PoliticalEditionIdentifier, political?: true))
 
-      expect { ResyncService.call(document) }
+      expect { ResyncDocumentService.call(document) }
         .to change { document.live_edition.system_political }.to(true)
         .and change { document.current_edition.system_political }.to(true)
     end
@@ -53,7 +53,7 @@ RSpec.describe ResyncService do
       government = build(:government)
       populate_government_bulk_data(government)
 
-      expect { ResyncService.call(document) }
+      expect { ResyncDocumentService.call(document) }
         .to change { document.live_edition.government_id }.to(government.content_id)
         .and change { document.current_edition.government_id }.to(government.content_id)
     end
@@ -62,9 +62,9 @@ RSpec.describe ResyncService do
       let(:edition) { create(:edition) }
 
       it "doesn't publish the edition" do
-        expect(FailsafePreviewService).to receive(:call).with(edition)
+        expect(FailsafeDraftPreviewService).to receive(:call).with(edition)
         expect(GdsApi.publishing_api).not_to receive(:publish)
-        ResyncService.call(edition.document)
+        ResyncDocumentService.call(edition.document)
       end
     end
 
@@ -72,12 +72,12 @@ RSpec.describe ResyncService do
       let(:edition) { create(:edition, :published) }
 
       it "avoids synchronising the edition twice" do
-        expect(PreviewService).to receive(:call).once
-        ResyncService.call(edition.document)
+        expect(PreviewDraftEditionService).to receive(:call).once
+        ResyncDocumentService.call(edition.document)
       end
 
       it "re-publishes the live edition" do
-        expect(PreviewService).to receive(:call)
+        expect(PreviewDraftEditionService).to receive(:call)
                               .with(edition, republish: true)
                               .and_call_original
 
@@ -86,16 +86,16 @@ RSpec.describe ResyncService do
           update_type: nil,
           locale: edition.locale,
         )
-        ResyncService.call(edition.document)
+        ResyncDocumentService.call(edition.document)
 
         expect(request).to have_been_requested
       end
 
       it "publishes assets to the live stack" do
-        expect(PublishAssetService)
+        expect(PublishAssetsService)
           .to receive(:call).once.with(edition, nil)
 
-        ResyncService.call(edition.document)
+        ResyncDocumentService.call(edition.document)
       end
     end
 
@@ -122,7 +122,7 @@ RSpec.describe ResyncService do
           .and_return(instance_double(GovspeakDocument, payload_html: explanation))
 
         request = stub_publishing_api_unpublish(edition.content_id, body: withdraw_params)
-        ResyncService.call(edition.document)
+        ResyncDocumentService.call(edition.document)
 
         expect(request).to have_been_requested
       end
@@ -158,7 +158,7 @@ RSpec.describe ResyncService do
           }
 
           request = stub_publishing_api_unpublish(edition.content_id, body: remove_params)
-          ResyncService.call(edition.document)
+          ResyncDocumentService.call(edition.document)
 
           expect(request).to have_been_requested
         end
@@ -176,7 +176,7 @@ RSpec.describe ResyncService do
           }
 
           request = stub_publishing_api_unpublish(edition.content_id, body: remove_params)
-          ResyncService.call(edition.document)
+          ResyncDocumentService.call(edition.document)
 
           expect(request).to have_been_requested
         end
@@ -186,24 +186,24 @@ RSpec.describe ResyncService do
         let(:edition) { create(:edition, :scheduled) }
 
         before do
-          allow(ScheduleService::Payload)
+          allow(SchedulePublishService::Payload)
             .to receive(:new)
-            .and_return(instance_double(ScheduleService::Payload, intent_payload: "payload"))
+            .and_return(instance_double(SchedulePublishService::Payload, intent_payload: "payload"))
         end
 
         it "notifies the publishing-api of the intent to publish" do
           request = stub_publishing_api_put_intent(edition.base_path, '"payload"')
 
-          expect(ScheduleService::Payload)
+          expect(SchedulePublishService::Payload)
             .to receive(:new)
             .with(edition)
 
-          ResyncService.call(edition.document)
+          ResyncDocumentService.call(edition.document)
           expect(request).to have_been_requested
         end
 
         it "schedules the edition to publish" do
-          ResyncService.call(edition.document)
+          ResyncDocumentService.call(edition.document)
           expect(ScheduledPublishingJob)
             .to have_been_enqueued
             .with(edition.id)

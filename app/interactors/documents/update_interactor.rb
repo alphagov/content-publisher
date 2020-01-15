@@ -40,7 +40,7 @@ private
   end
 
   def update_edition
-    EditEditionService.call(edition, user, revision: revision)
+    EditDraftEditionService.call(edition, user, revision: revision)
     edition.save!
   end
 
@@ -49,7 +49,7 @@ private
   end
 
   def update_preview
-    FailsafePreviewService.call(edition)
+    FailsafeDraftPreviewService.call(edition)
   end
 
   def update_params(edition)
@@ -60,7 +60,7 @@ private
       .tap do |p|
         p[:title] = p[:title]&.strip
         p[:summary] = p[:summary]&.strip
-        p[:base_path] = PathGeneratorService.call(edition.document, p[:title])
+        p[:base_path] = GenerateBasePathService.call(edition.document, p[:title])
       end
   end
 end

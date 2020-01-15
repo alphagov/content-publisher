@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PreviewService::Payload
+class PreviewDraftEditionService::Payload
   PUBLISHING_APP = "content-publisher"
 
   attr_reader :edition, :document_type, :publishing_metadata, :republish

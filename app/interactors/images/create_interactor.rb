@@ -38,10 +38,10 @@ private
   end
 
   def create_image_revision
-    blob_revision = ImageBlobService.call(
+    blob_revision = CreateImageBlobService.call(
       user: user,
       temp_image: temp_image,
-      filename: UniqueFilenameService.call(
+      filename: GenerateUniqueFilenameService.call(
         edition.revision.image_revisions.map(&:filename),
         temp_image.original_filename,
       ),
@@ -58,7 +58,7 @@ private
   def update_edition
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.add_image(image_revision)
-    EditEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
     edition.save!
   end
 end

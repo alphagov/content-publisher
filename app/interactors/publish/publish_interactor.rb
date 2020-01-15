@@ -46,7 +46,7 @@ private
   end
 
   def publish_edition
-    PublishService.call(edition, user, with_review: with_review?)
+    PublishDraftEditionService.call(edition, user, with_review: with_review?)
   rescue GdsApi::BaseError
     context.fail!(publish_failed: true)
   end

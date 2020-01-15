@@ -24,8 +24,8 @@ private
     live_edition.lock!
     set_political_and_government(live_edition)
     reserve_path(live_edition.base_path)
-    PreviewService.call(live_edition, republish: true)
-    PublishAssetService.call(live_edition, nil)
+    PreviewDraftEditionService.call(live_edition, republish: true)
+    PublishAssetsService.call(live_edition, nil)
 
     if live_edition.withdrawn?
       withdraw
@@ -40,7 +40,7 @@ private
     current_edition.lock!
     set_political_and_government(current_edition)
     reserve_path(current_edition.base_path)
-    FailsafePreviewService.call(current_edition)
+    FailsafeDraftPreviewService.call(current_edition)
 
     schedule if current_edition.scheduled?
   end
@@ -100,7 +100,7 @@ private
   end
 
   def schedule
-    payload = ScheduleService::Payload.new(current_edition).intent_payload
+    payload = SchedulePublishService::Payload.new(current_edition).intent_payload
     GdsApi.publishing_api.put_intent(current_edition.base_path, payload)
 
     scheduling = current_edition.status.details

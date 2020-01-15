@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ImageBlobService::CentreCrop
+class CreateImageBlobService::CentreCrop
   attr_reader :width, :height, :desired_aspect_ratio
 
   def initialize(width, height, desired_aspect_ratio = nil)

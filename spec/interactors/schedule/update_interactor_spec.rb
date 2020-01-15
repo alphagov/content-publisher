@@ -28,8 +28,8 @@ RSpec.describe Schedule::UpdateInteractor do
       expect(result).to be_success
     end
 
-    it "delegates to ScheduleService to schedule the edition for publishing" do
-      expect(ScheduleService)
+    it "delegates to SchedulePublishService to schedule the edition for publishing" do
+      expect(SchedulePublishService)
         .to receive(:call) do |schedule_edition, schedule_user, new_scheduling|
           expect(schedule_edition).to eq(edition)
           expect(schedule_user).to eq(user)
@@ -51,7 +51,7 @@ RSpec.describe Schedule::UpdateInteractor do
       let(:params) { build_params(time: publish_time) }
 
       it "fails without scheduling the edition" do
-        expect(ScheduleService).not_to receive(:call)
+        expect(SchedulePublishService).not_to receive(:call)
         result = Schedule::UpdateInteractor.call(params: params, user: user)
         expect(result).to be_failure
       end
@@ -85,7 +85,7 @@ RSpec.describe Schedule::UpdateInteractor do
       expect(result.issues).to have_issue(:schedule_date, :in_the_past)
     end
 
-    it "fails with an API error when ScheduleService raises a GdsApi Error" do
+    it "fails with an API error when SchedulePublishService raises a GdsApi Error" do
       stub_publishing_api_isnt_available
       result = Schedule::UpdateInteractor.call(params: build_params, user: user)
 

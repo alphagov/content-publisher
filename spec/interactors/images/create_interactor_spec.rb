@@ -25,14 +25,14 @@ RSpec.describe Images::CreateInteractor do
           .to change { Image::Revision.count }.by(1)
       end
 
-      it "normalises the uploaded image and delegates saving it to ImageBlobService" do
+      it "normalises the uploaded image and delegates saving it to CreateImageBlobService" do
         temp_image = ImageNormaliser::TempImage.new(image_upload)
         expect(ImageNormaliser)
           .to receive(:new)
           .with(image_upload)
           .and_return(double(normalise: temp_image, issues: []))
 
-        expect(ImageBlobService)
+        expect(CreateImageBlobService)
           .to receive(:call)
           .with(user: user, temp_image: temp_image, filename: an_instance_of(String))
           .and_call_original

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ScheduleService::Payload
+class SchedulePublishService::Payload
   attr_reader :edition
 
   def initialize(edition)
@@ -10,7 +10,7 @@ class ScheduleService::Payload
   def intent_payload
     {
       publish_time: publish_time,
-      publishing_app: PreviewService::Payload::PUBLISHING_APP,
+      publishing_app: PreviewDraftEditionService::Payload::PUBLISHING_APP,
       rendering_app: rendering_app,
     }
   end

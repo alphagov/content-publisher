@@ -16,11 +16,11 @@ RSpec.describe Schedule::CreateInteractor do
       expect(result).to be_success
     end
 
-    it "delegates to ScheduleService to schedule the edition for publishing" do
+    it "delegates to SchedulePublishService to schedule the edition for publishing" do
       publish_time = 3.days.from_now.beginning_of_day
       edition = create(:edition, :schedulable, proposed_publish_time: publish_time)
 
-      expect(ScheduleService)
+      expect(SchedulePublishService)
         .to receive(:call) do |schedule_edition, schedule_user, new_scheduling|
           expect(schedule_edition).to eq(edition)
           expect(schedule_user).to eq(user)
@@ -70,7 +70,7 @@ RSpec.describe Schedule::CreateInteractor do
       expect(result.issues).to have_issue(:schedule_review_status, :not_selected)
     end
 
-    it "fails with an API error when ScheduleService raises a GdsApi Error" do
+    it "fails with an API error when SchedulePublishService raises a GdsApi Error" do
       stub_publishing_api_isnt_available
       result = Schedule::CreateInteractor.call(params: build_params, user: user)
 

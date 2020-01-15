@@ -21,7 +21,7 @@ private
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(proposed_publish_time: nil)
 
-    EditEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
     AssignEditionStatusService.call(edition, user, :scheduled, status_details: scheduling)
     edition.save!
   end

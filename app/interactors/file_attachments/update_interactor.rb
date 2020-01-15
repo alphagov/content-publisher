@@ -56,7 +56,7 @@ private
 
     context.fail!(unchanged: true) unless updater.changed?
 
-    EditEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
     edition.save!
   end
 
@@ -66,7 +66,7 @@ private
   end
 
   def update_preview
-    FailsafePreviewService.call(edition)
+    FailsafeDraftPreviewService.call(edition)
   end
 
   def attachment_params
@@ -74,7 +74,7 @@ private
   end
 
   def blob_revision(file)
-    FileAttachmentBlobService.call(
+    CreateFileAttachmentBlobService.call(
       file: file, filename: unique_filename(file), user: user,
     )
   end
@@ -82,6 +82,6 @@ private
   def unique_filename(file)
     existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
     existing_filenames.delete(file_attachment_revision.filename)
-    UniqueFilenameService.call(existing_filenames, file.original_filename)
+    GenerateUniqueFilenameService.call(existing_filenames, file.original_filename)
   end
 end

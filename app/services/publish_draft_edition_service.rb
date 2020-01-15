@@ -27,7 +27,7 @@ private
   delegate :document, to: :edition
 
   def publish_assets(live_edition)
-    PublishAssetService.call(edition, live_edition)
+    PublishAssetsService.call(edition, live_edition)
   end
 
   def associate_with_government
@@ -42,7 +42,7 @@ private
     edition.assign_attributes(government_id: government&.content_id)
 
     # We need to update the Publishing API if we're changing the government
-    PreviewService.call(edition) if edition.government_id_changed?
+    PreviewDraftEditionService.call(edition) if edition.government_id_changed?
   end
 
   def publish_current_edition

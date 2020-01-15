@@ -4,7 +4,7 @@ class ScheduledPublishingJob < ApplicationJob
   # retry at 3s, 18s, 83s, 258s, 627s
   retry_on(StandardError, wait: :exponentially_longer, attempts: 5) do |job, error|
     GovukError.notify(error)
-    ScheduledPublishingFailedService.call(job.arguments.first)
+    RescueScheduledPublishingService.call(job.arguments.first)
   end
 
   discard_and_log(ActiveRecord::RecordNotFound)
@@ -18,7 +18,7 @@ class ScheduledPublishingJob < ApplicationJob
 
       user = edition.status.created_by
       reviewed = edition.status.details.reviewed
-      PublishService.call(edition, user, with_review: reviewed)
+      PublishDraftEditionService.call(edition, user, with_review: reviewed)
       create_timeline_entry(edition, reviewed)
     end
 
