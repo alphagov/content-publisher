@@ -27,6 +27,8 @@ RSpec.feature "User can navigate through a documents history" do
 
   def then_i_see_a_list_of_timeline_entries
     expect(page).to have_content(I18n.t!("documents.history.entry_types.updated_content"), count: 50)
+                .and have_content(I18n.t!("documents.history.page_info", page: 2, pages: 2))
+                .and have_link("Next page")
   end
 
   def when_i_click_to_go_to_the_next_page
@@ -35,9 +37,7 @@ RSpec.feature "User can navigate through a documents history" do
 
   def then_i_see_some_more_timeline_entries
     expect(page).to have_content(I18n.t!("documents.history.entry_types.created"), count: 1)
-
-    within(".gem-c-pagination__item") do
-      expect(page).to have_link("Previous page")
-    end
+                .and have_content(I18n.t!("documents.history.page_info", page: 1, pages: 2))
+                .and have_link("Previous page")
   end
 end

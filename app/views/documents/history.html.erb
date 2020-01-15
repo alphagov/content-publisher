@@ -75,11 +75,21 @@
     <% end %>
 
     <%
-    pages = {}
-    pages[:previous_page] = { url: document_history_path(page: @timeline_entries.prev_page),
-                              title: "Previous page" } if @timeline_entries.prev_page
-    pages[:next_page] = { url: document_history_path(page: @timeline_entries.next_page),
-                          title: "Next page" } if @timeline_entries.next_page
+      pages = {}
+      previous_page_info = t("documents.history.page_info",
+                             page: @timeline_entries.prev_page,
+                             pages: @timeline_entries.total_pages)
+
+      next_page_info = t("documents.history.page_info",
+                         page: @timeline_entries.next_page,
+                         pages: @timeline_entries.total_pages)
+
+      pages[:previous_page] = { url: document_history_path(page: @timeline_entries.prev_page),
+                                label: previous_page_info,
+                                title: "Previous page" } if @timeline_entries.prev_page
+      pages[:next_page] = { url: document_history_path(page: @timeline_entries.next_page),
+                            label: next_page_info,
+                            title: "Next page" } if @timeline_entries.next_page
     %>
 
     <%= render "govuk_publishing_components/components/previous_and_next_navigation", pages %>
