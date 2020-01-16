@@ -13,7 +13,7 @@
           {
             value: document_type.id,
             text: document_type.label,
-            hint_text: document_type.description,
+            hint_text: I18n.exists?("document_types.#{document_type.id}.description") ? t("document_types.#{document_type.id}.description") : nil,
             data_attributes: {
               gtm: "choose-document-type",
               "gtm-value": document_type.label,

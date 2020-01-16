@@ -4,7 +4,7 @@ class DocumentType
   include InitializeWithHash
 
   attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
-              :path_prefix, :tags, :guidance_govspeak, :description, :images,
+              :path_prefix, :tags, :guidance_govspeak, :images,
               :topics, :check_path_conflict
 
   def self.find(id)
