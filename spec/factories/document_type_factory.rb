@@ -10,7 +10,6 @@ FactoryBot.define do
     end
 
     id { SecureRandom.hex(4) }
-    label { SecureRandom.alphanumeric(8) }
     contents { [] }
     tags { [] }
     guidance { [] }
@@ -28,6 +27,8 @@ FactoryBot.define do
     after(:build) do |document_type|
       DocumentType.all << document_type
       Supertype.all.first.document_types << document_type
+      en = { document_types: { document_type.id.to_sym => { label: document_type.id } } }
+      I18n.backend.store_translations(:en, en)
     end
   end
 end

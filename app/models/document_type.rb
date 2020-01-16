@@ -3,7 +3,7 @@
 class DocumentType
   include InitializeWithHash
 
-  attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
+  attr_reader :contents, :id, :managed_elsewhere, :publishing_metadata,
               :path_prefix, :tags, :guidance_govspeak, :images,
               :topics, :check_path_conflict
 
@@ -28,6 +28,10 @@ class DocumentType
 
   def managed_elsewhere_url
     Plek.new.external_url_for(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
+  end
+
+  def label
+    I18n.t!("document_types.#{id}.label")
   end
 
   class TagField
