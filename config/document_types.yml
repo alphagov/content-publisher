@@ -12,30 +12,20 @@
       type: govspeak
   tags:
     - id: primary_publishing_organisation
-      label: Primary organisation
       type: single_tag
       document_type: organisation
-      hint: The organisation responsible for publishing and maintaining this content.
     - id: organisations
-      label: Organisations
       type: multi_tag
       document_type: organisation
-      hint: Tag organisations associated with this content.
     - id: role_appointments
-      label: Ministers and government appointments
       type: multi_tag
       document_type: role_appointment
-      hint: Tag people who are directly involved.
     - id: topical_events
-      label: Topical events
       type: multi_tag
       document_type: topical_event
-      hint: Tag major events this content is related to. For example, summits or budgets.
     - id: world_locations
-      label: World locations
       type: multi_tag
       document_type: world_location
-      hint: Tag locations this content is about. If it only relates to the UK you don’t need to use this tag.
 
 - id: press_release
   path_prefix: /government/news
@@ -50,30 +40,20 @@
       type: govspeak
   tags:
     - id: primary_publishing_organisation
-      label: Primary organisation
       type: single_tag
       document_type: organisation
-      hint: The organisation responsible for publishing and maintaining this content.
     - id: organisations
-      label: Organisations
       type: multi_tag
       document_type: organisation
-      hint: Tag organisations associated with this content.
     - id: role_appointments
-      label: Ministers and government appointments
       type: multi_tag
       document_type: role_appointment
-      hint: Tag people who are directly involved.
     - id: topical_events
-      label: Topical events
       type: multi_tag
       document_type: topical_event
-      hint: Tag major events this content is related to. For example, summits or budgets.
     - id: world_locations
-      label: World locations
       type: multi_tag
       document_type: world_location
-      hint: Tag locations this content is about. If it only relates to the UK you don’t need to use this tag.
 
 - id: fatality_notice
   managed_elsewhere:

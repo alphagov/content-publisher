@@ -18,7 +18,13 @@ class DocumentType
 
       hashes.map do |hash|
         hash["contents"] = hash["contents"].to_a.map(&Field.method(:new))
-        hash["tags"] = hash["tags"].to_a.map(&TagField.method(:new))
+        hash["tags"] = (hash["tags"] || []).map do |tag_config|
+          tag_i18n_data = "document_types.#{hash['id']}.fields.#{tag_config['id']}"
+          if I18n.exists?(tag_i18n_data)
+            TagField.new(tag_config.merge(I18n.t!(tag_i18n_data).stringify_keys))
+          end
+        end
+        hash["tags"] = hash["tags"].compact
         hash["publishing_metadata"] = PublishingMetadata.new(hash["publishing_metadata"].to_h)
         hash["topics"] = true # this feature is only disabled in tests
         new(hash)

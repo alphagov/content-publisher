@@ -30,6 +30,21 @@ en:
               [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
 
               [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+        primary_publishing_organisation:
+          label: Primary organisation
+          hint: The organisation responsible for publishing and maintaining this content.
+        organisations:
+          label: Organisations
+          hint: Tag organisations associated with this content.
+        role_appointments:
+          label: Ministers and government appointments
+          hint: Tag people who are directly involved.
+        topical_events:
+          label: Topical events
+          hint: Tag major events this content is related to. For example, summits or budgets.
+        world_locations:
+          label: World locations
+          hint: Tag locations this content is about. If it only relates to the UK you don’t need to use this tag.
 
     press_release:
       label: Press release
@@ -61,6 +76,21 @@ en:
               [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
 
               [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+        primary_publishing_organisation:
+          label: Primary organisation
+          hint: The organisation responsible for publishing and maintaining this content.
+        organisations:
+          label: Organisations
+          hint: Tag organisations associated with this content.
+        role_appointments:
+          label: Ministers and government appointments
+          hint: Tag people who are directly involved.
+        topical_events:
+          label: Topical events
+          hint: Tag major events this content is related to. For example, summits or budgets.
+        world_locations:
+          label: World locations
+          hint: Tag locations this content is about. If it only relates to the UK you don’t need to use this tag.
 
     fatality_notice:
       label: Fatality notice
