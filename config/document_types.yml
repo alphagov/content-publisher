@@ -2,9 +2,6 @@
 - id: news_story
   label: News story
   description: "News written for GOV.UK which users need, can act on, and cannot get from other sources."
-  hint_govspeak: |
-    Do not include advice in news stories. Do not use to promote other content.
-    Read the full [guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story).
   path_prefix: /government/news
   images: true
   check_path_conflict: true
@@ -62,9 +59,6 @@
 - id: press_release
   label: Press release
   description: "Unedited press releases as sent to the media, and official statements from the organisation."
-  hint_govspeak: |
-    Do not use to promote other content. Statements to Parliament should use the Speech document type.
-    Read the full [guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release).
   path_prefix: /government/news
   images: true
   check_path_conflict: true
