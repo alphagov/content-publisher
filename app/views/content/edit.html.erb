@@ -69,7 +69,7 @@
       id: "summary",
       html_for: "summary-field"
     }
-    if @edition.document_type.guidance_for("title")
+    if @edition.document_type.guidance_for("summary")
       summary_contextual_guidance.merge!({
         title: @edition.document_type.guidance_for("summary").title,
         content: @edition.document_type.guidance_for("summary").body_govspeak,
