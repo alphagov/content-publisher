@@ -82,14 +82,14 @@ module WhitehallImporter
   end
 
   def self.create_timeline_entry(edition)
-    whitehall_migration_timeline_entry = TimelineEntry::WhitehallImportedEntry.create!(
+    details = TimelineEntry::WhitehallImportedEntry.create!(
       entry_type: :imported_from_whitehall,
     )
     TimelineEntry.create_for_revision(
       entry_type: :whitehall_migration,
       revision: edition.revision,
       edition: edition,
-      details: whitehall_migration_timeline_entry,
+      details: details,
     )
   end
 
