@@ -20,8 +20,6 @@
             title: "#{t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"}",
             description_text: format_date(entry.created_at)
           } %>
-        <% elsif entry.whitehall_migration? %>
-          <%= render partial: "documents/whitehall_imported_entry", locals: {entry: entry} %>
         <% else %>
           <%= render partial: "documents/timeline_entry", locals: {entry: entry} %>
         <% end %>
