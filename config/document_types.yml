@@ -8,23 +8,6 @@
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
-  guidance:
-    - id: title
-      title: Create a news title
-      body_govspeak: The title must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
-    - id: summary
-      title: Writing a news summary
-      body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
-    - id: body
-      title: Writing news
-      body_govspeak: |
-        Tell the story in the first lines with the most important information at the top. Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
-
-        [Guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story){:target="_blank"}
-
-        [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
-
-        [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
   contents:
     - id: body
       label: Body
@@ -65,23 +48,6 @@
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
-  guidance:
-    - id: title
-      title: Title
-      body_govspeak: The title should be unique and specific. It must make clear what the content offers users. Use the words your users do to help them find this. Avoid wordplay or teases.
-    - id: summary
-      title: Summary
-      body_govspeak: The summary should explain the main point of the story. It is the first line of the story so don’t repeat it in the body and end with a full stop.
-    - id: body
-      title: Writing a press release
-      body_govspeak: |
-        Use short words, short sentences, and short paragraphs. Use subheadings in longer content. Avoid 'notes to editors'.
-
-        [Guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release){:target="_blank"}
-
-        [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
-
-        [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
   contents:
     - id: body
       label: Body
