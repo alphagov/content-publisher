@@ -10,7 +10,7 @@ RSpec.describe "documents/_whitehall_imported_entry.html.erb" do
                               details_id: whitehall_imported_entry.id,
                               created_by: nil)
       render partial: "documents/whitehall_imported_entry", locals: { entry: timeline_entry }
-      expect(rendered).not_to include(" by ")
+      expect(rendered).not_to include(I18n.t("documents.history.by"))
       expect(rendered).to include(I18n.t("documents.history.entry_types.whitehall_migration.new_edition"))
     end
 
@@ -21,7 +21,7 @@ RSpec.describe "documents/_whitehall_imported_entry.html.erb" do
                               details_type: "TimelineEntry::WhitehallImportedEntry",
                               details_id: whitehall_imported_entry.id)
       render partial: "documents/whitehall_imported_entry", locals: { entry: timeline_entry }
-      expect(rendered).to include(" by John Smith")
+      expect(rendered).to include(I18n.t("documents.history.by") + " John Smith")
       expect(rendered).to include(I18n.t("documents.history.entry_types.whitehall_migration.new_edition"))
     end
   end
