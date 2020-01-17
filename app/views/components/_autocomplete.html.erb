@@ -10,10 +10,12 @@
   select ||= {}
   input ||= {}
   search ||= false
+  jsonly ||= false
 
   root_classes = %w(app-c-autocomplete govuk-form-group)
   root_classes << "app-c-autocomplete--#{width}" if width
   root_classes << "app-c-autocomplete--search" if search
+  root_classes << "app-js-only" if jsonly
   root_classes << "govuk-form-group--error" if error_items.any?
 %>
 
