@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DocumentType
+  extend DocumentTypeHelper # for static methods
+  include DocumentTypeHelper
   include InitializeWithHash
 
   attr_reader :contents, :id, :managed_elsewhere, :publishing_metadata,
@@ -19,8 +21,8 @@ class DocumentType
         hash["contents"] = hash["contents"].to_a.map(&Field.method(:new))
         hash["tags"] = (hash["tags"] || []).map do |tag_config|
           tag_i18n_data = "document_types.#{hash['id']}.fields.#{tag_config['id']}"
-          if I18n.exists?(tag_i18n_data)
-            TagField.new(tag_config.merge(I18n.t!(tag_i18n_data).stringify_keys))
+          if t_doctype_exists?(tag_i18n_data)
+            TagField.new(tag_config.merge(t_doctype(tag_i18n_data)))
           end
         end
         hash["tags"] = hash["tags"].compact
@@ -36,7 +38,7 @@ class DocumentType
   end
 
   def label
-    I18n.t!("document_types.#{id}.label")
+    t_doctype("document_types.#{id}.label")
   end
 
   class TagField
