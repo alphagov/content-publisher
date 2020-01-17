@@ -29,6 +29,13 @@ RSpec.describe WhitehallImporter::Import do
       expect(document).to be_imported_from_whitehall
     end
 
+    it "sets the timeline entry as Imported from Whitehall" do
+      described_class.call(build(:whitehall_migration_document_import))
+
+      expect(TimelineEntry.last).to be_whitehall_migration
+      expect(TimelineEntry.last.details).to be_imported_from_whitehall
+    end
+
     it "associates the created document with the import record" do
       import_record = build(:whitehall_migration_document_import)
       document = described_class.call(import_record)
@@ -99,11 +106,11 @@ RSpec.describe WhitehallImporter::Import do
 
       expect(WhitehallImporter::CreateEdition).to receive(:call).with(
         hash_including(current: false),
-      ).ordered
+      ).ordered.and_call_original
 
       expect(WhitehallImporter::CreateEdition).to receive(:call).with(
         hash_including(current: true),
-      ).ordered
+      ).ordered.and_call_original
 
       described_class.call(document_import)
     end
