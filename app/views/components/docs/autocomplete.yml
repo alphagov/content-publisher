@@ -159,3 +159,19 @@ examples:
           - France
           - Germany
           - United Kingdom
+  autocomplete_js_only:
+    description: |
+      Shows an autocomplete component only if JavaScript is enabled.
+      This is used when the search input requires a JavaScript request to return results.
+    data:
+      id: autocomplete-jsonly
+      name: autocomplete-jsonly
+      label:
+        text: Search
+      search: true
+      jsonly: true
+      input:
+        options:
+          - France
+          - Germany
+          - United Kingdom

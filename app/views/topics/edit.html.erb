@@ -68,18 +68,17 @@
   } do %>
     <miller-columns-selected class="miller-columns-selected" id="selected-items" for="miller-columns"></miller-columns-selected>
 
-    <div class="app-js-only">
-      <%= render "components/autocomplete", {
-        id: "topics-autocomplete",
-        name: "topics-autocomplete",
-        label: {
-          text: "Search topics",
-          bold: true
-        },
-        type: "topics",
-        search: true
-      } %>
-    </div>
+    <%= render "components/autocomplete", {
+      id: "topics-autocomplete",
+      name: "topics-autocomplete",
+      label: {
+        text: "Search topics",
+        bold: true
+      },
+      type: "topics",
+      search: true,
+      jsonly: true
+    } %>
 
     <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items">
     <ul id="taxonomy" class="govuk-list">
