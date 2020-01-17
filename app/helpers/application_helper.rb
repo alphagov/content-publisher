@@ -1,19 +1,13 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  def govspeak_to_html(govspeak)
-    # We expect all the govspeak through this to be commited code where we
-    # verify the safety
-    raw(Govspeak::Document.new(govspeak, sanitize: false).to_html) # rubocop:disable Rails/OutputSafety
-  end
-
   def render_back_link(options)
     render("govuk_publishing_components/components/back_link", options)
   end
 
   def render_govspeak(content)
     render "govuk_publishing_components/components/govspeak" do
-      govspeak_to_html(content)
+      raw(Govspeak::Document.new(content, sanitize: false).to_html) # rubocop:disable Rails/OutputSafety
     end
   end
 

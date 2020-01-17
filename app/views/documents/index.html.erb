@@ -28,9 +28,7 @@
     </p>
 
     <% if @editions.none? %>
-      <div class="govuk-body">
-        <%= govspeak_to_html t("documents.index.search_results.guidance_govspeak") %>
-      </div>
+      <%= render_govspeak t("documents.index.search_results.guidance_govspeak") %>
     <% else %>
       <%= render "documents/index/results" %>
     <% end %>
