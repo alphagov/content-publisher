@@ -95,10 +95,6 @@ module WhitehallImporter
         raise AbortImportError, "Lead organisation missing"
       end
 
-      if primary_publishing_organisations.count > 1
-        raise AbortImportError, "Cannot have more than one lead organisation"
-      end
-
       primary_publishing_organisation = primary_publishing_organisations.min { |o| o["lead_ordering"] }
 
       [primary_publishing_organisation["content_id"]]

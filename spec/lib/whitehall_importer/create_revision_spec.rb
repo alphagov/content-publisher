@@ -181,6 +181,20 @@ RSpec.describe WhitehallImporter::CreateRevision do
         .to eq(lead_organisation["content_id"])
     end
 
+    it "sets the first lead organisation as the primary publishing organisation" do
+      first_lead_organisation = build(:whitehall_export_organisation, :lead)
+      second_lead_organisation = build(:whitehall_export_organisation, :lead, lead_ordering: 2)
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        organisations: [first_lead_organisation, second_lead_organisation],
+      )
+
+      revision = described_class.call(document_import, whitehall_edition)
+
+      expect(revision.primary_publishing_organisation_id)
+        .to eq(first_lead_organisation["content_id"])
+    end
+
     it "sets supporting organisations" do
       lead_organisation = build(:whitehall_export_organisation, :lead)
       supporting_organisation = build(:whitehall_export_organisation)
@@ -206,18 +220,6 @@ RSpec.describe WhitehallImporter::CreateRevision do
       whitehall_edition = build(
         :whitehall_export_edition,
         organisations: [build(:whitehall_export_organisation)],
-      )
-
-      expect { described_class.call(document_import, whitehall_edition) }
-        .to raise_error(WhitehallImporter::AbortImportError)
-    end
-
-    it "aborts if there is more than one lead organisation" do
-      first_lead_organisation = build(:whitehall_export_organisation, :lead)
-      second_lead_organisation = build(:whitehall_export_organisation, :lead)
-      whitehall_edition = build(
-        :whitehall_export_edition,
-        organisations: [first_lead_organisation, second_lead_organisation],
       )
 
       expect { described_class.call(document_import, whitehall_edition) }
