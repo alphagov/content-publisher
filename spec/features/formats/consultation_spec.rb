@@ -9,7 +9,7 @@ RSpec.describe "Consultation format" do
   def when_i_choose_this_document_type
     visit "/"
     click_on "Create new document"
-    choose Supertype.find("policy").label
+    choose I18n.t!("supertypes.policy.label")
     click_on "Continue"
     choose DocumentType.find("consultation").label
     click_on "Continue"

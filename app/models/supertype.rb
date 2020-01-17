@@ -3,7 +3,7 @@
 class Supertype
   include InitializeWithHash
 
-  attr_reader :id, :label, :description, :managed_elsewhere, :hint, :document_types
+  attr_reader :id, :managed_elsewhere, :document_types
 
   def self.all
     @all ||= begin
