@@ -47,12 +47,12 @@ InlineAttachmentModal.prototype.actionCallback = function (item) {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
     'insert-attachment-block': function () {
-      this.$modal.close()
       this.editor.insertBlock(item.dataset.modalData)
+      this.$modal.close()
     },
     'insert-attachment-link': function () {
-      this.$modal.close()
       this.editor.insertInline(item.dataset.modalData)
+      this.$modal.close()
     }
   }
 

@@ -34,8 +34,8 @@ ContactEmbedModal.prototype.actionCallback = function (item) {
           if (result.unprocessableEntity) {
             this.workflow.renderSuccess(result)
           } else {
-            this.$modal.close()
             this.editor.insertBlock(result.body)
+            this.$modal.close()
           }
         }.bind(this))
         .catch(this.workflow.renderError)
