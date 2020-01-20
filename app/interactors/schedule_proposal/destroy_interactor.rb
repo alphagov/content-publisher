@@ -25,7 +25,7 @@ private
     updater.assign(proposed_publish_time: nil)
 
     if updater.changed?
-      EditEditionService.call(edition, user, revision: updater.next_revision)
+      EditDraftEditionService.call(edition, user, revision: updater.next_revision)
       edition.save!
     end
   end

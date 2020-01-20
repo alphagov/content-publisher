@@ -41,14 +41,14 @@ module WhitehallImporter
     end
 
     def unique_filename
-      @unique_filename ||= UniqueFilenameService.call(
+      @unique_filename ||= GenerateUniqueFilenameService.call(
         existing_filenames,
         File.basename(whitehall_file_attachment["url"]),
       )
     end
 
     def create_blob_revision(decorated_file)
-      FileAttachmentBlobService.call(
+      CreateFileAttachmentBlobService.call(
         file: decorated_file,
         filename: unique_filename,
       )

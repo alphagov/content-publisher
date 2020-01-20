@@ -71,7 +71,7 @@ module WhitehallImporter
     begin
       whitehall_import.update!(state: "syncing")
 
-      ResyncService.call(whitehall_import.document)
+      ResyncDocumentService.call(whitehall_import.document)
       ClearLinksetLinks.call(whitehall_import.document.content_id)
       MigrateAssets.call(whitehall_import)
 

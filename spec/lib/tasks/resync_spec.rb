@@ -5,7 +5,7 @@ RSpec.describe "Resync tasks" do
     it "resyncs a document" do
       document = create(:document)
 
-      expect(ResyncService)
+      expect(ResyncDocumentService)
         .to receive(:call)
         .once
         .with(document)
@@ -18,7 +18,7 @@ RSpec.describe "Resync tasks" do
     it "resyncs all documents" do
       create_list(:document, 2)
 
-      expect(ResyncService)
+      expect(ResyncDocumentService)
         .to receive(:call)
         .twice
 

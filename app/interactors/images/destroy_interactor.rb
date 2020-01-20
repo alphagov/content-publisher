@@ -28,7 +28,7 @@ private
     context.image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.remove_image(image_revision)
-    EditEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
     edition.save!
     context.removed_lead_image = updater.removed_lead_image?
   end
@@ -38,6 +38,6 @@ private
   end
 
   def update_preview
-    FailsafePreviewService.call(edition)
+    FailsafeDraftPreviewService.call(edition)
   end
 end

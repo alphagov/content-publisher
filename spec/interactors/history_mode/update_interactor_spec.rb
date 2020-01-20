@@ -39,7 +39,7 @@ RSpec.describe HistoryMode::UpdateInteractor do
     end
 
     it "sends a preview of the new edition to the Publishing API" do
-      expect(FailsafePreviewService).to receive(:call)
+      expect(FailsafeDraftPreviewService).to receive(:call)
 
       HistoryMode::UpdateInteractor.call(**args)
     end

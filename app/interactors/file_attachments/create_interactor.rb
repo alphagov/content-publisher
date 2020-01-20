@@ -33,7 +33,7 @@ private
   end
 
   def upload_attachment
-    blob_revision = FileAttachmentBlobService.call(
+    blob_revision = CreateFileAttachmentBlobService.call(
       file: params[:file], filename: unique_filename, user: user,
     )
 
@@ -55,16 +55,16 @@ private
   def update_edition
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.add_file_attachment(attachment_revision)
-    EditEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
     edition.save!
   end
 
   def update_preview
-    FailsafePreviewService.call(edition)
+    FailsafeDraftPreviewService.call(edition)
   end
 
   def unique_filename
     existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
-    UniqueFilenameService.call(existing_filenames, params[:file].original_filename)
+    GenerateUniqueFilenameService.call(existing_filenames, params[:file].original_filename)
   end
 end

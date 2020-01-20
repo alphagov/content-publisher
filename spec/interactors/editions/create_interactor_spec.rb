@@ -32,8 +32,8 @@ RSpec.describe Editions::CreateInteractor do
     it "sends a preview of the new edition to the Publishing API" do
       old_edition = create(:edition, :published)
 
-      expect(FailsafePreviewService).to receive(:call)
-      expect(FailsafePreviewService).not_to receive(:call).with(old_edition)
+      expect(FailsafeDraftPreviewService).to receive(:call)
+      expect(FailsafeDraftPreviewService).not_to receive(:call).with(old_edition)
 
       Editions::CreateInteractor
         .call(params: { document: old_edition.document.to_param }, user: user)

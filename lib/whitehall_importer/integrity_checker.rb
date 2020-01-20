@@ -17,7 +17,7 @@ module WhitehallImporter
     end
 
     def proposed_payload
-      @proposed_payload ||= PreviewService::Payload.new(edition, republish: edition.live?).payload
+      @proposed_payload ||= PreviewDraftEditionService::Payload.new(edition, republish: edition.live?).payload
     end
 
   private

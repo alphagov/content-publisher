@@ -2,7 +2,7 @@
 
 RSpec.describe FileAttachments::CreateInteractor do
   describe ".call" do
-    before { allow(FailsafePreviewService).to receive(:call) }
+    before { allow(FailsafeDraftPreviewService).to receive(:call) }
     let(:user) { create(:user) }
     let(:edition) { create(:edition) }
     let(:file) { fixture_file_upload("files/13kb-1-page-attachment.pdf") }
@@ -28,15 +28,15 @@ RSpec.describe FileAttachments::CreateInteractor do
           .to change { FileAttachment::Revision.count }.by(1)
       end
 
-      it "delegates saving the file to the FileAttachmentBlobService" do
-        expect(FileAttachmentBlobService).to receive(:call)
+      it "delegates saving the file to the CreateFileAttachmentBlobService" do
+        expect(CreateFileAttachmentBlobService).to receive(:call)
           .with(file: file, filename: file.original_filename, user: user)
           .and_call_original
         FileAttachments::CreateInteractor.call(**args)
       end
 
-      it "delegates generating a unique filename to UniqueFilenameService" do
-        expect(UniqueFilenameService).to receive(:call)
+      it "delegates generating a unique filename to GenerateUniqueFilenameService" do
+        expect(GenerateUniqueFilenameService).to receive(:call)
           .with(edition.revision.file_attachment_revisions.map(&:filename), file.original_filename)
           .and_call_original
         FileAttachments::CreateInteractor.call(**args)
@@ -64,7 +64,7 @@ RSpec.describe FileAttachments::CreateInteractor do
       end
 
       it "updates the preview" do
-        expect(FailsafePreviewService).to receive(:call).with(edition)
+        expect(FailsafeDraftPreviewService).to receive(:call).with(edition)
         FileAttachments::CreateInteractor.call(**args)
       end
     end

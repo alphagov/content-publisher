@@ -31,7 +31,7 @@ private
 
     if LIMIT_TYPES.exclude?(limit_type)
       context.fail! if edition.access_limit.nil?
-      EditEditionService.call(edition, user, access_limit: nil)
+      EditDraftEditionService.call(edition, user, access_limit: nil)
       return
     end
 
@@ -42,7 +42,7 @@ private
                                    limit_type: limit_type,
                                    revision_at_creation: edition.revision)
 
-    EditEditionService.call(edition, user, access_limit: access_limit)
+    EditDraftEditionService.call(edition, user, access_limit: access_limit)
   end
 
   def check_for_issues
@@ -72,6 +72,6 @@ private
   end
 
   def update_preview
-    FailsafePreviewService.call(edition)
+    FailsafeDraftPreviewService.call(edition)
   end
 end
