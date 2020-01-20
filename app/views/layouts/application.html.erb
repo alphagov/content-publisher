@@ -72,11 +72,7 @@
             "gtm-value" => flash["alert_with_description"]["title"],
             "gtm-visibility-tracking" => true
           },
-          description: capture do
-            render "govuk_publishing_components/components/govspeak" do
-              govspeak_to_html(flash["alert_with_description"].fetch("description_govspeak"))
-            end
-          end
+          description: render_govspeak(flash["alert_with_description"].fetch("description_govspeak"))
         } %>
       <% end %>
 
