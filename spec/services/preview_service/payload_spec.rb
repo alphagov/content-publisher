@@ -35,7 +35,7 @@ RSpec.describe PreviewService::Payload do
       expect(payload["auth_bypass_ids"]).to eq(%w[id])
     end
 
-    it "specifies organistions when the edition is access limited" do
+    it "specifies organisations when the edition is access limited" do
       edition = build(:edition, :access_limited)
       allow(edition).to receive(:access_limit_organisation_ids) { %w[org-id] }
       payload = PreviewService::Payload.new(edition).payload
