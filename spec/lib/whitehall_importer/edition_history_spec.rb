@@ -54,6 +54,27 @@ RSpec.describe WhitehallImporter::EditionHistory do
     end
   end
 
+  describe "#previous_event" do
+    it "returns the event associated with the state" do
+      first_event = build(:revision_history_event)
+      second_event = build(:revision_history_event)
+      instance = described_class.new([first_event, second_event])
+
+      expect(instance.previous_event(second_event)).to eq(first_event)
+    end
+
+    it "returns nil when a previous event is not found" do
+      event = build(:revision_history_event)
+      expect(described_class.new([]).previous_event(event)).to be_nil
+    end
+  end
+
+  describe "#previous_event!" do
+    it_behaves_like "an event bang method",
+                    :previous_event,
+                    [FactoryBot.build(:revision_history_event)]
+  end
+
   describe "#next_event" do
     it "returns the event associated with the state" do
       first_event = build(:revision_history_event)
@@ -169,6 +190,47 @@ RSpec.describe WhitehallImporter::EditionHistory do
 
       expect(instance.editors.count).to eq(1)
       expect(instance.editors).to eq([1])
+    end
+  end
+
+  describe "#timeline_entry" do
+    it "returns first_created for create event on first edition" do
+      event = build(:revision_history_event)
+      instance = described_class.new([event])
+
+      expect(instance.imported_entry_type(event, 1)).to eq("first_created")
+    end
+
+    it "returns new_edition for create event on subsequent edition" do
+      event = build(:revision_history_event)
+      instance = described_class.new([event])
+
+      expect(instance.imported_entry_type(event, 2)).to eq("new_edition")
+    end
+
+    it "returns document_updated if there is no change in state" do
+      first_event = build(:revision_history_event)
+      second_event = build(:revision_history_event, event: "update")
+      instance = described_class.new([first_event, second_event])
+
+      expect(instance.imported_entry_type(second_event, 1)).to eq("document_updated")
+    end
+
+    it "returns the Content Publisher event type if the state has changed" do
+      first_event = build(:revision_history_event, state: "draft")
+      second_event = build(:revision_history_event, event: "update", state: "published")
+      instance = described_class.new([first_event, second_event])
+
+      expect(instance.imported_entry_type(second_event, 1)).to eq("published")
+    end
+
+    it "aborts if the state has changed but the mapping is undefined" do
+      first_event = build(:revision_history_event, state: "draft")
+      second_event = build(:revision_history_event, event: "update", state: "foo")
+      instance = described_class.new([first_event, second_event])
+
+      expect { instance.imported_entry_type(second_event, 1) }
+        .to raise_error(WhitehallImporter::AbortImportError)
     end
   end
 end

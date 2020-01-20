@@ -18,6 +18,17 @@ module WhitehallImporter
       revision_history.select { |h| h["state"] == state }.first
     end
 
+    def previous_event(event)
+      index = revision_history.index(event)
+      return unless index
+
+      revision_history[index - 1]
+    end
+
+    def previous_event!(event)
+      previous_event(event) || (raise AbortImportError, "Edition is missing previous event for #{event}")
+    end
+
     def next_event(event)
       index = revision_history.index(event)
       return unless index
@@ -62,6 +73,28 @@ module WhitehallImporter
 
     def editors
       revision_history.pluck("whodunnit").uniq
+    end
+
+    def imported_entry_type(event, edition_number)
+      if event["event"] == "create"
+        return edition_number == 1 ? "first_created" : "new_edition"
+      end
+
+      if previous_event(event) && previous_event(event)["state"] == event["state"]
+        return "document_updated"
+      end
+
+      case event["state"]
+      when "archived" then "archived"
+      when "draft" then "removed"
+      when "published" then "published"
+      when "rejected" then "rejected"
+      when "scheduled" then "scheduled"
+      when "submitted" then "submitted"
+      when "withdrawn" then "withdrawn"
+      else
+        raise(AbortImportError, "Edition history has an unsupported state #{event['state']}")
+      end
     end
 
   private
