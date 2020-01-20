@@ -86,7 +86,7 @@ RSpec.feature "Enforce access limit" do
     visit document_path(@edition.document)
     expect(page).to have_content("Change Access limiting")
     visit edit_document_path(@edition.document)
-    expect(page).to have_content(I18n.t!("documents.edit.title", title: @edition.title_or_fallback))
+    expect(page).to have_content(I18n.t!("content.edit.title", title: @edition.title_or_fallback))
   end
 
   def and_the_supporting_user_can_also

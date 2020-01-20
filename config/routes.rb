@@ -12,12 +12,14 @@ Rails.application.routes.draw do
 
   scope "/documents/:document" do
     get "" => "documents#show", as: :document
-    patch "" => "documents#update"
-    delete "" => "documents#destroy"
     get "/history" => "documents#history", as: :document_history
-    get "/edit" => "documents#edit", as: :edit_document
     get "/generate-path" => "documents#generate_path", as: :generate_path
-    get "/delete-draft" => "documents#confirm_delete_draft", as: :delete_draft
+
+    patch "" => "content#update"
+    get "/edit" => "content#edit", as: :edit_document
+
+    delete "" => "editions#destroy"
+    get "/delete-draft" => "editions#confirm_delete_draft", as: :delete_draft
 
     get "/publish" => "publish#confirmation", as: :publish_confirmation
     post "/publish" => "publish#publish"

@@ -64,7 +64,7 @@ RSpec.feature "Editions" do
   end
 
   def and_i_make_a_minor_change
-    choose I18n.t!("documents.edit.update_type.minor_name")
+    choose I18n.t!("content.edit.update_type.minor_name")
     click_on "Save"
   end
 

@@ -1,9 +1,9 @@
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 
 <% if @edition.document.newly_created? %>
-  <% content_for :title, t("documents.edit.title_new", document_type: @edition.document_type.label.downcase) %>
+  <% content_for :title, t("content.edit.title_new", document_type: @edition.document_type.label.downcase) %>
 <% else %>
-  <% content_for :title, t("documents.edit.title", title: @edition.title_or_fallback) %>
+  <% content_for :title, t("content.edit.title", title: @edition.title_or_fallback) %>
 <% end %>
 
 <%= form_for @edition.document,
@@ -32,7 +32,7 @@
   <%= render "govuk_publishing_components/components/contextual_guidance", title_contextual_guidance do %>
     <%= render "govuk_publishing_components/components/textarea", {
       label: {
-        text: t("documents.edit.form_labels.title"),
+        text: t("content.edit.form_labels.title"),
         bold: true
       },
       id: "title-field",
@@ -55,9 +55,9 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= render "components/url_preview", {
-        title: t("documents.edit.url_preview.available"),
-        default_message: t("documents.edit.url_preview.no_title"),
-        error_message: t("documents.edit.url_preview.error"),
+        title: t("content.edit.url_preview.available"),
+        default_message: t("content.edit.url_preview.no_title"),
+        error_message: t("content.edit.url_preview.error"),
         website_root: Plek.new.website_root,
         base_path: @revision.base_path
       } %>
@@ -81,7 +81,7 @@
   <%= render "govuk_publishing_components/components/contextual_guidance", summary_contextual_guidance do %>
     <%= render "govuk_publishing_components/components/textarea", {
       label: {
-        text: t("documents.edit.form_labels.summary"),
+        text: t("content.edit.form_labels.summary"),
         bold: true
       },
       id: "summary-field",
@@ -110,7 +110,7 @@
   <% end %>
 
   <% if @edition.document.live_edition %>
-    <%= render "documents/edit/change_notes" %>
+    <%= render "content/edit/change_notes" %>
   <% end %>
 
   <%= render "govuk_publishing_components/components/button", {

@@ -1,8 +1,8 @@
 <% document_contents_guidance = capture do %>
   <%= edition.document_type.guidance_for(field.id) ? render_govspeak(edition.document_type.guidance_for(field.id).body_govspeak) : nil %>
-  <h3 class="govuk-heading-s"><%= t("documents.edit.fields.govspeak.title") %></h3>
+  <h3 class="govuk-heading-s"><%= t("content.edit.fields.govspeak.title") %></h3>
   <p class="govuk-body">
-    <%= link_to t("documents.edit.fields.govspeak.guidance"), "https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown", class: "govuk-link", target: "_blank" %>
+    <%= link_to t("content.edit.fields.govspeak.guidance"), "https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown", class: "govuk-link", target: "_blank" %>
   </p>
   <%= render "components/markdown_guidance" %>
 <% end %>

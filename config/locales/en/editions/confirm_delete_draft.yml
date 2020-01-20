@@ -1,5 +1,5 @@
 en:
-  documents:
+  editions:
     confirm_delete_draft:
       title: Delete the draft of '%{title}'
       description_govspeak: |
