@@ -57,6 +57,14 @@ RSpec.describe WhitehallImporter::Import do
       expect { described_class.call(document_import) }.not_to(change { User.count })
     end
 
+    it "does not create a user who has a nil uid" do
+      user = build(:whitehall_export_user, uid: nil)
+      import_data = build(:whitehall_export_document, users: [user])
+      document_import = build(:whitehall_migration_document_import, payload: import_data)
+
+      expect { described_class.call(document_import) }.not_to(change { User.count })
+    end
+
     it "sets created_by_id as the original author" do
       user = User.create!(uid: whitehall_user["uid"])
       edition = build(

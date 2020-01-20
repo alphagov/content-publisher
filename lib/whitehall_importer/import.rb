@@ -40,8 +40,11 @@ module WhitehallImporter
     end
 
     def create_users(users)
+      user_keys = %w[uid name email organisation_slug organisation_content_id]
+
       users.each_with_object({}) do |user, memo|
-        user_keys = %w[uid name email organisation_slug organisation_content_id]
+        next if user["uid"].blank?
+
         attributes = user.slice(*user_keys).merge("permissions" => [])
         user_object = User.find_by(uid: user["uid"]) || User.create!(attributes)
         memo[user["id"]] = user_object.id
