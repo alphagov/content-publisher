@@ -7,8 +7,33 @@ function ModalWorkflow ($modal, actionCallback) {
   this.$multiSectionViewer = this.$modal
     .querySelector('[data-module="multi-section-viewer"]')
 
+  this.performAction = this.performAction.bind(this)
   this.renderSuccess = this.renderSuccess.bind(this)
   this.renderError = this.renderError.bind(this)
+}
+
+ModalWorkflow.prototype.performAction = function (item) {
+  this.$modal.focusDialog()
+  this.$multiSectionViewer.showStaticSection('loading')
+  this.actionCallback(item)
+}
+
+ModalWorkflow.prototype.render = function (response) {
+  response
+    .then(this.renderSuccess)
+    .catch(this.renderError)
+}
+
+ModalWorkflow.prototype.renderSuccess = function (result) {
+  this.$multiSectionViewer.showDynamicSection(result.body)
+  this.overrideActions(this.performAction)
+  this.initComponents()
+}
+
+ModalWorkflow.prototype.renderError = function (result) {
+  window.Raven.captureException(result)
+  console.error(result)
+  this.$multiSectionViewer.showStaticSection('error')
 }
 
 ModalWorkflow.prototype.initComponents = function () {
@@ -33,28 +58,4 @@ ModalWorkflow.prototype.overrideActions = function (actions) {
       actions(item)
     })
   })
-}
-
-ModalWorkflow.prototype.render = function (response) {
-  response
-    .then(this.renderSuccess)
-    .catch(this.renderError)
-}
-
-ModalWorkflow.prototype.renderError = function (result) {
-  window.Raven.captureException(result)
-  console.error(result)
-  this.$multiSectionViewer.showStaticSection('error')
-}
-
-ModalWorkflow.prototype.renderSuccess = function (result) {
-  this.$multiSectionViewer.showDynamicSection(result.body)
-  this.overrideActions(this.performAction.bind(this))
-  this.initComponents()
-}
-
-ModalWorkflow.prototype.performAction = function (item) {
-  this.$modal.focusDialog()
-  this.$multiSectionViewer.showStaticSection('loading')
-  this.actionCallback(item)
 }
