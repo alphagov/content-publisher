@@ -6,7 +6,7 @@
   <div class="app-timeline-entry__dateline">
     <%= format_date_at_time(entry.created_at) %>
     <% if entry.created_by %>
-    <%= t "documents.history.by" %> <%= name_or_fallback(entry.created_by)%>
+    <%= t "documents.history.by" %> <%= entry.created_by.name %>
     <% end %>
   </div>
 <% else %>
@@ -17,7 +17,7 @@
   <div class="app-timeline-entry__dateline">
     <%= format_date_at_time(entry.created_at) %>
     <% if entry.created_by %>
-    <%= t "documents.history.by"%> <%= name_or_fallback(entry.created_by)%>
+    <%= t "documents.history.by"%> <%= entry.created_by.name %>
     <% end %>
   </div>
 
