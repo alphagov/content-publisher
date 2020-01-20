@@ -39,7 +39,7 @@ en:
           title: Access limiting
           no_access_limit: None
           type:
-            tagged_organisations: Only publishers in tagged organistions have access
+            tagged_organisations: Only publishers in tagged organisations have access
             primary_organisation: Only publishers in the primary organisation have access
         gets_history_mode:
           title: Gets history mode

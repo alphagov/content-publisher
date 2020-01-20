@@ -55,7 +55,7 @@ RSpec.feature "Index filtering" do
                                })
     create(:edition,
            :published,
-           title: "Irrelevant but my organistion",
+           title: "Irrelevant but my organisation",
            tags: {
              primary_publishing_organisation: [@primary_organisation["content_id"]],
              organisations: [@primary_organisation["content_id"]],
