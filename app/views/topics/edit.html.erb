@@ -80,13 +80,15 @@
       jsonly: true
     } %>
 
-    <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items">
-    <ul id="taxonomy" class="govuk-list">
-      <% Topic.govuk_homepage(@edition.document_topics.index).children.each do |topic| %>
-        <% unroll(topic) %>
-      <% end %>
-    </ul>
-    </miller-columns>
+    <div class="govuk-form-group">
+      <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items">
+      <ul id="taxonomy" class="govuk-list">
+        <% Topic.govuk_homepage(@edition.document_topics.index).children.each do |topic| %>
+          <% unroll(topic) %>
+        <% end %>
+      </ul>
+      </miller-columns>
+    </div>
   <% end %>
 
   <%= hidden_field_tag :version, @version %>
