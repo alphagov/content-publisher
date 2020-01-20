@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 class ResyncDocumentService < ApplicationService
-  attr_reader :document
-
-  delegate :live_edition,
-           :current_edition,
-           to: :document
-
   def initialize(document)
     @document = document
   end
@@ -19,6 +13,12 @@ class ResyncDocumentService < ApplicationService
   end
 
 private
+
+  delegate :live_edition,
+           :current_edition,
+           to: :document
+
+  attr_reader :document
 
   def sync_live_edition
     live_edition.lock!
