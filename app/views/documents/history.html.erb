@@ -14,15 +14,7 @@
           <h3 class="govuk-heading-m"><%= t "documents.history.edition_header", number: entry.edition.number.ordinalize %></h3>
           <% displayed_edition_number = entry.edition.number %>
         <% end %>
-
-        <% if entry.whitehall_migration? && entry.details.imported_from_whitehall? %>
-          <%= render "govuk_publishing_components/components/notice", {
-            title: "#{t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"}",
-            description_text: format_date(entry.created_at)
-          } %>
-        <% else %>
-          <%= render partial: "documents/timeline_entry", locals: {entry: entry} %>
-        <% end %>
+        <%= render partial: "documents/timeline_entry", locals: {entry: entry} %>
       </div>
     <% end %>
 

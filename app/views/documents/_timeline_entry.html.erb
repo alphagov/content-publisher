@@ -1,3 +1,9 @@
+<% if entry.whitehall_migration? && entry.details.imported_from_whitehall? %>
+  <%= render "govuk_publishing_components/components/notice", {
+    title: "#{t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"}",
+    description_text: format_date(entry.created_at)
+  } %>
+<% end %>
 <% if entry.whitehall_migration? %>
   <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
     <%= t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}" %>
