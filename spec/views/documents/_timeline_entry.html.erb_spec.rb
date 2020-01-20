@@ -6,40 +6,37 @@ RSpec.describe "documents/_timeline_entry.html.erb" do
       timeline_entry = create(:timeline_entry,
                               created_by: nil)
       render partial: "documents/timeline_entry", locals: { entry: timeline_entry }
-      expect(rendered).not_to include(I18n.t!("documents.history.by"))
-      expect(rendered).to include(I18n.t!("documents.history.entry_types.created"))
+      expect(rendered).not_to have_content(I18n.t!("documents.history.by"))
+      expect(rendered).to have_content(I18n.t!("documents.history.entry_types.created"))
     end
 
     it "shows a Whitehall timeline entry with an author" do
       timeline_entry = create(:timeline_entry)
       render partial: "documents/timeline_entry", locals: { entry: timeline_entry }
-      expect(rendered).to include(I18n.t!("documents.history.by") + " John Smith")
-      expect(rendered).to include(I18n.t!("documents.history.entry_types.created"))
+      expect(rendered).to have_content(I18n.t!("documents.history.by") + " John Smith")
+      expect(rendered).to have_content(I18n.t!("documents.history.entry_types.created"))
     end
   end
 
   describe "Whitehall imported timeline entry" do
-    let(:whitehall_imported_entry) { create(:whitehall_imported_entry) }
     it "shows a Whitehall timeline entry without an author" do
       timeline_entry = create(:timeline_entry,
-                              entry_type: "whitehall_migration",
-                              details_type: "TimelineEntry::WhitehallImportedEntry",
-                              details_id: whitehall_imported_entry.id,
+                              :whitehall_imported,
+                              whitehall_entry_type: :new_edition,
                               created_by: nil)
       render partial: "documents/timeline_entry", locals: { entry: timeline_entry }
-      expect(rendered).not_to include(I18n.t!("documents.history.by"))
-      expect(rendered).to include(I18n.t!("documents.history.entry_types.whitehall_migration.new_edition"))
+      expect(rendered).not_to have_content(I18n.t!("documents.history.by"))
+      expect(rendered).to have_content(I18n.t!("documents.history.entry_types.whitehall_migration.new_edition"))
     end
 
     it "shows a Whitehall timeline entry with an author" do
       timeline_entry = create(:timeline_entry,
-                              entry_type: "whitehall_migration",
-                              details_type: "TimelineEntry::WhitehallImportedEntry",
-                              details_id: whitehall_imported_entry.id)
+                              :whitehall_imported,
+                              whitehall_entry_type: :new_edition)
 
       render partial: "documents/timeline_entry", locals: { entry: timeline_entry }
-      expect(rendered).to include(I18n.t!("documents.history.by") + " John Smith")
-      expect(rendered).to include(I18n.t!("documents.history.entry_types.whitehall_migration.new_edition"))
+      expect(rendered).to have_content(I18n.t!("documents.history.by") + " John Smith")
+      expect(rendered).to have_content(I18n.t!("documents.history.entry_types.whitehall_migration.new_edition"))
     end
   end
 end
