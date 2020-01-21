@@ -2,10 +2,9 @@
 
 module AssertEditionStateExamples
   # an example calling this is expected to provided text of the scenario name
-  # and an array of methods to be checked.
+  # and a hash of path helpers with the methods to be checked.
   # Within the example we expect a let of an edition to be defined, which
-  # sets up an edition in an incorrect state and a let of run_request which is
-  # a lambda to call to run the request
+  # sets up an edition in an incorrect state.
   #
   # For example:
   #   it_behaves_like "requests that assert edition state",
