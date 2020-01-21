@@ -3,8 +3,7 @@
     title: "#{t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"}",
     description_text: format_date(entry.created_at)
   } %>
-<% end %>
-<% if entry.whitehall_migration? %>
+<% elsif entry.whitehall_migration? %>
   <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
     <%= t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}" %>
   </h4>
