@@ -15,5 +15,18 @@ FactoryBot.define do
                                   end
       end
     end
+
+    trait :whitehall_imported do
+      entry_type { :whitehall_migration }
+      transient do
+        whitehall_entry_type { :first_created }
+      end
+
+      after(:build) do |timeline_entry, evaluator|
+        timeline_entry.details = TimelineEntry::WhitehallImportedEntry.new(
+          entry_type: evaluator.whitehall_entry_type,
+        )
+      end
+    end
   end
 end

@@ -102,11 +102,6 @@ RSpec.describe WhitehallImporter do
         WhitehallImporter.import(whitehall_migration_document_import)
         expect(whitehall_migration_document_import).to be_imported
       end
-
-      it "sets the timeline entry as Imported from Whitehall" do
-        WhitehallImporter.import(whitehall_migration_document_import)
-        expect(TimelineEntry.last).to be_imported_from_whitehall
-      end
     end
 
     context "when the import fails" do

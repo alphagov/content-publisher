@@ -29,11 +29,25 @@ module WhitehallImporter
         end
 
         check_document_integrity(document_import.document)
+
+        create_timeline_entry(document_import.document.current_edition)
         document_import.document
       end
     end
 
   private
+
+    def create_timeline_entry(edition)
+      details = TimelineEntry::WhitehallImportedEntry.create!(
+        entry_type: :imported_from_whitehall,
+      )
+      TimelineEntry.create_for_revision(
+        entry_type: :whitehall_migration,
+        revision: edition.revision,
+        edition: edition,
+        details: details,
+      )
+    end
 
     def current?(edition)
       edition["id"] == whitehall_document["editions"].max_by { |e| e["created_at"] }["id"]
