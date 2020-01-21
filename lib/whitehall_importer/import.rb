@@ -16,7 +16,7 @@ module WhitehallImporter
     def call
       ActiveRecord::Base.transaction do
         user_ids = create_users(whitehall_document["users"])
-        document_import.update!(document: create_document(user_ids))
+        document_import.document = create_document(user_ids)
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           CreateEdition.call(
@@ -31,8 +31,12 @@ module WhitehallImporter
         check_document_integrity(document_import.document)
 
         create_timeline_entry(document_import.document.current_edition)
-        document_import.document
+        document_import.update!(state: "imported")
       end
+    rescue StandardError
+      # restore any attributes set during import
+      document_import.reload
+      raise
     end
 
   private

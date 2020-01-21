@@ -18,15 +18,16 @@ RSpec.describe WhitehallImporter::Import do
     it "aborts if a document already exists" do
       content_id = create(:document).content_id
       import_data = build(:whitehall_export_document, content_id: content_id)
-      document_import = build(:whitehall_migration_document_import, payload: import_data)
+      document_import = create(:whitehall_migration_document_import, payload: import_data)
       expect { described_class.call(document_import) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
 
     it "sets the document as being imported from Whitehall" do
-      document = described_class.call(build(:whitehall_migration_document_import))
+      document_import = build(:whitehall_migration_document_import, document: nil)
+      described_class.call(document_import)
 
-      expect(document).to be_imported_from_whitehall
+      expect(document_import.document).to be_imported_from_whitehall
     end
 
     it "sets the timeline entry as Imported from Whitehall" do
@@ -37,10 +38,11 @@ RSpec.describe WhitehallImporter::Import do
     end
 
     it "associates the created document with the import record" do
-      import_record = build(:whitehall_migration_document_import)
-      document = described_class.call(import_record)
+      import_record = build(:whitehall_migration_document_import, document: nil)
+      whitehall_document_content_id = import_record.payload["content_id"]
+      described_class.call(import_record)
 
-      expect(import_record.document).to eq(document)
+      expect(import_record.document.content_id).to eq(whitehall_document_content_id)
     end
 
     it "creates users who have never logged into Content Publisher" do
@@ -83,9 +85,9 @@ RSpec.describe WhitehallImporter::Import do
                           editions: [edition],
                           users: [whitehall_user])
       document_import = build(:whitehall_migration_document_import, payload: import_data)
-      document = described_class.call(document_import)
+      described_class.call(document_import)
 
-      expect(document.created_by).to eq(user)
+      expect(document_import.document.created_by).to eq(user)
     end
 
     it "sets current boolean on whether edition is current or not" do
@@ -135,9 +137,9 @@ RSpec.describe WhitehallImporter::Import do
       import_data = build(:whitehall_export_document,
                           editions: [first_edition, second_edition])
       document_import = build(:whitehall_migration_document_import, payload: import_data)
-      document = described_class.call(document_import)
+      described_class.call(document_import)
 
-      expect(document.first_published_at).to eq(first_publish_date)
+      expect(document_import.document.first_published_at).to eq(first_publish_date)
     end
 
     it "integrity checks the current and live editions of the imported document" do
@@ -163,8 +165,21 @@ RSpec.describe WhitehallImporter::Import do
                       edition: build(:edition),
                     ))
 
-      expect { described_class.call(build(:whitehall_migration_document_import)) }
+      document_import = create(:whitehall_migration_document_import, document: nil)
+      expect { described_class.call(document_import) }
         .to raise_error(WhitehallImporter::IntegrityCheckError)
+    end
+
+    it "does not update the document import if the transaction fails" do
+      document_import = create(:whitehall_migration_document_import,
+                               updated_at: Date.tomorrow.noon)
+      updated_at = document_import.updated_at
+      document_import.updated_at = 2.days.from_now
+      allow(document_import).to receive(:update!).and_raise("forced error")
+
+      expect { described_class.call(document_import) }.to raise_error("forced error")
+      expect(document_import.changed?).to be false
+      expect(document_import.updated_at).to eq(updated_at)
     end
   end
 end
