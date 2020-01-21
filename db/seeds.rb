@@ -9,4 +9,5 @@ permissions << User::DEBUG_PERMISSION if Rails.env.development?
 
 user.update!(permissions: permissions,
              organisation_content_id: gds_organisation_content_id,
+             uid: SecureRandom.uuid,
              email: "someone-else@example.com")
