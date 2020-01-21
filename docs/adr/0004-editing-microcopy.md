@@ -1,6 +1,7 @@
 # 4. Editing Microcopy
 
 Date: 2018-09-11
+Revised: 2020-01-21
 
 ## Context
 
