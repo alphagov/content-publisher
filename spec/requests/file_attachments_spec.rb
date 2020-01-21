@@ -16,10 +16,20 @@ RSpec.describe "File Attachments" do
     let(:route_params) { [edition.document, "file_attachment_id"] }
   end
 
-  describe "GET /documents/:document/file-attachments/:file_attachment_id" do
+  it_behaves_like "requests that return status",
+                  "when a file attachment revision belongs to a different edition",
+                  status: :not_found,
+                  routes: { file_attachment_path: %i[get delete],
+                            edit_file_attachment_path: %i[get patch],
+                            preview_file_attachment_path: %i[get] } do
+    let(:edition) { create(:edition) }
     let(:file_attachment_revision) { create(:file_attachment_revision) }
+    let(:route_params) { [edition.document, file_attachment_revision] }
+  end
 
+  describe "GET /documents/:document/file-attachments/:file_attachment_id" do
     it "shows the file attachment when it exists on the edition" do
+      file_attachment_revision = create(:file_attachment_revision)
       edition = create(:edition,
                        file_attachment_revisions: [file_attachment_revision])
 
@@ -27,13 +37,6 @@ RSpec.describe "File Attachments" do
                                file_attachment_revision.file_attachment_id)
       expect(response).to have_http_status(:ok)
       expect(response.body).to have_content(file_attachment_revision.filename)
-    end
-
-    it "returns a 404 when file attachment isn't for the edition" do
-      edition = create(:edition)
-      get file_attachment_path(edition.document,
-                               file_attachment_revision.file_attachment_id)
-      expect(response).to have_http_status(:not_found)
     end
   end
 
@@ -129,6 +132,7 @@ RSpec.describe "File Attachments" do
     let(:file_attachment_revision) { create(:file_attachment_revision) }
 
     it "shows the file attachment when it exists on the edition" do
+      file_attachment_revision = create(:file_attachment_revision)
       edition = create(:edition,
                        file_attachment_revisions: [file_attachment_revision])
 
@@ -136,13 +140,6 @@ RSpec.describe "File Attachments" do
                                     file_attachment_revision.file_attachment_id)
       expect(response).to have_http_status(:ok)
       expect(response.body).to have_content(file_attachment_revision.filename)
-    end
-
-    it "returns a 404 when file attachment isn't for the edition" do
-      edition = create(:edition)
-      get edit_file_attachment_path(edition.document,
-                                    file_attachment_revision.file_attachment_id)
-      expect(response).to have_http_status(:not_found)
     end
   end
 
