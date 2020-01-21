@@ -14,7 +14,7 @@
           <h3 class="govuk-heading-m"><%= t "documents.history.edition_header", number: entry.edition.number.ordinalize %></h3>
           <% displayed_edition_number = entry.edition.number %>
         <% end %>
-        <%= render partial: "documents/timeline_entry", locals: {entry: entry} %>
+        <%= render partial: "documents/timeline_entry", locals: { entry: entry } %>
       </div>
     <% end %>
 
