@@ -5,6 +5,7 @@ RSpec.feature "History mode" do
     given_there_is_a_past_government
     and_there_is_a_not_political_document
     and_i_am_a_managing_editor
+
     when_i_visit_the_summary_page
     then_i_see_that_the_content_doesnt_get_history_mode
     and_i_do_not_see_the_history_mode_banner
