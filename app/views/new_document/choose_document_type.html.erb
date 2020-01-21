@@ -18,7 +18,7 @@
               gtm: "choose-document-type",
               "gtm-value": document_type.label,
             },
-            conditional: I18n.exists?("document_types.#{document_type.id}.guidance.body_govspeak") ? render_govspeak(I18n.t!("document_types.#{document_type.id}.guidance.body_govspeak")) : nil,
+            conditional: I18n.exists?("document_types.#{document_type.id}.guidance.body_govspeak") ? render_govspeak(t("document_types.#{document_type.id}.guidance.body_govspeak")) : nil,
             bold: true,
           }
         }

@@ -20,10 +20,10 @@
       id: "title",
       html_for: "title-field"
     }
-    if I18n.exists?("document_types.#{@edition.document_type.id}.fields.title.guidance")
+    if t_doctype_exists?("document_types.#{@edition.document_type.id}.fields.title.guidance")
       title_contextual_guidance.merge!({
-        title: t("document_types.#{@edition.document_type.id}.fields.title.guidance.title"),
-        content: t("document_types.#{@edition.document_type.id}.fields.title.guidance.body_govspeak"),
+        title: t_doctype("document_types.#{@edition.document_type.id}.fields.title.guidance.title"),
+        content: t_doctype("document_types.#{@edition.document_type.id}.fields.title.guidance.body_govspeak"),
         guidance_id: "title-guidance"
       })
     end
@@ -69,10 +69,10 @@
       id: "summary",
       html_for: "summary-field"
     }
-    if I18n.exists?("document_types.#{@edition.document_type.id}.fields.summary.guidance")
+    if t_doctype_exists?("document_types.#{@edition.document_type.id}.fields.summary.guidance")
       summary_contextual_guidance.merge!({
-        title: t("document_types.#{@edition.document_type.id}.fields.summary.guidance.title"),
-        content: t("document_types.#{@edition.document_type.id}.fields.summary.guidance.body_govspeak"),
+        title: t_doctype("document_types.#{@edition.document_type.id}.fields.summary.guidance.title"),
+        content: t_doctype("document_types.#{@edition.document_type.id}.fields.summary.guidance.body_govspeak"),
         guidance_id: "summary-guidance"
       })
     end

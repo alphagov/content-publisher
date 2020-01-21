@@ -1,5 +1,5 @@
 <% document_contents_guidance = capture do %>
-  <%= I18n.exists?("document_types.#{edition.document_type.id}.fields.#{field.id}.guidance") ? render_govspeak(t("document_types.#{edition.document_type.id}.fields.#{field.id}.guidance.body_govspeak")) : nil %>
+  <%= t_doctype_exists?("document_types.#{edition.document_type.id}.fields.#{field.id}.guidance") ? render_govspeak(t_doctype("document_types.#{edition.document_type.id}.fields.#{field.id}.guidance.body_govspeak")) : nil %>
   <h3 class="govuk-heading-s"><%= t("content.edit.fields.govspeak.title") %></h3>
   <p class="govuk-body">
     <%= link_to t("content.edit.fields.govspeak.guidance"), "https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown", class: "govuk-link", target: "_blank" %>
@@ -12,9 +12,9 @@
     id: field.id,
     html_for: "#{field.id}-field"
   }
-  if I18n.exists?("document_types.#{edition.document_type.id}.fields.#{field.id}.guidance")
+  if t_doctype_exists?("document_types.#{edition.document_type.id}.fields.#{field.id}.guidance")
     field_contextual_guidance.merge!({
-      title: t("document_types.#{edition.document_type.id}.fields.#{field.id}.guidance.title"),
+      title: t_doctype("document_types.#{edition.document_type.id}.fields.#{field.id}.guidance.title"),
       content: document_contents_guidance,
       guidance_id: "#{field.id}-guidance"
     })
