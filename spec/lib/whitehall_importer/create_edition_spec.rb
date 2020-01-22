@@ -86,6 +86,40 @@ RSpec.describe WhitehallImporter::CreateEdition do
       expect(edition.editors.count).to eq(2)
     end
 
+    it "sets the timeline history for revision history" do
+      freeze_time do
+        first_user = create(:user)
+        second_user = create(:user)
+
+        user_ids = {
+          1 => first_user.id,
+          2 => second_user.id,
+        }
+
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          revision_history: [
+            build(:revision_history_event, whodunnit: 1, event: "create", state: "draft", created_at: 2.days.ago),
+            build(:revision_history_event, whodunnit: 2, event: "update", state: "published", created_at: 1.day.ago),
+          ],
+        )
+
+        edition = described_class.call(document_import: document_import,
+                                       whitehall_edition: whitehall_edition,
+                                       user_ids: user_ids)
+
+        expect(edition.timeline_entries.first).to be_whitehall_migration
+        expect(edition.timeline_entries.first.details).to be_first_created
+        expect(edition.timeline_entries.first.created_at).to eq(2.days.ago)
+        expect(edition.timeline_entries.first.created_by_id).to eq(first_user.id)
+
+        expect(edition.timeline_entries.last).to be_whitehall_migration
+        expect(edition.timeline_entries.last.details).to be_published
+        expect(edition.timeline_entries.last.created_at).to eq(1.day.ago)
+        expect(edition.timeline_entries.last.created_by_id).to eq(second_user.id)
+      end
+    end
+
     context "when importing an access limited edition" do
       it "creates an access limit" do
         whitehall_edition = build(:whitehall_export_edition, access_limited: true)
