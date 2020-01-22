@@ -5,7 +5,7 @@ class DocumentType
   include DocumentTypeHelper
   include InitializeWithHash
 
-  attr_reader :contents, :id, :managed_elsewhere, :publishing_metadata,
+  attr_reader :contents, :id, :managed_elsewhere, :publishing_metadata, :label,
               :path_prefix, :tags, :images, :topics, :check_path_conflict
 
   def self.find(id)
@@ -35,10 +35,6 @@ class DocumentType
 
   def managed_elsewhere_url
     Plek.new.external_url_for(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
-  end
-
-  def label
-    t_doctype("document_types.#{id}.label")
   end
 
   class TagField
