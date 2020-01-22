@@ -46,6 +46,7 @@ en:
           document_updated: "Document updated"
           fact_check_request: "Fact check pending request"
           fact_check_response: "Fact check response"
+          first_created: "First created"
           imported_from_whitehall: "Imported from Whitehall"
           imported: "First created"
           internal_note: "Internal note"
