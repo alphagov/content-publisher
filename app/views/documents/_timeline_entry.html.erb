@@ -1,66 +1,70 @@
-<% if entry.whitehall_migration? && entry.details.imported_from_whitehall? %>
-  <%= render "govuk_publishing_components/components/notice", {
-    title: "#{t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"}",
-    description_text: format_date(entry.created_at)
-  } %>
-<% elsif entry.whitehall_migration? %>
-  <h4 class="govuk-heading-s">
-    <%= t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}" %>
-  </h4>
+<div class="app-timeline-entry <%= "app-timeline-entry--highlighted" if entry.details %>">
+  <% if entry.whitehall_migration? && entry.details.imported_from_whitehall? %>
+    <%= render "govuk_publishing_components/components/notice", {
+      title: "#{t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"}",
+      description_text: format_date(entry.created_at)
+    } %>
+  <% elsif entry.whitehall_migration? %>
+    <h4 class="govuk-heading-s">
+      <%= t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}" %>
+    </h4>
 
-  <div class="app-timeline-entry__dateline">
-    <%= format_date_at_time(entry.created_at) %>
-    <% if entry.created_by %>
-    <%= t "documents.history.by" %> <%= entry.created_by.name %>
-    <% end %>
-  </div>
-<% else %>
-  <h4 class="govuk-heading-s">
-    <%= t "documents.history.entry_types.#{entry.entry_type}" %>
-  </h4>
-
-  <div class="app-timeline-entry__dateline">
-    <%= format_date_at_time(entry.created_at) %>
-    <% if entry.created_by %>
-    <%= t "documents.history.by"%> <%= entry.created_by.name %>
-    <% end %>
-  </div>
-
-  <% if entry.internal_note? && entry.details %>
-    <%= simple_format(escape_and_link(entry.details.body)) %>
-  <% end %>
-
-  <% if (entry.withdrawn? || entry.withdrawn_updated?) && entry.details %>
-    <%= entry.details.public_explanation %>
-  <% end %>
-
-  <% if entry.backdated? %>
-    <% date = format_date(entry.revision.backdated_to) %>
-    <%= t "documents.history.entry_content.backdated", date: date %>
-  <% end %>
-
-  <% if entry.removed? && entry.details %>
-    <% removal = entry.details %>
-    <% if removal.explanatory_note.present? %>
-      <p><%= removal.explanatory_note %></p>
-    <% end %>
-
-    <% if removal.alternative_path.present? %>
-      <% if removal.redirect? %>
-        <p>
-          Redirected to
-          <%= link_to(Plek.new.website_root + removal.alternative_path,
-                      nil,
-                      class: "govuk-link") %>
-        </p>
-      <% else %>
-        <p>
-          Alternative path
-          <%= link_to(Plek.new.website_root + removal.alternative_path,
-                      nil,
-                      class: "govuk-link") %>
-        </p>
+    <div class="app-timeline-entry__dateline">
+      <%= format_date_at_time(entry.created_at) %>
+      <% if entry.created_by %>
+      <%= t "documents.history.by" %> <%= entry.created_by.name %>
       <% end %>
-    <% end %>
+    </div>
+  <% else %>
+    <h4 class="govuk-heading-s">
+      <%= t "documents.history.entry_types.#{entry.entry_type}" %>
+    </h4>
+
+    <div class="app-timeline-entry__dateline">
+      <%= format_date_at_time(entry.created_at) %>
+      <% if entry.created_by %>
+      <%= t "documents.history.by"%> <%= entry.created_by.name %>
+      <% end %>
+    </div>
+
+    <div class="app-timeline-entry__content">
+      <% if entry.internal_note? && entry.details %>
+        <%= simple_format(escape_and_link(entry.details.body)) %>
+      <% end %>
+
+      <% if (entry.withdrawn? || entry.withdrawn_updated?) && entry.details %>
+        <%= entry.details.public_explanation %>
+      <% end %>
+
+      <% if entry.backdated? %>
+        <% date = format_date(entry.revision.backdated_to) %>
+        <%= t "documents.history.entry_content.backdated", date: date %>
+      <% end %>
+
+      <% if entry.removed? && entry.details %>
+        <% removal = entry.details %>
+        <% if removal.explanatory_note.present? %>
+          <p><%= removal.explanatory_note %></p>
+        <% end %>
+
+        <% if removal.alternative_path.present? %>
+          <% if removal.redirect? %>
+            <p>
+              Redirected to
+              <%= link_to(Plek.new.website_root + removal.alternative_path,
+                          nil,
+                          class: "govuk-link") %>
+            </p>
+          <% else %>
+            <p>
+              Alternative path
+              <%= link_to(Plek.new.website_root + removal.alternative_path,
+                          nil,
+                          class: "govuk-link") %>
+            </p>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
-<% end %>
+</div>
