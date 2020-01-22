@@ -2,30 +2,24 @@
 
 class VideoEmbedController < ApplicationController
   include ActionView::Helpers::SanitizeHelper
+  layout "modal"
 
-  def new
-    if rendering_context != "modal"
-      head :bad_request
-    else
-      render :new, layout: rendering_context
-    end
+  before_action do
+    raise ActionController::BadRequest unless rendering_context == "modal"
   end
 
   def create
     result = VideoEmbed::CreateInteractor.call(params: params)
     issues, markdown_code = result.to_h.values_at(:issues, :markdown_code)
 
-    if rendering_context != "modal"
-      head :bad_request
-    elsif issues
+    if issues
       flash.now["requirements"] = { "items" => issues.items }
 
       render :new,
              assigns: { issues: issues },
-             layout: rendering_context,
              status: :unprocessable_entity
     else
-      render inline: markdown_code
+      render plain: markdown_code
     end
   end
 end
