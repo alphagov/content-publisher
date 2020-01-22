@@ -34,7 +34,7 @@ RSpec.configure do |config|
   config.include GdsApi::TestHelpers::PublishingApi
   config.include GdsApi::TestHelpers::AssetManager
   config.include GovukSchemas::RSpecMatchers
-  config.include AuthenticationHelper, type: ->(spec) { spec.in?(%i[feature request]) }
+  config.include AuthenticationHelper, type: ->(spec) { spec.in?(%i[feature request view]) }
   config.include BulkDataHelper
   config.include Capybara::RSpecMatchers, type: :request
 
@@ -62,6 +62,6 @@ RSpec.configure do |config|
   end
 
   config.before :each, type: :view do
-    allow(view).to receive(:current_user).and_return(User.first)
+    allow(view).to receive(:current_user) { current_user }
   end
 end
