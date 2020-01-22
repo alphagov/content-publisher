@@ -16,6 +16,17 @@ RSpec.describe "documents/_timeline_entry.html.erb" do
     expect(rendered).to have_content(I18n.t!("documents.history.entry_types.created"))
   end
 
+  it "shows a timeline entry with content" do
+    timeline_entry = create(:timeline_entry,
+                            entry_type: :internal_note,
+                            details: create(:internal_note))
+    render partial: "documents/timeline_entry", locals: { entry: timeline_entry }
+    within(".app-timeline-entry__content") do
+      expect(rendered).to have_content("Amazing internal note")
+    end
+    expect(rendered).to have_content(I18n.t!("documents.history.entry_types.internal_note"))
+  end
+
   it "shows a Whitehall timeline entry without an author" do
     timeline_entry = create(:timeline_entry,
                             :whitehall_imported,
