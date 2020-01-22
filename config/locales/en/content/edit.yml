@@ -1,5 +1,5 @@
 en:
-  documents:
+  content:
     edit:
       title: "Edit ‘%{title}’"
       title_new: "New %{document_type}"

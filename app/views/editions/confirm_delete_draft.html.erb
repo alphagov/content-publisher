@@ -1,4 +1,4 @@
-<% content_for :title, t("documents.confirm_delete_draft.title", title: @edition.title_or_fallback) %>
+<% content_for :title, t("editions.confirm_delete_draft.title", title: @edition.title_or_fallback) %>
 <% content_for :back_link, render_back_link(href: document_path(@edition.document)) %>
 
 <div class="govuk-grid-row">
@@ -6,7 +6,7 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <div class="govuk-body">
-          <%= render_govspeak(t("documents.confirm_delete_draft.description_govspeak")) %>
+          <%= render_govspeak(t("editions.confirm_delete_draft.description_govspeak")) %>
         </div>
       </div>
     </div>

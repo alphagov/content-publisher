@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Documents::UpdateInteractor do
+RSpec.describe Content::UpdateInteractor do
   describe ".call" do
     before { stub_any_publishing_api_put_content }
     let(:edition) { create(:edition) }
@@ -21,34 +21,34 @@ RSpec.describe Documents::UpdateInteractor do
     end
 
     it "succeeds with default parameters" do
-      result = Documents::UpdateInteractor.call(params: build_params, user: user)
+      result = Content::UpdateInteractor.call(params: build_params, user: user)
       expect(result).to be_success
     end
 
     it "updates the edition" do
       params = build_params(title: "New title", summary: "New summary")
 
-      expect { Documents::UpdateInteractor.call(params: params, user: user) }
+      expect { Content::UpdateInteractor.call(params: params, user: user) }
         .to change { edition.reload.title }.to("New title")
         .and change { edition.reload.summary }.to("New summary")
     end
 
     it "creates a timeline entry" do
-      expect { Documents::UpdateInteractor.call(params: build_params, user: user) }
+      expect { Content::UpdateInteractor.call(params: build_params, user: user) }
         .to change { TimelineEntry.where(entry_type: :updated_content).count }
         .by(1)
     end
 
     it "updates the preview" do
       expect(FailsafeDraftPreviewService).to receive(:call).with(edition)
-      Documents::UpdateInteractor.call(params: build_params, user: user)
+      Content::UpdateInteractor.call(params: build_params, user: user)
     end
 
     it "trims the title and summary parameters" do
       params = build_params(title: "\nPadded title  ",
                             summary: " Padded summary\n\n")
 
-      expect { Documents::UpdateInteractor.call(params: params, user: user) }
+      expect { Content::UpdateInteractor.call(params: params, user: user) }
         .to change { edition.reload.title }.to("Padded title")
         .and change { edition.reload.summary }.to("Padded summary")
     end
@@ -58,26 +58,26 @@ RSpec.describe Documents::UpdateInteractor do
       edition = create(:edition, document_type_id: document_type.id)
       params = build_params(document: edition.document, title: "My Title")
 
-      expect { Documents::UpdateInteractor.call(params: params, user: user) }
+      expect { Content::UpdateInteractor.call(params: params, user: user) }
         .to change { edition.reload.base_path }.to("/path/my-title")
     end
 
     it "raises an error when the edition isn't editable" do
       params = build_params(document: create(:edition, :published).document)
 
-      expect { Documents::UpdateInteractor.call(params: params, user: user) }
+      expect { Content::UpdateInteractor.call(params: params, user: user) }
         .to raise_error(EditionAssertions::StateError)
     end
 
     it "fails if the content is unchanged" do
       params = build_params(title: edition.title, summary: edition.summary)
-      result = Documents::UpdateInteractor.call(params: params, user: user)
+      result = Content::UpdateInteractor.call(params: params, user: user)
       expect(result).to be_failure
     end
 
     it "fails if there are issues with the input" do
       params = build_params(title: "")
-      result = Documents::UpdateInteractor.call(params: params, user: user)
+      result = Content::UpdateInteractor.call(params: params, user: user)
       expect(result).to be_failure
       expect(result.issues).to have_issue(:title, :blank)
     end

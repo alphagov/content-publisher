@@ -1,7 +1,7 @@
 <% textarea = capture do %>
     <%= render "govuk_publishing_components/components/textarea", {
       label: {
-        text: t("documents.edit.change_note.title"),
+        text: t("content.edit.change_note.title"),
       },
       id: "revision-change-note",
       name: "revision[change_note]",
@@ -16,31 +16,31 @@
 <%= render "govuk_publishing_components/components/contextual_guidance", {
   id: "change-note",
   html_for: "revision-change-note",
-  title: t("documents.edit.change_note.guidance_title"),
-  content: render_govspeak(t("documents.edit.change_note.guidance"))
+  title: t("content.edit.change_note.guidance_title"),
+  content: render_govspeak(t("content.edit.change_note.guidance"))
 } do %>
   <%= render "govuk_publishing_components/components/radio", {
     name: "revision[update_type]",
-    heading: t("documents.edit.update_type.title"),
+    heading: t("content.edit.update_type.title"),
     heading_size: "s",
     items: [
       {
         value: "major",
-        text: t("documents.edit.update_type.major_name"),
+        text: t("content.edit.update_type.major_name"),
         conditional: textarea,
         checked: @revision.major?,
         data_attributes: {
           gtm: "choose-update-type",
-          "gtm-value": t("documents.edit.update_type.major_name")
+          "gtm-value": t("content.edit.update_type.major_name")
         }
       },
       {
         value: "minor",
-        text: t("documents.edit.update_type.minor_name"),
+        text: t("content.edit.update_type.minor_name"),
         checked: @revision.minor?,
         data_attributes: {
           gtm: "choose-update-type",
-          "gtm-value": t("documents.edit.update_type.minor_name")
+          "gtm-value": t("content.edit.update_type.minor_name")
         }
       }
     ]

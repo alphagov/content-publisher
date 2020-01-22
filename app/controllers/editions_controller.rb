@@ -8,6 +8,22 @@ class EditionsController < ApplicationController
     redirect_to edit_document_path(params[:document])
   end
 
+  def destroy
+    result = Editions::DestroyInteractor.call(params: params, user: current_user)
+
+    if result.api_error
+      redirect_to document_path(params[:document]),
+                  alert_with_description: t("documents.show.flashes.delete_draft_error")
+    else
+      redirect_to documents_path
+    end
+  end
+
+  def confirm_delete_draft
+    @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
+  end
+
 private
 
   def check_permissions
