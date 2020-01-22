@@ -10,8 +10,6 @@
   },
   "standard": {
     "ignore": [
-      "/app/assets/javascripts/components/markdown-toolbar.js",
-      "/app/assets/javascripts/vendor/",
       "/spec/javascripts/helpers/jasmine-jquery.js"
     ]
   },
