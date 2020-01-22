@@ -28,7 +28,9 @@ private
   end
 
   def parse_publish_time
-    parser = DatetimeParser.new(issue_prefix: :schedule, **schedule_params)
+    parser = DatetimeParser.new(issue_prefix: :schedule,
+                                date: schedule_params.require(:date),
+                                time: schedule_params.require(:time))
     context.publish_time = parser.parse
     context.fail!(issues: parser.issues) if parser.issues.any?
   end
@@ -60,6 +62,5 @@ private
 
   def schedule_params
     params.require(:schedule).permit(:time, date: %i[day month year])
-      .to_h.deep_symbolize_keys
   end
 end

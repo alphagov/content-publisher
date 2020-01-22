@@ -7,8 +7,8 @@ RSpec.describe Schedule::DestroyInteractor do
   let(:params) { { document: edition.document.to_param } }
 
   describe "#call" do
-    before do
-      @destroy_intent_request = stub_publishing_api_destroy_intent(edition.base_path)
+    let!(:destroy_intent_request) do
+      stub_publishing_api_destroy_intent(edition.base_path)
     end
 
     it "creates a timeline entry" do
@@ -21,7 +21,7 @@ RSpec.describe Schedule::DestroyInteractor do
     it "makes a request to Publishing API to destroy the existing publishing intent" do
       Schedule::DestroyInteractor.call(params: params, user: user)
 
-      expect(@destroy_intent_request).to have_been_requested
+      expect(destroy_intent_request).to have_been_requested
     end
 
     it "returns an api_error flag when Publishing API is down" do
