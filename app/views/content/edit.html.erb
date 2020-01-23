@@ -20,10 +20,10 @@
       id: "title",
       html_for: "title-field"
     }
-    if @edition.document_type.guidance_for("title")
+    if t_doctype_field?(@edition, "title.guidance")
       title_contextual_guidance.merge!({
-        title: @edition.document_type.guidance_for("title").title,
-        content: @edition.document_type.guidance_for("title").body_govspeak,
+        title: t_doctype_field(@edition, "title.guidance.title"),
+        content: t_doctype_field(@edition, "title.guidance.body_govspeak"),
         guidance_id: "title-guidance"
       })
     end
@@ -69,10 +69,10 @@
       id: "summary",
       html_for: "summary-field"
     }
-    if @edition.document_type.guidance_for("title")
+    if t_doctype_field?(@edition, "summary.guidance")
       summary_contextual_guidance.merge!({
-        title: @edition.document_type.guidance_for("summary").title,
-        content: @edition.document_type.guidance_for("summary").body_govspeak,
+        title: t_doctype_field(@edition, "summary.guidance.title"),
+        content: t_doctype_field(@edition, "summary.guidance.body_govspeak"),
         guidance_id: "summary-guidance"
       })
     end

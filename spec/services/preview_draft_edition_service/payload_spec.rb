@@ -43,7 +43,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
     end
 
     it "includes primary_publishing_organisation in organisations links" do
-      organisation = build(:tag_field, type: "single_tag", id: "primary_publishing_organisation")
+      organisation = build(:tag_field, :primary_publishing_organisation)
       document_type = build(:document_type, tags: [organisation])
       edition = build(:edition,
                       document_type_id: document_type.id,
@@ -59,7 +59,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
     end
 
     it "ensures the organisation links are unique" do
-      organisation = build(:tag_field, type: "single_tag", id: "primary_publishing_organisation")
+      organisation = build(:tag_field, :primary_publishing_organisation)
       document_type = build(:document_type, tags: [organisation])
       edition = build(:edition,
                       document_type_id: document_type.id,

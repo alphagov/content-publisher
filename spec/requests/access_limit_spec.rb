@@ -2,9 +2,7 @@
 
 RSpec.describe "Access Limit" do
   let(:document_type) do
-    organisation = build(:tag_field,
-                         type: "single_tag",
-                         id: "primary_publishing_organisation")
+    organisation = build(:tag_field, :primary_publishing_organisation)
     build(:document_type, tags: [organisation])
   end
 

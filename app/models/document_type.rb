@@ -3,9 +3,8 @@
 class DocumentType
   include InitializeWithHash
 
-  attr_reader :contents, :id, :label, :managed_elsewhere, :publishing_metadata,
-              :path_prefix, :tags, :guidance_govspeak, :description, :hint_govspeak, :images,
-              :topics, :check_path_conflict
+  attr_reader :contents, :id, :managed_elsewhere, :publishing_metadata, :label,
+              :path_prefix, :tags, :images, :topics, :check_path_conflict
 
   def self.find(id)
     item = all.find { |document_type| document_type.id == id }
@@ -20,7 +19,6 @@ class DocumentType
         hash["contents"] = hash["contents"].to_a.map(&Field.method(:new))
         hash["tags"] = hash["tags"].to_a.map(&TagField.method(:new))
         hash["publishing_metadata"] = PublishingMetadata.new(hash["publishing_metadata"].to_h)
-        hash["guidance"] = hash["guidance"].to_a.map(&Guidance.method(:new))
         hash["topics"] = true # this feature is only disabled in tests
         new(hash)
       end
@@ -31,18 +29,9 @@ class DocumentType
     Plek.new.external_url_for(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
   end
 
-  def guidance_for(id)
-    @guidance.find { |guidance| guidance.id == id }
-  end
-
   class TagField
     include InitializeWithHash
     attr_reader :id, :label, :type, :document_type, :hint
-  end
-
-  class Guidance
-    include InitializeWithHash
-    attr_reader :id, :title, :body_govspeak
   end
 
   class PublishingMetadata

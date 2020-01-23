@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe EditionUrlHelper, type: :helper do
+RSpec.describe EditionUrlHelper do
   let(:edition) do
     build(:edition,
           base_path: "/foo",
