@@ -32,7 +32,7 @@ RSpec.feature "Upload an image", js: true do
   end
 
   def when_i_insert_an_inline_image
-    visit edit_document_path(@edition.document)
+    visit content_path(@edition.document)
 
     within(".app-c-markdown-editor") do
       find("markdown-toolbar details").click

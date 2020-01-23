@@ -21,7 +21,7 @@ module ActionsHelper
 
   def delete_draft_link(edition, extra_classes = [])
     link_to "Delete draft",
-            delete_draft_path(edition.document),
+            confirm_delete_draft_path(edition.document),
             class: %w(govuk-link app-link--destructive) + Array(extra_classes),
             data: { gtm: "delete-draft" }
   end

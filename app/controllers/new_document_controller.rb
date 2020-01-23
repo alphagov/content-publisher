@@ -32,7 +32,7 @@ class NewDocumentController < ApplicationController
     elsif result.managed_elsewhere
       redirect_to document_type.managed_elsewhere_url
     else
-      redirect_to edit_document_path(document)
+      redirect_to content_path(document)
     end
   end
 end

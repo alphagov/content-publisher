@@ -5,10 +5,10 @@ class EditionsController < ApplicationController
 
   def create
     Editions::CreateInteractor.call(params: params, user: current_user)
-    redirect_to edit_document_path(params[:document])
+    redirect_to content_path(params[:document])
   end
 
-  def destroy
+  def destroy_draft
     result = Editions::DestroyInteractor.call(params: params, user: current_user)
 
     if result.api_error

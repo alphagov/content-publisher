@@ -85,7 +85,7 @@ RSpec.feature "Enforce access limit" do
   def and_i_can_still_edit_the_edition
     visit document_path(@edition.document)
     expect(page).to have_content("Change Access limiting")
-    visit edit_document_path(@edition.document)
+    visit content_path(@edition.document)
     expect(page).to have_content(I18n.t!("content.edit.title", title: @edition.title_or_fallback))
   end
 
@@ -108,7 +108,7 @@ RSpec.feature "Enforce access limit" do
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.forbidden.description"))
     expect(page).to have_content(I18n.t!("documents.forbidden.owner", primary_org: "Primary org"))
-    visit edit_document_path(@edition.document)
+    visit content_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.forbidden.description"))
     expect(page).to have_content(I18n.t!("documents.forbidden.owner", primary_org: "Primary org"))
   end
