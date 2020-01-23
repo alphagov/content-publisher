@@ -181,8 +181,11 @@ module WhitehallImporter
 
     def create_revision_history(edition)
       whitehall_edition["revision_history"].each do |event|
+        entry_type = history.imported_entry_type(event, edition_number)
+        next if entry_type.nil?
+
         details = TimelineEntry::WhitehallImportedEntry.create!(
-          entry_type: history.imported_entry_type(event, edition_number),
+          entry_type: entry_type,
         )
         TimelineEntry.create!(
           entry_type: :whitehall_migration,

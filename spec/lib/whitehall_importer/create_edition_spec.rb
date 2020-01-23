@@ -101,6 +101,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
           revision_history: [
             build(:revision_history_event, whodunnit: 1, event: "create", state: "draft", created_at: 2.days.ago),
             build(:revision_history_event, whodunnit: 2, event: "update", state: "published", created_at: 1.day.ago),
+            build(:revision_history_event, whodunnit: 1, event: "update", state: "superseded", created_at: 2.days.ago),
           ],
         )
 

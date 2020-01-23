@@ -91,6 +91,7 @@ module WhitehallImporter
       when "rejected" then "rejected"
       when "scheduled" then "scheduled"
       when "submitted" then "submitted"
+      when "superseded" then nil
       when "withdrawn" then "withdrawn"
       else
         raise(AbortImportError, "Edition history has an unsupported state #{event['state']}")
