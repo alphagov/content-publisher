@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ApplicationHelper, type: :helper do
+RSpec.describe ApplicationHelper do
   describe "formats a body of text" do
     it "returns a hyper link when given a URI" do
       text = "govuk lives here - https://www.gov.uk/"

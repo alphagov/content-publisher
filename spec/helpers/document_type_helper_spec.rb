@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe DocumentTypeHelper, type: :helper do
+RSpec.describe DocumentTypeHelper do
   before do
     en = {
       document_types: {
