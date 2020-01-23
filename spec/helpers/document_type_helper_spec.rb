@@ -45,13 +45,6 @@ RSpec.describe DocumentTypeHelper, type: :helper do
       expect(t_doctype("document_types.some_document.fields.title.label")).to eq("My title")
     end
 
-    it "returns 'stringify_keys' hashes if matching multiple properties" do
-      expect(t_doctype("document_types.some_document.fields.title")).to eq(
-        "label" => "My title",
-        "description" => "...",
-      )
-    end
-
     it "inherits entire hashes from the default if explicit search has no match" do
       expect(t_doctype("document_types.some_document_no_fields_specified.fields.foo.label")).to eq("Foo")
     end

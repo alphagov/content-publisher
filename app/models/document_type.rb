@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class DocumentType
-  extend DocumentTypeHelper # for static methods
-  include DocumentTypeHelper
   include InitializeWithHash
 
   attr_reader :contents, :id, :managed_elsewhere, :publishing_metadata, :label,
@@ -19,13 +17,7 @@ class DocumentType
 
       hashes.map do |hash|
         hash["contents"] = hash["contents"].to_a.map(&Field.method(:new))
-        hash["tags"] = (hash["tags"] || []).map do |tag_config|
-          tag_i18n_data = "document_types.#{hash['id']}.fields.#{tag_config['id']}"
-          if t_doctype_exists?(tag_i18n_data)
-            TagField.new(tag_config.merge(t_doctype(tag_i18n_data)))
-          end
-        end
-        hash["tags"] = hash["tags"].compact
+        hash["tags"] = hash["tags"].to_a.map(&TagField.method(:new))
         hash["publishing_metadata"] = PublishingMetadata.new(hash["publishing_metadata"].to_h)
         hash["topics"] = true # this feature is only disabled in tests
         new(hash)

@@ -6,8 +6,7 @@ module DocumentTypeHelper
   end
 
   def t_doctype(i18n_key)
-    match = I18n.t!(I18n.exists?(i18n_key) ? i18n_key : doctype_default_key(i18n_key))
-    match.is_a?(String) ? match : match.stringify_keys
+    I18n.t!(I18n.exists?(i18n_key) ? i18n_key : doctype_default_key(i18n_key))
   end
 
 private
