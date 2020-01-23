@@ -18,7 +18,11 @@
         <% displayed_edition_number = entry.edition.number %>
       <% end %>
 
-      <%= render partial: "documents/timeline_entry", locals: { entry: entry } %>
+      <% if entry.whitehall_migration? %>
+        <%= render partial: "documents/history/whitehall_entry", locals: { entry: entry } %>
+      <% else %>
+        <%= render partial: "documents/history/content_publisher_entry", locals: { entry: entry } %>
+      <% end %>
     <% end %>
 
     <%
