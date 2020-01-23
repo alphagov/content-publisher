@@ -35,7 +35,9 @@ private
   end
 
   def update_status
-    AssignEditionStatusService.call(edition, user, :submitted_for_review)
+    AssignEditionStatusService.call(edition: edition,
+                                    user: user,
+                                    state: :submitted_for_review)
     edition.save!
   end
 

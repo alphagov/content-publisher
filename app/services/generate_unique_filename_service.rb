@@ -3,7 +3,7 @@
 class GenerateUniqueFilenameService < ApplicationService
   MAX_LENGTH = 65
 
-  def initialize(existing_filenames, suggested_name)
+  def initialize(existing_filenames:, suggested_name:)
     @existing_filenames = existing_filenames
     @suggested_name = suggested_name
   end

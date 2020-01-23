@@ -42,8 +42,8 @@ module WhitehallImporter
 
     def unique_filename
       @unique_filename ||= GenerateUniqueFilenameService.call(
-        existing_filenames,
-        File.basename(whitehall_file_attachment["url"]),
+        existing_filenames: existing_filenames,
+        suggested_name: File.basename(whitehall_file_attachment["url"]),
       )
     end
 

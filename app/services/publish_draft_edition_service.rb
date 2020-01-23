@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PublishDraftEditionService < ApplicationService
-  def initialize(edition, user, with_review:)
+  def initialize(edition:, user:, with_review:)
     @edition = edition
     @user = user
     @with_review = with_review
@@ -27,7 +27,7 @@ private
   delegate :document, to: :edition
 
   def publish_assets(live_edition)
-    PublishAssetsService.call(edition, live_edition)
+    PublishAssetsService.call(edition: edition, live_edition: live_edition)
   end
 
   def associate_with_government
@@ -42,7 +42,7 @@ private
     edition.assign_attributes(government_id: government&.content_id)
 
     # We need to update the Publishing API if we're changing the government
-    PreviewDraftEditionService.call(edition) if edition.government_id_changed?
+    PreviewDraftEditionService.call(edition: edition) if edition.government_id_changed?
   end
 
   def publish_current_edition
@@ -56,14 +56,20 @@ private
   def supersede_live_edition(live_edition)
     return unless live_edition
 
-    AssignEditionStatusService.call(live_edition, user, :superseded, record_edit: false)
+    AssignEditionStatusService.call(edition: live_edition,
+                                    user: user,
+                                    state: :superseded,
+                                    record_edit: false)
     live_edition.live = false
     live_edition.save!
   end
 
   def set_new_live_edition
     status = with_review ? :published : :published_but_needs_2i
-    AssignEditionStatusService.call(edition, user, status)
+
+    AssignEditionStatusService.call(edition: edition,
+                                    user: user,
+                                    state: status)
     edition.access_limit = nil
     edition.live = true
     edition.save!

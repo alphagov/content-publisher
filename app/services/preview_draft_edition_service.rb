@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PreviewDraftEditionService < ApplicationService
-  def initialize(edition, republish: false)
+  def initialize(edition:, republish: false)
     @edition = edition
     @republish = republish
   end
@@ -26,6 +26,9 @@ private
 
   def put_draft_assets
     edition.image_revisions.each(&:ensure_assets)
-    edition.assets.each { |asset| PreviewAssetService.call(edition, asset) }
+
+    edition.assets.each do |asset|
+      PreviewAssetService.call(edition: edition, asset: asset)
+    end
   end
 end

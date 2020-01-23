@@ -23,7 +23,9 @@ private
   end
 
   def approve_edition
-    AssignEditionStatusService.call(edition, user, :published)
+    AssignEditionStatusService.call(edition: edition,
+                                    user: user,
+                                    state: :published)
     edition.save!
   end
 

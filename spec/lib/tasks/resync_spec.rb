@@ -8,7 +8,7 @@ RSpec.describe "Resync tasks" do
       expect(ResyncDocumentService)
         .to receive(:call)
         .once
-        .with(document)
+        .with(document: document)
 
       Rake::Task["resync:document"].invoke("#{document.content_id}:#{document.locale}")
     end

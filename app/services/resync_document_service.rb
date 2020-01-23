@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ResyncDocumentService < ApplicationService
-  def initialize(document)
+  def initialize(document:)
     @document = document
   end
 
@@ -24,8 +24,8 @@ private
     live_edition.lock!
     set_political_and_government(live_edition)
     reserve_path(live_edition.base_path)
-    PreviewDraftEditionService.call(live_edition, republish: true)
-    PublishAssetsService.call(live_edition, nil)
+    PreviewDraftEditionService.call(edition: live_edition, republish: true)
+    PublishAssetsService.call(edition: live_edition)
 
     if live_edition.withdrawn?
       withdraw
@@ -40,7 +40,7 @@ private
     current_edition.lock!
     set_political_and_government(current_edition)
     reserve_path(current_edition.base_path)
-    FailsafeDraftPreviewService.call(current_edition)
+    FailsafeDraftPreviewService.call(edition: current_edition)
 
     schedule if current_edition.scheduled?
   end

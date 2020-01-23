@@ -30,7 +30,8 @@ class DocumentsController < ApplicationController
   def generate_path
     edition = Edition.find_current(document: params[:document])
     assert_edition_state(edition, &:editable?)
-    base_path = GenerateBasePathService.call(edition.document, params[:title])
+    base_path = GenerateBasePathService.call(document: edition.document,
+                                             proposed_title: params[:title])
     render plain: base_path
   end
 

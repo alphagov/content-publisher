@@ -55,16 +55,19 @@ private
   def update_edition
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.add_file_attachment(attachment_revision)
-    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition: edition,
+                                 user: user,
+                                 revision: updater.next_revision)
     edition.save!
   end
 
   def update_preview
-    FailsafeDraftPreviewService.call(edition)
+    FailsafeDraftPreviewService.call(edition: edition)
   end
 
   def unique_filename
     existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
-    GenerateUniqueFilenameService.call(existing_filenames, params[:file].original_filename)
+    GenerateUniqueFilenameService.call(existing_filenames: existing_filenames,
+                                       suggested_name: params[:file].original_filename)
   end
 end

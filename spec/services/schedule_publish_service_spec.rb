@@ -18,24 +18,32 @@ RSpec.describe SchedulePublishService do
     let(:scheduling) { create :scheduling, publish_time: edition.proposed_publish_time }
 
     it "sets an edition's state to 'scheduled'" do
-      SchedulePublishService.call(edition, user, scheduling)
+      SchedulePublishService.call(edition: edition,
+                                  user: user,
+                                  scheduling: scheduling)
       expect(edition).to be_scheduled
     end
 
     it "clears the editions proposed publish time" do
-      SchedulePublishService.call(edition, user, scheduling)
+      SchedulePublishService.call(edition: edition,
+                                  user: user,
+                                  scheduling: scheduling)
       expect(edition.reload.proposed_publish_time).to be_nil
     end
 
     it "creates a publishing intent" do
       request = stub_publishing_api_put_intent(edition.base_path, '"payload"')
-      SchedulePublishService.call(edition, user, scheduling)
+      SchedulePublishService.call(edition: edition,
+                                  user: user,
+                                  scheduling: scheduling)
       expect(request).to have_been_requested
     end
 
     it "schedules the edition to publish" do
       datetime = edition.proposed_publish_time
-      SchedulePublishService.call(edition, user, scheduling)
+      SchedulePublishService.call(edition: edition,
+                                  user: user,
+                                  scheduling: scheduling)
       expect(enqueued_jobs.count).to eq 1
       expect(enqueued_jobs.first[:args].first).to eq edition.id
       expect(enqueued_jobs.first[:at].to_i).to eq datetime.to_i

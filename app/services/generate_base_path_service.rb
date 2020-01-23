@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class GenerateBasePathService < ApplicationService
-  def initialize(document, proposed_title, max_repeated_titles: 1000)
+  def initialize(document:,
+                 proposed_title:,
+                 max_repeated_titles: 1000)
     @document = document
     @proposed_title = proposed_title
     @max_repeated_titles = max_repeated_titles

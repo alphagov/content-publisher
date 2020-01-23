@@ -9,13 +9,13 @@ namespace :resync do
 
     raise "No document exists for #{content_id_and_locale}" unless document
 
-    ResyncDocumentService.call(document)
+    ResyncDocumentService.call(document: document)
   end
 
   desc "Resync all documents with the publishing-api e.g. resync:all"
   task all: :environment do
     Document.find_each do |document|
-      ResyncDocumentService.call(document)
+      ResyncDocumentService.call(document: document)
     end
   end
 end

@@ -46,7 +46,9 @@ private
     context.fail! if publish_time == scheduling.publish_time
 
     new_scheduling = scheduling.dup.tap { |s| s.publish_time = publish_time }
-    SchedulePublishService.call(edition, user, new_scheduling)
+    SchedulePublishService.call(edition: edition,
+                                user: user,
+                                scheduling: new_scheduling)
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     context.fail!(api_error: true)

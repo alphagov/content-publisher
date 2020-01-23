@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class FailsafeDraftPreviewService < ApplicationService
-  def initialize(edition)
+  def initialize(edition:)
     @edition = edition
   end
 
@@ -9,7 +9,7 @@ class FailsafeDraftPreviewService < ApplicationService
     if has_issues?
       edition.update!(revision_synced: false)
     else
-      PreviewDraftEditionService.call(edition)
+      PreviewDraftEditionService.call(edition: edition)
     end
   rescue GdsApi::BaseError => e
     edition.update!(revision_synced: false)

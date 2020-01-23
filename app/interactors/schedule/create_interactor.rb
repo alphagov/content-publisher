@@ -47,7 +47,9 @@ private
                                 reviewed: params[:review_status] == "reviewed",
                                 publish_time: edition.proposed_publish_time)
 
-    SchedulePublishService.call(edition, user, scheduling)
+    SchedulePublishService.call(edition: edition,
+                                user: user,
+                                scheduling: scheduling)
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     context.fail!(api_error: true)

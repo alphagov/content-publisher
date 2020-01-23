@@ -52,8 +52,14 @@ private
                   number: edition.document.next_edition_number,
                   created_by: user)
 
-    EditDraftEditionService.call(next_edition, user, current: true, revision: next_revision)
-    AssignEditionStatusService.call(next_edition, user, :draft)
+    EditDraftEditionService.call(edition: next_edition,
+                                 user: user,
+                                 current: true,
+                                 revision: next_revision)
+
+    AssignEditionStatusService.call(edition: next_edition,
+                                    user: user,
+                                    state: :draft)
     next_edition.save!
   end
 
@@ -68,6 +74,6 @@ private
   end
 
   def preview_next_edition
-    FailsafeDraftPreviewService.call(next_edition)
+    FailsafeDraftPreviewService.call(edition: next_edition)
   end
 end

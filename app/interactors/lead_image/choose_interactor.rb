@@ -36,7 +36,9 @@ private
 
     context.fail! unless updater.changed?
 
-    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition: edition,
+                                 user: user,
+                                 revision: updater.next_revision)
     edition.save!
   end
 
@@ -45,6 +47,6 @@ private
   end
 
   def update_preview
-    FailsafeDraftPreviewService.call(edition)
+    FailsafeDraftPreviewService.call(edition: edition)
   end
 end

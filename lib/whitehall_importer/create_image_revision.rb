@@ -47,8 +47,8 @@ module WhitehallImporter
       CreateImageBlobService.call(
         temp_image: temp_image,
         filename: GenerateUniqueFilenameService.call(
-          filenames,
-          File.basename(whitehall_image["url"]),
+          existing_filenames: filenames,
+          suggested_name: File.basename(whitehall_image["url"]),
         ),
       )
     end

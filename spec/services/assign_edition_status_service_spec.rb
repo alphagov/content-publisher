@@ -6,14 +6,18 @@ RSpec.describe AssignEditionStatusService do
     let(:user) { build(:user) }
 
     it "assigns a status attributed to a user" do
-      AssignEditionStatusService.call(edition, user, :submitted_for_review)
+      AssignEditionStatusService.call(edition: edition,
+                                      user: user,
+                                      state: :submitted_for_review)
 
       expect(edition.status).to be_submitted_for_review
       expect(edition.status.created_by).to eq(user)
     end
 
     it "does not save the edition" do
-      AssignEditionStatusService.call(edition, user, :submitted_for_review)
+      AssignEditionStatusService.call(edition: edition,
+                                      user: user,
+                                      state: :submitted_for_review)
 
       expect(edition).to be_new_record
     end
@@ -22,7 +26,11 @@ RSpec.describe AssignEditionStatusService do
       freeze_time do
         edition = build(:edition, last_edited_at: 3.weeks.ago)
 
-        expect { AssignEditionStatusService.call(edition, user, :submitted_for_review) }
+        expect {
+          AssignEditionStatusService.call(edition: edition,
+                                          user: user,
+                                          state: :submitted_for_review)
+        }
           .to change { edition.last_edited_by }.to(user)
           .and change { edition.last_edited_at }.to(Time.current)
       end
@@ -31,9 +39,9 @@ RSpec.describe AssignEditionStatusService do
     it "preserves last edited when specified" do
       freeze_time do
         edition = build(:edition, last_edited_at: 3.weeks.ago)
-        AssignEditionStatusService.call(edition,
-                                        user,
-                                        :submitted_for_review,
+        AssignEditionStatusService.call(edition: edition,
+                                        user: user,
+                                        state: :submitted_for_review,
                                         record_edit: false)
 
         expect(edition.last_edited_at).not_to eq(Time.current)
@@ -44,9 +52,9 @@ RSpec.describe AssignEditionStatusService do
 
     it "can set details on the status" do
       removal = build(:removal)
-      AssignEditionStatusService.call(edition,
-                                      user,
-                                      :removed,
+      AssignEditionStatusService.call(edition: edition,
+                                      user: user,
+                                      state: :removed,
                                       status_details: removal)
 
       expect(edition.status.details).to eq(removal)
@@ -56,7 +64,11 @@ RSpec.describe AssignEditionStatusService do
       it "adds an edition user if they are not already listed as an editor" do
         edition = build(:edition)
 
-        expect { AssignEditionStatusService.call(edition, user, :submitted_for_review) }
+        expect {
+          AssignEditionStatusService.call(edition: edition,
+                                          user: user,
+                                          state: :submitted_for_review)
+        }
           .to change { edition.editors.size }
           .by(1)
       end

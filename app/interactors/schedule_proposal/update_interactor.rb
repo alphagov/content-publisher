@@ -48,7 +48,9 @@ private
     context.fail! unless updater.changed?
 
     context.revision = updater.next_revision
-    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition: edition,
+                                 user: user,
+                                 revision: updater.next_revision)
     edition.save!
   end
 

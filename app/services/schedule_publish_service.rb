@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SchedulePublishService < ApplicationService
-  def initialize(edition, user, scheduling)
+  def initialize(edition:, user:, scheduling:)
     @edition = edition
     @user = user
     @scheduling = scheduling
@@ -20,9 +20,14 @@ private
   def update_edition(scheduling, user)
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(proposed_publish_time: nil)
+    EditDraftEditionService.call(edition: edition,
+                                 user: user,
+                                 revision: updater.next_revision)
 
-    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
-    AssignEditionStatusService.call(edition, user, :scheduled, status_details: scheduling)
+    AssignEditionStatusService.call(edition: edition,
+                                    user: user,
+                                    state: :scheduled,
+                                    status_details: scheduling)
     edition.save!
   end
 

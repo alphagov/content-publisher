@@ -21,11 +21,11 @@ RSpec.describe Schedule::CreateInteractor do
       edition = create(:edition, :schedulable, proposed_publish_time: publish_time)
 
       expect(SchedulePublishService)
-        .to receive(:call) do |schedule_edition, schedule_user, new_scheduling|
-          expect(schedule_edition).to eq(edition)
-          expect(schedule_user).to eq(user)
-          expect(new_scheduling.reviewed).to be(false)
-          expect(new_scheduling.publish_time).to eq(publish_time)
+        .to receive(:call) do |args|
+          expect(args[:edition]).to eq(edition)
+          expect(args[:user]).to eq(user)
+          expect(args[:scheduling].reviewed).to be(false)
+          expect(args[:scheduling].publish_time).to eq(publish_time)
         end
 
       params = build_params(document: edition.document,

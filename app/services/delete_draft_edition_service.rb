@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DeleteDraftEditionService < ApplicationService
-  def initialize(document, user)
+  def initialize(document:, user:)
     @document = document
     @user = user
   end
@@ -58,7 +58,7 @@ private
       end
     end
 
-    AssignEditionStatusService.call(edition, user, :discarded)
+    AssignEditionStatusService.call(edition: edition, user: user, state: :discarded)
     edition.update!(current: false)
   end
 

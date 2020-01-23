@@ -24,14 +24,17 @@ private
 
   def update_edition
     scheduling = edition.status.details
-
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(proposed_publish_time: scheduling.publish_time)
-
     state = scheduling.reviewed? ? :submitted_for_review : :draft
 
-    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
-    AssignEditionStatusService.call(edition, user, state)
+    EditDraftEditionService.call(edition: edition,
+                                 user: user,
+                                 revision: updater.next_revision)
+
+    AssignEditionStatusService.call(edition: edition,
+                                    user: user,
+                                    state: state)
     edition.save!
   end
 

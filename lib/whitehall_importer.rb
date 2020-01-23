@@ -67,7 +67,8 @@ module WhitehallImporter
     raise "Cannot sync with a state of #{whitehall_import.state}" unless whitehall_import.imported?
 
     begin
-      ResyncDocumentService.call(whitehall_import.document)
+      whitehall_import.update!(state: "syncing")
+      ResyncDocumentService.call(document: whitehall_import.document)
       ClearLinksetLinks.call(whitehall_import.document.content_id)
       MigrateAssets.call(whitehall_import)
 

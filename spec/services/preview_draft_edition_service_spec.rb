@@ -10,13 +10,13 @@ RSpec.describe PreviewDraftEditionService do
     it "updates the Publishing API" do
       edition = create(:edition)
       request = stub_publishing_api_put_content(edition.content_id, {})
-      PreviewDraftEditionService.call(edition)
+      PreviewDraftEditionService.call(edition: edition)
       expect(request).to have_been_requested
     end
 
     it "marks the edition as 'revision_synced'" do
       edition = create(:edition, revision_synced: false)
-      PreviewDraftEditionService.call(edition)
+      PreviewDraftEditionService.call(edition: edition)
       expect(edition.reload.revision_synced).to be(true)
     end
 
@@ -24,14 +24,14 @@ RSpec.describe PreviewDraftEditionService do
       image_revision = create(:image_revision)
       edition = create(:edition, image_revisions: [image_revision])
       expect(PreviewAssetService).to receive(:call).at_least(:once)
-      PreviewDraftEditionService.call(edition)
+      PreviewDraftEditionService.call(edition: edition)
     end
 
     it "uploads any file attachment assets" do
       file_attachment_revision = create(:file_attachment_revision)
       edition = create(:edition, file_attachment_revisions: [file_attachment_revision])
       expect(PreviewAssetService).to receive(:call).at_least(:once)
-      PreviewDraftEditionService.call(edition)
+      PreviewDraftEditionService.call(edition: edition)
     end
 
     it "sets an update type of republish" do
@@ -42,7 +42,7 @@ RSpec.describe PreviewDraftEditionService do
         .with(edition, republish: true)
         .and_call_original
 
-      PreviewDraftEditionService.call(edition, republish: true)
+      PreviewDraftEditionService.call(edition: edition, republish: true)
     end
 
     context "when Publishing API is down" do
@@ -52,7 +52,7 @@ RSpec.describe PreviewDraftEditionService do
 
       it "sets revision_synced to false on the edition" do
         edition = create(:edition, revision_synced: true)
-        expect { PreviewDraftEditionService.call(edition) }.to raise_error(GdsApi::BaseError)
+        expect { PreviewDraftEditionService.call(edition: edition) }.to raise_error(GdsApi::BaseError)
         expect(edition.revision_synced).to be(false)
       end
     end
@@ -65,7 +65,7 @@ RSpec.describe PreviewDraftEditionService do
       it "sets revision_synced to false on the edition" do
         image_revision = create(:image_revision)
         edition = create(:edition, image_revisions: [image_revision], revision_synced: true)
-        expect { PreviewDraftEditionService.call(edition) }.to raise_error(GdsApi::BaseError)
+        expect { PreviewDraftEditionService.call(edition: edition) }.to raise_error(GdsApi::BaseError)
         expect(edition.revision_synced).to be(false)
       end
     end

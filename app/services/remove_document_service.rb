@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RemoveDocumentService < ApplicationService
-  def initialize(edition, removal)
+  def initialize(edition:, removal:)
     @edition = edition
     @removal = removal
   end
@@ -33,7 +33,9 @@ private
   end
 
   def update_edition_status
-    AssignEditionStatusService.call(edition, nil, :removed, status_details: removal)
+    AssignEditionStatusService.call(edition: edition,
+                                    state: :removed,
+                                    status_details: removal)
     edition.save!
   end
 

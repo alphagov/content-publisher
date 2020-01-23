@@ -30,11 +30,11 @@ RSpec.describe Schedule::UpdateInteractor do
 
     it "delegates to SchedulePublishService to schedule the edition for publishing" do
       expect(SchedulePublishService)
-        .to receive(:call) do |schedule_edition, schedule_user, new_scheduling|
-          expect(schedule_edition).to eq(edition)
-          expect(schedule_user).to eq(user)
-          expect(new_scheduling.reviewed).to eq(scheduling.reviewed)
-          expect(new_scheduling.publish_time).to eq(publish_time)
+        .to receive(:call) do |args|
+          expect(args[:edition]).to eq(edition)
+          expect(args[:user]).to eq(user)
+          expect(args[:scheduling].reviewed).to eq(scheduling.reviewed)
+          expect(args[:scheduling].publish_time).to eq(publish_time)
         end
 
       Schedule::UpdateInteractor.call(params: build_params, user: user)

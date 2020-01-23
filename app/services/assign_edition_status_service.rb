@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class AssignEditionStatusService < ApplicationService
-  def initialize(edition, user, state, record_edit: true, status_details: nil)
+  def initialize(edition:,
+                 user: nil,
+                 state:,
+                 record_edit: true,
+                 status_details: nil)
     @edition = edition
     @user = user
     @state = state

@@ -56,7 +56,9 @@ private
 
     context.fail! unless updater.changed?
 
-    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition: edition,
+                                 user: user,
+                                 revision: updater.next_revision)
     edition.save!
 
     context.selected_lead_image = updater.selected_lead_image?
@@ -76,6 +78,6 @@ private
   end
 
   def update_preview
-    FailsafeDraftPreviewService.call(edition)
+    FailsafeDraftPreviewService.call(edition: edition)
   end
 end

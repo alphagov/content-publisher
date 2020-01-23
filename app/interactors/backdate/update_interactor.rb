@@ -32,7 +32,9 @@ private
   def update_edition
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(backdated_to: date)
-    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition: edition,
+                                 user: user,
+                                 revision: updater.next_revision)
     edition.save!
 
     context.fail! unless updater.changed?
@@ -66,6 +68,6 @@ private
   end
 
   def update_preview
-    FailsafeDraftPreviewService.call(edition)
+    FailsafeDraftPreviewService.call(edition: edition)
   end
 end

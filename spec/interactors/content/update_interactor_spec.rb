@@ -35,7 +35,7 @@ RSpec.describe Content::UpdateInteractor do
     end
 
     it "updates the preview" do
-      expect(FailsafeDraftPreviewService).to receive(:call).with(edition)
+      expect(FailsafeDraftPreviewService).to receive(:call).with(edition: edition)
       Content::UpdateInteractor.call(params: build_params, user: user)
     end
 

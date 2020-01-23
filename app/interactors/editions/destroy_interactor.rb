@@ -23,7 +23,7 @@ private
   end
 
   def discard_draft
-    DeleteDraftEditionService.call(edition.document, user)
+    DeleteDraftEditionService.call(document: edition.document, user: user)
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     context.fail!(api_error: true)

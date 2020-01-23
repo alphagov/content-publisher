@@ -19,7 +19,9 @@ RSpec.describe PublishDraftEditionService do
                                                       update_type: nil,
                                                       locale: edition.locale)
 
-        PublishDraftEditionService.call(edition, user, with_review: true)
+        PublishDraftEditionService.call(edition: edition,
+                                        user: user,
+                                        with_review: true)
         expect(publish_request).to have_been_requested
         expect(edition.document.live_edition).to eq(edition)
         expect(edition).to be_published
@@ -27,7 +29,9 @@ RSpec.describe PublishDraftEditionService do
       end
 
       it "can specify if edition is reviewed" do
-        PublishDraftEditionService.call(edition, user, with_review: false)
+        PublishDraftEditionService.call(edition: edition,
+                                        user: user,
+                                        with_review: false)
         expect(edition).to be_published_but_needs_2i
       end
     end
@@ -38,7 +42,9 @@ RSpec.describe PublishDraftEditionService do
         current_edition = document.current_edition
         live_edition = document.live_edition
 
-        PublishDraftEditionService.call(current_edition, user, with_review: true)
+        PublishDraftEditionService.call(edition: current_edition,
+                                        user: user,
+                                        with_review: true)
         expect(document.live_edition).to eq(current_edition)
         expect(live_edition).to be_superseded
       end
@@ -48,7 +54,9 @@ RSpec.describe PublishDraftEditionService do
       document = create(:document, :with_current_and_live_editions)
       current_edition = document.current_edition
       expect(PublishAssetsService).to receive(:call)
-      PublishDraftEditionService.call(current_edition, user, with_review: true)
+      PublishDraftEditionService.call(edition: current_edition,
+                                      user: user,
+                                      with_review: true)
     end
 
     context "when the edition is not associated with a government" do
@@ -69,7 +77,11 @@ RSpec.describe PublishDraftEditionService do
         allow(edition).to receive(:public_first_published_at)
                       .and_return(Time.zone.yesterday)
 
-        expect { PublishDraftEditionService.call(edition, user, with_review: true) }
+        expect {
+          PublishDraftEditionService.call(edition: edition,
+                                          user: user,
+                                          with_review: true)
+        }
           .to change { edition.government_id }
           .to(past_government.content_id)
       end
@@ -77,15 +89,21 @@ RSpec.describe PublishDraftEditionService do
       it "associates with current government when the edition hasn't been published" do
         edition = create(:edition)
 
-        expect { PublishDraftEditionService.call(edition, user, with_review: true) }
+        expect {
+          PublishDraftEditionService.call(edition: edition,
+                                          user: user,
+                                          with_review: true)
+        }
           .to change { edition.government_id }
           .to(current_government.content_id)
       end
 
       it "updates the preview when a government is associated" do
         edition = create(:edition)
-        expect(PreviewDraftEditionService).to receive(:call).with(edition)
-        PublishDraftEditionService.call(edition, user, with_review: true)
+        expect(PreviewDraftEditionService).to receive(:call).with(edition: edition)
+        PublishDraftEditionService.call(edition: edition,
+                                        user: user,
+                                        with_review: true)
         expect(edition.government_id).to eq(current_government.content_id)
       end
 
@@ -94,7 +112,9 @@ RSpec.describe PublishDraftEditionService do
         edition = create(:edition)
 
         expect(PreviewDraftEditionService).not_to receive(:call).with(edition)
-        PublishDraftEditionService.call(edition, user, with_review: true)
+        PublishDraftEditionService.call(edition: edition,
+                                        user: user,
+                                        with_review: true)
         expect(edition.government_id).to be_nil
       end
     end
@@ -103,20 +123,28 @@ RSpec.describe PublishDraftEditionService do
       let(:edition) { create(:edition, government: past_government) }
 
       it "doesn't change the government on the edition" do
-        expect { PublishDraftEditionService.call(edition, user, with_review: true) }
+        expect {
+          PublishDraftEditionService.call(edition: edition,
+                                          user: user,
+                                          with_review: true)
+        }
           .not_to(change { edition.government_id })
       end
 
       it "doesn't update the preview of the edition" do
         expect(PreviewDraftEditionService).not_to receive(:call)
-        PublishDraftEditionService.call(edition, user, with_review: true)
+        PublishDraftEditionService.call(edition: edition,
+                                        user: user,
+                                        with_review: true)
       end
     end
 
     context "when the edition is access limited" do
       it "removes the access limit" do
         edition = create(:edition, :access_limited)
-        PublishDraftEditionService.call(edition, user, with_review: true)
+        PublishDraftEditionService.call(edition: edition,
+                                        user: user,
+                                        with_review: true)
         expect(edition.access_limit).to be_nil
       end
     end

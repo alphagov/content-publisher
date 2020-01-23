@@ -190,14 +190,14 @@ RSpec.describe WhitehallImporter do
 
   describe ".sync" do
     before do
-      allow(ResyncDocumentService).to receive(:call).with(whitehall_migration_document_import.document)
+      allow(ResyncDocumentService).to receive(:call).with(document: whitehall_migration_document_import.document)
       allow(WhitehallImporter::ClearLinksetLinks).to receive(:call).with(whitehall_migration_document_import.document.content_id)
     end
 
     let(:whitehall_migration_document_import) { create(:whitehall_migration_document_import, state: "imported") }
 
     it "syncs the imported document with publishing-api" do
-      expect(ResyncDocumentService).to receive(:call).with(whitehall_migration_document_import.document)
+      expect(ResyncDocumentService).to receive(:call).with(document: whitehall_migration_document_import.document)
       expect(WhitehallImporter::ClearLinksetLinks).to receive(:call).with(whitehall_migration_document_import.document.content_id)
       WhitehallImporter.sync(whitehall_migration_document_import)
     end
@@ -221,7 +221,7 @@ RSpec.describe WhitehallImporter do
     context "when the sync fails" do
       before do
         allow(ResyncDocumentService).to receive(:call)
-          .with(whitehall_migration_document_import.document)
+          .with(document: whitehall_migration_document_import.document)
           .and_raise(GdsApi::HTTPTooManyRequests.new(429, message))
       end
 

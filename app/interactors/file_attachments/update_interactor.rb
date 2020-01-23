@@ -56,7 +56,9 @@ private
 
     context.fail!(unchanged: true) unless updater.changed?
 
-    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
+    EditDraftEditionService.call(edition: edition,
+                                 user: user,
+                                 revision: updater.next_revision)
     edition.save!
   end
 
@@ -66,7 +68,7 @@ private
   end
 
   def update_preview
-    FailsafeDraftPreviewService.call(edition)
+    FailsafeDraftPreviewService.call(edition: edition)
   end
 
   def attachment_params
@@ -82,6 +84,7 @@ private
   def unique_filename(file)
     existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
     existing_filenames.delete(file_attachment_revision.filename)
-    GenerateUniqueFilenameService.call(existing_filenames, file.original_filename)
+    GenerateUniqueFilenameService.call(existing_filenames: existing_filenames,
+                                       suggested_name: file.original_filename)
   end
 end
