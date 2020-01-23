@@ -2,10 +2,10 @@
   id: "#{tag_field.id}-field",
   name: "tags[#{tag_field.id}][]",
   label: {
-    text: t_doctype("document_types.#{@edition.document_type.id}.fields.#{tag_field.id}.label"),
+    text: t_doctype_field(@edition, "#{tag_field.id}.label"),
     bold: true
   },
-  hint: t_doctype("document_types.#{@edition.document_type.id}.fields.#{tag_field.id}.hint"),
+  hint: t_doctype_field(@edition, "#{tag_field.id}.hint"),
   select: {
     options: Linkables.new(tag_field.document_type).select_options,
     selected: tags[tag_field.id],
