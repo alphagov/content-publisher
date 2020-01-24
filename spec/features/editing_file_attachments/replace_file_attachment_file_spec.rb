@@ -24,7 +24,7 @@ RSpec.feature "Replace a file attachment file", js: true do
   end
 
   def when_i_click_to_insert_an_attachment
-    visit edit_document_path(@edition.document)
+    visit content_path(@edition.document)
     find("markdown-toolbar details").click
     click_on "Attachment"
     expect(page).to have_content("74 Bytes")

@@ -13,7 +13,7 @@
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <%= form_tag document_path(@edition.document),
+        <%= form_tag destroy_draft_path(@edition.document),
                      method: :delete,
                      data: { gtm: "delete-draft-submit" } do %>
           <%= render "govuk_publishing_components/components/button", {

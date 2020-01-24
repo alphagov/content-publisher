@@ -24,7 +24,7 @@ RSpec.feature "Preview file attachment", js: true do
   end
 
   def when_i_preview_the_attachment
-    visit edit_document_path(@edition.document)
+    visit content_path(@edition.document)
     within(".app-c-markdown-editor") do
       find("markdown-toolbar details").click
       click_on "Attachment"

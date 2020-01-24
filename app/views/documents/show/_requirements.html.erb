@@ -1,10 +1,10 @@
 <% issue_params = {
   style: "summary",
   link_options: {
-    title: { href: edit_document_path(@edition.document, anchor: "title") },
-    summary: { href: edit_document_path(@edition.document, anchor: "summary") },
-    body: { href: edit_document_path(@edition.document, anchor: "body") },
-    change_note: { href: edit_document_path(@edition.document, anchor: "change-note") },
+    title: { href: content_path(@edition.document, anchor: "title") },
+    summary: { href: content_path(@edition.document, anchor: "summary") },
+    body: { href: content_path(@edition.document, anchor: "body") },
+    change_note: { href: content_path(@edition.document, anchor: "change-note") },
     alt_text: -> (context) do
       image_id = context[:image_revision].image_id
       { href: edit_image_path(@edition.document, image_id, anchor: "alt-text") }

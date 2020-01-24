@@ -6,14 +6,17 @@
   <% content_for :title, t("content.edit.title", title: @edition.title_or_fallback) %>
 <% end %>
 
-<%= form_for @edition.document,
-  html: { class: "app-c-contextual-guidance__form" },
-  data: {
-    module: "edit-document-form",
-    "url-preview-path": generate_path_path,
-    "warn-before-unload": "true",
-    gtm: "edit-document-submit"
-  } do |f| %>
+<%= form_tag(
+      content_path(@edition.document),
+      method: :patch,
+      html: { class: "app-c-contextual-guidance__form" },
+      data: {
+        module: "edit-document-form",
+        "url-preview-path": generate_path_path(@edition.document),
+        "warn-before-unload": "true",
+        gtm: "edit-document-submit"
+      }
+    ) do |f| %>
 
   <%
     title_contextual_guidance = {

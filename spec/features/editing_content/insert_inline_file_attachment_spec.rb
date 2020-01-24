@@ -40,7 +40,7 @@ RSpec.feature "Insert inline file attachment" do
   end
 
   def when_i_go_to_edit_the_edition
-    visit edit_document_path(@edition.document)
+    visit content_path(@edition.document)
   end
 
   def and_i_click_to_insert_a_file_attachment

@@ -27,7 +27,7 @@
   borderless: true,
   edit: (
     if @edition.editable?
-      { href: edit_document_path(@edition.document),
+      { href: content_path(@edition.document),
         data_attributes: { gtm: "edit-summary" } }
     end
   ),

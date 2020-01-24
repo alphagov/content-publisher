@@ -15,11 +15,11 @@ Rails.application.routes.draw do
     get "/history" => "documents#history", as: :document_history
     get "/generate-path" => "documents#generate_path", as: :generate_path
 
-    patch "" => "content#update"
-    get "/edit" => "content#edit", as: :edit_document
+    patch "/content" => "content#update", as: :content
+    get "/content" => "content#edit"
 
-    delete "" => "editions#destroy"
-    get "/delete-draft" => "editions#confirm_delete_draft", as: :delete_draft
+    delete "/draft" => "editions#destroy_draft", as: :destroy_draft
+    get "/delete-draft" => "editions#confirm_delete_draft", as: :confirm_delete_draft
 
     get "/publish" => "publish#confirmation", as: :publish_confirmation
     post "/publish" => "publish#publish"

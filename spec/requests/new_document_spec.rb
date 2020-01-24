@@ -31,7 +31,7 @@ RSpec.describe "New Document" do
       post create_document_path,
            params: { supertype: supertype_id, document_type: document_type.id }
 
-      expect(response).to redirect_to(edit_document_path(Document.last))
+      expect(response).to redirect_to(content_path(Document.last))
       follow_redirect!
       expect(response.body).to have_content(document_type.label.downcase)
     end

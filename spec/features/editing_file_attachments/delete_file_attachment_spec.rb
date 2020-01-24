@@ -20,7 +20,7 @@ RSpec.feature "Delete a file attachment", js: true do
   end
 
   def when_i_insert_an_attachment
-    visit edit_document_path(@edition.document)
+    visit content_path(@edition.document)
     find("markdown-toolbar details").click
     click_on "Attachment"
   end
