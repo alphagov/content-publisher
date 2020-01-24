@@ -25,9 +25,12 @@ class WithdrawController < ApplicationController
                         issues: issues },
              status: :unprocessable_entity
     elsif api_error
-      redirect_to withdraw_path(params[:document]),
-                  alert_with_description: t("withdraw.new.flashes.publishing_api_error"),
-                  public_explanation: params[:public_explanation]
+      flash.now["alert_with_description"] = t("withdraw.new.flashes.publishing_api_error")
+
+      render :new,
+             assigns: { edition: edition,
+                        public_explanation: params[:public_explanation] },
+             status: :service_unavailable
     else
       redirect_to document_path(edition.document)
     end

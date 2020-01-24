@@ -24,7 +24,7 @@ private
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
 
-    assert_edition_state(@edition, assertion: "is published or withdrawn") do
+    assert_edition_state(edition, assertion: "is published or withdrawn") do
       edition.published? || edition.published_but_needs_2i? || edition.withdrawn?
     end
   end
