@@ -1,6 +1,6 @@
 <% contents = @edition.document_type.contents.map { |field|
   {
-    field: field.label,
+    field: t_doctype_field(@edition, "#{field.id}.label"),
     value: render("documents/fields/#{field.type}", field: field, edition: @edition)
   }
 } %>

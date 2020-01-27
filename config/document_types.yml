@@ -9,7 +9,6 @@
     rendering_app: government-frontend
   contents:
     - id: body
-      label: Body
       type: govspeak
   tags:
     - id: primary_publishing_organisation
@@ -38,7 +37,6 @@
     rendering_app: government-frontend
   contents:
     - id: body
-      label: Body
       type: govspeak
   tags:
     - id: primary_publishing_organisation

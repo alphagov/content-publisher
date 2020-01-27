@@ -24,7 +24,7 @@
 <%= render "govuk_publishing_components/components/contextual_guidance", field_contextual_guidance do %>
   <%= render "components/markdown_editor", {
     label: {
-      text: field.label,
+      text: t_doctype_field(edition, "#{field.id}.label"),
       bold: true
     },
     textarea: {
