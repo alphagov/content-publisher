@@ -8,4 +8,12 @@ class DocumentType::BodyField
   def type
     "govspeak"
   end
+
+  def payload(edition)
+    {
+      details: {
+        body: GovspeakDocument.new(edition.contents[id], edition).payload_html,
+      },
+    }
+  end
 end

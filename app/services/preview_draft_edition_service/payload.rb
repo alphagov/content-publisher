@@ -33,6 +33,11 @@ class PreviewDraftEditionService::Payload
     }
     payload["change_note"] = edition.change_note if edition.major?
 
+    document_type.contents.each do |field|
+      attributes = field.payload(edition)
+      payload.deep_merge!(attributes.deep_stringify_keys)
+    end
+
     if edition.backdated_to.present?
       payload["first_published_at"] = edition.backdated_to
       payload["public_updated_at"] = edition.backdated_to if edition.first?
@@ -84,10 +89,6 @@ private
   def details
     details = { "political" => edition.political? }
 
-    document_type.contents.each do |field|
-      details[field.id] = perform_input_type_specific_transformations(field)
-    end
-
     if document_type.images && edition.lead_image_revision.present?
       details["image"] = image
     end
@@ -108,15 +109,5 @@ private
         memo["roles"] = (memo["roles"] + roles).uniq
         memo["people"] = (memo["people"] + people).uniq
       end
-  end
-
-  # Note: once this grows to a sufficient size, move it over into a new class
-  # or class system.
-  def perform_input_type_specific_transformations(field)
-    if field.type == "govspeak"
-      GovspeakDocument.new(edition.contents[field.id], edition).payload_html
-    else
-      document.contents[field.id]
-    end
   end
 end

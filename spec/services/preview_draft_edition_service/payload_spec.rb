@@ -94,16 +94,12 @@ RSpec.describe PreviewDraftEditionService::Payload do
       )
     end
 
-    it "transforms Govspeak before sending it to the publishing-api" do
-      body_field = build(:field, :body)
+    it "delegates to document type fields for contents" do
+      body_field = double(:body_field, payload: { details: { body: "body" } })
       document_type = build(:document_type, contents: [body_field])
-      edition = build(:edition,
-                      document_type_id: document_type.id,
-                      contents: { body: "Hey **buddy**!" })
-
+      edition = build(:edition, document_type_id: document_type.id)
       payload = PreviewDraftEditionService::Payload.new(edition).payload
-
-      expect(payload["details"]["body"]).to eq("<p>Hey <strong>buddy</strong>!</p>\n")
+      expect(payload["details"]["body"]).to eq("body")
     end
 
     it "includes a lead image if present" do
