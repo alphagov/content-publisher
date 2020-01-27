@@ -10,7 +10,7 @@ RSpec.feature "Delete a file attachment", js: true do
   end
 
   def given_there_is_an_edition_with_attachments
-    body_field = build(:field, id: "body", type: "govspeak")
+    body_field = build(:field, :body)
     document_type = build(:document_type, contents: [body_field])
     @attachment_revision = create(:file_attachment_revision, :on_asset_manager)
 

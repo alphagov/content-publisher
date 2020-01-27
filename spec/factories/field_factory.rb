@@ -7,5 +7,10 @@ FactoryBot.define do
     id { SecureRandom.hex(4) }
     label { SecureRandom.alphanumeric(4) }
     initialize_with { new(attributes) }
+
+    trait :body do
+      id { "body" }
+      type { "govspeak" }
+    end
   end
 end

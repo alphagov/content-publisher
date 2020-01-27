@@ -95,7 +95,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
     end
 
     it "transforms Govspeak before sending it to the publishing-api" do
-      body_field = build(:field, type: "govspeak", id: "body")
+      body_field = build(:field, :body)
       document_type = build(:document_type, contents: [body_field])
       edition = build(:edition,
                       document_type_id: document_type.id,

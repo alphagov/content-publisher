@@ -46,7 +46,7 @@ RSpec.describe Requirements::ContentChecker do
     end
 
     it "returns an issue if the a govspeak field contains forbidden HTML" do
-      body_field = build :field, id: "body", type: "govspeak"
+      body_field = build :field, :body
       document_type = build :document_type, contents: [body_field]
       edition = build :edition, document_type_id: document_type.id
       revision = build :revision, contents: { body: "<script>alert('hi')</script>" }
@@ -70,7 +70,7 @@ RSpec.describe Requirements::ContentChecker do
     end
 
     it "returns an issue if a field is blank" do
-      document_type = build :document_type, contents: [build(:field, id: "body")]
+      document_type = build :document_type, contents: [build(:field, :body)]
       edition = build :edition, document_type_id: document_type.id
       issues = Requirements::ContentChecker.new(edition).pre_publish_issues
       expect(issues).to have_issue(:body, :blank, styles: %i[form summary])
