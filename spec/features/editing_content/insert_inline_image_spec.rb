@@ -17,7 +17,7 @@ RSpec.feature "Insert inline image" do
   end
 
   def given_there_is_an_edition_with_images
-    body_field = build(:field, :body)
+    body_field = DocumentType::BodyField.new
     document_type = build(:document_type, contents: [body_field])
     @image_revision = create(:image_revision,
                              :on_asset_manager,
