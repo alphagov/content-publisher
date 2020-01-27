@@ -23,7 +23,7 @@
     value: @revision.summary,
     error_items: @issues&.items_for(:summary),
     rows: 4,
-    maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH,
+    maxlength: DocumentType::SummaryField::SUMMARY_MAX_LENGTH,
     describedby: "summary-guidance"
   } do %>
     <%= render "components/input_length_suggester", {

@@ -2,9 +2,6 @@
 
 module Requirements
   class ContentChecker
-    TITLE_MAX_LENGTH = 300
-    SUMMARY_MAX_LENGTH = 600
-
     attr_reader :edition, :revision
 
     def initialize(edition, revision = nil)
@@ -15,27 +12,12 @@ module Requirements
     def pre_preview_issues
       issues = CheckerIssues.new
 
-      if revision.title.blank?
-        issues << Issue.new(:title, :blank)
-      end
+      fields = [
+        DocumentType::TitleAndBasePathField.new,
+        DocumentType::SummaryField.new,
+      ] + edition.document_type.contents
 
-      if revision.title.to_s.size > TITLE_MAX_LENGTH
-        issues << Issue.new(:title, :too_long, max_length: TITLE_MAX_LENGTH)
-      end
-
-      if revision.title.to_s.lines.count > 1
-        issues << Issue.new(:title, :multiline)
-      end
-
-      if revision.summary.to_s.size > SUMMARY_MAX_LENGTH
-        issues << Issue.new(:summary, :too_long, max_length: SUMMARY_MAX_LENGTH)
-      end
-
-      if revision.summary.to_s.lines.count > 1
-        issues << Issue.new(:summary, :multiline)
-      end
-
-      edition.document_type.contents.each do |field|
+      fields.each do |field|
         issues += field.pre_preview_issues(edition, revision)
       end
 
@@ -45,11 +27,12 @@ module Requirements
     def pre_publish_issues
       issues = CheckerIssues.new
 
-      if revision.summary.blank?
-        issues << Issue.new(:summary, :blank)
-      end
+      fields = [
+        DocumentType::TitleAndBasePathField.new,
+        DocumentType::SummaryField.new,
+      ] + edition.document_type.contents
 
-      edition.document_type.contents.each do |field|
+      fields.each do |field|
         issues += field.pre_publish_issues(edition, revision)
       end
 

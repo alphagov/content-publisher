@@ -35,7 +35,17 @@ private
   end
 
   def check_for_issues
-    issues = Requirements::EditPageChecker.new(edition, revision).pre_preview_issues
+    issues = Requirements::CheckerIssues.new
+
+    fields = [
+      DocumentType::TitleAndBasePathField.new,
+      DocumentType::SummaryField.new,
+    ] + edition.document_type.contents
+
+    fields.each do |field|
+      issues += field.pre_update_issues(edition, revision)
+    end
+
     context.fail!(issues: issues) if issues.any?
   end
 

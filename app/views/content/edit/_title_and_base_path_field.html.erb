@@ -23,7 +23,7 @@
     value: @revision.title,
     error_items: @issues&.items_for(:title),
     rows: 2,
-    maxlength: Requirements::ContentChecker::TITLE_MAX_LENGTH,
+    maxlength: DocumentType::TitleAndBasePathField::TITLE_MAX_LENGTH,
     data: { "url-preview": "input" },
     describedby: "title-guidance"
   } do %>

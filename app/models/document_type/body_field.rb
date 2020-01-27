@@ -23,6 +23,8 @@ class DocumentType::BodyField
     issues
   end
 
+  alias_method :pre_update_issues, :pre_preview_issues
+
   def pre_publish_issues(_edition, revision)
     issues = Requirements::CheckerIssues.new
 
