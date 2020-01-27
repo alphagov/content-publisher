@@ -1,4 +1,7 @@
-<% contents = @edition.document_type.contents.map { |field|
+<% fields = [DocumentType::TitleAndBasePathField.new,
+             DocumentType::SummaryField.new] + @edition.document_type.contents %>
+
+<% contents = fields.map { |field|
   {
     field: t_doctype_field(@edition, "#{field.id}.label"),
     value: render("documents/show/contents/#{field.id}_field", edition: @edition)
@@ -31,14 +34,5 @@
         data_attributes: { gtm: "edit-summary" } }
     end
   ),
-  items: [
-    {
-      field: t("documents.show.contents.items.title"),
-      value: @edition.title
-    },
-    {
-      field: t("documents.show.contents.items.summary"),
-      value: @edition.summary
-    }
-  ] + contents + edition_metadata
+  items: contents + edition_metadata
 } %>

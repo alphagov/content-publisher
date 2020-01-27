@@ -1,0 +1,35 @@
+<%
+  summary_contextual_guidance = {
+    id: "summary",
+    html_for: "summary-field"
+  }
+  if t_doctype_field?(@edition, "summary.guidance")
+    summary_contextual_guidance.merge!({
+      title: t_doctype_field(@edition, "summary.guidance.title"),
+      content: t_doctype_field(@edition, "summary.guidance.body_govspeak"),
+      guidance_id: "summary-guidance"
+    })
+  end
+%>
+
+<%= render "govuk_publishing_components/components/contextual_guidance", summary_contextual_guidance do %>
+  <%= render "govuk_publishing_components/components/textarea", {
+    label: {
+      text: t("content.edit.form_labels.summary"),
+      bold: true
+    },
+    id: "summary-field",
+    name: "revision[summary]",
+    value: @revision.summary,
+    error_items: @issues&.items_for(:summary),
+    rows: 4,
+    maxlength: Requirements::ContentChecker::SUMMARY_MAX_LENGTH,
+    describedby: "summary-guidance"
+  } do %>
+    <%= render "components/input_length_suggester", {
+      for_id: "summary-field",
+      show_from: 120,
+      message: "Summary should be under 160 characters. Current length: {count}",
+    } %>
+  <% end %>
+<% end %>
