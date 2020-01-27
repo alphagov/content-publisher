@@ -31,7 +31,7 @@ class DocumentType
 
   class TagField
     include InitializeWithHash
-    attr_reader :id, :label, :type, :document_type, :hint
+    attr_reader :id, :type, :document_type, :hint
   end
 
   class PublishingMetadata
@@ -41,6 +41,6 @@ class DocumentType
 
   class Field
     include InitializeWithHash
-    attr_reader :id, :label, :type
+    attr_reader :id, :type
   end
 end
