@@ -5,10 +5,6 @@ class DocumentType::BodyField
     "body"
   end
 
-  def type
-    "govspeak"
-  end
-
   def payload(edition)
     {
       details: {
