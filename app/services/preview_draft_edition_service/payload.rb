@@ -14,26 +14,23 @@ class PreviewDraftEditionService::Payload
 
   def payload
     payload = {
-      "base_path" => edition.base_path,
-      "title" => edition.title,
       "locale" => edition.locale,
-      "description" => edition.summary,
       "schema_name" => publishing_metadata.schema_name,
       "document_type" => document_type.id,
       "publishing_app" => PUBLISHING_APP,
       "rendering_app" => publishing_metadata.rendering_app,
       "update_type" => edition.update_type,
       "details" => details,
-      "routes" => [
-        { "path" => edition.base_path, "type" => "exact" },
-      ],
       "links" => links,
       "access_limited" => access_limited,
       "auth_bypass_ids" => auth_bypass_ids,
     }
     payload["change_note"] = edition.change_note if edition.major?
 
-    document_type.contents.each do |field|
+    fields = [DocumentType::TitleAndBasePathField.new,
+              DocumentType::SummaryField.new] + document_type.contents
+
+    fields.each do |field|
       attributes = field.payload(edition)
       payload.deep_merge!(attributes.deep_stringify_keys)
     end

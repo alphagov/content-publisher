@@ -4,25 +4,17 @@ RSpec.describe PreviewDraftEditionService::Payload do
   describe "#payload" do
     it "generates a payload for the publishing API" do
       document_type = build(:document_type)
-      edition = build(:edition,
-                      document_type_id: document_type.id,
-                      title: "Some title",
-                      summary: "document summary",
-                      base_path: "/foo/bar/baz")
+      edition = build(:edition, document_type_id: document_type.id)
 
       payload = PreviewDraftEditionService::Payload.new(edition).payload
 
       payload_hash = {
-        "base_path" => "/foo/bar/baz",
-        "description" => "document summary",
         "document_type" => document_type.id,
         "links" => { "government" => [], "organisations" => [] },
         "locale" => edition.locale,
         "publishing_app" => "content-publisher",
         "rendering_app" => nil,
-        "routes" => [{ "path" => "/foo/bar/baz", "type" => "exact" }],
         "schema_name" => nil,
-        "title" => "Some title",
       }
       expect(payload).to match a_hash_including(payload_hash)
       expect(payload).not_to include("first_published_at")
