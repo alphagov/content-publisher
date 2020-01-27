@@ -16,4 +16,24 @@ class DocumentType::BodyField
       },
     }
   end
+
+  def pre_preview_issues(edition, revision)
+    issues = Requirements::CheckerIssues.new
+
+    unless GovspeakDocument.new(revision.contents[id], edition).valid?
+      issues << Requirements::Issue.new(id, :invalid_govspeak)
+    end
+
+    issues
+  end
+
+  def pre_publish_issues(_edition, revision)
+    issues = Requirements::CheckerIssues.new
+
+    if revision.contents[id].blank?
+      issues << Requirements::Issue.new(id, :blank)
+    end
+
+    issues
+  end
 end

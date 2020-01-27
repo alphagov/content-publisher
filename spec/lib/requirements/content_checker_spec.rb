@@ -45,13 +45,14 @@ RSpec.describe Requirements::ContentChecker do
       expect(issues).to have_issue(:summary, :multiline, styles: %i[form summary])
     end
 
-    it "returns an issue if the a govspeak field contains forbidden HTML" do
-      body_field = build :field, :body
+    it "delegates to return issues with content fields" do
+      issues = Requirements::CheckerIssues.new
+      issues << Requirements::Issue.new(:body, :blank)
+      body_field = double(:body_field, pre_preview_issues: issues)
       document_type = build :document_type, contents: [body_field]
       edition = build :edition, document_type_id: document_type.id
-      revision = build :revision, contents: { body: "<script>alert('hi')</script>" }
-      issues = Requirements::ContentChecker.new(edition, revision).pre_preview_issues
-      expect(issues).to have_issue(:body, :invalid_govspeak, styles: %i[form summary])
+      issues = Requirements::ContentChecker.new(edition).pre_preview_issues
+      expect(issues).to have_issue(:body, :blank, styles: %i[form summary])
     end
   end
 
@@ -69,8 +70,11 @@ RSpec.describe Requirements::ContentChecker do
       expect(issues).to have_issue(:summary, :blank, styles: %i[form summary])
     end
 
-    it "returns an issue if a field is blank" do
-      document_type = build :document_type, contents: [build(:field, :body)]
+    it "delegates to return issues with content fields" do
+      issues = Requirements::CheckerIssues.new
+      issues << Requirements::Issue.new(:body, :blank)
+      body_field = double(:body_field, pre_publish_issues: issues)
+      document_type = build :document_type, contents: [body_field]
       edition = build :edition, document_type_id: document_type.id
       issues = Requirements::ContentChecker.new(edition).pre_publish_issues
       expect(issues).to have_issue(:body, :blank, styles: %i[form summary])

@@ -36,11 +36,7 @@ module Requirements
       end
 
       edition.document_type.contents.each do |field|
-        next unless field.type == "govspeak"
-
-        unless GovspeakDocument.new(revision.contents[field.id], edition).valid?
-          issues << Issue.new(field.id, :invalid_govspeak)
-        end
+        issues += field.pre_preview_issues(edition, revision)
       end
 
       issues
@@ -54,9 +50,7 @@ module Requirements
       end
 
       edition.document_type.contents.each do |field|
-        if revision.contents[field.id].blank?
-          issues << Issue.new(field.id, :blank)
-        end
+        issues += field.pre_publish_issues(edition, revision)
       end
 
       if edition.document.live_edition &&
