@@ -93,17 +93,6 @@ RSpec.describe WhitehallImporter do
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
     end
 
-    context "when the import is successful" do
-      before do
-        allow(WhitehallImporter::Import).to receive(:call).and_return(build(:document, :with_current_edition))
-      end
-
-      it "marks the import as imported" do
-        WhitehallImporter.import(whitehall_migration_document_import)
-        expect(whitehall_migration_document_import).to be_imported
-      end
-    end
-
     context "when the import fails" do
       before do
         allow(WhitehallImporter::Import).to receive(:call).and_raise(message)

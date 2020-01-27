@@ -48,8 +48,7 @@ module WhitehallImporter
     raise "Cannot import with a state of #{whitehall_import.state}" unless whitehall_import.importing?
 
     begin
-      document = Import.call(whitehall_import)
-      whitehall_import.update!(document: document, state: "imported")
+      Import.call(whitehall_import)
     rescue IntegrityCheckError => e
       whitehall_import.update!(
         error_log: e.inspect,
