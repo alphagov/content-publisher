@@ -8,15 +8,10 @@ RSpec.describe Content::UpdateInteractor do
 
     def build_params(document: edition.document,
                      title: SecureRandom.alphanumeric(10),
-                     summary: SecureRandom.alphanumeric(10),
-                     contents: edition.contents)
+                     summary: SecureRandom.alphanumeric(10))
       ActionController::Parameters.new(
         document: document.to_param,
-        revision: {
-          title: title,
-          summary: summary,
-          contents: contents,
-        },
+        revision: { title: title, summary: summary },
       )
     end
 
@@ -42,24 +37,6 @@ RSpec.describe Content::UpdateInteractor do
     it "updates the preview" do
       expect(FailsafeDraftPreviewService).to receive(:call).with(edition)
       Content::UpdateInteractor.call(params: build_params, user: user)
-    end
-
-    it "trims the title and summary parameters" do
-      params = build_params(title: "\nPadded title  ",
-                            summary: " Padded summary\n\n")
-
-      expect { Content::UpdateInteractor.call(params: params, user: user) }
-        .to change { edition.reload.title }.to("Padded title")
-        .and change { edition.reload.summary }.to("Padded summary")
-    end
-
-    it "generates a base path from the title" do
-      document_type = build(:document_type, path_prefix: "/path")
-      edition = create(:edition, document_type_id: document_type.id)
-      params = build_params(document: edition.document, title: "My Title")
-
-      expect { Content::UpdateInteractor.call(params: params, user: user) }
-        .to change { edition.reload.base_path }.to("/path/my-title")
     end
 
     it "raises an error when the edition isn't editable" do

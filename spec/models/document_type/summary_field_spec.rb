@@ -9,6 +9,15 @@ RSpec.describe DocumentType::SummaryField do
     end
   end
 
+  describe "#updater_params" do
+    it "returns a hash of the stripped summary" do
+      edition = build :edition
+      params = ActionController::Parameters.new(revision: { summary: "  summary" })
+      updater_params = subject.updater_params(edition, params)
+      expect(updater_params).to eq(summary: "summary")
+    end
+  end
+
   describe "#pre_preview_issues" do
     let(:edition) { build :edition }
 

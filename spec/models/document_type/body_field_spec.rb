@@ -9,6 +9,15 @@ RSpec.describe DocumentType::BodyField do
     end
   end
 
+  describe "#updater_params" do
+    it "returns a hash of the body" do
+      edition = build :edition
+      params = ActionController::Parameters.new(revision: { contents: { body: "body" } })
+      updater_params = subject.updater_params(edition, params)
+      expect(updater_params).to eq(contents: { body: "body" })
+    end
+  end
+
   describe "#pre_preview_issues" do
     it "returns no issues when there are none" do
       edition = build :edition, contents: { body: "alert('hi')" }

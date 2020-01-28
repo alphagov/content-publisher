@@ -14,6 +14,16 @@ RSpec.describe DocumentType::TitleAndBasePathField do
     end
   end
 
+  describe "#updater_params" do
+    it "returns a hash of the stripped title and base_path" do
+      edition = build :edition
+      params = ActionController::Parameters.new(revision: { title: "  a title" })
+      allow(GenerateBasePathService).to receive(:call) { "base path" }
+      updater_params = subject.updater_params(edition, params)
+      expect(updater_params).to eq(title: "a title", base_path: "base path")
+    end
+  end
+
   describe "#pre_preview_issues" do
     let(:edition) { build :edition }
 

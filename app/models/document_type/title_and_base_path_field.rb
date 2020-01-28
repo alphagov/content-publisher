@@ -17,6 +17,12 @@ class DocumentType::TitleAndBasePathField
     }
   end
 
+  def updater_params(edition, params)
+    title = params.dig(:revision, :title)&.strip
+    base_path = GenerateBasePathService.call(edition.document, title)
+    { title: title, base_path: base_path }
+  end
+
   def pre_update_issues(edition, revision)
     issues = Requirements::CheckerIssues.new
 

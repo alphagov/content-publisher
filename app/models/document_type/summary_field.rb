@@ -11,6 +11,11 @@ class DocumentType::SummaryField
     { description: edition.summary }
   end
 
+  def updater_params(_edition, params)
+    summary = params.dig(:revision, :summary)&.strip
+    { summary: summary }
+  end
+
   def pre_preview_issues(_edition, revision)
     issues = Requirements::CheckerIssues.new
 
