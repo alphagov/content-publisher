@@ -12,6 +12,11 @@ RSpec.describe GenerateBasePathService do
         .to eq("#{document.current_edition.base_path}-1")
     end
 
+    it "preserves the base path when the title does not change" do
+      expect(GenerateBasePathService.call(document, document.current_edition.title))
+        .to eq(document.current_edition.base_path)
+    end
+
     it "raises an error when many variations of that path are in use" do
       prefix = document.current_edition.document_type.path_prefix
       existing_paths = ["#{prefix}/a-title", "#{prefix}/a-title-1", "#{prefix}/a-title-2"]
