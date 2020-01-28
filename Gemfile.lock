@@ -257,7 +257,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     nokogumbo (2.0.2)
       nokogiri (~> 1.8, >= 1.8.4)
-    notifications-ruby-client (5.1.1)
+    notifications-ruby-client (5.1.2)
       jwt (>= 1.5, < 3)
     null_logger (0.0.1)
     oauth2 (1.4.2)
