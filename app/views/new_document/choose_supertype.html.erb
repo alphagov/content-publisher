@@ -14,11 +14,11 @@
         error_items: @issues&.items_for(:supertype),
         items: Supertype.all.map do |supertype|
           id = supertype.id
-          label = I18n.t("supertypes.#{id}.label")
+          label = t("supertypes.#{id}.label")
           {
             value: id,
             text: label,
-            hint_text: I18n.t("supertypes.#{id}.description"),
+            hint_text: t("supertypes.#{id}.description"),
             bold: true,
             data_attributes: {
               gtm: "choose-supertype",
