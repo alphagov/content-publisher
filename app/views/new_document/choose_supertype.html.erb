@@ -14,18 +14,17 @@
         error_items: @issues&.items_for(:supertype),
         items: Supertype.all.map do |supertype|
           id = supertype.id
-          label = I18n.t("supertypes.#{id}.label")
-          hint = I18n.t("supertypes.#{id}.hint")
+          label = t("supertypes.#{id}.label")
           {
             value: id,
             text: label,
-            hint_text: I18n.t("supertypes.#{id}.description"),
+            hint_text: t("supertypes.#{id}.description"),
             bold: true,
             data_attributes: {
               gtm: "choose-supertype",
               "gtm-value": label,
             },
-            conditional: hint ? tag.p(hint, class: "govuk-body") : nil,
+            conditional: I18n.exists?("supertypes.#{id}.hint") ? tag.p(t("supertypes.#{id}.hint"), class: "govuk-body") : nil,
           }
         end
       } %>

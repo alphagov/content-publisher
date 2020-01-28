@@ -28,7 +28,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
   data: {
     "warn-before-unload": true,
     "modal-action": (params[:wizard] == "upload") ? "metaInsert": "meta",
-    "modal-data": I18n.t("images.index.meta.inline_code.value", filename: @image_revision.filename),
+    "modal-data": t("images.index.meta.inline_code.value", filename: @image_revision.filename),
     gtm: "save-image-metadata"
   }
 ) do %>
