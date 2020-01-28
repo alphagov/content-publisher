@@ -34,7 +34,6 @@ module WhitehallImporter
     whitehall_import.update!(
       payload: whitehall_document,
       content_id: whitehall_document["content_id"],
-      state: "importing",
     )
 
     import(whitehall_import)
@@ -45,7 +44,7 @@ module WhitehallImporter
   end
 
   def self.import(whitehall_import)
-    raise "Cannot import with a state of #{whitehall_import.state}" unless whitehall_import.importing?
+    raise "Cannot import with a state of #{whitehall_import.state}" unless whitehall_import.pending?
 
     begin
       Import.call(whitehall_import)
@@ -67,8 +66,6 @@ module WhitehallImporter
     raise "Cannot sync with a state of #{whitehall_import.state}" unless whitehall_import.imported?
 
     begin
-      whitehall_import.update!(state: "syncing")
-
       ResyncDocumentService.call(whitehall_import.document)
       ClearLinksetLinks.call(whitehall_import.document.content_id)
       MigrateAssets.call(whitehall_import)

@@ -73,9 +73,9 @@ RSpec.describe WhitehallImporter do
     end
 
     it "raises if the WhitehallMigration::DocumentImport doesn't have a state of pending" do
-      whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "importing")
+      whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "imported")
       expect { WhitehallImporter.import_and_sync(whitehall_migration_document_import) }
-        .to raise_error(RuntimeError, "Cannot import with a state of importing")
+        .to raise_error(RuntimeError, "Cannot import with a state of imported")
     end
   end
 
@@ -87,7 +87,7 @@ RSpec.describe WhitehallImporter do
       WhitehallImporter.import(whitehall_migration_document_import)
     end
 
-    it "raises if the WhitehallMigration::DocumentImport doesn't have a state of importing" do
+    it "raises if the WhitehallMigration::DocumentImport doesn't have a state of pending" do
       whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "imported")
       expect { WhitehallImporter.import(whitehall_migration_document_import) }
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
@@ -178,9 +178,9 @@ RSpec.describe WhitehallImporter do
     end
 
     it "raises if the WhitehallMigration::DocumentImport doesn't have a state of imported" do
-      whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "importing")
+      whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "pending")
       expect { WhitehallImporter.sync(whitehall_migration_document_import) }
-        .to raise_error(RuntimeError, "Cannot sync with a state of importing")
+        .to raise_error(RuntimeError, "Cannot sync with a state of pending")
     end
 
     context "when the sync fails" do
