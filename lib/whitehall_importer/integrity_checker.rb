@@ -57,6 +57,8 @@ module WhitehallImporter
 
       %w(alt_text caption).each_with_object([]) do |attribute, problems|
         if publishing_api_image[attribute] != proposed_image_payload[attribute]
+          next if attribute == "caption" && publishing_api_image[attribute].nil? && proposed_image_payload[attribute].empty?
+
           problems << problem_description(
             "image #{attribute} doesn't match",
             publishing_api_image[attribute],

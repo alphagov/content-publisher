@@ -5,6 +5,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     let(:edition) do
       build(
         :edition,
+        image_revisions: [build(:image_revision, caption: "")],
         tags: {
           primary_publishing_organisation: [SecureRandom.uuid],
           organisations: [SecureRandom.uuid],
@@ -22,6 +23,9 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         schema_name: edition.document_type.publishing_metadata.schema_name,
         details: {
           body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
+          image: {
+            caption: nil,
+          },
         },
         links: {
           primary_publishing_organisation: edition.tags["primary_publishing_organisation"].to_a,
