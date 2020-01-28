@@ -12,7 +12,7 @@
   <% actions << link_to("Insert image markdown", "#",
                         data: {
                           "modal-action": "insert",
-                          "modal-data": I18n.t("images.index.meta.inline_code.value", filename: image.filename),
+                          "modal-data": t("images.index.meta.inline_code.value", filename: image.filename),
                           gtm: "insert-image-markdown"
                         },
                         class: "govuk-link govuk-link--no-visited-state") %>
@@ -56,7 +56,7 @@
   },
   {
     field: t("images.index.meta.inline_code.label"),
-    value: I18n.t("images.index.meta.inline_code.value", filename: image.filename),
+    value: t("images.index.meta.inline_code.value", filename: image.filename),
   },
 ] %>
 
