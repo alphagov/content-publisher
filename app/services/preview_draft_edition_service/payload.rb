@@ -27,10 +27,7 @@ class PreviewDraftEditionService::Payload
     }
     payload["change_note"] = edition.change_note if edition.major?
 
-    fields = [DocumentType::TitleAndBasePathField.new,
-              DocumentType::SummaryField.new] + document_type.contents
-
-    fields.each do |field|
+    document_type.contents.each do |field|
       attributes = field.payload(edition)
       payload.deep_merge!(attributes.deep_stringify_keys)
     end

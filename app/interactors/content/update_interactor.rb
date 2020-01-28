@@ -37,12 +37,7 @@ private
   def check_for_issues
     issues = Requirements::CheckerIssues.new
 
-    fields = [
-      DocumentType::TitleAndBasePathField.new,
-      DocumentType::SummaryField.new,
-    ] + edition.document_type.contents
-
-    fields.each do |field|
+    edition.document_type.contents.each do |field|
       issues += field.pre_update_issues(edition, revision)
     end
 
@@ -67,12 +62,7 @@ private
   end
 
   def content_params
-    fields = [
-      DocumentType::TitleAndBasePathField.new,
-      DocumentType::SummaryField.new,
-    ] + edition.document_type.contents
-
-    fields.each_with_object({}) do |field, hash|
+    edition.document_type.contents.reduce({}) do |hash, field|
       hash.merge!(field.updater_params(edition, params))
     end
   end

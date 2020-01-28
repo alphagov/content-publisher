@@ -8,6 +8,8 @@
     schema_name: news_article
     rendering_app: government-frontend
   contents:
+    - title_and_base_path
+    - summary
     - body
   tags:
     - id: primary_publishing_organisation
@@ -35,6 +37,8 @@
     schema_name: news_article
     rendering_app: government-frontend
   contents:
+    - title_and_base_path
+    - summary
     - body
   tags:
     - id: primary_publishing_organisation

@@ -12,12 +12,7 @@ module Requirements
     def pre_preview_issues
       issues = CheckerIssues.new
 
-      fields = [
-        DocumentType::TitleAndBasePathField.new,
-        DocumentType::SummaryField.new,
-      ] + edition.document_type.contents
-
-      fields.each do |field|
+      edition.document_type.contents.each do |field|
         issues += field.pre_preview_issues(edition, revision)
       end
 
@@ -27,12 +22,7 @@ module Requirements
     def pre_publish_issues
       issues = CheckerIssues.new
 
-      fields = [
-        DocumentType::TitleAndBasePathField.new,
-        DocumentType::SummaryField.new,
-      ] + edition.document_type.contents
-
-      fields.each do |field|
+      edition.document_type.contents.each do |field|
         issues += field.pre_publish_issues(edition, revision)
       end
 

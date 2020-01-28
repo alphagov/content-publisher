@@ -60,11 +60,21 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
   end
 
   describe "#problems" do
+    let(:document_type) do
+      build :document_type, contents: [
+        DocumentType::TitleAndBasePathField.new,
+        DocumentType::SummaryField.new,
+        DocumentType::BodyField.new,
+      ]
+    end
+
     let(:edition) do
       build(:edition,
+            document_type_id: document_type.id,
             image_revisions: [build(:image_revision)],
             tags: { "organisations": [] })
     end
+
     let(:payload) do
       {
         content_id: edition.content_id,

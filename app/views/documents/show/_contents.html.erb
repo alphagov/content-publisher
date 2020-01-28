@@ -1,7 +1,4 @@
-<% fields = [DocumentType::TitleAndBasePathField.new,
-             DocumentType::SummaryField.new] + @edition.document_type.contents %>
-
-<% contents = fields.map { |field|
+<% contents = @edition.document_type.contents.map { |field|
   {
     field: t_doctype_field(@edition, "#{field.id}.label"),
     value: render("documents/show/contents/#{field.id}_field", edition: @edition)
