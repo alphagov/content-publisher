@@ -76,12 +76,22 @@ RSpec.describe WhitehallImporter::CreateRevision do
         expect(revision.image_revisions.last.blob_revision.filename).to eq("image-1.jpg")
       end
 
-      it "skips any image it has encountered before" do
+      it "skips any image it has encountered before with same metadata" do
         image = build(:whitehall_export_image, filename: "image.jpg")
         revision1 = described_class.call(document_import, build(:whitehall_export_edition, images: [image]))
         revision2 = described_class.call(document_import, build(:whitehall_export_edition, images: [image]))
         expect(revision1.image_revisions.count).to eq(1)
         expect(revision1.image_revisions).to eq(revision2.image_revisions)
+      end
+
+      it "creates a new revision for image it has encountered before with updated metadata" do
+        image1 = build(:whitehall_export_image, filename: "image.jpg", alt_text: "Some text")
+        image2 = build(:whitehall_export_image, filename: "image.jpg", alt_text: "Some revised text")
+        described_class.call(document_import, build(:whitehall_export_edition, images: [image1]))
+        described_class.call(document_import, build(:whitehall_export_edition, images: [image2]))
+        expect(Image.last.image_revisions.count).to eq(2)
+        expect(Image.last.image_revisions.first.alt_text).to eq("Some text")
+        expect(Image.last.image_revisions.second.alt_text).to eq("Some revised text")
       end
 
       it "uses the first image as the lead image" do

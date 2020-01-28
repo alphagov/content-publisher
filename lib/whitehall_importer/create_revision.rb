@@ -28,7 +28,7 @@ module WhitehallImporter
       raise AbortImportError, "Edition has an unsupported document type" unless SUPPORTED_DOCUMENT_TYPES.include?(whitehall_edition[document_type_key])
 
       file_attachment_revisions = find_or_create_file_attachment_revisions(whitehall_edition["attachments"])
-      image_revisions = find_or_create_image_revisions(whitehall_edition["images"])
+      image_revisions = image_revisions(whitehall_edition["images"])
       Revision.create!(
         document: document,
         number: document.next_revision_number,
@@ -116,16 +116,30 @@ module WhitehallImporter
       associations.map { |association| association["content_id"] }
     end
 
-    def find_or_create_image_revisions(images)
+    def image_revisions(images)
       images.reduce([]) do |memo, image|
-        already_imported = WhitehallMigration::AssetImport.find_by(original_asset_url: image["url"])
-        revision = if already_imported
-                     already_imported.image_revision
-                   else
-                     WhitehallImporter::CreateImageRevision
-                       .call(document_import, image, memo.map(&:filename))
-                   end
-        memo << revision
+        memo << find_or_create_image_revision(memo, image)
+      end
+    end
+
+    def find_or_create_image_revision(memo, image)
+      already_imported = WhitehallMigration::AssetImport.find_by(original_asset_url: image["url"])
+      if already_imported &&
+          (already_imported.image_revision.alt_text != image["alt_text"] ||
+           already_imported.image_revision.caption != image["caption"])
+        Image::Revision.create!(
+          image: already_imported.image_revision.image,
+          metadata_revision: Image::MetadataRevision.new(
+            caption: image["caption"],
+            alt_text: image["alt_text"],
+          ),
+          blob_revision: already_imported.image_revision.blob_revision,
+        )
+      elsif already_imported
+        already_imported.image_revision
+      else
+        WhitehallImporter::CreateImageRevision
+          .call(document_import, image, memo.map(&:filename))
       end
     end
 
