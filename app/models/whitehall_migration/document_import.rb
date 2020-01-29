@@ -10,15 +10,13 @@ class WhitehallMigration::DocumentImport < ApplicationRecord
   has_many :assets, class_name: "WhitehallMigration::AssetImport"
 
   enum state: { pending: "pending",
-                importing: "importing",
                 imported: "imported",
                 import_aborted: "import_aborted",
                 import_failed: "import_failed",
-                syncing: "syncing",
                 sync_failed: "sync failed",
                 completed: "completed" }
 
-  scope :in_progress, -> { pending.or(importing).or(imported).or(syncing) }
+  scope :in_progress, -> { pending.or(imported) }
 
   def migratable_assets
     assets.select { |a| a.pending? || a.migration_failed? }
