@@ -25,12 +25,45 @@ RSpec.describe WhitehallDocumentImportJob do
   end
 
   context "when a GdsApi::BaseError exception is raised" do
-    it "retries the job" do
+    let(:error) { GdsApi::BaseError.new }
+    before do
       allow(WhitehallImporter).to receive(:import_and_sync)
-                              .and_raise(GdsApi::BaseError)
+                              .and_raise(error)
+    end
+
+    it "retries the job" do
       WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
 
       expect(WhitehallDocumentImportJob).to have_been_enqueued
+    end
+
+    it "logs the error when retries have been exhausted" do
+      perform_enqueued_jobs do
+        WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
+      end
+
+      whitehall_migration_document_import.reload
+      expect(whitehall_migration_document_import.error_log).to eq(error.inspect)
+    end
+
+    it "updates the document import state to 'import_failed' if the import failed" do
+      perform_enqueued_jobs do
+        WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
+      end
+
+      whitehall_migration_document_import.reload
+      expect(whitehall_migration_document_import).to be_import_failed
+    end
+
+    it "updates the document import state to 'sync_failed' if the sync failed" do
+      whitehall_migration_document_import.update!(state: "imported")
+
+      perform_enqueued_jobs do
+        WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
+      end
+
+      whitehall_migration_document_import.reload
+      expect(whitehall_migration_document_import).to be_sync_failed
     end
   end
 end
