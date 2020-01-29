@@ -24,7 +24,7 @@ RSpec.describe WhitehallMigration do
       let!(:whitehall_migration) { create(:whitehall_migration) }
       before do
         create(:whitehall_migration_document_import, whitehall_migration_id: whitehall_migration["id"], state: "completed")
-        create(:whitehall_migration_document_import, whitehall_migration_id: whitehall_migration["id"], state: "pending")
+        create(:whitehall_migration_document_import, whitehall_migration_id: whitehall_migration["id"])
       end
 
       it "does not update each of the end times" do

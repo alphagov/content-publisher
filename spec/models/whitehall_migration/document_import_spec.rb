@@ -4,7 +4,7 @@ RSpec.describe WhitehallMigration::DocumentImport do
   describe ".migratable_assets" do
     it "should return assets that are 'pending' or 'migration_failed'" do
       assets_to_be_processed = [
-        create(:whitehall_migration_asset_import, state: "pending"),
+        create(:whitehall_migration_asset_import),
         create(:whitehall_migration_asset_import, state: "migration_failed"),
       ]
       assets_to_be_ignored = [
