@@ -99,14 +99,6 @@ RSpec.describe WhitehallImporter do
       expect(document_import.payload).to eq(whitehall_export_document)
     end
 
-    it "doesn't sync if import fails" do
-      allow(WhitehallImporter::Import).to receive(:call)
-        .and_raise(WhitehallImporter::AbortImportError, "Booo, import failed")
-
-      expect(WhitehallImporter).not_to receive(:sync)
-      WhitehallImporter.import_and_sync(whitehall_migration_document_import)
-    end
-
     it "raises if the WhitehallMigration::DocumentImport doesn't have a state of pending" do
       whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "imported")
       expect { WhitehallImporter.import_and_sync(whitehall_migration_document_import) }
@@ -126,23 +118,6 @@ RSpec.describe WhitehallImporter do
       whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "imported")
       expect { WhitehallImporter.import(whitehall_migration_document_import) }
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
-    end
-
-    context "when the import aborts" do
-      before do
-        allow(WhitehallImporter::Import).to receive(:call).and_raise(
-          WhitehallImporter::AbortImportError,
-          message,
-        )
-      end
-
-      let(:message) { "Import aborted" }
-
-      it "marks the import as aborted and logs the error" do
-        WhitehallImporter.import(whitehall_migration_document_import)
-        expect(whitehall_migration_document_import).to be_import_aborted
-        expect(whitehall_migration_document_import.error_log).to eq("#<WhitehallImporter::AbortImportError: #{message}>")
-      end
     end
 
     context "when the integrity check fails" do

@@ -18,7 +18,12 @@ class WhitehallDocumentImportJob < ApplicationJob
   end
 
   def self.handle_error(document_import, error)
-    state = document_import.imported? ? "sync_failed" : "import_failed"
-    document_import.update!(state: state, error_log: error.inspect)
+    case error
+    when WhitehallImporter::AbortImportError
+      document_import.update!(state: "import_aborted", error_log: error.inspect)
+    else
+      state = document_import.imported? ? "sync_failed" : "import_failed"
+      document_import.update!(state: state, error_log: error.inspect)
+    end
   end
 end

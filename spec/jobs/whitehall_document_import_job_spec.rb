@@ -83,4 +83,20 @@ RSpec.describe WhitehallDocumentImportJob do
       expect(whitehall_migration_document_import).to be_import_failed
     end
   end
+
+  context "when an AbortImportError exception is raised" do
+    let(:error) { WhitehallImporter::AbortImportError.new("Aborted") }
+    before do
+      allow(WhitehallImporter).to receive(:import_and_sync)
+                              .and_raise(error)
+    end
+
+    it "updates the document import state to 'import_aborted'" do
+      WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
+      whitehall_migration_document_import.reload
+
+      expect(whitehall_migration_document_import).to be_import_aborted
+      expect(whitehall_migration_document_import.error_log).to eq(error.inspect)
+    end
+  end
 end

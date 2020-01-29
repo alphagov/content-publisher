@@ -56,8 +56,6 @@ module WhitehallImporter
         integrity_check_problems: e.problems,
         integrity_check_proposed_payload: e.payload,
       )
-    rescue AbortImportError => e
-      whitehall_import.update!(error_log: e.inspect, state: "import_aborted")
     end
   end
 
