@@ -66,4 +66,21 @@ RSpec.describe WhitehallDocumentImportJob do
       expect(whitehall_migration_document_import).to be_sync_failed
     end
   end
+
+  context "when a StandardError exception is raised" do
+    let(:error) { StandardError.new }
+    before do
+      allow(WhitehallImporter).to receive(:import_and_sync)
+                              .and_raise(error)
+    end
+
+    it "does not retry the job, logs the error and updates the document import state" do
+      WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
+
+      whitehall_migration_document_import.reload
+      expect(WhitehallDocumentImportJob).not_to have_been_enqueued
+      expect(whitehall_migration_document_import.error_log).to eq(error.inspect)
+      expect(whitehall_migration_document_import).to be_import_failed
+    end
+  end
 end

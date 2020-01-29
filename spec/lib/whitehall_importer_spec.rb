@@ -128,20 +128,6 @@ RSpec.describe WhitehallImporter do
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
     end
 
-    context "when the import fails" do
-      before do
-        allow(WhitehallImporter::Import).to receive(:call).and_raise(message)
-      end
-
-      let(:message) { "Import failed" }
-
-      it "marks the import as failed and logs the error" do
-        WhitehallImporter.import(whitehall_migration_document_import)
-        expect(whitehall_migration_document_import).to be_import_failed
-        expect(whitehall_migration_document_import.error_log).to eq("#<RuntimeError: #{message}>")
-      end
-    end
-
     context "when the import aborts" do
       before do
         allow(WhitehallImporter::Import).to receive(:call).and_raise(
@@ -216,23 +202,6 @@ RSpec.describe WhitehallImporter do
       whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "pending")
       expect { WhitehallImporter.sync(whitehall_migration_document_import) }
         .to raise_error(RuntimeError, "Cannot sync with a state of pending")
-    end
-
-    context "when the sync fails" do
-      before do
-        allow(ResyncDocumentService).to receive(:call)
-          .with(whitehall_migration_document_import.document)
-          .and_raise(GdsApi::HTTPTooManyRequests.new(429, message))
-      end
-
-      let(:message) { "Ahhh too many requests" }
-
-      it "marks the import as failed due to sync issues and logs the error" do
-        WhitehallImporter.sync(whitehall_migration_document_import)
-
-        expect(whitehall_migration_document_import).to be_sync_failed
-        expect(whitehall_migration_document_import.error_log).to eq("#<GdsApi::HTTPTooManyRequests: #{message}>")
-      end
     end
   end
 end
