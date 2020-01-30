@@ -28,14 +28,19 @@ private
 
   def update_revision
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    updater.assign(update_params(edition))
-
+    updater.assign(content_params)
+    updater.assign(change_note_params)
     context.fail! unless updater.changed?
     context.revision = updater.next_revision
   end
 
   def check_for_issues
-    issues = Requirements::EditPageChecker.new(edition, revision).pre_preview_issues
+    issues = Requirements::CheckerIssues.new
+
+    edition.document_type.contents.each do |field|
+      issues += field.pre_update_issues(edition, revision)
+    end
+
     context.fail!(issues: issues) if issues.any?
   end
 
@@ -52,15 +57,13 @@ private
     FailsafeDraftPreviewService.call(edition)
   end
 
-  def update_params(edition)
-    contents_params = edition.document_type.contents.map(&:id)
+  def change_note_params
+    params.require(:revision).permit(:update_type, :change_note)
+  end
 
-    params.require(:revision)
-      .permit(:update_type, :change_note, :title, :summary, contents: contents_params)
-      .tap do |p|
-        p[:title] = p[:title]&.strip
-        p[:summary] = p[:summary]&.strip
-        p[:base_path] = GenerateBasePathService.call(edition.document, p[:title])
-      end
+  def content_params
+    edition.document_type.contents.reduce({}) do |hash, field|
+      hash.merge!(field.updater_params(edition, params))
+    end
   end
 end

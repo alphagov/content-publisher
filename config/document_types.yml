@@ -8,9 +8,9 @@
     schema_name: news_article
     rendering_app: government-frontend
   contents:
-    - id: body
-      label: Body
-      type: govspeak
+    - title_and_base_path
+    - summary
+    - body
   tags:
     - id: primary_publishing_organisation
       type: single_tag
@@ -37,9 +37,9 @@
     schema_name: news_article
     rendering_app: government-frontend
   contents:
-    - id: body
-      label: Body
-      type: govspeak
+    - title_and_base_path
+    - summary
+    - body
   tags:
     - id: primary_publishing_organisation
       type: single_tag

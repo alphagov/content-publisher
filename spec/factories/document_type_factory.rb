@@ -11,10 +11,14 @@ FactoryBot.define do
 
     id { SecureRandom.hex(4) }
     label { SecureRandom.alphanumeric(8) }
-    contents { [] }
     tags { [] }
     guidance { [] }
     topics { false }
+
+    contents do
+      [DocumentType::TitleAndBasePathField.new,
+       DocumentType::SummaryField.new]
+    end
 
     publishing_metadata do
       DocumentType::PublishingMetadata.new(

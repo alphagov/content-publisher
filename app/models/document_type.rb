@@ -16,7 +16,10 @@ class DocumentType
       hashes = YAML.load_file(Rails.root.join("config/document_types.yml"))
 
       hashes.map do |hash|
-        hash["contents"] = hash["contents"].to_a.map(&Field.method(:new))
+        hash["contents"] = hash["contents"].to_a.map do |field_id|
+          "DocumentType::#{field_id.camelize}Field".constantize.new
+        end
+
         hash["tags"] = hash["tags"].to_a.map(&TagField.method(:new))
         hash["publishing_metadata"] = PublishingMetadata.new(hash["publishing_metadata"].to_h)
         hash["topics"] = true # this feature is only disabled in tests
@@ -31,16 +34,11 @@ class DocumentType
 
   class TagField
     include InitializeWithHash
-    attr_reader :id, :label, :type, :document_type, :hint
+    attr_reader :id, :type, :document_type, :hint
   end
 
   class PublishingMetadata
     include InitializeWithHash
     attr_reader :schema_name, :rendering_app
-  end
-
-  class Field
-    include InitializeWithHash
-    attr_reader :id, :label, :type
   end
 end

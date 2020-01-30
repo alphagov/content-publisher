@@ -2,7 +2,7 @@ en:
   document_types:
     default:
       fields:
-        title:
+        title_and_base_path:
           label: Title
         summary:
           label: Summary
@@ -80,33 +80,33 @@ en:
 
     fatality_notice:
       description: Initial fatality notices and subsequent obituaries of forces and MOD personnel
-      
+
     speech:
       description: Public speeches, written statements, or authored articles
-    
+
     world_news_story:
       description: Announcements specific to one or more world location
-    
+
     detailed_guide:
       description: Detailed guidance for specialist users on the steps they need to take to complete a task
-    
+
     any-whitehall-publication:
       description: Standalone government documents that are issued and not usually updated
-    
+
     manual:
       description: Long and complex guidance broken into chapters and sub-sections for reference
-    
+
     any-mainstream-publication:
       description: Guidance for the general public on how to do something. Contact GDS to request changes.
-    
+
     travel_advice:
       description: Travel advice by country including entry requirements and safety information
-    
+
     statistical-data-set:
       description: Frequently updated (“live”) statistical data files.
-    
+
     case_study:
       description: Case studies show someone’s experience of a government process or policy problem
-    
+
     consultation:
       description: A request for views or evidence on an issue

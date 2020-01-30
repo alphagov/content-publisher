@@ -4,25 +4,17 @@ RSpec.describe PreviewDraftEditionService::Payload do
   describe "#payload" do
     it "generates a payload for the publishing API" do
       document_type = build(:document_type)
-      edition = build(:edition,
-                      document_type_id: document_type.id,
-                      title: "Some title",
-                      summary: "document summary",
-                      base_path: "/foo/bar/baz")
+      edition = build(:edition, document_type_id: document_type.id)
 
       payload = PreviewDraftEditionService::Payload.new(edition).payload
 
       payload_hash = {
-        "base_path" => "/foo/bar/baz",
-        "description" => "document summary",
         "document_type" => document_type.id,
         "links" => { "government" => [], "organisations" => [] },
         "locale" => edition.locale,
         "publishing_app" => "content-publisher",
         "rendering_app" => nil,
-        "routes" => [{ "path" => "/foo/bar/baz", "type" => "exact" }],
         "schema_name" => nil,
-        "title" => "Some title",
       }
       expect(payload).to match a_hash_including(payload_hash)
       expect(payload).not_to include("first_published_at")
@@ -94,16 +86,12 @@ RSpec.describe PreviewDraftEditionService::Payload do
       )
     end
 
-    it "transforms Govspeak before sending it to the publishing-api" do
-      body_field = build(:field, type: "govspeak", id: "body")
+    it "delegates to document type fields for contents" do
+      body_field = double(:body_field, payload: { details: { body: "body" } })
       document_type = build(:document_type, contents: [body_field])
-      edition = build(:edition,
-                      document_type_id: document_type.id,
-                      contents: { body: "Hey **buddy**!" })
-
+      edition = build(:edition, document_type_id: document_type.id)
       payload = PreviewDraftEditionService::Payload.new(edition).payload
-
-      expect(payload["details"]["body"]).to eq("<p>Hey <strong>buddy</strong>!</p>\n")
+      expect(payload["details"]["body"]).to eq("body")
     end
 
     it "includes a lead image if present" do
