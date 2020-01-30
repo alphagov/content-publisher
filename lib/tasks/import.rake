@@ -3,13 +3,15 @@
 require "gds_api/whitehall_export"
 
 namespace :import do
-  desc "Import all documents matching an organisation and document type from Whitehall Publisher, e.g. import:whitehall_migration[\"cabinet-office\",\"NewsArticle\"]"
-  task :whitehall_migration, %i[organisation_slug document_type] => :environment do |_, args|
+  desc "Import all documents matching an organisation, document type and optional list of document subtypes from Whitehall Publisher, e.g. import:whitehall_migration[\"cabinet-office\",\"NewsArticle\",\"NewsStory,PressRelease\"]"
+  task :whitehall_migration, %i[organisation_slug document_type document_subtypes] => :environment do |_, args|
     organisation_content_id = GdsApi.publishing_api.lookup_content_id(
       base_path: "/government/organisations/#{args.organisation_slug}",
     )
 
-    whitehall_migration = WhitehallImporter.create_migration(organisation_content_id, args.document_type)
+    document_subtypes = args.document_subtypes ? args.document_subtypes.split(",") : []
+
+    whitehall_migration = WhitehallImporter.create_migration(organisation_content_id, args.document_type, document_subtypes)
 
     documents_to_import = WhitehallMigration::DocumentImport.where(whitehall_migration_id: whitehall_migration.id).count
     puts "Identified #{documents_to_import} documents to import"

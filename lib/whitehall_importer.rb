@@ -3,12 +3,13 @@
 require "gds_api/whitehall_export"
 
 module WhitehallImporter
-  def self.create_migration(organisation_content_id, document_type)
+  def self.create_migration(organisation_content_id, document_type, document_subtypes = [])
     whitehall_migration = ActiveRecord::Base.transaction do
       record = WhitehallMigration.create!(organisation_content_id: organisation_content_id,
-                                          document_type: document_type)
+                                          document_type: document_type,
+                                          document_subtypes: document_subtypes)
 
-      whitehall_export = GdsApi.whitehall_export.document_list(organisation_content_id, document_type)
+      whitehall_export = GdsApi.whitehall_export.document_list(organisation_content_id, document_type, document_subtypes)
 
       whitehall_export.each do |page|
         page["documents"].each do |document|
