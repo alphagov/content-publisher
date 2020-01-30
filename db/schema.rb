@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_24_142150) do
+ActiveRecord::Schema.define(version: 2020_01_30_090021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -371,6 +371,7 @@ ActiveRecord::Schema.define(version: 2020_01_24_142150) do
   create_table "whitehall_migrations", force: :cascade do |t|
     t.text "organisation_content_id", null: false
     t.text "document_type", null: false
+    t.text "document_subtypes", array: true
     t.datetime "finished_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
