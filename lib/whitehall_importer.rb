@@ -39,18 +39,8 @@ module WhitehallImporter
 
     Import.call(whitehall_import)
 
-    sync(whitehall_import) if whitehall_import.imported?
+    Sync.call(whitehall_import) if whitehall_import.imported?
 
     whitehall_import
-  end
-
-  def self.sync(whitehall_import)
-    raise "Cannot sync with a state of #{whitehall_import.state}" unless whitehall_import.imported?
-
-    ResyncDocumentService.call(whitehall_import.document)
-    ClearLinksetLinks.call(whitehall_import.document.content_id)
-    MigrateAssets.call(whitehall_import)
-
-    whitehall_import.update!(state: "completed")
   end
 end

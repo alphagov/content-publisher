@@ -110,35 +110,4 @@ RSpec.describe WhitehallImporter do
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
     end
   end
-
-  describe ".sync" do
-    before do
-      allow(ResyncDocumentService).to receive(:call).with(whitehall_migration_document_import.document)
-      allow(WhitehallImporter::ClearLinksetLinks).to receive(:call).with(whitehall_migration_document_import.document.content_id)
-    end
-
-    let(:whitehall_migration_document_import) { create(:whitehall_migration_document_import, state: "imported") }
-
-    it "syncs the imported document with publishing-api" do
-      expect(ResyncDocumentService).to receive(:call).with(whitehall_migration_document_import.document)
-      expect(WhitehallImporter::ClearLinksetLinks).to receive(:call).with(whitehall_migration_document_import.document.content_id)
-      WhitehallImporter.sync(whitehall_migration_document_import)
-    end
-
-    it "redirects or deletes the corresponding Whitehall assets" do
-      expect(WhitehallImporter::MigrateAssets).to receive(:call).with(whitehall_migration_document_import)
-      WhitehallImporter.sync(whitehall_migration_document_import)
-    end
-
-    it "returns a completed WhitehallMigration::DocumentImport" do
-      WhitehallImporter.sync(whitehall_migration_document_import)
-      expect(whitehall_migration_document_import).to be_completed
-    end
-
-    it "raises if the WhitehallMigration::DocumentImport doesn't have a state of imported" do
-      whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "pending")
-      expect { WhitehallImporter.sync(whitehall_migration_document_import) }
-        .to raise_error(RuntimeError, "Cannot sync with a state of pending")
-    end
-  end
 end
