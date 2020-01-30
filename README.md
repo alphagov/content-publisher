@@ -75,6 +75,7 @@ listen to the sidekiq processes.
 - [History mode](docs/history-mode.md)
 - [Removing documents](docs/removing-documents.md)
 - [Testing strategy](docs/testing-strategy.md)
+- [User permissions](docs/user-permissions.md)
 
 ## Licence
 
