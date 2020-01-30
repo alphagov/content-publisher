@@ -37,6 +37,16 @@ RSpec.describe DocumentType do
     end
   end
 
+  describe ".clear" do
+    it "resets the DocumentType.all return value" do
+      preexisting_doctypes = DocumentType.all.count
+      build(:document_type)
+      expect(DocumentType.all.count).to eq(preexisting_doctypes + 1)
+      DocumentType.clear
+      expect(DocumentType.all.count).to eq(preexisting_doctypes)
+    end
+  end
+
   describe "#managed_elsewhere_url" do
     it "returns a full URL" do
       document_type = DocumentType.find("consultation")

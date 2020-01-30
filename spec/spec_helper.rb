@@ -42,6 +42,10 @@ RSpec.configure do |config|
     Rails.application.load_seed
   end
 
+  config.before :all do
+    DocumentType.clear
+  end
+
   config.before :each do
     Sidekiq::Worker.clear_all
     ActionMailer::Base.deliveries.clear
