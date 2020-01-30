@@ -87,6 +87,11 @@ RSpec.describe WhitehallImporter do
         .to_return(status: 200, body: whitehall_export_document.to_json)
     end
 
+    it "imports a document" do
+      expect(WhitehallImporter::Import).to receive(:call)
+      WhitehallImporter.import_and_sync(whitehall_migration_document_import)
+    end
+
     it "returns a WhitehallMigration::DocumentImport" do
       expect { WhitehallImporter.import_and_sync(whitehall_migration_document_import) }
         .to change { WhitehallMigration::DocumentImport.count }
@@ -102,21 +107,6 @@ RSpec.describe WhitehallImporter do
     it "raises if the WhitehallMigration::DocumentImport doesn't have a state of pending" do
       whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "imported")
       expect { WhitehallImporter.import_and_sync(whitehall_migration_document_import) }
-        .to raise_error(RuntimeError, "Cannot import with a state of imported")
-    end
-  end
-
-  describe ".import" do
-    let(:whitehall_migration_document_import) { create(:whitehall_migration_document_import) }
-
-    it "imports a document" do
-      expect(WhitehallImporter::Import).to receive(:call)
-      WhitehallImporter.import(whitehall_migration_document_import)
-    end
-
-    it "raises if the WhitehallMigration::DocumentImport doesn't have a state of pending" do
-      whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "imported")
-      expect { WhitehallImporter.import(whitehall_migration_document_import) }
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
     end
   end

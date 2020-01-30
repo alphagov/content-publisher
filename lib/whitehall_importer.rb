@@ -37,17 +37,11 @@ module WhitehallImporter
       content_id: whitehall_document["content_id"],
     )
 
-    import(whitehall_import)
+    Import.call(whitehall_import)
 
     sync(whitehall_import) if whitehall_import.imported?
 
     whitehall_import
-  end
-
-  def self.import(whitehall_import)
-    raise "Cannot import with a state of #{whitehall_import.state}" unless whitehall_import.pending?
-
-    Import.call(whitehall_import)
   end
 
   def self.sync(whitehall_import)

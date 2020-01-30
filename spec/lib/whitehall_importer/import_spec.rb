@@ -10,6 +10,12 @@ RSpec.describe WhitehallImporter::Import do
         .and_return(instance_double(WhitehallImporter::IntegrityChecker, valid?: true))
     end
 
+    it "raises if the WhitehallMigration::DocumentImport doesn't have a state of pending" do
+      document_import = create(:whitehall_migration_document_import, state: "imported")
+      expect { described_class.call(document_import) }
+        .to raise_error(RuntimeError, "Cannot import with a state of imported")
+    end
+
     it "creates a document" do
       expect { described_class.call(build(:whitehall_migration_document_import)) }
         .to change { Document.count }.by(1)

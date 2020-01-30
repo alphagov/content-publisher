@@ -14,6 +14,10 @@ module WhitehallImporter
     end
 
     def call
+      unless document_import.pending?
+        raise "Cannot import with a state of #{document_import.state}"
+      end
+
       ActiveRecord::Base.transaction do
         user_ids = create_users(whitehall_document["users"])
         document_import.document = create_document(user_ids)
