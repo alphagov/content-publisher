@@ -47,16 +47,7 @@ module WhitehallImporter
   def self.import(whitehall_import)
     raise "Cannot import with a state of #{whitehall_import.state}" unless whitehall_import.pending?
 
-    begin
-      Import.call(whitehall_import)
-    rescue IntegrityCheckError => e
-      whitehall_import.update!(
-        error_log: e.inspect,
-        state: "import_aborted",
-        integrity_check_problems: e.problems,
-        integrity_check_proposed_payload: e.payload,
-      )
-    end
+    Import.call(whitehall_import)
   end
 
   def self.sync(whitehall_import)

@@ -19,6 +19,13 @@ class WhitehallDocumentImportJob < ApplicationJob
 
   def self.handle_error(document_import, error)
     case error
+    when WhitehallImporter::IntegrityCheckError
+      document_import.update!(
+        error_log: error.inspect,
+        state: "import_aborted",
+        integrity_check_problems: error.problems,
+        integrity_check_proposed_payload: error.payload,
+      )
     when WhitehallImporter::AbortImportError
       document_import.update!(state: "import_aborted", error_log: error.inspect)
     else

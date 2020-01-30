@@ -91,12 +91,44 @@ RSpec.describe WhitehallDocumentImportJob do
                               .and_raise(error)
     end
 
+    it "updates the document import state to 'import_aborted' and saves the error" do
+      WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
+      whitehall_migration_document_import.reload
+
+      expect(whitehall_migration_document_import).to be_import_aborted
+      expect(whitehall_migration_document_import.error_log).to eq(error.inspect)
+    end
+  end
+
+  context "when an IntegrityCheckError exception is raised" do
+    let(:problems) { ["foo failed"] }
+    let(:payload) { { "foo" => "bar" } }
+    let(:integrity_check) do
+      instance_double(
+        WhitehallImporter::IntegrityChecker,
+        valid?: false,
+        problems: problems,
+        proposed_payload: payload,
+        edition: build(:edition),
+      )
+    end
+    let(:error) { WhitehallImporter::IntegrityCheckError.new(integrity_check) }
+
+    before do
+      allow(WhitehallImporter).to receive(:import_and_sync)
+                              .and_raise(error)
+    end
+
     it "updates the document import state to 'import_aborted'" do
       WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
       whitehall_migration_document_import.reload
 
       expect(whitehall_migration_document_import).to be_import_aborted
       expect(whitehall_migration_document_import.error_log).to eq(error.inspect)
+      expect(whitehall_migration_document_import.integrity_check_problems)
+        .to eq(problems)
+      expect(whitehall_migration_document_import.integrity_check_proposed_payload)
+        .to eq(payload)
     end
   end
 end

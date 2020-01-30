@@ -119,34 +119,6 @@ RSpec.describe WhitehallImporter do
       expect { WhitehallImporter.import(whitehall_migration_document_import) }
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
     end
-
-    context "when the integrity check fails" do
-      let(:problems) { ["foo failed"] }
-      let(:payload) { { "foo" => "bar" } }
-      let(:integrity_check) do
-        instance_double(
-          WhitehallImporter::IntegrityChecker,
-          valid?: false,
-          problems: problems,
-          proposed_payload: payload,
-          edition: build(:edition),
-        )
-      end
-
-      before do
-        allow(WhitehallImporter::Import).to receive(:call).and_raise(
-          WhitehallImporter::IntegrityCheckError.new(integrity_check),
-        )
-      end
-
-      it "marks the import as aborted and logs the error and the payload" do
-        WhitehallImporter.import(whitehall_migration_document_import)
-
-        expect(whitehall_migration_document_import).to be_import_aborted
-        expect(whitehall_migration_document_import.integrity_check_problems).to eq(problems)
-        expect(whitehall_migration_document_import.integrity_check_proposed_payload).to eq(payload)
-      end
-    end
   end
 
   describe ".sync" do
