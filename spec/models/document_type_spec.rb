@@ -1,27 +1,26 @@
 # frozen_string_literal: true
 
+require "json"
+
 RSpec.describe DocumentType do
+  let(:document_types) { YAML.load_file(Rails.root.join("config/document_types.yml")) }
+
   describe "all configured document types are valid" do
-    DocumentType.all.each do |document_type|
-      describe "Document type #{document_type.id}" do
-        it "has the required attributes" do
-          expect(document_type.id).to_not be_blank
-          expect(document_type.label).to_not be_blank
-        end
+    it "should conform to the document type schema" do
+      document_type_schema = JSON.parse(File.read("config/schemas/document_type.json"))
+      document_types.each do |document_type|
+        validator = JSON::Validator.fully_validate(document_type_schema, document_type)
+        expect(validator).to(
+          be_empty,
+          "Validation for #{document_type['id']} failed: \n\t#{validator.join("\n\t")}",
+        )
+      end
+    end
 
-        if document_type.managed_elsewhere
-          it "has the required attributes for managed_elsewhere" do
-            expect(document_type.managed_elsewhere.keys).to contain_exactly("hostname", "path")
-          end
-        else
-          it "has the required attributes for publishing_metadata" do
-            expect(document_type.publishing_metadata.rendering_app).to_not be_blank
-            expect(document_type.publishing_metadata.schema_name).to_not be_blank
-          end
-
-          it "has a valid document type" do
-            expect(document_type.id).to be_in(GovukSchemas::DocumentTypes.valid_document_types)
-          end
+    it "should have a valid document type that exists in GovukSchemas" do
+      document_types.each do |document_type|
+        unless document_type["managed_elsewhere"]
+          expect(document_type["id"]).to be_in(GovukSchemas::DocumentTypes.valid_document_types)
         end
       end
     end

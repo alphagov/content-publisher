@@ -1,0 +1,171 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/schemas/documentType"
+    },
+    {
+      "$ref": "#/schemas/managedElsewhere"
+    }
+  ],
+  "schemas": {
+    "documentType": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "path_prefix",
+        "images",
+        "check_path_conflict",
+        "publishing_metadata",
+        "contents",
+        "tags"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "label": {
+          "$ref": "#/definitions/label"
+        },
+        "path_prefix": {
+          "type": "string"
+        },
+        "images": {
+          "type": "boolean"
+        },
+        "check_path_conflict": {
+          "type": "boolean"
+        },
+        "publishing_metadata": {
+          "type": "object",
+          "required": [
+            "schema_name",
+            "rendering_app"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "schema_name": {
+              "type": "string",
+              "enum": [
+                "news_article"
+              ]
+            },
+            "rendering_app": {
+              "type": "string"
+            }
+          }
+        },
+        "contents": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/tag_field"
+          }
+        }
+      }
+    },
+    "managedElsewhere": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "managed_elsewhere"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "label": {
+          "$ref": "#/definitions/label"
+        },
+        "managed_elsewhere": {
+          "type": "object",
+          "required": [
+            "hostname",
+            "path"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "hostname": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "id": {
+      "type": "string",
+      "enum": [
+        "news_story",
+        "press_release",
+        "fatality_notice",
+        "speech",
+        "world_news_story",
+        "detailed_guide",
+        "any-whitehall-publication",
+        "manual",
+        "any-mainstream-publication",
+        "travel_advice",
+        "statistical-data-set",
+        "case_study",
+        "consultation"
+      ]
+    },
+    "label": {
+      "type": "string"
+    },
+    "tag_field": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "document_type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "enum": [
+            "primary_publishing_organisation",
+            "organisations",
+            "role_appointments",
+            "topical_events",
+            "world_locations"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "single_tag",
+            "multi_tag"
+          ]
+        },
+        "document_type": {
+          "type": "string",
+          "enum": [
+            "organisation",
+            "role_appointment",
+            "topical_event",
+            "world_location"
+          ]
+        }
+      }
+    }
+  }
+}
