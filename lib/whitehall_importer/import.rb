@@ -2,7 +2,7 @@
 
 module WhitehallImporter
   class Import
-    attr_reader :document_import, :whitehall_document
+    attr_reader :document_import
 
     def self.call(*args)
       new(*args).call
@@ -10,13 +10,17 @@ module WhitehallImporter
 
     def initialize(document_import)
       @document_import = document_import
-      @whitehall_document = document_import.payload
     end
 
     def call
       unless document_import.pending?
         raise "Cannot import with a state of #{document_import.state}"
       end
+
+      document_import.update!(
+        payload: whitehall_document,
+        content_id: whitehall_document["content_id"],
+      )
 
       ActiveRecord::Base.transaction do
         user_ids = create_users(whitehall_document["users"])
@@ -35,7 +39,9 @@ module WhitehallImporter
         check_document_integrity(document_import.document)
 
         create_timeline_entry(document_import.document.current_edition)
+
         document_import.update!(state: "imported")
+        document_import
       end
     rescue StandardError
       # restore any attributes set during import
@@ -44,6 +50,12 @@ module WhitehallImporter
     end
 
   private
+
+    def whitehall_document
+      @whitehall_document ||= GdsApi.whitehall_export
+                                    .document_export(document_import.whitehall_document_id)
+                                    .to_h
+    end
 
     def create_timeline_entry(edition)
       details = TimelineEntry::WhitehallImportedEntry.create!(

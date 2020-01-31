@@ -29,18 +29,8 @@ module WhitehallImporter
   end
 
   def self.import_and_sync(whitehall_import)
-    raise "Cannot import with a state of #{whitehall_import.state}" unless whitehall_import.pending?
-
-    whitehall_document = GdsApi.whitehall_export.document_export(whitehall_import.whitehall_document_id).to_h
-    whitehall_import.update!(
-      payload: whitehall_document,
-      content_id: whitehall_document["content_id"],
-    )
-
-    Import.call(whitehall_import)
+    whitehall_import = Import.call(whitehall_import)
 
     Sync.call(whitehall_import) if whitehall_import.imported?
-
-    whitehall_import
   end
 end

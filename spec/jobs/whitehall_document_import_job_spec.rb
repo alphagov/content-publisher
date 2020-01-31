@@ -8,6 +8,7 @@ RSpec.describe WhitehallDocumentImportJob do
   let(:whitehall_migration_document_import) do
     create(:whitehall_migration_document_import, whitehall_migration_id: whitehall_migration["id"], state: "pending")
   end
+  let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
 
   before do
     allow(WhitehallImporter).to receive(:import_and_sync)

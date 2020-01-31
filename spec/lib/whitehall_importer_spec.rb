@@ -78,13 +78,18 @@ RSpec.describe WhitehallImporter do
       )
     end
     let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
+    let(:imported_document_import) do
+      create(:whitehall_migration_document_import, state: "imported")
+    end
+    let(:completed_document_import) do
+      create(:whitehall_migration_document_import,
+             state: "completed",
+             payload: whitehall_export_document)
+    end
 
     before do
-      allow(ResyncDocumentService).to receive(:call)
-      allow(WhitehallImporter::ClearLinksetLinks).to receive(:call)
-      allow(WhitehallImporter::Import).to receive(:call).and_return(build(:document, :with_current_edition))
-      stub_request(:get, "#{whitehall_host}/government/admin/export/document/123")
-        .to_return(status: 200, body: whitehall_export_document.to_json)
+      allow(WhitehallImporter::Import).to receive(:call).and_return(imported_document_import)
+      allow(WhitehallImporter::Sync).to receive(:call).and_return(completed_document_import)
     end
 
     it "imports a document" do
@@ -93,21 +98,13 @@ RSpec.describe WhitehallImporter do
     end
 
     it "returns a WhitehallMigration::DocumentImport" do
-      expect { WhitehallImporter.import_and_sync(whitehall_migration_document_import) }
-        .to change { WhitehallMigration::DocumentImport.count }
-        .by(1)
-      expect(whitehall_migration_document_import).to be_an_instance_of(WhitehallMigration::DocumentImport)
+      result = WhitehallImporter.import_and_sync(whitehall_migration_document_import)
+      expect(result).to be_an_instance_of(WhitehallMigration::DocumentImport)
     end
 
     it "stores the exported whitehall data" do
       document_import = WhitehallImporter.import_and_sync(whitehall_migration_document_import)
       expect(document_import.payload).to eq(whitehall_export_document)
-    end
-
-    it "raises if the WhitehallMigration::DocumentImport doesn't have a state of pending" do
-      whitehall_migration_document_import = create(:whitehall_migration_document_import, state: "imported")
-      expect { WhitehallImporter.import_and_sync(whitehall_migration_document_import) }
-        .to raise_error(RuntimeError, "Cannot import with a state of imported")
     end
   end
 end
