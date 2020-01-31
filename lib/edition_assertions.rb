@@ -16,12 +16,6 @@ module EditionAssertions
     end
   end
 
-  class AccessError < Error
-    def initialize(edition, limit_type)
-      super(edition, "user is in #{limit_type}")
-    end
-  end
-
   def assert_edition_state(edition, options = {}, &block)
     return if block.call(edition)
 
