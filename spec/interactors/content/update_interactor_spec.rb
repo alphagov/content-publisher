@@ -3,58 +3,67 @@
 RSpec.describe Content::UpdateInteractor do
   describe ".call" do
     before { stub_any_publishing_api_put_content }
-    let(:edition) { create(:edition) }
+    let(:edition) { create(:edition, number: 2) }
     let(:user) { build(:user) }
 
-    def build_params(document: edition.document,
-                     title: SecureRandom.alphanumeric(10),
-                     summary: SecureRandom.alphanumeric(10))
-      ActionController::Parameters.new(
-        document: document.to_param,
-        title: title,
-        summary: summary,
-      )
+    let(:params) do
+      ActionController::Parameters.new(document: edition.document.to_param,
+                                       title: "New title",
+                                       summary: "New summary",
+                                       change_note: "New note",
+                                       update_type: "minor")
     end
 
     it "succeeds with default parameters" do
-      result = Content::UpdateInteractor.call(params: build_params, user: user)
+      result = Content::UpdateInteractor.call(params: params, user: user)
       expect(result).to be_success
     end
 
     it "updates the edition" do
-      params = build_params(title: "New title", summary: "New summary")
-
       expect { Content::UpdateInteractor.call(params: params, user: user) }
         .to change { edition.reload.title }.to("New title")
         .and change { edition.reload.summary }.to("New summary")
+        .and change { edition.reload.change_note }.to("New note")
+        .and change { edition.reload.update_type }.to("minor")
+    end
+
+    it "ignores change notes for first editions" do
+      params.merge!(document: create(:edition).document.to_param)
+      change_note = edition.change_note
+      Content::UpdateInteractor.call(params: params, user: user)
+      expect(edition.reload.change_note).to eq change_note
+      expect(edition.update_type).to eq "major"
     end
 
     it "creates a timeline entry" do
-      expect { Content::UpdateInteractor.call(params: build_params, user: user) }
+      expect { Content::UpdateInteractor.call(params: params, user: user) }
         .to change { TimelineEntry.where(entry_type: :updated_content).count }
         .by(1)
     end
 
     it "updates the preview" do
       expect(FailsafeDraftPreviewService).to receive(:call).with(edition)
-      Content::UpdateInteractor.call(params: build_params, user: user)
+      Content::UpdateInteractor.call(params: params, user: user)
     end
 
     it "raises an error when the edition isn't editable" do
-      params = build_params(document: create(:edition, :published).document)
+      params.merge!(document: create(:edition, :published).document.to_param)
 
       expect { Content::UpdateInteractor.call(params: params, user: user) }
         .to raise_error(EditionAssertions::StateError)
     end
 
     it "fails if the content is unchanged" do
-      params = build_params(title: edition.title, summary: edition.summary)
+      params.merge!(title: edition.title,
+                    summary: edition.summary,
+                    change_note: edition.change_note,
+                    update_type: edition.update_type)
       result = Content::UpdateInteractor.call(params: params, user: user)
       expect(result).to be_failure
     end
 
     it "fails if there are issues with the input" do
-      params = build_params(title: "")
+      params.merge!(title: "")
       result = Content::UpdateInteractor.call(params: params, user: user)
       expect(result).to be_failure
       expect(result.issues).to have_issue(:title, :blank)
