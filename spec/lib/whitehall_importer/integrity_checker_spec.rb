@@ -98,7 +98,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       build(:edition,
             document_type: document_type,
             image_revisions: [build(:image_revision)],
-            tags: { "organisations": [] })
+            tags: { "organisations" => [] })
     end
 
     let(:payload) do

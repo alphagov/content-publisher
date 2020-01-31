@@ -41,7 +41,7 @@ class PreviewDraftEditionService::Payload
       payload[:bulk_publishing] = true
     end
 
-    payload.deep_stringify_keys
+    payload
   end
 
 private
@@ -67,6 +67,7 @@ private
       .merge(roles_and_people(role_appointments))
       .merge(organisations: links.uniq)
       .merge(government: [edition.government&.content_id].compact)
+      .symbolize_keys
   end
 
   def image
