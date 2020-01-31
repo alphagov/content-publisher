@@ -14,13 +14,13 @@ RSpec.describe "Import tasks" do
     end
 
     it "calls WhitehallImporter::create_migration with correct arguments when subtype is specified" do
-      Rake::Task["import:whitehall_migration"].invoke("cabinet-office", "NewsArticle", "PressRelease")
-      expect(WhitehallImporter).to have_received(:create_migration).with("96ae61d6-c2a1-48cb-8e67-da9d105ae381", "NewsArticle", %w(PressRelease))
+      Rake::Task["import:whitehall_migration"].invoke("cabinet-office", "news_article", "press_release")
+      expect(WhitehallImporter).to have_received(:create_migration).with("96ae61d6-c2a1-48cb-8e67-da9d105ae381", "news_article", %w(press_release))
     end
 
     it "calls WhitehallImporter::create_migration with correct arguments when no subtype is specified" do
-      Rake::Task["import:whitehall_migration"].invoke("cabinet-office", "NewsArticle")
-      expect(WhitehallImporter).to have_received(:create_migration).with("96ae61d6-c2a1-48cb-8e67-da9d105ae381", "NewsArticle", [])
+      Rake::Task["import:whitehall_migration"].invoke("cabinet-office", "news_article")
+      expect(WhitehallImporter).to have_received(:create_migration).with("96ae61d6-c2a1-48cb-8e67-da9d105ae381", "news_article", [])
     end
   end
 
