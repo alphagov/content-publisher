@@ -96,7 +96,7 @@ RSpec.describe DocumentType::TitleAndBasePathField do
   describe "#pre_publish_issues" do
     it "returns no issues" do
       edition = build :edition
-      issues = subject.pre_update_issues(edition, edition.revision)
+      issues = subject.pre_publish_issues(edition, edition.revision)
       expect(issues).to be_empty
     end
   end
