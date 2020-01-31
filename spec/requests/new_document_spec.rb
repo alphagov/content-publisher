@@ -15,6 +15,12 @@ RSpec.describe "New Document" do
       expect(response).to redirect_to(supertype.managed_elsewhere_url)
     end
 
+    it "redirects to guidance page when \"I'm not sure\" option is selected" do
+      supertype = Supertype.all.find { |type| type.id == "not-sure" }
+      get choose_document_type_path, params: { supertype: supertype.id }
+      expect(response).to redirect_to(guidance_url)
+    end
+
     it "returns an unprocessable response with an issue when a supertype isn't selected" do
       get choose_document_type_path
       expect(response).to have_http_status(:unprocessable_entity)

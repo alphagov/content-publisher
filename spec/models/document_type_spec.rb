@@ -26,6 +26,12 @@ RSpec.describe DocumentType do
     end
   end
 
+  describe ".all" do
+    it "should create a DocumentType for each one in the YAML" do
+      expect(DocumentType.all.count).to eq(document_types.count)
+    end
+  end
+
   describe ".find" do
     it "returns a DocumentType when it's a known document_type" do
       expect(DocumentType.find("press_release")).to be_a(DocumentType)
