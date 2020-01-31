@@ -8,7 +8,6 @@ RSpec.feature "Create a document" do
     and_i_select_a_document_type
     and_i_fill_in_the_contents
     then_i_see_the_document_summary
-    and_the_preview_creation_was_successful
     and_i_see_the_timeline_entry
   end
 
@@ -43,32 +42,10 @@ RSpec.feature "Create a document" do
     expect(page).to have_content("A title")
   end
 
-  def and_the_preview_creation_was_successful
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)).to match a_hash_including(content_body)
-    }).to have_been_requested
-  end
-
   def and_i_see_the_timeline_entry
     click_on "Document history"
     expect(page).to have_content("1st edition")
                 .and have_content(I18n.t!("documents.history.entry_types.created"))
                 .and have_content(I18n.t!("documents.history.entry_types.updated_content"))
-  end
-
-  def content_body
-    {
-      "links" => hash_including(
-        "organisations" => [current_user.organisation_content_id],
-        "primary_publishing_organisation" => [current_user.organisation_content_id],
-      ),
-      "title" => "A title",
-      "document_type" => @document_type.id,
-      "description" => "A summary",
-      "update_type" => "major",
-      "change_note" => "First published.",
-      "base_path" => "/a-title",
-      "locale" => "en",
-    }
   end
 end

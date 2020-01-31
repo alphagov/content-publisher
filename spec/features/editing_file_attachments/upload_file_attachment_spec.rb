@@ -7,7 +7,7 @@ RSpec.feature "Upload file attachment", js: true do
     and_i_go_to_insert_an_attachment
     and_i_upload_a_file_attachment
     then_i_can_see_previews_of_the_attachment
-    and_the_attachment_has_been_uploaded_successfully
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_an_edition
@@ -30,8 +30,8 @@ RSpec.feature "Upload file attachment", js: true do
     @attachment_filename = "13kb-1-page-attachment.pdf"
     @title = "A title"
 
-    @asset_manager_request = stub_asset_manager_receives_an_asset(filename: @attachment_filename)
-    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
+    stub_asset_manager_receives_an_asset(filename: @attachment_filename)
+    stub_publishing_api_put_content(@edition.content_id, {})
 
     find('form input[type="file"]').set(Rails.root.join(file_fixture(@attachment_filename)))
     fill_in "title", with: @title
@@ -52,15 +52,9 @@ RSpec.feature "Upload file attachment", js: true do
     end
   end
 
-  def and_the_attachment_has_been_uploaded_successfully
-    expect(@publishing_api_request).to have_been_requested
-    expect(@asset_manager_request).to have_been_requested.at_least_once
-
+  def and_i_see_the_timeline_entry
     visit document_path(@edition.document)
     click_on "Document history"
-
-    within first(".app-timeline-entry") do
-      expect(page).to have_content I18n.t!("documents.history.entry_types.file_attachment_uploaded")
-    end
+    expect(page).to have_content I18n.t!("documents.history.entry_types.file_attachment_uploaded")
   end
 end
