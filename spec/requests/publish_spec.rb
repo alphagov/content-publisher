@@ -32,7 +32,7 @@ RSpec.describe "Publish" do
       stub_publishing_api_isnt_available
 
       document_type = build(:document_type, topics: true)
-      edition = create(:edition, document_type_id: document_type.id)
+      edition = create(:edition, document_type: document_type)
       get publish_path(edition.document)
 
       expect(response).to redirect_to(document_path(edition.document))

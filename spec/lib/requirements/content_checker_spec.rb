@@ -13,7 +13,7 @@ RSpec.describe Requirements::ContentChecker do
       issues << Requirements::Issue.new(:body, :blank)
       body_field = double(:body_field, pre_preview_issues: issues)
       document_type = build :document_type, contents: [body_field]
-      edition = build :edition, document_type_id: document_type.id
+      edition = build :edition, document_type: document_type
       issues = Requirements::ContentChecker.new(edition).pre_preview_issues
       expect(issues).to have_issue(:body, :blank, styles: %i[form summary])
     end
@@ -31,7 +31,7 @@ RSpec.describe Requirements::ContentChecker do
       issues << Requirements::Issue.new(:body, :blank)
       body_field = double(:body_field, pre_publish_issues: issues)
       document_type = build :document_type, contents: [body_field]
-      edition = build :edition, document_type_id: document_type.id
+      edition = build :edition, document_type: document_type
       issues = Requirements::ContentChecker.new(edition).pre_publish_issues
       expect(issues).to have_issue(:body, :blank, styles: %i[form summary])
     end

@@ -30,7 +30,7 @@ RSpec.describe "documents/show.html.erb" do
       tag = { "content_id" => SecureRandom.uuid, "internal_name" => "Tag name" }
       stub_publishing_api_has_linkables([tag], document_type: tag_field.document_type)
       edition = build(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       tags: { tag_field.id => [tag["content_id"]] })
       assign(:edition, edition)
 
@@ -38,7 +38,7 @@ RSpec.describe "documents/show.html.erb" do
     end
 
     it "shows a message when a document doesn't have tags" do
-      edition = build(:edition, document_type_id: document_type.id, tags: {})
+      edition = build(:edition, document_type: document_type, tags: {})
       assign(:edition, edition)
       expect(render).to include(I18n.t!("documents.show.tags.none"))
     end
@@ -46,7 +46,7 @@ RSpec.describe "documents/show.html.erb" do
     it "shows a message when tags can't be loaded" do
       stub_publishing_api_isnt_available
       edition = build(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       tags: { tag_field.id => [SecureRandom.uuid] })
       assign(:edition, edition)
       expect(render).to include(I18n.t!("documents.show.tags.api_down"))
@@ -55,7 +55,7 @@ RSpec.describe "documents/show.html.erb" do
 
   describe "topics" do
     let(:document_type) { build(:document_type, topics: true) }
-    let(:edition) { build(:edition, document_type_id: document_type.id) }
+    let(:edition) { build(:edition, document_type: document_type) }
     before { assign(:edition, edition) }
 
     it "shows the topics when a document has topics" do

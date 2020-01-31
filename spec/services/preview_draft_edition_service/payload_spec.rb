@@ -4,7 +4,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
   describe "#payload" do
     it "generates a payload for the publishing API" do
       document_type = build(:document_type)
-      edition = build(:edition, document_type_id: document_type.id)
+      edition = build(:edition, document_type: document_type)
 
       payload = PreviewDraftEditionService::Payload.new(edition).payload
 
@@ -38,7 +38,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
       organisation = build(:tag_field, :primary_publishing_organisation)
       document_type = build(:document_type, tags: [organisation])
       edition = build(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       tags: { primary_publishing_organisation: %w[my-org-id],
                               organisations: %w[other-org-id] })
 
@@ -54,7 +54,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
       organisation = build(:tag_field, :primary_publishing_organisation)
       document_type = build(:document_type, tags: [organisation])
       edition = build(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       tags: { primary_publishing_organisation: %w[my-org-id],
                               organisations: %w[my-org-id] })
 
@@ -68,7 +68,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
       role_appointments = build(:tag_field, type: "multi_tag", id: "role_appointments")
       document_type = build(:document_type, tags: [role_appointments])
       edition = build(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       tags: { role_appointments: [role_appointment_id] })
 
       person_id = SecureRandom.uuid
@@ -89,7 +89,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
     it "delegates to document type fields for contents" do
       body_field = double(:body_field, payload: { details: { body: "body" } })
       document_type = build(:document_type, contents: [body_field])
-      edition = build(:edition, document_type_id: document_type.id)
+      edition = build(:edition, document_type: document_type)
       payload = PreviewDraftEditionService::Payload.new(edition).payload
       expect(payload["details"]["body"]).to eq("body")
     end
@@ -104,7 +104,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
       document_type = build(:document_type, images: true)
 
       edition = build(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       lead_image_revision: image_revision)
 
       payload = PreviewDraftEditionService::Payload.new(edition).payload

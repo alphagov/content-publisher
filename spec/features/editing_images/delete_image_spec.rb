@@ -23,7 +23,7 @@ RSpec.feature "Delete an image" do
     @image_revision = create(:image_revision, :on_asset_manager)
 
     @edition = create(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       image_revisions: [@image_revision])
   end
 

@@ -56,7 +56,7 @@ RSpec.describe DocumentType::TitleAndBasePathField do
 
   describe "pre_update_issues" do
     let(:edition) do
-      build :edition, document_type_id: build(:document_type, check_path_conflict: true).id
+      build :edition, document_type: build(:document_type, check_path_conflict: true)
     end
 
     before do

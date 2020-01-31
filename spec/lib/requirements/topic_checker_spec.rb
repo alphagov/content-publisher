@@ -5,9 +5,7 @@ RSpec.describe Requirements::TopicChecker do
 
   describe "#pre_publish_issues" do
     let(:document_type) { create :document_type, topics: true }
-    let(:metadata_revision) { create :metadata_revision, document_type_id: document_type.id }
-    let(:revision) { create :revision, metadata_revision: metadata_revision }
-    let(:edition) { create :edition, revision: revision }
+    let(:edition) { create :edition, document_type: document_type }
 
     it "returns no issues if there are none" do
       edition = create :edition, :publishable

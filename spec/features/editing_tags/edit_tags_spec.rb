@@ -32,7 +32,7 @@ RSpec.feature "Edit tags" do
     }
 
     @edition = create(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       tags: initial_tags)
   end
 

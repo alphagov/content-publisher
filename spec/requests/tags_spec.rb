@@ -11,7 +11,7 @@ RSpec.describe "Tags" do
     let(:tag_field) { build(:tag_field, :world_locations) }
     let(:edition) do
       document_type = build(:document_type, tags: [tag_field])
-      create(:edition, document_type_id: document_type.id)
+      create(:edition, document_type: document_type)
     end
 
     it "returns successfully" do
@@ -51,7 +51,7 @@ RSpec.describe "Tags" do
        "organisation is not selected" do
       tag_field = build(:tag_field, :primary_publishing_organisation)
       document_type = build(:document_type, tags: [tag_field])
-      edition = create(:edition, document_type_id: document_type.id)
+      edition = create(:edition, document_type: document_type)
       stub_publishing_api_has_linkables(
         [{ "content_id" => SecureRandom.uuid, "internal_name" => "Organisation" }],
         document_type: tag_field.document_type,

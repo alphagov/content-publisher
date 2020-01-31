@@ -24,7 +24,7 @@ RSpec.feature "Remove a lead image" do
                              :on_asset_manager,
                              alt_text: "image")
     @edition = create(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       lead_image_revision: @image_revision)
   end
 

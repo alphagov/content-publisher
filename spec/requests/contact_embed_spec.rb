@@ -4,7 +4,7 @@ RSpec.describe "Contact Embed" do
   let(:edition) do
     body_field = DocumentType::BodyField.new
     document_type = build(:document_type, contents: [body_field])
-    create(:edition, document_type_id: document_type.id)
+    create(:edition, document_type: document_type)
   end
   let(:organisation) do
     {
