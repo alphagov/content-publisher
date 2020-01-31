@@ -36,7 +36,7 @@ RSpec.feature "Delete draft after publishing" do
     stub_any_publishing_api_put_content
     @new_title = "New draft"
     click_on "Create new edition"
-    fill_in "revision[title]", with: @new_title
+    fill_in "title", with: @new_title
     click_on "Save"
   end
 

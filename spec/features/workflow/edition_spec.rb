@@ -69,7 +69,7 @@ RSpec.feature "Editions" do
   end
 
   def and_i_make_a_major_change
-    fill_in "revision[change_note]", with: "I made a change"
+    fill_in "change_note", with: "I made a change"
     click_on "Save"
   end
 

@@ -12,7 +12,7 @@ RSpec.describe DocumentType::BodyField do
   describe "#updater_params" do
     it "returns a hash of the body" do
       edition = build :edition
-      params = ActionController::Parameters.new(revision: { contents: { body: "body" } })
+      params = ActionController::Parameters.new(body: "body")
       updater_params = subject.updater_params(edition, params)
       expect(updater_params).to eq(contents: { body: "body" })
     end

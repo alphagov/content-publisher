@@ -24,7 +24,7 @@ RSpec.feature "Edit an edition" do
   end
 
   def and_i_fill_in_the_content_fields
-    fill_in "revision[contents][body]", with: "Edited body."
+    fill_in "body", with: "Edited body."
     stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Save"
   end

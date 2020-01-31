@@ -12,8 +12,7 @@ class DocumentType::SummaryField
   end
 
   def updater_params(_edition, params)
-    summary = params.dig(:revision, :summary)&.strip
-    { summary: summary }
+    { summary: params[:summary]&.strip }
   end
 
   def pre_preview_issues(_edition, revision)

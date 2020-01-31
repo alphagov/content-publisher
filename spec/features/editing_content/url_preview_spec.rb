@@ -22,7 +22,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def and_i_delete_the_title
-    fill_in("revision[title]", with: "")
+    fill_in("title", with: "")
     page.find("body").click
   end
 
@@ -31,7 +31,7 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def and_i_fill_in_the_title
-    fill_in("revision[title]", with: "A great title")
+    fill_in("title", with: "A great title")
     page.find("body").native.send_keys :tab
   end
 

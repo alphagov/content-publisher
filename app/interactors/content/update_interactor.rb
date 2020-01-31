@@ -58,7 +58,7 @@ private
   end
 
   def change_note_params
-    params.require(:revision).permit(:update_type, :change_note)
+    { update_type: params[:update_type], change_note: params[:change_note] }.compact
   end
 
   def content_params

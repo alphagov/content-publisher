@@ -11,7 +11,8 @@ RSpec.describe Content::UpdateInteractor do
                      summary: SecureRandom.alphanumeric(10))
       ActionController::Parameters.new(
         document: document.to_param,
-        revision: { title: title, summary: summary },
+        title: title,
+        summary: summary,
       )
     end
 
