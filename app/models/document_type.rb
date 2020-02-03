@@ -28,6 +28,10 @@ class DocumentType
     end
   end
 
+  def self.clear
+    @all = nil
+  end
+
   def managed_elsewhere_url
     Plek.new.external_url_for(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
   end

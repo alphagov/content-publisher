@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Press release format" do
+RSpec.describe "News article format" do
   include TopicsHelper
 
   before do
@@ -20,7 +20,7 @@ RSpec.describe "Press release format" do
     click_on "Create new document"
     choose I18n.t!("supertypes.news.label")
     click_on "Continue"
-    choose DocumentType.find("press_release").label
+    choose DocumentType.find("news_story").label
     click_on "Continue"
   end
 
@@ -74,7 +74,7 @@ RSpec.describe "Press release format" do
         "people" => role_appointment_links["links"]["person"],
       ),
       "title" => "A great title",
-      "document_type" => "press_release",
+      "document_type" => "news_story",
       "description" => "A great summary",
     }
   end
