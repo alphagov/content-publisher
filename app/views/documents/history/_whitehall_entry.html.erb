@@ -1,0 +1,19 @@
+<div class="app-timeline-entry">
+  <% if entry.details.imported_from_whitehall? %>
+    <%= render "govuk_publishing_components/components/notice", {
+      title: t("documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"),
+      description_text: format_date(entry.created_at)
+    } %>
+  <% else %>
+    <h4 class="govuk-heading-s">
+      <%= t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}" %>
+    </h4>
+
+    <div class="app-timeline-entry__dateline">
+      <%= format_date_at_time(entry.created_at) %>
+      <% if entry.created_by %>
+        <%= t "documents.history.by" %> <%= entry.created_by.name %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

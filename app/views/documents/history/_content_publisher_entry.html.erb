@@ -1,31 +1,4 @@
-<% if entry.whitehall_migration? && entry.details.imported_from_whitehall? %>
-  <%= render "govuk_publishing_components/components/notice", {
-    title: "#{t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"}",
-    description_text: format_date(entry.created_at)
-  } %>
-<% elsif entry.whitehall_migration? %>
-  <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
-    <%= t "documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}" %>
-  </h4>
-
-  <div class="app-timeline-entry__dateline">
-    <%= format_date_at_time(entry.created_at) %>
-    <% if entry.created_by %>
-    <%= t "documents.history.by" %> <%= entry.created_by.name %>
-    <% end %>
-  </div>
-<% else %>
-  <h4 class="govuk-heading-s govuk-!-margin-bottom-1">
-    <%= t "documents.history.entry_types.#{entry.entry_type}" %>
-  </h4>
-
-  <div class="app-timeline-entry__dateline">
-    <%= format_date_at_time(entry.created_at) %>
-    <% if entry.created_by %>
-    <%= t "documents.history.by"%> <%= entry.created_by.name %>
-    <% end %>
-  </div>
-
+<% timeline_entry_content = capture do %>
   <% if entry.internal_note? && entry.details %>
     <%= simple_format(escape_and_link(entry.details.body)) %>
   <% end %>
@@ -44,7 +17,6 @@
     <% if removal.explanatory_note.present? %>
       <p><%= removal.explanatory_note %></p>
     <% end %>
-
     <% if removal.alternative_path.present? %>
       <% if removal.redirect? %>
         <p>
@@ -64,3 +36,22 @@
     <% end %>
   <% end %>
 <% end %>
+
+<div class="app-timeline-entry <%= "app-timeline-entry--highlighted" if timeline_entry_content %>">
+  <h4 class="govuk-heading-s">
+    <%= t "documents.history.entry_types.#{entry.entry_type}" %>
+  </h4>
+
+  <div class="app-timeline-entry__dateline">
+    <%= format_date_at_time(entry.created_at) %>
+    <% if entry.created_by %>
+      <%= t "documents.history.by" %> <%= entry.created_by.name %>
+    <% end %>
+  </div>
+
+  <% if timeline_entry_content %>
+    <div class="app-timeline-entry__content">
+      <%= timeline_entry_content %>
+    </div>
+  <% end %>
+</div>
