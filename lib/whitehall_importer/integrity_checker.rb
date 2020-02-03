@@ -57,7 +57,8 @@ module WhitehallImporter
 
       %w(alt_text caption).each_with_object([]) do |attribute, problems|
         if publishing_api_image[attribute] != proposed_image_payload[attribute]
-          next if attribute == "caption" && publishing_api_image[attribute].nil? && proposed_image_payload[attribute].empty?
+          next if default_image?(proposed_image_payload, publishing_api_image, attribute)
+          next if empty_caption?(proposed_image_payload, publishing_api_image, attribute)
 
           problems << problem_description(
             "image #{attribute} doesn't match",
@@ -117,6 +118,18 @@ module WhitehallImporter
 
     def publishing_api_links
       @publishing_api_links ||= GdsApi.publishing_api.get_links(edition.content_id).to_h
+    end
+
+    def empty_caption?(proposed_image_payload, publishing_api_image, attribute)
+      attribute == "caption" &&
+        publishing_api_image[attribute].nil? &&
+        proposed_image_payload[attribute].empty?
+    end
+
+    def default_image?(proposed_image_payload, publishing_api_image, attribute)
+      attribute == "alt_text" &&
+        proposed_image_payload.empty? &&
+        publishing_api_image[attribute] == "placeholder"
     end
   end
 end

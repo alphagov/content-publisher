@@ -5,7 +5,6 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     let(:edition) do
       build(
         :edition,
-        image_revisions: [build(:image_revision, caption: "")],
         tags: {
           primary_publishing_organisation: [SecureRandom.uuid],
           organisations: [SecureRandom.uuid],
@@ -13,8 +12,8 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       )
     end
 
-    it "returns true if there aren't any problems" do
-      stub_publishing_api_has_item(
+    let(:publishing_api_item) do
+      {
         content_id: edition.content_id,
         base_path: edition.base_path,
         title: edition.title,
@@ -23,15 +22,38 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         schema_name: edition.document_type.publishing_metadata.schema_name,
         details: {
           body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
-          image: {
-            caption: nil,
-          },
         },
         links: {
           primary_publishing_organisation: edition.tags["primary_publishing_organisation"].to_a,
           organisations: edition.tags["organisations"].to_a + edition.tags["primary_publishing_organisation"].to_a,
         },
-      )
+      }
+    end
+
+    it "returns true if there aren't any problems for edition without image" do
+      stub_publishing_api_has_item(publishing_api_item)
+
+      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      expect(integrity_check.valid?).to be true
+    end
+
+    it "returns true if the Publishing API image caption is nil but the imported image caption is an empty string" do
+      edition.revision.image_revisions = [build(:image_revision, caption: "")]
+
+      publishing_api_item[:image] = {
+        caption: nil,
+      }
+      stub_publishing_api_has_item(publishing_api_item)
+
+      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      expect(integrity_check.valid?).to be true
+    end
+
+    it "returns true if the Publishing API image is a placeholder and the imported edition has no image" do
+      publishing_api_item[:image] = {
+        alt_text: "placeholder",
+      }
+      stub_publishing_api_has_item(publishing_api_item)
 
       integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
       expect(integrity_check.valid?).to be true
