@@ -8,10 +8,10 @@ namespace :import do
     organisation_content_id = GdsApi.publishing_api.lookup_content_id(
       base_path: "/government/organisations/#{args.organisation_slug}",
     )
-
     document_subtypes = args.document_subtypes ? args.document_subtypes.split(",") : []
-
-    whitehall_migration = WhitehallImporter.create_migration(organisation_content_id, args.document_type, document_subtypes)
+    whitehall_migration = WhitehallImporter::CreateMigration.call(
+      organisation_content_id, args.document_type, document_subtypes
+    )
 
     documents_to_import = WhitehallMigration::DocumentImport.where(whitehall_migration_id: whitehall_migration.id).count
     puts "Identified #{documents_to_import} documents to import"
