@@ -22,9 +22,6 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         schema_name: edition.document_type.publishing_metadata.schema_name,
         details: {
           body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
-          image: {
-            caption: nil,
-          },
         },
         links: {
           primary_publishing_organisation: edition.tags["primary_publishing_organisation"].to_a,
@@ -45,6 +42,16 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       publishing_api_item[:image] = {
         caption: nil,
+      }
+      stub_publishing_api_has_item(publishing_api_item)
+
+      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      expect(integrity_check.valid?).to be true
+    end
+
+    it "returns true if the Publishing API image is a placeholder and the imported edition has no image" do
+      publishing_api_item[:image] = {
+        alt_text: "placeholder",
       }
       stub_publishing_api_has_item(publishing_api_item)
 
