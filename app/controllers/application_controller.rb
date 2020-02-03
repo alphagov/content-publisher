@@ -11,8 +11,6 @@ class ApplicationController < ActionController::Base
   before_action :check_user_access
 
   add_flash_types :alert_with_description,
-                  :alert_with_items,
-                  :confirmation,
                   :tried_to_publish,
                   :tried_to_preview
 

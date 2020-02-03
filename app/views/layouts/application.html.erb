@@ -60,10 +60,6 @@
         } %>
       <% end %>
 
-      <% if flash["confirmation"] %>
-        <%= render flash["confirmation"] %>
-      <% end %>
-
       <% if flash["alert_with_description"] %>
         <% alert = flash["alert_with_description"].stringify_keys %>
         <%= render "govuk_publishing_components/components/error_alert", {
