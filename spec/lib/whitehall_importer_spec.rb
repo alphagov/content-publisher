@@ -67,44 +67,4 @@ RSpec.describe WhitehallImporter do
       end
     end
   end
-
-  describe ".import_and_sync" do
-    let(:whitehall_export_document) { build(:whitehall_export_document) }
-    let(:whitehall_migration_document_import) do
-      build(
-        :whitehall_migration_document_import,
-        whitehall_document_id: "123",
-        state: "pending",
-      )
-    end
-    let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
-    let(:imported_document_import) do
-      create(:whitehall_migration_document_import, state: "imported")
-    end
-    let(:completed_document_import) do
-      create(:whitehall_migration_document_import,
-             state: "completed",
-             payload: whitehall_export_document)
-    end
-
-    before do
-      allow(WhitehallImporter::Import).to receive(:call).and_return(imported_document_import)
-      allow(WhitehallImporter::Sync).to receive(:call).and_return(completed_document_import)
-    end
-
-    it "imports a document" do
-      expect(WhitehallImporter::Import).to receive(:call)
-      WhitehallImporter.import_and_sync(whitehall_migration_document_import)
-    end
-
-    it "returns a WhitehallMigration::DocumentImport" do
-      result = WhitehallImporter.import_and_sync(whitehall_migration_document_import)
-      expect(result).to be_an_instance_of(WhitehallMigration::DocumentImport)
-    end
-
-    it "stores the exported whitehall data" do
-      document_import = WhitehallImporter.import_and_sync(whitehall_migration_document_import)
-      expect(document_import.payload).to eq(whitehall_export_document)
-    end
-  end
 end

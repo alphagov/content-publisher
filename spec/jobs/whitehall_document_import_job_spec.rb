@@ -4,32 +4,52 @@ RSpec.describe WhitehallDocumentImportJob do
   include ActiveJob::TestHelper
 
   let(:whitehall_migration) { create(:whitehall_migration) }
-
-  let(:whitehall_migration_document_import) do
-    create(:whitehall_migration_document_import, whitehall_migration_id: whitehall_migration["id"], state: "pending")
-  end
   let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
 
+  let(:whitehall_migration_document_import) do
+    create(:whitehall_migration_document_import)
+  end
+
+  let(:imported_document_import) do
+    create(:whitehall_migration_document_import, state: "imported")
+  end
+
+  let(:completed_document_import) do
+    create(:whitehall_migration_document_import,
+           state: "completed",
+           whitehall_migration_id: whitehall_migration["id"])
+  end
+
   before do
-    allow(WhitehallImporter).to receive(:import_and_sync)
+    allow(WhitehallImporter::Import).to receive(:call)
+                                    .and_return(imported_document_import)
+    allow(WhitehallImporter::Sync).to receive(:call)
+                                  .and_return(completed_document_import)
     allow(whitehall_migration).to receive(:check_migration_finished)
   end
 
-  it "calls on the import and sync method" do
-    expect(WhitehallImporter).to receive(:import_and_sync).with(whitehall_migration_document_import)
+  it "calls WhitehallImporter::Import" do
+    expect(WhitehallImporter::Import).to receive(:call)
+                                     .with(whitehall_migration_document_import)
+    WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
+  end
+
+  it "calls WhitehallImporter::Sync" do
+    expect(WhitehallImporter::Sync).to receive(:call)
+                                   .with(imported_document_import)
     WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
   end
 
   it "calls on the mark migration completed method" do
-    expect(whitehall_migration_document_import.whitehall_migration).to receive(:check_migration_finished)
+    expect(completed_document_import.whitehall_migration)
+      .to receive(:check_migration_finished)
     WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
   end
 
   context "when a GdsApi::BaseError exception is raised" do
     let(:error) { GdsApi::BaseError.new }
     before do
-      allow(WhitehallImporter).to receive(:import_and_sync)
-                              .and_raise(error)
+      allow(WhitehallImporter::Import).to receive(:call).and_raise(error)
     end
 
     it "retries the job" do
@@ -71,8 +91,7 @@ RSpec.describe WhitehallDocumentImportJob do
   context "when a StandardError exception is raised" do
     let(:error) { StandardError.new }
     before do
-      allow(WhitehallImporter).to receive(:import_and_sync)
-                              .and_raise(error)
+      allow(WhitehallImporter::Import).to receive(:call).and_raise(error)
     end
 
     it "does not retry the job, logs the error and updates the document import state" do
@@ -88,8 +107,7 @@ RSpec.describe WhitehallDocumentImportJob do
   context "when an AbortImportError exception is raised" do
     let(:error) { WhitehallImporter::AbortImportError.new("Aborted") }
     before do
-      allow(WhitehallImporter).to receive(:import_and_sync)
-                              .and_raise(error)
+      allow(WhitehallImporter::Import).to receive(:call).and_raise(error)
     end
 
     it "updates the document import state to 'import_aborted' and saves the error" do
@@ -116,8 +134,7 @@ RSpec.describe WhitehallDocumentImportJob do
     let(:error) { WhitehallImporter::IntegrityCheckError.new(integrity_check) }
 
     before do
-      allow(WhitehallImporter).to receive(:import_and_sync)
-                              .and_raise(error)
+      allow(WhitehallImporter::Import).to receive(:call).and_raise(error)
     end
 
     it "updates the document import state to 'import_aborted'" do

@@ -13,7 +13,8 @@ class WhitehallDocumentImportJob < ApplicationJob
   end
 
   def perform(document_import)
-    WhitehallImporter.import_and_sync(document_import)
+    document_import = WhitehallImporter::Import.call(document_import)
+    document_import = WhitehallImporter::Sync.call(document_import)
     document_import.whitehall_migration&.check_migration_finished
   end
 

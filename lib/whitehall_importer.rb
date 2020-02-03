@@ -27,10 +27,4 @@ module WhitehallImporter
     end
     whitehall_migration
   end
-
-  def self.import_and_sync(whitehall_import)
-    whitehall_import = Import.call(whitehall_import)
-
-    Sync.call(whitehall_import) if whitehall_import.imported?
-  end
 end
