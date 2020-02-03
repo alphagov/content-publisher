@@ -6,7 +6,6 @@ RSpec.feature "Delete an image" do
     when_i_visit_the_images_page
     when_i_delete_the_lead_image
     then_i_see_the_document_has_no_lead_image
-    and_the_preview_creation_succeeded
     and_i_see_the_timeline_entry
   end
 
@@ -23,7 +22,7 @@ RSpec.feature "Delete an image" do
   end
 
   def when_i_delete_the_lead_image
-    @put_content_request = stub_publishing_api_put_content(@edition.content_id, {})
+    stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Delete lead image"
   end
 
@@ -33,15 +32,6 @@ RSpec.feature "Delete an image" do
 
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
-  end
-
-  def and_the_preview_creation_succeeded
-    expect(@put_content_request).to have_been_requested
-    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"].keys).to_not include("image")
-    }).to have_been_requested
   end
 
   def and_i_see_the_timeline_entry

@@ -59,24 +59,7 @@ RSpec.describe "News article format" do
   def then_i_can_publish_the_document
     expect(a_request(:put, /content/).with { |req|
              expect(req.body).to be_valid_against_publisher_schema("news_article")
-             expect(JSON.parse(req.body)).to match a_hash_including(content_body)
            }).to have_been_requested
-  end
-
-  def content_body
-    {
-      "links" => hash_including(
-        "topical_events" => [linkable["content_id"]],
-        "world_locations" => [linkable["content_id"]],
-        "organisations" => [linkable["content_id"]],
-        "primary_publishing_organisation" => [linkable["content_id"]],
-        "roles" => role_appointment_links["links"]["role"],
-        "people" => role_appointment_links["links"]["person"],
-      ),
-      "title" => "A great title",
-      "document_type" => "news_story",
-      "description" => "A great summary",
-    }
   end
 
   def role_appointment_links

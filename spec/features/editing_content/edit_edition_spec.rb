@@ -6,7 +6,6 @@ RSpec.feature "Edit an edition" do
     when_i_go_to_edit_the_edition
     and_i_fill_in_the_content_fields
     then_i_see_the_edition_is_saved
-    and_the_preview_creation_succeeded
     and_i_see_i_was_the_last_user_to_edit_the_edition
     and_i_see_the_timeline_entry
   end
@@ -34,14 +33,6 @@ RSpec.feature "Edit an edition" do
     expect(page).to have_content("Edited body.")
   end
 
-  def and_the_preview_creation_succeeded
-    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"]["body"]).to eq("<p>Edited body.</p>\n")
-    }).to have_been_requested
-  end
-
   def and_i_see_i_was_the_last_user_to_edit_the_edition
     editor = current_user.name
     last_edited = I18n.t!("documents.show.metadata.last_edited_by") + ": #{editor}"
@@ -50,8 +41,6 @@ RSpec.feature "Edit an edition" do
 
   def and_i_see_the_timeline_entry
     click_on "Document history"
-    within first(".app-timeline-entry") do
-      expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
-    end
+    expect(page).to have_content I18n.t!("documents.history.entry_types.updated_content")
   end
 end

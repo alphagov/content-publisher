@@ -14,7 +14,6 @@ RSpec.feature "Edit tags" do
     then_i_see_the_current_selections
     when_i_edit_the_tags
     then_i_can_see_the_tags
-    and_the_preview_creation_succeeded
     and_i_see_the_timeline_entry
   end
 
@@ -69,24 +68,6 @@ RSpec.feature "Edit tags" do
 
   def and_i_see_the_timeline_entry
     click_on "Document history"
-    within first(".app-timeline-entry") do
-      expect(page).to have_content I18n.t!("documents.history.entry_types.updated_tags")
-    end
-  end
-
-  def and_the_preview_creation_succeeded
-    expect(@request).to have_been_requested
-    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["links"]).to include(edition_links)
-    }).to have_been_requested
-  end
-
-  def edition_links
-    {
-      multi_tag_id.to_s => [tag_to_select_1["content_id"], tag_to_select_2["content_id"]],
-      single_tag_id.to_s => [tag_to_select_1["content_id"]],
-    }
+    expect(page).to have_content I18n.t!("documents.history.entry_types.updated_tags")
   end
 end

@@ -10,8 +10,7 @@ RSpec.feature "Edit image", js: true do
 
     when_i_edit_the_image_metadata
     and_i_see_the_lead_image_is_updated
-    and_the_preview_creation_succeeded
-    and_the_document_history_has_been_updated
+    and_i_see_the_timeline_entry
   end
 
   scenario "inline image" do
@@ -23,8 +22,7 @@ RSpec.feature "Edit image", js: true do
 
     when_i_edit_the_image_metadata
     then_i_see_the_image_is_updated
-    and_the_preview_creation_succeeded
-    and_the_document_history_has_been_updated
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_an_edition_with_a_lead_image
@@ -78,8 +76,8 @@ RSpec.feature "Edit image", js: true do
     bottom_right_handle = find(".cropper-point.point-se")
     bottom_right_handle.drag_to(find(".govuk-header"))
 
-    @publishing_api_request = stub_any_publishing_api_put_content
-    @new_asset_requests = stub_asset_manager_receives_an_asset
+    stub_any_publishing_api_put_content
+    stub_asset_manager_receives_an_asset
     stub_asset_manager_updates_any_asset
 
     click_on "Crop image"
@@ -109,19 +107,12 @@ RSpec.feature "Edit image", js: true do
     expect(image_revision.crop_height).to eq(640)
   end
 
-  def and_the_preview_creation_succeeded
-    expect(@publishing_api_request).to have_been_requested.at_least_once
-    expect(@new_asset_requests).to have_been_requested.at_least_once
-
-    visit document_path(@edition.document)
-    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-  end
-
   def and_i_see_the_lead_image_is_updated
     within(".app-c-image-meta") { then_i_see_the_image_is_updated }
   end
 
-  def and_the_document_history_has_been_updated
+  def and_i_see_the_timeline_entry
+    visit document_path(@edition.document)
     click_on "Document history"
     expect(page).to have_content I18n.t!("documents.history.entry_types.image_updated")
   end

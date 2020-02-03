@@ -6,7 +6,6 @@ RSpec.feature "Remove a lead image" do
     when_i_visit_the_images_page
     and_i_remove_the_lead_image
     then_the_edition_has_no_lead_image
-    and_the_preview_creation_succeeded
     and_i_see_the_timeline_entry
   end
 
@@ -16,7 +15,6 @@ RSpec.feature "Remove a lead image" do
     and_i_edit_the_image_metadata
     and_i_untick_the_image_is_the_lead_image
     then_the_edition_has_no_lead_image
-    and_the_preview_creation_succeeded
     and_i_see_the_timeline_entry
   end
 
@@ -35,13 +33,13 @@ RSpec.feature "Remove a lead image" do
   end
 
   def and_i_remove_the_lead_image
-    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
+    stub_publishing_api_put_content(@edition.content_id, {})
     stub_asset_manager_updates_any_asset
     click_on "Remove lead image"
   end
 
   def and_i_edit_the_image_metadata
-    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
+    stub_publishing_api_put_content(@edition.content_id, {})
     stub_asset_manager_updates_any_asset
     visit edit_image_path(@edition.document, @image_revision.image_id)
   end
@@ -56,15 +54,6 @@ RSpec.feature "Remove a lead image" do
     expect(page).to have_content(I18n.t!("images.index.flashes.lead_image.removed", file: @image_revision.filename))
     visit document_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.show.lead_image.no_lead_image"))
-  end
-
-  def and_the_preview_creation_succeeded
-    expect(@publishing_api_request).to have_been_requested
-    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"].keys).to_not include("image")
-    }).to have_been_requested
   end
 
   def and_i_see_the_timeline_entry

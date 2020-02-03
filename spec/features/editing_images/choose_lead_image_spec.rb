@@ -6,7 +6,6 @@ RSpec.feature "Choose a lead image" do
     when_i_visit_the_images_page
     and_i_choose_one_of_the_images
     then_the_edition_has_a_lead_image
-    and_the_preview_creation_succeeded
     and_i_see_the_timeline_entry
   end
 
@@ -16,7 +15,6 @@ RSpec.feature "Choose a lead image" do
     and_i_edit_the_image_metadata
     and_i_tick_the_image_is_the_lead_image
     then_the_edition_has_a_lead_image
-    and_the_preview_creation_succeeded
     and_i_see_the_timeline_entry
   end
 
@@ -33,7 +31,7 @@ RSpec.feature "Choose a lead image" do
   end
 
   def and_i_edit_the_image_metadata
-    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
+    stub_publishing_api_put_content(@edition.content_id, {})
     stub_asset_manager_updates_any_asset
     visit edit_image_path(@edition.document, @image_revision.image_id)
   end
@@ -45,7 +43,7 @@ RSpec.feature "Choose a lead image" do
   end
 
   def and_i_choose_one_of_the_images
-    @publishing_api_request = stub_publishing_api_put_content(@edition.content_id, {})
+    stub_publishing_api_put_content(@edition.content_id, {})
     stub_asset_manager_updates_any_asset
 
     within("#image-#{@image_revision.image_id}") do
@@ -56,18 +54,6 @@ RSpec.feature "Choose a lead image" do
   def then_the_edition_has_a_lead_image
     expect(find("#lead-image img")["src"]).to include(@image_revision.filename)
     expect(page).to have_content(I18n.t!("documents.show.flashes.lead_image.selected", file: @image_revision.filename))
-  end
-
-  def and_the_preview_creation_succeeded
-    expect(@publishing_api_request).to have_been_requested
-    expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-
-    expect(a_request(:put, /content/).with { |req|
-      expect(JSON.parse(req.body)["details"]["image"]["url"])
-        .to eq @image_revision.asset_url("300")
-      expect(JSON.parse(req.body)["details"]["image"]["high_resolution_url"])
-        .to eq @image_revision.asset_url("high_resolution")
-    }).to have_been_requested
   end
 
   def and_i_see_the_timeline_entry

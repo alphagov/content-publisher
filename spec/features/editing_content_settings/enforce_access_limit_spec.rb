@@ -14,7 +14,6 @@ RSpec.feature "Enforce access limit" do
     and_i_can_still_edit_the_edition
     and_the_supporting_user_cannot
     and_someone_in_another_org_cannot
-    and_the_preview_creation_succeeded
   end
 
   scenario "all organisations" do
@@ -24,7 +23,6 @@ RSpec.feature "Enforce access limit" do
     and_i_can_still_edit_the_edition
     and_the_supporting_user_can_also
     and_someone_in_another_org_cannot
-    and_the_preview_creation_succeeded
   end
 
   def given_there_is_an_edition_in_multiple_orgs
@@ -47,8 +45,8 @@ RSpec.feature "Enforce access limit" do
       ],
     )
 
-    @asset_manager_request = stub_asset_manager_updates_any_asset
-    @publishing_api_request = stub_any_publishing_api_put_content
+    stub_asset_manager_updates_any_asset
+    stub_any_publishing_api_put_content
   end
 
   def and_there_is_a_user_in_a_supporting_org
@@ -111,20 +109,6 @@ RSpec.feature "Enforce access limit" do
     visit content_path(@edition.document)
     expect(page).to have_content(I18n.t!("documents.forbidden.description"))
     expect(page).to have_content(I18n.t!("documents.forbidden.owner", primary_org: "Primary org"))
-  end
-
-  def and_the_preview_creation_succeeded
-    expect(@asset_manager_request).to have_been_requested.at_least_once
-    expect(@publishing_api_request).to have_been_requested
-
-    expect(a_request(:put, /assets/).with { |req|
-      expect(req.body).to include "access_limited_organisation_ids"
-    }).to have_been_requested.at_least_once
-
-    expect(a_request(:put, /content/).with { |req|
-      orgs = JSON.parse(req.body)["access_limited"]["organisations"]
-      expect(orgs).to include @primary_org
-    }).to have_been_requested.at_least_once
   end
 
   def and_i_see_the_timeline_entry
