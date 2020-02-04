@@ -34,6 +34,7 @@ module WhitehallImporter
                 end
 
       create_revision_history(edition)
+      create_notes(edition)
 
       edition.tap { |e| access_limit(e) }
     end
@@ -184,18 +185,41 @@ module WhitehallImporter
         entry_type = history.imported_entry_type(event, edition_number)
         next if entry_type.nil?
 
-        details = TimelineEntry::WhitehallImportedEntry.create!(
-          entry_type: entry_type,
-        )
-        TimelineEntry.create!(
-          entry_type: :whitehall_migration,
-          created_at: event["created_at"],
-          created_by_id: user_ids[event["whodunnit"]],
-          edition: edition,
-          document: edition.document,
-          details: details,
-        )
+        details = create_whitehall_imported_entry(entry_type)
+        create_timeline_entry(details,
+                              edition,
+                              event["created_at"],
+                              user_ids[event["whodunnit"]])
       end
+    end
+
+    def create_notes(edition)
+      whitehall_edition["editorial_remarks"].each do |event|
+        contents = {
+          body: event["body"],
+        }
+        details = create_whitehall_imported_entry("internal_note", contents)
+        create_timeline_entry(details,
+                              edition, event["created_at"], event["author_id"])
+      end
+    end
+
+    def create_whitehall_imported_entry(entry_type, contents = {})
+      TimelineEntry::WhitehallImportedEntry.create!(
+        entry_type: entry_type,
+        contents: contents,
+      )
+    end
+
+    def create_timeline_entry(details, edition, created_at, created_by = nil)
+      TimelineEntry.create!(
+        entry_type: :whitehall_migration,
+        created_by_id: created_by,
+        created_at: created_at,
+        edition: edition,
+        document: edition.document,
+        details: details,
+      )
     end
   end
 end

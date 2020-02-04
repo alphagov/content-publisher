@@ -21,6 +21,7 @@ FactoryBot.define do
     contacts { [] }
     images { [] }
     attachments { [] }
+    editorial_remarks { [] }
     revision_history do
       [
         build(:whitehall_export_revision_history_event,
@@ -39,6 +40,7 @@ FactoryBot.define do
       created_at { 3.days.ago.rfc3339 }
       scheduled_publication { Time.current.tomorrow.rfc3339 }
       state { "scheduled" }
+      editorial_remarks { [] }
       revision_history do
         [
           build(:whitehall_export_revision_history_event,
@@ -58,6 +60,7 @@ FactoryBot.define do
     trait :published do
       created_at { 3.days.ago.rfc3339 }
       state { "published" }
+      editorial_remarks { [] }
       revision_history do
         [
           build(:whitehall_export_revision_history_event,
