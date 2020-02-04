@@ -100,5 +100,9 @@ module WhitehallImporter
     def content_type
       nil
     end
+
+    def tempfile
+      self
+    end
   end
 end
