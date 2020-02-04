@@ -86,6 +86,19 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
+    context "Image has exif data" do
+      let(:whitehall_image) do
+        build(:whitehall_export_image, fixture_file: "960x640-rotated.jpg")
+      end
+
+      it "should strip the exif data from the image" do
+        revision = described_class.call(document_import, whitehall_image, ["valid-image.jpg"])
+
+        image = MiniMagick::Image.open(revision.blob)
+        expect(image.exif).to be_empty
+      end
+    end
+
     it "should rename the file if duplicate filenames are passed" do
       described_class.call(document_import, whitehall_image, ["valid-image.jpg"])
       expect(Image::BlobRevision.last.filename).to eq("valid-image-1.jpg")
