@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :revision_history_event, class: Hash do
+  factory :whitehall_export_revision_history_event, class: Hash do
     skip_create
 
     event { "create" }

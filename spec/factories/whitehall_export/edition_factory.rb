@@ -23,7 +23,8 @@ FactoryBot.define do
     attachments { [] }
     revision_history do
       [
-        build(:revision_history_event, created_at: created_at),
+        build(:whitehall_export_revision_history_event,
+              created_at: created_at),
       ]
     end
     unpublishing { nil }
@@ -40,12 +41,13 @@ FactoryBot.define do
       state { "scheduled" }
       revision_history do
         [
-          build(:revision_history_event, created_at: created_at),
-          build(:revision_history_event,
+          build(:whitehall_export_revision_history_event,
+                created_at: created_at),
+          build(:whitehall_export_revision_history_event,
                 event: "update",
                 created_at: 2.days.ago.rfc3339,
                 state: previous_state),
-          build(:revision_history_event,
+          build(:whitehall_export_revision_history_event,
                 event: "update",
                 state: "scheduled",
                 created_at: Time.current.tomorrow.rfc3339),
@@ -58,8 +60,9 @@ FactoryBot.define do
       state { "published" }
       revision_history do
         [
-          build(:revision_history_event, created_at: created_at),
-          build(:revision_history_event,
+          build(:whitehall_export_revision_history_event,
+                created_at: created_at),
+          build(:whitehall_export_revision_history_event,
                 event: "update",
                 state: "published",
                 created_at: 2.days.ago.rfc3339),
