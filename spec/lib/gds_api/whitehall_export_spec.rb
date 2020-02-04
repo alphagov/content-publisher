@@ -3,21 +3,19 @@
 RSpec.describe GdsApi::WhitehallExport do
   describe "document_list" do
     let(:whitehall_adapter) { GdsApi::WhitehallExport.new(Plek.find("whitehall-admin")) }
-    let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
-    let(:whitehall_export_page_1) { build(:whitehall_export_index, documents: build_list(:whitehall_export_index_document, 100)) }
-    let(:whitehall_export_page_2) { build(:whitehall_export_index, documents: build_list(:whitehall_export_index_document, 10)) }
-
-    before do
-      stub_request(:get, "#{whitehall_host}/government/admin/export/document?lead_organisation=123&type=news_article&subtypes[]=news_story&subtypes[]=press_release&page_count=100&page_number=1")
-        .to_return(status: 200, body: whitehall_export_page_1.to_json)
-      stub_request(:get, "#{whitehall_host}/government/admin/export/document?lead_organisation=123&type=news_article&subtypes[]=news_story&subtypes[]=press_release&page_count=100&page_number=2")
-        .to_return(status: 200, body: whitehall_export_page_2.to_json)
-    end
 
     it "iterates through the correct number of pages" do
+      first_page = stub_whitehall_api_has_document_index("123", "news_article", %w(news_story press_release), 1, 100)
+      second_page = stub_whitehall_api_has_document_index("123", "news_article", %w(news_story press_release), 2, 10)
+
       whitehall_document_list = whitehall_adapter.document_list("123", "news_article", %w(news_story press_release))
-      expect(whitehall_document_list.next).to have_requested(:get, "#{whitehall_host}/government/admin/export/document?lead_organisation=123&type=news_article&subtypes[]=news_story&subtypes[]=press_release&page_count=100&page_number=1")
-      expect(whitehall_document_list.next).to have_requested(:get, "#{whitehall_host}/government/admin/export/document?lead_organisation=123&type=news_article&subtypes[]=news_story&subtypes[]=press_release&page_count=100&page_number=2")
+
+      whitehall_document_list.next
+      expect(first_page).to have_been_requested
+
+      whitehall_document_list.next
+      expect(second_page).to have_been_requested
+
       expect { whitehall_document_list.next }.to raise_error(StopIteration)
     end
   end
@@ -35,5 +33,19 @@ RSpec.describe GdsApi::WhitehallExport do
     it "makes a GET request to whitehall" do
       expect(whitehall_adapter.document_export("123")).to have_requested(:get, "#{whitehall_host}/government/admin/export/document/123")
     end
+  end
+
+  def stub_whitehall_api_has_document_index(lead_organisation, document_type, document_subtypes, page_number, items_on_page)
+    whitehall_host = Plek.new.external_url_for("whitehall-admin")
+    stub_request(:get, "#{whitehall_host}/government/admin/export/document").
+      with(query: hash_including(
+        lead_organisation: lead_organisation,
+        type: document_type,
+        subtypes: document_subtypes,
+        page_count: "100",
+        page_number: page_number.to_s,
+      )).
+      to_return(status: 200,
+        body: build(:whitehall_export_index, documents: build_list(:whitehall_export_index_document, items_on_page)).to_json)
   end
 end
