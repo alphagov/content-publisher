@@ -23,9 +23,26 @@ namespace :import do
       whitehall_document_id: args.document_id,
       state: "pending",
     )
-    WhitehallImporter.import_and_sync(whitehall_import)
 
-    unless whitehall_import.completed?
+    begin
+      whitehall_import = WhitehallImporter::Import.call(whitehall_import)
+      whitehall_import = WhitehallImporter::Sync.call(whitehall_import)
+    rescue StandardError => e
+      case e
+      when WhitehallImporter::IntegrityCheckError
+        whitehall_import.update!(
+          error_log: e.inspect,
+          state: "import_aborted",
+          integrity_check_problems: e.problems,
+          integrity_check_proposed_payload: e.payload,
+        )
+      when WhitehallImporter::AbortImportError
+        whitehall_import.update!(state: "import_aborted", error_log: e.inspect)
+      else
+        state = whitehall_import.imported? ? "sync_failed" : "import_failed"
+        whitehall_import.update!(state: state, error_log: e.inspect)
+      end
+
       puts whitehall_import.state.humanize
       puts "Error: #{whitehall_import.error_log}"
       abort
