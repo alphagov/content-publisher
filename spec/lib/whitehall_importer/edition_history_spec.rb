@@ -239,7 +239,8 @@ RSpec.describe WhitehallImporter::EditionHistory do
                            event: "update")
       instance = described_class.new([first_event, second_event])
 
-      expect(instance.imported_entry_type(second_event, 1)).to eq("document_updated")
+      expect(instance.imported_entry_type(second_event, 1))
+        .to eq("document_updated")
     end
 
     it "returns the Content Publisher event type if the state has changed" do

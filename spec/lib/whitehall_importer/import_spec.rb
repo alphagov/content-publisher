@@ -85,7 +85,8 @@ RSpec.describe WhitehallImporter::Import do
       import_data = build(:whitehall_export_document,
                           editions: [edition],
                           users: [whitehall_user])
-      document_import = build(:whitehall_migration_document_import, payload: import_data)
+      document_import = build(:whitehall_migration_document_import,
+                              payload: import_data)
       described_class.call(document_import)
 
       expect(document_import.document.created_by).to eq(user)
@@ -107,7 +108,8 @@ RSpec.describe WhitehallImporter::Import do
       import_data = build(:whitehall_export_document,
                           editions: [past_edition, current_edition],
                           users: [whitehall_user])
-      document_import = build(:whitehall_migration_document_import, payload: import_data)
+      document_import = build(:whitehall_migration_document_import,
+                              payload: import_data)
 
       expect(WhitehallImporter::CreateEdition).to receive(:call).with(
         hash_including(current: false),
@@ -145,7 +147,8 @@ RSpec.describe WhitehallImporter::Import do
 
       import_data = build(:whitehall_export_document,
                           editions: [first_edition, second_edition])
-      document_import = build(:whitehall_migration_document_import, payload: import_data)
+      document_import = build(:whitehall_migration_document_import,
+                              payload: import_data)
       described_class.call(document_import)
 
       expect(document_import.document.first_published_at).to eq(first_publish_date)

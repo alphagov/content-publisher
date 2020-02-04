@@ -50,10 +50,12 @@ RSpec.describe WhitehallImporter::CreateEdition do
         state: "published",
         revision_history: [
           build(:whitehall_export_revision_history_event),
-          build(:whitehall_export_revision_history_event, event: "update", state: "published"),
+          build(:whitehall_export_revision_history_event,
+                event: "update", state: "published"),
         ],
       )
-      edition = described_class.call(document_import: document_import, whitehall_edition: whitehall_edition)
+      edition = described_class.call(document_import: document_import,
+                                     whitehall_edition: whitehall_edition)
 
       expect(edition).to be_live
     end
@@ -99,9 +101,21 @@ RSpec.describe WhitehallImporter::CreateEdition do
         whitehall_edition = build(
           :whitehall_export_edition,
           revision_history: [
-            build(:whitehall_export_revision_history_event, whodunnit: 1, event: "create", state: "draft", created_at: 2.days.ago),
-            build(:whitehall_export_revision_history_event, whodunnit: 2, event: "update", state: "published", created_at: 1.day.ago),
-            build(:whitehall_export_revision_history_event, whodunnit: 1, event: "update", state: "superseded", created_at: 2.days.ago),
+            build(:whitehall_export_revision_history_event,
+                  whodunnit: 1,
+                  event: "create",
+                  state: "draft",
+                  created_at: 2.days.ago),
+            build(:whitehall_export_revision_history_event,
+                  whodunnit: 2,
+                  event: "update",
+                  state: "published",
+                  created_at: 1.day.ago),
+            build(:whitehall_export_revision_history_event,
+                  whodunnit: 1,
+                  event: "update",
+                  state: "superseded",
+                  created_at: 2.days.ago),
           ],
         )
 
@@ -112,12 +126,14 @@ RSpec.describe WhitehallImporter::CreateEdition do
         expect(edition.timeline_entries.first).to be_whitehall_migration
         expect(edition.timeline_entries.first.details).to be_first_created
         expect(edition.timeline_entries.first.created_at).to eq(2.days.ago)
-        expect(edition.timeline_entries.first.created_by_id).to eq(first_user.id)
+        expect(edition.timeline_entries.first.created_by_id)
+          .to eq(first_user.id)
 
         expect(edition.timeline_entries.last).to be_whitehall_migration
         expect(edition.timeline_entries.last.details).to be_published
         expect(edition.timeline_entries.last.created_at).to eq(1.day.ago)
-        expect(edition.timeline_entries.last.created_by_id).to eq(second_user.id)
+        expect(edition.timeline_entries.last.created_by_id)
+          .to eq(second_user.id)
       end
     end
 
@@ -132,14 +148,20 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     it "attributes the status to the user that created it and at the time that was done" do
-      whitehall_edition = build(:whitehall_export_edition)
+      whitehall_user_id = 1
       user = create(:user)
+      create_event = build(:whitehall_export_revision_history_event,
+                           event: "create", whodunnit: whitehall_user_id)
+      whitehall_edition = build(:whitehall_export_edition,
+                                revision_history: [create_event])
       edition = described_class.call(document_import: document_import,
                                      whitehall_edition: whitehall_edition,
-                                     user_ids: { 1 => user.id })
+                                     user_ids: { whitehall_user_id => user.id })
 
       expect(edition.status.created_by).to eq(user)
-      expect(edition.status.created_at).to eq(whitehall_edition["revision_history"].first["created_at"])
+      expect(edition.status.created_at).to eq(
+        whitehall_edition["revision_history"].first["created_at"],
+      )
     end
 
     context "when the document is withdrawn" do
@@ -148,8 +170,10 @@ RSpec.describe WhitehallImporter::CreateEdition do
               state: "withdrawn",
               revision_history: [
                 build(:whitehall_export_revision_history_event),
-                build(:whitehall_export_revision_history_event, event: "update", state: "published"),
-                build(:whitehall_export_revision_history_event, event: "update", state: "withdrawn"),
+                build(:whitehall_export_revision_history_event,
+                      event: "update", state: "published"),
+                build(:whitehall_export_revision_history_event,
+                      event: "update", state: "withdrawn"),
               ],
               unpublishing: build(:whitehall_export_unpublishing))
       end
@@ -186,9 +210,12 @@ RSpec.describe WhitehallImporter::CreateEdition do
       let(:whitehall_edition) do
         build(:whitehall_export_edition,
               revision_history: [
-                build(:whitehall_export_revision_history_event, created_at: created_at),
-                build(:whitehall_export_revision_history_event, event: "update", state: "published"),
-                build(:whitehall_export_revision_history_event, event: "update", state: "draft", created_at: updated_at),
+                build(:whitehall_export_revision_history_event,
+                      created_at: created_at),
+                build(:whitehall_export_revision_history_event,
+                      event: "update", state: "published"),
+                build(:whitehall_export_revision_history_event,
+                      event: "update", state: "draft", created_at: updated_at),
               ],
               unpublishing: build(:whitehall_export_unpublishing,
                                   alternative_url: "https://www.gov.uk/gators",
@@ -226,9 +253,14 @@ RSpec.describe WhitehallImporter::CreateEdition do
         build(:whitehall_export_edition,
               revision_history: [
                 build(:whitehall_export_revision_history_event),
-                build(:whitehall_export_revision_history_event, event: "update", state: "published"),
-                build(:whitehall_export_revision_history_event, event: "update", state: "draft", created_at: 5.minutes.ago.rfc3339),
-                build(:whitehall_export_revision_history_event, event: "update", state: "draft", created_at: created_at),
+                build(:whitehall_export_revision_history_event,
+                      event: "update", state: "published"),
+                build(:whitehall_export_revision_history_event,
+                      event: "update",
+                      state: "draft",
+                      created_at: 5.minutes.ago.rfc3339),
+                build(:whitehall_export_revision_history_event,
+                      event: "update", state: "draft", created_at: created_at),
               ],
               unpublishing: build(:whitehall_export_unpublishing,
                                   alternative_url: "https://www.gov.uk/flextension",
@@ -278,14 +310,17 @@ RSpec.describe WhitehallImporter::CreateEdition do
         state: "withdrawn",
         revision_history: [
           build(:whitehall_export_revision_history_event),
-          build(:whitehall_export_revision_history_event, event: "update", state: "published"),
-          build(:whitehall_export_revision_history_event, event: "update", state: "withdrawn"),
+          build(:whitehall_export_revision_history_event,
+                event: "update", state: "published"),
+          build(:whitehall_export_revision_history_event,
+                event: "update", state: "withdrawn"),
         ],
         unpublishing: nil,
       )
 
       expect {
-        described_class.call(document_import: document_import, whitehall_edition: whitehall_edition)
+        described_class.call(document_import: document_import,
+                             whitehall_edition: whitehall_edition)
       }.to raise_error(WhitehallImporter::AbortImportError)
     end
   end
