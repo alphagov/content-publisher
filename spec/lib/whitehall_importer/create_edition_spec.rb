@@ -158,6 +158,61 @@ RSpec.describe WhitehallImporter::CreateEdition do
           .to match a_hash_including("entry_type" => "internal_note",
                                      "contents" => { "body" => "Another note" })
       end
+
+      it "imports a fact check request event" do
+        event = build(:whitehall_export_fact_check_event,
+                      requestor_id: user.id,
+                      email_address: "someone@somewhere.com",
+                      instructions: "Do something",
+                      comments: nil,
+                      created_at: 1.day.ago.noon)
+        whitehall_edition = build(:whitehall_export_edition,
+                                  revision_history: [create_event],
+                                  fact_check_requests: [event])
+        edition = described_class.call(document_import: document_import,
+                                       whitehall_edition: whitehall_edition,
+                                       user_ids: user_ids)
+        timeline_entry = edition.timeline_entries.order(:created_at).last
+        expect(timeline_entry.attributes)
+          .to match a_hash_including("entry_type" => "whitehall_migration",
+                                     "created_by_id" => user.id,
+                                     "created_at" => 1.day.ago.noon)
+        expect(timeline_entry.details.attributes)
+          .to match a_hash_including("entry_type" => "fact_check_request",
+                                     "contents" => {
+                                       "email_address" =>
+                                          "someone@somewhere.com",
+                                       "instructions" => "Do something",
+                                     })
+      end
+
+      it "imports a fact check response event" do
+        response_received_at = 1.day.ago.noon
+        event = build(:whitehall_export_fact_check_event,
+                      requestor_id: user.id,
+                      email_address: "someone@somewhere.com",
+                      comments: "Hello World",
+                      created_at: 2.days.ago.noon,
+                      updated_at: response_received_at)
+        whitehall_edition = build(:whitehall_export_edition,
+                                  revision_history: [create_event],
+                                  fact_check_requests: [event])
+        edition = described_class.call(document_import: document_import,
+                                       whitehall_edition: whitehall_edition,
+                                       user_ids: user_ids)
+        response_entry = edition.timeline_entries.order(:created_at).last
+        expect(response_entry.attributes)
+          .to match a_hash_including("entry_type" => "whitehall_migration",
+                                     "created_at" => response_received_at,
+                                     "created_by_id" => nil)
+        expect(response_entry.details.attributes)
+          .to match a_hash_including("entry_type" => "fact_check_response",
+                                     "contents" => {
+                                       "email_address" =>
+                                         "someone@somewhere.com",
+                                       "comments" => "Hello World",
+                                     })
+      end
     end
 
     context "when importing an access limited edition" do

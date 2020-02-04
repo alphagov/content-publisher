@@ -151,7 +151,8 @@ RSpec.describe WhitehallImporter::Import do
                               payload: import_data)
       described_class.call(document_import)
 
-      expect(document_import.document.first_published_at).to eq(first_publish_date)
+      expect(document_import.document.first_published_at)
+        .to eq(first_publish_date)
     end
 
     it "integrity checks the current and live editions of the imported document" do

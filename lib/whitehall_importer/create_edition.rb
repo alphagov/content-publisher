@@ -35,6 +35,7 @@ module WhitehallImporter
 
       create_revision_history(edition)
       create_notes(edition)
+      create_fact_checks(edition)
 
       edition.tap { |e| access_limit(e) }
     end
@@ -202,6 +203,32 @@ module WhitehallImporter
         create_timeline_entry(details,
                               edition, event["created_at"], event["author_id"])
       end
+    end
+
+    def create_fact_checks(edition)
+      whitehall_edition["fact_check_requests"].each do |event|
+        create_fact_check_request(edition, event)
+        create_fact_check_response(edition, event) if event["comments"].present?
+      end
+    end
+
+    def create_fact_check_request(edition, event)
+      contents = {
+        email_address: event["email_address"],
+        instructions: event["instructions"],
+      }
+      details = create_whitehall_imported_entry("fact_check_request", contents)
+      create_timeline_entry(details,
+                            edition, event["created_at"], event["requestor_id"])
+    end
+
+    def create_fact_check_response(edition, event)
+      contents = {
+        email_address: event["email_address"],
+        comments: event["comments"],
+      }
+      details = create_whitehall_imported_entry("fact_check_response", contents)
+      create_timeline_entry(details, edition, event["updated_at"])
     end
 
     def create_whitehall_imported_entry(entry_type, contents = {})

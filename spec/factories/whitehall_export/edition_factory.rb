@@ -22,6 +22,7 @@ FactoryBot.define do
     images { [] }
     attachments { [] }
     editorial_remarks { [] }
+    fact_check_requests { [] }
     revision_history do
       [
         build(:whitehall_export_revision_history_event,
@@ -41,6 +42,7 @@ FactoryBot.define do
       scheduled_publication { Time.current.tomorrow.rfc3339 }
       state { "scheduled" }
       editorial_remarks { [] }
+      fact_check_requests { [] }
       revision_history do
         [
           build(:whitehall_export_revision_history_event,
@@ -61,6 +63,7 @@ FactoryBot.define do
       created_at { 3.days.ago.rfc3339 }
       state { "published" }
       editorial_remarks { [] }
+      fact_check_requests { [] }
       revision_history do
         [
           build(:whitehall_export_revision_history_event,
