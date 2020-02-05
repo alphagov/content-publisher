@@ -9,12 +9,13 @@ module GdsApi
   end
 
   class WhitehallExport < Base
-    def document_list(organisation_content_id, document_type)
+    def document_list(organisation_content_id, document_type, document_subtypes = [])
       params = {
         lead_organisation: organisation_content_id,
         type: document_type,
         page_number: 1,
         page_count: 100,
+        subtypes: document_subtypes,
       }
       Enumerator.new do |yielder|
         next_link = document_list_url(params)
