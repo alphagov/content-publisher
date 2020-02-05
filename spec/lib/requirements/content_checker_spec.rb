@@ -9,13 +9,12 @@ RSpec.describe Requirements::ContentChecker do
     end
 
     it "delegates to return issues with content fields" do
-      issues = Requirements::CheckerIssues.new
-      issues.create(:body, :blank)
+      issues = Requirements::CheckerIssues.new(%w(issue))
       body_field = double(:body_field, pre_preview_issues: issues)
       document_type = build :document_type, contents: [body_field]
       edition = build :edition, document_type_id: document_type.id
       issues = Requirements::ContentChecker.new(edition).pre_preview_issues
-      expect(issues).to have_issue(:body, :blank, styles: %i[form summary])
+      expect(issues).to eq issues
     end
   end
 
@@ -27,13 +26,12 @@ RSpec.describe Requirements::ContentChecker do
     end
 
     it "delegates to return issues with content fields" do
-      issues = Requirements::CheckerIssues.new
-      issues.create(:body, :blank)
+      issues = Requirements::CheckerIssues.new(%w(issue))
       body_field = double(:body_field, pre_publish_issues: issues)
       document_type = build :document_type, contents: [body_field]
       edition = build :edition, document_type_id: document_type.id
       issues = Requirements::ContentChecker.new(edition).pre_publish_issues
-      expect(issues).to have_issue(:body, :blank, styles: %i[form summary])
+      expect(issues).to eq issues
     end
 
     it "returns an issue if a major change note is blank" do
