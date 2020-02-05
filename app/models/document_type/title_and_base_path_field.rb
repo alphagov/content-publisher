@@ -28,7 +28,7 @@ class DocumentType::TitleAndBasePathField
 
     begin
       if base_path_conflict?(edition, revision)
-        issues << Requirements::Issue.new(:title, :conflict)
+        issues.create(:title, :conflict)
       end
     rescue GdsApi::BaseError => e
       GovukError.notify(e)
@@ -41,15 +41,15 @@ class DocumentType::TitleAndBasePathField
     issues = Requirements::CheckerIssues.new
 
     if revision.title.blank?
-      issues << Requirements::Issue.new(:title, :blank)
+      issues.create(:title, :blank)
     end
 
     if revision.title.to_s.size > TITLE_MAX_LENGTH
-      issues << Requirements::Issue.new(:title, :too_long, max_length: TITLE_MAX_LENGTH)
+      issues.create(:title, :too_long, max_length: TITLE_MAX_LENGTH)
     end
 
     if revision.title.to_s.lines.count > 1
-      issues << Requirements::Issue.new(:title, :multiline)
+      issues.create(:title, :multiline)
     end
 
     issues

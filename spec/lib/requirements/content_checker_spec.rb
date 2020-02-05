@@ -10,7 +10,7 @@ RSpec.describe Requirements::ContentChecker do
 
     it "delegates to return issues with content fields" do
       issues = Requirements::CheckerIssues.new
-      issues << Requirements::Issue.new(:body, :blank)
+      issues.create(:body, :blank)
       body_field = double(:body_field, pre_preview_issues: issues)
       document_type = build :document_type, contents: [body_field]
       edition = build :edition, document_type_id: document_type.id
@@ -28,7 +28,7 @@ RSpec.describe Requirements::ContentChecker do
 
     it "delegates to return issues with content fields" do
       issues = Requirements::CheckerIssues.new
-      issues << Requirements::Issue.new(:body, :blank)
+      issues.create(:body, :blank)
       body_field = double(:body_field, pre_publish_issues: issues)
       document_type = build :document_type, contents: [body_field]
       edition = build :edition, document_type_id: document_type.id

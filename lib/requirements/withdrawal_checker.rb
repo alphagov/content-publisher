@@ -13,11 +13,11 @@ module Requirements
       issues = CheckerIssues.new
 
       if public_explanation.blank?
-        issues << Issue.new(:public_explanation, :blank)
+        issues.create(:public_explanation, :blank)
       end
 
       unless GovspeakDocument.new(public_explanation, edition).valid?
-        issues << Issue.new(:public_explanation, :invalid_govspeak)
+        issues.create(:public_explanation, :invalid_govspeak)
       end
 
       issues

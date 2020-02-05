@@ -74,13 +74,13 @@ module Requirements
       issues = CheckerIssues.new
 
       if title.blank?
-        issues << Issue.new(:file_attachment_title, :blank)
+        issues.create(:file_attachment_title, :blank)
       end
 
       if title.to_s.size > TITLE_MAX_LENGTH
-        issues << Issue.new(:file_attachment_title,
-                            :too_long,
-                            max_length: TITLE_MAX_LENGTH)
+        issues.create(:file_attachment_title,
+                      :too_long,
+                      max_length: TITLE_MAX_LENGTH)
       end
 
       issues
@@ -90,17 +90,17 @@ module Requirements
       issues = CheckerIssues.new
 
       unless file
-        issues << Issue.new(:file_attachment_upload, :no_file)
+        issues.create(:file_attachment_upload, :no_file)
         return issues
       end
 
       if invalid_zip?
-        issues << Issue.new(:file_attachment_upload, :zip_unsupported_type)
+        issues.create(:file_attachment_upload, :zip_unsupported_type)
         return issues
       end
 
       if unsupported_type?
-        issues << Issue.new(:file_attachment_upload, :unsupported_type)
+        issues.create(:file_attachment_upload, :unsupported_type)
       end
 
       issues
