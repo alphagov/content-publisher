@@ -20,4 +20,28 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
     expect(rendered).to have_content(I18n.t!("documents.history.by") + " John Smith")
     expect(rendered).to have_content(I18n.t!("documents.history.entry_types.whitehall_migration.new_edition"))
   end
+
+  it "does not highlight an imported internal note timeline entry without content" do
+    timeline_entry = create(:timeline_entry,
+                            :whitehall_imported,
+                            whitehall_entry_type: :internal_note)
+    timeline_entry.details[:contents] = {}
+
+    render partial: "documents/history/whitehall_entry",
+                    locals: { entry: timeline_entry }
+    expect(rendered).to_not have_selector(".app-timeline-entry--highlighted")
+  end
+
+  it "shows the contents of an imported internal note timeline entry" do
+    note = "This is a note"
+    timeline_entry = create(:timeline_entry,
+                            :whitehall_imported,
+                            whitehall_entry_type: :internal_note)
+    timeline_entry.details[:contents] = { body: note }
+
+    render partial: "documents/history/whitehall_entry",
+                    locals: { entry: timeline_entry }
+    expect(rendered).to have_content(note)
+    expect(rendered).to have_selector(".app-timeline-entry--highlighted")
+  end
 end

@@ -1,4 +1,10 @@
-<div class="app-timeline-entry">
+<% whitehall_timeline_entry_content = capture do %>
+  <% if entry.details.internal_note? && entry.details.contents["body"].present? %>
+    <%= simple_format(escape_and_link(entry.details.contents["body"])) %>
+  <% end %>
+<% end %>
+
+<div class="app-timeline-entry <%= "app-timeline-entry--highlighted" if whitehall_timeline_entry_content %>">
   <% if entry.details.imported_from_whitehall? %>
     <%= render "govuk_publishing_components/components/notice", {
       title: t("documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"),
@@ -15,5 +21,11 @@
         <%= t "documents.history.by" %> <%= entry.created_by.name %>
       <% end %>
     </div>
+
+    <% if whitehall_timeline_entry_content %>
+      <div class="app-timeline-entry__content">
+        <%= whitehall_timeline_entry_content %>
+      </div>
+    <% end %>
   <% end %>
 </div>
