@@ -55,9 +55,7 @@ RSpec.describe DocumentType::TitleAndBasePathField do
   end
 
   describe "pre_update_issues" do
-    let(:edition) do
-      build :edition, document_type: build(:document_type, check_path_conflict: true)
-    end
+    let(:edition) { build :edition }
 
     before do
       stub_publishing_api_has_lookups(edition.base_path => nil)

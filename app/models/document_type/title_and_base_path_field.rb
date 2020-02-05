@@ -62,8 +62,6 @@ class DocumentType::TitleAndBasePathField
 private
 
   def base_path_conflict?(edition, revision)
-    return false unless edition.document_type.check_path_conflict
-
     base_path_owner = GdsApi.publishing_api.lookup_content_id(
       base_path: revision.base_path,
       with_drafts: true,
