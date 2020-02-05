@@ -74,7 +74,7 @@ RSpec.describe DeleteDraftEditionService do
       expect(document.reload.current_edition).to eq document.live_edition
     end
 
-    it "sets the current edition of the document to nil if there is no live edition" do
+    it "sets the current edition to nil if there is no live edition" do
       document = create :document, :with_current_edition
       stub_publishing_api_unreserve_path(document.current_edition.base_path)
       stub_publishing_api_discard_draft(document.content_id)
@@ -82,7 +82,7 @@ RSpec.describe DeleteDraftEditionService do
       expect(document.reload.current_edition).to be_nil
     end
 
-    it "sets the current edition of the document to current_edition if there is a live edition" do
+    it "sets the current edition to live_edition if there is a live edition" do
       document = create :document, :with_current_and_live_editions
       live_edition = document.live_edition
       stub_publishing_api_unreserve_path(document.current_edition.base_path)
@@ -91,7 +91,7 @@ RSpec.describe DeleteDraftEditionService do
       expect(document.reload.current_edition).to eq(live_edition)
     end
 
-    it "sets the status of the edition of the document to be discarded" do
+    it "sets the status of the edition to discarded" do
       document = create :document, :with_current_edition
       edition = document.current_edition
       stub_publishing_api_unreserve_path(document.current_edition.base_path)
@@ -108,7 +108,7 @@ RSpec.describe DeleteDraftEditionService do
       expect(document.reload.current_edition).to be_nil
     end
 
-    it "copes if the publishing API has a live but not draft edition of the document" do
+    it "copes if the publishing API has a live but not draft edition" do
       document = create :document, :with_current_edition
       stub_publishing_api_unreserve_path(document.current_edition.base_path)
       discard_draft_error = {
