@@ -71,8 +71,11 @@ listen to the sidekiq processes.
 
 ### Further documentation
 
-- [Removing documents](docs/removing-documents.md)
 - [Approach to analytics](docs/approach-to-analytics.md)
+- [History mode](docs/history-mode.md)
+- [Removing documents](docs/removing-documents.md)
+- [Testing strategy](docs/testing-strategy.md)
+- [User permissions](docs/user-permissions.md)
 
 ## Licence
 
