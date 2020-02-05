@@ -16,7 +16,7 @@ class FileAttachment::BlobRevision < ApplicationRecord
   end
 
   def asset_url
-    asset.file_url
+    asset.file_url.to_s
   end
 
   def bytes_for_asset
