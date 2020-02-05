@@ -31,7 +31,9 @@ private
   def update_revision
     context.revision_updater = Versioning::RevisionUpdater.new(edition.revision, user)
     revision_updater.assign(tags: update_params(edition))
+    context.fail! unless revision_updater.changed?
     context.revision = revision_updater.next_revision
+    EditDraftEditionService.call(edition, user, revision: revision)
   end
 
   def check_for_issues
@@ -41,9 +43,6 @@ private
   end
 
   def update_edition
-    context.fail! unless revision_updater.changed?
-
-    EditDraftEditionService.call(edition, user, revision: revision)
     edition.save!
   end
 

@@ -32,6 +32,7 @@ private
     updater.assign(change_note_params)
     context.fail! unless updater.changed?
     context.revision = updater.next_revision
+    EditDraftEditionService.call(edition, user, revision: revision)
   end
 
   def check_for_issues
@@ -45,7 +46,6 @@ private
   end
 
   def update_edition
-    EditDraftEditionService.call(edition, user, revision: revision)
     edition.save!
   end
 

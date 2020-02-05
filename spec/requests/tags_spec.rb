@@ -51,7 +51,11 @@ RSpec.describe "Tags" do
        "organisation is not selected" do
       tag_field = build(:tag_field, :primary_publishing_organisation)
       document_type = build(:document_type, tags: [tag_field])
-      edition = create(:edition, document_type_id: document_type.id)
+
+      edition = create(:edition,
+                       document_type_id: document_type.id,
+                       tags: { primary_publishing_organisation_ids: %w(id) })
+
       stub_publishing_api_has_linkables(
         [{ "content_id" => SecureRandom.uuid, "internal_name" => "Organisation" }],
         document_type: tag_field.document_type,
