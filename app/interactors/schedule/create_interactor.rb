@@ -33,13 +33,9 @@ private
   end
 
   def check_for_issues
-    if params[:review_status].blank?
-      issues = Requirements::CheckerIssues.new([
-        Requirements::Issue.new(:schedule_review_status, :not_selected),
-      ])
-    end
-
-    context.fail!(issues: issues) if issues
+    issues = Requirements::CheckerIssues.new
+    issues.create(:schedule_review_status, :not_selected) if params[:review_status].blank?
+    context.fail!(issues: issues) if issues.any?
   end
 
   def schedule_to_publish
