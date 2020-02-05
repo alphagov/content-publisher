@@ -23,7 +23,7 @@ RSpec.describe FailsafeDraftPreviewService do
     end
 
     context "when there are pre-preview issues" do
-      let(:edition) { create(:edition, title: "", revision_synced: true) }
+      let(:edition) { create(:edition, summary: "new\nline", revision_synced: true) }
 
       it "sets revision_synced to false on the edition" do
         FailsafeDraftPreviewService.call(edition)

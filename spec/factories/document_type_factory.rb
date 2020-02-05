@@ -16,8 +16,7 @@ FactoryBot.define do
     topics { false }
 
     contents do
-      [DocumentType::TitleAndBasePathField.new,
-       DocumentType::SummaryField.new]
+      [DocumentType::SummaryField.new]
     end
 
     publishing_metadata do

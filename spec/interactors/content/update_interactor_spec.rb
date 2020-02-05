@@ -8,7 +8,6 @@ RSpec.describe Content::UpdateInteractor do
 
     let(:params) do
       ActionController::Parameters.new(document: edition.document.to_param,
-                                       title: "New title",
                                        summary: "New summary",
                                        change_note: "New note",
                                        update_type: "minor")
@@ -21,8 +20,7 @@ RSpec.describe Content::UpdateInteractor do
 
     it "updates the edition" do
       expect { Content::UpdateInteractor.call(params: params, user: user) }
-        .to change { edition.reload.title }.to("New title")
-        .and change { edition.reload.summary }.to("New summary")
+        .to change { edition.reload.summary }.to("New summary")
         .and change { edition.reload.change_note }.to("New note")
         .and change { edition.reload.update_type }.to("minor")
     end
@@ -54,8 +52,7 @@ RSpec.describe Content::UpdateInteractor do
     end
 
     it "fails if the content is unchanged" do
-      params.merge!(title: edition.title,
-                    summary: edition.summary,
+      params.merge!(summary: edition.summary,
                     change_note: edition.change_note,
                     update_type: edition.update_type)
       result = Content::UpdateInteractor.call(params: params, user: user)
@@ -63,10 +60,10 @@ RSpec.describe Content::UpdateInteractor do
     end
 
     it "fails if there are issues with the input" do
-      params.merge!(title: "")
+      params.merge!(summary: "new\nline")
       result = Content::UpdateInteractor.call(params: params, user: user)
       expect(result).to be_failure
-      expect(result.issues).to have_issue(:title, :blank)
+      expect(result.issues).to have_issue(:summary, :multiline)
     end
   end
 end
