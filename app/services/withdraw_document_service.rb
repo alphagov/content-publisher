@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WithdrawDocumentService < ApplicationService
-  def initialize(edition, public_explanation, user = nil)
+  def initialize(edition, user, public_explanation:)
     @edition = edition
     @public_explanation = public_explanation
     @user = user
@@ -29,7 +29,10 @@ private
   end
 
   def update_edition(withdrawal)
-    AssignEditionStatusService.call(edition, user, :withdrawn, status_details: withdrawal)
+    AssignEditionStatusService.call(edition,
+                                    user: user,
+                                    state: :withdrawn,
+                                    status_details: withdrawal)
     edition.save!
   end
 

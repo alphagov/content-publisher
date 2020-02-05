@@ -19,7 +19,7 @@ class DocumentType::TitleAndBasePathField
 
   def updater_params(edition, params)
     title = params.dig(:revision, :title)&.strip
-    base_path = GenerateBasePathService.call(edition.document, title)
+    base_path = GenerateBasePathService.call(edition.document, title: title)
     { title: title, base_path: base_path }
   end
 

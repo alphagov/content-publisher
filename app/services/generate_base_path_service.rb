@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class GenerateBasePathService < ApplicationService
-  def initialize(document, proposed_title, max_repeated_titles: 1000)
+  def initialize(document, title:, max_repeated_titles: 1000)
     @document = document
-    @proposed_title = proposed_title
+    @title = title
     @max_repeated_titles = max_repeated_titles
   end
 
   def call
     prefix = document.current_edition.document_type.path_prefix
-    slug = proposed_title.parameterize
+    slug = title.parameterize
     base_path = create_path(prefix, slug)
     return base_path unless path_in_use?(base_path)
 
@@ -18,7 +18,7 @@ class GenerateBasePathService < ApplicationService
 
 private
 
-  attr_reader :document, :proposed_title, :max_repeated_titles
+  attr_reader :document, :title, :max_repeated_titles
 
   def find_a_unique_path(prefix, slug)
     (1..max_repeated_titles).each do |appended_count|

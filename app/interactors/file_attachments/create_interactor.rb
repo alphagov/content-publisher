@@ -65,6 +65,7 @@ private
 
   def unique_filename
     existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
-    GenerateUniqueFilenameService.call(existing_filenames, params[:file].original_filename)
+    GenerateUniqueFilenameService.call(filename: params[:file].original_filename,
+                                       existing_filenames: existing_filenames)
   end
 end

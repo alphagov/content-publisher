@@ -37,7 +37,8 @@ RSpec.describe FileAttachments::CreateInteractor do
 
       it "delegates generating a unique filename to GenerateUniqueFilenameService" do
         expect(GenerateUniqueFilenameService).to receive(:call)
-          .with(edition.revision.file_attachment_revisions.map(&:filename), file.original_filename)
+          .with(existing_filenames: edition.revision.file_attachment_revisions.map(&:filename),
+                filename: file.original_filename)
           .and_call_original
         FileAttachments::CreateInteractor.call(**args)
       end

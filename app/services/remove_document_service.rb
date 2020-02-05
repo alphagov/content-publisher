@@ -33,7 +33,7 @@ private
   end
 
   def update_edition_status
-    AssignEditionStatusService.call(edition, nil, :removed, status_details: removal)
+    AssignEditionStatusService.call(edition, state: :removed, status_details: removal)
     edition.save!
   end
 

@@ -27,7 +27,7 @@ private
   delegate :document, to: :edition
 
   def publish_assets(live_edition)
-    PublishAssetsService.call(edition, live_edition)
+    PublishAssetsService.call(edition, superseded_edition: live_edition)
   end
 
   def associate_with_government
@@ -56,14 +56,17 @@ private
   def supersede_live_edition(live_edition)
     return unless live_edition
 
-    AssignEditionStatusService.call(live_edition, user, :superseded, record_edit: false)
+    AssignEditionStatusService.call(live_edition,
+                                    user: user,
+                                    state: :superseded,
+                                    record_edit: false)
     live_edition.live = false
     live_edition.save!
   end
 
   def set_new_live_edition
-    status = with_review ? :published : :published_but_needs_2i
-    AssignEditionStatusService.call(edition, user, status)
+    state = with_review ? :published : :published_but_needs_2i
+    AssignEditionStatusService.call(edition, user: user, state: state)
     edition.access_limit = nil
     edition.live = true
     edition.save!

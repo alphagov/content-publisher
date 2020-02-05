@@ -92,9 +92,7 @@ RSpec.describe ResyncDocumentService do
       end
 
       it "publishes assets to the live stack" do
-        expect(PublishAssetsService)
-          .to receive(:call).once.with(edition, nil)
-
+        expect(PublishAssetsService).to receive(:call).once.with(edition)
         ResyncDocumentService.call(edition.document)
       end
     end

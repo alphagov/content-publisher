@@ -68,7 +68,8 @@ RSpec.describe ScheduledPublishingJob do
     end
 
     it "when it is out of retries it calls the failed service" do
-      expect(RescueScheduledPublishingService).to receive(:call).with(scheduled_edition.id)
+      expect(RescueScheduledPublishingService).to receive(:call)
+        .with(edition_id: scheduled_edition.id)
 
       perform_enqueued_jobs do
         ScheduledPublishingJob.perform_later(scheduled_edition.id)

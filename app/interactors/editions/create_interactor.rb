@@ -53,7 +53,7 @@ private
                   created_by: user)
 
     EditDraftEditionService.call(next_edition, user, current: true, revision: next_revision)
-    AssignEditionStatusService.call(next_edition, user, :draft)
+    AssignEditionStatusService.call(next_edition, user: user, state: :draft)
     next_edition.save!
   end
 

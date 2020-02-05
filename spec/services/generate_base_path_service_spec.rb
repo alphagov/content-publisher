@@ -8,12 +8,12 @@ RSpec.describe GenerateBasePathService do
       new_document = build(:document, :with_current_edition)
       stub_publishing_api_has_lookups("#{document.current_edition.base_path}": nil)
 
-      expect(GenerateBasePathService.call(new_document, document.current_edition.title))
+      expect(GenerateBasePathService.call(new_document, title: document.current_edition.title))
         .to eq("#{document.current_edition.base_path}-1")
     end
 
     it "preserves the base path when the title does not change" do
-      expect(GenerateBasePathService.call(document, document.current_edition.title))
+      expect(GenerateBasePathService.call(document, title: document.current_edition.title))
         .to eq(document.current_edition.base_path)
     end
 
@@ -22,7 +22,7 @@ RSpec.describe GenerateBasePathService do
       existing_paths = ["#{prefix}/a-title", "#{prefix}/a-title-1", "#{prefix}/a-title-2"]
       existing_paths.each { |path| create(:edition, base_path: path) }
 
-      expect { GenerateBasePathService.call(document, "A title", max_repeated_titles: 2) }
+      expect { GenerateBasePathService.call(document, title: "A title", max_repeated_titles: 2) }
         .to raise_error("Already >2 paths with same title.")
     end
   end

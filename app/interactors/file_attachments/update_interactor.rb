@@ -82,6 +82,7 @@ private
   def unique_filename(file)
     existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
     existing_filenames.delete(file_attachment_revision.filename)
-    GenerateUniqueFilenameService.call(existing_filenames, file.original_filename)
+    GenerateUniqueFilenameService.call(filename: file.original_filename,
+                                       existing_filenames: existing_filenames)
   end
 end
