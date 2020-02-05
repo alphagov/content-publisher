@@ -34,6 +34,8 @@ module WhitehallImporter
                 end
 
       create_revision_history(edition)
+      create_notes(edition)
+      create_fact_checks(edition)
 
       edition.tap { |e| access_limit(e) }
     end
@@ -184,18 +186,67 @@ module WhitehallImporter
         entry_type = history.imported_entry_type(event, edition_number)
         next if entry_type.nil?
 
-        details = TimelineEntry::WhitehallImportedEntry.create!(
-          entry_type: entry_type,
-        )
-        TimelineEntry.create!(
-          entry_type: :whitehall_migration,
-          created_at: event["created_at"],
-          created_by_id: user_ids[event["whodunnit"]],
-          edition: edition,
-          document: edition.document,
-          details: details,
-        )
+        details = create_whitehall_imported_entry(entry_type)
+        create_timeline_entry(details,
+                              edition,
+                              event["created_at"],
+                              user_ids[event["whodunnit"]])
       end
+    end
+
+    def create_notes(edition)
+      whitehall_edition["editorial_remarks"].each do |event|
+        contents = {
+          body: event["body"],
+        }
+        details = create_whitehall_imported_entry("internal_note", contents)
+        create_timeline_entry(details,
+                              edition, event["created_at"], event["author_id"])
+      end
+    end
+
+    def create_fact_checks(edition)
+      whitehall_edition["fact_check_requests"].each do |event|
+        create_fact_check_request(edition, event)
+        create_fact_check_response(edition, event) if event["comments"].present?
+      end
+    end
+
+    def create_fact_check_request(edition, event)
+      contents = {
+        email_address: event["email_address"],
+        instructions: event["instructions"],
+      }
+      details = create_whitehall_imported_entry("fact_check_request", contents)
+      create_timeline_entry(details,
+                            edition, event["created_at"], event["requestor_id"])
+    end
+
+    def create_fact_check_response(edition, event)
+      contents = {
+        email_address: event["email_address"],
+        comments: event["comments"],
+      }
+      details = create_whitehall_imported_entry("fact_check_response", contents)
+      create_timeline_entry(details, edition, event["updated_at"])
+    end
+
+    def create_whitehall_imported_entry(entry_type, contents = {})
+      TimelineEntry::WhitehallImportedEntry.create!(
+        entry_type: entry_type,
+        contents: contents,
+      )
+    end
+
+    def create_timeline_entry(details, edition, created_at, created_by = nil)
+      TimelineEntry.create!(
+        entry_type: :whitehall_migration,
+        created_by_id: created_by,
+        created_at: created_at,
+        edition: edition,
+        document: edition.document,
+        details: details,
+      )
     end
   end
 end

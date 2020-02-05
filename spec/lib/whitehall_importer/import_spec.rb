@@ -78,13 +78,15 @@ RSpec.describe WhitehallImporter::Import do
       user = User.create!(uid: whitehall_user["uid"])
       edition = build(
         :whitehall_export_edition,
-        revision_history: [build(:revision_history_event, whodunnit: whitehall_user["id"])],
+        revision_history: [build(:whitehall_export_revision_history_event,
+                                 whodunnit: whitehall_user["id"])],
       )
 
       import_data = build(:whitehall_export_document,
                           editions: [edition],
                           users: [whitehall_user])
-      document_import = build(:whitehall_migration_document_import, payload: import_data)
+      document_import = build(:whitehall_migration_document_import,
+                              payload: import_data)
       described_class.call(document_import)
 
       expect(document_import.document.created_by).to eq(user)
@@ -94,17 +96,20 @@ RSpec.describe WhitehallImporter::Import do
       past_edition = build(
         :whitehall_export_edition,
         created_at: Time.current.yesterday.rfc3339,
-        revision_history: [build(:revision_history_event, whodunnit: whitehall_user["id"])],
+        revision_history: [build(:whitehall_export_revision_history_event,
+                                 whodunnit: whitehall_user["id"])],
       )
       current_edition = build(
         :whitehall_export_edition,
-        revision_history: [build(:revision_history_event, whodunnit: whitehall_user["id"])],
+        revision_history: [build(:whitehall_export_revision_history_event,
+                                 whodunnit: whitehall_user["id"])],
       )
 
       import_data = build(:whitehall_export_document,
                           editions: [past_edition, current_edition],
                           users: [whitehall_user])
-      document_import = build(:whitehall_migration_document_import, payload: import_data)
+      document_import = build(:whitehall_migration_document_import,
+                              payload: import_data)
 
       expect(WhitehallImporter::CreateEdition).to receive(:call).with(
         hash_including(current: false),
@@ -122,24 +127,32 @@ RSpec.describe WhitehallImporter::Import do
       first_edition = build(
         :whitehall_export_edition,
         revision_history: [
-          build(:revision_history_event),
-          build(:revision_history_event, event: "update", state: "published", created_at: first_publish_date),
+          build(:whitehall_export_revision_history_event),
+          build(:whitehall_export_revision_history_event,
+                event: "update",
+                state: "published",
+                created_at: first_publish_date),
         ],
       )
       second_edition = build(
         :whitehall_export_edition,
         revision_history: [
-          build(:revision_history_event),
-          build(:revision_history_event, event: "update", state: "published", created_at: Time.current),
+          build(:whitehall_export_revision_history_event),
+          build(:whitehall_export_revision_history_event,
+                event: "update",
+                state: "published",
+                created_at: Time.current),
         ],
       )
 
       import_data = build(:whitehall_export_document,
                           editions: [first_edition, second_edition])
-      document_import = build(:whitehall_migration_document_import, payload: import_data)
+      document_import = build(:whitehall_migration_document_import,
+                              payload: import_data)
       described_class.call(document_import)
 
-      expect(document_import.document.first_published_at).to eq(first_publish_date)
+      expect(document_import.document.first_published_at)
+        .to eq(first_publish_date)
     end
 
     it "integrity checks the current and live editions of the imported document" do

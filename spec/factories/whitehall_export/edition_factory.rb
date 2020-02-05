@@ -21,9 +21,12 @@ FactoryBot.define do
     contacts { [] }
     images { [] }
     attachments { [] }
+    editorial_remarks { [] }
+    fact_check_requests { [] }
     revision_history do
       [
-        build(:revision_history_event, created_at: created_at),
+        build(:whitehall_export_revision_history_event,
+              created_at: created_at),
       ]
     end
     unpublishing { nil }
@@ -38,14 +41,17 @@ FactoryBot.define do
       created_at { 3.days.ago.rfc3339 }
       scheduled_publication { Time.current.tomorrow.rfc3339 }
       state { "scheduled" }
+      editorial_remarks { [] }
+      fact_check_requests { [] }
       revision_history do
         [
-          build(:revision_history_event, created_at: created_at),
-          build(:revision_history_event,
+          build(:whitehall_export_revision_history_event,
+                created_at: created_at),
+          build(:whitehall_export_revision_history_event,
                 event: "update",
                 created_at: 2.days.ago.rfc3339,
                 state: previous_state),
-          build(:revision_history_event,
+          build(:whitehall_export_revision_history_event,
                 event: "update",
                 state: "scheduled",
                 created_at: Time.current.tomorrow.rfc3339),
@@ -56,10 +62,13 @@ FactoryBot.define do
     trait :published do
       created_at { 3.days.ago.rfc3339 }
       state { "published" }
+      editorial_remarks { [] }
+      fact_check_requests { [] }
       revision_history do
         [
-          build(:revision_history_event, created_at: created_at),
-          build(:revision_history_event,
+          build(:whitehall_export_revision_history_event,
+                created_at: created_at),
+          build(:whitehall_export_revision_history_event,
                 event: "update",
                 state: "published",
                 created_at: 2.days.ago.rfc3339),
