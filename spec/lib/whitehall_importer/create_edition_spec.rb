@@ -140,7 +140,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
       it "imports an editorial remark event" do
         event = build(:whitehall_export_editorial_remark_event,
-                      author_id: user.id,
+                      author_id: whitehall_user_id,
                       body: "Another note",
                       created_at: 1.day.ago.noon)
         whitehall_edition = build(:whitehall_export_edition,
@@ -161,7 +161,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
       it "imports a fact check request event" do
         event = build(:whitehall_export_fact_check_event,
-                      requestor_id: user.id,
+                      requestor_id: whitehall_user_id,
                       email_address: "someone@somewhere.com",
                       instructions: "Do something",
                       comments: nil,

@@ -201,7 +201,7 @@ module WhitehallImporter
         }
         details = create_whitehall_imported_entry("internal_note", contents)
         create_timeline_entry(details,
-                              edition, event["created_at"], event["author_id"])
+                              edition, event["created_at"], user_ids[event["author_id"]])
       end
     end
 
@@ -219,7 +219,7 @@ module WhitehallImporter
       }
       details = create_whitehall_imported_entry("fact_check_request", contents)
       create_timeline_entry(details,
-                            edition, event["created_at"], event["requestor_id"])
+                            edition, event["created_at"], user_ids[event["requestor_id"]])
     end
 
     def create_fact_check_response(edition, event)
