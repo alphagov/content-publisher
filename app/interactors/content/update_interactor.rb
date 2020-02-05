@@ -38,7 +38,7 @@ private
     issues = Requirements::CheckerIssues.new
 
     edition.document_type.contents.each do |field|
-      issues += field.pre_update_issues(edition, revision)
+      issues += field.pre_update_issues(edition)
     end
 
     context.fail!(issues: issues) if issues.any?

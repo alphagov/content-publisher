@@ -16,14 +16,14 @@ class DocumentType::SummaryField
     { summary: summary }
   end
 
-  def pre_preview_issues(_edition, revision)
+  def pre_preview_issues(edition)
     issues = Requirements::CheckerIssues.new
 
-    if revision.summary.to_s.size > SUMMARY_MAX_LENGTH
+    if edition.summary.to_s.size > SUMMARY_MAX_LENGTH
       issues << Requirements::Issue.new(:summary, :too_long, max_length: SUMMARY_MAX_LENGTH)
     end
 
-    if revision.summary.to_s.lines.count > 1
+    if edition.summary.to_s.lines.count > 1
       issues << Requirements::Issue.new(:summary, :multiline)
     end
 
@@ -32,10 +32,10 @@ class DocumentType::SummaryField
 
   alias_method :pre_update_issues, :pre_preview_issues
 
-  def pre_publish_issues(_edition, revision)
+  def pre_publish_issues(edition)
     issues = Requirements::CheckerIssues.new
 
-    if revision.summary.blank?
+    if edition.summary.blank?
       issues << Requirements::Issue.new(:summary, :blank)
     end
 

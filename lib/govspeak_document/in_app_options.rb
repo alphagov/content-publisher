@@ -14,7 +14,7 @@ class GovspeakDocument::InAppOptions < GovspeakDocument::Options
 private
 
   def in_app_images
-    edition.revision.image_revisions.map(&method(:image_attributes))
+    edition.image_revisions.map(&method(:image_attributes))
   end
 
   def in_app_attachments

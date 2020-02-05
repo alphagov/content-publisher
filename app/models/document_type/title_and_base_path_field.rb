@@ -23,49 +23,49 @@ class DocumentType::TitleAndBasePathField
     { title: title, base_path: base_path }
   end
 
-  def pre_update_issues(edition, revision)
+  def pre_update_issues(edition)
     issues = Requirements::CheckerIssues.new
 
     begin
-      if base_path_conflict?(edition, revision)
+      if base_path_conflict?(edition)
         issues << Requirements::Issue.new(:title, :conflict)
       end
     rescue GdsApi::BaseError => e
       GovukError.notify(e)
     end
 
-    issues + pre_preview_issues(edition, revision)
+    issues + pre_preview_issues(edition)
   end
 
-  def pre_preview_issues(_edition, revision)
+  def pre_preview_issues(edition)
     issues = Requirements::CheckerIssues.new
 
-    if revision.title.blank?
+    if edition.title.blank?
       issues << Requirements::Issue.new(:title, :blank)
     end
 
-    if revision.title.to_s.size > TITLE_MAX_LENGTH
+    if edition.title.to_s.size > TITLE_MAX_LENGTH
       issues << Requirements::Issue.new(:title, :too_long, max_length: TITLE_MAX_LENGTH)
     end
 
-    if revision.title.to_s.lines.count > 1
+    if edition.title.to_s.lines.count > 1
       issues << Requirements::Issue.new(:title, :multiline)
     end
 
     issues
   end
 
-  def pre_publish_issues(_edition, _revision)
+  def pre_publish_issues(_edition)
     Requirements::CheckerIssues.new
   end
 
 private
 
-  def base_path_conflict?(edition, revision)
+  def base_path_conflict?(edition)
     return false unless edition.document_type.check_path_conflict
 
     base_path_owner = GdsApi.publishing_api.lookup_content_id(
-      base_path: revision.base_path,
+      base_path: edition.base_path,
       with_drafts: true,
       exclude_document_types: [],
       exclude_unpublishing_types: [],

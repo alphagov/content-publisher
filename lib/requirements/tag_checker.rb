@@ -2,11 +2,10 @@
 
 module Requirements
   class TagChecker
-    attr_reader :edition, :revision
+    attr_reader :edition
 
-    def initialize(edition, revision = nil)
+    def initialize(edition)
       @edition = edition
-      @revision = revision || edition.revision
     end
 
     def pre_publish_issues
@@ -27,7 +26,7 @@ module Requirements
     end
 
     def has_no_primary_org?
-      revision.primary_publishing_organisation_id.blank?
+      edition.primary_publishing_organisation_id.blank?
     end
   end
 end

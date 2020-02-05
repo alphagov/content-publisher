@@ -18,10 +18,10 @@ class DocumentType::BodyField
     { contents: { body: body } }
   end
 
-  def pre_preview_issues(edition, revision)
+  def pre_preview_issues(edition)
     issues = Requirements::CheckerIssues.new
 
-    unless GovspeakDocument.new(revision.contents[id], edition).valid?
+    unless GovspeakDocument.new(edition.contents[id], edition).valid?
       issues << Requirements::Issue.new(id, :invalid_govspeak)
     end
 
@@ -30,10 +30,10 @@ class DocumentType::BodyField
 
   alias_method :pre_update_issues, :pre_preview_issues
 
-  def pre_publish_issues(_edition, revision)
+  def pre_publish_issues(edition)
     issues = Requirements::CheckerIssues.new
 
-    if revision.contents[id].blank?
+    if edition.contents[id].blank?
       issues << Requirements::Issue.new(id, :blank)
     end
 

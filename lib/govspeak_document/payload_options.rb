@@ -16,7 +16,7 @@ class GovspeakDocument::PayloadOptions < GovspeakDocument::Options
 private
 
   def payload_images
-    edition.revision.image_revisions.map(&method(:image_attributes))
+    edition.image_revisions.map(&method(:image_attributes))
   end
 
   def payload_attachments
