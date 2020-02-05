@@ -15,7 +15,8 @@ FactoryBot.define do
     transient do
       content_id { SecureRandom.uuid }
       locale { I18n.available_locales.sample }
-      document_type_id { build(:document_type, path_prefix: "/prefix").id }
+      document_type_id { document_type.id }
+      document_type { build(:document_type, path_prefix: "/prefix") }
       state { "draft" }
       lead_image_revision { nil }
       image_revisions { [] }

@@ -15,7 +15,7 @@ RSpec.feature "Preview file attachment", js: true do
     @asset = @attachment_revision.asset
 
     @edition = create(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       file_attachment_revisions: [@attachment_revision])
   end
 

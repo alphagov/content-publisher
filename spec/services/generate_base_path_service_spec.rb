@@ -4,6 +4,12 @@ RSpec.describe GenerateBasePathService do
   describe ".call" do
     let(:edition) { create(:edition) }
 
+    it "copes if the proposed title is nil or blank" do
+      prefix = edition.document_type.path_prefix
+      expect(GenerateBasePathService.call(edition, title: nil)).to eq("#{prefix}/")
+      expect(GenerateBasePathService.call(edition, title: " ")).to eq("#{prefix}/")
+    end
+
     it "generates a base path which is unique to our database" do
       new_edition = build(:edition)
       stub_publishing_api_has_lookups("#{edition.base_path}": nil)

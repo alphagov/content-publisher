@@ -19,7 +19,7 @@ RSpec.feature "Replace a file attachment file", js: true do
     body_field = DocumentType::BodyField.new
     document_type = build(:document_type, contents: [body_field])
     @edition = create(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       file_attachment_revisions: [@attachment_revision])
   end
 

@@ -3,7 +3,7 @@
 class GenerateBasePathService < ApplicationService
   def initialize(edition, title:, max_repeated_titles: 1000)
     @edition = edition
-    @title = title
+    @title = title.to_s
     @max_repeated_titles = max_repeated_titles
   end
 

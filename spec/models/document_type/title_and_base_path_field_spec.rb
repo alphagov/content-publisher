@@ -17,7 +17,7 @@ RSpec.describe DocumentType::TitleAndBasePathField do
   describe "#updater_params" do
     it "returns a hash of the stripped title and base_path" do
       edition = build :edition
-      params = ActionController::Parameters.new(revision: { title: "  a title" })
+      params = ActionController::Parameters.new(title: "  a title")
       allow(GenerateBasePathService).to receive(:call).with(edition, title: "a title") { "base path" }
       updater_params = subject.updater_params(edition, params)
       expect(updater_params).to eq(title: "a title", base_path: "base path")
@@ -56,7 +56,7 @@ RSpec.describe DocumentType::TitleAndBasePathField do
 
   describe "pre_update_issues" do
     let(:edition) do
-      build :edition, document_type_id: build(:document_type, check_path_conflict: true).id
+      build :edition, document_type: build(:document_type, check_path_conflict: true)
     end
 
     before do
@@ -96,7 +96,7 @@ RSpec.describe DocumentType::TitleAndBasePathField do
   describe "#pre_publish_issues" do
     it "returns no issues" do
       edition = build :edition
-      issues = subject.pre_update_issues(edition, edition.revision)
+      issues = subject.pre_publish_issues(edition, edition.revision)
       expect(issues).to be_empty
     end
   end

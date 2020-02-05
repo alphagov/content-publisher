@@ -58,7 +58,9 @@ private
   end
 
   def change_note_params
-    params.require(:revision).permit(:update_type, :change_note)
+    return {} if edition.first?
+
+    { update_type: params[:update_type], change_note: params[:change_note] }
   end
 
   def content_params

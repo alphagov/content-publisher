@@ -15,7 +15,7 @@ RSpec.feature "Delete a file attachment", js: true do
     @attachment_revision = create(:file_attachment_revision, :on_asset_manager)
 
     @edition = create(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       file_attachment_revisions: [@attachment_revision])
   end
 

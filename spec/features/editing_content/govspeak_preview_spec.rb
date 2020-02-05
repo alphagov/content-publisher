@@ -12,7 +12,7 @@ RSpec.feature "Shows a preview of Govspeak", js: true do
   def given_there_is_an_edition
     body_field = DocumentType::BodyField.new
     document_type = build(:document_type, contents: [body_field])
-    @edition = create(:edition, document_type_id: document_type.id)
+    @edition = create(:edition, document_type: document_type)
   end
 
   def when_i_go_to_edit_the_edition
@@ -21,7 +21,7 @@ RSpec.feature "Shows a preview of Govspeak", js: true do
   end
 
   def and_i_enter_some_govspeak
-    fill_in "revision[contents][body]", with: "$C “contact” $C"
+    fill_in "body", with: "$C “contact” $C"
   end
 
   def and_i_view_the_govspeak_preview

@@ -4,7 +4,7 @@
         text: t("content.edit.change_note.title"),
       },
       id: "revision-change-note",
-      name: "revision[change_note]",
+      name: "change_note",
       value: @revision.change_note,
       rows: 4,
       data: {
@@ -20,7 +20,7 @@
   content: render_govspeak(t("content.edit.change_note.guidance"))
 } do %>
   <%= render "govuk_publishing_components/components/radio", {
-    name: "revision[update_type]",
+    name: "update_type",
     heading: t("content.edit.update_type.title"),
     heading_size: "s",
     items: [

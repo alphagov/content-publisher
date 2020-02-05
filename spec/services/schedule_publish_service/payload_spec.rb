@@ -8,7 +8,7 @@ RSpec.describe SchedulePublishService::Payload do
 
       edition = build(:edition,
                       :scheduled,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       publish_time: publish_time)
 
       payload = SchedulePublishService::Payload.new(edition).intent_payload

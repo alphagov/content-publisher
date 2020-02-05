@@ -16,7 +16,7 @@ RSpec.describe Requirements::TagChecker do
       end
 
       it "returns an issue when the primary org is blank" do
-        edition = build(:edition, document_type_id: document_type.id)
+        edition = build(:edition, document_type: document_type)
         issues = Requirements::TagChecker.new(edition).pre_publish_issues
 
         expect(issues).to have_issue(:primary_publishing_organisation,
@@ -26,7 +26,7 @@ RSpec.describe Requirements::TagChecker do
 
       it "returns no issues when there is a primary org" do
         edition = build(:edition,
-                        document_type_id: document_type.id,
+                        document_type: document_type,
                         tags: {
                           primary_publishing_organisation: %w[my-org],
                         })

@@ -14,8 +14,7 @@ class DocumentType::BodyField
   end
 
   def updater_params(_edition, params)
-    body = params.dig(:revision, :contents, :body)
-    { contents: { body: body } }
+    { contents: { body: params[:body] } }
   end
 
   def pre_preview_issues(edition, revision)

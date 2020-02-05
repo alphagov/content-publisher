@@ -14,32 +14,31 @@ class PreviewDraftEditionService::Payload
 
   def payload
     payload = {
-      "locale" => edition.locale,
-      "schema_name" => publishing_metadata.schema_name,
-      "document_type" => document_type.id,
-      "publishing_app" => PUBLISHING_APP,
-      "rendering_app" => publishing_metadata.rendering_app,
-      "update_type" => edition.update_type,
-      "details" => details,
-      "links" => links,
-      "access_limited" => access_limited,
-      "auth_bypass_ids" => auth_bypass_ids,
+      locale: edition.locale,
+      schema_name: publishing_metadata.schema_name,
+      document_type: document_type.id,
+      publishing_app: PUBLISHING_APP,
+      rendering_app: publishing_metadata.rendering_app,
+      update_type: edition.update_type,
+      details: details,
+      links: links,
+      access_limited: access_limited,
+      auth_bypass_ids: auth_bypass_ids,
     }
-    payload["change_note"] = edition.change_note if edition.major?
+    payload[:change_note] = edition.change_note if edition.major?
 
     document_type.contents.each do |field|
-      attributes = field.payload(edition)
-      payload.deep_merge!(attributes.deep_stringify_keys)
+      payload.deep_merge!(field.payload(edition))
     end
 
     if edition.backdated_to.present?
-      payload["first_published_at"] = edition.backdated_to
-      payload["public_updated_at"] = edition.backdated_to if edition.first?
+      payload[:first_published_at] = edition.backdated_to
+      payload[:public_updated_at] = edition.backdated_to if edition.first?
     end
 
     if republish
-      payload["update_type"] = "republish"
-      payload["bulk_publishing"] = true
+      payload[:update_type] = "republish"
+      payload[:bulk_publishing] = true
     end
 
     payload
@@ -50,7 +49,7 @@ private
   def access_limited
     return {} unless edition.access_limit
 
-    { "organisations" => edition.access_limit_organisation_ids }
+    { organisations: edition.access_limit_organisation_ids }
   end
 
   def auth_bypass_ids
@@ -66,25 +65,26 @@ private
     edition.tags
       .except("role_appointments")
       .merge(roles_and_people(role_appointments))
-      .merge("organisations" => links.uniq)
-      .merge("government" => [edition.government&.content_id].compact)
+      .merge(organisations: links.uniq)
+      .merge(government: [edition.government&.content_id].compact)
+      .symbolize_keys
   end
 
   def image
     {
-      "high_resolution_url" => edition.lead_image_revision.asset_url("high_resolution"),
-      "url" => edition.lead_image_revision.asset_url("300"),
-      "alt_text" => edition.lead_image_revision.alt_text,
-      "caption" => edition.lead_image_revision.caption,
-      "credit" => edition.lead_image_revision.credit,
+      high_resolution_url: edition.lead_image_revision.asset_url("high_resolution"),
+      url: edition.lead_image_revision.asset_url("300"),
+      alt_text: edition.lead_image_revision.alt_text,
+      caption: edition.lead_image_revision.caption,
+      credit: edition.lead_image_revision.credit,
     }
   end
 
   def details
-    details = { "political" => edition.political? }
+    details = { political: edition.political? }
 
     if document_type.images && edition.lead_image_revision.present?
-      details["image"] = image
+      details[:image] = image
     end
 
     details
@@ -94,14 +94,14 @@ private
     return {} if !role_appointments || role_appointments.count.zero?
 
     role_appointments
-      .each_with_object("roles" => [], "people" => []) do |appointment_id, memo|
+      .each_with_object(roles: [], people: []) do |appointment_id, memo|
         response = GdsApi.publishing_api.get_links(appointment_id).to_hash
 
         roles = response.dig("links", "role") || []
         people = response.dig("links", "person") || []
 
-        memo["roles"] = (memo["roles"] + roles).uniq
-        memo["people"] = (memo["people"] + people).uniq
+        memo[:roles] = (memo[:roles] + roles).uniq
+        memo[:people] = (memo[:people] + people).uniq
       end
   end
 end

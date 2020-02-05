@@ -52,7 +52,7 @@ RSpec.feature "Submit for 2i" do
     click_on "Document summary"
 
     click_on "Change Content"
-    fill_in "revision[title]", with: "a new title"
+    fill_in "title", with: "a new title"
     click_on "Save"
   end
 end

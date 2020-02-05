@@ -49,7 +49,7 @@ RSpec.feature "Edit image", js: true do
                             crop_height: 666,
                             fixture: "1000x1000.jpg")
     @edition = create(:edition,
-                      document_type_id: document_type.id,
+                      document_type: document_type,
                       image_revisions: [image_revision])
   end
 
