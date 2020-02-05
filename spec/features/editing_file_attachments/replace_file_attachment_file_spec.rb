@@ -16,10 +16,8 @@ RSpec.feature "Replace a file attachment file", js: true do
                                   :on_asset_manager,
                                   filename: attachment_filename)
 
-    body_field = DocumentType::BodyField.new
-    document_type = build(:document_type, contents: [body_field])
     @edition = create(:edition,
-                      document_type: document_type,
+                      document_type: build(:document_type, :with_body),
                       file_attachment_revisions: [@attachment_revision])
   end
 

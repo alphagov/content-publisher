@@ -10,8 +10,7 @@ RSpec.feature "Shows a preview of Govspeak", js: true do
   end
 
   def given_there_is_an_edition
-    body_field = DocumentType::BodyField.new
-    document_type = build(:document_type, contents: [body_field])
+    document_type = build(:document_type, :with_body)
     @edition = create(:edition, document_type: document_type)
   end
 

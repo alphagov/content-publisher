@@ -2,10 +2,9 @@
 
 RSpec.describe "Contact Embed" do
   let(:edition) do
-    body_field = DocumentType::BodyField.new
-    document_type = build(:document_type, contents: [body_field])
-    create(:edition, document_type: document_type)
+    create(:edition, document_type: build(:document_type, :with_body))
   end
+
   let(:organisation) do
     {
       "content_id" => SecureRandom.uuid,

@@ -32,5 +32,11 @@ FactoryBot.define do
       DocumentType.all << document_type
       Supertype.all.first.document_types << document_type
     end
+
+    trait :with_body do
+      contents do
+        [DocumentType::BodyField.new]
+      end
+    end
   end
 end
