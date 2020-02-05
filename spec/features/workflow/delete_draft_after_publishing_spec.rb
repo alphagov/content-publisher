@@ -19,10 +19,6 @@ RSpec.feature "Delete draft after publishing" do
     visit document_path(@edition.document)
   end
 
-  def when_i_submit_for_2i_review
-    click_on "Submit for 2i review"
-  end
-
   def and_i_publish_the_edition
     stub_any_publishing_api_put_content
     stub_any_publishing_api_publish
