@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RescueScheduledPublishingService < ApplicationService
-  def initialize(edition_id)
+  def initialize(edition_id:)
     @edition_id = edition_id
   end
 
@@ -25,8 +25,8 @@ private
     raise "Expected edition to be scheduled" unless edition.scheduled?
 
     AssignEditionStatusService.call(edition,
-                                    edition.status.created_by,
-                                    :failed_to_publish,
+                                    user: edition.status.created_by,
+                                    state: :failed_to_publish,
                                     record_edit: false,
                                     status_details: edition.status.details)
     edition.save!

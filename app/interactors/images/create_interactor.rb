@@ -42,8 +42,8 @@ private
       user: user,
       temp_image: temp_image,
       filename: GenerateUniqueFilenameService.call(
-        edition.revision.image_revisions.map(&:filename),
-        temp_image.original_filename,
+        existing_filenames: edition.revision.image_revisions.map(&:filename),
+        filename: temp_image.original_filename,
       ),
     )
 

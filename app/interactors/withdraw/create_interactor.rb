@@ -44,7 +44,9 @@ private
   end
 
   def withdraw_edition
-    WithdrawDocumentService.call(edition, params[:public_explanation], user)
+    WithdrawDocumentService.call(edition,
+                                 user,
+                                 public_explanation: params[:public_explanation])
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     context.fail!(api_error: true)

@@ -22,7 +22,10 @@ private
     updater.assign(proposed_publish_time: nil)
 
     EditDraftEditionService.call(edition, user, revision: updater.next_revision)
-    AssignEditionStatusService.call(edition, user, :scheduled, status_details: scheduling)
+    AssignEditionStatusService.call(edition,
+                                    user: user,
+                                    state: :scheduled,
+                                    status_details: scheduling)
     edition.save!
   end
 

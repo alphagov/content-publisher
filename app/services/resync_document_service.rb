@@ -25,7 +25,7 @@ private
     set_political_and_government(live_edition)
     reserve_path(live_edition.base_path)
     PreviewDraftEditionService.call(live_edition, republish: true)
-    PublishAssetsService.call(live_edition, nil)
+    PublishAssetsService.call(live_edition)
 
     if live_edition.withdrawn?
       withdraw

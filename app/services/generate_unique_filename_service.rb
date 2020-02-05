@@ -3,13 +3,12 @@
 class GenerateUniqueFilenameService < ApplicationService
   MAX_LENGTH = 65
 
-  def initialize(existing_filenames, suggested_name)
+  def initialize(filename:, existing_filenames:)
     @existing_filenames = existing_filenames
-    @suggested_name = suggested_name
+    @filename = ActiveStorage::Filename.new(filename)
   end
 
   def call
-    filename = ActiveStorage::Filename.new(suggested_name)
     base = filename.base.parameterize.slice 0...MAX_LENGTH
     base = ensure_unique(base)
     return base if filename.extension.blank?
@@ -19,7 +18,7 @@ class GenerateUniqueFilenameService < ApplicationService
 
 private
 
-  attr_reader :existing_filenames, :suggested_name
+  attr_reader :existing_filenames, :filename
 
   def ensure_unique(base)
     potential_conflicts = existing_filenames

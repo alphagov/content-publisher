@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class PublishAssetsService < ApplicationService
-  def initialize(edition, live_edition)
+  def initialize(edition, superseded_edition: nil)
     @edition = edition
-    @live_edition = live_edition
+    @superseded_edition = superseded_edition
   end
 
   def call
@@ -14,7 +14,7 @@ class PublishAssetsService < ApplicationService
 
 private
 
-  attr_reader :edition, :live_edition
+  attr_reader :edition, :superseded_edition
 
   def publish_asset(asset)
     raise "Expected asset to be on asset manager" if asset.absent?
@@ -31,9 +31,9 @@ private
   end
 
   def retire_old_file_attachments
-    return unless live_edition
+    return unless superseded_edition
 
-    live_edition.file_attachment_revisions.each do |live_revision|
+    superseded_edition.file_attachment_revisions.each do |live_revision|
       current_revision = find_file_attachment_revision(edition, live_revision)
 
       if current_revision
@@ -45,9 +45,9 @@ private
   end
 
   def retire_old_images
-    return unless live_edition
+    return unless superseded_edition
 
-    live_edition.image_revisions.each do |live_revision|
+    superseded_edition.image_revisions.each do |live_revision|
       current_revision = find_image_revision(edition, live_revision)
 
       if current_revision
