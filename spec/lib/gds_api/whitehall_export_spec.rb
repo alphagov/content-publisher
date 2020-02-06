@@ -48,6 +48,20 @@ RSpec.describe GdsApi::WhitehallExport do
     end
   end
 
+  describe "#unlock_document" do
+    let(:document_id) { "123" }
+    let(:unlock_endpoint) do
+      "#{whitehall_host}/government/admin/export/document/#{document_id}/unlock"
+    end
+
+    before { stub_request(:post, unlock_endpoint) }
+
+    it "makes a POST request to Whitehall admin export API unlock endpoint" do
+      expect(whitehall_adapter.unlock_document(document_id))
+        .to have_requested(:post, unlock_endpoint)
+    end
+  end
+
   def stub_whitehall_api_has_document_index(lead_organisation, document_type, document_subtypes, page_number, items_on_page)
     whitehall_host = Plek.new.external_url_for("whitehall-admin")
     stub_request(:get, "#{whitehall_host}/government/admin/export/document").
