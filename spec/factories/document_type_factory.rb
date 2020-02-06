@@ -16,8 +16,7 @@ FactoryBot.define do
     topics { false }
 
     contents do
-      [DocumentType::TitleAndBasePathField.new,
-       DocumentType::SummaryField.new]
+      [DocumentType::SummaryField.new]
     end
 
     publishing_metadata do
@@ -32,6 +31,12 @@ FactoryBot.define do
     after(:build) do |document_type|
       DocumentType.all << document_type
       Supertype.all.first.document_types << document_type
+    end
+
+    trait :with_body do
+      contents do
+        [DocumentType::BodyField.new]
+      end
     end
   end
 end

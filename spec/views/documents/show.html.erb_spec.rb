@@ -7,7 +7,6 @@ RSpec.describe "documents/show.html.erb" do
   describe "document summary" do
     it "shows the document and edition metadata" do
       edition = create(:edition,
-                       title: "Title",
                        summary: "Summary",
                        last_edited_by: create(:user, name: "User 1"),
                        created_by: create(:user, name: "User 2"))
@@ -15,8 +14,7 @@ RSpec.describe "documents/show.html.erb" do
       render
 
       expect(rendered)
-        .to include("Title")
-        .and include("Summary")
+        .to include("Summary")
         .and have_content(/#{I18n.t!("documents.show.metadata.created_by")}:\s*User 2/)
         .and have_content(/#{I18n.t!("documents.show.metadata.last_edited_by")}:\s*User 1/)
     end

@@ -18,8 +18,7 @@ RSpec.feature "Delete an image" do
   end
 
   def given_there_is_an_edition_with_images
-    body_field = DocumentType::BodyField.new
-    document_type = build(:document_type, contents: [body_field], images: true)
+    document_type = build(:document_type, :with_body, images: true)
     @image_revision = create(:image_revision, :on_asset_manager)
 
     @edition = create(:edition,

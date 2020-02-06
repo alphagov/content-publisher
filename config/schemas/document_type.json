@@ -17,7 +17,6 @@
         "label",
         "path_prefix",
         "images",
-        "check_path_conflict",
         "publishing_metadata",
         "contents",
         "tags"

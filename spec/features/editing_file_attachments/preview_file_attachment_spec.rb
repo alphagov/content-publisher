@@ -9,13 +9,11 @@ RSpec.feature "Preview file attachment", js: true do
   end
 
   def given_there_is_an_edition_with_attachments
-    body_field = DocumentType::BodyField.new
-    document_type = build(:document_type, contents: [body_field])
     @attachment_revision = create(:file_attachment_revision, :on_asset_manager)
     @asset = @attachment_revision.asset
 
     @edition = create(:edition,
-                      document_type: document_type,
+                      document_type: build(:document_type, :with_body),
                       file_attachment_revisions: [@attachment_revision])
   end
 

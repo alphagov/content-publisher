@@ -32,14 +32,13 @@ RSpec.feature "Create a document" do
 
   def and_i_fill_in_the_contents
     stub_any_publishing_api_put_content
-    fill_in "title", with: "A title"
     fill_in "summary", with: "A summary"
     click_on "Save"
   end
 
   def then_i_see_the_document_summary
     expect(page).to have_content(I18n.t!("user_facing_states.draft.name"))
-    expect(page).to have_content("A title")
+    expect(page).to have_content("A summary")
   end
 
   def and_i_see_the_timeline_entry

@@ -19,10 +19,6 @@ RSpec.feature "Delete draft after publishing" do
     visit document_path(@edition.document)
   end
 
-  def when_i_submit_for_2i_review
-    click_on "Submit for 2i review"
-  end
-
   def and_i_publish_the_edition
     stub_any_publishing_api_put_content
     stub_any_publishing_api_publish
@@ -34,9 +30,9 @@ RSpec.feature "Delete draft after publishing" do
 
   def and_i_create_a_new_draft
     stub_any_publishing_api_put_content
-    @new_title = "New draft"
+    @new_summary = "New summary"
     click_on "Create new edition"
-    fill_in "title", with: @new_title
+    fill_in "summary", with: @new_summary
     click_on "Save"
   end
 
@@ -47,12 +43,12 @@ RSpec.feature "Delete draft after publishing" do
   end
 
   def then_i_see_the_updated_draft
-    expect(page).to have_content @new_title
+    expect(page).to have_content @new_summary
   end
 
   def then_i_see_the_draft_is_gone
     expect(page).to have_current_path(documents_path, ignore_query: true)
-    expect(page).to_not have_content @new_title
+    expect(page).to_not have_content @new_summary
     expect(page).to have_content @edition.title
   end
 end

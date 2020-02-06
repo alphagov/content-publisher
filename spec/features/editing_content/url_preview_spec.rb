@@ -11,7 +11,9 @@ RSpec.feature "Shows a preview of the URL", js: true do
   end
 
   def given_there_is_an_edition
-    @edition = create(:edition)
+    title_field = DocumentType::TitleAndBasePathField.new
+    document_type = build :document_type, contents: [title_field]
+    @edition = create(:edition, document_type: document_type)
     @document_path_prefix = @edition.document_type.path_prefix
     @document_base_path = @edition.base_path
   end

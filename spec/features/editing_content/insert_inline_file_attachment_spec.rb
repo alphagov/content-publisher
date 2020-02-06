@@ -29,13 +29,11 @@ RSpec.feature "Insert inline file attachment" do
   end
 
   def given_there_is_an_edition_with_file_attachments
-    body_field = DocumentType::BodyField.new
-    document_type = build(:document_type, contents: [body_field])
     @file_attachment_revision = create(:file_attachment_revision,
                                        :on_asset_manager,
                                        filename: "foo.pdf")
     @edition = create(:edition,
-                      document_type: document_type,
+                      document_type: build(:document_type, :with_body),
                       file_attachment_revisions: [@file_attachment_revision])
   end
 

@@ -1,10 +1,19 @@
 # frozen_string_literal: true
 
 RSpec.describe WhitehallImporter::IntegrityChecker do
+  let(:document_type) do
+    build :document_type, contents: [
+      DocumentType::TitleAndBasePathField.new,
+      DocumentType::SummaryField.new,
+      DocumentType::BodyField.new,
+    ]
+  end
+
   describe "#valid?" do
     let(:edition) do
       build(
         :edition,
+        document_type: document_type,
         tags: {
           primary_publishing_organisation: [SecureRandom.uuid],
           organisations: [SecureRandom.uuid],
@@ -86,14 +95,6 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
   end
 
   describe "#problems" do
-    let(:document_type) do
-      build :document_type, contents: [
-        DocumentType::TitleAndBasePathField.new,
-        DocumentType::SummaryField.new,
-        DocumentType::BodyField.new,
-      ]
-    end
-
     let(:edition) do
       build(:edition,
             document_type: document_type,
