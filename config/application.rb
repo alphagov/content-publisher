@@ -30,7 +30,6 @@ module ContentPublisher
     # the framework and any gems in your application.
     config.action_view.raise_on_missing_translations = true
     config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*.yml")]
-    config.action_view.raise_on_missing_translations = true
     config.active_job.queue_adapter = :sidekiq
     config.time_zone = "London"
     config.eager_load_paths << Rails.root.join("lib")
