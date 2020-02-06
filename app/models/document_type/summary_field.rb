@@ -19,11 +19,11 @@ class DocumentType::SummaryField
     issues = Requirements::CheckerIssues.new
 
     if revision.summary.to_s.size > SUMMARY_MAX_LENGTH
-      issues << Requirements::Issue.new(:summary, :too_long, max_length: SUMMARY_MAX_LENGTH)
+      issues.create(:summary, :too_long, max_length: SUMMARY_MAX_LENGTH)
     end
 
     if revision.summary.to_s.lines.count > 1
-      issues << Requirements::Issue.new(:summary, :multiline)
+      issues.create(:summary, :multiline)
     end
 
     issues
@@ -33,11 +33,7 @@ class DocumentType::SummaryField
 
   def pre_publish_issues(_edition, revision)
     issues = Requirements::CheckerIssues.new
-
-    if revision.summary.blank?
-      issues << Requirements::Issue.new(:summary, :blank)
-    end
-
+    issues.create(:summary, :blank) if revision.summary.blank?
     issues
   end
 end

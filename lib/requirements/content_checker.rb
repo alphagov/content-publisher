@@ -29,7 +29,7 @@ module Requirements
       if edition.document.live_edition &&
           revision.update_type == "major" &&
           revision.change_note.blank?
-        issues << Issue.new(:change_note, :blank)
+        issues.create(:change_note, :blank)
       end
 
       issues

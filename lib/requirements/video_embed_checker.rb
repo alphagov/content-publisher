@@ -9,13 +9,13 @@ module Requirements
       issues = CheckerIssues.new
 
       if title.blank?
-        issues << Issue.new(:video_embed_title, :blank)
+        issues.create(:video_embed_title, :blank)
       end
 
       if url.blank?
-        issues << Issue.new(:video_embed_url, :blank)
+        issues.create(:video_embed_url, :blank)
       elsif !youtube_url?(url)
-        issues << Issue.new(:video_embed_url, :non_youtube)
+        issues.create(:video_embed_url, :non_youtube)
       end
 
       issues

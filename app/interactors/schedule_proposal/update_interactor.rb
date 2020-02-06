@@ -34,11 +34,9 @@ private
   end
 
   def check_for_issues
-    checker = Requirements::PublishTimeChecker.new(publish_time)
-    issues = checker.issues.to_a
+    issues = Requirements::PublishTimeChecker.new(publish_time).issues
     issues += action_issues if params[:wizard] == "schedule"
-
-    context.fail!(issues: Requirements::CheckerIssues.new(issues)) if issues.any?
+    context.fail!(issues: issues) if issues.any?
   end
 
   def update_edition
@@ -53,9 +51,9 @@ private
   end
 
   def action_issues
-    return [] if schedule_params[:action].present?
-
-    [Requirements::Issue.new(:schedule_action, :not_selected)]
+    issues = Requirements::CheckerIssues.new
+    issues.create(:schedule_action, :not_selected) if schedule_params[:action].blank?
+    issues
   end
 
   def schedule_params

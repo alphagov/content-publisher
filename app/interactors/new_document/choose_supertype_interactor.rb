@@ -14,18 +14,12 @@ class NewDocument::ChooseSupertypeInteractor < ApplicationInteractor
 private
 
   def check_for_issues
-    return if params[:supertype].present?
-
-    context.fail!(issues: supertype_issues)
+    issues = Requirements::CheckerIssues.new
+    issues.create(:supertype, :not_selected) if params[:supertype].blank?
+    context.fail!(issues: issues) if issues.any?
   end
 
   def find_supertype
     context.supertype = Supertype.find(params[:supertype])
-  end
-
-  def supertype_issues
-    Requirements::CheckerIssues.new([
-      Requirements::Issue.new(:supertype, :not_selected),
-    ])
   end
 end

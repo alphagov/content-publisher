@@ -21,7 +21,7 @@ class DocumentType::BodyField
     issues = Requirements::CheckerIssues.new
 
     unless GovspeakDocument.new(revision.contents[id], edition).valid?
-      issues << Requirements::Issue.new(id, :invalid_govspeak)
+      issues.create(id, :invalid_govspeak)
     end
 
     issues
@@ -31,11 +31,7 @@ class DocumentType::BodyField
 
   def pre_publish_issues(_edition, revision)
     issues = Requirements::CheckerIssues.new
-
-    if revision.contents[id].blank?
-      issues << Requirements::Issue.new(id, :blank)
-    end
-
+    issues.create(id, :blank) if revision.contents[id].blank?
     issues
   end
 end

@@ -24,9 +24,9 @@ private
   end
 
   def check_for_issues
-    return if params[:document_type].present?
-
-    context.fail!(issues: document_type_issues)
+    issues = Requirements::CheckerIssues.new
+    issues.create(:document_type, :not_selected) if params[:document_type].blank?
+    context.fail!(issues: issues) if issues.any?
   end
 
   def find_document_type
@@ -46,12 +46,6 @@ private
   def create_timeline_entry
     TimelineEntry.create_for_status_change(entry_type: :created,
                                            status: document.current_edition.status)
-  end
-
-  def document_type_issues
-    Requirements::CheckerIssues.new([
-      Requirements::Issue.new(:document_type, :not_selected),
-    ])
   end
 
   def default_tags

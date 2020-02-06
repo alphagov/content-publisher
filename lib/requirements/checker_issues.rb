@@ -15,6 +15,10 @@ module Requirements
       CheckerIssues.new(issues + other.issues)
     end
 
+    def create(*args, **params)
+      self << Issue.new(*args, **params)
+    end
+
     def items(params = {})
       map { |issue| issue.to_item(**issue_item_params(issue, params)) }
     end

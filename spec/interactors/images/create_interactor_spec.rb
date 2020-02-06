@@ -89,15 +89,14 @@ RSpec.describe Images::CreateInteractor do
 
     context "when the image normaliser finds issues" do
       it "fails with issues returned" do
-        issue = Requirements::Issue.new("image", "example")
         allow(ImageNormaliser)
           .to receive(:new)
-          .and_return(double(normalise: nil, issues: [issue]))
+          .and_return(double(normalise: nil, issues: %w(issue)))
 
         result = Images::CreateInteractor.call(**args)
 
         expect(result).to be_failure
-        expect(result.issues).to match([issue])
+        expect(result.issues).to match(%w(issue))
       end
     end
   end

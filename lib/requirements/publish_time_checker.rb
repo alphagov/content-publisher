@@ -17,20 +17,20 @@ module Requirements
       issues = CheckerIssues.new
 
       if publish_time > MAX_PUBLISH_DELAY.from_now
-        issues << Issue.new(:schedule_date,
-                            :too_far_in_future,
-                            time_period: MAX_PUBLISH_DELAY.inspect)
+        issues.create(:schedule_date,
+                      :too_far_in_future,
+                      time_period: MAX_PUBLISH_DELAY.inspect)
       end
 
       if publish_time > Time.current && publish_time < MIN_PUBLISH_DELAY.from_now
-        issues << Issue.new(:schedule_time,
-                            :too_close_to_now,
-                            time_period: MIN_PUBLISH_DELAY.inspect)
+        issues.create(:schedule_time,
+                      :too_close_to_now,
+                      time_period: MIN_PUBLISH_DELAY.inspect)
       end
 
       if publish_time < Time.current
         field = publish_time.today? ? :schedule_time : :schedule_date
-        issues << Issue.new(field, :in_the_past)
+        issues.create(field, :in_the_past)
       end
 
       issues

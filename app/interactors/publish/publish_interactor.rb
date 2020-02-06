@@ -32,13 +32,9 @@ private
   end
 
   def check_for_issues
-    return if params[:review_status].present?
-
-    issues = Requirements::CheckerIssues.new([
-      Requirements::Issue.new(:review_status, :not_selected),
-    ])
-
-    context.fail!(issues: issues)
+    issues = Requirements::CheckerIssues.new
+    issues.create(:review_status, :not_selected) if params[:review_status].blank?
+    context.fail!(issues: issues) if issues.any?
   end
 
   def with_review?

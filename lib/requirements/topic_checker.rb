@@ -13,7 +13,7 @@ module Requirements
 
       begin
         if edition.document_type.topics && edition.topics.none?
-          issues << Issue.new(:topics, :none)
+          issues.create(:topics, :none)
         end
       rescue GdsApi::BaseError => e
         GovukError.notify(e) if rescue_api_errors

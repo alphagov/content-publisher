@@ -13,7 +13,7 @@ module Requirements
       issues = CheckerIssues.new
 
       if should_have_primary_org? && has_no_primary_org?
-        issues << Issue.new(:primary_publishing_organisation, :blank)
+        issues.create(:primary_publishing_organisation, :blank)
       end
 
       issues

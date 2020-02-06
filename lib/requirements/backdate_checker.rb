@@ -12,12 +12,12 @@ module Requirements
       issues = CheckerIssues.new
 
       if in_the_future?
-        issues << Issue.new(:backdate_date, :in_the_future)
+        issues.create(:backdate_date, :in_the_future)
       end
 
       if too_long_ago?
         date = EARLIEST_DATE.strftime("%-d %B %Y")
-        issues << Issue.new(:backdate_date, :too_long_ago, date: date)
+        issues.create(:backdate_date, :too_long_ago, date: date)
       end
 
       issues

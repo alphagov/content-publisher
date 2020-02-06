@@ -19,17 +19,19 @@ module Requirements
       issues = CheckerIssues.new
 
       unless file
-        issues << Issue.new(:image_upload, :no_file)
-        return CheckerIssues.new(issues)
+        issues.create(:image_upload, :no_file)
+        return issues
       end
 
       if unsupported_type?
-        issues << Issue.new(:image_upload, :unsupported_type)
-        return CheckerIssues.new(issues)
+        issues.create(:image_upload, :unsupported_type)
+        return issues
       end
 
       if file.size >= MAX_FILE_SIZE
-        issues << Issue.new(:image_upload, :too_big, max_size: number_to_human_size(MAX_FILE_SIZE))
+        issues.create(:image_upload,
+                      :too_big,
+                      max_size: number_to_human_size(MAX_FILE_SIZE))
       end
 
       issues
