@@ -17,8 +17,6 @@ en:
       contents:
         title: Content
         items:
-          title: Title
-          summary: Summary
           update_type: Update type
           change_note: Change note
         update_type:
