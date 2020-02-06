@@ -6,7 +6,7 @@ module BulkData
 
     class << self
       delegate :cache, to: :instance
-      delegate :clear, :middleware, to: :cache
+      delegate :clear, :exist?, :middleware, to: :cache
     end
 
     attr_reader :cache
@@ -36,10 +36,6 @@ module BulkData
     def self.delete(key)
       cache.delete(key)
       cache.delete("#{key}:created")
-    end
-
-    def self.clear
-      cache.clear
     end
 
   private
