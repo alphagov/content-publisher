@@ -17,6 +17,8 @@ module WhitehallImporter
         raise "Cannot import with a state of #{document_import.state}"
       end
 
+      lock_document
+
       document_import.update!(
         payload: whitehall_document,
         content_id: whitehall_document["content_id"],
@@ -55,6 +57,10 @@ module WhitehallImporter
       @whitehall_document ||= GdsApi.whitehall_export
                                     .document_export(document_import.whitehall_document_id)
                                     .to_h
+    end
+
+    def lock_document
+      GdsApi.whitehall_export.lock_document(document_import.whitehall_document_id)
     end
 
     def create_timeline_entry(edition)

@@ -17,6 +17,7 @@ RSpec.describe WhitehallImporter::Import do
       allow(WhitehallImporter::IntegrityChecker)
         .to receive(:new)
         .and_return(instance_double(WhitehallImporter::IntegrityChecker, valid?: true))
+      stub_whitehall_api_lock_document(document_import.whitehall_document_id)
       stub_whitehall_api_document_export(
         document_import.whitehall_document_id, whitehall_export_document
       )
@@ -27,6 +28,12 @@ RSpec.describe WhitehallImporter::Import do
 
       expect { described_class.call(document_import) }
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
+    end
+
+    it "locks the document in Whitehall" do
+      described_class.call(document_import)
+      expect(stub_whitehall_api_lock_document(document_import.whitehall_document_id))
+        .to have_been_requested
     end
 
     it "stores the exported Whitehall document data" do
@@ -241,5 +248,9 @@ RSpec.describe WhitehallImporter::Import do
   def stub_whitehall_api_document_export(document_id, whitehall_export)
     stub_request(:get, "#{whitehall_host}/government/admin/export/document/#{document_id}")
       .to_return(status: 200, body: whitehall_export.to_json)
+  end
+
+  def stub_whitehall_api_lock_document(document_id)
+    stub_request(:post, "#{whitehall_host}/government/admin/export/document/#{document_id}/lock")
   end
 end
