@@ -90,9 +90,9 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     context "has editorial remarks" do
-      let(:user) { create(:user) }
+      let(:content_publisher_user) { create(:user) }
       let(:whitehall_user_id) { rand(100) }
-      let(:user_ids) { { whitehall_user_id => user.id } }
+      let(:user_ids) { { whitehall_user_id => content_publisher_user.id } }
       let(:create_event) do
         build(:whitehall_export_revision_history_event,
               event: "create",
@@ -109,7 +109,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         timeline_entry = edition.timeline_entries.first
         expect(timeline_entry.attributes)
           .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => user.id,
+                                     "created_by_id" => content_publisher_user.id,
                                      "created_at" => 1.week.ago.noon)
         expect(timeline_entry.details.attributes)
           .to match a_hash_including("entry_type" => "first_created",
@@ -131,7 +131,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         timeline_entry = edition.timeline_entries.order(:created_at).last
         expect(timeline_entry.attributes)
           .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => user.id,
+                                     "created_by_id" => content_publisher_user.id,
                                      "created_at" => 1.day.ago.noon)
         expect(timeline_entry.details.attributes)
           .to match a_hash_including("entry_type" => "published",
@@ -140,7 +140,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
       it "imports an editorial remark event" do
         event = build(:whitehall_export_editorial_remark_event,
-                      author_id: user.id,
+                      author_id: whitehall_user_id,
                       body: "Another note",
                       created_at: 1.day.ago.noon)
         whitehall_edition = build(:whitehall_export_edition,
@@ -152,7 +152,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         timeline_entry = edition.timeline_entries.order(:created_at).last
         expect(timeline_entry.attributes)
           .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => user.id,
+                                     "created_by_id" => content_publisher_user.id,
                                      "created_at" => 1.day.ago.noon)
         expect(timeline_entry.details.attributes)
           .to match a_hash_including("entry_type" => "internal_note",
@@ -161,7 +161,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
       it "imports a fact check request event" do
         event = build(:whitehall_export_fact_check_event,
-                      requestor_id: user.id,
+                      requestor_id: whitehall_user_id,
                       email_address: "someone@somewhere.com",
                       instructions: "Do something",
                       comments: nil,
@@ -175,7 +175,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         timeline_entry = edition.timeline_entries.order(:created_at).last
         expect(timeline_entry.attributes)
           .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => user.id,
+                                     "created_by_id" => content_publisher_user.id,
                                      "created_at" => 1.day.ago.noon)
         expect(timeline_entry.details.attributes)
           .to match a_hash_including("entry_type" => "fact_check_request",
@@ -189,7 +189,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       it "imports a fact check response event" do
         response_received_at = 1.day.ago.noon
         event = build(:whitehall_export_fact_check_event,
-                      requestor_id: user.id,
+                      requestor_id: whitehall_user_id,
                       email_address: "someone@somewhere.com",
                       comments: "Hello World",
                       created_at: 2.days.ago.noon,
