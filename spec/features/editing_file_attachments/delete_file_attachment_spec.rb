@@ -30,8 +30,8 @@ RSpec.feature "Delete a file attachment", js: true do
   end
 
   def then_i_see_the_attachment_is_gone
-    expect(all("#file-attachment-#{@attachment_revision.file_attachment_id}").count).to be_zero
     expect(page).to have_content(I18n.t!("file_attachments.index.flashes.deleted", file: @attachment_revision.filename))
+    expect(page).to_not have_selector("#file-attachment-#{@attachment_revision.file_attachment_id}")
   end
 
   def and_i_see_the_timeline_entry
