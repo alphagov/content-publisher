@@ -7,5 +7,6 @@ FactoryBot.define do
     whitehall_document_id { payload["id"] }
     content_id { payload["content_id"] }
     document { association :document, imported_from: "whitehall" }
+    whitehall_migration
   end
 end
