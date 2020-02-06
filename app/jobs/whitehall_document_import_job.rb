@@ -19,6 +19,10 @@ class WhitehallDocumentImportJob < ApplicationJob
   end
 
   def self.handle_error(document_import, error)
+    if document_import.pending?
+      GdsApi.whitehall_export.unlock_document(document_import.whitehall_document_id)
+    end
+
     case error
     when WhitehallImporter::IntegrityCheckError
       document_import.update!(

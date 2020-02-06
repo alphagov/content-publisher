@@ -3,6 +3,7 @@
 RSpec.describe GdsApi::WhitehallExport do
   let(:whitehall_adapter) { GdsApi::WhitehallExport.new(Plek.find("whitehall-admin")) }
   let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
+  let(:document_id) { "123" }
 
   describe "#document_list" do
     it "iterates through the correct number of pages" do
