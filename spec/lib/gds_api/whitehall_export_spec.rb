@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe GdsApi::WhitehallExport do
-  describe "document_list" do
-    let(:whitehall_adapter) { GdsApi::WhitehallExport.new(Plek.find("whitehall-admin")) }
+  let(:whitehall_adapter) { GdsApi::WhitehallExport.new(Plek.find("whitehall-admin")) }
+  let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
 
+  describe "#document_list" do
     it "iterates through the correct number of pages" do
       first_page = stub_whitehall_api_has_document_index("123", "news_article", %w(news_story press_release), 1, 100)
       second_page = stub_whitehall_api_has_document_index("123", "news_article", %w(news_story press_release), 2, 10)
@@ -20,9 +21,7 @@ RSpec.describe GdsApi::WhitehallExport do
     end
   end
 
-  describe "document_export" do
-    let(:whitehall_adapter) { GdsApi::WhitehallExport.new(Plek.find("whitehall-admin")) }
-    let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
+  describe "#document_export" do
     let(:whitehall_export) { build(:whitehall_export_document) }
 
     before do
@@ -32,6 +31,20 @@ RSpec.describe GdsApi::WhitehallExport do
 
     it "makes a GET request to whitehall" do
       expect(whitehall_adapter.document_export("123")).to have_requested(:get, "#{whitehall_host}/government/admin/export/document/123")
+    end
+  end
+
+  describe "#lock_document" do
+    let(:document_id) { "123" }
+    let(:lock_endpoint) do
+      "#{whitehall_host}/government/admin/export/document/#{document_id}/lock"
+    end
+
+    before { stub_request(:post, lock_endpoint) }
+
+    it "makes a POST request to Whitehall admin export API lock endpoint" do
+      expect(whitehall_adapter.lock_document(document_id))
+        .to have_requested(:post, lock_endpoint)
     end
   end
 
