@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Preview file attachment", js: true do
+RSpec.feature "Preview file attachment" do
   scenario do
     given_there_is_an_edition_with_attachments
     and_the_attachment_is_available
@@ -30,13 +30,10 @@ RSpec.feature "Preview file attachment", js: true do
       click_on "Attachment"
     end
 
-    expect(page).to have_selector(".gem-c-attachment__metadata")
-    @preview_window = window_opened_by { click_on "Preview" }
+    click_on "Preview"
   end
 
   def then_i_should_see_the_attachment
-    within_window @preview_window do
-      expect(current_url).to match(/#{@asset.file_url}\?token=.*/)
-    end
+    expect(current_url).to match(/#{@asset.file_url}\?token=.*/)
   end
 end

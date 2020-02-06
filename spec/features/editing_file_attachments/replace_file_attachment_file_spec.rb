@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Replace a file attachment file", js: true do
+RSpec.feature "Replace a file attachment file" do
   scenario do
     given_there_is_an_edition_with_an_attachment
     when_i_click_to_insert_an_attachment

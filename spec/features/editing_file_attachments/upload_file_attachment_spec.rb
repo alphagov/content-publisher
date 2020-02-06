@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature "Upload file attachment", js: true do
+RSpec.feature "Upload file attachment" do
   scenario do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
