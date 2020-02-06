@@ -6,6 +6,7 @@ en:
         Select topics that describe what your content is about. Topics group content on GOV.UK to make it easier to find.
         You can select any relevant topics. Choose the most specific topics you can.
       selected_title: Selected topics
+      navigation_instructions: Use the right arrow to explore sub-topics, use the up and down arrows to find other topics.
       warning_title: Changes are applied to a live page as soon as you save.
       warning_description: If this content has already been published and you add new topics, then the last published edition will appear on those topic pages immediately, before you publish a new edition.
       link_guidance: Full guidance on topics

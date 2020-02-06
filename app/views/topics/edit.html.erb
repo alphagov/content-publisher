@@ -81,12 +81,15 @@
     } %>
 
     <div class="govuk-form-group">
-      <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items">
-      <ul id="taxonomy" class="govuk-list">
-        <% Topic.govuk_homepage(@edition.document_topics.index).children.each do |topic| %>
-          <% unroll(topic) %>
-        <% end %>
-      </ul>
+      <p id="topics-navigation-instructions" class="govuk-body govuk-visually-hidden">
+        <%= t("topics.edit.navigation_instructions") %>
+      </p>
+      <miller-columns id="miller-columns" class="miller-columns" for="taxonomy" selected="selected-items" aria-describedby="topics-navigation-instructions">
+        <ul id="taxonomy" class="govuk-list">
+          <% Topic.govuk_homepage(@edition.document_topics.index).children.each do |topic| %>
+            <% unroll(topic) %>
+          <% end %>
+        </ul>
       </miller-columns>
     </div>
   <% end %>
