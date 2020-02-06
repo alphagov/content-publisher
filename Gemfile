@@ -46,7 +46,7 @@ group :development, :test do
   gem "govuk_schemas", "~> 4.0"
   gem "govuk_test", "~> 1.0"
   # => Using master as there are unreleased changes that are required for jasmine to work with Rails 6. Should be fine after 3.5.0
-  gem "jasmine", git: "https://github.com/jasmine/jasmine-gem.git", ref: "d7db1bc"
+  gem "jasmine"
   gem "jasmine_selenium_runner", "~> 3", require: false
   gem "rspec-rails", "~> 3"
   gem "rubocop-govuk", "~> 2"
