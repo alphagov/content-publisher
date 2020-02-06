@@ -190,7 +190,7 @@ module WhitehallImporter
         create_timeline_entry(details,
                               edition,
                               event["created_at"],
-                              user_ids[event["whodunnit"]])
+                              event["whodunnit"])
       end
     end
 
@@ -238,10 +238,10 @@ module WhitehallImporter
       )
     end
 
-    def create_timeline_entry(details, edition, created_at, created_by = nil)
+    def create_timeline_entry(details, edition, created_at, whitehall_created_by_id = nil)
       TimelineEntry.create!(
         entry_type: :whitehall_migration,
-        created_by_id: created_by,
+        created_by_id: user_ids[whitehall_created_by_id],
         created_at: created_at,
         edition: edition,
         document: edition.document,
