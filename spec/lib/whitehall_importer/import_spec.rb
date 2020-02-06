@@ -17,26 +17,25 @@ RSpec.describe WhitehallImporter::Import do
       allow(WhitehallImporter::IntegrityChecker)
         .to receive(:new)
         .and_return(instance_double(WhitehallImporter::IntegrityChecker, valid?: true))
+      stub_whitehall_api_document_export(
+        document_import.whitehall_document_id, whitehall_export_document
+      )
     end
 
     it "raises if the WhitehallMigration::DocumentImport doesn't have a state of pending" do
       document_import = create(:whitehall_migration_document_import, state: "imported")
-      stub_whitehall_export_api(document_import, whitehall_export_document)
 
       expect { described_class.call(document_import) }
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
     end
 
     it "stores the exported Whitehall document data" do
-      stub_whitehall_export_api(document_import, whitehall_export_document)
       described_class.call(document_import)
 
       expect(document_import.payload).to eq(whitehall_export_document)
     end
 
     it "creates a document" do
-      stub_whitehall_export_api(document_import, whitehall_export_document)
-
       expect { described_class.call(document_import) }
         .to change { Document.count }.by(1)
     end
@@ -44,21 +43,21 @@ RSpec.describe WhitehallImporter::Import do
     it "aborts if a document already exists" do
       content_id = create(:document).content_id
       whitehall_export = build(:whitehall_export_document, content_id: content_id)
-      stub_whitehall_export_api(document_import, whitehall_export)
+      stub_whitehall_api_document_export(
+        document_import.whitehall_document_id, whitehall_export
+      )
 
       expect { described_class.call(document_import) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
 
     it "sets the document as being imported from Whitehall" do
-      stub_whitehall_export_api(document_import, whitehall_export_document)
       described_class.call(document_import)
 
       expect(document_import.document).to be_imported_from_whitehall
     end
 
     it "sets the timeline entry as Imported from Whitehall" do
-      stub_whitehall_export_api(document_import, whitehall_export_document)
       described_class.call(document_import)
 
       expect(TimelineEntry.last).to be_whitehall_migration
@@ -67,7 +66,9 @@ RSpec.describe WhitehallImporter::Import do
 
     it "associates the created document with the import record" do
       whitehall_export = build(:whitehall_export_document, content_id: SecureRandom.uuid)
-      stub_whitehall_export_api(document_import, whitehall_export)
+      stub_whitehall_api_document_export(
+        document_import.whitehall_document_id, whitehall_export
+      )
       described_class.call(document_import)
 
       expect(document_import.document.content_id).to eq(whitehall_export["content_id"])
@@ -75,7 +76,9 @@ RSpec.describe WhitehallImporter::Import do
 
     it "creates users who have never logged into Content Publisher" do
       whitehall_export = build(:whitehall_export_document, users: [whitehall_user])
-      stub_whitehall_export_api(document_import, whitehall_export)
+      stub_whitehall_api_document_export(
+        document_import.whitehall_document_id, whitehall_export
+      )
       described_class.call(document_import)
 
       expect(User.last.attributes).to match hash_including(
@@ -90,7 +93,9 @@ RSpec.describe WhitehallImporter::Import do
     it "does not add users who have logged into Content Publisher" do
       User.create!(uid: whitehall_user["uid"])
       whitehall_export = build(:whitehall_export_document, users: [whitehall_user])
-      stub_whitehall_export_api(document_import, whitehall_export)
+      stub_whitehall_api_document_export(
+        document_import.whitehall_document_id, whitehall_export
+      )
 
       expect { described_class.call(document_import) }.not_to(change { User.count })
     end
@@ -98,7 +103,9 @@ RSpec.describe WhitehallImporter::Import do
     it "does not create a user who has a nil uid" do
       user = build(:whitehall_export_user, uid: nil)
       whitehall_export = build(:whitehall_export_document, users: [user])
-      stub_whitehall_export_api(document_import, whitehall_export)
+      stub_whitehall_api_document_export(
+        document_import.whitehall_document_id, whitehall_export
+      )
 
       expect { described_class.call(document_import) }.not_to(change { User.count })
     end
@@ -114,7 +121,9 @@ RSpec.describe WhitehallImporter::Import do
       whitehall_export = build(:whitehall_export_document,
                                editions: [edition],
                                users: [whitehall_user])
-      stub_whitehall_export_api(document_import, whitehall_export)
+      stub_whitehall_api_document_export(
+        document_import.whitehall_document_id, whitehall_export
+      )
       described_class.call(document_import)
 
       expect(document_import.document.created_by).to eq(user)
@@ -136,7 +145,9 @@ RSpec.describe WhitehallImporter::Import do
       whitehall_export = build(:whitehall_export_document,
                                editions: [past_edition, current_edition],
                                users: [whitehall_user])
-      stub_whitehall_export_api(document_import, whitehall_export)
+      stub_whitehall_api_document_export(
+        document_import.whitehall_document_id, whitehall_export
+      )
 
       expect(WhitehallImporter::CreateEdition).to receive(:call).with(
         hash_including(current: false),
@@ -174,7 +185,10 @@ RSpec.describe WhitehallImporter::Import do
 
       whitehall_export = build(:whitehall_export_document,
                                editions: [first_edition, second_edition])
-      stub_whitehall_export_api(document_import, whitehall_export)
+      stub_whitehall_api_document_export(
+        document_import.whitehall_document_id, whitehall_export
+      )
+
       described_class.call(document_import)
 
       expect(document_import.document.first_published_at)
@@ -187,7 +201,9 @@ RSpec.describe WhitehallImporter::Import do
         build(:whitehall_export_edition, :published),
       ]
       whitehall_export = build(:whitehall_export_document, editions: editions)
-      stub_whitehall_export_api(document_import, whitehall_export)
+      stub_whitehall_api_document_export(
+        document_import.whitehall_document_id, whitehall_export
+      )
 
       described_class.call(document_import)
 
@@ -204,7 +220,6 @@ RSpec.describe WhitehallImporter::Import do
                       proposed_payload: { "foo" => "bar" },
                       edition: build(:edition),
                     ))
-      stub_whitehall_export_api(document_import, whitehall_export_document)
 
       expect { described_class.call(document_import) }
         .to raise_error(WhitehallImporter::IntegrityCheckError)
@@ -215,7 +230,7 @@ RSpec.describe WhitehallImporter::Import do
       allow(document_import).to receive(:update!)
                             .with(state: "imported")
                             .and_raise("forced error")
-      stub_whitehall_export_api(document_import, whitehall_export_document)
+      stub_whitehall_api_document_export(document_import, whitehall_export_document)
 
       expect { described_class.call(document_import) }.to raise_error("forced error")
       expect(document_import.changed?).to be false
@@ -223,8 +238,8 @@ RSpec.describe WhitehallImporter::Import do
     end
   end
 
-  def stub_whitehall_export_api(document_import, whitehall_export)
-    stub_request(:get, "#{whitehall_host}/government/admin/export/document/#{document_import.whitehall_document_id}")
+  def stub_whitehall_api_document_export(document_id, whitehall_export)
+    stub_request(:get, "#{whitehall_host}/government/admin/export/document/#{document_id}")
       .to_return(status: 200, body: whitehall_export.to_json)
   end
 end
