@@ -4,7 +4,6 @@ class ImagesController < ApplicationController
   def index
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
-    render layout: rendering_context
   end
 
   def create
@@ -18,7 +17,6 @@ class ImagesController < ApplicationController
 
       render :index,
              assigns: { edition: edition },
-             layout: rendering_context,
              status: :unprocessable_entity
     else
       redirect_to crop_image_path(params[:document],
@@ -31,7 +29,6 @@ class ImagesController < ApplicationController
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
     @image_revision = @edition.image_revisions.find_by!(image_id: params[:image_id])
-    render layout: rendering_context
   end
 
   def update_crop
@@ -51,7 +48,6 @@ class ImagesController < ApplicationController
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
     @image_revision = @edition.image_revisions.find_by!(image_id: params[:image_id])
-    render layout: rendering_context
   end
 
   def update
@@ -70,7 +66,6 @@ class ImagesController < ApplicationController
              assigns: { edition: edition,
                         image_revision: image_revision,
                         issues: issues },
-             layout: rendering_context,
              status: :unprocessable_entity
     elsif lead_selected
       redirect_to document_path(params[:document]),

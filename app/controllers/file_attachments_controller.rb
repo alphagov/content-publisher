@@ -6,7 +6,6 @@ class FileAttachmentsController < ApplicationController
   def index
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
-    render layout: rendering_context
   end
 
   def show
@@ -15,8 +14,6 @@ class FileAttachmentsController < ApplicationController
 
     @attachment = @edition.file_attachment_revisions
       .find_by!(file_attachment_id: params[:file_attachment_id])
-
-    render layout: rendering_context
   end
 
   def preview
@@ -51,7 +48,6 @@ class FileAttachmentsController < ApplicationController
       render :index,
              assigns: { edition: edition,
                         issues: issues },
-             layout: rendering_context,
              status: :unprocessable_entity
     else
       redirect_to file_attachment_path(edition.document, attachment_revision.file_attachment)
@@ -73,8 +69,6 @@ class FileAttachmentsController < ApplicationController
 
     @attachment = @edition.file_attachment_revisions
       .find_by!(file_attachment_id: params[:file_attachment_id])
-
-    render layout: rendering_context
   end
 
   def update
@@ -97,7 +91,6 @@ class FileAttachmentsController < ApplicationController
              assigns: { edition: edition,
                         issues: issues,
                         attachment: attachment_revision },
-             layout: rendering_context,
              status: :unprocessable_entity
     elsif unchanged
       redirect_to file_attachments_path(edition.document)
