@@ -62,7 +62,7 @@
           "type": "array",
           "uniqueItems": true,
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/content_field"
           }
         },
         "tags": {
@@ -129,6 +129,14 @@
     },
     "label": {
       "type": "string"
+    },
+    "content_field": {
+      "type": "string",
+      "enum": [
+        "title_and_base_path",
+        "summary",
+        "body"
+      ]
     },
     "tag_field": {
       "type": "object",
