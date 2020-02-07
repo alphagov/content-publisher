@@ -19,6 +19,7 @@
 
 /public/assets
 .byebug_history
+.DS_Store
 
 /coverage
 /public/packs
