@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class RemoveDocumentService < ApplicationService
-  def initialize(edition, removal)
+  def initialize(edition, removal, user: nil)
     @edition = edition
     @removal = removal
+    @user = user
   end
 
   def call
@@ -20,7 +21,7 @@ class RemoveDocumentService < ApplicationService
 
 private
 
-  attr_reader :edition, :removal
+  attr_reader :edition, :removal, :user
 
   def unpublish_edition
     GdsApi.publishing_api.unpublish(
@@ -33,7 +34,10 @@ private
   end
 
   def update_edition_status
-    AssignEditionStatusService.call(edition, state: :removed, status_details: removal)
+    AssignEditionStatusService.call(edition,
+                                    state: :removed,
+                                    status_details: removal,
+                                    user: user)
     edition.save!
   end
 

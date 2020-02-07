@@ -37,6 +37,14 @@ RSpec.describe RemoveDocumentService do
       expect(edition.status.details).to eq(removal)
     end
 
+    it "can assign a user to the status" do
+      removal = build(:removal)
+      user = build(:user)
+
+      RemoveDocumentService.call(edition, removal, user: user)
+      expect(edition.status.created_by).to eq(user)
+    end
+
     context "when the removal is a redirect" do
       it "unpublishes in the Publishing API with a type of redirect" do
         removal = build(:removal,
