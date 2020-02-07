@@ -31,7 +31,7 @@ RSpec.describe RemoveDocumentService do
       removal = build(:removal)
 
       expect { RemoveDocumentService.call(edition, removal) }
-        .to change { edition.reload.state }
+        .to change { edition.state }
         .to("removed")
 
       expect(edition.status.details).to eq(removal)
