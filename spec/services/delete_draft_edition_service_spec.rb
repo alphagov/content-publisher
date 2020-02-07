@@ -1,235 +1,210 @@
 # frozen_string_literal: true
 
 RSpec.describe DeleteDraftEditionService do
-  let(:user) { create :user }
+  let(:user) { create(:user) }
 
   describe ".call" do
-    it "raises an exception if the edition is not current" do
-      edition = create :edition, current: false
-
-      expect { DeleteDraftEditionService.call(edition, user) }
-        .to raise_error "Only current editions can be deleted"
-    end
-
-    it "raises an exception if the current edition is live" do
-      document = create :document, :with_live_edition
-
-      expect { DeleteDraftEditionService.call(document.current_edition, user) }
-        .to raise_error "Trying to delete a live edition"
-    end
-
-    it "attempts to delete the document preview" do
-      document = create :document, :with_current_edition
-      stub_publishing_api_unreserve_path(document.current_edition.base_path)
-      request = stub_publishing_api_discard_draft(document.content_id)
-      DeleteDraftEditionService.call(document.current_edition, user)
-      expect(request).to have_been_requested
-    end
-
-    it "attempts to delete the assets from asset manager" do
-      image_revision = create :image_revision, :on_asset_manager
-      file_attachment_revision = create :file_attachment_revision, :on_asset_manager
-      edition = create(:edition,
-                       lead_image_revision: image_revision,
-                       file_attachment_revisions: [file_attachment_revision])
-
-      stub_publishing_api_discard_draft(edition.content_id)
-      stub_publishing_api_unreserve_path(edition.base_path)
-      delete_request = stub_asset_manager_deletes_any_asset
-
-      DeleteDraftEditionService.call(edition, user)
-
-      expect(delete_request).to have_been_requested.at_least_once
-      expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
-      expect(file_attachment_revision.reload.asset).to be_absent
-    end
-
-    it "attempts to delete path reservations for a first draft" do
-      edition = create :edition
-      previous_revision = create :revision
-      edition.revisions << previous_revision
-
-      stub_publishing_api_discard_draft(edition.content_id)
-
-      unreserve_request1 = stub_publishing_api_unreserve_path(
-        edition.base_path,
-        PreviewDraftEditionService::Payload::PUBLISHING_APP,
-      )
-
-      unreserve_request2 = stub_publishing_api_unreserve_path(
-        previous_revision.base_path,
-        PreviewDraftEditionService::Payload::PUBLISHING_APP,
-      )
-
-      DeleteDraftEditionService.call(edition, user)
-
-      expect(unreserve_request1).to have_been_requested
-      expect(unreserve_request2).to have_been_requested
-    end
-
-    it "does not delete path reservations for published documents" do
-      document = create :document, :with_current_and_live_editions
-      stub_publishing_api_discard_draft(document.content_id)
-      DeleteDraftEditionService.call(document.current_edition, user)
-      expect(document.reload.current_edition).to eq document.live_edition
-    end
-
-    it "sets the current edition to nil if there is no live edition" do
-      document = create :document, :with_current_edition
-      stub_publishing_api_unreserve_path(document.current_edition.base_path)
-      stub_publishing_api_discard_draft(document.content_id)
-      DeleteDraftEditionService.call(document.current_edition, user)
-      expect(document.reload.current_edition).to be_nil
-    end
-
-    it "sets the current edition to live_edition if there is a live edition" do
-      document = create :document, :with_current_and_live_editions
-      live_edition = document.live_edition
-      stub_publishing_api_unreserve_path(document.current_edition.base_path)
-      stub_publishing_api_discard_draft(document.content_id)
-      DeleteDraftEditionService.call(document.current_edition, user)
-      expect(document.reload.current_edition).to eq(live_edition)
-    end
-
-    it "sets the status of the edition to discarded" do
-      document = create :document, :with_current_edition
-      edition = document.current_edition
-      stub_publishing_api_unreserve_path(document.current_edition.base_path)
-      stub_publishing_api_discard_draft(document.content_id)
-      DeleteDraftEditionService.call(document.current_edition, user)
-      expect(edition.status).to be_discarded
-    end
-
-    it "copes if the document preview does not exist" do
-      document = create :document, :with_current_edition
-      stub_publishing_api_unreserve_path(document.current_edition.base_path)
-      stub_any_publishing_api_call_to_return_not_found
-      DeleteDraftEditionService.call(document.current_edition, user)
-      expect(document.reload.current_edition).to be_nil
-    end
-
-    it "copes if the publishing API has a live but not draft edition" do
-      document = create :document, :with_current_edition
-      stub_publishing_api_unreserve_path(document.current_edition.base_path)
-      discard_draft_error = {
-        error: {
-          code: 422,
-          message: "There is not a draft edition of this document to discard",
-        },
-      }
+    before do
       stub_any_publishing_api_discard_draft
-        .to_return(status: 422, body: discard_draft_error.to_json)
-
-      DeleteDraftEditionService.call(document.current_edition, user)
-      expect(document.reload.current_edition).to be_nil
+      stub_any_publishing_api_unreserve_path
     end
 
-    it "doesn't capture all Publishing API unprocessable entity issues" do
-      document = create :document, :with_current_edition
-      stub_publishing_api_unreserve_path(document.current_edition.base_path)
-      discard_draft_error = {
-        error: {
-          code: 422,
-          message: "New Publishing API problem",
-        },
-      }
-      stub_any_publishing_api_discard_draft
-        .to_return(status: 422, body: discard_draft_error.to_json)
+    describe "invalid edition" do
+      it "raises an error when the edition isn't current" do
+        edition = create(:edition, current: false)
 
-      expect { DeleteDraftEditionService.call(document.current_edition, user) }
-        .to raise_error(GdsApi::HTTPUnprocessableEntity)
-    end
-
-    it "copes if an asset is not in Asset Manager" do
-      image_revision = create :image_revision
-      file_attachment_revision = create :file_attachment_revision
-      edition = create(:edition,
-                       lead_image_revision: image_revision,
-                       file_attachment_revisions: [file_attachment_revision])
-
-      stub_publishing_api_unreserve_path(edition.base_path)
-      stub_publishing_api_discard_draft(edition.content_id)
-      DeleteDraftEditionService.call(edition, user)
-
-      expect(edition.reload.status).to be_discarded
-      expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
-      expect(file_attachment_revision.reload.asset).to be_absent
-    end
-
-    it "copes if the base path is not reserved" do
-      edition = create :edition
-
-      stub_publishing_api_unreserve_path_not_found(edition.base_path)
-      stub_publishing_api_discard_draft(edition.content_id)
-      DeleteDraftEditionService.call(edition, user)
-
-      expect(edition.reload.status).to be_discarded
-    end
-
-    it "copes if the base path is not valid" do
-      edition = create :edition, base_path: nil
-
-      stub_publishing_api_discard_draft(edition.content_id)
-      DeleteDraftEditionService.call(edition, user)
-
-      expect(edition.reload.status).to be_discarded
-    end
-
-    it "removes assets if the asset is on Asset Manager" do
-      image_revision = create :image_revision, :on_asset_manager
-      file_attachment_revision = create :file_attachment_revision, :on_asset_manager
-      edition = create(:edition,
-                       lead_image_revision: image_revision,
-                       file_attachment_revisions: [file_attachment_revision])
-
-      (image_revision.assets + [file_attachment_revision.asset]).map do |asset|
-        stub_asset_manager_delete_asset(asset.asset_manager_id)
+        expect { DeleteDraftEditionService.call(edition, user) }
+          .to raise_error("Only current editions can be deleted")
       end
 
-      stub_publishing_api_unreserve_path(edition.base_path)
-      stub_publishing_api_discard_draft(edition.content_id)
-      DeleteDraftEditionService.call(edition, user)
+      it "raises an exception if the current edition is live" do
+        edition = create(:edition, live: true)
 
-      expect(edition.reload.status).to be_discarded
-      expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
-      expect(file_attachment_revision.reload.asset).to be_absent
+        expect { DeleteDraftEditionService.call(edition, user) }
+          .to raise_error("Trying to delete a live edition")
+      end
     end
 
-    it "raises an error when a base path cannot be deleted" do
-      edition = create :edition
+    describe "changing edition status" do
+      it "changes the editions current flag" do
+        edition = create(:edition)
+        expect { DeleteDraftEditionService.call(edition, user) }
+          .to change { edition.current? }.to(false)
+      end
 
-      stub_publishing_api_discard_draft(edition.content_id)
-      stub_publishing_api_unreserve_path_invalid(edition.base_path)
+      it "sets a live edition to be current after a draft is discarded" do
+        document = create(:document, :with_current_and_live_editions)
+        live_edition = document.live_edition
+        expect { DeleteDraftEditionService.call(document.current_edition, user) }
+          .to change { document.current_edition }.to(live_edition)
+      end
 
-      expect { DeleteDraftEditionService.call(edition, user) }
-        .to raise_error(GdsApi::BaseError)
-
-      expect(edition.reload.revision_synced?).to be true
+      it "sets the status of the edition to discarded" do
+        edition = create(:edition)
+        expect { DeleteDraftEditionService.call(edition, user) }
+          .to change { edition.discarded? }.to(true)
+      end
     end
 
-    it "raises an error when the Pubishing API is down" do
-      edition = create :edition
-      stub_publishing_api_isnt_available
+    describe "Publishing API communication" do
+      it "discards the draft from the Publishing API" do
+        edition = create(:edition)
+        request = stub_publishing_api_discard_draft(edition.content_id)
+        DeleteDraftEditionService.call(edition, user)
+        expect(request).to have_been_requested
+      end
 
-      expect { DeleteDraftEditionService.call(edition, user) }
-        .to raise_error(GdsApi::BaseError)
+      it "attempts to delete path reservations for a first draft" do
+        edition = create(:edition)
+        previous_revision = create(:revision)
+        edition.revisions << previous_revision
 
-      expect(edition.reload.revision_synced?).to be false
+        unreserve_request1 = stub_publishing_api_unreserve_path(
+          edition.base_path,
+          PreviewDraftEditionService::Payload::PUBLISHING_APP,
+        )
+
+        unreserve_request2 = stub_publishing_api_unreserve_path(
+          previous_revision.base_path,
+          PreviewDraftEditionService::Payload::PUBLISHING_APP,
+        )
+
+        DeleteDraftEditionService.call(edition, user)
+
+        expect(unreserve_request1).to have_been_requested
+        expect(unreserve_request2).to have_been_requested
+      end
+
+      it "does not delete path reservations for published documents" do
+        document = create(:document, :with_current_and_live_editions)
+        unreserve_request = stub_publishing_api_unreserve_path(
+          document.current_edition.base_path,
+          PreviewDraftEditionService::Payload::PUBLISHING_APP,
+        )
+
+        DeleteDraftEditionService.call(document.current_edition, user)
+        expect(unreserve_request).not_to have_been_requested
+      end
+
+
+      it "copes if the document preview does not exist" do
+        edition = create(:edition)
+        stub_any_publishing_api_discard_draft.to_return(status: 404)
+        DeleteDraftEditionService.call(edition, user)
+        expect(edition).to be_discarded
+      end
+
+      it "copes if the publishing API has a live but not draft edition" do
+        edition = create(:edition)
+        discard_draft_error = {
+          error: {
+            code: 422,
+            message: "There is not a draft edition of this document to discard",
+          },
+        }
+        stub_any_publishing_api_discard_draft
+          .to_return(status: 422, body: discard_draft_error.to_json)
+
+        DeleteDraftEditionService.call(edition, user)
+        expect(edition).to be_discarded
+      end
+
+      it "doesn't capture all Publishing API unprocessable entity issues" do
+        edition = create(:edition)
+        discard_draft_error = {
+          error: {
+            code: 422,
+            message: "New Publishing API problem",
+          },
+        }
+        stub_any_publishing_api_discard_draft
+          .to_return(status: 422, body: discard_draft_error.to_json)
+
+        expect { DeleteDraftEditionService.call(edition, user) }
+          .to raise_error(GdsApi::HTTPUnprocessableEntity)
+      end
+
+      it "copes if the base path is not reserved" do
+        edition = create(:edition)
+
+        stub_publishing_api_unreserve_path_not_found(edition.base_path)
+        DeleteDraftEditionService.call(edition, user)
+
+        expect(edition).to be_discarded
+      end
+
+      it "copes if the base path is not valid" do
+        edition = create(:edition, base_path: nil)
+        DeleteDraftEditionService.call(edition, user)
+        expect(edition).to be_discarded
+      end
+
+      it "raises an error and marks an edition as not synced when an API error occurs during discarding" do
+        edition = create(:edition)
+        stub_publishing_api_isnt_available
+
+        expect { DeleteDraftEditionService.call(edition, user) }
+          .to raise_error(GdsApi::BaseError)
+
+        expect(edition.revision_synced?).to be(false)
+      end
+
+      it "doesn't mark an edition as not synced when an API error occurs whilst unreserving paths" do
+        edition = create(:edition)
+        stub_publishing_api_unreserve_path_invalid(edition.base_path)
+
+        expect { DeleteDraftEditionService.call(edition, user) }
+          .to raise_error(GdsApi::BaseError)
+
+        expect(edition.revision_synced?).to be(true)
+      end
     end
 
-    it "raises an error when Asset Manager is down" do
-      image_revision = create :image_revision, :on_asset_manager
-      file_attachment_revision = create :file_attachment_revision, :on_asset_manager
-      edition = create(:edition,
-                       lead_image_revision: image_revision,
-                       file_attachment_revisions: [file_attachment_revision])
+    describe "Asset Manager communication" do
+      it "attempts to delete the assets from asset manager" do
+        image_revision = create(:image_revision, :on_asset_manager)
+        file_attachment_revision = create(:file_attachment_revision, :on_asset_manager)
+        edition = create(:edition,
+                         lead_image_revision: image_revision,
+                         file_attachment_revisions: [file_attachment_revision])
 
-      stub_asset_manager_isnt_available
+        delete_request = stub_asset_manager_deletes_any_asset
 
-      expect { DeleteDraftEditionService.call(edition, user) }
-        .to raise_error(GdsApi::BaseError)
+        DeleteDraftEditionService.call(edition, user)
 
-      expect(edition.reload.revision_synced?).to be false
+        expect(delete_request).to have_been_requested.at_least_once
+        expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
+        expect(file_attachment_revision.reload.asset).to be_absent
+      end
+
+      it "copes if an asset is not in Asset Manager" do
+        image_revision = create(:image_revision, :on_asset_manager)
+        file_attachment_revision = create(:file_attachment_revision, :on_asset_manager)
+        edition = create(:edition,
+                         lead_image_revision: image_revision,
+                         file_attachment_revisions: [file_attachment_revision])
+        stub_any_asset_manager_call.to_return(status: 404)
+
+        DeleteDraftEditionService.call(edition, user)
+
+        expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
+        expect(file_attachment_revision.reload.asset).to be_absent
+      end
+
+      it "raises an error and marks as an edition as not synced when Asset Manager is down" do
+        image_revision = create(:image_revision, :on_asset_manager)
+        file_attachment_revision = create(:file_attachment_revision, :on_asset_manager)
+        edition = create(:edition,
+                         lead_image_revision: image_revision,
+                         file_attachment_revisions: [file_attachment_revision])
+
+        stub_asset_manager_isnt_available
+
+        expect { DeleteDraftEditionService.call(edition, user) }
+          .to raise_error(GdsApi::BaseError)
+
+        expect(edition.revision_synced?).to be(false)
+      end
     end
   end
 end
