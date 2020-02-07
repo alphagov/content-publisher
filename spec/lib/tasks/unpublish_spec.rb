@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Unpublish rake tasks" do
+RSpec.describe "Unpublish tasks" do
   let(:edition) { create(:edition, :published, locale: "en") }
 
   describe "unpublish:remove" do
