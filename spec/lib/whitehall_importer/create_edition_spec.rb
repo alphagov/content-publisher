@@ -315,7 +315,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
         removal = edition.status.details
         expect(removal.explanatory_note).to eq(whitehall_edition["unpublishing"]["explanation"])
-        expect(removal.alternative_path).to eq(whitehall_edition["unpublishing"]["alternative_url"])
+        expect(removal.alternative_url).to eq(whitehall_edition["unpublishing"]["alternative_url"])
         expect(removal.redirect).to be_truthy
       end
 
@@ -366,7 +366,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
         removal = document.editions.first.status.details
         expect(removal.explanatory_note).to eq(whitehall_edition["unpublishing"]["explanation"])
-        expect(removal.alternative_path).to eq(whitehall_edition["unpublishing"]["alternative_url"])
+        expect(removal.alternative_url).to eq(whitehall_edition["unpublishing"]["alternative_url"])
         expect(removal.redirect).to be_truthy
       end
 

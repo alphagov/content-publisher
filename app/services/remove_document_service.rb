@@ -27,7 +27,7 @@ private
       edition.content_id,
       type: removal.redirect? ? "redirect" : "gone",
       explanation: removal.explanatory_note,
-      alternative_path: removal.alternative_path,
+      alternative_path: removal.alternative_url,
       locale: edition.locale,
     )
   end

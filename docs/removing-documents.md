@@ -22,7 +22,7 @@ Optional parameters:
 
 - LOCALE (set to "en" by default)
 - NOTE
-- NEW_PATH
+- URL
 
 ```
 rake unpublish:remove['a-content-id']
@@ -33,7 +33,7 @@ rake unpublish:remove['a-content-id']
 Required parameters:
 
 - content_id
-- NEW_PATH
+- URL
 
 Optional parameters:
 
@@ -41,5 +41,5 @@ Optional parameters:
 - NOTE
 
 ```
-rake unpublish:remove_and_redirect['a-content-id'] NEW_PATH='/redirect-to-here'
+rake unpublish:remove_and_redirect['a-content-id'] URL='/redirect-to-here'
 ```

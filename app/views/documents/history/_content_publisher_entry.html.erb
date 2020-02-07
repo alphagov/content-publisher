@@ -17,18 +17,18 @@
     <% if removal.explanatory_note.present? %>
       <p><%= removal.explanatory_note %></p>
     <% end %>
-    <% if removal.alternative_path.present? %>
+    <% if removal.alternative_url.present? %>
       <% if removal.redirect? %>
         <p>
           Redirected to
-          <%= link_to(Plek.new.website_root + removal.alternative_path,
+          <%= link_to(Plek.new.website_root + removal.alternative_url,
                       nil,
                       class: "govuk-link") %>
         </p>
       <% else %>
         <p>
-          Alternative path
-          <%= link_to(Plek.new.website_root + removal.alternative_path,
+          Alternative URL
+          <%= link_to(Plek.new.website_root + removal.alternative_url,
                       nil,
                       class: "govuk-link") %>
         </p>

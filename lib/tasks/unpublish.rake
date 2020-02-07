@@ -6,25 +6,25 @@ namespace :unpublish do
     raise "Missing content_id parameter" unless args.content_id
 
     explanatory_note = ENV["NOTE"]
-    alternative_path = ENV["NEW_PATH"]
+    alternative_url = ENV["URL"]
     locale = ENV["LOCALE"] || "en"
 
     document = Document.find_by!(content_id: args.content_id, locale: locale)
     raise "Document must have a published version before it can be removed" unless document.live_edition
 
     removal = Removal.new(explanatory_note: explanatory_note,
-                          alternative_path: alternative_path)
+                          alternative_url: alternative_url)
 
     RemoveDocumentService.call(document.live_edition, removal)
   end
 
-  desc "Remove and redirect a document on GOV.UK e.g. unpublish:remove_and_redirect['a-content-id'] NEW_PATH='/redirect-to-here'"
+  desc "Remove and redirect a document on GOV.UK e.g. unpublish:remove_and_redirect['a-content-id'] URL='/redirect-to-here'"
   task :remove_and_redirect, [:content_id] => :environment do |_, args|
     raise "Missing content_id parameter" unless args.content_id
-    raise "Missing NEW_PATH value" if ENV["NEW_PATH"].blank?
+    raise "Missing URL value" if ENV["URL"].blank?
 
     explanatory_note = ENV["NOTE"]
-    redirect_path = ENV["NEW_PATH"]
+    redirect_url = ENV["URL"]
     locale = ENV["LOCALE"] || "en"
 
     document = Document.find_by!(content_id: args.content_id, locale: locale)
@@ -32,7 +32,7 @@ namespace :unpublish do
 
     removal = Removal.new(redirect: true,
                           explanatory_note: explanatory_note,
-                          alternative_path: redirect_path)
+                          alternative_url: redirect_url)
 
     RemoveDocumentService.call(document.live_edition, removal)
   end

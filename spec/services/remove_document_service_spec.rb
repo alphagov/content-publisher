@@ -41,7 +41,7 @@ RSpec.describe RemoveDocumentService do
       it "unpublishes in the Publishing API with a type of redirect" do
         removal = build(:removal,
                         redirect: true,
-                        alternative_path: "/path",
+                        alternative_url: "/path",
                         explanatory_note: "explanation")
 
         request = stub_publishing_api_unpublish(
@@ -62,7 +62,7 @@ RSpec.describe RemoveDocumentService do
       it "unpublishes in the Publishing API with a type of gone" do
         removal = build(:removal,
                         redirect: false,
-                        alternative_path: "/path",
+                        alternative_url: "/path",
                         explanatory_note: "explanation")
 
         request = stub_publishing_api_unpublish(

@@ -138,7 +138,7 @@ RSpec.describe ResyncDocumentService do
           build(
             :removal,
             redirect: true,
-            alternative_path: "/foo/bar",
+            alternative_url: "/foo/bar",
             explanatory_note: explanation,
           )
         end
@@ -149,7 +149,7 @@ RSpec.describe ResyncDocumentService do
           remove_params = {
             type: "redirect",
             explanation: explanation,
-            alternative_path: removal.alternative_path,
+            alternative_path: removal.alternative_url,
             locale: edition.locale,
             unpublished_at: removal.created_at,
             allow_draft: true,

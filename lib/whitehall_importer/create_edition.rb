@@ -128,7 +128,7 @@ module WhitehallImporter
 
       Removal.new(
         explanatory_note: unpublishing["explanation"],
-        alternative_path: unpublishing["alternative_url"],
+        alternative_url: unpublishing["alternative_url"],
         redirect: unpublishing["alternative_url"].present?,
       )
     end
