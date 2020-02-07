@@ -50,13 +50,11 @@ private
   end
 
   def check_removeable
-    document = edition.document
-
-    if edition != document.live_edition
+    unless edition.live?
       raise "attempted to remove an edition other than the live edition"
     end
 
-    if document.current_edition != document.live_edition
+    unless edition.current?
       raise "Publishing API does not support unpublishing while there is a draft"
     end
   end
