@@ -1,6 +1,6 @@
 # Removing or removing and redirecting a document
 
-We need to allow users to unpublish content from GOV.UK. Currently, a user can't
+We need to allow users to remove content from GOV.UK. Currently, a user can't
 remove a document from the UI so a developer needs to run a rake task to
 achieve this.
 
@@ -25,7 +25,7 @@ Optional parameters:
 - URL
 
 ```
-rake unpublish:remove['a-content-id']
+rake remove:gone['a-content-id']
 ```
 
 ## Redirect removed documents to another page on GOV.UK
@@ -41,5 +41,5 @@ Optional parameters:
 - NOTE
 
 ```
-rake unpublish:remove_and_redirect['a-content-id'] URL='/redirect-to-here'
+rake remove:redirect['a-content-id'] URL='/redirect-to-here'
 ```

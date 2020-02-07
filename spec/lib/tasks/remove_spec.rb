@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-RSpec.describe "Unpublish tasks" do
+RSpec.describe "Remove tasks" do
   let(:edition) { create(:edition, :published, locale: "en") }
 
-  describe "unpublish:remove" do
+  describe "remove:gone" do
     before do
-      Rake::Task["unpublish:remove"].reenable
+      Rake::Task["remove:gone"].reenable
     end
 
     it "removes the edition" do
@@ -23,7 +23,7 @@ RSpec.describe "Unpublish tasks" do
       )
 
       ClimateControl.modify URL: alternative_url, NOTE: explanatory_note do
-        Rake::Task["unpublish:remove"].invoke(edition.content_id)
+        Rake::Task["remove:gone"].invoke(edition.content_id)
       end
 
       expect(unpublish_request).to have_been_requested
@@ -31,21 +31,21 @@ RSpec.describe "Unpublish tasks" do
     end
 
     it "raises an error if a content_id is not present" do
-      expect { Rake::Task["unpublish:remove"].invoke }
+      expect { Rake::Task["remove:gone"].invoke }
         .to raise_error("Missing content_id parameter")
     end
 
     it "raises an error if the document does not have a live version on GOV.uk" do
       draft = create(:edition, locale: "en")
 
-      expect { Rake::Task["unpublish:remove"].invoke(draft.content_id) }
+      expect { Rake::Task["remove:gone"].invoke(draft.content_id) }
         .to raise_error("Document must have a published version before it can be removed")
     end
   end
 
-  describe "unpublish:remove_and_redirect" do
+  describe "remove:redirect" do
     before do
-      Rake::Task["unpublish:remove_and_redirect"].reenable
+      Rake::Task["remove:redirect"].reenable
     end
 
     it "removes the edition with a redirect" do
@@ -62,7 +62,7 @@ RSpec.describe "Unpublish tasks" do
         },
       )
       ClimateControl.modify URL: redirect_url, NOTE: explanatory_note do
-        Rake::Task["unpublish:remove_and_redirect"].invoke(edition.content_id)
+        Rake::Task["remove:redirect"].invoke(edition.content_id)
       end
 
       expect(unpublish_request).to have_been_requested
@@ -70,12 +70,12 @@ RSpec.describe "Unpublish tasks" do
     end
 
     it "raises an error if a content_id is not present" do
-      expect { Rake::Task["unpublish:remove_and_redirect"].invoke }
+      expect { Rake::Task["remove:redirect"].invoke }
         .to raise_error("Missing content_id parameter")
     end
 
     it "raises an error if a URL is not present" do
-      expect { Rake::Task["unpublish:remove_and_redirect"].invoke("a-content-id") }
+      expect { Rake::Task["remove:redirect"].invoke("a-content-id") }
         .to raise_error("Missing URL value")
     end
 
@@ -83,7 +83,7 @@ RSpec.describe "Unpublish tasks" do
       draft = create(:edition, locale: "en")
 
       ClimateControl.modify URL: "/redirect" do
-        expect { Rake::Task["unpublish:remove_and_redirect"].invoke(draft.content_id) }
+        expect { Rake::Task["remove:redirect"].invoke(draft.content_id) }
           .to raise_error("Document must have a published version before it can be redirected")
       end
     end

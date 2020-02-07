@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-namespace :unpublish do
-  desc "Remove a document from GOV.UK e.g. unpublish:remove['a-content-id']"
-  task :remove, [:content_id] => :environment do |_, args|
+namespace :remove do
+  desc "Remove a document with a gone on GOV.UK e.g. remove:gone['a-content-id']"
+  task :gone, [:content_id] => :environment do |_, args|
     raise "Missing content_id parameter" unless args.content_id
 
     explanatory_note = ENV["NOTE"]
@@ -18,8 +18,8 @@ namespace :unpublish do
     RemoveDocumentService.call(document.live_edition, removal)
   end
 
-  desc "Remove and redirect a document on GOV.UK e.g. unpublish:remove_and_redirect['a-content-id'] URL='/redirect-to-here'"
-  task :remove_and_redirect, [:content_id] => :environment do |_, args|
+  desc "Remove a document with a redirect on GOV.UK e.g. remove:redirect['a-content-id'] URL='/redirect-to-here'"
+  task :redirect, [:content_id] => :environment do |_, args|
     raise "Missing content_id parameter" unless args.content_id
     raise "Missing URL value" if ENV["URL"].blank?
 
