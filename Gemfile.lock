@@ -497,7 +497,7 @@ DEPENDENCIES
   hashdiff (~> 1.0)
   image_processing (~> 1)
   interactor (~> 3)
-  jasmine
+  jasmine (~> 3)
   jasmine_selenium_runner (~> 3)
   kaminari (~> 1)
   listen (~> 3)
