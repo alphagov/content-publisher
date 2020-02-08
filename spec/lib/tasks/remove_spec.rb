@@ -36,6 +36,18 @@ RSpec.describe "Remove tasks" do
       end
     end
 
+    it "accepts a user email" do
+      user = create(:user, email: "editor@example.com")
+
+      ClimateControl.modify NOTE: "My note", USER_EMAIL: user.email do
+        Rake::Task["remove:gone"].invoke(edition.content_id)
+      end
+
+      expect(RemoveDocumentService)
+        .to have_received(:call).with(anything, anything, user: user)
+    end
+
+
     it "raises an error if a content_id is not present" do
       expect { Rake::Task["remove:gone"].invoke }
         .to raise_error("Missing content_id parameter")
@@ -71,6 +83,17 @@ RSpec.describe "Remove tasks" do
             ),
           )
       end
+    end
+
+    it "accepts a user uid" do
+      user = create(:user, email: "editor@example.com")
+
+      ClimateControl.modify NOTE: "My note", URL: "/url", USER_EMAIL: user.email do
+        Rake::Task["remove:redirect"].invoke(edition.content_id)
+      end
+
+      expect(RemoveDocumentService)
+        .to have_received(:call).with(anything, anything, user: user)
     end
 
     it "raises an error if a content_id is not present" do
