@@ -86,7 +86,7 @@ RSpec.describe "Remove tasks" do
     end
 
     it "accepts a user uid" do
-      user = create(:user, email: "editor@example.com")
+      user = create(:user)
 
       ClimateControl.modify NOTE: "My note", URL: "/url", USER_EMAIL: user.email do
         Rake::Task["remove:redirect"].invoke(edition.content_id)

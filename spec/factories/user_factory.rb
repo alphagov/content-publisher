@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :user do
     name { "John Smith" }
     uid { SecureRandom.uuid }
-    email { "someone@example.com" }
+    sequence(:email) { |n| "user#{n}@example.com" }
     transient do
       managing_editor { false }
       manage_live_history_mode { false }
