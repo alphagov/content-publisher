@@ -18,21 +18,16 @@
       <p><%= removal.explanatory_note %></p>
     <% end %>
     <% if removal.alternative_url.present? %>
-      <% if removal.redirect? %>
-        <p>
+      <p>
+        <% if removal.redirect? %>
           Redirected to
-          <%= link_to(Plek.new.website_root + removal.alternative_url,
-                      nil,
-                      class: "govuk-link") %>
-        </p>
-      <% else %>
-        <p>
+        <% else %>
           Alternative URL
-          <%= link_to(Plek.new.website_root + removal.alternative_url,
-                      nil,
-                      class: "govuk-link") %>
-        </p>
-      <% end %>
+        <% end %>
+        <%= link_to(nil,
+                    URI.join(Plek.new.website_root, removal.alternative_url).to_s,
+                    class: "govuk-link") %>
+      </p>
     <% end %>
   <% end %>
 <% end %>
