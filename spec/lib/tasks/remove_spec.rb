@@ -1,33 +1,39 @@
 # frozen_string_literal: true
 
 RSpec.describe "Remove tasks" do
+  before do
+    stub_any_publishing_api_unpublish
+    allow(RemoveDocumentService).to receive(:call).and_call_original
+  end
+
   let(:edition) { create(:edition, :published, locale: "en") }
 
   describe "remove:gone" do
-    before do
-      Rake::Task["remove:gone"].reenable
-    end
+    before { Rake::Task["remove:gone"].reenable }
 
-    it "removes the edition" do
-      explanatory_note = "The reason the edition is being removed"
-      alternative_url = "/path"
+    it "delegates to RemoveDocumentService" do
+      note = "The reason the edition is being removed"
 
-      unpublish_request = stub_publishing_api_unpublish(
-        edition.content_id,
-        body: {
-          alternative_path: alternative_url,
-          explanation: explanatory_note,
-          locale: edition.locale,
-          type: "gone",
-        },
-      )
-
-      ClimateControl.modify URL: alternative_url, NOTE: explanatory_note do
+      ClimateControl.modify NOTE: note do
         Rake::Task["remove:gone"].invoke(edition.content_id)
       end
 
-      expect(unpublish_request).to have_been_requested
-      expect(edition.reload).to be_removed
+      expect(RemoveDocumentService).to have_received(:call) do |removed_edition, removal|
+        expect(removed_edition).to eq(edition)
+        expect(removal.explanatory_note).to eq(note)
+      end
+    end
+
+    it "accepts a URL" do
+      url = "https://example.com"
+
+      ClimateControl.modify NOTE: "My note", URL: url do
+        Rake::Task["remove:gone"].invoke(edition.content_id)
+      end
+
+      expect(RemoveDocumentService).to have_received(:call) do |_, removal|
+        expect(removal.alternative_url).to eq(url)
+      end
     end
 
     it "raises an error if a content_id is not present" do
@@ -44,29 +50,27 @@ RSpec.describe "Remove tasks" do
   end
 
   describe "remove:redirect" do
-    before do
-      Rake::Task["remove:redirect"].reenable
-    end
+    before { Rake::Task["remove:redirect"].reenable }
 
-    it "removes the edition with a redirect" do
-      explanatory_note = "The reason the edition is being redirected"
-      redirect_url = "/redirect-url"
+    it "delegates to RemoveDocumentService" do
+      note = "The reason the edition is being removed"
+      url = "/redirect-url"
 
-      unpublish_request = stub_publishing_api_unpublish(
-        edition.content_id,
-        body: {
-          alternative_path: redirect_url,
-          explanation: explanatory_note,
-          locale: edition.locale,
-          type: "redirect",
-        },
-      )
-      ClimateControl.modify URL: redirect_url, NOTE: explanatory_note do
+      ClimateControl.modify NOTE: note, URL: url do
         Rake::Task["remove:redirect"].invoke(edition.content_id)
       end
 
-      expect(unpublish_request).to have_been_requested
-      expect(edition.reload).to be_removed
+      expect(RemoveDocumentService).to have_received(:call) do |removed_edition, removal|
+        expect(removed_edition).to eq(edition)
+        expect(removal.attributes)
+          .to match(
+            a_hash_including(
+              "explanatory_note" => note,
+              "alternative_url" => url,
+              "redirect" => true,
+            ),
+          )
+      end
     end
 
     it "raises an error if a content_id is not present" do
