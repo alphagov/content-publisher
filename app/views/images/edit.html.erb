@@ -46,7 +46,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
       },
       id: "image-alt-text",
       name: "image_revision[alt_text]",
-      value: @image_revision.alt_text,
+      value: params.dig(:image_revision, :alt_text) || @image_revision.alt_text,
       error_items: @issues&.items_for(:alt_text),
       describedby: "image-alt-text-guidance"
     } %>
@@ -66,7 +66,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
       },
       id: "image-caption",
       name: "image_revision[caption]",
-      value: @image_revision.caption,
+      value: params.dig(:image_revision, :caption) || @image_revision.caption,
       error_items: @issues&.items_for(:caption),
       describedby: "image-caption-guidance"
     } %>
@@ -86,20 +86,23 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
       },
       id: "image-credit",
       name: "image_revision[credit]",
-      value: @image_revision.credit,
+      value: params.dig(:image_revision, :credit) || @image_revision.credit,
       error_items: @issues&.items_for(:credit),
       describedby: "image-credit-guidance"
     } %>
   <% end %>
 
   <% unless rendering_context == "modal" %>
+    <% is_lead = params[:image_revision] ? params[:lead_image] :
+      (@edition.lead_image_revision == @image_revision) %>
+
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <%= render "govuk_publishing_components/components/checkboxes", {
           items: [
             {
               label: t("images.edit.form_labels.lead_image"),
-              checked: @edition.lead_image_revision == @image_revision,
+              checked: is_lead,
               name: "lead_image",
               data_attributes: {
                 gtm: "is-lead-image",
