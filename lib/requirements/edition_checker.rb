@@ -16,7 +16,7 @@ module Requirements
         issues += ImageRevisionChecker.new(image).pre_preview_issues
       end
 
-      issues += ContentChecker.new(edition, revision).pre_preview_issues
+      issues += ContentChecker.new(edition).pre_preview_issues
       issues
     end
 

@@ -17,17 +17,19 @@ class DocumentType::BodyField
     { contents: { body: params[:body] } }
   end
 
-  def pre_preview_issues(edition, revision)
+  def pre_update_issues(edition, params)
     issues = Requirements::CheckerIssues.new
 
-    unless GovspeakDocument.new(revision.contents[id], edition).valid?
+    unless GovspeakDocument.new(params[:contents][:body], edition).valid?
       issues.create(id, :invalid_govspeak)
     end
 
     issues
   end
 
-  alias_method :pre_update_issues, :pre_preview_issues
+  def pre_preview_issues(edition)
+    pre_update_issues(edition, contents: edition.contents.symbolize_keys)
+  end
 
   def pre_publish_issues(_edition, revision)
     issues = Requirements::CheckerIssues.new

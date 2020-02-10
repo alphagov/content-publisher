@@ -30,14 +30,12 @@ private
 
   def update_revision
     context.revision_updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    revision_updater.assign(tags: update_params(edition))
+    revision_updater.assign(tags: update_params)
     context.revision = revision_updater.next_revision
   end
 
   def check_for_issues
-    checker = Requirements::TagChecker.new(edition, revision)
-    issues = checker.pre_publish_issues
-
+    issues = Requirements::TagChecker.new(edition).pre_update_issues(update_params)
     context.fail!(issues: issues) if issues.any?
   end
 
@@ -56,7 +54,7 @@ private
     FailsafeDraftPreviewService.call(edition)
   end
 
-  def update_params(edition)
+  def update_params
     permits = edition.document_type.tags.map do |tag_field|
       [tag_field.id, []]
     end

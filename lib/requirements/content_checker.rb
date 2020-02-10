@@ -9,11 +9,21 @@ module Requirements
       @revision = revision || edition.revision
     end
 
+    def pre_update_issues(params)
+      issues = CheckerIssues.new
+
+      edition.document_type.contents.each do |field|
+        issues += field.pre_update_issues(edition, params)
+      end
+
+      issues
+    end
+
     def pre_preview_issues
       issues = CheckerIssues.new
 
       edition.document_type.contents.each do |field|
-        issues += field.pre_preview_issues(edition, revision)
+        issues += field.pre_preview_issues(edition)
       end
 
       issues

@@ -38,7 +38,7 @@ private
     issues = Requirements::CheckerIssues.new
 
     edition.document_type.contents.each do |field|
-      issues += field.pre_update_issues(edition, revision)
+      issues += field.pre_update_issues(edition, content_params)
     end
 
     context.fail!(issues: issues) if issues.any?
@@ -64,7 +64,7 @@ private
   end
 
   def content_params
-    edition.document_type.contents.reduce({}) do |hash, field|
+    @content_params ||= edition.document_type.contents.reduce({}) do |hash, field|
       hash.merge!(field.updater_params(edition, params))
     end
   end
