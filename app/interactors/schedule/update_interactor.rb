@@ -36,8 +36,7 @@ private
   end
 
   def check_for_issues
-    checker = Requirements::PublishTimeChecker.new(publish_time)
-    issues = checker.issues
+    issues = Requirements::PublishTimeChecker.new.issues(publish_time)
     context.fail!(issues: issues) if issues.any?
   end
 

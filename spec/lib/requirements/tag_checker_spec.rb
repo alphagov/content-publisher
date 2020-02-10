@@ -1,23 +1,22 @@
 # frozen_string_literal: true
 
 RSpec.describe Requirements::TagChecker do
-  describe "#pre_publish_issues" do
+  describe "#pre_update_issues" do
     it "returns no issues when there are none" do
       edition = build(:edition)
-      issues = Requirements::TagChecker.new(edition).pre_publish_issues
+      issues = Requirements::TagChecker.new(edition).pre_update_issues({})
       expect(issues.items).to be_empty
     end
 
     context "when the edition supports primary orgs" do
-      let(:document_type) do
+      let(:edition) do
         organisation_field = build(:tag_field, :primary_publishing_organisation)
-
-        build(:document_type, tags: [organisation_field])
+        document_type = build(:document_type, tags: [organisation_field])
+        build(:edition, document_type: document_type)
       end
 
       it "returns an issue when the primary org is blank" do
-        edition = build(:edition, document_type: document_type)
-        issues = Requirements::TagChecker.new(edition).pre_publish_issues
+        issues = Requirements::TagChecker.new(edition).pre_update_issues({})
 
         expect(issues).to have_issue(:primary_publishing_organisation,
                                      :blank,
@@ -25,15 +24,19 @@ RSpec.describe Requirements::TagChecker do
       end
 
       it "returns no issues when there is a primary org" do
-        edition = build(:edition,
-                        document_type: document_type,
-                        tags: {
-                          primary_publishing_organisation: %w[my-org],
-                        })
-
-        issues = Requirements::TagChecker.new(edition).pre_publish_issues
+        params = { primary_publishing_organisation: %w[my-org] }
+        issues = Requirements::TagChecker.new(edition).pre_update_issues(params)
         expect(issues.items).to be_empty
       end
+    end
+  end
+
+  describe "#pre_publish_issues" do
+    it "delegates to #pre_update_issues" do
+      edition = build :edition, tags: { tag: %w[id1 id2] }
+      checker = Requirements::TagChecker.new(edition)
+      expect(checker).to receive(:pre_update_issues).with(tag: %w[id1 id2])
+      checker.pre_publish_issues
     end
   end
 end

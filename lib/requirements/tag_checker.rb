@@ -2,21 +2,24 @@
 
 module Requirements
   class TagChecker
-    attr_reader :edition, :revision
+    attr_reader :edition
 
-    def initialize(edition, revision = nil)
+    def initialize(edition)
       @edition = edition
-      @revision = revision || edition.revision
     end
 
-    def pre_publish_issues
+    def pre_update_issues(params)
       issues = CheckerIssues.new
 
-      if should_have_primary_org? && has_no_primary_org?
+      if missing_primary_org?(params)
         issues.create(:primary_publishing_organisation, :blank)
       end
 
       issues
+    end
+
+    def pre_publish_issues
+      pre_update_issues(edition.tags.symbolize_keys)
     end
 
   private
@@ -26,8 +29,10 @@ module Requirements
        .include?("primary_publishing_organisation")
     end
 
-    def has_no_primary_org?
-      revision.primary_publishing_organisation_id.blank?
+    def missing_primary_org?(params)
+      return false unless should_have_primary_org?
+
+      params[:primary_publishing_organisation].blank?
     end
   end
 end

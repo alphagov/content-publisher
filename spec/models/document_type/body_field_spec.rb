@@ -18,30 +18,41 @@ RSpec.describe DocumentType::BodyField do
     end
   end
 
-  describe "#pre_preview_issues" do
+  describe "#pre_update_issues" do
+    let(:edition) { build :edition }
+
     it "returns no issues when there are none" do
-      edition = build :edition, contents: { body: "alert('hi')" }
-      issues = subject.pre_preview_issues(edition, edition.revision)
+      params = { contents: { body: "alert('hi')" } }
+      issues = subject.pre_update_issues(edition, params)
       expect(issues).to be_empty
     end
 
     it "returns an issue if the a govspeak field contains forbidden HTML" do
-      edition = build :edition, contents: { body: "<script>alert('hi')</script>" }
-      issues = subject.pre_preview_issues(edition, edition.revision)
+      params = { contents: { body: "<script>alert('hi')</script>" } }
+      issues = subject.pre_update_issues(edition, params)
       expect(issues).to have_issue(:body, :invalid_govspeak, styles: %i[form summary])
+    end
+  end
+
+  describe "#pre_preview_issues" do
+    it "delegates to #pre_update_issues" do
+      edition = build :edition, contents: { body: "body" }
+      params = { contents: { body: edition.contents["body"] } }
+      expect(subject).to receive(:pre_update_issues).with(edition, params)
+      subject.pre_preview_issues(edition)
     end
   end
 
   describe "#pre_publish_issues" do
     it "returns no issues when there are none" do
       edition = build :edition, contents: { body: "alert('hi')" }
-      issues = subject.pre_publish_issues(edition, edition.revision)
+      issues = subject.pre_publish_issues(edition)
       expect(issues).to be_empty
     end
 
     it "returns an issue when the body is empty" do
       edition = build :edition, contents: { body: " " }
-      issues = subject.pre_publish_issues(edition, edition.revision)
+      issues = subject.pre_publish_issues(edition)
       expect(issues).to have_issue(:body, :blank, styles: %i[form summary])
     end
   end

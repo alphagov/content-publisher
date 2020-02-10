@@ -23,47 +23,55 @@ class DocumentType::TitleAndBasePathField
     { title: title, base_path: base_path }
   end
 
-  def pre_update_issues(edition, revision)
-    issues = Requirements::CheckerIssues.new
-
-    begin
-      if base_path_conflict?(edition, revision)
-        issues.create(:title, :conflict)
-      end
-    rescue GdsApi::BaseError => e
-      GovukError.notify(e)
-    end
-
-    issues + pre_preview_issues(edition, revision)
+  def pre_update_issues(edition, params)
+    base_path_issues(edition, params) + title_issues(params[:title])
   end
 
-  def pre_preview_issues(_edition, revision)
+  def pre_preview_issues(edition)
+    title_issues(edition.title)
+  end
+
+  def pre_publish_issues(_edition)
+    Requirements::CheckerIssues.new
+  end
+
+private
+
+  def title_issues(title)
     issues = Requirements::CheckerIssues.new
 
-    if revision.title.blank?
+    if title.blank?
       issues.create(:title, :blank)
     end
 
-    if revision.title.to_s.size > TITLE_MAX_LENGTH
+    if title.to_s.size > TITLE_MAX_LENGTH
       issues.create(:title, :too_long, max_length: TITLE_MAX_LENGTH)
     end
 
-    if revision.title.to_s.lines.count > 1
+    if title.to_s.lines.count > 1
       issues.create(:title, :multiline)
     end
 
     issues
   end
 
-  def pre_publish_issues(_edition, _revision)
-    Requirements::CheckerIssues.new
+  def base_path_issues(edition, params)
+    issues = Requirements::CheckerIssues.new
+
+    begin
+      if base_path_conflict?(edition, params)
+        issues.create(:title, :conflict)
+      end
+    rescue GdsApi::BaseError => e
+      GovukError.notify(e)
+    end
+
+    issues
   end
 
-private
-
-  def base_path_conflict?(edition, revision)
+  def base_path_conflict?(edition, params)
     base_path_owner = GdsApi.publishing_api.lookup_content_id(
-      base_path: revision.base_path,
+      base_path: params[:base_path],
       with_drafts: true,
       exclude_document_types: [],
       exclude_unpublishing_types: [],

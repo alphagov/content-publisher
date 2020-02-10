@@ -50,9 +50,7 @@ private
   end
 
   def check_for_issues
-    checker = Requirements::BackdateChecker.new(date)
-    issues = checker.pre_submit_issues
-
+    issues = Requirements::BackdateChecker.new.pre_update_issues(date)
     context.fail!(issues: issues) if issues.any?
   end
 

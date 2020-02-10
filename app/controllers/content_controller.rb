@@ -4,12 +4,11 @@ class ContentController < ApplicationController
   def edit
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
-    @revision = @edition.revision
   end
 
   def update
     result = Content::UpdateInteractor.call(params: params, user: current_user)
-    edition, revision, issues, = result.to_h.values_at(:edition, :revision, :issues)
+    edition, issues, = result.to_h.values_at(:edition, :issues)
 
     if issues
       flash.now["requirements"] = {
@@ -17,7 +16,7 @@ class ContentController < ApplicationController
       }
 
       render :edit,
-             assigns: { edition: edition, revision: revision, issues: issues },
+             assigns: { edition: edition, issues: issues },
              status: :unprocessable_entity
     else
       redirect_to edition.document

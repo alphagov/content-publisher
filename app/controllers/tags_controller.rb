@@ -9,19 +9,18 @@ class TagsController < ApplicationController
   def edit
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
-    @revision = @edition.revision
   end
 
   def update
     results = Tags::UpdateInteractor.call(params: params, user: current_user)
-    edition, revision, issues, = results.to_h.values_at(:edition, :revision, :issues)
+    edition, issues, = results.to_h.values_at(:edition, :issues)
 
     if issues
       flash.now["requirements"] = {
         "items" => issues.items(link_options: issues_link_options(edition)),
       }
       render :edit,
-             assigns: { edition: edition, revision: revision, issues: issues },
+             assigns: { edition: edition, issues: issues },
              status: :unprocessable_entity
     else
       redirect_to document_path(params[:document])

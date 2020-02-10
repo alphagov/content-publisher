@@ -3,10 +3,10 @@
     id: "summary",
     html_for: "summary-field"
   }
-  if t_doctype_field?(@edition, "summary.guidance")
+  if t_doctype_field?(edition, "summary.guidance")
     summary_contextual_guidance.merge!({
-      title: t_doctype_field(@edition, "summary.guidance.title"),
-      content: t_doctype_field(@edition, "summary.guidance.body_govspeak"),
+      title: t_doctype_field(edition, "summary.guidance.title"),
+      content: t_doctype_field(edition, "summary.guidance.body_govspeak"),
       guidance_id: "summary-guidance"
     })
   end
@@ -20,8 +20,8 @@
     },
     id: "summary-field",
     name: "summary",
-    value: @revision.summary,
-    error_items: @issues&.items_for(:summary),
+    value: params[:summary] || edition.summary,
+    error_items: issues&.items_for(:summary),
     rows: 4,
     maxlength: DocumentType::SummaryField::SUMMARY_MAX_LENGTH,
     describedby: "summary-guidance"

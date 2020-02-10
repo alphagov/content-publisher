@@ -4,16 +4,10 @@ module Requirements
   class PublishTimeChecker
     include ActionView::Helpers::DateHelper
 
-    attr_reader :publish_time
-
     MAX_PUBLISH_DELAY = 14.months
     MIN_PUBLISH_DELAY = 15.minutes
 
-    def initialize(publish_time)
-      @publish_time = publish_time
-    end
-
-    def issues
+    def issues(publish_time)
       issues = CheckerIssues.new
 
       if publish_time > MAX_PUBLISH_DELAY.from_now
