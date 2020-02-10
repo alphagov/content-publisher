@@ -20,9 +20,9 @@
     <% if removal.alternative_url.present? %>
       <p>
         <% if removal.redirect? %>
-          Redirected to
+          <%= t "documents.history.entry_content.redirected_to" %>
         <% else %>
-          Alternative URL
+          <%= t "documents.history.entry_content.alternative_url" %>
         <% end %>
         <%= link_to(nil,
                     URI.join(Plek.new.website_root, removal.alternative_url).to_s,

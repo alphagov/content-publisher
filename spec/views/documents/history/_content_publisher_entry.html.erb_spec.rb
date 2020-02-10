@@ -44,7 +44,8 @@ RSpec.describe "documents/history/_content_publisher_entry.html.erb" do
                               details: removal)
       render partial: "documents/history/content_publisher_entry",
              locals: { entry: timeline_entry }
-      expect(rendered).to have_content("Alternative URL https://example.com",
+      alternative_url = I18n.t!("documents.history.entry_content.alternative_url")
+      expect(rendered).to have_content("#{alternative_url} https://example.com",
                                        normalize_ws: true)
       expect(rendered).to have_link("https://example.com",
                                     href: "https://example.com")
@@ -68,7 +69,8 @@ RSpec.describe "documents/history/_content_publisher_entry.html.erb" do
                               details: removal)
       render partial: "documents/history/content_publisher_entry",
              locals: { entry: timeline_entry }
-      expect(rendered).to have_content("Redirected to https://example.com",
+      redirected_to = I18n.t!("documents.history.entry_content.redirected_to")
+      expect(rendered).to have_content("#{redirected_to} https://example.com",
                                        normalize_ws: true)
     end
   end
