@@ -3,10 +3,10 @@
     id: "title",
     html_for: "title-field"
   }
-  if t_doctype_field?(@edition, "title.guidance")
+  if t_doctype_field?(edition, "title.guidance")
     title_contextual_guidance.merge!({
-      title: t_doctype_field(@edition, "title.guidance.title"),
-      content: t_doctype_field(@edition, "title.guidance.body_govspeak"),
+      title: t_doctype_field(edition, "title.guidance.title"),
+      content: t_doctype_field(edition, "title.guidance.body_govspeak"),
       guidance_id: "title-guidance"
     })
   end
@@ -20,8 +20,8 @@
     },
     id: "title-field",
     name: "title",
-    value: @revision.title,
-    error_items: @issues&.items_for(:title),
+    value: revision.title,
+    error_items: issues&.items_for(:title),
     rows: 2,
     maxlength: DocumentType::TitleAndBasePathField::TITLE_MAX_LENGTH,
     data: { "url-preview": "input" },
@@ -42,7 +42,7 @@
       default_message: t("content.edit.url_preview.no_title"),
       error_message: t("content.edit.url_preview.error"),
       website_root: Plek.new.website_root,
-      base_path: @revision.base_path
+      base_path: revision.base_path
     } %>
   </div>
 </div>

@@ -27,7 +27,7 @@
   <% end %>
 
   <% if @edition.document.live_edition %>
-    <%= render "content/edit/change_notes" %>
+    <%= render "content/edit/change_notes", revision: @revision %>
   <% end %>
 
   <%= render "govuk_publishing_components/components/button", {

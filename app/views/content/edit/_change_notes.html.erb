@@ -5,7 +5,7 @@
       },
       id: "revision-change-note",
       name: "change_note",
-      value: @revision.change_note,
+      value: revision.change_note,
       rows: 4,
       data: {
         "contextual-guidance": "change-note-guidance"
@@ -28,7 +28,7 @@
         value: "major",
         text: t("content.edit.update_type.major_name"),
         conditional: textarea,
-        checked: @revision.major?,
+        checked: revision.major?,
         data_attributes: {
           gtm: "choose-update-type",
           "gtm-value": t("content.edit.update_type.major_name")
@@ -37,7 +37,7 @@
       {
         value: "minor",
         text: t("content.edit.update_type.minor_name"),
-        checked: @revision.minor?,
+        checked: revision.minor?,
         data_attributes: {
           gtm: "choose-update-type",
           "gtm-value": t("content.edit.update_type.minor_name")
