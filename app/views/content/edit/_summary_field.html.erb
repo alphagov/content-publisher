@@ -20,7 +20,7 @@
     },
     id: "summary-field",
     name: "summary",
-    value: revision.summary,
+    value: params[:summary] || edition.summary,
     error_items: issues&.items_for(:summary),
     rows: 4,
     maxlength: DocumentType::SummaryField::SUMMARY_MAX_LENGTH,

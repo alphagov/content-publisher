@@ -35,7 +35,7 @@
       },
       id: "body-field",
       name: "body",
-      value: revision.contents["body"],
+      value: params[:body] || edition.contents["body"],
       rows: 20,
       spellcheck: "false",
       describedby: "body-guidance"

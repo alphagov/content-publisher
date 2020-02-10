@@ -3,9 +3,9 @@
       label: {
         text: t("content.edit.change_note.title"),
       },
-      id: "revision-change-note",
+      id: "edition-change-note",
       name: "change_note",
-      value: revision.change_note,
+      value: params[:change_note] || edition.change_note,
       rows: 4,
       data: {
         "contextual-guidance": "change-note-guidance"
@@ -15,10 +15,12 @@
 
 <%= render "govuk_publishing_components/components/contextual_guidance", {
   id: "change-note",
-  html_for: "revision-change-note",
+  html_for: "edition-change-note",
   title: t("content.edit.change_note.guidance_title"),
   content: render_govspeak(t("content.edit.change_note.guidance"))
 } do %>
+  <% update_type = params[:update_type] || edition.update_type %>
+
   <%= render "govuk_publishing_components/components/radio", {
     name: "update_type",
     heading: t("content.edit.update_type.title"),
@@ -28,7 +30,7 @@
         value: "major",
         text: t("content.edit.update_type.major_name"),
         conditional: textarea,
-        checked: revision.major?,
+        checked: update_type == "major",
         data_attributes: {
           gtm: "choose-update-type",
           "gtm-value": t("content.edit.update_type.major_name")
@@ -37,7 +39,7 @@
       {
         value: "minor",
         text: t("content.edit.update_type.minor_name"),
-        checked: revision.minor?,
+        checked: update_type == "minor",
         data_attributes: {
           gtm: "choose-update-type",
           "gtm-value": t("content.edit.update_type.minor_name")

@@ -20,7 +20,7 @@
     },
     id: "title-field",
     name: "title",
-    value: revision.title,
+    value: params[:title] || edition.title,
     error_items: issues&.items_for(:title),
     rows: 2,
     maxlength: DocumentType::TitleAndBasePathField::TITLE_MAX_LENGTH,
@@ -42,7 +42,7 @@
       default_message: t("content.edit.url_preview.no_title"),
       error_message: t("content.edit.url_preview.error"),
       website_root: Plek.new.website_root,
-      base_path: revision.base_path
+      base_path: edition.base_path
     } %>
   </div>
 </div>
