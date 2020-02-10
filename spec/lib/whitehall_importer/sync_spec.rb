@@ -6,7 +6,7 @@ RSpec.describe WhitehallImporter::Sync do
       allow(ResyncDocumentService).to receive(:call).with(whitehall_document)
       allow(WhitehallImporter::ClearLinksetLinks).to receive(:call)
                                                  .with(whitehall_document.content_id)
-      stub_whitehall_api_document_migrated(
+      stub_whitehall_document_migrated(
         whitehall_migration_document_import.whitehall_document_id,
       )
     end
@@ -29,7 +29,7 @@ RSpec.describe WhitehallImporter::Sync do
     end
 
     it "marks the document as migrated in Whitehall" do
-      request = stub_whitehall_api_document_migrated(
+      request = stub_whitehall_document_migrated(
         whitehall_migration_document_import.whitehall_document_id,
       )
 
@@ -55,7 +55,7 @@ RSpec.describe WhitehallImporter::Sync do
     end
   end
 
-  def stub_whitehall_api_document_migrated(document_id)
+  def stub_whitehall_document_migrated(document_id)
     stub_request(:post, "#{whitehall_host}/government/admin/export/document/#{document_id}/migrated")
   end
 end
