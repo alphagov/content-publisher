@@ -2,14 +2,13 @@
 
 module Requirements
   class WithdrawalChecker
-    attr_reader :public_explanation, :edition
+    attr_reader :edition
 
-    def initialize(public_explanation, edition)
-      @public_explanation = public_explanation
+    def initialize(edition)
       @edition = edition
     end
 
-    def pre_withdrawal_issues
+    def pre_withdrawal_issues(public_explanation)
       issues = CheckerIssues.new
 
       if public_explanation.blank?
