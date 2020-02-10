@@ -5,15 +5,14 @@ class Tags::UpdateInteractor < ApplicationInteractor
            :user,
            :edition,
            :revision,
-           :revision_updater,
            :issues,
            to: :context
 
   def call
     Edition.transaction do
       find_and_lock_edition
-      update_revision
       check_for_issues
+      update_revision
 
       update_edition
       create_timeline_entry
@@ -29,9 +28,10 @@ private
   end
 
   def update_revision
-    context.revision_updater = Versioning::RevisionUpdater.new(edition.revision, user)
-    revision_updater.assign(tags: update_params)
-    context.revision = revision_updater.next_revision
+    updater = Versioning::RevisionUpdater.new(edition.revision, user)
+    updater.assign(tags: update_params)
+    context.fail! unless updater.changed?
+    context.revision = updater.next_revision
   end
 
   def check_for_issues
@@ -40,8 +40,6 @@ private
   end
 
   def update_edition
-    context.fail! unless revision_updater.changed?
-
     EditDraftEditionService.call(edition, user, revision: revision)
     edition.save!
   end

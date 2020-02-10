@@ -10,8 +10,8 @@ class Content::UpdateInteractor < ApplicationInteractor
   def call
     Edition.transaction do
       find_and_lock_edition
-      update_revision
       check_for_issues
+      update_revision
 
       update_edition
       create_timeline_entry
@@ -37,7 +37,7 @@ private
   def check_for_issues
     issues = Requirements::CheckerIssues.new
 
-    edition.document_type.contents.each do |field|
+    fields.each do |field|
       issues += field.pre_update_issues(edition, content_params)
     end
 
@@ -64,8 +64,12 @@ private
   end
 
   def content_params
-    @content_params ||= edition.document_type.contents.reduce({}) do |hash, field|
+    @content_params ||= fields.reduce({}) do |hash, field|
       hash.merge!(field.updater_params(edition, params))
     end
+  end
+
+  def fields
+    @fields ||= edition.document_type.contents
   end
 end
