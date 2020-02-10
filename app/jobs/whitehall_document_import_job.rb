@@ -20,7 +20,11 @@ class WhitehallDocumentImportJob < ApplicationJob
 
   def self.handle_error(document_import, error)
     if document_import.pending?
-      GdsApi.whitehall_export.unlock_document(document_import.whitehall_document_id)
+      begin
+        GdsApi.whitehall_export.unlock_document(document_import.whitehall_document_id)
+      rescue StandardError => e
+        logger.warn("Failed to unlock Whitehall document: #{e.inspect}")
+      end
     end
 
     case error

@@ -181,6 +181,26 @@ RSpec.describe WhitehallDocumentImportJob do
     end
   end
 
+  context "when the Whitehall unlock API call fails" do
+    let(:error) { StandardError.new }
+    before do
+      allow(WhitehallImporter::Import).to receive(:call).and_raise("import error")
+      stub_whitehall_api_unlock_document_error(
+        whitehall_migration_document_import.whitehall_document_id, error
+      )
+    end
+
+    it "updates the document import state to 'import_failed' and logs the error" do
+      job = WhitehallDocumentImportJob
+      log_message = "Failed to unlock Whitehall document: #{error.inspect}"
+      expect(job.logger).to receive(:warn).with(log_message)
+
+      job.perform_now(whitehall_migration_document_import)
+
+      expect(whitehall_migration_document_import).to be_import_failed
+    end
+  end
+
   def stub_whitehall_api_unlock_document(document_id)
     stub_request(:post, "#{whitehall_host}/government/admin/export/document/#{document_id}/unlock")
   end
