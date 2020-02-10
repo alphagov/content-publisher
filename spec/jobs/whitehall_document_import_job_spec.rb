@@ -184,4 +184,9 @@ RSpec.describe WhitehallDocumentImportJob do
   def stub_whitehall_api_unlock_document(document_id)
     stub_request(:post, "#{whitehall_host}/government/admin/export/document/#{document_id}/unlock")
   end
+
+  def stub_whitehall_api_unlock_document_error(document_id, error)
+    stub_request(:post, "#{whitehall_host}/government/admin/export/document/#{document_id}/unlock")
+      .to_raise(error)
+  end
 end
