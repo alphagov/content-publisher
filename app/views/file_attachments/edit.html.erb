@@ -19,7 +19,7 @@
           bold: true
         },
         name: "file_attachment[title]",
-        value: params[:title] || @attachment.title,
+        value: params.dig(:file_attachment, :title) || @attachment.title,
         hint: t("file_attachments.edit.attachment_title.hint_text"),
       } %>
 
