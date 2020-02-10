@@ -23,7 +23,7 @@ RSpec.describe Editions::DestroyInteractor do
     it "delegates to the DeleteDraftEditionService" do
       expect(DeleteDraftEditionService)
         .to receive(:call)
-        .with(edition.document, user)
+        .with(edition, user)
       Editions::DestroyInteractor.call(params: params, user: user)
     end
 
