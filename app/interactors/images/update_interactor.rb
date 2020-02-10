@@ -32,8 +32,6 @@ private
 
   def find_and_update_image
     current_image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
-    image_params = params.require(:image_revision).permit(:caption, :alt_text, :credit)
-
     updater = Versioning::ImageRevisionUpdater.new(current_image_revision, user)
     updater.assign(image_params)
 
@@ -42,7 +40,7 @@ private
 
   def check_for_issues
     checker = Requirements::ImageRevisionChecker.new(image_revision)
-    issues = checker.pre_preview_metadata_issues
+    issues = checker.pre_update_issues(image_params)
 
     context.fail!(issues: issues) if issues.any?
   end
@@ -77,5 +75,9 @@ private
 
   def update_preview
     FailsafeDraftPreviewService.call(edition)
+  end
+
+  def image_params
+    params.require(:image_revision).permit(:caption, :alt_text, :credit)
   end
 end
