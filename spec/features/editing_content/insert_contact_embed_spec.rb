@@ -13,7 +13,7 @@ RSpec.feature "Insert contact embed" do
     then_i_see_the_snippet_is_inserted
   end
 
-  scenario "without javascript", js: false do
+  scenario "without javascript" do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
     and_i_click_to_insert_a_contact

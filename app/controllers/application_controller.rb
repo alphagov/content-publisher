@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include EditionAssertions
 
   helper_method :rendering_context
+  layout -> { rendering_context }
 
   before_action :authenticate_user!
   before_action { Raven.user_context(id: current_user&.uid) }
