@@ -2,17 +2,16 @@
 
 module Requirements
   class EditionChecker
-    attr_reader :edition, :revision
+    attr_reader :edition
 
-    def initialize(edition, revision = nil)
+    def initialize(edition)
       @edition = edition
-      @revision = revision || edition.revision
     end
 
     def pre_preview_issues
       issues = CheckerIssues.new
 
-      revision.image_revisions.each do |image|
+      edition.image_revisions.each do |image|
         issues += ImageRevisionChecker.new(image).pre_preview_issues
       end
 
@@ -22,9 +21,9 @@ module Requirements
 
     def pre_publish_issues(params = {})
       issues = CheckerIssues.new
-      issues += ContentChecker.new(edition, revision).pre_publish_issues
+      issues += ContentChecker.new(edition).pre_publish_issues
       issues += TopicChecker.new(edition).pre_publish_issues(params)
-      issues += TagChecker.new(edition, revision).pre_publish_issues
+      issues += TagChecker.new(edition).pre_publish_issues
       issues
     end
   end

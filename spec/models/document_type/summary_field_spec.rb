@@ -54,13 +54,13 @@ RSpec.describe DocumentType::SummaryField do
     let(:edition) { build :edition, summary: "a summary" }
 
     it "returns no issues if there are none" do
-      issues = subject.pre_publish_issues(edition, edition.revision)
+      issues = subject.pre_publish_issues(edition)
       expect(issues).to be_empty
     end
 
     it "returns an issue if the summary is blank" do
-      revision = build :revision, summary: "  "
-      issues = subject.pre_publish_issues(edition, revision)
+      edition = build :edition, summary: "  "
+      issues = subject.pre_publish_issues(edition)
       expect(issues).to have_issue(:summary, :blank, styles: %i[form summary])
     end
   end

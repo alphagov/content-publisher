@@ -31,7 +31,7 @@ class DocumentType::TitleAndBasePathField
     title_issues(edition.title)
   end
 
-  def pre_publish_issues(_edition, _revision)
+  def pre_publish_issues(_edition)
     Requirements::CheckerIssues.new
   end
 

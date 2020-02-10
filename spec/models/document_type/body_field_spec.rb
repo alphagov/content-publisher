@@ -46,13 +46,13 @@ RSpec.describe DocumentType::BodyField do
   describe "#pre_publish_issues" do
     it "returns no issues when there are none" do
       edition = build :edition, contents: { body: "alert('hi')" }
-      issues = subject.pre_publish_issues(edition, edition.revision)
+      issues = subject.pre_publish_issues(edition)
       expect(issues).to be_empty
     end
 
     it "returns an issue when the body is empty" do
       edition = build :edition, contents: { body: " " }
-      issues = subject.pre_publish_issues(edition, edition.revision)
+      issues = subject.pre_publish_issues(edition)
       expect(issues).to have_issue(:body, :blank, styles: %i[form summary])
     end
   end

@@ -2,11 +2,10 @@
 
 module Requirements
   class TagChecker
-    attr_reader :edition, :revision
+    attr_reader :edition
 
-    def initialize(edition, revision = nil)
+    def initialize(edition)
       @edition = edition
-      @revision = revision || edition.revision
     end
 
     def pre_update_issues(params)

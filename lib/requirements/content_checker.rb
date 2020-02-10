@@ -2,11 +2,10 @@
 
 module Requirements
   class ContentChecker
-    attr_reader :edition, :revision
+    attr_reader :edition
 
-    def initialize(edition, revision = nil)
+    def initialize(edition)
       @edition = edition
-      @revision = revision || edition.revision
     end
 
     def pre_update_issues(params)
@@ -33,12 +32,12 @@ module Requirements
       issues = CheckerIssues.new
 
       edition.document_type.contents.each do |field|
-        issues += field.pre_publish_issues(edition, revision)
+        issues += field.pre_publish_issues(edition)
       end
 
       if edition.document.live_edition &&
-          revision.update_type == "major" &&
-          revision.change_note.blank?
+          edition.update_type == "major" &&
+          edition.change_note.blank?
         issues.create(:change_note, :blank)
       end
 
