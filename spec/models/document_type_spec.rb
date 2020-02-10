@@ -10,7 +10,19 @@ RSpec.describe DocumentType do
         validator = JSON::Validator.fully_validate(document_type_schema, document_type)
         expect(validator).to(
           be_empty,
-          "Validation for #{document_type['id']} failed: \n\t#{validator.join("\n\t")}",
+          "Document type validation for #{document_type['id']} failed: \n\t#{validator.join("\n\t")}",
+        )
+      end
+    end
+
+    it "has locale keys that conform to the document type locale schema" do
+      document_type_locale_schema = JSON.parse(File.read("config/schemas/document_type_locale.json"))
+      document_types.each do |document_type|
+        translations = I18n.t("document_types.#{document_type['id']}").deep_stringify_keys
+        validator = JSON::Validator.fully_validate(document_type_locale_schema, translations)
+        expect(validator).to(
+          be_empty,
+          "Documents type locale validation for #{document_type['id']} failed: \n\t#{validator.join("\n\t")}",
         )
       end
     end
