@@ -159,6 +159,7 @@ examples:
           - France
           - Germany
           - United Kingdom
+
   autocomplete_js_only:
     description: |
       Shows an autocomplete component only if JavaScript is enabled.
