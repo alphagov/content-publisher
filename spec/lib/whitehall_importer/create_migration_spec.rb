@@ -22,7 +22,7 @@ RSpec.describe WhitehallImporter::CreateMigration do
 
       it "creates a WhitehallMigration" do
         freeze_time do
-          expect { WhitehallImporter::CreateMigration.call("123", "news_article") }
+          expect { described_class.call("123", "news_article") }
             .to change(WhitehallMigration, :count).by(1)
           expect(WhitehallMigration.last.organisation_content_id).to eq("123")
           expect(WhitehallMigration.last.document_type).to eq("news_article")
@@ -32,12 +32,12 @@ RSpec.describe WhitehallImporter::CreateMigration do
       end
 
       it "creates a pending WhitehallMigration::DocumentImport for each listed item" do
-        expect { WhitehallImporter::CreateMigration.call("123", "news_article") }
+        expect { described_class.call("123", "news_article") }
           .to change { WhitehallMigration::DocumentImport.pending.count }.by(110)
       end
 
       it "queues a job for each listed document" do
-        WhitehallImporter::CreateMigration.call("123", "news_article")
+        described_class.call("123", "news_article")
         expect(WhitehallDocumentImportJob).to have_been_enqueued.exactly(110).times
       end
     end
@@ -53,9 +53,9 @@ RSpec.describe WhitehallImporter::CreateMigration do
       it "creates a WhitehallMigration" do
         freeze_time do
           expect {
-            WhitehallImporter::CreateMigration.call("123",
-                                                    "news_article",
-                                                    %w(press_release news_story))
+            described_class.call("123",
+                                 "news_article",
+                                 %w(press_release news_story))
           }.to change(WhitehallMigration, :count).by(1)
           expect(WhitehallMigration.last.organisation_content_id).to eq("123")
           expect(WhitehallMigration.last.document_type).to eq("news_article")
@@ -66,12 +66,12 @@ RSpec.describe WhitehallImporter::CreateMigration do
 
       it "creates a pending WhitehallMigration::DocumentImport for each listed item" do
         expect {
-          WhitehallImporter::CreateMigration.call("123", "news_article", %w(press_release news_story))
+          described_class.call("123", "news_article", %w(press_release news_story))
         }.to change { WhitehallMigration::DocumentImport.pending.count }.by(110)
       end
 
       it "queues a job for each listed document" do
-        WhitehallImporter::CreateMigration.call("123", "news_article", %w(press_release news_story))
+        described_class.call("123", "news_article", %w(press_release news_story))
         expect(WhitehallDocumentImportJob).to have_been_enqueued.exactly(110).times
       end
     end

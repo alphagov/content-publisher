@@ -16,7 +16,7 @@ RSpec.describe Editions::CreateInteractor do
 
       params = { document: edition.document.to_param }
 
-      next_edition = Editions::CreateInteractor
+      next_edition = described_class
         .call(params: params, user: user)
         .next_edition
 
@@ -33,7 +33,7 @@ RSpec.describe Editions::CreateInteractor do
       expect(FailsafeDraftPreviewService).to receive(:call)
       expect(FailsafeDraftPreviewService).not_to receive(:call).with(old_edition)
 
-      Editions::CreateInteractor
+      described_class
         .call(params: { document: old_edition.document.to_param }, user: user)
     end
 
@@ -49,7 +49,7 @@ RSpec.describe Editions::CreateInteractor do
       end
 
       it "resumes the edition" do
-        next_edition = Editions::CreateInteractor
+        next_edition = described_class
           .call(params: params, user: user)
           .next_edition
 
@@ -58,7 +58,7 @@ RSpec.describe Editions::CreateInteractor do
       end
 
       it "creates a timeline entry" do
-        next_edition = Editions::CreateInteractor
+        next_edition = described_class
           .call(params: params, user: user)
           .next_edition
 
@@ -73,7 +73,7 @@ RSpec.describe Editions::CreateInteractor do
       let(:params) { { document: edition.document.to_param } }
 
       it "creates a new edition" do
-        next_edition = Editions::CreateInteractor
+        next_edition = described_class
           .call(params: params, user: user)
           .next_edition
 
@@ -83,7 +83,7 @@ RSpec.describe Editions::CreateInteractor do
       end
 
       it "creates a timeline entry" do
-        next_edition = Editions::CreateInteractor
+        next_edition = described_class
           .call(params: params, user: user)
           .next_edition
 

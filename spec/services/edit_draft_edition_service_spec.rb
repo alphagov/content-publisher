@@ -6,12 +6,12 @@ RSpec.describe EditDraftEditionService do
     it "assigns attributes to an edition" do
       revision = build(:revision)
 
-      expect { EditDraftEditionService.call(edition, user, revision: revision) }
+      expect { described_class.call(edition, user, revision: revision) }
         .to change(edition, :revision).to(revision)
     end
 
     it "does not save the edition" do
-      EditDraftEditionService.call(edition, user, {})
+      described_class.call(edition, user, {})
 
       expect(edition).to be_new_record
     end
@@ -20,7 +20,7 @@ RSpec.describe EditDraftEditionService do
       freeze_time do
         edition = build(:edition, last_edited_at: 3.weeks.ago)
 
-        expect { EditDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to change { edition.last_edited_by }.to(user)
           .and change { edition.last_edited_at }.to(Time.current)
       end
@@ -29,7 +29,7 @@ RSpec.describe EditDraftEditionService do
     it "raises an error if a live edition is edited" do
       live_edition = build(:edition, live: true)
 
-      expect { EditDraftEditionService.call(live_edition, user) }
+      expect { described_class.call(live_edition, user) }
         .to raise_error("cannot edit a live edition")
     end
 
@@ -37,7 +37,7 @@ RSpec.describe EditDraftEditionService do
       it "adds an edition user if they are not already listed as an editor" do
         edition = build(:edition)
 
-        expect { EditDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to change { edition.editors.size }
           .by(1)
       end
@@ -50,7 +50,7 @@ RSpec.describe EditDraftEditionService do
           .with(edition)
           .and_return(instance_double(PoliticalEditionIdentifier, political?: true))
 
-        expect { EditDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to change(edition, :system_political)
           .to(true)
       end
@@ -63,7 +63,7 @@ RSpec.describe EditDraftEditionService do
           .with(edition)
           .and_return(instance_double(PoliticalEditionIdentifier, political?: false))
 
-        expect { EditDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to change { edition.system_political }
           .to(false)
       end
@@ -76,7 +76,7 @@ RSpec.describe EditDraftEditionService do
         populate_government_bulk_data(government)
         allow(edition).to receive(:public_first_published_at).and_return(time)
 
-        expect { EditDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to change(edition, :government_id)
           .to(government.content_id)
       end
@@ -87,7 +87,7 @@ RSpec.describe EditDraftEditionService do
         populate_government_bulk_data(government)
         edition = build(:edition, first_published_at: publish_date)
 
-        expect { EditDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .not_to change { edition.government_id }
           .from(nil)
       end
@@ -95,7 +95,7 @@ RSpec.describe EditDraftEditionService do
       it "sets the government to nil when an edition isn't backdated or the document published" do
         edition = build(:edition)
 
-        expect { EditDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .not_to change { edition.government_id }
           .from(nil)
       end

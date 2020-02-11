@@ -10,12 +10,12 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
     end
 
     it "raises an error for unexpected attributes" do
-      updater = Versioning::FileAttachmentRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
       expect { updater.assign(foo: "bar") }.to raise_error ActiveModel::UnknownAttributeError
     end
 
     it "creates a new revision when a value changes" do
-      updater = Versioning::FileAttachmentRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
       updater.assign(title: "Another title")
 
       next_revision = updater.next_revision
@@ -24,7 +24,7 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
     end
 
     it "updates and reports changes to the fields" do
-      updater = Versioning::FileAttachmentRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
 
       new_fields = { title: "Another title" }
 
@@ -38,7 +38,7 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
     end
 
     it "preserves the current revision if no change" do
-      updater = Versioning::FileAttachmentRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
       new_fields = { title: revision.title }
 
       updater.assign(new_fields)
@@ -48,7 +48,7 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
     end
 
     it "preserves existing values when others change" do
-      updater = Versioning::FileAttachmentRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
 
       old_fields = {
         blob_id: revision.blob_revision.blob.id,
@@ -64,7 +64,7 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
     end
 
     it "can accept a blob_revision as an attribute" do
-      updater = Versioning::FileAttachmentRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
       blob_revision = create(:file_attachment_blob_revision, filename: "new-file.txt")
       updater.assign(blob_revision: blob_revision)
 

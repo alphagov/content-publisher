@@ -22,7 +22,7 @@ RSpec.describe WhitehallImporter::ClearLinksetLinks do
       }
 
       request = stub_publishing_api_patch_links(content_id, linkset_params)
-      WhitehallImporter::ClearLinksetLinks.call(content_id)
+      described_class.call(content_id)
 
       expect(request).to have_been_requested
     end

@@ -18,7 +18,7 @@ RSpec.describe Organisations do
         end
 
         it "returns the specified email" do
-          email = Organisations.new(edition).alternative_format_contact_email
+          email = described_class.new(edition).alternative_format_contact_email
           expect(email).to eq "foo@bar.com"
         end
       end
@@ -34,7 +34,7 @@ RSpec.describe Organisations do
         end
 
         it "returns the default alt email" do
-          email = Organisations.new(edition).alternative_format_contact_email
+          email = described_class.new(edition).alternative_format_contact_email
           expect(email).to eq Organisations::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
         end
       end
@@ -45,7 +45,7 @@ RSpec.describe Organisations do
         end
 
         it "returns the default alt email" do
-          email = Organisations.new(edition).alternative_format_contact_email
+          email = described_class.new(edition).alternative_format_contact_email
           expect(email).to eq Organisations::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
         end
       end
@@ -55,7 +55,7 @@ RSpec.describe Organisations do
       let(:edition) { build :edition }
 
       it "returns the default alt email" do
-        email = Organisations.new(edition).alternative_format_contact_email
+        email = described_class.new(edition).alternative_format_contact_email
         expect(email).to eq Organisations::DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL
       end
     end

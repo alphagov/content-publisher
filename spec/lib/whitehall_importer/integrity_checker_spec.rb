@@ -40,7 +40,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     it "returns true if there aren't any problems for edition without image" do
       stub_publishing_api_has_item(publishing_api_item)
 
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      integrity_check = described_class.new(edition)
       expect(integrity_check.valid?).to be true
     end
 
@@ -54,7 +54,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       }
       stub_publishing_api_has_item(publishing_api_item)
 
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      integrity_check = described_class.new(edition)
       expect(integrity_check.valid?).to be true
     end
 
@@ -64,7 +64,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       }
       stub_publishing_api_has_item(publishing_api_item)
 
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      integrity_check = described_class.new(edition)
       expect(integrity_check.valid?).to be true
     end
 
@@ -89,7 +89,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         },
       )
 
-      integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+      integrity_check = described_class.new(edition)
       expect(integrity_check.valid?).to be true
     end
   end
@@ -124,7 +124,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       }
     end
 
-    let(:integrity_check) { WhitehallImporter::IntegrityChecker.new(edition) }
+    let(:integrity_check) { described_class.new(edition) }
 
     def problem_message(attribute, expected, actual)
       "#{attribute} doesn't match, expected: #{expected.inspect}, actual: #{actual.inspect}"

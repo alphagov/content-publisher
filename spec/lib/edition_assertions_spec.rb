@@ -1,5 +1,5 @@
 RSpec.describe EditionAssertions do
-  include EditionAssertions
+  include described_class
 
   describe "#assert_edition_state" do
     let(:edition) { build :edition }

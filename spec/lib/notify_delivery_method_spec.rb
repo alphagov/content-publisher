@@ -20,7 +20,7 @@ RSpec.describe NotifyDeliveryMethod do
                 subject: headers[:subject],
               })
 
-      method = NotifyDeliveryMethod.new(notify_api_key: "api-key", template_id: template_id)
+      method = described_class.new(notify_api_key: "api-key", template_id: template_id)
       method.deliver!(message)
     end
 
@@ -36,7 +36,7 @@ RSpec.describe NotifyDeliveryMethod do
       allow(Notifications::Client).to receive(:new)
         .with("api-key").and_return(client)
 
-      method = NotifyDeliveryMethod.new(notify_api_key: "api-key", template_id: template_id)
+      method = described_class.new(notify_api_key: "api-key", template_id: template_id)
 
       expect { method.deliver!(message) }.to raise_error(
         RuntimeError,

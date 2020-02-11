@@ -42,10 +42,6 @@ Style/DateTime:
 RSpec/ExampleLength:
   Enabled: false
 
-# TODO: remove
-RSpec/DescribedClass:
-  EnforcedStyle: explicit
-
 RSpec/DescribeClass:
   Enabled: false
 

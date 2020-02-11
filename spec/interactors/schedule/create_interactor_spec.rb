@@ -11,7 +11,7 @@ RSpec.describe Schedule::CreateInteractor do
     end
 
     it "succeeds with default paramaters" do
-      result = Schedule::CreateInteractor.call(params: build_params, user: user)
+      result = described_class.call(params: build_params, user: user)
       expect(result).to be_success
     end
 
@@ -29,25 +29,25 @@ RSpec.describe Schedule::CreateInteractor do
 
       params = build_params(document: edition.document,
                             review_status: "not_reviewed")
-      Schedule::CreateInteractor.call(params: params, user: user)
+      described_class.call(params: params, user: user)
     end
 
     it "creates a timeline entry" do
-      expect { Schedule::CreateInteractor.call(params: build_params, user: user) }
+      expect { described_class.call(params: build_params, user: user) }
         .to change { TimelineEntry.where(entry_type: :scheduled).count }
         .by(1)
     end
 
     it "raises an error when the edition isn't editable" do
       params = build_params(document: create(:edition, :published).document)
-      expect { Schedule::CreateInteractor.call(params: params, user: user) }
+      expect { described_class.call(params: params, user: user) }
         .to raise_error(EditionAssertions::StateError)
     end
 
     it "raises an error when the edition hasn't got a proposed publish time" do
       edition = create(:edition, proposed_publish_time: nil)
       params = build_params(document: edition.document)
-      expect { Schedule::CreateInteractor.call(params: params, user: user) }
+      expect { described_class.call(params: params, user: user) }
         .to raise_error(EditionAssertions::StateError)
     end
 
@@ -56,12 +56,12 @@ RSpec.describe Schedule::CreateInteractor do
                        :not_publishable,
                        proposed_publish_time: Time.zone.tomorrow)
       params = build_params(document: edition.document)
-      expect { Schedule::CreateInteractor.call(params: params, user: user) }
+      expect { described_class.call(params: params, user: user) }
         .to raise_error(EditionAssertions::StateError)
     end
 
     it "fails with an issue when a review status isn't set" do
-      result = Schedule::CreateInteractor.call(
+      result = described_class.call(
         params: build_params.merge(review_status: nil),
         user: user,
       )
@@ -71,7 +71,7 @@ RSpec.describe Schedule::CreateInteractor do
 
     it "fails with an API error when SchedulePublishService raises a GdsApi Error" do
       stub_publishing_api_isnt_available
-      result = Schedule::CreateInteractor.call(params: build_params, user: user)
+      result = described_class.call(params: build_params, user: user)
 
       expect(result).to be_failure
       expect(result.api_error).to be(true)

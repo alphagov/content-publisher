@@ -10,21 +10,21 @@ RSpec.describe Schedule::DestroyInteractor do
     end
 
     it "creates a timeline entry" do
-      result = Schedule::DestroyInteractor.call(params: params, user: user)
+      result = described_class.call(params: params, user: user)
       timeline_entry = result.edition.timeline_entries.last
 
       expect(timeline_entry.entry_type).to eq("unscheduled")
     end
 
     it "makes a request to Publishing API to destroy the existing publishing intent" do
-      Schedule::DestroyInteractor.call(params: params, user: user)
+      described_class.call(params: params, user: user)
 
       expect(destroy_intent_request).to have_been_requested
     end
 
     it "returns an api_error flag when Publishing API is down" do
       stub_publishing_api_isnt_available
-      result = Schedule::DestroyInteractor.call(params: params, user: user)
+      result = described_class.call(params: params, user: user)
 
       expect(result.api_error).to be_truthy
     end
@@ -35,7 +35,7 @@ RSpec.describe Schedule::DestroyInteractor do
         edition = create(:edition, :scheduled, scheduling: scheduling)
         stub_publishing_api_destroy_intent(edition.base_path)
 
-        result = Schedule::DestroyInteractor.call(
+        result = described_class.call(
           params: { document: edition.document.to_param }, user: user,
         )
 
@@ -45,7 +45,7 @@ RSpec.describe Schedule::DestroyInteractor do
 
     context "when the scheduling reviewed state is set to false" do
       it "sets the edition's status to 'draft'" do
-        result = Schedule::DestroyInteractor.call(params: params, user: user)
+        result = described_class.call(params: params, user: user)
 
         expect(result.edition.status).to be_draft
       end

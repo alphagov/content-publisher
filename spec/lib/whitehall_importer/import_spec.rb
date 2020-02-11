@@ -24,24 +24,24 @@ RSpec.describe WhitehallImporter::Import do
     it "raises if the WhitehallMigration::DocumentImport doesn't have a state of pending" do
       document_import = create(:whitehall_migration_document_import, state: "imported")
 
-      expect { WhitehallImporter::Import.call(document_import) }
+      expect { described_class.call(document_import) }
         .to raise_error(RuntimeError, "Cannot import with a state of imported")
     end
 
     it "locks the document in Whitehall" do
-      WhitehallImporter::Import.call(document_import)
+      described_class.call(document_import)
       expect(stub_whitehall_lock_document(document_import.whitehall_document_id))
         .to have_been_requested
     end
 
     it "stores the exported Whitehall document data" do
-      WhitehallImporter::Import.call(document_import)
+      described_class.call(document_import)
 
       expect(document_import.payload).to eq(whitehall_export_document)
     end
 
     it "creates a document" do
-      expect { WhitehallImporter::Import.call(document_import) }
+      expect { described_class.call(document_import) }
         .to change(Document, :count).by(1)
     end
 
@@ -52,18 +52,18 @@ RSpec.describe WhitehallImporter::Import do
         document_import.whitehall_document_id, whitehall_export
       )
 
-      expect { WhitehallImporter::Import.call(document_import) }
+      expect { described_class.call(document_import) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
 
     it "sets the document as being imported from Whitehall" do
-      WhitehallImporter::Import.call(document_import)
+      described_class.call(document_import)
 
       expect(document_import.document).to be_imported_from_whitehall
     end
 
     it "sets the timeline entry as Imported from Whitehall" do
-      WhitehallImporter::Import.call(document_import)
+      described_class.call(document_import)
 
       expect(TimelineEntry.last).to be_whitehall_migration
       expect(TimelineEntry.last.details).to be_imported_from_whitehall
@@ -74,7 +74,7 @@ RSpec.describe WhitehallImporter::Import do
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )
-      WhitehallImporter::Import.call(document_import)
+      described_class.call(document_import)
 
       expect(document_import.document.content_id).to eq(whitehall_export["content_id"])
     end
@@ -84,7 +84,7 @@ RSpec.describe WhitehallImporter::Import do
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )
-      WhitehallImporter::Import.call(document_import)
+      described_class.call(document_import)
 
       expect(User.last.attributes).to match hash_including(
         "uid" => whitehall_user["uid"],
@@ -102,7 +102,7 @@ RSpec.describe WhitehallImporter::Import do
         document_import.whitehall_document_id, whitehall_export
       )
 
-      expect { WhitehallImporter::Import.call(document_import) }.not_to(change(User, :count))
+      expect { described_class.call(document_import) }.not_to(change(User, :count))
     end
 
     it "does not create a user who has a nil uid" do
@@ -112,7 +112,7 @@ RSpec.describe WhitehallImporter::Import do
         document_import.whitehall_document_id, whitehall_export
       )
 
-      expect { WhitehallImporter::Import.call(document_import) }.not_to(change(User, :count))
+      expect { described_class.call(document_import) }.not_to(change(User, :count))
     end
 
     it "sets created_by_id as the original author" do
@@ -129,7 +129,7 @@ RSpec.describe WhitehallImporter::Import do
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )
-      WhitehallImporter::Import.call(document_import)
+      described_class.call(document_import)
 
       expect(document_import.document.created_by).to eq(user)
     end
@@ -162,7 +162,7 @@ RSpec.describe WhitehallImporter::Import do
         hash_including(current: true),
       ).ordered.and_call_original
 
-      WhitehallImporter::Import.call(document_import)
+      described_class.call(document_import)
     end
 
     it "sets first_published_at date to publish time of first edition" do
@@ -194,7 +194,7 @@ RSpec.describe WhitehallImporter::Import do
         document_import.whitehall_document_id, whitehall_export
       )
 
-      WhitehallImporter::Import.call(document_import)
+      described_class.call(document_import)
 
       expect(document_import.document.first_published_at)
         .to eq(first_publish_date)
@@ -210,7 +210,7 @@ RSpec.describe WhitehallImporter::Import do
         document_import.whitehall_document_id, whitehall_export
       )
 
-      WhitehallImporter::Import.call(document_import)
+      described_class.call(document_import)
 
       expect(WhitehallImporter::IntegrityChecker.new).to have_received(:valid?).twice
     end
@@ -226,7 +226,7 @@ RSpec.describe WhitehallImporter::Import do
                       edition: build(:edition),
                     ))
 
-      expect { WhitehallImporter::Import.call(document_import) }
+      expect { described_class.call(document_import) }
         .to raise_error(WhitehallImporter::IntegrityCheckError)
     end
 
@@ -237,7 +237,7 @@ RSpec.describe WhitehallImporter::Import do
                             .and_raise("forced error")
       stub_whitehall_document_export(document_import, whitehall_export_document)
 
-      expect { WhitehallImporter::Import.call(document_import) }.to raise_error("forced error")
+      expect { described_class.call(document_import) }.to raise_error("forced error")
       expect(document_import.changed?).to be false
       expect(document_import.document).to be nil
     end

@@ -5,7 +5,7 @@ RSpec.describe MailRecipientInterceptor do
 
     before do
       ClimateControl.modify(EMAIL_ADDRESS_OVERRIDE: "allowed@example.com") do
-        MailRecipientInterceptor.delivering_email(mail)
+        described_class.delivering_email(mail)
       end
     end
 

@@ -1,6 +1,6 @@
 RSpec.describe Requirements::PublishTimeChecker do
   describe "#issues" do
-    let(:checker) { Requirements::PublishTimeChecker.new }
+    let(:checker) { described_class.new }
 
     it "returns no issues if there are none" do
       issues = checker.issues(1.day.from_now)

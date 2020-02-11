@@ -10,7 +10,7 @@ RSpec.describe PublishAssetsService do
                        image_revisions: [image_revision])
 
       request = stub_asset_manager_updates_any_asset
-      PublishAssetsService.call(edition)
+      described_class.call(edition)
       expect(image_revision.assets.map(&:state).uniq).to eq(%w[live])
       expect(file_attachment_revision.asset).to be_live
       expect(request).to have_been_requested.at_least_once
@@ -32,7 +32,7 @@ RSpec.describe PublishAssetsService do
                        document: live_edition.document)
 
       request = stub_any_asset_manager_call
-      PublishAssetsService.call(edition, superseded_edition: live_edition)
+      described_class.call(edition, superseded_edition: live_edition)
       expect(request).not_to have_been_requested
     end
 
@@ -42,7 +42,7 @@ RSpec.describe PublishAssetsService do
                        :publishable,
                        image_revisions: [image_revision])
 
-      expect { PublishAssetsService.call(edition) }.to raise_error("Expected asset to be on asset manager")
+      expect { described_class.call(edition) }.to raise_error("Expected asset to be on asset manager")
     end
 
     it "removes an asset not used by the current edition" do
@@ -62,7 +62,7 @@ RSpec.describe PublishAssetsService do
 
       delete_request = stub_asset_manager_deletes_any_asset
 
-      PublishAssetsService.call(edition, superseded_edition: live_edition)
+      described_class.call(edition, superseded_edition: live_edition)
       expect(image_revision_to_remove.assets.map(&:state).uniq).to eq(%w[absent])
       expect(file_attachment_revision_to_remove.asset).to be_absent
       expect(delete_request).to have_been_requested.at_least_once
@@ -84,7 +84,7 @@ RSpec.describe PublishAssetsService do
                      file_attachment_revisions: [file_attachment_revision_to_keep],
                      document: live_edition.document)
 
-    PublishAssetsService.call(edition, superseded_edition: live_edition)
+    described_class.call(edition, superseded_edition: live_edition)
     expect(image_revision_to_keep.assets.map(&:state).uniq).to eq(%w[live])
     expect(file_attachment_revision_to_keep.asset).to be_live
   end
@@ -107,7 +107,7 @@ RSpec.describe PublishAssetsService do
                      document: live_edition.document)
 
     request = stub_asset_manager_updates_any_asset
-    PublishAssetsService.call(edition, superseded_edition: live_edition)
+    described_class.call(edition, superseded_edition: live_edition)
     expect(old_image_revision.assets.map(&:state).uniq).to eq(%w[superseded])
     expect(old_file_attachment_revision.asset).to be_superseded
     expect(request).to have_been_requested.at_least_once

@@ -15,11 +15,11 @@ RSpec.describe Images::CreateInteractor do
 
     context "when input is valid" do
       it "is successful" do
-        expect(Images::CreateInteractor.call(**args)).to be_success
+        expect(described_class.call(**args)).to be_success
       end
 
       it "creates a new image revision" do
-        expect { Images::CreateInteractor.call(**args) }
+        expect { described_class.call(**args) }
           .to change { Image::Revision.count }.by(1)
       end
 
@@ -33,11 +33,11 @@ RSpec.describe Images::CreateInteractor do
           .with(user: user, temp_image: temp_image, filename: an_instance_of(String))
           .and_call_original
 
-        Images::CreateInteractor.call(**args)
+        described_class.call(**args)
       end
 
       it "attributes the various created image models to the user" do
-        result = Images::CreateInteractor.call(**args)
+        result = described_class.call(**args)
         image_revision = result.edition.image_revisions.first
 
         expect(image_revision.created_by).to eq(user)
@@ -55,7 +55,7 @@ RSpec.describe Images::CreateInteractor do
         end
 
         it "sets the image revision with a unique filename" do
-          result = Images::CreateInteractor.call(**args)
+          result = described_class.call(**args)
           expect(result.image_revision.filename).to eq("960x640-1.jpg")
         end
       end
@@ -65,7 +65,7 @@ RSpec.describe Images::CreateInteractor do
       let(:edition) { create(:edition, :published) }
 
       it "raises a state error" do
-        expect { Images::CreateInteractor.call(**args) }
+        expect { described_class.call(**args) }
           .to raise_error(EditionAssertions::StateError)
       end
     end
@@ -75,7 +75,7 @@ RSpec.describe Images::CreateInteractor do
         checker = instance_double(Requirements::ImageUploadChecker)
         allow(checker).to receive(:issues).and_return(%w(issue))
         allow(Requirements::ImageUploadChecker).to receive(:new).and_return(checker)
-        result = Images::CreateInteractor.call(**args)
+        result = described_class.call(**args)
 
         expect(result).to be_failure
         expect(result.issues).to eq %w(issue)
@@ -89,7 +89,7 @@ RSpec.describe Images::CreateInteractor do
                                      issues: %w(issue))
 
         allow(ImageNormaliser).to receive(:new).and_return(normaliser)
-        result = Images::CreateInteractor.call(**args)
+        result = described_class.call(**args)
 
         expect(result).to be_failure
         expect(result.issues).to match(%w(issue))

@@ -4,7 +4,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
       document_type = build(:document_type)
       edition = build(:edition, document_type: document_type)
 
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
 
       payload_hash = {
         document_type: document_type.id,
@@ -22,14 +22,14 @@ RSpec.describe PreviewDraftEditionService::Payload do
       edition = build(:edition)
       preview_auth_bypass = instance_double(PreviewAuthBypass, auth_bypass_id: "id")
       allow(PreviewAuthBypass).to receive(:new).and_return(preview_auth_bypass)
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
       expect(payload[:auth_bypass_ids]).to eq(%w[id])
     end
 
     it "specifies organisations when the edition is access limited" do
       edition = build(:edition, :access_limited)
       allow(edition).to receive(:access_limit_organisation_ids).and_return(%w[org-id])
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
       expect(payload[:access_limited][:organisations]).to eq %w[org-id]
     end
 
@@ -41,7 +41,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
                       tags: { primary_publishing_organisation: %w[my-org-id],
                               organisations: %w[other-org-id] })
 
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
 
       expect(payload[:links]).to match a_hash_including(
         primary_publishing_organisation: %w[my-org-id],
@@ -57,7 +57,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
                       tags: { primary_publishing_organisation: %w[my-org-id],
                               organisations: %w[my-org-id] })
 
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
 
       expect(payload[:links][:organisations]).to eq %w[my-org-id]
     end
@@ -77,7 +77,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
         links: { person: [person_id], role: [role_id] },
       )
 
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
 
       expect(payload[:links]).to match a_hash_including(
         roles: [role_id],
@@ -91,7 +91,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
 
       document_type = build(:document_type, contents: [body_field])
       edition = build(:edition, document_type: document_type)
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
       expect(payload[:details][:body]).to eq("body")
     end
 
@@ -108,7 +108,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
                       document_type: document_type,
                       lead_image_revision: image_revision)
 
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
 
       payload_hash = {
         url: image_revision.asset_url("300"),
@@ -123,11 +123,11 @@ RSpec.describe PreviewDraftEditionService::Payload do
 
     it "includes the political status of the edition" do
       political_edition = build(:edition, :political)
-      payload = PreviewDraftEditionService::Payload.new(political_edition).payload
+      payload = described_class.new(political_edition).payload
       expect(payload[:details][:political]).to be true
 
       not_political_edition = build(:edition, :not_political)
-      payload = PreviewDraftEditionService::Payload.new(not_political_edition).payload
+      payload = described_class.new(not_political_edition).payload
       expect(payload[:details][:political]).to be false
     end
 
@@ -137,7 +137,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
 
       edition = build(:edition, government_id: government.content_id)
 
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
 
       expect(payload[:links][:government]).to eq [government.content_id]
     end
@@ -146,7 +146,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
       edition = build(:edition,
                       update_type: "major",
                       change_note: "A change note")
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
 
       expect(payload).to match a_hash_including(change_note: "A change note")
     end
@@ -155,7 +155,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
       edition = build(:edition,
                       update_type: "minor",
                       change_note: "A change note")
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
 
       expect(payload).not_to match a_hash_including(change_note: "A change note")
     end
@@ -164,7 +164,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
       date = Time.current.yesterday
       revision = build(:revision, backdated_to: date)
       edition = build(:edition, revision: revision)
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
 
       expect(payload).to match a_hash_including(first_published_at: date)
     end
@@ -173,14 +173,14 @@ RSpec.describe PreviewDraftEditionService::Payload do
       date = Time.current.yesterday
       revision = build(:revision, backdated_to: date)
       edition = build(:edition, revision: revision, number: 1)
-      payload = PreviewDraftEditionService::Payload.new(edition).payload
+      payload = described_class.new(edition).payload
 
       expect(payload).to match a_hash_including(public_updated_at: date)
     end
 
     it "includes bulk_publishing and sets the update to republish if the edition is being republished" do
       edition = build(:edition)
-      payload = PreviewDraftEditionService::Payload.new(edition, republish: true).payload
+      payload = described_class.new(edition, republish: true).payload
 
       expect(payload).to match a_hash_including(
         update_type: "republish",

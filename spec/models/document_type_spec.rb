@@ -26,34 +26,34 @@ RSpec.describe DocumentType do
 
   describe ".all" do
     it "creates a DocumentType for each one in the YAML" do
-      expect(DocumentType.all.count).to eq(document_types.count)
+      expect(described_class.all.count).to eq(document_types.count)
     end
   end
 
   describe ".find" do
     it "returns a DocumentType when it's a known document_type" do
-      expect(DocumentType.find("press_release")).to be_a(DocumentType)
+      expect(described_class.find("press_release")).to be_a(described_class)
     end
 
     it "raises a RuntimeError when we don't know the document_type" do
-      expect { DocumentType.find("unknown_document_type") }
+      expect { described_class.find("unknown_document_type") }
         .to raise_error(RuntimeError, "Document type unknown_document_type not found")
     end
   end
 
   describe ".clear" do
     it "resets the DocumentType.all return value" do
-      preexisting_doctypes = DocumentType.all.count
+      preexisting_doctypes = described_class.all.count
       build(:document_type)
-      expect(DocumentType.all.count).to eq(preexisting_doctypes + 1)
-      DocumentType.clear
-      expect(DocumentType.all.count).to eq(preexisting_doctypes)
+      expect(described_class.all.count).to eq(preexisting_doctypes + 1)
+      described_class.clear
+      expect(described_class.all.count).to eq(preexisting_doctypes)
     end
   end
 
   describe "#managed_elsewhere_url" do
     it "returns a full URL" do
-      document_type = DocumentType.find("consultation")
+      document_type = described_class.find("consultation")
       path = "https://whitehall-admin.test.gov.uk/government/admin/consultations/new"
       expect(document_type.managed_elsewhere_url).to eq(path)
     end

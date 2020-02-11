@@ -5,13 +5,13 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
   let(:document_import) { build(:whitehall_migration_document_import) }
 
   it "fetches file from asset-manager" do
-    create_revision = WhitehallImporter::CreateFileAttachmentRevision.new(document_import, whitehall_file_attachment)
+    create_revision = described_class.new(document_import, whitehall_file_attachment)
     expect(create_revision.call).to have_requested(:get, whitehall_file_attachment["url"])
   end
 
   it "creates a FileAttachment::Revision and sets correct metadata" do
     revision = nil
-    expect { revision = WhitehallImporter::CreateFileAttachmentRevision.call(document_import, whitehall_file_attachment) }
+    expect { revision = described_class.call(document_import, whitehall_file_attachment) }
       .to change { FileAttachment::Revision.count }.by(1)
 
     expect(revision.metadata_revision.title).to eq(whitehall_file_attachment["title"])
@@ -19,7 +19,7 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
   end
 
   it "creates a WhitehallMigration::AssetImport for each attachment variant" do
-    revision = WhitehallImporter::CreateFileAttachmentRevision.call(document_import, whitehall_file_attachment)
+    revision = described_class.call(document_import, whitehall_file_attachment)
 
     expect(document_import.assets.size).to eq(2)
     expect(document_import.assets.map(&:attributes).map(&:with_indifferent_access))
@@ -35,7 +35,7 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
 
   shared_examples "rejected file attachment" do
     it "raises an AbortImportError with an informative error" do
-      create_revision = WhitehallImporter::CreateFileAttachmentRevision.new(document_import, whitehall_file_attachment)
+      create_revision = described_class.new(document_import, whitehall_file_attachment)
       expect { create_revision.call }.to raise_error(
         WhitehallImporter::AbortImportError,
         error_message,

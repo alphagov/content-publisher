@@ -15,7 +15,7 @@ RSpec.describe GovspeakDocument::PayloadOptions do
                              filename: "filename.png")
       edition = build(:edition, image_revisions: [image_revision])
 
-      payload_options = GovspeakDocument::PayloadOptions.new("govspeak", edition)
+      payload_options = described_class.new("govspeak", edition)
       actual_image_options = payload_options.to_h[:images].first
 
       expect(actual_image_options).to match(
@@ -42,7 +42,7 @@ RSpec.describe GovspeakDocument::PayloadOptions do
       allow(organisation_service)
         .to receive(:alternative_format_contact_email).and_return("foo@bar.com")
 
-      payload_options = GovspeakDocument::PayloadOptions.new("govspeak", edition)
+      payload_options = described_class.new("govspeak", edition)
       actual_attachment_options = payload_options.to_h[:attachments].first
 
       expect(actual_attachment_options).to match(

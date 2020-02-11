@@ -24,20 +24,20 @@ RSpec.describe FileAttachments::PreviewInteractor do
 
       it "returns the asset when it's available to download" do
         stub_asset_manager_has_an_asset(asset.asset_manager_id, "state": "uploaded")
-        result = FileAttachments::PreviewInteractor.call(params: params)
+        result = described_class.call(params: params)
         expect(result.can_preview).to be_truthy
         expect(result.api_error).to be_falsey
       end
 
       it "returns a can_preview flag when the asset is unavailable" do
         stub_asset_manager_has_an_asset(asset.asset_manager_id, "state": "unscanned")
-        result = FileAttachments::PreviewInteractor.call(params: params)
+        result = described_class.call(params: params)
         expect(result.can_preview).to be_falsey
       end
 
       it "returns an api_error flag when Asset Manager is down" do
         stub_asset_manager_isnt_available
-        result = FileAttachments::PreviewInteractor.call(params: params)
+        result = described_class.call(params: params)
         expect(result.api_error).to be_truthy
       end
     end
@@ -53,17 +53,17 @@ RSpec.describe FileAttachments::PreviewInteractor do
 
       it "uploads the asset" do
         expect(PreviewAssetService).to receive(:call)
-        FileAttachments::PreviewInteractor.call(params: params)
+        described_class.call(params: params)
       end
 
       it "returns a can_preview flag" do
-        result = FileAttachments::PreviewInteractor.call(params: params)
+        result = described_class.call(params: params)
         expect(result.can_preview).to be_falsey
       end
 
       it "returns an api_error flag when Asset Manager is down" do
         allow(PreviewAssetService).to receive(:call).and_raise(GdsApi::BaseError)
-        result = FileAttachments::PreviewInteractor.call(params: params)
+        result = described_class.call(params: params)
         expect(result.api_error).to be_truthy
       end
     end

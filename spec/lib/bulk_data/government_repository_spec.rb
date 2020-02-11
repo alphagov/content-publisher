@@ -1,7 +1,7 @@
 RSpec.describe BulkData::GovernmentRepository do
   include ActiveJob::TestHelper
 
-  let(:repository) { BulkData::GovernmentRepository.new }
+  let(:repository) { described_class.new }
   let(:cache_key) { BulkData::GovernmentRepository::CACHE_KEY }
 
   describe "#find" do

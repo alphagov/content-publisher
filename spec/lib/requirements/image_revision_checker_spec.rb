@@ -1,7 +1,7 @@
 RSpec.describe Requirements::ImageRevisionChecker do
   describe "#pre_update_issues" do
     let(:image_revision) { build :image_revision }
-    let(:checker) { Requirements::ImageRevisionChecker.new(image_revision) }
+    let(:checker) { described_class.new(image_revision) }
 
     it "returns no issues if there are none" do
       issues = checker.pre_update_issues(alt_text: "something")
@@ -60,7 +60,7 @@ RSpec.describe Requirements::ImageRevisionChecker do
       params = { alt_text: "alt", caption: "caption", credit: "credit" }
       image_revision = build :image_revision, params
 
-      checker = Requirements::ImageRevisionChecker.new(image_revision)
+      checker = described_class.new(image_revision)
       expect(checker).to receive(:pre_update_issues).with(params)
       checker.pre_preview_issues
     end

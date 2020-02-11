@@ -23,7 +23,7 @@ RSpec.describe WhitehallImporter::Sync do
       expect(WhitehallImporter::ClearLinksetLinks).to receive(:call)
                                                   .with(whitehall_document.content_id)
 
-      WhitehallImporter::Sync.call(whitehall_migration_document_import)
+      described_class.call(whitehall_migration_document_import)
     end
 
     it "marks the document as migrated in Whitehall" do
@@ -31,24 +31,24 @@ RSpec.describe WhitehallImporter::Sync do
         whitehall_migration_document_import.whitehall_document_id,
       )
 
-      WhitehallImporter::Sync.call(whitehall_migration_document_import)
+      described_class.call(whitehall_migration_document_import)
       expect(request).to have_been_requested
     end
 
     it "redirects or deletes the corresponding Whitehall assets" do
       expect(WhitehallImporter::MigrateAssets).to receive(:call)
                                               .with(whitehall_migration_document_import)
-      WhitehallImporter::Sync.call(whitehall_migration_document_import)
+      described_class.call(whitehall_migration_document_import)
     end
 
     it "returns a completed WhitehallMigration::DocumentImport" do
-      WhitehallImporter::Sync.call(whitehall_migration_document_import)
+      described_class.call(whitehall_migration_document_import)
       expect(whitehall_migration_document_import).to be_completed
     end
 
     it "raises if the WhitehallMigration::DocumentImport doesn't have a state of imported" do
       whitehall_migration_document_import = build(:whitehall_migration_document_import)
-      expect { WhitehallImporter::Sync.call(whitehall_migration_document_import) }
+      expect { described_class.call(whitehall_migration_document_import) }
         .to raise_error(RuntimeError, "Cannot sync with a state of pending")
     end
   end

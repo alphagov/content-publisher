@@ -7,7 +7,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       expect(asset).not_to receive(:update!)
       asset_manager_call = stub_any_asset_manager_call
-      WhitehallImporter::MigrateAssets.call(whitehall_import)
+      described_class.call(whitehall_import)
       expect(asset_manager_call).not_to have_been_requested
     end
 
@@ -15,7 +15,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       asset = build(:whitehall_migration_asset_import)
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       allow(asset).to receive(:whitehall_asset_id).and_raise("Some error")
-      expect { WhitehallImporter::MigrateAssets.call(whitehall_import) }
+      expect { described_class.call(whitehall_import) }
         .to raise_error "Failed migrating at least one Whitehall asset"
       expect(asset.state).to eq("migration_failed")
       expect(asset.error_message).to include("Some error")
@@ -27,7 +27,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       allow(bad_asset).to receive(:whitehall_asset_id).and_raise
       whitehall_import = build(:whitehall_migration_document_import, assets: [bad_asset, asset])
 
-      expect { WhitehallImporter::MigrateAssets.call(whitehall_import) }
+      expect { described_class.call(whitehall_import) }
         .to raise_error "Failed migrating at least one Whitehall asset"
       expect(bad_asset.state).to eq("migration_failed")
       expect(asset.state).not_to eq("migration_failed")
@@ -39,7 +39,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       delete_asset_request = stub_asset_manager_delete_asset(asset.whitehall_asset_id)
 
-      WhitehallImporter::MigrateAssets.call(whitehall_import)
+      described_class.call(whitehall_import)
       expect(delete_asset_request).to have_been_requested
       expect(asset.state).to eq("removed")
     end
@@ -52,7 +52,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       delete_asset_request = stub_asset_manager_delete_asset(asset.whitehall_asset_id)
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
 
-      WhitehallImporter::MigrateAssets.call(whitehall_import)
+      described_class.call(whitehall_import)
       expect(delete_asset_request).to have_been_requested
       expect(asset.state).to eq("removed")
     end
@@ -65,7 +65,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
         redirect_url: asset.file_attachment_revision.asset_url,
       )
 
-      WhitehallImporter::MigrateAssets.call(whitehall_import)
+      described_class.call(whitehall_import)
       expect(redirect_request).to have_been_requested
       expect(asset.state).to eq("redirected")
     end
@@ -77,7 +77,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       delete_request = stub_asset_manager_delete_asset(asset.whitehall_asset_id)
 
-      WhitehallImporter::MigrateAssets.call(whitehall_import)
+      described_class.call(whitehall_import)
       expect(delete_request).to have_been_requested
       expect(asset.state).to eq("removed")
     end
@@ -90,7 +90,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
         redirect_url: asset.image_revision.asset_url("960"),
       )
 
-      WhitehallImporter::MigrateAssets.call(whitehall_import)
+      described_class.call(whitehall_import)
       expect(redirect_request).to have_been_requested
       expect(asset.state).to eq("redirected")
     end
@@ -103,7 +103,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
         redirect_url: asset.image_revision.asset_url("300"),
       )
 
-      WhitehallImporter::MigrateAssets.call(whitehall_import)
+      described_class.call(whitehall_import)
       expect(redirect_request).to have_been_requested
       expect(asset.state).to eq("redirected")
     end
@@ -113,7 +113,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       delete_request = stub_asset_manager_delete_asset(asset.whitehall_asset_id)
 
-      WhitehallImporter::MigrateAssets.call(whitehall_import)
+      described_class.call(whitehall_import)
       expect(delete_request).to have_been_requested
       expect(asset.state).to eq("removed")
     end

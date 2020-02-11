@@ -3,20 +3,20 @@ RSpec.describe Edition do
     it "finds an edition by id" do
       edition = create(:edition)
 
-      expect(Edition.find_current(id: edition.id)).to eq(edition)
+      expect(described_class.find_current(id: edition.id)).to eq(edition)
     end
 
     it "finds an edition by a document param" do
       edition = create(:edition)
       param = "#{edition.content_id}:#{edition.locale}"
 
-      expect(Edition.find_current(document: param)).to eq(edition)
+      expect(described_class.find_current(document: param)).to eq(edition)
     end
 
     it "only finds a current edition" do
       edition = create(:edition, current: false)
 
-      expect { Edition.find_current(id: edition.id) }
+      expect { described_class.find_current(id: edition.id) }
         .to raise_error(ActiveRecord::RecordNotFound)
     end
   end
@@ -28,12 +28,12 @@ RSpec.describe Edition do
     let!(:system_not_political) { create(:edition, system_political: false) }
 
     it "defaults to scoping to only political editions" do
-      expect(Edition.political)
+      expect(described_class.political)
         .to contain_exactly(editor_political, system_political)
     end
 
     it "can be passed false to scope to non political editions" do
-      expect(Edition.political(false))
+      expect(described_class.political(false))
         .to contain_exactly(editor_not_political, system_not_political)
     end
   end
@@ -47,12 +47,12 @@ RSpec.describe Edition do
     let!(:not_political) { create(:edition, :not_political) }
 
     it "defaults to scoping to only history mode editions" do
-      expect(Edition.history_mode)
+      expect(described_class.history_mode)
         .to contain_exactly(political_past_government)
     end
 
     it "can be passed false to scope to non history mode editions" do
-      expect(Edition.history_mode(false))
+      expect(described_class.history_mode(false))
         .to contain_exactly(political_current_government, political_no_government, not_political)
     end
   end

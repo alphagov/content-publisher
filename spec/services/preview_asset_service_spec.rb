@@ -31,7 +31,7 @@ RSpec.describe PreviewAssetService do
         expect(asset).to receive(:update!)
           .with a_hash_including(state: :draft, file_url: file_url)
 
-        PreviewAssetService.call(edition, asset)
+        described_class.call(edition, asset)
         expect(request).to have_been_requested.at_least_once
       end
 
@@ -44,7 +44,7 @@ RSpec.describe PreviewAssetService do
           expect(req.body).to include("foo")
         end
 
-        PreviewAssetService.call(edition, asset)
+        described_class.call(edition, asset)
         expect(request).to have_been_requested
       end
     end
@@ -61,7 +61,7 @@ RSpec.describe PreviewAssetService do
 
       it "updates the asset" do
         request = stub_asset_manager_update_asset("id")
-        PreviewAssetService.call(edition, asset)
+        described_class.call(edition, asset)
         expect(request).to have_been_requested
       end
 
@@ -72,7 +72,7 @@ RSpec.describe PreviewAssetService do
           expect(req.body).to include("foo")
         end
 
-        PreviewAssetService.call(edition, asset)
+        described_class.call(edition, asset)
         expect(request).to have_been_requested
       end
     end
@@ -82,7 +82,7 @@ RSpec.describe PreviewAssetService do
         request = stub_asset_manager_update_asset("id")
         allow(asset).to receive(:draft?).and_return(false)
         allow(asset).to receive(:absent?).and_return(false)
-        PreviewAssetService.call(edition, asset)
+        described_class.call(edition, asset)
         expect(request).not_to have_been_requested
       end
     end

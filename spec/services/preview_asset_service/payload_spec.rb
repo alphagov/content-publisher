@@ -10,7 +10,7 @@ RSpec.describe PreviewAssetService::Payload do
   describe "#for_update" do
     it "returns a payload hash" do
       edition = build :edition
-      payload = PreviewAssetService::Payload.new(edition).for_update
+      payload = described_class.new(edition).for_update
 
       expect(payload).to match(
         draft: true,
@@ -22,7 +22,7 @@ RSpec.describe PreviewAssetService::Payload do
       it "returns a payload with the permitted org ids" do
         edition = build :edition, :access_limited
         allow(edition).to receive(:access_limit_organisation_ids).and_return("ids")
-        payload = PreviewAssetService::Payload.new(edition).for_update
+        payload = described_class.new(edition).for_update
         expect(payload[:access_limited_organisation_ids]).to eq "ids"
       end
     end
@@ -33,7 +33,7 @@ RSpec.describe PreviewAssetService::Payload do
 
     it "returns a payload hash" do
       edition = build :edition
-      payload = PreviewAssetService::Payload.new(edition).for_upload(asset)
+      payload = described_class.new(edition).for_upload(asset)
 
       expect(payload).to match(
         draft: true,
@@ -46,7 +46,7 @@ RSpec.describe PreviewAssetService::Payload do
       it "returns a payload with the permitted org ids" do
         edition = build :edition, :access_limited
         allow(edition).to receive(:access_limit_organisation_ids).and_return("ids")
-        payload = PreviewAssetService::Payload.new(edition).for_upload(asset)
+        payload = described_class.new(edition).for_upload(asset)
         expect(payload[:access_limited_organisation_ids]).to eq "ids"
       end
     end

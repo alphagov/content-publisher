@@ -11,12 +11,12 @@ RSpec.describe Versioning::ImageRevisionUpdater do
     end
 
     it "raises an error for unexpected attributes" do
-      updater = Versioning::ImageRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
       expect { updater.assign(foo: "bar") }.to raise_error ActiveModel::UnknownAttributeError
     end
 
     it "creates a new revision when a value changes" do
-      updater = Versioning::ImageRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
       updater.assign(alt_text: "new alt text")
 
       next_revision = updater.next_revision
@@ -25,7 +25,7 @@ RSpec.describe Versioning::ImageRevisionUpdater do
     end
 
     it "updates and reports changes to the fields" do
-      updater = Versioning::ImageRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
 
       new_fields = {
         alt_text: "new alt text",
@@ -45,7 +45,7 @@ RSpec.describe Versioning::ImageRevisionUpdater do
     end
 
     it "preserves the current revision if no change" do
-      updater = Versioning::ImageRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
 
       old_fields = {
         alt_text: revision.alt_text,
@@ -59,7 +59,7 @@ RSpec.describe Versioning::ImageRevisionUpdater do
     end
 
     it "preserves existing values when others change" do
-      updater = Versioning::ImageRevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
 
       old_fields = {
         alt_text: revision.alt_text,

@@ -5,14 +5,14 @@ RSpec.describe PreviewAuthBypass do
 
   describe "#auth_bypass_id" do
     it "returns a hash of the content_id" do
-      service = PreviewAuthBypass.new(document)
+      service = described_class.new(document)
       expect(service.auth_bypass_id).to eq "34323335-3863-4766-b866-636631376231"
     end
   end
 
   describe "#preview_token" do
     it "returns a hash of the auth_bypass_id" do
-      service = PreviewAuthBypass.new(document)
+      service = described_class.new(document)
       expect(service.preview_token).to eq "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNDMyMzMzNS0zODYzLTQ3NjYtYjg2Ni02MzY2MzEzNzYyMzEifQ.cPR22fZ8l584nEi-q2WHUDFxtqWDSg3BOoCVjcDALdw"
     end
   end
