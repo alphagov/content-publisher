@@ -20,7 +20,8 @@ RSpec.describe PreviewDraftEditionService::Payload do
 
     it "specifies an auth bypass ID for anonymous previews" do
       edition = build(:edition)
-      allow_any_instance_of(PreviewAuthBypass).to receive(:auth_bypass_id).and_return("id")
+      preview_auth_bypass = instance_double(PreviewAuthBypass, auth_bypass_id: "id")
+      allow(PreviewAuthBypass).to receive(:new).and_return(preview_auth_bypass)
       payload = PreviewDraftEditionService::Payload.new(edition).payload
       expect(payload[:auth_bypass_ids]).to eq(%w[id])
     end
@@ -85,8 +86,11 @@ RSpec.describe PreviewDraftEditionService::Payload do
     end
 
     it "delegates to document type fields for contents" do
-      document_type = build(:document_type, :with_body)
-      edition = build(:edition, document_type: document_type, contents: { body: "body" })
+      body_field = instance_double(DocumentType::BodyField,
+                                   payload: { details: { body: "body" } })
+
+      document_type = build(:document_type, contents: [body_field])
+      edition = build(:edition, document_type: document_type)
       payload = PreviewDraftEditionService::Payload.new(edition).payload
       expect(payload[:details][:body]).to eq("body")
     end

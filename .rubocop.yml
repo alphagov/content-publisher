@@ -65,7 +65,3 @@ RSpec/MessageSpies:
 
 RSpec/NestedGroups:
   Enabled: false
-
-# TODO: switch on
-RSpec/AnyInstance:
-  Enabled: false

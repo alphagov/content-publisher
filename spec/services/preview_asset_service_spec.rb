@@ -20,8 +20,9 @@ RSpec.describe PreviewAssetService do
         allow(asset).to receive(:absent?).and_return(true)
         file = PreviewAssetService::UploadedFile.new(asset)
 
-        allow_any_instance_of(PreviewAssetService::Payload)
-          .to receive(:for_upload) { { file: file, foo: "bar" } }
+        payload = instance_double(PreviewAssetService::Payload)
+        allow(payload).to receive(:for_upload).and_return(file: file, foo: "bar")
+        allow(PreviewAssetService::Payload).to receive(:new).and_return(payload)
       end
 
       it "uploads and updates the asset" do
@@ -53,8 +54,9 @@ RSpec.describe PreviewAssetService do
         allow(asset).to receive(:draft?).and_return(true)
         allow(asset).to receive(:absent?).and_return(false)
 
-        allow_any_instance_of(PreviewAssetService::Payload)
-          .to receive(:for_update).and_return(foo: "bar")
+        payload = instance_double(PreviewAssetService::Payload)
+        allow(payload).to receive(:for_update).and_return(foo: "bar")
+        allow(PreviewAssetService::Payload).to receive(:new).and_return(payload)
       end
 
       it "updates the asset" do

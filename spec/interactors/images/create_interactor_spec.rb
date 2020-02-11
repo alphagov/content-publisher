@@ -72,16 +72,13 @@ RSpec.describe Images::CreateInteractor do
 
     context "when the uploaded image has issues" do
       it "fails with issues returned" do
-        issues = Requirements::CheckerIssues.new
-        issues.create(:image, :examle)
-
-        allow_any_instance_of(Requirements::ImageUploadChecker)
-          .to receive(:issues).and_return(issues)
-
+        checker = instance_double(Requirements::ImageUploadChecker)
+        allow(checker).to receive(:issues).and_return(%w(issue))
+        allow(Requirements::ImageUploadChecker).to receive(:new).and_return(checker)
         result = Images::CreateInteractor.call(**args)
 
         expect(result).to be_failure
-        expect(result.issues).to eq(issues)
+        expect(result.issues).to eq %w(issue)
       end
     end
 
