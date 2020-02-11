@@ -59,3 +59,5 @@ en:
           withdrawn: "Withdrawn"
       entry_content:
         backdated: "First published date backdated to %{date}"
+        alternative_url: "Alternative URL"
+        redirected_to: "Redirected to"

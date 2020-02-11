@@ -1,6 +1,6 @@
 # Removing or removing and redirecting a document
 
-We need to allow users to unpublish content from GOV.UK. Currently, a user can't
+We need to allow users to remove content from GOV.UK. Currently, a user can't
 remove a document from the UI so a developer needs to run a rake task to
 achieve this.
 
@@ -12,6 +12,12 @@ Removed and redirected content redirects users to another page on GOV.UK
 
 Environment variables are being used to pass parameters to the rake tasks.
 
+When calling these tasks the USER_EMAIL variable should be passed in with your
+email address, for example:
+`rake remove:gone['a-content-id'] USER_EMAIL=me@example.com`. This is so
+the change can be associated with you, the developer that performed the task,
+and attributed correctly in the document history.
+
 ## Removing documents
 
 Required parameters:
@@ -22,10 +28,11 @@ Optional parameters:
 
 - LOCALE (set to "en" by default)
 - NOTE
-- NEW_PATH
+- URL
+- USER_EMAIL
 
 ```
-rake unpublish:remove['a-content-id']
+rake remove:gone['a-content-id']
 ```
 
 ## Redirect removed documents to another page on GOV.UK
@@ -33,13 +40,14 @@ rake unpublish:remove['a-content-id']
 Required parameters:
 
 - content_id
-- NEW_PATH
+- URL
 
 Optional parameters:
 
 - LOCALE (set to "en" by default)
 - NOTE
+- USER_EMAIL
 
 ```
-rake unpublish:remove_and_redirect['a-content-id'] NEW_PATH='/redirect-to-here'
+rake remove:redirect['a-content-id'] URL='/redirect-to-here'
 ```

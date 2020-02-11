@@ -31,17 +31,25 @@ RSpec.describe RemoveDocumentService do
       removal = build(:removal)
 
       expect { RemoveDocumentService.call(edition, removal) }
-        .to change { edition.reload.state }
+        .to change { edition.state }
         .to("removed")
 
       expect(edition.status.details).to eq(removal)
+    end
+
+    it "can assign a user to the status" do
+      removal = build(:removal)
+      user = build(:user)
+
+      RemoveDocumentService.call(edition, removal, user: user)
+      expect(edition.status.created_by).to eq(user)
     end
 
     context "when the removal is a redirect" do
       it "unpublishes in the Publishing API with a type of redirect" do
         removal = build(:removal,
                         redirect: true,
-                        alternative_path: "/path",
+                        alternative_url: "/path",
                         explanatory_note: "explanation")
 
         request = stub_publishing_api_unpublish(
@@ -62,7 +70,7 @@ RSpec.describe RemoveDocumentService do
       it "unpublishes in the Publishing API with a type of gone" do
         removal = build(:removal,
                         redirect: false,
-                        alternative_path: "/path",
+                        alternative_url: "/path",
                         explanatory_note: "explanation")
 
         request = stub_publishing_api_unpublish(

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class RemoveDocumentService < ApplicationService
-  def initialize(edition, removal)
+  def initialize(edition, removal, user: nil)
     @edition = edition
     @removal = removal
+    @user = user
   end
 
   def call
@@ -20,20 +21,23 @@ class RemoveDocumentService < ApplicationService
 
 private
 
-  attr_reader :edition, :removal
+  attr_reader :edition, :removal, :user
 
   def unpublish_edition
     GdsApi.publishing_api.unpublish(
       edition.content_id,
       type: removal.redirect? ? "redirect" : "gone",
       explanation: removal.explanatory_note,
-      alternative_path: removal.alternative_path,
+      alternative_path: removal.alternative_url,
       locale: edition.locale,
     )
   end
 
   def update_edition_status
-    AssignEditionStatusService.call(edition, state: :removed, status_details: removal)
+    AssignEditionStatusService.call(edition,
+                                    state: :removed,
+                                    status_details: removal,
+                                    user: user)
     edition.save!
   end
 
@@ -46,13 +50,11 @@ private
   end
 
   def check_removeable
-    document = edition.document
-
-    if edition != document.live_edition
+    unless edition.live?
       raise "attempted to remove an edition other than the live edition"
     end
 
-    if document.current_edition != document.live_edition
+    unless edition.current?
       raise "Publishing API does not support unpublishing while there is a draft"
     end
   end
