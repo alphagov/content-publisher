@@ -1,6 +1,7 @@
 RSpec.describe Content::UpdateInteractor do
   describe ".call" do
     before { stub_any_publishing_api_put_content }
+
     let(:edition) { create(:edition, number: 2) }
     let(:user) { build(:user) }
 

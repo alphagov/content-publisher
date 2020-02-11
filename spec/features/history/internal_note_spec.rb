@@ -33,6 +33,6 @@ RSpec.feature "Creating a internal note" do
   end
 
   def then_no_internal_note_is_created
-    expect(@edition.timeline_entries.last.details.body).to_not eq("")
+    expect(@edition.timeline_entries.last.details.body).not_to eq("")
   end
 end

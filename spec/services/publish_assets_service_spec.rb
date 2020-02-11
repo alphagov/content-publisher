@@ -33,7 +33,7 @@ RSpec.describe PublishAssetsService do
 
       request = stub_any_asset_manager_call
       PublishAssetsService.call(edition, superseded_edition: live_edition)
-      expect(request).to_not have_been_requested
+      expect(request).not_to have_been_requested
     end
 
     it "raises an error if an asset is marked as absent" do

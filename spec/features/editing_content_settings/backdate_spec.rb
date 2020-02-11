@@ -48,7 +48,7 @@ RSpec.feature "Backdate content" do
 
   def then_i_see_the_content_has_been_backdated
     expect(page).to have_content("1 January 2019")
-    expect(page).to_not have_content(I18n.t!("documents.show.content_settings.backdate.no_backdate"))
+    expect(page).not_to have_content(I18n.t!("documents.show.content_settings.backdate.no_backdate"))
   end
 
   def and_i_see_the_backdate_timeline_entry

@@ -44,7 +44,7 @@ RSpec.configure do |config|
     DocumentType.clear
   end
 
-  config.before :each do
+  config.before do
     Sidekiq::Worker.clear_all
     ActionMailer::Base.deliveries.clear
     BulkData::Cache.clear

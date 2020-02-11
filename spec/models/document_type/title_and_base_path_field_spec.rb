@@ -16,7 +16,7 @@ RSpec.describe DocumentType::TitleAndBasePathField do
     it "returns a hash of the stripped title and base_path" do
       edition = build :edition
       params = ActionController::Parameters.new(title: "  a title")
-      allow(GenerateBasePathService).to receive(:call).with(edition, title: "a title") { "base path" }
+      allow(GenerateBasePathService).to receive(:call).with(edition, title: "a title").and_return("base path")
       updater_params = DocumentType::TitleAndBasePathField.new.updater_params(edition, params)
       expect(updater_params).to eq(title: "a title", base_path: "base path")
     end

@@ -126,14 +126,14 @@ RSpec.describe Edition do
   end
 
   describe "#public_first_published_at" do
-    it "it returns backdate when that is set" do
+    it "returns backdate when that is set" do
       freeze_time do
         edition = build(:edition, backdated_to: 1.year.ago, first_published_at: 1.week.ago)
         expect(edition.public_first_published_at).to eq(1.year.ago)
       end
     end
 
-    it "it returns first published date when backdate isn't set" do
+    it "returns first published date when backdate isn't set" do
       freeze_time do
         edition = build(:edition, backdated_to: nil, first_published_at: 1.week.ago)
         expect(edition.public_first_published_at).to eq(1.week.ago)

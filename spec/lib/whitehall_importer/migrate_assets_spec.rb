@@ -2,49 +2,49 @@ RSpec.describe WhitehallImporter::MigrateAssets do
   describe ".call" do
     before { stub_any_asset_manager_call }
 
-    it "should skip migrating any assets that have already been processed" do
+    it "skips migrating any assets that have already been processed" do
       asset = build(:whitehall_migration_asset_import, state: "removed")
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       expect(asset).not_to receive(:update!)
       asset_manager_call = stub_any_asset_manager_call
-      described_class.call(whitehall_import)
-      expect(asset_manager_call).to_not have_been_requested
+      WhitehallImporter::MigrateAssets.call(whitehall_import)
+      expect(asset_manager_call).not_to have_been_requested
     end
 
-    it "should log individual errors and put asset into a migration failed state" do
+    it "logs individual errors and put asset into a migration failed state" do
       asset = build(:whitehall_migration_asset_import)
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       allow(asset).to receive(:whitehall_asset_id).and_raise("Some error")
-      expect { described_class.call(whitehall_import) }
+      expect { WhitehallImporter::MigrateAssets.call(whitehall_import) }
         .to raise_error "Failed migrating at least one Whitehall asset"
       expect(asset.state).to eq("migration_failed")
       expect(asset.error_message).to include("Some error")
     end
 
-    it "should attempt to migrate all assets and raise error only at the end" do
+    it "attempts to migrate all assets and raise error only at the end" do
       asset = build(:whitehall_migration_asset_import)
       bad_asset = build(:whitehall_migration_asset_import)
       allow(bad_asset).to receive(:whitehall_asset_id).and_raise
       whitehall_import = build(:whitehall_migration_document_import, assets: [bad_asset, asset])
 
-      expect { described_class.call(whitehall_import) }
+      expect { WhitehallImporter::MigrateAssets.call(whitehall_import) }
         .to raise_error "Failed migrating at least one Whitehall asset"
       expect(bad_asset.state).to eq("migration_failed")
       expect(asset.state).not_to eq("migration_failed")
     end
 
-    it "should delete draft assets" do
+    it "deletes draft assets" do
       image_revision = build(:image_revision, :on_asset_manager, state: :draft)
       asset = create(:whitehall_migration_asset_import, image_revision: image_revision)
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       delete_asset_request = stub_asset_manager_delete_asset(asset.whitehall_asset_id)
 
-      described_class.call(whitehall_import)
+      WhitehallImporter::MigrateAssets.call(whitehall_import)
       expect(delete_asset_request).to have_been_requested
       expect(asset.state).to eq("removed")
     end
 
-    it "should delete draft asset variants" do
+    it "deletes draft asset variants" do
       image_revision = build(:image_revision, :on_asset_manager, state: :draft)
       asset = create(:whitehall_migration_asset_import,
                      image_revision: image_revision,
@@ -52,12 +52,12 @@ RSpec.describe WhitehallImporter::MigrateAssets do
       delete_asset_request = stub_asset_manager_delete_asset(asset.whitehall_asset_id)
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
 
-      described_class.call(whitehall_import)
+      WhitehallImporter::MigrateAssets.call(whitehall_import)
       expect(delete_asset_request).to have_been_requested
       expect(asset.state).to eq("removed")
     end
 
-    it "should redirect live attachments to their content publisher equivalents" do
+    it "redirects live attachments to their content publisher equivalents" do
       asset = build(:whitehall_migration_asset_import, :for_file_attachment)
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       redirect_request = stub_asset_manager_update_asset(
@@ -65,24 +65,24 @@ RSpec.describe WhitehallImporter::MigrateAssets do
         redirect_url: asset.file_attachment_revision.asset_url,
       )
 
-      described_class.call(whitehall_import)
+      WhitehallImporter::MigrateAssets.call(whitehall_import)
       expect(redirect_request).to have_been_requested
       expect(asset.state).to eq("redirected")
     end
 
-    it "should delete attachment variants even if they are live" do
+    it "deletes attachment variants even if they are live" do
       asset = create(:whitehall_migration_asset_import,
                      :for_file_attachment,
                      variant: "thumbnail")
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       delete_request = stub_asset_manager_delete_asset(asset.whitehall_asset_id)
 
-      described_class.call(whitehall_import)
+      WhitehallImporter::MigrateAssets.call(whitehall_import)
       expect(delete_request).to have_been_requested
       expect(asset.state).to eq("removed")
     end
 
-    it "should redirect live images to their content publisher equivalents" do
+    it "redirects live images to their content publisher equivalents" do
       asset = build(:whitehall_migration_asset_import, :for_image)
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       redirect_request = stub_asset_manager_update_asset(
@@ -90,12 +90,12 @@ RSpec.describe WhitehallImporter::MigrateAssets do
         redirect_url: asset.image_revision.asset_url("960"),
       )
 
-      described_class.call(whitehall_import)
+      WhitehallImporter::MigrateAssets.call(whitehall_import)
       expect(redirect_request).to have_been_requested
       expect(asset.state).to eq("redirected")
     end
 
-    it "should redirect live image variants to their content publisher equivalents" do
+    it "redirects live image variants to their content publisher equivalents" do
       asset = build(:whitehall_migration_asset_import, :for_image, variant: "s300")
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       redirect_request = stub_asset_manager_update_asset(
@@ -103,17 +103,17 @@ RSpec.describe WhitehallImporter::MigrateAssets do
         redirect_url: asset.image_revision.asset_url("300"),
       )
 
-      described_class.call(whitehall_import)
+      WhitehallImporter::MigrateAssets.call(whitehall_import)
       expect(redirect_request).to have_been_requested
       expect(asset.state).to eq("redirected")
     end
 
-    it "should delete live image variants that have no content publisher equivalent" do
+    it "deletes live image variants that have no content publisher equivalent" do
       asset = build(:whitehall_migration_asset_import, :for_image, variant: "s216")
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       delete_request = stub_asset_manager_delete_asset(asset.whitehall_asset_id)
 
-      described_class.call(whitehall_import)
+      WhitehallImporter::MigrateAssets.call(whitehall_import)
       expect(delete_request).to have_been_requested
       expect(asset.state).to eq("removed")
     end

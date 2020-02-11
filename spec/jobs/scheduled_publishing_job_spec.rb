@@ -19,7 +19,7 @@ RSpec.describe ScheduledPublishingJob do
 
   it "creates a timeline entry" do
     expect { ScheduledPublishingJob.perform_now(scheduled_edition.id) }
-      .to change { TimelineEntry.count }
+      .to change(TimelineEntry, :count)
       .by(1)
   end
 

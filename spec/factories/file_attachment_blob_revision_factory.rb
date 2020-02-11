@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :file_attachment_blob_revision, class: FileAttachment::BlobRevision do
+  factory :file_attachment_blob_revision, class: "FileAttachment::BlobRevision" do
     association :created_by, factory: :user
 
     filename { SecureRandom.hex(8) }

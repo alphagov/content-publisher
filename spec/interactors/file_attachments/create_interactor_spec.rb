@@ -1,6 +1,7 @@
 RSpec.describe FileAttachments::CreateInteractor do
   describe ".call" do
     before { allow(FailsafeDraftPreviewService).to receive(:call) }
+
     let(:user) { create(:user) }
     let(:edition) { create(:edition) }
     let(:file) { fixture_file_upload("files/13kb-1-page-attachment.pdf") }
@@ -59,7 +60,7 @@ RSpec.describe FileAttachments::CreateInteractor do
 
       it "creates a timeline entry" do
         expect { FileAttachments::CreateInteractor.call(**args) }
-          .to change { TimelineEntry.count }.by(1)
+          .to change(TimelineEntry, :count).by(1)
       end
 
       it "updates the preview" do

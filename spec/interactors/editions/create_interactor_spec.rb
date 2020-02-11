@@ -77,7 +77,7 @@ RSpec.describe Editions::CreateInteractor do
           .call(params: params, user: user)
           .next_edition
 
-        expect(next_edition).to_not eq edition.reload
+        expect(next_edition).not_to eq edition.reload
         expect(next_edition.number).to eq 3
         expect(next_edition.created_by).to eq user
       end

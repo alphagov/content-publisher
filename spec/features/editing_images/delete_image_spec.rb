@@ -44,7 +44,7 @@ RSpec.feature "Delete an image" do
 
   def then_i_see_the_image_is_gone
     expect(page).to have_content(I18n.t!("images.index.flashes.deleted", file: @image_revision.filename))
-    expect(page).to_not have_selector("#image-#{@image_revision.image_id}")
+    expect(page).not_to have_selector("#image-#{@image_revision.image_id}")
   end
 
   def and_i_see_the_timeline_entry

@@ -18,13 +18,13 @@ RSpec.describe Requirements::AccessLimitChecker do
       let(:edition) { build(:edition, :access_limited, created_by: user) }
 
       it "returns an issue when the user is not in the orgs" do
-        allow(edition).to receive(:access_limit_organisation_ids) { %w[another-org] }
+        allow(edition).to receive(:access_limit_organisation_ids).and_return(%w[another-org])
         issues = Requirements::AccessLimitChecker.new(edition, user).pre_update_issues
         expect(issues).to have_issue(:access_limit, :not_in_orgs)
       end
 
       it "returns no issues when the user is in the orgs" do
-        allow(edition).to receive(:access_limit_organisation_ids) { %w[my-org] }
+        allow(edition).to receive(:access_limit_organisation_ids).and_return(%w[my-org])
         issues = Requirements::AccessLimitChecker.new(edition, user).pre_update_issues
         expect(issues).to be_empty
       end

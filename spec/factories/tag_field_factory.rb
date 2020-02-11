@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :tag_field, class: DocumentType::TagField do
+  factory :tag_field, class: "DocumentType::TagField" do
     skip_create
 
     id { SecureRandom.hex(4) }

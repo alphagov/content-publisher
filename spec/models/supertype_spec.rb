@@ -3,9 +3,9 @@ RSpec.describe Supertype do
     Supertype.all.each do |supertype|
       describe "Supertype #{supertype.id}" do
         it "has the required attributes for #{supertype.id}" do
-          expect(supertype.id).to_not be_blank
-          expect(I18n.t!("supertypes.#{supertype.id}.label")).to_not be_blank
-          expect(I18n.t!("supertypes.#{supertype.id}.description")).to_not be_blank
+          expect(supertype.id).not_to be_blank
+          expect(I18n.t!("supertypes.#{supertype.id}.label")).not_to be_blank
+          expect(I18n.t!("supertypes.#{supertype.id}.description")).not_to be_blank
         end
       end
     end

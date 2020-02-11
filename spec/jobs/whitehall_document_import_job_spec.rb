@@ -57,6 +57,7 @@ RSpec.describe WhitehallDocumentImportJob do
 
   context "when the import fails" do
     let(:error_message) { "import failed error" }
+
     before do
       allow(WhitehallImporter::Import).to receive(:call).and_raise(error_message)
     end
@@ -80,6 +81,7 @@ RSpec.describe WhitehallDocumentImportJob do
 
   context "when the sync fails" do
     let(:error_message) { "sync failed error" }
+
     before do
       allow(WhitehallImporter::Sync).to receive(:call).and_raise(error_message)
     end
@@ -103,6 +105,7 @@ RSpec.describe WhitehallDocumentImportJob do
 
   context "when a GdsApi::BaseError exception is raised" do
     let(:error) { GdsApi::BaseError.new }
+
     before do
       allow(WhitehallImporter::Import).to receive(:call).and_raise(error)
     end
@@ -125,6 +128,7 @@ RSpec.describe WhitehallDocumentImportJob do
 
   context "when a StandardError exception is raised" do
     let(:error) { StandardError.new }
+
     before do
       allow(WhitehallImporter::Import).to receive(:call).and_raise(error)
       stub_whitehall_unlock_document(
@@ -143,6 +147,7 @@ RSpec.describe WhitehallDocumentImportJob do
 
   context "when an AbortImportError exception is raised" do
     let(:error) { WhitehallImporter::AbortImportError.new("Aborted") }
+
     before do
       allow(WhitehallImporter::Import).to receive(:call).and_raise(error)
     end
@@ -189,6 +194,7 @@ RSpec.describe WhitehallDocumentImportJob do
 
   context "when the Whitehall unlock API call fails" do
     let(:error) { StandardError.new }
+
     before do
       allow(WhitehallImporter::Import).to receive(:call).and_raise("import error")
       stub_whitehall_unlock_document_error(

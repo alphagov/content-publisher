@@ -68,8 +68,8 @@ RSpec.describe ImageNormaliser::TempImage do
       temp_image = ImageNormaliser::TempImage.new(source_file)
       image = MiniMagick::Image.open(temp_image.file.path)
 
-      expect(image.width).to eql(960)
-      expect(image.height).to eql(640)
+      expect(image.width).to be(960)
+      expect(image.height).to be(640)
       expect(image.exif).to be_empty
     end
   end

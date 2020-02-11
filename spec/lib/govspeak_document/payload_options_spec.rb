@@ -40,7 +40,7 @@ RSpec.describe GovspeakDocument::PayloadOptions do
                        file_attachment_revisions: [file_attachment_revision])
 
       allow(organisation_service)
-        .to receive(:alternative_format_contact_email) { "foo@bar.com" }
+        .to receive(:alternative_format_contact_email).and_return("foo@bar.com")
 
       payload_options = GovspeakDocument::PayloadOptions.new("govspeak", edition)
       actual_attachment_options = payload_options.to_h[:attachments].first

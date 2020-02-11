@@ -3,6 +3,7 @@ RSpec.describe "History Mode" do
                   "managing history mode on a non editable edition",
                   routes: { history_mode_path: %i[get patch] } do
     before { login_as(create(:user, managing_editor: true)) }
+
     let(:edition) { create(:edition, :published) }
   end
 

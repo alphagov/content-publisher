@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :guidance, class: Hash do
+  factory :guidance, class: "Hash" do
     skip_create
 
     title { SecureRandom.alphanumeric(8) }

@@ -102,7 +102,7 @@ RSpec.describe PublishDraftEditionService do
 
       it "doesn't change the government on the edition" do
         expect { PublishDraftEditionService.call(edition, user, with_review: true) }
-          .not_to(change { edition.government_id })
+          .not_to(change(edition, :government_id))
       end
 
       it "doesn't update the preview of the edition" do

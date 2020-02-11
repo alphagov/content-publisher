@@ -4,7 +4,7 @@ RSpec.describe CreateDocumentService do
 
     it "creates a document" do
       expect { CreateDocumentService.call(document_type_id: document_type.id) }
-        .to change { Document.count }.by(1)
+        .to change(Document, :count).by(1)
     end
 
     it "runs inside a transaction so failures are rolled back" do

@@ -4,7 +4,7 @@ RSpec.describe DocumentType do
   let(:document_types) { YAML.load_file(Rails.root.join("config/document_types.yml")) }
 
   describe "all configured document types are valid" do
-    it "should conform to the document type schema" do
+    it "conforms to the document type schema" do
       document_type_schema = JSON.parse(File.read("config/schemas/document_type.json"))
       document_types.each do |document_type|
         validator = JSON::Validator.fully_validate(document_type_schema, document_type)
@@ -15,7 +15,7 @@ RSpec.describe DocumentType do
       end
     end
 
-    it "should have a valid document type that exists in GovukSchemas" do
+    it "has a valid document type that exists in GovukSchemas" do
       document_types.each do |document_type|
         unless document_type["managed_elsewhere"]
           expect(document_type["id"]).to be_in(GovukSchemas::DocumentTypes.valid_document_types)
@@ -25,7 +25,7 @@ RSpec.describe DocumentType do
   end
 
   describe ".all" do
-    it "should create a DocumentType for each one in the YAML" do
+    it "creates a DocumentType for each one in the YAML" do
       expect(DocumentType.all.count).to eq(document_types.count)
     end
   end

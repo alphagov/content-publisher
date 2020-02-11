@@ -40,7 +40,7 @@ RSpec.describe GovspeakDocument::InAppOptions do
                       file_attachment_revisions: [attachment_revision])
 
       allow(organisation_service)
-        .to receive(:alternative_format_contact_email) { "foo@bar.com" }
+        .to receive(:alternative_format_contact_email).and_return("foo@bar.com")
 
       in_app_options = GovspeakDocument::InAppOptions.new("govspeak", edition)
       actual_attachment_options = in_app_options.to_h[:attachments].first

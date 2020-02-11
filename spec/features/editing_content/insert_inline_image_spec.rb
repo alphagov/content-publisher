@@ -39,7 +39,7 @@ RSpec.feature "Insert inline image" do
   end
 
   def then_i_see_the_snippet_is_inserted
-    expect(page).to_not have_selector(".gem-c-modal-dialogue")
+    expect(page).not_to have_selector(".gem-c-modal-dialogue")
     snippet = I18n.t("images.index.meta.inline_code.value", filename: @image_revision.filename)
     expect(find("#body-field").value).to include snippet
   end

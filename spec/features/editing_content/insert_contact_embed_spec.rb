@@ -64,7 +64,7 @@ RSpec.feature "Insert contact embed" do
   end
 
   def then_i_see_the_snippet_is_inserted
-    expect(page).to_not have_selector(".gem-c-modal-dialogue") # wait for modal to close
+    expect(page).not_to have_selector(".gem-c-modal-dialogue") # wait for modal to close
     snippet = I18n.t!("contact_embed.new.contact_markdown", id: @contact["content_id"])
     expect(find("#body-field").value).to include snippet
   end

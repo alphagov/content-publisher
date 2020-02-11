@@ -14,7 +14,7 @@ RSpec.describe CreateFileAttachmentBlobService do
 
       it "calculates the number of pages" do
         blob_revision = CreateFileAttachmentBlobService.call(file: file, filename: "file.txt")
-        expect(blob_revision.number_of_pages).to eql(1)
+        expect(blob_revision.number_of_pages).to be(1)
       end
     end
 

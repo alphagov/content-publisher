@@ -7,7 +7,7 @@ RSpec.describe EditDraftEditionService do
       revision = build(:revision)
 
       expect { EditDraftEditionService.call(edition, user, revision: revision) }
-        .to change { edition.revision }.to(revision)
+        .to change(edition, :revision).to(revision)
     end
 
     it "does not save the edition" do
@@ -51,7 +51,7 @@ RSpec.describe EditDraftEditionService do
           .and_return(instance_double(PoliticalEditionIdentifier, political?: true))
 
         expect { EditDraftEditionService.call(edition, user) }
-          .to change { edition.system_political }
+          .to change(edition, :system_political)
           .to(true)
       end
 
@@ -77,7 +77,7 @@ RSpec.describe EditDraftEditionService do
         allow(edition).to receive(:public_first_published_at).and_return(time)
 
         expect { EditDraftEditionService.call(edition, user) }
-          .to change { edition.government_id }
+          .to change(edition, :government_id)
           .to(government.content_id)
       end
 

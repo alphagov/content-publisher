@@ -59,14 +59,14 @@ RSpec.feature "Insert inline file attachment" do
   end
 
   def then_i_see_the_attachment_snippet_is_inserted
-    expect(page).to_not have_selector(".gem-c-modal-dialogue") # wait for modal to close
+    expect(page).not_to have_selector(".gem-c-modal-dialogue") # wait for modal to close
     snippet = I18n.t("file_attachments.show.attachment_markdown",
                      filename: @file_attachment_revision.filename)
     expect(find("#body-field").value).to include snippet
   end
 
   def then_i_see_the_attachment_link_snippet_is_inserted
-    expect(page).to_not have_selector(".gem-c-modal-dialogue") # wait for modal to close
+    expect(page).not_to have_selector(".gem-c-modal-dialogue") # wait for modal to close
     snippet = I18n.t("file_attachments.show.attachment_link_markdown",
                      filename: @file_attachment_revision.filename)
     expect(find("#body-field").value).to include snippet

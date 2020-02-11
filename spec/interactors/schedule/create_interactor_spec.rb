@@ -1,6 +1,7 @@
 RSpec.describe Schedule::CreateInteractor do
   describe ".call" do
     before { stub_any_publishing_api_put_intent }
+
     let(:edition) { create(:edition, :schedulable) }
     let(:user) { build(:user) }
 

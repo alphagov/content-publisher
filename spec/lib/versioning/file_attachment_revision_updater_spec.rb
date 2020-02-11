@@ -19,7 +19,7 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
       updater.assign(title: "Another title")
 
       next_revision = updater.next_revision
-      expect(next_revision).to_not eq revision
+      expect(next_revision).not_to eq revision
       expect(next_revision.created_by).to eq user
     end
 
@@ -31,9 +31,9 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
       updater.assign(new_fields)
       next_revision = updater.next_revision
 
-      expect(updater.changed?).to be_truthy
+      expect(updater).to be_changed
       expect(updater.changes).to include(new_fields)
-      expect(updater.changed?(:title)).to be_truthy
+      expect(updater).to be_changed(:title)
       expect(next_revision.public_send(:title)).to eq "Another title"
     end
 
@@ -42,7 +42,7 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
       new_fields = { title: revision.title }
 
       updater.assign(new_fields)
-      expect(updater.changed?).to be_falsey
+      expect(updater).not_to be_changed
       expect(updater.changes).to be_empty
       expect(updater.next_revision).to eq revision
     end
@@ -58,7 +58,7 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
       updater.assign(title: "A new title")
       next_revision = updater.next_revision
 
-      expect(next_revision).to_not eq revision
+      expect(next_revision).not_to eq revision
       expect(next_revision.blob_revision.blob_id).to eq(old_fields[:blob_id])
       expect(next_revision.number_of_pages).to eq(old_fields[:number_of_pages])
     end
@@ -69,7 +69,7 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
       updater.assign(blob_revision: blob_revision)
 
       expect(updater.next_revision.blob_revision).to eq(blob_revision)
-      expect(updater.next_revision).to_not eq(revision)
+      expect(updater.next_revision).not_to eq(revision)
       expect(updater.changes).to match(a_hash_including(blob_revision: blob_revision))
     end
   end

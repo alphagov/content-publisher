@@ -20,14 +20,14 @@ RSpec.describe PreviewDraftEditionService::Payload do
 
     it "specifies an auth bypass ID for anonymous previews" do
       edition = build(:edition)
-      allow_any_instance_of(PreviewAuthBypass).to receive(:auth_bypass_id) { "id" }
+      allow_any_instance_of(PreviewAuthBypass).to receive(:auth_bypass_id).and_return("id")
       payload = PreviewDraftEditionService::Payload.new(edition).payload
       expect(payload[:auth_bypass_ids]).to eq(%w[id])
     end
 
     it "specifies organisations when the edition is access limited" do
       edition = build(:edition, :access_limited)
-      allow(edition).to receive(:access_limit_organisation_ids) { %w[org-id] }
+      allow(edition).to receive(:access_limit_organisation_ids).and_return(%w[org-id])
       payload = PreviewDraftEditionService::Payload.new(edition).payload
       expect(payload[:access_limited][:organisations]).to eq %w[org-id]
     end

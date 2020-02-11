@@ -19,6 +19,7 @@ RSpec.describe "Documents" do
     context "when the user has an organisation" do
       let(:organisation_content_id) { SecureRandom.uuid }
       let(:user) { create(:user, organisation_content_id: organisation_content_id) }
+
       before { login_as(user) }
 
       it "redirects to filter by the users organisation" do
@@ -31,6 +32,7 @@ RSpec.describe "Documents" do
 
     context "when the user doesn't have an organisation" do
       let(:user) { create(:user, organisation_content_id: nil) }
+
       before { login_as(user) }
 
       it "returns successfully" do

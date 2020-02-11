@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :whitehall_export_image, class: Hash do
+  factory :whitehall_export_image, class: "Hash" do
     skip_create
 
     sequence(:id)

@@ -86,6 +86,7 @@ RSpec.describe "File Attachments" do
 
   describe "POST /documents/:document/file-attachments" do
     let(:edition) { create(:edition) }
+
     before { stub_publishing_api_put_content(edition.content_id, {}) }
 
     it "redirects to edit view when file attachment is created successfully" do
@@ -113,6 +114,7 @@ RSpec.describe "File Attachments" do
 
   describe "DELETE /documents/:document/file-attachments/:file_attachment_id" do
     before { stub_publishing_api_put_content(edition.content_id, {}) }
+
     let(:file_attachment_revision) { create(:file_attachment_revision) }
     let(:edition) do
       create(:edition, file_attachment_revisions: [file_attachment_revision])

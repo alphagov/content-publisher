@@ -36,8 +36,8 @@ RSpec.feature "Edit topics" do
     expect(page).to have_content("Level One Topic")
     expect(page).to have_content("Level Two Topic")
     expect(page).to have_content("Level Three Topic")
-    expect(find("#topic-level_one_topic")).to_not be_checked
-    expect(find("#topic-level_two_topic")).to_not be_checked
+    expect(find("#topic-level_one_topic")).not_to be_checked
+    expect(find("#topic-level_two_topic")).not_to be_checked
     expect(find("#topic-level_three_topic")).to be_checked
   end
 

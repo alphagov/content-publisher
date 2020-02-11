@@ -1,6 +1,7 @@
 RSpec.describe "Notify tasks" do
   describe "notify:send_email" do
     let(:email_address) { "x@y.com" }
+
     before { Rake::Task["notify:send_email"].reenable }
 
     it "sends an email notification via GOV.UK Notify" do

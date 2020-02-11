@@ -1,3 +1,5 @@
+require: rubocop-rspec
+
 inherit_gem:
   rubocop-govuk:
     - config/default.yml
@@ -36,3 +38,34 @@ Rails/SaveBang:
 
 Style/DateTime:
   Enabled: true
+
+RSpec/ExampleLength:
+  Enabled: false
+
+# TODO: remove
+RSpec/DescribedClass:
+  EnforcedStyle: explicit
+
+RSpec/DescribeClass:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+Capybara/FeatureMethods:
+  Exclude:
+    - 'spec/features/**/*.rb'
+
+RSpec/InstanceVariable:
+  Exclude:
+    - 'spec/features/**/*.rb'
+
+RSpec/MessageSpies:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+# TODO: switch on
+RSpec/AnyInstance:
+  Enabled: false

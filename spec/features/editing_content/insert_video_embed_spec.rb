@@ -30,7 +30,7 @@ RSpec.describe "Insert video embed", js: true do
   end
 
   def then_i_see_the_snippet_is_inserted
-    expect(page).to_not have_selector(".gem-c-modal-dialogue")
+    expect(page).not_to have_selector(".gem-c-modal-dialogue")
     snippet = "[A title](https://www.youtube.com/watch?v=G8KpPw303PY)"
     expect(find("#body-field").value).to include snippet
   end

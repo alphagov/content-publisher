@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :file_attachment_revision, class: FileAttachment::Revision do
+  factory :file_attachment_revision, class: "FileAttachment::Revision" do
     association :file_attachment, factory: :file_attachment
     association :created_by, factory: :user
 

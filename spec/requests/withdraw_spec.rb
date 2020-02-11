@@ -5,6 +5,7 @@ RSpec.describe "Withdraw" do
                   "withdrawing a draft edition",
                   routes: { withdraw_path: %i[get post] } do
     before { login_as(managing_editor) }
+
     let(:edition) { create(:edition) }
   end
 
@@ -18,6 +19,7 @@ RSpec.describe "Withdraw" do
 
     context "when logged in as a managing editor" do
       let(:managing_editor) { create(:user, managing_editor: true) }
+
       before { login_as(managing_editor) }
 
       it "allows withdrawing an edtiion" do
@@ -99,6 +101,7 @@ RSpec.describe "Withdraw" do
   describe "GET /documents/:document/withdraw" do
     context "when logged in as a managing editor" do
       let(:managing_editor) { create(:user, managing_editor: true) }
+
       before { login_as(managing_editor) }
 
       it "allows withdrawing a published edtiion" do

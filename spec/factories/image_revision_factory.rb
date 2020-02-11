@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :image_revision, class: Image::Revision do
+  factory :image_revision, class: "Image::Revision" do
     association :image, factory: :image
     association :created_by, factory: :user
 

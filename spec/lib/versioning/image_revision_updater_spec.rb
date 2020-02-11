@@ -20,7 +20,7 @@ RSpec.describe Versioning::ImageRevisionUpdater do
       updater.assign(alt_text: "new alt text")
 
       next_revision = updater.next_revision
-      expect(next_revision).to_not eq revision
+      expect(next_revision).not_to eq revision
       expect(next_revision.created_by).to eq user
     end
 
@@ -35,11 +35,11 @@ RSpec.describe Versioning::ImageRevisionUpdater do
       updater.assign(new_fields)
       next_revision = updater.next_revision
 
-      expect(updater.changed?).to be_truthy
+      expect(updater).to be_changed
       expect(updater.changes).to include(new_fields)
 
       new_fields.each do |name, value|
-        expect(updater.changed?(name)).to be_truthy
+        expect(updater).to be_changed(name)
         expect(next_revision.public_send(name)).to eq value
       end
     end
@@ -53,7 +53,7 @@ RSpec.describe Versioning::ImageRevisionUpdater do
       }
 
       updater.assign(old_fields)
-      expect(updater.changed?).to be_falsey
+      expect(updater).not_to be_changed
       expect(updater.changes).to be_empty
       expect(updater.next_revision).to eq revision
     end
@@ -69,7 +69,7 @@ RSpec.describe Versioning::ImageRevisionUpdater do
       updater.assign(credit: "new credit")
       next_revision = updater.next_revision
 
-      expect(next_revision).to_not eq revision
+      expect(next_revision).not_to eq revision
 
       old_fields.each do |name, value|
         expect(next_revision.public_send(name)).to eq value

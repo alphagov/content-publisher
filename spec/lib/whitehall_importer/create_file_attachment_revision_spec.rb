@@ -6,21 +6,21 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
 
   context "creates a file attachment" do
     it "fetches file from asset-manager" do
-      create_revision = described_class.new(document_import, whitehall_file_attachment)
+      create_revision = WhitehallImporter::CreateFileAttachmentRevision.new(document_import, whitehall_file_attachment)
       expect(create_revision.call).to have_requested(:get, whitehall_file_attachment["url"])
     end
 
     it "creates a FileAttachment::Revision and sets correct metadata" do
       revision = nil
-      expect { revision = described_class.call(document_import, whitehall_file_attachment) }
+      expect { revision = WhitehallImporter::CreateFileAttachmentRevision.call(document_import, whitehall_file_attachment) }
         .to change { FileAttachment::Revision.count }.by(1)
 
       expect(revision.metadata_revision.title).to eq(whitehall_file_attachment["title"])
       expect(revision.filename).to eq("some-txt.txt")
     end
 
-    it "should create a WhitehallMigration::AssetImport for each attachment variant" do
-      revision = described_class.call(document_import, whitehall_file_attachment)
+    it "creates a WhitehallMigration::AssetImport for each attachment variant" do
+      revision = WhitehallImporter::CreateFileAttachmentRevision.call(document_import, whitehall_file_attachment)
 
       expect(document_import.assets.size).to eq(2)
       expect(document_import.assets.map(&:attributes).map(&:with_indifferent_access))
@@ -37,7 +37,7 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
 
   shared_examples "rejected file attachment" do
     it "raises an AbortImportError with an informative error" do
-      create_revision = described_class.new(document_import, whitehall_file_attachment)
+      create_revision = WhitehallImporter::CreateFileAttachmentRevision.new(document_import, whitehall_file_attachment)
       expect { create_revision.call }.to raise_error(
         WhitehallImporter::AbortImportError,
         error_message,
@@ -47,6 +47,7 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
 
   context "file attachment URL is invalid" do
     let(:error_message) { "File attachment does not exist: #{whitehall_file_attachment['url']}" }
+
     before { stub_request(:get, whitehall_file_attachment["url"]).to_return(status: 404) }
 
     it_behaves_like "rejected file attachment"

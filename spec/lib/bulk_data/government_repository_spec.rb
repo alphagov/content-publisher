@@ -6,6 +6,7 @@ RSpec.describe BulkData::GovernmentRepository do
 
   describe "#find" do
     let(:government) { build(:government) }
+
     before { populate_government_bulk_data(government) }
 
     it "can find a government for a particular content id" do

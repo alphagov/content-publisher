@@ -17,7 +17,7 @@ RSpec.describe RemoveDocumentService do
       removal = build(:removal)
 
       expect { RemoveDocumentService.call(edition, removal) }
-        .to change { TimelineEntry.count }
+        .to change(TimelineEntry, :count)
         .by(1)
 
       timeline_entry = edition.timeline_entries.first
@@ -29,7 +29,7 @@ RSpec.describe RemoveDocumentService do
       removal = build(:removal)
 
       expect { RemoveDocumentService.call(edition, removal) }
-        .to change { edition.state }
+        .to change(edition, :state)
         .to("removed")
 
       expect(edition.status.details).to eq(removal)
