@@ -3,7 +3,7 @@
       label: {
         text: t("content.edit.change_note.title"),
       },
-      id: "edition-change-note",
+      id: "change-note-field",
       name: "change_note",
       value: params[:change_note] || edition.change_note,
       rows: 4,
@@ -15,7 +15,7 @@
 
 <%= render "govuk_publishing_components/components/contextual_guidance", {
   id: "change-note",
-  html_for: "edition-change-note",
+  html_for: "change-note-field",
   title: t("content.edit.change_note.guidance_title"),
   content: render_govspeak(t("content.edit.change_note.guidance"))
 } do %>
