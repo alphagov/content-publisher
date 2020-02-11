@@ -195,10 +195,8 @@ RSpec.describe Edition do
       user = build(:user)
       edition = build(:edition, editors: [user])
 
-      expect do
-        edition.add_edition_editor(user)
+      expect { edition.add_edition_editor(user) }
           .not_to(change { edition.editors })
-      end
     end
   end
 end

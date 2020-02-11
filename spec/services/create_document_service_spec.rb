@@ -43,13 +43,13 @@ RSpec.describe CreateDocumentService do
     end
 
     it "sets the political status of an edition" do
-      allow(PoliticalEditionIdentifier).to receive(:new)
-                                       .and_return(double(political?: true))
+      edition = instance_double(Edition, political?: true)
+      allow(PoliticalEditionIdentifier).to receive(:new).and_return(edition)
       document = CreateDocumentService.call(document_type_id: document_type.id)
       expect(document.current_edition.system_political).to be(true)
 
-      allow(PoliticalEditionIdentifier).to receive(:new)
-                                       .and_return(double(political?: false))
+      edition = instance_double(Edition, political?: false)
+      allow(PoliticalEditionIdentifier).to receive(:new).and_return(edition)
       document = CreateDocumentService.call(document_type_id: document_type.id)
       expect(document.current_edition.system_political).to be(false)
     end

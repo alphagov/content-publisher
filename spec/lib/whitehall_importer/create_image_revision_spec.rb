@@ -3,7 +3,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
     let(:whitehall_image) { build(:whitehall_export_image) }
     let(:document_import) { build(:whitehall_migration_document_import) }
 
-    context "Valid image is provided" do
+    context "with a valid image" do
       it "creates an Image::Revision" do
         image_revision = nil
         expect { image_revision = WhitehallImporter::CreateImageRevision.call(document_import, whitehall_image) }
@@ -29,7 +29,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
-    context "Image is not available" do
+    context "when the image is not available" do
       let(:image_url) { "https://assets.publishing.service.gov.uk/government/uploads/404ing-image.jpg" }
       let(:whitehall_image) do
         whitehall_image = build(:whitehall_export_image, url: image_url)
@@ -45,7 +45,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
-    context "Image is wrong type" do
+    context "when the image is the wrong type" do
       let(:whitehall_image) do
         build(:whitehall_export_image, filename: "vector.svg", fixture_file: "coffee.svg")
       end
@@ -59,7 +59,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
-    context "Image is too small" do
+    context "when the image is too small" do
       let(:whitehall_image) do
         build(:whitehall_export_image, fixture_file: "100x100.jpg")
       end
@@ -73,7 +73,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
-    context "Original image filename is URL-unfriendly" do
+    context "when the original image filename is URL-unfriendly" do
       let(:whitehall_image) do
         build(:whitehall_export_image, filename: "Whitehall--Asset_-image.jpg")
       end
@@ -84,7 +84,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
-    context "Image has exif data" do
+    context "when the image has exif data" do
       let(:whitehall_image) do
         build(:whitehall_export_image, fixture_file: "960x640-rotated.jpg")
       end

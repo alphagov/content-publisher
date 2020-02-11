@@ -25,10 +25,8 @@ RSpec.describe Images::CreateInteractor do
 
       it "normalises the uploaded image and delegates saving it to CreateImageBlobService" do
         temp_image = ImageNormaliser::TempImage.new(image_upload)
-        expect(ImageNormaliser)
-          .to receive(:new)
-          .with(image_upload)
-          .and_return(double(normalise: temp_image, issues: []))
+        normaliser = instance_double(ImageNormaliser, normalise: temp_image, issues: [])
+        expect(ImageNormaliser).to receive(:new).with(image_upload).and_return(normaliser)
 
         expect(CreateImageBlobService)
           .to receive(:call)
@@ -48,7 +46,7 @@ RSpec.describe Images::CreateInteractor do
         expect(image_revision.metadata_revision.created_by).to eq(user)
       end
 
-      context "and there is a file that already has the image filename" do
+      context "when a file already has the image filename" do
         let(:edition) do
           create(
             :edition,
@@ -74,23 +72,26 @@ RSpec.describe Images::CreateInteractor do
 
     context "when the uploaded image has issues" do
       it "fails with issues returned" do
-        issue = Requirements::Issue.new("image", "example")
-        allow(Requirements::ImageUploadChecker)
-          .to receive(:new).and_return(double(issues: [issue]))
+        issues = Requirements::CheckerIssues.new
+        issues.create(:image, :examle)
+
+        allow_any_instance_of(Requirements::ImageUploadChecker)
+          .to receive(:issues).and_return(issues)
 
         result = Images::CreateInteractor.call(**args)
 
         expect(result).to be_failure
-        expect(result.issues).to match([issue])
+        expect(result.issues).to eq(issues)
       end
     end
 
     context "when the image normaliser finds issues" do
       it "fails with issues returned" do
-        allow(ImageNormaliser)
-          .to receive(:new)
-          .and_return(double(normalise: nil, issues: %w(issue)))
+        normaliser = instance_double(ImageNormaliser,
+                                     normalise: nil,
+                                     issues: %w(issue))
 
+        allow(ImageNormaliser).to receive(:new).and_return(normaliser)
         result = Images::CreateInteractor.call(**args)
 
         expect(result).to be_failure

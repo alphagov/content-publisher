@@ -3,7 +3,7 @@ RSpec.describe PreviewAssetService do
     let(:edition) { create :edition }
 
     let(:asset) do
-      double(asset_manager_id: "id",
+      double(asset_manager_id: "id", # rubocop:disable RSpec/VerifiedDoubles
              update!: false,
              content_type: "type",
              filename: "foo/bar.jpg",

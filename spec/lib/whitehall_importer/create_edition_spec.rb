@@ -87,7 +87,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       expect(edition.editors.count).to eq(2)
     end
 
-    context "has editorial remarks" do
+    context "with editorial remarks" do
       let(:content_publisher_user) { create(:user) }
       let(:whitehall_user_id) { rand(100) }
       let(:user_ids) { { whitehall_user_id => content_publisher_user.id } }

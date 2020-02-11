@@ -80,8 +80,8 @@ RSpec.describe FileAttachments::CreateInteractor do
 
     context "when the uploaded file has issues" do
       it "fails with issues returned" do
-        allow(Requirements::FileAttachmentChecker)
-          .to receive(:new).and_return(double(pre_upload_issues: %w(issue)))
+        allow_any_instance_of(Requirements::FileAttachmentChecker)
+          .to receive(:pre_upload_issues).and_return(%w(issues))
 
         result = FileAttachments::CreateInteractor.call(**args)
 

@@ -85,9 +85,8 @@ RSpec.describe PreviewDraftEditionService::Payload do
     end
 
     it "delegates to document type fields for contents" do
-      body_field = double(:body_field, payload: { details: { body: "body" } })
-      document_type = build(:document_type, contents: [body_field])
-      edition = build(:edition, document_type: document_type)
+      document_type = build(:document_type, :with_body)
+      edition = build(:edition, document_type: document_type, contents: { body: "body" })
       payload = PreviewDraftEditionService::Payload.new(edition).payload
       expect(payload[:details][:body]).to eq("body")
     end

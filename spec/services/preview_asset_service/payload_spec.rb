@@ -29,7 +29,7 @@ RSpec.describe PreviewAssetService::Payload do
   end
 
   describe "#for_upload" do
-    let(:asset) { double(:asset, bytes: "bytes") }
+    let(:asset) { double(:asset, bytes: "bytes") } # rubocop:disable RSpec/VerifiedDoubles
 
     it "returns a payload hash" do
       edition = build :edition
