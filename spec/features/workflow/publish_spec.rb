@@ -1,5 +1,5 @@
-RSpec.feature "Publishing an edition" do
-  scenario do
+RSpec.describe "Publishing an edition" do
+  it do
     given_there_is_an_edition_in_draft
     when_i_visit_the_summary_page
     and_i_publish_the_edition

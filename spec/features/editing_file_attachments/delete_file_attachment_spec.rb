@@ -1,5 +1,5 @@
-RSpec.feature "Delete a file attachment", js: true do
-  scenario do
+RSpec.describe "Delete a file attachment", js: true do
+  it do
     given_there_is_an_edition_with_attachments
     when_i_insert_an_attachment
     and_i_delete_the_attachment

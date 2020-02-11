@@ -1,5 +1,5 @@
-RSpec.feature "Edit access limit" do
-  scenario do
+RSpec.describe "Edit access limit" do
+  it do
     given_there_is_an_access_limited_edition
     when_i_visit_the_summary_page
     and_i_go_to_edit_the_access_limit

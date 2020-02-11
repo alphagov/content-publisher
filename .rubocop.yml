@@ -52,10 +52,6 @@ RSpec/DescribeClass:
 RSpec/MultipleExpectations:
   Enabled: false
 
-Capybara/FeatureMethods:
-  Exclude:
-    - 'spec/features/**/*.rb'
-
 RSpec/InstanceVariable:
   Exclude:
     - 'spec/features/**/*.rb'

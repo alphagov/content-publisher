@@ -1,5 +1,5 @@
-RSpec.feature "Remove" do
-  scenario do
+RSpec.describe "Remove" do
+  it do
     given_there_is_a_published_edition
     when_i_visit_the_summary_page
     and_i_click_to_remove_the_edition

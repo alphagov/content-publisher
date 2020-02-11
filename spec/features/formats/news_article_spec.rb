@@ -1,7 +1,7 @@
 RSpec.describe "News article format" do
   include TopicsHelper
 
-  scenario do
+  it do
     when_i_choose_this_document_type
     and_i_fill_in_the_form_fields
     then_the_document_should_be_previewable

@@ -1,5 +1,5 @@
-RSpec.feature "Previewing an edition" do
-  scenario do
+RSpec.describe "Previewing an edition" do
+  it do
     given_there_is_an_edition
     when_i_visit_the_summary_page
     and_i_click_the_preview_button

@@ -1,7 +1,7 @@
-RSpec.feature "Edit topics using search", js: true do
+RSpec.describe "Edit topics using search", js: true do
   include TopicsHelper
 
-  scenario do
+  it do
     given_there_is_an_edition
     when_i_visit_the_summary_page
     and_i_click_on_edit_topics

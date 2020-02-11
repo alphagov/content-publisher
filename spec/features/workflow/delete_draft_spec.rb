@@ -1,5 +1,5 @@
-RSpec.feature "Delete draft" do
-  scenario do
+RSpec.describe "Delete draft" do
+  it do
     given_there_is_an_edition
     when_i_visit_the_summary_page
     and_i_delete_the_draft

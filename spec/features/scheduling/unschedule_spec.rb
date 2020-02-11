@@ -1,9 +1,9 @@
-RSpec.feature "Unschedule" do
+RSpec.describe "Unschedule" do
   around do |example|
     travel_to(Time.zone.parse("2019-06-13")) { example.run }
   end
 
-  scenario do
+  it do
     given_there_is_a_scheduled_edition
     when_i_visit_the_summary_page
     and_i_click_stop_scheduled_publishing

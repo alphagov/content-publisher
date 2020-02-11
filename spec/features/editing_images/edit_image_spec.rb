@@ -1,5 +1,5 @@
-RSpec.feature "Edit image", js: true do
-  scenario "lead image" do
+RSpec.describe "Edit image", js: true do
+  it "lead image" do
     given_there_is_an_edition_with_a_lead_image
 
     when_i_visit_the_images_page
@@ -11,7 +11,7 @@ RSpec.feature "Edit image", js: true do
     and_i_see_the_timeline_entry
   end
 
-  scenario "inline image" do
+  it "inline image" do
     given_there_is_an_edition_with_images
 
     when_i_insert_an_inline_image

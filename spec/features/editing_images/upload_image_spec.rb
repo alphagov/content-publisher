@@ -1,5 +1,5 @@
-RSpec.feature "Upload an image", js: true do
-  scenario "lead image" do
+RSpec.describe "Upload an image", js: true do
+  it "lead image" do
     given_there_is_an_edition
     when_i_visit_the_images_page
     and_i_upload_a_new_image
@@ -9,7 +9,7 @@ RSpec.feature "Upload an image", js: true do
     and_i_see_the_timeline_entry
   end
 
-  scenario "inline image" do
+  it "inline image" do
     given_there_is_an_edition
     when_i_insert_an_inline_image
     and_i_upload_a_new_image

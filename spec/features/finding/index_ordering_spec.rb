@@ -1,5 +1,5 @@
-RSpec.feature "Index ordering" do
-  scenario do
+RSpec.describe "Index ordering" do
+  it do
     given_there_are_some_editions
     when_i_visit_the_index_page
     then_i_see_the_most_recently_updated_first

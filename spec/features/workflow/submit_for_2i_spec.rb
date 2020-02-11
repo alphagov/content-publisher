@@ -1,5 +1,5 @@
-RSpec.feature "Submit for 2i" do
-  scenario do
+RSpec.describe "Submit for 2i" do
+  it do
     given_there_is_a_draft_edition
     when_i_visit_the_summary_page
     and_i_click_submit_for_2i

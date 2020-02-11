@@ -1,5 +1,5 @@
-RSpec.feature "Shows a preview of the URL", js: true do
-  scenario do
+RSpec.describe "Shows a preview of the URL", js: true do
+  it do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
     and_i_delete_the_title

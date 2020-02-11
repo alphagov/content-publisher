@@ -1,5 +1,5 @@
-RSpec.feature "Create a document" do
-  scenario do
+RSpec.describe "Create a document" do
+  it do
     given_i_am_on_the_home_page
     when_i_click_to_create_a_document
     and_i_select_a_supertype

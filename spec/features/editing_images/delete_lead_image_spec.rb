@@ -1,5 +1,5 @@
-RSpec.feature "Delete an image" do
-  scenario do
+RSpec.describe "Delete an image" do
+  it do
     given_there_is_an_edition_with_images
     when_i_visit_the_images_page
     when_i_delete_the_lead_image

@@ -1,9 +1,9 @@
-RSpec.feature "Clear proposed publish time" do
+RSpec.describe "Clear proposed publish time" do
   around do |example|
     travel_to(Time.zone.parse("2019-06-13 11:00")) { example.run }
   end
 
-  scenario do
+  it do
     given_there_is_an_edition_with_a_proposed_publish_time
     when_i_visit_the_summary_page
     then_i_see_the_proposed_time

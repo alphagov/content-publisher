@@ -1,5 +1,5 @@
-RSpec.feature "Edit a withdrawal" do
-  scenario do
+RSpec.describe "Edit a withdrawal" do
+  it do
     given_there_is_a_withdrawn_edition
     and_i_am_a_managing_editor
     when_i_visit_the_summary_page

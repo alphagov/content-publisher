@@ -1,5 +1,5 @@
-RSpec.feature "User pages through a list of editions" do
-  scenario do
+RSpec.describe "User pages through a list of editions" do
+  it do
     given_there_are_lots_of_editions
     when_i_visit_the_index_page
     then_i_should_see_the_first_results
