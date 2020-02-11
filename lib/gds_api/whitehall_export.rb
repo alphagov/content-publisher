@@ -33,6 +33,18 @@ module GdsApi
       get_json("#{endpoint}/government/admin/export/document/#{document_id}")
     end
 
+    def lock_document(document_id)
+      post_json("#{endpoint}/government/admin/export/document/#{document_id}/lock")
+    end
+
+    def unlock_document(document_id)
+      post_json("#{endpoint}/government/admin/export/document/#{document_id}/unlock")
+    end
+
+    def document_migrated(document_id)
+      post_json("#{endpoint}/government/admin/export/document/#{document_id}/migrated")
+    end
+
   private
 
     def document_list_url(params)
