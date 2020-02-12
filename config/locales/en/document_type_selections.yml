@@ -1,0 +1,84 @@
+en:
+  document_type_selections:
+    root:
+      label: "What is the content for?"
+    news:
+      label: News
+      description: To tell users about something government has done or will do
+      guidance:
+        body_govspeak: |
+          For example, news stories, press releases, speeches, or statements
+    guidance:
+      label: Guidance
+      description: To help the user do something or understand what they need to do
+      guidance:
+        body_govspeak: |
+          For example, manuals, or statutory guidance
+    transparency:
+      label: Transparency and statistics
+      description: To provide information that helps users hold government to account
+      guidance:
+        body_govspeak: |
+          For example, statistics, FOI data, or reports
+    policy:
+      label: Policy or consultation
+      description: To explain the government’s position or request views or evidence on an issue
+      guidance:
+        body_govspeak: |
+          For example, policy papers, impact assessments, or case studies
+    document_collection:
+      label: Document collection
+      description: To create a list of related documents on a single page
+    corporate_information:
+      label: Corporate information
+      description: Information about your organisation
+    not_sure:
+      label: I’m not sure if this should be on GOV.UK
+      description: View this guide to see what should go on GOV.UK and where else you can publish content
+    news_story:
+      label: News story
+      description: "News written for GOV.UK which users need, can act on, and cannot get from other sources."
+      guidance:
+        body_govspeak: |
+          Do not include advice in news stories. Do not use to promote other content.
+          Read the full [guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story).
+    press_release:
+      label: Press release
+      description: "Unedited press releases as sent to the media, and official statements from the organisation."
+      guidance:
+        body_govspeak: |
+          Do not use to promote other content. Statements to Parliament should use the Speech document type.
+          Read the full [guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release).
+    fatality_notice:
+      label: Fatality notice
+      description: Initial fatality notices and subsequent obituaries of forces and MOD personnel
+    speech:
+      label: Speech
+      description: Public speeches, written statements, or authored articles
+    world_news_story:
+      label: World news story
+      description: Announcements specific to one or more world location
+    detailed_guide:
+      label: Detailed guide
+      description: Detailed guidance for specialist users on the steps they need to take to complete a task
+    any_whitehall_publication:
+      label: Publication
+      description: Standalone government documents that are issued and not usually updated
+    manual:
+      label: Manual
+      description: Long and complex guidance broken into chapters and sub-sections for reference
+    any_mainstream_publication:
+      label: Mainstream guide
+      description: Guidance for the general public on how to do something. Contact GDS to request changes.
+    travel_advice:
+      label: Travel advice
+      description: Travel advice by country including entry requirements and safety information
+    statistical_data_set:
+      label: Statistical data set
+      description: Frequently updated (“live”) statistical data files.
+    case_study:
+      label: Case study
+      description: Case studies show someone’s experience of a government process or policy problem
+    consultation:
+      label: Consultation
+      description: A request for views or evidence on an issue
