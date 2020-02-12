@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get "/documents/new" => "new_document#choose_supertype", as: :new_document
   get "/documents/choose-document-type" => "new_document#choose_document_type", as: :choose_document_type
   post "/documents/create" => "new_document#create", as: :create_document
+  get "/documents/show" => "new_document#show", as: :show
+  post "/documents/select" => "new_document#select", as: :select
 
   get "/documents" => "documents#index"
 
