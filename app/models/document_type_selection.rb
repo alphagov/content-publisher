@@ -13,6 +13,9 @@ class DocumentTypeSelection
       hashes = YAML.load_file(Rails.root.join("config/document_type_selections.yml"))
 
       hashes.map do |hash|
+        hash["options"].map! do |option|
+          Option.new(option)
+        end
         new(hash)
       end
     end
