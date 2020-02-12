@@ -25,11 +25,6 @@ en:
           hint: Tag locations this content is about. If it only relates to the UK you don’t need to use this tag.
 
     news_story:
-      description: "News written for GOV.UK which users need, can act on, and cannot get from other sources."
-      guidance:
-        body_govspeak: |
-          Do not include advice in news stories. Do not use to promote other content.
-          Read the full [guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story).
       fields:
         title:
           guidance:
@@ -52,11 +47,6 @@ en:
               [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
 
     press_release:
-      description: "Unedited press releases as sent to the media, and official statements from the organisation."
-      guidance:
-        body_govspeak: |
-          Do not use to promote other content. Statements to Parliament should use the Speech document type.
-          Read the full [guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release).
       fields:
         title:
           guidance:
@@ -77,36 +67,3 @@ en:
               [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
 
               [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
-
-    fatality_notice:
-      description: Initial fatality notices and subsequent obituaries of forces and MOD personnel
-
-    speech:
-      description: Public speeches, written statements, or authored articles
-
-    world_news_story:
-      description: Announcements specific to one or more world location
-
-    detailed_guide:
-      description: Detailed guidance for specialist users on the steps they need to take to complete a task
-
-    any-whitehall-publication:
-      description: Standalone government documents that are issued and not usually updated
-
-    manual:
-      description: Long and complex guidance broken into chapters and sub-sections for reference
-
-    any-mainstream-publication:
-      description: Guidance for the general public on how to do something. Contact GDS to request changes.
-
-    travel_advice:
-      description: Travel advice by country including entry requirements and safety information
-
-    statistical-data-set:
-      description: Frequently updated (“live”) statistical data files.
-
-    case_study:
-      description: Case studies show someone’s experience of a government process or policy problem
-
-    consultation:
-      description: A request for views or evidence on an issue
