@@ -21,5 +21,11 @@ class DocumentTypeSelection
     end
   end
 
+  def parent
+    self.class.all.find do |document_type_selection|
+      document_type_selection.options.map(&:id).include?(id)
+    end
+  end
+
   class NotFoundError < RuntimeError; end
 end

@@ -48,4 +48,14 @@ RSpec.describe DocumentTypeSelection do
         .to raise_error(DocumentTypeSelection::NotFoundError)
     end
   end
+
+  describe "#parent" do
+    it "returns nil if we pass it 'root'" do
+      expect(described_class.find("root").parent).to be_nil
+    end
+
+    it "returns a DocumentTypeSelection for the parent if it exists" do
+      expect(described_class.find("news").parent).to eq(described_class.find("root"))
+    end
+  end
 end
