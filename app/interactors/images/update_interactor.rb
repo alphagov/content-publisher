@@ -13,9 +13,10 @@ class Images::UpdateInteractor < ApplicationInteractor
   def call
     Edition.transaction do
       find_and_lock_edition
-      find_and_update_image
-
+      find_image
       check_for_issues
+
+      update_image
       update_edition
 
       create_timeline_entry
@@ -30,21 +31,21 @@ private
     assert_edition_state(edition, &:editable?)
   end
 
-  def find_and_update_image
-    current_image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
-    image_params = params.require(:image_revision).permit(:caption, :alt_text, :credit)
-
-    updater = Versioning::ImageRevisionUpdater.new(current_image_revision, user)
-    updater.assign(image_params)
-
-    context.image_revision = updater.next_revision
+  def find_image
+    context.image_revision = edition.image_revisions.find_by!(image_id: params[:image_id])
   end
 
   def check_for_issues
     checker = Requirements::ImageRevisionChecker.new(image_revision)
-    issues = checker.pre_preview_metadata_issues
+    issues = checker.pre_update_issues(image_params)
 
     context.fail!(issues: issues) if issues.any?
+  end
+
+  def update_image
+    updater = Versioning::ImageRevisionUpdater.new(image_revision, user)
+    updater.assign(image_params)
+    context.image_revision = updater.next_revision
   end
 
   def update_edition
@@ -77,5 +78,9 @@ private
 
   def update_preview
     FailsafeDraftPreviewService.call(edition)
+  end
+
+  def image_params
+    params.require(:image_revision).permit(:caption, :alt_text, :credit)
   end
 end
