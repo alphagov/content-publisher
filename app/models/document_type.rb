@@ -30,10 +30,6 @@ class DocumentType
     @all = nil
   end
 
-  def managed_elsewhere_url
-    Plek.new.external_url_for(managed_elsewhere.fetch("hostname")) + managed_elsewhere.fetch("path")
-  end
-
   class TagField
     include InitializeWithHash
     attr_reader :id, :type, :document_type, :hint

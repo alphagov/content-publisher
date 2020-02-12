@@ -1,109 +1,63 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "oneOf": [
-    {
-      "$ref": "#/schemas/documentType"
-    },
-    {
-      "$ref": "#/schemas/managedElsewhere"
-    }
+  "required": [
+    "id",
+    "label",
+    "path_prefix",
+    "images",
+    "publishing_metadata",
+    "contents",
+    "tags"
   ],
-  "schemas": {
-    "documentType": {
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "$ref": "#/definitions/id"
+    },
+    "label": {
+      "$ref": "#/definitions/label"
+    },
+    "path_prefix": {
+      "type": "string"
+    },
+    "images": {
+      "type": "boolean"
+    },
+    "check_path_conflict": {
+      "type": "boolean"
+    },
+    "publishing_metadata": {
       "type": "object",
       "required": [
-        "id",
-        "label",
-        "path_prefix",
-        "images",
-        "publishing_metadata",
-        "contents",
-        "tags"
+        "schema_name",
+        "rendering_app"
       ],
       "additionalProperties": false,
       "properties": {
-        "id": {
-          "$ref": "#/definitions/id"
+        "schema_name": {
+          "type": "string",
+          "enum": [
+            "news_article"
+          ]
         },
-        "label": {
-          "$ref": "#/definitions/label"
-        },
-        "path_prefix": {
+        "rendering_app": {
           "type": "string"
-        },
-        "images": {
-          "type": "boolean"
-        },
-        "check_path_conflict": {
-          "type": "boolean"
-        },
-        "publishing_metadata": {
-          "type": "object",
-          "required": [
-            "schema_name",
-            "rendering_app"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "schema_name": {
-              "type": "string",
-              "enum": [
-                "news_article"
-              ]
-            },
-            "rendering_app": {
-              "type": "string"
-            }
-          }
-        },
-        "contents": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {
-            "$ref": "#/definitions/content_field"
-          }
-        },
-        "tags": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {
-            "$ref": "#/definitions/tag_field"
-          }
         }
       }
     },
-    "managedElsewhere": {
-      "type": "object",
-      "required": [
-        "id",
-        "label",
-        "managed_elsewhere"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "id": {
-          "$ref": "#/definitions/id"
-        },
-        "label": {
-          "$ref": "#/definitions/label"
-        },
-        "managed_elsewhere": {
-          "type": "object",
-          "required": [
-            "hostname",
-            "path"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "hostname": {
-              "type": "string"
-            },
-            "path": {
-              "type": "string"
-            }
-          }
-        }
+    "contents": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/definitions/content_field"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/definitions/tag_field"
       }
     }
   },
