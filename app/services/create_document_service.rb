@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateDocumentService < ApplicationService
   def initialize(content_id: SecureRandom.uuid,
                  document_type_id:,

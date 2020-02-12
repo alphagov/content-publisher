@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ActionsHelper
   def create_edition_button(edition, secondary: false)
     form_tag create_edition_path(edition.document),

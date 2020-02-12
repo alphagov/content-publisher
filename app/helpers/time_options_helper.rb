@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module TimeOptionsHelper
   def time_options
     %w[am pm].flat_map do |period|

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DateParser
   attr_reader :raw_date, :issue_prefix, :issues
 

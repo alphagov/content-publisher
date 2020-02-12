@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DeleteDraftEditionService < ApplicationService
   def initialize(edition, user)
     @edition = edition

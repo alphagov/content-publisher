@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RemoveEditedAtEditedByFromDocument < ActiveRecord::Migration[5.2]
   def up
     remove_column :versioned_documents, :last_edited_at

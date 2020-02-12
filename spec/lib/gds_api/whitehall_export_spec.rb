@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe GdsApi::WhitehallExport do
   let(:whitehall_adapter) { GdsApi::WhitehallExport.new(Plek.find("whitehall-admin")) }
   let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }

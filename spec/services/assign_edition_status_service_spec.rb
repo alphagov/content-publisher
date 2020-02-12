@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe AssignEditionStatusService do
   describe ".call" do
     let(:edition) { build(:edition) }

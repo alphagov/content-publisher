@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Requirements
   class PublishTimeChecker
     include ActionView::Helpers::DateHelper

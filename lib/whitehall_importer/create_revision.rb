@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module WhitehallImporter
   class CreateRevision
     attr_reader :document_import, :whitehall_edition

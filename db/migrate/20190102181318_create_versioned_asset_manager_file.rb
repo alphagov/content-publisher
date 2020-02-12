@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateVersionedAssetManagerFile < ActiveRecord::Migration[5.2]
   def change
     create_table :versioned_asset_manager_files do |t|

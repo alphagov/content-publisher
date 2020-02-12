@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe PublishDraftEditionService do
   describe ".call" do
     let(:user) { create(:user) }

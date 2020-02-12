@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RestrictDeleteForAllForeignKeys < ActiveRecord::Migration[5.2]
   def up
     remove_foreign_key "versioned_content_revisions", column: "created_by_id"

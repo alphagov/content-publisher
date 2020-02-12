@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallDocumentImportJob do
   include ActiveJob::TestHelper
 

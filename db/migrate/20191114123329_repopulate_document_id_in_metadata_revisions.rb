@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RepopulateDocumentIdInMetadataRevisions < ActiveRecord::Migration[5.2]
   def up
     type_doc_ids_hash = Document.group(:document_type_id).pluck(:document_type_id, "ARRAY_AGG(id)").to_h

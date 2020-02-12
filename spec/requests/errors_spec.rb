@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Errors" do
   describe "/400" do
     it "returns a bad request response" do

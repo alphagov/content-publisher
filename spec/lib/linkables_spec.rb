@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Linkables do
   describe "#select_options" do
     it "returns a sorted array of linkables" do

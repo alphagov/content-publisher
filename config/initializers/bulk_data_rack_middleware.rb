@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # We need to explicitly 'require' the BulkData::Cache in development so that
 # the singleton instance here continues to be used in requests. Otherwise the
 # caching described below will only apply to the orphaned singleton. This has

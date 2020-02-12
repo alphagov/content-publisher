@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Upload an image", js: true do
   scenario "lead image" do
     given_there_is_an_edition

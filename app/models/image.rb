@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Represents all versions of a particular image. Each change is represented
 # as an ImageRevision.
 #

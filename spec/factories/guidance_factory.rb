@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :guidance, class: Hash do
     skip_create

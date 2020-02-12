@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ApplicationHelper
   def render_back_link(options)
     render("govuk_publishing_components/components/back_link", options)

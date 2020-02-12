@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Represents all versions of a piece of content in a particular locale.
 # The version of content that is draft or been on GOV.UK is represented as an
 # edition model. Each edit a user has made to content is represented through a

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DropVersionedImages < ActiveRecord::Migration[5.2]
   def up
     remove_reference :versioned_revisions, :lead_image

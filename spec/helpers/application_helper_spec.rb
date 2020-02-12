@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe ApplicationHelper do
   describe "formats a body of text" do
     it "returns a hyper link when given a URI" do

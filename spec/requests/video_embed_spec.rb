@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Video Embed" do
   let(:edition) { create(:edition) }
 

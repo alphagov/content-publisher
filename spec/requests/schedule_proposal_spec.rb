@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Schedule Proposal" do
   it_behaves_like "requests that assert edition state",
                   "schedule proposing on a non editable edition",

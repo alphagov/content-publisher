@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RemoveDocumentService < ApplicationService
   def initialize(edition, removal, user: nil)
     @edition = edition

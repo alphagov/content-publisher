@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class GovspeakDocument::Options
   attr_reader :text, :edition
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ScheduledPublishingJob < ApplicationJob
   # retry at 3s, 18s, 83s, 258s, 627s
   retry_on(StandardError, wait: :exponentially_longer, attempts: 5) do |job, error|

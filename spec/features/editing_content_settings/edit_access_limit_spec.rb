@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Edit access limit" do
   scenario do
     given_there_is_an_access_limited_edition

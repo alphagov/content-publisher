@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AssignEditionStatusService < ApplicationService
   def initialize(edition,
                  user: nil,

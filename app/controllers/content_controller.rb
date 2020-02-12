@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ContentController < ApplicationController
   def edit
     @edition = Edition.find_current(document: params[:document])

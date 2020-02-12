@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe ImageNormaliser do
   describe "#normalise" do
     it "returns a temp image when valid" do

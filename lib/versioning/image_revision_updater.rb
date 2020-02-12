@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Versioning
   class ImageRevisionUpdater < BaseUpdater
     def column_names

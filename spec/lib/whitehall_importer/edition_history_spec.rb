@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::EditionHistory do
   shared_examples "an event bang method" do |method, args = []|
     let(:instance) { described_class.new([]) }

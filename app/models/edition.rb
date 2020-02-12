@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Respresents the current state of a piece of content that was once or is
 # expected to be published on GOV.UK.
 #

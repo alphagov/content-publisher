@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AssetCleanupJob < ApplicationJob
   def perform
     run_exclusively do

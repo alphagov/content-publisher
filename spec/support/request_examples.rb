@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module RequestExamples
   # an example calling this is expected to provided text of the scenario name
   # and a hash of path helpers with the methods to be checked.

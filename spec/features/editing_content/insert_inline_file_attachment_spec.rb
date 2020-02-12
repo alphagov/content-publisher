@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Insert inline file attachment" do
   scenario "block snippet", js: true do
     given_there_is_an_edition_with_file_attachments

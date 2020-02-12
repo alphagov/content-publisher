@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Requirements
   class BackdateChecker
     EARLIEST_DATE = Date.new(1995, 1, 1)

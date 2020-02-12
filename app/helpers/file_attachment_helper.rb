@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module FileAttachmentHelper
   def file_attachment_preview_url(attachment_revision, document)
     service = PreviewAuthBypass.new(document)

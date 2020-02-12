@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Create a document" do
   scenario do
     given_i_am_on_the_home_page

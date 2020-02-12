@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::IntegrityChecker do
   let(:document_type) do
     build :document_type, contents: [

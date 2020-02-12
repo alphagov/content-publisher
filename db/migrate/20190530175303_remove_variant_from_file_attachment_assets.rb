@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RemoveVariantFromFileAttachmentAssets < ActiveRecord::Migration[5.2]
   def change
     remove_index :file_attachment_assets,

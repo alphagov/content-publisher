@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :timeline_entry do
     association :created_by, factory: :user

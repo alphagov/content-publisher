@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Contacts do
   describe "#by_content_id" do
     context "when a contact is found" do

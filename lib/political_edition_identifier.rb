@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PoliticalEditionIdentifier
   def self.political_organisation_ids
     @political_organisation_ids ||= YAML.load_file(

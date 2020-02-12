@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe DateParser do
   describe "#parse" do
     it "returns the parsed date when valid" do

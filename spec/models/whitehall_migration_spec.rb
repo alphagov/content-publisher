@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallMigration do
   describe ".check_migration_completed" do
     context "with only jobs that have finished running" do

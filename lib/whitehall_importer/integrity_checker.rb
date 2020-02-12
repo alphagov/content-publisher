@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module WhitehallImporter
   class IntegrityChecker
     attr_reader :edition

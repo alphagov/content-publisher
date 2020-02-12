@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe FileAttachments::PreviewInteractor do
   describe ".call" do
     let(:file_attachment) { create :file_attachment }

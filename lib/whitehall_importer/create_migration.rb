@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "gds_api/whitehall_export"
 
 module WhitehallImporter

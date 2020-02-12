@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddImageMetadataFields < ActiveRecord::Migration[5.2]
   def change
     change_table :images, bulk: true do |t|

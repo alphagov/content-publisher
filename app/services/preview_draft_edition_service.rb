@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PreviewDraftEditionService < ApplicationService
   def initialize(edition, republish: false)
     @edition = edition

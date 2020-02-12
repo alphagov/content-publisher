@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class WhitehallDocumentImportJob < ApplicationJob
   discard_on(StandardError) do |job, error|
     document_import = job.arguments.first

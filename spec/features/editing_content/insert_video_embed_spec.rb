@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Insert video embed", js: true do
   scenario do
     given_there_is_an_edition

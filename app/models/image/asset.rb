@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # An Image::Asset is used to interface with Asset Manager to represent a
 # file uploaded as part of an Image::Revision. It is used to track the state
 # of the media on Asset Manager and it's url.

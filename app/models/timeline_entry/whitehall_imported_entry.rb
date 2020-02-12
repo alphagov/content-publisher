@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class TimelineEntry::WhitehallImportedEntry < ApplicationRecord
   enum entry_type: {
     archived: "archived",

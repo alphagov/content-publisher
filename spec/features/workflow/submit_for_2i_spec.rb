@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Submit for 2i" do
   scenario do
     given_there_is_a_draft_edition

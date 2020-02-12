@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Remove" do
   scenario do
     given_there_is_a_published_edition

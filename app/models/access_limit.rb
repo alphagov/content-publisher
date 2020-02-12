@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Represents an access limit which applies to an edition that is not live
 #
 # This model is immutable

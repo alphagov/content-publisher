@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class NewDocumentController < ApplicationController
   def choose_document_type
     result = NewDocument::ChooseSupertypeInteractor.call(params: params, user: current_user)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module EditionAssertions
   class Error < StandardError
     attr_reader :edition

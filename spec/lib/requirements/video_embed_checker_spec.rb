@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Requirements::VideoEmbedChecker do
   describe "#pre_embed_issues" do
     it "returns no issues when there are none" do

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe PreviewDraftEditionService::Payload do
   describe "#payload" do
     it "generates a payload for the publishing API" do

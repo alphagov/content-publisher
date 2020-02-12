@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe AssetCleanupJob do
   describe "#perform" do
     context "when the assets only exist on an old edition" do

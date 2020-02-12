@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Edit topics using search", js: true do
   include TopicsHelper
 

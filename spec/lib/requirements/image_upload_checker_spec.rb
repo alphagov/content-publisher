@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Requirements::ImageUploadChecker do
   describe "#errors" do
     it "returns no issues if there are none" do

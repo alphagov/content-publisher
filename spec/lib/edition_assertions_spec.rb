@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe EditionAssertions do
   include EditionAssertions
 

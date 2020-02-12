@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PopulateBulkDataJob < ApplicationJob
   # The last retry will be 2 hours 46 mins later which should be an indication
   # of a long running problem.

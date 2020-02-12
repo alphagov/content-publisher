@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PublishMailer < ApplicationMailer
   helper :date_time, :edition_url
 

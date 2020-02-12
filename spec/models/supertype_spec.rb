@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Supertype do
   describe "all configured supertypes are valid" do
     Supertype.all.each do |supertype|

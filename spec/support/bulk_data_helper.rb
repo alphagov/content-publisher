@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module BulkDataHelper
   def populate_default_government_bulk_data
     current_government = build(:government)

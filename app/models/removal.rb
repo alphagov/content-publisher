@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Stores the specific data for a removed status.
 #
 # This model is immutable

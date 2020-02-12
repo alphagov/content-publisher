@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module WhitehallImporter
   class CreateFileAttachmentRevision
     def self.call(*args)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe TimelineEntry do
   describe ".entry_types" do
     TimelineEntry.entry_types.keys.each do |type|

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::MigrateAssets do
   describe ".call" do
     before { stub_any_asset_manager_call }

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "News article format" do
   include TopicsHelper
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ImageNormaliser::TempImage
   delegate :original_filename, to: :raw_file
   delegate :frames, to: :raw_image

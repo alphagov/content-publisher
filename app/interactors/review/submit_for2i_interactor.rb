@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Review::SubmitFor2iInteractor < ApplicationInteractor
   delegate :params,
            :user,

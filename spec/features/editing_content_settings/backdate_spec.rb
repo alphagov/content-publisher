@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Backdate content" do
   scenario do
     given_there_is_a_document_with_a_first_edition

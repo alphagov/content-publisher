@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::Import do
   describe ".call" do
     let(:whitehall_user) { build(:whitehall_export_user) }

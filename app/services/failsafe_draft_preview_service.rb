@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class FailsafeDraftPreviewService < ApplicationService
   def initialize(edition)
     @edition = edition

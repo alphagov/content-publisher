@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddAttachmentFileMetadataRevision < ActiveRecord::Migration[5.2]
   def change
     create_table :file_attachment_metadata_revisions do |t|

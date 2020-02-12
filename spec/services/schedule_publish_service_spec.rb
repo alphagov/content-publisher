@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe SchedulePublishService do
   let(:payload) do
     instance_double(SchedulePublishService::Payload, intent_payload: "payload")

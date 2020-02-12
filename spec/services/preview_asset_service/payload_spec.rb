@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe PreviewAssetService::Payload do
   let(:auth_bypass) do
     instance_double PreviewAuthBypass, auth_bypass_id: "bypass-id"

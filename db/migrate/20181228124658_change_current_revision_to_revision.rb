@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ChangeCurrentRevisionToRevision < ActiveRecord::Migration[5.2]
   def change
     remove_reference :versioned_editions,

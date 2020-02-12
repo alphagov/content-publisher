@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RemoveVersionedEditionRevisions < ActiveRecord::Migration[5.2]
   def up
     drop_table :versioned_edition_revisions

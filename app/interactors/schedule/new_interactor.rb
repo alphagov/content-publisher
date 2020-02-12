@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Schedule::NewInteractor < ApplicationInteractor
   delegate :params,
            :user,

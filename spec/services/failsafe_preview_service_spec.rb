@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe FailsafeDraftPreviewService do
   before do
     allow(PreviewDraftEditionService).to receive(:call)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # A model that is used to represent an entry in the history of a document.
 # It is intended to have information that is shown to a user and is not
 # intended as a debugging history log. It has associations to the data event

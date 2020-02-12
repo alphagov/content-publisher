@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe GovspeakDocument::Options do
   let(:contacts_service) { instance_double(Contacts) }
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ResyncDocumentService < ApplicationService
   def initialize(document)
     @document = document

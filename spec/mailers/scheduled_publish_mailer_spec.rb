@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe ScheduledPublishMailer do
   let(:recipient) { build(:user) }
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module GdsApi
   def self.whitehall_export(options = {})
     GdsApi::WhitehallExport.new(

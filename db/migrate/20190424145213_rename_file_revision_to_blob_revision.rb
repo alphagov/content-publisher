@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RenameFileRevisionToBlobRevision < ActiveRecord::Migration[5.2]
   def change
     rename_table :file_attachment_file_revisions, :file_attachment_blob_revisions

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddLastEditedByToDocument < ActiveRecord::Migration[5.2]
   def change
     add_reference :versioned_documents,

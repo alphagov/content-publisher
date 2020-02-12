@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DebugController < ApplicationController
   before_action { authorise_user!(User::DEBUG_PERMISSION) }
   helper_method :revision_diff

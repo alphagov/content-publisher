@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Versioning::RevisionUpdater::Image do
   let(:user) { create :user }
   let(:image_revision) { create :image_revision }

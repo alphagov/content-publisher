@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Requirements::AccessLimitChecker do
   describe "#pre_update_issues" do
     let(:user) { build :user, organisation_content_id: "my-org" }

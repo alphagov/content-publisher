@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddWhitehallImport < ActiveRecord::Migration[5.2]
   def change
     create_table :whitehall_imports do |t|

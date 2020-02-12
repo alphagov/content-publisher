@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Enforce access limit" do
   background do
     given_there_is_an_edition_in_multiple_orgs

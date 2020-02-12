@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Requirements::ImageRevisionChecker do
   describe "#pre_update_issues" do
     let(:image_revision) { build :image_revision }

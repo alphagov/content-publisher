@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe PreviewAssetService do
   describe ".call" do
     let(:edition) { create :edition }

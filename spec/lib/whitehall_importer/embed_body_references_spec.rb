@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::EmbedBodyReferences do
   describe ".call" do
     it "changes the ids of embedded contacts" do

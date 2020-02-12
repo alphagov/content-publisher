@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module TopicsHelper
   ENDPOINT = GdsApi::TestHelpers::PublishingApi::PUBLISHING_API_V2_ENDPOINT
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This model stores data of Image::Revision which affects the resultant files
 # that are sent to Asset Manager. Any change to data in here will mean new
 # files need to be sent. It has a one to many association with

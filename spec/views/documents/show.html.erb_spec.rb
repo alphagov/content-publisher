@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "documents/show.html.erb" do
   include TopicsHelper
   before { populate_default_government_bulk_data }

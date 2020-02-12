@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe GenerateBasePathService do
   describe ".call" do
     let(:edition) { create(:edition) }

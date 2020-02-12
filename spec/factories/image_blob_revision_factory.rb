@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :image_blob_revision, class: Image::BlobRevision do
     association :created_by, factory: :user

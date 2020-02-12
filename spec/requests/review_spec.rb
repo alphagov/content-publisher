@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Review" do
   describe "POST /documents/:document/submit-for-2i" do
     it_behaves_like "requests that assert edition state",

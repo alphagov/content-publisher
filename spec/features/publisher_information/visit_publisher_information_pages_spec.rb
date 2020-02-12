@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "User can view the publisher information pages" do
   scenario do
     given_im_on_the_home_page

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallMigration::DocumentImport do
   describe ".migratable_assets" do
     it "should return assets that are 'pending' or 'migration_failed'" do

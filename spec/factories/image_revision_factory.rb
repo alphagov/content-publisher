@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :image_revision, class: Image::Revision do
     association :image, factory: :image

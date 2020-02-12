@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Documents" do
   it_behaves_like "requests that assert edition state",
                   "modifying a non editable edition",

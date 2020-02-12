@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Government do
   describe "#==" do
     it "returns true when content_id and locale are equal" do

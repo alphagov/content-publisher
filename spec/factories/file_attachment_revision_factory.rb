@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :file_attachment_revision, class: FileAttachment::Revision do
     association :file_attachment, factory: :file_attachment

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module WhitehallImporter
   class CreateEdition
     attr_reader :document_import, :current, :whitehall_edition, :edition_number, :user_ids

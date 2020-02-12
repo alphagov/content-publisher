@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::CreateEdition do
   let(:document_import) { build(:whitehall_migration_document_import, document: document) }
 

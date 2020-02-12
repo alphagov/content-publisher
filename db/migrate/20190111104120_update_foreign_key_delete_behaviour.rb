@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class UpdateForeignKeyDeleteBehaviour < ActiveRecord::Migration[5.2]
   def up
     remove_foreign_key :versioned_statuses, column: :edition_id

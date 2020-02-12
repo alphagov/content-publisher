@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Remove tasks" do
   before do
     stub_any_publishing_api_unpublish

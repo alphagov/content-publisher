@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Stores the specific data for a withdrawn status.
 #
 # This model is immutable

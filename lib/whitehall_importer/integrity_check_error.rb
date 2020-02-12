@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module WhitehallImporter
   class IntegrityCheckError < AbortImportError
     attr_reader :problems, :payload

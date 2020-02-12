@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "User pages through a list of editions" do
   scenario do
     given_there_are_lots_of_editions

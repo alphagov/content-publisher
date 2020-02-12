@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe EditionFilter do
   let(:user) { build :user, organisation_content_id: "org-id" }
 

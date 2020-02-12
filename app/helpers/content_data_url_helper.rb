@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ContentDataUrlHelper
   def content_data_url(document)
     content_data_root = Plek.new.external_url_for("content-data")

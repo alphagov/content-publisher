@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe PoliticalEditionIdentifier do
   describe ".policical_organisation_ids" do
     it "returns an array of content_ids" do

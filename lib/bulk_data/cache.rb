@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module BulkData
   class Cache
     include Singleton

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "New Document" do
   describe "GET /documents/choose-document-type" do
     it "shows supertype when a supertype managed by content publisher is selected" do

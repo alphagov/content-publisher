@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This stores the metadata component of a revision, by metadata we mean
 # supporting data that explains the revision which is represented by
 # update_type and change_note fields.

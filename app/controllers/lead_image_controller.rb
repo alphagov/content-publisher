@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LeadImageController < ApplicationController
   def choose
     result = LeadImage::ChooseInteractor.call(params: params, user: current_user)

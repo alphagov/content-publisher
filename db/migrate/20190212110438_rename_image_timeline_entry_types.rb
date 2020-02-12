@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RenameImageTimelineEntryTypes < ActiveRecord::Migration[5.2]
   def up
     TimelineEntry.where(entry_type: "lead_image_updated")

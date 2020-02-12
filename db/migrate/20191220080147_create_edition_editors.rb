@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateEditionEditors < ActiveRecord::Migration[6.0]
   def change
     create_table :edition_editors do |t|

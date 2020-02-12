@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Scrub Access Limited SQL Script" do
   def execute_sql
     sql = File.read(Rails.root.join("db/scrub_access_limited.sql"))

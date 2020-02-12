@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ContactEmbed::CreateInteractor < ApplicationInteractor
   delegate :params,
            :markdown_code,

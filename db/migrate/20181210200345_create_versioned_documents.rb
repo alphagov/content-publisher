@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateVersionedDocuments < ActiveRecord::Migration[5.2]
   def change
     create_table :versioned_documents do |t|

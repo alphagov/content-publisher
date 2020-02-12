@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Publish::PublishInteractor < ApplicationInteractor
   delegate :params,
            :user,

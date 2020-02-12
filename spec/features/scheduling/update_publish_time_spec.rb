@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Update publish time" do
   include ActiveJob::TestHelper
 

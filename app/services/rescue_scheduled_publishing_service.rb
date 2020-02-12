@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RescueScheduledPublishingService < ApplicationService
   def initialize(edition_id:)
     @edition_id = edition_id

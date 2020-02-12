@@ -1,9 +1,7 @@
-# frozen_string_literal: true
-
 module Requirements
   class VideoEmbedChecker
-    YOUTUBE_HOST = "youtube.com"
-    YOUTU_HOST = "youtu.be"
+    YOUTUBE_HOST = "youtube.com".freeze
+    YOUTU_HOST = "youtu.be".freeze
 
     def pre_embed_issues(title: nil, url: nil)
       issues = CheckerIssues.new

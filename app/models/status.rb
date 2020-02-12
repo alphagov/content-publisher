@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Used to represent the user facing status of an edition. Each status an
 # edition has is stored and it must always have one.
 class Status < ApplicationRecord

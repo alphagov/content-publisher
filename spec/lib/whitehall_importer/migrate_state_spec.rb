@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::MigrateState do
   describe "#call" do
     it "sets the correct state when Whitehall document state is 'draft'" do

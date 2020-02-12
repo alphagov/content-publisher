@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This is an immutable model
 class FileAttachment::BlobRevision < ApplicationRecord
   belongs_to :blob, class_name: "ActiveStorage::Blob"

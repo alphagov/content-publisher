@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # A File Attachment revision represents an edit of a particular file attachment
 #
 # This is an immutable model

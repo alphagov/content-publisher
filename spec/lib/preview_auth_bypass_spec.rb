@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe PreviewAuthBypass do
   let(:document) do
     create :document, content_id: "1c24199f-1f98-426a-bea7-3f5ccc32e44d"

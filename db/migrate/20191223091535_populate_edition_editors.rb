@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PopulateEditionEditors < ActiveRecord::Migration[6.0]
   class Edition < ApplicationRecord
     has_and_belongs_to_many :edition_editors,

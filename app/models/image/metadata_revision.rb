@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This stores the data for an Image::Revision about the image such as
 # alt_text caption. This is distinct from Image::BlobRevision as it is data
 # that when changed doesn't require changing the files on Asset Manager.
