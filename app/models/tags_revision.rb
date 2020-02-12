@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This stores the tags of a revision, which are grouped associations to other
 # GOV.UK content by a particular tag (such as organisations).
 #

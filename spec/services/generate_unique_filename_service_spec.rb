@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe GenerateUniqueFilenameService do
   let(:existing_filenames) { ["file1.jpg"] }
 

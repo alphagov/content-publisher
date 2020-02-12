@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Represents the raw import of a document from Whitehall Publisher and
 # the import status of the document into Content Publisher
 class WhitehallMigration::DocumentImport < ApplicationRecord

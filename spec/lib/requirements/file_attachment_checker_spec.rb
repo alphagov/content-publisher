@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Requirements::FileAttachmentChecker do
   describe "#pre_upload_issues" do
     it "returns no issues if there are none" do

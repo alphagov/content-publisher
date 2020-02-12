@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Lead Image" do
   describe "POST /documents/:document/lead-image/:image_id" do
     let(:image_revision) { create(:image_revision) }

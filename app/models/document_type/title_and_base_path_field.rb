@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DocumentType::TitleAndBasePathField
   TITLE_MAX_LENGTH = 300
 

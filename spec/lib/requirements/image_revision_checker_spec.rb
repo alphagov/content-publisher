@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Requirements::ImageRevisionChecker do
   describe "#pre_preview_issues" do
     it "returns no issues if there are none" do

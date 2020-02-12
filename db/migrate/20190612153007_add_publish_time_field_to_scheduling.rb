@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddPublishTimeFieldToScheduling < ActiveRecord::Migration[5.2]
   def change
     # This migration has a default value so that we can set it to be nil false

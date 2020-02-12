@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "tags/edit.html.erb" do
   it "shows a warning when editing the primary organisation tag of an access limited edition" do
     tag_field = build(:tag_field, :primary_publishing_organisation)

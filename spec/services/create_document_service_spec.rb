@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe CreateDocumentService do
   describe ".call" do
     let(:document_type) { build(:document_type) }

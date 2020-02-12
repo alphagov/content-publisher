@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateVersionedImageMetadataRevision < ActiveRecord::Migration[5.2]
   def change
     create_table :versioned_image_metadata_revisions do |t|

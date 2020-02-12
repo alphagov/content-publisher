@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe HistoryMode::UpdateInteractor do
   describe ".call" do
     let(:user) { create(:user, managing_editor: true) }

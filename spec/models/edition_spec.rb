@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Edition do
   describe ".find_current" do
     it "finds an edition by id" do

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Backdate" do
   it_behaves_like "requests that assert edition state",
                   "backdating a non editable edition",

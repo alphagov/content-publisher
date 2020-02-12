@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Versioning
   class FileAttachmentRevisionUpdater < BaseUpdater
     def column_names

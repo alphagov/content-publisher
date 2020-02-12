@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe FileAttachment::BlobRevision do
   describe "#bytes_for_asset" do
     let(:blob_revision) { build(:file_attachment_blob_revision) }

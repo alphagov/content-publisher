@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class TopicsController < ApplicationController
   rescue_from GdsApi::BaseError do |e|
     GovukError.notify(e)

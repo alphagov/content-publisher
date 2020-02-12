@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Insert inline image" do
   scenario "with javascript", js: true do
     given_there_is_an_edition_with_images

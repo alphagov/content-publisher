@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe DocumentType::BodyField do
   describe "#payload" do
     it "returns a hash with 'body' converted to Govspeak" do

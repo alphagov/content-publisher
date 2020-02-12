@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Document do
   describe "#newly_created?" do
     it "returns false if there isn't a current edition" do

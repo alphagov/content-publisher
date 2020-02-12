@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RemoveAssetManagerTables < ActiveRecord::Migration[5.2]
   def up
     drop_table :versioned_asset_manager_image_variants

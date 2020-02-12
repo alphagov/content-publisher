@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :access_limit do
     limit_type { :primary_organisation }

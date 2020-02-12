@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module DocumentTypeHelper
   def t_doctype_field?(edition, partial_i18n_key)
     i18n_key = prefix_doctype_field(edition, partial_i18n_key)

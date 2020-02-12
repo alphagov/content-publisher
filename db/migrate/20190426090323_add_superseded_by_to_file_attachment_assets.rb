@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddSupersededByToFileAttachmentAssets < ActiveRecord::Migration[5.2]
   def change
     add_reference :file_attachment_assets,

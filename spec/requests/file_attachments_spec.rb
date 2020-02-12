@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "File Attachments" do
   it_behaves_like "requests that assert edition state",
                   "accessing file attachments for a non editable edition",

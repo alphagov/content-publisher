@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PreviewController < ApplicationController
   def create
     result = Preview::CreateInteractor.call(params: params, user: current_user)

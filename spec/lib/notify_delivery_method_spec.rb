@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe NotifyDeliveryMethod do
   describe "#deliver!" do
     it "calls Notify's send_email endpoint" do

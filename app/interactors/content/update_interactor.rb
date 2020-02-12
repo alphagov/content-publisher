@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Content::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,

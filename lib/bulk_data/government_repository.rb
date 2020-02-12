@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 module BulkData
   class GovernmentRepository
-    CACHE_KEY = "government-v1"
+    CACHE_KEY = "government-v1".freeze
 
     def find(content_id)
       government = all.find { |g| g.content_id == content_id }

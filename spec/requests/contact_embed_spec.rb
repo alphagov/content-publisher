@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Contact Embed" do
   let(:edition) do
     create(:edition, document_type: build(:document_type, :with_body))

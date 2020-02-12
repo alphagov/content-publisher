@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddRevisionReferencesToFileAttachmentRevision < ActiveRecord::Migration[5.2]
   def change
     change_table :file_attachment_revisions, bulk: true do |t|

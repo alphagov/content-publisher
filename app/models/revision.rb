@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Represents a particular revision of a document - acting as a snapshot to
 # a particular user's edit.
 #

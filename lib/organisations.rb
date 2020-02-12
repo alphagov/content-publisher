@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Organisations
-  DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL = "govuk-feedback@digital.cabinet-office.gov.uk"
+  DEFAULT_ALTERNATIVE_FORMAT_CONTACT_EMAIL = "govuk-feedback@digital.cabinet-office.gov.uk".freeze
   CACHE_OPTIONS = { expires_in: 15.minutes, race_condition_ttl: 30.seconds }.freeze
 
   attr_reader :edition

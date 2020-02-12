@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "User can navigate through a documents history" do
   scenario do
     given_there_is_an_edition_with_extensive_document_history

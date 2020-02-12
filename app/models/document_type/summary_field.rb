@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DocumentType::SummaryField
   SUMMARY_MAX_LENGTH = 600
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "documents/index/_filters.html.erb" do
   describe "Organisation select" do
     context "when organisations are loaded from the Publishing API" do

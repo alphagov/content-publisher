@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe BulkData::Cache do
   describe ".write" do
     it "adds an entry that expires in 24 hours" do

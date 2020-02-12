@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe CreateImageBlobService::CentreCrop do
   describe ".new" do
     context "when no desired aspect ratio is specified" do

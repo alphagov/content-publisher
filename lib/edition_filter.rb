@@ -1,10 +1,8 @@
-# frozen_string_literal: true
-
 class EditionFilter
   include ActiveRecord::Sanitization::ClassMethods
 
   SORT_KEYS = %w[last_updated].freeze
-  DEFAULT_SORT = "-last_updated"
+  DEFAULT_SORT = "-last_updated".freeze
 
   attr_reader :filters, :sort, :page, :per_page, :user
 

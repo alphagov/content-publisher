@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This stores the content component of a revision, such as title, body and
 # other data a particular format uses.
 #

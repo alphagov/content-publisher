@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Requirements
   class ImageRevisionChecker
     ALT_TEXT_MAX_LENGTH = 125

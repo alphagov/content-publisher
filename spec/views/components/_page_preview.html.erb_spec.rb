@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "components/_page_preview.html.erb" do
   it "renders an iframe for desktop" do
     render "components/page_preview",

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Remove a lead image" do
   scenario "on the index page" do
     given_there_is_an_edition_with_a_lead_image

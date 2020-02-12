@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe EditionUrlHelper do
   let(:edition) do
     build(:edition,

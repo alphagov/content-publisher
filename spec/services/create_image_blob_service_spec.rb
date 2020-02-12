@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe CreateImageBlobService do
   let(:user) { build(:user) }
   let(:temp_image) do

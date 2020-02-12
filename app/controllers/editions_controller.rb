@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EditionsController < ApplicationController
   before_action :check_permissions
 

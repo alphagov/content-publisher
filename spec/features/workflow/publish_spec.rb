@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Publishing an edition" do
   scenario do
     given_there_is_an_edition_in_draft

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateVersionedTagsRevision < ActiveRecord::Migration[5.2]
   def change
     create_table :versioned_tags_revisions do |t|

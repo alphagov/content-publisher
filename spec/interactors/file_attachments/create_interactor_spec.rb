@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe FileAttachments::CreateInteractor do
   describe ".call" do
     before { allow(FailsafeDraftPreviewService).to receive(:call) }

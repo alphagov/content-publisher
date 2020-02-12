@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Images" do
   it_behaves_like "requests that assert edition state",
                   "accessing images for a non editable edition",

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Images::UpdateCropInteractor < ApplicationInteractor
   delegate :params,
            :user,

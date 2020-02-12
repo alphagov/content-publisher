@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Unwithdraw" do
   scenario do
     given_there_is_a_withdrawn_edition

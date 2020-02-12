@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Images::CreateInteractor < ApplicationInteractor
   delegate :params,
            :user,

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SchedulePublishService < ApplicationService
   def initialize(edition, user, scheduling)
     @edition = edition

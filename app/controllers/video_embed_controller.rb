@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class VideoEmbedController < ApplicationController
   include ActionView::Helpers::SanitizeHelper
   layout "modal"

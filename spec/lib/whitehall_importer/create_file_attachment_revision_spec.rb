@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
   let(:whitehall_file_attachment) do
     build(:whitehall_export_file_attachment)

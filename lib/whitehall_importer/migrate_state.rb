@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module WhitehallImporter
   class MigrateState
     attr_reader :whitehall_state, :force_published

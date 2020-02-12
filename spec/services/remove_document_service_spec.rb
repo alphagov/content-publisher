@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe RemoveDocumentService do
   describe "#call" do
     let(:edition) { create(:edition, :published) }

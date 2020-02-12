@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe DocumentType::TitleAndBasePathField do
   describe "#payload" do
     it "returns a hash with title and routing attributes" do

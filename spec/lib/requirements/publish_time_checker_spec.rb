@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Requirements::PublishTimeChecker do
   describe "#issues" do
     it "returns no issues if there are none" do

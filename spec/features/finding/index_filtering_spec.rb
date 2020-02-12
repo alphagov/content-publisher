@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Index filtering" do
   scenario do
     given_there_are_some_editions

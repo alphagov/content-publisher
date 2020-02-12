@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddReviewStateToDocuments < ActiveRecord::Migration[5.2]
   def up
     execute "TRUNCATE documents CASCADE"

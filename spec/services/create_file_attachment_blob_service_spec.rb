@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe CreateFileAttachmentBlobService do
   let(:file) { fixture_file_upload("files/text-file-74bytes.txt") }
   let(:revision) { build(:revision) }

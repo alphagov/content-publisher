@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Versioning::RevisionUpdater::FileAttachment do
   let(:user) { create :user }
   let(:attachment_revision) { create :file_attachment_revision }

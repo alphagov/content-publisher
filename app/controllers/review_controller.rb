@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ReviewController < ApplicationController
   def submit_for_2i
     result = Review::SubmitFor2iInteractor.call(params: params, user: current_user)

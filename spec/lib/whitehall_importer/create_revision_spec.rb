@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::CreateRevision do
   describe ".call" do
     let(:document) { build(:document, imported_from: "whitehall", locale: "en") }

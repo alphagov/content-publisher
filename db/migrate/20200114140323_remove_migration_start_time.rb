@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RemoveMigrationStartTime < ActiveRecord::Migration[6.0]
   def change
     remove_column :whitehall_migrations,

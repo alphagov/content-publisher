@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe GovspeakDocument::InAppOptions do
   include Rails.application.routes.url_helpers
 

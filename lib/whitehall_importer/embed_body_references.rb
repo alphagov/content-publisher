@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module WhitehallImporter
   class EmbedBodyReferences
     attr_reader :body, :contacts, :images, :attachments

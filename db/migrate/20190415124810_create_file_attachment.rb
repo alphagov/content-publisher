@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateFileAttachment < ActiveRecord::Migration[5.2]
   def change
     create_table :file_attachments do |t|

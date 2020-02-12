@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::ClearLinksetLinks do
   describe "#call" do
     before do

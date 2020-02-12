@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Scheduled publishing without review" do
   around do |example|
     travel_to(Time.zone.parse("2019-06-20")) { example.run }

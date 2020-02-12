@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PublishAssetsService < ApplicationService
   def initialize(edition, superseded_edition: nil)
     @edition = edition

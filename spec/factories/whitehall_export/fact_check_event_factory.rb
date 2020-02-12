@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :whitehall_export_fact_check_event, class: Hash do
     skip_create

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "new_document/choose_supertype.html.erb" do
   describe "input values for Supertypes" do
     it "should have an input radio for every Supertype" do

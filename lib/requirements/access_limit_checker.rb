@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Requirements
   class AccessLimitChecker
     attr_reader :edition, :user

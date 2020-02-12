@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module EditionUrlHelper
   def edition_public_url(edition)
     return unless edition.base_path

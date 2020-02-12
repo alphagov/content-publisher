@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class VideoEmbed::CreateInteractor < ApplicationInteractor
   include ActionView::Helpers::TextHelper
 

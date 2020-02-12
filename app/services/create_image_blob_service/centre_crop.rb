@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateImageBlobService::CentreCrop
   attr_reader :width, :height, :desired_aspect_ratio
 

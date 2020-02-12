@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Used as a stand-in for a File / Rack::Multipart::UploadedFile object when
 # passed to GdsApi::AssetManager#create_asset. The interface is required for
 # uploading a file using the restclient we used in the backend.

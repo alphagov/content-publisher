@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Schedule::DestroyInteractor do
   let(:scheduling) { build(:scheduling) }
   let(:edition) { create(:edition, :scheduled, scheduling: scheduling) }

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe PublishAssetsService do
   describe ".call" do
     it "publishes the draft assets and marks them as live" do

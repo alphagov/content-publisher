@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::CreateMigration do
   include ActiveJob::TestHelper
   describe ".call" do

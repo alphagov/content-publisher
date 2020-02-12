@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Resync tasks" do
   describe "resync:document" do
     it "resyncs a document" do

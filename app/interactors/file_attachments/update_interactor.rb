@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class FileAttachments::UpdateInteractor < ApplicationInteractor
   delegate :params,
            :user,

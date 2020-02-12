@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallMigration::AssetImport do
   describe ".content_publisher_asset" do
     it "returns the file attachment asset when associated with one" do

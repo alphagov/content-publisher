@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Organisations do
   describe "#alternative_format_contact_email" do
     context "when the edition has a primary org" do

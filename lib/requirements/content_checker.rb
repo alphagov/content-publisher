@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Requirements
   class ContentChecker
     attr_reader :edition

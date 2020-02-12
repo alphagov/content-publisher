@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AccessLimit::UpdateInteractor < ApplicationInteractor
   LIMIT_TYPES = AccessLimit.limit_types.keys
 

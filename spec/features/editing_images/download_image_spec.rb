@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Download a image" do
   scenario do
     given_there_is_an_edition_with_images

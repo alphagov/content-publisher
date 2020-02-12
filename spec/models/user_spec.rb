@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe User do
   describe "#can_access?" do
     context "when the user has an override permission" do

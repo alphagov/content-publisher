@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe DocumentType::SummaryField do
   describe "#payload" do
     it "returns a hash with a 'description' / summary" do

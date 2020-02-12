@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AllowRevisionDeletion < ActiveRecord::Migration[5.2]
   def up
     remove_foreign_key :revisions_image_revisions, :revisions

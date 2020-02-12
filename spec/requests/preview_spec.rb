@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Preview" do
   it_behaves_like "requests that assert edition state",
                   "previewing a live edition",

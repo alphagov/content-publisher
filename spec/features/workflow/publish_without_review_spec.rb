@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Publish without review" do
   scenario do
     given_there_is_an_edition

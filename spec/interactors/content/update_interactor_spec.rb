@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Content::UpdateInteractor do
   describe ".call" do
     before { stub_any_publishing_api_put_content }

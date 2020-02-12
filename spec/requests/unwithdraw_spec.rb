@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Unwithdraw" do
   let(:managing_editor) { create(:user, managing_editor: true) }
 

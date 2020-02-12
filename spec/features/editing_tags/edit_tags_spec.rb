@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Edit tags" do
   let(:initial_tag) { { "content_id" => SecureRandom.uuid, "internal_name" => "Initial tag" } }
   let(:tag_to_select_1) { { "content_id" => SecureRandom.uuid, "internal_name" => "Tag to select 1" } }

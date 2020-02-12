@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LeadImage::ChooseInteractor < ApplicationInteractor
   delegate :params,
            :user,

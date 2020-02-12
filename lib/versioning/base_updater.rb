@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Versioning
   class BaseUpdater
     attr_reader :revision, :user

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Requirements
   class FileAttachmentChecker
     TITLE_MAX_LENGTH = 255

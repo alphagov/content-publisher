@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Linkables
   CACHE_OPTIONS = { expires_in: 5.minutes, race_condition_ttl: 10.seconds }.freeze
 

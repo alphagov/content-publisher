@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module AccessibleAutocompleteHelper
   def accessible_autocomplete_select(option, for_id:, value:)
     # accessible autocomplete replaces a select element with an input

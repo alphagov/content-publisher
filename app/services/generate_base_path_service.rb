@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class GenerateBasePathService < ApplicationService
   def initialize(edition, title:, max_repeated_titles: 1000)
     @edition = edition

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ScheduleController < ApplicationController
   def new
     result = Schedule::NewInteractor.call(params: params, user: current_user)

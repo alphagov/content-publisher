@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Backdate::DestroyInteractor < ApplicationInteractor
   delegate :params,
            :edition,

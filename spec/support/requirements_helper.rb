@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec::Matchers.define :have_issue do |field, key, context = {}|
   context[:styles] ||= %i[form]
 

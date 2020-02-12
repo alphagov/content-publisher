@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Editions::CreateInteractor do
   describe ".call" do
     let(:user) { create :user }

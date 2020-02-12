@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Requirements::WithdrawalChecker do
   describe "#pre_withdrawal_issues" do
     let(:edition) { build(:edition) }

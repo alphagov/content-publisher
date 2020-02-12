@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Status do
   describe ".states" do
     Status.states.keys.each do |state|

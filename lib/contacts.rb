@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Contacts
   CACHE_OPTIONS = { expires_in: 15.minutes, race_condition_ttl: 30.seconds }.freeze
   EDITION_PARAMS = {

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "History Mode" do
   it_behaves_like "requests that assert edition state",
                   "managing history mode on a non editable edition",

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Editions::DestroyInteractor < ApplicationInteractor
   delegate :params,
            :user,

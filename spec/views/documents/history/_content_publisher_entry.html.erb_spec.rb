@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "documents/history/_content_publisher_entry.html.erb" do
   it "shows a timeline entry without an author" do
     timeline_entry = create(:timeline_entry,

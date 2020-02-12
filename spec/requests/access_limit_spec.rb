@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Access Limit" do
   let(:document_type) do
     organisation = build(:tag_field, :primary_publishing_organisation)

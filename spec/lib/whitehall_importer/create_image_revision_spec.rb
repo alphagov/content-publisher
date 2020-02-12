@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe WhitehallImporter::CreateImageRevision do
   describe "#call" do
     let(:whitehall_image) { build(:whitehall_export_image) }

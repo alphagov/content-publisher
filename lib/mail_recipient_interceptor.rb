@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class MailRecipientInterceptor
   def self.delivering_email(message)
     body_prefix = "Intended recipient(s): #{message.to.join(', ')}\n\n"

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # An image revision represents an edit of a particular image, it's data is
 # stored across two associations: Image::BlobRevision and
 # Image::MetadataRevision.

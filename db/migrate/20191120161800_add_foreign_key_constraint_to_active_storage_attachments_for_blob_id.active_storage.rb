@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This migration comes from active_storage (originally 20180723000244)
 class AddForeignKeyConstraintToActiveStorageAttachmentsForBlobId < ActiveRecord::Migration[6.0]
   def up

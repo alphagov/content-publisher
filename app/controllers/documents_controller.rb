@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DocumentsController < ApplicationController
   def index
     if filter_params[:filters].empty? && current_user.organisation_content_id

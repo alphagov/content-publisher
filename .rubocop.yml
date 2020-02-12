@@ -26,11 +26,6 @@ Rails/InverseOf:
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
-Style/FrozenStringLiteralComment:
-  Enabled: true
-  Exclude:
-    - config/**/*
-
 Rails/DynamicFindBy:
   Whitelist:
     - find_by_param

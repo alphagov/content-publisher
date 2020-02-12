@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "with_advisory_lock/base"
 
 RSpec.describe ApplicationJob do

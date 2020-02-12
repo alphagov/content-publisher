@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Image::BlobRevision do
   describe "#ensure_assets" do
     it "doesn't change the assets when they already exist" do

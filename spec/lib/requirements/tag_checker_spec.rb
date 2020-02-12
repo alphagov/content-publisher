@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Requirements::TagChecker do
   describe "#pre_update_issues" do
     it "returns no issues when there are none" do

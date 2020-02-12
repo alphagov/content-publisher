@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RemoveFieldsFromVersionedImageRevisions < ActiveRecord::Migration[5.2]
   def up
     change_table :versioned_image_revisions, bulk: true do |t|

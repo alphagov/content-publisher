@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe "Publish" do
   it_behaves_like "requests that assert edition state",
                   "publishing a non editable edition",

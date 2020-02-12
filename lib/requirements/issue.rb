@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Requirements
   class Issue
     attr_accessor :field, :issue_key, :context

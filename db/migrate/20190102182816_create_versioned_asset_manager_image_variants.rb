@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateVersionedAssetManagerImageVariants < ActiveRecord::Migration[5.2]
   def change
     create_table :versioned_asset_manager_image_variants do |t|

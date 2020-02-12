@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Schedule::DestroyInteractor < ApplicationInteractor
   delegate :params,
            :edition,

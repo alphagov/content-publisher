@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ScheduleProposalController < ApplicationController
   def update
     result = ScheduleProposal::UpdateInteractor.call(params: params, user: current_user)

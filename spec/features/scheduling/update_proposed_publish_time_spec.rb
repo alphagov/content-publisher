@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.feature "Update proposed publish time" do
   around do |example|
     travel_to(Time.zone.parse("2019-06-13")) { example.run }

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module WhitehallImporter
   class ClearLinksetLinks
     attr_reader :content_id
