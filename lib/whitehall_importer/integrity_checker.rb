@@ -128,13 +128,13 @@ module WhitehallImporter
     end
 
     def empty_caption?(proposed_image_payload, publishing_api_image, attribute)
-      attribute == "caption" &&
+      attribute == :caption &&
         publishing_api_image[attribute].nil? &&
         proposed_image_payload[attribute].empty?
     end
 
     def default_image?(proposed_image_payload, publishing_api_image, attribute)
-      attribute == "alt_text" &&
+      attribute == :alt_text &&
         proposed_image_payload.empty? &&
         publishing_api_image[attribute] == "placeholder"
     end
