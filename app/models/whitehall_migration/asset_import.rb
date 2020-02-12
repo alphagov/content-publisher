@@ -24,10 +24,8 @@ class WhitehallMigration::AssetImport < ApplicationRecord
     end
   end
 
-  def whitehall_asset_id
-    url_array = original_asset_url.to_s.split("/")
-    # https://github.com/alphagov/asset-manager#create-an-asset
-    url_array[url_array.length - 2]
+  def legacy_url_path
+    URI(original_asset_url).path
   end
 
 private

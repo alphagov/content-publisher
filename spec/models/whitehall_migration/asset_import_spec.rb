@@ -31,14 +31,14 @@ RSpec.describe WhitehallMigration::AssetImport do
     end
   end
 
-  describe ".whitehall_asset_id" do
-    it "returns the asset manager ID of the original asset" do
-      whitehall_asset_id = "847150"
+  describe ".legacy_url_path" do
+    it "returns the path of the original asset URL" do
+      asset_path = "/government/uploads/system/uploads/attachment_data/file/1/foo.jpg"
       asset = build(
         :whitehall_migration_asset_import,
-        original_asset_url: "https://asset-manager.gov.uk/blah/#{whitehall_asset_id}/foo.jpg",
+        original_asset_url: "https://static.gov.uk#{asset_path}",
       )
-      expect(asset.whitehall_asset_id).to eq(whitehall_asset_id)
+      expect(asset.legacy_url_path).to eq(asset_path)
     end
   end
 
