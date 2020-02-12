@@ -5,7 +5,8 @@ RSpec.describe WhitehallDocumentImportJob do
   let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
 
   let(:whitehall_migration_document_import) do
-    create(:whitehall_migration_document_import)
+    create(:whitehall_migration_document_import,
+           whitehall_migration_id: whitehall_migration["id"])
   end
 
   let(:imported_document_import) do
@@ -45,6 +46,21 @@ RSpec.describe WhitehallDocumentImportJob do
     expect(completed_document_import.whitehall_migration)
       .to receive(:check_migration_finished)
     WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
+  end
+
+  context "when an error is raised" do
+    let(:error_message) { "an error" }
+
+    before do
+      allow(WhitehallImporter::Import).to receive(:call).and_raise(error_message)
+    end
+
+    it "calls on the mark migration completed method" do
+      expect(whitehall_migration_document_import.whitehall_migration)
+        .to receive(:check_migration_finished)
+
+      WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
+    end
   end
 
   context "when the import fails" do

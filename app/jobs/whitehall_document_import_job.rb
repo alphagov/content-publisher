@@ -13,7 +13,7 @@ class WhitehallDocumentImportJob < ApplicationJob
   def perform(document_import)
     document_import = WhitehallImporter::Import.call(document_import)
     document_import = WhitehallImporter::Sync.call(document_import)
-    document_import.whitehall_migration&.check_migration_finished
+    document_import.whitehall_migration.check_migration_finished
   end
 
   def self.handle_error(document_import, error)
@@ -39,5 +39,7 @@ class WhitehallDocumentImportJob < ApplicationJob
       state = document_import.imported? ? "sync_failed" : "import_failed"
       document_import.update!(state: state, error_log: error.inspect)
     end
+
+    document_import.whitehall_migration.check_migration_finished
   end
 end
