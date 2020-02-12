@@ -1,3 +1,5 @@
+require "gds_api/whitehall_export"
+
 module WhitehallImporter
   class Import
     attr_reader :document_import
