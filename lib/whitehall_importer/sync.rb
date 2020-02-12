@@ -23,6 +23,7 @@ module WhitehallImporter
       MigrateAssets.call(whitehall_import)
 
       whitehall_import.update!(state: "completed")
+      whitehall_import
     end
   end
 end

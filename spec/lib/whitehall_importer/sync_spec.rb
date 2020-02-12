@@ -42,8 +42,8 @@ RSpec.describe WhitehallImporter::Sync do
     end
 
     it "returns a completed WhitehallMigration::DocumentImport" do
-      described_class.call(whitehall_migration_document_import)
-      expect(whitehall_migration_document_import).to be_completed
+      document_import = described_class.call(whitehall_migration_document_import)
+      expect(document_import).to be_completed
     end
 
     it "raises if the WhitehallMigration::DocumentImport doesn't have a state of imported" do
