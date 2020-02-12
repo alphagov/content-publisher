@@ -1,7 +1,7 @@
-RSpec.describe "Edit topics" do
+RSpec.feature "Edit topics" do
   include TopicsHelper
 
-  it do
+  scenario do
     given_there_is_an_edition
     when_i_visit_the_summary_page
     and_i_click_on_edit_topics

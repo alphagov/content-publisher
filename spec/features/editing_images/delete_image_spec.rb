@@ -1,5 +1,5 @@
-RSpec.describe "Delete an image" do
-  it "lead image" do
+RSpec.feature "Delete an image" do
+  scenario "lead image" do
     given_there_is_an_edition_with_images
     when_i_visit_the_images_page
     and_i_delete_the_non_lead_image
@@ -7,7 +7,7 @@ RSpec.describe "Delete an image" do
     and_i_see_the_timeline_entry
   end
 
-  it "inline image", js: true do
+  scenario "inline image", js: true do
     given_there_is_an_edition_with_images
     when_i_insert_an_inline_image
     and_i_delete_the_non_lead_image

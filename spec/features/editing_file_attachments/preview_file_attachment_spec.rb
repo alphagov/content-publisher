@@ -1,5 +1,5 @@
-RSpec.describe "Preview file attachment", js: true do
-  it do
+RSpec.feature "Preview file attachment", js: true do
+  scenario do
     given_there_is_an_edition_with_attachments
     and_the_attachment_is_available
     when_i_preview_the_attachment

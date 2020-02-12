@@ -1,5 +1,5 @@
-RSpec.describe "Replace a file attachment file", js: true do
-  it do
+RSpec.feature "Replace a file attachment file", js: true do
+  scenario do
     given_there_is_an_edition_with_an_attachment
     when_i_click_to_insert_an_attachment
     and_i_click_on_edit_file

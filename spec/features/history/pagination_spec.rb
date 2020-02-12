@@ -1,5 +1,5 @@
-RSpec.describe "User can navigate through a documents history" do
-  it do
+RSpec.feature "User can navigate through a documents history" do
+  scenario do
     given_there_is_an_edition_with_extensive_document_history
     when_i_visit_the_summary_page
     and_click_on_document_history

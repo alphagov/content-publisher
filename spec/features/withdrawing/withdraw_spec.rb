@@ -1,5 +1,5 @@
-RSpec.describe "Withdraw a document" do
-  it do
+RSpec.feature "Withdraw a document" do
+  scenario do
     given_there_is_a_published_edition
     and_i_am_a_managing_editor
     when_i_visit_the_summary_page

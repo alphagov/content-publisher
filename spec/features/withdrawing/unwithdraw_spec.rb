@@ -1,5 +1,5 @@
-RSpec.describe "Unwithdraw" do
-  it do
+RSpec.feature "Unwithdraw" do
+  scenario do
     given_there_is_a_withdrawn_edition
     and_i_am_a_managing_editor
     when_i_visit_the_summary_page

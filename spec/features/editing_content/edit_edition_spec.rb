@@ -1,5 +1,5 @@
-RSpec.describe "Edit an edition" do
-  it do
+RSpec.feature "Edit an edition" do
+  scenario do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
     and_i_fill_in_the_content_fields

@@ -1,5 +1,5 @@
-RSpec.describe "Creating a internal note" do
-  it do
+RSpec.feature "Creating a internal note" do
+  scenario do
     given_there_is_an_edition
     when_i_visit_the_document_history_page
     and_i_fill_in_and_submit_a_internal_note

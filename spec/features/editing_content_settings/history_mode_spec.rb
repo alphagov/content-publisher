@@ -1,5 +1,5 @@
-RSpec.describe "History mode" do
-  it do
+RSpec.feature "History mode" do
+  scenario do
     given_there_is_a_past_government
     and_there_is_a_not_political_document
     and_i_am_a_managing_editor

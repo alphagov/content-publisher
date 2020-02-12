@@ -1,14 +1,14 @@
-RSpec.describe "Editions" do
-  before do
+RSpec.feature "Editions" do
+  background do
     given_there_is_a_published_edition
   end
 
-  it "first edition" do
+  scenario "first edition" do
     when_i_visit_the_summary_page
     then_i_see_it_is_the_first_edition
   end
 
-  it "major change" do
+  scenario "major change" do
     when_i_visit_the_summary_page
     and_i_click_to_create_a_new_edition
     and_i_make_a_major_change
@@ -16,14 +16,14 @@ RSpec.describe "Editions" do
     and_i_see_the_new_edition_timeline_entry
   end
 
-  it "minor change" do
+  scenario "minor change" do
     when_i_visit_the_summary_page
     and_i_click_to_create_a_new_edition
     and_i_make_a_minor_change
     then_i_see_there_is_a_new_minor_edition
   end
 
-  it "discarded draft" do
+  scenario "discarded draft" do
     given_there_is_a_discarded_draft
     when_i_visit_the_summary_page
     and_i_click_to_create_a_new_edition

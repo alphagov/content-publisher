@@ -1,5 +1,5 @@
-RSpec.describe "Publish without review" do
-  it do
+RSpec.feature "Publish without review" do
+  scenario do
     given_there_is_an_edition
     when_i_visit_the_summary_page
     and_i_publish_without_review

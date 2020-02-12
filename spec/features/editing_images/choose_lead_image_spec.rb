@@ -1,5 +1,5 @@
-RSpec.describe "Choose a lead image" do
-  it "on the index page" do
+RSpec.feature "Choose a lead image" do
+  scenario "on the index page" do
     given_there_is_an_edition_with_images
     when_i_visit_the_images_page
     and_i_choose_one_of_the_images
@@ -7,7 +7,7 @@ RSpec.describe "Choose a lead image" do
     and_i_see_the_timeline_entry
   end
 
-  it "on the metadata page" do
+  scenario "on the metadata page" do
     given_there_is_an_edition_with_images
     when_i_visit_the_images_page
     and_i_edit_the_image_metadata

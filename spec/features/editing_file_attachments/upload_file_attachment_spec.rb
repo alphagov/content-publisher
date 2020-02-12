@@ -1,5 +1,5 @@
-RSpec.describe "Upload file attachment", js: true do
-  it do
+RSpec.feature "Upload file attachment", js: true do
+  scenario do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition
     and_i_go_to_insert_an_attachment

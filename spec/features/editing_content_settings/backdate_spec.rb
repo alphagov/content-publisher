@@ -1,5 +1,5 @@
-RSpec.describe "Backdate content" do
-  it do
+RSpec.feature "Backdate content" do
+  scenario do
     given_there_is_a_document_with_a_first_edition
     when_i_visit_the_summary_page
     then_i_see_that_the_content_has_not_been_backdated

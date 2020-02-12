@@ -1,5 +1,5 @@
-RSpec.describe "Remove a lead image" do
-  it "on the index page" do
+RSpec.feature "Remove a lead image" do
+  scenario "on the index page" do
     given_there_is_an_edition_with_a_lead_image
     when_i_visit_the_images_page
     and_i_remove_the_lead_image
@@ -7,7 +7,7 @@ RSpec.describe "Remove a lead image" do
     and_i_see_the_timeline_entry
   end
 
-  it "on the metadata page" do
+  scenario "on the metadata page" do
     given_there_is_an_edition_with_a_lead_image
     when_i_visit_the_images_page
     and_i_edit_the_image_metadata

@@ -1,5 +1,5 @@
-RSpec.describe "User can view the publisher information pages" do
-  it do
+RSpec.feature "User can view the publisher information pages" do
+  scenario do
     given_im_on_the_home_page
     when_i_click_on_the_publisher_updates_link_in_footer
     then_i_can_see_publisher_updates_page

@@ -1,11 +1,11 @@
-RSpec.describe "Edit tags" do
+RSpec.feature "Edit tags" do
   let(:initial_tag) { { "content_id" => SecureRandom.uuid, "internal_name" => "Initial tag" } }
   let(:tag_to_select_1) { { "content_id" => SecureRandom.uuid, "internal_name" => "Tag to select 1" } }
   let(:tag_to_select_2) { { "content_id" => SecureRandom.uuid, "internal_name" => "Tag to select 2" } }
   let(:single_tag_id) { "primary_publishing_organisation" }
   let(:multi_tag_id) { "world_locations" }
 
-  it do
+  scenario do
     given_there_is_an_edition
     when_i_visit_the_summary_page
     and_i_click_on_edit_tags

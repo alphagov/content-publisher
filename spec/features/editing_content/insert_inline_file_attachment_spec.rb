@@ -1,5 +1,5 @@
-RSpec.describe "Insert inline file attachment" do
-  it "block snippet", js: true do
+RSpec.feature "Insert inline file attachment" do
+  scenario "block snippet", js: true do
     given_there_is_an_edition_with_file_attachments
     when_i_go_to_edit_the_edition
     and_i_click_to_insert_a_file_attachment
@@ -8,7 +8,7 @@ RSpec.describe "Insert inline file attachment" do
     then_i_see_the_attachment_snippet_is_inserted
   end
 
-  it "link snippet", js: true do
+  scenario "link snippet", js: true do
     given_there_is_an_edition_with_file_attachments
     when_i_go_to_edit_the_edition
     and_i_click_to_insert_a_file_attachment
@@ -17,7 +17,7 @@ RSpec.describe "Insert inline file attachment" do
     then_i_see_the_attachment_link_snippet_is_inserted
   end
 
-  it "without javascript" do
+  scenario "without javascript" do
     given_there_is_an_edition_with_file_attachments
     when_i_go_to_edit_the_edition
     and_i_click_to_insert_a_file_attachment

@@ -1,9 +1,9 @@
-RSpec.describe "Scheduled publishing without review" do
+RSpec.feature "Scheduled publishing without review" do
   around do |example|
     travel_to(Time.zone.parse("2019-06-20")) { example.run }
   end
 
-  it do
+  scenario do
     given_there_is_a_schedulable_edition
     when_i_go_to_schedule_a_publishing
     and_i_submit_the_not_reviewed_option

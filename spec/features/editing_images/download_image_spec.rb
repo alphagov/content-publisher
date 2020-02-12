@@ -1,5 +1,5 @@
-RSpec.describe "Download a image" do
-  it do
+RSpec.feature "Download a image" do
+  scenario do
     given_there_is_an_edition_with_images
     when_i_visit_the_image_index_page
     and_i_click_the_link_to_download_the_image

@@ -1,5 +1,5 @@
-RSpec.describe "Index details" do
-  it do
+RSpec.feature "Index details" do
+  scenario do
     given_there_is_an_edition
     when_i_visit_the_index_page
     then_i_can_see_the_edition

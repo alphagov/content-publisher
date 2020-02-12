@@ -1,9 +1,9 @@
-RSpec.describe "Propose publish time and schedule" do
+RSpec.feature "Propose publish time and schedule" do
   around do |example|
     travel_to(Time.zone.parse("2019-06-17")) { example.run }
   end
 
-  it do
+  scenario do
     given_there_is_an_edition
     when_i_go_to_propose_a_publish_time
     and_i_enter_a_time

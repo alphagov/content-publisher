@@ -1,5 +1,5 @@
-RSpec.describe "Viewing debug information" do
-  it do
+RSpec.feature "Viewing debug information" do
+  scenario do
     given_there_is_an_edition_with_revisions
     when_i_dont_have_the_debug_permission
     and_i_visit_the_debug_page

@@ -1,11 +1,11 @@
-RSpec.describe "Enforce access limit" do
-  before do
+RSpec.feature "Enforce access limit" do
+  background do
     given_there_is_an_edition_in_multiple_orgs
     and_there_is_a_user_in_a_supporting_org
     and_there_is_a_user_in_some_other_org
   end
 
-  it "primary organisation" do
+  scenario "primary organisation" do
     when_i_limit_to_my_organisation
     then_i_see_the_primary_org_has_access
     and_i_see_the_timeline_entry
@@ -14,7 +14,7 @@ RSpec.describe "Enforce access limit" do
     and_someone_in_another_org_cannot
   end
 
-  it "all organisations" do
+  scenario "all organisations" do
     when_i_limit_to_tagged_organisations
     then_i_see_tagged_orgs_have_access
     and_i_see_the_timeline_entry

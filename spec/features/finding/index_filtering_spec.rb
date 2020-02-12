@@ -1,5 +1,5 @@
-RSpec.describe "Index filtering" do
-  it do
+RSpec.feature "Index filtering" do
+  scenario do
     given_there_are_some_editions
     when_i_visit_the_index_page
     then_i_only_see_my_organisations_editions
