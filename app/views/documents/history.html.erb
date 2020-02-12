@@ -8,6 +8,8 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <h2 class="govuk-visually-hidden"><%= t("documents.history.heading") %></h2>
+
     <% @timeline_entries.each_with_index do |entry, index| %>
 
       <% if displayed_edition_number != entry.edition.number %>

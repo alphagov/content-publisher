@@ -1,6 +1,7 @@
 en:
   documents:
     history:
+      heading: "Document history"
       edition_header: "%{number} edition"
       add_internal_note: "Add internal note"
       page_info: "%{page} of %{pages}"
