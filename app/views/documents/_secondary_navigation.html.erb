@@ -2,7 +2,7 @@
   aria_label: "Document",
   items: [
     {
-      label: "Document summary",
+      label: t("documents.show.heading"),
       href: document_path(@edition.document),
       current: current_page?(document_path(@edition.document)),
       data_attributes: {
@@ -10,7 +10,7 @@
       }
     },
     {
-      label: "Document history",
+      label: t("documents.history.heading"),
       href: document_history_path(@edition.document),
       current: current_page?(document_history_path(@edition.document)),
       data_attributes: {
