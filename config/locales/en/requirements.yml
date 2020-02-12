@@ -143,3 +143,6 @@ en:
     contact_embed:
       blank:
         form_message: Select a contact
+    document_type_selection:
+        not_selected:
+          form_message: Select a document type
