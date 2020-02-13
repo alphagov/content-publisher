@@ -1,11 +1,11 @@
 RSpec.describe AssetCleanupJob do
   describe "#perform" do
-    context "when the assets only exist on an old edition" do
-      let(:draft_image_revision) { create(:image_revision, :on_asset_manager, state: :draft) }
-      let(:live_image_revision) { create(:image_revision, :on_asset_manager, state: :live) }
-      let(:draft_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :draft) }
-      let(:live_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :live) }
+    let(:draft_image_revision) { create(:image_revision, :on_asset_manager, state: :draft) }
+    let(:live_image_revision) { create(:image_revision, :on_asset_manager, state: :live) }
+    let(:draft_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :draft) }
+    let(:live_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :live) }
 
+    context "when the assets only exist on an old edition" do
       before do
         create(:edition,
                current: false,
@@ -27,11 +27,6 @@ RSpec.describe AssetCleanupJob do
     end
 
     context "when the assets only exist on an old revision" do
-      let(:draft_image_revision) { create(:image_revision, :on_asset_manager, state: :draft) }
-      let(:live_image_revision) { create(:image_revision, :on_asset_manager, state: :live) }
-      let(:draft_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :draft) }
-      let(:live_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :live) }
-
       before do
         preceding_revision = create(:revision,
                                     lead_image_revision: nil,
@@ -55,11 +50,6 @@ RSpec.describe AssetCleanupJob do
     end
 
     context "when the assets exist on a current edition" do
-      let(:draft_image_revision) { create(:image_revision, :on_asset_manager, state: :draft) }
-      let(:live_image_revision) { create(:image_revision, :on_asset_manager, state: :live) }
-      let(:draft_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :draft) }
-      let(:live_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :live) }
-
       before do
         create(:edition,
                lead_image_revision: nil,
@@ -80,11 +70,6 @@ RSpec.describe AssetCleanupJob do
     end
 
     context "when the assets exist on a live edition" do
-      let(:draft_image_revision) { create(:image_revision, :on_asset_manager, state: :draft) }
-      let(:live_image_revision) { create(:image_revision, :on_asset_manager, state: :live) }
-      let(:draft_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :draft) }
-      let(:live_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :live) }
-
       before do
         create(:edition,
                live: true,
@@ -107,11 +92,6 @@ RSpec.describe AssetCleanupJob do
     end
 
     context "when the assets exist on an old revision" do
-      let(:draft_image_revision) { create(:image_revision, :on_asset_manager, state: :draft) }
-      let(:live_image_revision) { create(:image_revision, :on_asset_manager, state: :live) }
-      let(:draft_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :draft) }
-      let(:live_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :live) }
-
       before do
         preceding_revision = create(:revision,
                                     lead_image_revision: nil,
@@ -140,11 +120,6 @@ RSpec.describe AssetCleanupJob do
     end
 
     context "when the assets exist on an old edition" do
-      let(:draft_image_revision) { create(:image_revision, :on_asset_manager, state: :draft) }
-      let(:live_image_revision) { create(:image_revision, :on_asset_manager, state: :live) }
-      let(:draft_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :draft) }
-      let(:live_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :live) }
-
       before do
         create(:edition,
                current: false,
