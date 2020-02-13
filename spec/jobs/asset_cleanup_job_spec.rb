@@ -5,7 +5,7 @@ RSpec.describe AssetCleanupJob do
     let(:draft_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :draft) }
     let(:live_file_attachment_revision) { create(:file_attachment_revision, :on_asset_manager, state: :live) }
 
-    context "when the assets only exist on an old edition" do
+    context "when the assets only exist on a past edition" do
       before do
         create(:edition,
                current: false,
@@ -26,7 +26,7 @@ RSpec.describe AssetCleanupJob do
       end
     end
 
-    context "when the assets only exist on an old revision" do
+    context "when the assets only exist on a previous revision" do
       before do
         preceding_revision = create(:revision,
                                     lead_image_revision: nil,
@@ -91,7 +91,7 @@ RSpec.describe AssetCleanupJob do
       end
     end
 
-    context "when the assets exist on an old revision" do
+    context "when the assets from the current revision also exist on a past revision" do
       before do
         preceding_revision = create(:revision,
                                     lead_image_revision: nil,
@@ -107,7 +107,7 @@ RSpec.describe AssetCleanupJob do
         create(:edition, revision: revision)
       end
 
-      it "preserves draft/live assets in Asset Manager" do
+      it "doesn't delete the assets" do
         request = stub_asset_manager_deletes_any_asset
         described_class.perform_now
 
@@ -119,7 +119,7 @@ RSpec.describe AssetCleanupJob do
       end
     end
 
-    context "when the assets exist on an old edition" do
+    context "when the assets exist on a past edition and the current edition" do
       before do
         create(:edition,
                current: false,
@@ -133,7 +133,7 @@ RSpec.describe AssetCleanupJob do
                file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
       end
 
-      it "preserves draft/live assets in Asset Manager" do
+      it "doesn't delete the assets" do
         request = stub_asset_manager_deletes_any_asset
         described_class.perform_now
 
