@@ -16,6 +16,18 @@ RSpec.describe DocumentTypeSelection do
       end
     end
 
+    it "has locale keys that conform to the document type selection locale schema" do
+      document_types_locale_schema = JSON.parse(File.read("config/schemas/document_type_selection_locale.json"))
+      document_type_selections.each do |document_type_selection|
+        translations = I18n.t("document_type_selections.#{document_type_selection['id']}").deep_stringify_keys
+        validator = JSON::Validator.fully_validate(document_types_locale_schema, translations)
+        expect(validator).to(
+          be_empty,
+          "Document type selections locale validation for #{document_type_selection['id']} failed: \n\t#{validator.join("\n\t")}",
+        )
+      end
+    end
+
     it "finds the corresponding object for every string id in the options" do
       document_type_selections.flat_map { |d| d["options"] }.each do |option|
         if option["type"] == "document_type_selection"

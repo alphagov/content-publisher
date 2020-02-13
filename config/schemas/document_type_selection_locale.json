@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "required": [
+    "label"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "label": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "guidance": {
+      "type": "object",
+      "required": [
+        "body_govspeak"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "body_govspeak": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
