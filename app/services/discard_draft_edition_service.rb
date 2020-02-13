@@ -1,4 +1,4 @@
-class DeleteDraftEditionService < ApplicationService
+class DiscardDraftEditionService < ApplicationService
   def initialize(edition, user)
     @edition = edition
     @user = user

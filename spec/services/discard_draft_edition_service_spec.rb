@@ -1,4 +1,4 @@
-RSpec.describe DeleteDraftEditionService do
+RSpec.describe DiscardDraftEditionService do
   let(:user) { build(:user) }
 
   describe ".call" do

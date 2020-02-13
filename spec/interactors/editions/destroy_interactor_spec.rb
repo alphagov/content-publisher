@@ -18,8 +18,8 @@ RSpec.describe Editions::DestroyInteractor do
       expect(result.edition).to be_discarded
     end
 
-    it "delegates to the DeleteDraftEditionService" do
-      expect(DeleteDraftEditionService)
+    it "delegates to the DiscardDraftEditionService" do
+      expect(DiscardDraftEditionService)
         .to receive(:call)
         .with(edition, user)
       described_class.call(params: params, user: user)
