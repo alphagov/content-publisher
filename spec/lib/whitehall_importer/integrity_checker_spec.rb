@@ -1,10 +1,10 @@
 RSpec.describe WhitehallImporter::IntegrityChecker do
   let(:document_type) do
-    build :document_type, contents: [
+    build(:document_type, images: true, contents: [
       DocumentType::TitleAndBasePathField.new,
       DocumentType::SummaryField.new,
       DocumentType::BodyField.new,
-    ]
+    ])
   end
 
   describe "#valid?" do
@@ -45,9 +45,11 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     it "returns true if the Publishing API image caption is nil but the imported image caption is an empty string" do
-      edition.revision.image_revisions = [build(:image_revision, caption: "")]
+      image_revision = create(:image_revision, caption: "")
+      edition.revision.image_revisions = [image_revision]
+      edition.revision.lead_image_revision = image_revision
 
-      publishing_api_item[:image] = {
+      publishing_api_item[:details][:image] = {
         caption: nil,
       }
       stub_publishing_api_has_item(publishing_api_item)
@@ -57,7 +59,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     it "returns true if the Publishing API image is a placeholder and the imported edition has no image" do
-      publishing_api_item[:image] = {
+      publishing_api_item[:details][:image] = {
         alt_text: "placeholder",
       }
       stub_publishing_api_has_item(publishing_api_item)
