@@ -144,5 +144,40 @@ RSpec.describe AssetCleanupJob do
         expect(live_file_attachment_revision.reload.asset).to be_live
       end
     end
+
+    context "when asset manager doesn't have an asset to delete" do
+      before do
+        create(:edition,
+               current: false,
+               file_attachment_revisions: [draft_file_attachment_revision])
+      end
+
+      it "marks the asset as absent" do
+        request = stub_asset_manager_delete_asset(
+          draft_file_attachment_revision.asset.asset_manager_id,
+        ).to_return(status: 404)
+
+        described_class.perform_now
+
+        expect(request).to have_been_requested
+        expect(draft_file_attachment_revision.reload.asset).to be_absent
+      end
+    end
+
+    context "when asset manager is down" do
+      before do
+        stub_asset_manager_isnt_available
+        create(:edition,
+               current: false,
+               file_attachment_revisions: [draft_file_attachment_revision])
+      end
+
+      it "raises the error and doesn't change the assets state" do
+        expect { described_class.perform_now }
+          .to raise_error(GdsApi::HTTPUnavailable)
+
+        expect(draft_file_attachment_revision.reload.asset).to be_draft
+      end
+    end
   end
 end
