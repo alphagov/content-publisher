@@ -16,23 +16,23 @@ RSpec.describe Versioning::RevisionUpdater do
     end
 
     it "raises an error for unexpected attributes" do
-      updater = Versioning::RevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
       expect { updater.assign(foo: "bar") }.to raise_error ActiveModel::UnknownAttributeError
     end
 
     it "creates a new revision when a value changes" do
-      updater = Versioning::RevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
       updater.assign(title: "new title")
 
       next_revision = updater.next_revision
-      expect(next_revision).to_not eq revision
+      expect(next_revision).not_to eq revision
       expect(next_revision.created_by).to eq user
       expect(next_revision.number).to eq 2
       expect(next_revision.preceded_by).to eq revision
     end
 
     it "updates and reports changes to the fields" do
-      updater = Versioning::RevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
 
       new_fields = {
         title: "new title",
@@ -46,17 +46,17 @@ RSpec.describe Versioning::RevisionUpdater do
       updater.assign(new_fields)
       next_revision = updater.next_revision
 
-      expect(updater.changed?).to be_truthy
+      expect(updater).to be_changed
       expect(updater.changes).to include(new_fields)
 
       new_fields.each do |name, value|
-        expect(updater.changed?(name)).to be_truthy
+        expect(updater).to be_changed(name)
         expect(next_revision.public_send(name)).to eq value
       end
     end
 
     it "preserves the current revision if no change" do
-      updater = Versioning::RevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
 
       old_fields = {
         title: revision.title,
@@ -68,13 +68,13 @@ RSpec.describe Versioning::RevisionUpdater do
       }
 
       updater.assign(old_fields)
-      expect(updater.changed?).to be_falsey
+      expect(updater).not_to be_changed
       expect(updater.changes).to be_empty
       expect(updater.next_revision).to eq revision
     end
 
     it "preserves existing values when others change" do
-      updater = Versioning::RevisionUpdater.new(revision, user)
+      updater = described_class.new(revision, user)
 
       old_fields = {
         title: revision.title,
@@ -88,7 +88,7 @@ RSpec.describe Versioning::RevisionUpdater do
       updater.assign(summary: "new summary")
       next_revision = updater.next_revision
 
-      expect(next_revision).to_not eq revision
+      expect(next_revision).not_to eq revision
 
       old_fields.each do |name, value|
         expect(next_revision.public_send(name)).to eq value

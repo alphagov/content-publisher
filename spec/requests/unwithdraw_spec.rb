@@ -5,15 +5,18 @@ RSpec.describe "Unwithdraw" do
                   "unwithdrawing a non withdrawn edition",
                   routes: { unwithdraw_path: %i[get post] } do
     before { login_as(managing_editor) }
+
     let(:edition) { create(:edition, :published) }
   end
 
   describe "POST /documents/:document/unwithdraw" do
     let(:edition) { create(:edition, :withdrawn) }
+
     before { stub_publishing_api_republish(edition.content_id, {}) }
 
     context "when logged in as a managing editor" do
       let(:managing_editor) { create(:user, managing_editor: true) }
+
       before { login_as(managing_editor) }
 
       it "redirects to document summary" do
@@ -82,6 +85,7 @@ RSpec.describe "Unwithdraw" do
 
     context "when logged in as a managing editor" do
       let(:managing_editor) { create(:user, managing_editor: true) }
+
       before { login_as(managing_editor) }
 
       it "returns successfully" do

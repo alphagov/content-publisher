@@ -1,11 +1,11 @@
 RSpec.describe Supertype do
   describe "all configured supertypes are valid" do
-    Supertype.all.each do |supertype|
+    described_class.all.each do |supertype|
       describe "Supertype #{supertype.id}" do
         it "has the required attributes for #{supertype.id}" do
-          expect(supertype.id).to_not be_blank
-          expect(I18n.t!("supertypes.#{supertype.id}.label")).to_not be_blank
-          expect(I18n.t!("supertypes.#{supertype.id}.description")).to_not be_blank
+          expect(supertype.id).not_to be_blank
+          expect(I18n.t!("supertypes.#{supertype.id}.label")).not_to be_blank
+          expect(I18n.t!("supertypes.#{supertype.id}.description")).not_to be_blank
         end
       end
     end
@@ -13,11 +13,11 @@ RSpec.describe Supertype do
 
   describe ".find" do
     it "returns a Supertype when it's a known supertype" do
-      expect(Supertype.find("news")).to be_a(Supertype)
+      expect(described_class.find("news")).to be_a(described_class)
     end
 
     it "raises a RuntimeError when we don't know the supertype" do
-      expect { Supertype.find("unknown_supertype") }
+      expect { described_class.find("unknown_supertype") }
         .to raise_error(RuntimeError, "Supertype unknown_supertype not found")
     end
   end

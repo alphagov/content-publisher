@@ -3,8 +3,8 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
     let(:whitehall_image) { build(:whitehall_export_image) }
     let(:document_import) { build(:whitehall_migration_document_import) }
 
-    context "Valid image is provided" do
-      it "should create an Image::Revision" do
+    context "with a valid image" do
+      it "creates an Image::Revision" do
         image_revision = nil
         expect { image_revision = described_class.call(document_import, whitehall_image) }
           .to change { Image::Revision.count }.by(1)
@@ -13,7 +13,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
         expect(image_revision.filename).to eq("valid-image.jpg")
       end
 
-      it "should create a WhitehallMigration::AssetImport for each image variant" do
+      it "creates a WhitehallMigration::AssetImport for each image variant" do
         revision = described_class.call(document_import, whitehall_image)
 
         expect(document_import.assets.size).to eq(2)
@@ -29,7 +29,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
-    context "Image is not available" do
+    context "when the image is not available" do
       let(:image_url) { "https://assets.publishing.service.gov.uk/government/uploads/404ing-image.jpg" }
       let(:whitehall_image) do
         whitehall_image = build(:whitehall_export_image, url: image_url)
@@ -37,7 +37,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
         whitehall_image
       end
 
-      it "should raise a WhitehallImporter::AbortImportError" do
+      it "raises a WhitehallImporter::AbortImportError" do
         expect { described_class.call(document_import, whitehall_image) }.to raise_error(
           WhitehallImporter::AbortImportError,
           "Image does not exist: #{image_url}",
@@ -45,12 +45,12 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
-    context "Image is wrong type" do
+    context "when the image is the wrong type" do
       let(:whitehall_image) do
         build(:whitehall_export_image, filename: "vector.svg", fixture_file: "coffee.svg")
       end
 
-      it "should pass through ImageUploadChecker and raise a WhitehallImporter::AbortImportError" do
+      it "passes through ImageUploadChecker and raise a WhitehallImporter::AbortImportError" do
         expect(Requirements::ImageUploadChecker).to receive(:new).and_call_original
         expect { described_class.call(document_import, whitehall_image) }.to raise_error(
           WhitehallImporter::AbortImportError,
@@ -59,12 +59,12 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
-    context "Image is too small" do
+    context "when the image is too small" do
       let(:whitehall_image) do
         build(:whitehall_export_image, fixture_file: "100x100.jpg")
       end
 
-      it "should pass through ImageNormaliser and raise a WhitehallImporter::AbortImportError" do
+      it "passes through ImageNormaliser and raise a WhitehallImporter::AbortImportError" do
         expect(ImageNormaliser).to receive(:new).and_call_original
         expect { described_class.call(document_import, whitehall_image) }.to raise_error(
           WhitehallImporter::AbortImportError,
@@ -73,23 +73,23 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
-    context "Original image filename is URL-unfriendly" do
+    context "when the original image filename is URL-unfriendly" do
       let(:whitehall_image) do
         build(:whitehall_export_image, filename: "Whitehall--Asset_-image.jpg")
       end
 
-      it "should rename the file to something URL-friendly" do
+      it "renames the file to something URL-friendly" do
         described_class.call(document_import, whitehall_image)
         expect(Image::BlobRevision.last.filename).to eq("whitehall-asset_-image.jpg")
       end
     end
 
-    context "Image has exif data" do
+    context "when the image has exif data" do
       let(:whitehall_image) do
         build(:whitehall_export_image, fixture_file: "960x640-rotated.jpg")
       end
 
-      it "should strip the exif data from the image" do
+      it "strips the exif data from the image" do
         revision = described_class.call(document_import, whitehall_image, ["valid-image.jpg"])
 
         image = MiniMagick::Image.open(revision.blob)
@@ -97,7 +97,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       end
     end
 
-    it "should rename the file if duplicate filenames are passed" do
+    it "renames the file if duplicate filenames are passed" do
       described_class.call(document_import, whitehall_image, ["valid-image.jpg"])
       expect(Image::BlobRevision.last.filename).to eq("valid-image-1.jpg")
     end

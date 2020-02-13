@@ -1,11 +1,12 @@
 RSpec.describe BulkData::GovernmentRepository do
   include ActiveJob::TestHelper
 
-  let(:repository) { BulkData::GovernmentRepository.new }
+  let(:repository) { described_class.new }
   let(:cache_key) { BulkData::GovernmentRepository::CACHE_KEY }
 
   describe "#find" do
     let(:government) { build(:government) }
+
     before { populate_government_bulk_data(government) }
 
     it "can find a government for a particular content id" do

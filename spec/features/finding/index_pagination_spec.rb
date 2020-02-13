@@ -21,7 +21,7 @@ RSpec.feature "User pages through a list of editions" do
     expect(page.html).to include(I18n.t!("documents.index.search_results.summary_html", count: 51))
     expect(all(".gem-c-document-list__item").count).to eq 50
     expect(page).to have_content I18n.t!("documents.index.search_results.page_info", page: 2, pages: 2)
-    expect(page).to_not have_content("Previous page")
+    expect(page).not_to have_content("Previous page")
   end
 
   def when_i_click_to_see_the_next_results
@@ -36,6 +36,6 @@ RSpec.feature "User pages through a list of editions" do
     expect(page.html).to include(I18n.t!("documents.index.search_results.summary_html", count: 51))
     expect(all(".gem-c-document-list__item").count).to eq 1
     expect(page).to have_content I18n.t!("documents.index.search_results.page_info", page: 1, pages: 2)
-    expect(page).to_not have_content("Next page")
+    expect(page).not_to have_content("Next page")
   end
 end

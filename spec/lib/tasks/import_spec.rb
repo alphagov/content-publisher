@@ -4,7 +4,7 @@ RSpec.describe "Import tasks" do
   describe "import:whitehall_migration" do
     let(:whitehall_migration_document_import) { build(:whitehall_migration_document_import) }
 
-    before(:each) do
+    before do
       allow($stdout).to receive(:puts)
       Rake::Task["import:whitehall_migration"].reenable
       stub_publishing_api_has_lookups(

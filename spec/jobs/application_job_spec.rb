@@ -14,17 +14,17 @@ RSpec.describe ApplicationJob do
         .and_yield
         .and_return(result)
 
-      ApplicationJob.new.run_exclusively { code_block.run }
+      described_class.new.run_exclusively { code_block.run }
     end
 
     it "returns the result of the block" do
       id = SecureRandom.uuid
-      returned_result = ApplicationJob.new.run_exclusively { id }
+      returned_result = described_class.new.run_exclusively { id }
       expect(returned_result).to eq(id)
     end
 
     it "logs when a lock can't be acquired" do
-      job = ApplicationJob.new
+      job = described_class.new
       expect(ApplicationRecord)
         .to receive(:with_advisory_lock_result)
         .and_return(WithAdvisoryLock::Result.new(false))
@@ -43,11 +43,11 @@ RSpec.describe ApplicationJob do
         .with(instance_of(String), a_hash_including(transaction: true))
         .and_return(result)
 
-      ApplicationJob.new.run_exclusively
+      described_class.new.run_exclusively
     end
 
     it "defaults to using the class name for the lock name" do
-      klass = Class.new(ApplicationJob)
+      klass = Class.new(described_class)
       allow(klass).to receive(:name).and_return("MyJob")
 
       expect(ApplicationRecord)
@@ -64,7 +64,7 @@ RSpec.describe ApplicationJob do
         .with("content-publisher:lock-name", instance_of(Hash))
         .and_return(result)
 
-      ApplicationJob.new.run_exclusively(lock_name: "lock-name")
+      described_class.new.run_exclusively(lock_name: "lock-name")
     end
   end
 end

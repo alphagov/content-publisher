@@ -87,7 +87,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       expect(edition.editors.count).to eq(2)
     end
 
-    context "has editorial remarks" do
+    context "with editorial remarks" do
       let(:content_publisher_user) { create(:user) }
       let(:whitehall_user_id) { rand(100) }
       let(:user_ids) { { whitehall_user_id => content_publisher_user.id } }
@@ -305,7 +305,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       it "creates an edition with a status of removed" do
         edition = described_class.call(document_import: document_import, whitehall_edition: whitehall_edition)
 
-        expect(edition.removed?).to be_truthy
+        expect(edition).to be_removed
       end
 
       it "sets the correct removal metadata" do
@@ -350,13 +350,13 @@ RSpec.describe WhitehallImporter::CreateEdition do
       it "creates two editions" do
         expect {
           described_class.call(document_import: document_import, whitehall_edition: whitehall_edition)
-        } .to change { Edition.count }.by(2)
+        } .to change(Edition, :count).by(2)
       end
 
       it "creates an edition with a status of removed" do
         described_class.call(document_import: document_import, whitehall_edition: whitehall_edition)
 
-        expect(document.editions.first.removed?).to be_truthy
+        expect(document.editions.first).to be_removed
       end
 
       it "sets the correct removal metadata" do
@@ -371,7 +371,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
       it "creates a draft edition and assigns as current" do
         edition = described_class.call(document_import: document_import, whitehall_edition: whitehall_edition)
 
-        expect(edition.draft?).to be_truthy
+        expect(edition).to be_draft
         expect(edition.current).to be_truthy
       end
 

@@ -6,14 +6,14 @@ RSpec.describe Contacts do
         editions = [{ "content_id" => content_id, "locale" => "en", "title" => "Clark Kent" }]
         stub_publishing_api_get_editions(editions, Contacts::EDITION_PARAMS)
 
-        expect(Contacts.new.by_content_id(content_id)).to eq(editions.first)
+        expect(described_class.new.by_content_id(content_id)).to eq(editions.first)
       end
     end
 
     context "when a contact is not found" do
       it "returns nil" do
         stub_publishing_api_get_editions([], Contacts::EDITION_PARAMS)
-        expect(Contacts.new.by_content_id(SecureRandom.uuid)).to be_nil
+        expect(described_class.new.by_content_id(SecureRandom.uuid)).to be_nil
       end
     end
   end
@@ -34,7 +34,7 @@ RSpec.describe Contacts do
         ]
         stub_publishing_api_get_editions(org1_contacts + org2_contacts, Contacts::EDITION_PARAMS)
 
-        expect(Contacts.new.all_by_organisation).to match([
+        expect(described_class.new.all_by_organisation).to match([
           { "name" => org1["internal_name"], "content_id" => org1["content_id"], "contacts" => org1_contacts },
           { "name" => org2["internal_name"], "content_id" => org2["content_id"], "contacts" => org2_contacts },
         ])
@@ -48,7 +48,7 @@ RSpec.describe Contacts do
 
         stub_publishing_api_get_editions([], Contacts::EDITION_PARAMS)
 
-        expect(Contacts.new.all_by_organisation).to match([
+        expect(described_class.new.all_by_organisation).to match([
           { "name" => org1["internal_name"], "content_id" => org1["content_id"], "contacts" => [] },
         ])
       end
@@ -58,7 +58,7 @@ RSpec.describe Contacts do
       it "returns an empty array" do
         stub_publishing_api_has_linkables([], document_type: "organisation")
         stub_publishing_api_get_editions([], Contacts::EDITION_PARAMS)
-        expect(Contacts.new.all_by_organisation).to eql([])
+        expect(described_class.new.all_by_organisation).to eql([])
       end
     end
   end

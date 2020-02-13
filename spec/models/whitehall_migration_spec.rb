@@ -2,6 +2,7 @@ RSpec.describe WhitehallMigration do
   describe ".check_migration_completed" do
     context "with only jobs that have finished running" do
       let!(:whitehall_migration) { create(:whitehall_migration) }
+
       before do
         %i[completed import_aborted import_failed sync_failed].each do |state|
           create(:whitehall_migration_document_import,
@@ -20,6 +21,7 @@ RSpec.describe WhitehallMigration do
 
     context "with some incomplete jobs" do
       let!(:whitehall_migration) { create(:whitehall_migration) }
+
       before do
         create(:whitehall_migration_document_import, whitehall_migration_id: whitehall_migration["id"], state: "completed")
         create(:whitehall_migration_document_import, whitehall_migration_id: whitehall_migration["id"])

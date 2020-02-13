@@ -3,7 +3,7 @@ RSpec.describe PreviewAssetService do
     let(:edition) { create :edition }
 
     let(:asset) do
-      double(asset_manager_id: "id",
+      double(asset_manager_id: "id", # rubocop:disable RSpec/VerifiedDoubles
              update!: false,
              content_type: "type",
              filename: "foo/bar.jpg",
@@ -16,12 +16,13 @@ RSpec.describe PreviewAssetService do
       end
 
       before do
-        allow(asset).to receive(:draft?) { false }
-        allow(asset).to receive(:absent?) { true }
+        allow(asset).to receive(:draft?).and_return(false)
+        allow(asset).to receive(:absent?).and_return(true)
         file = PreviewAssetService::UploadedFile.new(asset)
 
-        allow_any_instance_of(PreviewAssetService::Payload)
-          .to receive(:for_upload) { { file: file, foo: "bar" } }
+        payload = instance_double(PreviewAssetService::Payload)
+        allow(payload).to receive(:for_upload).and_return(file: file, foo: "bar")
+        allow(PreviewAssetService::Payload).to receive(:new).and_return(payload)
       end
 
       it "uploads and updates the asset" do
@@ -30,7 +31,7 @@ RSpec.describe PreviewAssetService do
         expect(asset).to receive(:update!)
           .with a_hash_including(state: :draft, file_url: file_url)
 
-        PreviewAssetService.call(edition, asset)
+        described_class.call(edition, asset)
         expect(request).to have_been_requested.at_least_once
       end
 
@@ -43,23 +44,24 @@ RSpec.describe PreviewAssetService do
           expect(req.body).to include("foo")
         end
 
-        PreviewAssetService.call(edition, asset)
+        described_class.call(edition, asset)
         expect(request).to have_been_requested
       end
     end
 
     context "when a draft asset is on Asset Manager" do
       before do
-        allow(asset).to receive(:draft?) { true }
-        allow(asset).to receive(:absent?) { false }
+        allow(asset).to receive(:draft?).and_return(true)
+        allow(asset).to receive(:absent?).and_return(false)
 
-        allow_any_instance_of(PreviewAssetService::Payload)
-          .to receive(:for_update) { { foo: "bar" } }
+        payload = instance_double(PreviewAssetService::Payload)
+        allow(payload).to receive(:for_update).and_return(foo: "bar")
+        allow(PreviewAssetService::Payload).to receive(:new).and_return(payload)
       end
 
       it "updates the asset" do
         request = stub_asset_manager_update_asset("id")
-        PreviewAssetService.call(edition, asset)
+        described_class.call(edition, asset)
         expect(request).to have_been_requested
       end
 
@@ -70,7 +72,7 @@ RSpec.describe PreviewAssetService do
           expect(req.body).to include("foo")
         end
 
-        PreviewAssetService.call(edition, asset)
+        described_class.call(edition, asset)
         expect(request).to have_been_requested
       end
     end
@@ -78,10 +80,10 @@ RSpec.describe PreviewAssetService do
     context "when a live asset is on Asset Manager" do
       it "does not update the asset" do
         request = stub_asset_manager_update_asset("id")
-        allow(asset).to receive(:draft?) { false }
-        allow(asset).to receive(:absent?) { false }
-        PreviewAssetService.call(edition, asset)
-        expect(request).to_not have_been_requested
+        allow(asset).to receive(:draft?).and_return(false)
+        allow(asset).to receive(:absent?).and_return(false)
+        described_class.call(edition, asset)
+        expect(request).not_to have_been_requested
       end
     end
   end

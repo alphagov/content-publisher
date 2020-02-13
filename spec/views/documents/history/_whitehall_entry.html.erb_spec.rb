@@ -27,7 +27,7 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
 
     render partial: "documents/history/whitehall_entry",
                     locals: { entry: timeline_entry }
-    expect(rendered).to_not have_selector(".app-timeline-entry--highlighted")
+    expect(rendered).not_to have_selector(".app-timeline-entry--highlighted")
   end
 
   it "shows the contents of an imported internal note timeline entry" do
@@ -51,7 +51,7 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
 
     render partial: "documents/history/whitehall_entry",
                     locals: { entry: timeline_entry }
-    expect(rendered).to_not have_selector(".app-timeline-entry--highlighted")
+    expect(rendered).not_to have_selector(".app-timeline-entry--highlighted")
   end
 
   it "shows the contents of an imported fact check request timeline entry" do
@@ -80,7 +80,7 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
 
     render partial: "documents/history/whitehall_entry",
                     locals: { entry: timeline_entry }
-    expect(rendered).to_not have_selector(".app-timeline-entry--highlighted")
+    expect(rendered).not_to have_selector(".app-timeline-entry--highlighted")
   end
 
   it "shows the contents of an imported fact check response timeline entry" do

@@ -8,14 +8,14 @@ RSpec.describe FailsafeDraftPreviewService do
     it "delegates to the PreviewDraftEditionService" do
       edition = create(:edition)
       expect(PreviewDraftEditionService).to receive(:call)
-      FailsafeDraftPreviewService.call(edition)
+      described_class.call(edition)
     end
 
     context "when an external service is down" do
       it "sets revision_synced to false on the edition" do
         allow(PreviewDraftEditionService).to receive(:call).and_raise(GdsApi::BaseError)
         edition = create(:edition, revision_synced: true)
-        FailsafeDraftPreviewService.call(edition)
+        described_class.call(edition)
         expect(edition.revision_synced).to be(false)
       end
     end
@@ -24,13 +24,13 @@ RSpec.describe FailsafeDraftPreviewService do
       let(:edition) { create(:edition, summary: "new\nline", revision_synced: true) }
 
       it "sets revision_synced to false on the edition" do
-        FailsafeDraftPreviewService.call(edition)
+        described_class.call(edition)
         expect(edition.revision_synced).to be(false)
       end
 
       it "doesn't send to the Publishing API" do
         request = stub_publishing_api_put_content(edition.content_id, {})
-        FailsafeDraftPreviewService.call(edition)
+        described_class.call(edition)
         expect(request).not_to have_been_requested
       end
     end

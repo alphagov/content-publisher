@@ -42,7 +42,7 @@ RSpec.describe WhitehallImporter::Import do
 
     it "creates a document" do
       expect { described_class.call(document_import) }
-        .to change { Document.count }.by(1)
+        .to change(Document, :count).by(1)
     end
 
     it "aborts if a document already exists" do
@@ -102,7 +102,7 @@ RSpec.describe WhitehallImporter::Import do
         document_import.whitehall_document_id, whitehall_export
       )
 
-      expect { described_class.call(document_import) }.not_to(change { User.count })
+      expect { described_class.call(document_import) }.not_to(change(User, :count))
     end
 
     it "does not create a user who has a nil uid" do
@@ -112,7 +112,7 @@ RSpec.describe WhitehallImporter::Import do
         document_import.whitehall_document_id, whitehall_export
       )
 
-      expect { described_class.call(document_import) }.not_to(change { User.count })
+      expect { described_class.call(document_import) }.not_to(change(User, :count))
     end
 
     it "sets created_by_id as the original author" do

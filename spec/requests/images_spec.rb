@@ -29,6 +29,7 @@ RSpec.describe "Images" do
 
   describe "POST /documents/:document/images" do
     let(:edition) { create(:edition) }
+
     before { stub_publishing_api_put_content(edition.content_id, {}) }
 
     it "redirects to crop when image is created successfully" do
@@ -149,6 +150,7 @@ RSpec.describe "Images" do
 
   describe "DELETE /documents/:document/images/:image_id" do
     before { stub_any_publishing_api_put_content }
+
     let(:image_revision) { create(:image_revision) }
 
     it "redirects with a lead image alert when the image is the lead image" do

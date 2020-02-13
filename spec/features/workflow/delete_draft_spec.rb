@@ -29,7 +29,7 @@ RSpec.feature "Delete draft" do
 
   def then_i_see_the_edition_is_gone
     expect(page).to have_current_path(documents_path, ignore_query: true)
-    expect(page).to_not have_content @edition.title
+    expect(page).not_to have_content @edition.title
   end
 
   def and_the_draft_is_discarded

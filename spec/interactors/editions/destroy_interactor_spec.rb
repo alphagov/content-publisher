@@ -13,7 +13,7 @@ RSpec.describe Editions::DestroyInteractor do
     end
 
     it "discards an edition" do
-      result = Editions::DestroyInteractor.call(params: params, user: user)
+      result = described_class.call(params: params, user: user)
       expect(result).to be_success
       expect(result.edition).to be_discarded
     end
@@ -22,11 +22,11 @@ RSpec.describe Editions::DestroyInteractor do
       expect(DeleteDraftEditionService)
         .to receive(:call)
         .with(edition, user)
-      Editions::DestroyInteractor.call(params: params, user: user)
+      described_class.call(params: params, user: user)
     end
 
     it "creates a timeline entry" do
-      expect { Editions::DestroyInteractor.call(params: params, user: user) }
+      expect { described_class.call(params: params, user: user) }
         .to change { TimelineEntry.where(entry_type: :draft_discarded).count }
         .by(1)
     end
@@ -35,7 +35,7 @@ RSpec.describe Editions::DestroyInteractor do
       before { stub_publishing_api_isnt_available }
 
       it "fails with an api_error flag" do
-        result = Editions::DestroyInteractor.call(params: params, user: user)
+        result = described_class.call(params: params, user: user)
         expect(result).to be_failure
         expect(result.api_error).to be(true)
       end
@@ -45,7 +45,7 @@ RSpec.describe Editions::DestroyInteractor do
       let(:edition) { create(:edition, :published) }
 
       it "raises a state error" do
-        expect { Editions::DestroyInteractor.call(params: params, user: user) }
+        expect { described_class.call(params: params, user: user) }
           .to raise_error(EditionAssertions::StateError)
       end
     end

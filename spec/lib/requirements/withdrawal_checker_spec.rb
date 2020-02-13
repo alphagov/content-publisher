@@ -1,7 +1,7 @@
 RSpec.describe Requirements::WithdrawalChecker do
   describe "#pre_withdrawal_issues" do
     let(:edition) { build(:edition) }
-    let(:checker) { Requirements::WithdrawalChecker.new(edition) }
+    let(:checker) { described_class.new(edition) }
 
     it "returns no issues if there are none" do
       explanation = SecureRandom.alphanumeric

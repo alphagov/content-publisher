@@ -9,7 +9,7 @@ RSpec.describe SchedulePublishService::Payload do
                       document_type: document_type,
                       publish_time: publish_time)
 
-      payload = SchedulePublishService::Payload.new(edition).intent_payload
+      payload = described_class.new(edition).intent_payload
 
       payload_hash = {
         publish_time: publish_time,

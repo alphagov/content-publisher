@@ -51,9 +51,9 @@ RSpec.feature "Editions" do
   end
 
   def then_i_see_it_is_the_first_edition
-    expect(page).to_not have_content(I18n.t!("documents.show.contents.items.update_type"))
-    expect(page).to_not have_content(I18n.t!("documents.show.contents.items.change_note"))
-    expect(page).to_not have_link "Change Content"
+    expect(page).not_to have_content(I18n.t!("documents.show.contents.items.update_type"))
+    expect(page).not_to have_content(I18n.t!("documents.show.contents.items.change_note"))
+    expect(page).not_to have_link "Change Content"
   end
 
   def and_i_click_to_create_a_new_edition
@@ -73,7 +73,7 @@ RSpec.feature "Editions" do
 
   def then_i_see_there_is_a_new_minor_edition
     expect(page).to have_content(I18n.t!("documents.show.contents.update_type.minor"))
-    expect(page).to_not have_content(I18n.t!("documents.show.contents.items.change_note"))
+    expect(page).not_to have_content(I18n.t!("documents.show.contents.items.change_note"))
   end
 
   def then_i_see_there_is_a_new_major_edition

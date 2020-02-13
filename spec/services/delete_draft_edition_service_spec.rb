@@ -11,14 +11,14 @@ RSpec.describe DeleteDraftEditionService do
       it "raises an error when the edition isn't current" do
         edition = create(:edition, current: false)
 
-        expect { DeleteDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to raise_error("Only current editions can be deleted")
       end
 
       it "raises an exception if the current edition is live" do
         edition = create(:edition, live: true)
 
-        expect { DeleteDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to raise_error("Trying to delete a live edition")
       end
     end
@@ -26,20 +26,20 @@ RSpec.describe DeleteDraftEditionService do
     describe "changing edition status" do
       it "changes the editions current flag" do
         edition = create(:edition)
-        expect { DeleteDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to change { edition.current? }.to(false)
       end
 
       it "sets a live edition to be current after a draft is discarded" do
         document = create(:document, :with_current_and_live_editions)
         live_edition = document.live_edition
-        expect { DeleteDraftEditionService.call(document.current_edition, user) }
+        expect { described_class.call(document.current_edition, user) }
           .to change { document.current_edition }.to(live_edition)
       end
 
       it "sets the status of the edition to discarded" do
         edition = create(:edition)
-        expect { DeleteDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to change { edition.discarded? }.to(true)
       end
     end
@@ -48,7 +48,7 @@ RSpec.describe DeleteDraftEditionService do
       it "discards the draft from the Publishing API" do
         edition = create(:edition)
         request = stub_publishing_api_discard_draft(edition.content_id)
-        DeleteDraftEditionService.call(edition, user)
+        described_class.call(edition, user)
         expect(request).to have_been_requested
       end
 
@@ -67,7 +67,7 @@ RSpec.describe DeleteDraftEditionService do
           PreviewDraftEditionService::Payload::PUBLISHING_APP,
         )
 
-        DeleteDraftEditionService.call(edition, user)
+        described_class.call(edition, user)
 
         expect(unreserve_request1).to have_been_requested
         expect(unreserve_request2).to have_been_requested
@@ -80,7 +80,7 @@ RSpec.describe DeleteDraftEditionService do
           PreviewDraftEditionService::Payload::PUBLISHING_APP,
         )
 
-        DeleteDraftEditionService.call(document.current_edition, user)
+        described_class.call(document.current_edition, user)
         expect(unreserve_request).not_to have_been_requested
       end
 
@@ -88,7 +88,7 @@ RSpec.describe DeleteDraftEditionService do
       it "copes if the document preview does not exist" do
         edition = create(:edition)
         stub_any_publishing_api_discard_draft.to_return(status: 404)
-        DeleteDraftEditionService.call(edition, user)
+        described_class.call(edition, user)
         expect(edition).to be_discarded
       end
 
@@ -103,7 +103,7 @@ RSpec.describe DeleteDraftEditionService do
         stub_any_publishing_api_discard_draft
           .to_return(status: 422, body: discard_draft_error.to_json)
 
-        DeleteDraftEditionService.call(edition, user)
+        described_class.call(edition, user)
         expect(edition).to be_discarded
       end
 
@@ -118,7 +118,7 @@ RSpec.describe DeleteDraftEditionService do
         stub_any_publishing_api_discard_draft
           .to_return(status: 422, body: discard_draft_error.to_json)
 
-        expect { DeleteDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to raise_error(GdsApi::HTTPUnprocessableEntity)
       end
 
@@ -126,14 +126,14 @@ RSpec.describe DeleteDraftEditionService do
         edition = create(:edition)
 
         stub_publishing_api_unreserve_path_not_found(edition.base_path)
-        DeleteDraftEditionService.call(edition, user)
+        described_class.call(edition, user)
 
         expect(edition).to be_discarded
       end
 
       it "copes if the base path is not valid" do
         edition = create(:edition, base_path: nil)
-        DeleteDraftEditionService.call(edition, user)
+        described_class.call(edition, user)
         expect(edition).to be_discarded
       end
 
@@ -141,7 +141,7 @@ RSpec.describe DeleteDraftEditionService do
         edition = create(:edition)
         stub_publishing_api_isnt_available
 
-        expect { DeleteDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to raise_error(GdsApi::BaseError)
 
         expect(edition.revision_synced?).to be(false)
@@ -151,7 +151,7 @@ RSpec.describe DeleteDraftEditionService do
         edition = create(:edition)
         stub_publishing_api_unreserve_path_invalid(edition.base_path)
 
-        expect { DeleteDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to raise_error(GdsApi::BaseError)
 
         expect(edition.revision_synced?).to be(true)
@@ -168,7 +168,7 @@ RSpec.describe DeleteDraftEditionService do
 
         delete_request = stub_asset_manager_deletes_any_asset
 
-        DeleteDraftEditionService.call(edition, user)
+        described_class.call(edition, user)
 
         expect(delete_request).to have_been_requested.at_least_once
         expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
@@ -183,7 +183,7 @@ RSpec.describe DeleteDraftEditionService do
                          file_attachment_revisions: [file_attachment_revision])
         stub_any_asset_manager_call.to_return(status: 404)
 
-        DeleteDraftEditionService.call(edition, user)
+        described_class.call(edition, user)
 
         expect(image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
         expect(file_attachment_revision.reload.asset).to be_absent
@@ -198,7 +198,7 @@ RSpec.describe DeleteDraftEditionService do
 
         stub_asset_manager_isnt_available
 
-        expect { DeleteDraftEditionService.call(edition, user) }
+        expect { described_class.call(edition, user) }
           .to raise_error(GdsApi::BaseError)
 
         expect(edition.revision_synced?).to be(false)

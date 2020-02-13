@@ -15,7 +15,7 @@ RSpec.describe HistoryMode::UpdateInteractor do
     before { stub_any_publishing_api_put_content }
 
     it "sets the edition to political" do
-      HistoryMode::UpdateInteractor.call(**args)
+      described_class.call(**args)
       edition.reload
 
       expect(edition.political?).to be true
@@ -23,14 +23,14 @@ RSpec.describe HistoryMode::UpdateInteractor do
 
     it "sets the edition to not political" do
       args[:params][:political] = "no"
-      HistoryMode::UpdateInteractor.call(**args)
+      described_class.call(**args)
       edition.reload
 
       expect(edition.political?).to be false
     end
 
     it "creates a timeline entry" do
-      HistoryMode::UpdateInteractor.call(**args)
+      described_class.call(**args)
       edition.reload
 
       expect(edition.timeline_entries.last.entry_type).to eq("political_status_changed")
@@ -39,7 +39,7 @@ RSpec.describe HistoryMode::UpdateInteractor do
     it "sends a preview of the new edition to the Publishing API" do
       expect(FailsafeDraftPreviewService).to receive(:call)
 
-      HistoryMode::UpdateInteractor.call(**args)
+      described_class.call(**args)
     end
   end
 end

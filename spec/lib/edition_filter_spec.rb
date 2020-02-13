@@ -6,13 +6,13 @@ RSpec.describe EditionFilter do
       edition1 = create(:edition, last_edited_at: 1.minute.ago)
       edition2 = create(:edition, last_edited_at: 2.minutes.ago)
 
-      editions = EditionFilter.new(user, sort: "last_updated").editions
+      editions = described_class.new(user, sort: "last_updated").editions
       expect(editions).to eq([edition2, edition1])
 
-      editions = EditionFilter.new(user, sort: "-last_updated").editions
+      editions = described_class.new(user, sort: "-last_updated").editions
       expect(editions).to eq([edition1, edition2])
 
-      editions = EditionFilter.new(user, sort: "default -last_updated").editions
+      editions = described_class.new(user, sort: "default -last_updated").editions
       expect(editions).to eq([edition1, edition2])
     end
 
@@ -20,16 +20,16 @@ RSpec.describe EditionFilter do
       edition1 = create(:edition, title: "First", base_path: "/doc_1")
       edition2 = create(:edition, title: "Second", base_path: "/doc_2")
 
-      editions = EditionFilter.new(user, filters: { title_or_url: " " }).editions
+      editions = described_class.new(user, filters: { title_or_url: " " }).editions
       expect(editions).to match_array([edition1, edition2])
 
-      editions = EditionFilter.new(user, filters: { title_or_url: "Fir" }).editions
+      editions = described_class.new(user, filters: { title_or_url: "Fir" }).editions
       expect(editions).to eq([edition1])
 
-      editions = EditionFilter.new(user, filters: { title_or_url: "_1" }).editions
+      editions = described_class.new(user, filters: { title_or_url: "_1" }).editions
       expect(editions).to eq([edition1])
 
-      editions = EditionFilter.new(user, filters: { title_or_url: "%" }).editions
+      editions = described_class.new(user, filters: { title_or_url: "%" }).editions
       expect(editions).to be_empty
     end
 
@@ -37,10 +37,10 @@ RSpec.describe EditionFilter do
       edition1 = create(:edition, document_type_id: "type_1")
       edition2 = create(:edition, document_type_id: "type_2")
 
-      editions = EditionFilter.new(user, filters: { document_type: " " }).editions
+      editions = described_class.new(user, filters: { document_type: " " }).editions
       expect(editions).to match_array([edition1, edition2])
 
-      editions = EditionFilter.new(user, filters: { document_type: "type_1" }).editions
+      editions = described_class.new(user, filters: { document_type: "type_1" }).editions
       expect(editions).to eq([edition1])
     end
 
@@ -48,13 +48,13 @@ RSpec.describe EditionFilter do
       edition1 = create(:edition, state: "draft")
       edition2 = create(:edition, state: "submitted_for_review")
 
-      editions = EditionFilter.new(user, filters: { status: " " }).editions
+      editions = described_class.new(user, filters: { status: " " }).editions
       expect(editions).to match_array([edition1, edition2])
 
-      editions = EditionFilter.new(user, filters: { status: "non-existant" }).editions
+      editions = described_class.new(user, filters: { status: "non-existant" }).editions
       expect(editions).to be_empty
 
-      editions = EditionFilter.new(user, filters: { status: "draft" }).editions
+      editions = described_class.new(user, filters: { status: "draft" }).editions
       expect(editions).to eq([edition1])
     end
 
@@ -62,10 +62,10 @@ RSpec.describe EditionFilter do
       edition1 = create(:edition, state: "published")
       edition2 = create(:edition, state: "published_but_needs_2i")
 
-      editions = EditionFilter.new(user, filters: { status: "published" }).editions
+      editions = described_class.new(user, filters: { status: "published" }).editions
       expect(editions).to match_array([edition1, edition2])
 
-      editions = EditionFilter.new(user, filters: { status: "published_but_needs_2i" }).editions
+      editions = described_class.new(user, filters: { status: "published_but_needs_2i" }).editions
       expect(editions).to eq([edition2])
     end
 
@@ -74,10 +74,10 @@ RSpec.describe EditionFilter do
       edition2 = create(:edition, tags: { organisations: %w[org1] })
       edition3 = create(:edition, tags: { organisations: %w[org11] })
 
-      editions = EditionFilter.new(user, filters: { organisation: " " }).editions
+      editions = described_class.new(user, filters: { organisation: " " }).editions
       expect(editions).to match_array([edition1, edition2, edition3])
 
-      editions = EditionFilter.new(user, filters: { organisation: "org1" }).editions
+      editions = described_class.new(user, filters: { organisation: "org1" }).editions
       expect(editions).to match_array([edition1, edition2])
     end
 
@@ -85,10 +85,10 @@ RSpec.describe EditionFilter do
       edition1 = create(:edition, :not_political)
       edition2 = create(:edition, :political)
 
-      editions = EditionFilter.new(user, filters: { gets_history_mode: "yes" }).editions
+      editions = described_class.new(user, filters: { gets_history_mode: "yes" }).editions
       expect(editions).to match_array([edition2])
 
-      editions = EditionFilter.new(user, filters: { gets_history_mode: "no" }).editions
+      editions = described_class.new(user, filters: { gets_history_mode: "no" }).editions
       expect(editions).to match_array([edition1])
     end
 
@@ -98,17 +98,17 @@ RSpec.describe EditionFilter do
       edition1 = create(:edition, :political, government: current_government)
       edition2 = create(:edition, :political, government: past_government)
 
-      editions = EditionFilter.new(user, filters: { in_history_mode: "yes" }).editions
+      editions = described_class.new(user, filters: { in_history_mode: "yes" }).editions
       expect(editions).to match_array([edition2])
 
-      editions = EditionFilter.new(user, filters: { in_history_mode: "no" }).editions
+      editions = described_class.new(user, filters: { in_history_mode: "no" }).editions
       expect(editions).to match_array([edition1])
     end
 
     it "ignores other kinds of filter" do
       edition1 = create(:edition)
 
-      editions = EditionFilter.new(user, filters: { invalid: "filter" }).editions
+      editions = described_class.new(user, filters: { invalid: "filter" }).editions
       expect(editions).to eq([edition1])
     end
 
@@ -116,10 +116,10 @@ RSpec.describe EditionFilter do
       edition1 = create(:edition, last_edited_at: 1.minute.ago)
       edition2 = create(:edition, last_edited_at: 2.minutes.ago)
 
-      editions = EditionFilter.new(user, page: 1, per_page: 1).editions
+      editions = described_class.new(user, page: 1, per_page: 1).editions
       expect(editions).to eq([edition1])
 
-      editions = EditionFilter.new(user, page: 2, per_page: 1).editions
+      editions = described_class.new(user, page: 2, per_page: 1).editions
       expect(editions).to eq([edition2])
     end
 
@@ -135,24 +135,24 @@ RSpec.describe EditionFilter do
       end
 
       it "includes the edition if the user is in its primary org" do
-        editions = EditionFilter.new(user).editions
+        editions = described_class.new(user).editions
         expect(editions).to eq([edition])
       end
 
       it "excludes the edition if the user is in a supporting org" do
         supporting_user = build(:user, organisation_content_id: "supporting-org")
-        editions = EditionFilter.new(supporting_user).editions
+        editions = described_class.new(supporting_user).editions
         expect(editions).to be_empty
       end
 
       it "excludes the edition if the user is in a some other org" do
         user = build(:user, organisation_content_id: "other-org")
-        editions = EditionFilter.new(user).editions
+        editions = described_class.new(user).editions
         expect(editions).to be_empty
       end
 
       it "excludes the edition if the user has no org" do
-        editions = EditionFilter.new(build(:user)).editions
+        editions = described_class.new(build(:user)).editions
         expect(editions).to be_empty
       end
     end
@@ -169,24 +169,24 @@ RSpec.describe EditionFilter do
       end
 
       it "includes the edition if the user is in its primary org" do
-        editions = EditionFilter.new(user).editions
+        editions = described_class.new(user).editions
         expect(editions).to eq([edition])
       end
 
       it "includes the edition if the user is in a supporting org" do
         supporting_user = build(:user, organisation_content_id: "supporting-org")
-        editions = EditionFilter.new(supporting_user).editions
+        editions = described_class.new(supporting_user).editions
         expect(editions).to eq([edition])
       end
 
       it "excludes the edition if the user is in a some other org" do
         user = build(:user, organisation_content_id: "other-org")
-        editions = EditionFilter.new(user).editions
+        editions = described_class.new(user).editions
         expect(editions).to be_empty
       end
 
       it "excludes the edition if the user has no org" do
-        editions = EditionFilter.new(build(:user)).editions
+        editions = described_class.new(build(:user)).editions
         expect(editions).to be_empty
       end
     end
@@ -199,7 +199,7 @@ RSpec.describe EditionFilter do
           User::ACCESS_LIMIT_OVERRIDE_PERMISSION,
         ])
 
-        editions = EditionFilter.new(gds_user).editions
+        editions = described_class.new(gds_user).editions
         expect(editions).to eq([edition])
       end
     end
@@ -207,22 +207,22 @@ RSpec.describe EditionFilter do
 
   describe "#filter_params" do
     it "returns the params used to filter" do
-      params = EditionFilter.new(user, filters: { title_or_url: "title" }).filter_params
+      params = described_class.new(user, filters: { title_or_url: "title" }).filter_params
       expect(params).to eq(title_or_url: "title")
     end
 
     it "maintains empty params" do
-      params = EditionFilter.new(user, filters: { organisation: "" }).filter_params
+      params = described_class.new(user, filters: { organisation: "" }).filter_params
       expect(params).to eq(organisation: "")
     end
 
     it "includes sort and page if they are different to default" do
-      params = EditionFilter.new(user, sort: "last_updated", page: 5).filter_params
+      params = described_class.new(user, sort: "last_updated", page: 5).filter_params
       expect(params).to eq(sort: "last_updated", page: 5)
     end
 
     it "rejects page parameters less than 1" do
-      params = EditionFilter.new(user, page: 0).filter_params
+      params = described_class.new(user, page: 0).filter_params
       expect(params).to eq({})
     end
   end

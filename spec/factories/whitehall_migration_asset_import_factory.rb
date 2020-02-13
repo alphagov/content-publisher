@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :whitehall_migration_asset_import, class: WhitehallMigration::AssetImport do
+  factory :whitehall_migration_asset_import, class: "WhitehallMigration::AssetImport" do
     document_import { association :whitehall_migration_document_import }
     state { "pending" }
 

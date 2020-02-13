@@ -6,7 +6,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
     it "creates a revision" do
       whitehall_edition = build(:whitehall_export_edition)
       expect { described_class.call(document_import, whitehall_edition) }
-        .to change { Revision.count }
+        .to change(Revision, :count)
         .by(1)
     end
 

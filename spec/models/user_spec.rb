@@ -7,7 +7,7 @@ RSpec.describe User do
         ])
 
         edition = build(:edition)
-        expect(user.can_access?(edition)).to be_truthy
+        expect(user).to be_can_access(edition)
       end
     end
 
@@ -15,17 +15,17 @@ RSpec.describe User do
       let(:edition) { build(:edition, :access_limited) }
 
       before do
-        allow(edition).to receive(:access_limit_organisation_ids) { %w[org-id] }
+        allow(edition).to receive(:access_limit_organisation_ids).and_return(%w[org-id])
       end
 
       it "returns true if the user is in the specified orgs" do
         user = build(:user, organisation_content_id: "org-id")
-        expect(user.can_access?(edition)).to be_truthy
+        expect(user).to be_can_access(edition)
       end
 
       it "returns false if the user is not in the orgs" do
         user = build(:user, organisation_content_id: "another-org-id")
-        expect(user.can_access?(edition)).to be_falsey
+        expect(user).not_to be_can_access(edition)
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe User do
       it "returns true" do
         edition = build(:edition)
         user = build(:user)
-        expect(user.can_access?(edition)).to be_truthy
+        expect(user).to be_can_access(edition)
       end
     end
   end

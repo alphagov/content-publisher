@@ -5,7 +5,7 @@ RSpec.describe PublishMailer do
     it "creates an email for the user" do
       edition = build(:edition, :published, base_path: "/news/some-great-news")
 
-      mail = PublishMailer.publish_email(recipient, edition, edition.status)
+      mail = described_class.publish_email(recipient, edition, edition.status)
       mail_subject = I18n.t!("publish_mailer.publish_email.subject.published",
                              title: edition.title)
 
@@ -20,7 +20,7 @@ RSpec.describe PublishMailer do
                       :published,
                       published_at: Time.zone.parse("2019-06-17 9:00"))
 
-      mail = PublishMailer.publish_email(recipient, edition, edition.status)
+      mail = described_class.publish_email(recipient, edition, edition.status)
       publish_time = I18n.t!("publish_mailer.publish_email.details.publish",
                              date: "17 June 2019",
                              time: "9:00am",
@@ -33,7 +33,7 @@ RSpec.describe PublishMailer do
       it "informs recipients" do
         edition = build(:edition, :published, state: :published_but_needs_2i)
 
-        mail = PublishMailer.publish_email(recipient, edition, edition.status)
+        mail = described_class.publish_email(recipient, edition, edition.status)
 
         review_notice = I18n.t!("publish_mailer.publish_email.2i_warning")
         expect(mail.body.to_s).to include(review_notice)
@@ -47,7 +47,7 @@ RSpec.describe PublishMailer do
                         number: 2,
                         published_at: Time.zone.parse("2019-06-17 23:00"))
 
-        mail = PublishMailer.publish_email(recipient, edition, edition.status)
+        mail = described_class.publish_email(recipient, edition, edition.status)
         update_text = I18n.t!("publish_mailer.publish_email.details.update",
                               date: "17 June 2019",
                               time: "11:00pm",
@@ -66,7 +66,7 @@ RSpec.describe PublishMailer do
                         update_type: "major",
                         change_note: "Massive sweeping change")
 
-        mail = PublishMailer.publish_email(recipient, edition, edition.status)
+        mail = described_class.publish_email(recipient, edition, edition.status)
 
         expect(mail.body.to_s).to include("Massive sweeping change")
       end
@@ -78,7 +78,7 @@ RSpec.describe PublishMailer do
                         update_type: "minor",
                         change_note: "Tiny change")
 
-        mail = PublishMailer.publish_email(recipient, edition, edition.status)
+        mail = described_class.publish_email(recipient, edition, edition.status)
 
         expect(mail.body.to_s).not_to include("Tiny change")
         expect(mail.body.to_s)

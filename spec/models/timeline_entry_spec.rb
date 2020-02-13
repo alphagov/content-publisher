@@ -1,6 +1,6 @@
 RSpec.describe TimelineEntry do
   describe ".entry_types" do
-    TimelineEntry.entry_types.keys.each do |type|
+    described_class.entry_types.keys.each do |type|
       it "has a translation for `#{type}`" do
         expect(I18n.exists?("documents.history.entry_types.#{type}")).to be true
       end
@@ -15,12 +15,12 @@ RSpec.describe TimelineEntry do
                      state: :submitted_for_review,
                      edition: edition)
 
-      entry = TimelineEntry.create_for_status_change(
+      entry = described_class.create_for_status_change(
         entry_type: :submitted,
         status: status,
       )
 
-      expect(entry).to be_a(TimelineEntry)
+      expect(entry).to be_a(described_class)
       expect(entry).not_to be_new_record
       expect(entry).to be_submitted
       expect(entry.status).to eq(status)
@@ -31,7 +31,7 @@ RSpec.describe TimelineEntry do
                      state: :submitted_for_review,
                      edition: edition)
 
-      entry = TimelineEntry.create_for_status_change(
+      entry = described_class.create_for_status_change(
         entry_type: :submitted,
         status: status,
       )
@@ -48,20 +48,20 @@ RSpec.describe TimelineEntry do
     it "creates a TimelineEntry" do
       revision = create(:revision, document: edition.document)
 
-      entry = TimelineEntry.create_for_revision(
+      entry = described_class.create_for_revision(
         entry_type: :updated_content,
         edition: edition,
         revision: revision,
       )
 
-      expect(entry).to be_a(TimelineEntry)
+      expect(entry).to be_a(described_class)
       expect(entry).not_to be_new_record
       expect(entry).to be_updated_content
       expect(entry.revision).to eq(revision)
     end
 
     it "can set the revision based on the edition" do
-      entry = TimelineEntry.create_for_revision(
+      entry = described_class.create_for_revision(
         entry_type: :submitted,
         edition: edition,
       )

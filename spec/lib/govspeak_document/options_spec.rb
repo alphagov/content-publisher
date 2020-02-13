@@ -14,7 +14,7 @@ RSpec.describe GovspeakDocument::Options do
       content_id = SecureRandom.uuid
       govspeak = "[Contact:#{content_id}]"
       edition = create(:edition)
-      options = GovspeakDocument::Options.new(govspeak, edition)
+      options = described_class.new(govspeak, edition)
       actual_contacts_options = options.to_h[:contacts]
       expect(actual_contacts_options).to be_empty
     end
@@ -30,7 +30,7 @@ RSpec.describe GovspeakDocument::Options do
     it "returns the contacts options" do
       govspeak = "[Contact:#{content_id}]"
       edition = create(:edition)
-      options = GovspeakDocument::Options.new(govspeak, edition)
+      options = described_class.new(govspeak, edition)
       actual_contacts_options = options.to_h[:contacts].first
       expect(actual_contacts_options).to eq("Contact")
     end

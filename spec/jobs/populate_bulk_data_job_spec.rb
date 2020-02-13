@@ -2,7 +2,7 @@ RSpec.describe PopulateBulkDataJob do
   include ActiveJob::TestHelper
 
   it "runs the job exclusively" do
-    job = PopulateBulkDataJob.new
+    job = described_class.new
     expect(job).to receive(:run_exclusively)
     job.perform
   end
@@ -14,7 +14,7 @@ RSpec.describe PopulateBulkDataJob do
       expect(repository).to receive(:populate_cache)
                         .with(older_than: 5.minutes.ago)
 
-      PopulateBulkDataJob.perform_now
+      described_class.perform_now
     end
   end
 
@@ -23,15 +23,15 @@ RSpec.describe PopulateBulkDataJob do
       .to receive(:new)
       .and_raise(BulkData::RemoteDataUnavailableError)
 
-    PopulateBulkDataJob.perform_now
-    expect(PopulateBulkDataJob).to have_been_enqueued
+    described_class.perform_now
+    expect(described_class).to have_been_enqueued
   end
 
   it "logs the cause of BulkData::RemoteDataUnavailableErrors" do
     error = GdsApi::TimedOutException.new
     stub_any_publishing_api_call.to_raise(error)
 
-    job = PopulateBulkDataJob.new
+    job = described_class.new
     expect(job.logger).to receive(:warn).with(error.inspect)
     expect { job.perform }.to raise_error(BulkData::RemoteDataUnavailableError)
   end
@@ -43,7 +43,7 @@ RSpec.describe PopulateBulkDataJob do
       perform_enqueued_jobs do
         expect(GovukError).to receive(:notify)
                           .with(instance_of(BulkData::RemoteDataUnavailableError))
-        PopulateBulkDataJob.perform_later
+        described_class.perform_later
       end
     end
   end

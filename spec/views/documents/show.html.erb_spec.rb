@@ -52,6 +52,7 @@ RSpec.describe "documents/show.html.erb" do
   describe "topics" do
     let(:document_type) { build(:document_type, topics: true) }
     let(:edition) { build(:edition, document_type: document_type) }
+
     before { assign(:edition, edition) }
 
     it "shows the topics when a document has topics" do

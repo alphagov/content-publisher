@@ -1,3 +1,5 @@
+require: rubocop-rspec
+
 inherit_gem:
   rubocop-govuk:
     - config/default.yml
@@ -36,3 +38,44 @@ Rails/SaveBang:
 
 Style/DateTime:
   Enabled: true
+
+# Rubocop RSpec rules
+# We are trialling these set in app before intending to push the config to
+# rubocop-govuk
+
+# Don't require examples to be below a particular number of lines
+RSpec/ExampleLength:
+  Enabled: false
+
+# Don't force the top level describe to be a class, we tend to be good at
+# sticking to the class convention and only deviate for valid cases like rake
+# tasks
+RSpec/DescribeClass:
+  Enabled: false
+
+# We accept multiple expectations (within reason), preferring them to running
+# mulitple similar tests
+RSpec/MultipleExpectations:
+  Enabled: false
+
+# Within GOV.UK we use Capybara test method syntax of feature, scenario. We
+# don't want this outside of feature specs though
+Capybara/FeatureMethods:
+  Exclude:
+    - 'spec/features/**/*.rb'
+
+# Part of the GOV.UK feature spec style involves instance variables
+# TODO: Investigate if we can embrace this rule and use let/given methods
+RSpec/InstanceVariable:
+  Exclude:
+    - 'spec/features/**/*.rb'
+
+# In GOV.UK we quite often test that a class received a particular method
+RSpec/MessageSpies:
+  Enabled: false
+
+# This prevents nesting context blocks. This practice is hard to understand
+# but unfortunately is in some GOV.UK apps.
+# TODO: Investigate if we can embrace this rule and remove our nesting
+RSpec/NestedGroups:
+  Enabled: false

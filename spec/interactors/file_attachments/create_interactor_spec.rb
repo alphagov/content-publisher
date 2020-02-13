@@ -1,6 +1,7 @@
 RSpec.describe FileAttachments::CreateInteractor do
   describe ".call" do
     before { allow(FailsafeDraftPreviewService).to receive(:call) }
+
     let(:user) { create(:user) }
     let(:edition) { create(:edition) }
     let(:file) { fixture_file_upload("files/13kb-1-page-attachment.pdf") }
@@ -18,11 +19,11 @@ RSpec.describe FileAttachments::CreateInteractor do
 
     context "when input is valid" do
       it "is successful" do
-        expect(FileAttachments::CreateInteractor.call(**args)).to be_success
+        expect(described_class.call(**args)).to be_success
       end
 
       it "creates a new file attachment revision" do
-        expect { FileAttachments::CreateInteractor.call(**args) }
+        expect { described_class.call(**args) }
           .to change { FileAttachment::Revision.count }.by(1)
       end
 
@@ -30,7 +31,7 @@ RSpec.describe FileAttachments::CreateInteractor do
         expect(CreateFileAttachmentBlobService).to receive(:call)
           .with(file: file, filename: file.original_filename, user: user)
           .and_call_original
-        FileAttachments::CreateInteractor.call(**args)
+        described_class.call(**args)
       end
 
       it "delegates generating a unique filename to GenerateUniqueFilenameService" do
@@ -38,17 +39,17 @@ RSpec.describe FileAttachments::CreateInteractor do
           .with(existing_filenames: edition.revision.file_attachment_revisions.map(&:filename),
                 filename: file.original_filename)
           .and_call_original
-        FileAttachments::CreateInteractor.call(**args)
+        described_class.call(**args)
       end
 
       it "sets the title of the File attachment" do
-        result = FileAttachments::CreateInteractor.call(**args)
+        result = described_class.call(**args)
         file_attachment_revision = result.edition.file_attachment_revisions.first
         expect(file_attachment_revision.title).to eq(title)
       end
 
       it "attributes the various created file attachment models to the user" do
-        result = FileAttachments::CreateInteractor.call(**args)
+        result = described_class.call(**args)
         file_attachment_revision = result.edition.file_attachment_revisions.first
 
         expect(file_attachment_revision.created_by).to eq(user)
@@ -58,13 +59,13 @@ RSpec.describe FileAttachments::CreateInteractor do
       end
 
       it "creates a timeline entry" do
-        expect { FileAttachments::CreateInteractor.call(**args) }
-          .to change { TimelineEntry.count }.by(1)
+        expect { described_class.call(**args) }
+          .to change(TimelineEntry, :count).by(1)
       end
 
       it "updates the preview" do
         expect(FailsafeDraftPreviewService).to receive(:call).with(edition)
-        FileAttachments::CreateInteractor.call(**args)
+        described_class.call(**args)
       end
     end
 
@@ -72,17 +73,17 @@ RSpec.describe FileAttachments::CreateInteractor do
       let(:edition) { create(:edition, :published) }
 
       it "raises a state error" do
-        expect { FileAttachments::CreateInteractor.call(**args) }
+        expect { described_class.call(**args) }
           .to raise_error(EditionAssertions::StateError)
       end
     end
 
     context "when the uploaded file has issues" do
       it "fails with issues returned" do
-        allow(Requirements::FileAttachmentChecker)
-          .to receive(:new).and_return(double(pre_upload_issues: %w(issue)))
-
-        result = FileAttachments::CreateInteractor.call(**args)
+        checker = instance_double(Requirements::FileAttachmentChecker)
+        allow(checker).to receive(:pre_upload_issues).and_return(%w(issue))
+        allow(Requirements::FileAttachmentChecker).to receive(:new).and_return(checker)
+        result = described_class.call(**args)
 
         expect(result).to be_failure
         expect(result.issues).to eq %w(issue)

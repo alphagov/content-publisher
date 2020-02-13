@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :government, class: Government do
+  factory :government, class: "Government" do
     skip_create
 
     transient do

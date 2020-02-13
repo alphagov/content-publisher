@@ -16,7 +16,7 @@ RSpec.describe GovspeakDocument::InAppOptions do
                              filename: "filename.png")
       edition = build(:edition, image_revisions: [image_revision])
 
-      in_app_options = GovspeakDocument::InAppOptions.new("govspeak", edition)
+      in_app_options = described_class.new("govspeak", edition)
       actual_image_options = in_app_options.to_h[:images].first
 
       expect(actual_image_options).to match(
@@ -40,9 +40,9 @@ RSpec.describe GovspeakDocument::InAppOptions do
                       file_attachment_revisions: [attachment_revision])
 
       allow(organisation_service)
-        .to receive(:alternative_format_contact_email) { "foo@bar.com" }
+        .to receive(:alternative_format_contact_email).and_return("foo@bar.com")
 
-      in_app_options = GovspeakDocument::InAppOptions.new("govspeak", edition)
+      in_app_options = described_class.new("govspeak", edition)
       actual_attachment_options = in_app_options.to_h[:attachments].first
 
       expect(actual_attachment_options).to match(

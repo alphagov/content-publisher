@@ -16,7 +16,7 @@ RSpec.describe AssetCleanupJob do
 
       it "deletes draft/live assets that are dangling" do
         request = stub_asset_manager_deletes_any_asset
-        AssetCleanupJob.perform_now
+        described_class.perform_now
 
         expect(request).to have_been_requested.at_least_once
         expect(draft_image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
@@ -44,7 +44,7 @@ RSpec.describe AssetCleanupJob do
 
       it "deletes draft/live assets that are dangling" do
         request = stub_asset_manager_deletes_any_asset
-        AssetCleanupJob.perform_now
+        described_class.perform_now
 
         expect(request).to have_been_requested.at_least_once
         expect(draft_image_revision.reload.assets.map(&:state).uniq).to eq(%w[absent])
@@ -69,9 +69,9 @@ RSpec.describe AssetCleanupJob do
 
       it "preserves draft/live assets in Asset Manager" do
         request = stub_asset_manager_deletes_any_asset
-        AssetCleanupJob.perform_now
+        described_class.perform_now
 
-        expect(request).to_not have_been_requested
+        expect(request).not_to have_been_requested
         expect(draft_image_revision.reload.assets.map(&:state).uniq).to eq(%w[draft])
         expect(draft_file_attachment_revision.reload.asset).to be_draft
         expect(live_image_revision.reload.assets.map(&:state).uniq).to eq(%w[live])
@@ -96,9 +96,9 @@ RSpec.describe AssetCleanupJob do
 
       it "preserves draft/live assets in Asset Manager" do
         request = stub_asset_manager_deletes_any_asset
-        AssetCleanupJob.perform_now
+        described_class.perform_now
 
-        expect(request).to_not have_been_requested
+        expect(request).not_to have_been_requested
         expect(draft_image_revision.reload.assets.map(&:state).uniq).to eq(%w[draft])
         expect(draft_file_attachment_revision.reload.asset).to be_draft
         expect(live_image_revision.reload.assets.map(&:state).uniq).to eq(%w[live])
@@ -129,9 +129,9 @@ RSpec.describe AssetCleanupJob do
 
       it "preserves draft/live assets in Asset Manager" do
         request = stub_asset_manager_deletes_any_asset
-        AssetCleanupJob.perform_now
+        described_class.perform_now
 
-        expect(request).to_not have_been_requested
+        expect(request).not_to have_been_requested
         expect(draft_image_revision.reload.assets.map(&:state).uniq).to eq(%w[draft])
         expect(draft_file_attachment_revision.reload.asset).to be_draft
         expect(live_image_revision.reload.assets.map(&:state).uniq).to eq(%w[live])
@@ -160,9 +160,9 @@ RSpec.describe AssetCleanupJob do
 
       it "preserves draft/live assets in Asset Manager" do
         request = stub_asset_manager_deletes_any_asset
-        AssetCleanupJob.perform_now
+        described_class.perform_now
 
-        expect(request).to_not have_been_requested
+        expect(request).not_to have_been_requested
         expect(draft_image_revision.reload.assets.map(&:state).uniq).to eq(%w[draft])
         expect(draft_file_attachment_revision.reload.asset).to be_draft
         expect(live_image_revision.reload.assets.map(&:state).uniq).to eq(%w[live])

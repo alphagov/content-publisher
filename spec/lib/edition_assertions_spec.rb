@@ -1,11 +1,11 @@
 RSpec.describe EditionAssertions do
-  include EditionAssertions
+  include described_class
 
   describe "#assert_edition_state" do
     let(:edition) { build :edition }
 
     it "does nothing when the assertion block returns true" do
-      expect { assert_edition_state(edition) { true } }.to_not raise_error
+      expect { assert_edition_state(edition) { true } }.not_to raise_error
     end
 
     it "raises an error when the assertion block is false" do

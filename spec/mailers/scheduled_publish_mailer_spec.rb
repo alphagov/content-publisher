@@ -4,7 +4,7 @@ RSpec.describe ScheduledPublishMailer do
   describe ".success_email" do
     it "creates an email for the user" do
       edition = build(:edition, :published)
-      mail = ScheduledPublishMailer.success_email(recipient, edition, edition.status)
+      mail = described_class.success_email(recipient, edition, edition.status)
 
       expect(mail.to).to eq([recipient.email])
 
@@ -18,7 +18,7 @@ RSpec.describe ScheduledPublishMailer do
                       :published,
                       published_at: Time.zone.parse("2019-06-17 9:00"))
 
-      mail = ScheduledPublishMailer.success_email(recipient, edition, edition.status)
+      mail = described_class.success_email(recipient, edition, edition.status)
 
       publish_time = I18n.t!("scheduled_publish_mailer.success_email.details.publish",
                              date: "17 June 2019",
@@ -30,7 +30,7 @@ RSpec.describe ScheduledPublishMailer do
       publisher = build(:user, name: "Government Publisher")
       edition = build(:edition, :published, created_by: publisher)
 
-      mail = ScheduledPublishMailer.success_email(recipient, edition, edition.status)
+      mail = described_class.success_email(recipient, edition, edition.status)
 
       scheduled_by = I18n.t!("scheduled_publish_mailer.success_email.scheduled_by",
                              name: "Government Publisher")
@@ -41,7 +41,7 @@ RSpec.describe ScheduledPublishMailer do
       it "informs recipients" do
         edition = build(:edition, :published, state: :published_but_needs_2i)
 
-        mail = ScheduledPublishMailer.success_email(recipient, edition, edition.status)
+        mail = described_class.success_email(recipient, edition, edition.status)
 
         review_notice = I18n.t!("scheduled_publish_mailer.success_email.2i_warning")
         expect(mail.body.to_s).to include(review_notice)
@@ -55,7 +55,7 @@ RSpec.describe ScheduledPublishMailer do
                         number: 2,
                         published_at: Time.zone.parse("2019-06-17 23:00"))
 
-        mail = ScheduledPublishMailer.success_email(recipient, edition, edition.status)
+        mail = described_class.success_email(recipient, edition, edition.status)
 
         update_text = I18n.t!("scheduled_publish_mailer.success_email.details.update",
                               date: "17 June 2019",
@@ -70,7 +70,7 @@ RSpec.describe ScheduledPublishMailer do
                         update_type: "major",
                         change_note: "Massive sweeping change")
 
-        mail = ScheduledPublishMailer.success_email(recipient, edition, edition.status)
+        mail = described_class.success_email(recipient, edition, edition.status)
 
         expect(mail.body.to_s).to include("Massive sweeping change")
       end
@@ -82,7 +82,7 @@ RSpec.describe ScheduledPublishMailer do
                         update_type: "minor",
                         change_note: "Tiny change")
 
-        mail = ScheduledPublishMailer.success_email(recipient, edition, edition.status)
+        mail = described_class.success_email(recipient, edition, edition.status)
 
         expect(mail.body.to_s).not_to include("Tiny change")
         expect(mail.body.to_s)
@@ -94,7 +94,7 @@ RSpec.describe ScheduledPublishMailer do
   describe ".failure_email" do
     it "creates an email for the user" do
       edition = build(:edition, :failed_to_publish)
-      mail = ScheduledPublishMailer.failure_email(recipient, edition, edition.status)
+      mail = described_class.failure_email(recipient, edition, edition.status)
 
       expect(mail.to).to eq([recipient.email])
 
@@ -108,7 +108,7 @@ RSpec.describe ScheduledPublishMailer do
                          publish_time: Time.zone.parse("2019-06-17 12:00"))
       edition = build(:edition, :failed_to_publish, scheduling: scheduling)
 
-      mail = ScheduledPublishMailer.failure_email(recipient, edition, edition.status)
+      mail = described_class.failure_email(recipient, edition, edition.status)
 
       publish_time = I18n.t!("scheduled_publish_mailer.failure_email.schedule_date",
                              date: "17 June 2019",

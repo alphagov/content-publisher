@@ -23,7 +23,7 @@ RSpec.describe WhitehallImporter::CreateMigration do
       it "creates a WhitehallMigration" do
         freeze_time do
           expect { described_class.call("123", "news_article") }
-            .to change { WhitehallMigration.count }.by(1)
+            .to change(WhitehallMigration, :count).by(1)
           expect(WhitehallMigration.last.organisation_content_id).to eq("123")
           expect(WhitehallMigration.last.document_type).to eq("news_article")
           expect(WhitehallMigration.last.document_subtypes).to eq([])
@@ -56,7 +56,7 @@ RSpec.describe WhitehallImporter::CreateMigration do
             described_class.call("123",
                                  "news_article",
                                  %w(press_release news_story))
-          }.to change { WhitehallMigration.count }.by(1)
+          }.to change(WhitehallMigration, :count).by(1)
           expect(WhitehallMigration.last.organisation_content_id).to eq("123")
           expect(WhitehallMigration.last.document_type).to eq("news_article")
           expect(WhitehallMigration.last.document_subtypes).to eq(%w(press_release news_story))

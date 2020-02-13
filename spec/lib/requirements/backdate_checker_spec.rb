@@ -1,6 +1,6 @@
 RSpec.describe Requirements::BackdateChecker do
   describe "#pre_submit_issues" do
-    let(:checker) { Requirements::BackdateChecker.new }
+    let(:checker) { described_class.new }
 
     it "returns no issues if there are none" do
       date = Time.current.change(day: 1, month: 1, year: 2019)

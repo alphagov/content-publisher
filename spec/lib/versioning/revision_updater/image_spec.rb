@@ -55,8 +55,8 @@ RSpec.describe Versioning::RevisionUpdater::Image do
 
       next_revision = updater.next_revision
       expect(next_revision.lead_image_revision).to eq image_revision
-      expect(updater.selected_lead_image?).to be_falsey
-      expect(updater.removed_lead_image?).to be_falsey
+      expect(updater).not_to be_selected_lead_image
+      expect(updater).not_to be_removed_lead_image
     end
 
     it "replaces the lead image revision with the updated revision" do
@@ -69,8 +69,8 @@ RSpec.describe Versioning::RevisionUpdater::Image do
 
       next_revision = updater.next_revision
       expect(next_revision.lead_image_revision).to eq updated_image
-      expect(updater.selected_lead_image?).to be_falsey
-      expect(updater.removed_lead_image?).to be_falsey
+      expect(updater).not_to be_selected_lead_image
+      expect(updater).not_to be_removed_lead_image
     end
 
     describe "#update_lead_image" do
@@ -84,8 +84,8 @@ RSpec.describe Versioning::RevisionUpdater::Image do
 
         next_revision = updater.next_revision
         expect(next_revision.lead_image_revision).to eq updated_image
-        expect(updater.selected_lead_image?).to be_falsey
-        expect(updater.removed_lead_image?).to be_falsey
+        expect(updater).not_to be_selected_lead_image
+        expect(updater).not_to be_removed_lead_image
       end
 
       it "sets the given image as the lead if selected" do
@@ -97,8 +97,8 @@ RSpec.describe Versioning::RevisionUpdater::Image do
 
         next_revision = updater.next_revision
         expect(next_revision.lead_image_revision).to eq updated_image
-        expect(updater.selected_lead_image?).to be_truthy
-        expect(updater.removed_lead_image?).to be_falsey
+        expect(updater).to be_selected_lead_image
+        expect(updater).not_to be_removed_lead_image
       end
 
       it "unsets the given image as the lead if not selected" do
@@ -111,8 +111,8 @@ RSpec.describe Versioning::RevisionUpdater::Image do
 
         next_revision = updater.next_revision
         expect(next_revision.lead_image_revision).to be_nil
-        expect(updater.selected_lead_image?).to be_falsey
-        expect(updater.removed_lead_image?).to be_truthy
+        expect(updater).not_to be_selected_lead_image
+        expect(updater).to be_removed_lead_image
       end
     end
   end
@@ -138,8 +138,8 @@ RSpec.describe Versioning::RevisionUpdater::Image do
 
       next_revision = updater.next_revision
       expect(next_revision.lead_image_revision).to eq other_image_revision
-      expect(updater.selected_lead_image?).to be_falsey
-      expect(updater.removed_lead_image?).to be_falsey
+      expect(updater).not_to be_selected_lead_image
+      expect(updater).not_to be_removed_lead_image
     end
 
     it "unsets the given image if it was the lead" do
@@ -150,8 +150,8 @@ RSpec.describe Versioning::RevisionUpdater::Image do
 
       next_revision = updater.next_revision
       expect(next_revision.lead_image_revision).to be_nil
-      expect(updater.selected_lead_image?).to be_falsey
-      expect(updater.removed_lead_image?).to be_truthy
+      expect(updater).not_to be_selected_lead_image
+      expect(updater).to be_removed_lead_image
     end
   end
 end
