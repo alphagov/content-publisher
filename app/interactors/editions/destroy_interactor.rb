@@ -10,6 +10,8 @@ class Editions::DestroyInteractor < ApplicationInteractor
       find_and_lock_edition
       discard_draft
       create_timeline_entry
+    rescue Interactor::Failure
+      edition.update!(revision_synced: false)
     end
   end
 
