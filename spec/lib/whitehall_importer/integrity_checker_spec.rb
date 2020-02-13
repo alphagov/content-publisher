@@ -37,7 +37,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       }
     end
 
-    it "returns true if there aren't any problems for edition without image" do
+    it "returns true if there aren't any problems for edition without image or attachment" do
       stub_publishing_api_has_item(publishing_api_item)
 
       integrity_check = described_class.new(edition)
@@ -91,6 +91,57 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       integrity_check = described_class.new(edition)
       expect(integrity_check.valid?).to be true
+    end
+
+    context "with an attachment not yet on asset mananger" do
+      let(:organisation_service) { instance_double(Organisations) }
+      let(:file_attachment_revision) { create(:file_attachment_revision) }
+
+      let(:edition) do
+        build(
+          :edition,
+          document_type: document_type,
+          tags: {
+            primary_publishing_organisation: [SecureRandom.uuid],
+            organisations: [SecureRandom.uuid],
+          },
+          file_attachment_revisions: [file_attachment_revision],
+          contents: {
+            body: "[InlineAttachment:#{file_attachment_revision.filename}]",
+          },
+        )
+      end
+
+      let(:publishing_api_item) do
+        {
+          content_id: edition.content_id,
+          base_path: edition.base_path,
+          title: edition.title,
+          description: edition.summary,
+          document_type: edition.document_type.id,
+          schema_name: edition.document_type.publishing_metadata.schema_name,
+          details: {
+            body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
+          },
+          links: {
+            primary_publishing_organisation: edition.tags["primary_publishing_organisation"].to_a,
+            organisations: edition.tags["organisations"].to_a + edition.tags["primary_publishing_organisation"].to_a,
+          },
+        }
+      end
+
+      before do
+        allow(Organisations).to receive(:new) { organisation_service }
+        allow(organisation_service)
+          .to receive(:alternative_format_contact_email) { "foo@bar.com" }
+      end
+
+      it "returns true if there aren't any problems" do
+        stub_publishing_api_has_item(publishing_api_item)
+
+        integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+        expect(integrity_check.valid?).to be true
+      end
     end
   end
 
