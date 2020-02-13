@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   root to: redirect("/documents")
 
   get "/documents/publishing-guidance" => "new_document#guidance", as: :guidance
-  get "/documents/show" => "new_document#show", as: :show
-  post "/documents/select" => "new_document#select", as: :select
+  get "/documents/new" => "new_document#show", as: :new_document
+  post "/documents/new" => "new_document#select"
 
   get "/documents" => "documents#index"
 

@@ -27,7 +27,7 @@ class NewDocumentController < ApplicationController
                     elsif selected_option.managed_elsewhere?
                       selected_option.managed_elsewhere_url
                     else
-                      show_path(type: selected_option.id)
+                      new_document_path(type: selected_option.id)
                     end
 
       redirect_to destination

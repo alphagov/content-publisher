@@ -1,10 +1,10 @@
 <% content_for :browser_title, t("document_type_selections.#{@document_type_selection.id}.label") %>
-<% back_href = @document_type_selection.parent ? show_path(type: @document_type_selection.parent.id) : root_path %>
+<% back_href = @document_type_selection.parent ? new_document_path(type: @document_type_selection.parent.id) : root_path %>
 <% content_for :back_link, render_back_link(href: back_href) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_tag select_path(type: @document_type_selection.id), data: { gtm: "confirm-document-type" } do %>
+    <%= form_tag new_document_path(type: @document_type_selection.id), data: { gtm: "confirm-document-type" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         heading: t("document_type_selections.#{@document_type_selection.id}.label"),
         is_page_heading: true,
