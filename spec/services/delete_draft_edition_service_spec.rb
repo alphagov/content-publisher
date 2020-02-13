@@ -94,15 +94,5 @@ RSpec.describe DeleteDraftEditionService do
       expect(DiscardPathReservationsService).not_to receive(:call).with(edition)
       described_class.call(edition, user)
     end
-
-    it "raises an error and marks an edition as not synced when an API error occurs during discarding" do
-      edition = build(:edition)
-      stub_publishing_api_isnt_available
-
-      expect { described_class.call(edition, user) }
-        .to raise_error(GdsApi::BaseError)
-
-      expect(edition.revision_synced?).to be(false)
-    end
   end
 end

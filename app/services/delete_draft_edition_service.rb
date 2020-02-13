@@ -8,14 +8,8 @@ class DeleteDraftEditionService < ApplicationService
     raise "Only current editions can be deleted" unless edition.current?
     raise "Trying to delete a live edition" if edition.live?
 
-    begin
-      DeleteDraftAssetsService.call(edition)
-      discard_draft(edition)
-    rescue GdsApi::BaseError
-      edition.update!(revision_synced: false)
-      raise
-    end
-
+    DeleteDraftAssetsService.call(edition)
+    discard_draft(edition)
     reset_live_edition if document.live_edition
     DiscardPathReservationsService.call(edition) if edition.first?
     document.reload_current_edition
