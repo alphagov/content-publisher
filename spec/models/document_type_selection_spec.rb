@@ -58,4 +58,11 @@ RSpec.describe DocumentTypeSelection do
       expect(described_class.find("news").parent).to eq(described_class.find("root"))
     end
   end
+
+  describe "#find_option" do
+    it "returns the requested option" do
+      option = described_class.find("news").find_option("news_story")
+      expect(option.id).to eq("news_story")
+    end
+  end
 end

@@ -27,5 +27,9 @@ class DocumentTypeSelection
     end
   end
 
+  def find_option(option_id)
+    options.find { |option| option.id == option_id }
+  end
+
   class NotFoundError < RuntimeError; end
 end
