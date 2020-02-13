@@ -139,7 +139,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       it "returns true if there aren't any problems" do
         stub_publishing_api_has_item(publishing_api_item)
 
-        integrity_check = WhitehallImporter::IntegrityChecker.new(edition)
+        integrity_check = described_class.new(edition)
         expect(integrity_check.valid?).to be true
       end
     end
