@@ -41,7 +41,6 @@ module WhitehallImporter
         create_timeline_entry(document_import.document.current_edition)
 
         document_import.update!(state: "imported")
-        document_import
       end
     rescue StandardError
       # restore any attributes set during import

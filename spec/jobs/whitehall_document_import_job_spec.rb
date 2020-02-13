@@ -13,17 +13,9 @@ RSpec.describe WhitehallDocumentImportJob do
     create(:whitehall_migration_document_import, state: "imported")
   end
 
-  let(:completed_document_import) do
-    create(:whitehall_migration_document_import,
-           state: "completed",
-           whitehall_migration_id: whitehall_migration["id"])
-  end
-
   before do
     allow(WhitehallImporter::Import).to receive(:call)
-                                    .and_return(imported_document_import)
     allow(WhitehallImporter::Sync).to receive(:call)
-                                  .and_return(completed_document_import)
     allow(whitehall_migration).to receive(:check_migration_finished)
     stub_whitehall_unlock_document(
       whitehall_migration_document_import.whitehall_document_id,
@@ -38,12 +30,12 @@ RSpec.describe WhitehallDocumentImportJob do
 
   it "calls WhitehallImporter::Sync" do
     expect(WhitehallImporter::Sync).to receive(:call)
-                                   .with(imported_document_import)
+                                   .with(whitehall_migration_document_import)
     WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
   end
 
   it "calls on the mark migration completed method" do
-    expect(completed_document_import.whitehall_migration)
+    expect(whitehall_migration_document_import.whitehall_migration)
       .to receive(:check_migration_finished)
     WhitehallDocumentImportJob.perform_now(whitehall_migration_document_import)
   end
