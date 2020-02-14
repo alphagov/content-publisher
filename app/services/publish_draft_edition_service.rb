@@ -6,14 +6,15 @@ class PublishDraftEditionService < ApplicationService
   end
 
   def call
-    live_edition = document.live_edition
-    publish_assets(live_edition)
+    raise "Only a current edition can be published" unless edition.current?
+    raise "Live editions cannot be published" if edition.live?
+
+    publish_assets
     associate_with_government
     publish_current_edition
-    supersede_live_edition(live_edition)
+    supersede_live_edition
     set_new_live_edition
     set_first_published_at
-    document.reload
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     raise
@@ -24,8 +25,8 @@ private
   attr_reader :edition, :user, :with_review
   delegate :document, to: :edition
 
-  def publish_assets(live_edition)
-    PublishAssetsService.call(edition, superseded_edition: live_edition)
+  def publish_assets
+    PublishAssetsService.call(edition, superseded_edition: document.live_edition)
   end
 
   def associate_with_government
@@ -51,7 +52,8 @@ private
     )
   end
 
-  def supersede_live_edition(live_edition)
+  def supersede_live_edition
+    live_edition = document.live_edition
     return unless live_edition
 
     AssignEditionStatusService.call(live_edition,
@@ -68,6 +70,7 @@ private
     edition.access_limit = nil
     edition.live = true
     edition.save!
+    document.reload_live_edition
   end
 
   def set_first_published_at

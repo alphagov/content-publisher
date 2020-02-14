@@ -33,13 +33,16 @@ RSpec.describe PublishDraftEditionService do
     context "when there is a live edition" do
       it "supersedes the live edition" do
         document = create(:document, :with_current_and_live_editions)
-        current_edition = document.current_edition
         live_edition = document.live_edition
-
-        described_class.call(current_edition, user, with_review: true)
-        expect(document.live_edition).to eq(current_edition)
+        described_class.call(document.current_edition, user, with_review: true)
         expect(live_edition).to be_superseded
       end
+    end
+
+    it "updates the document's live edition to be the current edition" do
+      document = create(:document, :with_current_edition)
+      expect { described_class.call(document.current_edition, user, with_review: true) }
+        .to change(document, :live_edition).to(document.current_edition)
     end
 
     it "calls the PublishAssetsService" do
@@ -47,6 +50,18 @@ RSpec.describe PublishDraftEditionService do
       current_edition = document.current_edition
       expect(PublishAssetsService).to receive(:call)
       described_class.call(current_edition, user, with_review: true)
+    end
+
+    it "raises an error when the edition is not current" do
+      edition = build(:edition, current: false)
+      expect { described_class.call(edition, user, with_review: true) }
+        .to raise_error("Only a current edition can be published")
+    end
+
+    it "raises an error when the edition is already live" do
+      edition = build(:edition, live: true)
+      expect { described_class.call(edition, user, with_review: true) }
+        .to raise_error("Live editions cannot be published")
     end
 
     context "when the edition is not associated with a government" do
