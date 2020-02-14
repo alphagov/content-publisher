@@ -37,10 +37,12 @@ private
   end
 
   def delete_asset(asset)
-    GdsApi.asset_manager.delete_asset(asset.asset_manager_id)
-  rescue GdsApi::HTTPNotFound
-    logger.warn("No asset to delete for id #{asset.asset_manager_id}")
-  ensure
+    begin
+      GdsApi.asset_manager.delete_asset(asset.asset_manager_id)
+    rescue GdsApi::HTTPNotFound
+      logger.warn("No asset to delete for id #{asset.asset_manager_id}")
+    end
+
     asset.absent!
   end
 end
