@@ -33,11 +33,8 @@ RSpec.describe PublishDraftEditionService do
     context "when there is a live edition" do
       it "supersedes the live edition" do
         document = create(:document, :with_current_and_live_editions)
-        current_edition = document.current_edition
         live_edition = document.live_edition
-
-        described_class.call(current_edition, user, with_review: true)
-        expect(document.live_edition).to eq(current_edition)
+        described_class.call(document.current_edition, user, with_review: true)
         expect(live_edition).to be_superseded
       end
     end
