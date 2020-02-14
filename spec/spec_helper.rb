@@ -22,7 +22,7 @@ Capybara.automatic_label_click = true
 ActiveRecord::Migration.maintain_test_schema!
 Rails.application.load_tasks
 Sidekiq::Testing.fake!
-JsonMatchers.schema_root = "config/schemas"
+JsonMatchers.schema_root = "spec/support/schemas"
 
 RSpec.configure do |config|
   config.expose_dsl_globally = false
