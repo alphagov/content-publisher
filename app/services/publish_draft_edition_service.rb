@@ -6,11 +6,10 @@ class PublishDraftEditionService < ApplicationService
   end
 
   def call
-    live_edition = document.live_edition
-    publish_assets(live_edition)
+    publish_assets
     associate_with_government
     publish_current_edition
-    supersede_live_edition(live_edition)
+    supersede_live_edition
     set_new_live_edition
     set_first_published_at
     document.reload
@@ -24,8 +23,8 @@ private
   attr_reader :edition, :user, :with_review
   delegate :document, to: :edition
 
-  def publish_assets(live_edition)
-    PublishAssetsService.call(edition, superseded_edition: live_edition)
+  def publish_assets
+    PublishAssetsService.call(edition, superseded_edition: document.live_edition)
   end
 
   def associate_with_government
@@ -51,7 +50,8 @@ private
     )
   end
 
-  def supersede_live_edition(live_edition)
+  def supersede_live_edition
+    live_edition = document.live_edition
     return unless live_edition
 
     AssignEditionStatusService.call(live_edition,
