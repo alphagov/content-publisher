@@ -6,6 +6,8 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <h2 class="govuk-visually-hidden"><%= t("documents.show.heading") %></h2>
+
     <% if @edition.failed_to_publish? %>
       <%= render "documents/show/failed_to_publish_notice" %>
     <% end %>

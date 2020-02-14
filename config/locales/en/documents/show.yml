@@ -1,6 +1,7 @@
 en:
   documents:
     show:
+      heading: "Document summary"
       withdrawn:
         title: "This %{document_type} was withdrawn on %{withdrawn_date}"
       historical:

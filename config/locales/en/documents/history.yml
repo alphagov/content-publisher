@@ -1,7 +1,8 @@
 en:
   documents:
     history:
-      edition_header: "%{number} edition"
+      heading: "Document history"
+      edition_heading: "%{number} edition"
       add_internal_note: "Add internal note"
       page_info: "%{page} of %{pages}"
       by: "by"
