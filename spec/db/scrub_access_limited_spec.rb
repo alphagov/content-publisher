@@ -13,11 +13,11 @@ RSpec.describe "Scrub Access Limited SQL Script" do
                           current: false,
                           document: current_edition.document)
 
-    expect(document.reload.current_edition).to eq(current_edition)
+    expect(document.reload_current_edition).to eq(current_edition)
 
     execute_sql
 
-    expect(document.reload.current_edition).to eq(live_edition)
+    expect(document.reload_current_edition).to eq(live_edition)
     expect { current_edition.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
 
