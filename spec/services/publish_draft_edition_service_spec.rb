@@ -52,6 +52,18 @@ RSpec.describe PublishDraftEditionService do
       described_class.call(current_edition, user, with_review: true)
     end
 
+    it "raises an error when the edition is not current" do
+      edition = build(:edition, current: false)
+      expect { described_class.call(edition, user, with_review: true) }
+        .to raise_error("Only a current edition can be published")
+    end
+
+    it "raises an error when the edition is already live" do
+      edition = build(:edition, live: true)
+      expect { described_class.call(edition, user, with_review: true) }
+        .to raise_error("Live editions cannot be published")
+    end
+
     context "when the edition is not associated with a government" do
       let(:past_government) do
         build(:government, ended_on: Time.zone.today)

@@ -6,6 +6,9 @@ class PublishDraftEditionService < ApplicationService
   end
 
   def call
+    raise "Only a current edition can be published" unless edition.current?
+    raise "Live editions cannot be published" if edition.live?
+
     publish_assets
     associate_with_government
     publish_current_edition
