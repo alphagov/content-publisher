@@ -12,7 +12,6 @@ class PublishDraftEditionService < ApplicationService
     supersede_live_edition
     set_new_live_edition
     set_first_published_at
-    document.reload
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     raise
@@ -68,6 +67,7 @@ private
     edition.access_limit = nil
     edition.live = true
     edition.save!
+    document.reload_live_edition
   end
 
   def set_first_published_at
