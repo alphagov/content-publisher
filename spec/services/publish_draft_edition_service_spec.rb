@@ -39,6 +39,12 @@ RSpec.describe PublishDraftEditionService do
       end
     end
 
+    it "updates the document's live edition to be the current edition" do
+      document = create(:document, :with_current_edition)
+      expect { described_class.call(document.current_edition, user, with_review: true) }
+        .to change(document, :live_edition).to(document.current_edition)
+    end
+
     it "calls the PublishAssetsService" do
       document = create(:document, :with_current_and_live_editions)
       current_edition = document.current_edition
