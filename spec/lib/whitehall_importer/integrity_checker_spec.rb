@@ -77,42 +77,26 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     context "with an attachment not yet on asset mananger" do
-      let(:organisation_service) { instance_double(Organisations) }
       let(:file_attachment_revision) { create(:file_attachment_revision) }
 
       let(:edition) do
-        build(
-          :edition,
-          document_type: document_type,
-          tags: {
-            primary_publishing_organisation: [SecureRandom.uuid],
-            organisations: [SecureRandom.uuid],
-          },
-          file_attachment_revisions: [file_attachment_revision],
-          contents: {
-            body: "[InlineAttachment:#{file_attachment_revision.filename}]",
-          },
-        )
+        build(:edition,
+              document_type: document_type,
+              file_attachment_revisions: [file_attachment_revision],
+              contents: {
+                body: "[InlineAttachment:#{file_attachment_revision.filename}]",
+              })
       end
 
       let(:publishing_api_item) do
         default_publishing_api_item(edition,
                                     details: {
                                       body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
-                                    },
-                                    links: {
-                                      primary_publishing_organisation: edition.tags["primary_publishing_organisation"].to_a,
-                                      organisations: edition.tags["organisations"].to_a + edition.tags["primary_publishing_organisation"].to_a,
                                     })
       end
 
-      before do
-        allow(Organisations).to receive(:new) { organisation_service }
-        allow(organisation_service)
-          .to receive(:alternative_format_contact_email) { "foo@bar.com" }
-      end
-
       it "returns true if there aren't any problems" do
+        stub_publishing_api_has_links(content_id: edition.content_id)
         stub_publishing_api_has_item(publishing_api_item)
 
         integrity_check = described_class.new(edition)
