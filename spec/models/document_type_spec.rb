@@ -17,9 +17,7 @@ RSpec.describe DocumentType do
 
     it "has a valid document type that exists in GovukSchemas" do
       document_types.each do |document_type|
-        unless document_type["managed_elsewhere"]
-          expect(document_type["id"]).to be_in(GovukSchemas::DocumentTypes.valid_document_types)
-        end
+        expect(document_type["id"]).to be_in(GovukSchemas::DocumentTypes.valid_document_types)
       end
     end
   end
@@ -48,14 +46,6 @@ RSpec.describe DocumentType do
       expect(described_class.all.count).to eq(preexisting_doctypes + 1)
       described_class.clear
       expect(described_class.all.count).to eq(preexisting_doctypes)
-    end
-  end
-
-  describe "#managed_elsewhere_url" do
-    it "returns a full URL" do
-      document_type = described_class.find("consultation")
-      path = "https://whitehall-admin.test.gov.uk/government/admin/consultations/new"
-      expect(document_type.managed_elsewhere_url).to eq(path)
     end
   end
 end

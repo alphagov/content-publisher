@@ -14,22 +14,24 @@ RSpec.feature "Create a document" do
   end
 
   def when_i_click_to_create_a_document
-    @document_type = build :document_type
     click_on "Create new document"
   end
 
   def and_i_select_a_supertype
-    choose I18n.t("supertypes.news.label")
+    choose I18n.t("document_type_selections.news.label")
     click_on "Continue"
   end
 
   def and_i_select_a_document_type
-    choose @document_type.label
+    choose I18n.t("document_type_selections.news_story.label")
     click_on "Continue"
   end
 
   def and_i_fill_in_the_contents
     stub_any_publishing_api_put_content
+    stub_publishing_api_has_lookups({})
+    stub_publishing_api_has_links("content_id" => Document.last.content_id)
+    fill_in "title", with: "A title"
     fill_in "summary", with: "A summary"
     click_on "Save"
   end

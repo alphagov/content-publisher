@@ -10,9 +10,9 @@ RSpec.describe "News article format" do
   def when_i_choose_this_document_type
     visit root_path
     click_on "Create new document"
-    choose I18n.t!("supertypes.news.label")
+    choose I18n.t!("document_type_selections.news.label")
     click_on "Continue"
-    choose DocumentType.find("news_story").label
+    choose I18n.t!("document_type_selections.news_story.label")
     click_on "Continue"
   end
 

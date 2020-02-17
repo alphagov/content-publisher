@@ -1,0 +1,31 @@
+<% content_for :browser_title, t("document_type_selections.#{@document_type_selection.id}.label") %>
+<% back_href = @document_type_selection.parent ? new_document_path(type: @document_type_selection.parent.id) : root_path %>
+<% content_for :back_link, render_back_link(href: back_href) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag new_document_path(type: @document_type_selection.id), data: { gtm: "confirm-document-type" } do %>
+      <%= render "govuk_publishing_components/components/radio", {
+        heading: t("document_type_selections.#{@document_type_selection.id}.label"),
+        is_page_heading: true,
+        name: "selected_option_id",
+        error_items: @issues&.items_for(:document_type_selection),
+        items: @document_type_selection.options.map do |option|
+          {
+            value: option.id,
+            text: t("document_type_selections.#{option.id}.label"),
+            hint_text: I18n.exists?("document_type_selections.#{option.id}.description") ? t("document_type_selections.#{option.id}.description") : nil,
+            data_attributes: {
+              gtm: "choose-document-type",
+              "gtm-value": t("document_type_selections.#{option.id}.label"),
+            },
+            conditional: I18n.exists?("document_type_selections.#{option.id}.guidance.body_govspeak") ? render_govspeak(t("document_type_selections.#{option.id}.guidance.body_govspeak")) : nil,
+            bold: true,
+          }
+        end
+      } %>
+
+      <%= render "govuk_publishing_components/components/button", text: "Continue", margin_bottom: true %>
+    <% end %>
+  </div>
+</div>

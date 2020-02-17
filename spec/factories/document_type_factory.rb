@@ -28,7 +28,6 @@ FactoryBot.define do
 
     after(:build) do |document_type|
       DocumentType.all << document_type
-      Supertype.all.first.document_types << document_type
     end
 
     trait :with_body do

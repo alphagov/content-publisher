@@ -1,0 +1,90 @@
+---
+- id: root
+  options:
+    - id: news
+      type: document_type_selection
+    - id: guidance
+      type: document_type_selection
+    - id: transparency
+      type: document_type_selection
+    - id: policy
+      type: document_type_selection
+    - id: document_collection
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/collections/new
+    - id: corporate_information
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/organisations/government-digital-service/corporate_information_pages
+    - id: not_sure
+      type: managed_elsewhere
+      path: /documents/publishing-guidance
+
+- id: news
+  options:
+    - id: news_story
+      type: document_type
+    - id: press_release
+      type: document_type
+    - id: fatality_notice
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/fatalities/new
+    - id: speech
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/speeches/new
+    - id: world_news_story
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/news/new
+
+- id: guidance
+  options:
+    - id: detailed_guide
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/detailed-guides/new
+    - id: any_whitehall_publication
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+    - id: manual
+      type: managed_elsewhere
+      hostname: manuals-publisher
+      path: /
+    - id: any_mainstream_publication
+      type: managed_elsewhere
+      hostname: support
+      path: /content_change_request/new
+    - id: travel_advice
+      type: managed_elsewhere
+      hostname: travel-advice-publisher
+      path: /admin
+
+- id: transparency
+  options:
+    - id: any_whitehall_publication
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+    - id: statistical_data_set
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/statistical-data-sets/new
+
+- id: policy
+  options:
+    - id: case_study
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/case-studies/new
+    - id: consultation
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/consultations/new
+    - id: any_whitehall_publication
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
