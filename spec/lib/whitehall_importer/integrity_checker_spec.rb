@@ -20,24 +20,17 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     let(:publishing_api_item) do
-      {
-        content_id: edition.content_id,
-        base_path: edition.base_path,
-        title: edition.title,
-        description: edition.summary,
-        document_type: edition.document_type.id,
-        schema_name: edition.document_type.publishing_metadata.schema_name,
-        details: {
-          body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
-        },
-        links: {
-          primary_publishing_organisation: edition.tags["primary_publishing_organisation"].to_a,
-          organisations: edition.tags["organisations"].to_a + edition.tags["primary_publishing_organisation"].to_a,
-        },
-      }
+      default_publishing_api_item(edition,
+                                  details: {
+                                    body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
+                                  },
+                                  links: {
+                                    primary_publishing_organisation: edition.tags["primary_publishing_organisation"].to_a,
+                                    organisations: edition.tags["organisations"].to_a + edition.tags["primary_publishing_organisation"].to_a,
+                                  })
     end
 
-    it "returns true if there aren't any problems for edition without image" do
+    it "returns true if there aren't any problems for edition without image or attachment" do
       stub_publishing_api_has_item(publishing_api_item)
 
       integrity_check = described_class.new(edition)
@@ -69,17 +62,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     it "compares against organisations in linkset links if there no edition links" do
-      stub_publishing_api_has_item(
-        content_id: edition.content_id,
-        base_path: edition.base_path,
-        title: edition.title,
-        description: edition.summary,
-        document_type: edition.document_type.id,
-        schema_name: edition.document_type.publishing_metadata.schema_name,
-        details: {
-          body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
-        },
-      )
+      stub_publishing_api_has_item(default_publishing_api_item(edition))
 
       stub_publishing_api_has_links(
         content_id: edition.content_id,
@@ -91,6 +74,34 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       integrity_check = described_class.new(edition)
       expect(integrity_check.valid?).to be true
+    end
+
+    context "with an attachment not yet on asset mananger" do
+      let(:file_attachment_revision) { create(:file_attachment_revision) }
+
+      let(:edition) do
+        build(:edition,
+              document_type: document_type,
+              file_attachment_revisions: [file_attachment_revision],
+              contents: {
+                body: "[InlineAttachment:#{file_attachment_revision.filename}]",
+              })
+      end
+
+      let(:publishing_api_item) do
+        default_publishing_api_item(edition,
+                                    details: {
+                                      body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
+                                    })
+      end
+
+      it "returns true if there aren't any problems" do
+        stub_publishing_api_has_links(content_id: edition.content_id)
+        stub_publishing_api_has_item(publishing_api_item)
+
+        integrity_check = described_class.new(edition)
+        expect(integrity_check.valid?).to be true
+      end
     end
   end
 
@@ -209,5 +220,19 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       expect(integrity_check.problems).to include(message)
     end
+  end
+
+  def default_publishing_api_item(edition, override_hash = {})
+    {
+      content_id: edition.content_id,
+      base_path: edition.base_path,
+      title: edition.title,
+      description: edition.summary,
+      document_type: edition.document_type.id,
+      schema_name: edition.document_type.publishing_metadata.schema_name,
+      details: {
+        body: "",
+      },
+    }.deep_merge!(override_hash)
   end
 end

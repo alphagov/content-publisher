@@ -1,3 +1,5 @@
+require "gds_api/whitehall_export"
+
 module WhitehallImporter
   class Sync
     attr_reader :whitehall_import
