@@ -10,6 +10,8 @@ class Editions::DestroyInteractor < ApplicationInteractor
       find_and_lock_edition
       discard_draft
       create_timeline_entry
+    rescue Interactor::Failure
+      edition.update!(revision_synced: false)
     end
   end
 
@@ -21,7 +23,7 @@ private
   end
 
   def discard_draft
-    DeleteDraftEditionService.call(edition, user)
+    DiscardDraftEditionService.call(edition, user)
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     context.fail!(api_error: true)

@@ -18,8 +18,8 @@ RSpec.describe Editions::DestroyInteractor do
       expect(result.edition).to be_discarded
     end
 
-    it "delegates to the DeleteDraftEditionService" do
-      expect(DeleteDraftEditionService)
+    it "delegates to the DiscardDraftEditionService" do
+      expect(DiscardDraftEditionService)
         .to receive(:call)
         .with(edition, user)
       described_class.call(params: params, user: user)
@@ -38,6 +38,11 @@ RSpec.describe Editions::DestroyInteractor do
         result = described_class.call(params: params, user: user)
         expect(result).to be_failure
         expect(result.api_error).to be(true)
+      end
+
+      it "marks the edition as revision not synced" do
+        result = described_class.call(params: params, user: user)
+        expect(result.edition).not_to be_revision_synced
       end
     end
 
