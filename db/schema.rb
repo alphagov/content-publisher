@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_07_224528) do
+ActiveRecord::Schema.define(version: 2020_02_17_112039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(version: 2020_02_07_224528) do
     t.datetime "backdated_to"
     t.string "document_type_id", null: false
     t.boolean "editor_political"
+    t.json "change_history", default: [], null: false
   end
 
   create_table "removals", force: :cascade do |t|
