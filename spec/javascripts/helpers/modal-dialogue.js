@@ -9,9 +9,9 @@ window.buildModalDialogue = function buildModalDialogue () {
     '<dialog class="gem-c-modal-dialogue__box" aria-modal="true" role="dialogue" aria-labelledby="my-modal-title">' +
       '<div class="gem-c-modal-dialogue__content">' +
         '<div class="app-c-multi-section-viewer" data-module="multi-section-viewer">' +
+          '<section class="app-c-multi-section-viewer__section js-dynamic-section"></section>' +
           '<section class="app-c-multi-section-viewer__section" id="loading"></section>' +
-          '<section class="app-c-multi-section-viewer__section" id="error"></section>' +
-          '<div class="app-c-multi-section-viewer__section js-dynamic-section"></div>' +
+          '<section class="app-c-multi-section-viewer__section" id="error"><h1>Something has gone wrong</h1></section>' +
         '</div>' +
       '</div>' +
       '<button class="gem-c-modal-dialogue__close-button" aria-label="Close modal dialogue">&times;</button>' +
