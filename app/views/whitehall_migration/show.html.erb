@@ -1,0 +1,14 @@
+<h1>Whitehall Migration: <%= @whitehall_migration.id %> </h1>
+<ul>
+    <li>Time started: <%= @whitehall_migration.created_at.strftime("At %T on %d/%m/%Y") %></li>
+    <li>Time finished: <%= @whitehall_migration.finished_at.nil? ? "Unfinished" : @whitehall_migration.finished_at %></li>
+    <li>Number of documents: <%= @whitehall_migration.document_imports.count %></li>
+</ul>
+
+<h3>Document Import Status</h3>
+
+<ul>
+    <% @whitehall_migration.document_imports.states.each_value do |state| %>
+        <li><%= "#{state}:" %> <%= @whitehall_migration.document_imports.where(state: "#{state}").count%></li>
+    <% end %>
+</ul>
