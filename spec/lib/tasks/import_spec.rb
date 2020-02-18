@@ -2,7 +2,7 @@ RSpec.describe "Import tasks" do
   include ActiveJob::TestHelper
 
   describe "import:whitehall_migration" do
-    let(:whitehall_migration_document_import) { build(:whitehall_migration_document_import) }
+    let(:whitehall_migration) { create(:whitehall_migration) }
 
     before do
       allow($stdout).to receive(:puts)
@@ -11,7 +11,7 @@ RSpec.describe "Import tasks" do
         "/government/organisations/cabinet-office" => "96ae61d6-c2a1-48cb-8e67-da9d105ae381",
       )
       allow(WhitehallImporter::CreateMigration).to receive(:call)
-                                               .and_return(whitehall_migration_document_import)
+                                               .and_return(whitehall_migration)
     end
 
     it "calls WhitehallImporter::create_migration with correct arguments when subtype is specified" do
