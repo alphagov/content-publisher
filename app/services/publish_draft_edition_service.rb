@@ -11,10 +11,10 @@ class PublishDraftEditionService < ApplicationService
 
     publish_assets
     associate_with_government
+    set_published_at
     publish_current_edition
     supersede_live_edition
     set_new_live_edition
-    set_first_published_at
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     raise
@@ -73,9 +73,12 @@ private
     document.reload_live_edition
   end
 
-  def set_first_published_at
+  def set_published_at
+    current_time = Time.current
+    edition.published_at = current_time
+
     return if document.first_published_at
 
-    document.update!(first_published_at: Time.current)
+    document.update!(first_published_at: current_time)
   end
 end

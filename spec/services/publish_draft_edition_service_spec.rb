@@ -24,6 +24,13 @@ RSpec.describe PublishDraftEditionService do
         expect(edition).to be_live
       end
 
+      it "sets the document first publishing time" do
+        freeze_time do
+          expect { described_class.call(edition, user, with_review: true) }
+            .to change(edition.document, :first_published_at).to(Time.current)
+        end
+      end
+
       it "can specify if edition is reviewed" do
         described_class.call(edition, user, with_review: false)
         expect(edition).to be_published_but_needs_2i
@@ -31,11 +38,25 @@ RSpec.describe PublishDraftEditionService do
     end
 
     context "when there is a live edition" do
+      let(:document) { create(:document, :with_current_and_live_editions) }
+
       it "supersedes the live edition" do
-        document = create(:document, :with_current_and_live_editions)
         live_edition = document.live_edition
         described_class.call(document.current_edition, user, with_review: true)
         expect(live_edition).to be_superseded
+      end
+
+      it "doesn't overwrite when the document was first published" do
+        expect { described_class.call(document.current_edition, user, with_review: true) }
+          .not_to change(document, :first_published_at)
+      end
+    end
+
+    it "sets the current edition's published_at time" do
+      document = create(:document, :with_current_edition)
+      freeze_time do
+        expect { described_class.call(document.current_edition, user, with_review: true) }
+          .to change(document.current_edition, :published_at).to(Time.current)
       end
     end
 
