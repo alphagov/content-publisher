@@ -36,7 +36,8 @@ RSpec.describe "Whitehall Migration" do
   describe "GET /whitehall-migration/:migration_id/documents" do
     it "returns success" do
       login_as(debug_permission_user)
-      get whitehall_migration_documents_path(whitehall_migration)
+      create(:whitehall_migration_document_import, whitehall_migration_id: whitehall_migration.id)
+      get whitehall_migration_documents_path(whitehall_migration.id)
 
       expect(response).to have_http_status(:ok)
     end
@@ -45,7 +46,8 @@ RSpec.describe "Whitehall Migration" do
   describe "GET /whitehall-migration/:migration_id/documents/:document_import_id" do
     it "returns success" do
       login_as(debug_permission_user)
-      get whitehall_migration_document_path(whitehall_migration, document_import)
+      document_import = create(:whitehall_migration_document_import, whitehall_migration_id: whitehall_migration.id)
+      get whitehall_migration_document_path(whitehall_migration.id, document_import.id)
 
       expect(response).to have_http_status(:ok)
     end
