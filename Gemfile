@@ -47,6 +47,7 @@ group :development, :test do
   gem "govuk_test", "~> 1.0"
   gem "jasmine", "~> 3"
   gem "jasmine_selenium_runner", "~> 3", require: false
+  gem "json_matchers"
   gem "rspec-rails", "~> 3"
   gem "rubocop-govuk", "~> 2"
   gem "scss_lint-govuk", "~> 0"

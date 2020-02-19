@@ -11,6 +11,7 @@ require "webmock/rspec"
 require "gds_api/test_helpers/publishing_api"
 require "gds_api/test_helpers/asset_manager"
 require "govuk_sidekiq/testing"
+require "json_matchers/rspec"
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 SimpleCov.start
@@ -21,6 +22,7 @@ Capybara.automatic_label_click = true
 ActiveRecord::Migration.maintain_test_schema!
 Rails.application.load_tasks
 Sidekiq::Testing.fake!
+JsonMatchers.schema_root = "spec/support/schemas"
 
 RSpec.configure do |config|
   config.expose_dsl_globally = false
