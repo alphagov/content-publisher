@@ -32,8 +32,8 @@ module WhitehallImporter
     def embed_contacts(body, contacts)
       body&.gsub(/\[Contact:\s*(\d*)\s*\]/) do
         id = Regexp.last_match[1].to_i
-        embed = contacts.select { |x| x["id"] == id }.first["content_id"]
-        "[Contact:#{embed}]"
+        contact = contacts.find { |c| c["id"] == id }
+        "[Contact:#{contact['content_id']}]" if contact.present?
       end
     end
 
