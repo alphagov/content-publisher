@@ -18,7 +18,7 @@
   &:visited,
   &:hover,
   &:active {
-    color: $govuk-error-colour;
+    color: darken($govuk-error-colour, 5%);
   }
 
   &:focus {
