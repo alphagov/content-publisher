@@ -11,7 +11,21 @@
       "$ref": "#/definitions/id"
     },
     "options": {
-      "$ref": "#/definitions/options"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/document_type"
+          },
+          {
+            "$ref": "#/definitions/document_type_selection"
+          },
+          {
+            "$ref": "#/definitions/managed_elsewhere"
+          }
+        ]
+      }
     }
   },
   "definitions": {
@@ -19,38 +33,66 @@
       "type": "string",
       "pattern": "^[a-z_]+$"
     },
-    "options": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/definitions/id"
-          },
-          "type": {
-            "$ref": "#/definitions/type"
-          },
-          "hostname": {
-            "type": "string"
-          },
-          "path": {
-            "type": "string"
-          }
+    "document_type": {
+      "required": [
+        "id",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "document_type"
+          ]
         }
       }
     },
-    "type": {
-      "type": "string",
-      "enum": [
-        "document_type",
-        "managed_elsewhere",
-        "document_type_selection"
-      ]
+    "document_type_selection": {
+      "required": [
+        "id",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "document_type_selection"
+          ]
+        }
+      }
+    },
+    "managed_elsewhere": {
+      "required": [
+        "id",
+        "type",
+        "path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "managed_elsewhere"
+          ]
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      }
     }
   }
 }
