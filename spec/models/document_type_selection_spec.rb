@@ -34,7 +34,7 @@ RSpec.describe DocumentTypeSelection do
 
     it "only allows unique document type selections" do
       ids = document_type_selections.pluck("id")
-      expect(ids.size).to eq(ids.uniq.size)
+      expect(ids).to eq(ids.uniq), "duplicate document type selection ids in: #{ids}"
     end
 
     it "only allows unique options in each document_type_selection" do
