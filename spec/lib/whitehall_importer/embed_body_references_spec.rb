@@ -10,6 +10,22 @@ RSpec.describe WhitehallImporter::EmbedBodyReferences do
       expect(govspeak_body).to eq("[Contact:#{content_id}]")
     end
 
+    it "ignores contact embed when there is no contacts" do
+      govspeak_body = described_class.call(
+        body: "[Contact:123]",
+        contacts: [],
+      )
+      expect(govspeak_body).to be_empty
+    end
+
+    it "ignores contact embed when there is no matching contacts" do
+      govspeak_body = described_class.call(
+        body: "[Contact:123]",
+        contacts: [{ "id" => 321, "content_id" => SecureRandom.uuid }],
+      )
+      expect(govspeak_body).to be_empty
+    end
+
     it "converts Whitehall image bang embeds to govspeak Image embeds" do
       body = described_class.call(body: "!!1", images: ["file.jpg"])
 
