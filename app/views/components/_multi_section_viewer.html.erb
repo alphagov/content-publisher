@@ -11,9 +11,9 @@
   id: id,
   data: data_attributes,
   aria: aria_attributes do %>
+  <%= tag.section class: "app-c-multi-section-viewer__section js-dynamic-section" %>
+
   <% sections.each do |section| %>
     <%= tag.section section[:content], class: "app-c-multi-section-viewer__section", id: section[:id] %>
   <% end %>
-
-  <%= tag.div class: "app-c-multi-section-viewer__section js-dynamic-section" %>
 <% end %>

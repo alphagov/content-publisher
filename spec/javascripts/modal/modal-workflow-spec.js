@@ -36,10 +36,11 @@ describe('ModalWorkflow', function () {
   })
 
   describe('modalWorkflow.renderSuccess', function () {
-    var dynamicSection
+    var dynamicSection, modalDialogue
 
     beforeEach(function () {
       dynamicSection = modal.querySelector('.js-dynamic-section')
+      modalDialogue = modal.querySelector('dialog')
       spyOn(modalWorkflow, 'performAction')
     })
 
@@ -47,6 +48,11 @@ describe('ModalWorkflow', function () {
       modalWorkflow.renderSuccess({ body: '<h1>Success</h1>' })
       expect(dynamicSection).toBeVisible()
       expect(dynamicSection).toContainHtml('<h1>Success</h1>')
+    })
+
+    it('sets the dynamic section heading as label for the modal', function () {
+      modalWorkflow.renderSuccess({ body: '<h1>Success</h1>' })
+      expect(modalDialogue.getAttribute('aria-label')).toEqual('Success')
     })
 
     it('intercepts submits on forms with modal-action data attributes', function () {
@@ -89,10 +95,11 @@ describe('ModalWorkflow', function () {
   })
 
   describe('modalWorkflow.renderError', function () {
-    var errorSection, error
+    var errorSection, modalDialogue, error
 
     beforeEach(function () {
       errorSection = modal.querySelector('#error')
+      modalDialogue = modal.querySelector('dialog')
       error = new Error('Failed')
       spyOn(window.Raven, 'captureException')
       spyOn(console, 'error')
@@ -101,6 +108,11 @@ describe('ModalWorkflow', function () {
     it('shows the error section', function () {
       modalWorkflow.renderError(error)
       expect(errorSection).toBeVisible()
+    })
+
+    it('sets the dynamic section heading as label for the modal', function () {
+      modalWorkflow.renderError(error)
+      expect(modalDialogue.getAttribute('aria-label')).toEqual('Something has gone wrong')
     })
 
     it('logs the error to the console and to raven', function () {
