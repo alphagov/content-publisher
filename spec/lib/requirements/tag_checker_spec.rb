@@ -6,26 +6,14 @@ RSpec.describe Requirements::TagChecker do
       expect(issues.items).to be_empty
     end
 
-    context "when the edition supports primary orgs" do
-      let(:edition) do
-        organisation_field = DocumentType::PrimaryPublishingOrganisationField.new
-        document_type = build(:document_type, tags: [organisation_field])
-        build(:edition, document_type: document_type)
-      end
+    it "delegates to return issues with tag fields" do
+      tag = DocumentType::PrimaryPublishingOrganisationField.new
+      document_type = build :document_type, tags: [tag]
+      edition = build :edition, document_type: document_type
 
-      it "returns an issue when the primary org is blank" do
-        issues = described_class.new(edition).pre_update_issues({})
-
-        expect(issues).to have_issue(:primary_publishing_organisation,
-                                     :blank,
-                                     styles: %i[form summary])
-      end
-
-      it "returns no issues when there is a primary org" do
-        params = { primary_publishing_organisation: %w[my-org] }
-        issues = described_class.new(edition).pre_update_issues(params)
-        expect(issues.items).to be_empty
-      end
+      params = { primary_publishing_organisation: SecureRandom.uuid }
+      expect(tag).to receive(:pre_update_issues).with(edition, params).and_call_original
+      described_class.new(edition).pre_update_issues(params)
     end
   end
 

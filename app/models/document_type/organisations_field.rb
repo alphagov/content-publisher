@@ -10,4 +10,8 @@ class DocumentType::OrganisationsField
   def document_type
     "organisation"
   end
+
+  def pre_update_issues(_edition, _params)
+    Requirements::CheckerIssues.new
+  end
 end

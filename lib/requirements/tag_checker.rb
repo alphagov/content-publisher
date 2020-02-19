@@ -8,9 +8,8 @@ module Requirements
 
     def pre_update_issues(params)
       issues = CheckerIssues.new
-
-      if missing_primary_org?(params)
-        issues.create(:primary_publishing_organisation, :blank)
+      edition.document_type.tags.each do |tag|
+        issues += tag.pre_update_issues(edition, params)
       end
 
       issues
@@ -18,19 +17,6 @@ module Requirements
 
     def pre_publish_issues
       pre_update_issues(edition.tags.symbolize_keys)
-    end
-
-  private
-
-    def should_have_primary_org?
-      edition.document_type.tags.map(&:id)
-       .include?("primary_publishing_organisation")
-    end
-
-    def missing_primary_org?(params)
-      return false unless should_have_primary_org?
-
-      params[:primary_publishing_organisation].blank?
     end
   end
 end
