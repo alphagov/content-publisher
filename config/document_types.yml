@@ -11,21 +11,11 @@ news_article: &news_article
     - summary
     - body
   tags:
-    - id: primary_publishing_organisation
-      type: single_tag
-      document_type: organisation
-    - id: organisations
-      type: multi_tag
-      document_type: organisation
-    - id: role_appointments
-      type: multi_tag
-      document_type: role_appointment
-    - id: topical_events
-      type: multi_tag
-      document_type: topical_event
-    - id: world_locations
-      type: multi_tag
-      document_type: world_location
+    - primary_publishing_organisation
+    - organisations
+    - role_appointments
+    - topical_events
+    - world_locations
 
 publication: &publication
   pre_release: true
@@ -40,22 +30,11 @@ publication: &publication
     - summary
     - body
   tags:
-    - id: primary_publishing_organisation
-      type: single_tag
-      document_type: organisation
-    - id: organisations
-      type: multi_tag
-      document_type: organisation
-    - id: role_appointments
-      type: multi_tag
-      document_type: role_appointment
-    - id: topical_events
-      type: multi_tag
-      document_type: topical_event
-    - id: world_locations
-      type: multi_tag
-      document_type: world_location
-
+    - primary_publishing_organisation
+    - organisations
+    - role_appointments
+    - topical_events
+    - world_locations
 
 document_types:
   - id: correspondence

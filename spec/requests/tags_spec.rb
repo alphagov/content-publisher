@@ -6,7 +6,7 @@ RSpec.describe "Tags" do
   end
 
   describe "GET /documents/:document/tags" do
-    let(:tag_field) { build(:tag_field, :world_locations) }
+    let(:tag_field) { DocumentType::WorldLocationsField.new }
     let(:edition) do
       document_type = build(:document_type, tags: [tag_field])
       create(:edition, document_type: document_type)
@@ -47,7 +47,7 @@ RSpec.describe "Tags" do
 
     it "returns an issue and unprocessable response when a primary publishing "\
        "organisation is not selected" do
-      tag_field = build(:tag_field, :primary_publishing_organisation)
+      tag_field = DocumentType::PrimaryPublishingOrganisationField.new
       document_type = build(:document_type, tags: [tag_field])
       edition = create(:edition, document_type: document_type)
       stub_publishing_api_has_linkables(

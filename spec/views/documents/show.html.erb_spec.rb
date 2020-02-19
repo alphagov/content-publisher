@@ -19,7 +19,7 @@ RSpec.describe "documents/show.html.erb" do
   end
 
   describe "tags" do
-    let(:tag_field) { build(:tag_field, :primary_publishing_organisation) }
+    let(:tag_field) { DocumentType::PrimaryPublishingOrganisationField.new }
     let(:document_type) { build(:document_type, tags: [tag_field]) }
 
     it "shows the tags when a document has tags" do

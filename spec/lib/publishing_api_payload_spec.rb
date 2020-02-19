@@ -75,7 +75,7 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "includes primary_publishing_organisation in organisations links" do
-      organisation = build(:tag_field, :primary_publishing_organisation)
+      organisation = DocumentType::PrimaryPublishingOrganisationField.new
       document_type = build(:document_type, tags: [organisation])
       edition = build(:edition,
                       document_type: document_type,
@@ -91,7 +91,7 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "ensures the organisation links are unique" do
-      organisation = build(:tag_field, :primary_publishing_organisation)
+      organisation = DocumentType::PrimaryPublishingOrganisationField.new
       document_type = build(:document_type, tags: [organisation])
       edition = build(:edition,
                       document_type: document_type,
@@ -105,7 +105,7 @@ RSpec.describe PublishingApiPayload do
 
     it "converts role appointment links to role and person links" do
       role_appointment_id = SecureRandom.uuid
-      role_appointments = build(:tag_field, type: "multi_tag", id: "role_appointments")
+      role_appointments = DocumentType::RoleAppointmentsField.new
       document_type = build(:document_type, tags: [role_appointments])
       edition = build(:edition,
                       document_type: document_type,

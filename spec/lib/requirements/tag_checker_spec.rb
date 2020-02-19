@@ -8,7 +8,7 @@ RSpec.describe Requirements::TagChecker do
 
     context "when the edition supports primary orgs" do
       let(:edition) do
-        organisation_field = build(:tag_field, :primary_publishing_organisation)
+        organisation_field = DocumentType::PrimaryPublishingOrganisationField.new
         document_type = build(:document_type, tags: [organisation_field])
         build(:edition, document_type: document_type)
       end
