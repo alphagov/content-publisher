@@ -80,15 +80,15 @@ en:
     notice:
       label: Notice
       description: Permit and licence applications published temporarily for public awareness.
-    official_statistics:
-      label: Official statistics
-      description: Statistics governed by the UK Statistics Authority and produced by members of the Government Statistical Service.
     national_statistics:
       label: National statistics
       description: Official Statistics that have been produced in accordance with the Code of Practice for Official Statistics, which is indicated using the National Statistics quality mark.
     non_statutory_guidance:
       label: Non-statutory guidance
       description: Publications like manuals, handbooks, and other documents that offer advice. Use for content produced as a standalone hard-copy publicaton. For web-original content use 'detailed guide'.
+    official_statistics:
+      label: Official statistics
+      description: Statistics governed by the UK Statistics Authority and produced by members of the Government Statistical Service.
     oral_statement:
       label: Oral statement to Parliament
       description: Oral statements made to Parliament by a minister, where there is significant public interest in the entire statement.
