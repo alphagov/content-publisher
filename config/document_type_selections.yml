@@ -95,6 +95,10 @@
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/consultations/new
+    - id: policy_paper
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
 
 - id: specialist_notices
   options:

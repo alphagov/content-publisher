@@ -98,6 +98,9 @@ en:
       guidance:
         body_govspeak: |
           For example, policy papers or impact assessments
+    policy_paper:
+      label: Policy paper
+      description: An explanation of the government's position on something. It doesn’t include instructions on how to carry out a task, only the policy itself and how it’ll be implemented.
     press_release:
       label: Press release
       description: "Unedited press releases as sent to the media, and official statements from the organisation."
