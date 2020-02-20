@@ -1,6 +1,6 @@
 <% content_for :browser_title, t("publisher_information.beta_capabilities.title") %>
 <div class="govuk-grid-row">
-  <%= render partial: "publication_info_nav", locals: {current_page: beta_capabilities_path } %>
+  <%= render partial: "publisher_info_nav", locals: {current_page: beta_capabilities_path } %>
   <div class="govuk-grid-column-two-thirds">
     <h1 class='govuk-heading-l page-title'><%= t("publisher_information.beta_capabilities.title") %></h1>
     <%= render_govspeak(File.read("app/views/publisher_information/beta_capabilities.govspeak.md")) %>
