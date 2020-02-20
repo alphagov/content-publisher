@@ -1,0 +1,13 @@
+<% content_for :browser_title, t("publisher_information.what_managing_editors_can_do.title") %>
+<div class="govuk-grid-row">
+  <%= render partial: "publication_info_nav", locals: {current_page: managing_editors_path } %>
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l page-title"><%= t("publisher_information.what_managing_editors_can_do.title") %></h1>
+
+    <%= render_govspeak(t("publisher_information.what_managing_editors_can_do.body_govspeak",
+    user_status: current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION) ?
+      t("publisher_information.what_managing_editors_can_do.user_status.with_managing_editor_status") :
+      t("publisher_information.what_managing_editors_can_do.user_status.without_managing_editor_status")))
+    %>
+  </div>
+</div>
