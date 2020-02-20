@@ -15,36 +15,6 @@
       type: managed_elsewhere
       path: /documents/publishing-guidance
 
-- id: news
-  options:
-    - id: news_story
-      type: document_type
-    - id: press_release
-      type: document_type
-    - id: speech
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/speeches/new
-    - id: statement_to_parliament
-      type: document_type_selection
-    - id: articles_and_correspondence
-      type: document_type_selection
-    - id: case_study
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/case-studies/new
-
-- id: statement_to_parliament
-  options:
-    - id: oral_statement
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/speeches/new
-    - id: written_statement
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/speeches/new
-
 - id: articles_and_correspondence
   options:
     - id: authored_article
@@ -52,23 +22,6 @@
       hostname: whitehall-admin
       path: /government/admin/speeches/new
     - id: correspondence
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/publications/new
-
-- id: guidance_and_regulation
-  options:
-    - id: guidance
-      type: document_type_selection
-    - id: regulation
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/publications/new
-    - id: form
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/publications/new
-    - id: map
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
@@ -95,6 +48,102 @@
       type: managed_elsewhere
       hostname: support
       path: /content_change_request/new
+
+- id: guidance_and_regulation
+  options:
+    - id: guidance
+      type: document_type_selection
+    - id: regulation
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+    - id: form
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+    - id: map
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+
+- id: news
+  options:
+    - id: news_story
+      type: document_type
+    - id: press_release
+      type: document_type
+    - id: speech
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/speeches/new
+    - id: statement_to_parliament
+      type: document_type_selection
+    - id: articles_and_correspondence
+      type: document_type_selection
+    - id: case_study
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/case-studies/new
+
+- id: policy
+  options:
+    - id: impact_assessment
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+    - id: consultation
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/consultations/new
+
+- id: specialist_notices
+  options:
+    - id: decision
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+    - id: fatality_notice
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/fatalities/new
+    - id: notice
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+    - id: specialist_notice
+      type: managed_elsewhere
+      hostname: specialist-publisher
+      path: /
+
+- id: statement_to_parliament
+  options:
+    - id: oral_statement
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/speeches/new
+    - id: written_statement
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/speeches/new
+
+- id: statistics
+  options:
+    - id: official_statistics
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+    - id: national_statistics
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+    - id: statistics_announcement
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/statistics_announcements/new
+    - id: statistical_dataset
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/statistical-data-sets/new
 
 - id: transparency_statistics_reports
   options:
@@ -128,52 +177,3 @@
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
-
-- id: statistics
-  options:
-    - id: official_statistics
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/publications/new
-    - id: national_statistics
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/publications/new
-    - id: statistics_announcement
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/statistics_announcements/new
-    - id: statistical_dataset
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/statistical-data-sets/new
-
-- id: policy
-  options:
-    - id: impact_assessment
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/publications/new
-    - id: consultation
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/consultations/new
-
-- id: specialist_notices
-  options:
-    - id: descision
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/publications/new
-    - id: fatality_notice
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/fatalities/new
-    - id: notice
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/publications/new
-    - id: specialist_notice
-      type: managed_elsewhere
-      hostname: specialist-publisher
-      path: /
