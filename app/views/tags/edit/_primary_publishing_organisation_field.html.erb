@@ -1,3 +1,9 @@
+<% if edition.access_limit.present? %>
+  <%= render "govuk_publishing_components/components/warning_text", {
+    text: t("tags.edit.organisation_warning"),
+  } %>
+<% end %>
+
 <%= render "components/autocomplete", {
   id: "#{tag_field.id}-field",
   name: "tags[#{tag_field.id}][]",
