@@ -2,83 +2,150 @@ en:
   document_type_selections:
     root:
       label: "What is the content for?"
-    news:
-      label: News
-      description: To tell users about something government has done or will do
-      guidance:
-        body_govspeak: |
-          For example, news stories, press releases, speeches, or statements
+    any_mainstream_publication:
+      label: Mainstream guide
+      description: Guidance for the general public, written for people not expected to have any previous experience or specialist knowledge.
+    any_whitehall_publication:
+      label: Publication
+      description: Standalone government documents that are issued and not usually updated
+    articles_and_correspondence:
+      label: Articles and correspondence
+      description: Articles written by a minister or official, responses from the organisation or a minister, and circulars or newsletters.
+    authored_article:
+      label: Authored article
+      description: Bylined articles written in the name of a minister or official, usually republished from elsewhere.
+    case_study:
+      label: Case study
+      description: Real examples that help users understand a process or an important aspect of government policy.
+    consultation:
+      label: Consultation
+      description: Consultations (officially ‘documents requiring collective agreement across government’), calls for evidence and requests for people's views on a question.
+    corporate_report:
+      label: Corporate report
+      description: Publications about the organisation as a public entity, for example, annual reports, business plans and accounts.
+    correspondence:
+      label: Correspondence
+      description: Minister or organisation responses (for example to campaign letters), correspondence to individuals, organisations and professionals, circulars, bulletins and newsletters.
+    decision:
+      label: Decision
+      description: Formal decisions by tribunals, regulators or adjudicators (including courts and Secretaries of State).
+    detailed_guide:
+      label: Detailed guide
+      description: Guidance for specialist or professional users detailing the steps they need to take to complete a clearly defined task.
+    fatality_notice:
+      label: Fatality notice
+      description: Initial fatality notices and subsequent obituaries of forces and Ministry of Defence personnel.
+    foi_release:
+      label: FOI release
+      description: Responses to Freedom of Information (FOI) requests.
+    form:
+      label: Form
+      description: Form documents that need to be completed by the users.
     guidance:
       label: Guidance
+      description: Guidance to help the user do something or understand what they need to do.
+    guidance_and_regulation:
+      label: Guidance and regulation
       description: To help the user do something or understand what they need to do
       guidance:
         body_govspeak: |
           For example, manuals, or statutory guidance
-    transparency:
-      label: Transparency and statistics
-      description: To provide information that helps users hold government to account
+    impact_assessment:
+      label: Impact assessment
+      description: Cost-benefit analyses and other assessments of the impact of proposed initiatives, or changes to regulations or legislation.
+    independent_report:
+      label: Independent report
+      description: Reports commissioned by government but written by non-government organisations, including independent enquiries, investigations and reviews.
+    international_treaty:
+      label: International treaty
+      description: Treaties and memorandums of understanding between the UK and other nations.
+    manual:
+      label: Manual
+      description: Long, complex guidance or legal documents for specialist users who are familiar with a topic, usually with named or numbered chapters or clauses.
+    map:
+      label: Map
+      description: Drawn maps and geographical data.
+    news:
+      label: News and communications
+      description: To tell users about something government has done or will do
       guidance:
         body_govspeak: |
-          For example, statistics, FOI data, or reports
+          For example, news stories, press releases, speeches, or statements
+    news_story:
+      label: News story
+      description: "News written for GOV.UK which users need, can act on, and cannot get from other sources."
+    not_sure:
+      label: I’m not sure if this should be on GOV.UK
+      description: View this guide to see what should go on GOV.UK and where else you can publish content
+    notice:
+      label: Notice
+      description: Permit and licence applications published temporarily for public awareness.
+    official_statistics:
+      label: Official statistics
+      description: Statistics governed by the UK Statistics Authority and produced by members of the Government Statistical Service.
+    national_statistics:
+      label: National statistics
+      description: Official Statistics that have been produced in accordance with the Code of Practice for Official Statistics, which is indicated using the National Statistics quality mark.
+    non_statutory_guidance:
+      label: Non-statutory guidance
+      description: Publications like manuals, handbooks, and other documents that offer advice. Use for content produced as a standalone hard-copy publicaton. For web-original content use 'detailed guide'.
+    oral_statement:
+      label: Oral statement to Parliament
+      description: Oral statements made to Parliament by a minister, where there is significant public interest in the entire statement.
     policy:
       label: Policy or consultation
       description: To explain the government’s position or request views or evidence on an issue
       guidance:
         body_govspeak: |
-          For example, policy papers, impact assessments, or case studies
-    document_collection:
-      label: Document collection
-      description: To create a list of related documents on a single page
-    corporate_information:
-      label: Corporate information
-      description: Information about your organisation
-    not_sure:
-      label: I’m not sure if this should be on GOV.UK
-      description: View this guide to see what should go on GOV.UK and where else you can publish content
-    news_story:
-      label: News story
-      description: "News written for GOV.UK which users need, can act on, and cannot get from other sources."
-      guidance:
-        body_govspeak: |
-          Do not include advice in news stories. Do not use to promote other content.
-          Read the full [guidance on news stories](https://www.gov.uk/guidance/content-design/content-types#news-story).
+          For example, policy papers or impact assessments
+    policy_paper:
+      label: Policy paper
+      description: An explanation of the government's position on something. It doesn’t include instructions on how to carry out a task, only the policy itself and how it’ll be implemented.
     press_release:
       label: Press release
       description: "Unedited press releases as sent to the media, and official statements from the organisation."
-      guidance:
-        body_govspeak: |
-          Do not use to promote other content. Statements to Parliament should use the Speech document type.
-          Read the full [guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release).
-    fatality_notice:
-      label: Fatality notice
-      description: Initial fatality notices and subsequent obituaries of forces and MOD personnel
+    promotional_material:
+      label: Promotional material
+      description: Leaflets, posters, factsheets and marketing materials.
+    regulation:
+      label: Regulation
+      description: Regulations imposed by an independent regulatory authority.
+    research_and_analysis:
+      label: Research and analysis
+      description: Research reports, surveys, analyses and evaluations.
+    specialist_notice:
+      label: Specialist notice
+      description: Notices published in Specialist Publisher.
+    specialist_notices:
+      label: Specialist notices
+      description: To give notice of permit and licence applications, fatalities and formal decisions by tribunals, regulators or adjudicators.
     speech:
       label: Speech
-      description: Public speeches, written statements, or authored articles
-    world_news_story:
-      label: World news story
-      description: Announcements specific to one or more world location
-    detailed_guide:
-      label: Detailed guide
-      description: Detailed guidance for specialist users on the steps they need to take to complete a task
-    any_whitehall_publication:
-      label: Publication
-      description: Standalone government documents that are issued and not usually updated
-    manual:
-      label: Manual
-      description: Long and complex guidance broken into chapters and sub-sections for reference
-    any_mainstream_publication:
-      label: Mainstream guide
-      description: Guidance for the general public on how to do something. Contact GDS to request changes.
-    travel_advice:
-      label: Travel advice
-      description: Travel advice by country including entry requirements and safety information
-    statistical_data_set:
-      label: Statistical data set
-      description: Frequently updated (“live”) statistical data files.
-    case_study:
-      label: Case study
-      description: Case studies show someone’s experience of a government process or policy problem
-    consultation:
-      label: Consultation
-      description: A request for views or evidence on an issue
+      description: A significant speech by a minister or official.
+    statement_to_parliament:
+      label: Statement to Parliament
+      description: A written or oral statement made to Parliament
+    statistical_dataset:
+      label: Statistical dataset
+      description: Data you publish monthly or more often without analysis (ie raw data).
+    statistics:
+      label: Statistics
+      description: Official and national statistics, announcements and raw datasets.
+    statistics_announcement:
+      label: Statistics announcement
+      description: An announcement of national and official statistics releases to comply with the Code of Practice for Official Statistics.
+    statutory_guidance:
+      label: Statutory guidance
+      description: Guidance which relevant users are legally obliged to follow.
+    transparency:
+      label: Transparency
+      description: Information about how an organisation operates, for example departmental spending, salaries and staff survey results.
+    transparency_statistics_reports:
+      label: Transparency, statistics and reports
+      description: To provide information that helps users hold government to account
+      guidance:
+        body_govspeak: |
+          For example, statistics, FOI data, or reports
+    written_statement:
+      label: Written statement to Parliament
+      description: Written statements given to Parliament by a minister, where there is significant public interest in the entire statement.
