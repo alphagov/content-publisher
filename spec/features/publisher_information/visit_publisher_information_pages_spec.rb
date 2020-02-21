@@ -27,7 +27,7 @@ RSpec.feature "User can view the publisher information pages" do
   end
 
   def then_i_can_see_publisher_updates_page
-    within(".page-title") do
+    within("main h1") do
       expect(page).to have_content(I18n.t("publisher_information.publisher_updates.title"))
     end
   end
@@ -39,7 +39,7 @@ RSpec.feature "User can view the publisher information pages" do
   end
 
   def then_i_can_see_beta_capabilities_page
-    within(".page-title") do
+    within("main h1") do
       expect(page).to have_content(I18n.t("publisher_information.beta_capabilities.title"))
     end
   end
@@ -51,7 +51,7 @@ RSpec.feature "User can view the publisher information pages" do
   end
 
   def then_i_can_see_how_to_use_publisher_page
-    within(".page-title") do
+    within("main h1") do
       expect(page).to have_content(I18n.t("publisher_information.how_to_use_publisher.title"))
     end
   end
@@ -65,7 +65,7 @@ RSpec.feature "User can view the publisher information pages" do
   alias :and_i_click_on_the_what_managing_editors_can_do_link_in_footer :when_i_click_on_the_what_managing_editors_can_do_link_in_footer
 
   def then_i_can_see_the_what_managing_editors_can_do_page
-    within(".page-title") do
+    within("main h1") do
       expect(page).to have_content(I18n.t("publisher_information.what_managing_editors_can_do.title"))
     end
   end
