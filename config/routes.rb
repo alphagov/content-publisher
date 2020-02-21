@@ -106,6 +106,7 @@ Rails.application.routes.draw do
   get "/how-to-use-publisher" => "publisher_information#how_to_use_publisher", as: :how_to_use_publisher
   get "/beta-capabilities" => "publisher_information#beta_capabilities", as: :beta_capabilities
   get "/publisher-updates" => "publisher_information#publisher_updates", as: :publisher_updates
+  get "/what-managing-editors-can-do" => "publisher_information#what_managing_editors_can_do", as: :managing_editors
 
   get "/video-embed" => "video_embed#new", as: :video_embed
   post "/video-embed" => "video_embed#create"

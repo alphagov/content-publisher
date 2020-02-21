@@ -1,0 +1,31 @@
+en:
+  publisher_information:
+    what_managing_editors_can_do:
+      title: What Managing Editors can do
+      body_govspeak: |
+        Some Content Publisher user accounts have Managing Editor status.
+
+        %{user_status}
+
+        There are options which are only available to users with Managing Editor status.
+
+        ## Withdraw content
+
+        Managing Editors can withdraw documents on GOV.UK.
+
+        Withdrawn documents stay online but show a banner that tells users they contain out of date information. The documents will not appear in internal search on GOV.UK.
+
+        Managing Editors can also edit the banner message, or unwithdraw the document.
+
+        [Find out more about withdrawing documents.](https://www.gov.uk/guidance/content-design/gov-uk-content-retention-and-withdrawal-archiving-policy)
+
+        ## History mode
+
+        Managing Editors can change whether or not a document gets history mode.
+
+        They can also edit documents that are already in history mode.
+
+        [Find out more about history mode.](https://www.gov.uk/guidance/content-design/gov-uk-content-retention-and-withdrawal-archiving-policy)
+      user_status:
+        with_managing_editor_status: You have Managing Editor status.
+        without_managing_editor_status: You do not have Managing Editor status.
