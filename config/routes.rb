@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   root to: redirect("/documents")
 
+  scope "/whitehall-migration/:migration_id" do
+    get "" => "whitehall_migration#show", as: :whitehall_migration
+    get "/documents" => "whitehall_migration#documents", as: :whitehall_migration_documents
+    get "/documents/:document_import_id" => "whitehall_migration#document", as: :whitehall_migration_document
+  end
+
   get "/documents/publishing-guidance" => "new_document#guidance", as: :guidance
   get "/documents/new" => "new_document#show", as: :new_document
   post "/documents/new" => "new_document#select"
