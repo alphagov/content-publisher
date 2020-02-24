@@ -147,6 +147,14 @@ RSpec.describe "Images" do
       expect(response.body)
         .to include(I18n.t!("requirements.alt_text.blank.form_message"))
     end
+
+    it "returns a bad request when selecting a lead image is not a supported feature" do
+      edition = create(:edition, image_revisions: [image_revision])
+      patch edit_image_path(edition.document, image_revision.image_id),
+            params: { image_revision: { alt_text: "Alt text" }, lead_image: "on" }
+
+      expect(response).to have_http_status(:bad_request)
+    end
   end
 
   describe "DELETE /documents/:document/images/:image_id" do
