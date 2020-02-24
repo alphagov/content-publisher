@@ -5,7 +5,7 @@
     "id",
     "label",
     "path_prefix",
-    "images",
+    "lead_image",
     "publishing_metadata",
     "contents",
     "tags"
@@ -21,7 +21,7 @@
     "path_prefix": {
       "type": "string"
     },
-    "images": {
+    "lead_image": {
       "type": "boolean"
     },
     "publishing_metadata": {

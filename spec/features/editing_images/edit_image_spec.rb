@@ -30,6 +30,7 @@ RSpec.feature "Edit image", js: true do
   end
 
   def given_there_is_an_edition_with_a_lead_image
+    document_type = build(:document_type, :with_lead_image)
     @image_revision = create(:image_revision,
                              :on_asset_manager,
                              crop_x: 0,
@@ -38,11 +39,12 @@ RSpec.feature "Edit image", js: true do
                              crop_height: 666,
                              fixture: "1000x1000.jpg")
     @edition = create(:edition,
+                      document_type: document_type,
                       lead_image_revision: @image_revision)
   end
 
   def given_there_is_an_edition_with_images
-    document_type = build(:document_type, :with_body, images: true)
+    document_type = build(:document_type, :with_body)
 
     image_revision = create(:image_revision,
                             :on_asset_manager,
