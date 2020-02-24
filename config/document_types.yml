@@ -57,6 +57,7 @@
 
 - id: correspondence
   label: Correspondence
+  pre_release: true
   path_prefix: /government/publications
   images: false
   publishing_metadata:
@@ -85,6 +86,7 @@
 
 - id: corporate_report
   label: Corporate report
+  pre_release: true
   path_prefix: /government/publications
   images: false
   check_path_conflict: true
@@ -114,6 +116,7 @@
 
 - id: foi_release
   label: FOI Release
+  pre_release: true
   path_prefix: /government/publications
   images: false
   check_path_conflict: true
@@ -143,6 +146,7 @@
 
 - id: impact_assessment
   label: Impact assessement
+  pre_release: true
   path_prefix: /government/publications
   images: false
   check_path_conflict: true
@@ -172,6 +176,7 @@
 
 - id: independent_report
   label: Independent report
+  pre_release: true
   path_prefix: /government/publications
   images: false
   check_path_conflict: true
@@ -201,6 +206,7 @@
 
 - id: policy_paper
   label: Policy paper
+  pre_release: true
   path_prefix: /government/publications
   images: false
   check_path_conflict: true
@@ -230,6 +236,7 @@
 
 - id: promotional
   label: Promotional material
+  pre_release: true
   path_prefix: /government/publications
   images: false
   check_path_conflict: true
@@ -259,6 +266,7 @@
 
 - id: research
   label: Research and analysis
+  pre_release: true
   path_prefix: /government/publications
   images: false
   check_path_conflict: true
@@ -288,6 +296,7 @@
 
 - id: transparency
   label: Transparency
+  pre_release: true
   path_prefix: /government/publications
   images: false
   check_path_conflict: true
