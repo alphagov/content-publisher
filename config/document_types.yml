@@ -3,7 +3,6 @@
   label: News story
   path_prefix: /government/news
   images: true
-  check_path_conflict: true
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
@@ -32,7 +31,6 @@
   label: Press release
   path_prefix: /government/news
   images: true
-  check_path_conflict: true
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend

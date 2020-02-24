@@ -24,9 +24,6 @@
     "images": {
       "type": "boolean"
     },
-    "check_path_conflict": {
-      "type": "boolean"
-    },
     "publishing_metadata": {
       "type": "object",
       "required": [
