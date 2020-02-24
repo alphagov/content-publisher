@@ -53,6 +53,9 @@
       "items": {
         "$ref": "#/definitions/tag_field"
       }
+    },
+    "pre_release": {
+      "type": "boolean"
     }
   },
   "definitions": {
