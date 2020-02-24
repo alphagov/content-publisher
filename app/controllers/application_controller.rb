@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
     Rails.logger.warn(e.message)
 
     if rendering_context == "modal"
-      render nothing: true, status: :bad_request
+      raise ActionController::BadRequest
     elsif e.edition.first? && e.edition.discarded?
       redirect_to documents_path
     else
