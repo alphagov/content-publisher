@@ -1,10 +1,10 @@
 <% actions = [] %>
 
-<% actions << link_to("Edit details", edit_image_path(document, image.image_id),
+<% actions << link_to("Edit details", edit_image_path(edition.document, image.image_id),
                       class: "govuk-link",
                       data: { "modal-action": "edit", gtm: "edit-image" }) %>
 
-<% actions << link_to("Crop image", crop_image_path(document, image.image_id),
+<% actions << link_to("Crop image", crop_image_path(edition.document, image.image_id),
                       class: "govuk-link",
                       data: { "modal-action": "edit", gtm: "crop-image" }) %>
 
@@ -16,9 +16,9 @@
                           gtm: "insert-image-markdown"
                         },
                         class: "govuk-link govuk-link--no-visited-state") %>
-<% else %>
+<% elsif edition.document_type.lead_image  %>
   <% actions << capture do %>
-    <%= form_tag choose_lead_image_path(document, image.image_id),
+    <%= form_tag choose_lead_image_path(edition.document, image.image_id),
                  class: "app-inline-block",
                  data: { gtm: "select-lead-image" } do %>
       <button class="govuk-link app-link--button">Select as lead image</button>
@@ -29,7 +29,7 @@
 
 <% actions << capture do %>
   <%= form_tag(
-    destroy_image_path(document, image.image_id),
+    destroy_image_path(edition.document, image.image_id),
     method: :delete,
     data: {
       "modal-action": "delete",
