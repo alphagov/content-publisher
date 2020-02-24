@@ -54,3 +54,263 @@
     - id: world_locations
       type: multi_tag
       document_type: world_location
+
+- id: correspondence
+  label: Correspondence
+  path_prefix: /government/publications
+  images: false
+  publishing_metadata:
+    schema_name: publication
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
+
+- id: corporate_report
+  label: Corporate report
+  path_prefix: /government/publications
+  images: false
+  check_path_conflict: true
+  publishing_metadata:
+    schema_name: publication
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
+
+- id: foi_release
+  label: FOI Release
+  path_prefix: /government/publications
+  images: false
+  check_path_conflict: true
+  publishing_metadata:
+    schema_name: publication
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
+
+- id: impact_assessment
+  label: Impact assessement
+  path_prefix: /government/publications
+  images: false
+  check_path_conflict: true
+  publishing_metadata:
+    schema_name: publication
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
+
+- id: independent_report
+  label: Independent report
+  path_prefix: /government/publications
+  images: false
+  check_path_conflict: true
+  publishing_metadata:
+    schema_name: publication
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
+
+- id: policy_paper
+  label: Policy paper
+  path_prefix: /government/publications
+  images: false
+  check_path_conflict: true
+  publishing_metadata:
+    schema_name: publication
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
+
+- id: promotional
+  label: Promotional material
+  path_prefix: /government/publications
+  images: false
+  check_path_conflict: true
+  publishing_metadata:
+    schema_name: publication
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
+
+- id: research
+  label: Research and analysis
+  path_prefix: /government/publications
+  images: false
+  check_path_conflict: true
+  publishing_metadata:
+    schema_name: publication
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
+
+- id: transparency
+  label: Transparency
+  path_prefix: /government/publications
+  images: false
+  check_path_conflict: true
+  publishing_metadata:
+    schema_name: publication
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
