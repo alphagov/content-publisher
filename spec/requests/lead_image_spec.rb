@@ -18,6 +18,14 @@ RSpec.describe "Lead Image" do
       let(:route_params) { [edition.document, "image_id"] }
     end
 
+    it_behaves_like "requests that return status",
+                    "choosing lead image not associated with edition",
+                    status: :not_found,
+                    routes: { choose_lead_image_path: %i[post] } do
+      let(:edition) { create :edition, document_type: document_type }
+      let(:route_params) { [edition.document, image_revision.image_id] }
+    end
+
     it "redirects to document summary with an alert" do
       edition = create(:edition,
                        document_type: document_type,
@@ -30,13 +38,6 @@ RSpec.describe "Lead Image" do
         I18n.t!("documents.show.flashes.lead_image.selected",
                 file: image_revision.filename),
       )
-    end
-
-    it "returns a 404 if the image revision isn't associated with the edition" do
-      edition = create(:edition, document_type: document_type)
-      post choose_lead_image_path(edition.document, image_revision.image_id)
-
-      expect(response).to have_http_status(:not_found)
     end
   end
 
