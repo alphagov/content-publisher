@@ -114,7 +114,8 @@ RSpec.describe "Images" do
     end
 
     it "redirects to document summary with an alert when lead image is selected" do
-      edition = create(:edition, image_revisions: [image_revision])
+      document_type = build(:document_type, :with_lead_image)
+      edition = create(:edition, document_type: document_type, image_revisions: [image_revision])
 
       patch edit_image_path(edition.document, image_revision.image_id),
             params: { image_revision: { alt_text: "Alt text" }, lead_image: "on" }

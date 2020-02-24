@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from EditionAssertions::FeatureError do |e|
+    raise ActionController::RoutingError, e.message
+  end
+
   rescue_from BulkData::LocalDataUnavailableError do |error|
     GovukError.notify(error)
 
