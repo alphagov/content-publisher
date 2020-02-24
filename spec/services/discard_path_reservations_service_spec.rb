@@ -7,12 +7,12 @@ RSpec.describe DiscardPathReservationsService do
 
       unreserve_request1 = stub_publishing_api_unreserve_path(
         edition.base_path,
-        PreviewDraftEditionService::Payload::PUBLISHING_APP,
+        PublishingApiPayload::PUBLISHING_APP,
       )
 
       unreserve_request2 = stub_publishing_api_unreserve_path(
         previous_revision.base_path,
-        PreviewDraftEditionService::Payload::PUBLISHING_APP,
+        PublishingApiPayload::PUBLISHING_APP,
       )
 
       described_class.call(edition)

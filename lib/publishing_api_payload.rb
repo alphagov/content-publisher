@@ -1,4 +1,4 @@
-class PreviewDraftEditionService::Payload
+class PublishingApiPayload
   PUBLISHING_APP = "content-publisher".freeze
 
   attr_reader :edition, :document_type, :publishing_metadata, :republish

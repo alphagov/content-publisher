@@ -35,7 +35,7 @@ RSpec.describe PreviewDraftEditionService do
     it "sets an update type of republish" do
       edition = create(:edition)
 
-      expect(PreviewDraftEditionService::Payload)
+      expect(PublishingApiPayload)
         .to receive(:new)
         .with(edition, republish: true)
         .and_call_original

@@ -8,7 +8,7 @@ class SchedulePublishService::Payload
   def intent_payload
     {
       publish_time: publish_time,
-      publishing_app: PreviewDraftEditionService::Payload::PUBLISHING_APP,
+      publishing_app: PublishingApiPayload::PUBLISHING_APP,
       rendering_app: rendering_app,
     }
   end

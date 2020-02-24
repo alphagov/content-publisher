@@ -1,4 +1,4 @@
-RSpec.describe PreviewDraftEditionService::Payload do
+RSpec.describe PublishingApiPayload do
   describe "#payload" do
     it "generates a payload for the publishing API" do
       document_type = build(:document_type)
