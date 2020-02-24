@@ -61,7 +61,7 @@ RSpec.configure do |config|
     populate_default_government_bulk_data
   end
 
-  config.after :each, type: ->(spec) { spec.in?(%i[feature request]) } do
+  config.after :each, type: ->(spec) { spec.in?(%i[feature request view]) } do
     reset_authentication
   end
 

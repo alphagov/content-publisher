@@ -10,8 +10,10 @@
         is_page_heading: true,
         name: "selected_option_id",
         error_items: @issues&.items_for(:document_type_selection),
-        items: @document_type_selection.options.map do |option|
-          {
+        items: @document_type_selection.options.each_with_object([]) do |option, memo|
+          next if option.pre_release? && !current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
+
+          memo << {
             value: option.id,
             text: t("document_type_selections.#{option.id}.label"),
             hint_text: I18n.exists?("document_type_selections.#{option.id}.description") ? t("document_type_selections.#{option.id}.description") : nil,
