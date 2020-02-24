@@ -22,8 +22,9 @@ class PublishingApiPayload
       links: links,
       access_limited: access_limited,
       auth_bypass_ids: auth_bypass_ids,
+      public_updated_at: history.public_updated_at,
     }
-    payload[:change_note] = edition.change_note if edition.major?
+    payload[:first_published_at] = history.first_published_at if history.first_published_at.present?
 
     document_type.contents.each do |field|
       payload.deep_merge!(field.payload(edition))
@@ -43,6 +44,10 @@ class PublishingApiPayload
   end
 
 private
+
+  def history
+    @history ||= History.new(edition)
+  end
 
   def access_limited
     return {} unless edition.access_limit
@@ -79,7 +84,10 @@ private
   end
 
   def details
-    details = { political: edition.political? }
+    details = {
+      political: edition.political?,
+      change_history: history.change_history,
+    }
 
     if document_type.lead_image? && edition.lead_image_revision.present?
       details[:image] = image
