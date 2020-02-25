@@ -3,10 +3,6 @@ class DocumentType::PrimaryPublishingOrganisationField
     "primary_publishing_organisation"
   end
 
-  def type
-    "single_tag"
-  end
-
   def document_type
     "organisation"
   end

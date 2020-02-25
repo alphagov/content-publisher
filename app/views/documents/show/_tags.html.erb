@@ -7,7 +7,7 @@
 
     {
       field: t_doctype_field(@edition, "#{tag_field.id}.label"),
-      value: render("documents/tags/#{tag_field.type}", tag_field: tag_field, values: values)
+      value: render("documents/show/tags/#{tag_field.id}_field", tag_field: tag_field, values: values)
     }
   } %>
 

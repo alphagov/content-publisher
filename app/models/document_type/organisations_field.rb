@@ -3,10 +3,6 @@ class DocumentType::OrganisationsField
     "organisations"
   end
 
-  def type
-    "multi_tag"
-  end
-
   def document_type
     "organisation"
   end

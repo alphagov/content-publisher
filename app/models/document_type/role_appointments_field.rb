@@ -3,10 +3,6 @@ class DocumentType::RoleAppointmentsField
     "role_appointments"
   end
 
-  def type
-    "multi_tag"
-  end
-
   def document_type
     "role_appointment"
   end
