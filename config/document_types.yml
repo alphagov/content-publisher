@@ -26,6 +26,35 @@ news_article: &news_article
       type: multi_tag
       document_type: world_location
 
+publication: &publication
+  pre_release: true
+  path_prefix: /government/publications
+  lead_image: false
+  publishing_metadata:
+    schema_name: publication
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
+
+
 document_types:
   - id: news_story
     <<: *news_article
@@ -36,262 +65,37 @@ document_types:
     label: Press release
 
   - id: correspondence
+    <<: *publication
     label: Correspondence
-    pre_release: true
-    path_prefix: /government/publications
-    lead_image: false
-    publishing_metadata:
-      schema_name: publication
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
 
   - id: corporate_report
+    <<: *publication
     label: Corporate report
-    pre_release: true
-    path_prefix: /government/publications
-    lead_image: false
-    publishing_metadata:
-      schema_name: publication
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
 
   - id: foi_release
+    <<: *publication
     label: FOI Release
-    pre_release: true
-    path_prefix: /government/publications
-    lead_image: false
-    publishing_metadata:
-      schema_name: publication
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
 
   - id: impact_assessment
+    <<: *publication
     label: Impact assessement
-    pre_release: true
-    path_prefix: /government/publications
-    lead_image: false
-    publishing_metadata:
-      schema_name: publication
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
 
   - id: independent_report
+    <<: *publication
     label: Independent report
-    pre_release: true
-    path_prefix: /government/publications
-    lead_image: false
-    publishing_metadata:
-      schema_name: publication
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
 
   - id: policy_paper
+    <<: *publication
     label: Policy paper
-    pre_release: true
-    path_prefix: /government/publications
-    lead_image: false
-    publishing_metadata:
-      schema_name: publication
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
 
   - id: promotional
+    <<: *publication
     label: Promotional material
-    pre_release: true
-    path_prefix: /government/publications
-    lead_image: false
-    publishing_metadata:
-      schema_name: publication
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
 
   - id: research
+    <<: *publication
     label: Research and analysis
-    pre_release: true
-    path_prefix: /government/publications
-    lead_image: false
-    publishing_metadata:
-      schema_name: publication
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
 
   - id: transparency
+    <<: *publication
     label: Transparency
-    pre_release: true
-    path_prefix: /government/publications
-    lead_image: false
-    publishing_metadata:
-      schema_name: publication
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
