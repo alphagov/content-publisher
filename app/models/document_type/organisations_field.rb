@@ -3,6 +3,11 @@ class DocumentType::OrganisationsField
     "organisations"
   end
 
+  def payload(edition)
+    links = edition.tags["primary_publishing_organisation"].to_a + edition.tags[id].to_a
+    { links: { id.to_sym => links.uniq } }
+  end
+
   def document_type
     "organisation"
   end

@@ -30,6 +30,10 @@ class PublishingApiPayload
       payload.deep_merge!(field.payload(edition))
     end
 
+    document_type.tags.each do |field|
+      payload.deep_merge!(field.payload(edition))
+    end
+
     if edition.backdated_to.present?
       payload[:first_published_at] = edition.backdated_to
       payload[:public_updated_at] = edition.backdated_to if edition.first?
@@ -61,16 +65,7 @@ private
   end
 
   def links
-    links = edition.tags["primary_publishing_organisation"].to_a +
-      edition.tags["organisations"].to_a
-
-    role_appointments = edition.tags["role_appointments"]
-    edition.tags
-      .except("role_appointments")
-      .merge(roles_and_people(role_appointments))
-      .merge(organisations: links.uniq)
-      .merge(government: [edition.government&.content_id].compact)
-      .symbolize_keys
+    { government: [edition.government&.content_id].compact }
   end
 
   def image
@@ -98,18 +93,7 @@ private
     details
   end
 
-  def roles_and_people(role_appointments)
-    return {} if !role_appointments || role_appointments.count.zero?
-
-    role_appointments
-      .each_with_object(roles: [], people: []) do |appointment_id, memo|
-        response = GdsApi.publishing_api.get_links(appointment_id).to_hash
-
-        roles = response.dig("links", "role") || []
-        people = response.dig("links", "person") || []
-
-        memo[:roles] = (memo[:roles] + roles).uniq
-        memo[:people] = (memo[:people] + people).uniq
-      end
+  def publication?
+    publishing_metadata.schema_name == "publication"
   end
 end

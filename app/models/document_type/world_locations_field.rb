@@ -3,6 +3,12 @@ class DocumentType::WorldLocationsField
     "world_locations"
   end
 
+  def payload(edition)
+    return {} if edition.tags[id].blank?
+
+    { links: { id.to_sym => edition.tags[id] } }
+  end
+
   def document_type
     "world_location"
   end

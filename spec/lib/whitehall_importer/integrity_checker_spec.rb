@@ -1,10 +1,18 @@
 RSpec.describe WhitehallImporter::IntegrityChecker do
   let(:document_type) do
-    build(:document_type, :with_lead_image, contents: [
-      DocumentType::TitleAndBasePathField.new,
-      DocumentType::SummaryField.new,
-      DocumentType::BodyField.new,
-    ])
+    build(
+      :document_type,
+      :with_lead_image,
+      contents: [
+        DocumentType::TitleAndBasePathField.new,
+        DocumentType::SummaryField.new,
+        DocumentType::BodyField.new,
+      ],
+      tags: [
+        DocumentType::PrimaryPublishingOrganisationField.new,
+        DocumentType::OrganisationsField.new,
+      ],
+    )
   end
 
   describe "#valid?" do

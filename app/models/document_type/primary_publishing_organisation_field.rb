@@ -3,6 +3,10 @@ class DocumentType::PrimaryPublishingOrganisationField
     "primary_publishing_organisation"
   end
 
+  def payload(edition)
+    { links: { id.to_sym => edition.tags[id] } }
+  end
+
   def document_type
     "organisation"
   end

@@ -1,4 +1,13 @@
 RSpec.describe DocumentType::PrimaryPublishingOrganisationField do
+  describe "#payload" do
+    it "returns a hash with 'primary_publishing_organisation'" do
+      org_ids = [SecureRandom.uuid]
+      edition = build(:edition, tags: { primary_publishing_organisation: org_ids })
+      payload = described_class.new.payload(edition)
+      expect(payload[:links][:primary_publishing_organisation]).to eq(org_ids)
+    end
+  end
+
   describe "#pre_update_issues" do
     let(:edition) { build(:edition) }
 
