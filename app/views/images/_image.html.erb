@@ -16,7 +16,7 @@
                           gtm: "insert-image-markdown"
                         },
                         class: "govuk-link govuk-link--no-visited-state") %>
-<% elsif edition.document_type.lead_image  %>
+<% elsif edition.document_type.lead_image? %>
   <% actions << capture do %>
     <%= form_tag choose_lead_image_path(edition.document, image.image_id),
                  class: "app-inline-block",

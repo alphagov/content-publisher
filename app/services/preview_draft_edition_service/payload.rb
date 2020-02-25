@@ -81,7 +81,7 @@ private
   def details
     details = { political: edition.political? }
 
-    if document_type.lead_image && edition.lead_image_revision.present?
+    if document_type.lead_image? && edition.lead_image_revision.present?
       details[:image] = image
     end
 

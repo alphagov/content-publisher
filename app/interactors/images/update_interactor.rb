@@ -48,7 +48,7 @@ private
 
   def update_edition
     is_lead_image = params[:lead_image] == "on"
-    raise ActionController::BadRequest if !edition.document_type.lead_image && is_lead_image
+    raise ActionController::BadRequest if !edition.document_type.lead_image? && is_lead_image
 
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.update_image(image_revision)

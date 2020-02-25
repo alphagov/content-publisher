@@ -92,7 +92,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
     } %>
   <% end %>
 
-  <% if rendering_context != "modal" && @edition.document_type.lead_image %>
+  <% if rendering_context != "modal" && @edition.document_type.lead_image? %>
     <% is_lead = params[:image_revision] ? params[:lead_image] :
       (@edition.lead_image_revision == @image_revision) %>
 
