@@ -1,60 +1,39 @@
 ---
+news_article: &news_article
+  path_prefix: /government/news
+  lead_image: true
+  publishing_metadata:
+    schema_name: news_article
+    rendering_app: government-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags:
+    - id: primary_publishing_organisation
+      type: single_tag
+      document_type: organisation
+    - id: organisations
+      type: multi_tag
+      document_type: organisation
+    - id: role_appointments
+      type: multi_tag
+      document_type: role_appointment
+    - id: topical_events
+      type: multi_tag
+      document_type: topical_event
+    - id: world_locations
+      type: multi_tag
+      document_type: world_location
+
 document_types:
   - id: news_story
+    <<: *news_article
     label: News story
-    path_prefix: /government/news
-    lead_image: true
-    publishing_metadata:
-      schema_name: news_article
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
 
   - id: press_release
+    <<: *news_article
     label: Press release
-    path_prefix: /government/news
-    lead_image: true
-    publishing_metadata:
-      schema_name: news_article
-      rendering_app: government-frontend
-    contents:
-      - title_and_base_path
-      - summary
-      - body
-    tags:
-      - id: primary_publishing_organisation
-        type: single_tag
-        document_type: organisation
-      - id: organisations
-        type: multi_tag
-        document_type: organisation
-      - id: role_appointments
-        type: multi_tag
-        document_type: role_appointment
-      - id: topical_events
-        type: multi_tag
-        document_type: topical_event
-      - id: world_locations
-        type: multi_tag
-        document_type: world_location
 
   - id: correspondence
     label: Correspondence
