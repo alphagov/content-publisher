@@ -56,14 +56,6 @@ publication: &publication
 
 
 document_types:
-  - id: news_story
-    <<: *news_article
-    label: News story
-
-  - id: press_release
-    <<: *news_article
-    label: Press release
-
   - id: correspondence
     <<: *publication
     label: Correspondence
@@ -84,9 +76,17 @@ document_types:
     <<: *publication
     label: Independent report
 
+  - id: news_story
+    <<: *news_article
+    label: News story
+
   - id: policy_paper
     <<: *publication
     label: Policy paper
+
+  - id: press_release
+    <<: *news_article
+    label: Press release
 
   - id: promotional
     <<: *publication
