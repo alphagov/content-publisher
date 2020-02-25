@@ -9,6 +9,16 @@ RSpec.feature "Edit image", js: true do
     and_i_see_the_timeline_entry
   end
 
+  scenario "non-lead image" do
+    given_there_is_an_edition_with_images
+    when_i_visit_the_images_page
+    and_i_edit_the_image_crop
+    then_the_image_crop_is_updated
+    when_i_edit_the_image_metadata
+    then_i_see_the_image_is_updated
+    and_i_see_the_timeline_entry
+  end
+
   scenario "inline image" do
     given_there_is_an_edition_with_images
     when_i_insert_an_inline_image
