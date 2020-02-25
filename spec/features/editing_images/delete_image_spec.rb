@@ -1,8 +1,8 @@
 RSpec.feature "Delete an image" do
-  scenario "lead image" do
+  scenario "non-lead image" do
     given_there_is_an_edition_with_images
     when_i_visit_the_images_page
-    and_i_delete_the_non_lead_image
+    and_i_delete_the_image
     then_i_see_the_image_is_gone
     and_i_see_the_timeline_entry
   end
@@ -10,7 +10,7 @@ RSpec.feature "Delete an image" do
   scenario "inline image", js: true do
     given_there_is_an_edition_with_images
     when_i_insert_an_inline_image
-    and_i_delete_the_non_lead_image
+    and_i_delete_the_image
     then_i_see_the_image_is_gone
     and_i_see_the_timeline_entry
   end
@@ -37,7 +37,7 @@ RSpec.feature "Delete an image" do
     end
   end
 
-  def and_i_delete_the_non_lead_image
+  def and_i_delete_the_image
     stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Delete image"
   end
