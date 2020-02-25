@@ -1,0 +1,109 @@
+.app-c-reorderable-list {
+  @include govuk-font(19, bold);
+
+  list-style-type: decimal;
+  margin-bottom: govuk-spacing(6);
+  margin-top: 0;
+  padding-left: govuk-spacing(4);
+  position: relative;
+
+  .govuk-form-group {
+    margin-bottom: 0;
+  }
+}
+
+.app-c-reorderable-list__item {
+  margin-bottom: govuk-spacing(3);
+
+  &:after {
+    background: $govuk-border-colour;
+    content: '';
+    display: block;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.app-c-reorderable-list__wrapper {
+  display: block;
+
+  @include govuk-media-query($from: desktop) {
+    display: inline-flex;
+    width: 100%;
+  }
+}
+
+.app-c-reorderable-list__content,
+.app-c-reorderable-list__actions {
+  margin-bottom: govuk-spacing(2);
+}
+
+.app-c-reorderable-list__content {
+  @include govuk-media-query($from: desktop) {
+    flex: 0 1 auto;
+    min-width: 70%;
+  }
+}
+
+.app-c-reorderable-list__title {
+  margin: 0;
+}
+
+.app-c-reorderable-list__description {
+  @include govuk-font(16, regular);
+  margin: 0;
+}
+
+.app-c-reorderable-list__actions {
+  display: block;
+
+  @include govuk-media-query($from: desktop) {
+    flex: 1 0 auto;
+    text-align: right;
+  }
+
+  .gem-c-button {
+    display: none;
+  }
+}
+
+.js-enabled {
+  .app-c-reorderable-list__actions {
+    .govuk-form-group {
+      display: none;
+    }
+
+    .gem-c-button {
+      display: inline-block;
+      margin-left: govuk-spacing(3);
+      width: 80px;
+    }
+
+    .gem-c-button:first-of-type {
+      margin-left: 0;
+
+      @include govuk-media-query($from: desktop) {
+        margin-left: govuk-spacing(3);
+      }
+    }
+  }
+
+  .app-c-reorderable-list__item:first-child .gem-c-button:first-of-type,
+  .app-c-reorderable-list__item:last-child .gem-c-button:last-of-type {
+    display: none;
+
+    @include govuk-media-query($from: desktop) {
+      display: inline-block;
+      visibility: hidden;
+    }
+  }
+
+  .app-c-reorderable-list__item:first-child .gem-c-button:last-of-type {
+    margin-left: 0;
+    @include govuk-media-query($from: desktop) {
+      margin-left: govuk-spacing(3);
+    }
+  }
+}
