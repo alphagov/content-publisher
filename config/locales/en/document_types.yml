@@ -24,6 +24,116 @@ en:
           label: World locations
           hint: Tag locations this content is about. If it only relates to the UK you don’t need to use this tag.
 
+    correspondence:
+      fields:
+        title:
+          guidance:
+            title: Creating a title
+            body_govspeak: This does not have to be the full publication title. The title must be unique and specific, and make clear what the content offers users in their words.
+        summary:
+          guidance:
+            title: Writing a summary
+            body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
+        body:
+          guidance:
+            title: Writing the details for correspondence
+            body_govspeak: |
+              Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+              [Guidance on correspondence](https://www.gov.uk/guidance/content-design/content-types#correspondence){:target="_blank"}
+
+              [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+              [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
+    corporate_report:
+      fields:
+        title:
+          guidance:
+            title: Creating a title
+            body_govspeak: This does not have to be the full publication title. The title must be unique and specific, and make clear what the content offers users in their words.
+        summary:
+          guidance:
+            title: Writing a summary
+            body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
+        body:
+          guidance:
+            title: Writing the details for a corporate report
+            body_govspeak: |
+              Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+              [Guidance on corporate reports](https://www.gov.uk/guidance/content-design/content-types#corporate-report){:target="_blank"}
+
+              [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+              [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
+    foi_release:
+      fields:
+        title:
+          guidance:
+            title: Creating a title
+            body_govspeak: This does not have to be the full publication title. The title must be unique and specific, and make clear what the content offers users in their words.
+        summary:
+          guidance:
+            title: Writing a summary
+            body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
+        body:
+          guidance:
+            title: Writing the details for an FOI release
+            body_govspeak: |
+              Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+              [Guidance on FOI releases](https://www.gov.uk/guidance/content-design/content-types#foi){:target="_blank"}
+
+              [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+              [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
+    impact_assessment:
+      fields:
+        title:
+          guidance:
+            title: Creating a title
+            body_govspeak: This does not have to be the full publication title. The title must be unique and specific, and make clear what the content offers users in their words.
+        summary:
+          guidance:
+            title: Writing a summary
+            body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
+        body:
+          guidance:
+            title: Writing the details for an impact assessment
+            body_govspeak: |
+              Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+              [Guidance on impact assessment publications](https://www.gov.uk/guidance/content-design/content-types#impact-assessment){:target="_blank"}
+
+              [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+              [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
+    independent_report:
+      fields:
+        title:
+          guidance:
+            title: Creating a title
+            body_govspeak: This does not have to be the full publication title. The title must be unique and specific, and make clear what the content offers users in their words.
+        summary:
+          guidance:
+            title: Writing a summary
+            body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
+        body:
+          guidance:
+            title: Writing the details for an independent report
+            body_govspeak: |
+              Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+              [Guidance on independent reports](https://www.gov.uk/guidance/content-design/content-types#independent-report){:target="_blank"}
+
+              [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+              [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
     news_story:
       fields:
         title:
@@ -46,6 +156,28 @@ en:
 
               [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
 
+    policy_paper:
+      fields:
+        title:
+          guidance:
+            title: Creating a title
+            body_govspeak: This does not have to be the full publication title. The title must be unique and specific, and make clear what the content offers users in their words.
+        summary:
+          guidance:
+            title: Writing a summary
+            body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
+        body:
+          guidance:
+            title: Writing the details for a policy paper
+            body_govspeak: |
+              Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+              [Guidance on policy papers](https://www.gov.uk/guidance/content-design/content-types#policy-paper){:target="_blank"}
+
+              [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+              [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
     press_release:
       fields:
         title:
@@ -63,6 +195,72 @@ en:
               Use short words, short sentences, and short paragraphs. Use subheadings in longer content. Avoid 'notes to editors'.
 
               [Guidance on press releases](https://www.gov.uk/guidance/content-design/content-types#press-release){:target="_blank"}
+
+              [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+              [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
+    promotional:
+      fields:
+        title:
+          guidance:
+            title: Creating a title
+            body_govspeak: This does not have to be the full publication title. The title must be unique and specific, and make clear what the content offers users in their words.
+        summary:
+          guidance:
+            title: Writing a summary
+            body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
+        body:
+          guidance:
+            title: Writing the details for promotional material
+            body_govspeak: |
+              Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+              [Guidance on promotional material](https://www.gov.uk/guidance/content-design/content-types#promotional-material){:target="_blank"}
+
+              [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+              [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
+    research:
+      fields:
+        title:
+          guidance:
+            title: Creating a title
+            body_govspeak: This does not have to be the full publication title. The title must be unique and specific, and make clear what the content offers users in their words.
+        summary:
+          guidance:
+            title: Writing a summary
+            body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
+        body:
+          guidance:
+            title: Writing the details for research and analysis
+            body_govspeak: |
+              Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+              [Guidance on research and analysis](https://www.gov.uk/guidance/content-design/content-types#research-analysis){:target="_blank"}
+
+              [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+              [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
+    transparency:
+      fields:
+        title:
+          guidance:
+            title: Creating a title
+            body_govspeak: This does not have to be the full publication title. The title must be unique and specific, and make clear what the content offers users in their words.
+        summary:
+          guidance:
+            title: Writing a summary
+            body_govspeak: The summary explains the main point of the content and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
+        body:
+          guidance:
+            title: Writing the details for transparency data
+            body_govspeak: |
+              Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+              [Guidance on transparency data](https://www.gov.uk/guidance/content-design/content-types#transparency-data){:target="_blank"}
 
               [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
 

@@ -22,6 +22,8 @@
       hostname: whitehall-admin
       path: /government/admin/speeches/new
     - id: correspondence
+      type: document_type
+    - id: correspondence_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
@@ -88,6 +90,8 @@
 - id: policy
   options:
     - id: impact_assessment
+      type: document_type
+    - id: impact_assessment_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
@@ -96,6 +100,8 @@
       hostname: whitehall-admin
       path: /government/admin/consultations/new
     - id: policy_paper
+      type: document_type
+    - id: policy_paper_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
@@ -154,22 +160,32 @@
     - id: statistics
       type: document_type_selection
     - id: independent_report
+      type: document_type
+    - id: independent_report_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: foi_release
+      type: document_type
+    - id: foi_release_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: corporate_report
+      type: document_type
+    - id: corporate_report_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: transparency
+      type: document_type
+    - id: transparency_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
-    - id: research_and_analysis
+    - id: research
+      type: document_type
+    - id: research_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
@@ -177,7 +193,9 @@
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
-    - id: promotional_material
+    - id: promotional
+      type: document_type
+    - id: promotional_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new

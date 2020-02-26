@@ -77,7 +77,7 @@
 
   <div class="govuk-form-group">
     <% document_type_select = DocumentType.all
-      .reject(&:managed_elsewhere)
+      .reject { |d| d.pre_release? && !current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) }
       .map { |d| [d.label, d.id] }
     %>
 

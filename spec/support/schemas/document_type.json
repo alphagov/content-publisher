@@ -33,10 +33,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_name": {
-          "type": "string",
-          "enum": [
-            "news_article"
-          ]
+          "type": "string"
         },
         "rendering_app": {
           "type": "string"
@@ -56,26 +53,15 @@
       "items": {
         "$ref": "#/definitions/tag_field"
       }
+    },
+    "pre_release": {
+      "type": "boolean"
     }
   },
   "definitions": {
     "id": {
       "type": "string",
-      "enum": [
-        "news_story",
-        "press_release",
-        "fatality_notice",
-        "speech",
-        "world_news_story",
-        "detailed_guide",
-        "any-whitehall-publication",
-        "manual",
-        "any-mainstream-publication",
-        "travel_advice",
-        "statistical-data-set",
-        "case_study",
-        "consultation"
-      ]
+      "pattern": "^[a-z_]+$"
     },
     "label": {
       "type": "string"

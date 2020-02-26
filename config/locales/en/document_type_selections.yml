@@ -21,9 +21,15 @@ en:
       label: Consultation
       description: Consultations (officially ‘documents requiring collective agreement across government’), calls for evidence and requests for people's views on a question.
     corporate_report:
+      label: Corporate report (pre-release)
+      description: Publications about the organisation as a public entity, for example, annual reports, business plans and accounts.
+    corporate_report_managed_elsewhere:
       label: Corporate report
       description: Publications about the organisation as a public entity, for example, annual reports, business plans and accounts.
     correspondence:
+      label: Correspondence (pre-release)
+      description: Minister or organisation responses (for example to campaign letters), correspondence to individuals, organisations and professionals, circulars, bulletins and newsletters.
+    correspondence_managed_elsewhere:
       label: Correspondence
       description: Minister or organisation responses (for example to campaign letters), correspondence to individuals, organisations and professionals, circulars, bulletins and newsletters.
     decision:
@@ -36,6 +42,9 @@ en:
       label: Fatality notice
       description: Initial fatality notices and subsequent obituaries of forces and Ministry of Defence personnel.
     foi_release:
+      label: FOI release (pre-release)
+      description: Responses to Freedom of Information (FOI) requests.
+    foi_release_managed_elsewhere:
       label: FOI release
       description: Responses to Freedom of Information (FOI) requests.
     form:
@@ -51,9 +60,15 @@ en:
         body_govspeak: |
           For example, manuals, or statutory guidance
     impact_assessment:
+      label: Impact assessment (pre-release)
+      description: Cost-benefit analyses and other assessments of the impact of proposed initiatives, or changes to regulations or legislation.
+    impact_assessment_managed_elsewhere:
       label: Impact assessment
       description: Cost-benefit analyses and other assessments of the impact of proposed initiatives, or changes to regulations or legislation.
     independent_report:
+      label: Independent report (pre-release)
+      description: Reports commissioned by government but written by non-government organisations, including independent enquiries, investigations and reviews.
+    independent_report_managed_elsewhere:
       label: Independent report
       description: Reports commissioned by government but written by non-government organisations, including independent enquiries, investigations and reviews.
     international_treaty:
@@ -80,15 +95,15 @@ en:
     notice:
       label: Notice
       description: Permit and licence applications published temporarily for public awareness.
-    official_statistics:
-      label: Official statistics
-      description: Statistics governed by the UK Statistics Authority and produced by members of the Government Statistical Service.
     national_statistics:
       label: National statistics
       description: Official Statistics that have been produced in accordance with the Code of Practice for Official Statistics, which is indicated using the National Statistics quality mark.
     non_statutory_guidance:
       label: Non-statutory guidance
       description: Publications like manuals, handbooks, and other documents that offer advice. Use for content produced as a standalone hard-copy publicaton. For web-original content use 'detailed guide'.
+    official_statistics:
+      label: Official statistics
+      description: Statistics governed by the UK Statistics Authority and produced by members of the Government Statistical Service.
     oral_statement:
       label: Oral statement to Parliament
       description: Oral statements made to Parliament by a minister, where there is significant public interest in the entire statement.
@@ -99,18 +114,27 @@ en:
         body_govspeak: |
           For example, policy papers or impact assessments
     policy_paper:
+      label: Policy paper (pre-release)
+      description: An explanation of the government's position on something. It doesn’t include instructions on how to carry out a task, only the policy itself and how it’ll be implemented.
+    policy_paper_managed_elsewhere:
       label: Policy paper
       description: An explanation of the government's position on something. It doesn’t include instructions on how to carry out a task, only the policy itself and how it’ll be implemented.
     press_release:
       label: Press release
       description: "Unedited press releases as sent to the media, and official statements from the organisation."
-    promotional_material:
+    promotional:
+      label: Promotional material (pre-release)
+      description: Leaflets, posters, factsheets and marketing materials.
+    promotional_managed_elsewhere:
       label: Promotional material
       description: Leaflets, posters, factsheets and marketing materials.
     regulation:
       label: Regulation
       description: Regulations imposed by an independent regulatory authority.
-    research_and_analysis:
+    research:
+      label: Research and analysis (pre-release)
+      description: Research reports, surveys, analyses and evaluations.
+    research_managed_elsewhere:
       label: Research and analysis
       description: Research reports, surveys, analyses and evaluations.
     specialist_notice:
@@ -138,6 +162,9 @@ en:
       label: Statutory guidance
       description: Guidance which relevant users are legally obliged to follow.
     transparency:
+      label: Transparency (pre-release)
+      description: Information about how an organisation operates, for example departmental spending, salaries and staff survey results.
+    transparency_managed_elsewhere:
       label: Transparency
       description: Information about how an organisation operates, for example departmental spending, salaries and staff survey results.
     transparency_statistics_reports:

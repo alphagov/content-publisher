@@ -18,4 +18,10 @@ class DocumentTypeSelection::Option
   def managed_elsewhere_url
     hostname ? Plek.new.external_url_for(hostname) + path : path
   end
+
+  def pre_release?
+    return false unless document_type?
+
+    DocumentType.find(id).pre_release?
+  end
 end

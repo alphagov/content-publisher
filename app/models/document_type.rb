@@ -2,7 +2,7 @@ class DocumentType
   include InitializeWithHash
 
   attr_reader :contents, :id, :managed_elsewhere, :publishing_metadata, :label,
-              :path_prefix, :tags, :lead_image, :topics
+              :path_prefix, :tags, :lead_image, :topics, :pre_release
 
   alias_method :lead_image?, :lead_image
 
@@ -13,7 +13,7 @@ class DocumentType
 
   def self.all
     @all ||= begin
-      hashes = YAML.load_file(Rails.root.join("config/document_types.yml"))
+      hashes = YAML.load_file(Rails.root.join("config/document_types.yml"))["document_types"]
 
       hashes.map do |hash|
         hash["contents"] = hash["contents"].to_a.map do |field_id|
@@ -31,6 +31,8 @@ class DocumentType
   def self.clear
     @all = nil
   end
+
+  alias_method :pre_release?, :pre_release
 
   class TagField
     include InitializeWithHash

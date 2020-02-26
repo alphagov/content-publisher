@@ -1,6 +1,5 @@
 ---
-- id: news_story
-  label: News story
+news_article: &news_article
   path_prefix: /government/news
   lead_image: true
   publishing_metadata:
@@ -27,12 +26,12 @@
       type: multi_tag
       document_type: world_location
 
-- id: press_release
-  label: Press release
-  path_prefix: /government/news
-  lead_image: true
+publication: &publication
+  pre_release: true
+  path_prefix: /government/publications
+  lead_image: false
   publishing_metadata:
-    schema_name: news_article
+    schema_name: publication
     rendering_app: government-frontend
   contents:
     - title_and_base_path
@@ -54,3 +53,49 @@
     - id: world_locations
       type: multi_tag
       document_type: world_location
+
+
+document_types:
+  - id: correspondence
+    <<: *publication
+    label: Correspondence
+
+  - id: corporate_report
+    <<: *publication
+    label: Corporate report
+
+  - id: foi_release
+    <<: *publication
+    label: FOI Release
+
+  - id: impact_assessment
+    <<: *publication
+    label: Impact assessement
+
+  - id: independent_report
+    <<: *publication
+    label: Independent report
+
+  - id: news_story
+    <<: *news_article
+    label: News story
+
+  - id: policy_paper
+    <<: *publication
+    label: Policy paper
+
+  - id: press_release
+    <<: *news_article
+    label: Press release
+
+  - id: promotional
+    <<: *publication
+    label: Promotional material
+
+  - id: research
+    <<: *publication
+    label: Research and analysis
+
+  - id: transparency
+    <<: *publication
+    label: Transparency
