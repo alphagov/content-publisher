@@ -6,8 +6,10 @@ class WhitehallMigrationController < ApplicationController
   end
 
   def documents
-    whitehall_migration = WhitehallMigration.find(params[:migration_id])
-    @documents = whitehall_migration.document_imports
+    @whitehall_migration = WhitehallMigration.find(params[:migration_id])
+    scope = @whitehall_migration.document_imports
+    scope = scope.where(state: params[:state]) if params[:state]
+    @documents = scope.order(:id).page(params.fetch(:page, 1)).per(25)
   end
 
   def document
