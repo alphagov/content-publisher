@@ -1,23 +1,29 @@
 RSpec.feature "Edit image", js: true do
   scenario "lead image" do
     given_there_is_an_edition_with_a_lead_image
-
     when_i_visit_the_images_page
     and_i_edit_the_image_crop
     then_the_image_crop_is_updated
-
     when_i_edit_the_image_metadata
-    and_i_see_the_lead_image_is_updated
+    then_i_see_the_image_is_updated
+    and_i_see_the_timeline_entry
+  end
+
+  scenario "non-lead image" do
+    given_there_is_an_edition_with_images
+    when_i_visit_the_images_page
+    and_i_edit_the_image_crop
+    then_the_image_crop_is_updated
+    when_i_edit_the_image_metadata
+    then_i_see_the_image_is_updated
     and_i_see_the_timeline_entry
   end
 
   scenario "inline image" do
     given_there_is_an_edition_with_images
-
     when_i_insert_an_inline_image
     and_i_edit_the_image_crop
     then_the_image_crop_is_updated
-
     when_i_edit_the_image_metadata
     then_i_see_the_image_is_updated
     and_i_see_the_timeline_entry
@@ -102,10 +108,6 @@ RSpec.feature "Edit image", js: true do
     expect(image_revision.crop_x).to be <= 1
     expect(image_revision.crop_width).to eq(960)
     expect(image_revision.crop_height).to eq(640)
-  end
-
-  def and_i_see_the_lead_image_is_updated
-    within(".app-c-image-meta") { then_i_see_the_image_is_updated }
   end
 
   def and_i_see_the_timeline_entry
