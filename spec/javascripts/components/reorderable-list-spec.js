@@ -19,8 +19,8 @@ describe('Reorderable list component', function () {
           '<div class="app-c-reorderable-list__actions">' +
             '<input type="hidden" name="original_order[]" value="1">' +
             '<input name="new_order[]" value="1" class="gem-c-input govuk-input govuk-input--width-2" id="input-278a8924" type="text">' +
-            '<button type="button">Up</button>' +
-            '<button type="button">Down</button>' +
+            '<button type="button" class="js-reorderable-list-up">Up</button>' +
+            '<button type="button" class="js-reorderable-list-down">Down</button>' +
           '</div>' +
         '</div>' +
       '</li>' +
@@ -32,8 +32,8 @@ describe('Reorderable list component', function () {
           '<div class="app-c-reorderable-list__actions">' +
             '<input type="hidden" name="original_order[]" value="2">' +
             '<input name="new_order[]" value="2" class="gem-c-input govuk-input govuk-input--width-2" id="input-278a8924" type="text">' +
-            '<button type="button">Up</button>' +
-            '<button type="button">Down</button>' +
+            '<button type="button" class="js-reorderable-list-up">Up</button>' +
+            '<button type="button" class="js-reorderable-list-down">Down</button>' +
           '</div>' +
         '</div>' +
       '</li>' +
@@ -112,6 +112,42 @@ describe('Reorderable list component', function () {
       matchMediaMock(reorderableList, false)
 
       expect(reorderableList.sortable.option).toHaveBeenCalledWith('disabled', true)
+    })
+  })
+
+  describe('when clicking the Down button on first item', function () {
+    var reorderableList
+    var firstItemDownButton
+    beforeEach(function () {
+      reorderableList = new GOVUK.Modules.ReorderableList()
+      reorderableList.start($(element))
+      firstItemDownButton = document.querySelector('li:nth-child(1) .js-reorderable-list-down')
+      firstItemDownButton.click()
+    })
+
+    it('should swaps current item with next item', function () {
+      var firstItemTitle = document.querySelector('li:nth-child(1) .app-c-reorderable-list__title').textContent
+      var secondItemTitle = document.querySelector('li:nth-child(2) .app-c-reorderable-list__title').textContent
+      expect(firstItemTitle).toEqual('Second attachment')
+      expect(secondItemTitle).toEqual('First attachment')
+    })
+  })
+
+  describe('when clicking the Up button on the second item', function () {
+    var reorderableList
+    var secondItemUpButton
+    beforeEach(function () {
+      reorderableList = new GOVUK.Modules.ReorderableList()
+      reorderableList.start($(element))
+      secondItemUpButton = document.querySelector('li:nth-child(2) .js-reorderable-list-up')
+      secondItemUpButton.click()
+    })
+
+    it('should swaps current item with previous item', function () {
+      var firstItemTitle = document.querySelector('li:nth-child(1) .app-c-reorderable-list__title').textContent
+      var secondItemTitle = document.querySelector('li:nth-child(2) .app-c-reorderable-list__title').textContent
+      expect(firstItemTitle).toEqual('Second attachment')
+      expect(secondItemTitle).toEqual('First attachment')
     })
   })
 })

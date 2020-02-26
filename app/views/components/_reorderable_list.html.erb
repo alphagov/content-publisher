@@ -26,12 +26,14 @@
             text: "Up",
             type: "button",
             aria_label: "Move #{item[:title]} up",
+            classes: "js-reorderable-list-up",
             secondary_quiet: true
           } %>
           <%= render "govuk_publishing_components/components/button", {
             text: "Down",
             type: "button",
             aria_label: "Move #{item[:title]} down",
+            classes: "js-reorderable-list-down",
             secondary_quiet: true
           } %>
         <% end %>

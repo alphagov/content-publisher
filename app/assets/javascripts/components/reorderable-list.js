@@ -7,6 +7,8 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
   ReorderableList.prototype.start = function ($module) {
     this.$module = $module[0]
+    this.$upButtons = this.$module.querySelectorAll('.js-reorderable-list-up')
+    this.$downButtons = this.$module.querySelectorAll('.js-reorderable-list-down')
 
     this.sortable = window.Sortable.create(this.$module, { // eslint-disable-line new-cap
       chosenClass: 'app-c-reorderable-list__item--chosen',
@@ -18,6 +20,16 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     } else {
       this.sortable.option('disabled', true)
     }
+
+    var boundOnClickUpButton = this.onClickUpButton.bind(this)
+    this.$upButtons.forEach(function (button) {
+      button.addEventListener('click', boundOnClickUpButton)
+    })
+
+    var boundOnClickDownButton = this.onClickDownButton.bind(this)
+    this.$downButtons.forEach(function (button) {
+      button.addEventListener('click', boundOnClickDownButton)
+    })
   }
 
   ReorderableList.prototype.setupResponsiveChecks = function () {
@@ -29,6 +41,38 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
   ReorderableList.prototype.checkMode = function () {
     this.sortable.option('disabled', !this.mediaQueryList.matches)
+  }
+
+  ReorderableList.prototype.onClickUpButton = function (e) {
+    var item = e.target.closest('.app-c-reorderable-list__item')
+    var previousItem = item.previousElementSibling
+    if (item && previousItem) {
+      item.parentNode.insertBefore(item, previousItem)
+    }
+    // if triggered by keyboard preserve focus on button
+    if (e.detail === 0) {
+      if (item !== item.parentNode.firstElementChild) {
+        e.target.focus()
+      } else {
+        e.target.nextElementSibling.focus()
+      }
+    }
+  }
+
+  ReorderableList.prototype.onClickDownButton = function (e) {
+    var item = e.target.closest('.app-c-reorderable-list__item')
+    var nextItem = item.nextElementSibling
+    if (item && nextItem) {
+      item.parentNode.insertBefore(item, nextItem.nextElementSibling)
+    }
+    // if triggered by keyboard preserve focus on button
+    if (e.detail === 0) {
+      if (item !== item.parentNode.lastElementChild) {
+        e.target.focus()
+      } else {
+        e.target.previousElementSibling.focus()
+      }
+    }
   }
 
   Modules.ReorderableList = ReorderableList
