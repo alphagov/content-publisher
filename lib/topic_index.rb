@@ -30,13 +30,13 @@ private
 
   def raw_level_one_topics
     @raw_level_one_topics ||= begin
-      start_time = Time.current
+      start_time = Time.zone.now
 
       topics = publishing_api.get_expanded_links(GOVUK_HOMEPAGE_CONTENT_ID)
         .dig("expanded_links", "level_one_taxons")
 
       topics.each do |raw_topic|
-        raise GdsApi::TimedOutException.new if Time.current - start_time > TOPIC_INDEX_TIMEOUT
+        raise GdsApi::TimedOutException.new if Time.zone.now - start_time > TOPIC_INDEX_TIMEOUT
 
         topic_content_id = raw_topic["content_id"]
         raw_topic["links"] = publishing_api.get_expanded_links(topic_content_id)["expanded_links"]

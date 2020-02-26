@@ -29,7 +29,7 @@ RSpec.describe AssignEditionStatusService do
                                user: user,
                                state: :submitted_for_review)
         }.to change { edition.last_edited_by }.to(user)
-         .and change { edition.last_edited_at }.to(Time.current)
+         .and change { edition.last_edited_at }.to(Time.zone.now)
       end
     end
 
@@ -41,7 +41,7 @@ RSpec.describe AssignEditionStatusService do
                              state: :submitted_for_review,
                              record_edit: false)
 
-        expect(edition.last_edited_at).not_to eq(Time.current)
+        expect(edition.last_edited_at).not_to eq(Time.zone.now)
         expect(edition.last_edited_at).to eq(3.weeks.ago)
         expect(edition.last_edited_by).not_to eq(user)
       end

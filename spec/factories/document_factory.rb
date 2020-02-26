@@ -5,7 +5,7 @@ FactoryBot.define do
     association :created_by, factory: :user
 
     trait :live do
-      first_published_at { Time.current }
+      first_published_at { Time.zone.now }
     end
 
     trait :with_live_edition do

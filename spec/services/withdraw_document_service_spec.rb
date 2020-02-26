@@ -21,7 +21,7 @@ RSpec.describe WithdrawDocumentService do
 
 
     it "updates the edition status to withdrawn" do
-      travel_to(Time.current) do
+      travel_to(Time.zone.now) do
         described_class.call(edition,
                              user,
                              public_explanation: public_explanation)
@@ -30,7 +30,7 @@ RSpec.describe WithdrawDocumentService do
 
         expect(edition.status).to be_withdrawn
         expect(withdrawal.public_explanation).to eq(public_explanation)
-        expect(withdrawal.withdrawn_at).to eq(Time.current)
+        expect(withdrawal.withdrawn_at).to eq(Time.zone.now)
       end
     end
 

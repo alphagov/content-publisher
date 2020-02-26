@@ -36,7 +36,7 @@ RSpec.feature "Publish without review" do
   end
 
   def and_i_publish_without_review
-    travel_to(@publish_date = Time.current) do
+    travel_to(@publish_date = Time.zone.now) do
       click_on "Publish"
       choose I18n.t!("publish.confirmation.should_be_reviewed")
       stub_any_publishing_api_put_content

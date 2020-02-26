@@ -5,7 +5,7 @@ FactoryBot.define do
     sequence(:id)
     body { "Note about the revision" }
     sequence(:author_id)
-    created_at { Time.current.rfc3339 }
+    created_at { Time.zone.now.rfc3339 }
 
     initialize_with { attributes.stringify_keys }
   end

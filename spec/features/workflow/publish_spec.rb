@@ -38,7 +38,7 @@ RSpec.feature "Publishing an edition" do
   end
 
   def and_i_publish_the_edition
-    travel_to(@publish_date = Time.current) do
+    travel_to(@publish_date = Time.zone.now) do
       click_on "Publish"
       choose I18n.t!("publish.confirmation.has_been_reviewed")
       stub_any_publishing_api_put_content

@@ -31,7 +31,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
     end
 
     it "sets backdated_to when edition has been backdated" do
-      backdated_to = Time.current.yesterday.rfc3339
+      backdated_to = Time.zone.now.yesterday.rfc3339
       whitehall_edition = build(:whitehall_export_edition,
                                 first_published_at: backdated_to)
 

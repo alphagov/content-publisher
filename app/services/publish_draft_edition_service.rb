@@ -74,7 +74,7 @@ private
   end
 
   def set_published_at
-    current_time = Time.current
+    current_time = Time.zone.now
     edition.published_at = current_time
 
     return if document.first_published_at

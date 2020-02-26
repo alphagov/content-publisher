@@ -12,7 +12,7 @@ RSpec.describe BulkData::Cache do
     it "sets the current time as the age, which also expires" do
       freeze_time do
         described_class.write("key", "value")
-        expect(described_class.cache.read("key:created")).to eq(Time.current)
+        expect(described_class.cache.read("key:created")).to eq(Time.zone.now)
       end
 
       travel_to(25.hours.from_now) do
@@ -45,7 +45,7 @@ RSpec.describe BulkData::Cache do
     end
 
     it "returns nil when only the created value exists but not the actual entry" do
-      described_class.cache.write("key:created", Time.current)
+      described_class.cache.write("key:created", Time.zone.now)
 
       expect(described_class.written_at("key")).to be_nil
     end

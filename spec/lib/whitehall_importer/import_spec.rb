@@ -137,7 +137,7 @@ RSpec.describe WhitehallImporter::Import do
     it "sets current boolean on whether edition is current or not" do
       past_edition = build(
         :whitehall_export_edition,
-        created_at: Time.current.yesterday.rfc3339,
+        created_at: Time.zone.now.yesterday.rfc3339,
         revision_history: [build(:whitehall_export_revision_history_event,
                                  whodunnit: whitehall_user["id"])],
       )
@@ -166,7 +166,7 @@ RSpec.describe WhitehallImporter::Import do
     end
 
     it "sets first_published_at date to publish time of first edition" do
-      first_publish_date = Time.current.yesterday.rfc3339
+      first_publish_date = Time.zone.now.yesterday.rfc3339
       first_edition = build(
         :whitehall_export_edition,
         revision_history: [
@@ -184,7 +184,7 @@ RSpec.describe WhitehallImporter::Import do
           build(:whitehall_export_revision_history_event,
                 event: "update",
                 state: "published",
-                created_at: Time.current),
+                created_at: Time.zone.now),
         ],
       )
 

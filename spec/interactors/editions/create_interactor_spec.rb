@@ -11,7 +11,7 @@ RSpec.describe Editions::CreateInteractor do
       edition = create(:edition,
                        live: true,
                        change_note: "note",
-                       proposed_publish_time: Time.current,
+                       proposed_publish_time: Time.zone.now,
                        update_type: :minor)
 
       params = { document: edition.document.to_param }

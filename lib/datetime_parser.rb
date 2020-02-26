@@ -15,7 +15,7 @@ class DatetimeParser
     check_time_is_valid
     return if issues.any?
 
-    Time.current.change(
+    Time.zone.now.change(
       day: raw_date[:day].to_i,
       month: raw_date[:month].to_i,
       year: raw_date[:year].to_i,

@@ -19,7 +19,7 @@ class AssignEditionStatusService < ApplicationService
 
     if record_edit
       edition.last_edited_by = user
-      edition.last_edited_at = Time.current
+      edition.last_edited_at = Time.zone.now
       edition.add_edition_editor(user)
     end
   end

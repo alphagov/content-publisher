@@ -1,5 +1,5 @@
 <%
-  publish_time ||= Time.current.tomorrow.change(hour: 9)
+  publish_time ||= Time.zone.now.tomorrow.change(hour: 9)
 %>
 
 <% legend = capture do %>

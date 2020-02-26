@@ -12,7 +12,7 @@ RSpec.describe SchedulePublishService do
 
   describe "#call" do
     let(:user) { create :user }
-    let(:edition) { create :edition, proposed_publish_time: Time.current.tomorrow }
+    let(:edition) { create :edition, proposed_publish_time: Time.zone.now.tomorrow }
     let(:scheduling) { create :scheduling, publish_time: edition.proposed_publish_time }
 
     it "sets an edition's state to 'scheduled'" do
