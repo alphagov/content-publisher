@@ -17,12 +17,16 @@ class ApplicationController < ActionController::Base
     Rails.logger.warn(e.message)
 
     if rendering_context == "modal"
-      render nothing: true, status: :bad_request
+      raise ActionController::BadRequest
     elsif e.edition.first? && e.edition.discarded?
       redirect_to documents_path
     else
       redirect_to document_path(e.edition.document)
     end
+  end
+
+  rescue_from EditionAssertions::FeatureError do |e|
+    raise ActionController::RoutingError, e.message
   end
 
   rescue_from BulkData::LocalDataUnavailableError do |error|

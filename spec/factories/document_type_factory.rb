@@ -31,9 +31,11 @@ FactoryBot.define do
     end
 
     trait :with_body do
-      contents do
-        [DocumentType::BodyField.new]
-      end
+      contents { [DocumentType::BodyField.new] }
+    end
+
+    trait :with_lead_image do
+      lead_image { true }
     end
   end
 end

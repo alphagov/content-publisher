@@ -2,7 +2,7 @@
 - id: news_story
   label: News story
   path_prefix: /government/news
-  images: true
+  lead_image: true
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend
@@ -30,7 +30,7 @@
 - id: press_release
   label: Press release
   path_prefix: /government/news
-  images: true
+  lead_image: true
   publishing_metadata:
     schema_name: news_article
     rendering_app: government-frontend

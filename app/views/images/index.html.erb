@@ -50,7 +50,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
       </h2>
 
       <% images.each do |image| %>
-        <%= render "image", image: image, document: @edition.document %>
+        <%= render "image", image: image, edition: @edition %>
       <% end %>
     <% end %>
   </div>

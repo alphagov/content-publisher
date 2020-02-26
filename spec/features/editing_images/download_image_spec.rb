@@ -7,7 +7,7 @@ RSpec.feature "Download a image" do
   end
 
   def given_there_is_an_edition_with_images
-    document_type = build(:document_type, images: true)
+    document_type = build(:document_type, :with_lead_image)
     @image_revision = create(:image_revision, :on_asset_manager)
 
     @edition = create(:edition,

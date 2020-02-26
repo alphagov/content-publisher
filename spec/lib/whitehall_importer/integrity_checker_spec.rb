@@ -1,6 +1,6 @@
 RSpec.describe WhitehallImporter::IntegrityChecker do
   let(:document_type) do
-    build(:document_type, images: true, contents: [
+    build(:document_type, :with_lead_image, contents: [
       DocumentType::TitleAndBasePathField.new,
       DocumentType::SummaryField.new,
       DocumentType::BodyField.new,

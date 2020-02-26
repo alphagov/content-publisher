@@ -102,7 +102,7 @@ RSpec.describe PreviewDraftEditionService::Payload do
                              caption: "image caption",
                              credit: "image credit")
 
-      document_type = build(:document_type, images: true)
+      document_type = build(:document_type, :with_lead_image)
 
       edition = build(:edition,
                       document_type: document_type,

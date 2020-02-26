@@ -20,7 +20,7 @@ RSpec.feature "Upload an image", js: true do
   end
 
   def given_there_is_an_edition
-    document_type = build(:document_type, :with_body, images: true)
+    document_type = build(:document_type, :with_body, :with_lead_image)
     @edition = create(:edition, document_type: document_type)
   end
 

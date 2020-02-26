@@ -51,7 +51,7 @@
   <div class="govuk-grid-column-two-thirds">
     <%= render "documents/show/contents" %>
 
-    <% if @edition.document_type.images %>
+    <% if @edition.document_type.lead_image? %>
       <%= render "documents/show/lead_image" %>
     <% end %>
 
