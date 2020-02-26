@@ -33,6 +33,14 @@ RSpec.describe DocumentType::PrimaryPublishingOrganisationField do
     end
   end
 
+  describe "#pre_preview_issues" do
+    it "delegates to #pre_update_issues" do
+      field = described_class.new
+      expect(field).to receive(:pre_update_issues)
+      field.pre_preview_issues(build(:edition))
+    end
+  end
+
   describe "#pre_publish_issues" do
     it "delegates to #pre_update_issues" do
       field = described_class.new

@@ -25,6 +25,10 @@ class DocumentType::PrimaryPublishingOrganisationField
     issues
   end
 
+  def pre_preview_issues(edition)
+    pre_update_issues(edition, edition.tags.symbolize_keys)
+  end
+
   def pre_publish_issues(edition)
     pre_update_issues(edition, edition.tags.symbolize_keys)
   end

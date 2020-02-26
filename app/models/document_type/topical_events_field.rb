@@ -21,6 +21,10 @@ class DocumentType::TopicalEventsField
     Requirements::CheckerIssues.new
   end
 
+  def pre_preview_issues(_edition)
+    Requirements::CheckerIssues.new
+  end
+
   def pre_publish_issues(edition)
     pre_update_issues(edition, edition.tags.symbolize_keys)
   end

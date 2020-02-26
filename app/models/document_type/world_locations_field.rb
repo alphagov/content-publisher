@@ -21,6 +21,10 @@ class DocumentType::WorldLocationsField
     Requirements::CheckerIssues.new
   end
 
+  def pre_preview_issues(_edition)
+    Requirements::CheckerIssues.new
+  end
+
   def pre_publish_issues(_edition)
     Requirements::CheckerIssues.new
   end
