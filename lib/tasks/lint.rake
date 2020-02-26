@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 desc "lint Ruby, FactoryBot, Sass and Javascript"
 task lint: :environment do
   sh "bundle exec rubocop --format clang"

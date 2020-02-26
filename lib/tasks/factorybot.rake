@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 desc "Run FactoryBot linter"
 namespace :factorybot do
   task lint: :environment do

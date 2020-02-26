@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :notify do
   desc "Send an email notification"
   task :send_email, [:email_address] => :environment do |_, args|

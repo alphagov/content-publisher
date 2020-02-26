@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :resync do
   desc "Resync a document with the publishing-api e.g. resync:document['a-content-id:en']"
   task :document, [:content_id_and_locale] => :environment do |_, args|
