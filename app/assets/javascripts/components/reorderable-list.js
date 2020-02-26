@@ -12,7 +12,8 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
     this.sortable = window.Sortable.create(this.$module, { // eslint-disable-line new-cap
       chosenClass: 'app-c-reorderable-list__item--chosen',
-      dragClass: 'app-c-reorderable-list__item--drag'
+      dragClass: 'app-c-reorderable-list__item--drag',
+      onSort: this.updateOrderIndexes.bind(this)
     })
 
     if (typeof window.matchMedia === 'function') {
@@ -48,6 +49,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     var previousItem = item.previousElementSibling
     if (item && previousItem) {
       item.parentNode.insertBefore(item, previousItem)
+      this.updateOrderIndexes()
     }
     // if triggered by keyboard preserve focus on button
     if (e.detail === 0) {
@@ -64,6 +66,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     var nextItem = item.nextElementSibling
     if (item && nextItem) {
       item.parentNode.insertBefore(item, nextItem.nextElementSibling)
+      this.updateOrderIndexes()
     }
     // if triggered by keyboard preserve focus on button
     if (e.detail === 0) {
@@ -73,6 +76,13 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         e.target.previousElementSibling.focus()
       }
     }
+  }
+
+  ReorderableList.prototype.updateOrderIndexes = function () {
+    var $orderInputs = this.$module.querySelectorAll('.app-c-reorderable-list__actions input')
+    $orderInputs.forEach(function (input, index) {
+      input.setAttribute('value', index + 1)
+    })
   }
 
   Modules.ReorderableList = ReorderableList

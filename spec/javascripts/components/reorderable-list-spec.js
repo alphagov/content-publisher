@@ -17,7 +17,6 @@ describe('Reorderable list component', function () {
             '<p class="app-c-reorderable-list__title">First attachment</p>' +
           '</div>' +
           '<div class="app-c-reorderable-list__actions">' +
-            '<input type="hidden" name="original_order[]" value="1">' +
             '<input name="new_order[]" value="1" class="gem-c-input govuk-input govuk-input--width-2" id="input-278a8924" type="text">' +
             '<button type="button" class="js-reorderable-list-up">Up</button>' +
             '<button type="button" class="js-reorderable-list-down">Down</button>' +
@@ -30,7 +29,6 @@ describe('Reorderable list component', function () {
             '<p class="app-c-reorderable-list__title">Second attachment</p>' +
           '</div>' +
           '<div class="app-c-reorderable-list__actions">' +
-            '<input type="hidden" name="original_order[]" value="2">' +
             '<input name="new_order[]" value="2" class="gem-c-input govuk-input govuk-input--width-2" id="input-278a8924" type="text">' +
             '<button type="button" class="js-reorderable-list-up">Up</button>' +
             '<button type="button" class="js-reorderable-list-down">Down</button>' +
@@ -131,6 +129,13 @@ describe('Reorderable list component', function () {
       expect(firstItemTitle).toEqual('Second attachment')
       expect(secondItemTitle).toEqual('First attachment')
     })
+
+    it('should update the associated indexes', function () {
+      var firstItemNewIndex = document.querySelector('li:nth-child(1) input[type=text]').value
+      var secondItemNewIndex = document.querySelector('li:nth-child(2) input[type=text]').value
+      expect(firstItemNewIndex).toEqual('1')
+      expect(secondItemNewIndex).toEqual('2')
+    })
   })
 
   describe('when clicking the Up button on the second item', function () {
@@ -148,6 +153,13 @@ describe('Reorderable list component', function () {
       var secondItemTitle = document.querySelector('li:nth-child(2) .app-c-reorderable-list__title').textContent
       expect(firstItemTitle).toEqual('Second attachment')
       expect(secondItemTitle).toEqual('First attachment')
+    })
+
+    it('should update the associated indexes', function () {
+      var firstItemNewIndex = document.querySelector('li:nth-child(1) input[type=text]').value
+      var secondItemNewIndex = document.querySelector('li:nth-child(2) input[type=text]').value
+      expect(firstItemNewIndex).toEqual('1')
+      expect(secondItemNewIndex).toEqual('2')
     })
   })
 })

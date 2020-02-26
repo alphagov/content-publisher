@@ -5,7 +5,7 @@
 %>
 
 <%= tag.ol class: "app-c-reorderable-list", data: data_attributes do %>
-  <% items.each do |item| %>
+  <% items.each_with_index do |item, index| %>
     <%= tag.li class: "app-c-reorderable-list__item" do %>
       <%= tag.div class: "app-c-reorderable-list__wrapper" do %>
         <%= tag.div class: "app-c-reorderable-list__content" do %>
