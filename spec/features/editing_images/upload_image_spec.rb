@@ -45,7 +45,7 @@ RSpec.feature "Upload an image", js: true do
 
   def and_i_crop_the_image
     stub_publishing_api_put_content(@edition.content_id, {})
-    click_on "Continue"
+    click_on "Save and continue"
   end
 
   def and_i_fill_in_the_metadata

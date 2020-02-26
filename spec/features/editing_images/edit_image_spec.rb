@@ -83,7 +83,7 @@ RSpec.feature "Edit image", js: true do
     stub_asset_manager_receives_an_asset
     stub_asset_manager_updates_any_asset
 
-    click_on "Crop image"
+    click_on "Save"
   end
 
   def when_i_edit_the_image_metadata

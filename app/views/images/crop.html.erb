@@ -34,7 +34,13 @@ content_for :title,t(title_key, title: @edition.title_or_fallback)
 
   <div class="app-js-only">
     <%= render "govuk_publishing_components/components/button", {
-      text: (@image_revision.at_exact_dimensions?) || params[:wizard] == 'upload' ? "Continue" : "Crop image",
+      text: if @image_revision.at_exact_dimensions?
+              "Continue"
+            elsif params[:wizard] == 'upload'
+              "Save and continue"
+            else
+              "Save"
+            end,
       margin_bottom: true
     } %>
   </div>
