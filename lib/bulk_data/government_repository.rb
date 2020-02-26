@@ -44,5 +44,13 @@ module BulkData
     rescue GdsApi::BaseError
       raise RemoteDataUnavailableError
     end
+
+    def cache_age
+      Time.current - Cache.written_at(CACHE_KEY)
+    end
+
+    def cache_populated?
+      Cache.exist?(CACHE_KEY)
+    end
   end
 end

@@ -101,7 +101,7 @@ Rails.application.routes.draw do
     delete "/file-attachments/:file_attachment_id" => "file_attachments#destroy"
   end
 
-  get "/healthcheck", to: proc { [200, {}, %w[OK]] }
+  get "/healthcheck", to: "healthcheck#index"
 
   get "/how-to-use-publisher" => "publisher_information#how_to_use_publisher", as: :how_to_use_publisher
   get "/beta-capabilities" => "publisher_information#beta_capabilities", as: :beta_capabilities
