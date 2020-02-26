@@ -15,4 +15,8 @@ class DocumentType::OrganisationsField
   def pre_update_issues(_edition, _params)
     Requirements::CheckerIssues.new
   end
+
+  def pre_publish_issues(_edition)
+    Requirements::CheckerIssues.new
+  end
 end

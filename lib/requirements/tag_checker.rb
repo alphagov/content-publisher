@@ -11,12 +11,15 @@ module Requirements
       edition.document_type.tags.each do |tag|
         issues += tag.pre_update_issues(edition, params)
       end
-
       issues
     end
 
     def pre_publish_issues
-      pre_update_issues(edition.tags.symbolize_keys)
+      issues = CheckerIssues.new
+      edition.document_type.tags.each do |tag|
+        issues += tag.pre_publish_issues(edition)
+      end
+      issues
     end
   end
 end

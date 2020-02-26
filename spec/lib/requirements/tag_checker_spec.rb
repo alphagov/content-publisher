@@ -18,11 +18,13 @@ RSpec.describe Requirements::TagChecker do
   end
 
   describe "#pre_publish_issues" do
-    it "delegates to #pre_update_issues" do
-      edition = build :edition, tags: { tag: %w[id1 id2] }
-      checker = described_class.new(edition)
-      expect(checker).to receive(:pre_update_issues).with(tag: %w[id1 id2])
-      checker.pre_publish_issues
+    it "delegates to return issues with tag fields" do
+      tag = DocumentType::PrimaryPublishingOrganisationField.new
+      document_type = build :document_type, tags: [tag]
+      edition = build :edition, document_type: document_type
+
+      expect(tag).to receive(:pre_publish_issues).with(edition).and_call_original
+      described_class.new(edition).pre_publish_issues
     end
   end
 end

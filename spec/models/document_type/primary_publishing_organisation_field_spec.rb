@@ -23,4 +23,12 @@ RSpec.describe DocumentType::PrimaryPublishingOrganisationField do
       expect(issues).to have_issue(:primary_publishing_organisation, :blank, styles: %i[form summary])
     end
   end
+
+  describe "#pre_publish_issues" do
+    it "delegates to #pre_update_issues" do
+      field = described_class.new
+      expect(field).to receive(:pre_update_issues)
+      field.pre_publish_issues(build(:edition))
+    end
+  end
 end
