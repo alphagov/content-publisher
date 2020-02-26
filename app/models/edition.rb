@@ -64,6 +64,7 @@ class Edition < ApplicationRecord
            :contents,
            :update_type,
            :change_note,
+           :change_history,
            :major?,
            :minor?,
            :tags,
