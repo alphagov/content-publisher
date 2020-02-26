@@ -51,6 +51,12 @@ class ApplicationController < ActionController::Base
       .includes(:access_limit, revision: [:tags_revision])
       .find_current(document: document_param)
 
+    if edition.document_type.pre_release? &&
+        !current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
+
+      raise Forbidden
+    end
+
     unless current_user.can_access?(edition)
       render "documents/access_limited", status: :forbidden,
         assigns: { edition: edition }

@@ -60,4 +60,16 @@ RSpec.describe "Errors" do
       expect(response.body).to include(I18n.t!("errors.local_data_unavailable.title"))
     end
   end
+
+  it "forbids users without pre-release permission from accessing pre-release documents" do
+    pre_release_document_type = build(:document_type, pre_release: true)
+    edition = create(:edition, document_type: pre_release_document_type)
+    user = build(:user, permissions: %w(signin))
+
+    login_as(user)
+    get document_path(edition.document)
+
+    expect(response).to have_http_status(:forbidden)
+    expect(response.body).to include(I18n.t!("errors.forbidden.title"))
+  end
 end
