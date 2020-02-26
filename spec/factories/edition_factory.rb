@@ -86,10 +86,10 @@ FactoryBot.define do
       summary { SecureRandom.alphanumeric(10) }
       live { true }
       first_published_at { Time.zone.now }
+      published_at { Time.zone.now }
 
       transient do
         state { "published" }
-        published_at { Time.zone.now }
       end
 
       after(:build) do |edition, evaluator|
