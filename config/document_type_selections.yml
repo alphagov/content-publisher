@@ -23,7 +23,6 @@
       path: /government/admin/speeches/new
     - id: correspondence
       type: document_type
-      pre_release: true
     - id: correspondence_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
@@ -92,7 +91,6 @@
   options:
     - id: impact_assessment
       type: document_type
-      pre_release: true
     - id: impact_assessment_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
@@ -103,7 +101,6 @@
       path: /government/admin/consultations/new
     - id: policy_paper
       type: document_type
-      pre_release: true
     - id: policy_paper_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
@@ -164,35 +161,30 @@
       type: document_type_selection
     - id: independent_report
       type: document_type
-      pre_release: true
     - id: independent_report_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: foi_release
       type: document_type
-      pre_release: true
     - id: foi_release_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: corporate_report
       type: document_type
-      pre_release: true
     - id: corporate_report_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: transparency
       type: document_type
-      pre_release: true
     - id: transparency_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: research
       type: document_type
-      pre_release: true
     - id: research_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
@@ -203,7 +195,6 @@
       path: /government/admin/publications/new
     - id: promotional
       type: document_type
-      pre_release: true
     - id: promotional_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin

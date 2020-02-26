@@ -1,7 +1,7 @@
 class DocumentTypeSelection::Option
   include InitializeWithHash
 
-  attr_reader :id, :type, :hostname, :path, :pre_release
+  attr_reader :id, :type, :hostname, :path
 
   def document_type_selection?
     type == "document_type_selection"
@@ -19,5 +19,9 @@ class DocumentTypeSelection::Option
     hostname ? Plek.new.external_url_for(hostname) + path : path
   end
 
-  alias_method :pre_release?, :pre_release
+  def pre_release?
+    return false unless document_type?
+
+    DocumentType.find(id).pre_release?
+  end
 end

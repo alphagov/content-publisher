@@ -48,9 +48,6 @@
           "enum": [
             "document_type"
           ]
-        },
-        "pre_release": {
-          "type": "boolean"
         }
       }
     },

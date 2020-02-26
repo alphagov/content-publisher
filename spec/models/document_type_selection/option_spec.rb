@@ -56,4 +56,29 @@ RSpec.describe DocumentTypeSelection::Option do
       expect(described_class.new(option).document_type?).to be true
     end
   end
+
+  describe "#pre_release?" do
+    it "returns true when the option is an existing document type and a pre-release feature" do
+      pre_release_document_type = build(:document_type, pre_release: true)
+
+      allow(DocumentType)
+        .to receive(:all)
+        .and_return([pre_release_document_type])
+
+      option = {
+        "id" => pre_release_document_type.id,
+        "type" => "document_type",
+      }
+
+      expect(described_class.new(option).pre_release?).to be true
+    end
+
+    it "returns false when the option is not a document type" do
+      option = {
+        "id" => "foo",
+      }
+
+      expect(described_class.new(option).pre_release?).to be false
+    end
+  end
 end

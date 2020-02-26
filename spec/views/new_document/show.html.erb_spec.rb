@@ -1,9 +1,10 @@
 RSpec.describe "new_document/show.html.erb" do
+  let(:pre_release_document_type) { build(:document_type, id: "news", pre_release: true) }
+
   let(:pre_release_option) do
     DocumentTypeSelection::Option.new(
-      id: "news",
+      id: pre_release_document_type.id,
       type: "document_type",
-      pre_release: true,
     )
   end
 
@@ -14,6 +15,12 @@ RSpec.describe "new_document/show.html.erb" do
         pre_release_option,
       ],
     )
+  end
+
+  before do
+    allow(DocumentType)
+      .to receive(:all)
+      .and_return([pre_release_document_type])
   end
 
   it "shows pre_release options when the user has pre_release_features permissions" do
