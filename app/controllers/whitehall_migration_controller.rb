@@ -13,7 +13,7 @@ class WhitehallMigrationController < ApplicationController
   end
 
   def document
-    @document = WhitehallMigration::DocumentImport.find_by!(
+    @document_import = WhitehallMigration::DocumentImport.find_by!(
       id: params[:document_import_id],
       whitehall_migration_id: params[:migration_id],
     )
