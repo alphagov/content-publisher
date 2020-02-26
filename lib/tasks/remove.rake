@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :remove do
   desc "Remove a document with a gone on GOV.UK e.g. remove:gone['a-content-id']"
   task :gone, [:content_id] => :environment do |_, args|
