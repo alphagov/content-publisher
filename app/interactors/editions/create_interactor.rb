@@ -4,13 +4,11 @@ class Editions::CreateInteractor < ApplicationInteractor
            :edition,
            :next_edition,
            :discarded_edition,
-           :next_revision,
            to: :context
 
   def call
     Edition.transaction do
       find_and_lock_edition
-      create_next_revision
       create_next_edition
       create_timeline_entry
       preview_next_edition
@@ -21,38 +19,15 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-
-    assert_edition_state(edition, assertion: "can create new edition") do
-      edition.live || edition.discarded?
-    end
-  end
-
-  def create_next_revision
-    updater = Versioning::RevisionUpdater.new(edition.revision, user)
-
-    updater.assign(change_note: "",
-                   update_type: "major",
-                   proposed_publish_time: nil)
-
-    context.next_revision = updater.next_revision
+    context.discarded_edition = Edition.find_by(document: edition.document,
+                                                number: edition.number + 1)
+    assert_edition_state(edition, assertion: "can create new edition") { edition.live }
   end
 
   def create_next_edition
-    edition.update!(current: false)
-
-    context.discarded_edition = Edition.find_by(
-      document: edition.document,
-      number: edition.number + 1,
-    )
-
-    context.next_edition = discarded_edition ||
-      Edition.new(document: edition.document,
-                  number: edition.document.next_edition_number,
-                  created_by: user)
-
-    EditDraftEditionService.call(next_edition, user, current: true, revision: next_revision)
-    AssignEditionStatusService.call(next_edition, user: user, state: :draft)
-    next_edition.save!
+    context.next_edition = CreateNextEditionService.call(current_edition: edition,
+                                                         user: user,
+                                                         discarded_edition: discarded_edition)
   end
 
   def create_timeline_entry
