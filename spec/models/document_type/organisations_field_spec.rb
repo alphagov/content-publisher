@@ -30,4 +30,13 @@ RSpec.describe DocumentType::OrganisationsField do
       expect(payload[:links][:organisations]).to eq(org_ids)
     end
   end
+
+  describe "#updater_params" do
+    it "returns a hash of the organisations" do
+      edition = build :edition
+      params = ActionController::Parameters.new(organisations: %w[some_org_id])
+      updater_params = described_class.new.updater_params(edition, params)
+      expect(updater_params).to eq(organisations: %w[some_org_id])
+    end
+  end
 end

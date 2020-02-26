@@ -8,6 +8,15 @@ RSpec.describe DocumentType::PrimaryPublishingOrganisationField do
     end
   end
 
+  describe "#updater_params" do
+    it "returns a hash of the primary_publishing_organisations" do
+      edition = build :edition
+      params = ActionController::Parameters.new(primary_publishing_organisation: %w[some_org_id])
+      updater_params = described_class.new.updater_params(edition, params)
+      expect(updater_params).to eq(primary_publishing_organisation: %w[some_org_id])
+    end
+  end
+
   describe "#pre_update_issues" do
     let(:edition) { build(:edition) }
 

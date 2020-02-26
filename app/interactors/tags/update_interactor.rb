@@ -51,10 +51,8 @@ private
   end
 
   def update_params
-    permits = edition.document_type.tags.map do |tag_field|
-      [tag_field.id, []]
+    @update_params ||= edition.document_type.tags.reduce({}) do |hash, field|
+      hash.merge!(field.updater_params(edition, params.fetch(:tags, {})))
     end
-
-    params.fetch(:tags, {}).permit(Hash[permits]).each { |_, v| v.reject!(&:empty?) }
   end
 end

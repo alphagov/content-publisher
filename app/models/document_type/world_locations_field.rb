@@ -9,6 +9,10 @@ class DocumentType::WorldLocationsField
     { links: { id.to_sym => edition.tags[id] } }
   end
 
+  def updater_params(_edition, params)
+    { world_locations: params[:world_locations] }
+  end
+
   def document_type
     "world_location"
   end

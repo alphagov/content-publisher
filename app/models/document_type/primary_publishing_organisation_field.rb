@@ -7,6 +7,10 @@ class DocumentType::PrimaryPublishingOrganisationField
     { links: { id.to_sym => edition.tags[id] } }
   end
 
+  def updater_params(_edition, params)
+    { primary_publishing_organisation: params[:primary_publishing_organisation] }
+  end
+
   def document_type
     "organisation"
   end

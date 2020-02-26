@@ -20,6 +20,10 @@ class DocumentType::RoleAppointmentsField
     { links: roles_and_people }
   end
 
+  def updater_params(_edition, params)
+    { role_appointments: params[:role_appointments] }
+  end
+
   def document_type
     "role_appointment"
   end

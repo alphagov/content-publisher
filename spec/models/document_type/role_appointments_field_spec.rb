@@ -19,4 +19,13 @@ RSpec.describe DocumentType::RoleAppointmentsField do
       )
     end
   end
+
+  describe "#updater_params" do
+    it "returns a hash of the role_appointments" do
+      edition = build :edition
+      params = ActionController::Parameters.new(role_appointments: %w[some_role_id])
+      updater_params = described_class.new.updater_params(edition, params)
+      expect(updater_params).to eq(role_appointments: %w[some_role_id])
+    end
+  end
 end

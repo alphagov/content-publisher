@@ -8,6 +8,10 @@ class DocumentType::OrganisationsField
     { links: { id.to_sym => links.uniq } }
   end
 
+  def updater_params(_edition, params)
+    { organisations: params[:organisations] }
+  end
+
   def document_type
     "organisation"
   end

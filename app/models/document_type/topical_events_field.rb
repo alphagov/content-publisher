@@ -9,6 +9,10 @@ class DocumentType::TopicalEventsField
     { links: { id.to_sym => edition.tags[id] } }
   end
 
+  def updater_params(_edition, params)
+    { topical_events: params[:topical_events] }
+  end
+
   def document_type
     "topical_event"
   end
