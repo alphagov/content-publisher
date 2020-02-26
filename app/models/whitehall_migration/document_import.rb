@@ -19,4 +19,10 @@ class WhitehallMigration::DocumentImport < ApplicationRecord
   def migratable_assets
     assets.select { |a| a.pending? || a.migration_failed? }
   end
+
+  def current_title
+    return nil unless document
+
+    document.current_edition.title
+  end
 end
