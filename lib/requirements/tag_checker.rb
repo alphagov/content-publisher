@@ -14,6 +14,14 @@ module Requirements
       issues
     end
 
+    def pre_preview_issues
+      issues = CheckerIssues.new
+      edition.document_type.tags.each do |tag|
+        issues += tag.pre_preview_issues(edition)
+      end
+      issues
+    end
+
     def pre_publish_issues
       issues = CheckerIssues.new
       edition.document_type.tags.each do |tag|

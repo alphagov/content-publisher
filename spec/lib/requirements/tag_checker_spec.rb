@@ -17,6 +17,17 @@ RSpec.describe Requirements::TagChecker do
     end
   end
 
+  describe "#pre_preview_issues" do
+    it "delegates to return issues with tag fields" do
+      tag = DocumentType::PrimaryPublishingOrganisationField.new
+      document_type = build :document_type, tags: [tag]
+      edition = build :edition, document_type: document_type
+
+      expect(tag).to receive(:pre_preview_issues).with(edition).and_call_original
+      described_class.new(edition).pre_preview_issues
+    end
+  end
+
   describe "#pre_publish_issues" do
     it "delegates to return issues with tag fields" do
       tag = DocumentType::PrimaryPublishingOrganisationField.new

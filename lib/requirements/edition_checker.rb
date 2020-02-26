@@ -14,6 +14,7 @@ module Requirements
       end
 
       issues += ContentChecker.new(edition).pre_preview_issues
+      issues += TagChecker.new(edition).pre_preview_issues
       issues
     end
 
