@@ -14,13 +14,13 @@ module Requirements
                       time_period: MAX_PUBLISH_DELAY.inspect)
       end
 
-      if publish_time > Time.current && publish_time < MIN_PUBLISH_DELAY.from_now
+      if publish_time > Time.zone.now && publish_time < MIN_PUBLISH_DELAY.from_now
         issues.create(:schedule_time,
                       :too_close_to_now,
                       time_period: MIN_PUBLISH_DELAY.inspect)
       end
 
-      if publish_time < Time.current
+      if publish_time < Time.zone.now
         field = publish_time.today? ? :schedule_time : :schedule_date
         issues.create(field, :in_the_past)
       end

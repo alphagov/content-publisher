@@ -27,7 +27,7 @@ RSpec.describe PublishDraftEditionService do
       it "sets the document first publishing time" do
         freeze_time do
           expect { described_class.call(edition, user, with_review: true) }
-            .to change(edition.document, :first_published_at).to(Time.current)
+            .to change(edition.document, :first_published_at).to(Time.zone.now)
         end
       end
 
@@ -56,7 +56,7 @@ RSpec.describe PublishDraftEditionService do
       document = create(:document, :with_current_edition)
       freeze_time do
         expect { described_class.call(document.current_edition, user, with_review: true) }
-          .to change(document.current_edition, :published_at).to(Time.current)
+          .to change(document.current_edition, :published_at).to(Time.zone.now)
       end
     end
 

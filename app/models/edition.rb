@@ -6,7 +6,7 @@
 class Edition < ApplicationRecord
   before_create do
     # set a default value for last_edited_at works better than using DB default
-    self.last_edited_at = Time.current unless last_edited_at
+    self.last_edited_at = Time.zone.now unless last_edited_at
   end
 
   after_save do

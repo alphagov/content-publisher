@@ -22,7 +22,7 @@ RSpec.describe EditDraftEditionService do
 
         expect { described_class.call(edition, user) }
           .to change { edition.last_edited_by }.to(user)
-          .and change { edition.last_edited_at }.to(Time.current)
+          .and change { edition.last_edited_at }.to(Time.zone.now)
       end
     end
 

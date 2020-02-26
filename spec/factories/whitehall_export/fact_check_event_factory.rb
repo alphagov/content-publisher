@@ -9,8 +9,8 @@ FactoryBot.define do
     instructions { "Do something" }
     comments { "hello" }
     sequence(:requestor_id)
-    created_at { Time.current.rfc3339 }
-    updated_at { Time.current.rfc3339 }
+    created_at { Time.zone.now.rfc3339 }
+    updated_at { Time.zone.now.rfc3339 }
 
     initialize_with { attributes.stringify_keys }
   end

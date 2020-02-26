@@ -55,7 +55,7 @@ private
     else
       Withdrawal.new(public_explanation: public_explanation,
                      published_status: edition.status,
-                     withdrawn_at: Time.current)
+                     withdrawn_at: Time.zone.now)
     end
   end
 

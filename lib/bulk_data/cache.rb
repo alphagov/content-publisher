@@ -13,7 +13,7 @@ module BulkData
 
     def self.write(key, value)
       cache.write(key, value, expires_in: 24.hours)
-      cache.write("#{key}:created", Time.current, expires_in: 24.hours)
+      cache.write("#{key}:created", Time.zone.now, expires_in: 24.hours)
     end
 
     def self.read(key)

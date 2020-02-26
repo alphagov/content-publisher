@@ -284,8 +284,8 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     context "when an unpublished edition has not been edited" do
-      let(:created_at) { Time.current.yesterday.rfc3339 }
-      let(:updated_at) { Time.current.rfc3339 }
+      let(:created_at) { Time.zone.now.yesterday.rfc3339 }
+      let(:updated_at) { Time.zone.now.rfc3339 }
       let(:whitehall_edition) do
         build(:whitehall_export_edition,
               revision_history: [
@@ -327,7 +327,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     context "when an unpublished edition has been edited" do
-      let(:created_at) { Time.current.rfc3339 }
+      let(:created_at) { Time.zone.now.rfc3339 }
       let(:whitehall_edition) do
         build(:whitehall_export_edition,
               revision_history: [

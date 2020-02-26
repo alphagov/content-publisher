@@ -27,7 +27,7 @@ RSpec.describe WhitehallImporter::CreateMigration do
           expect(WhitehallMigration.last.organisation_content_id).to eq("123")
           expect(WhitehallMigration.last.document_type).to eq("news_article")
           expect(WhitehallMigration.last.document_subtypes).to eq([])
-          expect(WhitehallMigration.last.created_at).to eq(Time.current)
+          expect(WhitehallMigration.last.created_at).to eq(Time.zone.now)
         end
       end
 
@@ -60,7 +60,7 @@ RSpec.describe WhitehallImporter::CreateMigration do
           expect(WhitehallMigration.last.organisation_content_id).to eq("123")
           expect(WhitehallMigration.last.document_type).to eq("news_article")
           expect(WhitehallMigration.last.document_subtypes).to eq(%w(press_release news_story))
-          expect(WhitehallMigration.last.created_at).to eq(Time.current)
+          expect(WhitehallMigration.last.created_at).to eq(Time.zone.now)
         end
       end
 

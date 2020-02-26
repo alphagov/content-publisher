@@ -3,8 +3,8 @@ FactoryBot.define do
     skip_create
 
     sequence(:id)
-    created_at { Time.current.rfc3339 }
-    updated_at { Time.current.rfc3339 }
+    created_at { Time.zone.now.rfc3339 }
+    updated_at { Time.zone.now.rfc3339 }
     title { "Some random text file" }
     accessible { false }
     isbn { "" }

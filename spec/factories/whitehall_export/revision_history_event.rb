@@ -6,7 +6,7 @@ FactoryBot.define do
     event { "create" }
     state { "draft" }
     sequence(:whodunnit)
-    created_at { Time.current.rfc3339 }
+    created_at { Time.zone.now.rfc3339 }
 
     initialize_with { attributes.stringify_keys }
   end

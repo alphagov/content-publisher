@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :edition do
-    last_edited_at { Time.current }
+    last_edited_at { Time.zone.now }
     current { true }
     live { false }
     government_id { government&.content_id }
@@ -85,11 +85,11 @@ FactoryBot.define do
     trait :published do
       summary { SecureRandom.alphanumeric(10) }
       live { true }
-      first_published_at { Time.current }
+      first_published_at { Time.zone.now }
 
       transient do
         state { "published" }
-        published_at { Time.current }
+        published_at { Time.zone.now }
       end
 
       after(:build) do |edition, evaluator|
@@ -106,7 +106,7 @@ FactoryBot.define do
     trait :withdrawn do
       summary { SecureRandom.alphanumeric(10) }
       live { true }
-      first_published_at { Time.current }
+      first_published_at { Time.zone.now }
 
       transient do
         withdrawal { nil }

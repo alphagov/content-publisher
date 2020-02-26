@@ -3,7 +3,7 @@ RSpec.describe Requirements::BackdateChecker do
     let(:checker) { described_class.new }
 
     it "returns no issues if there are none" do
-      date = Time.current.change(day: 1, month: 1, year: 2019)
+      date = Time.zone.now.change(day: 1, month: 1, year: 2019)
       issues = checker.pre_update_issues(date)
       expect(issues).to be_empty
     end

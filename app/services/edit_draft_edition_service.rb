@@ -9,7 +9,7 @@ class EditDraftEditionService < ApplicationService
     raise "cannot edit a live edition" if edition.live?
 
     edition.assign_attributes(
-      attributes.merge(last_edited_by: user, last_edited_at: Time.current),
+      attributes.merge(last_edited_by: user, last_edited_at: Time.zone.now),
     )
 
     determine_political
