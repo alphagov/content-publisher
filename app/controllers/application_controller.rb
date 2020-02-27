@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
       .find_current(document: document_param)
 
     unless current_user.can_access?(edition)
-      render "documents/forbidden", status: :forbidden,
+      render "documents/access_limited", status: :forbidden,
         assigns: { edition: edition }
     end
   end
