@@ -41,20 +41,21 @@ RSpec.describe Editions::CreateInteractor do
       let(:live_edition) { create(:edition, :published) }
       let(:params) { { document: live_edition.document.to_param } }
 
-      let!(:edition) do
+      let!(:discarded_edition) do
         create(:edition,
                state: "discarded",
                current: false,
                document: live_edition.document)
       end
 
-      it "resumes the edition" do
-        next_edition = described_class
-          .call(params: params, user: user)
-          .next_edition
-
-        expect(next_edition.number).to eq edition.number
-        expect(next_edition).to eq edition.reload
+      it "delegates to the CreateNextEditionService" do
+        expect(CreateNextEditionService)
+          .to receive(:call)
+          .with(current_edition: live_edition,
+                user: user,
+                discarded_edition: discarded_edition)
+          .and_call_original
+        described_class.call(params: params, user: user)
       end
 
       it "creates a timeline entry" do
@@ -68,18 +69,16 @@ RSpec.describe Editions::CreateInteractor do
       end
     end
 
-    context "when the edition is live" do
-      let(:edition) { create(:edition, live: true, number: 2) }
+    context "when there is not a discarded edition" do
+      let(:edition) { create(:edition, :published, number: 2) }
       let(:params) { { document: edition.document.to_param } }
 
-      it "creates a new edition" do
-        next_edition = described_class
-          .call(params: params, user: user)
-          .next_edition
-
-        expect(next_edition).not_to eq edition.reload
-        expect(next_edition.number).to eq 3
-        expect(next_edition.created_by).to eq user
+      it "delegates to the CreateNextEditionService" do
+        expect(CreateNextEditionService)
+          .to receive(:call)
+          .with(current_edition: edition, user: user, discarded_edition: nil)
+          .and_call_original
+        described_class.call(params: params, user: user)
       end
 
       it "creates a timeline entry" do
