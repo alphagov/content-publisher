@@ -22,10 +22,15 @@ RSpec.describe WhitehallDocumentImportJob do
     )
   end
 
-  it "calls WhitehallImporter::Import" do
+  it "calls WhitehallImporter::Import if the document import is pending" do
     expect(WhitehallImporter::Import).to receive(:call)
                                      .with(whitehall_migration_document_import)
     described_class.perform_now(whitehall_migration_document_import)
+  end
+
+  it "does not call WhitehallImporter::Import if the document import is not pending" do
+    expect(WhitehallImporter::Import).not_to receive(:call)
+    described_class.perform_now(imported_document_import)
   end
 
   it "calls WhitehallImporter::Sync" do
