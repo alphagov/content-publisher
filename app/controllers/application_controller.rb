@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
   include EditionAssertions
 
+  class Forbidden < RuntimeError; end
+
   helper_method :rendering_context
   layout -> { rendering_context }
 
