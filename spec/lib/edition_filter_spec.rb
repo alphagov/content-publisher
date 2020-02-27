@@ -203,6 +203,23 @@ RSpec.describe EditionFilter do
         expect(editions).to eq([edition])
       end
     end
+
+    context "when the edition's document type is tagged as pre release" do
+      let!(:edition1) { create(:edition) }
+      let!(:edition2) { create(:edition, document_type: build(:document_type, :pre_release)) }
+
+      it "includes the edition for users with pre_release_features permission" do
+        pre_release_user = build(:user)
+        editions = described_class.new(pre_release_user).editions
+        expect(editions).to match_array([edition1, edition2])
+      end
+
+      it "excludes the edition for users without pre_release_features permission" do
+        user = build(:user, permissions: [])
+        editions = described_class.new(user).editions
+        expect(editions).to match_array([edition1])
+      end
+    end
   end
 
   describe "#filter_params" do
