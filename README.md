@@ -73,6 +73,7 @@ listen to the sidekiq processes.
 
 - [Approach to analytics](docs/approach-to-analytics.md)
 - [History mode](docs/history-mode.md)
+- [Importing documents from Whitehall](docs/import-from-whitehall.md)
 - [Removing documents](docs/removing-documents.md)
 - [Testing strategy](docs/testing-strategy.md)
 - [User permissions](docs/user-permissions.md)
