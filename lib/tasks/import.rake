@@ -15,7 +15,7 @@ namespace :import do
     documents_to_import = WhitehallMigration::DocumentImport.where(whitehall_migration: whitehall_migration).count
     puts "Identified #{documents_to_import} documents to import"
 
-    puts whitehall_migration_url(whitehall_migration, host: Plek.new.external_url_for("content-publisher")).to_s
+    puts whitehall_migration_url(whitehall_migration, host: Plek.new.external_url_for("content-publisher"))
   end
 
   desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall_document[123]"
@@ -30,6 +30,6 @@ namespace :import do
     WhitehallDocumentImportJob.perform_later(whitehall_import)
     puts "Added whitehall document with ID:#{args.document_id} to the import queue"
 
-    puts whitehall_migration_url(whitehall_import.whitehall_migration_id, host: Plek.new.external_url_for("content-publisher")).to_s
+    puts whitehall_migration_url(whitehall_import.whitehall_migration_id, host: Plek.new.external_url_for("content-publisher"))
   end
 end
