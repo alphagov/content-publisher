@@ -1,0 +1,6 @@
+en:
+  errors:
+    forbidden:
+      title: Forbidden
+      body_govspeak: |
+        You do not have permission to access this page.

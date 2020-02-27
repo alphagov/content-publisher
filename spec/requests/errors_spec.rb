@@ -7,6 +7,14 @@ RSpec.describe "Errors" do
     end
   end
 
+  describe "/403" do
+    it "returns a forbidden response" do
+      get "/403"
+      expect(response).to have_http_status(:forbidden)
+      expect(response.body).to include(I18n.t!("errors.forbidden.title"))
+    end
+  end
+
   describe "/404" do
     it "returns a not found response" do
       get "/404"

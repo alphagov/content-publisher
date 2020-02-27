@@ -6,6 +6,10 @@ class ErrorsController < ApplicationController
     render status: :bad_request, formats: :html
   end
 
+  def forbidden
+    render status: :forbidden, formats: :html
+  end
+
   def not_found
     render status: :not_found, formats: :html
   end
