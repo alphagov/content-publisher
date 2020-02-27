@@ -21,13 +21,6 @@ RSpec.describe WhitehallImporter::Import do
       )
     end
 
-    it "raises if the WhitehallMigration::DocumentImport doesn't have a state of pending" do
-      document_import = create(:whitehall_migration_document_import, state: "imported")
-
-      expect { described_class.call(document_import) }
-        .to raise_error(RuntimeError, "Cannot import with a state of imported")
-    end
-
     it "locks the document in Whitehall" do
       described_class.call(document_import)
       expect(stub_whitehall_lock_document(document_import.whitehall_document_id))

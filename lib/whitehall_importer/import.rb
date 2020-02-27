@@ -13,10 +13,6 @@ module WhitehallImporter
     end
 
     def call
-      unless document_import.pending?
-        raise "Cannot import with a state of #{document_import.state}"
-      end
-
       lock_document
 
       document_import.update!(
