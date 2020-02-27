@@ -1,0 +1,17 @@
+<% content_for :title, t("documents.access_limited.title") %>
+
+<div class="govuk-body" data-gtm="access-limit-forbidden" data-gtm-visibility-tracking="true">
+  <%= t("documents.access_limited.description") %>
+</div>
+
+<div class="govuk-body">
+  <% begin %>
+    <% primary_org = Linkables.new("organisation")
+      .by_content_id(@edition.primary_publishing_organisation_id) %>
+
+    <% if primary_org %>
+      <%= t("documents.access_limited.owner",
+            primary_org: primary_org.fetch("internal_name")) %>
+    <% end %>
+  <% rescue GdsApi::BaseError; end %>
+</div>

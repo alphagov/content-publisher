@@ -1,6 +1,6 @@
 en:
   documents:
-    forbidden:
+    access_limited:
       title: Forbidden
       description: You do not have permission to access this page.
       owner: This page is owned by %{primary_org}.
