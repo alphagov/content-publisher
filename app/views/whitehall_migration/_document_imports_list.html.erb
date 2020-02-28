@@ -1,0 +1,40 @@
+<% items = document_imports.map do |document_import|
+  view_links = []
+
+  if document_import.content_id
+    url = "#{Plek.find('whitehall-admin')}/government/admin/by-content-id/#{document_import.content_id}"
+    view_links << link_to("Whitehall", url, target: "_blank")
+  end
+
+  if document_import.document
+    view_links << link_to("Content Publisher",
+                          document_path(document_import.document),
+                          target: "_blank")
+  end
+
+  if document_import.completed?
+    view_links << link_to("Draft GOV.UK",
+                          edition_preview_url(document_import.document.current_edition),
+                          target: "_blank")
+  end
+
+  if document_import.completed? && document_import.document.live_edition
+    view_links << link_to("Live GOV.UK",
+                          edition_public_url(document_import.document.live_edition),
+                          target: "_blank")
+  end
+
+  {
+    link: {
+      text: document_import.current_title ? document_import.current_title : document_import.id.to_s,
+      path: whitehall_migration_document_path(document_import.whitehall_migration_id, document_import),
+    },
+    metadata: {
+      state: document_import.state.to_s.titleize,
+      error_message: document_import.error_log ? "Error log: #{document_import.error_log}" : ""
+    },
+    subtext: view_links.any? ? "View: #{view_links.join(" ")}".html_safe : nil,
+  }
+  end
+%>
+<%= render "govuk_publishing_components/components/document_list", items: items %>

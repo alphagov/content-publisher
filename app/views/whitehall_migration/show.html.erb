@@ -35,14 +35,6 @@
 
 <% if @whitehall_migration.document_imports.completed.exists? %>
   <h2 class="govuk-heading-m">Selection of imported documents to view</h2>
-  <% random_items = @whitehall_migration.document_imports.completed.order(Arel.sql("RANDOM()")).first(10).map do |document_import|
-      {
-        link: {
-          text: document_import.document.current_edition.title
-        },
-        subtext: "View: <a href=\"#{Plek.find('whitehall-admin')}/government/admin/by-content-id/#{document_import.content_id}\">Whitehall</a> View: <a href=\"#{Plek.find('content-publisher')}/documents/#{document_import.content_id}:en\">Content Publisher</a>".html_safe
-      }
-    end
-  %>
-  <%= render "govuk_publishing_components/components/document_list", items: random_items %>
+  <% random_items = @whitehall_migration.document_imports.completed.order(Arel.sql("RANDOM()")).first(10) %>
+  <%= render "document_imports_list", document_imports: random_items %>
 <% end %>
