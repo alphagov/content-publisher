@@ -13,6 +13,7 @@ class BackfillChangeHistoryForMetadataRevisions < ActiveRecord::Migration[6.0]
   disable_ddl_transaction!
 
   def up
+    change_history_ids = {}
     MetadataRevision.find_each do |metadata_revision|
       edition = metadata_revision.revision.editions.first
       Edition.transaction do
@@ -25,7 +26,7 @@ class BackfillChangeHistoryForMetadataRevisions < ActiveRecord::Migration[6.0]
           .order(:published_at)
 
         change_history = change_history_editions.map do |e|
-          { id: SecureRandom.uuid,
+          { id: change_history_ids[e.id] ||= SecureRandom.uuid,
             note: e.revision.metadata_revision.change_note,
             public_timestamp: e.published_at.rfc3339 }
         end
