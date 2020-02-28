@@ -270,6 +270,10 @@ RSpec.describe WhitehallImporter::CreateEdition do
         expect(edition).to be_withdrawn
       end
 
+      it "sets the edition as live" do
+        expect(edition).to be_live
+      end
+
       it "sets the correct previous status" do
         expect(edition.statuses.first).to be_published
       end
@@ -309,10 +313,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
                                   explanation: "Gator"))
       end
 
-      it "creates an edition with a status of removed" do
+      it "creates a live edition with a status of removed" do
         edition = described_class.call(document_import: document_import, whitehall_edition: whitehall_edition)
 
         expect(edition).to be_removed
+        expect(edition).to be_live
       end
 
       it "sets the correct removal metadata" do
@@ -363,10 +368,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
         } .to change(Edition, :count).by(2)
       end
 
-      it "creates an edition with a status of removed" do
+      it "creates a live edition with a status of removed" do
         described_class.call(document_import: document_import, whitehall_edition: whitehall_edition)
 
         expect(document.editions.first).to be_removed
+        expect(document.editions.first).to be_live
       end
 
       it "sets the correct removal metadata" do
@@ -382,7 +388,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         edition = described_class.call(document_import: document_import, whitehall_edition: whitehall_edition)
 
         expect(edition).to be_draft
-        expect(edition.current).to be_truthy
+        expect(edition).to be_current
       end
 
       it "sets the correct timestamps" do

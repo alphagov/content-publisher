@@ -157,7 +157,7 @@ module WhitehallImporter
         revision: revision,
         status: status,
         current: current,
-        live: whitehall_edition["state"].in?(%w(published withdrawn)),
+        live: status.live?,
         created_at: create_event["created_at"],
         updated_at: last_event["created_at"],
         created_by_id: user_ids[create_event["whodunnit"]],
