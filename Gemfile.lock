@@ -175,7 +175,7 @@ GEM
       puma
       selenium-webdriver (>= 3.142)
       webdrivers (>= 4)
-    hashdiff (1.0.0)
+    hashdiff (1.0.1)
     hashery (2.1.2)
     hashie (3.6.0)
     htmlentities (4.3.4)
