@@ -243,13 +243,14 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     context "when the document is withdrawn" do
+      let(:published_at) { Time.zone.now.yesterday.rfc3339 }
       let(:whitehall_edition) do
         build(:whitehall_export_edition,
               state: "withdrawn",
               revision_history: [
                 build(:whitehall_export_revision_history_event),
                 build(:whitehall_export_revision_history_event,
-                      event: "update", state: "published"),
+                      event: "update", state: "published", created_at: published_at),
                 build(:whitehall_export_revision_history_event,
                       event: "update", state: "withdrawn"),
               ],
@@ -281,10 +282,15 @@ RSpec.describe WhitehallImporter::CreateEdition do
           whitehall_edition["unpublishing"]["explanation"],
         )
       end
+
+      it "sets the published_at time" do
+        expect(edition.published_at).to eq(published_at)
+      end
     end
 
     context "when an unpublished edition has not been edited" do
-      let(:created_at) { Time.zone.now.yesterday.rfc3339 }
+      let(:created_at) { Time.zone.now.last_week.rfc3339 }
+      let(:published_at) { Time.zone.now.yesterday.rfc3339 }
       let(:updated_at) { Time.zone.now.rfc3339 }
       let(:whitehall_edition) do
         build(:whitehall_export_edition,
@@ -292,7 +298,8 @@ RSpec.describe WhitehallImporter::CreateEdition do
                 build(:whitehall_export_revision_history_event,
                       created_at: created_at),
                 build(:whitehall_export_revision_history_event,
-                      event: "update", state: "published"),
+                      event: "update", state: "published",
+                      created_at: published_at),
                 build(:whitehall_export_revision_history_event,
                       event: "update", state: "draft", created_at: updated_at),
               ],
@@ -323,17 +330,20 @@ RSpec.describe WhitehallImporter::CreateEdition do
         expect(edition.created_at).to eq(created_at)
         expect(edition.updated_at).to eq(updated_at)
         expect(edition.last_edited_at).to eq(updated_at)
+        expect(edition.published_at).to eq(published_at)
       end
     end
 
     context "when an unpublished edition has been edited" do
       let(:created_at) { Time.zone.now.rfc3339 }
+      let(:published_at) { Time.zone.now.yesterday.rfc3339 }
       let(:whitehall_edition) do
         build(:whitehall_export_edition,
               revision_history: [
                 build(:whitehall_export_revision_history_event),
                 build(:whitehall_export_revision_history_event,
-                      event: "update", state: "published"),
+                      event: "update", state: "published",
+                      created_at: published_at),
                 build(:whitehall_export_revision_history_event,
                       event: "update",
                       state: "draft",
@@ -375,11 +385,14 @@ RSpec.describe WhitehallImporter::CreateEdition do
         expect(edition.current).to be_truthy
       end
 
-      it "sets the correct timestamps on the edition" do
+      it "sets the correct timestamps" do
         edition = described_class.call(document_import: document_import, whitehall_edition: whitehall_edition)
+        removed_edition = edition.document.editions.first
 
         expect(edition.created_at).to eq(created_at)
         expect(edition.updated_at).to eq(created_at)
+        expect(edition.published_at).to be_nil
+        expect(removed_edition.published_at).to eq(published_at)
       end
     end
 

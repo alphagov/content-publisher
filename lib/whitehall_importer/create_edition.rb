@@ -148,6 +148,7 @@ module WhitehallImporter
       last_event ||= whitehall_edition["revision_history"].last
 
       editor_ids = history.editors.map { |editor| user_ids[editor] }.compact
+      published_at = history.last_state_event!("published")["created_at"] if status.live? || status.superseded?
 
       Edition.create!(
         document: document_import.document,
@@ -162,6 +163,7 @@ module WhitehallImporter
         created_by_id: user_ids[create_event["whodunnit"]],
         last_edited_at: last_event["created_at"],
         last_edited_by_id: user_ids[last_event["whodunnit"]],
+        published_at: published_at,
         editor_ids: editor_ids,
       )
     end

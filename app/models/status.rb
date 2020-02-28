@@ -23,4 +23,8 @@ class Status < ApplicationRecord
                 superseded: "superseded",
                 scheduled: "scheduled",
                 failed_to_publish: "failed_to_publish" }
+
+  def live?
+    %w[published published_but_needs_2i withdrawn removed].include?(state)
+  end
 end
