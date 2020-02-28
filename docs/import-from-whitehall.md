@@ -59,7 +59,7 @@ Tokens can be obtained by creating a new API user in Signon.  These allow access
 
 1. Navigate to https://signon.integration.publishing.service.gov.uk/api_users
 1. Click 'Create API user'
-1. Enter a name (e.g. your name followed by 'Whitehall Import to Content Publisher Migration Testing') and an email address
+1. Enter a name (e.g. your name followed by 'Whitehall Import to Content Publisher Migration Testing') and an email address.  You will not be able to use your `digital.cabinet-office.gov.uk` email address as it will already exist.  However, do identify yourself - something like `<first_name>.<last_name>@alphagov.uk` is fine.
 1. Once the user is created, click 'Add application token'
 1. Select 'Whitehall', then add the 'Export data' permission
 1. Copy the Whitehall token - you will not be able to access this again
@@ -94,7 +94,7 @@ These environment variables will be passed into govuk-docker in later steps.
 In order to run a migration locally, Sidekiq must be running when the rake tasks are executed.  As jobs are run independently of the rake task, Plek overrides and bearer tokens are also required here.
 
 ```
-govuk-docker run -e PLEK_SERVICE_PUBLISHING_API_URI=$publishing_api_url -e PUBLISHING_API_BEARER_TOKEN=$publishing_api_bearer_token -e PLEK_SERVICE_PUBLISHING_API_URI=$publishing_api_urlPLEK_SERVICE_WHITEHALL_ADMIN_URI=$whitehall_url -e WHITEHALL_BEARER_TOKEN=$whitehall_bearer_token content-publisher-worker bundle exec sidekiq -C config/sidekiq.yml
+govuk-docker run -e PLEK_SERVICE_PUBLISHING_API_URI=$publishing_api_url -e PUBLISHING_API_BEARER_TOKEN=$publishing_api_bearer_token -e PLEK_SERVICE_WHITEHALL_ADMIN_URI=$whitehall_url -e WHITEHALL_BEARER_TOKEN=$whitehall_bearer_token content-publisher-worker bundle exec sidekiq -C config/sidekiq.yml
 ```
 
 ### Running a migration
@@ -118,7 +118,7 @@ govuk-docker up content-publisher-app
 You may wish to open a Rails console that allows you to perform tasks on Whitehall documents (e.g. unlock or lock a document in order to test the import task multiple times).  Information about locking documents can be found in [Whitehall's documentation](https://github.com/alphagov/whitehall/blob/master/docs/migration_to_content_publisher/locked-documents.md).
 
 ```
-govuk-docker run -e PLEK_SERVICE_PUBLISHING_API_URI=$publishing_api_url -e PUBLISHING_API_BEARER_TOKEN=$publishing_api_bearer_token -e PLEK_SERVICE_PUBLISHING_API_URI=$publishing_api_urlPLEK_SERVICE_WHITEHALL_ADMIN_URI=$whitehall_url -e WHITEHALL_BEARER_TOKEN=$whitehall_bearer_token content-publisher-lite rails c
+govuk-docker run -e PLEK_SERVICE_PUBLISHING_API_URI=$publishing_api_url -e PUBLISHING_API_BEARER_TOKEN=$publishing_api_bearer_token -e PLEK_SERVICE_WHITEHALL_ADMIN_URI=$whitehall_url -e WHITEHALL_BEARER_TOKEN=$whitehall_bearer_token content-publisher-lite rails c
 ```
 
 To unlock a document you will need the Whitehall document ID.  Type the following into a Content Publisher Rails console:
@@ -126,4 +126,11 @@ To unlock a document you will need the Whitehall document ID.  Type the followin
 ```
 require "gds_api/whitehall_export"
 GdsApi.whitehall_export.unlock_document(1234)
+```
+
+To unlock all documents you have imported (useful when testing and comparing documents) type the following into a Content Publisher Rails console:
+
+```
+require "gds_api/whitehall_export"
+WhitehallMigration::DocumentImport.pluck(:whitehall_document_id).uniq.each { |id| GdsApi.whitehall_export.unlock_document(id) }
 ```
