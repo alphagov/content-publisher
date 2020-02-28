@@ -319,7 +319,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         removal = edition.status.details
         expect(removal.explanatory_note).to eq(whitehall_edition["unpublishing"]["explanation"])
         expect(removal.alternative_url).to eq(whitehall_edition["unpublishing"]["alternative_url"])
-        expect(removal.redirect).to be_truthy
+        expect(removal).to be_redirect
       end
 
       it "sets the correct timestamps on the edition" do
@@ -374,7 +374,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         removal = document.editions.first.status.details
         expect(removal.explanatory_note).to eq(whitehall_edition["unpublishing"]["explanation"])
         expect(removal.alternative_url).to eq(whitehall_edition["unpublishing"]["alternative_url"])
-        expect(removal.redirect).to be_truthy
+        expect(removal).to be_redirect
       end
 
       it "creates a draft edition and assigns as current" do
@@ -461,7 +461,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
                                 force_published: false)
       edition = described_class.call(document_import: document_import,
                                      whitehall_edition: whitehall_edition)
-      expect(edition.status.details.reviewed).to be true
+      expect(edition.status.details).to be_reviewed
     end
 
     it "marks a force published whitehall edition as needing review" do
@@ -470,7 +470,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
                                 force_published: true)
       edition = described_class.call(document_import: document_import,
                                      whitehall_edition: whitehall_edition)
-      expect(edition.status.details.reviewed).to be false
+      expect(edition.status.details).not_to be_reviewed
     end
 
     it "aborts when there is no scheduled publication date" do
