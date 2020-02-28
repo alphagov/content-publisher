@@ -102,11 +102,11 @@ RSpec.feature "Enforce access limit" do
 
   def i_cannot_edit_the_edition
     visit document_path(@edition.document)
-    expect(page).to have_content(I18n.t!("documents.forbidden.description"))
-    expect(page).to have_content(I18n.t!("documents.forbidden.owner", primary_org: "Primary org"))
+    expect(page).to have_content(I18n.t!("documents.access_limited.description"))
+    expect(page).to have_content(I18n.t!("documents.access_limited.owner", primary_org: "Primary org"))
     visit content_path(@edition.document)
-    expect(page).to have_content(I18n.t!("documents.forbidden.description"))
-    expect(page).to have_content(I18n.t!("documents.forbidden.owner", primary_org: "Primary org"))
+    expect(page).to have_content(I18n.t!("documents.access_limited.description"))
+    expect(page).to have_content(I18n.t!("documents.access_limited.owner", primary_org: "Primary org"))
   end
 
   def and_i_see_the_timeline_entry
