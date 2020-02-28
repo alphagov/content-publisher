@@ -45,6 +45,7 @@ module WhitehallImporter
         record.document_imports.create!(
           whitehall_document_id: document["document_id"],
           state: "pending",
+          content_id: document["content_id"],
         )
       end
     end
