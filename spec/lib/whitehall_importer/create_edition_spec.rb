@@ -257,28 +257,17 @@ RSpec.describe WhitehallImporter::CreateEdition do
               unpublishing: build(:whitehall_export_unpublishing))
       end
 
-      let(:edition) do
-        described_class.call(document_import: document_import,
-                             whitehall_edition: whitehall_edition)
-      end
-
-      it "creates two statuses" do
-        expect(edition.statuses.count).to eq(2)
-      end
-
-      it "sets the correct withdrawn status" do
+      it "creates a live withdrawn edition" do
+        edition = described_class.call(document_import: document_import,
+                                       whitehall_edition: whitehall_edition)
         expect(edition).to be_withdrawn
-      end
-
-      it "sets the edition as live" do
         expect(edition).to be_live
+        expect(edition.published_at).to eq(published_at)
       end
 
-      it "sets the correct previous status" do
-        expect(edition.statuses.first).to be_published
-      end
-
-      it "sets the correct withdrawal metadata" do
+      it "sets the expected withdrawal metadata" do
+        edition = described_class.call(document_import: document_import,
+                                       whitehall_edition: whitehall_edition)
         expect(edition.status.details.withdrawn_at.rfc3339).to eq(
           whitehall_edition["unpublishing"]["created_at"],
         )
@@ -287,8 +276,12 @@ RSpec.describe WhitehallImporter::CreateEdition do
         )
       end
 
-      it "sets the published_at time" do
-        expect(edition.published_at).to eq(published_at)
+      it "sets a previous status of the edition of the publishing status " do
+        edition = described_class.call(document_import: document_import,
+                                       whitehall_edition: whitehall_edition)
+        first_status = edition.statuses.first
+        expect(first_status).to be_published
+        expect(edition.status.details.published_status).to eq(first_status)
       end
     end
 
