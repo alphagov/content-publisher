@@ -1,7 +1,8 @@
 RSpec.describe "File Attachments" do
   it_behaves_like "requests that assert edition state",
                   "accessing file attachments for a non editable edition",
-                  routes: { file_attachments_path: %i[get post] } do
+                  routes: { file_attachments_path: %i[get post],
+                            new_file_attachment_path: %i[get] } do
     let(:edition) { create(:edition, :published) }
   end
 
@@ -23,6 +24,14 @@ RSpec.describe "File Attachments" do
     let(:edition) { create(:edition) }
     let(:file_attachment_revision) { create(:file_attachment_revision) }
     let(:route_params) { [edition.document, file_attachment_revision] }
+  end
+
+  describe "GET /documents/:document/file-attachments/new" do
+    it "returns successfully" do
+      edition = create(:edition)
+      get new_file_attachment_path(edition.document)
+      expect(response).to have_http_status(:ok)
+    end
   end
 
   describe "GET /documents/:document/file-attachments/:file_attachment_id" do

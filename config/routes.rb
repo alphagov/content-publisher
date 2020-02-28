@@ -93,6 +93,7 @@ Rails.application.routes.draw do
     post "/govspeak-preview" => "govspeak_preview#to_html", as: :govspeak_preview
 
     get "/file-attachments" => "file_attachments#index", as: :file_attachments
+    get "/file-attachments/new" => "file_attachments#new", as: :new_file_attachment
     post "/file-attachments" => "file_attachments#create"
     get "/file-attachments/:file_attachment_id" => "file_attachments#show", as: :file_attachment
     get "/file-attachments/:file_attachment_id/preview" => "file_attachments#preview", as: :preview_file_attachment

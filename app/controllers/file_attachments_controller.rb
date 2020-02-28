@@ -6,6 +6,11 @@ class FileAttachmentsController < ApplicationController
     assert_edition_state(@edition, &:editable?)
   end
 
+  def new
+    @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
+  end
+
   def show
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
