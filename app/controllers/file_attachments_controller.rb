@@ -48,7 +48,7 @@ class FileAttachmentsController < ApplicationController
         ),
       }
 
-      render :index,
+      render params[:wizard] == "new" ? :new : :index,
              assigns: { edition: edition,
                         issues: issues },
              status: :unprocessable_entity

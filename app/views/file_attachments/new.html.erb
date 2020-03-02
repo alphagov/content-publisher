@@ -7,6 +7,7 @@
       file_attachments_path(@edition.document),
       multipart: true,
     ) do %>
+      <%= hidden_field_tag(:wizard, params[:wizard]) %>
 
       <%= render_govspeak(t("file_attachments.new.description_govspeak")) %>
 
