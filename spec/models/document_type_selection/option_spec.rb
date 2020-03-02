@@ -59,7 +59,7 @@ RSpec.describe DocumentTypeSelection::Option do
 
   describe "#pre_release?" do
     it "returns true when the option is an existing document type and a pre-release feature" do
-      pre_release_document_type = build(:document_type, pre_release: true)
+      pre_release_document_type = build(:document_type, :pre_release)
 
       allow(DocumentType)
         .to receive(:all)

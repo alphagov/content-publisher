@@ -37,5 +37,9 @@ FactoryBot.define do
     trait :with_lead_image do
       lead_image { true }
     end
+
+    trait :pre_release do
+      pre_release { true }
+    end
   end
 end

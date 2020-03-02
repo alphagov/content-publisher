@@ -25,7 +25,7 @@ RSpec.describe "documents/index/_filters.html.erb" do
   end
 
   describe "Document type select" do
-    let(:pre_release_document_type) { build(:document_type, pre_release: true) }
+    let(:pre_release_document_type) { build(:document_type, :pre_release) }
 
     before do
       stub_publishing_api_has_linkables([], document_type: "organisation")

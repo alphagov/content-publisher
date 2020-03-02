@@ -22,6 +22,7 @@ class EditionFilter
                    .preload(revision_joins, :status, :document, :last_edited_by)
     scope = access_limited_scope(scope)
     scope = filtered_scope(scope)
+    scope = non_pre_release_type_scope(scope)
     scope = ordered_scope(scope)
     scope.page(page).per(per_page)
   end
@@ -89,5 +90,12 @@ private
     else
       scope
     end
+  end
+
+  def non_pre_release_type_scope(scope)
+    return scope if user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION)
+
+    types = DocumentType.all.reject(&:pre_release?).map(&:id)
+    scope.where("metadata_revisions.document_type_id": types)
   end
 end
