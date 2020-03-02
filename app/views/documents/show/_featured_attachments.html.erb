@@ -1,0 +1,11 @@
+<%= render "govuk_publishing_components/components/summary_list", {
+  id: "attachments",
+  title: t("documents.show.featured_attachments.title"),
+  borderless: true,
+  edit: (
+    if @edition.editable?
+      { href: featured_attachments_path(@edition.document),
+        data_attributes: { gtm: "edit-tags" } }
+    end
+  )
+} %>

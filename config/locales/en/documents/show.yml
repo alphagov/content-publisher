@@ -31,6 +31,8 @@ en:
           It was scheduled to publish at %{time} on %{date}
 
           You can publish it now, schedule it to publish later, or edit it.
+      featured_attachments:
+        title: Attachments
       flashes:
         pre_preview_issues:
           warning: To preview this document you need to
