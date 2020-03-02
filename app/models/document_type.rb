@@ -2,9 +2,7 @@ class DocumentType
   include InitializeWithHash
 
   attr_reader :contents, :id, :managed_elsewhere, :publishing_metadata, :label,
-              :path_prefix, :tags, :lead_image, :topics, :pre_release
-
-  alias_method :lead_image?, :lead_image
+              :path_prefix, :tags, :topics
 
   def self.find(id)
     item = all.find { |document_type| document_type.id == id }
@@ -32,7 +30,9 @@ class DocumentType
     @all = nil
   end
 
-  alias_method :pre_release?, :pre_release
+  def lead_image?; @lead_image; end
+
+  def pre_release?; @pre_release; end
 
   def attachments
     ActiveSupport::StringInquirer.new(@attachments)
