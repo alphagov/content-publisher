@@ -39,8 +39,6 @@ FactoryBot.define do
       created_at { 3.days.ago.rfc3339 }
       scheduled_publication { Time.zone.now.tomorrow.rfc3339 }
       state { "scheduled" }
-      editorial_remarks { [] }
-      fact_check_requests { [] }
       revision_history do
         [
           build(:whitehall_export_revision_history_event,
@@ -58,10 +56,12 @@ FactoryBot.define do
     end
 
     trait :published do
+      transient do
+        published_at { Time.zone.now.rfc3339 }
+      end
+
       created_at { 3.days.ago.rfc3339 }
       state { "published" }
-      editorial_remarks { [] }
-      fact_check_requests { [] }
       revision_history do
         [
           build(:whitehall_export_revision_history_event,
@@ -69,7 +69,29 @@ FactoryBot.define do
           build(:whitehall_export_revision_history_event,
                 event: "update",
                 state: "published",
-                created_at: 2.days.ago.rfc3339),
+                created_at: published_at),
+        ]
+      end
+    end
+
+    trait :superseded do
+      transient do
+        published_at { Time.zone.now.rfc3339 }
+      end
+
+      created_at { 3.days.ago.rfc3339 }
+      state { "superseded" }
+      revision_history do
+        [
+          build(:whitehall_export_revision_history_event,
+                created_at: created_at),
+          build(:whitehall_export_revision_history_event,
+                event: "update",
+                state: "published",
+                created_at: published_at),
+          build(:whitehall_export_revision_history_event,
+                event: "update",
+                state: "superseded"),
         ]
       end
     end
