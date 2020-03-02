@@ -34,6 +34,10 @@ class DocumentType
 
   alias_method :pre_release?, :pre_release
 
+  def attachments
+    ActiveSupport::StringInquirer.new(@attachments)
+  end
+
   class TagField
     include InitializeWithHash
     attr_reader :id, :type, :document_type, :hint
