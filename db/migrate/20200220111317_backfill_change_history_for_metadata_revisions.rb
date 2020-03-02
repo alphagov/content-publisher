@@ -23,7 +23,7 @@ class BackfillChangeHistoryForMetadataRevisions < ActiveRecord::Migration[6.0]
           .where("editions.number > 1 AND editions.number < ?", edition.number)
           .where("metadata_revisions.update_type": "major")
           .where(document_id: edition.document_id)
-          .order(:published_at)
+          .order(published_at: :desc)
 
         change_history = change_history_editions.map do |e|
           { id: change_history_ids[e.id] ||= SecureRandom.uuid,
