@@ -1,7 +1,7 @@
 class DocumentType
   include InitializeWithHash
 
-  attr_reader :contents, :id, :managed_elsewhere, :publishing_metadata, :label,
+  attr_reader :contents, :id, :publishing_metadata, :label,
               :path_prefix, :tags, :topics
 
   def self.find(id)
