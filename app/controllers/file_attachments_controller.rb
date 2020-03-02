@@ -52,6 +52,8 @@ class FileAttachmentsController < ApplicationController
              assigns: { edition: edition,
                         issues: issues },
              status: :unprocessable_entity
+    elsif params[:wizard] == "new"
+      redirect_to featured_attachments_path(edition.document, attachment_revision.file_attachment)
     else
       redirect_to file_attachment_path(edition.document, attachment_revision.file_attachment)
     end
