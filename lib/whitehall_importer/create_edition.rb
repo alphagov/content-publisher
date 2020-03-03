@@ -128,6 +128,7 @@ module WhitehallImporter
         explanatory_note: unpublishing["explanation"],
         alternative_url: unpublishing["alternative_url"],
         redirect: unpublishing["alternative_url"].present?,
+        removed_at: unpublishing["created_at"],
       )
     end
 
