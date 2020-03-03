@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_20_111317) do
+ActiveRecord::Schema.define(version: 2020_03_03_115207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(version: 2020_02_20_111317) do
     t.string "alternative_url"
     t.boolean "redirect", default: false
     t.datetime "created_at", null: false
+    t.datetime "removed_at"
   end
 
   create_table "revisions", force: :cascade do |t|
