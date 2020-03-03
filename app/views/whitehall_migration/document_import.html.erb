@@ -1,4 +1,4 @@
-<% content_for :back_link, render_back_link(href: whitehall_migration_documents_path(migration_id: @document_import.whitehall_migration, state: @document_import.state)) %>
+<% content_for :back_link, render_back_link(href: whitehall_migration_document_imports_path(migration_id: @document_import.whitehall_migration, state: @document_import.state)) %>
 <% content_for :title, "Document Import: #{@document_import.id}" %>
 <%= render "govuk_publishing_components/components/summary_list", {
   items: [

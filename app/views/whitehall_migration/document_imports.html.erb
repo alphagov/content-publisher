@@ -16,13 +16,13 @@
 <%
   pages = {}
   pages[:previous_page] = {
-    url: whitehall_migration_documents_path(migration_id: @whitehall_migration, page: @document_imports.prev_page, state: params['state']),
+    url: whitehall_migration_document_imports_path(migration_id: @whitehall_migration, page: @document_imports.prev_page, state: params['state']),
     title: "Previous page",
     label: "#{@document_imports.prev_page} of #{@document_imports.total_pages}"
   } if @document_imports.prev_page
 
   pages[:next_page] = {
-    url: whitehall_migration_documents_path(migration_id: @whitehall_migration, page: @document_imports.next_page, state: params['state']),
+    url: whitehall_migration_document_imports_path(migration_id: @whitehall_migration, page: @document_imports.next_page, state: params['state']),
     title: "Next page",
     label: "#{@document_imports.next_page} of #{@document_imports.total_pages}"
   } if @document_imports.next_page

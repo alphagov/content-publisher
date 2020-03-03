@@ -27,7 +27,7 @@
   {
     link: {
       text: document_import.current_title ? document_import.current_title : document_import.id.to_s,
-      path: whitehall_migration_document_path(document_import.whitehall_migration_id, document_import),
+      path: whitehall_migration_document_import_path(document_import.whitehall_migration_id, document_import),
     },
     metadata: {
       state: document_import.state.to_s.titleize,

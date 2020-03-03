@@ -7,7 +7,7 @@ RSpec.describe "Whitehall Migration" do
                   "when a user without debug permissions looks at a whitehall migration",
                   status: :forbidden,
                   routes: { whitehall_migration_path: %i[get],
-                          whitehall_migration_documents_path: %i[get] } do
+                          whitehall_migration_document_imports_path: %i[get] } do
     before { login_as(create(:user)) }
 
     let(:route_params) { [whitehall_migration] }
@@ -16,7 +16,7 @@ RSpec.describe "Whitehall Migration" do
   it_behaves_like "requests that return status",
                   "when a user without debug permissions looks at a whitehall migration document",
                   status: :forbidden,
-                  routes: { whitehall_migration_document_path: %i[get] } do
+                  routes: { whitehall_migration_document_import_path: %i[get] } do
     before { login_as(create(:user)) }
 
     let(:route_params) do
@@ -36,7 +36,7 @@ RSpec.describe "Whitehall Migration" do
   describe "GET /whitehall-migration/:migration_id/documents" do
     it "returns success" do
       login_as(debug_permission_user)
-      get whitehall_migration_documents_path(whitehall_migration)
+      get whitehall_migration_document_imports_path(whitehall_migration)
 
       expect(response).to have_http_status(:ok)
     end
@@ -45,7 +45,7 @@ RSpec.describe "Whitehall Migration" do
   describe "GET /whitehall-migration/:migration_id/documents/:document_import_id" do
     it "returns success" do
       login_as(debug_permission_user)
-      get whitehall_migration_document_path(whitehall_migration, document_import)
+      get whitehall_migration_document_import_path(whitehall_migration, document_import)
 
       expect(response).to have_http_status(:ok)
     end

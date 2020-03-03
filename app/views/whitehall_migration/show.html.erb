@@ -25,7 +25,7 @@
     {
       link: {
         text: "#{state.titleize}: #{@whitehall_migration.document_imports.where(state: state).count}",
-        path: whitehall_migration_documents_path(migration_id: @whitehall_migration, state: state),
+        path: whitehall_migration_document_imports_path(migration_id: @whitehall_migration, state: state),
       },
     }
   end
