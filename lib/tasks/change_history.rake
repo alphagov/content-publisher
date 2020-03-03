@@ -36,4 +36,26 @@ namespace :change_history do
       updater.assign(change_history: change_history)
     end
   end
+
+  desc "Add a new change note for a document, e.g. change_history:add[content-id] NOTE='some note' TIMESTAMP='2020-01-01 10:30:00'"
+  task :add, %i[content_id] => :environment do |_, args|
+    Tasks::EditionUpdater.call(args.content_id,
+                               locale: ENV.fetch("LOCALE", "en"),
+                               user_email: ENV["USER_EMAIL"]) do |edition, updater|
+      raise "Expected a note" if ENV["NOTE"].blank?
+      raise "Expected a timestamp" if ENV["TIMESTAMP"].blank?
+
+      entry = {
+        "id" => SecureRandom.uuid,
+        "note" => ENV["NOTE"],
+        "public_timestamp" => Time.zone.parse(ENV["TIMESTAMP"]).rfc3339,
+      }
+
+      change_history = (edition.change_history + [entry])
+        .sort_by { |note| note["public_timestamp"] }
+        .reverse
+
+      updater.assign(change_history: change_history)
+    end
+  end
 end
