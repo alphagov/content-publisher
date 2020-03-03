@@ -20,4 +20,20 @@ namespace :change_history do
       updater.assign(change_history: edition.change_history - [entry])
     end
   end
+
+  desc "Edit a single change note for a document, e.g. change_history:edit[content-id, change-note-id] NOTE='some note'"
+  task :edit, %i[content_id change_history_id] => :environment do |_, args|
+    Tasks::EditionUpdater.call(args.content_id,
+                               locale: ENV.fetch("LOCALE", "en"),
+                               user_email: ENV["USER_EMAIL"]) do |edition, updater|
+      raise "Expected a note" if ENV["NOTE"].blank?
+
+      change_history = edition.change_history.deep_dup
+      entry = change_history.find { |item| item["id"] == args.change_history_id }
+      raise "No change history entry with id #{args.change_history_id}" unless entry
+
+      entry["note"] = ENV["NOTE"]
+      updater.assign(change_history: change_history)
+    end
+  end
 end

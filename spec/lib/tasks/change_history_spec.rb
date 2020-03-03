@@ -98,4 +98,72 @@ RSpec.describe "Change History tasks" do
         .to raise_error("No change history entry with id abc123")
     end
   end
+
+  describe "change_history:edit" do
+    let(:id_to_edit) { SecureRandom.uuid }
+
+    let(:change_history) do
+      [
+        {
+          id: SecureRandom.uuid,
+          public_timestamp: "2020-03-01T00:00:00+00:00",
+          note: "Test 1",
+        }, {
+          id: id_to_edit,
+          public_timestamp: "2020-02-01T00:00:00+00:00",
+          note: "Test 2",
+        }, {
+          id: SecureRandom.uuid,
+          public_timestamp: "2020-01-01T00:00:00+00:00",
+          note: "Test 3",
+        }
+      ]
+    end
+
+    let(:edition) do
+      create(:edition,
+             locale: "en",
+             change_history: change_history)
+    end
+
+    before { Rake::Task["change_history:edit"].reenable }
+
+    it "updates a change history entry note" do
+      ClimateControl.modify NOTE: "Test 99" do
+        Rake::Task["change_history:edit"].invoke(edition.content_id, id_to_edit)
+      end
+
+      change_history[1][:note] = "Test 99"
+
+      expect(edition.reload.revision.metadata_revision.change_history)
+        .to eq(change_history.map(&:with_indifferent_access))
+    end
+
+    it "calls the edition updater" do
+      ClimateControl.modify NOTE: "Test 99" do
+        Rake::Task["change_history:edit"].invoke(edition.content_id, id_to_edit)
+      end
+
+      change_history[1][:note] = "Test 99"
+
+      expect(Tasks::EditionUpdater).to have_received(:call)
+    end
+
+    it "raises an error when no note is supplied" do
+      expect { Rake::Task["change_history:edit"].invoke(edition.content_id, "abc123") }
+        .to raise_error("Expected a note")
+
+      ClimateControl.modify NOTE: "" do
+        expect { Rake::Task["change_history:edit"].invoke(edition.content_id, "abc123") }
+          .to raise_error("Expected a note")
+      end
+    end
+
+    it "raises an error when the change history ID does not exist" do
+      ClimateControl.modify NOTE: "Test 99" do
+        expect { Rake::Task["change_history:edit"].invoke(edition.content_id, "abc123") }
+          .to raise_error("No change history entry with id abc123")
+      end
+    end
+  end
 end
