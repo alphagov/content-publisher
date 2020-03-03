@@ -1,5 +1,5 @@
 <% content_for :back_link, render_back_link(href: whitehall_migration_path(@whitehall_migration)) %>
-<% title = params[:state] ? "Document Imports: #{params[:state].titleize}" : "Document Imports" %>
+<% title = @state ? "Document Imports: #{@state.titleize}" : "Document Imports" %>
 <% content_for :title, title %>
 
 <% if @document_imports.any? %>
@@ -7,8 +7,8 @@
 <% else %>
   <p class="govuk-body">
     There are no document imports
-    <% if params[:state] %>
-      with state: <%= params[:state].titleize %>
+    <% if @state %>
+      with state: <%= @state.titleize %>
     <% end %>
   </p>
 <% end %>
@@ -16,13 +16,13 @@
 <%
   pages = {}
   pages[:previous_page] = {
-    url: whitehall_migration_document_imports_path(migration_id: @whitehall_migration, page: @document_imports.prev_page, state: params['state']),
+    url: whitehall_migration_document_imports_path(migration_id: @whitehall_migration, page: @document_imports.prev_page, state: @state),
     title: "Previous page",
     label: "#{@document_imports.prev_page} of #{@document_imports.total_pages}"
   } if @document_imports.prev_page
 
   pages[:next_page] = {
-    url: whitehall_migration_document_imports_path(migration_id: @whitehall_migration, page: @document_imports.next_page, state: params['state']),
+    url: whitehall_migration_document_imports_path(migration_id: @whitehall_migration, page: @document_imports.next_page, state: @state),
     title: "Next page",
     label: "#{@document_imports.next_page} of #{@document_imports.total_pages}"
   } if @document_imports.next_page
