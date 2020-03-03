@@ -21,6 +21,7 @@ FactoryBot.define do
       file_attachment_revisions { [] }
       first_published_at { nil }
       government { nil }
+      change_history { [] }
     end
 
     after(:build) do |edition, evaluator|
@@ -61,6 +62,7 @@ FactoryBot.define do
           lead_image_revision: evaluator.lead_image_revision,
           image_revisions: image_revisions,
           file_attachment_revisions: evaluator.file_attachment_revisions,
+          change_history: evaluator.change_history,
         )
       end
 

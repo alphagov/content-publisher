@@ -17,7 +17,7 @@ private
   attr_reader :edition, :republish
 
   def put_draft_content
-    payload = Payload.new(edition, republish: republish).payload
+    payload = PublishingApiPayload.new(edition, republish: republish).payload
     GdsApi.publishing_api.put_content(edition.content_id, payload)
     edition.update!(revision_synced: true)
   end

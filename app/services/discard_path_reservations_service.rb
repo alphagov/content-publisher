@@ -5,7 +5,7 @@ class DiscardPathReservationsService < ApplicationService
 
   def call
     paths = edition.revisions.map(&:base_path).uniq.compact
-    publishing_app = PreviewDraftEditionService::Payload::PUBLISHING_APP
+    publishing_app = PublishingApiPayload::PUBLISHING_APP
 
     paths.each do |path|
       GdsApi.publishing_api.unreserve_path(path, publishing_app)

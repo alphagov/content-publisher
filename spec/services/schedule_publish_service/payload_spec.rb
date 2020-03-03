@@ -13,7 +13,7 @@ RSpec.describe SchedulePublishService::Payload do
 
       payload_hash = {
         publish_time: publish_time,
-        publishing_app: PreviewDraftEditionService::Payload::PUBLISHING_APP,
+        publishing_app: PublishingApiPayload::PUBLISHING_APP,
         rendering_app: "government-frontend",
       }
 
