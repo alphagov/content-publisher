@@ -5,6 +5,7 @@
     "id",
     "label",
     "path_prefix",
+    "attachments",
     "lead_image",
     "publishing_metadata",
     "contents",
@@ -23,6 +24,13 @@
     },
     "lead_image": {
       "type": "boolean"
+    },
+    "attachments": {
+      "type": "string",
+      "enum": [
+        "inline_file_only",
+        "featured"
+      ]
     },
     "publishing_metadata": {
       "type": "object",

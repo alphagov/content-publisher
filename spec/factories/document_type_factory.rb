@@ -12,6 +12,7 @@ FactoryBot.define do
     tags { [] }
     guidance { [] }
     topics { false }
+    attachments { "inline_file_only" }
 
     contents do
       [DocumentType::SummaryField.new]
