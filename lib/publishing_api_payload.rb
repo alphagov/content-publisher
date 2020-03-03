@@ -93,7 +93,7 @@ private
       details[:image] = image
     end
 
-    details[:documents] = [] if publication?
+    details[:documents] = [] if document_type.attachments.featured?
 
     details
   end
@@ -111,9 +111,5 @@ private
         memo[:roles] = (memo[:roles] + roles).uniq
         memo[:people] = (memo[:people] + people).uniq
       end
-  end
-
-  def publication?
-    publishing_metadata.schema_name == "publication"
   end
 end
