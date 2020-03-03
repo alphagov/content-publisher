@@ -26,13 +26,8 @@ class PublishingApiPayload
     }
     payload[:first_published_at] = history.first_published_at if history.first_published_at.present?
 
-    document_type.contents.each do |field|
-      payload.deep_merge!(field.payload(edition))
-    end
-
-    document_type.tags.each do |field|
-      payload.deep_merge!(field.payload(edition))
-    end
+    fields = document_type.contents + document_type.tags
+    fields.each { |f| payload.deep_merge!(f.payload(edition)) }
 
     if edition.backdated_to.present?
       payload[:first_published_at] = edition.backdated_to
