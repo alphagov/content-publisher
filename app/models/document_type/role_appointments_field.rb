@@ -1,4 +1,4 @@
-class DocumentType::RoleAppointmentsField
+class DocumentType::RoleAppointmentsField < DocumentType::MultiTagField
   def id
     "role_appointments"
   end
@@ -18,21 +18,5 @@ class DocumentType::RoleAppointmentsField
         memo[:people] = (memo[:people] + people).uniq
       end
     { links: roles_and_people }
-  end
-
-  def updater_params(_edition, params)
-    { role_appointments: params[:role_appointments] }
-  end
-
-  def pre_update_issues(_edition, _params)
-    Requirements::CheckerIssues.new
-  end
-
-  def pre_preview_issues(_edition)
-    Requirements::CheckerIssues.new
-  end
-
-  def pre_publish_issues(_edition)
-    Requirements::CheckerIssues.new
   end
 end
