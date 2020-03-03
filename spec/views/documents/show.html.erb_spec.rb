@@ -24,7 +24,7 @@ RSpec.describe "documents/show.html.erb" do
 
     it "shows the tags when a document has tags" do
       tag = { "content_id" => SecureRandom.uuid, "internal_name" => "Tag name" }
-      stub_publishing_api_has_linkables([tag], document_type: tag_field.document_type)
+      stub_publishing_api_has_linkables([tag], document_type: "organisation")
       edition = build(:edition,
                       document_type: document_type,
                       tags: { tag_field.id => [tag["content_id"]] })

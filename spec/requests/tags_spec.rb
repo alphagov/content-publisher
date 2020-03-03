@@ -16,7 +16,7 @@ RSpec.describe "Tags" do
       tag_name = SecureRandom.hex(8)
       stub_publishing_api_has_linkables(
         [{ "content_id" => SecureRandom.uuid, "internal_name" => tag_name }],
-        document_type: tag_field.document_type,
+        document_type: "world_location",
       )
       get tags_path(edition.document)
       expect(response).to have_http_status(:ok)
@@ -52,7 +52,7 @@ RSpec.describe "Tags" do
       edition = create(:edition, document_type: document_type)
       stub_publishing_api_has_linkables(
         [{ "content_id" => SecureRandom.uuid, "internal_name" => "Organisation" }],
-        document_type: tag_field.document_type,
+        document_type: "organisation",
       )
 
       patch tags_path(edition.document), params: { tags: {} }

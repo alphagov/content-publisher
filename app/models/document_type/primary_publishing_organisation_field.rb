@@ -11,10 +11,6 @@ class DocumentType::PrimaryPublishingOrganisationField
     { primary_publishing_organisation: params[:primary_publishing_organisation] }
   end
 
-  def document_type
-    "organisation"
-  end
-
   def pre_update_issues(_edition, params)
     issues = Requirements::CheckerIssues.new
 

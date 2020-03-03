@@ -52,7 +52,7 @@ private
 
   def update_params
     @update_params ||= edition.document_type.tags.reduce({}) do |hash, field|
-      hash.merge!(field.updater_params(edition, params.fetch(:tags, {})))
+      hash.merge!(field.updater_params(edition, params))
     end
   end
 end

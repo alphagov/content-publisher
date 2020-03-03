@@ -13,10 +13,6 @@ class DocumentType::TopicalEventsField
     { topical_events: params[:topical_events] }
   end
 
-  def document_type
-    "topical_event"
-  end
-
   def pre_update_issues(_edition, _params)
     Requirements::CheckerIssues.new
   end

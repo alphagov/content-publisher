@@ -1,13 +1,8 @@
 <% begin %>
-  <% tags = @edition.document_type.tags.map { |tag_field|
-    service = Linkables.new(tag_field.document_type)
-
-    values = @edition.tags[tag_field.id].to_a
-      .map { |content_id| service.by_content_id(content_id) }
-
+  <% tags = @edition.document_type.tags.map { |field|
     {
-      field: t_doctype_field(@edition, "#{tag_field.id}.label"),
-      value: render("documents/show/tags/#{tag_field.id}_field", tag_field: tag_field, values: values)
+      field: t_doctype_field(@edition, "#{field.id}.label"),
+      value: render("documents/show/tags/#{field.id}_field", edition: @edition)
     }
   } %>
 
@@ -23,7 +18,7 @@
     ),
     items: tags
   } %>
-<% rescue GdsApi::BaseError => e %>
+<% rescue ActionView::Template::Error => e %>
   <% GovukError.notify(e) %>
 
   <%= render "govuk_publishing_components/components/summary_list", {

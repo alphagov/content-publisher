@@ -24,10 +24,6 @@ class DocumentType::RoleAppointmentsField
     { role_appointments: params[:role_appointments] }
   end
 
-  def document_type
-    "role_appointment"
-  end
-
   def pre_update_issues(_edition, _params)
     Requirements::CheckerIssues.new
   end

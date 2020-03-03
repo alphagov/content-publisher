@@ -19,8 +19,8 @@ RSpec.feature "Edit tags" do
     document_type = build(:document_type, tags: [multi_tag_field, single_tag_field])
 
     tag_linkables = [initial_tag, tag_to_select_1, tag_to_select_2]
-    stub_publishing_api_has_linkables(tag_linkables, document_type: multi_tag_field.document_type)
-    stub_publishing_api_has_linkables(tag_linkables, document_type: single_tag_field.document_type)
+    stub_publishing_api_has_linkables(tag_linkables, document_type: "world_location")
+    stub_publishing_api_has_linkables(tag_linkables, document_type: "organisation")
 
     initial_tags = {
       multi_tag_field.id => [initial_tag["content_id"]],
@@ -42,15 +42,15 @@ RSpec.feature "Edit tags" do
 
   def then_i_see_the_current_selections
     @request = stub_publishing_api_put_content(@edition.content_id, {})
-    expect(page).to have_select("tags[#{multi_tag_field.id}][]", selected: "Initial tag")
-    expect(page).to have_select("tags[#{single_tag_field.id}][]", selected: "Initial tag")
+    expect(page).to have_select("#{multi_tag_field.id}[]", selected: "Initial tag")
+    expect(page).to have_select("#{single_tag_field.id}[]", selected: "Initial tag")
   end
 
   def when_i_edit_the_tags
-    select "Tag to select 1", from: "tags[#{multi_tag_field.id}][]"
-    select "Tag to select 2", from: "tags[#{multi_tag_field.id}][]"
-    unselect "Initial tag", from: "tags[#{multi_tag_field.id}][]"
-    select "Tag to select 1", from: "tags[#{single_tag_field.id}][]"
+    select "Tag to select 1", from: "#{multi_tag_field.id}[]"
+    select "Tag to select 2", from: "#{multi_tag_field.id}[]"
+    unselect "Initial tag", from: "#{multi_tag_field.id}[]"
+    select "Tag to select 1", from: "#{single_tag_field.id}[]"
     click_on "Save"
   end
 
