@@ -12,7 +12,8 @@ namespace :remove do
     raise "Document must have a published version before it can be removed" unless document.live_edition
 
     removal = Removal.new(explanatory_note: explanatory_note,
-                          alternative_url: alternative_url)
+                          alternative_url: alternative_url,
+                          removed_at: Time.zone.now)
 
     RemoveDocumentService.call(document.live_edition, removal, user: user)
   end
@@ -32,7 +33,8 @@ namespace :remove do
 
     removal = Removal.new(redirect: true,
                           explanatory_note: explanatory_note,
-                          alternative_url: redirect_url)
+                          alternative_url: redirect_url,
+                          removed_at: Time.zone.now)
 
     RemoveDocumentService.call(document.live_edition, removal, user: user)
   end

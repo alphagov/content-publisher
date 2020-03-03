@@ -12,13 +12,16 @@ RSpec.describe "Remove tasks" do
     it "delegates to RemoveDocumentService" do
       note = "The reason the edition is being removed"
 
-      ClimateControl.modify NOTE: note do
-        Rake::Task["remove:gone"].invoke(edition.content_id)
-      end
+      freeze_time do
+        ClimateControl.modify NOTE: note do
+          Rake::Task["remove:gone"].invoke(edition.content_id)
+        end
 
-      expect(RemoveDocumentService).to have_received(:call) do |removed_edition, removal|
-        expect(removed_edition).to eq(edition)
-        expect(removal.explanatory_note).to eq(note)
+        expect(RemoveDocumentService).to have_received(:call) do |removed_edition, removal|
+          expect(removed_edition).to eq(edition)
+          expect(removal.explanatory_note).to eq(note)
+          expect(removal.removed_at).to eq(Time.zone.now)
+        end
       end
     end
 
@@ -66,20 +69,23 @@ RSpec.describe "Remove tasks" do
       note = "The reason the edition is being removed"
       url = "/redirect-url"
 
-      ClimateControl.modify NOTE: note, URL: url do
-        Rake::Task["remove:redirect"].invoke(edition.content_id)
-      end
+      freeze_time do
+        ClimateControl.modify NOTE: note, URL: url do
+          Rake::Task["remove:redirect"].invoke(edition.content_id)
+        end
 
-      expect(RemoveDocumentService).to have_received(:call) do |removed_edition, removal|
-        expect(removed_edition).to eq(edition)
-        expect(removal.attributes)
-          .to match(
-            a_hash_including(
-              "explanatory_note" => note,
-              "alternative_url" => url,
-              "redirect" => true,
-            ),
-          )
+        expect(RemoveDocumentService).to have_received(:call) do |removed_edition, removal|
+          expect(removed_edition).to eq(edition)
+          expect(removal.attributes)
+            .to match(
+              a_hash_including(
+                "explanatory_note" => note,
+                "alternative_url" => url,
+                "redirect" => true,
+                "removed_at" => Time.zone.now,
+              ),
+            )
+        end
       end
     end
 
