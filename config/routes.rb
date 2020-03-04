@@ -3,8 +3,8 @@ Rails.application.routes.draw do
 
   scope "/whitehall-migration/:migration_id" do
     get "" => "whitehall_migration#show", as: :whitehall_migration
-    get "/documents" => "whitehall_migration#documents", as: :whitehall_migration_documents
-    get "/documents/:document_import_id" => "whitehall_migration#document", as: :whitehall_migration_document
+    get "/documents-imports" => "whitehall_migration#document_imports", as: :whitehall_migration_document_imports
+    get "/document-imports/:document_import_id" => "whitehall_migration#document_import", as: :whitehall_migration_document_import
   end
 
   get "/documents/publishing-guidance" => "new_document#guidance", as: :guidance

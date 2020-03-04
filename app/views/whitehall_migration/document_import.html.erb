@@ -1,0 +1,27 @@
+<% content_for :back_link, render_back_link(href: whitehall_migration_document_imports_path(migration_id: @document_import.whitehall_migration, state: @document_import.state)) %>
+<% content_for :title, "Document Import: #{@document_import.id}" %>
+<%= render "govuk_publishing_components/components/summary_list", {
+  items: [
+    {
+      field: "ID",
+      value: @document_import.id
+    },
+    {
+      field: "Created at",
+      value: format_time_on_date(@document_import.created_at)
+    },
+    {
+      field: "Updated at",
+      value: format_time_on_date(@document_import.updated_at)
+    },
+    {
+      field: "State",
+      value: @document_import.state.titleize
+    },
+    {
+      field: "Error log",
+      value: @document_import.error_log
+    }
+  ],
+  borderless: true
+} %>

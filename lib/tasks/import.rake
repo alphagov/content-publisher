@@ -4,7 +4,6 @@ namespace :import do
   desc "Import all documents matching an organisation, document type and optional list of document subtypes from Whitehall Publisher, e.g. import:whitehall_migration[\"cabinet-office\",\"news_article\",\"news_story,press_release\"]"
   task :whitehall_migration, %i[organisation_slug document_type document_subtypes] => :environment do |_, args|
     include Rails.application.routes.url_helpers
-
     organisation_content_id = GdsApi.publishing_api.lookup_content_id(
       base_path: "/government/organisations/#{args.organisation_slug}",
      )
@@ -22,7 +21,6 @@ namespace :import do
   desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall_document[123]"
   task :whitehall_document, [:document_id] => :environment do |_, args|
     include Rails.application.routes.url_helpers
-
     whitehall_import = WhitehallMigration::DocumentImport.create!(
       whitehall_document_id: args.document_id,
       whitehall_migration: WhitehallMigration.create!,

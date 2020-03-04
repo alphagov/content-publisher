@@ -1,14 +1,39 @@
-<h1>Whitehall Migration: <%= @whitehall_migration.id %> </h1>
-<ul>
-    <li>Time started: <%= @whitehall_migration.created_at.strftime("At %T on %d/%m/%Y") %></li>
-    <li>Time finished: <%= @whitehall_migration.finished_at.nil? ? "Unfinished" : @whitehall_migration.finished_at %></li>
-    <li>Number of documents: <%= @whitehall_migration.document_imports.count %></li>
-</ul>
+<% content_for :title, "Whitehall Migration: #{@whitehall_migration.id}" %>
 
-<h3>Document Import Status</h3>
+<%= render "govuk_publishing_components/components/summary_list", {
+  items: [
+    {
+      field: "Time started",
+      value: format_time_on_date(@whitehall_migration.created_at)
+    },
+    {
+      field: "Time finished",
+      value: @whitehall_migration.finished_at.nil? ? "unfinished" : format_time_on_date(@whitehall_migration.finished_at)
+    },
+    {
+      field: "Number of document imports",
+      value: @whitehall_migration.document_imports.count
+    }
+  ],
+  borderless: true
+} %>
 
-<ul>
-    <% @whitehall_migration.document_imports.states.each_value do |state| %>
-        <li><%= "#{state}:" %> <%= @whitehall_migration.document_imports.where(state: "#{state}").count%></li>
-    <% end %>
-</ul>
+<h2 class="govuk-heading-m">Document import states</h2>
+<%
+  items = @whitehall_migration.document_imports.states.map do |state, _|
+    {
+      link: {
+        text: "#{state.titleize}: #{@whitehall_migration.document_imports.where(state: state).count}",
+        path: whitehall_migration_document_imports_path(migration_id: @whitehall_migration, state: state),
+      },
+    }
+  end
+%>
+
+<%= render "govuk_publishing_components/components/document_list", items: items %>
+
+<% if @whitehall_migration.document_imports.completed.exists? %>
+  <h2 class="govuk-heading-m">Selection of imported documents to view</h2>
+  <% random_items = @whitehall_migration.document_imports.completed.order(Arel.sql("RANDOM()")).first(10) %>
+  <%= render "document_imports_list", document_imports: random_items %>
+<% end %>
