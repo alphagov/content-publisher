@@ -85,6 +85,32 @@ RSpec.describe RemoveDocumentService do
       end
     end
 
+    context "when the edition does not have a removal" do
+      it "sets the removed_at time" do
+        freeze_time do
+          removal = build(:removal)
+
+          described_class.call(edition, removal)
+          expect(edition.status.details.removed_at).to eq(Time.zone.now)
+        end
+      end
+    end
+
+    context "when the edition already has a removal" do
+      it "maintains the existing removed_at time" do
+        existing_removed_at = 2.days.ago.noon
+        existing_removal = build(:removal, removed_at: existing_removed_at)
+        edition = create(:edition, :removed, removal: existing_removal)
+        new_removal = build(:removal,
+                            alternative_url: "/path",
+                            explanatory_note: "explanation",
+                            redirect: true)
+
+        described_class.call(edition, new_removal)
+        expect(edition.status.details.removed_at).to eq(existing_removed_at)
+      end
+    end
+
     context "when Publishing API is down" do
       before { stub_publishing_api_isnt_available }
 

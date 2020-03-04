@@ -9,6 +9,7 @@ class RemoveDocumentService < ApplicationService
     Document.transaction do
       edition.document.lock!
       check_removeable
+      set_removed_at
       unpublish_edition
       update_edition_status
       create_timeline_entry
@@ -45,6 +46,14 @@ private
       status: edition.status,
       details: removal,
     )
+  end
+
+  def set_removed_at
+    removal.removed_at = if edition.removed?
+                           edition.status.details.removed_at
+                         else
+                           Time.zone.now
+                         end
   end
 
   def check_removeable
