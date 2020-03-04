@@ -13,7 +13,7 @@ require "gds_api/test_helpers/asset_manager"
 require "govuk_sidekiq/testing"
 require "json_matchers/rspec"
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
 SimpleCov.start
 GovukTest.configure
 I18nCov.start
