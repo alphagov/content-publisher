@@ -131,7 +131,7 @@ RSpec.describe ResyncDocumentService do
         stub_any_publishing_api_unpublish
       end
 
-      context "when the live edition is removed with a redirect" do
+      context "with a redirect" do
         let(:removal) do
           build(
             :removal,
@@ -149,7 +149,7 @@ RSpec.describe ResyncDocumentService do
             explanation: explanation,
             alternative_path: removal.alternative_url,
             locale: edition.locale,
-            unpublished_at: removal.created_at,
+            unpublished_at: removal.removed_at,
             allow_draft: true,
           }
 
@@ -160,14 +160,14 @@ RSpec.describe ResyncDocumentService do
         end
       end
 
-      context "when the live edition is removed without a redirect" do
+      context "without a redirect" do
         let(:edition) { create(:edition, :removed) }
 
         it "removes the edition" do
           remove_params = {
             type: "gone",
             locale: edition.locale,
-            unpublished_at: edition.status.details.created_at,
+            unpublished_at: edition.status.details.removed_at,
             allow_draft: true,
           }
 
