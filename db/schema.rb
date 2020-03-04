@@ -374,10 +374,10 @@ ActiveRecord::Schema.define(version: 2020_03_03_143426) do
   create_table "whitehall_migrations", force: :cascade do |t|
     t.text "organisation_content_id"
     t.text "document_type"
-    t.text "document_subtypes", array: true
     t.datetime "finished_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "document_subtypes", array: true
   end
 
   create_table "withdrawals", force: :cascade do |t|
