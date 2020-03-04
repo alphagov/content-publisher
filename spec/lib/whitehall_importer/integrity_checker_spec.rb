@@ -113,7 +113,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
             tags: { "organisations" => [] })
     end
 
-    let(:payload) do
+    let(:publishing_api_item) do
       {
         content_id: edition.content_id,
         base_path: "base-path",
@@ -143,31 +143,31 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
     before do
       stub_publishing_api_has_links(content_id: edition.content_id)
-      stub_publishing_api_has_item(payload)
+      stub_publishing_api_has_item(publishing_api_item)
     end
 
     it "returns a problem when the base paths don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("base_path", payload[:base_path], edition.base_path),
+        problem_message("base_path", publishing_api_item[:base_path], edition.base_path),
       )
     end
 
     it "returns a problem when the titles don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("title", payload[:title], edition.title),
+        problem_message("title", publishing_api_item[:title], edition.title),
       )
     end
 
     it "returns a problem when the descriptions don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("description", payload[:description], edition.summary),
+        problem_message("description", publishing_api_item[:description], edition.summary),
       )
     end
 
     it "returns a problem when the document types don't match" do
       expect(integrity_check.problems).to include(
         problem_message("document_type",
-                        payload[:document_type],
+                        publishing_api_item[:document_type],
                         edition.document_type.id),
       )
     end
@@ -175,7 +175,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     it "returns a problem when the schema names don't match" do
       edition_schema_name = edition.document_type.publishing_metadata.schema_name
       expect(integrity_check.problems).to include(
-        problem_message("schema_name", payload[:schema_name], edition_schema_name),
+        problem_message("schema_name", publishing_api_item[:schema_name], edition_schema_name),
       )
     end
 
@@ -185,22 +185,22 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
     it "returns a problem when the image alt_text doesn't match" do
       edition_image = edition.image_revisions.first
-      payload_image = payload[:details][:image]
+      publishing_api_image = publishing_api_item[:details][:image]
 
       expect(integrity_check.problems).to include(
         problem_message("image alt_text",
-                        payload_image[:alt_text],
+                        publishing_api_image[:alt_text],
                         edition_image.alt_text),
       )
     end
 
     it "returns a problem when the image caption doesn't match" do
       edition_image = edition.image_revisions.first
-      payload_image = payload[:details][:image]
+      publishing_api_image = publishing_api_item[:details][:image]
 
       expect(integrity_check.problems).to include(
         problem_message("image caption",
-                        payload_image[:caption],
+                        publishing_api_image[:caption],
                         edition_image.caption),
       )
     end
@@ -208,13 +208,13 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     it "returns a problem when the primary_publishing_organisation doesn't match" do
       expect(integrity_check.problems).to include(
         problem_message("primary_publishing_organisation",
-                        payload[:links][:primary_publishing_organisation],
+                        publishing_api_item[:links][:primary_publishing_organisation],
                         edition.tags["primary_publishing_organisation"]),
       )
     end
 
     it "returns a problem when the organisations don't match" do
-      expected = payload[:links][:organisations].inspect
+      expected = publishing_api_item[:links][:organisations].inspect
       actual = edition.tags["organisations"].inspect
       message = "organisations don't match, expected: #{expected}, actual: #{actual}"
 
