@@ -29,6 +29,7 @@ private
       explanation: removal.explanatory_note,
       alternative_path: removal.alternative_url,
       locale: edition.locale,
+      unpublished_at: removal.removed_at,
     )
   end
 
