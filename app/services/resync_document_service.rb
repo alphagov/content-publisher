@@ -92,7 +92,7 @@ private
       explanation: removal.explanatory_note,
       alternative_path: removal.alternative_url,
       locale: live_edition.locale,
-      unpublished_at: removal.created_at,
+      unpublished_at: removal.removed_at,
       allow_draft: true,
     )
   end
