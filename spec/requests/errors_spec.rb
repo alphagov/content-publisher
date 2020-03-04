@@ -39,7 +39,7 @@ RSpec.describe "Errors" do
     end
   end
 
-  describe "bypassing user access checks" do
+  describe "GET /any-path-for-a-document" do
     it "returns a not found response when a document doesn't exist" do
       get document_path("document-that-does-not-exist")
 
@@ -47,8 +47,8 @@ RSpec.describe "Errors" do
     end
   end
 
-  describe "local data unavailable" do
-    it "returns service unavailable" do
+  describe "ANY /document-path-using-local-data" do
+    it "returns service unavailable when local data is unavailable" do
       # This is a somewhat contrived example, hopefully this can be replaced
       # when there's a simple way to trigger this error
       expect(Edition).to receive(:find_current)
@@ -61,15 +61,17 @@ RSpec.describe "Errors" do
     end
   end
 
-  it "forbids users without pre-release permission from accessing pre-release documents" do
-    pre_release_document_type = build(:document_type, pre_release: true)
-    edition = create(:edition, document_type: pre_release_document_type)
-    user = build(:user, permissions: %w(signin))
+  describe "ANY /pre-release-document-path" do
+    it "returns forbidden when the document type is pre-release" do
+      pre_release_document_type = build(:document_type, :pre_release)
+      edition = create(:edition, document_type: pre_release_document_type)
+      user = build(:user, permissions: %w(signin))
 
-    login_as(user)
-    get document_path(edition.document)
+      login_as(user)
+      get document_path(edition.document)
 
-    expect(response).to have_http_status(:forbidden)
-    expect(response.body).to include(I18n.t!("errors.forbidden.title"))
+      expect(response).to have_http_status(:forbidden)
+      expect(response.body).to include(I18n.t!("errors.forbidden.title"))
+    end
   end
 end
