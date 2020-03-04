@@ -47,7 +47,7 @@ group :development, :test do
   gem "jasmine_selenium_runner", "~> 3", require: false
   gem "json_matchers"
   gem "rspec-rails", "~> 3"
-  gem "rubocop-govuk", "~> 2"
+  gem "rubocop-govuk", "~> 3"
   gem "scss_lint-govuk", "~> 0"
   gem "webmock", "~> 3"
 end
