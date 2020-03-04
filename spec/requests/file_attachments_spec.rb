@@ -34,6 +34,15 @@ RSpec.describe "File Attachments" do
     let(:route_params) { [edition.document] }
   end
 
+  it_behaves_like "requests that return status",
+                  "adding inline attachments for an edition that doesn't allow them",
+                  status: :not_found,
+                  routes: { file_attachments_path: %i[get] } do
+    let(:document_type) { build(:document_type, attachments: "featured") }
+    let(:edition) { create(:edition, document_type: document_type) }
+    let(:route_params) { [edition.document] }
+  end
+
   describe "GET /documents/:document/file-attachments/new" do
     it "returns successfully" do
       document_type = build(:document_type, attachments: "featured")
