@@ -4,7 +4,29 @@ RSpec.describe MetadataRevision do
       change_history = [
         {
           "id" => SecureRandom.uuid,
-          "note" => "Testing",
+          "note" => "Newest",
+          "public_timestamp" => Time.zone.today.rfc3339,
+        },
+        {
+          "id" => SecureRandom.uuid,
+          "note" => "Oldest",
+          "public_timestamp" => Time.zone.yesterday.rfc3339,
+        },
+      ]
+
+      expect(build(:metadata_revision, change_history: change_history)).to be_valid
+    end
+
+    it "copes when two items have the same public_timestamp" do
+      change_history = [
+        {
+          "id" => SecureRandom.uuid,
+          "note" => "Note",
+          "public_timestamp" => Time.zone.today.rfc3339,
+        },
+        {
+          "id" => SecureRandom.uuid,
+          "note" => "Note",
           "public_timestamp" => Time.zone.today.rfc3339,
         },
       ]
@@ -72,6 +94,25 @@ RSpec.describe MetadataRevision do
       expect { build(:metadata_revision, change_history: change_history).valid? }
         .to raise_error(ActiveModel::StrictValidationFailed,
                         "Change history has an entry with an invalid timestamp")
+    end
+
+    it "fails validation when notes are not in reverse chronological order" do
+      change_history = [
+        {
+          "id" => SecureRandom.uuid,
+          "note" => "Oldest",
+          "public_timestamp" => Time.zone.yesterday.rfc3339,
+        },
+        {
+          "id" => SecureRandom.uuid,
+          "note" => "Newest",
+          "public_timestamp" => Time.zone.today.rfc3339,
+        },
+      ]
+
+      expect { build(:metadata_revision, change_history: change_history).valid? }
+        .to raise_error(ActiveModel::StrictValidationFailed,
+                        "Change history is not in a reverse chronological ordering")
     end
   end
 end
