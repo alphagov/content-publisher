@@ -45,43 +45,75 @@ RSpec.describe RemoveDocumentService do
 
     context "when the removal is a redirect" do
       it "unpublishes in the Publishing API with a type of redirect" do
-        removal = build(:removal,
-                        redirect: true,
-                        alternative_url: "/path",
-                        explanatory_note: "explanation")
+        freeze_time do
+          removal = build(:removal,
+                          redirect: true,
+                          alternative_url: "/path",
+                          explanatory_note: "explanation")
 
-        request = stub_publishing_api_unpublish(
-          edition.content_id,
-          body: {
-            alternative_path: "/path",
-            explanation: "explanation",
-            locale: edition.locale,
-            type: "redirect",
-          },
-        )
-        described_class.call(edition, removal)
-        expect(request).to have_been_requested
+          request = stub_publishing_api_unpublish(
+            edition.content_id,
+            body: {
+              alternative_path: "/path",
+              explanation: "explanation",
+              locale: edition.locale,
+              type: "redirect",
+              unpublished_at: Time.zone.now,
+            },
+          )
+          described_class.call(edition, removal)
+          expect(request).to have_been_requested
+        end
       end
     end
 
     context "when the removal is not a redirect" do
       it "unpublishes in the Publishing API with a type of gone" do
-        removal = build(:removal,
-                        redirect: false,
-                        alternative_url: "/path",
-                        explanatory_note: "explanation")
+        freeze_time do
+          removal = build(:removal,
+                          redirect: false,
+                          alternative_url: "/path",
+                          explanatory_note: "explanation")
 
-        request = stub_publishing_api_unpublish(
-          edition.content_id,
-          body: {
-            alternative_path: "/path",
-            explanation: "explanation",
-            locale: edition.locale,
-            type: "gone",
-          },
-        )
-        described_class.call(edition, removal)
-        expect(request).to have_been_requested
+          request = stub_publishing_api_unpublish(
+            edition.content_id,
+            body: {
+              alternative_path: "/path",
+              explanation: "explanation",
+              locale: edition.locale,
+              type: "gone",
+              unpublished_at: Time.zone.now,
+            },
+          )
+          described_class.call(edition, removal)
+          expect(request).to have_been_requested
+        end
+      end
+    end
+
+    context "when the edition does not have a removal" do
+      it "sets the removed_at time" do
+        freeze_time do
+          removal = build(:removal)
+
+          described_class.call(edition, removal)
+          expect(edition.status.details.removed_at).to eq(Time.zone.now)
+        end
+      end
+    end
+
+    context "when the edition already has a removal" do
+      it "maintains the existing removed_at time" do
+        existing_removed_at = 2.days.ago.noon
+        existing_removal = build(:removal, removed_at: existing_removed_at)
+        edition = create(:edition, :removed, removal: existing_removal)
+        new_removal = build(:removal,
+                            alternative_url: "/path",
+                            explanatory_note: "explanation",
+                            redirect: true)
+
+        described_class.call(edition, new_removal)
+        expect(edition.status.details.removed_at).to eq(existing_removed_at)
       end
     end
 
