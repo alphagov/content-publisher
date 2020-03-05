@@ -33,7 +33,12 @@ RSpec.feature "Edit a withdrawal" do
   def when_i_edit_the_public_explanation
     @new_explanation = "Another explanation"
     converted_explanation = GovspeakDocument.new(@new_explanation, @edition).payload_html
-    body = { type: "withdrawal", explanation: converted_explanation, locale: @edition.locale }
+    body = {
+      type: "withdrawal",
+      explanation: converted_explanation,
+      locale: @edition.locale,
+      unpublished_at: @edition.status.details.withdrawn_at,
+    }
     stub_publishing_api_unpublish(@edition.content_id, body: body)
 
     fill_in "public_explanation", with: @new_explanation
