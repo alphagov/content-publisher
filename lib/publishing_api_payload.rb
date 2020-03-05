@@ -77,6 +77,7 @@ private
     details = {
       political: edition.political?,
       change_history: history.change_history,
+      attachments: attachments,
     }
 
     if document_type.lead_image? && edition.lead_image_revision.present?
@@ -90,5 +91,13 @@ private
 
   def publication?
     publishing_metadata.schema_name == "publication"
+  end
+
+  def attachments
+    file_attachments = edition.file_attachment_revisions
+
+    file_attachments.map do |attachment|
+      FileAttachmentPayload.new(attachment, edition.document).payload
+    end
   end
 end

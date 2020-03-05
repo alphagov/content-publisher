@@ -59,6 +59,19 @@ RSpec.describe PublishingApiPayload do
       expect(payload[:details][:change_history]).to match(history.change_history)
     end
 
+    it "delegates to PublishingApiPayload::FileAttachmentPayload to populate attachments" do
+      file_attachment_revision = create(:file_attachment_revision)
+      edition = build(:edition,
+                      file_attachment_revisions: [file_attachment_revision])
+
+      payload = described_class.new(edition).payload
+      attachment_payload = PublishingApiPayload::FileAttachmentPayload
+                             .new(file_attachment_revision, edition.document)
+                             .payload
+
+      expect(payload[:details][:attachments]).to contain_exactly(attachment_payload)
+    end
+
     it "specifies an auth bypass ID for anonymous previews" do
       edition = build(:edition)
       preview_auth_bypass = instance_double(PreviewAuthBypass, auth_bypass_id: "id")
