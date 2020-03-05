@@ -32,10 +32,17 @@ RSpec.feature "Withdraw a document" do
   end
 
   def and_i_confirm_the_withdrawal
-    converted_explanation = GovspeakDocument.new(@explanation, @edition).payload_html
-    body = { type: "withdrawal", explanation: converted_explanation, locale: @edition.locale }
-    stub_publishing_api_unpublish(@edition.content_id, body: body)
-    click_on "Withdraw document"
+    freeze_time do
+      converted_explanation = GovspeakDocument.new(@explanation, @edition).payload_html
+      body = {
+        type: "withdrawal",
+        explanation: converted_explanation,
+        locale: @edition.locale,
+        unpublished_at: Time.zone.now,
+      }
+      stub_publishing_api_unpublish(@edition.content_id, body: body)
+      click_on "Withdraw document"
+    end
   end
 
   def then_i_see_the_document_has_been_withdrawn

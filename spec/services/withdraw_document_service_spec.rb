@@ -7,16 +7,19 @@ RSpec.describe WithdrawDocumentService do
     before { stub_any_publishing_api_unpublish }
 
     it "converts the public explanation Govspeak to HTML before sending to Publishing API" do
-      converted_public_explanation = GovspeakDocument.new(public_explanation, edition).payload_html
-      request = stub_publishing_api_unpublish(edition.content_id,
-                                              body: { type: "withdrawal",
-                                                      explanation: converted_public_explanation,
-                                                      locale: edition.locale })
-      described_class.call(edition,
-                           user,
-                           public_explanation: public_explanation)
+      freeze_time do
+        converted_public_explanation = GovspeakDocument.new(public_explanation, edition).payload_html
+        request = stub_publishing_api_unpublish(edition.content_id,
+                                                body: { type: "withdrawal",
+                                                        explanation: converted_public_explanation,
+                                                        locale: edition.locale,
+                                                        unpublished_at: Time.zone.now })
+        described_class.call(edition,
+                             user,
+                             public_explanation: public_explanation)
 
-      expect(request).to have_been_requested
+        expect(request).to have_been_requested
+      end
     end
 
 

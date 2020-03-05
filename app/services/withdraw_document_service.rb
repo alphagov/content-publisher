@@ -23,6 +23,7 @@ private
       type: "withdrawal",
       explanation: format_govspeak(public_explanation, edition),
       locale: edition.locale,
+      unpublished_at: edition.status.details.withdrawn_at,
     )
   end
 
