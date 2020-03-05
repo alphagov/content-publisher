@@ -2,7 +2,7 @@
   view_links = []
 
   if document_import.content_id
-    url = "#{Plek.find('whitehall-admin')}/government/admin/by-content-id/#{document_import.content_id}"
+    url = "#{Plek.find('whitehall-admin', external: true)}/government/admin/by-content-id/#{document_import.content_id}"
     view_links << link_to("Whitehall", url, target: "_blank")
   end
 
