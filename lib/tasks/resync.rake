@@ -13,7 +13,7 @@ namespace :resync do
   desc "Resync all documents with the publishing-api e.g. resync:all"
   task all: :environment do
     Document.find_each do |document|
-      ResyncDocumentService.call(document)
+      ResyncDocumentJob.perform_later(document)
     end
   end
 end
