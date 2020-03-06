@@ -1,12 +1,24 @@
 RSpec.describe PublishingApiPayload::History do
   describe "#public_updated_at" do
-    it "returns current time if a major change is published" do
-      freeze_time do
-        first_edition = build(:edition)
-        second_edition = build(:edition, document: first_edition.document, update_type: "major")
+    it "returns current time when a major change has not been published before" do
+      first_edition = build(:edition)
+      second_edition = build(:edition, document: first_edition.document, update_type: "major")
 
+      freeze_time do
         expect(described_class.new(second_edition).public_updated_at).to eq(Time.zone.now)
       end
+    end
+
+    it "returns published_at time when an edition has already been published with a major change" do
+      first_edition = create(:edition, current: false,
+                             first_published_at: "2020-02-22 11:00:00")
+      second_edition = build(:edition, :published,
+                             document: first_edition.document,
+                             update_type: "major",
+                             first_published_at: "2020-02-22 11:00:00",
+                             published_at: "2020-03-01 12:00:00")
+
+      expect(described_class.new(second_edition).public_updated_at).to eq("2020-03-01 12:00:00")
     end
 
     it "returns most recent change history time if a minor change is published" do

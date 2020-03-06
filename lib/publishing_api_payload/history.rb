@@ -25,7 +25,7 @@ class PublishingApiPayload::History
 
     if edition.change_note && edition.major? && !edition.first?
       change_history << { note: edition.change_note,
-                          public_timestamp: Time.zone.now }
+                          public_timestamp: edition.published_at || Time.zone.now }
     end
 
     change_history.reject { |note| first_published_at && note[:public_timestamp] < first_published_at }
