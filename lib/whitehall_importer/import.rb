@@ -27,8 +27,9 @@ module WhitehallImporter
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           CreateEdition.call(
             document_import: document_import,
-            current: current?(edition),
             whitehall_edition: edition,
+            change_history: change_history,
+            current: current?(edition),
             edition_number: edition_number + 1,
             user_ids: user_ids,
           )
@@ -47,6 +48,10 @@ module WhitehallImporter
     end
 
   private
+
+    def change_history
+      @change_history ||= ChangeHistory.new(document_import.payload)
+    end
 
     def whitehall_document
       @whitehall_document ||= GdsApi.whitehall_export

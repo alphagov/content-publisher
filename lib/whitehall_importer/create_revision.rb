@@ -1,6 +1,6 @@
 module WhitehallImporter
   class CreateRevision
-    attr_reader :document_import, :whitehall_edition
+    attr_reader :document_import, :whitehall_edition, :change_history
 
     delegate :document, to: :document_import
 
@@ -16,9 +16,10 @@ module WhitehallImporter
       new(*args).call
     end
 
-    def initialize(document_import, whitehall_edition)
+    def initialize(document_import, whitehall_edition, change_history = [])
       @document_import = document_import
       @whitehall_edition = whitehall_edition
+      @change_history = change_history
     end
 
     def call
@@ -49,6 +50,7 @@ module WhitehallImporter
           change_note: whitehall_edition["change_note"],
           document_type_id: whitehall_edition[document_type_key],
           backdated_to: backdated? ? whitehall_edition["first_published_at"] : nil,
+          change_history: change_history,
         ),
         tags_revision: TagsRevision.new(
           tags: {
