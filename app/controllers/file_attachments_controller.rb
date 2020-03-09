@@ -75,9 +75,13 @@ class FileAttachmentsController < ApplicationController
     result = FileAttachments::DestroyInteractor.call(params: params, user: current_user)
     attachment_revision = result.attachment_revision
 
-    redirect_to file_attachments_path(params[:document]),
-                notice: t("file_attachments.index.flashes.deleted",
-                          file: attachment_revision.filename)
+    if params[:wizard] == "featured"
+      redirect_to featured_attachments_path(params[:document])
+    else
+      redirect_to file_attachments_path(params[:document]),
+                  notice: t("file_attachments.index.flashes.deleted",
+                            file: attachment_revision.filename)
+    end
   end
 
   def edit

@@ -1,7 +1,7 @@
 <% actions = [] %>
 <% actions << capture do %>
   <%= form_tag(
-    file_attachment_path(document, attachment.file_attachment_id),
+    file_attachment_path(document, attachment.file_attachment_id, wizard: "featured"),
     method: :delete,
     class: "app-inline-block",
     data: {
