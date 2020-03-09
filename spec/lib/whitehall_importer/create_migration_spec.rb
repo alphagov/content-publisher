@@ -36,6 +36,11 @@ RSpec.describe WhitehallImporter::CreateMigration do
           .to change { WhitehallMigration::DocumentImport.pending.count }.by(110)
       end
 
+      it "sets the content_id on the WhitehallMigration::DocumentImport" do
+        described_class.call("123", "news_article")
+        expect(WhitehallMigration::DocumentImport.last.content_id).to eq(whitehall_export_page_2["documents"].last["content_id"])
+      end
+
       it "queues a job for each listed document" do
         described_class.call("123", "news_article")
         expect(WhitehallDocumentImportJob).to have_been_enqueued.exactly(110).times
