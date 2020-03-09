@@ -10,15 +10,9 @@ RSpec.describe PoliticalEditionIdentifier do
 
   describe "#political?" do
     let(:document_type) do
-      primary_organisation_field = build(:tag_field,
-                                         type: "single_tag",
-                                         id: "primary_publishing_organisation")
-      organisations_field = build(:tag_field,
-                                  type: "multi_tag",
-                                  id: "organisations")
-      role_appointments_field = build(:tag_field,
-                                      type: "multi_tag",
-                                      id: "role_appointments")
+      primary_organisation_field = DocumentType::PrimaryPublishingOrganisationField.new
+      organisations_field = DocumentType::OrganisationsField.new
+      role_appointments_field = DocumentType::RoleAppointmentsField.new
 
       build(:document_type, tags: [primary_organisation_field,
                                    organisations_field,

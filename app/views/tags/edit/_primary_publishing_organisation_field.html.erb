@@ -1,0 +1,20 @@
+<% if edition.access_limit.present? %>
+  <%= render "govuk_publishing_components/components/warning_text", {
+    text: t("tags.edit.organisation_warning"),
+  } %>
+<% end %>
+
+<%= render "components/autocomplete", {
+  id: "primary_publishing_organisation-field",
+  name: "primary_publishing_organisation[]",
+  label: {
+    text: t_doctype_field(edition, "primary_publishing_organisation.label"),
+    bold: true,
+  },
+  hint: t_doctype_field(edition, "primary_publishing_organisation.hint"),
+  select: {
+    options: [""] + Linkables.new("organisation").select_options,
+    selected: (params[:tags] || edition.tags)["primary_publishing_organisation"],
+  },
+  error_items: issues&.items_for(:primary_publishing_organisation),
+} %>

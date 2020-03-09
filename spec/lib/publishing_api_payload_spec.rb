@@ -8,7 +8,7 @@ RSpec.describe PublishingApiPayload do
 
       payload_hash = {
         document_type: document_type.id,
-        links: { government: [], organisations: [] },
+        links: { government: [] },
         locale: edition.locale,
         publishing_app: "content-publisher",
         rendering_app: nil,
@@ -74,56 +74,16 @@ RSpec.describe PublishingApiPayload do
       expect(payload[:access_limited][:organisations]).to eq %w[org-id]
     end
 
-    it "includes primary_publishing_organisation in organisations links" do
-      organisation = build(:tag_field, :primary_publishing_organisation)
-      document_type = build(:document_type, tags: [organisation])
+    it "delegates to document type fields for tags" do
+      tag_field = instance_double(DocumentType::RoleAppointmentsField,
+                                  payload: { links: { foo: "bar" } })
+      document_type = build(:document_type, tags: [tag_field])
       edition = build(:edition,
                       document_type: document_type,
-                      tags: { primary_publishing_organisation: %w[my-org-id],
-                              organisations: %w[other-org-id] })
+                      tags: { role_appointments: %w[foo] })
 
       payload = described_class.new(edition).payload
-
-      expect(payload[:links]).to match a_hash_including(
-        primary_publishing_organisation: %w[my-org-id],
-        organisations: %w[my-org-id other-org-id],
-      )
-    end
-
-    it "ensures the organisation links are unique" do
-      organisation = build(:tag_field, :primary_publishing_organisation)
-      document_type = build(:document_type, tags: [organisation])
-      edition = build(:edition,
-                      document_type: document_type,
-                      tags: { primary_publishing_organisation: %w[my-org-id],
-                              organisations: %w[my-org-id] })
-
-      payload = described_class.new(edition).payload
-
-      expect(payload[:links][:organisations]).to eq %w[my-org-id]
-    end
-
-    it "converts role appointment links to role and person links" do
-      role_appointment_id = SecureRandom.uuid
-      role_appointments = build(:tag_field, type: "multi_tag", id: "role_appointments")
-      document_type = build(:document_type, tags: [role_appointments])
-      edition = build(:edition,
-                      document_type: document_type,
-                      tags: { role_appointments: [role_appointment_id] })
-
-      person_id = SecureRandom.uuid
-      role_id = SecureRandom.uuid
-      stub_publishing_api_has_links(
-        content_id: role_appointment_id,
-        links: { person: [person_id], role: [role_id] },
-      )
-
-      payload = described_class.new(edition).payload
-
-      expect(payload[:links]).to match a_hash_including(
-        roles: [role_id],
-        people: [person_id],
-      )
+      expect(payload[:links]).to match a_hash_including(foo: "bar")
     end
 
     it "delegates to document type fields for contents" do

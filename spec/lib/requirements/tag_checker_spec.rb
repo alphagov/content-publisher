@@ -6,35 +6,36 @@ RSpec.describe Requirements::TagChecker do
       expect(issues.items).to be_empty
     end
 
-    context "when the edition supports primary orgs" do
-      let(:edition) do
-        organisation_field = build(:tag_field, :primary_publishing_organisation)
-        document_type = build(:document_type, tags: [organisation_field])
-        build(:edition, document_type: document_type)
-      end
+    it "delegates to return issues with tag fields" do
+      tag = DocumentType::PrimaryPublishingOrganisationField.new
+      document_type = build :document_type, tags: [tag]
+      edition = build :edition, document_type: document_type
 
-      it "returns an issue when the primary org is blank" do
-        issues = described_class.new(edition).pre_update_issues({})
+      params = { primary_publishing_organisation: SecureRandom.uuid }
+      expect(tag).to receive(:pre_update_issues).with(edition, params).and_call_original
+      described_class.new(edition).pre_update_issues(params)
+    end
+  end
 
-        expect(issues).to have_issue(:primary_publishing_organisation,
-                                     :blank,
-                                     styles: %i[form summary])
-      end
+  describe "#pre_preview_issues" do
+    it "delegates to return issues with tag fields" do
+      tag = DocumentType::PrimaryPublishingOrganisationField.new
+      document_type = build :document_type, tags: [tag]
+      edition = build :edition, document_type: document_type
 
-      it "returns no issues when there is a primary org" do
-        params = { primary_publishing_organisation: %w[my-org] }
-        issues = described_class.new(edition).pre_update_issues(params)
-        expect(issues.items).to be_empty
-      end
+      expect(tag).to receive(:pre_preview_issues).with(edition).and_call_original
+      described_class.new(edition).pre_preview_issues
     end
   end
 
   describe "#pre_publish_issues" do
-    it "delegates to #pre_update_issues" do
-      edition = build :edition, tags: { tag: %w[id1 id2] }
-      checker = described_class.new(edition)
-      expect(checker).to receive(:pre_update_issues).with(tag: %w[id1 id2])
-      checker.pre_publish_issues
+    it "delegates to return issues with tag fields" do
+      tag = DocumentType::PrimaryPublishingOrganisationField.new
+      document_type = build :document_type, tags: [tag]
+      edition = build :edition, document_type: document_type
+
+      expect(tag).to receive(:pre_publish_issues).with(edition).and_call_original
+      described_class.new(edition).pre_publish_issues
     end
   end
 end

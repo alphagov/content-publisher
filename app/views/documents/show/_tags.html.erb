@@ -1,35 +1,19 @@
-<% begin %>
-  <% tags = @edition.document_type.tags.map { |tag_field|
-    service = Linkables.new(tag_field.document_type)
+<% tags = @edition.document_type.tags.map { |field|
+  {
+    field: t_doctype_field(@edition, "#{field.id}.label"),
+    value: render("documents/show/tags/#{field.id}_field", edition: @edition)
+  }
+} %>
 
-    values = @edition.tags[tag_field.id].to_a
-      .map { |content_id| service.by_content_id(content_id) }
-
-    {
-      field: t_doctype_field(@edition, "#{tag_field.id}.label"),
-      value: render("documents/tags/#{tag_field.type}", tag_field: tag_field, values: values)
-    }
-  } %>
-
-  <%= render "govuk_publishing_components/components/summary_list", {
-    id: "tags",
-    title: t("documents.show.tags.title"),
-    borderless: true,
-    edit: (
-      if @edition.editable?
-        { href: tags_path(@edition.document),
-          data_attributes: { gtm: "edit-tags" } }
-      end
-    ),
-    items: tags
-  } %>
-<% rescue GdsApi::BaseError => e %>
-  <% GovukError.notify(e) %>
-
-  <%= render "govuk_publishing_components/components/summary_list", {
-    id: "tags",
-    title: t("documents.show.tags.title"),
-    borderless: true,
-    block: t("documents.show.tags.api_down")
-  } %>
-<% end %>
+<%= render "govuk_publishing_components/components/summary_list", {
+  id: "tags",
+  title: t("documents.show.tags.title"),
+  borderless: true,
+  edit: (
+    if @edition.editable?
+      { href: tags_path(@edition.document),
+        data_attributes: { gtm: "edit-tags" } }
+    end
+  ),
+  items: tags
+} %>

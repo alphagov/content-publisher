@@ -14,10 +14,11 @@
   "additionalProperties": false,
   "properties": {
     "id": {
-      "$ref": "#/definitions/id"
+      "type": "string",
+      "pattern": "^[a-z_]+$"
     },
     "label": {
-      "$ref": "#/definitions/label"
+      "type": "string"
     },
     "path_prefix": {
       "type": "string"
@@ -52,72 +53,18 @@
       "type": "array",
       "uniqueItems": true,
       "items": {
-        "$ref": "#/definitions/content_field"
+        "type": "string"
       }
     },
     "tags": {
       "type": "array",
       "uniqueItems": true,
       "items": {
-        "$ref": "#/definitions/tag_field"
+        "type": "string"
       }
     },
     "pre_release": {
       "type": "boolean"
-    }
-  },
-  "definitions": {
-    "id": {
-      "type": "string",
-      "pattern": "^[a-z_]+$"
-    },
-    "label": {
-      "type": "string"
-    },
-    "content_field": {
-      "type": "string",
-      "enum": [
-        "title_and_base_path",
-        "summary",
-        "body"
-      ]
-    },
-    "tag_field": {
-      "type": "object",
-      "required": [
-        "id",
-        "type",
-        "document_type"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "id": {
-          "type": "string",
-          "enum": [
-            "primary_publishing_organisation",
-            "organisations",
-            "role_appointments",
-            "topical_events",
-            "world_locations"
-          ]
-        },
-        "type": {
-          "type": "string",
-          "enum": [
-            "single_tag",
-            "multi_tag"
-          ]
-        },
-        "document_type": {
-          "type": "string",
-          "enum": [
-            "organisation",
-            "role_appointment",
-            "topical_event",
-            "world_location"
-          ]
-        }
-      }
     }
   }
 }
