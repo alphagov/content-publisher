@@ -222,6 +222,26 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
   end
 
+  describe ".time_matches?" do
+    let(:time) { Time.zone.now }
+
+    it "returns true when times match" do
+      expect(described_class.time_matches?(time.rfc3339, time.rfc3339)).to eq true
+    end
+
+    it "returns true when times are sufficiently similar" do
+      expect(described_class.time_matches?((time + 4).rfc3339, time.rfc3339)).to eq true
+    end
+
+    it "returns false when times are not sufficiently similar" do
+      expect(described_class.time_matches?((time + 30).rfc3339, time.rfc3339)).to eq false
+    end
+
+    it "returns false when times are invalid" do
+      expect(described_class.time_matches?("Not a time", nil)).to eq false
+    end
+  end
+
   def default_publishing_api_item(edition, override_hash = {})
     {
       content_id: edition.content_id,

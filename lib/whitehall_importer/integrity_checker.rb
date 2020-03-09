@@ -2,6 +2,17 @@ module WhitehallImporter
   class IntegrityChecker
     attr_reader :edition
 
+    def self.time_matches?(proposed_time, publishing_api_time)
+      return true if proposed_time == publishing_api_time
+
+      proposed_time = Time.zone.rfc3339(proposed_time)
+      publishing_api_time = Time.zone.rfc3339(publishing_api_time)
+
+      proposed_time.between?(publishing_api_time - 5, publishing_api_time + 5)
+    rescue ArgumentError
+      false
+    end
+
     def initialize(edition)
       @edition = edition
     end
