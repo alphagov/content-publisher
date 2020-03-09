@@ -26,7 +26,6 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         },
       )
     end
-
     let(:publishing_api_item) do
       default_publishing_api_item(edition,
                                   details: {
@@ -37,11 +36,11 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                     organisations: edition.tags["organisations"].to_a + edition.tags["primary_publishing_organisation"].to_a,
                                   })
     end
+    let(:integrity_check) { described_class.new(edition) }
 
     it "returns true if there aren't any problems for edition without image or attachment" do
       stub_publishing_api_has_item(publishing_api_item)
 
-      integrity_check = described_class.new(edition)
       expect(integrity_check.valid?).to be true
     end
 
@@ -55,7 +54,6 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       }
       stub_publishing_api_has_item(publishing_api_item)
 
-      integrity_check = described_class.new(edition)
       expect(integrity_check.valid?).to be true
     end
 
@@ -65,7 +63,6 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       }
       stub_publishing_api_has_item(publishing_api_item)
 
-      integrity_check = described_class.new(edition)
       expect(integrity_check.valid?).to be true
     end
 
@@ -80,13 +77,11 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         },
       )
 
-      integrity_check = described_class.new(edition)
       expect(integrity_check.valid?).to be true
     end
 
     context "with an attachment not yet on asset mananger" do
       let(:file_attachment_revision) { create(:file_attachment_revision) }
-
       let(:edition) do
         build(:edition,
               document_type: document_type,
@@ -107,7 +102,6 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         stub_publishing_api_has_links(content_id: edition.content_id)
         stub_publishing_api_has_item(publishing_api_item)
 
-        integrity_check = described_class.new(edition)
         expect(integrity_check.valid?).to be true
       end
     end
@@ -120,7 +114,6 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
             image_revisions: [build(:image_revision)],
             tags: { "organisations" => [] })
     end
-
     let(:publishing_api_item) do
       {
         content_id: edition.content_id,
@@ -142,7 +135,6 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         },
       }
     end
-
     let(:integrity_check) { described_class.new(edition) }
 
     def problem_message(attribute, expected, actual)
