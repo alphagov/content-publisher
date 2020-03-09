@@ -1,0 +1,32 @@
+<% back_link_path = if params[:wizard] == "featured"
+                      featured_attachments_path(@edition.document)
+                    else
+                      file_attachments_path(@edition.document)
+                    end %>
+
+<% content_for :back_link, render_back_link(href: back_link_path) %>
+<% content_for :title, t("file_attachments.confirm_delete.title", title: @attachment.title) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag(
+      file_attachment_path(@edition.document, wizard: params[:wizard]),
+      method: :delete,
+      multipart: true,
+    ) do %>
+      <%= render_govspeak(t("file_attachments.confirm_delete.description_govspeak")) %>
+
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Yes, delete attachment",
+        destructive: true,
+        margin_bottom: true,
+      } %>
+
+      <div class="govuk-body">
+        <%= link_to "Cancel",
+                  back_link_path,
+                  class: "govuk-link govuk-link--no-visited-state" %>
+      <% end %>
+    </div>
+  </div>
+</div>

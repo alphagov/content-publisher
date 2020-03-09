@@ -31,6 +31,14 @@ class FileAttachmentsController < ApplicationController
       .find_by!(file_attachment_id: params[:file_attachment_id])
   end
 
+  def confirm_delete
+    @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
+
+    @attachment = @edition.file_attachment_revisions
+      .find_by!(file_attachment_id: params[:file_attachment_id])
+  end
+
   def preview
     result = FileAttachments::PreviewInteractor.call(params: params, user: current_user)
     can_preview, api_error = result.to_h.values_at(:can_preview, :api_error)
