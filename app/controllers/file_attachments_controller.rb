@@ -4,16 +4,28 @@ class FileAttachmentsController < ApplicationController
   def index
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
+
+    assert_edition_feature(@edition, assertion: "supports inline attachments") do
+      @edition.document_type.attachments.inline_file_only?
+    end
   end
 
   def new
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
+
+    assert_edition_feature(@edition, assertion: "supports featured attachments") do
+      @edition.document_type.attachments.featured?
+    end
   end
 
   def show
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
+
+    assert_edition_feature(@edition, assertion: "supports inline attachments") do
+      @edition.document_type.attachments.inline_file_only?
+    end
 
     @attachment = @edition.file_attachment_revisions
       .find_by!(file_attachment_id: params[:file_attachment_id])

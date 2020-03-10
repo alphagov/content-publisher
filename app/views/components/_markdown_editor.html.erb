@@ -17,8 +17,8 @@
                             .merge({ "paste-html-to-govspeak": paste_html_to_govspeak })
 
   if edition
-    insert_items = [
-      {
+    if edition.document_type.attachments.inline_file_only?
+      insert_items << {
         text: "Attachment",
         href: file_attachments_path(edition.document),
         target: "_blank",
@@ -27,7 +27,10 @@
           "modal-action": "open",
           gtm: "open-inline-attachment-modal",
         }
-      },
+      }
+    end
+
+    insert_items += [
       {
         text: "Contact",
         href: contact_embed_path,
