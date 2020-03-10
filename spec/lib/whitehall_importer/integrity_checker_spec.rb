@@ -140,6 +140,12 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                     },
                                     details: {
                                       first_public_at: first_published_at,
+                                      change_history: [
+                                        {
+                                          note: "First published.",
+                                          public_timestamp: Date.yesterday.noon,
+                                        },
+],
                                     }),
       )
 
@@ -186,6 +192,12 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                       },
                                       details: {
                                         first_public_at: first_published_at,
+                                        change_history: [
+                                          {
+                                            note: "First published.",
+                                            public_timestamp: first_published_at,
+                                          },
+],
                                       }),
         )
 
@@ -206,6 +218,12 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                       },
                                       details: {
                                         first_public_at: first_published_at,
+                                        change_history: [
+                                          {
+                                            note: "First published.",
+                                            public_timestamp: first_published_at,
+                                          },
+],
                                       }),
         )
 
@@ -262,6 +280,12 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         state_history: { "1" => "published" },
         details: {
           body: "body text",
+          change_history: [
+            {
+              note: "",
+              public_timestamp: Time.zone.now,
+            },
+          ],
           image: {
             alt_text: "alt text",
             caption: "caption",
@@ -349,6 +373,10 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
     it "returns a problem when the body text doesn't match" do
       expect(integrity_check.problems).to include("body text doesn't match")
+    end
+
+    it "returns a problem when the change history doesn't match" do
+      expect(integrity_check.problems).to include("change history doesn't match")
     end
 
     it "returns a problem when the image alt_text doesn't match" do
@@ -565,6 +593,12 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       schema_name: edition.document_type.publishing_metadata.schema_name,
       details: {
         body: "",
+        change_history: [
+          {
+            note: "First published.",
+            public_timestamp: Time.zone.rfc3339("2020-03-11T12:00:00.000+00:00"),
+          },
+        ],
       },
     }.deep_merge!(override_hash)
   end

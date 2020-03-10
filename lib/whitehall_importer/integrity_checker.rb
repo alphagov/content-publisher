@@ -56,6 +56,12 @@ module WhitehallImporter
         publishing_api_content.dig("details", "body"),
       ).sufficiently_similar?
 
+      problems << "change history doesn't match" unless ChangeHistoryCheck.new(
+        proposed_payload.dig("details", "change_history"),
+        publishing_api_content.dig("details", "change_history"),
+        live_edition: edition.live?,
+      ).match?
+
       problems
     end
 
