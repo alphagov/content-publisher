@@ -5,7 +5,7 @@ en:
       upload:
         title: Upload file attachment
         description_govspeak: |
-          Publications have a summary page that must link to a file attachment or a document hosted on an external website.
+          Publications have a summary page that must link to a file attachment.
       featured_attachments:
         title: Attachments
         description_govspeak: |
