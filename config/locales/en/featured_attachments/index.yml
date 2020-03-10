@@ -1,0 +1,13 @@
+en:
+  featured_attachments:
+    index:
+      title: "Attachments for ‘%{title}’"
+      upload:
+        title: Upload file attachment
+        description_govspeak: |
+          Publications have a summary page that must link to a file attachment or a document hosted on an external website.
+      featured_attachments:
+        title: Attachments
+        description_govspeak: |
+          Attachments will be listed on the document in this order.
+      no_attachments: No attachments added to this document.

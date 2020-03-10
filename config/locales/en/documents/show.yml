@@ -1,20 +1,6 @@
 en:
   documents:
     show:
-      heading: "Document summary"
-      withdrawn:
-        title: "This %{document_type} was withdrawn on %{withdrawn_date}"
-      historical:
-        title: "This %{document_type} is in history mode"
-        description: "It was created under the %{government_name}"
-      topics:
-        title: Topics
-        no_topics: No topics.
-        api_down: This content isn’t available right now. We’re having trouble getting the data we need to show you this content.
-      tags:
-        title: Tags
-        api_down: This content isn’t available right now. We’re having trouble getting the data we need to show you this content.
-        none: None
       contents:
         title: Content
         items:
@@ -23,12 +9,6 @@ en:
         update_type:
           minor: There’s no change to the published information. For example, spelling corrections.
           major: There’s a change to the published information.
-      lead_image:
-        title: Lead image
-        no_lead_image: No image selected. The default image for your department will be used.
-        alt_text: Alt text
-        caption: Caption
-        credit: Credit
       content_settings:
         title: Content settings
         backdate:
@@ -44,17 +24,6 @@ en:
           title: Gets history mode
           true_label: "Yes"
           false_label: "No"
-      metadata:
-        status: Status
-        updated_at: Last updated
-        created_at: Created
-        created_by: Document created by
-        last_edited_by: Last edited by
-        withdrawn_by: Withdrawn by
-      scheduled_notice:
-        title: Scheduled to publish at %{time} on %{date}
-      proposed_scheduling_notice:
-        title: Proposed to publish at %{time} on %{date}
       failed_to_publish:
         title: There is a problem
         description_govspeak: |
@@ -62,9 +31,8 @@ en:
           It was scheduled to publish at %{time} on %{date}
 
           You can publish it now, schedule it to publish later, or edit it.
-      submitted_for_review:
-        title: Content has been marked as ready for 2i review
-        label: Send the Content Publisher link to another publisher for them to review. When content is ready you or they can publish it.
+      featured_attachments:
+        title: Attachments
       flashes:
         pre_preview_issues:
           warning: To preview this document you need to
@@ -100,3 +68,37 @@ en:
         unschedule_error:
           title: Something has gone wrong
           description_govspeak: Something went wrong when stopping the scheduling of this document. Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
+      heading: "Document summary"
+      historical:
+        title: "This %{document_type} is in history mode"
+        description: "It was created under the %{government_name}"
+      lead_image:
+        title: Lead image
+        no_lead_image: No image selected. The default image for your department will be used.
+        alt_text: Alt text
+        caption: Caption
+        credit: Credit
+      metadata:
+        status: Status
+        updated_at: Last updated
+        created_at: Created
+        created_by: Document created by
+        last_edited_by: Last edited by
+        withdrawn_by: Withdrawn by
+      proposed_scheduling_notice:
+        title: Proposed to publish at %{time} on %{date}
+      scheduled_notice:
+        title: Scheduled to publish at %{time} on %{date}
+      submitted_for_review:
+        title: Content has been marked as ready for 2i review
+        label: Send the Content Publisher link to another publisher for them to review. When content is ready you or they can publish it.
+      tags:
+        title: Tags
+        api_down: This content isn’t available right now. We’re having trouble getting the data we need to show you this content.
+        none: None
+      topics:
+        title: Topics
+        no_topics: No topics.
+        api_down: This content isn’t available right now. We’re having trouble getting the data we need to show you this content.
+      withdrawn:
+        title: "This %{document_type} was withdrawn on %{withdrawn_date}"

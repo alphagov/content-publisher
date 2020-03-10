@@ -1,7 +1,8 @@
 RSpec.describe "File Attachments" do
   it_behaves_like "requests that assert edition state",
                   "accessing file attachments for a non editable edition",
-                  routes: { file_attachments_path: %i[get post] } do
+                  routes: { file_attachments_path: %i[get post],
+                            new_file_attachment_path: %i[get] } do
     let(:edition) { create(:edition, :published) }
   end
 
@@ -23,6 +24,14 @@ RSpec.describe "File Attachments" do
     let(:edition) { create(:edition) }
     let(:file_attachment_revision) { create(:file_attachment_revision) }
     let(:route_params) { [edition.document, file_attachment_revision] }
+  end
+
+  describe "GET /documents/:document/file-attachments/new" do
+    it "returns successfully" do
+      edition = create(:edition)
+      get new_file_attachment_path(edition.document)
+      expect(response).to have_http_status(:ok)
+    end
   end
 
   describe "GET /documents/:document/file-attachments/:file_attachment_id" do
@@ -99,6 +108,18 @@ RSpec.describe "File Attachments" do
       file_attachment = FileAttachment.last
       expect(response)
         .to redirect_to(file_attachment_path(edition.document, file_attachment))
+    end
+
+    it "redirects to attachments index view when featured attachment is created successfully" do
+      stub_asset_manager_receives_an_asset(filename: "text-file-74bytes.txt")
+
+      file = fixture_file_upload("files/text-file-74bytes.txt")
+      post file_attachments_path(edition.document, wizard: "new"),
+           params: { file: file, title: "File" }
+
+      file_attachment = FileAttachment.last
+      expect(response)
+        .to redirect_to(featured_attachments_path(edition.document, file_attachment))
     end
 
     it "returns issues and an unprocessable response when there are requirement issues" do
