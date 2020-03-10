@@ -14,6 +14,6 @@ module FileAttachmentHelper
       file_size: attachment_revision.byte_size,
       number_of_pages: attachment_revision.number_of_pages,
       url: preview_file_attachment_path(document, attachment_revision.file_attachment),
-    }
+    }.compact
   end
 end
