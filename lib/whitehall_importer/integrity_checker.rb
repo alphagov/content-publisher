@@ -69,6 +69,14 @@ module WhitehallImporter
                                         first_public_at,
                                         proposed_first_published_at)
       end
+      proposed_public_updated_at = proposed_payload["public_updated_at"]
+      public_updated_at = publishing_api_content["public_updated_at"]
+
+      if edition.live? && !time_matches?(proposed_public_updated_at, public_updated_at)
+        problems << problem_description("public_updated_at doesn't match",
+                                        public_updated_at,
+                                        proposed_public_updated_at)
+      end
 
       problems
     end

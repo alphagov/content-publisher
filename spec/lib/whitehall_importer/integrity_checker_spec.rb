@@ -16,9 +16,12 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
   end
 
   describe "#valid?" do
+    let(:state) { :published }
     let(:edition) do
-      build(:edition,
+      build(:edition, state,
+            state: state,
             document_type: document_type,
+            published_at: "2020-03-11 12:00 UTC",
             document: create(:document, first_published_at: "2020-03-11 12:00 UTC"),
             tags: {
               primary_publishing_organisation: [SecureRandom.uuid],
@@ -27,6 +30,8 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
     let(:publishing_api_item) do
       default_publishing_api_item(edition,
+                                  public_updated_at: "2020-03-11T12:00:00Z",
+                                  state_history: { "1" => "published" },
                                   details: {
                                     body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
                                     first_public_at: "2020-03-11T12:00:00.000+00:00",
@@ -73,6 +78,13 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       expect(integrity_check.valid?).to be true
     end
 
+    it "returns true if public_updated_at times match" do
+      publishing_api_item[:public_updated_at] = "2020-03-11T12:00:00Z"
+      stub_publishing_api_has_item(publishing_api_item)
+
+      expect(integrity_check.valid?).to be true
+    end
+
     it "compares against organisations in linkset links if there no edition links" do
       publishing_api_item[:links] = {}
       stub_publishing_api_has_item(publishing_api_item)
@@ -86,6 +98,17 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       )
 
       expect(integrity_check.valid?).to be true
+    end
+
+    context "when checking an edition that isn't live" do
+      let(:state) { :scheduled }
+
+      it "returns true even if the public_updated_at times don't match" do
+        publishing_api_item[:public_updated_at] = "2019-02-11T09:30:00Z"
+        stub_publishing_api_has_item(publishing_api_item)
+
+        expect(integrity_check.valid?).to be true
+      end
     end
 
     context "with an attachment not yet on asset mananger" do
@@ -119,7 +142,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
   describe "#problems" do
     let(:edition) do
-      build(:edition,
+      build(:edition, :published,
             document_type: document_type,
             image_revisions: [build(:image_revision)],
             document: create(:document, first_published_at: "2020-03-11 18:32:38 UTC"),
@@ -133,6 +156,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         description: "description",
         document_type: "news_story",
         schema_name: "news_article",
+        state_history: { "1" => "published" },
         details: {
           body: "body text",
           image: {
@@ -165,6 +189,17 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         problem_message("our first_published_at doesn't match first_public_at",
                         publishing_api_item[:details][:first_public_at],
                         edition.document.first_published_at.as_json),
+      )
+    end
+
+    it "returns a problem when public_updated_at times don't match" do
+      publishing_api_item[:public_updated_at] = "2020-03-11T12:00:00Z"
+      stub_publishing_api_has_item(publishing_api_item)
+
+      expect(integrity_check.problems).to include(
+        problem_message("public_updated_at doesn't match",
+                        publishing_api_item[:public_updated_at],
+                        edition.public_first_published_at.as_json),
       )
     end
 
