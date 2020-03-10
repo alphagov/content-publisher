@@ -16,8 +16,8 @@ RSpec.describe "Resync tasks" do
     it "resyncs all documents" do
       create_list(:document, 2)
 
-      expect(ResyncDocumentService)
-        .to receive(:call)
+      expect(ResyncDocumentJob)
+        .to receive(:perform_later)
         .twice
 
       Rake::Task["resync:all"].invoke
