@@ -1,19 +1,32 @@
 RSpec.describe WhitehallImporter::ChangeHistory do
   describe "#for" do
     let(:first_edition) { build(:whitehall_export_edition, :superseded) }
+    let(:second_edition) do
+      build(:whitehall_export_edition, :superseded,
+            change_note: "Some change",
+            published_at: Time.zone.now.beginning_of_week.rfc3339)
+    end
+    let(:third_edition) do
+      build(:whitehall_export_edition, :published,
+            change_note: "Other change",
+            published_at: Time.zone.now.beginning_of_day.rfc3339)
+    end
 
-    it "returns the change history for the editions preceding the given edition number" do
-      second_edition = build(:whitehall_export_edition, :superseded,
-                             change_note: "Some change",
-                             published_at: Time.zone.now.beginning_of_week.rfc3339)
-      third_edition = build(:whitehall_export_edition, :published,
-                            change_note: "Other change",
-                            published_at: Time.zone.now.beginning_of_day.rfc3339)
+    it "returns all the change history for a number greater than the number of editions" do
       whitehall_export = build(:whitehall_export_document,
                                editions: [first_edition, second_edition, third_edition])
 
       expect(described_class.new(whitehall_export).for(4)).to match([
         { "id" => anything, "note" => "Other change", "public_timestamp" => Time.zone.now.beginning_of_day.rfc3339 },
+        { "id" => anything, "note" => "Some change", "public_timestamp" => Time.zone.now.beginning_of_week.rfc3339 },
+      ])
+    end
+
+    it "returns the change history for the editions preceding the given edition number" do
+      whitehall_export = build(:whitehall_export_document,
+                               editions: [first_edition, second_edition, third_edition])
+
+      expect(described_class.new(whitehall_export).for(3)).to match([
         { "id" => anything, "note" => "Some change", "public_timestamp" => Time.zone.now.beginning_of_week.rfc3339 },
       ])
     end
