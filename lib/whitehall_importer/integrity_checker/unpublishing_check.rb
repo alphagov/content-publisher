@@ -8,16 +8,13 @@ module WhitehallImporter
     end
 
     def expected_type?
-      case unpublishing["type"]
-      when "gone"
-        edition.removed? && !edition.status.details.redirect?
-      when "redirect"
-        edition.removed? && edition.status.details.redirect?
-      when "withdrawal"
-        edition.withdrawn?
-      else
-        false
-      end
+      unpublishing["type"] == expected_type
+    end
+
+    def expected_type
+      return "withdrawal" if edition.withdrawn?
+
+      edition.status.details.redirect? ? "redirect" : "gone"
     end
 
     def expected_unpublishing_time?

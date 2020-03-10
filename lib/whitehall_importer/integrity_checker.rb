@@ -22,7 +22,8 @@ module WhitehallImporter
     end
 
     def problems
-      content_problems + image_problems + organisation_problems + time_problems
+      content_problems + image_problems + organisation_problems +
+        time_problems + unpublishing_problems
     end
 
     def proposed_payload
@@ -119,6 +120,24 @@ module WhitehallImporter
           "organisations don't match",
           publishing_api_link("organisations"),
           proposed_payload.dig("links", "organisations"),
+        )
+      end
+
+      problems
+    end
+
+    def unpublishing_problems
+      problems = []
+      return problems unless edition.withdrawn? || edition.removed?
+
+      check = UnpublishingCheck.new(edition,
+                                    publishing_api_content["unpublishing"])
+
+      unless check.expected_type?
+        problems << problem_description(
+          "unpublishing type not expected",
+          check.expected_type,
+          publishing_api_content.dig("unpublishing", "type"),
         )
       end
 

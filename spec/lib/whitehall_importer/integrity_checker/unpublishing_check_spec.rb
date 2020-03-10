@@ -66,6 +66,26 @@ RSpec.describe WhitehallImporter::IntegrityChecker::UnpublishingCheck do
     end
   end
 
+  describe "#expected_type" do
+    it "returns 'withdrawal' when edition is withdrawn" do
+      unpublishing_check = described_class.new(withdrawn_edition,
+                                               publishing_api_withdrawal)
+      expect(unpublishing_check.expected_type).to eq "withdrawal"
+    end
+
+    it "returns 'gone' when edition is removed" do
+      unpublishing_check = described_class.new(removed_edition,
+                                               publishing_api_gone)
+      expect(unpublishing_check.expected_type).to eq "gone"
+    end
+
+    it "returns 'redirect' when edition is removed and redirected" do
+      unpublishing_check = described_class.new(removed_edition_with_redirect,
+                                               publishing_api_redirect)
+      expect(unpublishing_check.expected_type).to eq "redirect"
+    end
+  end
+
   describe "#expected_unpublishing_time?" do
     context "when imported edition is withdrawn" do
       it "returns true if withdrawn_at matches unpublished_at in Publishing API" do

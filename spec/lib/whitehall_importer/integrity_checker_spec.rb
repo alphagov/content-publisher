@@ -111,6 +111,64 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       end
     end
 
+    it "returns true if withdrawn data matches the Publishing API" do
+      withdrawal = build(:withdrawal)
+      withdrawn_edition = build(:edition,
+                                :withdrawn,
+                                document_type: document_type,
+                                first_published_at: Date.yesterday.noon,
+                                withdrawal: withdrawal)
+
+      first_published_at = withdrawn_edition.document.first_published_at
+      stub_publishing_api_has_item(
+        default_publishing_api_item(withdrawn_edition,
+                                    publication_state: "unpublished",
+                                    public_updated_at: first_published_at,
+                                    unpublishing: {
+                                      type: "withdrawal",
+                                    },
+                                    details: {
+                                      first_public_at: first_published_at,
+                                    }),
+      )
+
+      stub_publishing_api_has_links(
+        content_id: withdrawn_edition.content_id, links: {},
+      )
+
+      integrity_check = described_class.new(withdrawn_edition)
+      expect(integrity_check.valid?).to be true
+    end
+
+    it "returns true if removed data matches the Publishing API" do
+      removal = build(:removal)
+      removed_edition = build(:edition,
+                              :removed,
+                              document_type: document_type,
+                              first_published_at: Date.yesterday.noon,
+                              removal: removal)
+
+      first_published_at = removed_edition.document.first_published_at
+      stub_publishing_api_has_item(
+        default_publishing_api_item(removed_edition,
+                                    publication_state: "unpublished",
+                                    public_updated_at: first_published_at,
+                                    unpublishing: {
+                                      type: "gone",
+                                    },
+                                    details: {
+                                      first_public_at: first_published_at,
+                                    }),
+      )
+
+      stub_publishing_api_has_links(
+        content_id: removed_edition.content_id, links: {},
+      )
+
+      integrity_check = described_class.new(removed_edition)
+      expect(integrity_check.valid?).to be true
+    end
+
     context "with an attachment not yet on asset mananger" do
       let(:file_attachment_revision) { create(:file_attachment_revision) }
       let(:edition) do
@@ -174,6 +232,12 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
     def problem_message(message, expected, actual)
       "#{message}, expected: #{expected.inspect}, actual: #{actual.inspect}"
+    end
+
+    def unpublishing_problem_message(publishing_api_type, expected)
+      "unpublishing type not expected, " +
+        "expected: #{publishing_api_type.inspect}, " +
+        "actual: #{expected.inspect}"
     end
 
     before do
@@ -276,6 +340,78 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       message = "organisations don't match, expected: #{expected}, actual: #{actual}"
 
       expect(integrity_check.problems).to include(message)
+    end
+
+    context "when the edition is withdrawn" do
+      let(:edition) { build(:edition, :withdrawn, withdrawal: build(:withdrawal)) }
+      let(:publishing_api_item) do
+        default_publishing_api_item(edition,
+                                    publication_state: "unpublished",
+                                    unpublishing: { type: "gone" })
+      end
+
+      before do
+        stub_publishing_api_has_item(publishing_api_item)
+      end
+
+      it "returns a problem when the unpublishing type isn't correct" do
+        integrity_check = described_class.new(edition)
+        expect(integrity_check.problems).to include(
+          unpublishing_problem_message("withdrawal",
+                                       publishing_api_item[:unpublishing][:type]),
+        )
+      end
+    end
+
+    context "when the edition is removed" do
+      let(:edition) { build(:edition, :removed, removal: build(:removal)) }
+      let(:publishing_api_item) do
+        default_publishing_api_item(edition,
+                                    publication_state: "unpublished",
+                                    unpublishing: {
+                                      type: "withdrawn",
+                                    })
+      end
+
+      before do
+        stub_publishing_api_has_item(publishing_api_item)
+      end
+
+      it "returns a problem when the unpublishing type isn't correct" do
+        integrity_check = described_class.new(edition)
+
+        expect(integrity_check.problems).to include(
+          unpublishing_problem_message("gone",
+                                       publishing_api_item[:unpublishing][:type]),
+        )
+      end
+    end
+
+    context "when the edition is removed and redirected" do
+      let(:edition) do
+        build(:edition, :removed, removal: build(:removal, redirect: true))
+      end
+
+      let(:publishing_api_item) do
+        default_publishing_api_item(edition,
+                                    publication_state: "unpublished",
+                                    unpublishing: {
+                                      type: "withdrawn",
+                                    })
+      end
+
+      before do
+        stub_publishing_api_has_item(publishing_api_item)
+      end
+
+      it "returns a problem when the unpublishing type isn't correct" do
+        integrity_check = described_class.new(edition)
+
+        expect(integrity_check.problems).to include(
+          unpublishing_problem_message("redirect",
+                                       publishing_api_item[:unpublishing][:type]),
+        )
+      end
     end
   end
 
