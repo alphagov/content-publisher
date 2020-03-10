@@ -22,7 +22,7 @@ module WhitehallImporter
     end
 
     def problems
-      content_problems + image_problems + organisation_problems
+      content_problems + image_problems + organisation_problems + time_problems
     end
 
     def proposed_payload
@@ -56,6 +56,25 @@ module WhitehallImporter
       ).sufficiently_similar?
 
       problems
+    end
+
+    def time_problems
+      problems = []
+
+      proposed_first_published_at = proposed_payload["first_published_at"]
+      first_public_at = publishing_api_content["details"]["first_public_at"]
+
+      unless time_matches?(proposed_first_published_at, first_public_at)
+        problems << problem_description("our first_published_at doesn't match first_public_at",
+                                        first_public_at,
+                                        proposed_first_published_at)
+      end
+
+      problems
+    end
+
+    def time_matches?(proposed_time, publishing_api_time)
+      self.class.time_matches?(proposed_time, publishing_api_time)
     end
 
     def image_problems
