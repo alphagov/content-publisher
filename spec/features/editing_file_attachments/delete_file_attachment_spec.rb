@@ -12,6 +12,7 @@ RSpec.feature "Delete a file attachment", js: true do
     given_there_is_an_edition_with_featured_attachments
     when_i_go_to_change_an_attachment
     and_i_delete_the_attachment
+    and_i_confirm_the_deletion
     then_i_see_the_attachment_is_gone
     and_i_see_the_timeline_entry
   end
@@ -47,6 +48,10 @@ RSpec.feature "Delete a file attachment", js: true do
     stub_publishing_api_put_content(@edition.content_id, {})
     expect(page).to have_selector(".gem-c-attachment__metadata")
     click_on "Delete attachment"
+  end
+
+  def and_i_confirm_the_deletion
+    click_on "Yes, delete attachment"
   end
 
   def then_i_am_told_the_attachment_is_gone
