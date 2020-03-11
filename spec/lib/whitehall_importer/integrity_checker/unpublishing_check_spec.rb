@@ -115,6 +115,16 @@ RSpec.describe WhitehallImporter::IntegrityChecker::UnpublishingCheck do
     end
   end
 
+  describe "#expected_unpublishing_time" do
+    it "returns withdrawn_at for withdrawn editions" do
+      unpublishing_check = described_class.new(withdrawn_edition,
+                                               publishing_api_withdrawal)
+
+      expect(unpublishing_check.expected_unpublishing_time)
+        .to eq(withdrawal.withdrawn_at)
+    end
+  end
+
   describe "#expected_alternative_path?" do
     context "when imported edition is withdrawn" do
       it "returns true and does not check for an alternative path" do

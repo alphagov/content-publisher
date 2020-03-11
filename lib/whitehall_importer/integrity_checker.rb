@@ -141,6 +141,14 @@ module WhitehallImporter
         )
       end
 
+      unless check.expected_unpublishing_time?
+        problems << problem_description(
+          "unpublishing time doesn't match",
+          publishing_api_content.dig("unpublishing", "unpublished_at"),
+          check.expected_unpublishing_time,
+        )
+      end
+
       problems
     end
 

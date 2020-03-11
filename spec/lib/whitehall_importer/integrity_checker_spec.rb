@@ -126,6 +126,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                     public_updated_at: first_published_at,
                                     unpublishing: {
                                       type: "withdrawal",
+                                      unpublished_at: withdrawal.withdrawn_at,
                                     },
                                     details: {
                                       first_public_at: first_published_at,
@@ -140,33 +141,58 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       expect(integrity_check.valid?).to be true
     end
 
-    it "returns true if removed data matches the Publishing API" do
-      removal = build(:removal)
-      removed_edition = build(:edition,
-                              :removed,
-                              document_type: document_type,
-                              first_published_at: Date.yesterday.noon,
-                              removal: removal)
+    context "when removed content" do
+      let(:removal) { build(:removal) }
+      let(:removed_edition) do
+        build(:edition,
+              :removed,
+              document_type: document_type,
+              first_published_at: Date.yesterday.noon,
+              removal: removal)
+      end
 
-      first_published_at = removed_edition.document.first_published_at
-      stub_publishing_api_has_item(
-        default_publishing_api_item(removed_edition,
-                                    publication_state: "unpublished",
-                                    public_updated_at: first_published_at,
-                                    unpublishing: {
-                                      type: "gone",
-                                    },
-                                    details: {
-                                      first_public_at: first_published_at,
-                                    }),
-      )
+      let(:first_published_at) { removed_edition.document.first_published_at }
 
-      stub_publishing_api_has_links(
-        content_id: removed_edition.content_id, links: {},
-      )
+      before do
+        stub_publishing_api_has_links(
+          content_id: removed_edition.content_id, links: {},
+        )
+      end
 
-      integrity_check = described_class.new(removed_edition)
-      expect(integrity_check.valid?).to be true
+      it "returns true if removed data matches the Publishing API" do
+        stub_publishing_api_has_item(
+          default_publishing_api_item(removed_edition,
+                                      publication_state: "unpublished",
+                                      public_updated_at: first_published_at,
+                                      unpublishing: {
+                                        type: "gone",
+                                      },
+                                      details: {
+                                        first_public_at: first_published_at,
+                                      }),
+        )
+
+        integrity_check = described_class.new(removed_edition)
+        expect(integrity_check.valid?).to be true
+      end
+
+      it "returns true if there is an unpublished time mismatch" do
+        stub_publishing_api_has_item(
+          default_publishing_api_item(removed_edition,
+                                      publication_state: "unpublished",
+                                      public_updated_at: first_published_at,
+                                      unpublishing: {
+                                        type: "gone",
+                                        unpublished_at: Date.yesterday.end_of_day,
+                                      },
+                                      details: {
+                                        first_public_at: first_published_at,
+                                      }),
+        )
+
+        integrity_check = described_class.new(removed_edition)
+        expect(integrity_check.valid?).to be true
+      end
     end
 
     context "with an attachment not yet on asset mananger" do
@@ -343,11 +369,25 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     context "when the edition is withdrawn" do
-      let(:edition) { build(:edition, :withdrawn, withdrawal: build(:withdrawal)) }
+      let(:edition) do
+        build(:edition,
+              :withdrawn,
+              first_published_at: Date.yesterday.noon,
+              withdrawal: build(:withdrawal))
+      end
+
+      let(:integrity_check) { described_class.new(edition) }
       let(:publishing_api_item) do
         default_publishing_api_item(edition,
                                     publication_state: "unpublished",
-                                    unpublishing: { type: "gone" })
+                                    public_updated_at: Date.yesterday.noon,
+                                    unpublishing: {
+                                      type: "gone",
+                                      unpublished_at: Date.yesterday.end_of_day.rfc3339,
+                                    },
+                                    details: {
+                                      first_public_at: Date.yesterday.noon,
+                                    })
       end
 
       before do
@@ -355,10 +395,17 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       end
 
       it "returns a problem when the unpublishing type isn't correct" do
-        integrity_check = described_class.new(edition)
         expect(integrity_check.problems).to include(
           unpublishing_problem_message("withdrawal",
                                        publishing_api_item[:unpublishing][:type]),
+        )
+      end
+
+      it "returns a problem when the unpublishing time isn't correct" do
+        expect(integrity_check.problems).to include(
+          problem_message("unpublishing time doesn't match",
+                          publishing_api_item[:unpublishing][:unpublished_at],
+                          edition.status.details.withdrawn_at),
         )
       end
     end

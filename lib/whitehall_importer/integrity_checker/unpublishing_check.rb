@@ -23,6 +23,10 @@ module WhitehallImporter
       unpublishing_time_matches?
     end
 
+    def expected_unpublishing_time
+      edition.status.details&.withdrawn_at
+    end
+
     def expected_alternative_path?
       return true unless edition.removed?
 
@@ -37,10 +41,8 @@ module WhitehallImporter
   private
 
     def unpublishing_time_matches?
-      IntegrityChecker.time_matches?(
-        unpublishing["unpublished_at"],
-        edition.status.details.withdrawn_at&.rfc3339,
-      )
+      IntegrityChecker.time_matches?(unpublishing["unpublished_at"],
+                                     expected_unpublishing_time&.rfc3339)
     end
 
     def edition_explanation_html
