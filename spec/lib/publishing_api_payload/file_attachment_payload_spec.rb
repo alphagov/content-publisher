@@ -1,7 +1,7 @@
 RSpec.describe PublishingApiPayload::FileAttachmentPayload do
   describe "#payload" do
     it "generates a file attachment payload for the publishing_api" do
-      attachment = build(:file_attachment_revision)
+      attachment = build(:file_attachment_revision, number_of_pages: 1)
       edition = create(:edition, file_attachment_revisions: [attachment])
 
       payload = described_class.new(attachment, edition.document).payload
