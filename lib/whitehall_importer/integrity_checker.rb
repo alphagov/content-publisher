@@ -141,6 +141,14 @@ module WhitehallImporter
         )
       end
 
+      unless check.expected_alternative_path?
+        problems << problem_description(
+          "unpublishing alternative path doesn't match",
+          publishing_api_content.dig("unpublishing", "alternative_path"),
+          check.expected_alternative_path,
+        )
+      end
+
       unless check.expected_unpublishing_time?
         problems << problem_description(
           "unpublishing time doesn't match",

@@ -33,6 +33,10 @@ module WhitehallImporter
       unpublishing["alternative_path"] == edition.status.details.alternative_url
     end
 
+    def expected_alternative_path
+      edition.status.details&.alternative_url
+    end
+
     def expected_explanation?
       Sanitize.clean(unpublishing["explanation"]).squish ==
         Sanitize.clean(edition_explanation_html).squish

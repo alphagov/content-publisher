@@ -151,6 +151,15 @@ RSpec.describe WhitehallImporter::IntegrityChecker::UnpublishingCheck do
     end
   end
 
+  describe "#expected_alternative_path" do
+    it "returns the edition's alternative_url" do
+      unpublishing_check = described_class.new(removed_edition_with_redirect,
+                                               publishing_api_redirect)
+      expect(unpublishing_check.expected_alternative_path)
+        .to eq(removal_with_redirect.alternative_url)
+    end
+  end
+
   describe "#expected_explanation?" do
     context "when imported edition is withdrawn" do
       it "returns true if public_explanation matches explanation in Publishing API" do

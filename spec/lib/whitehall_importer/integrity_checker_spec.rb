@@ -152,7 +152,12 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     context "when removed content" do
-      let(:removal) { build(:removal, explanatory_note: markdown_explanation) }
+      let(:removal) do
+        build(:removal,
+              explanatory_note: markdown_explanation,
+              alternative_url: "/somewhere")
+      end
+
       let(:removed_edition) do
         build(:edition,
               :removed,
@@ -177,6 +182,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                       unpublishing: {
                                         type: "gone",
                                         explanation: html_explanation,
+                                        alternative_path: "/somewhere",
                                       },
                                       details: {
                                         first_public_at: first_published_at,
@@ -196,6 +202,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                         type: "gone",
                                         unpublished_at: Date.yesterday.end_of_day,
                                         explanation: html_explanation,
+                                        alternative_path: "/somewhere",
                                       },
                                       details: {
                                         first_public_at: first_published_at,
@@ -431,7 +438,8 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     context "when the edition is removed" do
-      let(:edition) { build(:edition, :removed, removal: build(:removal)) }
+      let(:removal) { build(:removal) }
+      let(:edition) { build(:edition, :removed, removal: removal) }
       let(:unpublishing_explanation) { "This was removed" }
       let(:integrity_check) { described_class.new(edition) }
       let(:publishing_api_item) do
@@ -462,15 +470,14 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     context "when the edition is removed and redirected" do
-      let(:edition) do
-        build(:edition, :removed, removal: build(:removal, redirect: true))
-      end
-
+      let(:removal) { build(:removal, redirect: true, alternative_url: "/somewhere") }
+      let(:edition) { build(:edition, :removed, removal: removal) }
       let(:publishing_api_item) do
         default_publishing_api_item(edition,
                                     publication_state: "unpublished",
                                     unpublishing: {
                                       type: "withdrawn",
+                                      alternative_path: "/somewhere-else",
                                     })
       end
 
@@ -484,6 +491,14 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         expect(integrity_check.problems).to include(
           unpublishing_problem_message("redirect",
                                        publishing_api_item[:unpublishing][:type]),
+        )
+      end
+
+      it "returns a problem when the alternative path doesn't match" do
+        expect(integrity_check.problems).to include(
+          problem_message("unpublishing alternative path doesn't match",
+                          publishing_api_item[:unpublishing][:alternative_path],
+                          edition.status.details.alternative_url),
         )
       end
     end
