@@ -149,6 +149,10 @@ module WhitehallImporter
         )
       end
 
+      unless check.expected_explanation?
+        problems << "unpublishing explanation doesn't match"
+      end
+
       problems
     end
 

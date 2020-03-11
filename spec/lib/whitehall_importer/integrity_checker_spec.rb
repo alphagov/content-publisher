@@ -43,6 +43,15 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
     let(:integrity_check) { described_class.new(edition) }
 
+    let(:explanation) { "This has been moved" }
+    let(:html_explanation) do
+      "#{explanation} <a href=\"https://www.gov.uk/elsewhere\">elsewhere</a>"
+    end
+
+    let(:markdown_explanation) do
+      "#{explanation} [elsewhere](https://www.gov.uk/elsewhere)"
+    end
+
     it "returns true if there aren't any problems for edition without image or attachment" do
       stub_publishing_api_has_item(publishing_api_item)
 
@@ -112,7 +121,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     it "returns true if withdrawn data matches the Publishing API" do
-      withdrawal = build(:withdrawal)
+      withdrawal = build(:withdrawal, public_explanation: markdown_explanation)
       withdrawn_edition = build(:edition,
                                 :withdrawn,
                                 document_type: document_type,
@@ -127,6 +136,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                     unpublishing: {
                                       type: "withdrawal",
                                       unpublished_at: withdrawal.withdrawn_at,
+                                      explanation: html_explanation,
                                     },
                                     details: {
                                       first_public_at: first_published_at,
@@ -142,7 +152,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     context "when removed content" do
-      let(:removal) { build(:removal) }
+      let(:removal) { build(:removal, explanatory_note: markdown_explanation) }
       let(:removed_edition) do
         build(:edition,
               :removed,
@@ -166,6 +176,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                       public_updated_at: first_published_at,
                                       unpublishing: {
                                         type: "gone",
+                                        explanation: html_explanation,
                                       },
                                       details: {
                                         first_public_at: first_published_at,
@@ -184,6 +195,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                       unpublishing: {
                                         type: "gone",
                                         unpublished_at: Date.yesterday.end_of_day,
+                                        explanation: html_explanation,
                                       },
                                       details: {
                                         first_public_at: first_published_at,
@@ -377,6 +389,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       end
 
       let(:integrity_check) { described_class.new(edition) }
+      let(:unpublishing_explanation) { "This has been moved elsewhere" }
       let(:publishing_api_item) do
         default_publishing_api_item(edition,
                                     publication_state: "unpublished",
@@ -384,6 +397,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                     unpublishing: {
                                       type: "gone",
                                       unpublished_at: Date.yesterday.end_of_day.rfc3339,
+                                      explanation: unpublishing_explanation,
                                     },
                                     details: {
                                       first_public_at: Date.yesterday.noon,
@@ -408,15 +422,24 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                           edition.status.details.withdrawn_at),
         )
       end
+
+      it "returns a problem when the unpublishing explanation isn't correct" do
+        expect(integrity_check.problems).to include(
+          "unpublishing explanation doesn't match",
+        )
+      end
     end
 
     context "when the edition is removed" do
       let(:edition) { build(:edition, :removed, removal: build(:removal)) }
+      let(:unpublishing_explanation) { "This was removed" }
+      let(:integrity_check) { described_class.new(edition) }
       let(:publishing_api_item) do
         default_publishing_api_item(edition,
                                     publication_state: "unpublished",
                                     unpublishing: {
                                       type: "withdrawn",
+                                      explanation: unpublishing_explanation,
                                     })
       end
 
@@ -425,11 +448,15 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       end
 
       it "returns a problem when the unpublishing type isn't correct" do
-        integrity_check = described_class.new(edition)
-
         expect(integrity_check.problems).to include(
           unpublishing_problem_message("gone",
                                        publishing_api_item[:unpublishing][:type]),
+        )
+      end
+
+      it "returns a problem when the unpublishing explanation isn't correct" do
+        expect(integrity_check.problems).to include(
+          "unpublishing explanation doesn't match",
         )
       end
     end
