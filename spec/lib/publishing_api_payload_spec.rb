@@ -156,15 +156,6 @@ RSpec.describe PublishingApiPayload do
       expect(payload[:links][:government]).to eq [government.content_id]
     end
 
-    it "includes first_published_at if the edition has a backdated_to value" do
-      date = Time.zone.now.yesterday.rfc3339
-      revision = build(:revision, backdated_to: date)
-      edition = build(:edition, revision: revision)
-      payload = described_class.new(edition).payload
-
-      expect(payload).to match a_hash_including(first_published_at: date)
-    end
-
     it "include public_updated_at if the edition has backdated_to and is a first edition" do
       date = Time.zone.now.yesterday.rfc3339
       revision = build(:revision, backdated_to: date)

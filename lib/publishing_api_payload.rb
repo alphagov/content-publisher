@@ -30,7 +30,6 @@ class PublishingApiPayload
     fields.each { |f| payload.deep_merge!(f.payload(edition)) }
 
     if edition.backdated_to.present?
-      payload[:first_published_at] = edition.backdated_to.rfc3339
       payload[:public_updated_at] = edition.backdated_to.rfc3339 if edition.first?
     end
 
