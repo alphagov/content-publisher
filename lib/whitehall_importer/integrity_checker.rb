@@ -15,7 +15,9 @@ module WhitehallImporter
     end
 
     def proposed_payload
-      @proposed_payload ||= PublishingApiPayload.new(edition, republish: edition.live?).payload
+      @proposed_payload ||= PublishingApiPayload.new(edition, republish: edition.live?)
+                                                .payload
+                                                .as_json
     end
 
   private
@@ -23,7 +25,7 @@ module WhitehallImporter
     def content_problems
       problems = []
 
-      %i(base_path
+      %w(base_path
          title
          description
          document_type
@@ -38,18 +40,18 @@ module WhitehallImporter
       end
 
       problems << "body text doesn't match" unless BodyTextCheck.new(
-        proposed_payload.dig(:details, :body),
-        publishing_api_content.dig(:details, :body),
+        proposed_payload.dig("details", "body"),
+        publishing_api_content.dig("details", "body"),
       ).sufficiently_similar?
 
       problems
     end
 
     def image_problems
-      proposed_image_payload = proposed_payload.dig(:details, :image) || {}
-      publishing_api_image = publishing_api_content.dig(:details, :image) || {}
+      proposed_image_payload = proposed_payload.dig("details", "image") || {}
+      publishing_api_image = publishing_api_content.dig("details", "image") || {}
 
-      %i(alt_text caption).each_with_object([]) do |attribute, problems|
+      %w(alt_text caption).each_with_object([]) do |attribute, problems|
         if publishing_api_image[attribute] != proposed_image_payload[attribute]
           next if default_image?(proposed_image_payload, publishing_api_image, attribute)
           next if empty_caption?(proposed_image_payload, publishing_api_image, attribute)
@@ -69,16 +71,16 @@ module WhitehallImporter
       unless primary_publishing_organisation_matches?
         problems << problem_description(
           "primary_publishing_organisation doesn't match",
-          publishing_api_link(:primary_publishing_organisation),
-          proposed_payload.dig(:links, :primary_publishing_organisation),
+          publishing_api_link("primary_publishing_organisation"),
+          proposed_payload.dig("links", "primary_publishing_organisation"),
         )
       end
 
       unless organisations_match?
         problems << problem_description(
           "organisations don't match",
-          publishing_api_link(:organisations),
-          proposed_payload.dig(:links, :organisations),
+          publishing_api_link("organisations"),
+          proposed_payload.dig("links", "organisations"),
         )
       end
 
@@ -90,13 +92,13 @@ module WhitehallImporter
     end
 
     def primary_publishing_organisation_matches?
-      proposed_payload.dig(:links, :primary_publishing_organisation).presence ==
-        publishing_api_link(:primary_publishing_organisation).presence
+      proposed_payload.dig("links", "primary_publishing_organisation").presence ==
+        publishing_api_link("primary_publishing_organisation").presence
     end
 
     def organisations_match?
-      proposed_payload.dig(:links, :organisations).to_a.sort ==
-        publishing_api_link(:organisations).to_a.sort
+      proposed_payload.dig("links", "organisations").to_a.sort ==
+        publishing_api_link("organisations").to_a.sort
     end
 
     def publishing_api_content
@@ -104,35 +106,32 @@ module WhitehallImporter
                                     GdsApi.publishing_api
                                           .get_live_content(edition.content_id)
                                           .to_h
-                                          .deep_symbolize_keys
                                   else
                                     GdsApi.publishing_api
                                           .get_content(edition.content_id)
                                           .to_h
-                                          .deep_symbolize_keys
                                   end
     end
 
     def publishing_api_link(link_type)
-      publishing_api_content.dig(:links, link_type) ||
-        publishing_api_links.dig(:links, link_type)
+      publishing_api_content.dig("links", link_type) ||
+        publishing_api_links.dig("links", link_type)
     end
 
     def publishing_api_links
       @publishing_api_links ||= GdsApi.publishing_api
                                       .get_links(edition.content_id)
                                       .to_h
-                                      .deep_symbolize_keys
     end
 
     def empty_caption?(proposed_image_payload, publishing_api_image, attribute)
-      attribute == :caption &&
+      attribute == "caption" &&
         publishing_api_image[attribute].nil? &&
         proposed_image_payload[attribute].empty?
     end
 
     def default_image?(proposed_image_payload, publishing_api_image, attribute)
-      attribute == :alt_text &&
+      attribute == "alt_text" &&
         proposed_image_payload.empty? &&
         publishing_api_image[attribute] == "placeholder"
     end
