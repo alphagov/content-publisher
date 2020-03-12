@@ -299,7 +299,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
                       event: "update", state: "draft", created_at: updated_at),
               ],
               unpublishing: build(:whitehall_export_unpublishing,
-                                  alternative_url: "https://www.gov.uk/gators",
+                                  alternative_path: "/gators",
                                   unpublishing_reason: "Consolidated into another GOV.UK page",
                                   explanation: "Gator"))
       end
@@ -318,7 +318,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
         removal = edition.status.details
         expect(removal.explanatory_note).to eq(whitehall_edition["unpublishing"]["explanation"])
-        expect(removal.alternative_url).to eq(whitehall_edition["unpublishing"]["alternative_url"])
+        expect(removal.alternative_url).to eq(whitehall_edition["unpublishing"]["alternative_path"])
         expect(removal.removed_at).to eq(whitehall_edition["unpublishing"]["created_at"])
         expect(removal).to be_redirect
       end
@@ -352,7 +352,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
                       event: "update", state: "draft", created_at: created_at),
               ],
               unpublishing: build(:whitehall_export_unpublishing,
-                                  alternative_url: "https://www.gov.uk/flextension",
+                                  alternative_path: "/flextension",
                                   unpublishing_reason: "Consolidated into another GOV.UK page",
                                   explanation: "Brexit is being delayed again"))
       end
@@ -378,7 +378,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
         removal = document.editions.first.status.details
         expect(removal.explanatory_note).to eq(whitehall_edition["unpublishing"]["explanation"])
-        expect(removal.alternative_url).to eq(whitehall_edition["unpublishing"]["alternative_url"])
+        expect(removal.alternative_url).to eq(whitehall_edition["unpublishing"]["alternative_path"])
         expect(removal.removed_at).to eq(whitehall_edition["unpublishing"]["created_at"])
 
         expect(removal).to be_redirect
