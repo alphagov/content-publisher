@@ -27,7 +27,7 @@ RSpec.feature "Upload file attachment", js: true do
   end
 
   def given_there_is_an_edition_that_allows_featured_attachments
-    document_type = build(:document_type, :with_body, attachments: "featured")
+    document_type = build(:document_type, attachments: "featured")
     @edition = create(:edition, document_type: document_type)
   end
 

@@ -52,6 +52,20 @@ class FileAttachmentsController < ApplicationController
     end
   end
 
+  def download
+    edition = Edition.find_current(document: params[:document])
+    assert_edition_state(edition, &:editable?)
+
+    attachment_revision = edition.file_attachment_revisions
+      .find_by!(file_attachment_id: params[:file_attachment_id])
+
+    send_data(
+      attachment_revision.blob.download,
+      filename: attachment_revision.filename,
+      type: attachment_revision.content_type,
+    )
+  end
+
   def create
     result = FileAttachments::CreateInteractor.call(params: params, user: current_user)
     edition, attachment_revision, issues = result.to_h.values_at(:edition,

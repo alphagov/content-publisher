@@ -27,7 +27,7 @@ RSpec.feature "Preview file attachment", js: true do
     end
 
     expect(page).to have_selector(".gem-c-attachment__metadata")
-    @preview_window = window_opened_by { click_on "Preview" }
+    @preview_window = window_opened_by { click_on @attachment_revision.title }
   end
 
   def then_i_should_see_the_attachment

@@ -11,12 +11,11 @@
 ) %>
 
 <% actions << link_to(
-  "Preview",
-  preview_file_attachment_path(document, attachment.file_attachment),
-  target: :_blank,
+  "Download",
+  download_file_attachment_path(document, attachment.file_attachment),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
-    gtm: "preview-attachment"
+    gtm: "download-attachment"
   }
 ) %>
 
