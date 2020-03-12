@@ -22,16 +22,16 @@ class PublishingApiPayload
       links: links,
       access_limited: access_limited,
       auth_bypass_ids: auth_bypass_ids,
-      public_updated_at: history.public_updated_at,
+      public_updated_at: history.public_updated_at.rfc3339,
     }
-    payload[:first_published_at] = history.first_published_at if history.first_published_at.present?
+    payload[:first_published_at] = history.first_published_at.rfc3339 if history.first_published_at.present?
 
     fields = document_type.contents + document_type.tags
     fields.each { |f| payload.deep_merge!(f.payload(edition)) }
 
     if edition.backdated_to.present?
-      payload[:first_published_at] = edition.backdated_to
-      payload[:public_updated_at] = edition.backdated_to if edition.first?
+      payload[:first_published_at] = edition.backdated_to.rfc3339
+      payload[:public_updated_at] = edition.backdated_to.rfc3339 if edition.first?
     end
 
     if republish

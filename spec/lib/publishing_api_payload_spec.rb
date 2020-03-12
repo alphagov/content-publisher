@@ -157,7 +157,7 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "includes first_published_at if the edition has a backdated_to value" do
-      date = Time.zone.now.yesterday
+      date = Time.zone.now.yesterday.rfc3339
       revision = build(:revision, backdated_to: date)
       edition = build(:edition, revision: revision)
       payload = described_class.new(edition).payload
@@ -166,7 +166,7 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "include public_updated_at if the edition has backdated_to and is a first edition" do
-      date = Time.zone.now.yesterday
+      date = Time.zone.now.yesterday.rfc3339
       revision = build(:revision, backdated_to: date)
       edition = build(:edition, revision: revision, number: 1)
       payload = described_class.new(edition).payload
