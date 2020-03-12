@@ -29,11 +29,6 @@ class PublishingApiPayload
     fields = document_type.contents + document_type.tags
     fields.each { |f| payload.deep_merge!(f.payload(edition)) }
 
-    if edition.backdated_to.present?
-      payload[:first_published_at] = edition.backdated_to
-      payload[:public_updated_at] = edition.backdated_to if edition.first?
-    end
-
     if republish
       payload[:update_type] = "republish"
       payload[:bulk_publishing] = true
