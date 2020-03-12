@@ -10,7 +10,8 @@ RSpec.describe "File Attachments" do
                   "accessing a single file attachments for a non editable edition",
                   routes: { file_attachment_path: %i[get delete],
                             edit_file_attachment_path: %i[get patch],
-                            preview_file_attachment_path: %i[get] } do
+                            preview_file_attachment_path: %i[get],
+                            confirm_delete_file_attachment_path: %i[get] } do
     let(:edition) { create(:edition, :published) }
     let(:route_params) { [edition.document, "file_attachment_id"] }
   end
@@ -20,7 +21,8 @@ RSpec.describe "File Attachments" do
                   status: :not_found,
                   routes: { file_attachment_path: %i[get delete],
                             edit_file_attachment_path: %i[get patch],
-                            preview_file_attachment_path: %i[get] } do
+                            preview_file_attachment_path: %i[get],
+                            confirm_delete_file_attachment_path: %i[get] } do
     let(:edition) { create(:edition) }
     let(:file_attachment_revision) { create(:file_attachment_revision) }
     let(:route_params) { [edition.document, file_attachment_revision] }
@@ -73,6 +75,17 @@ RSpec.describe "File Attachments" do
                                file_attachment_revision.file_attachment_id)
       expect(response).to have_http_status(:ok)
       expect(response.body).to have_content(file_attachment_revision.filename)
+    end
+  end
+
+  describe "GET /documents/:document/file-attachments/:file_attachment_id/delete" do
+    it "returns successfully" do
+      file_attachment_revision = create(:file_attachment_revision)
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision])
+
+      get confirm_delete_file_attachment_path(edition.document, file_attachment_revision.file_attachment_id)
+      expect(response).to have_http_status(:ok)
     end
   end
 

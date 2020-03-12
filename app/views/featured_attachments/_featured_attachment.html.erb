@@ -1,4 +1,11 @@
+<% actions = [] %>
+<% actions << link_to(
+    "Delete attachment",
+    confirm_delete_file_attachment_path(document, attachment.file_attachment_id, wizard: "featured"),
+    class: "govuk-link app-link--button app-link--destructive",
+) %>
+
 <%= render "components/attachment_meta", {
   attachment: file_attachment_attributes(attachment, document),
-  actions: [],
+  actions: actions,
 } %>
