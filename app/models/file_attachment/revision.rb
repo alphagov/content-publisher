@@ -18,6 +18,7 @@ class FileAttachment::Revision < ApplicationRecord
            :asset_url,
            :content_type,
            :byte_size,
+           :blob,
            :number_of_pages,
            to: :blob_revision
 

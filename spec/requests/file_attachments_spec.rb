@@ -11,7 +11,8 @@ RSpec.describe "File Attachments" do
                   routes: { file_attachment_path: %i[get delete],
                             edit_file_attachment_path: %i[get patch],
                             preview_file_attachment_path: %i[get],
-                            confirm_delete_file_attachment_path: %i[get] } do
+                            confirm_delete_file_attachment_path: %i[get],
+                            download_file_attachment_path: %i[get] } do
     let(:edition) { create(:edition, :published) }
     let(:route_params) { [edition.document, "file_attachment_id"] }
   end
@@ -22,7 +23,8 @@ RSpec.describe "File Attachments" do
                   routes: { file_attachment_path: %i[get delete],
                             edit_file_attachment_path: %i[get patch],
                             preview_file_attachment_path: %i[get],
-                            confirm_delete_file_attachment_path: %i[get] } do
+                            confirm_delete_file_attachment_path: %i[get],
+                            download_file_attachment_path: %i[get] } do
     let(:edition) { create(:edition) }
     let(:file_attachment_revision) { create(:file_attachment_revision) }
     let(:route_params) { [edition.document, file_attachment_revision] }
@@ -248,6 +250,16 @@ RSpec.describe "File Attachments" do
       expect(response.body).to have_content(
         I18n.t!("requirements.file_attachment_title.blank.form_message"),
       )
+    end
+  end
+
+  describe "GET /documents/:document/file_attachments/:file_attachment_id/download" do
+    it "provides a file attachment download" do
+      file_attachment_revision = create(:file_attachment_revision)
+      edition = create(:edition, file_attachment_revisions: [file_attachment_revision])
+      get download_file_attachment_path(edition.document, file_attachment_revision.file_attachment_id)
+      expect(response.headers["Content-Disposition"])
+        .to match(/attachment; filename="#{file_attachment_revision.filename}";/)
     end
   end
 end
