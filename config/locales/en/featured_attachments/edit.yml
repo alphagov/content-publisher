@@ -1,0 +1,19 @@
+en:
+  featured_attachments:
+    edit:
+      title: "Update attachment ‘%{title}’"
+      description_govspeak: |
+        All files must be accessible. Read [full guidance on accessible attachment](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/accessible-pdfs){:target="_blank"}.
+
+        Files must be uploaded in an [open standards file format](https://www.gov.uk/guidance/content-design/planning-content#open-formats){:target="_blank"}.
+        For example, .odt not .docx.
+      callout_govspeak: |
+        Attachments must be in English.
+      attachment_file:
+        heading: Choose a file
+        hint_text: Upload a file to replace the current attachment.
+        current:
+          heading: Current attachment
+      attachment_title:
+        heading: Attachment title
+        hint_text: Use the full title of the document

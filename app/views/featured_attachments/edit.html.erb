@@ -1,0 +1,57 @@
+<% content_for :back_link, render_back_link(href: featured_attachments_path(@edition.document)) %>
+<% content_for :title, t("featured_attachments.edit.title", title: @attachment.title) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag(
+      edit_file_attachment_path(@edition.document, @attachment.file_attachment_id),
+      method: :patch,
+      multipart: true,
+    ) do %>
+      <%= hidden_field_tag(:wizard, params[:wizard]) %>
+
+      <%= render_govspeak(t("featured_attachments.edit.description_govspeak")) %>
+
+      <%= render "govuk_publishing_components/components/inset_text", {
+        text: render_govspeak(
+          t("featured_attachments.edit.callout_govspeak")
+        ),
+      } %>
+
+      <h2 class="govuk-heading-s govuk-!-margin-bottom-0">
+        <%= t("featured_attachments.edit.attachment_file.current.heading") %>
+      </h2>
+
+      <p class="govuk-body">
+        <%= link_to(
+              @attachment.title,
+              preview_file_attachment_path(@edition.document, @attachment.file_attachment),
+              target: :_blank,
+              class: "govuk-link govuk-link--no-visited-state"
+        )%>
+      <p>
+
+      <%= render "govuk_publishing_components/components/file_upload", {
+        label: {
+          text: t("featured_attachments.edit.attachment_file.heading"),
+          bold: true,
+        },
+        name: "file_attachment[file]",
+        hint: t("featured_attachments.edit.attachment_file.hint_text")
+      } %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: t("featured_attachments.edit.attachment_title.heading"),
+          bold: true
+        },
+        name: "file_attachment[title]",
+        value: params.dig(:file_attachment, :title) || @attachment.title,
+        hint: t("featured_attachments.edit.attachment_title.hint_text"),
+        error_items: @issues&.items_for(:file_attachment_title),
+      } %>
+
+      <%= render "govuk_publishing_components/components/button", { text: "Save" } %>
+    <% end %>
+  </div>
+</div>

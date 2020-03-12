@@ -22,4 +22,18 @@ RSpec.describe "Featured Attachments" do
       expect(response).to have_http_status(:ok)
     end
   end
+
+  describe "GET /documents/:document/attachments/:attachment_id/edit" do
+    it "returns successfully" do
+      document_type = build(:document_type, attachments: "featured")
+      file_attachment_revision = create(:file_attachment_revision)
+      edition = create(:edition,
+                       document_type: document_type,
+                       file_attachment_revisions: [file_attachment_revision])
+
+      get edit_featured_attachment_path(edition.document,
+                                        file_attachment_revision.file_attachment_id)
+      expect(response).to have_http_status(:ok)
+    end
+  end
 end

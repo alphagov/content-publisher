@@ -7,4 +7,12 @@ class FeaturedAttachmentsController < ApplicationController
       @edition.document_type.attachments.featured?
     end
   end
+
+  def edit
+    @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
+
+    @attachment = @edition.file_attachment_revisions
+      .find_by!(file_attachment_id: params[:attachment_id])
+  end
 end
