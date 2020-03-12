@@ -8,7 +8,7 @@ RSpec.describe "Video Embed" do
       expect(response).to have_http_status(:ok)
     end
 
-    it "returns a bad request outside of a modal context" do
+    it "returns a bad request outside of a modal context", realistic_error_responses: true do
       get video_embed_path(edition.document)
       expect(response).to have_http_status(:bad_request)
     end
@@ -25,7 +25,7 @@ RSpec.describe "Video Embed" do
       expect(response.body).to eq("[My title](#{video_url})")
     end
 
-    it "returns a bad request outside of a modal context" do
+    it "returns a bad request outside of a modal context", realistic_error_responses: true do
       post video_embed_path(edition.document)
       expect(response).to have_http_status(:bad_request)
     end

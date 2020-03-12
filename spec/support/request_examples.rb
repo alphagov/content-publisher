@@ -44,7 +44,7 @@ module RequestExamples
     describe scenario do
       routes.each do |path, methods|
         methods.each do |method|
-          it "returns a #{status} for #{method} #{path}" do
+          it "returns a #{status} for #{method} #{path}", realistic_error_responses: true do
             process(method.to_sym, public_send(path.to_sym, *route_params))
 
             expect(response).to have_http_status(status)

@@ -40,7 +40,7 @@ RSpec.describe "Errors" do
   end
 
   describe "GET /any-path-for-a-document" do
-    it "returns a not found response when a document doesn't exist" do
+    it "returns a not found response when a document doesn't exist", realistic_error_responses: true do
       get document_path("document-that-does-not-exist")
 
       expect(response).to have_http_status(:not_found)
@@ -62,7 +62,7 @@ RSpec.describe "Errors" do
   end
 
   describe "ANY /pre-release-document-path" do
-    it "returns forbidden when the document type is pre-release" do
+    it "returns forbidden when the document type is pre-release", realistic_error_responses: true do
       pre_release_document_type = build(:document_type, :pre_release)
       edition = create(:edition, document_type: pre_release_document_type)
       user = build(:user, permissions: %w(signin))

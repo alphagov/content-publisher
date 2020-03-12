@@ -148,7 +148,7 @@ RSpec.describe "Images" do
         .to include(I18n.t!("requirements.alt_text.blank.form_message"))
     end
 
-    it "returns a bad request when selecting a lead image is not a supported feature" do
+    it "returns a bad request when selecting a lead image is not a supported feature", realistic_error_responses: true do
       edition = create(:edition, image_revisions: [image_revision])
       patch edit_image_path(edition.document, image_revision.image_id),
             params: { image_revision: { alt_text: "Alt text" }, lead_image: "on" }

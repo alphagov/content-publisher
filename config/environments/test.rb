@@ -25,7 +25,7 @@ Rails.application.configure do
   config.cache_store = :null_store
 
   # Handle exceptions ourselves and return HTTP status instead of raising exceptions.
-  config.action_dispatch.show_exceptions = true
+  config.action_dispatch.show_exceptions = false
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false

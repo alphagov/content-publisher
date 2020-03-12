@@ -1,4 +1,6 @@
 RSpec.describe "Publication format" do
+  include TopicsHelper
+
   scenario do
     when_i_choose_this_document_type
     and_i_fill_in_the_form_fields
@@ -17,6 +19,8 @@ RSpec.describe "Publication format" do
   def and_i_fill_in_the_form_fields
     base_path = Edition.last.document_type.path_prefix + "/a-great-title"
     stub_publishing_api_has_lookups(base_path => Document.last.content_id)
+    stub_any_publishing_api_put_content
+    stub_any_publishing_api_no_links
     fill_in "title", with: "A great title"
     click_on "Save"
   end

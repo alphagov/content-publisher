@@ -12,7 +12,7 @@ RSpec.describe "New Document" do
       expect(response.body).to have_content(I18n.t("document_type_selections.news.label"))
     end
 
-    it "returns a 404 when the requested document type selection doesn't exist" do
+    it "returns a 404 when the requested document type selection doesn't exist", realistic_error_responses: true do
       get new_document_path, params: { type: "foo" }
       expect(response.status).to eq(404)
     end
@@ -50,7 +50,7 @@ RSpec.describe "New Document" do
       )
     end
 
-    it "returns a 404 when the requested selected document type doesn't exist" do
+    it "returns a 404 when the requested selected document type doesn't exist", realistic_error_responses: true do
       post new_document_path, params: { type: "foo", selected_option_id: "foo" }
       expect(response.status).to eq(404)
     end
