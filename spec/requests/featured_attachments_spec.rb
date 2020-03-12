@@ -5,6 +5,22 @@ RSpec.describe "Featured Attachments" do
     let(:edition) { create(:edition, :published) }
   end
 
+  it_behaves_like "requests that assert edition state",
+                  "accessing a single featured attachment for a non editable edition",
+                  routes: { edit_featured_attachment_path: %i[get] } do
+    let(:edition) { create(:edition, :published) }
+    let(:route_params) { [edition.document, "file_attachment_id"] }
+  end
+
+  it_behaves_like "requests that return status",
+                  "when a file attachment revision belongs to a different edition",
+                  status: :not_found,
+                  routes: { edit_featured_attachment_path: %i[get] } do
+    let(:edition) { create(:edition) }
+    let(:file_attachment_revision) { create(:file_attachment_revision) }
+    let(:route_params) { [edition.document, file_attachment_revision] }
+  end
+
   it_behaves_like "requests that return status",
                   "accessing featured attachments for an edition that doesn't allow them",
                   status: :not_found,
