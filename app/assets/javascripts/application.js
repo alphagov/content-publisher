@@ -22,6 +22,7 @@
 //= require components/input-length-suggester.js
 //= require components/markdown-editor.js
 //= require components/multi-section-viewer.js
+//= require components/reorderable-list.js
 //= require components/url-preview.js
 //= require miller-columns-element/dist/index.umd.js
 

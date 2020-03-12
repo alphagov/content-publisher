@@ -1,0 +1,43 @@
+<%
+  items ||= []
+  data_attributes ||= {}
+  data_attributes[:module] = "reorderable-list"
+%>
+
+<%= tag.ol class: "app-c-reorderable-list", data: data_attributes do %>
+  <% items.each_with_index do |item, index| %>
+    <%= tag.li class: "app-c-reorderable-list__item" do %>
+      <%= tag.div class: "app-c-reorderable-list__wrapper" do %>
+        <%= tag.div class: "app-c-reorderable-list__content" do %>
+          <%= tag.p item[:title], class: "app-c-reorderable-list__title" %>
+          <%= tag.p item[:description], class: "app-c-reorderable-list__description" %>
+        <% end %>
+        <%= tag.div class: "app-c-reorderable-list__actions" do %>
+          <%= render "govuk_publishing_components/components/input", {
+            label: {
+              text: sanitize("Order index<span class='govuk-visually-hidden'> for #{item[:title]}</span>")
+            },
+            name: "#{order_input_name}[#{item[:order_input_index]}]",
+            type: "number",
+            value: index + 1,
+            width: 2
+          } %>
+          <%= render "govuk_publishing_components/components/button", {
+            text: "Up",
+            type: "button",
+            aria_label: "Move #{item[:title]} up",
+            classes: "js-reorderable-list-up",
+            secondary_quiet: true
+          } %>
+          <%= render "govuk_publishing_components/components/button", {
+            text: "Down",
+            type: "button",
+            aria_label: "Move #{item[:title]} down",
+            classes: "js-reorderable-list-down",
+            secondary_quiet: true
+          } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
