@@ -1,18 +1,18 @@
 <% actions = [] %>
 
 <% actions << link_to(
-  "Delete attachment",
-  confirm_delete_file_attachment_path(document, attachment.file_attachment_id, wizard: "featured"),
-  class: "govuk-link app-link--button app-link--destructive",
-) %>
-
-<% actions << link_to(
   "Download",
   download_file_attachment_path(document, attachment.file_attachment),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     gtm: "download-attachment"
   }
+) %>
+
+<% actions << link_to(
+  "Delete attachment",
+  confirm_delete_file_attachment_path(document, attachment.file_attachment_id, wizard: "featured"),
+  class: "govuk-link app-link--button app-link--destructive",
 ) %>
 
 <%= render "components/attachment_meta", {
