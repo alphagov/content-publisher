@@ -12,7 +12,17 @@ class FileAttachment::Revision < ApplicationRecord
                           foreign_key: "file_attachment_revision_id",
                           join_table: "revisions_file_attachment_revisions"
 
-  delegate :title, to: :metadata_revision
+  delegate :title,
+           :isbn,
+           :unique_reference,
+           :paper_number,
+           :unofficial?,
+           :command_paper?,
+           :act_paper?,
+           :official_document,
+           :parliamentary_session,
+           to: :metadata_revision
+
   delegate :filename,
            :asset,
            :asset_url,

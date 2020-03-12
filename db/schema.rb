@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_04_083621) do
+ActiveRecord::Schema.define(version: 2020_03_12_132425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,6 +135,11 @@ ActiveRecord::Schema.define(version: 2020_03_04_083621) do
     t.datetime "created_at", null: false
     t.string "title", null: false
     t.bigint "created_by_id"
+    t.string "isbn"
+    t.string "unique_reference"
+    t.string "paper_number"
+    t.string "parliamentary_session"
+    t.string "official_document", default: "unofficial", null: false
   end
 
   create_table "file_attachment_revisions", force: :cascade do |t|
