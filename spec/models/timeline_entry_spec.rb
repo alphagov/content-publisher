@@ -1,6 +1,6 @@
 RSpec.describe TimelineEntry do
   describe ".entry_types" do
-    described_class.entry_types.keys.each do |type|
+    described_class.entry_types.each_key do |type|
       it "has a translation for `#{type}`" do
         expect(I18n.exists?("documents.history.entry_types.#{type}")).to be true
       end
