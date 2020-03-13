@@ -1,5 +1,12 @@
 <% content_for :title, t("file_attachments.edit.title", title: @edition.title_or_fallback) %>
-<% content_for :back_link, render_back_link(href: file_attachments_path(@edition.document),
+
+<% back_link_path = if params[:wizard] == "featured"
+                      featured_attachments_path(@edition.document)
+                    else
+                      file_attachments_path(@edition.document)
+                    end %>
+
+<% content_for :back_link, render_back_link(href: back_link_path,
                                             data_attributes: { "modal-action": "back" }) %>
 
 <div class="govuk-grid-row">
