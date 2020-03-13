@@ -83,6 +83,32 @@ RSpec.describe WhitehallImporter::IntegrityChecker::UnpublishingCheck do
     end
   end
 
+  describe "#expected_alternative_path?" do
+    context "when imported edition is withdrawn" do
+      it "returns true and does not check for an alternative path" do
+        unpublishing_check = described_class.new(withdrawn_edition,
+                                                 publishing_api_withdrawal)
+
+        expect(unpublishing_check.expected_alternative_path?).to be true
+      end
+    end
+
+    context "when imported edition is removed and redirected" do
+      it "returns true if alternative_url matches alternative_path in Publishing API" do
+        unpublishing_check = described_class.new(removed_edition_with_redirect,
+                                                 publishing_api_redirect)
+        expect(unpublishing_check.expected_alternative_path?).to be true
+      end
+
+      it "returns false if alternative_url does not match alternative_path in Publishing API" do
+        alternative_path = { "alternative_path" => "/somewhere-else" }
+        unpublishing_check = described_class.new(removed_edition_with_redirect,
+                                                 publishing_api_redirect(alternative_path))
+        expect(unpublishing_check.expected_alternative_path?).to be false
+      end
+    end
+  end
+
   def publishing_api_withdrawal(attributes = {})
     {
       "type" => "withdrawal",
@@ -99,6 +125,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker::UnpublishingCheck do
   def publishing_api_redirect(attributes = {})
     {
       "type" => "redirect",
+      "alternative_path" => "/somewhere",
     }.merge(attributes).as_json
   end
 end

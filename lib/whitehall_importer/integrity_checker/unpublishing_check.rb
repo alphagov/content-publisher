@@ -26,6 +26,12 @@ module WhitehallImporter
       unpublishing_time_matches?
     end
 
+    def expected_alternative_path?
+      return true unless edition.removed?
+
+      unpublishing["alternative_path"] == edition.status.details.alternative_url
+    end
+
   private
 
     def unpublishing_time_matches?
