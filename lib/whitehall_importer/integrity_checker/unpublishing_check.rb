@@ -32,6 +32,11 @@ module WhitehallImporter
       unpublishing["alternative_path"] == edition.status.details.alternative_url
     end
 
+    def expected_explanation?
+      Sanitize.clean(unpublishing["explanation"]).squish ==
+        Sanitize.clean(edition_explanation_html).squish
+    end
+
   private
 
     def unpublishing_time_matches?
@@ -39,6 +44,13 @@ module WhitehallImporter
         unpublishing["unpublished_at"],
         edition.status.details.withdrawn_at&.rfc3339,
       )
+    end
+
+    def edition_explanation_html
+      explanation = edition.status.details.try(:public_explanation) ||
+        edition.status.details.try(:explanatory_note)
+
+      Govspeak::Document.new(explanation).to_html
     end
   end
 end

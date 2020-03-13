@@ -1,12 +1,24 @@
 RSpec.describe WhitehallImporter::IntegrityChecker::UnpublishingCheck do
-  let(:withdrawal) { build(:withdrawal) }
-  let(:withdrawn_edition) { build(:edition, :withdrawn, withdrawal: withdrawal) }
-  let(:removal) { build(:removal) }
-  let(:removal_with_redirect) do
-    build(:removal, alternative_url: "/somewhere", redirect: true)
+  let(:withdrawal_explanation) { "This has been moved" }
+  let(:withdrawal) do
+    build(:withdrawal,
+          public_explanation: "#{withdrawal_explanation} [elsewhere](https://www.gov.uk/elsewhere)")
   end
 
+  let(:withdrawn_edition) { build(:edition, :withdrawn, withdrawal: withdrawal) }
+  let(:removed_explanation) { "This has been removed" }
+  let(:removal) do
+    build(:removal,
+          explanatory_note: "#{removed_explanation} [Visit here](https://www.gov.uk/here)")
+  end
   let(:removed_edition) { build(:edition, :removed, removal: removal) }
+
+  let(:removal_with_redirect) do
+    build(:removal,
+          alternative_url: "/somewhere",
+          redirect: true)
+  end
+
   let(:removed_edition_with_redirect) do
     build(:edition, :removed, removal: removal_with_redirect)
   end
@@ -109,16 +121,50 @@ RSpec.describe WhitehallImporter::IntegrityChecker::UnpublishingCheck do
     end
   end
 
+  describe "#expected_explanation?" do
+    context "when imported edition is withdrawn" do
+      it "returns true if public_explanation matches explanation in Publishing API" do
+        unpublishing_check = described_class.new(withdrawn_edition,
+                                                 publishing_api_withdrawal)
+        expect(unpublishing_check.expected_explanation?).to be true
+      end
+
+      it "returns false if public_explanation does not match explanation in Publishing API" do
+        explanation = { "explanation" => "Another explanation" }
+        unpublishing_check = described_class.new(withdrawn_edition,
+                                                 publishing_api_withdrawal(explanation))
+        expect(unpublishing_check.expected_explanation?).to be false
+      end
+    end
+
+    context "when imported edition is removed" do
+      it "returns true if explanatory_note matches explanation in Publishing API" do
+        unpublishing_check = described_class.new(removed_edition,
+                                                 publishing_api_gone)
+        expect(unpublishing_check.expected_explanation?).to be true
+      end
+
+      it "returns false if explanatory_note does not match explanation in Publishing API" do
+        explanation = { "explanation" => "Another explanation" }
+        unpublishing_check = described_class.new(removed_edition,
+                                                 publishing_api_gone(explanation))
+        expect(unpublishing_check.expected_explanation?).to be false
+      end
+    end
+  end
+
   def publishing_api_withdrawal(attributes = {})
     {
       "type" => "withdrawal",
       "unpublished_at" => withdrawal.withdrawn_at.rfc3339,
+      "explanation" => "#{withdrawal_explanation} <a href=\"https://www.gov.uk/elsewhere\">elsewhere</a>",
     }.merge(attributes).as_json
   end
 
   def publishing_api_gone(attributes = {})
     {
       "type" => "gone",
+      "explanation" => "#{removed_explanation} <a href=\"https://www.gov.uk/here\">Visit here</a>",
     }.merge(attributes).as_json
   end
 
