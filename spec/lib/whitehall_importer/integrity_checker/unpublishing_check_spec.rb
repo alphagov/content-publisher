@@ -54,9 +54,39 @@ RSpec.describe WhitehallImporter::IntegrityChecker::UnpublishingCheck do
     end
   end
 
+  describe "#expected_unpublishing_time?" do
+    context "when imported edition is withdrawn" do
+      it "returns true if withdrawn_at matches unpublished_at in Publishing API" do
+        unpublishing_check = described_class.new(withdrawn_edition,
+                                                 publishing_api_withdrawal)
+
+        expect(unpublishing_check.expected_unpublishing_time?).to be true
+      end
+
+      it "returns false if withdrawn_at does not match unpublished_at in Publishing API" do
+        unpublished_at = { "unpublished_at" => Date.yesterday.end_of_day }
+        unpublishing_check = described_class.new(withdrawn_edition,
+                                                 publishing_api_withdrawal(unpublished_at))
+
+        expect(unpublishing_check.expected_unpublishing_time?).to be false
+      end
+    end
+
+    context "when imported edition is removed" do
+      it "returns true even if removed_at does not match unpublished_at in Publishing API" do
+        unpublished_at = { "unpublished_at" => Date.yesterday.end_of_day }
+        unpublishing_check = described_class.new(removed_edition,
+                                                 publishing_api_gone(unpublished_at))
+
+        expect(unpublishing_check.expected_unpublishing_time?).to be true
+      end
+    end
+  end
+
   def publishing_api_withdrawal(attributes = {})
     {
       "type" => "withdrawal",
+      "unpublished_at" => withdrawal.withdrawn_at.rfc3339,
     }.merge(attributes).as_json
   end
 
