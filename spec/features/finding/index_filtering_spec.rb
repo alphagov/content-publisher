@@ -2,7 +2,6 @@ RSpec.feature "Index filtering" do
   scenario do
     given_there_are_some_editions
     when_i_visit_the_index_page
-    then_i_only_see_my_organisations_editions
 
     when_i_clear_the_filters
     then_i_see_all_editions
@@ -83,10 +82,6 @@ RSpec.feature "Index filtering" do
 
   def when_i_clear_the_filters
     click_on "Clear all filters"
-  end
-
-  def then_i_only_see_my_organisations_editions
-    expect(page).to have_content("2 documents")
   end
 
   def when_i_filter_by_all_organisations

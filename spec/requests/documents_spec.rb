@@ -16,20 +16,6 @@ RSpec.describe "Documents" do
       end
     end
 
-    context "when the user has an organisation" do
-      let(:organisation_content_id) { SecureRandom.uuid }
-      let(:user) { create(:user, organisation_content_id: organisation_content_id) }
-
-      before { login_as(user) }
-
-      it "redirects to filter by the users organisation" do
-        get documents_path
-        expect(response).to redirect_to(
-          documents_path(organisation: organisation_content_id),
-        )
-      end
-    end
-
     context "when the user doesn't have an organisation" do
       let(:user) { create(:user, organisation_content_id: nil) }
 

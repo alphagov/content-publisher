@@ -1,10 +1,5 @@
 class DocumentsController < ApplicationController
   def index
-    if filter_params[:filters].empty? && current_user.organisation_content_id
-      redirect_to documents_path(organisation: current_user.organisation_content_id)
-      return
-    end
-
     filter = EditionFilter.new(current_user, filter_params)
     @editions = filter.editions
     @filter_params = filter.filter_params
