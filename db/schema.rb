@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_12_132425) do
+ActiveRecord::Schema.define(version: 2020_03_13_130700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 2020_03_12_132425) do
     t.string "unique_reference"
     t.string "paper_number"
     t.string "parliamentary_session"
-    t.string "official_document", default: "unofficial", null: false
+    t.string "official_document_type", default: "unofficial", null: false
   end
 
   create_table "file_attachment_revisions", force: :cascade do |t|
