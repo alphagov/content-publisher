@@ -1,5 +1,5 @@
 /* eslint-env jasmine, jquery */
-/* global GOVUK */
+/* global GOVUK, spyOnEvent */
 
 describe('Reorderable list component', function () {
   'use strict'
@@ -120,6 +120,7 @@ describe('Reorderable list component', function () {
       reorderableList = new GOVUK.Modules.ReorderableList()
       reorderableList.start($(element))
       firstItemDownButton = document.querySelector('li:nth-child(1) .js-reorderable-list-down')
+      spyOnEvent(firstItemDownButton, 'reorder-move-down')
       firstItemDownButton.click()
     })
 
@@ -136,6 +137,10 @@ describe('Reorderable list component', function () {
       expect(firstItemNewIndex).toEqual('1')
       expect(secondItemNewIndex).toEqual('2')
     })
+
+    it('should trigger a reorder-move-down event', function () {
+      expect('reorder-move-down').toHaveBeenTriggeredOn(firstItemDownButton)
+    })
   })
 
   describe('when clicking the Up button on the second item', function () {
@@ -145,6 +150,7 @@ describe('Reorderable list component', function () {
       reorderableList = new GOVUK.Modules.ReorderableList()
       reorderableList.start($(element))
       secondItemUpButton = document.querySelector('li:nth-child(2) .js-reorderable-list-up')
+      spyOnEvent(secondItemUpButton, 'reorder-move-up')
       secondItemUpButton.click()
     })
 
@@ -160,6 +166,10 @@ describe('Reorderable list component', function () {
       var secondItemNewIndex = document.querySelector('li:nth-child(2) input[type=text]').value
       expect(firstItemNewIndex).toEqual('1')
       expect(secondItemNewIndex).toEqual('2')
+    })
+
+    it('should trigger a reorder-move-up event', function () {
+      expect('reorder-move-up').toHaveBeenTriggeredOn(secondItemUpButton)
     })
   })
 })
