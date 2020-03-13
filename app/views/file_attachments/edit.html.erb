@@ -13,6 +13,8 @@
         gtm: "save-attachment"
       },
     ) do %>
+      <%= hidden_field_tag(:wizard, params[:wizard]) %>
+
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: t("file_attachments.edit.attachment_title.heading"),
