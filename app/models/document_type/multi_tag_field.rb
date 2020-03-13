@@ -6,7 +6,7 @@ class DocumentType::MultiTagField
   end
 
   def updater_params(_edition, params)
-    { id.to_sym => params[id.to_sym] }
+    { id.to_sym => params[id.to_sym] }.compact
   end
 
   def pre_update_issues(_edition, _params)
