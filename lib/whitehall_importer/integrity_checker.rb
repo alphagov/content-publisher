@@ -139,21 +139,20 @@ module WhitehallImporter
         return problems
       end
 
-      check = UnpublishingCheck.new(edition,
-                                    publishing_api_content["unpublishing"])
+      check = UnpublishingCheck.new(edition, publishing_api_unpublishing)
 
       unless check.expected_type?
         problems << problem_description(
           "unpublishing type not expected",
           check.expected_type,
-          publishing_api_content.dig("unpublishing", "type"),
+          publishing_api_unpublishing["type"],
         )
       end
 
       unless check.expected_alternative_path?
         problems << problem_description(
           "unpublishing alternative path doesn't match",
-          publishing_api_content.dig("unpublishing", "alternative_path"),
+          publishing_api_unpublishing["alternative_path"],
           check.expected_alternative_path,
         )
       end
@@ -161,7 +160,7 @@ module WhitehallImporter
       unless check.expected_unpublishing_time?
         problems << problem_description(
           "unpublishing time doesn't match",
-          publishing_api_content.dig("unpublishing", "unpublished_at"),
+          publishing_api_unpublishing["unpublished_at"],
           check.expected_unpublishing_time,
         )
       end
@@ -225,6 +224,10 @@ module WhitehallImporter
     def expected_state?
       %w[withdrawn removed].include?(edition.state) &&
         publishing_api_content.dig("publication_state") == "unpublished"
+    end
+
+    def publishing_api_unpublishing
+      publishing_api_content["unpublishing"]
     end
   end
 end
