@@ -415,6 +415,19 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         stub_publishing_api_has_item(publishing_api_item)
       end
 
+      it "returns a problem if the publication_state isn't 'unpublished' in Publishing API" do
+        publishing_api_item = default_publishing_api_item(edition,
+                                                          publication_state: "published")
+        stub_publishing_api_has_item(publishing_api_item)
+        expected = "unpublished"
+        actual = publishing_api_item[:publication_state]
+        integrity_check = described_class.new(edition)
+
+        expect(integrity_check.problems).to include(
+          "edition state isn't as expected, expected: #{expected.inspect}, actual: #{actual.inspect}",
+        )
+      end
+
       it "returns a problem when the unpublishing type isn't correct" do
         expect(integrity_check.problems).to include(
           unpublishing_problem_message("withdrawal",
@@ -453,6 +466,19 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       before do
         stub_publishing_api_has_item(publishing_api_item)
+      end
+
+      it "returns a problem if the publication_state isn't 'unpublished' in Publishing API" do
+        publishing_api_item = default_publishing_api_item(edition,
+                                                          publication_state: "published")
+        stub_publishing_api_has_item(publishing_api_item)
+        expected = "unpublished"
+        actual = publishing_api_item[:publication_state]
+        integrity_check = described_class.new(edition)
+
+        expect(integrity_check.problems).to include(
+          "edition state isn't as expected, expected: #{expected.inspect}, actual: #{actual.inspect}",
+        )
       end
 
       it "returns a problem when the unpublishing type isn't correct" do
