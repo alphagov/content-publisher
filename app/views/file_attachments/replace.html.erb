@@ -12,7 +12,7 @@
 <div class="govuk-grid-row">
   <div class="<%= rendering_context == 'modal' ? 'govuk-grid-column-full' : 'govuk-grid-column-two-thirds' %>">
     <%= form_tag(
-      edit_file_attachment_path(@edition.document, @attachment.file_attachment_id),
+      replace_file_attachment_path(@edition.document, @attachment.file_attachment_id),
       method: :patch,
       multipart: true,
       data: {

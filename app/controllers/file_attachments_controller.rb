@@ -106,7 +106,7 @@ class FileAttachmentsController < ApplicationController
     end
   end
 
-  def edit
+  def replace
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
 
@@ -129,7 +129,7 @@ class FileAttachmentsController < ApplicationController
         ),
       }
 
-      render :edit,
+      render :replace,
              title: params.dig(:file_attachment, :title),
              assigns: { edition: edition,
                         issues: issues,

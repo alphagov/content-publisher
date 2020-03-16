@@ -9,7 +9,7 @@ RSpec.describe "File Attachments" do
   it_behaves_like "requests that assert edition state",
                   "accessing a single file attachments for a non editable edition",
                   routes: { file_attachment_path: %i[get delete],
-                            edit_file_attachment_path: %i[get patch],
+                            replace_file_attachment_path: %i[get patch],
                             preview_file_attachment_path: %i[get],
                             confirm_delete_file_attachment_path: %i[get],
                             download_file_attachment_path: %i[get] } do
@@ -21,7 +21,7 @@ RSpec.describe "File Attachments" do
                   "when a file attachment revision belongs to a different edition",
                   status: :not_found,
                   routes: { file_attachment_path: %i[get delete],
-                            edit_file_attachment_path: %i[get patch],
+                            replace_file_attachment_path: %i[get patch],
                             preview_file_attachment_path: %i[get],
                             confirm_delete_file_attachment_path: %i[get],
                             download_file_attachment_path: %i[get] } do
@@ -193,7 +193,7 @@ RSpec.describe "File Attachments" do
     end
   end
 
-  describe "GET /documents/:document/file-attachments/:file_attachment_id/edit" do
+  describe "GET /documents/:document/file-attachments/:file_attachment_id/replace" do
     let(:file_attachment_revision) { create(:file_attachment_revision) }
 
     it "shows the file attachment when it exists on the edition" do
@@ -201,14 +201,14 @@ RSpec.describe "File Attachments" do
       edition = create(:edition,
                        file_attachment_revisions: [file_attachment_revision])
 
-      get edit_file_attachment_path(edition.document,
-                                    file_attachment_revision.file_attachment_id)
+      get replace_file_attachment_path(edition.document,
+                                       file_attachment_revision.file_attachment_id)
       expect(response).to have_http_status(:ok)
       expect(response.body).to have_content(file_attachment_revision.filename)
     end
   end
 
-  describe "PATCH /documents/:document/file-attachments/:file_attachment_id/edit" do
+  describe "PATCH /documents/:document/file-attachments/:file_attachment_id/replace" do
     before do
       stub_publishing_api_put_content(edition.content_id, {})
       stub_asset_manager_update_asset(file_attachment_revision.asset.asset_manager_id)
@@ -221,7 +221,7 @@ RSpec.describe "File Attachments" do
     end
 
     it "redirects to the file attachments index with a flash message when changed" do
-      patch edit_file_attachment_path(edition.document, file_attachment_id),
+      patch replace_file_attachment_path(edition.document, file_attachment_id),
             params: { file_attachment: { title: "New title" } }
 
       expect(response).to redirect_to(file_attachments_path(edition.document))
@@ -232,7 +232,7 @@ RSpec.describe "File Attachments" do
     end
 
     it "redirects to the file attachments index without a flash message when unchanged" do
-      patch edit_file_attachment_path(edition.document, file_attachment_id),
+      patch replace_file_attachment_path(edition.document, file_attachment_id),
             params: { file_attachment: { title: file_attachment_revision.title } }
 
       expect(response).to redirect_to(file_attachments_path(edition.document))
@@ -243,7 +243,7 @@ RSpec.describe "File Attachments" do
     end
 
     it "returns issues and an unprocessable response when there are requirement issues" do
-      patch edit_file_attachment_path(edition.document, file_attachment_id),
+      patch replace_file_attachment_path(edition.document, file_attachment_id),
             params: { file_attachment: { title: "" } }
 
       expect(response).to have_http_status(:unprocessable_entity)
