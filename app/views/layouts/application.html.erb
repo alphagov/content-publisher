@@ -6,8 +6,8 @@
 
   <script>
     var dataLayer = [{
-      'user-organisation': '<%= current_user.organisation_slug %>',
-      'cp-uid': '<%= current_user.uid %>',
+      'user-organisation': '<%= current_user&.organisation_slug %>',
+      'cp-uid': '<%= current_user&.uid %>',
       'page-name': '<%= "#{controller_name}-#{action_name}" %>'
     }];
     dataLayer.push({ 'gtm.blacklist': ['html', 'customScripts', 'nonGoogleScripts', 'customPixels'] });
@@ -30,17 +30,25 @@
 
   <%= render "govuk_publishing_components/components/skip_link" %>
 
-  <%= render "govuk_publishing_components/components/layout_header", {
-    environment: GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment,
-    navigation_items: [
+  <%
+    navigation_items = [
       { text: "Switch app", href: Plek.new.external_url_for("signon") },
       { text: t("application.phase_banner.raise_a_support_request"), href: "https://support.publishing.service.gov.uk/technical_fault_report/new", show_only_in_collapsed_menu: true },
       { text: t("application.phase_banner.send_us_feedback"), href: "https://support.publishing.service.gov.uk/content_publisher_feedback_request/new", show_only_in_collapsed_menu: true },
       { text: t("application.phase_banner.whats_new"), href: publisher_updates_path, show_only_in_collapsed_menu: true },
-      { text: current_user.name, href: Plek.new.external_url_for("signon") },
-      { text: "Log out", href: gds_sign_out_path }
     ]
-  }%>
+
+    if current_user
+      navigation_items += [
+        { text: current_user.name, href: Plek.new.external_url_for("signon") },
+        { text: "Log out", href: gds_sign_out_path },
+      ]
+    end
+  %>
+  <%= render "govuk_publishing_components/components/layout_header", {
+    environment: GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment,
+    navigation_items: navigation_items,
+  } %>
 
   <div class="govuk-width-container">
     <%= render "govuk_publishing_components/components/phase_banner", {

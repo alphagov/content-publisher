@@ -1,42 +1,39 @@
 RSpec.describe "Errors" do
-  describe "/400" do
-    it "returns a bad request response" do
-      get "/400"
-      expect(response).to have_http_status(:bad_request)
-      expect(response.body).to include(I18n.t!("errors.bad_request.title"))
+  shared_examples "an error response" do |code, status|
+    title = "code #{status.to_s.titleize}"
+    it "returns a #{title} response" do
+      get "/#{code}"
+      expect(response).to have_http_status(status)
+      expect(response.body).to include(I18n.t!("errors.#{status}.title"))
     end
+
+    it "returns a #{title} for unauthenticated users" do
+      ClimateControl.modify GDS_SSO_MOCK_INVALID: "true" do
+        get "/#{code}"
+        expect(response).to have_http_status(status)
+        expect(response.body).to include(I18n.t!("errors.#{status}.title"))
+      end
+    end
+  end
+
+  describe "/400" do
+    it_behaves_like "an error response", 400, :bad_request
   end
 
   describe "/403" do
-    it "returns a forbidden response" do
-      get "/403"
-      expect(response).to have_http_status(:forbidden)
-      expect(response.body).to include(I18n.t!("errors.forbidden.title"))
-    end
+    it_behaves_like "an error response", 403, :forbidden
   end
 
   describe "/404" do
-    it "returns a not found response" do
-      get "/404"
-      expect(response).to have_http_status(:not_found)
-      expect(response.body).to include(I18n.t!("errors.not_found.title"))
-    end
+    it_behaves_like "an error response", 404, :not_found
   end
 
   describe "/422" do
-    it "returns an unprocessable entity response" do
-      get "/422"
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(response.body).to include(I18n.t!("errors.unprocessable_entity.title"))
-    end
+    it_behaves_like "an error response", 422, :unprocessable_entity
   end
 
   describe "/500" do
-    it "returns an internal server error response" do
-      get "/500"
-      expect(response).to have_http_status(:internal_server_error)
-      expect(response.body).to include(I18n.t!("errors.internal_server_error.title"))
-    end
+    it_behaves_like "an error response", 500, :internal_server_error
   end
 
   describe "GET /any-path-for-a-document" do
