@@ -19,7 +19,7 @@ class FileAttachment::Revision < ApplicationRecord
            :unofficial?,
            :command_paper?,
            :act_paper?,
-           :official_document,
+           :official_document_type,
            :parliamentary_session,
            to: :metadata_revision
 
