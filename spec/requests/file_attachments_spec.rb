@@ -227,7 +227,7 @@ RSpec.describe "File Attachments" do
       expect(response).to redirect_to(file_attachments_path(edition.document))
       follow_redirect!
       expect(response.body).to have_content(
-        I18n.t!("file_attachments.edit.flashes.update_confirmation"),
+        I18n.t!("file_attachments.replace.flashes.update_confirmation"),
       )
     end
 
@@ -238,7 +238,7 @@ RSpec.describe "File Attachments" do
       expect(response).to redirect_to(file_attachments_path(edition.document))
       follow_redirect!
       expect(response.body).not_to have_content(
-        I18n.t!("file_attachments.edit.flashes.update_confirmation"),
+        I18n.t!("file_attachments.replace.flashes.update_confirmation"),
       )
     end
 
