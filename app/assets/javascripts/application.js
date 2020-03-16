@@ -31,6 +31,7 @@
 //= require modal/modal-workflow.js
 
 //= require modules/gtm-copy-paste-listener.js
+//= require modules/gtm-reorder-listener.js
 //= require modules/gtm-topics-listener.js
 //= require modules/contact-embed-modal.js
 //= require modules/inline-attachment-modal.js

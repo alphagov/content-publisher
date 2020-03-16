@@ -13,7 +13,10 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.sortable = window.Sortable.create(this.$module, { // eslint-disable-line new-cap
       chosenClass: 'app-c-reorderable-list__item--chosen',
       dragClass: 'app-c-reorderable-list__item--drag',
-      onSort: this.updateOrderIndexes.bind(this)
+      onSort: function () {
+        this.updateOrderIndexes.bind(this)
+        this.triggerEvent(this.$module, 'reorder-drag')
+      }.bind(this)
     })
 
     if (typeof window.matchMedia === 'function') {
@@ -59,6 +62,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         e.target.nextElementSibling.focus()
       }
     }
+    this.triggerEvent(e.target, 'reorder-move-up')
   }
 
   ReorderableList.prototype.onClickDownButton = function (e) {
@@ -76,6 +80,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         e.target.previousElementSibling.focus()
       }
     }
+    this.triggerEvent(e.target, 'reorder-move-down')
   }
 
   ReorderableList.prototype.updateOrderIndexes = function () {
@@ -83,6 +88,20 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     $orderInputs.forEach(function (input, index) {
       input.setAttribute('value', index + 1)
     })
+  }
+
+  ReorderableList.prototype.triggerEvent = function (element, eventName) {
+    var params = { bubbles: true, cancelable: true }
+    var event
+
+    if (typeof window.CustomEvent === 'function') {
+      event = new window.CustomEvent(eventName, params)
+    } else {
+      event = document.createEvent('CustomEvent')
+      event.initCustomEvent(eventName, params.bubbles, params.cancelable)
+    }
+
+    element.dispatchEvent(event)
   }
 
   Modules.ReorderableList = ReorderableList
