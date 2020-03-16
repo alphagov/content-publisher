@@ -135,10 +135,10 @@ class FileAttachmentsController < ApplicationController
                         issues: issues,
                         attachment: attachment_revision },
              status: :unprocessable_entity
-    elsif unchanged
-      redirect_to file_attachments_path(edition.document)
+    elsif params[:wizard] == "featured"
+      redirect_to featured_attachments_path(edition.document)
     else
-      flash[:notice] = I18n.t!("file_attachments.edit.flashes.update_confirmation")
+      flash[:notice] = I18n.t!("file_attachments.edit.flashes.update_confirmation") unless unchanged
       redirect_to file_attachments_path(edition.document)
     end
   end

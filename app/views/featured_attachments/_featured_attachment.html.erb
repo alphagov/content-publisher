@@ -1,6 +1,15 @@
 <% actions = [] %>
 
 <% actions << link_to(
+  "Edit attachment",
+  edit_file_attachment_path(document, attachment.file_attachment_id, wizard: "featured"),
+  class: "govuk-link govuk-link--no-visited-state app-link--button",
+  data: {
+    gtm: "edit-attachment",
+  },
+) %>
+
+<% actions << link_to(
   "Download",
   download_file_attachment_path(document, attachment.file_attachment),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
