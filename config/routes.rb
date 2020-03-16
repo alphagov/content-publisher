@@ -101,7 +101,7 @@ Rails.application.routes.draw do
     get "/file-attachments/:file_attachment_id/preview" => "file_attachments#preview", as: :preview_file_attachment
     get "/file-attachments/:file_attachment_id/download" => "file_attachments#download", as: :download_file_attachment
     get "/file-attachments/:file_attachment_id/replace" => "file_attachments#replace", as: :replace_file_attachment
-    patch "/file-attachments/:file_attachment_id/replace" => "file_attachments#update"
+    patch "/file-attachments/:file_attachment_id/replace" => "file_attachments#update_file"
     delete "/file-attachments/:file_attachment_id" => "file_attachments#destroy"
     get "/file-attachments/:file_attachment_id/delete" => "file_attachments#confirm_delete", as: :confirm_delete_file_attachment
   end
