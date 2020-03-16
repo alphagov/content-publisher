@@ -1,6 +1,6 @@
 en:
   file_attachments:
-    edit:
+    replace:
       title: Edit attachment
       attachment_title:
         heading: Edit title

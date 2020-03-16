@@ -21,7 +21,7 @@
 
 <% actions << link_to(
   "Edit file",
-  edit_file_attachment_path(document, attachment.file_attachment_id),
+  replace_file_attachment_path(document, attachment.file_attachment_id),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     "modal-action": "edit",

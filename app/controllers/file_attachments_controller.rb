@@ -106,7 +106,7 @@ class FileAttachmentsController < ApplicationController
     end
   end
 
-  def edit
+  def replace
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
 
@@ -114,7 +114,7 @@ class FileAttachmentsController < ApplicationController
       .find_by!(file_attachment_id: params[:file_attachment_id])
   end
 
-  def update
+  def update_file
     result = FileAttachments::UpdateInteractor.call(params: params, user: current_user)
     edition, attachment_revision, issues, unchanged =
       result.to_h.values_at(:edition, :file_attachment_revision, :issues, :unchanged)
@@ -129,7 +129,7 @@ class FileAttachmentsController < ApplicationController
         ),
       }
 
-      render :edit,
+      render :replace,
              title: params.dig(:file_attachment, :title),
              assigns: { edition: edition,
                         issues: issues,
@@ -138,7 +138,7 @@ class FileAttachmentsController < ApplicationController
     elsif params[:wizard] == "featured"
       redirect_to featured_attachments_path(edition.document)
     else
-      flash[:notice] = I18n.t!("file_attachments.edit.flashes.update_confirmation") unless unchanged
+      flash[:notice] = I18n.t!("file_attachments.replace.flashes.update_confirmation") unless unchanged
       redirect_to file_attachments_path(edition.document)
     end
   end
