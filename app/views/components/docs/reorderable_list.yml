@@ -17,7 +17,6 @@ accessibility_criteria: |
 examples:
   default:
     data:
-      order_input_name: attachments_order
       items:
         - title: "Budget 2018"
           description: "PDF, 2.56MB, 48 pages"
@@ -36,20 +35,19 @@ examples:
         <button class="govuk-button" type="submit">Save order</button>
       </form>
     data:
-      order_input_name: attachments_order_in_form
       items:
         - title: "Budget 2018"
           description: "PDF, 2.56MB, 48 pages"
-          order_input_index: "217ab88f-74a9-41eb-ab47-428f54461c00"
+          order_id: "217ab88f-74a9-41eb-ab47-428f54461c00"
         - title: "Budget 2018 (web)"
           description: "HTML attachment"
-          order_input_index: "217ab88f-74a9-41eb-ab47-428f54461c01"
+          order_id: "217ab88f-74a9-41eb-ab47-428f54461c01"
         - title: "Impact on households: distributional analysis to accompany Budget 2018"
           description: "PDF, 592KB, 48 pages"
-          order_input_index: "217ab88f-74a9-41eb-ab47-428f54461c02"
+          order_id: "217ab88f-74a9-41eb-ab47-428f54461c02"
         - title: "Table 2.1: Budget 2018 policy decisions"
           description: "MS Excel Spreadsheet, 248KB"
-          order_input_index: "217ab88f-74a9-41eb-ab47-428f54461c03"
+          order_id: "217ab88f-74a9-41eb-ab47-428f54461c03"
         - title: "Table 2.2: Measures announced at Autumn Budget 2017 or earlier that will take effect from November 2018 or later (£ million)"
           description: "MS Excel Spreadsheet, 248KB"
-          order_input_index: "217ab88f-74a9-41eb-ab47-428f54461c04"
+          order_id: "217ab88f-74a9-41eb-ab47-428f54461c04"
