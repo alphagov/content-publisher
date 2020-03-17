@@ -15,9 +15,9 @@
         <%= tag.div class: "app-c-reorderable-list__actions" do %>
           <%= render "govuk_publishing_components/components/input", {
             label: {
-              text: sanitize("Order index<span class='govuk-visually-hidden'> for #{item[:title]}</span>")
+              text: sanitize("Position<span class='govuk-visually-hidden'> for #{item[:title]}</span>")
             },
-            name: "#{order_input_name}[#{item[:order_input_index]}]",
+            name: "ordering[#{item[:order_id]}]",
             type: "number",
             value: index + 1,
             width: 2
