@@ -21,19 +21,19 @@ en:
       label: Consultation
       description: Consultations (officially ‘documents requiring collective agreement across government’), calls for evidence and requests for people's views on a question.
     corporate_report:
-      label: Corporate report (pre-release)
+      label: Corporate report publication (pre-release)
       description: Publications about the organisation as a public entity, for example, annual reports, business plans and accounts.
     corporate_report_managed_elsewhere:
-      label: Corporate report
+      label: Corporate report publication
       description: Publications about the organisation as a public entity, for example, annual reports, business plans and accounts.
     correspondence:
-      label: Correspondence (pre-release)
+      label: Correspondence publication (pre-release)
       description: Minister or organisation responses (for example to campaign letters), correspondence to individuals, organisations and professionals, circulars, bulletins and newsletters.
     correspondence_managed_elsewhere:
-      label: Correspondence
+      label: Correspondence publication
       description: Minister or organisation responses (for example to campaign letters), correspondence to individuals, organisations and professionals, circulars, bulletins and newsletters.
     decision:
-      label: Decision
+      label: Decision publication
       description: Formal decisions by tribunals, regulators or adjudicators (including courts and Secretaries of State).
     detailed_guide:
       label: Detailed guide
@@ -42,13 +42,13 @@ en:
       label: Fatality notice
       description: Initial fatality notices and subsequent obituaries of forces and Ministry of Defence personnel.
     foi_release:
-      label: FOI release (pre-release)
+      label: FOI release publication (pre-release)
       description: Responses to Freedom of Information (FOI) requests.
     foi_release_managed_elsewhere:
-      label: FOI release
+      label: FOI release publication
       description: Responses to Freedom of Information (FOI) requests.
     form:
-      label: Form
+      label: Form publication
       description: Form documents that need to be completed by the users.
     guidance:
       label: Guidance
@@ -60,25 +60,25 @@ en:
         body_govspeak: |
           For example, manuals, or statutory guidance
     impact_assessment:
-      label: Impact assessment (pre-release)
+      label: Impact assessment publication (pre-release)
       description: Cost-benefit analyses and other assessments of the impact of proposed initiatives, or changes to regulations or legislation.
     impact_assessment_managed_elsewhere:
-      label: Impact assessment
+      label: Impact assessment publication
       description: Cost-benefit analyses and other assessments of the impact of proposed initiatives, or changes to regulations or legislation.
     independent_report:
-      label: Independent report (pre-release)
+      label: Independent report publication (pre-release)
       description: Reports commissioned by government but written by non-government organisations, including independent enquiries, investigations and reviews.
     independent_report_managed_elsewhere:
-      label: Independent report
+      label: Independent report publication
       description: Reports commissioned by government but written by non-government organisations, including independent enquiries, investigations and reviews.
     international_treaty:
-      label: International treaty
+      label: International treaty publication
       description: Treaties and memorandums of understanding between the UK and other nations.
     manual:
       label: Manual
       description: Long, complex guidance or legal documents for specialist users who are familiar with a topic, usually with named or numbered chapters or clauses.
     map:
-      label: Map
+      label: Map publication
       description: Drawn maps and geographical data.
     news:
       label: News and communications
@@ -93,16 +93,16 @@ en:
       label: I’m not sure if this should be on GOV.UK
       description: View this guide to see what should go on GOV.UK and where else you can publish content
     notice:
-      label: Notice
+      label: Notice publication
       description: Permit and licence applications published temporarily for public awareness.
     national_statistics:
-      label: National statistics
+      label: National statistics publication
       description: Official Statistics that have been produced in accordance with the Code of Practice for Official Statistics, which is indicated using the National Statistics quality mark.
     non_statutory_guidance:
-      label: Non-statutory guidance
+      label: Non-statutory guidance publication
       description: Publications like manuals, handbooks, and other documents that offer advice. Use for content produced as a standalone hard-copy publicaton. For web-original content use 'detailed guide'.
     official_statistics:
-      label: Official statistics
+      label: Official statistics publication
       description: Statistics governed by the UK Statistics Authority and produced by members of the Government Statistical Service.
     oral_statement:
       label: Oral statement to Parliament
@@ -114,28 +114,28 @@ en:
         body_govspeak: |
           For example, policy papers or impact assessments
     policy_paper:
-      label: Policy paper (pre-release)
+      label: Policy paper publication (pre-release)
       description: An explanation of the government's position on something. It doesn’t include instructions on how to carry out a task, only the policy itself and how it’ll be implemented.
     policy_paper_managed_elsewhere:
-      label: Policy paper
+      label: Policy paper publication
       description: An explanation of the government's position on something. It doesn’t include instructions on how to carry out a task, only the policy itself and how it’ll be implemented.
     press_release:
       label: Press release
       description: "Unedited press releases as sent to the media, and official statements from the organisation."
     promotional:
-      label: Promotional material (pre-release)
+      label: Promotional material publication (pre-release)
       description: Leaflets, posters, factsheets and marketing materials.
     promotional_managed_elsewhere:
-      label: Promotional material
+      label: Promotional material publication
       description: Leaflets, posters, factsheets and marketing materials.
     regulation:
-      label: Regulation
+      label: Regulation publication
       description: Regulations imposed by an independent regulatory authority.
     research:
-      label: Research and analysis (pre-release)
+      label: Research and analysis publication (pre-release)
       description: Research reports, surveys, analyses and evaluations.
     research_managed_elsewhere:
-      label: Research and analysis
+      label: Research and analysis publication
       description: Research reports, surveys, analyses and evaluations.
     specialist_notice:
       label: Specialist notice
@@ -159,13 +159,13 @@ en:
       label: Statistics announcement
       description: An announcement of national and official statistics releases to comply with the Code of Practice for Official Statistics.
     statutory_guidance:
-      label: Statutory guidance
+      label: Statutory guidance publication
       description: Guidance which relevant users are legally obliged to follow.
     transparency:
-      label: Transparency (pre-release)
+      label: Transparency data publication (pre-release)
       description: Information about how an organisation operates, for example departmental spending, salaries and staff survey results.
     transparency_managed_elsewhere:
-      label: Transparency
+      label: Transparency data
       description: Information about how an organisation operates, for example departmental spending, salaries and staff survey results.
     transparency_statistics_reports:
       label: Transparency, statistics and reports
