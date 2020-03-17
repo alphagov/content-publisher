@@ -78,6 +78,7 @@ class Edition < ApplicationRecord
            :supporting_organisation_ids,
            :backdated_to,
            :editor_political,
+           :featured_attachment_ordering,
            to: :revision
 
   scope :find_current, ->(id: nil, document: nil) do

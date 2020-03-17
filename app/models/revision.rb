@@ -56,6 +56,7 @@ class Revision < ApplicationRecord
            :backdated_to,
            :document_type,
            :editor_political,
+           :featured_attachment_ordering,
            to: :metadata_revision
 
   delegate :tags,

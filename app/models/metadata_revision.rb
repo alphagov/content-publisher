@@ -5,6 +5,7 @@
 # This model is immutable.
 class MetadataRevision < ApplicationRecord
   validates :change_history, "metadata_revision/change_history" => true
+  validates :featured_attachment_ordering, "metadata_revision/featured_attachment_ordering" => true
 
   belongs_to :created_by, class_name: "User", optional: true
 

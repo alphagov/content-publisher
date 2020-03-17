@@ -15,6 +15,7 @@ FactoryBot.define do
       locale { I18n.available_locales.sample }
       document_type_id { document_type.id }
       document_type { build(:document_type, path_prefix: "/prefix") }
+      featured_attachment_ordering { [] }
       state { "draft" }
       lead_image_revision { nil }
       image_revisions { [] }
@@ -62,6 +63,7 @@ FactoryBot.define do
           lead_image_revision: evaluator.lead_image_revision,
           image_revisions: image_revisions,
           file_attachment_revisions: evaluator.file_attachment_revisions,
+          featured_attachment_ordering: evaluator.featured_attachment_ordering,
           change_history: evaluator.change_history,
         )
       end

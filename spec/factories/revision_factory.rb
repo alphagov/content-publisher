@@ -19,6 +19,7 @@ FactoryBot.define do
       backdated_to { nil }
       editor_political { nil }
       change_history { [] }
+      featured_attachment_ordering { [] }
     end
   end
 
@@ -55,6 +56,7 @@ FactoryBot.define do
           document_type_id: evaluator.document_type_id,
           editor_political: evaluator.editor_political,
           change_history: evaluator.change_history,
+          featured_attachment_ordering: evaluator.featured_attachment_ordering,
         )
       end
 
