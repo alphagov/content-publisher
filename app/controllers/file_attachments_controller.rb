@@ -106,6 +106,16 @@ class FileAttachmentsController < ApplicationController
     end
   end
 
+  def edit
+    @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
+
+    @attachment = @edition.file_attachment_revisions
+      .find_by!(file_attachment_id: params[:file_attachment_id])
+  end
+
+  def update; end
+
   def replace
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
