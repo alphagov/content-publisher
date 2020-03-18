@@ -29,19 +29,14 @@
   },
 ) %>
 
-<% actions << capture do %>
-  <%= form_tag(
-    file_attachment_path(edition.document, attachment.file_attachment_id),
-    method: :delete,
-    class: "app-inline-block",
+<% actions << link_to(
+  "Delete attachment",
+    confirm_delete_file_attachment_path(document, attachment.file_attachment_id),
+    class: "govuk-link app-link--button app-link--destructive",
     data: {
-      "modal-action": "delete",
-      gtm: "delete-attachment",
-    },
-  ) do %>
-    <button class="govuk-link app-link--button app-link--destructive">Delete attachment</button>
-  <% end %>
-<% end %>
+      "modal-action": "confirm-delete"
+  },
+) %>
 
 <%= render "components/attachment_meta", {
   attachment: file_attachment_attributes(attachment, edition),

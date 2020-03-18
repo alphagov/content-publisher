@@ -4,7 +4,7 @@
                       file_attachments_path(@edition.document)
                     end %>
 
-<% content_for :back_link, render_back_link(href: back_link_path) %>
+<% content_for :back_link, render_back_link(href: back_link_path, data_attributes: { "modal-action": "back" }) %>
 <% content_for :title, t("file_attachments.confirm_delete.title", title: @attachment.title) %>
 
 <div class="govuk-grid-row">
@@ -13,6 +13,10 @@
       file_attachment_path(@edition.document, wizard: params[:wizard]),
       method: :delete,
       multipart: true,
+      data: {
+        "modal-action": "delete",
+        gtm: "delete-attachment"
+      },
     ) do %>
       <%= render_govspeak(t("file_attachments.confirm_delete.description_govspeak")) %>
 
@@ -25,7 +29,8 @@
       <div class="govuk-body">
         <%= link_to "Cancel",
                   back_link_path,
-                  class: "govuk-link govuk-link--no-visited-state" %>
+                  class: "govuk-link govuk-link--no-visited-state", 
+                  data: { "modal-action": "cancel" } %>
       <% end %>
     </div>
   </div>
