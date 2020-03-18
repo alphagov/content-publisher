@@ -112,6 +112,10 @@ class FileAttachmentsController < ApplicationController
 
     @attachment = @edition.file_attachment_revisions
       .find_by!(file_attachment_id: params[:file_attachment_id])
+
+    assert_edition_feature(@edition, assertion: "supports featured attachments") do
+      @edition.document_type.attachments.featured?
+    end
   end
 
   def update; end

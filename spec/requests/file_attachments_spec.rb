@@ -33,6 +33,15 @@ RSpec.describe "File Attachments" do
   end
 
   it_behaves_like "requests that return status",
+                  "editing featured attachments for an edition that doesn't allow them",
+                  status: :not_found,
+                  routes: { edit_file_attachment_path: %i[get] } do
+    let(:edition) { create(:edition) }
+    let(:file_attachment_revision) { create(:file_attachment_revision) }
+    let(:route_params) { [edition.document, file_attachment_revision] }
+  end
+
+  it_behaves_like "requests that return status",
                   "adding featured attachments for an edition that doesn't allow them",
                   status: :not_found,
                   routes: { new_file_attachment_path: %i[get] } do
@@ -258,8 +267,10 @@ RSpec.describe "File Attachments" do
   describe "GET /documents/:document/file-attachments/:file_attachment_id/edit" do
     it "returns successfully" do
       file_attachment_revision = create(:file_attachment_revision)
+      document_type = build(:document_type, attachments: "featured")
       edition = create(:edition,
-                       file_attachment_revisions: [file_attachment_revision])
+                       file_attachment_revisions: [file_attachment_revision],
+                       document_type: document_type)
 
       get edit_file_attachment_path(edition.document,
                                     file_attachment_revision.file_attachment_id)
