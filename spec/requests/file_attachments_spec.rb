@@ -278,6 +278,25 @@ RSpec.describe "File Attachments" do
     end
   end
 
+  describe "PATCH /documents/:document/file-attachments/:file_attachment_id/edit" do
+    it "redirects to the featured attachments index page" do
+      stub_any_publishing_api_put_content
+      stub_asset_manager_receives_an_asset
+
+      file_attachment_revision = create(:file_attachment_revision)
+      document_type = build(:document_type, attachments: "featured")
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision],
+                       document_type: document_type)
+
+      patch edit_file_attachment_path(edition.document,
+                                      file_attachment_revision.file_attachment_id),
+            params: { file_attachment: { unique_reference: "Uniq Ref" } }
+
+      expect(response).to redirect_to(featured_attachments_path(edition.document))
+    end
+  end
+
   describe "GET /documents/:document/file_attachments/:file_attachment_id/download" do
     it "provides a file attachment download" do
       file_attachment_revision = create(:file_attachment_revision)

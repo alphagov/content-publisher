@@ -118,7 +118,12 @@ class FileAttachmentsController < ApplicationController
     end
   end
 
-  def update; end
+  def update
+    result = FileAttachments::UpdateInteractor.call(params: params, user: current_user)
+    edition = result.edition
+
+    redirect_to featured_attachments_path(edition.document)
+  end
 
   def replace
     @edition = Edition.find_current(document: params[:document])
