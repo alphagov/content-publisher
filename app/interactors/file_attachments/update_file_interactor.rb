@@ -1,4 +1,4 @@
-class FileAttachments::UpdateInteractor < ApplicationInteractor
+class FileAttachments::UpdateFileInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,

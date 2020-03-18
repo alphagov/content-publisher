@@ -115,7 +115,7 @@ class FileAttachmentsController < ApplicationController
   end
 
   def update_file
-    result = FileAttachments::UpdateInteractor.call(params: params, user: current_user)
+    result = FileAttachments::UpdateFileInteractor.call(params: params, user: current_user)
     edition, attachment_revision, issues, unchanged =
       result.to_h.values_at(:edition, :file_attachment_revision, :issues, :unchanged)
 
