@@ -282,7 +282,7 @@ GEM
       hashery (~> 2.0)
       ruby-rc4
       ttfunk
-    pg (1.2.2)
+    pg (1.2.3)
     phantomjs (2.1.1.0)
     plek (3.0.0)
     public_suffix (4.0.3)
