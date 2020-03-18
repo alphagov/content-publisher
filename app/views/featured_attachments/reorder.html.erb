@@ -1,0 +1,35 @@
+<% content_for :back_link, render_back_link(href: featured_attachments_path(@edition.document)) %>
+<% content_for :title, t("featured_attachments.reorder.title", title: @edition.title_or_fallback) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <p class="govuk-body govuk-!-margin-bottom-8 app-js-only">
+      <%= t("featured_attachments.reorder.description") %>
+    </p>
+
+    <p class="govuk-body govuk-!-margin-bottom-8 app-no-js">
+      <%= t("featured_attachments.reorder.nojs_description") %>
+    </p>
+
+    <%= form_tag(
+      reorder_featured_attachments_path(@edition.document),
+      method: :patch,
+      data: { gtm: "save-attachment-order" },
+    ) do %>
+      <%= render "components/reorderable_list", {
+        input_name: "attachments[ordering]",
+        items: @edition.featured_attachments.map do |attachment|
+          {
+            title: attachment.title,
+            order_id: attachment.featured_attachment_id,
+          }
+        end
+      } %>
+
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save attachment order",
+        margin_bottom: true,
+      } %>
+    <% end %>
+  </div>
+</div>

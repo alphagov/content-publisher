@@ -41,6 +41,7 @@ en:
         access_limit_updated: "Access limit updated"
         access_limit_removed: "Access limit removed"
         political_status_changed: "History mode criteria updated"
+        attachments_reordered: "Attachments reordered"
         whitehall_migration:
           archived: "Archived"
           deleted: "First created"
