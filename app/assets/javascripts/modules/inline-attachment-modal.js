@@ -34,7 +34,7 @@ InlineAttachmentModal.prototype.actionCallback = function (item) {
     'insert': function () {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
-    'confirm-delete': function () { 
+    'confirm-delete': function () {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
     'delete': function () {

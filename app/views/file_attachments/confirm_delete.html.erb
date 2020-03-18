@@ -30,7 +30,9 @@
         <%= link_to "Cancel",
                   back_link_path,
                   class: "govuk-link govuk-link--no-visited-state", 
-                  data: { "modal-action": "cancel" } %>
+                  data: { "modal-action": "cancel",
+                  gtm: "cancel-delete-attachment" 
+                  } %>                  
       <% end %>
     </div>
   </div>
