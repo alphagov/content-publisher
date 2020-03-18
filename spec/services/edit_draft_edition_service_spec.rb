@@ -1,6 +1,6 @@
 RSpec.describe EditDraftEditionService do
   describe ".call" do
-    let(:edition) { build(:edition) }
+    let(:edition) { build(:edition, revision_synced: true) }
     let(:user) { build(:user) }
 
     it "assigns attributes to an edition" do
@@ -40,6 +40,20 @@ RSpec.describe EditDraftEditionService do
         expect { described_class.call(edition, user) }
           .to change { edition.editors.size }
           .by(1)
+      end
+    end
+
+    describe "updates revision sync flag" do
+      it "flags the revision as out-of-sync if updated" do
+        revision = build(:revision)
+
+        expect { described_class.call(edition, user, revision: revision) }
+          .to change(edition, :revision_synced).to(false)
+      end
+
+      it "preserves revision sync flag if it's not updated" do
+        expect { described_class.call(edition, user) }
+          .not_to change(edition, :revision_synced)
       end
     end
 

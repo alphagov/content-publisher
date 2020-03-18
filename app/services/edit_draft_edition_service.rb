@@ -8,10 +8,7 @@ class EditDraftEditionService < ApplicationService
   def call
     raise "cannot edit a live edition" if edition.live?
 
-    edition.assign_attributes(
-      attributes.merge(last_edited_by: user, last_edited_at: Time.zone.now),
-    )
-
+    edition.assign_attributes(extended_attributes)
     determine_political
     associate_with_government
     edition.add_edition_editor(user)
@@ -20,6 +17,12 @@ class EditDraftEditionService < ApplicationService
 private
 
   attr_reader :edition, :user, :attributes
+
+  def extended_attributes
+    result = attributes.merge(last_edited_by: user, last_edited_at: Time.zone.now)
+    result[:revision_synced] = false if attributes.key?(:revision)
+    result
+  end
 
   def determine_political
     identifier = PoliticalEditionIdentifier.new(edition)
