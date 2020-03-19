@@ -511,7 +511,7 @@ DEPENDENCIES
   json_matchers
   kaminari (~> 1)
   listen (~> 3)
-  mail-notify
+  mail-notify (~> 1)
   pdf-reader (~> 2)
   pg (~> 1)
   plek (~> 3)
