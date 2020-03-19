@@ -120,9 +120,20 @@ class FileAttachmentsController < ApplicationController
 
   def update
     result = FileAttachments::UpdateInteractor.call(params: params, user: current_user)
-    edition = result.edition
+    edition, attachment_revision, issues =
+      result.to_h.values_at(:edition, :file_attachment_revision, :issues)
 
-    redirect_to featured_attachments_path(edition.document)
+    if issues
+      flash.now["requirements"] = { "items" => issues.items }
+
+      render :edit,
+             assigns: { edition: edition,
+                        attachment: attachment_revision,
+                        issues: issues },
+             status: :unprocessable_entity
+    else
+      redirect_to featured_attachments_path(edition.document)
+    end
   end
 
   def replace

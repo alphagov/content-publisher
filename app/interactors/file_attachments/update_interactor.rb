@@ -9,6 +9,7 @@ class FileAttachments::UpdateInteractor < ApplicationInteractor
     Edition.transaction do
       find_and_lock_edition
       find_file_attachment
+      check_for_issues
 
       update_file_attachment
       update_edition
@@ -28,6 +29,13 @@ private
   def find_file_attachment
     context.file_attachment_revision = edition.file_attachment_revisions
                                               .find_by!(file_attachment_id: params[:file_attachment_id])
+  end
+
+  def check_for_issues
+    checker = Requirements::FileAttachmentMetadataChecker.new(unique_reference: attachment_params[:unique_reference])
+    issues = checker.pre_update_issues
+
+    context.fail!(issues: issues) if issues.any?
   end
 
   def update_file_attachment
