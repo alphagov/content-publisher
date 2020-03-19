@@ -10,6 +10,15 @@
 ) %>
 
 <% actions << link_to(
+  "Edit details",
+  edit_file_attachment_path(document, attachment.file_attachment_id),
+  class: "govuk-link govuk-link--no-visited-state app-link--button",
+  data: {
+    gtm: "edit-details",
+  },
+) %>
+
+<% actions << link_to(
   "Download",
   download_file_attachment_path(document, attachment.file_attachment),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
