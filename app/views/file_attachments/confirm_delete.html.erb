@@ -12,10 +12,10 @@
     <%= form_tag(
       file_attachment_path(@edition.document, wizard: params[:wizard]),
       method: :delete,
-      multipart: true,
+      multipart: true,  
       data: {
-        "modal-action": "delete",
-        gtm: "delete-attachment"
+        "modal-action": "confirm-delete",
+        gtm: "confirm-delete-attachment"
       },
     ) do %>
       <%= render_govspeak(t("file_attachments.confirm_delete.description_govspeak")) %>
@@ -28,11 +28,11 @@
 
       <div class="govuk-body">
         <%= link_to "Cancel",
-                  back_link_path,
-                  class: "govuk-link govuk-link--no-visited-state", 
-                  data: { "modal-action": "cancel",
-                  gtm: "cancel-delete-attachment" 
-                  } %>                  
+          back_link_path,
+          class: "govuk-link govuk-link--no-visited-state", 
+          data: { "modal-action": "back",
+          gtm: "cancel-delete-attachment" 
+        } %>                  
       <% end %>
     </div>
   </div>

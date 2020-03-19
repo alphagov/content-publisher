@@ -31,11 +31,11 @@
 
 <% actions << link_to(
   "Delete attachment",
-    confirm_delete_file_attachment_path(document, attachment.file_attachment_id),
-    class: "govuk-link app-link--button app-link--destructive",
-    data: {
-      "modal-action": "confirm-delete",
-      gtm: "confirm-delete"
+  confirm_delete_file_attachment_path(edition.document, attachment.file_attachment_id),
+  class: "govuk-link app-link--button app-link--destructive",
+  data: {
+    "modal-action": "delete",
+    gtm: "delete-attachment"
   },
 ) %>
 
