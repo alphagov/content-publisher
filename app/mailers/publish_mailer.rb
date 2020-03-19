@@ -11,7 +11,7 @@ class PublishMailer < ApplicationMailer
       raise "Cannot send publish email for a #{status.state} state"
     end
 
-    mail(to: recipient.email, subject: subject)
+    view_mail(template_id, to: recipient.email, subject: subject)
   end
 
 private

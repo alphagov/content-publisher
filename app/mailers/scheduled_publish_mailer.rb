@@ -11,7 +11,7 @@ class ScheduledPublishMailer < ApplicationMailer
       raise "Cannot send successful publish email for a #{status.state} state"
     end
 
-    mail(to: recipient.email, subject: success_subject)
+    view_mail(template_id, to: recipient.email, subject: success_subject)
   end
 
   def failure_email(recipient, edition, status)
@@ -26,7 +26,7 @@ class ScheduledPublishMailer < ApplicationMailer
     subject = I18n.t("scheduled_publish_mailer.failure_email.subject",
                      title: edition.title)
 
-    mail(to: recipient.email, subject: subject)
+    view_mail(template_id, to: recipient.email, subject: subject)
   end
 
 private
