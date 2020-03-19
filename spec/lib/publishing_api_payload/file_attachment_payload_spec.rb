@@ -16,6 +16,7 @@ RSpec.describe PublishingApiPayload::FileAttachmentPayload do
         number_of_pages: attachment.number_of_pages,
         title: attachment.title,
         url: attachment.asset_url,
+        unique_reference: attachment.unique_reference,
       }
 
       expect(payload).to match a_hash_including(expected_payload)
