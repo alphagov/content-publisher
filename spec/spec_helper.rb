@@ -14,9 +14,7 @@ require "govuk_sidekiq/testing"
 require "json_matchers/rspec"
 
 Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
-SimpleCov.start
 GovukTest.configure
-I18nCov.start
 WebMock.disable_net_connect!(allow_localhost: true)
 Capybara.automatic_label_click = true
 ActiveRecord::Migration.maintain_test_schema!
@@ -37,6 +35,11 @@ RSpec.configure do |config|
   config.include AuthenticationHelper, type: ->(spec) { spec.in?(%i[feature request view]) }
   config.include BulkDataHelper
   config.include Capybara::RSpecMatchers, type: :request
+
+  unless config.files_to_run.one?
+    I18nCov.start
+    SimpleCov.start
+  end
 
   config.before :suite do
     Rails.application.load_seed
