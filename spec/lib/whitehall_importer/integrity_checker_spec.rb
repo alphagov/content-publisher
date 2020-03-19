@@ -275,14 +275,8 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
     let(:integrity_check) { described_class.new(edition) }
 
-    def problem_message(message, expected, actual)
+    def problem_description(message, expected, actual)
       "#{message}, expected: #{expected.inspect}, actual: #{actual.inspect}"
-    end
-
-    def unpublishing_problem_message(publishing_api_type, expected)
-      "unpublishing type not expected, " +
-        "expected: #{publishing_api_type.inspect}, " +
-        "actual: #{expected.inspect}"
     end
 
     before do
@@ -295,9 +289,9 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       stub_publishing_api_has_item(publishing_api_item)
 
       expect(integrity_check.problems).to include(
-        problem_message("our first_published_at doesn't match first_public_at",
-                        publishing_api_item[:details][:first_public_at],
-                        edition.document.first_published_at.as_json),
+        problem_description("our first_published_at doesn't match first_public_at",
+                            publishing_api_item[:details][:first_public_at],
+                            edition.document.first_published_at.as_json),
       )
     end
 
@@ -306,42 +300,50 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       stub_publishing_api_has_item(publishing_api_item)
 
       expect(integrity_check.problems).to include(
-        problem_message("public_updated_at doesn't match",
-                        publishing_api_item[:public_updated_at],
-                        edition.public_first_published_at.as_json),
+        problem_description("public_updated_at doesn't match",
+                            publishing_api_item[:public_updated_at],
+                            edition.public_first_published_at.as_json),
       )
     end
 
     it "returns a problem when the base paths don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("base_path doesn't match", publishing_api_item[:base_path], edition.base_path),
+        problem_description("base_path doesn't match",
+                            publishing_api_item[:base_path],
+                            edition.base_path),
       )
     end
 
     it "returns a problem when the titles don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("title doesn't match", publishing_api_item[:title], edition.title),
+        problem_description("title doesn't match",
+                            publishing_api_item[:title],
+                            edition.title),
       )
     end
 
     it "returns a problem when the descriptions don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("description doesn't match", publishing_api_item[:description], edition.summary),
+        problem_description("description doesn't match",
+                            publishing_api_item[:description],
+                            edition.summary),
       )
     end
 
     it "returns a problem when the document types don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("document_type doesn't match",
-                        publishing_api_item[:document_type],
-                        edition.document_type.id),
+        problem_description("document_type doesn't match",
+                            publishing_api_item[:document_type],
+                            edition.document_type.id),
       )
     end
 
     it "returns a problem when the schema names don't match" do
       edition_schema_name = edition.document_type.publishing_metadata.schema_name
       expect(integrity_check.problems).to include(
-        problem_message("schema_name doesn't match", publishing_api_item[:schema_name], edition_schema_name),
+        problem_description("schema_name doesn't match",
+                            publishing_api_item[:schema_name],
+                            edition_schema_name),
       )
     end
 
@@ -354,9 +356,9 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       publishing_api_image = publishing_api_item[:details][:image]
 
       expect(integrity_check.problems).to include(
-        problem_message("image alt_text doesn't match",
-                        publishing_api_image[:alt_text],
-                        edition_image.alt_text),
+        problem_description("image alt_text doesn't match",
+                            publishing_api_image[:alt_text],
+                            edition_image.alt_text),
       )
     end
 
@@ -365,17 +367,17 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       publishing_api_image = publishing_api_item[:details][:image]
 
       expect(integrity_check.problems).to include(
-        problem_message("image caption doesn't match",
-                        publishing_api_image[:caption],
-                        edition_image.caption),
+        problem_description("image caption doesn't match",
+                            publishing_api_image[:caption],
+                            edition_image.caption),
       )
     end
 
     it "returns a problem when the primary_publishing_organisation doesn't match" do
       expect(integrity_check.problems).to include(
-        problem_message("primary_publishing_organisation doesn't match",
-                        publishing_api_item[:links][:primary_publishing_organisation],
-                        edition.tags["primary_publishing_organisation"]),
+        problem_description("primary_publishing_organisation doesn't match",
+                            publishing_api_item[:links][:primary_publishing_organisation],
+                            edition.tags["primary_publishing_organisation"]),
       )
     end
 
@@ -430,16 +432,17 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       it "returns a problem when the unpublishing type isn't correct" do
         expect(integrity_check.problems).to include(
-          unpublishing_problem_message("withdrawal",
-                                       publishing_api_item[:unpublishing][:type]),
+          problem_description("unpublishing type not expected",
+                              "withdrawal",
+                              publishing_api_item[:unpublishing][:type]),
         )
       end
 
       it "returns a problem when the unpublishing time isn't correct" do
         expect(integrity_check.problems).to include(
-          problem_message("unpublishing time doesn't match",
-                          publishing_api_item[:unpublishing][:unpublished_at],
-                          edition.status.details.withdrawn_at),
+          problem_description("unpublishing time doesn't match",
+                              publishing_api_item[:unpublishing][:unpublished_at],
+                              edition.status.details.withdrawn_at),
         )
       end
 
@@ -483,8 +486,9 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       it "returns a problem when the unpublishing type isn't correct" do
         expect(integrity_check.problems).to include(
-          unpublishing_problem_message("gone",
-                                       publishing_api_item[:unpublishing][:type]),
+          problem_description("unpublishing type not expected",
+                              "gone",
+                              publishing_api_item[:unpublishing][:type]),
         )
       end
 
@@ -515,16 +519,17 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         integrity_check = described_class.new(edition)
 
         expect(integrity_check.problems).to include(
-          unpublishing_problem_message("redirect",
-                                       publishing_api_item[:unpublishing][:type]),
+          problem_description("unpublishing type not expected",
+                              "redirect",
+                              publishing_api_item[:unpublishing][:type]),
         )
       end
 
       it "returns a problem when the alternative path doesn't match" do
         expect(integrity_check.problems).to include(
-          problem_message("unpublishing alternative path doesn't match",
-                          publishing_api_item[:unpublishing][:alternative_path],
-                          edition.status.details.alternative_url),
+          problem_description("unpublishing alternative path doesn't match",
+                              publishing_api_item[:unpublishing][:alternative_path],
+                              edition.status.details.alternative_url),
         )
       end
     end
