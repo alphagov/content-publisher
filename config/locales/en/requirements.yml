@@ -76,6 +76,9 @@ en:
         form_message: Enter a title
       too_long:
         form_message: "Enter a title that is fewer than %{max_length} characters long"
+    file_attachment_unique_reference:
+      too_long:
+        form_message: "Enter a unique reference that is fewer than %{max_length} characters long"
     public_explanation:
       blank:
         form_message: Enter a public explanation
