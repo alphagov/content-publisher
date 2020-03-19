@@ -2,6 +2,17 @@ module WhitehallImporter
   class IntegrityChecker
     attr_reader :edition
 
+    def self.time_matches?(proposed_time, publishing_api_time)
+      return true if proposed_time == publishing_api_time
+
+      proposed_time = Time.zone.rfc3339(proposed_time)
+      publishing_api_time = Time.zone.rfc3339(publishing_api_time)
+
+      proposed_time.between?(publishing_api_time - 5, publishing_api_time + 5)
+    rescue ArgumentError
+      false
+    end
+
     def initialize(edition)
       @edition = edition
     end
@@ -11,7 +22,7 @@ module WhitehallImporter
     end
 
     def problems
-      content_problems + image_problems + organisation_problems
+      content_problems + image_problems + organisation_problems + time_problems
     end
 
     def proposed_payload
@@ -45,6 +56,33 @@ module WhitehallImporter
       ).sufficiently_similar?
 
       problems
+    end
+
+    def time_problems
+      problems = []
+
+      proposed_first_published_at = proposed_payload["first_published_at"]
+      first_public_at = publishing_api_content["details"]["first_public_at"]
+
+      unless time_matches?(proposed_first_published_at, first_public_at)
+        problems << problem_description("our first_published_at doesn't match first_public_at",
+                                        first_public_at,
+                                        proposed_first_published_at)
+      end
+      proposed_public_updated_at = proposed_payload["public_updated_at"]
+      public_updated_at = publishing_api_content["public_updated_at"]
+
+      if edition.live? && !time_matches?(proposed_public_updated_at, public_updated_at)
+        problems << problem_description("public_updated_at doesn't match",
+                                        public_updated_at,
+                                        proposed_public_updated_at)
+      end
+
+      problems
+    end
+
+    def time_matches?(proposed_time, publishing_api_time)
+      self.class.time_matches?(proposed_time, publishing_api_time)
     end
 
     def image_problems
