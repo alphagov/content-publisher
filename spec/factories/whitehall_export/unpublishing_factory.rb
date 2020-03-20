@@ -6,7 +6,7 @@ FactoryBot.define do
     created_at { Time.zone.now.rfc3339 }
     updated_at { Time.zone.now.rfc3339 }
     explanation { "User facing explanation" }
-    alternative_url { "" }
+    alternative_path { "" }
     redirect { false }
     unpublishing_reason { "No longer current government policy/activity" }
 

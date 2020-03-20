@@ -140,8 +140,8 @@ module WhitehallImporter
 
       Removal.new(
         explanatory_note: unpublishing["explanation"],
-        alternative_url: unpublishing["alternative_url"],
-        redirect: unpublishing["alternative_url"].present?,
+        alternative_url: unpublishing["alternative_path"],
+        redirect: unpublishing["alternative_path"].present?,
         removed_at: unpublishing["created_at"],
       )
     end
