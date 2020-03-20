@@ -43,6 +43,15 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
     let(:integrity_check) { described_class.new(edition) }
 
+    let(:explanation) { "This has been moved" }
+    let(:html_explanation) do
+      "#{explanation} <a href=\"https://www.gov.uk/elsewhere\">elsewhere</a>"
+    end
+
+    let(:markdown_explanation) do
+      "#{explanation} [elsewhere](https://www.gov.uk/elsewhere)"
+    end
+
     it "returns true if there aren't any problems for edition without image or attachment" do
       stub_publishing_api_has_item(publishing_api_item)
 
@@ -111,6 +120,100 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       end
     end
 
+    it "returns true if withdrawn data matches the Publishing API" do
+      withdrawal = build(:withdrawal, public_explanation: markdown_explanation)
+      withdrawn_edition = build(:edition,
+                                :withdrawn,
+                                document_type: document_type,
+                                first_published_at: Date.yesterday.noon,
+                                withdrawal: withdrawal)
+
+      first_published_at = withdrawn_edition.document.first_published_at
+      stub_publishing_api_has_item(
+        default_publishing_api_item(withdrawn_edition,
+                                    publication_state: "unpublished",
+                                    public_updated_at: first_published_at,
+                                    unpublishing: {
+                                      type: "withdrawal",
+                                      unpublished_at: withdrawal.withdrawn_at,
+                                      explanation: html_explanation,
+                                    },
+                                    details: {
+                                      first_public_at: first_published_at,
+                                    }),
+      )
+
+      stub_publishing_api_has_links(
+        content_id: withdrawn_edition.content_id, links: {},
+      )
+
+      integrity_check = described_class.new(withdrawn_edition)
+      expect(integrity_check.valid?).to be true
+    end
+
+    context "when removed content" do
+      let(:removal) do
+        build(:removal,
+              explanatory_note: markdown_explanation,
+              alternative_url: "/somewhere")
+      end
+
+      let(:removed_edition) do
+        build(:edition,
+              :removed,
+              document_type: document_type,
+              first_published_at: Date.yesterday.noon,
+              removal: removal)
+      end
+
+      let(:first_published_at) { removed_edition.document.first_published_at }
+
+      before do
+        stub_publishing_api_has_links(
+          content_id: removed_edition.content_id, links: {},
+        )
+      end
+
+      it "returns true if removed data matches the Publishing API" do
+        stub_publishing_api_has_item(
+          default_publishing_api_item(removed_edition,
+                                      publication_state: "unpublished",
+                                      public_updated_at: first_published_at,
+                                      unpublishing: {
+                                        type: "gone",
+                                        explanation: html_explanation,
+                                        alternative_path: "/somewhere",
+                                      },
+                                      details: {
+                                        first_public_at: first_published_at,
+                                      }),
+        )
+
+        integrity_check = described_class.new(removed_edition)
+        expect(integrity_check.valid?).to be true
+      end
+
+      it "returns true if there is an unpublished time mismatch" do
+        stub_publishing_api_has_item(
+          default_publishing_api_item(removed_edition,
+                                      publication_state: "unpublished",
+                                      public_updated_at: first_published_at,
+                                      unpublishing: {
+                                        type: "gone",
+                                        unpublished_at: Date.yesterday.end_of_day,
+                                        explanation: html_explanation,
+                                        alternative_path: "/somewhere",
+                                      },
+                                      details: {
+                                        first_public_at: first_published_at,
+                                      }),
+        )
+
+        integrity_check = described_class.new(removed_edition)
+        expect(integrity_check.valid?).to be true
+      end
+    end
+
     context "with an attachment not yet on asset mananger" do
       let(:file_attachment_revision) { create(:file_attachment_revision) }
       let(:edition) do
@@ -172,7 +275,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
     let(:integrity_check) { described_class.new(edition) }
 
-    def problem_message(message, expected, actual)
+    def problem_description(message, expected, actual)
       "#{message}, expected: #{expected.inspect}, actual: #{actual.inspect}"
     end
 
@@ -186,9 +289,9 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       stub_publishing_api_has_item(publishing_api_item)
 
       expect(integrity_check.problems).to include(
-        problem_message("our first_published_at doesn't match first_public_at",
-                        publishing_api_item[:details][:first_public_at],
-                        edition.document.first_published_at.as_json),
+        problem_description("our first_published_at doesn't match first_public_at",
+                            publishing_api_item[:details][:first_public_at],
+                            edition.document.first_published_at.as_json),
       )
     end
 
@@ -197,42 +300,50 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       stub_publishing_api_has_item(publishing_api_item)
 
       expect(integrity_check.problems).to include(
-        problem_message("public_updated_at doesn't match",
-                        publishing_api_item[:public_updated_at],
-                        edition.public_first_published_at.as_json),
+        problem_description("public_updated_at doesn't match",
+                            publishing_api_item[:public_updated_at],
+                            edition.public_first_published_at.as_json),
       )
     end
 
     it "returns a problem when the base paths don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("base_path doesn't match", publishing_api_item[:base_path], edition.base_path),
+        problem_description("base_path doesn't match",
+                            publishing_api_item[:base_path],
+                            edition.base_path),
       )
     end
 
     it "returns a problem when the titles don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("title doesn't match", publishing_api_item[:title], edition.title),
+        problem_description("title doesn't match",
+                            publishing_api_item[:title],
+                            edition.title),
       )
     end
 
     it "returns a problem when the descriptions don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("description doesn't match", publishing_api_item[:description], edition.summary),
+        problem_description("description doesn't match",
+                            publishing_api_item[:description],
+                            edition.summary),
       )
     end
 
     it "returns a problem when the document types don't match" do
       expect(integrity_check.problems).to include(
-        problem_message("document_type doesn't match",
-                        publishing_api_item[:document_type],
-                        edition.document_type.id),
+        problem_description("document_type doesn't match",
+                            publishing_api_item[:document_type],
+                            edition.document_type.id),
       )
     end
 
     it "returns a problem when the schema names don't match" do
       edition_schema_name = edition.document_type.publishing_metadata.schema_name
       expect(integrity_check.problems).to include(
-        problem_message("schema_name doesn't match", publishing_api_item[:schema_name], edition_schema_name),
+        problem_description("schema_name doesn't match",
+                            publishing_api_item[:schema_name],
+                            edition_schema_name),
       )
     end
 
@@ -245,9 +356,9 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       publishing_api_image = publishing_api_item[:details][:image]
 
       expect(integrity_check.problems).to include(
-        problem_message("image alt_text doesn't match",
-                        publishing_api_image[:alt_text],
-                        edition_image.alt_text),
+        problem_description("image alt_text doesn't match",
+                            publishing_api_image[:alt_text],
+                            edition_image.alt_text),
       )
     end
 
@@ -256,17 +367,17 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       publishing_api_image = publishing_api_item[:details][:image]
 
       expect(integrity_check.problems).to include(
-        problem_message("image caption doesn't match",
-                        publishing_api_image[:caption],
-                        edition_image.caption),
+        problem_description("image caption doesn't match",
+                            publishing_api_image[:caption],
+                            edition_image.caption),
       )
     end
 
     it "returns a problem when the primary_publishing_organisation doesn't match" do
       expect(integrity_check.problems).to include(
-        problem_message("primary_publishing_organisation doesn't match",
-                        publishing_api_item[:links][:primary_publishing_organisation],
-                        edition.tags["primary_publishing_organisation"]),
+        problem_description("primary_publishing_organisation doesn't match",
+                            publishing_api_item[:links][:primary_publishing_organisation],
+                            edition.tags["primary_publishing_organisation"]),
       )
     end
 
@@ -276,6 +387,151 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       message = "organisations don't match, expected: #{expected}, actual: #{actual}"
 
       expect(integrity_check.problems).to include(message)
+    end
+
+    context "when the edition is withdrawn" do
+      let(:edition) do
+        build(:edition,
+              :withdrawn,
+              first_published_at: Date.yesterday.noon,
+              withdrawal: build(:withdrawal))
+      end
+
+      let(:integrity_check) { described_class.new(edition) }
+      let(:unpublishing_explanation) { "This has been moved elsewhere" }
+      let(:publishing_api_item) do
+        default_publishing_api_item(edition,
+                                    publication_state: "unpublished",
+                                    public_updated_at: Date.yesterday.noon,
+                                    unpublishing: {
+                                      type: "gone",
+                                      unpublished_at: Date.yesterday.end_of_day.rfc3339,
+                                      explanation: unpublishing_explanation,
+                                    },
+                                    details: {
+                                      first_public_at: Date.yesterday.noon,
+                                    })
+      end
+
+      before do
+        stub_publishing_api_has_item(publishing_api_item)
+      end
+
+      it "returns a problem if the publication_state isn't 'unpublished' in Publishing API" do
+        publishing_api_item = default_publishing_api_item(edition,
+                                                          publication_state: "published")
+        stub_publishing_api_has_item(publishing_api_item)
+        expected = "unpublished"
+        actual = publishing_api_item[:publication_state]
+        integrity_check = described_class.new(edition)
+
+        expect(integrity_check.problems).to include(
+          "edition state isn't as expected, expected: #{expected.inspect}, actual: #{actual.inspect}",
+        )
+      end
+
+      it "returns a problem when the unpublishing type isn't correct" do
+        expect(integrity_check.problems).to include(
+          problem_description("unpublishing type not expected",
+                              "withdrawal",
+                              publishing_api_item[:unpublishing][:type]),
+        )
+      end
+
+      it "returns a problem when the unpublishing time isn't correct" do
+        expect(integrity_check.problems).to include(
+          problem_description("unpublishing time doesn't match",
+                              publishing_api_item[:unpublishing][:unpublished_at],
+                              edition.status.details.withdrawn_at),
+        )
+      end
+
+      it "returns a problem when the unpublishing explanation isn't correct" do
+        expect(integrity_check.problems).to include(
+          "unpublishing explanation doesn't match",
+        )
+      end
+    end
+
+    context "when the edition is removed" do
+      let(:removal) { build(:removal) }
+      let(:edition) { build(:edition, :removed, removal: removal) }
+      let(:unpublishing_explanation) { "This was removed" }
+      let(:integrity_check) { described_class.new(edition) }
+      let(:publishing_api_item) do
+        default_publishing_api_item(edition,
+                                    publication_state: "unpublished",
+                                    unpublishing: {
+                                      type: "withdrawn",
+                                      explanation: unpublishing_explanation,
+                                    })
+      end
+
+      before do
+        stub_publishing_api_has_item(publishing_api_item)
+      end
+
+      it "returns a problem if the publication_state isn't 'unpublished' in Publishing API" do
+        publishing_api_item = default_publishing_api_item(edition,
+                                                          publication_state: "published")
+        stub_publishing_api_has_item(publishing_api_item)
+        expected = "unpublished"
+        actual = publishing_api_item[:publication_state]
+        integrity_check = described_class.new(edition)
+
+        expect(integrity_check.problems).to include(
+          "edition state isn't as expected, expected: #{expected.inspect}, actual: #{actual.inspect}",
+        )
+      end
+
+      it "returns a problem when the unpublishing type isn't correct" do
+        expect(integrity_check.problems).to include(
+          problem_description("unpublishing type not expected",
+                              "gone",
+                              publishing_api_item[:unpublishing][:type]),
+        )
+      end
+
+      it "returns a problem when the unpublishing explanation isn't correct" do
+        expect(integrity_check.problems).to include(
+          "unpublishing explanation doesn't match",
+        )
+      end
+    end
+
+    context "when the edition is removed and redirected" do
+      let(:removal) { build(:removal, redirect: true, alternative_url: "/somewhere") }
+      let(:edition) { build(:edition, :removed, removal: removal) }
+      let(:publishing_api_item) do
+        default_publishing_api_item(edition,
+                                    publication_state: "unpublished",
+                                    unpublishing: {
+                                      type: "withdrawn",
+                                      alternative_path: "/somewhere-else",
+                                    })
+      end
+
+      before do
+        stub_publishing_api_has_item(publishing_api_item)
+      end
+
+      it "returns a problem when the unpublishing type isn't correct" do
+        integrity_check = described_class.new(edition)
+
+        expect(integrity_check.problems).to include(
+          problem_description("unpublishing type not expected",
+                              "redirect",
+                              publishing_api_item[:unpublishing][:type]),
+        )
+      end
+
+      it "returns a problem when the alternative path doesn't match" do
+        expect(integrity_check.problems).to include(
+          problem_description("unpublishing alternative path doesn't match",
+                              publishing_api_item[:unpublishing][:alternative_path],
+                              edition.status.details.alternative_url),
+        )
+      end
     end
   end
 

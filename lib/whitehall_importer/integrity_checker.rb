@@ -22,7 +22,8 @@ module WhitehallImporter
     end
 
     def problems
-      content_problems + image_problems + organisation_problems + time_problems
+      content_problems + image_problems + organisation_problems +
+        time_problems + unpublishing_problems
     end
 
     def proposed_payload
@@ -125,6 +126,52 @@ module WhitehallImporter
       problems
     end
 
+    def unpublishing_problems
+      problems = []
+      return problems unless edition.withdrawn? || edition.removed?
+
+      unless expected_state?
+        problems << problem_description(
+          "edition state isn't as expected",
+          "unpublished",
+          publishing_api_content.dig("publication_state"),
+        )
+        return problems
+      end
+
+      check = UnpublishingCheck.new(edition, publishing_api_unpublishing)
+
+      unless check.expected_type?
+        problems << problem_description(
+          "unpublishing type not expected",
+          check.expected_type,
+          publishing_api_unpublishing["type"],
+        )
+      end
+
+      unless check.expected_alternative_path?
+        problems << problem_description(
+          "unpublishing alternative path doesn't match",
+          publishing_api_unpublishing["alternative_path"],
+          check.expected_alternative_path,
+        )
+      end
+
+      unless check.expected_unpublishing_time?
+        problems << problem_description(
+          "unpublishing time doesn't match",
+          publishing_api_unpublishing["unpublished_at"],
+          check.expected_unpublishing_time,
+        )
+      end
+
+      unless check.expected_explanation?
+        problems << "unpublishing explanation doesn't match"
+      end
+
+      problems
+    end
+
     def problem_description(message, expected, actual)
       "#{message}, expected: #{expected.inspect}, actual: #{actual.inspect}"
     end
@@ -172,6 +219,15 @@ module WhitehallImporter
       attribute == "alt_text" &&
         proposed_image_payload.empty? &&
         publishing_api_image[attribute] == "placeholder"
+    end
+
+    def expected_state?
+      %w[withdrawn removed].include?(edition.state) &&
+        publishing_api_content.dig("publication_state") == "unpublished"
+    end
+
+    def publishing_api_unpublishing
+      publishing_api_content["unpublishing"]
     end
   end
 end
