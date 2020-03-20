@@ -56,6 +56,7 @@ class Revision < ApplicationRecord
            :backdated_to,
            :document_type,
            :editor_political,
+           :featured_attachment_ordering,
            to: :metadata_revision
 
   delegate :tags,
@@ -73,5 +74,11 @@ class Revision < ApplicationRecord
 
   def assets
     image_revisions.flat_map(&:assets) + file_attachment_revisions.map(&:asset)
+  end
+
+  def featured_attachments
+    file_attachment_revisions.sort_by do |attachment|
+      featured_attachment_ordering.find_index(attachment.featured_attachment_id).to_i
+    end
   end
 end

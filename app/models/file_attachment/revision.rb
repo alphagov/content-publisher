@@ -35,4 +35,8 @@ class FileAttachment::Revision < ApplicationRecord
   def readonly?
     !new_record?
   end
+
+  def featured_attachment_id
+    "FileAttachment#{file_attachment.id}"
+  end
 end

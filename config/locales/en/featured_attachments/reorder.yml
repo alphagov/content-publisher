@@ -1,0 +1,6 @@
+en:
+  featured_attachments:
+    reorder:
+      title: "Reorder attachments for ‘%{title}’"
+      description: You can drag or drop to change the order of attachments or use the links to move them up or down the list, then save the changes.
+      nojs_description: Reorder position numbers to change the order in which you want attachments listed on GOV.UK. Position 1 will be the first attachment on the page.
