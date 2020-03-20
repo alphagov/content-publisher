@@ -1,5 +1,6 @@
 <%
   items ||= []
+  input_name ||= "ordering"
   data_attributes ||= {}
   data_attributes[:module] = "reorderable-list"
 %>
@@ -17,7 +18,7 @@
             label: {
               text: sanitize("Position<span class='govuk-visually-hidden'> for #{item[:title]}</span>")
             },
-            name: "ordering[#{item[:order_id]}]",
+            name: "#{input_name}[#{item[:order_id]}]",
             type: "number",
             value: index + 1,
             width: 2

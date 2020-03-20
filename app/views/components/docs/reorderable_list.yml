@@ -51,3 +51,9 @@ examples:
         - title: "Table 2.2: Measures announced at Autumn Budget 2017 or earlier that will take effect from November 2018 or later (£ million)"
           description: "MS Excel Spreadsheet, 248KB"
           order_id: "217ab88f-74a9-41eb-ab47-428f54461c04"
+  with_custom_input_name:
+    data:
+      input_name: "attachments[ordering]"
+      items:
+        - title: "Budget 2018"
+          description: "PDF, 2.56MB, 48 pages"
