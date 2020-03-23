@@ -1,6 +1,5 @@
 <% content_for :title, t("file_attachments.edit.update.title", title: @edition.title_or_fallback) %>
-<% content_for :back_link, render_back_link(href: featured_attachments_path(@edition.document),
-                                            data_attributes: { "modal-action": "back" }) %>
+<% content_for :back_link, render_back_link(href: featured_attachments_path(@edition.document)) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -9,8 +8,7 @@
       method: :patch,
       multipart: true,
       data: {
-        "modal-action": "update",
-        gtm: "edit-details"
+        gtm: "save-attachment-details"
       },
     ) do %>
       <%= render_govspeak(t("file_attachments.edit.description_govspeak")) %>
