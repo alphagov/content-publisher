@@ -1,9 +1,9 @@
-RSpec.feature "Edit a file attachment file", js: true do
+RSpec.feature "Edit a file attachment", js: true do
   scenario do
     given_there_is_an_edition_with_featured_attachments
     when_i_go_to_edit_an_attachment
-    and_i_add_a_unique_reference
-    then_i_see_the_unique_reference
+    and_i_edit_the_attachment_metadata
+    then_i_see_the_attachment_is_updated
     and_i_see_the_timeline_entry
   end
 
@@ -20,7 +20,7 @@ RSpec.feature "Edit a file attachment file", js: true do
     click_on "Edit details"
   end
 
-  def and_i_add_a_unique_reference
+  def and_i_edit_the_attachment_metadata
     stub_publishing_api_put_content(@edition.content_id, {})
     stub_asset_manager_receives_an_asset
 
@@ -30,7 +30,7 @@ RSpec.feature "Edit a file attachment file", js: true do
     click_on "Save"
   end
 
-  def then_i_see_the_unique_reference
+  def then_i_see_the_attachment_is_updated
     expect(page).to have_content(@unique_reference)
   end
 
