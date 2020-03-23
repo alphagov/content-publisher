@@ -14,7 +14,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       chosenClass: 'app-c-reorderable-list__item--chosen',
       dragClass: 'app-c-reorderable-list__item--drag',
       onSort: function () {
-        this.updateOrderIndexes.bind(this)
+        this.updateOrderIndexes()
         this.triggerEvent(this.$module, 'reorder-drag')
       }.bind(this)
     })
