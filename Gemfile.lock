@@ -234,6 +234,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
+    mail-notify (1.0.1)
+      actionmailer (>= 5.0, < 6.1)
+      notifications-ruby-client (~> 5.1)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (1.0.0)
@@ -508,7 +511,7 @@ DEPENDENCIES
   json_matchers
   kaminari (~> 1)
   listen (~> 3)
-  notifications-ruby-client (~> 5.1)
+  mail-notify (~> 1)
   pdf-reader (~> 2)
   pg (~> 1)
   plek (~> 3)
