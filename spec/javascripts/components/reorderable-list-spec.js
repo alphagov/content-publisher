@@ -113,6 +113,37 @@ describe('Reorderable list component', function () {
     })
   })
 
+  describe('when dragging the first element to the bottom', function () {
+    var reorderableList
+    var sortable
+    beforeEach(function () {
+      reorderableList = new GOVUK.Modules.ReorderableList()
+      reorderableList.start($(element))
+      spyOnEvent($(element), 'reorder-drag')
+      sortable = reorderableList.sortable
+      sortable.sort(sortable.toArray().reverse())
+      sortable.options.onSort() // not triggered by 'sort'
+    })
+
+    it('should swaps current item with next item', function () {
+      var firstItemTitle = document.querySelector('li:nth-child(1) .app-c-reorderable-list__title').textContent
+      var secondItemTitle = document.querySelector('li:nth-child(2) .app-c-reorderable-list__title').textContent
+      expect(firstItemTitle).toEqual('Second attachment')
+      expect(secondItemTitle).toEqual('First attachment')
+    })
+
+    it('should update the associated indexes', function () {
+      var firstItemNewIndex = document.querySelector('li:nth-child(1) input[type=text]').value
+      var secondItemNewIndex = document.querySelector('li:nth-child(2) input[type=text]').value
+      expect(firstItemNewIndex).toEqual('1')
+      expect(secondItemNewIndex).toEqual('2')
+    })
+
+    it('should trigger a reorder-drag event', function () {
+      expect('reorder-drag').toHaveBeenTriggeredOn($(element))
+    })
+  })
+
   describe('when clicking the Down button on first item', function () {
     var reorderableList
     var firstItemDownButton
