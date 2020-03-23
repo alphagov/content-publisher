@@ -24,14 +24,16 @@
         <%= t("featured_attachments.index.featured_attachments.description_govspeak") %>
       </p>
 
-      <p class="govuk-body govuk-!-margin-bottom-8">
-        <%= link_to(
-          "Reorder attachments",
-          reorder_featured_attachments_path(@edition.document),
-          class: "govuk-link",
-          data: { gtm: "reorder-attachments" }
-        ) %>
-      </p>
+      <% if attachments.count > 1 %>
+        <p class="govuk-body govuk-!-margin-bottom-8">
+          <%= link_to(
+            "Reorder attachments",
+            reorder_featured_attachments_path(@edition.document),
+            class: "govuk-link",
+            data: { gtm: "reorder-attachments" }
+          ) %>
+        </p>
+      <% end %>
 
       <% attachments.each do |attachment| %>
         <%= render "featured_attachment", document: @edition.document, attachment: attachment %>
