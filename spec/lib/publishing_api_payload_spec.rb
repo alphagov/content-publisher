@@ -66,7 +66,7 @@ RSpec.describe PublishingApiPayload do
 
       payload = described_class.new(edition).payload
       attachment_payload = PublishingApiPayload::FileAttachmentPayload
-                             .new(file_attachment_revision, edition.document)
+                             .new(file_attachment_revision, edition)
                              .payload
 
       expect(payload[:details][:attachments]).to contain_exactly(attachment_payload)

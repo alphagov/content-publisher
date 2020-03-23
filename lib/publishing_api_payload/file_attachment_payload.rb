@@ -2,20 +2,20 @@ class PublishingApiPayload::FileAttachmentPayload
   include Rails.application.routes.url_helpers
   include FileAttachmentHelper
 
-  attr_reader :attachment, :document
+  attr_reader :attachment, :edition
 
-  def initialize(attachment, document)
+  def initialize(attachment, edition)
     @attachment = attachment
-    @document = document
+    @edition = edition
   end
 
   def payload
     payload = {
       attachment_type: "file",
-      locale: document.locale,
+      locale: edition.locale,
       url: attachment.asset_url,
     }
 
-    file_attachment_attributes(attachment, document).merge!(payload)
+    file_attachment_attributes(attachment, edition).merge!(payload)
   end
 end

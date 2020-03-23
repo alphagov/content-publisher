@@ -2,7 +2,7 @@
 
 <% actions << link_to(
   "Insert attachment",
-  file_attachment_path(document, attachment.file_attachment),
+  file_attachment_path(edition.document, attachment.file_attachment),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     "modal-action": "insert",
@@ -12,7 +12,7 @@
 
 <% actions << link_to(
   "Download",
-  download_file_attachment_path(document, attachment.file_attachment),
+  download_file_attachment_path(edition.document, attachment.file_attachment),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     gtm: "download-attachment"
@@ -21,7 +21,7 @@
 
 <% actions << link_to(
   "Edit file",
-  replace_file_attachment_path(document, attachment.file_attachment_id),
+  replace_file_attachment_path(edition.document, attachment.file_attachment_id),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     "modal-action": "edit",
@@ -31,7 +31,7 @@
 
 <% actions << capture do %>
   <%= form_tag(
-    file_attachment_path(document, attachment.file_attachment_id),
+    file_attachment_path(edition.document, attachment.file_attachment_id),
     method: :delete,
     class: "app-inline-block",
     data: {
@@ -44,7 +44,7 @@
 <% end %>
 
 <%= render "components/attachment_meta", {
-  attachment: file_attachment_attributes(attachment, document),
+  attachment: file_attachment_attributes(attachment, edition),
   data_attributes: {
     gtm: "preview-attachment-block"
   },

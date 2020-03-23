@@ -5,7 +5,7 @@ module FileAttachmentHelper
     attachment_revision.asset_url + "?" + params
   end
 
-  def file_attachment_attributes(attachment_revision, document)
+  def file_attachment_attributes(attachment_revision, edition)
     {
       id: attachment_revision.filename,
       title: attachment_revision.title,
@@ -13,7 +13,7 @@ module FileAttachmentHelper
       content_type: attachment_revision.content_type,
       file_size: attachment_revision.byte_size,
       number_of_pages: attachment_revision.number_of_pages,
-      url: preview_file_attachment_path(document, attachment_revision.file_attachment),
+      url: preview_file_attachment_path(edition.document, attachment_revision.file_attachment),
       unique_reference: attachment_revision.unique_reference,
     }.compact
   end

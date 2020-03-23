@@ -2,7 +2,7 @@
 
 <% actions << link_to(
   "Edit attachment",
-  replace_file_attachment_path(document, attachment.file_attachment_id, wizard: "featured"),
+  replace_file_attachment_path(edition.document, attachment.file_attachment_id, wizard: "featured"),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     gtm: "edit-attachment",
@@ -11,7 +11,7 @@
 
 <% actions << link_to(
   "Edit details",
-  edit_file_attachment_path(document, attachment.file_attachment_id),
+  edit_file_attachment_path(edition.document, attachment.file_attachment_id),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     gtm: "edit-details",
@@ -20,7 +20,7 @@
 
 <% actions << link_to(
   "Download",
-  download_file_attachment_path(document, attachment.file_attachment),
+  download_file_attachment_path(edition.document, attachment.file_attachment),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     gtm: "download-attachment"
@@ -29,11 +29,11 @@
 
 <% actions << link_to(
   "Delete attachment",
-  confirm_delete_file_attachment_path(document, attachment.file_attachment_id, wizard: "featured"),
+  confirm_delete_file_attachment_path(edition.document, attachment.file_attachment_id, wizard: "featured"),
   class: "govuk-link app-link--button app-link--destructive",
 ) %>
 
 <%= render "components/attachment_meta", {
-  attachment: file_attachment_attributes(attachment, document),
+  attachment: file_attachment_attributes(attachment, edition),
   actions: actions,
 } %>
