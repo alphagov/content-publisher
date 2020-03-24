@@ -16,9 +16,10 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
   end
 
   describe "#valid?" do
+    let(:status) { :published }
     let(:state) { :published }
     let(:edition) do
-      build(:edition, state,
+      build(:edition, status,
             state: state,
             document_type: document_type,
             published_at: "2020-03-11 12:00 UTC",
@@ -32,6 +33,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       default_publishing_api_item(edition,
                                   public_updated_at: "2020-03-11T12:00:00Z",
                                   state_history: { "1" => "published" },
+                                  publication_state: "published",
                                   details: {
                                     body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
                                     first_public_at: "2020-03-11T12:00:00.000+00:00",
@@ -109,11 +111,22 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       expect(integrity_check.valid?).to be true
     end
 
+    context "when checking an edition that is published_but_needs_2i" do
+      let(:state) { :published_but_needs_2i }
+
+      it "returns true if states are equivalent" do
+        stub_publishing_api_has_item(publishing_api_item)
+
+        expect(integrity_check.valid?).to be true
+      end
+    end
+
     context "when checking an edition that isn't live" do
-      let(:state) { :scheduled }
+      let(:status) { :scheduled }
 
       it "returns true even if the public_updated_at times don't match" do
         publishing_api_item[:public_updated_at] = "2019-02-11T09:30:00Z"
+        publishing_api_item[:publication_state] = "draft"
         stub_publishing_api_has_item(publishing_api_item)
 
         expect(integrity_check.valid?).to be true
@@ -228,6 +241,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
       let(:publishing_api_item) do
         default_publishing_api_item(edition,
+                                    publication_state: "draft",
                                     details: {
                                       body: GovspeakDocument.new(edition.contents["body"], edition).payload_html,
                                       first_public_at: "2020-03-11T12:00:00.000+00:00",
@@ -282,6 +296,17 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     before do
       stub_publishing_api_has_links(content_id: edition.content_id)
       stub_publishing_api_has_item(publishing_api_item)
+    end
+
+    it "returns a problem when states are not equivalent" do
+      publishing_api_item[:publication_state] = "draft"
+
+      stub_publishing_api_has_item(publishing_api_item)
+      expect(integrity_check.problems).to include(
+        problem_description("publication_state isn't as expected",
+                            publishing_api_item[:publication_state],
+                            edition.state),
+      )
     end
 
     it "returns a problem when first_published_at times don't match" do
@@ -417,14 +442,14 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         stub_publishing_api_has_item(publishing_api_item)
       end
 
-      it "returns a problem when the publishing_api_unpublishing is missing" do
+      it "returns a problem when publishing api's unpublishing is missing" do
         publishing_api_item = default_publishing_api_item(edition,
                                                           publication_state: "published")
         stub_publishing_api_has_item(publishing_api_item)
         integrity_check = described_class.new(edition)
 
         expect(integrity_check.problems).to include(
-          "publishing_api_unpublishing is missing",
+          "publishing api's unpublishing is missing",
         )
       end
 
