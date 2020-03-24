@@ -129,15 +129,7 @@ module WhitehallImporter
     def unpublishing_problems
       problems = []
       return problems unless edition.withdrawn? || edition.removed?
-
-      unless expected_state?
-        problems << problem_description(
-          "edition state isn't as expected",
-          "unpublished",
-          publishing_api_content.dig("publication_state"),
-        )
-        return problems
-      end
+      return problems << "publishing_api_unpublishing is missing" if publishing_api_unpublishing.blank?
 
       check = UnpublishingCheck.new(edition, publishing_api_unpublishing)
 
@@ -219,11 +211,6 @@ module WhitehallImporter
       attribute == "alt_text" &&
         proposed_image_payload.empty? &&
         publishing_api_image[attribute] == "placeholder"
-    end
-
-    def expected_state?
-      %w[withdrawn removed].include?(edition.state) &&
-        publishing_api_content.dig("publication_state") == "unpublished"
     end
 
     def publishing_api_unpublishing
