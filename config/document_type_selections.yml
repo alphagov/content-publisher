@@ -108,15 +108,11 @@
 
 - id: specialist_notices
   options:
-    - id: decision
+    - id: notice
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
-    - id: fatality_notice
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/fatalities/new
-    - id: notice
+    - id: decision
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
@@ -124,6 +120,10 @@
       type: managed_elsewhere
       hostname: specialist-publisher
       path: /
+    - id: fatality_notice
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/fatalities/new
 
 - id: statement_to_parliament
   options:
