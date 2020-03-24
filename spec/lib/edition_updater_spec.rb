@@ -1,4 +1,4 @@
-RSpec.describe Tasks::EditionUpdater do
+RSpec.describe EditionUpdater do
   before do
     stub_any_publishing_api_put_content
     allow(EditDraftEditionService).to receive(:call).and_call_original

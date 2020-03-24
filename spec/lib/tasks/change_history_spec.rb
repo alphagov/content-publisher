@@ -2,7 +2,7 @@ RSpec.describe "Change History tasks" do
   before do
     populate_default_government_bulk_data
     stub_any_publishing_api_put_content
-    allow(Tasks::EditionUpdater).to receive(:call).and_call_original
+    allow(EditionUpdater).to receive(:call).and_call_original
   end
 
   describe "change_history:show" do
@@ -81,7 +81,7 @@ RSpec.describe "Change History tasks" do
     it "calls the edition updater" do
       Rake::Task["change_history:delete"].invoke(edition.content_id, id_to_delete)
 
-      expect(Tasks::EditionUpdater).to have_received(:call)
+      expect(EditionUpdater).to have_received(:call)
     end
 
     it "raises an error when the change history ID does not exist" do
@@ -127,7 +127,7 @@ RSpec.describe "Change History tasks" do
       ClimateControl.modify NOTE: "Updated second change note" do
         Rake::Task["change_history:edit"].invoke(edition.content_id, id_to_edit)
 
-        expect(Tasks::EditionUpdater).to have_received(:call)
+        expect(EditionUpdater).to have_received(:call)
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe "Change History tasks" do
       ClimateControl.modify NOTE: "New change note", TIMESTAMP: "2020-10-22 09:30" do
         Rake::Task["change_history:add"].invoke(edition.content_id)
 
-        expect(Tasks::EditionUpdater).to have_received(:call)
+        expect(EditionUpdater).to have_received(:call)
       end
     end
 
