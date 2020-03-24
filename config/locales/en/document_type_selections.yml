@@ -165,7 +165,7 @@ en:
       label: Transparency data publication (pre-release)
       description: Information about how an organisation operates, for example departmental spending, salaries and staff survey results.
     transparency_managed_elsewhere:
-      label: Transparency data
+      label: Transparency data publication
       description: Information about how an organisation operates, for example departmental spending, salaries and staff survey results.
     transparency_statistics_reports:
       label: Transparency, statistics and reports
