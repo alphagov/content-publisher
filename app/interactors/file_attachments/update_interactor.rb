@@ -32,7 +32,7 @@ private
   end
 
   def check_for_issues
-    checker = Requirements::FileAttachmentMetadataChecker.new(unique_reference: attachment_params[:unique_reference])
+    checker = Requirements::FileAttachmentMetadataChecker.new(attachment_params)
     issues = checker.pre_update_issues
 
     context.fail!(issues: issues) if issues.any?
