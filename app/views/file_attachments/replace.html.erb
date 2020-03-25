@@ -54,7 +54,11 @@
 
       <%= render "govuk_publishing_components/components/button", {
         margin_bottom: true,
-        text: "Save",
+        text: if params[:wizard] == "new"
+                "Save and continue"
+              else
+                "Save"
+              end
       } %>
     <% end %>
   </div>

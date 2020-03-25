@@ -1,5 +1,14 @@
 <% content_for :title, t("file_attachments.edit.title", title: @edition.title_or_fallback) %>
-<% content_for :back_link, render_back_link(href: featured_attachments_path(@edition.document)) %>
+
+<% back_link_path = if params[:wizard] == 'new'
+                      replace_file_attachment_path(@edition.document,
+                                                   @attachment.file_attachment_id,
+                                                   wizard: params[:wizard])
+                    else
+                      featured_attachments_path(@edition.document)
+                    end %>
+
+<% content_for :back_link, render_back_link(href: back_link_path) %>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
