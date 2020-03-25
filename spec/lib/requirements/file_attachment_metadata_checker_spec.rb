@@ -8,7 +8,7 @@ RSpec.describe Requirements::FileAttachmentMetadataChecker do
       expect(issues).to be_empty
     end
 
-    it "returns unique_reference issues when the unique unique_reference is too long" do
+    it "returns unique_reference issues when the unique_reference is too long" do
       unique_reference = "z" * (max_length + 1)
       issues = described_class.new(unique_reference: unique_reference).pre_update_issues
 
