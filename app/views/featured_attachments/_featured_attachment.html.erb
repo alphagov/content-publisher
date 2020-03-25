@@ -2,7 +2,9 @@
 
 <% actions << link_to(
   "Edit attachment",
-  replace_file_attachment_path(edition.document, attachment.file_attachment_id, wizard: "featured"),
+  replace_file_attachment_path(edition.document,
+                               attachment.file_attachment_id,
+                               wizard: "featured-attachment-replace"),
   class: "govuk-link govuk-link--no-visited-state app-link--button",
   data: {
     gtm: "edit-attachment",
@@ -29,7 +31,9 @@
 
 <% actions << link_to(
   "Delete attachment",
-  confirm_delete_file_attachment_path(edition.document, attachment.file_attachment_id, wizard: "featured"),
+  confirm_delete_file_attachment_path(edition.document,
+                                      attachment.file_attachment_id,
+                                      wizard: "featured-attachment-delete"),
   class: "govuk-link app-link--button app-link--destructive",
 ) %>
 

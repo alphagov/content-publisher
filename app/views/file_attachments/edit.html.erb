@@ -1,6 +1,6 @@
 <% content_for :title, t("file_attachments.edit.title", title: @edition.title_or_fallback) %>
 
-<% back_link_path = if params[:wizard] == 'new'
+<% back_link_path = if params[:wizard] == 'featured-attachment-upload'
                       replace_file_attachment_path(@edition.document,
                                                    @attachment.file_attachment_id,
                                                    wizard: params[:wizard])

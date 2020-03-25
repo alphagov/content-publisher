@@ -13,7 +13,7 @@ RSpec.describe "file_attachments/replace.html.erb" do
         assign(:attachment, create(:file_attachment_revision))
 
         render(template: "file_attachments/replace",
-               locals: { params: { wizard: "new" } })
+               locals: { params: { wizard: "featured-attachment-upload" } })
 
         expect(rendered).to have_button("Save and continue")
       end

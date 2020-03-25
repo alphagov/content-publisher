@@ -1,6 +1,6 @@
 <% content_for :title, t("file_attachments.replace.title", title: @edition.title_or_fallback) %>
 
-<% back_link_path = if params[:wizard] == "featured"
+<% back_link_path = if params[:wizard] == "featured-attachment-replace"
                       featured_attachments_path(@edition.document)
                     else
                       file_attachments_path(@edition.document)
@@ -54,7 +54,7 @@
 
       <%= render "govuk_publishing_components/components/button", {
         margin_bottom: true,
-        text: if params[:wizard] == "new"
+        text: if params[:wizard] == "featured-attachment-upload"
                 "Save and continue"
               else
                 "Save"

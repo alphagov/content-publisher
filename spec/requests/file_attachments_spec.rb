@@ -169,7 +169,7 @@ RSpec.describe "File Attachments" do
       stub_asset_manager_receives_an_asset(filename: "text-file-74bytes.txt")
 
       file = fixture_file_upload("files/text-file-74bytes.txt")
-      post file_attachments_path(edition.document, wizard: "new"),
+      post file_attachments_path(edition.document, wizard: "featured-attachment-upload"),
            params: { file: file, title: "File" }
 
       file_attachment = FileAttachment.last

@@ -9,7 +9,7 @@
 
     <%= render "govuk_publishing_components/components/button", {
       text: t("featured_attachments.index.upload.title"),
-      href: new_file_attachment_path(@edition.document, wizard: "new"),
+      href: new_file_attachment_path(@edition.document, wizard: "featured-attachment-upload"),
       margin_bottom: true,
     } %>
 
