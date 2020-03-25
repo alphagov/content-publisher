@@ -24,6 +24,16 @@
 
       <%= render "govuk_publishing_components/components/input", {
         label: {
+          text: t("file_attachments.edit.isbn.heading"),
+          bold: true
+        },
+        name: "file_attachment[isbn]",
+        value: params.dig(:file_attachment, :isbn) || @attachment.isbn,
+        hint: t("file_attachments.edit.isbn.hint_text"),
+      } %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
           text: t("file_attachments.edit.unique_reference.heading"),
           bold: true
         },
