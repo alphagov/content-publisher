@@ -165,7 +165,7 @@ RSpec.describe "File Attachments" do
         .to redirect_to(file_attachment_path(edition.document, file_attachment))
     end
 
-    it "redirects to attachments index view when featured attachment is created successfully" do
+    it "redirects to the edit view when featured attachment is created successfully" do
       stub_asset_manager_receives_an_asset(filename: "text-file-74bytes.txt")
 
       file = fixture_file_upload("files/text-file-74bytes.txt")
@@ -174,7 +174,7 @@ RSpec.describe "File Attachments" do
 
       file_attachment = FileAttachment.last
       expect(response)
-        .to redirect_to(featured_attachments_path(edition.document, file_attachment))
+        .to redirect_to(edit_file_attachment_path(edition.document, file_attachment))
     end
 
     it "returns issues and an unprocessable response when there are requirement issues" do

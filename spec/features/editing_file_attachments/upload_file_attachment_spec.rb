@@ -5,8 +5,7 @@ RSpec.feature "Upload file attachment", js: true do
     and_i_go_to_insert_an_attachment
     and_i_select_a_file_to_upload
     and_i_upload_the_file_attachment
-    then_i_can_see_the_attachment
-    and_i_can_see_an_action_to_preview_the_attachment
+    then_i_can_insert_the_attachment
     and_i_see_the_timeline_entry
   end
 
@@ -16,7 +15,7 @@ RSpec.feature "Upload file attachment", js: true do
     and_i_go_to_change_an_attachment
     and_i_go_to_add_an_attachment
     and_i_select_a_file_to_upload
-    and_i_save_the_file_attachment
+    and_i_enter_attachment_metadata
     then_i_can_see_the_attachment
     and_i_see_the_timeline_entry
   end
@@ -68,23 +67,36 @@ RSpec.feature "Upload file attachment", js: true do
     click_on "Upload"
   end
 
-  def and_i_save_the_file_attachment
+  def and_i_enter_attachment_metadata
     click_on "Save and continue"
+    @metadata = "Ref: Unique ref"
+    fill_in "file_attachment[unique_reference]", with: "Unique ref"
+
+    stub_asset_manager_updates_any_asset
+    click_on "Save"
   end
 
   def then_i_can_see_the_attachment
-    @metadata = "PDF, 13 KB, 1 page"
+    file_metadata = "PDF, 13 KB, 1 page"
 
     within(".gem-c-attachment") do
       expect(page).to have_content(@title)
+      expect(page).to have_content(file_metadata)
       expect(page).to have_content(@metadata)
     end
   end
 
-  def and_i_can_see_an_action_to_preview_the_attachment
+  def then_i_can_insert_the_attachment
+    file_metadata = "PDF, 13 KB, 1 page"
+
+    within(".gem-c-attachment") do
+      expect(page).to have_content(@title)
+      expect(page).to have_content(file_metadata)
+    end
+
     within(".gem-c-attachment-link") do
       expect(page).to have_content(@title)
-      expect(page).to have_content(@metadata)
+      expect(page).to have_content(file_metadata)
     end
   end
 
