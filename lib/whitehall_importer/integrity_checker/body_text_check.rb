@@ -28,8 +28,14 @@ module WhitehallImporter
     end
 
     def remove_attachment_file_size(body)
-      file_size_selector = ".attachment-inline .file-size, .gem-c-attachment-link .gem-c-attachment-link__attribute:nth-of-type(2)"
-      remove_html_elements(body, file_size_selector)
+      file_size_selectors = [
+        ".attachment-inline .file-size",
+        ".metadata .file-size",
+        ".gem-c-attachment-link .gem-c-attachment-link__attribute:nth-of-type(2)",
+        ".gem-c-attachment__metadata .gem-c-attachment__attribute:nth-of-type(2)",
+      ]
+
+      remove_html_elements(body, file_size_selectors.join(","))
     end
 
     def remove_html_elements(body, selector)
