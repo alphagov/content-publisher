@@ -33,7 +33,7 @@ private
 
   def attachment_attributes(attachment_revision)
     alt_email = Organisations.new(edition).alternative_format_contact_email
-    attributes = file_attachment_attributes(attachment_revision, edition.document)
+    attributes = file_attachment_attributes(attachment_revision, edition)
 
     attributes.merge(
       url: attachment_revision.asset_url,

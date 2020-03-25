@@ -4,7 +4,7 @@ RSpec.describe PublishingApiPayload::FileAttachmentPayload do
       attachment = build(:file_attachment_revision, number_of_pages: 1)
       edition = create(:edition, file_attachment_revisions: [attachment])
 
-      payload = described_class.new(attachment, edition.document).payload
+      payload = described_class.new(attachment, edition).payload
 
       expected_payload = {
         attachment_type: "file",
@@ -16,6 +16,23 @@ RSpec.describe PublishingApiPayload::FileAttachmentPayload do
         number_of_pages: attachment.number_of_pages,
         title: attachment.title,
         url: attachment.asset_url,
+      }
+
+      expect(payload).to match a_hash_including(expected_payload)
+    end
+
+    it "adds extra metadata if the document has featured attachments" do
+      attachment = build(:file_attachment_revision,
+                         unique_reference: "unique ref")
+
+      edition = create(:edition,
+                       document_type: build(:document_type, attachments: "featured"),
+                       file_attachment_revisions: [attachment])
+
+      payload = described_class.new(attachment, edition).payload
+
+      expected_payload = {
+        unique_reference: attachment.unique_reference,
       }
 
       expect(payload).to match a_hash_including(expected_payload)

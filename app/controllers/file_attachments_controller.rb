@@ -106,6 +106,36 @@ class FileAttachmentsController < ApplicationController
     end
   end
 
+  def edit
+    @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
+
+    @attachment = @edition.file_attachment_revisions
+      .find_by!(file_attachment_id: params[:file_attachment_id])
+
+    assert_edition_feature(@edition, assertion: "supports featured attachments") do
+      @edition.document_type.attachments.featured?
+    end
+  end
+
+  def update
+    result = FileAttachments::UpdateInteractor.call(params: params, user: current_user)
+    edition, attachment_revision, issues =
+      result.to_h.values_at(:edition, :file_attachment_revision, :issues)
+
+    if issues
+      flash.now["requirements"] = { "items" => issues.items }
+
+      render :edit,
+             assigns: { edition: edition,
+                        attachment: attachment_revision,
+                        issues: issues },
+             status: :unprocessable_entity
+    else
+      redirect_to featured_attachments_path(edition.document)
+    end
+  end
+
   def replace
     @edition = Edition.find_current(document: params[:document])
     assert_edition_state(@edition, &:editable?)
@@ -115,7 +145,7 @@ class FileAttachmentsController < ApplicationController
   end
 
   def update_file
-    result = FileAttachments::UpdateInteractor.call(params: params, user: current_user)
+    result = FileAttachments::UpdateFileInteractor.call(params: params, user: current_user)
     edition, attachment_revision, issues, unchanged =
       result.to_h.values_at(:edition, :file_attachment_revision, :issues, :unchanged)
 

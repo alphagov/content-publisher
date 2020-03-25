@@ -5,7 +5,7 @@
 <div class="govuk-grid-row">
   <div class="<%= rendering_context == 'modal' ? 'govuk-grid-column-full' : 'govuk-grid-column-two-thirds' %>">
     <%= render "govuk_publishing_components/components/attachment", {
-      attachment: file_attachment_attributes(@attachment, @edition.document),
+      attachment: file_attachment_attributes(@attachment, @edition),
       target: "_blank",
       data_attributes: {
         gtm: "preview-attachment-block"
@@ -41,7 +41,7 @@
 
     <div class="govuk-body">
       <%= render "govuk_publishing_components/components/attachment_link", {
-        attachment: file_attachment_attributes(@attachment, @edition.document),
+        attachment: file_attachment_attributes(@attachment, @edition),
         target: "_blank",
         data_attributes: { gtm: "preview-attachment-link" }
       } %>

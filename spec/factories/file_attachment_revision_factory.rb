@@ -6,6 +6,7 @@ FactoryBot.define do
     transient do
       filename { SecureRandom.hex(8) }
       number_of_pages { nil }
+      unique_reference { nil }
       fixture { "text-file-74bytes.txt" }
       title { SecureRandom.hex(8) }
       asset { nil }
@@ -26,6 +27,7 @@ FactoryBot.define do
         revision.metadata_revision = evaluator.association(
           :file_attachment_metadata_revision,
           title: evaluator.title,
+          unique_reference: evaluator.unique_reference,
         )
       end
     end
@@ -49,6 +51,7 @@ FactoryBot.define do
         revision.metadata_revision = evaluator.association(
           :file_attachment_metadata_revision,
           title: evaluator.title,
+          unique_reference: evaluator.unique_reference,
         )
       end
     end

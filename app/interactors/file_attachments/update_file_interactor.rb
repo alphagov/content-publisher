@@ -1,4 +1,4 @@
-class FileAttachments::UpdateInteractor < ApplicationInteractor
+class FileAttachments::UpdateFileInteractor < ApplicationInteractor
   delegate :params,
            :user,
            :edition,
@@ -32,7 +32,8 @@ private
   end
 
   def check_for_issues
-    checker = Requirements::FileAttachmentMetadataChecker.new(unique_reference: attachment_params[:unique_reference])
+    checker = Requirements::FileAttachmentChecker.new(file: attachment_params[:file],
+                                                      title: attachment_params[:title])
     issues = checker.pre_update_issues
 
     context.fail!(issues: issues) if issues.any?
@@ -40,7 +41,8 @@ private
 
   def update_file_attachment
     updater = Versioning::FileAttachmentRevisionUpdater.new(file_attachment_revision, user)
-    revision_attributes = attachment_params.slice(:unique_reference)
+    revision_attributes = attachment_params.slice(:title)
+    revision_attributes[:blob_revision] = blob_revision(attachment_params[:file]) if attachment_params[:file]
     updater.assign(revision_attributes)
 
     context.file_attachment_revision = updater.next_revision
@@ -66,6 +68,19 @@ private
   end
 
   def attachment_params
-    params.require(:file_attachment).permit(:unique_reference)
+    params.require(:file_attachment).permit(:file, :title)
+  end
+
+  def blob_revision(file)
+    CreateFileAttachmentBlobService.call(
+      file: file, filename: unique_filename(file), user: user,
+    )
+  end
+
+  def unique_filename(file)
+    existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
+    existing_filenames.delete(file_attachment_revision.filename)
+    GenerateUniqueFilenameService.call(filename: file.original_filename,
+                                       existing_filenames: existing_filenames)
   end
 end

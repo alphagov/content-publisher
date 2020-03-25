@@ -36,7 +36,7 @@
       <% end %>
 
       <% attachments.each do |attachment| %>
-        <%= render "featured_attachment", document: @edition.document, attachment: attachment %>
+        <%= render "featured_attachment", edition: @edition, attachment: attachment %>
       <% end %>
     <% else %>
       <p class="govuk-body">

@@ -92,7 +92,7 @@ private
     file_attachments = edition.file_attachment_revisions
 
     file_attachments.map do |attachment|
-      FileAttachmentPayload.new(attachment, edition.document).payload
+      FileAttachmentPayload.new(attachment, edition).payload
     end
   end
 end

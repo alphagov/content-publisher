@@ -48,7 +48,7 @@
       </h2>
 
       <% attachments.each do |attachment| %>
-        <%= render "file_attachment", document: @edition.document, attachment: attachment %>
+        <%= render "file_attachment", edition: @edition, attachment: attachment %>
       <% end %>
     <% end %>
   </div>

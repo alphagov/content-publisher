@@ -12,7 +12,8 @@ RSpec.describe "File Attachments" do
                             replace_file_attachment_path: %i[get patch],
                             preview_file_attachment_path: %i[get],
                             confirm_delete_file_attachment_path: %i[get],
-                            download_file_attachment_path: %i[get] } do
+                            download_file_attachment_path: %i[get],
+                            edit_file_attachment_path: %i[get] } do
     let(:edition) { create(:edition, :published) }
     let(:route_params) { [edition.document, "file_attachment_id"] }
   end
@@ -24,7 +25,17 @@ RSpec.describe "File Attachments" do
                             replace_file_attachment_path: %i[get patch],
                             preview_file_attachment_path: %i[get],
                             confirm_delete_file_attachment_path: %i[get],
-                            download_file_attachment_path: %i[get] } do
+                            download_file_attachment_path: %i[get],
+                            edit_file_attachment_path: %i[get] } do
+    let(:edition) { create(:edition) }
+    let(:file_attachment_revision) { create(:file_attachment_revision) }
+    let(:route_params) { [edition.document, file_attachment_revision] }
+  end
+
+  it_behaves_like "requests that return status",
+                  "editing featured attachments for an edition that doesn't allow them",
+                  status: :not_found,
+                  routes: { edit_file_attachment_path: %i[get] } do
     let(:edition) { create(:edition) }
     let(:file_attachment_revision) { create(:file_attachment_revision) }
     let(:route_params) { [edition.document, file_attachment_revision] }
@@ -249,6 +260,55 @@ RSpec.describe "File Attachments" do
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.body).to have_content(
         I18n.t!("requirements.file_attachment_title.blank.form_message"),
+      )
+    end
+  end
+
+  describe "GET /documents/:document/file-attachments/:file_attachment_id/edit" do
+    it "returns successfully" do
+      file_attachment_revision = create(:file_attachment_revision)
+      document_type = build(:document_type, attachments: "featured")
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision],
+                       document_type: document_type)
+
+      get edit_file_attachment_path(edition.document,
+                                    file_attachment_revision.file_attachment_id)
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe "PATCH /documents/:document/file-attachments/:file_attachment_id/edit" do
+    let(:document_type) { build(:document_type, attachments: "featured") }
+    let(:file_attachment_revision) { create(:file_attachment_revision) }
+    let(:edition) do
+      create(:edition,
+             file_attachment_revisions: [file_attachment_revision],
+             document_type: document_type)
+    end
+
+    it "redirects to the featured attachments index page" do
+      stub_any_publishing_api_put_content
+      stub_asset_manager_receives_an_asset
+
+      patch edit_file_attachment_path(edition.document,
+                                      file_attachment_revision.file_attachment_id),
+            params: { file_attachment: { unique_reference: "Uniq Ref" } }
+
+      expect(response).to redirect_to(featured_attachments_path(edition.document))
+    end
+
+    it "returns issues and an unprocessable response when there are requirement issues" do
+      max_length = Requirements::FileAttachmentMetadataChecker::UNIQUE_REF_MAX_LENGTH
+      too_long_unique_reference = "a" * (max_length + 1)
+
+      patch edit_file_attachment_path(edition.document,
+                                      file_attachment_revision.file_attachment_id),
+            params: { file_attachment: { unique_reference: too_long_unique_reference } }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to have_content(
+        I18n.t!("requirements.file_attachment_unique_reference.too_long.form_message", max_length: max_length),
       )
     end
   end
