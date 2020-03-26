@@ -58,9 +58,9 @@ module WhitehallImporter
       ).sufficiently_similar?
 
       problems << "change history doesn't match" unless ChangeHistoryCheck.new(
+        edition,
         proposed_payload.dig("details", "change_history"),
         publishing_api_content["details"].fetch("change_history", []),
-        edition,
       ).match?
 
       problems
