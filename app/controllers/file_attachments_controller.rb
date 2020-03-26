@@ -82,12 +82,12 @@ class FileAttachmentsController < ApplicationController
         ),
       }
 
-      render params[:wizard] == "new" ? :new : :index,
+      render params[:wizard] == "featured-attachment-upload" ? :new : :index,
              assigns: { edition: edition,
                         issues: issues },
              status: :unprocessable_entity
-    elsif params[:wizard] == "new"
-      redirect_to featured_attachments_path(edition.document, attachment_revision.file_attachment)
+    elsif params[:wizard] == "featured-attachment-upload"
+      redirect_to edit_file_attachment_path(edition.document, attachment_revision.file_attachment)
     else
       redirect_to file_attachment_path(edition.document, attachment_revision.file_attachment)
     end
@@ -97,7 +97,7 @@ class FileAttachmentsController < ApplicationController
     result = FileAttachments::DestroyInteractor.call(params: params, user: current_user)
     attachment_revision = result.attachment_revision
 
-    if params[:wizard] == "featured"
+    if params[:wizard] == "featured-attachment-delete"
       redirect_to featured_attachments_path(params[:document])
     else
       redirect_to file_attachments_path(params[:document]),
@@ -165,7 +165,7 @@ class FileAttachmentsController < ApplicationController
                         issues: issues,
                         attachment: attachment_revision },
              status: :unprocessable_entity
-    elsif params[:wizard] == "featured"
+    elsif params[:wizard] == "featured-attachment-replace"
       redirect_to featured_attachments_path(edition.document)
     else
       flash[:notice] = I18n.t!("file_attachments.replace.flashes.update_confirmation") unless unchanged
