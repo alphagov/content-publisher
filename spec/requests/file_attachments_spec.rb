@@ -167,14 +167,16 @@ RSpec.describe "File Attachments" do
 
     it "redirects to the edit view when featured attachment is created successfully" do
       stub_asset_manager_receives_an_asset(filename: "text-file-74bytes.txt")
-
       file = fixture_file_upload("files/text-file-74bytes.txt")
-      post file_attachments_path(edition.document, wizard: "featured-attachment-upload"),
-           params: { file: file, title: "File" }
 
-      file_attachment = FileAttachment.last
-      expect(response)
-        .to redirect_to(edit_file_attachment_path(edition.document, file_attachment))
+      post file_attachments_path(edition.document),
+           params: { file: file, title: "File",
+                     wizard: "featured-attachment-upload" }
+
+      expect(response).to redirect_to(
+        edit_file_attachment_path(edition.document, FileAttachment.last,
+                                  wizard: "featured-attachment-upload"),
+      )
     end
 
     it "returns issues and an unprocessable response when there are requirement issues" do
@@ -231,26 +233,51 @@ RSpec.describe "File Attachments" do
       create(:edition, file_attachment_revisions: [file_attachment_revision])
     end
 
-    it "redirects to the file attachments index with a flash message when changed" do
-      patch replace_file_attachment_path(edition.document, file_attachment_id),
-            params: { file_attachment: { title: "New title" } }
+    context "when replacing an inline file attachment" do
+      it "redirects to the file attachments index with a flash message when changed" do
+        patch replace_file_attachment_path(edition.document, file_attachment_id),
+              params: { file_attachment: { title: "New title" } }
 
-      expect(response).to redirect_to(file_attachments_path(edition.document))
-      follow_redirect!
-      expect(response.body).to have_content(
-        I18n.t!("file_attachments.replace.flashes.update_confirmation"),
-      )
+        expect(response).to redirect_to(file_attachments_path(edition.document))
+        follow_redirect!
+        expect(response.body).to have_content(
+          I18n.t!("file_attachments.replace.flashes.update_confirmation"),
+        )
+      end
+
+      it "redirects to the file attachments index without a flash message when unchanged" do
+        patch replace_file_attachment_path(edition.document, file_attachment_id),
+              params: { file_attachment: { title: file_attachment_revision.title } }
+
+        expect(response).to redirect_to(file_attachments_path(edition.document))
+        follow_redirect!
+        expect(response.body).not_to have_content(
+          I18n.t!("file_attachments.replace.flashes.update_confirmation"),
+        )
+      end
     end
 
-    it "redirects to the file attachments index without a flash message when unchanged" do
-      patch replace_file_attachment_path(edition.document, file_attachment_id),
-            params: { file_attachment: { title: file_attachment_revision.title } }
+    context "when uploading a file attachment" do
+      it "redirects to the metadata edit page (after clicking 'Back' from there)" do
+        patch replace_file_attachment_path(edition.document, file_attachment_id),
+              params: { file_attachment: { title: "New title" },
+                        wizard: "featured-attachment-upload" }
 
-      expect(response).to redirect_to(file_attachments_path(edition.document))
-      follow_redirect!
-      expect(response.body).not_to have_content(
-        I18n.t!("file_attachments.replace.flashes.update_confirmation"),
-      )
+        expect(response).to redirect_to(
+          edit_file_attachment_path(edition.document, file_attachment_id,
+                                    wizard: "featured-attachment-upload"),
+        )
+      end
+    end
+
+    context "when replacing a featured attachment" do
+      it "redirects to the featured attachments index" do
+        patch replace_file_attachment_path(edition.document, file_attachment_id),
+              params: { file_attachment: { title: "New title" },
+                        wizard: "featured-attachment-replace" }
+
+        expect(response).to redirect_to(featured_attachments_path(edition.document))
+      end
     end
 
     it "returns issues and an unprocessable response when there are requirement issues" do
