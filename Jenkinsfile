@@ -24,6 +24,9 @@ node {
       stage("Lint FactoryBot") {
         sh("bundle exec rake factorybot:lint RAILS_ENV=test")
       }
+      stage("I18n Coverage") {
+        sh("bundle exec rake i18n_cov:ci")
+      }
     }
   )
 }

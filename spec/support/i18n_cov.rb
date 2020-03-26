@@ -1,7 +1,7 @@
 require "singleton"
 
 class I18nCov
-  REPORT_PATH = Rails.root.join("coverage/i18n")
+  REPORT_PATH = Rails.root.join("coverage/i18n.json")
   IN_APP_LOCALE_FILES = Dir.glob(Rails.root.join("config/locales/**/*.yml"))
 
   include Singleton
@@ -33,11 +33,10 @@ class I18nCov
   def report
     return if used_keys.blank?
 
-    all = all_locale_keys
-    scoped_used = all.select { |as| used_keys.any? { |us| as.start_with?(us) } }
-
-    write_report(all - scoped_used)
-    print_message(all, scoped_used)
+    unused_keys = check_unused_keys
+    report = generate_report(unused_keys)
+    write_report(report)
+    print_message(report)
   end
 
 private
@@ -47,7 +46,8 @@ private
   end
 
   def all_locale_keys
-    locales.flat_map { |locale, ts| key_chains_for(locale, ts, is_root: true) }
+    @all_locale_keys ||= locales
+      .flat_map { |locale, ts| key_chains_for(locale, ts, is_root: true) }
       .map { |key_chain| key_chain.join(".") }.uniq
   end
 
@@ -58,20 +58,35 @@ private
       .map { |sub_key| (is_root ? [] : [key]) + sub_key }
   end
 
-  def write_report(unused)
-    FileUtils.mkdir_p(File.dirname(REPORT_PATH))
-
-    File.open(REPORT_PATH, "w") do |f|
-      f.puts("Keys not covered (potentially unused)\n\n")
-      unused.each { |key| f.puts key }
-    end
+  def check_unused_keys
+    all_locale_keys.reject { |as| used_keys.any? { |us| as.start_with?(us) } }
   end
 
-  def print_message(all, used)
-    percent = ((used.count.to_f / all.count) * 100).round(2)
+  def generate_report(unused_keys)
+    used_count = all_locale_keys.count - unused_keys.count
 
-    puts "Coverage report generated for I18n to #{Dir.pwd}/coverage/i18n. " +
-      "#{used.count} / #{all.count} keys (#{percent}%) covered."
+    {
+      stats: {
+        used_keys: used_count,
+        all_keys: all_locale_keys.count,
+        coverage: ((used_count.to_f / all_locale_keys.count) * 100).round(2),
+      },
+      unused_keys: {
+        description: "Keys not covered (potentially unused)",
+        items: unused_keys,
+      },
+    }
+  end
+
+  def write_report(report)
+    FileUtils.mkdir_p(File.dirname(REPORT_PATH))
+    File.write(REPORT_PATH, JSON.pretty_generate(report))
+  end
+
+  def print_message(report)
+    puts "Coverage report generated for I18n to #{REPORT_PATH}. " +
+      "#{report[:stats][:used_keys]} / #{report[:stats][:all_keys]} keys " +
+      "(#{report[:stats][:coverage]}%) covered."
   end
 end
 

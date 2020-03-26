@@ -5,9 +5,6 @@ en:
     any_mainstream_publication:
       label: Mainstream guide
       description: Guidance for the general public, written for people not expected to have any previous experience or specialist knowledge.
-    any_whitehall_publication:
-      label: Publication
-      description: Standalone government documents that are issued and not usually updated
     articles_and_correspondence:
       label: Articles and correspondence
       description: Articles written by a minister or official, responses from the organisation or a minister, and circulars or newsletters.
