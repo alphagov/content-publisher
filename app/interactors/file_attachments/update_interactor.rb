@@ -40,7 +40,7 @@ private
 
   def update_file_attachment
     updater = Versioning::FileAttachmentRevisionUpdater.new(file_attachment_revision, user)
-    revision_attributes = attachment_params.slice(:unique_reference)
+    revision_attributes = attachment_params.slice(:isbn, :unique_reference)
     updater.assign(revision_attributes)
 
     context.file_attachment_revision = updater.next_revision
@@ -66,6 +66,6 @@ private
   end
 
   def attachment_params
-    params.require(:file_attachment).permit(:unique_reference)
+    params.require(:file_attachment).permit(:isbn, :unique_reference)
   end
 end
