@@ -23,7 +23,7 @@ RSpec.describe PublishingApiPayload::FileAttachmentPayload do
 
     it "adds extra metadata if the document has featured attachments" do
       attachment = build(:file_attachment_revision,
-                         unique_reference: "unique ref")
+                         isbn: "9788700631625", unique_reference: "unique ref")
 
       edition = create(:edition,
                        document_type: build(:document_type, attachments: "featured"),
@@ -32,6 +32,7 @@ RSpec.describe PublishingApiPayload::FileAttachmentPayload do
       payload = described_class.new(attachment, edition).payload
 
       expected_payload = {
+        isbn: attachment.isbn,
         unique_reference: attachment.unique_reference,
       }
 

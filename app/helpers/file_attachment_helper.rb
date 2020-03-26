@@ -18,6 +18,7 @@ module FileAttachmentHelper
 
     if edition.document_type.attachments.featured?
       attributes.merge!(
+        isbn: attachment_revision.isbn,
         unique_reference: attachment_revision.unique_reference,
       )
     end
