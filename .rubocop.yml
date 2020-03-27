@@ -73,7 +73,6 @@ Capybara/FeatureMethods:
     - 'spec/features/**/*.rb'
 
 # Part of the GOV.UK feature spec style involves instance variables
-# TODO: Investigate if we can embrace this rule and use let/given methods
 RSpec/InstanceVariable:
   Exclude:
     - 'spec/features/**/*.rb'
