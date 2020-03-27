@@ -111,6 +111,13 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       expect(integrity_check.valid?).to be true
     end
 
+    it "returns true when there is no change history" do
+      publishing_api_item[:details] = publishing_api_item[:details].except(:change_history)
+      stub_publishing_api_has_item(publishing_api_item)
+
+      expect(integrity_check.valid?).to be true
+    end
+
     context "when checking an edition that is published_but_needs_2i" do
       let(:state) { :published_but_needs_2i }
 

@@ -4,7 +4,6 @@ RSpec.describe WhitehallImporter::IntegrityChecker::ChangeHistoryCheck do
       proposed_change_history = change_note("First published.", Date.yesterday.noon)
       publishing_api_change_history = change_note("First published.", Date.yesterday.noon)
 
-
       integrity_check = described_class.new(
         proposed_change_history,
         publishing_api_change_history,
@@ -25,6 +24,15 @@ RSpec.describe WhitehallImporter::IntegrityChecker::ChangeHistoryCheck do
         publishing_api_change_history,
         live_edition: false,
       )
+      expect(integrity_check.match?).to be true
+    end
+
+    it "returns true if proposed change history has a 'First published' change note and Publishing API has no change history" do
+      proposed_change_history = change_note("First published.", Date.yesterday.noon)
+      integrity_check = described_class.new(proposed_change_history,
+                                            [],
+                                            live_edition: false)
+
       expect(integrity_check.match?).to be true
     end
 

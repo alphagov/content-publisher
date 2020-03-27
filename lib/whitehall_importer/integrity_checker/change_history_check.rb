@@ -9,6 +9,10 @@ module WhitehallImporter
     end
 
     def match?
+      if publishing_api_change_history.empty?
+        return proposed_history_has_first_published_change_note?
+      end
+
       return false unless history_length_matches?
 
       if live_edition
@@ -42,6 +46,11 @@ module WhitehallImporter
       remaining_history_matches = history_matches?(proposed_tail, publishing_api_tail)
 
       first_note_matches && remaining_history_matches
+    end
+
+    def proposed_history_has_first_published_change_note?
+      proposed_change_history.one? &&
+        proposed_change_history.first["note"] == PublishingApiPayload::History::FIRST_CHANGE_NOTE
     end
   end
 end
