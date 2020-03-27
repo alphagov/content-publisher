@@ -117,7 +117,7 @@ Either a single document or multiple document import can be run, as detailed in 
 For example:
 
 ```
-govuk-docker run -e PLEK_SERVICE_PUBLISHING_API_URI=$publishing_api_url -e PUBLISHING_API_BEARER_TOKEN=$publishing_api_bearer_token -e PLEK_SERVICE_PUBLISHING_API_URI=$publishing_api_url -e PLEK_SERVICE_WHITEHALL_ADMIN_URI=$whitehall_url -e WHITEHALL_BEARER_TOKEN=$whitehall_bearer_token content-publisher-lite bundle exec rake import:whitehall_migration["nuclear-decommissioning-authority","news_article"]
+govuk-docker run -e PLEK_SERVICE_PUBLISHING_API_URI=$publishing_api_url -e PUBLISHING_API_BEARER_TOKEN=$publishing_api_bearer_token -e PLEK_SERVICE_WHITEHALL_ADMIN_URI=$whitehall_url -e WHITEHALL_BEARER_TOKEN=$whitehall_bearer_token content-publisher-lite bundle exec rake import:whitehall_migration["nuclear-decommissioning-authority","news_article"]
 ```
 
 In order to access the URL printed at the end of the rake task, the Content Publisher application will need to be running locally:
