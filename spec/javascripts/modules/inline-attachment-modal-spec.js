@@ -86,7 +86,11 @@ describe('InlineAttachmentModal', function () {
   })
 
   describe('delete action', function () {
-    itBehavesLikeAFormAction('delete')
+    itBehavesLikeALinkAction('delete')
+  })
+
+  describe('confirm-delete action', function () {
+    itBehavesLikeAFormAction('confirm-delete')
   })
 
   describe('edit action', function () {
