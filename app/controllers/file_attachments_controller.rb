@@ -87,7 +87,9 @@ class FileAttachmentsController < ApplicationController
                         issues: issues },
              status: :unprocessable_entity
     elsif params[:wizard] == "featured-attachment-upload"
-      redirect_to edit_file_attachment_path(edition.document, attachment_revision.file_attachment)
+      redirect_to edit_file_attachment_path(edition.document,
+                                            attachment_revision.file_attachment,
+                                            wizard: params[:wizard])
     else
       redirect_to file_attachment_path(edition.document, attachment_revision.file_attachment)
     end
@@ -167,6 +169,10 @@ class FileAttachmentsController < ApplicationController
              status: :unprocessable_entity
     elsif params[:wizard] == "featured-attachment-replace"
       redirect_to featured_attachments_path(edition.document)
+    elsif params[:wizard] == "featured-attachment-upload"
+      redirect_to edit_file_attachment_path(edition.document,
+                                            attachment_revision.file_attachment,
+                                            wizard: params[:wizard])
     else
       flash[:notice] = I18n.t!("file_attachments.replace.flashes.update_confirmation") unless unchanged
       redirect_to file_attachments_path(edition.document)
