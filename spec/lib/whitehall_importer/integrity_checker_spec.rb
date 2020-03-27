@@ -23,7 +23,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
             state: state,
             document_type: document_type,
             published_at: "2020-03-11 12:00 UTC",
-            document: create(:document, first_published_at: "2020-03-11 12:00 UTC"),
+            document: create(:document, first_published_at: "2020-03-11 12:00:45 UTC"),
             tags: {
               primary_publishing_organisation: [SecureRandom.uuid],
               organisations: [SecureRandom.uuid],
@@ -31,7 +31,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
     let(:publishing_api_item) do
       default_publishing_api_item(edition,
-                                  public_updated_at: "2020-03-11T12:00:00Z",
+                                  public_updated_at: "2020-03-11T12:00:45Z",
                                   state_history: { "1" => "published" },
                                   publication_state: "published",
                                   details: {
@@ -90,7 +90,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
 
     it "returns true if public_updated_at times match" do
-      publishing_api_item[:public_updated_at] = "2020-03-11T12:00:00Z"
+      publishing_api_item[:public_updated_at] = "2020-03-11T12:00:45Z"
       stub_publishing_api_has_item(publishing_api_item)
 
       expect(integrity_check.valid?).to be true
@@ -613,7 +613,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         change_history: [
           {
             note: "First published.",
-            public_timestamp: Time.zone.rfc3339("2020-03-11T12:00:00.000+00:00"),
+            public_timestamp: Time.zone.rfc3339("2020-03-11T12:00:45.000+00:00"),
           },
         ],
       },
