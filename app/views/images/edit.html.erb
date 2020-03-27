@@ -11,7 +11,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
 
 <% content_for :back_link, render_back_link(
   href: back_link_path,
-  data_attributes: { "modal-action": "metaBack" }
+  data_attributes: { "modal-action": "back" }
 ) %>
 
 <%= render "components/image_meta", {

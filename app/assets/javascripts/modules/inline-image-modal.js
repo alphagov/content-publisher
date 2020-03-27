@@ -35,16 +35,16 @@ InlineImageModal.prototype.actionCallback = function (item) {
     'upload': function () {
       this.workflow.render(window.ModalFetch.postForm(item))
     },
-    'cropBack': function () {
-      this.workflow.render(window.ModalFetch.getLink(item))
-    },
-    'metaBack': function () {
+    'back': function () {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
     'crop': function () {
       this.workflow.render(window.ModalFetch.postForm(item))
     },
     'delete': function () {
+      this.workflow.render(window.ModalFetch.getLink(item))
+    },
+    'confirm-delete': function () {
       this.workflow.render(window.ModalFetch.postForm(item))
     },
     'meta': function () {
