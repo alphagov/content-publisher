@@ -107,8 +107,8 @@ describe('InlineImageModal', function () {
     itBehavesLikeALinkAction('delete')
   })
 
-  describe('confirm-delete action', function () {
-    itBehavesLikeAFormAction('confirm-delete')
+  describe('confirmDelete action', function () {
+    itBehavesLikeAFormAction('confirmDelete')
   })
 
   describe('meta action', function () {

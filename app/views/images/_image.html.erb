@@ -27,19 +27,9 @@
 
 <% end %>
 
-<% actions << capture do %>
-  <%= form_tag(
-    destroy_image_path(edition.document, image.image_id),
-    method: :delete,
-    data: {
-      "modal-action": "delete",
-      gtm: "delete-image"
-    },
-    class: "app-inline-block"
-  ) do %>
-    <button class="govuk-link app-link--button app-link--destructive">Delete image</button>
-  <% end %>
-<% end %>
+<% actions << link_to("Delete image", confirm_delete_image_path(edition.document, image.image_id),
+                      class: "govuk-link app-link--button app-link--destructive",
+                      data: { "modal-action": "delete", gtm: "delete-image" }) %>
 
 <% metadata_items = [
   {

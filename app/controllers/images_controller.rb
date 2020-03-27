@@ -76,6 +76,12 @@ class ImagesController < ApplicationController
     end
   end
 
+  def confirm_delete
+    @edition = Edition.find_current(document: params[:document])
+    assert_edition_state(@edition, &:editable?)
+    @image_revision = @edition.image_revisions.find_by!(image_id: params[:image_id])
+  end
+
   def destroy
     result = Images::DestroyInteractor.call(params: params, user: current_user)
     image_revision, removed_lead = result.to_h.values_at(:image_revision, :removed_lead_image)

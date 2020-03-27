@@ -157,6 +157,15 @@ RSpec.describe "Images" do
     end
   end
 
+  describe "GET /documents/:document/images/:image_id/delete" do
+    it "returns successfully" do
+      image_revision = create(:image_revision)
+      edition = create(:edition, lead_image_revision: image_revision)
+      get confirm_delete_image_path(edition.document, image_revision.image_id)
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
   describe "DELETE /documents/:document/images/:image_id" do
     before { stub_any_publishing_api_put_content }
 
