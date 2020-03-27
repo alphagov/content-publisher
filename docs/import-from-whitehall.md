@@ -1,7 +1,8 @@
 # Importing documents from Whitehall to Content Publisher
 
-There are two ways to import documents from Whitehall:
+There are three ways to import documents from Whitehall:
 - [a single document](#single-document-import)
+- [multiple documents](#multiple-document-import)
 - [documents of a specific type or subtypes from a single publishing organisation](#import-documents-of-a-specific-type-and-subtypes-from-a-single-publishing-organisation)
 
 ## Running an import
@@ -22,6 +23,18 @@ Note that the ID in Whitehall's internal URLs is the edition number (e.g. for `/
 irb> URI.parse("https://whitehall-admin.integration.publishing.service.gov.uk/government/admin/publications/1038279").path.split("/")[4].then { |id| Edition.find(id).document_id }
 => 412144
 ```
+
+### Multiple document import
+
+To import a number of documents and all their editions from Whitehall into Content Publisher.
+
+```
+rake import:whitehall_documents["1234 5678"]
+```
+
+Where `"1234 5678"` is a space-separated list of Whitehall document ids.  As with [a single document import](#single-document-import), after running the rake task, a URL will be printed to the console which allows the status of each imported document to be examined.
+
+This type of import is useful for re-importing a list of specific documents, without having to import them individually, and when testing previously failed documents imports for de-bugging purposes.
 
 ### Import documents of a specific type and subtypes from a single publishing organisation
 

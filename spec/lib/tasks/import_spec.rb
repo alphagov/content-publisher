@@ -52,4 +52,38 @@ RSpec.describe "Import tasks" do
       )
     end
   end
+
+  describe "import:whitehall_documents" do
+    before do
+      allow($stdout).to receive(:puts)
+      Rake::Task["import:whitehall_documents"].reenable
+    end
+
+    it "creates pending whitehall migration document imports" do
+      allow(WhitehallDocumentImportJob).to receive(:perform_later)
+
+      expect {
+        Rake::Task["import:whitehall_documents"].invoke("123 456")
+      }.to change {
+        WhitehallMigration::DocumentImport.pending.exists?(whitehall_document_id: 123)
+      }.to(true).and change {
+        WhitehallMigration::DocumentImport.pending.exists?(whitehall_document_id: 456)
+      }.to(true)
+    end
+
+    it "queues a job for each document to be imported" do
+      Rake::Task["import:whitehall_documents"].invoke("123 456 789")
+      expect(WhitehallDocumentImportJob).to have_been_enqueued.exactly(3).times
+    end
+
+    it "creates a single WhitehallMigration irrespective of the number of documents" do
+      expect { Rake::Task["import:whitehall_documents"].invoke("123") }
+        .to change(WhitehallMigration, :count).by(1)
+
+      Rake::Task["import:whitehall_documents"].reenable
+
+      expect { Rake::Task["import:whitehall_documents"].invoke("123 456 789") }
+        .to change(WhitehallMigration, :count).by(1)
+    end
+  end
 end

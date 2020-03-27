@@ -6,7 +6,7 @@ namespace :import do
     include Rails.application.routes.url_helpers
     organisation_content_id = GdsApi.publishing_api.lookup_content_id(
       base_path: "/government/organisations/#{args.organisation_slug}",
-     )
+    )
     document_subtypes = args.document_subtypes ? args.document_subtypes.split(",") : []
     whitehall_migration = WhitehallImporter::CreateMigration.call(
       organisation_content_id, args.document_type, document_subtypes
@@ -25,11 +25,30 @@ namespace :import do
       whitehall_document_id: args.document_id,
       whitehall_migration: WhitehallMigration.create!,
       state: "pending",
-     )
+    )
 
     WhitehallDocumentImportJob.perform_later(whitehall_import)
     puts "Added whitehall document with ID:#{args.document_id} to the import queue"
 
     puts whitehall_migration_url(whitehall_import.whitehall_migration_id, host: Plek.new.external_url_for("content-publisher"))
+  end
+
+  desc "Import multiple documents from Whitehall Publisher using Whitehall's internal document ID's e.g. import:whitehall_documents[\"123 456 789\"]"
+  task :whitehall_documents, [:document_ids] => :environment do |_, args|
+    include Rails.application.routes.url_helpers
+    whitehall_migration = WhitehallMigration.create!
+
+    args.document_ids.split(" ").map(&:to_i).each do |document_id|
+      whitehall_import = WhitehallMigration::DocumentImport.create!(
+        whitehall_document_id: document_id,
+        whitehall_migration: whitehall_migration,
+        state: "pending",
+      )
+
+      WhitehallDocumentImportJob.perform_later(whitehall_import)
+      puts "Added whitehall document with ID:#{document_id} to the import queue"
+    end
+
+    puts whitehall_migration_url(whitehall_migration.id, host: Plek.new.external_url_for("content-publisher"))
   end
 end
