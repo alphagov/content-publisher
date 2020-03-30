@@ -60,7 +60,7 @@ module WhitehallImporter
       problems << "change history doesn't match" unless ChangeHistoryCheck.new(
         proposed_payload.dig("details", "change_history"),
         publishing_api_content["details"].fetch("change_history", []),
-        live_edition: edition.live?,
+        edition,
       ).match?
 
       problems

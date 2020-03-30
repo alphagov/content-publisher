@@ -7,7 +7,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker::ChangeHistoryCheck do
       integrity_check = described_class.new(
         proposed_change_history,
         publishing_api_change_history,
-        live_edition: true,
+        create(:edition, :published),
       )
       expect(integrity_check.match?).to be true
     end
@@ -22,7 +22,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker::ChangeHistoryCheck do
       integrity_check = described_class.new(
         proposed_change_history,
         publishing_api_change_history,
-        live_edition: false,
+        create(:edition),
       )
       expect(integrity_check.match?).to be true
     end
@@ -31,7 +31,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker::ChangeHistoryCheck do
       proposed_change_history = change_note("First published.", Date.yesterday.noon)
       integrity_check = described_class.new(proposed_change_history,
                                             [],
-                                            live_edition: false)
+                                            create(:edition))
 
       expect(integrity_check.match?).to be true
     end
@@ -45,7 +45,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker::ChangeHistoryCheck do
       integrity_check = described_class.new(
         proposed_change_history,
         publishing_api_change_history,
-        live_edition: true,
+        create(:edition, :published),
       )
       expect(integrity_check.match?).to be false
     end
@@ -58,7 +58,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker::ChangeHistoryCheck do
       integrity_check = described_class.new(
         proposed_change_history,
         publishing_api_change_history,
-        live_edition: true,
+        create(:edition, :published),
       )
       expect(integrity_check.match?).to be false
     end
@@ -71,7 +71,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker::ChangeHistoryCheck do
       integrity_check = described_class.new(
         proposed_change_history,
         publishing_api_change_history,
-        live_edition: true,
+        create(:edition, :published),
       )
       expect(integrity_check.match?).to be false
     end
