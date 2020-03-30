@@ -30,20 +30,53 @@ RSpec.describe WhitehallImporter::CreateRevision do
       expect(revision.base_path).to eq("/a-path")
     end
 
-    it "sets backdated_to when edition has been backdated" do
+    it "sets backdated_to when the first edition has been backdated" do
       backdated_to = Time.zone.now.yesterday.rfc3339
       whitehall_edition = build(:whitehall_export_edition,
                                 first_published_at: backdated_to)
+      document_import = build(:whitehall_migration_document_import,
+                              document: document,
+                              payload: build(:whitehall_export_document, editions: [whitehall_edition]))
 
       revision = described_class.call(document_import, whitehall_edition)
 
       expect(revision.backdated_to).to eq(backdated_to)
     end
 
-    it "does not set backdated_to when edition has not been backdated" do
+    it "sets backdated_to when the following edition has been backdated" do
+      backdated_to = Time.zone.now.beginning_of_week.rfc3339
+      whitehall_edition = build(:whitehall_export_edition, :published,
+                                published_at: Time.zone.yesterday.rfc3339)
+      backdated_whitehall_edition = build(:whitehall_export_edition,
+                                          first_published_at: backdated_to)
+      document_import = build(:whitehall_migration_document_import,
+                              document: document,
+                              payload: build(:whitehall_export_document,
+                                             editions: [whitehall_edition, backdated_whitehall_edition]))
+
+      revision = described_class.call(document_import, backdated_whitehall_edition)
+
+      expect(revision.backdated_to).to eq(backdated_to)
+    end
+
+    it "does not set backdated_to when the first edition has not been backdated" do
       whitehall_edition = build(:whitehall_export_edition)
 
       revision = described_class.call(document_import, whitehall_edition)
+
+      expect(revision.backdated_to).to be_nil
+    end
+
+    it "does not set backdated_to when the following edition has not been backdated" do
+      published_at = Time.zone.now.rfc3339
+      whitehall_edition = build(:whitehall_export_edition, :published, published_at: published_at)
+      following_whitehall_edition = build(:whitehall_export_edition, first_published_at: published_at)
+      document_import = build(:whitehall_migration_document_import,
+                              document: document,
+                              payload: build(:whitehall_export_document,
+                                             editions: [whitehall_edition, following_whitehall_edition]))
+
+      revision = described_class.call(document_import, following_whitehall_edition)
 
       expect(revision.backdated_to).to be_nil
     end

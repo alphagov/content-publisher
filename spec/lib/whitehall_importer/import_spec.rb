@@ -129,15 +129,12 @@ RSpec.describe WhitehallImporter::Import do
 
     it "sets current boolean on whether edition is current or not" do
       past_edition = build(
-        :whitehall_export_edition,
-        created_at: Time.zone.now.yesterday.rfc3339,
-        revision_history: [build(:whitehall_export_revision_history_event,
-                                 whodunnit: whitehall_user["id"])],
+        :whitehall_export_edition, :published,
+        created_at: Time.zone.now.yesterday.rfc3339
       )
       current_edition = build(
         :whitehall_export_edition,
-        revision_history: [build(:whitehall_export_revision_history_event,
-                                 whodunnit: whitehall_user["id"])],
+        first_published_at: past_edition["first_published_at"],
       )
 
       whitehall_export = build(:whitehall_export_document,
@@ -160,26 +157,9 @@ RSpec.describe WhitehallImporter::Import do
 
     it "sets first_published_at date to publish time of first edition" do
       first_publish_date = Time.zone.now.yesterday.rfc3339
-      first_edition = build(
-        :whitehall_export_edition,
-        revision_history: [
-          build(:whitehall_export_revision_history_event),
-          build(:whitehall_export_revision_history_event,
-                event: "update",
-                state: "published",
-                created_at: first_publish_date),
-        ],
-      )
-      second_edition = build(
-        :whitehall_export_edition,
-        revision_history: [
-          build(:whitehall_export_revision_history_event),
-          build(:whitehall_export_revision_history_event,
-                event: "update",
-                state: "published",
-                created_at: Time.zone.now),
-        ],
-      )
+      first_edition = build(:whitehall_export_edition,
+                            :published, published_at: first_publish_date)
+      second_edition = build(:whitehall_export_edition, first_published_at: Time.zone.now.rfc3339)
 
       whitehall_export = build(:whitehall_export_document,
                                editions: [first_edition, second_edition])
@@ -194,11 +174,11 @@ RSpec.describe WhitehallImporter::Import do
     end
 
     it "integrity checks the current and live editions of the imported document" do
-      editions = [
-        build(:whitehall_export_edition),
-        build(:whitehall_export_edition, :published),
-      ]
-      whitehall_export = build(:whitehall_export_document, editions: editions)
+      first_edition = build(:whitehall_export_edition, :published)
+      second_edition = build(:whitehall_export_edition,
+                             first_published_at: first_edition["first_published_at"])
+
+      whitehall_export = build(:whitehall_export_document, editions: [first_edition, second_edition])
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )
