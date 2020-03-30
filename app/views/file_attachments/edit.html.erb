@@ -24,12 +24,24 @@
 
       <%= render "govuk_publishing_components/components/input", {
         label: {
+          text: t("file_attachments.edit.isbn.heading"),
+          bold: true
+        },
+        name: "file_attachment[isbn]",
+        value: params.dig(:file_attachment, :isbn) || @attachment.isbn,
+        hint: t("file_attachments.edit.isbn.hint_text"),
+        error_items: @issues&.items_for(:file_attachment_isbn),
+      } %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
           text: t("file_attachments.edit.unique_reference.heading"),
           bold: true
         },
         name: "file_attachment[unique_reference]",
         value: params.dig(:file_attachment, :unique_reference) || @attachment.unique_reference,
         hint: t("file_attachments.edit.unique_reference.hint_text"),
+        error_items: @issues&.items_for(:file_attachment_unique_reference),
       } %>
 
       <%= render "govuk_publishing_components/components/button", {
