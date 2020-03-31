@@ -2,6 +2,8 @@
 
 <% back_link_path = if params[:wizard] == "featured-attachment-replace"
                       featured_attachments_path(@edition.document)
+                    elsif params[:wizard] == "featured-attachment-upload"
+                      featured_attachments_path(@edition.document)
                     else
                       file_attachments_path(@edition.document)
                     end %>
