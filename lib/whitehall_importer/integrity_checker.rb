@@ -2,13 +2,14 @@ module WhitehallImporter
   class IntegrityChecker
     attr_reader :edition
 
-    def self.time_matches?(proposed_time, publishing_api_time)
+    def self.time_matches?(proposed_time, publishing_api_time, seconds_difference = 5)
       return true if proposed_time == publishing_api_time
 
       proposed_time = Time.zone.rfc3339(proposed_time)
       publishing_api_time = Time.zone.rfc3339(publishing_api_time)
 
-      proposed_time.between?(publishing_api_time - 5, publishing_api_time + 5)
+      proposed_time.between?(publishing_api_time - seconds_difference,
+                             publishing_api_time + seconds_difference)
     rescue ArgumentError
       false
     end
@@ -71,7 +72,7 @@ module WhitehallImporter
       proposed_first_published_at = proposed_payload["first_published_at"]
       first_public_at = publishing_api_content["details"]["first_public_at"]
 
-      unless time_matches?(proposed_first_published_at, first_public_at)
+      unless time_matches?(proposed_first_published_at, first_public_at, 60)
         problems << problem_description("our first_published_at doesn't match first_public_at",
                                         first_public_at,
                                         proposed_first_published_at)
@@ -88,8 +89,8 @@ module WhitehallImporter
       problems
     end
 
-    def time_matches?(proposed_time, publishing_api_time)
-      self.class.time_matches?(proposed_time, publishing_api_time)
+    def time_matches?(proposed_time, publishing_api_time, seconds_difference = 5)
+      self.class.time_matches?(proposed_time, publishing_api_time, seconds_difference)
     end
 
     def state_problems
