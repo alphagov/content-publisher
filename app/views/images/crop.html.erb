@@ -6,7 +6,7 @@ content_for :title,t(title_key, title: @edition.title_or_fallback)
 <% content_for :back_link, render_back_link(
   href: images_path(@edition.document),
   data_attributes: {
-    "modal-action": "cropBack",
+    "modal-action": "back",
   }
 ) %>
 

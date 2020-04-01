@@ -95,12 +95,8 @@ describe('InlineImageModal', function () {
     itBehavesLikeAFormAction('upload')
   })
 
-  describe('cropBack action', function () {
-    itBehavesLikeALinkAction('cropBack')
-  })
-
-  describe('metaBack action', function () {
-    itBehavesLikeALinkAction('metaBack')
+  describe('back action', function () {
+    itBehavesLikeALinkAction('back')
   })
 
   describe('crop action', function () {
@@ -108,7 +104,11 @@ describe('InlineImageModal', function () {
   })
 
   describe('delete action', function () {
-    itBehavesLikeAFormAction('delete')
+    itBehavesLikeALinkAction('delete')
+  })
+
+  describe('confirmDelete action', function () {
+    itBehavesLikeAFormAction('confirmDelete')
   })
 
   describe('meta action', function () {

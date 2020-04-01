@@ -3,6 +3,7 @@ RSpec.feature "Delete an image" do
     given_there_is_an_edition_with_images
     when_i_visit_the_images_page
     and_i_delete_the_image
+    and_i_confirm_the_deletion
     then_i_see_the_image_is_gone
     and_i_see_the_timeline_entry
   end
@@ -11,6 +12,7 @@ RSpec.feature "Delete an image" do
     given_there_is_an_edition_with_a_lead_image
     when_i_visit_the_images_page
     when_i_delete_the_lead_image
+    and_i_confirm_the_deletion
     then_i_see_the_lead_image_is_gone
     and_i_see_the_timeline_entry
   end
@@ -19,6 +21,7 @@ RSpec.feature "Delete an image" do
     given_there_is_an_edition_with_images
     when_i_insert_an_inline_image
     and_i_delete_the_image
+    and_i_confirm_the_deletion
     then_i_see_the_image_is_gone
     and_i_see_the_timeline_entry
   end
@@ -62,6 +65,10 @@ RSpec.feature "Delete an image" do
   def when_i_delete_the_lead_image
     stub_publishing_api_put_content(@edition.content_id, {})
     click_on "Delete lead image"
+  end
+
+  def and_i_confirm_the_deletion
+    click_on "Yes, delete image"
   end
 
   def then_i_see_the_image_is_gone

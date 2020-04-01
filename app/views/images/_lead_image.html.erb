@@ -9,6 +9,10 @@
 
 <% unless rendering_context == "modal" %>
 
+  <% actions << link_to("Delete lead image", confirm_delete_image_path(@edition.document, lead_image.image_id),
+                      class: "govuk-link app-link--button app-link--destructive",
+                      data: { "modal-action": "delete", gtm: "delete-lead-image" }) %>
+
   <% actions << link_to("Edit details", edit_image_path(document, lead_image.image_id),
                         class: "govuk-link",
                         data: { "modal-action": "edit", gtm: "edit-lead-image" }) %>
@@ -23,15 +27,6 @@
         class: "app-inline-block",
         data: { gtm: "remove-lead-image" } do %>
       <button class="govuk-link app-link--button">Remove lead image</button>
-    <% end %>
-  <% end %>
-
-  <% actions << capture do %>
-    <%= form_tag destroy_image_path(document, lead_image.image_id),
-        method: :delete,
-        class: "app-inline-block",
-        data: { gtm: "delete-lead-image" } do %>
-      <button class="govuk-link app-link--button app-link--destructive">Delete lead image</button>
     <% end %>
   <% end %>
 <% end %>
