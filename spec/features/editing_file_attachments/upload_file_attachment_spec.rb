@@ -69,8 +69,12 @@ RSpec.feature "Upload file attachment", js: true do
 
   def and_i_enter_attachment_metadata
     click_on "Save and continue"
-    @metadata = "Ref: Unique ref"
-    fill_in "file_attachment[unique_reference]", with: "Unique ref"
+    unique_ref = "REF"
+    isbn = "9788700631625"
+    @metadata = "Ref: ISBN #{isbn}, #{unique_ref}"
+
+    fill_in "file_attachment[unique_reference]", with: unique_ref
+    fill_in "file_attachment[isbn]", with: isbn
 
     stub_asset_manager_updates_any_asset
     click_on "Save"
