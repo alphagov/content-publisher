@@ -70,8 +70,8 @@ module WhitehallImporter
 
   private
 
-    def history
-      @history ||= EditionHistory.new(whitehall_edition["revision_history"])
+    def history(whitehall_edition)
+      EditionHistory.new(whitehall_edition["revision_history"])
     end
 
     def translation
@@ -157,8 +157,21 @@ module WhitehallImporter
     end
 
     def backdated?
-      first_publish_event = history.first_state_event("publish") || {}
-      whitehall_edition["first_published_at"] != first_publish_event["created_at"]
+      return false if whitehall_edition["first_published_at"].blank?
+
+      first_whitehall_edition = document_import.payload["editions"].first
+      first_whitehall_edition_publish_event = history(first_whitehall_edition).first_state_event("published") || {}
+
+      if first_whitehall_edition["first_published_at"] != first_whitehall_edition_publish_event["created_at"]
+        return true
+      end
+
+      round_time_down(whitehall_edition["first_published_at"]) !=
+        round_time_down(first_whitehall_edition["first_published_at"])
+    end
+
+    def round_time_down(time)
+      Time.zone.parse(time).beginning_of_minute
     end
   end
 end

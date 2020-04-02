@@ -1,11 +1,11 @@
 module WhitehallImporter
   class IntegrityChecker::ChangeHistoryCheck
-    attr_reader :live_edition, :proposed_change_history, :publishing_api_change_history
+    attr_reader :edition, :proposed_change_history, :publishing_api_change_history
 
-    def initialize(proposed_change_history, publishing_api_change_history, live_edition:)
+    def initialize(proposed_change_history, publishing_api_change_history, edition)
       @proposed_change_history = proposed_change_history
       @publishing_api_change_history = publishing_api_change_history
-      @live_edition = live_edition
+      @edition = edition
     end
 
     def match?
@@ -15,7 +15,7 @@ module WhitehallImporter
 
       return false unless history_length_matches?
 
-      if live_edition
+      if edition.live?
         history_matches?(proposed_change_history, publishing_api_change_history)
       else
         history_excluding_first_timestamp_matches?
@@ -33,8 +33,10 @@ module WhitehallImporter
         proposed_time = proposed_history["public_timestamp"]
         publishing_api_time = publishing_api_history["public_timestamp"]
 
+        seconds_difference = proposed_history["note"] == "First published." ? 60 : 5
+
         proposed_history["note"] == publishing_api_history["note"] &&
-          IntegrityChecker.time_matches?(proposed_time, publishing_api_time)
+          IntegrityChecker.time_matches?(proposed_time, publishing_api_time, seconds_difference)
       end
     end
 

@@ -60,7 +60,7 @@ module WhitehallImporter
       problems << "change history doesn't match" unless ChangeHistoryCheck.new(
         proposed_payload.dig("details", "change_history"),
         publishing_api_content["details"].fetch("change_history", []),
-        live_edition: edition.live?,
+        edition,
       ).match?
 
       problems
@@ -72,11 +72,12 @@ module WhitehallImporter
       proposed_first_published_at = proposed_payload["first_published_at"]
       first_public_at = publishing_api_content["details"]["first_public_at"]
 
-      unless time_matches?(proposed_first_published_at, first_public_at, 60)
+      unless time_matches?(proposed_first_published_at, first_public_at)
         problems << problem_description("our first_published_at doesn't match first_public_at",
                                         first_public_at,
                                         proposed_first_published_at)
       end
+
       proposed_public_updated_at = proposed_payload["public_updated_at"]
       public_updated_at = publishing_api_content["public_updated_at"]
 
@@ -89,7 +90,7 @@ module WhitehallImporter
       problems
     end
 
-    def time_matches?(proposed_time, publishing_api_time, seconds_difference = 5)
+    def time_matches?(proposed_time, publishing_api_time, seconds_difference = 60)
       self.class.time_matches?(proposed_time, publishing_api_time, seconds_difference)
     end
 
