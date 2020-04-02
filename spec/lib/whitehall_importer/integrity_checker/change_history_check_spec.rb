@@ -36,6 +36,20 @@ RSpec.describe WhitehallImporter::IntegrityChecker::ChangeHistoryCheck do
       expect(integrity_check.match?).to be true
     end
 
+    it "returns true if first published timestamps are sufficiently similar" do
+      proposed_change_history = change_note("First published.",
+                                            Time.zone.now.beginning_of_minute)
+      publishing_api_change_history = change_note("First published.",
+                                                  Time.zone.now)
+
+      integrity_check = described_class.new(
+        proposed_change_history,
+        publishing_api_change_history,
+        create(:edition),
+      )
+      expect(integrity_check.match?).to be true
+    end
+
     it "returns false if length of change history does not match" do
       proposed_change_history = change_note("First published.", Date.yesterday.noon)
 

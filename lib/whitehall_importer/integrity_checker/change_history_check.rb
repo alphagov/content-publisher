@@ -33,8 +33,10 @@ module WhitehallImporter
         proposed_time = proposed_history["public_timestamp"]
         publishing_api_time = publishing_api_history["public_timestamp"]
 
+        seconds_difference = proposed_history["note"] == "First published." ? 60 : 5
+
         proposed_history["note"] == publishing_api_history["note"] &&
-          IntegrityChecker.time_matches?(proposed_time, publishing_api_time)
+          IntegrityChecker.time_matches?(proposed_time, publishing_api_time, seconds_difference)
       end
     end
 
