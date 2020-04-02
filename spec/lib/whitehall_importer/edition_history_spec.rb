@@ -262,4 +262,16 @@ RSpec.describe WhitehallImporter::EditionHistory do
         .to raise_error(WhitehallImporter::AbortImportError)
     end
   end
+
+  describe "#last_event" do
+    it "returns the last event of the revision history" do
+      first_event = build(:whitehall_export_revision_history_event,
+                          state: "draft")
+      second_event = build(:whitehall_export_revision_history_event,
+                           event: "update", state: "published")
+      instance = described_class.new([first_event, second_event])
+
+      expect(instance.last_event).to eq(second_event)
+    end
+  end
 end

@@ -96,6 +96,10 @@ module WhitehallImporter
       end
     end
 
+    def last_event
+      revision_history.last
+    end
+
   private
 
     attr_reader :revision_history

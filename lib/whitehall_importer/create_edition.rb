@@ -147,7 +147,7 @@ module WhitehallImporter
     end
 
     def build_status(revision, state, details = nil)
-      last_state_event = history.last_state_event!(whitehall_edition["state"])
+      last_state_event = history.last_state_event!(event_state(state))
 
       Status.new(
         state: state,
@@ -262,6 +262,14 @@ module WhitehallImporter
         document: edition.document,
         details: details,
       )
+    end
+
+    def event_state(state)
+      if state == "superseded" && history.last_event["state"] == "archived"
+        "archived"
+      else
+        whitehall_edition["state"]
+      end
     end
   end
 end
