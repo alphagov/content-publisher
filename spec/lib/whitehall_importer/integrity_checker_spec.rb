@@ -31,7 +31,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     end
     let(:publishing_api_item) do
       default_publishing_api_item(edition,
-                                  public_updated_at: "2020-03-11T12:00:45Z",
+                                  public_updated_at: "2020-03-11T12:00:00Z",
                                   state_history: { "1" => "published" },
                                   publication_state: "published",
                                   details: {
