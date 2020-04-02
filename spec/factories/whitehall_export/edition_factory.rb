@@ -60,6 +60,7 @@ FactoryBot.define do
         published_at { Time.zone.now.rfc3339 }
       end
 
+      first_published_at { published_at }
       created_at { 3.days.ago.rfc3339 }
       state { "published" }
       revision_history do
