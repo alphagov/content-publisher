@@ -320,7 +320,7 @@ RSpec.describe "File Attachments" do
 
       patch edit_file_attachment_path(edition.document,
                                       file_attachment_revision.file_attachment_id),
-            params: { file_attachment: { isbn: "9788700631625", unique_reference: "Uniq Ref" } }
+            params: { file_attachment: { isbn: "9788700631625" } }
 
       expect(response).to redirect_to(featured_attachments_path(edition.document))
     end
