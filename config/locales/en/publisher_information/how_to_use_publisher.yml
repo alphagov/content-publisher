@@ -9,22 +9,43 @@ en:
 
         ##Whitehall users
 
-        Content Publisher works differently to Whitehall. If you are familiar with Whitehall there are some differences to be aware of:
+        Content Publisher works differently from Whitehall. If you are familiar with Whitehall there are some differences to be aware of:
 
-        - Markdown can be added using a menu to format text
-        - Text pasted into the content body will be automatically converted to markdown
-        - There is an Insert menu to use to add pictures, contacts, or video embeds
-        - Pictures can be any size larger than 960px wide and 640px high
-        - Content is tagged to one Primary Organisation and they are responsible for managing that content
-        - Pictures to go at the top of content are added in the Lead Image section
-        - Previews can be shared to show other people the page
-        - You don’t need a second user to publish content if it has already been approved
+        - markdown can be added using a menu to format text
+        - text pasted into the content body will be automatically converted to markdown
+        - there is an Insert menu to use to add pictures, contacts, or video embeds
+        - pictures can be any size larger than 960px wide and 640px high
+        - content is tagged to one primary organisation and they are responsible for managing that content
+        - pictures to go at the top of content are added in the Lead Image section
+        - previews can be shared to show other people the page
+        - you do not need a second user to publish content if it has already been approved
 
         ---
 
         ##How to create content
 
-        Content Publisher can be used to create news stories and press releases. Other document types still need to be created in Whitehall publisher.
+        Content Publisher can be used to create: 
+        
+        - news stories
+        - press releases
+        - corporate report
+        - correspondence
+        - decision
+        - FOI release
+        - form
+        - guidance 
+        - impact assessment
+        - independent report
+        - map
+        - notice
+        - policy paper
+        - promotional material
+        - regulation
+        - research and analysis
+        - statutory guidance
+        - transparency data
+
+        Other document types still need to be created in Whitehall publisher.
 
         You should always consider if content really needs to be published on GOV.UK. Unnecessary content makes it harder for users to find what they need.
 
@@ -40,7 +61,7 @@ en:
 
         This works best when copy and pasting from text editing software like Word. It is less likely to recognise formatting from PDFs.
 
-        Content publisher has a toolbar to make it easier to add common markdown. You can use the buttons to add headings, links, or lists.
+        Content Publisher has a toolbar to make it easier to add common markdown. You can use the buttons to add headings, links, or lists.
 
         Use the Insert menu to add other media or special content. For example, you can insert images, videos, attachments, or contact addresses.
 
@@ -52,9 +73,9 @@ en:
 
         ##Attachments
 
-        Attachments are files the user can download. You can upload file attachments and add link to them from the body text. The link can be either a simple text link or a larger icon.
-
-        Use the Insert menu to upload files and add markdown which creates a link to the file.
+        Attachments are files the user can download. You can upload file attachments and add links to them from the body text. The link can be either a simple text link or a larger icon.
+        
+        Attachments must be in English. Content Publisher does not support attachments in other languages.
 
         All file attachments [must be accessible](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/accessible-pdfs), or there must be an accessible version available.
 
@@ -67,6 +88,36 @@ en:
 
         Other supported file types:
         .doc .docx .dxf .gif .jpg .png .ppt .pptx .eps .rtf .txt .xls . xlsm .xlsx .xlm .zip
+        
+        ###Adding attachments in news and press releases
+        
+        The attachment can be either a simple text link or a larger icon.        
+        
+        Use the insert menu to upload files and add markdown which creates a link to the file.
+        
+        ###Adding attachments in other formats
+        
+        You must add at least one attachment to these formats:
+        
+        - corporate report
+        - correspondence
+        - decision
+        - FOI release
+        - form
+        - guidance 
+        - impact assessment
+        - independent report
+        - map
+        - notice
+        - policy paper
+        - promotional material
+        - regulation-
+        - research and analysis
+        - statutory guidance
+        - transparency data
+        
+        You can add file attachments from the attachments section on the summary page. 
+
 
         ---
 
