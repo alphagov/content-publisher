@@ -1,10 +1,10 @@
-RSpec.describe "documents/history/_whitehall_entry.html.erb" do
+RSpec.describe "documents/history/whitehall_entry.html.erb" do
   it "shows an imported timeline entry without an author" do
     timeline_entry = create(:timeline_entry,
                             :whitehall_imported,
                             whitehall_entry_type: :new_edition,
                             created_by: nil)
-    render partial: "documents/history/whitehall_entry", locals: { entry: timeline_entry }
+    render partial: self.class.top_level_description, locals: { entry: timeline_entry }
     expect(rendered).not_to have_content(I18n.t!("documents.history.by"))
     expect(rendered).to have_content(I18n.t!("documents.history.entry_types.whitehall_migration.new_edition"))
   end
@@ -14,7 +14,7 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
                             :whitehall_imported,
                             whitehall_entry_type: :new_edition)
 
-    render partial: "documents/history/whitehall_entry", locals: { entry: timeline_entry }
+    render partial: self.class.top_level_description, locals: { entry: timeline_entry }
     expect(rendered).to have_content(I18n.t!("documents.history.by") + " John Smith")
     expect(rendered).to have_content(I18n.t!("documents.history.entry_types.whitehall_migration.new_edition"))
   end
@@ -25,8 +25,8 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
                             whitehall_entry_type: :internal_note)
     timeline_entry.details[:contents] = {}
 
-    render partial: "documents/history/whitehall_entry",
-                    locals: { entry: timeline_entry }
+    render partial: self.class.top_level_description,
+           locals: { entry: timeline_entry }
     expect(rendered).not_to have_selector(".app-timeline-entry--highlighted")
   end
 
@@ -37,8 +37,8 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
                             whitehall_entry_type: :internal_note)
     timeline_entry.details[:contents] = { body: note }
 
-    render partial: "documents/history/whitehall_entry",
-                    locals: { entry: timeline_entry }
+    render partial: self.class.top_level_description,
+           locals: { entry: timeline_entry }
     expect(rendered).to have_content(note)
     expect(rendered).to have_selector(".app-timeline-entry--highlighted")
   end
@@ -49,8 +49,8 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
                             whitehall_entry_type: :fact_check_request)
     timeline_entry.details[:contents] = {}
 
-    render partial: "documents/history/whitehall_entry",
-                    locals: { entry: timeline_entry }
+    render partial: self.class.top_level_description,
+           locals: { entry: timeline_entry }
     expect(rendered).not_to have_selector(".app-timeline-entry--highlighted")
   end
 
@@ -65,8 +65,8 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
       instructions: instructions,
     }
 
-    render partial: "documents/history/whitehall_entry",
-                    locals: { entry: timeline_entry }
+    render partial: self.class.top_level_description,
+           locals: { entry: timeline_entry }
     expect(rendered).to have_content(email)
     expect(rendered).to have_content(instructions)
     expect(rendered).to have_selector(".app-timeline-entry--highlighted")
@@ -78,8 +78,8 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
                             whitehall_entry_type: :fact_check_response)
     timeline_entry.details[:contents] = {}
 
-    render partial: "documents/history/whitehall_entry",
-                    locals: { entry: timeline_entry }
+    render partial: self.class.top_level_description,
+           locals: { entry: timeline_entry }
     expect(rendered).not_to have_selector(".app-timeline-entry--highlighted")
   end
 
@@ -94,8 +94,8 @@ RSpec.describe "documents/history/_whitehall_entry.html.erb" do
       comments: comments,
     }
 
-    render partial: "documents/history/whitehall_entry",
-                    locals: { entry: timeline_entry }
+    render partial: self.class.top_level_description,
+           locals: { entry: timeline_entry }
     expect(rendered).to have_content(email)
     expect(rendered).to have_content(comments)
     expect(rendered).to have_selector(".app-timeline-entry--highlighted")

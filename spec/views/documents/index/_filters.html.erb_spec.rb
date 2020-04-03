@@ -1,4 +1,4 @@
-RSpec.describe "documents/index/_filters.html.erb" do
+RSpec.describe "documents/index/filters.html.erb" do
   describe "Organisation select" do
     context "when organisations are loaded from the Publishing API" do
       it "renders the organisations in the organisation filter" do
@@ -9,7 +9,7 @@ RSpec.describe "documents/index/_filters.html.erb" do
           ],
           document_type: "organisation",
         )
-        render partial: "documents/index/filters"
+        render partial: self.class.top_level_description
         expect(rendered).to have_select("organisation",
                                         options: ["", "Org 1", "Org 2"])
       end
@@ -18,7 +18,7 @@ RSpec.describe "documents/index/_filters.html.erb" do
     context "when organisations fail to load from the Publishing API" do
       it "renders an empty option in the organisation filter" do
         stub_publishing_api_isnt_available
-        render partial: "documents/index/filters"
+        render partial: self.class.top_level_description
         expect(rendered).to have_select("organisation", options: [""])
       end
     end
@@ -36,7 +36,7 @@ RSpec.describe "documents/index/_filters.html.erb" do
     end
 
     it "includes pre-release document types when the user has pre_release_features permissions" do
-      render partial: "documents/index/filters"
+      render partial: self.class.top_level_description
 
       expect(rendered).to include(pre_release_document_type.label)
     end
@@ -45,7 +45,7 @@ RSpec.describe "documents/index/_filters.html.erb" do
       user = build(:user, permissions: %w(signin))
       login_as(user)
 
-      render partial: "documents/index/filters"
+      render partial: self.class.top_level_description
       expect(rendered).not_to include(pre_release_document_type.label)
     end
   end
