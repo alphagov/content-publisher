@@ -1,5 +1,5 @@
-name: Attachment meta
-description: Displays an attachment with actions
+name: Media with actions
+description: Takes an arbitrary block and displays actions below it
 body: |
   This component embeds the govuk_publishing_components attachment component
   with reduced data. Links to open the file use `target="_blank"` to open in a
@@ -9,12 +9,8 @@ shared_accessibility_criteria:
 examples:
   default:
     data:
-      attachment:
-        url: https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/289058/11-1276-the-future-of-computer-trading-in-financial-markets.pdf
-        title: "Future of computer trading in financial markets: working paper"
-        file_size: 895078
-        content_type: application/pdf
-        number_of_pages: 56
+      block:
+        Imagine this is a preview of the attachment.
       actions:
         - <a class="govuk-link" href="#">Insert attachment</a>
         - <a class="govuk-link" href="#">Preview</a>

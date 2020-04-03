@@ -37,7 +37,10 @@
   class: "govuk-link app-link--button app-link--destructive",
 ) %>
 
-<%= render "components/attachment_meta", {
-  attachment: file_attachment_attributes(attachment, edition),
-  actions: actions,
-} %>
+<%= render "components/media_with_actions", actions: actions do %>
+  <%= render "govuk_publishing_components/components/attachment", {
+    attachment: file_attachment_attributes(attachment, edition),
+    hide_opendocument_metadata: true,
+    target: "_blank",
+  } %>
+<% end %>

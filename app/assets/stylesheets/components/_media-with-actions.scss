@@ -1,4 +1,4 @@
-.app-c-attachment-meta {
+.app-c-media-with-actions {
   @include govuk-font(19);
 
   margin-bottom: govuk-spacing(6);
@@ -10,11 +10,11 @@
   }
 }
 
-.app-c-attachment-meta:last-child {
+.app-c-media-with-actions:last-child {
   border-bottom: 0;
 }
 
-.app-c-attachment-meta__actions {
+.app-c-media-with-actions__actions {
   margin: 0;
   padding: 0;
   clear: both;
