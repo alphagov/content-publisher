@@ -32,9 +32,8 @@ private
   end
 
   def check_for_issues
-    checker = Requirements::FileAttachmentMetadataChecker.new(attachment_params)
-    issues = checker.pre_update_issues
-
+    checker = Requirements::FileAttachmentMetadataChecker.new
+    issues = checker.pre_update_issues(params.require(:file_attachment))
     context.fail!(issues: issues) if issues.any?
   end
 
