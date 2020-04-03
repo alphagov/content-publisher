@@ -1,4 +1,4 @@
-RSpec.describe Requirements::FileAttachmentChecker do
+RSpec.describe Requirements::FileAttachmentUploadChecker do
   describe "#pre_upload_issues" do
     it "returns no issues if there are none" do
       file = fixture_file_upload("files/text-file-74bytes.txt", "text/plain")
@@ -24,7 +24,7 @@ RSpec.describe Requirements::FileAttachmentChecker do
     end
 
     it "returns an issue when the title is too long" do
-      max_length = Requirements::FileAttachmentChecker::TITLE_MAX_LENGTH
+      max_length = Requirements::FileAttachmentUploadChecker::TITLE_MAX_LENGTH
       title = "z" * (max_length + 1)
       issues = described_class.new(file: nil, title: title).pre_upload_issues
       expect(issues).to have_issue(:file_attachment_title, :too_long, max_length: max_length)
@@ -56,7 +56,7 @@ RSpec.describe Requirements::FileAttachmentChecker do
     end
 
     it "returns title issues when only the title is provided" do
-      max_length = Requirements::FileAttachmentChecker::TITLE_MAX_LENGTH
+      max_length = Requirements::FileAttachmentUploadChecker::TITLE_MAX_LENGTH
       title = "z" * (max_length + 1)
       issues = described_class.new(title: title).pre_update_issues
       expect(issues).to have_issue(:file_attachment_title, :too_long, max_length: max_length)

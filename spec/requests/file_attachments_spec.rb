@@ -326,7 +326,7 @@ RSpec.describe "File Attachments" do
     end
 
     it "returns issues and an unprocessable response when there are requirement issues" do
-      max_length = Requirements::FileAttachmentMetadataChecker::UNIQUE_REF_MAX_LENGTH
+      max_length = Requirements::FileAttachmentRevisionChecker::UNIQUE_REF_MAX_LENGTH
       too_long_unique_reference = "a" * (max_length + 1)
 
       patch edit_file_attachment_path(edition.document,

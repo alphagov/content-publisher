@@ -1,5 +1,5 @@
 module Requirements
-  class FileAttachmentChecker
+  class FileAttachmentUploadChecker
     TITLE_MAX_LENGTH = 255
     ALLOWED_FORMATS = [
       "text/csv", # csv

@@ -1,16 +1,18 @@
-RSpec.describe Requirements::FileAttachmentMetadataChecker do
+RSpec.describe Requirements::FileAttachmentRevisionChecker do
   describe "#pre_update_issues" do
-    let(:max_length) { Requirements::FileAttachmentMetadataChecker::UNIQUE_REF_MAX_LENGTH }
+    let(:max_length) { Requirements::FileAttachmentRevisionChecker::UNIQUE_REF_MAX_LENGTH }
+    let(:checker) { described_class.new(build(:file_attachment_revision)) }
+    let(:valid_params) { { official_document_type: "unofficial" } }
 
     it "returns no issues if there are none" do
       unique_reference = "z" * max_length
-      issues = described_class.new(unique_reference: unique_reference).pre_update_issues
+      issues = checker.pre_update_issues(unique_reference: unique_reference)
       expect(issues).to be_empty
     end
 
-    it "returns unique_reference issues when the unique_reference is too long" do
+    it "returns an issue when the unique_reference is too long" do
       unique_reference = "z" * (max_length + 1)
-      issues = described_class.new(unique_reference: unique_reference).pre_update_issues
+      issues = checker.pre_update_issues(unique_reference: unique_reference)
 
       expect(issues).to have_issue(:file_attachment_unique_reference,
                                    :too_long,
@@ -24,14 +26,14 @@ RSpec.describe Requirements::FileAttachmentMetadataChecker do
       "0-9722051-1-F",
       "ISBN 9788700631625",
     ].each do |invalid_isbn|
-      it "returns isbn issues when invalid isbn #{invalid_isbn.inspect} is provided" do
-        issues = described_class.new(isbn: invalid_isbn).pre_update_issues
+      it "returns an issue for invalid isbn #{invalid_isbn}" do
+        issues = checker.pre_update_issues(isbn: invalid_isbn)
         expect(issues).to have_issue(:file_attachment_isbn, :invalid)
       end
     end
 
     it "returns no issues when isbn is omitted" do
-      issues = described_class.new(isbn: nil).pre_update_issues
+      issues = checker.pre_update_issues(isbn: nil)
       expect(issues).to be_empty
     end
 
@@ -44,8 +46,8 @@ RSpec.describe Requirements::FileAttachmentMetadataChecker do
       "0-9722051-1-X",
       "0-9722051-1-x",
     ].each do |valid_isbn|
-      it "returns no issues when valid isbn #{valid_isbn.inspect} is provided" do
-        issues = described_class.new(isbn: valid_isbn).pre_update_issues
+      it "returns no issues for valid isbn #{valid_isbn}" do
+        issues = checker.pre_update_issues(isbn: valid_isbn)
         expect(issues).to be_empty
       end
     end

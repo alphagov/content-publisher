@@ -53,7 +53,7 @@ module WhitehallImporter
     end
 
     def check_file_requirements(decorated_file)
-      upload_checker = Requirements::FileAttachmentChecker.new(
+      upload_checker = Requirements::FileAttachmentUploadChecker.new(
         file: decorated_file, title: whitehall_file_attachment["title"],
       ).pre_upload_issues
 

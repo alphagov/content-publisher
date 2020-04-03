@@ -25,8 +25,9 @@ private
   end
 
   def check_for_issues
-    issues = Requirements::FileAttachmentChecker.new(file: params[:file], title: params[:title])
-                                                .pre_upload_issues
+    issues = Requirements::FileAttachmentUploadChecker
+      .new(file: params[:file], title: params[:title]).pre_upload_issues
+
     context.fail!(issues: issues) if issues.any?
   end
 
