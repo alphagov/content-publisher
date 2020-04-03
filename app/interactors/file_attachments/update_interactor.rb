@@ -42,7 +42,7 @@ private
 
   def update_file_attachment
     updater = Versioning::FileAttachmentRevisionUpdater.new(file_attachment_revision, user)
-    updater.assign(attachment_params)
+    updater.assign(updater_params)
     context.file_attachment_revision = updater.next_revision
   end
 
@@ -66,12 +66,15 @@ private
   end
 
   def attachment_params
-    raw_params = params.require(:file_attachment)
+    params.require(:file_attachment)
+  end
+
+  def updater_params
     update_params = {}
-    update_params[:isbn] = raw_params[:isbn]
-    update_params[:unique_reference] = raw_params[:unique_reference]
-    update_params[:official_document_type] = official_document_type(raw_params)
-    update_params[:paper_number] = paper_number(raw_params)
+    update_params[:isbn] = attachment_params[:isbn]
+    update_params[:unique_reference] = attachment_params[:unique_reference]
+    update_params[:official_document_type] = official_document_type(attachment_params)
+    update_params[:paper_number] = paper_number(attachment_params)
     update_params
   end
 

@@ -5,8 +5,7 @@ RSpec.describe Requirements::FileAttachmentRevisionChecker do
     let(:valid_params) { { official_document_type: "unofficial" } }
 
     it "returns no issues if there are none" do
-      unique_reference = "z" * max_length
-      issues = checker.pre_update_issues(unique_reference: unique_reference)
+      issues = checker.pre_update_issues(valid_params)
       expect(issues).to be_empty
     end
 
@@ -42,8 +41,20 @@ RSpec.describe Requirements::FileAttachmentRevisionChecker do
       "0-9722051-1-x",
     ].each do |valid_isbn|
       it "returns no issues for valid isbn #{valid_isbn}" do
-        issues = checker.pre_update_issues(isbn: valid_isbn)
+        issues = checker.pre_update_issues(valid_params.merge(isbn: valid_isbn))
         expect(issues).to be_empty
+      end
+    end
+
+    it "returns an issue when the official document type is blank" do
+      issues = checker.pre_update_issues({})
+      expect(issues).to have_issue(:file_attachment_official_document_type, :blank)
+    end
+
+    %w(command act).each do |type|
+      it "returns an issue when a numbered #{type} paper has no number" do
+        issues = checker.pre_update_issues(official_document_type: "#{type}_paper")
+        expect(issues).to have_issue(:"file_attachment_#{type}_paper_number", :blank)
       end
     end
   end
