@@ -5,6 +5,28 @@ en:
       summary_govspeak: Summary of updates to Content Publisher, content design guidance, or the design of GOV.UK.
       updates_heading: Publisher updates
       body_govspeak: |
+        ### Publications with file attachments <span class="govuk-caption-m"> April 2020</span>
+        You can now create these publication types in Content Publisher:
+        
+        - corporate report
+        - correspondence
+        - decision
+        - FOI release
+        - form
+        - guidance 
+        - impact assessment
+        - independent report
+        - map
+        - notice
+        - policy paper
+        - promotional material
+        - regulation
+        - research and analysis
+        - statutory guidance
+        - transparency data
+        
+        You can only attach a file to your publication.
+        
         ### History mode <span class="govuk-caption-m">12 December 2019</span>
         You can see if a document will go into history mode if there is a change of government. Managing Editors can change this setting.
 
