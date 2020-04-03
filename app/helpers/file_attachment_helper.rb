@@ -17,10 +17,18 @@ module FileAttachmentHelper
     }
 
     if edition.document_type.attachments.featured?
-      attributes.merge!(
-        isbn: attachment_revision.isbn,
-        unique_reference: attachment_revision.unique_reference,
-      )
+      attributes[:isbn] = attachment_revision.isbn
+      attributes[:unique_reference] = attachment_revision.unique_reference
+
+      if attachment_revision.command_paper?
+        attributes[:unnumbered_command_paper] = true if attachment_revision.paper_number.blank?
+        attributes[:command_paper_number] = attachment_revision.paper_number.presence
+      end
+
+      if attachment_revision.act_paper?
+        attributes[:unnumbered_hoc_paper] = true if attachment_revision.paper_number.blank?
+        attributes[:hoc_paper_number] = attachment_revision.paper_number.presence
+      end
     end
 
     attributes.compact

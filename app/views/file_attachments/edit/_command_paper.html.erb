@@ -1,0 +1,10 @@
+<%= render "govuk_publishing_components/components/input", {
+  label: {
+    text: t("file_attachments.edit.official_document.options.command_paper.input_label")
+  },
+  hint: t("file_attachments.edit.official_document.options.command_paper.input_hint_text"),
+  name: "file_attachment[command_paper_number]",
+  value: params.dig(:file_attachment, :command_paper_number) ||
+         (attachment.command_paper? && attachment.paper_number),
+  width: 10
+} %>

@@ -1,0 +1,30 @@
+<% official_document_type = params.dig(:file_attachment, :official_document_type) ||
+                            if attachment.unofficial? then "unofficial"
+                            elsif attachment.paper_number.present? then attachment.official_document_type
+                            elsif attachment.act_paper? then "unnumbered_act_paper"
+                            elsif attachment.command_paper? then "unnumbered_command_paper"
+                            end %>
+
+<% official_document_items = t("file_attachments.edit.official_document.options").map { |key, locales|
+  {
+    value: key,
+    text: locales[:label],
+    conditional: %i(command_paper act_paper).include?(key) && capture {
+      render "file_attachments/edit/#{key}", attachment: attachment, issues: issues
+    },
+    checked: official_document_type == key.to_s,
+    data_attributes: {
+      gtm: "choose-attachment-official-document-type",
+      "gtm-value": locales[:label]
+    }
+  }
+} %>
+
+<%= render "govuk_publishing_components/components/radio", {
+  id: "official-document-type",
+  heading: t("file_attachments.edit.official_document.heading"),
+  description: render_govspeak(t("file_attachments.edit.official_document.hint_text")),
+  name: "file_attachment[official_document_type]",
+  items: official_document_items,
+  error_items: issues&.items_for(:file_attachment_official_document_type),
+} %>
