@@ -30,6 +30,9 @@ en:
       label: Correspondence publication
       description: Minister or organisation responses (for example to campaign letters), correspondence to individuals, organisations and professionals, circulars, bulletins and newsletters.
     decision:
+      label: Decision publication (pre-release)
+      description: Formal decisions by tribunals, regulators or adjudicators (including courts and Secretaries of State).
+    decision_managed_elsewhere:
       label: Decision publication
       description: Formal decisions by tribunals, regulators or adjudicators (including courts and Secretaries of State).
     detailed_guide:
@@ -45,9 +48,12 @@ en:
       label: FOI release publication
       description: Responses to Freedom of Information (FOI) requests.
     form:
+      label: Form publication (pre-release)
+      description: Form documents that need to be completed by the users.
+    form_managed_elsewhere:
       label: Form publication
       description: Form documents that need to be completed by the users.
-    guidance:
+    guidance_title:
       label: Guidance
       description: Guidance to help the user do something or understand what they need to do.
     guidance_and_regulation:
@@ -75,6 +81,9 @@ en:
       label: Manual
       description: Long, complex guidance or legal documents for specialist users who are familiar with a topic, usually with named or numbered chapters or clauses.
     map:
+      label: Map publication (pre-release)
+      description: Drawn maps and geographical data.
+    map_managed_elsewhere:
       label: Map publication
       description: Drawn maps and geographical data.
     news:
@@ -90,12 +99,18 @@ en:
       label: I’m not sure if this should be on GOV.UK
       description: View this guide to see what should go on GOV.UK and where else you can publish content
     notice:
+      label: Notice publication (pre-release)
+      description: Permit and licence applications published temporarily for public awareness.
+    notice_managed_elsewhere:
       label: Notice publication
       description: Permit and licence applications published temporarily for public awareness.
     national_statistics:
       label: National statistics publication
       description: Official Statistics that have been produced in accordance with the Code of Practice for Official Statistics, which is indicated using the National Statistics quality mark.
-    non_statutory_guidance:
+    guidance:
+      label: Non-statutory guidance publication (pre-release)
+      description: Publications like manuals, handbooks, and other documents that offer advice. Use for content produced as a standalone hard-copy publicaton. For web-original content use 'detailed guide'.
+    guidance_managed_elsewhere:
       label: Non-statutory guidance publication
       description: Publications like manuals, handbooks, and other documents that offer advice. Use for content produced as a standalone hard-copy publicaton. For web-original content use 'detailed guide'.
     official_statistics:
@@ -126,6 +141,9 @@ en:
       label: Promotional material publication
       description: Leaflets, posters, factsheets and marketing materials.
     regulation:
+      label: Regulation publication (pre-release)
+      description: Regulations imposed by an independent regulatory authority.
+    regulation_managed_elsewhere:
       label: Regulation publication
       description: Regulations imposed by an independent regulatory authority.
     research:
@@ -156,6 +174,9 @@ en:
       label: Statistics announcement
       description: An announcement of national and official statistics releases to comply with the Code of Practice for Official Statistics.
     statutory_guidance:
+      label: Statutory guidance publication (pre-release)
+      description: Guidance which relevant users are legally obliged to follow.
+    statutory_guidance_managed_elsewhere:
       label: Statutory guidance publication
       description: Guidance which relevant users are legally obliged to follow.
     transparency:

@@ -28,17 +28,21 @@
       hostname: whitehall-admin
       path: /government/admin/speeches/new
 
-- id: guidance
+- id: guidance_title
   options:
     - id: detailed_guide
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/detailed-guides/new
-    - id: non_statutory_guidance
+    - id: guidance
+      type: document_type
+    - id: guidance_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: statutory_guidance
+      type: document_type
+    - id: statutory_guidance_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
@@ -53,17 +57,23 @@
 
 - id: guidance_and_regulation
   options:
-    - id: guidance
+    - id: guidance_title
       type: document_type_selection
     - id: form
+      type: document_type
+    - id: form_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: regulation
+      type: document_type
+    - id: regulation_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: map
+      type: document_type
+    - id: map_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
@@ -109,10 +119,14 @@
 - id: specialist_notices
   options:
     - id: notice
+      type: document_type
+    - id: notice_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
     - id: decision
+      type: document_type
+    - id: decision_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new

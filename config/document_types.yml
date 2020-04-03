@@ -45,9 +45,17 @@ document_types:
     <<: *publication
     label: Corporate report
 
+  - id: decision
+    <<: *publication
+    label: Decision
+
   - id: foi_release
     <<: *publication
     label: FOI Release
+
+  - id: form
+    <<: *publication
+    label: Form
 
   - id: impact_assessment
     <<: *publication
@@ -57,9 +65,21 @@ document_types:
     <<: *publication
     label: Independent report
 
+  - id: map
+    <<: *publication
+    label: Map
+
   - id: news_story
     <<: *news_article
     label: News story
+
+  - id: notice
+    <<: *publication
+    label: Notice
+        
+  - id: guidance
+    <<: *publication
+    label: Non statutory guidance  
 
   - id: policy_paper
     <<: *publication
@@ -73,9 +93,17 @@ document_types:
     <<: *publication
     label: Promotional material
 
+  - id: regulation
+    <<: *publication
+    label: Regulation
+
   - id: research
     <<: *publication
     label: Research and analysis
+
+  - id: statutory_guidance
+    <<: *publication
+    label: Statutory guidance
 
   - id: transparency
     <<: *publication
