@@ -32,11 +32,6 @@ RSpec.describe Requirements::FileAttachmentRevisionChecker do
       end
     end
 
-    it "returns no issues when isbn is omitted" do
-      issues = checker.pre_update_issues(isbn: nil)
-      expect(issues).to be_empty
-    end
-
     [
       "9788700631625",
       "1590599934",
