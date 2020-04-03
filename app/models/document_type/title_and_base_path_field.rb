@@ -18,7 +18,7 @@ class DocumentType::TitleAndBasePathField
   def updater_params(edition, params)
     title = params[:title]&.strip
     base_path = GenerateBasePathService.call(edition, title: title)
-    { title: title, base_path: base_path }
+    { title: title, base_path: base_path }.compact
   end
 
   def pre_update_issues(edition, params)

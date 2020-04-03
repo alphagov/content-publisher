@@ -27,5 +27,12 @@ RSpec.describe DocumentType::RoleAppointmentsField do
       updater_params = described_class.new.updater_params(edition, params)
       expect(updater_params).to eq(role_appointments: %w[some_role_id])
     end
+
+    it "disallows incorect data" do
+      edition = build :edition
+      params = ActionController::Parameters.new(organisations: nil)
+      updater_params = described_class.new.updater_params(edition, params)
+      expect(updater_params).to be_empty
+    end
   end
 end

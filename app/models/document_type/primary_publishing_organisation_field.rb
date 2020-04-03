@@ -8,7 +8,7 @@ class DocumentType::PrimaryPublishingOrganisationField
   end
 
   def updater_params(_edition, params)
-    { primary_publishing_organisation: params[:primary_publishing_organisation] }
+    { primary_publishing_organisation: params[:primary_publishing_organisation] }.compact
   end
 
   def pre_update_issues(_edition, params)

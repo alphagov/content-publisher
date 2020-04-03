@@ -10,7 +10,7 @@ class DocumentType::SummaryField
   end
 
   def updater_params(_edition, params)
-    { summary: params[:summary]&.strip }
+    { summary: params[:summary]&.strip }.compact
   end
 
   def pre_update_issues(_edition, params)

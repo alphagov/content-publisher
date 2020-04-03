@@ -15,6 +15,13 @@ RSpec.describe DocumentType::PrimaryPublishingOrganisationField do
       updater_params = described_class.new.updater_params(edition, params)
       expect(updater_params).to eq(primary_publishing_organisation: %w[some_org_id])
     end
+
+    it "disallows incorect data" do
+      edition = build :edition
+      params = ActionController::Parameters.new(organisations: nil)
+      updater_params = described_class.new.updater_params(edition, params)
+      expect(updater_params).to be_empty
+    end
   end
 
   describe "#pre_update_issues" do

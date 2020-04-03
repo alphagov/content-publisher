@@ -15,5 +15,12 @@ RSpec.describe DocumentType::WorldLocationsField do
       updater_params = described_class.new.updater_params(edition, params)
       expect(updater_params).to eq(world_locations: %w[some_world_location_id])
     end
+
+    it "disallows incorect data" do
+      edition = build :edition
+      params = ActionController::Parameters.new(organisations: nil)
+      updater_params = described_class.new.updater_params(edition, params)
+      expect(updater_params).to be_empty
+    end
   end
 end
