@@ -1,23 +1,59 @@
 en:
   publisher_information:
     beta_capabilities:
-      title: What the Beta can and cannot do
+      title: What the beta can and cannot do
       body_govspeak: |
         <span class="govuk-hint">Last updated: 6 September 2019</span>
 
         Content Publisher beta can be used to publish the following document types:
 
-        * News stories
-        * Press releases
+        * news stories
+        * press releases
+        
+        If you are attaching file, you can create these publications in Content Publisher:
+        
+        * corporate report
+        * correspondence
+        * decision
+        * FOI release
+        * form
+        * non-statutory guidance 
+        * impact assessment
+        * independent report
+        * map
+        * notice
+        * policy paper
+        * promotional material
+        * regulation
+        * research and analysis
+        * statutory guidance
+        * transparency data
+        
+        You can only add file attachments to these publications. 
+        
+        It is not yet possible to:
+        
+         * create HTML attachments
+         * add external links
+         * indicate that content only covers some UK nations 
+         * include links to attachments in the body of the document’s publication page or HTML attachment
+         
+         GOV.UK users will be able to download CSV files from publications created in Content Publisher but they will not be able to view them online.
 
         Content created in Content Publisher cannot be edited in Whitehall publisher. Whitehall content cannot be edited in Content Publisher.
 
-        Content created in Content Publisher can be featured on organisation homepages in Whitehall using the option to 'Feature non-GOV.UK government link'.
+        Content Publisher cannot be used to publish any translations. If content needs a translated version you need to use Whitehall.
+        
+        ##Featuring documents and adding them to collections
 
+        Content created in Content Publisher can be featured on organisation homepages in Whitehall using the option to 'Feature non-GOV.UK government link'.
+        
         Content created in Content Publisher can be added to document collections in Whitehall using the option to 'Add GOV.UK content created outside of Whitehall to a group'.
 
-        It is possible to remove (unpublish) pages on request.
+        ##Removing content created in Content Publisher from GOV.UK
 
-        Content Publisher cannot be used to publish any translations. If content needs a translated version you need to use Whitehall.
-
-        If you use Whitehall to publish News content please send feedback to explain why.
+        It is possible to remove (unpublish) pages on request. [Raise a support request](https://support.publishing.service.gov.uk/unpublish_content_request/new) to do this.
+        
+        ##If you’re still using Whitehall for document types available in Content Publisher
+        
+        Please send feedback to explain why you’re not using Content Publisher. This will help us improve it.
