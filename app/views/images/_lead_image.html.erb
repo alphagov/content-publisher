@@ -31,7 +31,7 @@
   <% end %>
 <% end %>
 
-<%= render "components/image_meta", {
+<%= render "components/image_with_metadata", {
   id: "image-#{lead_image.id}",
   src: url_for(lead_image.thumbnail),
   alt_text: lead_image.alt_text,

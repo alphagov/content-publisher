@@ -1,4 +1,4 @@
-.app-c-image-meta {
+.app-c-image-with-metadata {
   @include govuk-font(19);
 
   margin-bottom: govuk-spacing(6);
@@ -10,17 +10,17 @@
   }
 }
 
-.app-c-image-meta:last-child {
+.app-c-image-with-metadata:last-child {
   border-bottom: 0;
 }
 
-.app-c-image-meta__image {
+.app-c-image-with-metadata__image {
   display: block;
   max-width: 100%;
   margin-bottom: govuk-spacing(3);
 }
 
-.app-c-image-meta__actions {
+.app-c-image-with-metadata__actions {
   margin: 0;
   padding: 0;
 

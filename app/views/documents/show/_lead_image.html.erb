@@ -2,7 +2,7 @@
 
 <% lead_image_block = if lead_image_revision %>
   <% capture do %>
-    <%= render "components/image_meta", {
+    <%= render "components/image_with_metadata", {
       src: url_for(lead_image_revision.thumbnail),
       alt_text: lead_image_revision.alt_text,
       metadata_items: [

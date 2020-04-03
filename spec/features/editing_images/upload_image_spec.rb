@@ -59,7 +59,7 @@ RSpec.feature "Upload an image", js: true do
   end
 
   def then_i_see_the_uploaded_image
-    expect(page).to have_selector(".app-c-image-meta")
+    expect(page).to have_selector(".app-c-image-with-metadata")
 
     within("#image-#{Image.first.id}") do
       expect(find("img")["src"]).to include("1000x1000.jpg")

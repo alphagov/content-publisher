@@ -1,14 +1,14 @@
 <%
-  id ||= "image-meta-#{SecureRandom.hex(4)}"
+  id ||= "image-with-metadata-#{SecureRandom.hex(4)}"
   alt_text ||= nil
   actions ||= []
   metadata_items ||= []
 %>
-<div class="app-c-image-meta" id="<%= id %>">
+<div class="app-c-image-with-metadata" id="<%= id %>">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
 
-      <%= tag.img class: "app-c-image-meta__image",
+      <%= tag.img class: "app-c-image-with-metadata__image",
         src: src,
         alt: alt_text
       %>
@@ -25,7 +25,7 @@
   </div>
 
   <% if actions.any? %>
-    <ul class="app-c-image-meta__actions">
+    <ul class="app-c-image-with-metadata__actions">
       <% actions.each do |action| %>
         <li><%= action %></li>
       <% end %>

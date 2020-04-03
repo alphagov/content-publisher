@@ -50,7 +50,7 @@
   },
 ] %>
 
-<%= render "components/image_meta", {
+<%= render "components/image_with_metadata", {
   id: "image-#{image.image_id}",
   src: url_for(image.thumbnail),
   alt_text: image.alt_text,
