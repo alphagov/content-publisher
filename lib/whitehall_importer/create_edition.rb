@@ -160,7 +160,7 @@ module WhitehallImporter
 
     def create_edition(status:, edition_number:, current:, revision:, create_event: nil, last_event: nil)
       create_event ||= history.create_event!
-      last_event ||= whitehall_edition["revision_history"].last
+      last_event ||= history.last_event
 
       editor_ids = history.editors.map { |editor| user_ids[editor] }.compact
       published_at = history.last_state_event!("published")["created_at"] if status.live? || status.superseded?
