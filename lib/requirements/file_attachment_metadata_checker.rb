@@ -18,6 +18,21 @@ module Requirements
                       max_length: UNIQUE_REF_MAX_LENGTH)
       end
 
+      if params[:official_document_type].blank?
+        issues.create(:file_attachment_official_document_type,
+                      :blank)
+      end
+
+      if blank_paper_number?("command", params)
+        issues.create(:file_attachment_command_paper_number,
+                      :blank)
+      end
+
+      if blank_paper_number?("act", params)
+        issues.create(:file_attachment_act_paper_number,
+                      :blank)
+      end
+
       issues
     end
 
@@ -25,6 +40,11 @@ module Requirements
 
     def valid_isbn?(isbn)
       isbn.blank? || ISBN10_REGEX.match?(isbn) || ISBN13_REGEX.match?(isbn)
+    end
+
+    def blank_paper_number?(type, params)
+      params[:official_document_type] == "#{type}_paper" &&
+        params[:"#{type}_paper_number"].blank?
     end
   end
 end

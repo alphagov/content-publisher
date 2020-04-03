@@ -71,6 +71,15 @@ en:
     file_attachment_unique_reference:
       too_long:
         form_message: "Enter a unique reference that is fewer than %{max_length} characters long"
+    file_attachment_official_document_type:
+      blank:
+        form_message: "Choose if this is an official document"
+    file_attachment_command_paper_number:
+      blank:
+        form_message: "Enter a command paper number"
+    file_attachment_act_paper_number:
+      blank:
+        form_message: "Enter a House of Commons paper number"
     public_explanation:
       blank:
         form_message: Enter a public explanation
