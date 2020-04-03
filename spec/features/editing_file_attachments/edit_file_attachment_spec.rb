@@ -26,10 +26,13 @@ RSpec.feature "Edit a file attachment" do
 
     unique_ref = "REF"
     isbn = "9788700631625"
+    paper_number = "1234"
     @metadata = "Ref: ISBN #{isbn}, #{unique_ref}"
 
     fill_in "file_attachment[unique_reference]", with: unique_ref
     fill_in "file_attachment[isbn]", with: isbn
+    choose I18n.t!("file_attachments.edit.official_document.options.act_paper.label")
+    fill_in "file_attachment[act_paper_number]", with: paper_number
     click_on "Save"
   end
 

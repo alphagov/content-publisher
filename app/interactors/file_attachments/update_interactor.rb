@@ -40,9 +40,7 @@ private
 
   def update_file_attachment
     updater = Versioning::FileAttachmentRevisionUpdater.new(file_attachment_revision, user)
-    revision_attributes = attachment_params.slice(:isbn, :unique_reference)
-    updater.assign(revision_attributes)
-
+    updater.assign(attachment_params)
     context.file_attachment_revision = updater.next_revision
   end
 
@@ -66,6 +64,26 @@ private
   end
 
   def attachment_params
-    params.require(:file_attachment).permit(:isbn, :unique_reference)
+    raw_params = params.require(:file_attachment)
+
+    { isbn: raw_params[:isbn],
+      unique_reference: raw_params[:unique_reference],
+      official_document_type: official_document_type(raw_params),
+      paper_number: paper_number(raw_params) }
+  end
+
+  def paper_number(params)
+    case params[:official_document_type]
+    when "command_paper" then params[:command_paper_number]
+    when "act_paper" then params[:act_paper_number]
+    end
+  end
+
+  def official_document_type(params)
+    case params[:official_document_type]
+    when "command_paper", "unnumbered_command_paper" then "command_paper"
+    when "act_paper", "unnumbered_act_paper" then "act_paper"
+    when "unofficial" then "unofficial"
+    end
   end
 end
