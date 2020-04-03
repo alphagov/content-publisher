@@ -404,6 +404,43 @@ RSpec.describe WhitehallImporter::CreateEdition do
       end
     end
 
+    context "when a superseded edition does not have a 'superseded' event" do
+      it "sets a superseded state if its last event is 'archived'" do
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          state: "superseded",
+          revision_history: [
+            build(:whitehall_export_revision_history_event),
+            build(:whitehall_export_revision_history_event,
+                  event: "update", state: "published"),
+            build(:whitehall_export_revision_history_event,
+                  event: "update", state: "archived"),
+          ],
+        )
+        described_class.call(document_import: document_import, change_history: change_history,
+                             whitehall_edition: whitehall_edition)
+
+        expect(document.editions.first).to be_superseded
+      end
+
+      it "aborts if its last event is not 'archived'" do
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          state: "superseded",
+          revision_history: [
+            build(:whitehall_export_revision_history_event),
+            build(:whitehall_export_revision_history_event,
+                  event: "update", state: "published"),
+          ],
+        )
+
+        expect {
+          described_class.call(document_import: document_import, change_history: change_history,
+                               whitehall_edition: whitehall_edition)
+        }.to raise_error(WhitehallImporter::AbortImportError, "Edition is missing a superseded event")
+      end
+    end
+
     it "aborts when there are no unpublishing details" do
       whitehall_edition = build(
         :whitehall_export_edition,
