@@ -1,0 +1,23 @@
+.gem-c-attachment-meta {
+  @include govuk-font(19);
+  @include govuk-clearfix;
+  position: relative;
+}
+
+.gem-c-attachment-meta__metadata {
+  @include govuk-font($size: 14);
+  margin: 0 0 govuk-spacing(3);
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.gem-c-attachment-meta__metadata--compact {
+  margin-bottom: 0;
+}
+
+.gem-c-attachment-meta__abbr {
+  text-decoration: none;
+  cursor: help;
+}

@@ -1,0 +1,42 @@
+<%
+  attachment = GovukPublishingComponents::Presenters::Attachment.new(attachment)
+  attributes = []
+
+  if attachment.content_type_name
+    content = if attachment.content_type_abbr
+                raw tag.abbr(attachment.content_type.abbr,
+                             title: attachment.content_type_name,
+                             class: "gem-c-attachment-meta__abbr")
+              else
+                attachment.content_type_name
+              end
+    attributes << tag.span(content, class: "gem-c-attachment-meta__attribute")
+  end
+
+  if attachment.file_size
+    attributes << tag.span(
+      number_to_human_size(attachment.file_size),
+      class: "gem-c-attachment-meta__attribute",
+    )
+  end
+
+  if attachment.number_of_pages
+    attributes << tag.span(
+      pluralize(attachment.number_of_pages, "page"),
+      class: "gem-c-attachment-meta__attribute",
+    )
+  end
+%>
+<%= tag.section class: "gem-c-attachment-meta" do %>
+  <% if attachment.reference.present? %>
+    <%= tag.p "Ref: #{attachment.reference}", class: "gem-c-attachment-meta__metadata gem-c-attachment-meta__metadata--compact" %>
+  <% end %>
+
+  <% if attachment.unnumbered_reference.present? %>
+    <%= tag.p attachment.unnumbered_reference, class: "gem-c-attachment-meta__metadata gem-c-attachment-meta__metadata--compact" %>
+  <% end %>
+
+  <% if attributes.any? %>
+    <%= tag.p raw(attributes.join(', ')), class: "gem-c-attachment-meta__metadata" %>
+  <% end %>
+<% end %>
