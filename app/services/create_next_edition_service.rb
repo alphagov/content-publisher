@@ -38,7 +38,7 @@ private
   end
 
   def change_history
-    if !current_edition.major? || current_edition.change_note.empty? || current_edition.first?
+    if !current_edition.major? || current_edition.change_note.blank? || current_edition.first?
       return current_edition.change_history
     end
 
