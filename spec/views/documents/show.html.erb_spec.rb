@@ -26,6 +26,20 @@ RSpec.describe "documents/show.html.erb" do
     end
   end
 
+  describe "attachments" do
+    it "shows the attachments when a document has attachments" do
+      file_attachment_revision = create(:file_attachment_revision,
+                                        unique_reference: SecureRandom.uuid)
+      edition = create(:edition,
+                       document_type: build(:document_type, attachments: "featured"),
+                       file_attachment_revisions: [file_attachment_revision])
+      assign(:edition, edition)
+
+      expect(render).to have_content(file_attachment_revision.title)
+      expect(render).to have_content(file_attachment_revision.unique_reference)
+    end
+  end
+
   describe "tags" do
     let(:tag_field) { DocumentType::PrimaryPublishingOrganisationField.new }
     let(:document_type) { build(:document_type, tags: [tag_field]) }

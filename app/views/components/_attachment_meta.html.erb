@@ -29,11 +29,11 @@
 %>
 <%= tag.section class: "gem-c-attachment-meta" do %>
   <% if attachment.reference.present? %>
-    <%= tag.p "Ref: #{attachment.reference}", class: "gem-c-attachment-meta__metadata gem-c-attachment-meta__metadata--compact" %>
+    <%= tag.p "Ref: #{attachment.reference}", class: "gem-c-attachment-meta__metadata govuk-!-margin-bottom-0" %>
   <% end %>
 
   <% if attachment.unnumbered_reference.present? %>
-    <%= tag.p attachment.unnumbered_reference, class: "gem-c-attachment-meta__metadata gem-c-attachment-meta__metadata--compact" %>
+    <%= tag.p attachment.unnumbered_reference, class: "gem-c-attachment-meta__metadata govuk-!-margin-bottom-0" %>
   <% end %>
 
   <% if attributes.any? %>
