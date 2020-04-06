@@ -14,10 +14,6 @@ RSpec.describe Images::CreateInteractor do
     end
 
     context "when input is valid" do
-      it "is successful" do
-        expect(described_class.call(**args)).to be_success
-      end
-
       it "creates a new image revision" do
         expect { described_class.call(**args) }
           .to change { Image::Revision.count }.by(1)
