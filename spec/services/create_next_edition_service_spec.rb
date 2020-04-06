@@ -92,7 +92,7 @@ RSpec.describe CreateNextEditionService do
       current_edition = create(:edition,
                                :published,
                                number: 2,
-                               change_note: "")
+                               change_note: nil)
 
       next_edition = described_class.call(current_edition: current_edition,
                                           user: user)
