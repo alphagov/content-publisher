@@ -2,12 +2,9 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
   let(:user) { create :user }
   let(:attachment_revision) { create :file_attachment_revision }
 
-  let(:revision) do
-    create :revision, file_attachment_revisions: [attachment_revision]
-  end
-
   describe "#add_file_attachment" do
     it "extends file attachment revisions with a new file attachment" do
+      revision = create :revision, file_attachment_revisions: [attachment_revision]
       new_attachment = create :file_attachment_revision
 
       updater = Versioning::RevisionUpdater.new(revision, user)
@@ -19,6 +16,7 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
     end
 
     it "raises an error if a revision exists for the same attachment" do
+      revision = create :revision, file_attachment_revisions: [attachment_revision]
       updater = Versioning::RevisionUpdater.new(revision, user)
 
       expect { updater.add_file_attachment(attachment_revision) }
@@ -45,6 +43,7 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
       updated_attachment = create :file_attachment_revision,
                                   file_attachment_id: attachment_revision.file_attachment_id
 
+      revision = create :revision, file_attachment_revisions: [attachment_revision]
       updater = Versioning::RevisionUpdater.new(revision, user)
       updater.update_file_attachment(updated_attachment)
 
