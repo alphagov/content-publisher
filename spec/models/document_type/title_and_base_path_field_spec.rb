@@ -33,20 +33,7 @@ RSpec.describe DocumentType::TitleAndBasePathField do
     it "returns an issue if there is no title" do
       edition = build :edition, title: nil
       issues = described_class.new.pre_preview_issues(edition)
-      expect(issues).to have_issue(:title, :blank, styles: %i[form summary])
-    end
-
-    it "returns an issue if the title is too long" do
-      max_length = DocumentType::TitleAndBasePathField::TITLE_MAX_LENGTH
-      edition = build :edition, title: "a" * (max_length + 1)
-      issues = described_class.new.pre_preview_issues(edition)
-      expect(issues).to have_issue(:title, :too_long, styles: %i[form summary], max_length: max_length)
-    end
-
-    it "returns an issue if the title has newlines" do
-      edition = build :edition, title: "a\nb"
-      issues = described_class.new.pre_preview_issues(edition)
-      expect(issues).to have_issue(:title, :multiline, styles: %i[form summary])
+      expect(issues).to have_issue(:title, :blank, styles: %i[summary])
     end
   end
 
@@ -63,10 +50,23 @@ RSpec.describe DocumentType::TitleAndBasePathField do
       expect(issues).to be_empty
     end
 
-    it "returns any pre_preview_issues" do
+    it "returns an issue if the title is blank" do
       params = { title: nil }
       issues = described_class.new.pre_update_issues(edition, params)
-      expect(issues).to have_issue(:title, :blank, styles: %i[form summary])
+      expect(issues).to have_issue(:title, :blank)
+    end
+
+    it "returns an issue if the title is too long" do
+      max_length = DocumentType::TitleAndBasePathField::TITLE_MAX_LENGTH
+      params = { title: "a" * (max_length + 1) }
+      issues = described_class.new.pre_update_issues(edition, params)
+      expect(issues).to have_issue(:title, :too_long, max_length: max_length)
+    end
+
+    it "returns an issue if the title has newlines" do
+      params = { title: "a\nb" }
+      issues = described_class.new.pre_update_issues(edition, params)
+      expect(issues).to have_issue(:title, :multiline)
     end
 
     it "returns no issues if the document owns the path" do
@@ -80,7 +80,7 @@ RSpec.describe DocumentType::TitleAndBasePathField do
       stub_publishing_api_has_lookups(edition.base_path => SecureRandom.uuid)
       params = { title: edition.title, base_path: edition.base_path }
       issues = described_class.new.pre_update_issues(edition, params)
-      expect(issues).to have_issue(:title, :conflict, styles: %i[form summary])
+      expect(issues).to have_issue(:title, :conflict)
     end
 
     it "returns no issues when the Publishing API is down" do

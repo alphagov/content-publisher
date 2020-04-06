@@ -29,23 +29,22 @@ RSpec.describe DocumentType::SummaryField do
       max_length = DocumentType::SummaryField::SUMMARY_MAX_LENGTH
       params = { summary: "a" * (max_length + 1) }
       issues = described_class.new.pre_update_issues(edition, params)
-      expect(issues).to have_issue(:summary, :too_long, styles: %i[form summary], max_length: max_length)
+      expect(issues).to have_issue(:summary, :too_long, max_length: max_length)
     end
 
     it "returns an issue if the summary has newlines" do
       params = { summary: "a\nb" }
       issues = described_class.new.pre_update_issues(edition, params)
-      expect(issues).to have_issue(:summary, :multiline, styles: %i[form summary])
+      expect(issues).to have_issue(:summary, :multiline)
     end
   end
 
   describe "#pre_preview_issues" do
     let(:edition) { build :edition }
 
-    it "delegates to #pre_update_issues" do
-      field = described_class.new
-      expect(field).to receive(:pre_update_issues).with(edition, summary: edition.summary)
-      field.pre_preview_issues(edition)
+    it "returns no issues" do
+      issues = described_class.new.pre_preview_issues(edition)
+      expect(issues).to be_empty
     end
   end
 
@@ -60,7 +59,7 @@ RSpec.describe DocumentType::SummaryField do
     it "returns an issue if the summary is blank" do
       edition = build :edition, summary: "  "
       issues = described_class.new.pre_publish_issues(edition)
-      expect(issues).to have_issue(:summary, :blank, styles: %i[form summary])
+      expect(issues).to have_issue(:summary, :blank, styles: %i[summary])
     end
   end
 end

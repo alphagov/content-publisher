@@ -27,8 +27,8 @@ class DocumentType::SummaryField
     issues
   end
 
-  def pre_preview_issues(edition)
-    pre_update_issues(edition, summary: edition.summary)
+  def pre_preview_issues(_edition)
+    Requirements::CheckerIssues.new
   end
 
   def pre_publish_issues(edition)

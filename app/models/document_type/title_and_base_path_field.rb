@@ -22,39 +22,19 @@ class DocumentType::TitleAndBasePathField
   end
 
   def pre_update_issues(edition, params)
-    base_path_issues(edition, params) + title_issues(params[:title])
-  end
-
-  def pre_preview_issues(edition)
-    title_issues(edition.title)
-  end
-
-  def pre_publish_issues(_edition)
-    Requirements::CheckerIssues.new
-  end
-
-private
-
-  def title_issues(title)
     issues = Requirements::CheckerIssues.new
 
-    if title.blank?
+    if params[:title].blank?
       issues.create(:title, :blank)
     end
 
-    if title.to_s.size > TITLE_MAX_LENGTH
+    if params[:title].to_s.size > TITLE_MAX_LENGTH
       issues.create(:title, :too_long, max_length: TITLE_MAX_LENGTH)
     end
 
-    if title.to_s.lines.count > 1
+    if params[:title].to_s.lines.count > 1
       issues.create(:title, :multiline)
     end
-
-    issues
-  end
-
-  def base_path_issues(edition, params)
-    issues = Requirements::CheckerIssues.new
 
     begin
       if base_path_conflict?(edition, params)
@@ -66,6 +46,18 @@ private
 
     issues
   end
+
+  def pre_preview_issues(edition)
+    issues = Requirements::CheckerIssues.new
+    issues.create(:title, :blank) if edition.title.blank?
+    issues
+  end
+
+  def pre_publish_issues(_edition)
+    Requirements::CheckerIssues.new
+  end
+
+private
 
   def base_path_conflict?(edition, params)
     base_path_owner = GdsApi.publishing_api.lookup_content_id(

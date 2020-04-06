@@ -28,17 +28,15 @@ RSpec.describe DocumentType::BodyField do
     it "returns an issue if the a govspeak field contains forbidden HTML" do
       params = { contents: { body: "<script>alert('hi')</script>" } }
       issues = described_class.new.pre_update_issues(edition, params)
-      expect(issues).to have_issue(:body, :invalid_govspeak, styles: %i[form summary])
+      expect(issues).to have_issue(:body, :invalid_govspeak)
     end
   end
 
   describe "#pre_preview_issues" do
-    it "delegates to #pre_update_issues" do
+    it "returns no issues" do
       edition = build :edition, contents: { body: "body" }
-      params = { contents: { body: edition.contents["body"] } }
-      field = described_class.new
-      expect(field).to receive(:pre_update_issues).with(edition, params)
-      field.pre_preview_issues(edition)
+      issues = described_class.new.pre_preview_issues(edition)
+      expect(issues).to be_empty
     end
   end
 
@@ -52,7 +50,7 @@ RSpec.describe DocumentType::BodyField do
     it "returns an issue when the body is empty" do
       edition = build :edition, contents: { body: " " }
       issues = described_class.new.pre_publish_issues(edition)
-      expect(issues).to have_issue(:body, :blank, styles: %i[form summary])
+      expect(issues).to have_issue(:body, :blank, styles: %i[summary])
     end
   end
 end
