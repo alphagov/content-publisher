@@ -13,7 +13,6 @@ FactoryBot.define do
     transient do
       content_id { SecureRandom.uuid }
       locale { I18n.available_locales.sample }
-      document_type_id { document_type.id }
       document_type { build(:document_type, path_prefix: "/prefix") }
       featured_attachment_ordering { [] }
       state { "draft" }
