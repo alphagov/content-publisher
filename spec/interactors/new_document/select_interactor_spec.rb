@@ -1,6 +1,6 @@
 RSpec.describe NewDocument::SelectInteractor do
   describe ".call" do
-    let(:user) { build(:user, organisation_content_id: "org-id") }
+    let(:user) { build(:user, organisation_content_id: SecureRandom.uuid) }
 
     it "succeeds with valid parameters" do
       result = described_class.call(params: { type: "root", selected_option_id: "news" })

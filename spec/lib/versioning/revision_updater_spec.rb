@@ -7,7 +7,7 @@ RSpec.describe Versioning::RevisionUpdater do
         :revision,
         number: 1,
         title: "old title",
-        tags: { old: "tag" },
+        tags: { organisations: [SecureRandom.uuid] },
         change_note: "old change note",
         lead_image_revision: (create :image_revision),
         image_revisions: [create(:image_revision)],
@@ -36,7 +36,7 @@ RSpec.describe Versioning::RevisionUpdater do
 
       new_fields = {
         title: "new title",
-        tags: { "new_tag" => [] },
+        tags: { "organisations" => [] },
         change_note: "new change note",
         lead_image_revision: nil,
         image_revisions: [],

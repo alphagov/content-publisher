@@ -188,7 +188,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
         contacts: [],
         images: ["foo.jpg"],
         attachments: ["attach.txt"],
-      )
+      ).and_call_original
       described_class.call(document_import, whitehall_edition)
     end
 
