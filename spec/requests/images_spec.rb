@@ -145,7 +145,7 @@ RSpec.describe "Images" do
 
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.body)
-        .to include(I18n.t!("requirements.alt_text.blank.form_message"))
+        .to include(I18n.t!("requirements.image_alt_text.blank.form_message"))
     end
 
     it "returns a bad request when selecting a lead image is not a supported feature" do

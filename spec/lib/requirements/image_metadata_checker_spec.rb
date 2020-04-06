@@ -9,25 +9,25 @@ RSpec.describe Requirements::ImageMetadataChecker do
 
     it "returns an issue if there is no alt text" do
       issues = checker.pre_update_issues({})
-      expect(issues).to have_issue(:alt_text, :blank)
+      expect(issues).to have_issue(:image_alt_text, :blank)
     end
 
     it "returns an issue if the alt text is too long" do
       max_length = Requirements::ImageMetadataChecker::ALT_TEXT_MAX_LENGTH
       issues = checker.pre_update_issues(alt_text: "a" * (max_length + 1))
-      expect(issues).to have_issue(:alt_text, :too_long, max_length: max_length)
+      expect(issues).to have_issue(:image_alt_text, :too_long, max_length: max_length)
     end
 
     it "returns an issue if the caption is too long" do
       max_length = Requirements::ImageMetadataChecker::CAPTION_MAX_LENGTH
       issues = checker.pre_update_issues(caption: "a" * (max_length + 1))
-      expect(issues).to have_issue(:caption, :too_long, max_length: max_length)
+      expect(issues).to have_issue(:image_caption, :too_long, max_length: max_length)
     end
 
     it "returns an issue if the credit is too long" do
       max_length = Requirements::ImageMetadataChecker::CREDIT_MAX_LENGTH
       issues = checker.pre_update_issues(credit: "a" * (max_length + 1))
-      expect(issues).to have_issue(:credit, :too_long, max_length: max_length)
+      expect(issues).to have_issue(:image_credit, :too_long, max_length: max_length)
     end
   end
 
@@ -44,7 +44,7 @@ RSpec.describe Requirements::ImageMetadataChecker do
       image_revision = build :image_revision
       issues = checker.pre_preview_issues(image_revision)
 
-      expect(issues).to have_issue(:alt_text,
+      expect(issues).to have_issue(:image_alt_text,
                                    :blank,
                                    styles: %i[summary],
                                    filename: image_revision.filename,
