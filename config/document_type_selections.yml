@@ -28,7 +28,7 @@
       hostname: whitehall-admin
       path: /government/admin/speeches/new
 
-- id: guidance_title
+- id: guidance_publications
   options:
     - id: detailed_guide
       type: managed_elsewhere
@@ -57,7 +57,7 @@
 
 - id: guidance_and_regulation
   options:
-    - id: guidance_title
+    - id: guidance_publications
       type: document_type_selection
     - id: form
       type: document_type
@@ -149,7 +149,7 @@
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/speeches/new
-    
+
 - id: statistics
   options:
     - id: official_statistics

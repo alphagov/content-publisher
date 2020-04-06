@@ -53,7 +53,7 @@ en:
     form_managed_elsewhere:
       label: Form publication
       description: Form documents that need to be completed by the users.
-    guidance_title:
+    guidance_publications:
       label: Guidance
       description: Guidance to help the user do something or understand what they need to do.
     guidance_and_regulation:
