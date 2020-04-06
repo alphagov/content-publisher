@@ -18,10 +18,6 @@ RSpec.describe FileAttachments::CreateInteractor do
     end
 
     context "when input is valid" do
-      it "is successful" do
-        expect(described_class.call(**args)).to be_success
-      end
-
       it "creates a new file attachment revision" do
         expect { described_class.call(**args) }
           .to change { FileAttachment::Revision.count }.by(1)
@@ -34,11 +30,16 @@ RSpec.describe FileAttachments::CreateInteractor do
         described_class.call(**args)
       end
 
-      it "delegates generating a unique filename to GenerateUniqueFilenameService" do
+      it "generates a unique filename for the attachment" do
+        other_attachment = create :file_attachment_revision
+        edition = create :edition, file_attachment_revisions: [other_attachment]
+        args[:params].merge!(document: edition.document.to_param)
+
         expect(GenerateUniqueFilenameService).to receive(:call)
-          .with(existing_filenames: edition.revision.file_attachment_revisions.map(&:filename),
+          .with(existing_filenames: [other_attachment.filename],
                 filename: file.original_filename)
           .and_call_original
+
         described_class.call(**args)
       end
 
