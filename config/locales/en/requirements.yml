@@ -74,6 +74,7 @@ en:
     file_attachment_official_document_type:
       blank:
         form_message: "Choose if this is an official document"
+        summary_message: "Choose if ‘%{filename}’ is an official document"
     file_attachment_command_paper_number:
       blank:
         form_message: "Enter a command paper number"

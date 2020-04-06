@@ -36,6 +36,19 @@ module Requirements
       issues
     end
 
+    def pre_publish_issues(attachment)
+      issues = CheckerIssues.new
+
+      if attachment.official_document_type.blank?
+        issues.create(:file_attachment_official_document_type,
+                      :blank,
+                      filename: attachment.filename,
+                      attachment_revision: attachment)
+      end
+
+      issues
+    end
+
   private
 
     def valid_isbn?(isbn)
