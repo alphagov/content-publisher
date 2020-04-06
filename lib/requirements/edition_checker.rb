@@ -22,7 +22,6 @@ module Requirements
       issues = CheckerIssues.new
       issues += ContentChecker.new(edition).pre_publish_issues
       issues += TopicChecker.new(edition).pre_publish_issues(params)
-      issues += TagChecker.new(edition).pre_publish_issues
       issues
     end
   end
