@@ -17,6 +17,10 @@
       image_id = context[:image_revision].image_id
       { href: edit_image_path(@edition.document, image_id, anchor: "caption") }
     end,
+    file_attachment_official_document_type: -> (context) do
+      attachment_id = context[:attachment_revision].file_attachment_id
+      { href: edit_file_attachment_path(@edition.document, attachment_id }
+    end,
     topics: { href: topics_path(@edition.document) },
     primary_publishing_organisation: {
       href: tags_path(@edition.document, anchor: "primary_publishing_organisation")

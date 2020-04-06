@@ -1,4 +1,25 @@
 RSpec.describe Requirements::FileAttachmentRevisionChecker do
+  describe "#pre_publish_issues" do
+    it "returns no issues if there are none" do
+      attachment_revision = build(:file_attachment_revision, official_document_type: "unofficial")
+      checker = described_class.new(attachment_revision)
+      issues = checker.pre_publish_issues
+      expect(issues).to be_empty
+    end
+
+    it "returns an issue when the official document type is blank" do
+      attachment_revision = build(:file_attachment_revision)
+      checker = described_class.new(attachment_revision)
+      issues = checker.pre_publish_issues
+
+      expect(issues).to have_issue(:file_attachment_official_document_type,
+                                   :blank,
+                                   styles: %i[summary],
+                                   filename: attachment_revision.filename,
+                                   attachment_revision: attachment_revision)
+    end
+  end
+
   describe "#pre_update_issues" do
     let(:max_length) { Requirements::FileAttachmentRevisionChecker::UNIQUE_REF_MAX_LENGTH }
     let(:checker) { described_class.new(build(:file_attachment_revision)) }
