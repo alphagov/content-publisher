@@ -15,6 +15,33 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
         .to match_array [attachment_revision, new_attachment]
     end
 
+    it "appends to the ordering when there are featured attachments" do
+      document_type = build :document_type, attachments: "featured"
+      ordering = [attachment_revision.featured_attachment_id]
+      new_attachment = create :file_attachment_revision
+
+      revision = create :revision,
+                        document_type: document_type,
+                        file_attachment_revisions: [attachment_revision],
+                        featured_attachment_ordering: ordering
+
+      updater = Versioning::RevisionUpdater.new(revision, user)
+      updater.add_file_attachment(new_attachment)
+
+      next_revision = updater.next_revision
+      expect(next_revision.featured_attachment_ordering)
+        .to eq ordering + [new_attachment.featured_attachment_id]
+    end
+
+    it "preserves the ordering when there are no featured attachments" do
+      revision = create :revision
+      updater = Versioning::RevisionUpdater.new(revision, user)
+      updater.add_file_attachment(attachment_revision)
+
+      next_revision = updater.next_revision
+      expect(next_revision.featured_attachment_ordering).to be_empty
+    end
+
     it "raises an error if a revision exists for the same attachment" do
       revision = create :revision, file_attachment_revisions: [attachment_revision]
       updater = Versioning::RevisionUpdater.new(revision, user)
@@ -35,6 +62,22 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
 
       next_revision = updater.next_revision
       expect(next_revision.file_attachment_revisions).to match_array [other_attachment_revision]
+    end
+
+    it "updates the ordering when there are featured attachments" do
+      document_type = build :document_type, attachments: "featured"
+      ordering = [attachment_revision.featured_attachment_id]
+
+      revision = create :revision,
+                        document_type: document_type,
+                        file_attachment_revisions: [attachment_revision],
+                        featured_attachment_ordering: ordering
+
+      updater = Versioning::RevisionUpdater.new(revision, user)
+      updater.remove_file_attachment(attachment_revision)
+
+      next_revision = updater.next_revision
+      expect(next_revision.featured_attachment_ordering).to be_empty
     end
   end
 

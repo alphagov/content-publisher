@@ -6,8 +6,9 @@ module Versioning
           raise "Cannot add another revision for the same file attachment"
         end
 
-        revisions = revision.file_attachment_revisions + [attachment_revision]
-        assign(file_attachment_revisions: revisions)
+        new_revisions = revision.file_attachment_revisions + [attachment_revision]
+        assign(file_attachment_revisions: new_revisions)
+        update_attachment_ordering
       end
 
       def update_file_attachment(attachment_revision)
@@ -15,12 +16,13 @@ module Versioning
           raise "Cannot update a file attachment that doesn't exist"
         end
 
-        revisions = other_file_attachments(attachment_revision) + [attachment_revision]
-        assign(file_attachment_revisions: revisions)
+        other_revisions = other_file_attachments(attachment_revision)
+        assign(file_attachment_revisions: other_revisions + [attachment_revision])
       end
 
       def remove_file_attachment(attachment_revision)
         assign(file_attachment_revisions: other_file_attachments(attachment_revision))
+        update_attachment_ordering
       end
 
     private
@@ -34,6 +36,13 @@ module Versioning
       def other_file_attachments(attachment_revision)
         revision.file_attachment_revisions
           .reject { |ar| ar.file_attachment_id == attachment_revision.file_attachment_id }
+      end
+
+      def update_attachment_ordering
+        return unless revision.document_type.attachments.featured?
+
+        new_ordering = next_revision.featured_attachments.map(&:featured_attachment_id)
+        assign(featured_attachment_ordering: new_ordering)
       end
     end
   end
