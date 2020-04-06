@@ -9,8 +9,8 @@ module Requirements
     def pre_preview_issues
       issues = CheckerIssues.new
 
-      edition.image_revisions.each do |image|
-        issues += ImageRevisionChecker.new(image).pre_preview_issues
+      edition.image_revisions.each do |image_revision|
+        issues += ImageMetadataChecker.new.pre_preview_issues(image_revision)
       end
 
       issues += ContentChecker.new(edition).pre_preview_issues
