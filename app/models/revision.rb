@@ -78,7 +78,7 @@ class Revision < ApplicationRecord
 
   def featured_attachments
     file_attachment_revisions.sort_by do |attachment|
-      featured_attachment_ordering.find_index(attachment.featured_attachment_id).to_i
+      featured_attachment_ordering.find_index(attachment.featured_attachment_id) || Float::INFINITY
     end
   end
 end

@@ -17,12 +17,13 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
 
     it "appends to the ordering when there are featured attachments" do
       document_type = build :document_type, attachments: "featured"
-      ordering = [attachment_revision.featured_attachment_id]
+      attachments = [attachment_revision, create(:file_attachment_revision)]
+      ordering = attachments.map(&:featured_attachment_id)
       new_attachment = create :file_attachment_revision
 
       revision = create :revision,
                         document_type: document_type,
-                        file_attachment_revisions: [attachment_revision],
+                        file_attachment_revisions: attachments,
                         featured_attachment_ordering: ordering
 
       updater = Versioning::RevisionUpdater.new(revision, user)
