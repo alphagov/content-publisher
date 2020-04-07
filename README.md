@@ -34,40 +34,16 @@ To enable them for your GOV.UK account add them to your account in [Signon](http
 
 ```
 yarn install
-bundle exec rake
-```
 
-#### Running JavaScript tests only
+# ruby tests
+bundle exec rspec
 
-Running [Jasmine][] tests in local web browser
-
-```
+# JS tests (in console, or in browser)
+bundle exec rake jasmine:ci
 bundle exec rake jasmine
 ```
 
-Running [Jasmine][] tests in console
-
-```
-bundle exec rake jasmine:ci
-```
-
-### Debugging the application
-
-This application uses [byebug](https://github.com/deivid-rodriguez/byebug) for
-debugging. A breakpoint can be inserted by inserting a line of
-`byebug` into the ruby code.
-
-As this application is run via foreman it is not easy to interact with the
-debugger via the running processes. Instead the debugger should be accessed
-by creating a remote debugging session with byebug and listening. This can be
-done by running the following in a separate terminal window:
-
-```
-bundle exec byebug -R localhost:3237
-```
-
-which will listen for the web application. Substitute port 3237 for 3238 to
-listen to the sidekiq processes.
+> [Our test environment is setup to render 'real' error pages, instead of raising an exception](https://github.com/alphagov/content-publisher/commit/184a93d23551161125c1ac6ff3d9287eafabbc3d). This can make it hard to debug a test failure, as the actual error won't appear in the test output. Instead, you can see it in `log/test.log`.
 
 ### Further documentation
 
