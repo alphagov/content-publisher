@@ -7,7 +7,9 @@ RSpec.describe "featured_attachments/reorder.html.erb" do
                      file_attachment_revisions: [file_attachment_revision])
     assign(:edition, edition)
 
-    expect(render).to have_content(file_attachment_revision.title)
-    expect(render).to have_content(file_attachment_revision.unique_reference)
+    render
+    expect(rendered)
+      .to have_content(file_attachment_revision.title)
+      .and have_content(file_attachment_revision.unique_reference)
   end
 end

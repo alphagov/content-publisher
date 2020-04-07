@@ -4,24 +4,31 @@ RSpec.describe "featured_attachments/index.html.erb" do
     edition = create(:edition,
                      file_attachment_revisions: [file_attachment_revision])
     assign(:edition, edition)
-
-    expect(render).to have_content(file_attachment_revision.title)
+    render
+    expect(rendered).to have_content(file_attachment_revision.title)
   end
 
   it "shows a message when there aren't any attachments" do
     assign(:edition, create(:edition))
-
-    expect(render).to have_content(I18n.t!("featured_attachments.index.no_attachments"))
+    render
+    expect(rendered).to have_content(I18n.t!("featured_attachments.index.no_attachments"))
   end
 
-  it "only shows a reorder action for multiple attachments" do
-    edition = create(:edition)
-    edition.file_attachment_revisions << build(:file_attachment_revision)
-
+  it "shows a reorder action for multiple attachments" do
+    file_attachment_revisions = create_list(:file_attachment_revision, 2)
+    edition = create(:edition,
+                     file_attachment_revisions: file_attachment_revisions)
     assign(:edition, edition)
-    expect(render).not_to have_content("Reorder attachments")
+    render
+    expect(rendered).to have_content("Reorder attachments")
+  end
 
-    edition.file_attachment_revisions << build(:file_attachment_revision)
-    expect(render).to have_content("Reorder attachments")
+  it "doesn't show a reorder action for a single attachment" do
+    file_attachment_revision = create(:file_attachment_revision)
+    edition = create(:edition,
+                     file_attachment_revisions: [file_attachment_revision])
+    assign(:edition, edition)
+    render
+    expect(rendered).not_to have_content("Reorder attachments")
   end
 end
