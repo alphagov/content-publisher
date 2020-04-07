@@ -41,6 +41,7 @@
   <%= render "govuk_publishing_components/components/attachment", {
     attachment: file_attachment_attributes(attachment, edition),
     hide_opendocument_metadata: true,
+    hide_order_copy_link: true,
     target: "_blank",
   } %>
 <% end %>
