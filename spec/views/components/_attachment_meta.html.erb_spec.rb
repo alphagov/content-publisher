@@ -1,8 +1,6 @@
-RSpec.describe "components/_attachment_meta.html.erb", type: :view do
+RSpec.describe "components/_attachment_meta.html.erb" do
   it "fails to render when no attachment is given" do
-    assert_raises do
-      render "components/attachment_meta", {}
-    end
+    expect { render "components/attachment_meta", {} }.to raise_error
   end
 
   it "can include attribute metadata" do
@@ -11,9 +9,10 @@ RSpec.describe "components/_attachment_meta.html.erb", type: :view do
       file_size: 2048,
       number_of_pages: 2,
     }
-    assert_select "abbr.app-c-attachment-meta__abbr[title='Portable Document Format']", text: "PDF"
-    expect(rendered).to match(/2 KB/)
-    expect(rendered).to match(/2 pages/)
+    expect(rendered)
+      .to have_selector("abbr.app-c-attachment-meta__abbr[title='Portable Document Format']", text: "PDF")
+      .and match(/2 KB/)
+      .and match(/2 pages/)
   end
 
   it "can show file type that doesn't have an abbreviation" do
@@ -27,7 +26,7 @@ RSpec.describe "components/_attachment_meta.html.erb", type: :view do
     render "components/attachment_meta", attachment: {
       content_type: "unknown/type",
     }
-    assert_select ".app-c-attachment-meta__metadata", false
+    expect(rendered).not_to have_selector(".app-c-attachment-meta__metadata")
   end
 
   it "shows reference details on the first metadata line if provided" do
@@ -40,7 +39,8 @@ RSpec.describe "components/_attachment_meta.html.erb", type: :view do
       unique_reference: "2259",
       command_paper_number: "Cd. 67",
     }
-    assert_select ".app-c-attachment-meta__metadata:nth-of-type(1)", text: "Ref: ISBN 978-1-5286-1173-2, 2259, Cd. 67"
+    expect(rendered).to have_selector(".app-c-attachment-meta__metadata",
+                                      text: "Ref: ISBN 978-1-5286-1173-2, 2259, Cd. 67")
   end
 
   it "shows unnumbered details on the second metadata line if marked so" do
@@ -53,6 +53,7 @@ RSpec.describe "components/_attachment_meta.html.erb", type: :view do
       unique_reference: "2259",
       unnumbered_command_paper: true,
     }
-    assert_select ".app-c-attachment-meta__metadata:nth-of-type(2)", text: "Unnumbered command paper"
+    expect(rendered).to have_selector(".app-c-attachment-meta__metadata",
+                                      text: "Unnumbered command paper")
   end
 end
