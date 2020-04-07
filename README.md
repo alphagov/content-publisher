@@ -34,21 +34,13 @@ To enable them for your GOV.UK account add them to your account in [Signon](http
 
 ```
 yarn install
-bundle exec rake
-```
 
-#### Running JavaScript tests only
+# ruby tests
+bundle exec rspec
 
-Running [Jasmine][] tests in local web browser
-
-```
-bundle exec rake jasmine
-```
-
-Running [Jasmine][] tests in console
-
-```
+# JS tests (in console, or in browser)
 bundle exec rake jasmine:ci
+bundle exec rake jasmine
 ```
 
 ### Further documentation
