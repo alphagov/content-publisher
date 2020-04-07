@@ -23,7 +23,6 @@ RSpec.describe "documents/history/whitehall_entry.html.erb" do
     timeline_entry = create(:timeline_entry,
                             :whitehall_imported,
                             whitehall_entry_type: :internal_note)
-    timeline_entry.details[:contents] = {}
 
     render partial: self.class.top_level_description,
            locals: { entry: timeline_entry }
@@ -34,8 +33,8 @@ RSpec.describe "documents/history/whitehall_entry.html.erb" do
     note = "This is a note"
     timeline_entry = create(:timeline_entry,
                             :whitehall_imported,
-                            whitehall_entry_type: :internal_note)
-    timeline_entry.details[:contents] = { body: note }
+                            whitehall_entry_type: :internal_note,
+                            whitehall_entry_contents: { body: note })
 
     render partial: self.class.top_level_description,
            locals: { entry: timeline_entry }
@@ -47,7 +46,6 @@ RSpec.describe "documents/history/whitehall_entry.html.erb" do
     timeline_entry = create(:timeline_entry,
                             :whitehall_imported,
                             whitehall_entry_type: :fact_check_request)
-    timeline_entry.details[:contents] = {}
 
     render partial: self.class.top_level_description,
            locals: { entry: timeline_entry }
@@ -57,13 +55,12 @@ RSpec.describe "documents/history/whitehall_entry.html.erb" do
   it "shows the contents of an imported fact check request timeline entry" do
     email = "someone@somewhere.com"
     instructions = "Do something, then do something else"
-    timeline_entry = create(:timeline_entry,
-                            :whitehall_imported,
-                            whitehall_entry_type: :fact_check_request)
-    timeline_entry.details[:contents] = {
-      email_address: email,
-      instructions: instructions,
-    }
+    timeline_entry = create(
+      :timeline_entry,
+      :whitehall_imported,
+      whitehall_entry_type: :fact_check_request,
+      whitehall_entry_contents: { email_address: email, instructions: instructions },
+    )
 
     render partial: self.class.top_level_description,
            locals: { entry: timeline_entry }
@@ -76,7 +73,6 @@ RSpec.describe "documents/history/whitehall_entry.html.erb" do
     timeline_entry = create(:timeline_entry,
                             :whitehall_imported,
                             whitehall_entry_type: :fact_check_response)
-    timeline_entry.details[:contents] = {}
 
     render partial: self.class.top_level_description,
            locals: { entry: timeline_entry }
@@ -86,13 +82,12 @@ RSpec.describe "documents/history/whitehall_entry.html.erb" do
   it "shows the contents of an imported fact check response timeline entry" do
     email = "someone@somewhere.com"
     comments = "I have done what you requested"
-    timeline_entry = create(:timeline_entry,
-                            :whitehall_imported,
-                            whitehall_entry_type: :fact_check_response)
-    timeline_entry.details[:contents] = {
-      email_address: email,
-      comments: comments,
-    }
+    timeline_entry = create(
+      :timeline_entry,
+      :whitehall_imported,
+      whitehall_entry_type: :fact_check_response,
+      whitehall_entry_contents: { email_address: email, comments: comments },
+    )
 
     render partial: self.class.top_level_description,
            locals: { entry: timeline_entry }
