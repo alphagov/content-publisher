@@ -6,30 +6,22 @@ en:
         summary_message: Enter a title
       too_long:
         form_message: "Enter a title that is fewer than %{max_length} characters long"
-        summary_message: Enter a shorter title
       multiline:
         form_message: Remove line breaks from the title
-        summary_message: Remove line breaks from the title
       conflict:
         form_message: "Enter a title that hasn’t been used before - the system cannot create a unique URL otherwise"
-        summary_message: "Enter a title that hasn’t been used before - the system cannot create a unique URL otherwise"
     summary:
       blank:
-        form_message: Enter a summary
         summary_message: Enter a summary
       too_long:
         form_message: "Enter a summary that is fewer than %{max_length} characters long"
-        summary_message: Enter a shorter summary
       multiline:
         form_message: Remove line breaks from the summary
-        summary_message: Remove line breaks from the summary
     body:
       blank:
-        form_message: Enter a body
         summary_message: Enter a body
       invalid_govspeak:
         form_message: Remove invalid HTML or any JavaScript from the body
-        summary_message: Remove invalid HTML or any JavaScript from the body
     change_note:
       blank:
         form_message: Enter a change note
@@ -38,21 +30,18 @@ en:
       none:
         form_message: Add a topic
         summary_message: Add a topic
-    alt_text:
+    image_alt_text:
       blank:
         form_message: Enter alt text
         summary_message: "Enter alt text for ‘%{filename}’"
       too_long:
         form_message: "Enter alt text that is fewer than %{max_length} characters long"
-        summary_message: "Enter shorter alt text for ‘%{filename}’"
-    caption:
+    image_caption:
       too_long:
         form_message: "Enter an image caption that is fewer than %{max_length} characters long"
-        summary_message: "Enter a shorter caption for ‘%{filename}’"
-    credit:
+    image_credit:
       too_long:
         form_message: "Enter an image credit that is fewer than %{max_length} characters long"
-        summary_message: "Enter a shorter credit for ‘%{filename}’"
     image_upload:
       no_file:
         form_message: Select a file to upload

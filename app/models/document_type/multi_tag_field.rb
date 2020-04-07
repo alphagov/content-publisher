@@ -16,8 +16,4 @@ class DocumentType::MultiTagField
   def pre_preview_issues(_edition)
     Requirements::CheckerIssues.new
   end
-
-  def pre_publish_issues(_edition)
-    Requirements::CheckerIssues.new
-  end
 end

@@ -21,13 +21,5 @@ module Requirements
       end
       issues
     end
-
-    def pre_publish_issues
-      issues = CheckerIssues.new
-      edition.document_type.tags.each do |tag|
-        issues += tag.pre_publish_issues(edition)
-      end
-      issues
-    end
   end
 end

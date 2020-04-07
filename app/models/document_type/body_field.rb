@@ -25,8 +25,8 @@ class DocumentType::BodyField
     issues
   end
 
-  def pre_preview_issues(edition)
-    pre_update_issues(edition, contents: edition.contents.symbolize_keys)
+  def pre_preview_issues(_edition)
+    Requirements::CheckerIssues.new
   end
 
   def pre_publish_issues(edition)

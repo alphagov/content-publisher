@@ -15,14 +15,15 @@ RSpec.describe "Preview" do
     end
 
     it "redirects to the summary page issues in an error when the document isn't previewable" do
-      edition = create(:edition, summary: "new\nline", revision_synced: false)
+      document_type = build :document_type, contents: [DocumentType::TitleAndBasePathField.new]
+      edition = create(:edition, document_type: document_type, title: "", revision_synced: false)
       post preview_document_path(edition.document)
 
       expect(response).to redirect_to(document_path(edition.document))
       follow_redirect!
       expect(response.body)
         .to have_selector(".gem-c-error-summary",
-                          text: I18n.t!("requirements.summary.multiline.summary_message"))
+                          text: I18n.t!("requirements.title.blank.summary_message"))
     end
 
     it "redirects to the summary page with an error flash when it can't preview the document" do

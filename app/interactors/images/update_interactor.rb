@@ -34,9 +34,7 @@ private
   end
 
   def check_for_issues
-    checker = Requirements::ImageRevisionChecker.new(image_revision)
-    issues = checker.pre_update_issues(image_params)
-
+    issues = Requirements::ImageMetadataChecker.new.pre_update_issues(image_params)
     context.fail!(issues: issues) if issues.any?
   end
 
