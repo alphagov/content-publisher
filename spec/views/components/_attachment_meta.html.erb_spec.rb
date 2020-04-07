@@ -1,8 +1,4 @@
 RSpec.describe "components/_attachment_meta.html.erb" do
-  it "fails to render when no attachment is given" do
-    expect { render "components/attachment_meta", {} }.to raise_error
-  end
-
   it "can include attribute metadata" do
     render "components/attachment_meta", attachment: {
       content_type: "application/pdf",
