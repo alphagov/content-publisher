@@ -1,31 +1,19 @@
 .app-c-attachment-meta {
   @include govuk-font(19);
-
-  margin-bottom: govuk-spacing(6);
-  padding-bottom: govuk-spacing(6);
-  border-bottom: 1px solid $govuk-border-colour;
-
-  .app-c-metadata {
-    margin-bottom: govuk-spacing(3);
-  }
+  @include govuk-clearfix;
+  position: relative;
 }
 
-.app-c-attachment-meta:last-child {
-  border-bottom: 0;
-}
+.app-c-attachment-meta__metadata {
+  @include govuk-font($size: 14);
+  margin: 0 0 govuk-spacing(3);
 
-.app-c-attachment-meta__actions {
-  margin: 0;
-  padding: 0;
-  clear: both;
-
-  li {
-    display: inline-block;
-    margin-right: govuk-spacing(3);
-    margin-bottom: govuk-spacing(1);
-  }
-
-  .govuk-link {
+  &:last-of-type {
     margin-bottom: 0;
   }
+}
+
+.app-c-attachment-meta__abbr {
+  text-decoration: none;
+  cursor: help;
 }

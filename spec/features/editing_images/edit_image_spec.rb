@@ -104,7 +104,7 @@ RSpec.feature "Edit image", js: true do
   end
 
   def then_the_image_crop_is_updated
-    expect(page).to have_selector(".app-c-image-meta")
+    expect(page).to have_selector(".app-c-image-with-metadata")
     image_revision = @edition.reload.image_revisions[0]
     expect(image_revision.crop_y).to be <= 1
     expect(image_revision.crop_x).to be <= 1

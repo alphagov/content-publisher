@@ -21,6 +21,7 @@
         items: @edition.featured_attachments.map do |attachment|
           {
             title: attachment.title,
+            description: render("components/attachment_meta", { attachment: file_attachment_attributes(attachment, @edition) }),
             order_id: attachment.featured_attachment_id,
           }
         end

@@ -1,0 +1,31 @@
+.app-c-media-with-actions {
+  @include govuk-font(19);
+
+  margin-bottom: govuk-spacing(6);
+  padding-bottom: govuk-spacing(6);
+  border-bottom: 1px solid $govuk-border-colour;
+
+  .app-c-metadata {
+    margin-bottom: govuk-spacing(3);
+  }
+}
+
+.app-c-media-with-actions:last-child {
+  border-bottom: 0;
+}
+
+.app-c-media-with-actions__actions {
+  margin: 0;
+  padding: 0;
+  clear: both;
+
+  li {
+    display: inline-block;
+    margin-right: govuk-spacing(3);
+    margin-bottom: govuk-spacing(1);
+  }
+
+  .govuk-link {
+    margin-bottom: 0;
+  }
+}

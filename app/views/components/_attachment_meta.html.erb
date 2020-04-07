@@ -1,22 +1,42 @@
 <%
-  id ||= nil
-  actions ||= []
-  data_attributes ||= {}
-%>
+  attachment = GovukPublishingComponents::Presenters::Attachment.new(attachment)
+  attributes = []
 
-<%= tag.div class: "app-c-attachment-meta", id: id do %>
-  <%= render "govuk_publishing_components/components/attachment", {
-    attachment: attachment,
-    data_attributes: data_attributes,
-    hide_opendocument_metadata: true,
-    target: "_blank",
-  } %>
-  <% if actions.any? %>
-    <%= tag.ul class: "app-c-attachment-meta__actions" do %>
-      <% actions.each do |action| %>
-        <li><%= action %></li>
-      <% end %>
-    <% end %>
+  if attachment.content_type_name
+    content = if attachment.content_type_abbr
+                raw tag.abbr(attachment.content_type.abbr,
+                             title: attachment.content_type_name,
+                             class: "app-c-attachment-meta__abbr")
+              else
+                attachment.content_type_name
+              end
+    attributes << tag.span(content, class: "app-c-attachment-meta__attribute")
+  end
+
+  if attachment.file_size
+    attributes << tag.span(
+      number_to_human_size(attachment.file_size),
+      class: "app-c-attachment-meta__attribute",
+    )
+  end
+
+  if attachment.number_of_pages
+    attributes << tag.span(
+      pluralize(attachment.number_of_pages, "page"),
+      class: "app-c-attachment-meta__attribute",
+    )
+  end
+%>
+<%= tag.section class: "app-c-attachment-meta" do %>
+  <% if attachment.reference.present? %>
+    <%= tag.p "Ref: #{attachment.reference}", class: "app-c-attachment-meta__metadata govuk-!-margin-bottom-0" %>
   <% end %>
 
+  <% if attachment.unnumbered_reference.present? %>
+    <%= tag.p attachment.unnumbered_reference, class: "app-c-attachment-meta__metadata govuk-!-margin-bottom-0" %>
+  <% end %>
+
+  <% if attributes.any? %>
+    <%= tag.p raw(attributes.join(', ')), class: "app-c-attachment-meta__metadata" %>
+  <% end %>
 <% end %>

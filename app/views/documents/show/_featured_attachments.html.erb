@@ -7,5 +7,15 @@
       { href: featured_attachments_path(@edition.document),
         data_attributes: { gtm: "edit-attachments" } }
     end
+  ),
+  items: (
+    @edition.featured_attachments.each_with_index.map do |attachment, index|
+      {
+        field: index + 1,
+        value: sanitize(
+          "<h4 class='govuk-heading-s govuk-!-margin-bottom-0'>#{attachment.title}</h4>#{render('components/attachment_meta', { attachment: file_attachment_attributes(attachment, @edition) })}"
+        ),
+      }
+    end
   )
 } %>

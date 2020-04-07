@@ -1,0 +1,15 @@
+<%
+  id ||= nil
+  actions ||= []
+%>
+
+<%= tag.div class: "app-c-media-with-actions", id: id do %>
+  <%= yield %>
+  <% if actions.any? %>
+    <%= tag.ul class: "app-c-media-with-actions__actions" do %>
+      <% actions.each do |action| %>
+        <li><%= action %></li>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

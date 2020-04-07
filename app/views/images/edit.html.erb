@@ -14,7 +14,7 @@ content_for :title, t(title_key, title: @edition.title_or_fallback)
   data_attributes: { "modal-action": "back" }
 ) %>
 
-<%= render "components/image_meta", {
+<%= render "components/image_with_metadata", {
   id: "selected-image",
   src: url_for(@image_revision.thumbnail),
   alt_text: @image_revision.alt_text || t("images.edit.alt_text_placeholder"),

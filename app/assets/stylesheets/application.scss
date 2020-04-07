@@ -7,17 +7,18 @@
 @import "objects/pane";
 @import "objects/side";
 
-@import "components/autocomplete";
 @import "components/attachment-meta";
+@import "components/autocomplete";
 @import "components/contact-preview";
 @import "components/formatted-text";
 @import "components/image-cropper";
-@import "components/image-meta";
+@import "components/image-with-metadata";
 @import "components/input-length-suggester";
 @import "components/inset-prompt";
 @import "components/loading-spinner";
 @import "components/markdown-editor";
 @import "components/markdown-guidance";
+@import "components/media-with-actions";
 @import "components/metadata";
 @import "components/miller-columns";
 @import "components/multi-section-viewer";

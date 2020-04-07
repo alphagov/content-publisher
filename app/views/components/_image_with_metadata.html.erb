@@ -1,0 +1,28 @@
+<%
+  id ||= "image-with-metadata-#{SecureRandom.hex(4)}"
+  alt_text ||= nil
+  actions ||= []
+  metadata_items ||= []
+%>
+<div class="app-c-image-with-metadata" id="<%= id %>">
+  <%= render "components/media_with_actions", actions: actions do %>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third">
+
+        <%= tag.img class: "app-c-image-with-metadata__image",
+          src: src,
+          alt: alt_text
+        %>
+
+      </div>
+      <div class="govuk-grid-column-two-thirds">
+        <% if metadata_items.any? %>
+          <%= render "components/metadata", {
+            inline: true,
+            items: metadata_items,
+          } %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
