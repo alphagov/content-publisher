@@ -11,7 +11,7 @@ RSpec.describe "components/_attachment_meta.html.erb", type: :view do
       file_size: 2048,
       number_of_pages: 2,
     }
-    assert_select "abbr.gem-c-attachment-meta__abbr[title='Portable Document Format']", text: "PDF"
+    assert_select "abbr.app-c-attachment-meta__abbr[title='Portable Document Format']", text: "PDF"
     expect(rendered).to match(/2 KB/)
     expect(rendered).to match(/2 pages/)
   end
@@ -27,7 +27,7 @@ RSpec.describe "components/_attachment_meta.html.erb", type: :view do
     render "components/attachment_meta", attachment: {
       content_type: "unknown/type",
     }
-    assert_select ".gem-c-attachment-meta__metadata", false
+    assert_select ".app-c-attachment-meta__metadata", false
   end
 
   it "shows reference details on the first metadata line if provided" do
@@ -40,7 +40,7 @@ RSpec.describe "components/_attachment_meta.html.erb", type: :view do
       unique_reference: "2259",
       command_paper_number: "Cd. 67",
     }
-    assert_select ".gem-c-attachment-meta__metadata:nth-of-type(1)", text: "Ref: ISBN 978-1-5286-1173-2, 2259, Cd. 67"
+    assert_select ".app-c-attachment-meta__metadata:nth-of-type(1)", text: "Ref: ISBN 978-1-5286-1173-2, 2259, Cd. 67"
   end
 
   it "shows unnumbered details on the second metadata line if marked so" do
@@ -53,6 +53,6 @@ RSpec.describe "components/_attachment_meta.html.erb", type: :view do
       unique_reference: "2259",
       unnumbered_command_paper: true,
     }
-    assert_select ".gem-c-attachment-meta__metadata:nth-of-type(2)", text: "Unnumbered command paper"
+    assert_select ".app-c-attachment-meta__metadata:nth-of-type(2)", text: "Unnumbered command paper"
   end
 end
