@@ -1,5 +1,5 @@
 RSpec.describe EditionFilter do
-  let(:user) { build :user, organisation_content_id: "org-id" }
+  let(:user) { build :user, organisation_content_id: SecureRandom.uuid }
 
   describe "#editions" do
     it "orders the editions by edition last_edited_at" do
@@ -70,14 +70,17 @@ RSpec.describe EditionFilter do
     end
 
     it "filters the editions by organisation" do
-      edition1 = create(:edition, tags: { primary_publishing_organisation: %w[org1] })
-      edition2 = create(:edition, tags: { organisations: %w[org1] })
-      edition3 = create(:edition, tags: { organisations: %w[org11] })
+      org_id1 = SecureRandom.uuid
+      org_id2 = SecureRandom.uuid
+
+      edition1 = create(:edition, tags: { primary_publishing_organisation: [org_id1] })
+      edition2 = create(:edition, tags: { organisations: [org_id1] })
+      edition3 = create(:edition, tags: { organisations: [org_id2] })
 
       editions = described_class.new(user, filters: { organisation: " " }).editions
       expect(editions).to match_array([edition1, edition2, edition3])
 
-      editions = described_class.new(user, filters: { organisation: "org1" }).editions
+      editions = described_class.new(user, filters: { organisation: org_id1 }).editions
       expect(editions).to match_array([edition1, edition2])
     end
 
@@ -124,13 +127,15 @@ RSpec.describe EditionFilter do
     end
 
     context "when the edition is access limited to the primary org" do
+      let(:supporting_org_id) { SecureRandom.uuid }
+
       let!(:edition) do
         create(:edition,
                :access_limited,
                limit_type: :primary_organisation,
                tags: {
                  primary_publishing_organisation: [user.organisation_content_id],
-                 organisations: %w[supporting-org],
+                 organisations: [supporting_org_id],
               })
       end
 
@@ -140,13 +145,13 @@ RSpec.describe EditionFilter do
       end
 
       it "excludes the edition if the user is in a supporting org" do
-        supporting_user = build(:user, organisation_content_id: "supporting-org")
+        supporting_user = build(:user, organisation_content_id: supporting_org_id)
         editions = described_class.new(supporting_user).editions
         expect(editions).to be_empty
       end
 
       it "excludes the edition if the user is in a some other org" do
-        user = build(:user, organisation_content_id: "other-org")
+        user = build(:user, organisation_content_id: SecureRandom.uuid)
         editions = described_class.new(user).editions
         expect(editions).to be_empty
       end
@@ -158,13 +163,15 @@ RSpec.describe EditionFilter do
     end
 
     context "when the edition is access limited to tagged orgs" do
+      let(:supporting_org_id) { SecureRandom.uuid }
+
       let!(:edition) do
         create(:edition,
                :access_limited,
                limit_type: :tagged_organisations,
                tags: {
                  primary_publishing_organisation: [user.organisation_content_id],
-                 organisations: %w[supporting-org],
+                 organisations: [supporting_org_id],
               })
       end
 
@@ -174,13 +181,13 @@ RSpec.describe EditionFilter do
       end
 
       it "includes the edition if the user is in a supporting org" do
-        supporting_user = build(:user, organisation_content_id: "supporting-org")
+        supporting_user = build(:user, organisation_content_id: supporting_org_id)
         editions = described_class.new(supporting_user).editions
         expect(editions).to eq([edition])
       end
 
       it "excludes the edition if the user is in a some other org" do
-        user = build(:user, organisation_content_id: "other-org")
+        user = build(:user, organisation_content_id: SecureRandom.uuid)
         editions = described_class.new(user).editions
         expect(editions).to be_empty
       end

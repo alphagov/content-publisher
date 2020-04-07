@@ -1,8 +1,6 @@
 class DocumentType::MultiTagField
-  def payload(edition)
-    return {} if edition.tags[id].blank?
-
-    { links: { id.to_sym => edition.tags[id] } }
+  def payload
+    raise "not implemented"
   end
 
   def updater_params(_edition, params)

@@ -3,6 +3,8 @@
 #
 # This model is immutable.
 class ContentRevision < ApplicationRecord
+  validates :contents, "content_revision/contents" => true
+
   belongs_to :created_by, class_name: "User", optional: true
 
   def readonly?

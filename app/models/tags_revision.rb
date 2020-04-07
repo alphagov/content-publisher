@@ -3,6 +3,8 @@
 #
 # This model is immutable.
 class TagsRevision < ApplicationRecord
+  validates :tags, "tags_revision/tags" => true
+
   belongs_to :created_by, class_name: "User", optional: true
 
   scope :tag_contains, ->(tag, value) do
