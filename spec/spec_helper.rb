@@ -71,5 +71,9 @@ RSpec.configure do |config|
   config.before :each, type: :view do
     allow(view).to receive(:current_user) { current_user }
     allow(view).to receive(:rendering_context).and_return("application")
+
+    def described_template
+      self.class.top_level_description
+    end
   end
 end

@@ -1,6 +1,6 @@
 RSpec.describe "components/_attachment_meta.html.erb" do
   it "can include attribute metadata" do
-    render template: self.class.top_level_description,
+    render template: described_template,
            locals: { attachment: { content_type: "application/pdf",
                                    file_size: 2048,
                                    number_of_pages: 2 } }
@@ -11,19 +11,19 @@ RSpec.describe "components/_attachment_meta.html.erb" do
   end
 
   it "can show file type that doesn't have an abbreviation" do
-    render template: self.class.top_level_description,
+    render template: described_template,
            locals: { attachment: { content_type: "text/plain" } }
     expect(rendered).to match(/Plain Text/)
   end
 
   it "doesn't show metadata information when there isn't any to show" do
-    render template: self.class.top_level_description,
+    render template: described_template,
            locals: { attachment: { content_type: "unknown/type" } }
     expect(rendered).not_to have_selector(".app-c-attachment-meta__metadata")
   end
 
   it "shows reference details on the first metadata line if provided" do
-    render template: self.class.top_level_description,
+    render template: described_template,
            locals: { attachment: { filename: "register.csv",
                                    content_type: "application/pdf",
                                    file_size: 20000,
@@ -36,7 +36,7 @@ RSpec.describe "components/_attachment_meta.html.erb" do
   end
 
   it "shows unnumbered details on the second metadata line if marked so" do
-    render template: self.class.top_level_description,
+    render template: described_template,
            locals: { attachment: { filename: "register.csv",
                                    content_type: "application/pdf",
                                    file_size: 20000,

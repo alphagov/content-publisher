@@ -21,7 +21,7 @@ RSpec.describe "documents/show.html.erb" do
     it "shows a fallback title if there is none" do
       edition = create(:edition, title: nil)
       assign(:edition, edition)
-      render template: self.class.top_level_description, layout: "layouts/application"
+      render template: described_template, layout: "layouts/application"
       expect(rendered).to include(I18n.t!("documents.untitled_document"))
     end
   end

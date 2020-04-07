@@ -11,7 +11,7 @@ RSpec.describe "file_attachments/replace.html.erb" do
       assign(:edition, build(:edition))
       assign(:attachment, create(:file_attachment_revision))
 
-      render template: self.class.top_level_description,
+      render template: described_template,
              locals: { params: { wizard: "featured-attachment-upload" } }
 
       expect(rendered).to have_button("Save and continue")

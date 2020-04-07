@@ -29,7 +29,7 @@ RSpec.describe "images/crop.html.erb" do
     it "shows a 'Save and continue' button" do
       assign(:image_revision, create(:image_revision))
       assign(:edition, build(:edition))
-      render template: self.class.top_level_description,
+      render template: described_template,
              locals: { params: { wizard: "upload" } }
       expect(rendered).to have_button("Save and continue")
     end

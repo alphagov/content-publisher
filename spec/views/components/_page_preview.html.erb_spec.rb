@@ -1,6 +1,6 @@
 RSpec.describe "components/_page_preview.html.erb" do
   it "renders an iframe for desktop" do
-    render template: self.class.top_level_description,
+    render template: described_template,
            locals: { url: "http://example.com/iframe-foo",
                      title: "Foo",
                      base_path: "/bar",
@@ -11,7 +11,7 @@ RSpec.describe "components/_page_preview.html.erb" do
   end
 
   it "renders a search snippet" do
-    render template: self.class.top_level_description,
+    render template: described_template,
            locals: { url: "http://example.com/iframe-foo",
                      title: "Foo",
                      base_path: "/bar",
