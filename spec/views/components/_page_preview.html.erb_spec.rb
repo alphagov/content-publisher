@@ -1,4 +1,4 @@
-RSpec.describe "components/_page_preview.html.erb" do
+RSpec.describe "components/_page_preview" do
   it "renders an iframe for desktop" do
     render template: described_template,
            locals: { url: "http://example.com/iframe-foo",

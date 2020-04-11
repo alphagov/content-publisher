@@ -1,4 +1,4 @@
-RSpec.describe "documents/index/_filters.html.erb" do
+RSpec.describe "documents/index/_filters" do
   describe "Organisation select" do
     context "when organisations are loaded from the Publishing API" do
       it "renders the organisations in the organisation filter" do

@@ -1,4 +1,4 @@
-RSpec.describe "featured_attachments/reorder.html.erb" do
+RSpec.describe "featured_attachments/reorder" do
   it "shows file attachments and metadata that exist on the edition" do
     file_attachment_revision = create(:file_attachment_revision,
                                       unique_reference: SecureRandom.uuid)

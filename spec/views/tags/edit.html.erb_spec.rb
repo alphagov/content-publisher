@@ -1,4 +1,4 @@
-RSpec.describe "tags/edit.html.erb" do
+RSpec.describe "tags/edit" do
   it "shows a warning when editing the primary organisation tag of an access limited edition" do
     tag_field = DocumentType::PrimaryPublishingOrganisationField.new
     document_type = build(:document_type, tags: [tag_field])

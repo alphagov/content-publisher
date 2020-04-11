@@ -1,4 +1,4 @@
-RSpec.describe "components/_attachment_meta.html.erb" do
+RSpec.describe "components/_attachment_meta" do
   it "can include attribute metadata" do
     render template: described_template,
            locals: { attachment: { content_type: "application/pdf",

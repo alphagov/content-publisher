@@ -1,4 +1,4 @@
-RSpec.describe "featured_attachments/index.html.erb" do
+RSpec.describe "featured_attachments/index" do
   it "shows file attachments that exist on the edition" do
     file_attachment_revision = create(:file_attachment_revision)
     edition = create(:edition,

@@ -1,4 +1,4 @@
-RSpec.describe "documents/index/_results.html.erb" do
+RSpec.describe "documents/index/_results" do
   describe "Results list" do
     it "shows a fallback for untitled documents" do
       edition = create(:edition, title: nil)

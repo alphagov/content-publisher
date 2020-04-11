@@ -1,4 +1,4 @@
-RSpec.describe "documents/show.html.erb" do
+RSpec.describe "documents/show" do
   include TopicsHelper
   before { populate_default_government_bulk_data }
 

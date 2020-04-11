@@ -1,4 +1,4 @@
-RSpec.describe "images/crop.html.erb" do
+RSpec.describe "images/crop" do
   it "shows a 'Save' button with JS" do
     assign(:image_revision, create(:image_revision))
     assign(:edition, build(:edition))

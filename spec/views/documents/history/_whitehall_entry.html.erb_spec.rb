@@ -1,4 +1,4 @@
-RSpec.describe "documents/history/_whitehall_entry.html.erb" do
+RSpec.describe "documents/history/_whitehall_entry" do
   it "shows an imported timeline entry without an author" do
     timeline_entry = create(:timeline_entry,
                             :whitehall_imported,

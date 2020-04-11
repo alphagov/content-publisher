@@ -1,4 +1,4 @@
-RSpec.describe "file_attachments/replace.html.erb" do
+RSpec.describe "file_attachments/replace" do
   it "shows a 'Save' button by default" do
     assign(:edition, build(:edition))
     assign(:attachment, create(:file_attachment_revision))
