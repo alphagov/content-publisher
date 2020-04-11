@@ -2,8 +2,8 @@
   scheduling = @edition.status.details
   description_govspeak = t("documents.show.failed_to_publish.description_govspeak",
                            title: @edition.title,
-                           date: format_date(scheduling.publish_time),
-                           time: format_time(scheduling.publish_time))
+                           date: scheduling.publish_time.to_s(:date),
+                           time: scheduling.publish_time.to_s(:time))
 
 %>
 <%= render "components/inset_prompt", {
@@ -12,6 +12,6 @@
   description: render_govspeak(description_govspeak),
   data_attributes: {
     gtm: "scheduled-publish-failed",
-    "gtm-visibility-tracking": true
-  }
+    "gtm-visibility-tracking": true,
+  },
 } %>

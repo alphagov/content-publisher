@@ -4,24 +4,24 @@
   items: [
     {
       field: "ID",
-      value: @document_import.id
+      value: @document_import.id,
     },
     {
       field: "Created at",
-      value: format_time_on_date(@document_import.created_at)
+      value: @document_import.created_at.to_s(:time_on_date),
     },
     {
       field: "Updated at",
-      value: format_time_on_date(@document_import.updated_at)
+      value: @document_import.updated_at.to_s(:time_on_date),
     },
     {
       field: "State",
-      value: @document_import.state.titleize
+      value: @document_import.state.titleize,
     },
     {
       field: "Error log",
-      value: @document_import.error_log
+      value: @document_import.error_log,
     }
   ],
-  borderless: true
+  borderless: true,
 } %>

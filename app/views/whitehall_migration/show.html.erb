@@ -4,18 +4,18 @@
   items: [
     {
       field: "Time started",
-      value: format_time_on_date(@whitehall_migration.created_at)
+      value: @whitehall_migration.created_at.to_s(:time_on_date),
     },
     {
       field: "Time finished",
-      value: @whitehall_migration.finished_at.nil? ? "unfinished" : format_time_on_date(@whitehall_migration.finished_at)
+      value: @whitehall_migration.finished_at.nil? ? "unfinished" : @whitehall_migration.finished_at.to_s(:time_on_date),
     },
     {
       field: "Number of document imports",
-      value: @whitehall_migration.document_imports.count
+      value: @whitehall_migration.document_imports.count,
     }
   ],
-  borderless: true
+  borderless: true,
 } %>
 
 <h2 class="govuk-heading-m">Document import states</h2>

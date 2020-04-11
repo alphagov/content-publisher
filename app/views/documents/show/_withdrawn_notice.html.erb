@@ -3,7 +3,7 @@
 <%= render "govuk_publishing_components/components/notice", {
   title: t("documents.show.withdrawn.title",
            document_type: @edition.document_type.label.downcase,
-           withdrawn_date: format_date(withdrawal.withdrawn_at))
+           withdrawn_date: withdrawal.withdrawn_at.to_s(:date))
 } do %>
   <%= render_govspeak(withdrawal.public_explanation) %>
   <%= tag.p link_to("Change public explanation", withdraw_path(@edition.document),
