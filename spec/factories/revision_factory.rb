@@ -15,7 +15,7 @@ FactoryBot.define do
         end
       end
       update_type { "major" }
-      change_note { "First published." }
+      change_note { nil }
       proposed_publish_time { nil }
       backdated_to { nil }
       editor_political { nil }
