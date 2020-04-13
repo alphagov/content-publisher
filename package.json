@@ -20,7 +20,7 @@
     "@webcomponents/custom-elements": "^1.4.1",
     "abortcontroller-polyfill": "^1.4.0",
     "accessible-autocomplete": "git://github.com/kevindew/accessible-autocomplete.git",
-    "core-js-bundle": "^3.6.4",
+    "core-js-bundle": "^3.6.5",
     "cropperjs": "^1.5.6",
     "es5-polyfill": "^0.0.6",
     "fetch-mock": "^9.3.1",
