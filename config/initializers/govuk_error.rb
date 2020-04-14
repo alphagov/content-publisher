@@ -3,8 +3,11 @@ GovukError.configure do |config|
 
   # Don't capture postgres errors that occur during the time that the data sync
   # is running in integration and staging environments
-  config.should_capture = ->(error) do
-    data_sync_ignored_error = error.is_a?(PG::Error) || error.cause.is_a?(PG::Error)
+  # This lambda is called with Ruby Exception objects, Raven::Event objects
+  # and may be called with other types.
+  config.should_capture = ->(error_or_event) do
+    data_sync_ignored_error = error_or_event.is_a?(PG::Error) ||
+      (error_or_event.respond_to?(:cause) && error_or_event.cause.is_a?(PG::Error))
     data_sync_environment = ENV.fetch("SENTRY_CURRENT_ENV", "")
                                .match(/integration|staging/)
     data_sync_time = Time.zone.now.hour <= 5
