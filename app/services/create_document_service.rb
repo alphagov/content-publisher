@@ -51,7 +51,6 @@ private
       number: 1,
       content_revision: ContentRevision.new(created_by: user),
       metadata_revision: MetadataRevision.new(
-        change_note: "First published.",
         update_type: "major",
         created_by: user,
         document_type_id: document_type_id,

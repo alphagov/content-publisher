@@ -15,7 +15,7 @@ RSpec.describe PublishingApiPayload::History do
       second_edition = build(:edition, :published,
                              document: first_edition.document,
                              update_type: "major",
-                             first_published_at: "2020-02-22 11:00:00",
+                             change_note: "Content updated",
                              published_at: "2020-03-01 12:00:00")
 
       expect(described_class.new(second_edition).public_updated_at).to eq("2020-03-01 12:00:00")

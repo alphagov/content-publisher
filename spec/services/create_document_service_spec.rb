@@ -24,9 +24,8 @@ RSpec.describe CreateDocumentService do
       expect(document.current_edition.revision.number).to be(1)
     end
 
-    it "sets the initial change note details" do
+    it "sets the initial update type" do
       document = described_class.call(document_type_id: document_type.id)
-      expect(document.current_edition.change_note).to eq("First published.")
       expect(document.current_edition.update_type).to eq("major")
     end
 
