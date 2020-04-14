@@ -32,6 +32,7 @@ en:
 
           You can publish it now, schedule it to publish later, or edit it.
       featured_attachments:
+        none: No attachments.
         title: Attachments
       flashes:
         pre_preview_issues:
