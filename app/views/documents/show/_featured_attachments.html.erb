@@ -1,4 +1,4 @@
-<%= render "govuk_publishing_components/components/summary_list", {
+<% attributes = {
   id: "attachments",
   title: t("documents.show.featured_attachments.title"),
   borderless: true,
@@ -7,9 +7,12 @@
       { href: featured_attachments_path(@edition.document),
         data_attributes: { gtm: "edit-attachments" } }
     end
-  ),
-  items: (
-    @edition.featured_attachments.each_with_index.map do |attachment, index|
+  )
+} %>
+
+<% if @edition.featured_attachments.any? %>
+  <%= render "govuk_publishing_components/components/summary_list", attributes.merge(
+    items: @edition.featured_attachments.each_with_index.map do |attachment, index|
       {
         field: index + 1,
         value: sanitize(
@@ -17,5 +20,9 @@
         ),
       }
     end
-  )
-} %>
+  ) %>
+<% else %>
+  <%= render "govuk_publishing_components/components/summary_list", attributes.merge(
+    block: t("documents.show.featured_attachments.none")
+  ) %>
+<% end %>
