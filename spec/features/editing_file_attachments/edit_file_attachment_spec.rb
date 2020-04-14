@@ -24,17 +24,20 @@ RSpec.feature "Edit a file attachment" do
     stub_publishing_api_put_content(@edition.content_id, {})
     stub_asset_manager_receives_an_asset
 
-    @isbn = "9788700631625"
-    @unique_reference = "A unique reference"
+    unique_ref = "REF"
+    isbn = "9788700631625"
+    paper_number = "1234"
+    @metadata = "Ref: ISBN #{isbn}, #{unique_ref}"
 
-    fill_in "file_attachment[isbn]", with: @isbn
-    fill_in "file_attachment[unique_reference]", with: @unique_reference
+    fill_in "file_attachment[unique_reference]", with: unique_ref
+    fill_in "file_attachment[isbn]", with: isbn
+    choose I18n.t!("file_attachments.edit.official_document.options.act_paper.label")
+    fill_in "file_attachment[act_paper_number]", with: paper_number
     click_on "Save"
   end
 
   def then_i_see_the_attachment_is_updated
-    expect(page).to have_content(@isbn)
-    expect(page).to have_content(@unique_reference)
+    expect(page).to have_content(@metadata)
   end
 
   def and_i_see_the_timeline_entry

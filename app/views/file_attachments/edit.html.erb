@@ -22,6 +22,8 @@
     ) do %>
       <%= render_govspeak(t("file_attachments.edit.description_govspeak")) %>
 
+      <%= render "file_attachments/edit/official_document", attachment: @attachment, issues: @issues %>
+
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: t("file_attachments.edit.isbn.heading"),
