@@ -4,17 +4,19 @@
   } %>
 <% end %>
 
+<% tag_field_id = "primary_publishing_organisation" %>
+
 <%= render "components/autocomplete", {
-  id: "primary_publishing_organisation-field",
-  name: "primary_publishing_organisation[]",
+  id: "#{tag_field_id}-field",
+  name: "#{tag_field_id}[]",
   label: {
-    text: t_doctype_field(edition, "primary_publishing_organisation.label"),
+    text: t_doctype_field(edition, "#{tag_field_id}.label"),
     bold: true,
   },
-  hint: t_doctype_field(edition, "primary_publishing_organisation.hint"),
+  hint: t_doctype_field(edition, "#{tag_field_id}.hint"),
   select: {
     options: [""] + Linkables.new("organisation").select_options,
-    selected: (params[:tags] || edition.tags)["primary_publishing_organisation"],
+    selected: (params.key?(tag_field_id) ? params : edition.tags)[tag_field_id]
   },
-  error_items: issues&.items_for(:primary_publishing_organisation),
+  error_items: issues&.items_for(tag_field_id.to_sym)
 } %>

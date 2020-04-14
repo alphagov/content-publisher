@@ -8,7 +8,7 @@
   hint: t_doctype_field(edition, "#{tag_field_id}.hint"),
   select: {
     options: Linkables.new(tag_field_document_type).select_options,
-    selected: (params[:tags] || edition.tags)[tag_field_id],
+    selected: (params.key?(tag_field_id) ? params : edition.tags)[tag_field_id],
     multiple: true,
     size: 10,
   },
