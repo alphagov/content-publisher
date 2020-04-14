@@ -1,15 +1,15 @@
-RSpec.describe "documents/history/content_publisher_entry.html.erb" do
+RSpec.describe "documents/history/_content_publisher_entry" do
   it "shows a timeline entry without an author" do
     timeline_entry = create(:timeline_entry,
                             created_by: nil)
-    render partial: self.class.top_level_description, locals: { entry: timeline_entry }
+    render template: described_template, locals: { entry: timeline_entry }
     expect(rendered).not_to have_content(I18n.t!("documents.history.by"))
     expect(rendered).to have_content(I18n.t!("documents.history.entry_types.created"))
   end
 
   it "shows a timeline entry with an author" do
     timeline_entry = create(:timeline_entry)
-    render partial: self.class.top_level_description, locals: { entry: timeline_entry }
+    render template: described_template, locals: { entry: timeline_entry }
     expect(rendered).to have_content(I18n.t!("documents.history.by") + " John Smith")
     expect(rendered).to have_content(I18n.t!("documents.history.entry_types.created"))
   end
@@ -18,7 +18,7 @@ RSpec.describe "documents/history/content_publisher_entry.html.erb" do
     timeline_entry = create(:timeline_entry,
                             entry_type: :internal_note,
                             details: create(:internal_note))
-    render partial: self.class.top_level_description, locals: { entry: timeline_entry }
+    render template: described_template, locals: { entry: timeline_entry }
     expect(rendered).to have_selector(".app-timeline-entry__content",
                                       text: "Amazing internal note")
     expect(rendered).to have_content(I18n.t!("documents.history.entry_types.internal_note"))
@@ -30,8 +30,7 @@ RSpec.describe "documents/history/content_publisher_entry.html.erb" do
       timeline_entry = create(:timeline_entry,
                               entry_type: :removed,
                               details: removal)
-      render partial: self.class.top_level_description,
-             locals: { entry: timeline_entry }
+      render template: described_template, locals: { entry: timeline_entry }
       expect(rendered).to have_content("My note")
     end
 
@@ -40,8 +39,7 @@ RSpec.describe "documents/history/content_publisher_entry.html.erb" do
       timeline_entry = create(:timeline_entry,
                               entry_type: :removed,
                               details: removal)
-      render partial: self.class.top_level_description,
-             locals: { entry: timeline_entry }
+      render template: described_template, locals: { entry: timeline_entry }
       alternative_url = I18n.t!("documents.history.entry_content.alternative_url")
       expect(rendered).to have_content("#{alternative_url} https://example.com",
                                        normalize_ws: true)
@@ -54,8 +52,7 @@ RSpec.describe "documents/history/content_publisher_entry.html.erb" do
       timeline_entry = create(:timeline_entry,
                               entry_type: :removed,
                               details: removal)
-      render partial: self.class.top_level_description,
-             locals: { entry: timeline_entry }
+      render template: described_template, locals: { entry: timeline_entry }
       expect(rendered).to have_link("https://www.test.gov.uk/path",
                                     href: "https://www.test.gov.uk/path")
     end
@@ -65,8 +62,7 @@ RSpec.describe "documents/history/content_publisher_entry.html.erb" do
       timeline_entry = create(:timeline_entry,
                               entry_type: :removed,
                               details: removal)
-      render partial: self.class.top_level_description,
-             locals: { entry: timeline_entry }
+      render template: described_template, locals: { entry: timeline_entry }
       redirected_to = I18n.t!("documents.history.entry_content.redirected_to")
       expect(rendered).to have_content("#{redirected_to} https://example.com",
                                        normalize_ws: true)

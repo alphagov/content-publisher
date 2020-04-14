@@ -1,4 +1,4 @@
-RSpec.describe "new_document/show.html.erb" do
+RSpec.describe "new_document/show" do
   let(:pre_release_document_type) { build(:document_type, :pre_release, id: "news") }
 
   let(:pre_release_option) do

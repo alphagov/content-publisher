@@ -18,11 +18,13 @@ FactoryBot.define do
       entry_type { :whitehall_migration }
       transient do
         whitehall_entry_type { :first_created }
+        whitehall_entry_contents { {} }
       end
 
       after(:build) do |timeline_entry, evaluator|
         timeline_entry.details = TimelineEntry::WhitehallImportedEntry.new(
           entry_type: evaluator.whitehall_entry_type,
+          contents: evaluator.whitehall_entry_contents,
         )
       end
     end
