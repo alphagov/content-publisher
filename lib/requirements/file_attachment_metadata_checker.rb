@@ -3,6 +3,8 @@ module Requirements
     UNIQUE_REF_MAX_LENGTH = 255
     ISBN10_REGEX = /^(?:\d[\ -]?){9}[\dX]$/i.freeze
     ISBN13_REGEX = /^(?:\d[\ -]?){13}$/i.freeze
+    ACT_PAPER_REGEX = /^\d+(-[IV]+)?$/.freeze
+    COMMAND_PAPER_REGEX = /^(CP|C\.|Cd\.|Cmd\.|Cmnd\.|Cm\.)\s\d+(-[IV]+)?$/.freeze
 
     def pre_update_issues(params)
       issues = CheckerIssues.new
@@ -23,14 +25,11 @@ module Requirements
                       :blank)
       end
 
-      if blank_paper_number?("command", params)
-        issues.create(:file_attachment_command_paper_number,
-                      :blank)
-      end
-
-      if blank_paper_number?("act", params)
-        issues.create(:file_attachment_act_paper_number,
-                      :blank)
+      %w(command act).each do |type|
+        if (issue_key = invalid_paper_number?(type, params))
+          issues.create(:"file_attachment_#{type}_paper_number",
+                        issue_key)
+        end
       end
 
       issues
@@ -55,9 +54,14 @@ module Requirements
       isbn.blank? || ISBN10_REGEX.match?(isbn) || ISBN13_REGEX.match?(isbn)
     end
 
-    def blank_paper_number?(type, params)
-      params[:official_document_type] == "#{type}_paper" &&
-        params[:"#{type}_paper_number"].blank?
+    def invalid_paper_number?(type, params)
+      return unless params[:official_document_type] == "#{type}_paper"
+
+      number = params[:"#{type}_paper_number"]
+      return :blank if number.blank?
+
+      regex = "#{self.class}::#{type.upcase}_PAPER_REGEX".constantize
+      return :invalid unless regex.match?(number)
     end
   end
 end

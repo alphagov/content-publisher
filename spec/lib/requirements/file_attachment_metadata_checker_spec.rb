@@ -78,5 +78,58 @@ RSpec.describe Requirements::FileAttachmentMetadataChecker do
         expect(issues).to have_issue(:"file_attachment_#{type}_paper_number", :blank)
       end
     end
+
+    [
+      "C. 123",
+      "Cd. 123-I",
+      "Cmd. 123-IV",
+      "Cmnd. 123-VIII",
+      "Cm. 123",
+      "CP 1",
+    ].each do |valid_number|
+      it "returns no issues for valid command paper number #{valid_number}" do
+        params = { official_document_type: "command_paper", command_paper_number: valid_number }
+        issues = checker.pre_update_issues(valid_params.merge(params))
+        expect(issues).to be_empty
+      end
+    end
+
+    [
+      "NA 123", # bad prefix
+      "C 123", # no dot
+      "C123", # no space
+      "CM. 123", # prefix casing
+      "CP. 123", # prefix casing
+      "C. 123-i", # lower case
+      "C. 123VIII", # no dash
+    ].each do |valid_number|
+      it "returns an issue for invalid command paper number #{valid_number}" do
+        params = { official_document_type: "command_paper", command_paper_number: valid_number }
+        issues = checker.pre_update_issues(params)
+        expect(issues).to have_issue(:file_attachment_command_paper_number, :invalid)
+      end
+    end
+
+    %w[
+      123
+      123-VIII
+    ].each do |valid_number|
+      it "returns no issues for valid act paper number #{valid_number}" do
+        params = { official_document_type: "act_paper", act_paper_number: valid_number }
+        issues = checker.pre_update_issues(valid_params.merge(params))
+        expect(issues).to be_empty
+      end
+    end
+
+    [
+      "123-i", # lower case
+      "123VIII", # no dash
+    ].each do |valid_number|
+      it "returns an issue for invalid act paper number #{valid_number}" do
+        params = { official_document_type: "act_paper", act_paper_number: valid_number }
+        issues = checker.pre_update_issues(params)
+        expect(issues).to have_issue(:file_attachment_act_paper_number, :invalid)
+      end
+    end
   end
 end

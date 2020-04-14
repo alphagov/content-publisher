@@ -26,7 +26,7 @@ RSpec.describe FileAttachments::UpdateInteractor do
     context "with unnumbered command papers" do
       it "overrides the official document type and number" do
         attachment_params.merge!(official_document_type: "unnumbered_command_paper",
-                                 command_paper_number: "1234")
+                                 command_paper_number: "CP 1234")
         result = described_class.call(params: params, user: user)
         expect(result.file_attachment_revision).to be_command_paper
         expect(result.file_attachment_revision.paper_number).to be_blank
@@ -46,7 +46,7 @@ RSpec.describe FileAttachments::UpdateInteractor do
     context "with unofficial documents" do
       it "overrides the official document type and number" do
         attachment_params.merge!(official_document_type: "unofficial",
-                                 command_paper_number: "1234")
+                                 command_paper_number: "CP 1234")
         result = described_class.call(params: params, user: user)
         expect(result.file_attachment_revision).to be_unofficial
         expect(result.file_attachment_revision.paper_number).to be_blank
@@ -56,10 +56,10 @@ RSpec.describe FileAttachments::UpdateInteractor do
     context "with numbered command papers" do
       it "overrides the official document type and number" do
         attachment_params.merge!(official_document_type: "command_paper",
-                                 command_paper_number: "1234")
+                                 command_paper_number: "CP 1234")
         result = described_class.call(params: params, user: user)
         expect(result.file_attachment_revision).to be_command_paper
-        expect(result.file_attachment_revision.paper_number).to eq "1234"
+        expect(result.file_attachment_revision.paper_number).to eq "CP 1234"
       end
     end
 

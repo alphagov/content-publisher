@@ -78,9 +78,13 @@ en:
     file_attachment_command_paper_number:
       blank:
         form_message: "Enter a command paper number"
+      invalid:
+        form_message: "Enter a valid command paper number"
     file_attachment_act_paper_number:
       blank:
         form_message: "Enter a House of Commons paper number"
+      invalid:
+        form_message: "Enter a valid House of Commons paper number"
     public_explanation:
       blank:
         form_message: Enter a public explanation
