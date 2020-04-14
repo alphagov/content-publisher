@@ -5,9 +5,6 @@ en:
     any_mainstream_publication:
       label: Mainstream guide
       description: Guidance for the general public, written for people not expected to have any previous experience or specialist knowledge.
-    articles_and_correspondence:
-      label: Articles and correspondence
-      description: Articles written by a minister or official, responses from the organisation or a minister, and circulars or newsletters.
     authored_article:
       label: Authored article
       description: Bylined articles written in the name of a minister or official, usually republished from elsewhere.
