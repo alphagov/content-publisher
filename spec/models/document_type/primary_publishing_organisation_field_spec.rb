@@ -15,6 +15,20 @@ RSpec.describe DocumentType::PrimaryPublishingOrganisationField do
       updater_params = described_class.new.updater_params(edition, params)
       expect(updater_params).to eq(primary_publishing_organisation: %w[some_org_id])
     end
+
+    it "copes with empty values for the organisation ID" do
+      edition = build :edition
+      params = ActionController::Parameters.new(primary_publishing_organisation: [""])
+      updater_params = described_class.new.updater_params(edition, params)
+      expect(updater_params).to eq(primary_publishing_organisation: %w[])
+    end
+
+    it "copes when the field is not present in the params" do
+      edition = build :edition
+      params = ActionController::Parameters.new
+      updater_params = described_class.new.updater_params(edition, params)
+      expect(updater_params).to eq({})
+    end
   end
 
   describe "#pre_update_issues" do

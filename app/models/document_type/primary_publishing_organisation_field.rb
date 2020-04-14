@@ -8,7 +8,8 @@ class DocumentType::PrimaryPublishingOrganisationField
   end
 
   def updater_params(_edition, params)
-    { primary_publishing_organisation: params[:primary_publishing_organisation] }
+    value = params[id] && params[id].map(&:presence).compact
+    { id.to_sym => value }.compact
   end
 
   def pre_update_issues(_edition, params)
