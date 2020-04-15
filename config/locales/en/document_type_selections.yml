@@ -175,10 +175,10 @@ en:
       description: An announcement of national and official statistics releases to comply with the Code of Practice for Official Statistics.
     statutory_guidance:
       label: Statutory guidance publication (pre-release)
-      description: Guidance which relevant users are legally obliged to follow.
+      description: Guidance that sets out what users must do to comply with the law.
     statutory_guidance_managed_elsewhere:
       label: Statutory guidance publication
-      description: Guidance which relevant users are legally obliged to follow.
+      description: Guidance that sets out what users must do to comply with the law.
     transparency:
       label: Transparency data publication (pre-release)
       description: Information about how an organisation operates, for example departmental spending, salaries and staff survey results.
