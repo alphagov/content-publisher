@@ -40,7 +40,7 @@ RSpec.describe "Tags" do
       edition = create(:edition)
 
       patch tags_path(edition.document),
-            params: { tags: { field: [SecureRandom.uuid] } }
+            params: { field: [SecureRandom.uuid] }
 
       expect(response).to redirect_to(document_path(edition.document))
     end
@@ -55,7 +55,7 @@ RSpec.describe "Tags" do
         document_type: "organisation",
       )
 
-      patch tags_path(edition.document), params: { tags: {} }
+      patch tags_path(edition.document), params: {}
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.body).to have_content(
         I18n.t!("requirements.primary_publishing_organisation.blank.form_message"),

@@ -15,20 +15,39 @@ RSpec.describe DocumentType::PrimaryPublishingOrganisationField do
       updater_params = described_class.new.updater_params(edition, params)
       expect(updater_params).to eq(primary_publishing_organisation: %w[some_org_id])
     end
+
+    it "copes with empty values for the organisation ID" do
+      edition = build :edition
+      params = ActionController::Parameters.new(primary_publishing_organisation: [""])
+      updater_params = described_class.new.updater_params(edition, params)
+      expect(updater_params).to eq(primary_publishing_organisation: %w[])
+    end
+
+    it "copes when the field is not present in the params" do
+      edition = build :edition
+      params = ActionController::Parameters.new
+      updater_params = described_class.new.updater_params(edition, params)
+      expect(updater_params).to eq({})
+    end
   end
 
   describe "#pre_update_issues" do
     let(:edition) { build(:edition) }
 
     it "returns no issues when there are none" do
-      params = { primary_publishing_organisation: SecureRandom.uuid }
+      params = { primary_publishing_organisation: [SecureRandom.uuid] }
       issues = described_class.new.pre_update_issues(edition, params)
       expect(issues).to be_empty
     end
 
     it "returns an issue if no primary publishing organisation is provided" do
-      params = {}
+      params = { primary_publishing_organisation: [] }
       issues = described_class.new.pre_update_issues(edition, params)
+      expect(issues).to have_issue(:primary_publishing_organisation, :blank, styles: %i[form summary])
+    end
+
+    it "returns an issue if the field is not in the params" do
+      issues = described_class.new.pre_update_issues(edition, {})
       expect(issues).to have_issue(:primary_publishing_organisation, :blank, styles: %i[form summary])
     end
   end
