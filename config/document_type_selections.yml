@@ -15,19 +15,6 @@
       type: managed_elsewhere
       path: /documents/publishing-guidance
 
-- id: articles_and_correspondence
-  options:
-    - id: correspondence
-      type: document_type
-    - id: correspondence_managed_elsewhere
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/publications/new
-    - id: authored_article
-      type: managed_elsewhere
-      hostname: whitehall-admin
-      path: /government/admin/speeches/new
-
 - id: guidance_publications
   options:
     - id: detailed_guide
@@ -84,8 +71,6 @@
       type: document_type
     - id: press_release
       type: document_type
-    - id: articles_and_correspondence
-      type: document_type_selection
     - id: speech
       type: managed_elsewhere
       hostname: whitehall-admin
@@ -96,6 +81,10 @@
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/case-studies/new
+    - id: authored_article
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/speeches/new
 
 - id: policy
   options:
@@ -188,6 +177,12 @@
     - id: research
       type: document_type
     - id: research_managed_elsewhere
+      type: managed_elsewhere
+      hostname: whitehall-admin
+      path: /government/admin/publications/new
+    - id: correspondence
+      type: document_type
+    - id: correspondence_managed_elsewhere
       type: managed_elsewhere
       hostname: whitehall-admin
       path: /government/admin/publications/new
