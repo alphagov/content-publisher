@@ -1,5 +1,5 @@
-desc "Run FactoryBot linter"
 namespace :factorybot do
+  desc "Run FactoryBot linter"
   task lint: :environment do
     if Rails.env.test?
       ActiveRecord::Base.transaction do
