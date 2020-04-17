@@ -320,22 +320,19 @@ RSpec.describe "File Attachments" do
 
       patch edit_file_attachment_path(edition.document,
                                       file_attachment_revision.file_attachment_id),
-            params: { file_attachment: { isbn: "9788700631625" } }
+            params: { file_attachment: { official_document_type: "unofficial" } }
 
       expect(response).to redirect_to(featured_attachments_path(edition.document))
     end
 
     it "returns issues and an unprocessable response when there are requirement issues" do
-      max_length = Requirements::FileAttachmentMetadataChecker::UNIQUE_REF_MAX_LENGTH
-      too_long_unique_reference = "a" * (max_length + 1)
-
       patch edit_file_attachment_path(edition.document,
                                       file_attachment_revision.file_attachment_id),
-            params: { file_attachment: { unique_reference: too_long_unique_reference } }
+            params: { file_attachment: { official_document_type: "" } }
 
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.body).to have_content(
-        I18n.t!("requirements.file_attachment_unique_reference.too_long.form_message", max_length: max_length),
+        I18n.t!("requirements.file_attachment_official_document_type.blank.form_message"),
       )
     end
   end

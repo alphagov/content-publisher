@@ -4,6 +4,7 @@
   },
   hint: t("file_attachments.edit.official_document.options.act_paper.input_hint_text"),
   name: "file_attachment[act_paper_number]",
+  error_items: issues&.items_for(:file_attachment_act_paper_number),
   value: params.dig(:file_attachment, :act_paper_number) ||
          (attachment.act_paper? && attachment.paper_number),
   width: 10
