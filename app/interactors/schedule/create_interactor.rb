@@ -26,7 +26,7 @@ private
     end
 
     assert_edition_state(edition, assertion: "has no requirements issues") do
-      Requirements::EditionChecker.new(edition).pre_publish_issues(rescue_api_errors: false).none?
+      Requirements::Publish::EditionChecker.call(edition).none?
     end
   end
 

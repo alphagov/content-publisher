@@ -22,11 +22,8 @@ RSpec.describe "documents/show/_requirements" do
                   attachment_revision: file_attachment,
                   filename: "file")
 
-    checker = instance_double(Requirements::EditionChecker,
-                              pre_preview_issues: issues,
-                              pre_publish_issues: issues)
-
-    allow(Requirements::EditionChecker).to receive(:new).and_return(checker)
+    allow(Requirements::Preview::EditionChecker).to receive(:call).and_return(issues)
+    allow(Requirements::Publish::EditionChecker).to receive(:call).and_return(issues)
     assign(:edition, edition)
   end
 

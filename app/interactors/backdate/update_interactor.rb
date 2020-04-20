@@ -48,7 +48,7 @@ private
   end
 
   def check_for_issues
-    issues = Requirements::BackdateChecker.new.pre_update_issues(date)
+    issues = Requirements::Form::BackdateChecker.call(date)
     context.fail!(issues: issues) if issues.any?
   end
 

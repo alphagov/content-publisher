@@ -21,7 +21,7 @@
 } %>
 
 <% unless @edition.revision_synced? %>
-  <% draft_issues = Requirements::EditionChecker.new(@edition).pre_preview_issues %>
+  <% draft_issues = Requirements::Preview::EditionChecker.call(@edition) %>
 
   <% if draft_issues.any? %>
     <% if flash[:tried_to_preview] %>
@@ -47,7 +47,7 @@
 <% end %>
 
 <% if @edition.editable? %>
-  <% publish_issues = Requirements::EditionChecker.new(@edition).pre_publish_issues %>
+  <% publish_issues = Requirements::Publish::EditionChecker.call(@edition, rescue_api_errors: true) %>
 
   <% if publish_issues.any? %>
     <% if flash[:tried_to_publish] %>
