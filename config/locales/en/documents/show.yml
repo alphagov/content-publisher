@@ -28,7 +28,7 @@ en:
         title: There is a problem
         description_govspeak: |
           ‘%{title}’ has not been published.<br>
-          It was scheduled to publish at %{time} on %{date}
+          It was scheduled to publish at %{datetime}
 
           You can publish it now, schedule it to publish later, or edit it.
       featured_attachments:
@@ -87,9 +87,9 @@ en:
         last_edited_by: Last edited by
         withdrawn_by: Withdrawn by
       proposed_scheduling_notice:
-        title: Proposed to publish at %{time} on %{date}
+        title: Proposed to publish at %{datetime}
       scheduled_notice:
-        title: Scheduled to publish at %{time} on %{date}
+        title: Scheduled to publish at %{datetime}
       submitted_for_review:
         title: Content has been marked as ready for 2i review
         label: Send the Content Publisher link to another publisher for them to review. When content is ready you or they can publish it.

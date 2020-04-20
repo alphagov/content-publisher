@@ -61,8 +61,7 @@ RSpec.feature "Scheduled publishing failed" do
 
     expect(message.body)
       .to have_content(I18n.t("scheduled_publish_mailer.failure_email.schedule_date",
-                              time: "3:00pm",
-                              date: "20 June 2019"))
+                              datetime: @edition.proposed_publish_time.to_s(:time_on_date)))
   end
 
   def when_i_visit_the_summary_page

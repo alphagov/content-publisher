@@ -21,8 +21,7 @@ RSpec.describe ScheduledPublishMailer do
       mail = described_class.success_email(recipient, edition, edition.status)
 
       publish_time = I18n.t!("scheduled_publish_mailer.success_email.details.publish",
-                             date: "17 June 2019",
-                             time: "9:00am")
+                             datetime: edition.published_at.to_s(:time_on_date))
       expect(mail.body.to_s).to include(publish_time)
     end
 
@@ -58,8 +57,7 @@ RSpec.describe ScheduledPublishMailer do
         mail = described_class.success_email(recipient, edition, edition.status)
 
         update_text = I18n.t!("scheduled_publish_mailer.success_email.details.update",
-                              date: "17 June 2019",
-                              time: "11:00pm")
+                              datetime: edition.published_at.to_s(:time_on_date))
         expect(mail.body.to_s).to include(update_text)
       end
 
@@ -111,8 +109,7 @@ RSpec.describe ScheduledPublishMailer do
       mail = described_class.failure_email(recipient, edition, edition.status)
 
       publish_time = I18n.t!("scheduled_publish_mailer.failure_email.schedule_date",
-                             date: "17 June 2019",
-                             time: "12:00pm")
+                             datetime: scheduling.publish_time.to_s(:time_on_date))
       expect(mail.body.to_s).to include(publish_time)
     end
   end

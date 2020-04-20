@@ -3,6 +3,6 @@ en:
     scheduled:
       title: Content has been scheduled to publish
       body_govspeak: |
-        ‘%{title}’ will be automatically published at %{time} on %{date}.
+        ‘%{title}’ will be automatically published at %{datetime}.
 
         It may take 5 minutes to appear live.

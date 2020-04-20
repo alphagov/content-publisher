@@ -38,7 +38,7 @@ RSpec.feature "Publishing an edition" do
   end
 
   def and_i_publish_the_edition
-    travel_to(@publish_date = Time.zone.now) do
+    travel_to(@publish_time = Time.zone.now) do
       click_on "Publish"
       choose I18n.t!("publish.confirmation.has_been_reviewed")
       stub_any_publishing_api_put_content
@@ -76,10 +76,6 @@ RSpec.feature "Publishing an edition" do
     tos = ActionMailer::Base.deliveries.map(&:to)
     message = ActionMailer::Base.deliveries.first
 
-    publish_time = @publish_date.strftime("%-l:%M%P").strip
-    publish_date = @publish_date.strftime("%-d %B %Y")
-    publish_user = current_user.name
-
     expect(tos).to match_array [[@creator.email], [current_user.email]]
     expect(message.body).to have_content("https://www.test.gov.uk/news/banana-pricing-updates")
     expect(message.body).to have_content(document_path(@edition.document))
@@ -88,8 +84,7 @@ RSpec.feature "Publishing an edition" do
                                          title: @edition.title))
 
     expect(message.body).to have_content(I18n.t("publish_mailer.publish_email.details.publish",
-                                                time: publish_time,
-                                                date: publish_date,
-                                                user: publish_user))
+                                                datetime: @publish_time.to_s(:time_on_date),
+                                                user: current_user.name))
   end
 end

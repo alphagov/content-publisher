@@ -2,12 +2,10 @@
 
 <% if @edition.first? -%>
   <%= t("scheduled_publish_mailer.success_email.details.publish",
-        time: @status.created_at.to_s(:time),
-        date: @status.created_at.to_s(:date)) %>
+        datetime: @status.created_at.to_s(:time_on_date)) %>
 <% else -%>
   <%= t("scheduled_publish_mailer.success_email.details.update",
-        time: @status.created_at.to_s(:time),
-        date: @status.created_at.to_s(:date)) %>
+        datetime: @status.created_at.to_s(:time_on_date)) %>
 <% end -%>
 
 <% if @status.created_by -%>

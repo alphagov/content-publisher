@@ -2,13 +2,11 @@
 
 <% if @edition.first? -%>
   <%= t("publish_mailer.publish_email.details.publish",
-        time: @status.created_at.to_s(:time),
-        date: @status.created_at.to_s(:date),
+        datetime: @status.created_at.to_s(:time_on_date),
         user: @status.created_by&.name || I18n.t!("documents.unknown_user")) %>
 <% else -%>
   <%= t("publish_mailer.publish_email.details.update",
-        time: @status.created_at.to_s(:time),
-        date: @status.created_at.to_s(:date),
+        datetime: @status.created_at.to_s(:time_on_date),
         user: @status.created_by&.name || I18n.t!("documents.unknown_user")) %>
 <% end -%>
 

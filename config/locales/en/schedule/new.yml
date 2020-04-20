@@ -2,7 +2,7 @@ en:
   schedule:
     new:
       title: Schedule to publish
-      hint_text: "Publish at %{time} on %{date}."
+      hint_text: "Publish at %{datetime}."
       review_status:
         reviewed: This content has been reviewed and approved for publication
         not_reviewed: This content needs to be reviewed after it has been published

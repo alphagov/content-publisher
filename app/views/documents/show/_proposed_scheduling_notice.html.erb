@@ -5,8 +5,7 @@
 <% proposed_scheduling_description = capture do %>
   <p class="govuk-body govuk-!-margin-bottom-1">
     <%= t("documents.show.proposed_scheduling_notice.title",
-          time: publish_time.to_s(:time),
-          date: publish_time.to_s(:date)) %>
+          datetime: publish_time.to_s(:time_on_date)) %>
   </p>
   <%= tag.p link_to("Change date",
               schedule_proposal_path(@edition.document),

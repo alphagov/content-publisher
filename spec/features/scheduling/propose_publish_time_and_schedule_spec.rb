@@ -39,8 +39,7 @@ RSpec.feature "Propose publish time and schedule" do
       .to have_content(I18n.t!("schedule.new.title"))
     expect(page)
       .to have_content(I18n.t!("schedule.new.hint_text",
-                               time: "3:30pm",
-                               date: "20 August 2019"))
+                               datetime: "3:30pm on 20 August 2019"))
   end
 
   def when_i_submit_a_review_option
