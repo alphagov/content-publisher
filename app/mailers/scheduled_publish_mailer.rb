@@ -1,5 +1,5 @@
 class ScheduledPublishMailer < ApplicationMailer
-  helper :date_time, :edition_url
+  helper :edition_url
 
   self.delivery_job = EmailDeliveryJob
 

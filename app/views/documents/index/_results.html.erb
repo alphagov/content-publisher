@@ -42,7 +42,7 @@
         } %>
 
         <%= t.cell t("user_facing_states.#{edition.state}.name") %>
-        <%= t.cell format_date(edition.last_edited_at) %>
+        <%= t.cell edition.last_edited_at.to_s(:date) %>
       <% end %>
     <% end %>
   <% end %>

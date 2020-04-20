@@ -2,8 +2,8 @@
 <% content_for :browser_title, t("schedule.scheduled.title") %>
 
 <% scheduling = @edition.status.details %>
-<% time = format_time(scheduling.publish_time) %>
-<% date = format_date(scheduling.publish_time) %>
+<% time = scheduling.publish_time.to_s(:time) %>
+<% date = scheduling.publish_time.to_s(:date) %>
 <% public_url = edition_public_url(@edition) %>
 
 <div class="govuk-grid-row">

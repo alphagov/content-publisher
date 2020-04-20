@@ -1,8 +1,8 @@
 <%= t("scheduled_publish_mailer.failure_email.problem", title: @edition.title) %>
 
 <%= t("scheduled_publish_mailer.failure_email.schedule_date",
-      time: format_time(@scheduling.publish_time),
-      date: format_date(@scheduling.publish_time)) %>
+      time: @scheduling.publish_time.to_s(:time),
+      date: @scheduling.publish_time.to_s(:date)) %>
 
 <%= t("scheduled_publish_mailer.failure_email.try_again") %>
 

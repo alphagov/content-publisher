@@ -1,22 +1,24 @@
 <% if @edition.withdrawn? %>
   <% metadata = [
+    {
       field: t("documents.show.metadata.withdrawn_by"),
-      value: name_or_fallback(@edition.status.created_by)
+      value: name_or_fallback(@edition.status.created_by),
+    },
   ] %>
 <% else %>
   <% metadata = [
     {
       field: t("documents.show.metadata.created_at"),
-      value: (created_at = @edition.document.created_at) ? format_time_on_date(created_at) : "",
+      value: (created_at = @edition.document.created_at) ? created_at.to_s(:time_on_date) : "",
     },
     {
       field: t("documents.show.metadata.created_by"),
-      value: name_or_fallback(@edition.document.created_by)
+      value: name_or_fallback(@edition.document.created_by),
     },
     {
       field: t("documents.show.metadata.last_edited_by"),
       value: name_or_fallback(@edition.last_edited_by)
-    }
+    },
   ] %>
 <% end %>
 
@@ -29,7 +31,7 @@
       },
       {
         field: t("documents.show.metadata.updated_at"),
-        value: format_time_on_date(@edition.last_edited_at)
+        value: @edition.last_edited_at.to_s(:time_on_date),
       },
     ] + metadata
   } %>
