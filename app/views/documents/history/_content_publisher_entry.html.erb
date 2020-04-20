@@ -38,9 +38,15 @@
   </h4>
 
   <div class="app-timeline-entry__dateline">
-    <%= entry.created_at.to_s(:date_at_time) %>
     <% if entry.created_by %>
-      <%= t "documents.history.by" %> <%= entry.created_by.name %>
+      <%= t "documents.history.dateline_user",
+          date: entry.created_at.to_s(:date),
+          time: entry.created_at.to_s(:time),
+          user: entry.created_by.name %>
+    <% else %>
+      <%= t "documents.history.dateline_no_user",
+          date: entry.created_at.to_s(:date),
+          time: entry.created_at.to_s(:time) %>
     <% end %>
   </div>
 
