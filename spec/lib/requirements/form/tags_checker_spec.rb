@@ -12,7 +12,7 @@ RSpec.describe Requirements::Form::TagsChecker do
       edition = build :edition, document_type: document_type
 
       params = { primary_publishing_organisation: SecureRandom.uuid }
-      expect(tag).to receive(:pre_update_issues).with(edition, params).and_call_original
+      expect(tag).to receive(:form_issues).with(edition, params).and_call_original
       described_class.call(edition, params)
     end
   end

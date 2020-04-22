@@ -13,7 +13,7 @@ class DocumentType::SummaryField
     { summary: params[:summary]&.strip }
   end
 
-  def pre_update_issues(_edition, params)
+  def form_issues(_edition, params)
     issues = Requirements::CheckerIssues.new
 
     if params[:summary].to_s.size > SUMMARY_MAX_LENGTH
@@ -27,11 +27,11 @@ class DocumentType::SummaryField
     issues
   end
 
-  def pre_preview_issues(_edition)
+  def preview_issues(_edition)
     Requirements::CheckerIssues.new
   end
 
-  def pre_publish_issues(edition)
+  def publish_issues(edition)
     issues = Requirements::CheckerIssues.new
     issues.create(:summary, :blank) if edition.summary.blank?
     issues

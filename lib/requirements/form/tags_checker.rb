@@ -8,7 +8,7 @@ class Requirements::Form::TagsChecker < Requirements::Checker
 
   def check
     edition.document_type.tags.each do |tag|
-      self.issues += tag.update_issues(edition, params)
+      self.issues += tag.form_issues(edition, params)
     end
   end
 end

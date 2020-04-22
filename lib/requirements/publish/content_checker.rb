@@ -7,7 +7,7 @@ class Requirements::Publish::ContentChecker < Requirements::Checker
 
   def check
     edition.document_type.contents.each do |field|
-      self.issues += field.pre_publish_issues(edition)
+      self.issues += field.publish_issues(edition)
     end
 
     if edition.document.live_edition &&

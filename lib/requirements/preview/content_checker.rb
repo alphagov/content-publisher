@@ -7,7 +7,7 @@ class Requirements::Preview::ContentChecker < Requirements::Checker
 
   def check
     edition.document_type.contents.each do |field|
-      self.issues += field.pre_preview_issues(edition)
+      self.issues += field.preview_issues(edition)
     end
   end
 end

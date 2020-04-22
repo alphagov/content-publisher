@@ -36,7 +36,7 @@ private
     issues = Requirements::CheckerIssues.new
 
     fields.each do |field|
-      issues += field.pre_update_issues(edition, content_params)
+      issues += field.form_issues(edition, content_params)
     end
 
     context.fail!(issues: issues) if issues.any?
