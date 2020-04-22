@@ -5,12 +5,8 @@ class Requirements::Publish::FileAttachmentsChecker < Requirements::Checker
     @edition = edition
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
-    unless edition.document_type.attachments.featured?
-      return issues
-    end
+  def check
+    return unless edition.document_type.attachments.featured?
 
     edition.file_attachment_revisions.each do |attachment|
       if attachment.official_document_type.blank?
@@ -20,7 +16,5 @@ class Requirements::Publish::FileAttachmentsChecker < Requirements::Checker
                       attachment_revision: attachment)
       end
     end
-
-    issues
   end
 end

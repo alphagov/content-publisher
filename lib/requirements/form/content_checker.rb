@@ -6,13 +6,9 @@ class Requirements::Form::ContentChecker < Requirements::Checker
     @params = params
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     edition.document_type.contents.each do |field|
-      issues += field.pre_update_issues(edition, params)
+      self.issues += field.form_issues(edition, params)
     end
-
-    issues
   end
 end

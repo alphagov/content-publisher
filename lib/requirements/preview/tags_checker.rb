@@ -5,13 +5,9 @@ class Requirements::Preview::TagsChecker < Requirements::Checker
     @edition = edition
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     edition.document_type.tags.each do |tag|
-      issues += tag.pre_preview_issues(edition)
+      self.issues += tag.pre_preview_issues(edition)
     end
-
-    issues
   end
 end

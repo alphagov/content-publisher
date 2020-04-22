@@ -5,7 +5,7 @@ RSpec.describe Requirements::Preview::TagsChecker do
       document_type = build :document_type, tags: [tag]
       edition = build :edition, document_type: document_type
 
-      expect(tag).to receive(:pre_preview_issues).with(edition).and_call_original
+      expect(tag).to receive(:preview_issues).with(edition).and_call_original
       described_class.call(edition)
     end
   end

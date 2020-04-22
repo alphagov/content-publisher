@@ -5,13 +5,9 @@ class Requirements::Publish::TopicChecker < Requirements::Checker
     @edition = edition
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     if edition.document_type.topics && edition.topics.none?
       issues.create(:topics, :none)
     end
-
-    issues
   end
 end

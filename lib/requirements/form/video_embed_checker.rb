@@ -9,9 +9,7 @@ class Requirements::Form::VideoEmbedChecker < Requirements::Checker
     @url = url
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     if title.blank?
       issues.create(:video_embed_title, :blank)
     end
@@ -21,8 +19,6 @@ class Requirements::Form::VideoEmbedChecker < Requirements::Checker
     elsif !youtube_url?
       issues.create(:video_embed_url, :non_youtube)
     end
-
-    issues
   end
 
 private

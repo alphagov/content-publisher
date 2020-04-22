@@ -6,9 +6,7 @@ class Requirements::Form::WithdrawalChecker < Requirements::Checker
     @public_explanation = public_explanation
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     if public_explanation.blank?
       issues.create(:public_explanation, :blank)
     end
@@ -16,7 +14,5 @@ class Requirements::Form::WithdrawalChecker < Requirements::Checker
     unless GovspeakDocument.new(public_explanation, edition).valid?
       issues.create(:public_explanation, :invalid_govspeak)
     end
-
-    issues
   end
 end

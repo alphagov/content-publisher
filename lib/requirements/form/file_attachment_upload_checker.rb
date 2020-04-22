@@ -33,12 +33,10 @@ class Requirements::Form::FileAttachmentUploadChecker < Requirements::Checker
     @title = title
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     if file && invalid_zip?
       issues.create(:file_attachment_upload, :zip_unsupported_type)
-      return issues
+      return
     end
 
     if file && unsupported_type?
@@ -54,9 +52,6 @@ class Requirements::Form::FileAttachmentUploadChecker < Requirements::Checker
                     :too_long,
                     max_length: TITLE_MAX_LENGTH)
     end
-
-
-    issues
   end
 
 private

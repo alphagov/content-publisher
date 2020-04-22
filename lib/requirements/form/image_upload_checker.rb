@@ -12,17 +12,15 @@ class Requirements::Form::ImageUploadChecker < Requirements::Checker
     @file = file
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     unless file
       issues.create(:image_upload, :no_file)
-      return issues
+      return
     end
 
     if unsupported_type?
       issues.create(:image_upload, :unsupported_type)
-      return issues
+      return
     end
 
     if file.size >= MAX_FILE_SIZE
@@ -30,8 +28,6 @@ class Requirements::Form::ImageUploadChecker < Requirements::Checker
                     :too_big,
                     max_size: number_to_human_size(MAX_FILE_SIZE))
     end
-
-    issues
   end
 
 private

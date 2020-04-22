@@ -12,16 +12,12 @@ class Requirements::Publish::EditionChecker < Requirements::Checker
     @rescue_api_errors = rescue_api_errors
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     CHECKERS.each do |checker|
-      issues += checker.call(edition)
+      self.issues += checker.call(edition)
     rescue GdsApi::BaseError => e
       GovukError.notify(e) if rescue_api_errors
       raise unless rescue_api_errors
     end
-
-    issues
   end
 end

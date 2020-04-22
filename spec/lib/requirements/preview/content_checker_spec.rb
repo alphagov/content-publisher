@@ -8,7 +8,7 @@ RSpec.describe Requirements::Preview::ContentChecker do
 
     it "delegates to return issues with content fields" do
       issues = Requirements::CheckerIssues.new(%w(issue))
-      body_field = instance_double(DocumentType::BodyField, pre_preview_issues: issues)
+      body_field = instance_double(DocumentType::BodyField, preview_issues: issues)
       document_type = build :document_type, contents: [body_field]
       edition = build :edition, document_type: document_type
       issues = described_class.call(edition)

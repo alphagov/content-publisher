@@ -11,9 +11,7 @@ class Requirements::Form::FileAttachmentMetadataChecker < Requirements::Checker
     @params = params
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     unless valid_isbn?(params[:isbn])
       issues.create(:file_attachment_isbn,
                     :invalid)
@@ -36,8 +34,6 @@ class Requirements::Form::FileAttachmentMetadataChecker < Requirements::Checker
                       issue_key)
       end
     end
-
-    issues
   end
 
 private

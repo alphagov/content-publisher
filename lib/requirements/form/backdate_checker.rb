@@ -7,9 +7,7 @@ class Requirements::Form::BackdateChecker < Requirements::Checker
     @backdate = backdate
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     if backdate > Time.zone.today
       issues.create(:backdate_date, :in_the_future)
     end
@@ -18,7 +16,5 @@ class Requirements::Form::BackdateChecker < Requirements::Checker
       date = EARLIEST_DATE.strftime("%-d %B %Y")
       issues.create(:backdate_date, :too_long_ago, date: date)
     end
-
-    issues
   end
 end

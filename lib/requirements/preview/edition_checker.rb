@@ -11,13 +11,9 @@ class Requirements::Preview::EditionChecker < Requirements::Checker
     @edition = edition
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     CHECKERS.each do |checker|
-      issues += checker.call(edition)
+      self.issues += checker.call(edition)
     end
-
-    issues
   end
 end

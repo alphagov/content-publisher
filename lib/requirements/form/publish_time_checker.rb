@@ -10,9 +10,7 @@ class Requirements::Form::PublishTimeChecker < Requirements::Checker
     @publish_time = publish_time
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     if publish_time > MAX_PUBLISH_DELAY.from_now
       issues.create(:schedule_date,
                     :too_far_in_future,
@@ -29,7 +27,5 @@ class Requirements::Form::PublishTimeChecker < Requirements::Checker
       field = publish_time.today? ? :schedule_time : :schedule_date
       issues.create(field, :in_the_past)
     end
-
-    issues
   end
 end

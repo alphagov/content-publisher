@@ -9,9 +9,7 @@ class Requirements::Form::ImageMetadataChecker < Requirements::Checker
     @params = params
   end
 
-  def issues
-    issues = Requirements::CheckerIssues.new
-
+  def check
     if params[:alt_text].blank?
       issues.create(:image_alt_text, :blank)
     end
@@ -27,7 +25,5 @@ class Requirements::Form::ImageMetadataChecker < Requirements::Checker
     if params[:credit].to_s.length > CREDIT_MAX_LENGTH
       issues.create(:image_credit, :too_long, max_length: CREDIT_MAX_LENGTH)
     end
-
-    issues
   end
 end
