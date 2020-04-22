@@ -31,18 +31,18 @@ private
     Date.strptime("#{day}-#{month}-#{year}", "%d-%m-%Y")
   rescue ArgumentError
     field_name = "#{issue_prefix}_date".to_sym
-    issues << Requirements::Issue.new(field_name, :invalid)
+    issues.create(field_name, :invalid)
   end
 
   def check_time_is_valid
     field_name = "#{issue_prefix}_time".to_sym
 
     if !parsed_time_values
-      issues << Requirements::Issue.new(field_name, :invalid)
+      issues.create(field_name, :invalid)
     elsif parsed_time_values[:hour].to_i > 12 && parsed_time_values[:period]
-      issues << Requirements::Issue.new(field_name, :invalid)
+      issues.create(field_name, :invalid)
     elsif time[:hour] > 23
-      issues << Requirements::Issue.new(field_name, :invalid)
+      issues.create(field_name, :invalid)
     end
   end
 

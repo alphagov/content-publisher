@@ -24,15 +24,15 @@ private
     return unless normalised_image.width < Image::WIDTH ||
       normalised_image.height < Image::HEIGHT
 
-    issues << Requirements::Issue.new(:image_upload,
-                                      :too_small,
-                                      width: Image::WIDTH,
-                                      height: Image::HEIGHT)
+    issues.create(:image_upload,
+                  :too_small,
+                  width: Image::WIDTH,
+                  height: Image::HEIGHT)
   end
 
   def check_image_is_not_animated
     return unless normalised_image.frames.count > 1
 
-    issues << Requirements::Issue.new(:image_upload, :animated_image)
+    issues.create(:image_upload, :animated_image)
   end
 end
