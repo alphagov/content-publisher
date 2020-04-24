@@ -22,7 +22,7 @@ module Requirements
       issues = CheckerIssues.new
 
       edition.file_attachment_revisions.each do |attachment|
-        issues += FileAttachmentMetadataChecker.new.pre_publish_issues(attachment)
+        issues += FileAttachmentMetadataChecker.new(edition).pre_publish_issues(attachment)
       end
 
       issues += ContentChecker.new(edition).pre_publish_issues

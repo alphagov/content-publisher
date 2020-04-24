@@ -6,6 +6,12 @@ module Requirements
     ACT_PAPER_REGEX = /^\d+(-[IV]+)?$/.freeze
     COMMAND_PAPER_REGEX = /^(CP|C\.|Cd\.|Cmd\.|Cmnd\.|Cm\.)\s\d+(-[IV]+)?$/.freeze
 
+    attr_reader :edition
+
+    def initialize(edition)
+      @edition = edition
+    end
+
     def pre_update_issues(params)
       issues = CheckerIssues.new
 
@@ -37,6 +43,10 @@ module Requirements
 
     def pre_publish_issues(attachment)
       issues = CheckerIssues.new
+
+      unless edition.document_type.attachments.featured?
+        return issues
+      end
 
       if attachment.official_document_type.blank?
         issues.create(:file_attachment_official_document_type,

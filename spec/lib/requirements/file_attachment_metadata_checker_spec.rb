@@ -1,14 +1,16 @@
 RSpec.describe Requirements::FileAttachmentMetadataChecker do
-  let(:checker) { described_class.new }
-
   describe "#pre_publish_issues" do
+    let(:document_type) { build :document_type, attachments: "featured" }
+
     it "returns no issues if there are none" do
+      checker = described_class.new(build(:edition, document_type: document_type))
       attachment_revision = build(:file_attachment_revision, official_document_type: "unofficial")
       issues = checker.pre_publish_issues(attachment_revision)
       expect(issues).to be_empty
     end
 
     it "returns an issue when the official document type is blank" do
+      checker = described_class.new(build(:edition, document_type: document_type))
       attachment_revision = build(:file_attachment_revision)
       issues = checker.pre_publish_issues(attachment_revision)
 
@@ -18,11 +20,18 @@ RSpec.describe Requirements::FileAttachmentMetadataChecker do
                                    filename: attachment_revision.filename,
                                    attachment_revision: attachment_revision)
     end
+
+    it "returns no issues unless the document type supports featured attachments" do
+      checker = described_class.new(build(:edition))
+      attachment_revision = build(:file_attachment_revision)
+      issues = checker.pre_publish_issues(attachment_revision)
+      expect(issues).to be_empty
+    end
   end
 
   describe "#pre_update_issues" do
     let(:max_length) { Requirements::FileAttachmentMetadataChecker::UNIQUE_REF_MAX_LENGTH }
-    let(:checker) { described_class.new }
+    let(:checker) { described_class.new(build(:edition)) }
     let(:valid_params) { { official_document_type: "unofficial" } }
 
     it "returns no issues if there are none" do
