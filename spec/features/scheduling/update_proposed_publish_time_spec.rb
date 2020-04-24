@@ -34,6 +34,7 @@ RSpec.feature "Update proposed publish time" do
   end
 
   def when_i_set_a_new_time
+    stub_any_publishing_api_put_content
     fill_in "schedule[date][day]", with: "15"
     fill_in "schedule[date][month]", with: "6"
     fill_in "schedule[date][year]", with: "2019"

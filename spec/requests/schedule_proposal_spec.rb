@@ -16,6 +16,8 @@ RSpec.describe "Schedule Proposal" do
   end
 
   describe "POST /documents/:document/schedule-proposal" do
+    before { stub_any_publishing_api_put_content }
+
     let(:edition) { create(:edition) }
     let(:schedule_params) do
       tomorrow = Time.zone.tomorrow
@@ -72,6 +74,8 @@ RSpec.describe "Schedule Proposal" do
   end
 
   describe "DELETE /documents/:document/schedule-proposal" do
+    before { stub_any_publishing_api_put_content }
+
     it "redirects to document summary" do
       edition = create(:edition)
       delete schedule_proposal_path(edition.document)

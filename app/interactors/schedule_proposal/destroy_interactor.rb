@@ -8,6 +8,7 @@ class ScheduleProposal::DestroyInteractor < ApplicationInteractor
     Edition.transaction do
       find_and_lock_edition
       clear_proposed_time
+      update_preview
     end
   end
 
@@ -22,9 +23,13 @@ private
     updater = Versioning::RevisionUpdater.new(edition.revision, user)
     updater.assign(proposed_publish_time: nil)
 
-    if updater.changed?
-      EditDraftEditionService.call(edition, user, revision: updater.next_revision)
-      edition.save!
-    end
+    context.fail! unless updater.changed?
+
+    EditDraftEditionService.call(edition, user, revision: updater.next_revision)
+    edition.save!
+  end
+
+  def update_preview
+    FailsafeDraftPreviewService.call(edition)
   end
 end

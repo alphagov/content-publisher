@@ -28,6 +28,7 @@ RSpec.feature "Propose publish time" do
   end
 
   def and_i_select_save_proposed_time
+    stub_any_publishing_api_put_content
     choose "Save proposed date and time"
     click_on "Continue"
   end

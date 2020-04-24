@@ -13,6 +13,7 @@ class ScheduleProposal::UpdateInteractor < ApplicationInteractor
       parse_publish_time
       check_for_issues
       update_edition
+      update_preview
     end
   end
 
@@ -56,5 +57,9 @@ private
 
   def schedule_params
     params.require(:schedule).permit(:time, :action, date: %i[day month year])
+  end
+
+  def update_preview
+    FailsafeDraftPreviewService.call(edition)
   end
 end
