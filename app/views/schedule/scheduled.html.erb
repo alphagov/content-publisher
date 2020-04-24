@@ -2,8 +2,6 @@
 <% content_for :browser_title, t("schedule.scheduled.title") %>
 
 <% scheduling = @edition.status.details %>
-<% time = scheduling.publish_time.to_s(:time) %>
-<% date = scheduling.publish_time.to_s(:date) %>
 <% public_url = edition_public_url(@edition) %>
 
 <div class="govuk-grid-row">
@@ -12,7 +10,9 @@
       title: t("schedule.scheduled.title")
     } %>
 
-    <%= render_govspeak(t("schedule.scheduled.body_govspeak", title: @edition.title, time: time, date: date)) %>
+    <%= render_govspeak(t("schedule.scheduled.body_govspeak",
+                          title: @edition.title,
+                          datetime: scheduling.publish_time.to_s(:time_on_date))) %>
 
     <%= render "govuk_publishing_components/components/inset_text", {
       text: link_to(strip_scheme_from_url(public_url), public_url,

@@ -7,16 +7,13 @@
 <% end %>
 
 <% datetime = @edition.proposed_publish_time %>
-<% time = datetime.to_s(:time) %>
-<% date = datetime.to_s(:date) %>
-
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_tag new_schedule_path(@edition.document), data: { gtm: "confirm-schedule" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         heading: t("schedule.new.title"),
         is_page_heading: true,
-        description: render_govspeak(t("schedule.new.hint_text", time: time, date: date)),
+        description: render_govspeak(t("schedule.new.hint_text", datetime: datetime.to_s(:time_on_date))),
         name: "review_status",
         error_items: @issues&.items,
         items: [

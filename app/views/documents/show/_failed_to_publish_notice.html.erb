@@ -2,9 +2,7 @@
   scheduling = @edition.status.details
   description_govspeak = t("documents.show.failed_to_publish.description_govspeak",
                            title: @edition.title,
-                           date: scheduling.publish_time.to_s(:date),
-                           time: scheduling.publish_time.to_s(:time))
-
+                           datetime: scheduling.publish_time.to_s(:time_on_date))
 %>
 <%= render "components/inset_prompt", {
   error: true,

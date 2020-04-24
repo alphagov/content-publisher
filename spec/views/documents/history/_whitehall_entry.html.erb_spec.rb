@@ -1,22 +1,31 @@
 RSpec.describe "documents/history/_whitehall_entry" do
   it "shows an imported timeline entry without an author" do
-    timeline_entry = create(:timeline_entry,
-                            :whitehall_imported,
-                            whitehall_entry_type: :new_edition,
-                            created_by: nil)
-    render template: described_template, locals: { entry: timeline_entry }
-    expect(rendered).not_to have_content(I18n.t!("documents.history.by"))
-    expect(rendered).to have_content(I18n.t!("documents.history.entry_types.whitehall_migration.new_edition"))
+    freeze_time do
+      timeline_entry = create(:timeline_entry,
+                              :whitehall_imported,
+                              whitehall_entry_type: :new_edition,
+                              created_by: nil)
+      render template: described_template, locals: { entry: timeline_entry }
+      expect(rendered)
+        .to have_content(I18n.t!("documents.history.dateline_no_user",
+                                 date: Time.zone.now.to_s(:date),
+                                 time: Time.zone.now.to_s(:time)))
+    end
   end
 
   it "shows an imported timeline entry with an author" do
-    timeline_entry = create(:timeline_entry,
-                            :whitehall_imported,
-                            whitehall_entry_type: :new_edition)
+    freeze_time do
+      timeline_entry = create(:timeline_entry,
+                              :whitehall_imported,
+                              whitehall_entry_type: :new_edition)
 
-    render template: described_template, locals: { entry: timeline_entry }
-    expect(rendered).to have_content(I18n.t!("documents.history.by") + " John Smith")
-    expect(rendered).to have_content(I18n.t!("documents.history.entry_types.whitehall_migration.new_edition"))
+      render template: described_template, locals: { entry: timeline_entry }
+      expect(rendered)
+        .to have_content(I18n.t!("documents.history.dateline_user",
+                                 date: Time.zone.now.to_s(:date),
+                                 time: Time.zone.now.to_s(:time),
+                                 user: timeline_entry.created_by.name))
+    end
   end
 
   it "does not highlight an imported internal note timeline entry without content" do

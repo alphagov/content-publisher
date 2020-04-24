@@ -22,8 +22,7 @@ RSpec.describe PublishMailer do
 
       mail = described_class.publish_email(recipient, edition, edition.status)
       publish_time = I18n.t!("publish_mailer.publish_email.details.publish",
-                             date: "17 June 2019",
-                             time: "9:00am",
+                             datetime: edition.published_at.to_s(:time_on_date),
                              user: recipient.name)
 
       expect(mail.body.to_s).to include(publish_time)
@@ -49,8 +48,7 @@ RSpec.describe PublishMailer do
 
         mail = described_class.publish_email(recipient, edition, edition.status)
         update_text = I18n.t!("publish_mailer.publish_email.details.update",
-                              date: "17 June 2019",
-                              time: "11:00pm",
+                              datetime: edition.published_at.to_s(:time_on_date),
                               user: recipient.name)
         mail_subject = I18n.t!("publish_mailer.publish_email.subject.update",
                                title: edition.title)

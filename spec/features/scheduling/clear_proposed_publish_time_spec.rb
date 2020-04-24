@@ -23,8 +23,7 @@ RSpec.feature "Clear proposed publish time" do
 
   def then_i_see_the_proposed_time
     @proposed_content = I18n.t!("documents.show.proposed_scheduling_notice.title",
-                                time: "12:00pm",
-                                date: "15 June 2019")
+                                datetime: @edition.proposed_publish_time.to_s(:time_on_date))
     expect(page).to have_content(@proposed_content)
   end
 

@@ -5,7 +5,8 @@ en:
       edition_heading: "%{number} edition"
       add_internal_note: "Add internal note"
       page_info: "%{page} of %{pages}"
-      by: "by"
+      dateline_user: "%{date} at %{time} by %{user}"
+      dateline_no_user: "%{date} at %{time}"
       entry_types:
         created: "First created"
         submitted: "Submitted for review"
