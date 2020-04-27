@@ -19,7 +19,7 @@ private
     parsed_date
   rescue ArgumentError
     field_name = "#{issue_prefix}_date".to_sym
-    issues << Requirements::Issue.new(field_name, :invalid)
+    issues.create(field_name, :invalid)
   end
 
   def parsed_date
