@@ -7,7 +7,7 @@ class Requirements::Preview::TagsChecker < Requirements::Checker
 
   def check
     edition.document_type.tags.each do |tag|
-      self.issues += tag.preview_issues(edition)
+      issues.push(*tag.preview_issues(edition))
     end
   end
 end

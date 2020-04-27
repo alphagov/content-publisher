@@ -13,7 +13,7 @@ class Requirements::Preview::EditionChecker < Requirements::Checker
 
   def check
     CHECKERS.each do |checker|
-      self.issues += checker.call(edition)
+      issues.push(*checker.call(edition))
     end
   end
 end

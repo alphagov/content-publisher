@@ -10,8 +10,4 @@ class Requirements::Checker
   def issues
     @issues ||= Requirements::CheckerIssues.new
   end
-
-protected
-
-  attr_writer :issues
 end

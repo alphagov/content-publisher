@@ -8,7 +8,7 @@ class Requirements::Form::ContentChecker < Requirements::Checker
 
   def check
     edition.document_type.contents.each do |field|
-      self.issues += field.form_issues(edition, params)
+      issues.push(*field.form_issues(edition, params))
     end
   end
 end
