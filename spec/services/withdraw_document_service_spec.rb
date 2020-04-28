@@ -22,7 +22,6 @@ RSpec.describe WithdrawDocumentService do
       end
     end
 
-
     it "updates the edition status to withdrawn" do
       travel_to(Time.zone.now) do
         described_class.call(edition,

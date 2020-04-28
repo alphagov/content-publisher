@@ -48,7 +48,6 @@ RSpec.describe "Remove tasks" do
         .to have_received(:call).with(anything, anything, user: user)
     end
 
-
     it "raises an error if a content_id is not present" do
       expect { Rake::Task["remove:gone"].invoke }
         .to raise_error("Missing content_id parameter")

@@ -70,7 +70,6 @@ Rails.application.routes.draw do
     delete "/images/:image_id" => "images#destroy", as: :destroy_image
     get "/images/:image_id/delete" => "images#confirm_delete", as: :confirm_delete_image
 
-
     post "/lead-image/:image_id" => "lead_image#choose", as: :choose_lead_image
     delete "/lead-image" => "lead_image#remove", as: :remove_lead_image
 

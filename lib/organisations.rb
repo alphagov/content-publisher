@@ -26,7 +26,6 @@ class Organisations
 
 private
 
-
   def primary_org_content_id
     edition.primary_publishing_organisation_id
   end
