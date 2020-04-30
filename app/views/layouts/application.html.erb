@@ -36,6 +36,7 @@
       { text: t("application.phase_banner.raise_a_support_request"), href: "https://support.publishing.service.gov.uk/technical_fault_report/new", show_only_in_collapsed_menu: true },
       { text: t("application.phase_banner.send_us_feedback"), href: "https://support.publishing.service.gov.uk/content_publisher_feedback_request/new", show_only_in_collapsed_menu: true },
       { text: t("application.phase_banner.whats_new"), href: publisher_updates_path, show_only_in_collapsed_menu: true },
+      { text: t("application.phase_banner.request_training"), href: request_training_path, show_only_in_collapsed_menu: true },
     ]
 
     if current_user
@@ -166,7 +167,12 @@
             href: beta_capabilities_path,
             text: t("application.footer.what_the_beta_can_do"),
             attributes: { "data-gtm": "footer-beta-capabilities" }
-          }
+          },
+          {
+            href: request_training_path,
+            text: t("application.footer.request_training"),
+            attributes: { "data-gtm": "footer-beta-capabilities" }
+          },
         ]
       },
     ]

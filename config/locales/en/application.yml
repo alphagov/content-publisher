@@ -7,6 +7,7 @@ en:
       raise_a_support_request: Raise a support request
       send_us_feedback: Send us feedback
       whats_new: What’s new
+      request_training: Request training
     footer:
       support_and_feedback: Support and feedback
       documentation: Documentation
@@ -19,3 +20,4 @@ en:
       whats_new_in_content_publisher: What’s new in Content Publisher
       what_to_publish: What to publish on GOV.UK
       what_managing_editors_can_do: What Managing Editors can do
+      request_training: Request Content Publisher training

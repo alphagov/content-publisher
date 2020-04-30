@@ -1,0 +1,21 @@
+en:
+  publisher_information:
+    request_training:
+      title: Request Content Publisher training
+      body_govspeak: |
+        Publishers who need access to Content Publisher must complete the Content Publisher training online.
+
+        Managing editors must approve training requests.
+
+        The course covers how to use Content Publisher to edit and publish content.
+
+        By the end of this course, publishers will be able to:
+
+        - create a news article
+        - insert content
+        - manage content
+        - share content for review
+        - publish content or schedule it to be published
+        - find guidance
+
+        [Request Content Publisher training](https://docs.google.com/forms/d/e/1FAIpQLSf3VXKUS0MHO3pXsUm7O5kmB87aqGFclDfJupMnx0a-nwdFbA/viewform) for a GOV.UK publisher.

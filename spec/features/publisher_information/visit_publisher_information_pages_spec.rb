@@ -7,6 +7,8 @@ RSpec.feature "User can view the publisher information pages" do
     then_i_can_see_beta_capabilities_page
     when_i_click_on_the_how_to_use_publisher_link_in_footer
     then_i_can_see_how_to_use_publisher_page
+    when_i_click_on_the_request_training_link_in_footer
+    then_i_can_see_the_request_training_page
     when_i_click_on_the_what_managing_editors_can_do_link_in_footer
     then_i_can_see_the_what_managing_editors_can_do_page
     and_i_see_i_am_not_a_managing_editor
@@ -53,6 +55,18 @@ RSpec.feature "User can view the publisher information pages" do
   def then_i_can_see_how_to_use_publisher_page
     within("main h1") do
       expect(page).to have_content(I18n.t("publisher_information.how_to_use_publisher.title"))
+    end
+  end
+
+  def when_i_click_on_the_request_training_link_in_footer
+    within(".govuk-footer") do
+      click_on "Request Content Publisher training"
+    end
+  end
+
+  def then_i_can_see_the_request_training_page
+    within("main h1") do
+      expect(page).to have_content(I18n.t("publisher_information.request_training.title"))
     end
   end
 
