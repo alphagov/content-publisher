@@ -3,21 +3,6 @@ en:
     modal_error:
       title: Something has gone wrong
       description_govspeak: Please try again or [raise a support request](https://support.publishing.service.gov.uk/technical_fault_report/new).
-    phase_banner:
-      raise_a_support_request: Raise a support request
-      send_us_feedback: Send us feedback
-      whats_new: What’s new
-      request_training: Request training
     footer:
       support_and_feedback: Support and feedback
       documentation: Documentation
-      raise_a_support_request: Raise a support request
-      send_us_feedback: Send us feedback
-      govuk_status: GOV.UK Status
-      how_to_write_content: How to write, publish, and improve content
-      what_the_beta_can_do: What the Beta can and cannot do
-      how_to_use_content_publisher: How to use Content Publisher
-      whats_new_in_content_publisher: What’s new in Content Publisher
-      what_to_publish: What to publish on GOV.UK
-      what_managing_editors_can_do: What Managing Editors can do
-      request_training: Request Content Publisher training
