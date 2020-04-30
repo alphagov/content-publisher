@@ -5,6 +5,9 @@ en:
       summary_govspeak: Summary of updates to Content Publisher, content design guidance, or the design of GOV.UK.
       updates_heading: Publisher updates
       body_govspeak: |
+        ### Content Publisher training now available online <span class="govuk-caption-m">30 April 2020</span>
+        You can now [register publishers for Content Publisher training](https://docs.google.com/forms/d/e/1FAIpQLSf3VXKUS0MHO3pXsUm7O5kmB87aqGFclDfJupMnx0a-nwdFbA/viewform) who do not have access to Content Publisher but need it.
+        
         ### History mode <span class="govuk-caption-m">12 December 2019</span>
         You can see if a document will go into history mode if there is a change of government. Managing Editors can change this setting.
 
