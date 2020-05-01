@@ -41,7 +41,7 @@ RSpec.describe "documents/index/_filters" do
     end
 
     it "excludes pre-release document types when the user does not have pre_release_features permissions" do
-      user = build(:user, permissions: %w(signin))
+      user = build(:user, permissions: %w[signin])
       login_as(user)
 
       render

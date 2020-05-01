@@ -2,7 +2,7 @@ module TopicsHelper
   ENDPOINT = GdsApi::TestHelpers::PublishingApi::PUBLISHING_API_V2_ENDPOINT
 
   def stub_any_publishing_api_no_links
-    stub_request(:get, %r(\A#{ENDPOINT}/links/[a-z0-9\-]+\Z))
+    stub_request(:get, %r{\A#{ENDPOINT}/links/[a-z0-9\-]+\Z})
       .to_return(status: 200, body: { "links": {} }.to_json)
   end
 

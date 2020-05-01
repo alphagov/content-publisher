@@ -10,7 +10,7 @@ module AccessibleAutocompleteHelper
 
     # wait until option is selected
     within("##{for_id}-select", visible: false) do
-      find(%{option[value="#{value}"]:checked}, visible: false)
+      find(%(option[value="#{value}"]:checked), visible: false)
     end
   end
 end

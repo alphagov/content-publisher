@@ -46,7 +46,7 @@ class Image::BlobRevision < ApplicationRecord
       processed = crop_variant(nil).processed
       processed.service.download(processed.key)
     else
-      raise RuntimeError, "Unsupported image revision variant #{variant}"
+      raise "Unsupported image revision variant #{variant}"
     end
   end
 

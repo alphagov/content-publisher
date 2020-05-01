@@ -6,7 +6,7 @@ class DocumentType
 
   def self.find(id)
     item = all.find { |document_type| document_type.id == id }
-    item || (raise RuntimeError, "Document type #{id} not found")
+    item || (raise "Document type #{id} not found")
   end
 
   def self.all

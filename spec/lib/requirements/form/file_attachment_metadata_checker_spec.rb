@@ -50,7 +50,7 @@ RSpec.describe Requirements::Form::FileAttachmentMetadataChecker do
       expect(issues).to have_issue(:file_attachment_official_document_type, :blank)
     end
 
-    %w(command act).each do |type|
+    %w[command act].each do |type|
       it "returns an issue when a numbered #{type} paper has no number" do
         issues = described_class.call(official_document_type: "#{type}_paper")
         expect(issues).to have_issue(:"file_attachment_#{type}_paper_number", :blank)

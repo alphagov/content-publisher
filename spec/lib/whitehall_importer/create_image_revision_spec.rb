@@ -20,11 +20,11 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
         expect(document_import.assets.map(&:attributes).map(&:with_indifferent_access))
           .to contain_exactly(
             a_hash_including(variant: nil,
-                            image_revision_id: revision.id,
-                            original_asset_url: whitehall_image["url"]),
+                             image_revision_id: revision.id,
+                             original_asset_url: whitehall_image["url"]),
             a_hash_including(variant: "s960",
-                            image_revision_id: revision.id,
-                            original_asset_url: whitehall_image["variants"]["s960"]),
+                             image_revision_id: revision.id,
+                             original_asset_url: whitehall_image["variants"]["s960"]),
           )
       end
     end

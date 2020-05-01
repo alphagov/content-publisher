@@ -10,7 +10,7 @@ RSpec.describe DocumentTopics do
         stub_publishing_api_has_links(
           "content_id" => document.content_id,
           "links" => {
-            "taxons" => %w(level_one_topic),
+            "taxons" => %w[level_one_topic],
           },
           "version" => 1,
         )
@@ -41,7 +41,7 @@ RSpec.describe DocumentTopics do
         stub_publishing_api_has_links(
           "content_id" => document.content_id,
           "links" => {
-            "taxons" => %w(level_one_topic unknown_taxon_content_id),
+            "taxons" => %w[level_one_topic unknown_taxon_content_id],
           },
           "version" => 1,
         )
@@ -64,12 +64,12 @@ RSpec.describe DocumentTopics do
         document = build(:document)
         stub_publishing_api_does_not_have_links(document.content_id)
 
-        document.document_topics.patch(%w(level_one_topic), 1)
+        document.document_topics.patch(%w[level_one_topic], 1)
 
         expected_links = {
           links: {
-            taxons: %w(level_one_topic),
-            topics: %w(specialist_sector_1),
+            taxons: %w[level_one_topic],
+            topics: %w[specialist_sector_1],
           },
           previous_version: 1,
         }
@@ -77,7 +77,7 @@ RSpec.describe DocumentTopics do
         request = stub_publishing_api_patch_links(document.content_id, expected_links)
 
         expect(request).to have_been_requested
-        expect(document.document_topics.topic_content_ids).to eq(%w(level_one_topic))
+        expect(document.document_topics.topic_content_ids).to eq(%w[level_one_topic])
       end
     end
 
@@ -87,17 +87,17 @@ RSpec.describe DocumentTopics do
         stub_publishing_api_has_links(
           "content_id" => document.content_id,
           "links" => {
-            "taxons" => %w(level_one_topic),
+            "taxons" => %w[level_one_topic],
           },
           "version" => 1,
         )
 
-        document.document_topics.patch(%w(level_two_topic), 1)
+        document.document_topics.patch(%w[level_two_topic], 1)
 
         expected_links = {
           links: {
-            taxons: %w(level_two_topic),
-            topics: %w(specialist_sector_1 specialist_sector_2),
+            taxons: %w[level_two_topic],
+            topics: %w[specialist_sector_1 specialist_sector_2],
           },
           previous_version: 1,
         }
@@ -105,7 +105,7 @@ RSpec.describe DocumentTopics do
         request = stub_publishing_api_patch_links(document.content_id, expected_links)
 
         expect(request).to have_been_requested
-        expect(document.document_topics.topic_content_ids).to eq(%w(level_two_topic))
+        expect(document.document_topics.topic_content_ids).to eq(%w[level_two_topic])
       end
     end
 
@@ -115,17 +115,17 @@ RSpec.describe DocumentTopics do
         stub_publishing_api_has_links(
           "content_id" => document.content_id,
           "links" => {
-            "taxons" => %w(level_one_topic unknown_taxon_content_id),
+            "taxons" => %w[level_one_topic unknown_taxon_content_id],
           },
           "version" => 1,
         )
 
-        document.document_topics.patch(%w(level_two_topic), 1)
+        document.document_topics.patch(%w[level_two_topic], 1)
 
         expected_links = {
           links: {
-            taxons: %w(level_two_topic unknown_taxon_content_id),
-            topics: %w(specialist_sector_1 specialist_sector_2),
+            taxons: %w[level_two_topic unknown_taxon_content_id],
+            topics: %w[specialist_sector_1 specialist_sector_2],
           },
           previous_version: 1,
         }
@@ -133,7 +133,7 @@ RSpec.describe DocumentTopics do
         request = stub_publishing_api_patch_links(document.content_id, expected_links)
 
         expect(request).to have_been_requested
-        expect(document.document_topics.topic_content_ids).to eq(%w(level_two_topic unknown_taxon_content_id))
+        expect(document.document_topics.topic_content_ids).to eq(%w[level_two_topic unknown_taxon_content_id])
       end
     end
   end

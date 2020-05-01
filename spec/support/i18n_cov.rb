@@ -84,10 +84,10 @@ private
   end
 
   def print_message(report)
-    puts "Coverage report generated for I18n to #{REPORT_PATH}. " +
-      "#{report[:stats][:used_keys]} / #{report[:stats][:all_keys]} keys " +
+    puts "Coverage report generated for I18n to #{REPORT_PATH}. " \
+      "#{report[:stats][:used_keys]} / #{report[:stats][:all_keys]} keys " \
       "(#{report[:stats][:coverage]}%) covered."
   end
 end
 
-END { I18nCov.report }
+at_exit { I18nCov.report }

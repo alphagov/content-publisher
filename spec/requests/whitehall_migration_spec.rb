@@ -7,7 +7,7 @@ RSpec.describe "Whitehall Migration" do
                   "when a user without debug permissions looks at a whitehall migration",
                   status: :forbidden,
                   routes: { whitehall_migration_path: %i[get],
-                          whitehall_migration_document_imports_path: %i[get] } do
+                            whitehall_migration_document_imports_path: %i[get] } do
     before { login_as(create(:user)) }
 
     let(:route_params) { [whitehall_migration] }

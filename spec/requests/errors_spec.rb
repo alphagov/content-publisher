@@ -62,7 +62,7 @@ RSpec.describe "Errors" do
     it "returns forbidden when the document type is pre-release" do
       pre_release_document_type = build(:document_type, :pre_release)
       edition = create(:edition, document_type: pre_release_document_type)
-      user = build(:user, permissions: %w(signin))
+      user = build(:user, permissions: %w[signin])
 
       login_as(user)
       get document_path(edition.document)

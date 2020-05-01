@@ -32,7 +32,7 @@ RSpec.describe "new_document/show" do
   end
 
   it "excludes pre_release options when the user does not have pre_release_features permissions" do
-    user = build(:user, permissions: %w(signin))
+    user = build(:user, permissions: %w[signin])
     login_as(user)
     assign(:document_type_selection, document_type_selection)
     render

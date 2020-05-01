@@ -12,11 +12,9 @@ module WhitehallImporter
 
     def call
       whitehall_import.migratable_assets.each do |whitehall_asset|
-        begin
-          migrate_asset(whitehall_asset)
-        rescue StandardError => e
-          whitehall_asset.update!(state: "migration_failed", error_message: e.inspect)
-        end
+        migrate_asset(whitehall_asset)
+      rescue StandardError => e
+        whitehall_asset.update!(state: "migration_failed", error_message: e.inspect)
       end
       raise "Failed migrating at least one Whitehall asset" if whitehall_import.assets.migration_failed.any?
     end

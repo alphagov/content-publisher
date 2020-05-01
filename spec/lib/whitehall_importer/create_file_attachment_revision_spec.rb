@@ -25,11 +25,11 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
     expect(document_import.assets.map(&:attributes).map(&:with_indifferent_access))
       .to contain_exactly(
         a_hash_including(variant: nil,
-                        file_attachment_revision_id: revision.id,
-                        original_asset_url: whitehall_file_attachment["url"]),
+                         file_attachment_revision_id: revision.id,
+                         original_asset_url: whitehall_file_attachment["url"]),
         a_hash_including(variant: "thumbnail",
-                        file_attachment_revision_id: revision.id,
-                        original_asset_url: whitehall_file_attachment["variants"]["thumbnail"]["url"]),
+                         file_attachment_revision_id: revision.id,
+                         original_asset_url: whitehall_file_attachment["variants"]["thumbnail"]["url"]),
       )
   end
 

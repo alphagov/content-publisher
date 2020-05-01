@@ -4,7 +4,7 @@ module WhitehallImporter
 
     delegate :document, to: :document_import
 
-    SUPPORTED_DOCUMENT_TYPES = %w(news_story press_release).freeze
+    SUPPORTED_DOCUMENT_TYPES = %w[news_story press_release].freeze
     DOCUMENT_SUB_TYPES = %w[
       news_article_type
       publication_type

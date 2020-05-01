@@ -19,7 +19,7 @@ RSpec.feature "Edit topics" do
     stub_publishing_api_has_links(
       "content_id" => @edition.content_id,
       "links" => {
-        "taxons" => %w(level_three_topic),
+        "taxons" => %w[level_three_topic],
       },
       "version" => 3,
     )
@@ -49,8 +49,8 @@ RSpec.feature "Edit topics" do
     @request = stub_publishing_api_patch_links(
       @edition.content_id,
       "links" => {
-        "taxons" => %w(level_two_topic),
-        "topics" => %w(specialist_sector_1 specialist_sector_2),
+        "taxons" => %w[level_two_topic],
+        "topics" => %w[specialist_sector_1 specialist_sector_2],
       },
       "previous_version" => 3,
     )

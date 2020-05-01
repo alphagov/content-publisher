@@ -3,13 +3,13 @@ RSpec.describe ApplicationHelper do
     it "returns a hyper link when given a URI" do
       text = "govuk lives here - https://www.gov.uk/"
       expect(helper.escape_and_link(text))
-        .to match(%{govuk lives here - <a href=\"https://www.gov.uk/\" class="govuk-link">https://www.gov.uk/</a>})
+        .to match(%(govuk lives here - <a href=\"https://www.gov.uk/\" class="govuk-link">https://www.gov.uk/</a>))
     end
 
     it "returns a mailto link when given a email address" do
       text = "You can email me here - email123@gmail.com"
       expect(helper.escape_and_link(text))
-        .to match(%{You can email me here - <a href=\"mailto:email123@gmail.com\" class="govuk-link">email123@gmail.com</a>})
+        .to match(%(You can email me here - <a href=\"mailto:email123@gmail.com\" class="govuk-link">email123@gmail.com</a>))
     end
 
     it "returns a body of text that converts html tags to html entities " do

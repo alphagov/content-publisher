@@ -76,7 +76,7 @@ RSpec.describe Versioning::RevisionUpdater::Image do
     describe "#update_lead_image" do
       it "preserves the given image as the lead if selected" do
         revision = create :revision, image_revisions: [image_revision],
-          lead_image_revision: image_revision
+                                     lead_image_revision: image_revision
 
         updated_image = create :image_revision, image_id: image_revision.image_id
         updater = Versioning::RevisionUpdater.new(revision, user)
@@ -103,7 +103,7 @@ RSpec.describe Versioning::RevisionUpdater::Image do
 
       it "unsets the given image as the lead if not selected" do
         revision = create :revision, image_revisions: [image_revision],
-          lead_image_revision: image_revision
+                                     lead_image_revision: image_revision
 
         updated_image = create :image_revision, image_id: image_revision.image_id
         updater = Versioning::RevisionUpdater.new(revision, user)

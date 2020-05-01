@@ -79,7 +79,7 @@ RSpec.describe "documents/show" do
 
     it "shows the topics when a document has topics" do
       stub_publishing_api_has_links(content_id: edition.content_id,
-                                    links: { "taxons" => %w(level_three_topic) })
+                                    links: { "taxons" => %w[level_three_topic] })
       stub_publishing_api_has_taxonomy
 
       expect(render)

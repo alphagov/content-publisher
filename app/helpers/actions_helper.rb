@@ -20,7 +20,7 @@ module ActionsHelper
   def delete_draft_link(edition, extra_classes = [])
     link_to "Delete draft",
             confirm_delete_draft_path(edition.document),
-            class: %w(govuk-link app-link--destructive) + Array(extra_classes),
+            class: %w[govuk-link app-link--destructive] + Array(extra_classes),
             data: { gtm: "delete-draft" }
   end
 
@@ -40,7 +40,7 @@ module ActionsHelper
   def schedule_link(edition, extra_classes = [])
     link_to "Schedule",
             new_schedule_path(edition.document),
-            class: %w(govuk-link govuk-link--no-visited-state) + Array(extra_classes),
+            class: %w[govuk-link govuk-link--no-visited-state] + Array(extra_classes),
             data: { gtm: "schedule" }
   end
 
@@ -54,7 +54,7 @@ module ActionsHelper
   def schedule_proposal_link(edition, extra_classes = [])
     link_to "Schedule",
             schedule_proposal_path(edition.document, wizard: "schedule"),
-            class: %w(govuk-link govuk-link--no-visited-state) + Array(extra_classes),
+            class: %w[govuk-link govuk-link--no-visited-state] + Array(extra_classes),
             data: { gtm: "propose-schedule" }
   end
 

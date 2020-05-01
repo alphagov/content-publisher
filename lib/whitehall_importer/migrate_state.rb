@@ -2,13 +2,13 @@ module WhitehallImporter
   class MigrateState
     attr_reader :whitehall_state, :force_published
 
-    SUPPORTED_WHITEHALL_STATES = %w(
+    SUPPORTED_WHITEHALL_STATES = %w[
       draft
       published
       rejected
       submitted
       superseded
-    ).freeze
+    ].freeze
 
     def self.call(*args)
       new(*args).call

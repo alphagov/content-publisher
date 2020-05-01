@@ -31,9 +31,7 @@ private
   def unused_suffix(suggested_base, potential_conflicts)
     suffix = 1
 
-    while potential_conflicts.include?("#{suggested_base}-#{suffix}")
-      suffix += 1
-    end
+    suffix += 1 while potential_conflicts.include?("#{suggested_base}-#{suffix}")
 
     suffix
   end
