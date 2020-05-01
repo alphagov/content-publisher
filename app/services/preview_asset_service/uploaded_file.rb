@@ -14,9 +14,7 @@ class PreviewAssetService::UploadedFile < SimpleDelegator
     @asset = asset
   end
 
-  def content_type
-    asset.content_type
-  end
+  delegate :content_type, to: :asset
 
   def path
     asset.filename

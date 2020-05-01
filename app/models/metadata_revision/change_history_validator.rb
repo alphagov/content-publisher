@@ -5,7 +5,7 @@ class MetadataRevision::ChangeHistoryValidator < ActiveModel::EachValidator
     previous_time = nil
 
     value.each do |change_note|
-      unless change_note.keys.sort == %w(id note public_timestamp)
+      unless change_note.keys.sort == %w[id note public_timestamp]
         record.errors.add(attribute, "has an entry with invalid keys", strict: true)
       end
 

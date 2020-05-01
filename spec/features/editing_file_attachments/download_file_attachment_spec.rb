@@ -46,8 +46,8 @@ RSpec.feature "Download a file attachment" do
   end
 
   def then_the_attachment_should_download
-    expected = "attachment; " +
-      "filename=\"#{@attachment_revision.filename}\"; " +
+    expected = "attachment; " \
+      "filename=\"#{@attachment_revision.filename}\"; " \
       "filename*=UTF-8\'\'#{@attachment_revision.filename}"
 
     expect(page.response_headers["Content-Disposition"]).to eq(expected)

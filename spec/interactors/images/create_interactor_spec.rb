@@ -69,12 +69,12 @@ RSpec.describe Images::CreateInteractor do
     context "when the uploaded image has issues" do
       it "fails with issues returned" do
         allow(Requirements::Form::ImageUploadChecker)
-          .to receive(:call).and_return(%w(issue))
+          .to receive(:call).and_return(%w[issue])
 
         result = described_class.call(**args)
 
         expect(result).to be_failure
-        expect(result.issues).to eq %w(issue)
+        expect(result.issues).to eq %w[issue]
       end
     end
 
@@ -82,13 +82,13 @@ RSpec.describe Images::CreateInteractor do
       it "fails with issues returned" do
         normaliser = instance_double(ImageNormaliser,
                                      normalise: nil,
-                                     issues: %w(issue))
+                                     issues: %w[issue])
 
         allow(ImageNormaliser).to receive(:new).and_return(normaliser)
         result = described_class.call(**args)
 
         expect(result).to be_failure
-        expect(result.issues).to match(%w(issue))
+        expect(result.issues).to match(%w[issue])
       end
     end
   end

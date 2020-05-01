@@ -1,6 +1,6 @@
 class EditionUpdater
   def self.call(*args, &block)
-    self.new(*args).call(&block)
+    new(*args).call(&block)
   end
 
   def initialize(content_id, locale: nil, user_email: nil)

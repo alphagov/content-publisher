@@ -19,7 +19,7 @@ RSpec.describe "Import tasks" do
       expect(WhitehallImporter::CreateMigration).to have_received(:call)
                                                 .with("96ae61d6-c2a1-48cb-8e67-da9d105ae381",
                                                       "news_article",
-                                                      %w(press_release))
+                                                      %w[press_release])
     end
 
     it "calls WhitehallImporter::create_migration with correct arguments when no subtype is specified" do

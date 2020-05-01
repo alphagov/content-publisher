@@ -23,7 +23,7 @@ RSpec.describe TagsRevision::TagsValidator do
     end
 
     it "fails if a tag is not in UUID format" do
-      expect { validator.validate_each(record, attribute, { organisations: %w(an-id) }) }
+      expect { validator.validate_each(record, attribute, { organisations: %w[an-id] }) }
         .to raise_error(ActiveModel::StrictValidationFailed,
                         "Tags has an invalid tag ID ‘an-id’")
     end

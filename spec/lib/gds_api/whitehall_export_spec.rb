@@ -6,13 +6,13 @@ RSpec.describe GdsApi::WhitehallExport do
   describe "#document_list" do
     it "iterates through the correct number of pages" do
       first_page = stub_whitehall_has_document_index(
-        document_id, "news_article", %w(news_story press_release), 1, 100
+        document_id, "news_article", %w[news_story press_release], 1, 100
       )
       second_page = stub_whitehall_has_document_index(
-        document_id, "news_article", %w(news_story press_release), 2, 10
+        document_id, "news_article", %w[news_story press_release], 2, 10
       )
       whitehall_document_list = whitehall_adapter.document_list(
-        document_id, "news_article", %w(news_story press_release)
+        document_id, "news_article", %w[news_story press_release]
       )
 
       whitehall_document_list.next
@@ -81,15 +81,15 @@ RSpec.describe GdsApi::WhitehallExport do
 
   def stub_whitehall_has_document_index(lead_organisation, document_type, document_subtypes, page_number, items_on_page)
     whitehall_host = Plek.new.external_url_for("whitehall-admin")
-    stub_request(:get, "#{whitehall_host}/government/admin/export/document").
-      with(query: hash_including(
+    stub_request(:get, "#{whitehall_host}/government/admin/export/document")
+      .with(query: hash_including(
         lead_organisation: lead_organisation,
         type: document_type,
         subtypes: document_subtypes,
         page_count: "100",
         page_number: page_number.to_s,
-      )).
-      to_return(status: 200,
-        body: build(:whitehall_export_index, documents: build_list(:whitehall_export_index_document, items_on_page)).to_json)
+      ))
+      .to_return(status: 200,
+                 body: build(:whitehall_export_index, documents: build_list(:whitehall_export_index_document, items_on_page)).to_json)
   end
 end

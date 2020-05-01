@@ -37,7 +37,7 @@ FactoryBot.define do
 
       after(:build) do |blob_revision, evaluator|
         blob_revision.assets.each do |asset|
-          url = "https://asset-manager.test.gov.uk/media/" +
+          url = "https://asset-manager.test.gov.uk/media/" \
             "asset-id#{SecureRandom.hex(8)}/#{blob_revision.filename}"
           asset.assign_attributes(state: evaluator.state, file_url: url)
         end

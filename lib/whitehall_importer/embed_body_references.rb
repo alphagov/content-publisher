@@ -42,7 +42,7 @@ module WhitehallImporter
         prefix = Regexp.last_match[1]
         file_index = Regexp.last_match[2].to_i
         file_name = files[file_index - 1]
-        prefix = prefix * 2 if ["\r\n", "\n"].include?(prefix)
+        prefix *= 2 if ["\r\n", "\n"].include?(prefix)
         "#{prefix}[#{new_pattern}:#{file_name}]" if file_name.present?
       end
     end

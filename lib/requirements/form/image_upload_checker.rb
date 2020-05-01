@@ -3,7 +3,7 @@ require "mini_magick"
 class Requirements::Form::ImageUploadChecker < Requirements::Checker
   include ActionView::Helpers::NumberHelper
 
-  SUPPORTED_FORMATS = %w(image/jpeg image/png image/gif).freeze
+  SUPPORTED_FORMATS = %w[image/jpeg image/png image/gif].freeze
   MAX_FILE_SIZE = 20.megabytes
 
   attr_reader :file
