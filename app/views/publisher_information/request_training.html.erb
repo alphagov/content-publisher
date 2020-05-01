@@ -1,0 +1,9 @@
+<% content_for :browser_title, t("publisher_information.request_training.title") %>
+<div class="govuk-grid-row">
+  <%= render partial: "publisher_info_nav", locals: { current_page: request_training_path } %>
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l"><%= t("publisher_information.request_training.title") %></h1>
+
+    <%= render_govspeak(t("publisher_information.request_training.body_govspeak")) %>
+  </div>
+</div>
