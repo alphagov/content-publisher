@@ -19,6 +19,6 @@ private
   attr_reader :edition
 
   def has_issues?
-    Requirements::EditionChecker.new(edition).pre_preview_issues.any?
+    Requirements::Preview::EditionChecker.call(edition).any?
   end
 end

@@ -21,7 +21,7 @@ class DocumentType::TitleAndBasePathField
     { title: title, base_path: base_path }
   end
 
-  def pre_update_issues(edition, params)
+  def form_issues(edition, params)
     issues = Requirements::CheckerIssues.new
 
     if params[:title].blank?
@@ -47,13 +47,13 @@ class DocumentType::TitleAndBasePathField
     issues
   end
 
-  def pre_preview_issues(edition)
+  def preview_issues(edition)
     issues = Requirements::CheckerIssues.new
     issues.create(:title, :blank) if edition.title.blank?
     issues
   end
 
-  def pre_publish_issues(_edition)
+  def publish_issues(_edition)
     Requirements::CheckerIssues.new
   end
 

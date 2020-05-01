@@ -7,11 +7,11 @@ class DocumentType::MultiTagField
     { id.to_sym => params[id.to_sym] }.compact
   end
 
-  def pre_update_issues(_edition, _params)
+  def form_issues(_edition, _params)
     Requirements::CheckerIssues.new
   end
 
-  def pre_preview_issues(_edition)
+  def preview_issues(_edition)
     Requirements::CheckerIssues.new
   end
 end

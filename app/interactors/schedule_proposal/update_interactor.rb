@@ -33,8 +33,8 @@ private
   end
 
   def check_for_issues
-    issues = Requirements::PublishTimeChecker.new.issues(publish_time)
-    issues += action_issues if params[:wizard] == "schedule"
+    issues = Requirements::Form::PublishTimeChecker.call(publish_time)
+    issues.push(*action_issues) if params[:wizard] == "schedule"
     context.fail!(issues: issues) if issues.any?
   end
 

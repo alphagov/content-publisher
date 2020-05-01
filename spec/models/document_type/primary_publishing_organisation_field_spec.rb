@@ -31,32 +31,32 @@ RSpec.describe DocumentType::PrimaryPublishingOrganisationField do
     end
   end
 
-  describe "#pre_update_issues" do
+  describe "#form_issues" do
     let(:edition) { build(:edition) }
 
     it "returns no issues when there are none" do
       params = { primary_publishing_organisation: [SecureRandom.uuid] }
-      issues = described_class.new.pre_update_issues(edition, params)
+      issues = described_class.new.form_issues(edition, params)
       expect(issues).to be_empty
     end
 
     it "returns an issue if no primary publishing organisation is provided" do
       params = { primary_publishing_organisation: [] }
-      issues = described_class.new.pre_update_issues(edition, params)
+      issues = described_class.new.form_issues(edition, params)
       expect(issues).to have_issue(:primary_publishing_organisation, :blank, styles: %i[form summary])
     end
 
     it "returns an issue if the field is not in the params" do
-      issues = described_class.new.pre_update_issues(edition, {})
+      issues = described_class.new.form_issues(edition, {})
       expect(issues).to have_issue(:primary_publishing_organisation, :blank, styles: %i[form summary])
     end
   end
 
-  describe "#pre_preview_issues" do
-    it "delegates to #pre_update_issues" do
+  describe "#preview_issues" do
+    it "delegates to #form_issues" do
       field = described_class.new
-      expect(field).to receive(:pre_update_issues)
-      field.pre_preview_issues(build(:edition))
+      expect(field).to receive(:form_issues)
+      field.preview_issues(build(:edition))
     end
   end
 end

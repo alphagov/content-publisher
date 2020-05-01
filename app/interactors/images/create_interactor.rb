@@ -25,7 +25,7 @@ private
   end
 
   def check_for_issues
-    issues = Requirements::ImageUploadChecker.new(params[:image]).issues
+    issues = Requirements::Form::ImageUploadChecker.call(params[:image])
     context.fail!(issues: issues) if issues.any?
   end
 

@@ -12,7 +12,7 @@ class DocumentType::PrimaryPublishingOrganisationField
     { id.to_sym => value }.compact
   end
 
-  def pre_update_issues(_edition, params)
+  def form_issues(_edition, params)
     issues = Requirements::CheckerIssues.new
 
     if params[:primary_publishing_organisation].blank?
@@ -22,7 +22,7 @@ class DocumentType::PrimaryPublishingOrganisationField
     issues
   end
 
-  def pre_preview_issues(edition)
-    pre_update_issues(edition, edition.tags.symbolize_keys)
+  def preview_issues(edition)
+    form_issues(edition, edition.tags.symbolize_keys)
   end
 end

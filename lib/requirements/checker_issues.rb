@@ -9,8 +9,8 @@ module Requirements
       @issues = issues
     end
 
-    def +(other)
-      CheckerIssues.new(issues + other.issues)
+    def push(*issues)
+      self.issues.push(*issues)
     end
 
     def create(*args, **params)

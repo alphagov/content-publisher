@@ -79,11 +79,21 @@ RSpec.describe FileAttachments::CreateInteractor do
       end
     end
 
+    context "when the file is blank" do
+      it "fails with issues returned" do
+        args[:params][:file] = nil
+        result = described_class.call(**args)
+
+        expect(result).to be_failure
+        expect(result.issues).to have_issue(:file_attachment_upload, :no_file)
+      end
+    end
+
     context "when the uploaded file has issues" do
       it "fails with issues returned" do
-        checker = instance_double(Requirements::FileAttachmentUploadChecker)
-        allow(checker).to receive(:pre_upload_issues).and_return(%w(issue))
-        allow(Requirements::FileAttachmentUploadChecker).to receive(:new).and_return(checker)
+        allow(Requirements::Form::FileAttachmentUploadChecker)
+          .to receive(:call).and_return(%w(issue))
+
         result = described_class.call(**args)
 
         expect(result).to be_failure

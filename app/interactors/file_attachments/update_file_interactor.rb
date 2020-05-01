@@ -32,10 +32,8 @@ private
   end
 
   def check_for_issues
-    checker = Requirements::FileAttachmentUploadChecker.new(file: attachment_params[:file],
-                                                            title: attachment_params[:title])
-    issues = checker.pre_update_issues
-
+    issues = Requirements::Form::FileAttachmentUploadChecker.call(file: attachment_params[:file],
+                                                                  title: attachment_params[:title])
     context.fail!(issues: issues) if issues.any?
   end
 

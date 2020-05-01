@@ -44,7 +44,7 @@ private
   end
 
   def check_for_issues
-    issues = Requirements::AccessLimitChecker.new(edition, user).pre_update_issues
+    issues = Requirements::Form::AccessLimitChecker.call(edition, user)
     context.fail!(issues: issues) if issues.any?
   end
 
