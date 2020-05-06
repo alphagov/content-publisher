@@ -136,7 +136,7 @@ RSpec.describe EditionFilter do
                tags: {
                  primary_publishing_organisation: [user.organisation_content_id],
                  organisations: [supporting_org_id],
-              })
+               })
       end
 
       it "includes the edition if the user is in its primary org" do
@@ -172,7 +172,7 @@ RSpec.describe EditionFilter do
                tags: {
                  primary_publishing_organisation: [user.organisation_content_id],
                  organisations: [supporting_org_id],
-              })
+               })
       end
 
       it "includes the edition if the user is in its primary org" do
