@@ -166,7 +166,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                           note: "First published.",
                                           public_timestamp: Date.yesterday.noon,
                                         },
-],
+                                      ],
                                     }),
       )
 
@@ -218,7 +218,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                             note: "First published.",
                                             public_timestamp: first_published_at,
                                           },
-],
+                                        ],
                                       }),
         )
 
@@ -244,7 +244,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
                                             note: "First published.",
                                             public_timestamp: first_published_at,
                                           },
-],
+                                        ],
                                       }),
         )
 
