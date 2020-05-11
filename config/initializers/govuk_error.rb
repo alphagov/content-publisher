@@ -5,7 +5,7 @@ GovukError.configure do |config|
   # is running in integration and staging environments
   # This lambda is called with Ruby Exception objects, Raven::Event objects
   # and may be called with other types.
-  config.should_capture = ->(error_or_event) do
+  config.should_capture = lambda { |error_or_event|
     data_sync_ignored_error = error_or_event.is_a?(PG::Error) ||
       (error_or_event.respond_to?(:cause) && error_or_event.cause.is_a?(PG::Error))
     data_sync_environment = ENV.fetch("SENTRY_CURRENT_ENV", "")
@@ -13,5 +13,5 @@ GovukError.configure do |config|
     data_sync_time = Time.zone.now.hour <= 5
 
     !(data_sync_ignored_error && data_sync_environment && data_sync_time)
-  end
+  }
 end

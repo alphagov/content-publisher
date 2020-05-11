@@ -31,9 +31,9 @@ FactoryBot.define do
     end
 
     trait :on_asset_manager do
-      transient {
+      transient do
         state { :draft }
-      }
+      end
 
       after(:build) do |blob_revision, evaluator|
         blob_revision.assets.each do |asset|

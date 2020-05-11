@@ -46,10 +46,10 @@ FactoryBot.define do
     end
 
     trait :on_asset_manager do
-      transient {
+      transient do
         alt_text { SecureRandom.hex(8) }
         state { :draft }
-      }
+      end
 
       after(:build) do |revision, evaluator|
         revision.blob_revision = evaluator.association(

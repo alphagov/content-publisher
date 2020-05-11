@@ -32,9 +32,13 @@ class DocumentType
     @all = nil
   end
 
-  def lead_image?; @lead_image; end
+  def lead_image?
+    @lead_image
+  end
 
-  def pre_release?; @pre_release; end
+  def pre_release?
+    @pre_release
+  end
 
   def attachments
     ActiveSupport::StringInquirer.new(@attachments)
