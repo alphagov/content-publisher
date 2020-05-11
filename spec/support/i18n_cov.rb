@@ -9,8 +9,8 @@ class I18nCov
   attr_reader :locales, :used_keys
 
   module I18nOverrides
-    def lookup(locale, key, scope = [], options = {})
-      I18nCov.log(key, scope)
+    def translate(*args)
+      I18nCov.log(args[1])
       super
     end
   end
@@ -20,14 +20,13 @@ class I18nCov
   end
 
   def start(locales = nil)
-    @used_keys = []
+    @used_keys = Set.new
     @locales = locales || in_app_locales
     I18n::Backend::Simple.include I18nOverrides
   end
 
-  def log(key, scope)
-    key = (Array(scope || []) + [key]).compact.join(".")
-    used_keys << key unless used_keys.include?(key)
+  def log(key)
+    used_keys << key.to_s
   end
 
   def report
