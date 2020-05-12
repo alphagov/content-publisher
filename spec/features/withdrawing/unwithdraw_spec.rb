@@ -5,6 +5,7 @@ RSpec.feature "Unwithdraw" do
     when_i_visit_the_summary_page
     and_i_undo_the_withdrawal
     then_i_see_the_edition_is_unwithdrawn
+    and_i_see_the_timeline_entry
   end
 
   def given_there_is_a_withdrawn_edition
