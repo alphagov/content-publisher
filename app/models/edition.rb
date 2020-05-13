@@ -82,7 +82,7 @@ class Edition < ApplicationRecord
            :featured_attachment_ordering,
            to: :revision
 
-  scope :find_current, ->(id: nil, document: nil) do
+  scope :find_current, lambda { |id: nil, document: nil|
     find_by = {}.tap do |criteria|
       criteria[:id] = id if id
 
@@ -97,18 +97,18 @@ class Edition < ApplicationRecord
       .joins(join_tables)
       .includes(join_tables)
       .find_by!(find_by)
-  end
+  }
 
-  scope :political, ->(political = true) do
+  scope :political, lambda { |political = true|
     sql = "CASE WHEN metadata_revisions.editor_political IS NULL "\
           "THEN editions.system_political = :political "\
           "ELSE metadata_revisions.editor_political = :political "\
           "END"
 
     joins(revision: :metadata_revision).where(sql, political: political)
-  end
+  }
 
-  scope :history_mode, ->(history_mode = true) do
+  scope :history_mode, lambda { |history_mode = true|
     repository = BulkData::GovernmentRepository.new
     if history_mode
       political.where.not(government_id: [nil, repository.current.content_id])
@@ -116,7 +116,7 @@ class Edition < ApplicationRecord
       political(false)
         .or(political.where(government_id: [nil, repository.current.content_id]))
     end
-  end
+  }
 
   def editable?
     !live? && !scheduled?

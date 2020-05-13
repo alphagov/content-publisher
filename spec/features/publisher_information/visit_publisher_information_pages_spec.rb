@@ -58,7 +58,7 @@ RSpec.feature "User can view the publisher information pages" do
     click_footer_link("What Managing Editors can do")
   end
 
-  alias :and_i_click_on_the_what_managing_editors_can_do_link_in_footer :when_i_click_on_the_what_managing_editors_can_do_link_in_footer
+  alias_method :and_i_click_on_the_what_managing_editors_can_do_link_in_footer, :when_i_click_on_the_what_managing_editors_can_do_link_in_footer
 
   def then_i_can_see_the_what_managing_editors_can_do_page
     expect_page_to_have_h1(I18n.t("publisher_information.what_managing_editors_can_do.title"))

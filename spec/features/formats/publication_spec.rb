@@ -22,8 +22,8 @@ RSpec.describe "Publication format" do
   end
 
   def then_the_document_should_be_previewable
-    expect(a_request(:put, /content/).with { |req|
+    expect(a_request(:put, /content/).with do |req|
              expect(req.body).to be_valid_against_publisher_schema("publication")
-           }).to have_been_requested
+           end).to have_been_requested
   end
 end
