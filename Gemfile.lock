@@ -493,45 +493,45 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aws-sdk-s3 (~> 1)
-  bootsnap (~> 1)
-  brakeman (~> 4)
-  byebug (~> 11)
-  climate_control
-  factory_bot_rails (~> 5)
-  gds-api-adapters (~> 63)
-  gds-sso (~> 14)
-  govspeak (~> 6.5)
-  govuk_app_config (~> 2)
-  govuk_publishing_components (~> 21.44)
-  govuk_schemas (~> 4.0)
-  govuk_sidekiq (~> 3)
-  govuk_test (~> 1.0)
-  hashdiff (~> 1.0)
-  image_processing (~> 1)
-  interactor (~> 3)
-  jasmine (~> 3)
-  jasmine_selenium_runner (~> 3)
-  json_matchers
-  kaminari (~> 1)
-  listen (~> 3)
-  mail-notify (~> 1)
-  pdf-reader (~> 2)
-  pg (~> 1)
-  plek (~> 3)
-  rails (~> 6.0)
-  rinku (~> 2)
-  rspec-rails (~> 4)
-  rubocop-govuk (~> 3)
-  rubyzip (~> 2)
-  sanitize (~> 5)
+  aws-sdk-s3 (~> 1.64.0)
+  bootsnap (~> 1.4.0)
+  brakeman
+  byebug (~> 11.1.0)
+  climate_control (~> 0.2.0)
+  factory_bot_rails (~> 5.2.0)
+  gds-api-adapters
+  gds-sso
+  govspeak
+  govuk_app_config
+  govuk_publishing_components
+  govuk_schemas
+  govuk_sidekiq
+  govuk_test
+  hashdiff (~> 1.0.0)
+  image_processing (~> 1.10.0)
+  interactor (~> 3.1.0)
+  jasmine (~> 3.5.0)
+  jasmine_selenium_runner (~> 3.0.0)
+  json_matchers (~> 0.11.0)
+  kaminari (~> 1.2.0)
+  listen (~> 3.2.0)
+  mail-notify (~> 1.0.2)
+  pdf-reader (~> 2.4.0)
+  pg
+  plek
+  rails
+  rinku (~> 2.0.0)
+  rspec-rails
+  rubocop-govuk
+  rubyzip (~> 2.3.0)
+  sanitize (~> 5.1.0)
   sass-rails (< 6)
-  scss_lint-govuk (~> 0)
-  sidekiq-scheduler (~> 3)
-  simplecov (~> 0.18)
-  uglifier (~> 4)
-  webmock (~> 3)
-  with_advisory_lock (~> 4)
+  scss_lint-govuk
+  sidekiq-scheduler (~> 3.0.0)
+  simplecov (~> 0.18.0)
+  uglifier (~> 4.2.0)
+  webmock (~> 3.8.0)
+  with_advisory_lock (~> 4.6.0)
 
 RUBY VERSION
    ruby 2.6.6
