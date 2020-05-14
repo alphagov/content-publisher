@@ -19,10 +19,12 @@ RSpec.feature "Scheduled publishing without review" do
   end
 
   def given_there_is_a_schedulable_edition
-    @edition = create(:edition,
-                      :schedulable,
-                      created_by: current_user,
-                      proposed_publish_time: Time.zone.parse("2019-8-10 12:00"))
+    @edition = create(
+      :edition,
+      :schedulable,
+      created_by: current_user,
+      proposed_publish_time: Time.zone.parse("2019-8-10 12:00"),
+    )
   end
 
   def when_i_go_to_schedule_a_publishing
@@ -44,9 +46,11 @@ RSpec.feature "Scheduled publishing without review" do
     travel_to(Time.zone.parse("2019-8-10 12:00"))
     populate_default_government_bulk_data
     stub_any_publishing_api_put_content
-    @publish_request = stub_publishing_api_publish(@edition.content_id,
-                                                   update_type: nil,
-                                                   locale: @edition.locale)
+    @publish_request = stub_publishing_api_publish(
+      @edition.content_id,
+      update_type: nil,
+      locale: @edition.locale,
+    )
     Sidekiq::Worker.drain_all
   end
 
@@ -56,8 +60,10 @@ RSpec.feature "Scheduled publishing without review" do
 
   def and_the_editors_are_notified
     message = ActionMailer::Base.deliveries.first
-    expected_subject = I18n.t("scheduled_publish_mailer.success_email.subject.published_but_needs_2i",
-                              title: @edition.title)
+    expected_subject = I18n.t(
+      "scheduled_publish_mailer.success_email.subject.published_but_needs_2i",
+      title: @edition.title,
+    )
 
     expect(message.to).to include(current_user.email)
     expect(message.subject).to eq(expected_subject)

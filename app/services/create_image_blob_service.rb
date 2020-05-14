@@ -32,7 +32,9 @@ private
   attr_reader :temp_image, :filename, :user
 
   def centre_crop
-    @centre_crop ||= CentreCrop.new(temp_image.width,
-                                    temp_image.height).dimensions
+    @centre_crop ||= CentreCrop.new(
+      temp_image.width,
+      temp_image.height,
+    ).dimensions
   end
 end

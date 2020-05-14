@@ -56,9 +56,11 @@ RSpec.describe CreateDocumentService do
     it "can have content_id and locale specified" do
       content_id = SecureRandom.uuid
       locale = "fr"
-      document = described_class.call(content_id: content_id,
-                                      document_type_id: document_type.id,
-                                      locale: locale)
+      document = described_class.call(
+        content_id: content_id,
+        document_type_id: document_type.id,
+        locale: locale,
+      )
 
       expect(document.content_id).to eq(content_id)
       expect(document.locale).to eq(locale)
@@ -66,8 +68,10 @@ RSpec.describe CreateDocumentService do
 
     it "can be attributed to a user" do
       user = create(:user)
-      document = described_class.call(document_type_id: document_type.id,
-                                      user: user)
+      document = described_class.call(
+        document_type_id: document_type.id,
+        user: user,
+      )
 
       expect(document.created_by).to eq(user)
       expect(document.current_edition.created_by).to eq(user)
@@ -83,8 +87,10 @@ RSpec.describe CreateDocumentService do
 
     it "can set tags on the current edition" do
       tags = { "primary_publishing_organisation" => [SecureRandom.uuid] }
-      document = described_class.call(document_type_id: document_type.id,
-                                      tags: tags)
+      document = described_class.call(
+        document_type_id: document_type.id,
+        tags: tags,
+      )
 
       expect(document.current_edition.tags).to eq(tags)
     end

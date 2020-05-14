@@ -7,8 +7,10 @@ RSpec.describe FeaturedAttachments::UpdateOrderInteractor do
     let(:ordering_params) { {} }
 
     let(:params) do
-      ActionController::Parameters.new(document: edition.document.to_param,
-                                       attachments: { ordering: ordering_params })
+      ActionController::Parameters.new(
+        document: edition.document.to_param,
+        attachments: { ordering: ordering_params },
+      )
     end
 
     let(:edition) do

@@ -4,39 +4,53 @@ RSpec.describe DatetimeParser do
       date_params = { day: "10", month: "01", year: "2019" }
       expected_time = Time.zone.local(2019, 1, 10, 0, 0)
 
-      parser = described_class.new(date: date_params,
-                                   time: "11:00am",
-                                   issue_prefix: :schedule)
+      parser = described_class.new(
+        date: date_params,
+        time: "11:00am",
+        issue_prefix: :schedule,
+      )
       expect(parser.parse).to eq expected_time.change(hour: 11)
 
-      parser = described_class.new(date: date_params,
-                                   time: "9:34",
-                                   issue_prefix: :schedule)
+      parser = described_class.new(
+        date: date_params,
+        time: "9:34",
+        issue_prefix: :schedule,
+      )
       expect(parser.parse).to eq expected_time.change(hour: 9, min: 34)
 
-      parser = described_class.new(date: date_params,
-                                   time: "12:00",
-                                   issue_prefix: :schedule)
+      parser = described_class.new(
+        date: date_params,
+        time: "12:00",
+        issue_prefix: :schedule,
+      )
       expect(parser.parse).to eq expected_time.change(hour: 12)
 
-      parser = described_class.new(date: date_params,
-                                   time: "12:00am",
-                                   issue_prefix: :schedule)
+      parser = described_class.new(
+        date: date_params,
+        time: "12:00am",
+        issue_prefix: :schedule,
+      )
       expect(parser.parse).to eq expected_time.change(hour: 0)
 
-      parser = described_class.new(date: date_params,
-                                   time: "6:00 pm",
-                                   issue_prefix: :schedule)
+      parser = described_class.new(
+        date: date_params,
+        time: "6:00 pm",
+        issue_prefix: :schedule,
+      )
       expect(parser.parse).to eq expected_time.change(hour: 18)
 
-      parser = described_class.new(date: date_params,
-                                   time: "23:32",
-                                   issue_prefix: :schedule)
+      parser = described_class.new(
+        date: date_params,
+        time: "23:32",
+        issue_prefix: :schedule,
+      )
       expect(parser.parse).to eq expected_time.change(hour: 23, min: 32)
 
-      parser = described_class.new(date: date_params,
-                                   time: "12:30pm",
-                                   issue_prefix: :schedule)
+      parser = described_class.new(
+        date: date_params,
+        time: "12:30pm",
+        issue_prefix: :schedule,
+      )
       expect(parser.parse).to eq expected_time.change(hour: 12, min: 30)
     end
 

@@ -13,9 +13,11 @@ RSpec.feature "Unschedule" do
   end
 
   def given_there_is_a_scheduled_edition
-    @scheduling = create(:scheduling,
-                         reviewed: true,
-                         publish_time: Time.zone.parse("2019-06-14 23:00"))
+    @scheduling = create(
+      :scheduling,
+      reviewed: true,
+      publish_time: Time.zone.parse("2019-06-14 23:00"),
+    )
 
     @edition = create(:edition, :scheduled, scheduling: @scheduling)
   end
@@ -36,8 +38,10 @@ RSpec.feature "Unschedule" do
 
   def and_the_proposed_publish_time_is_still_set
     expect(page)
-      .to have_content(I18n.t!("documents.show.proposed_scheduling_notice.title",
-                               datetime: @scheduling.publish_time.to_s(:time_on_date)))
+      .to have_content(I18n.t!(
+                         "documents.show.proposed_scheduling_notice.title",
+                         datetime: @scheduling.publish_time.to_s(:time_on_date),
+                       ))
   end
 
   def and_i_see_the_timeline_entry

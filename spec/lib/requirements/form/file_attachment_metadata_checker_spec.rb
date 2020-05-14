@@ -12,9 +12,11 @@ RSpec.describe Requirements::Form::FileAttachmentMetadataChecker do
       unique_reference = "z" * (max_length + 1)
       issues = described_class.call(unique_reference: unique_reference)
 
-      expect(issues).to have_issue(:file_attachment_unique_reference,
-                                   :too_long,
-                                   max_length: max_length)
+      expect(issues).to have_issue(
+        :file_attachment_unique_reference,
+        :too_long,
+        max_length: max_length,
+      )
     end
 
     [

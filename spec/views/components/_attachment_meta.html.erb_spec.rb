@@ -26,25 +26,29 @@ RSpec.describe "components/_attachment_meta" do
     render template: described_template,
            locals: { attachment: { filename: "register.csv",
                                    content_type: "application/pdf",
-                                   file_size: 20000,
+                                   file_size: 20_000,
                                    number_of_pages: 7,
                                    isbn: "978-1-5286-1173-2",
                                    unique_reference: "2259",
                                    command_paper_number: "Cd. 67" } }
-    expect(rendered).to have_selector(".app-c-attachment-meta__metadata",
-                                      text: "Ref: ISBN 978-1-5286-1173-2, 2259, Cd. 67")
+    expect(rendered).to have_selector(
+      ".app-c-attachment-meta__metadata",
+      text: "Ref: ISBN 978-1-5286-1173-2, 2259, Cd. 67",
+    )
   end
 
   it "shows unnumbered details on the second metadata line if marked so" do
     render template: described_template,
            locals: { attachment: { filename: "register.csv",
                                    content_type: "application/pdf",
-                                   file_size: 20000,
+                                   file_size: 20_000,
                                    number_of_pages: 7,
                                    isbn: "978-1-5286-1173-2",
                                    unique_reference: "2259",
                                    unnumbered_command_paper: true } }
-    expect(rendered).to have_selector(".app-c-attachment-meta__metadata",
-                                      text: "Unnumbered command paper")
+    expect(rendered).to have_selector(
+      ".app-c-attachment-meta__metadata",
+      text: "Unnumbered command paper",
+    )
   end
 end

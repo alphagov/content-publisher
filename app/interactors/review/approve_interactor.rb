@@ -26,7 +26,9 @@ private
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_status_change(entry_type: :approved,
-                                           status: edition.status)
+    TimelineEntry.create_for_status_change(
+      entry_type: :approved,
+      status: edition.status,
+    )
   end
 end

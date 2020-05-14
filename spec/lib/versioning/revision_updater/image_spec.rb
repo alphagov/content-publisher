@@ -47,8 +47,9 @@ RSpec.describe Versioning::RevisionUpdater::Image do
       other_image_revision = create :image_revision
       updated_image = create :image_revision, image_id: other_image_revision.image_id
 
-      revision = create :revision, image_revisions: [image_revision, other_image_revision],
-                                   lead_image_revision: image_revision
+      revision = create :revision,
+                        image_revisions: [image_revision, other_image_revision],
+                        lead_image_revision: image_revision
 
       updater = Versioning::RevisionUpdater.new(revision, user)
       updater.update_image(updated_image)
@@ -61,8 +62,9 @@ RSpec.describe Versioning::RevisionUpdater::Image do
 
     it "replaces the lead image revision with the updated revision" do
       updated_image = create :image_revision, image_id: image_revision.image_id
-      revision = create :revision, image_revisions: [image_revision],
-                                   lead_image_revision: image_revision
+      revision = create :revision,
+                        image_revisions: [image_revision],
+                        lead_image_revision: image_revision
 
       updater = Versioning::RevisionUpdater.new(revision, user)
       updater.update_image(updated_image)
@@ -75,8 +77,9 @@ RSpec.describe Versioning::RevisionUpdater::Image do
 
     describe "#update_lead_image" do
       it "preserves the given image as the lead if selected" do
-        revision = create :revision, image_revisions: [image_revision],
-                                     lead_image_revision: image_revision
+        revision = create :revision,
+                          image_revisions: [image_revision],
+                          lead_image_revision: image_revision
 
         updated_image = create :image_revision, image_id: image_revision.image_id
         updater = Versioning::RevisionUpdater.new(revision, user)
@@ -102,8 +105,9 @@ RSpec.describe Versioning::RevisionUpdater::Image do
       end
 
       it "unsets the given image as the lead if not selected" do
-        revision = create :revision, image_revisions: [image_revision],
-                                     lead_image_revision: image_revision
+        revision = create :revision,
+                          image_revisions: [image_revision],
+                          lead_image_revision: image_revision
 
         updated_image = create :image_revision, image_id: image_revision.image_id
         updater = Versioning::RevisionUpdater.new(revision, user)

@@ -39,15 +39,19 @@ RSpec.describe WhitehallImporter::EmbedBodyReferences do
     end
 
     it "ignores Whitehall image bang embeds that are neither start of the string or preceeded by new lines" do
-      body = described_class.call(body: "!!1 test !!2",
-                                  images: ["file.png", "file.jpg"])
+      body = described_class.call(
+        body: "!!1 test !!2",
+        images: ["file.png", "file.jpg"],
+      )
 
       expect(body).to eq("[Image:file.png] test !!2")
     end
 
     it "ignores Whitehall attachment bang embeds that are neither start of the string or preceeded by new lines" do
-      body = described_class.call(body: "!@1 test !@2",
-                                  attachments: ["file.pdf", "file.csv"])
+      body = described_class.call(
+        body: "!@1 test !@2",
+        attachments: ["file.pdf", "file.csv"],
+      )
 
       expect(body).to eq("[Attachment:file.pdf] test !@2")
     end
@@ -92,9 +96,12 @@ RSpec.describe WhitehallImporter::EmbedBodyReferences do
 
     it "doesn't change the prefixes of images and attachments preceeded by two or more new lines" do
       prefixes = [
-        "\n\n", "\r\n\r\n",
-        "\n\n\n", "\r\n\r\n\r\n",
-        "\n\n\n\n", "\r\n\r\n\r\n\r\n"
+        "\n\n",
+        "\r\n\r\n",
+        "\n\n\n",
+        "\r\n\r\n\r\n",
+        "\n\n\n\n",
+        "\r\n\r\n\r\n\r\n",
       ]
 
       prefixes.each do |prefix|

@@ -7,8 +7,10 @@ module BulkDataHelper
   end
 
   def populate_government_bulk_data(*governments)
-    BulkData::Cache.write(BulkData::GovernmentRepository::CACHE_KEY,
-                          governments.map(&:to_h))
+    BulkData::Cache.write(
+      BulkData::GovernmentRepository::CACHE_KEY,
+      governments.map(&:to_h),
+    )
   end
 
   def current_government

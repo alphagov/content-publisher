@@ -59,9 +59,11 @@ private
 
       case field
       when :title_or_url
-        memo.where("content_revisions.title ILIKE ? OR content_revisions.base_path ILIKE ?",
-                   "%#{sanitize_sql_like(value)}%",
-                   "%#{sanitize_sql_like(value)}%")
+        memo.where(
+          "content_revisions.title ILIKE ? OR content_revisions.base_path ILIKE ?",
+          "%#{sanitize_sql_like(value)}%",
+          "%#{sanitize_sql_like(value)}%",
+        )
       when :document_type
         memo.where("metadata_revisions.document_type_id": value)
       when :status

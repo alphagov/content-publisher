@@ -11,9 +11,11 @@ RSpec.describe TimelineEntry do
     let(:edition) { build(:edition) }
 
     it "creates a TimelineEntry" do
-      status = build(:status,
-                     state: :submitted_for_review,
-                     edition: edition)
+      status = build(
+        :status,
+        state: :submitted_for_review,
+        edition: edition,
+      )
 
       entry = described_class.create_for_status_change(
         entry_type: :submitted,
@@ -27,9 +29,11 @@ RSpec.describe TimelineEntry do
     end
 
     it "sets the created_by, edition and document based on status" do
-      status = build(:status,
-                     state: :submitted_for_review,
-                     edition: edition)
+      status = build(
+        :status,
+        state: :submitted_for_review,
+        edition: edition,
+      )
 
       entry = described_class.create_for_status_change(
         entry_type: :submitted,

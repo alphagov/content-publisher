@@ -58,8 +58,9 @@ class ApplicationController < ActionController::Base
     end
 
     unless current_user.can_access?(edition)
-      render "documents/access_limited", status: :forbidden,
-                                         assigns: { edition: edition }
+      render "documents/access_limited",
+             status: :forbidden,
+             assigns: { edition: edition }
     end
   end
 end

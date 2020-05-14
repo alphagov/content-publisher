@@ -6,9 +6,11 @@ class ImagesController < ApplicationController
 
   def create
     result = Images::CreateInteractor.call(params: params, user: current_user)
-    edition, image_revision, issues = result.to_h.values_at(:edition,
-                                                            :image_revision,
-                                                            :issues)
+    edition, image_revision, issues = result.to_h.values_at(
+      :edition,
+      :image_revision,
+      :issues,
+    )
 
     if issues
       flash.now["requirements"] = { "items" => issues.items }
@@ -17,9 +19,11 @@ class ImagesController < ApplicationController
              assigns: { edition: edition },
              status: :unprocessable_entity
     else
-      redirect_to crop_image_path(params[:document],
-                                  image_revision.image_id,
-                                  wizard: "upload")
+      redirect_to crop_image_path(
+        params[:document],
+        image_revision.image_id,
+        wizard: "upload",
+      )
     end
   end
 
@@ -34,9 +38,11 @@ class ImagesController < ApplicationController
     image_revision = result.image_revision
 
     if params[:wizard] == "upload"
-      redirect_to edit_image_path(params[:document],
-                                  image_revision.image_id,
-                                  wizard: params[:wizard])
+      redirect_to edit_image_path(
+        params[:document],
+        image_revision.image_id,
+        wizard: params[:wizard],
+      )
     else
       redirect_to images_path(params[:document])
     end
@@ -88,12 +94,16 @@ class ImagesController < ApplicationController
 
     if removed_lead
       redirect_to images_path(params[:document]),
-                  notice: t("images.index.flashes.lead_image.deleted",
-                            file: image_revision.filename)
+                  notice: t(
+                    "images.index.flashes.lead_image.deleted",
+                    file: image_revision.filename,
+                  )
     else
       redirect_to images_path(params[:document]),
-                  notice: t("images.index.flashes.deleted",
-                            file: image_revision.filename)
+                  notice: t(
+                    "images.index.flashes.deleted",
+                    file: image_revision.filename,
+                  )
     end
   end
 

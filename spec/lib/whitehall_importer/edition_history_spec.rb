@@ -18,18 +18,24 @@ RSpec.describe WhitehallImporter::EditionHistory do
 
   describe "#last_state_event" do
     it "returns the last event associated with the state" do
-      first_draft_event = build(:whitehall_export_revision_history_event,
-                                state: "draft")
-      last_draft_event = build(:whitehall_export_revision_history_event,
-                               state: "draft")
+      first_draft_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
+      last_draft_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
       instance = described_class.new([first_draft_event, last_draft_event])
 
       expect(instance.last_state_event("draft")).to be(last_draft_event)
     end
 
     it "returns nil if the edition is missing a state event" do
-      draft_event = build(:whitehall_export_revision_history_event,
-                          state: "draft")
+      draft_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
       expect(described_class.new([draft_event]).last_state_event("published"))
         .to be_nil
     end
@@ -41,18 +47,24 @@ RSpec.describe WhitehallImporter::EditionHistory do
 
   describe "#first_state_event" do
     it "returns the first event associated with the state" do
-      first_draft_event = build(:whitehall_export_revision_history_event,
-                                state: "draft")
-      last_draft_event = build(:whitehall_export_revision_history_event,
-                               state: "draft")
+      first_draft_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
+      last_draft_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
       instance = described_class.new([first_draft_event, last_draft_event])
 
       expect(instance.first_state_event("draft")).to be(first_draft_event)
     end
 
     it "returns nil if the edition is missing a state event" do
-      draft_event = build(:whitehall_export_revision_history_event,
-                          state: "draft")
+      draft_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
       expect(described_class.new([draft_event]).first_state_event("published"))
         .to be_nil
     end
@@ -102,12 +114,18 @@ RSpec.describe WhitehallImporter::EditionHistory do
 
   describe "#create_event" do
     it "returns the first create event associated" do
-      first_event = build(:whitehall_export_revision_history_event,
-                          event: "update")
-      first_create_event = build(:whitehall_export_revision_history_event,
-                                 event: "create")
-      last_create_event = build(:whitehall_export_revision_history_event,
-                                event: "create")
+      first_event = build(
+        :whitehall_export_revision_history_event,
+        event: "update",
+      )
+      first_create_event = build(
+        :whitehall_export_revision_history_event,
+        event: "create",
+      )
+      last_create_event = build(
+        :whitehall_export_revision_history_event,
+        event: "create",
+      )
       instance = described_class.new([first_event,
                                       first_create_event,
                                       last_create_event])
@@ -127,14 +145,22 @@ RSpec.describe WhitehallImporter::EditionHistory do
 
   describe "#last_unpublishing_event" do
     it "returns the draft that follows a published event" do
-      first_publishing_event = build(:whitehall_export_revision_history_event,
-                                     state: "published")
-      first_unpublishing_event = build(:whitehall_export_revision_history_event,
-                                       state: "draft")
-      last_publishing_event = build(:whitehall_export_revision_history_event,
-                                    state: "published")
-      last_unpublishing_event = build(:whitehall_export_revision_history_event,
-                                      state: "draft")
+      first_publishing_event = build(
+        :whitehall_export_revision_history_event,
+        state: "published",
+      )
+      first_unpublishing_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
+      last_publishing_event = build(
+        :whitehall_export_revision_history_event,
+        state: "published",
+      )
+      last_unpublishing_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
       instance = described_class.new([first_publishing_event,
                                       first_unpublishing_event,
                                       last_publishing_event,
@@ -144,10 +170,14 @@ RSpec.describe WhitehallImporter::EditionHistory do
     end
 
     it "returns nil if there is not a draft update that follows a published event" do
-      publishing_event = build(:whitehall_export_revision_history_event,
-                               state: "published")
-      next_event = build(:whitehall_export_revision_history_event,
-                         state: "withdrawn")
+      publishing_event = build(
+        :whitehall_export_revision_history_event,
+        state: "published",
+      )
+      next_event = build(
+        :whitehall_export_revision_history_event,
+        state: "withdrawn",
+      )
       instance = described_class.new([publishing_event, next_event])
 
       expect(instance.last_unpublishing_event).to be_nil
@@ -160,13 +190,19 @@ RSpec.describe WhitehallImporter::EditionHistory do
 
   describe "#edited_after_unpublishing?" do
     it "returns true if there are events after the unpublishing" do
-      publishing_event = build(:whitehall_export_revision_history_event,
-                               state: "published")
-      unpublishing_event = build(:whitehall_export_revision_history_event,
-                                 state: "draft")
-      edit_event = build(:whitehall_export_revision_history_event,
-                         state: "draft",
-                         created_at: 5.minutes.from_now.rfc3339)
+      publishing_event = build(
+        :whitehall_export_revision_history_event,
+        state: "published",
+      )
+      unpublishing_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
+      edit_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+        created_at: 5.minutes.from_now.rfc3339,
+      )
       instance = described_class.new([publishing_event,
                                       unpublishing_event,
                                       edit_event])
@@ -175,10 +211,14 @@ RSpec.describe WhitehallImporter::EditionHistory do
     end
 
     it "returns false if there aren't edits after unpublishing" do
-      publishing_event = build(:whitehall_export_revision_history_event,
-                               state: "published")
-      unpublishing_event = build(:whitehall_export_revision_history_event,
-                                 state: "draft")
+      publishing_event = build(
+        :whitehall_export_revision_history_event,
+        state: "published",
+      )
+      unpublishing_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
       instance = described_class.new([publishing_event, unpublishing_event])
 
       expect(instance.edited_after_unpublishing?).to be(false)
@@ -192,10 +232,14 @@ RSpec.describe WhitehallImporter::EditionHistory do
 
   describe "#editors" do
     it "returns all of the editors who have contributed to an edition" do
-      first_event = build(:whitehall_export_revision_history_event,
-                          whodunnit: 1)
-      second_event = build(:whitehall_export_revision_history_event,
-                           whodunnit: 2)
+      first_event = build(
+        :whitehall_export_revision_history_event,
+        whodunnit: 1,
+      )
+      second_event = build(
+        :whitehall_export_revision_history_event,
+        whodunnit: 2,
+      )
 
       instance = described_class.new([first_event, second_event])
 
@@ -204,10 +248,14 @@ RSpec.describe WhitehallImporter::EditionHistory do
     end
 
     it "doesn't return the same editor more than once" do
-      first_event = build(:whitehall_export_revision_history_event,
-                          whodunnit: 1)
-      second_event = build(:whitehall_export_revision_history_event,
-                           whodunnit: 1)
+      first_event = build(
+        :whitehall_export_revision_history_event,
+        whodunnit: 1,
+      )
+      second_event = build(
+        :whitehall_export_revision_history_event,
+        whodunnit: 1,
+      )
 
       instance = described_class.new([first_event, second_event])
 
@@ -233,8 +281,10 @@ RSpec.describe WhitehallImporter::EditionHistory do
 
     it "returns document_updated if there is no change in state" do
       first_event = build(:whitehall_export_revision_history_event)
-      second_event = build(:whitehall_export_revision_history_event,
-                           event: "update")
+      second_event = build(
+        :whitehall_export_revision_history_event,
+        event: "update",
+      )
       instance = described_class.new([first_event, second_event])
 
       expect(instance.imported_entry_type(second_event, 1))
@@ -242,20 +292,30 @@ RSpec.describe WhitehallImporter::EditionHistory do
     end
 
     it "returns the Content Publisher event type if the state has changed" do
-      first_event = build(:whitehall_export_revision_history_event,
-                          state: "draft")
-      second_event = build(:whitehall_export_revision_history_event,
-                           event: "update", state: "published")
+      first_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
+      second_event = build(
+        :whitehall_export_revision_history_event,
+        event: "update",
+        state: "published",
+      )
       instance = described_class.new([first_event, second_event])
 
       expect(instance.imported_entry_type(second_event, 1)).to eq("published")
     end
 
     it "aborts if the state has changed but the mapping is undefined" do
-      first_event = build(:whitehall_export_revision_history_event,
-                          state: "draft")
-      second_event = build(:whitehall_export_revision_history_event,
-                           event: "update", state: "foo")
+      first_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
+      second_event = build(
+        :whitehall_export_revision_history_event,
+        event: "update",
+        state: "foo",
+      )
       instance = described_class.new([first_event, second_event])
 
       expect { instance.imported_entry_type(second_event, 1) }
@@ -265,10 +325,15 @@ RSpec.describe WhitehallImporter::EditionHistory do
 
   describe "#last_event" do
     it "returns the last event of the revision history" do
-      first_event = build(:whitehall_export_revision_history_event,
-                          state: "draft")
-      second_event = build(:whitehall_export_revision_history_event,
-                           event: "update", state: "published")
+      first_event = build(
+        :whitehall_export_revision_history_event,
+        state: "draft",
+      )
+      second_event = build(
+        :whitehall_export_revision_history_event,
+        event: "update",
+        state: "published",
+      )
       instance = described_class.new([first_event, second_event])
 
       expect(instance.last_event).to eq(second_event)

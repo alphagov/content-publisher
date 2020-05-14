@@ -48,9 +48,11 @@ class DebugController < ApplicationController
     images = revision.image_revisions.map { |r| image_revision_hash(r) }
     file_attachments = revision.file_attachment_revisions.map { |r| file_attachment_revision_hash(r) }
 
-    content.merge(tags).merge(metadata).merge(lead_image: lead_image,
-                                              images: images,
-                                              file_attachments: file_attachments)
+    content.merge(tags).merge(metadata).merge(
+      lead_image: lead_image,
+      images: images,
+      file_attachments: file_attachments,
+    )
   end
 
   def image_revision_hash(image_revision)

@@ -6,9 +6,11 @@ RSpec.feature "Index details" do
   end
 
   def given_there_is_an_edition
-    @edition = create(:edition,
-                      last_edited_by: current_user,
-                      created_by: current_user)
+    @edition = create(
+      :edition,
+      last_edited_by: current_user,
+      created_by: current_user,
+    )
   end
 
   def when_i_visit_the_index_page

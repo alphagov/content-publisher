@@ -7,11 +7,13 @@ RSpec.describe AssetCleanupJob do
 
     context "when the assets only exist on a past edition" do
       before do
-        create(:edition,
-               current: false,
-               lead_image_revision: nil,
-               image_revisions: [draft_image_revision, live_image_revision],
-               file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
+        create(
+          :edition,
+          current: false,
+          lead_image_revision: nil,
+          image_revisions: [draft_image_revision, live_image_revision],
+          file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision],
+        )
       end
 
       it "deletes draft/live assets that are dangling" do
@@ -28,10 +30,12 @@ RSpec.describe AssetCleanupJob do
 
     context "when the assets only exist on a previous revision" do
       before do
-        preceding_revision = create(:revision,
-                                    lead_image_revision: nil,
-                                    image_revisions: [draft_image_revision, live_image_revision],
-                                    file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
+        preceding_revision = create(
+          :revision,
+          lead_image_revision: nil,
+          image_revisions: [draft_image_revision, live_image_revision],
+          file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision],
+        )
 
         revision = create(:revision, lead_image_revision: nil, preceded_by: preceding_revision)
         create(:edition, revision: revision)
@@ -51,10 +55,12 @@ RSpec.describe AssetCleanupJob do
 
     context "when the assets exist on a current edition" do
       before do
-        create(:edition,
-               lead_image_revision: nil,
-               image_revisions: [draft_image_revision, live_image_revision],
-               file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
+        create(
+          :edition,
+          lead_image_revision: nil,
+          image_revisions: [draft_image_revision, live_image_revision],
+          file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision],
+        )
       end
 
       it "preserves draft/live assets in Asset Manager" do
@@ -71,12 +77,14 @@ RSpec.describe AssetCleanupJob do
 
     context "when the assets exist on a live edition" do
       before do
-        create(:edition,
-               live: true,
-               current: false,
-               lead_image_revision: nil,
-               image_revisions: [draft_image_revision, live_image_revision],
-               file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
+        create(
+          :edition,
+          live: true,
+          current: false,
+          lead_image_revision: nil,
+          image_revisions: [draft_image_revision, live_image_revision],
+          file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision],
+        )
       end
 
       it "preserves draft/live assets in Asset Manager" do
@@ -93,16 +101,20 @@ RSpec.describe AssetCleanupJob do
 
     context "when the assets from the current revision also exist on a past revision" do
       before do
-        preceding_revision = create(:revision,
-                                    lead_image_revision: nil,
-                                    image_revisions: [draft_image_revision, live_image_revision],
-                                    file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
+        preceding_revision = create(
+          :revision,
+          lead_image_revision: nil,
+          image_revisions: [draft_image_revision, live_image_revision],
+          file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision],
+        )
 
-        revision = create(:revision,
-                          lead_image_revision: nil,
-                          preceded_by: preceding_revision,
-                          image_revisions: [draft_image_revision, live_image_revision],
-                          file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
+        revision = create(
+          :revision,
+          lead_image_revision: nil,
+          preceded_by: preceding_revision,
+          image_revisions: [draft_image_revision, live_image_revision],
+          file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision],
+        )
 
         create(:edition, revision: revision)
       end
@@ -121,16 +133,20 @@ RSpec.describe AssetCleanupJob do
 
     context "when the assets exist on a past edition and the current edition" do
       before do
-        create(:edition,
-               current: false,
-               lead_image_revision: nil,
-               image_revisions: [draft_image_revision, live_image_revision],
-               file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
+        create(
+          :edition,
+          current: false,
+          lead_image_revision: nil,
+          image_revisions: [draft_image_revision, live_image_revision],
+          file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision],
+        )
 
-        create(:edition,
-               lead_image_revision: nil,
-               image_revisions: [draft_image_revision, live_image_revision],
-               file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
+        create(
+          :edition,
+          lead_image_revision: nil,
+          image_revisions: [draft_image_revision, live_image_revision],
+          file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision],
+        )
       end
 
       it "doesn't delete the assets" do
@@ -147,9 +163,11 @@ RSpec.describe AssetCleanupJob do
 
     context "when asset manager doesn't have an asset to delete" do
       before do
-        create(:edition,
-               current: false,
-               file_attachment_revisions: [draft_file_attachment_revision])
+        create(
+          :edition,
+          current: false,
+          file_attachment_revisions: [draft_file_attachment_revision],
+        )
       end
 
       it "marks the asset as absent" do
@@ -167,9 +185,11 @@ RSpec.describe AssetCleanupJob do
     context "when asset manager is down" do
       before do
         stub_asset_manager_isnt_available
-        create(:edition,
-               current: false,
-               file_attachment_revisions: [draft_file_attachment_revision])
+        create(
+          :edition,
+          current: false,
+          file_attachment_revisions: [draft_file_attachment_revision],
+        )
       end
 
       it "raises the error and doesn't change the assets state" do

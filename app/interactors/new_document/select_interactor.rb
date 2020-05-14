@@ -36,8 +36,10 @@ private
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_status_change(entry_type: :created,
-                                           status: document.current_edition.status)
+    TimelineEntry.create_for_status_change(
+      entry_type: :created,
+      status: document.current_edition.status,
+    )
   end
 
   def default_tags

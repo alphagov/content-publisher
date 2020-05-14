@@ -32,7 +32,8 @@ module ActionsHelper
   end
 
   def remove_link(edition)
-    link_to "Remove", remove_path(edition.document),
+    link_to "Remove",
+            remove_path(edition.document),
             class: "govuk-link app-link--destructive app-link--right",
             data: { gtm: "remove" }
   end

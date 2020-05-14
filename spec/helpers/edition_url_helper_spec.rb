@@ -1,8 +1,10 @@
 RSpec.describe EditionUrlHelper do
   let(:edition) do
-    build(:edition,
-          base_path: "/foo",
-          content_id: "d2547c42-8ed3-49f5-baeb-6112f98c2bf9")
+    build(
+      :edition,
+      base_path: "/foo",
+      content_id: "d2547c42-8ed3-49f5-baeb-6112f98c2bf9",
+    )
   end
 
   describe "#public_url" do

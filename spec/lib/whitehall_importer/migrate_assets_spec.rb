@@ -42,8 +42,10 @@ RSpec.describe WhitehallImporter::MigrateAssets do
 
     it "deletes draft assets" do
       image_revision = build(:image_revision, :on_asset_manager, state: :draft)
-      asset = create(:whitehall_migration_asset_import,
-                     image_revision: image_revision)
+      asset = create(
+        :whitehall_migration_asset_import,
+        image_revision: image_revision,
+      )
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       delete_asset_request = stub_asset_manager_delete_asset(asset_id)
 
@@ -54,9 +56,11 @@ RSpec.describe WhitehallImporter::MigrateAssets do
 
     it "deletes draft asset variants" do
       image_revision = build(:image_revision, :on_asset_manager, state: :draft)
-      asset = create(:whitehall_migration_asset_import,
-                     image_revision: image_revision,
-                     variant: "s300")
+      asset = create(
+        :whitehall_migration_asset_import,
+        image_revision: image_revision,
+        variant: "s300",
+      )
       delete_asset_request = stub_asset_manager_delete_asset(asset_id)
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
 
@@ -83,9 +87,11 @@ RSpec.describe WhitehallImporter::MigrateAssets do
     end
 
     it "deletes attachment variants even if they are live" do
-      asset = create(:whitehall_migration_asset_import,
-                     :for_file_attachment,
-                     variant: "thumbnail")
+      asset = create(
+        :whitehall_migration_asset_import,
+        :for_file_attachment,
+        variant: "thumbnail",
+      )
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
 
       stub_asset_manager_has_a_whitehall_asset(
@@ -99,8 +105,10 @@ RSpec.describe WhitehallImporter::MigrateAssets do
     end
 
     it "redirects live images to their content publisher equivalents" do
-      asset = build(:whitehall_migration_asset_import,
-                    :for_image)
+      asset = build(
+        :whitehall_migration_asset_import,
+        :for_image,
+      )
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       redirect_request = stub_asset_manager_update_asset(
         asset_id,
@@ -113,9 +121,11 @@ RSpec.describe WhitehallImporter::MigrateAssets do
     end
 
     it "redirects live image variants to their content publisher equivalents" do
-      asset = build(:whitehall_migration_asset_import,
-                    :for_image,
-                    variant: "s300")
+      asset = build(
+        :whitehall_migration_asset_import,
+        :for_image,
+        variant: "s300",
+      )
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       redirect_request = stub_asset_manager_update_asset(
         asset_id,
@@ -128,9 +138,11 @@ RSpec.describe WhitehallImporter::MigrateAssets do
     end
 
     it "deletes live image variants that have no content publisher equivalent" do
-      asset = build(:whitehall_migration_asset_import,
-                    :for_image,
-                    variant: "s216")
+      asset = build(
+        :whitehall_migration_asset_import,
+        :for_image,
+        variant: "s216",
+      )
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       delete_request = stub_asset_manager_delete_asset(asset_id)
 

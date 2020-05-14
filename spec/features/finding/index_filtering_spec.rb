@@ -40,24 +40,28 @@ RSpec.feature "Index filtering" do
     @other_organisation = { "content_id" => SecureRandom.uuid,
                             "internal_name" => "Organisation 2" }
 
-    @relevant_edition = create(:edition,
-                               :political,
-                               government: past_government,
-                               title: "Super relevant",
-                               tags: {
-                                 primary_publishing_organisation: [@primary_organisation["content_id"]],
-                                 organisations: [
-                                   @primary_organisation["content_id"],
-                                   @other_organisation["content_id"],
-                                 ],
-                               })
-    create(:edition,
-           :published,
-           title: "Irrelevant but my organisation",
-           tags: {
-             primary_publishing_organisation: [@primary_organisation["content_id"]],
-             organisations: [@primary_organisation["content_id"]],
-           })
+    @relevant_edition = create(
+      :edition,
+      :political,
+      government: past_government,
+      title: "Super relevant",
+      tags: {
+        primary_publishing_organisation: [@primary_organisation["content_id"]],
+        organisations: [
+          @primary_organisation["content_id"],
+          @other_organisation["content_id"],
+        ],
+      },
+    )
+    create(
+      :edition,
+      :published,
+      title: "Irrelevant but my organisation",
+      tags: {
+        primary_publishing_organisation: [@primary_organisation["content_id"]],
+        organisations: [@primary_organisation["content_id"]],
+      },
+    )
 
     create(:edition, :published, title: "Not even my organisation")
   end

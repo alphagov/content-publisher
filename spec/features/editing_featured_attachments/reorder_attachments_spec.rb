@@ -23,9 +23,11 @@ RSpec.feature "Reorder attachments" do
     @attachment_revision1 = create(:file_attachment_revision)
     @attachment_revision2 = create(:file_attachment_revision)
 
-    @edition = create(:edition,
-                      document_type: build(:document_type, attachments: "featured"),
-                      file_attachment_revisions: [@attachment_revision1, @attachment_revision2])
+    @edition = create(
+      :edition,
+      document_type: build(:document_type, attachments: "featured"),
+      file_attachment_revisions: [@attachment_revision1, @attachment_revision2],
+    )
   end
 
   def when_i_go_to_the_attachments_page

@@ -53,15 +53,17 @@ RSpec.describe "Change History tasks" do
           "id" => SecureRandom.uuid,
           "public_timestamp" => "2020-02-20T18:00:00+00:00",
           "note" => "First change note",
-        }, {
+        },
+        {
           "id" => id_to_delete,
           "public_timestamp" => "2020-02-20T17:00:00+00:00",
           "note" => "Second change note",
-        }, {
+        },
+        {
           "id" => SecureRandom.uuid,
           "public_timestamp" => "2020-02-20T16:00:00+00:00",
           "note" => "Third change note",
-        }
+        },
       ]
     end
 
@@ -99,15 +101,17 @@ RSpec.describe "Change History tasks" do
           "id" => SecureRandom.uuid,
           "public_timestamp" => "2020-02-20T18:00:00+00:00",
           "note" => "First change note",
-        }, {
+        },
+        {
           "id" => id_to_edit,
           "public_timestamp" => "2020-02-20T17:00:00+00:00",
           "note" => "Second change note",
-        }, {
+        },
+        {
           "id" => SecureRandom.uuid,
           "public_timestamp" => "2020-02-20T16:00:00+00:00",
           "note" => "Third change note",
-        }
+        },
       ]
     end
 
@@ -166,8 +170,10 @@ RSpec.describe "Change History tasks" do
         Rake::Task["change_history:add"].invoke(edition.content_id)
 
         expect(edition.reload.change_history)
-          .to include(a_hash_including("note" => "New change note",
-                                       "public_timestamp" => "2020-10-22T09:30:00+01:00"))
+          .to include(a_hash_including(
+                        "note" => "New change note",
+                        "public_timestamp" => "2020-10-22T09:30:00+01:00",
+                      ))
       end
     end
 

@@ -10,8 +10,10 @@ RSpec.describe "documents/index/_filters" do
           document_type: "organisation",
         )
         render
-        expect(rendered).to have_select("organisation",
-                                        options: ["", "Org 1", "Org 2"])
+        expect(rendered).to have_select(
+          "organisation",
+          options: ["", "Org 1", "Org 2"],
+        )
       end
     end
 
