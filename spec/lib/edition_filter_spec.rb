@@ -130,13 +130,15 @@ RSpec.describe EditionFilter do
       let(:supporting_org_id) { SecureRandom.uuid }
 
       let!(:edition) do
-        create(:edition,
-               :access_limited,
-               limit_type: :primary_organisation,
-               tags: {
-                 primary_publishing_organisation: [user.organisation_content_id],
-                 organisations: [supporting_org_id],
-               })
+        create(
+          :edition,
+          :access_limited,
+          limit_type: :primary_organisation,
+          tags: {
+            primary_publishing_organisation: [user.organisation_content_id],
+            organisations: [supporting_org_id],
+          },
+        )
       end
 
       it "includes the edition if the user is in its primary org" do
@@ -166,13 +168,15 @@ RSpec.describe EditionFilter do
       let(:supporting_org_id) { SecureRandom.uuid }
 
       let!(:edition) do
-        create(:edition,
-               :access_limited,
-               limit_type: :tagged_organisations,
-               tags: {
-                 primary_publishing_organisation: [user.organisation_content_id],
-                 organisations: [supporting_org_id],
-               })
+        create(
+          :edition,
+          :access_limited,
+          limit_type: :tagged_organisations,
+          tags: {
+            primary_publishing_organisation: [user.organisation_content_id],
+            organisations: [supporting_org_id],
+          },
+        )
       end
 
       it "includes the edition if the user is in its primary org" do
@@ -202,9 +206,12 @@ RSpec.describe EditionFilter do
       it "includes the edition" do
         edition = create(:edition, :access_limited)
 
-        gds_user = build(:user, permissions: [
-          User::ACCESS_LIMIT_OVERRIDE_PERMISSION,
-        ])
+        gds_user = build(
+          :user,
+          permissions: [
+            User::ACCESS_LIMIT_OVERRIDE_PERMISSION,
+          ],
+        )
 
         editions = described_class.new(gds_user).editions
         expect(editions).to eq([edition])

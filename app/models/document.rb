@@ -29,16 +29,20 @@ class Document < ApplicationRecord
 
   delegate :topics, to: :document_topics
 
-  scope :with_current_edition, lambda {
-    join_tables = { current_edition: %i[revision status] }
-    joins(join_tables).includes(join_tables)
-  }
+  scope :with_current_edition,
+        lambda {
+          join_tables = { current_edition: %i[revision status] }
+          joins(join_tables).includes(join_tables)
+        }
 
-  scope :using_base_path, lambda { |base_path|
-    left_outer_joins(current_edition: { revision: :content_revision },
-                     live_edition: { revision: :content_revision })
-      .where("content_revisions.base_path": base_path)
-  }
+  scope :using_base_path,
+        lambda { |base_path|
+          left_outer_joins(
+            current_edition: { revision: :content_revision },
+            live_edition: { revision: :content_revision },
+          )
+            .where("content_revisions.base_path": base_path)
+        }
 
   def self.find_by_param(content_id_and_locale)
     content_id, locale = content_id_and_locale.split(":")

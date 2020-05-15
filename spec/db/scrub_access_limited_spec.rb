@@ -8,10 +8,12 @@ RSpec.describe "Scrub Access Limited SQL Script" do
 
   it "replaces an access limited draft with the live one" do
     current_edition = create(:edition, :access_limited, document: document)
-    live_edition = create(:edition,
-                          :published,
-                          current: false,
-                          document: current_edition.document)
+    live_edition = create(
+      :edition,
+      :published,
+      current: false,
+      document: current_edition.document,
+    )
 
     expect(document.reload_current_edition).to eq(current_edition)
 

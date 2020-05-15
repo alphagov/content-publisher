@@ -56,10 +56,12 @@ private
     live_edition = document.live_edition
     return unless live_edition
 
-    AssignEditionStatusService.call(live_edition,
-                                    user: user,
-                                    state: :superseded,
-                                    record_edit: false)
+    AssignEditionStatusService.call(
+      live_edition,
+      user: user,
+      state: :superseded,
+      record_edit: false,
+    )
     live_edition.live = false
     live_edition.save!
   end

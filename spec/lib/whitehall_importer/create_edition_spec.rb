@@ -8,8 +8,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
     it "can import an edition" do
       whitehall_edition = build(:whitehall_export_edition)
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition)
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+      )
 
       expect(edition).to be_draft
       expect(edition.number).to eq(1)
@@ -18,8 +21,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
     it "can set minor update type" do
       whitehall_edition = build(:whitehall_export_edition, minor_change: true)
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition)
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+      )
 
       expect(edition.update_type).to eq("minor")
     end
@@ -34,15 +40,21 @@ RSpec.describe WhitehallImporter::CreateEdition do
       )
 
       expect {
-        described_class.call(document_import: document_import, change_history: change_history,
-                             whitehall_edition: whitehall_edition)
+        described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
       }.to raise_error(WhitehallImporter::AbortImportError)
     end
 
     it "defaults to an edition not being flagged as live" do
       whitehall_edition = build(:whitehall_export_edition)
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition)
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+      )
 
       expect(edition).not_to be_live
     end
@@ -53,20 +65,29 @@ RSpec.describe WhitehallImporter::CreateEdition do
         state: "published",
         revision_history: [
           build(:whitehall_export_revision_history_event),
-          build(:whitehall_export_revision_history_event,
-                event: "update", state: "published"),
+          build(
+            :whitehall_export_revision_history_event,
+            event: "update",
+            state: "published",
+          ),
         ],
       )
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition)
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+      )
 
       expect(edition).to be_live
     end
 
     it "does not mark the edition as synced with Publishing API" do
       whitehall_edition = build(:whitehall_export_edition)
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition)
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+      )
 
       expect(edition.revision_synced).to be false
     end
@@ -85,8 +106,12 @@ RSpec.describe WhitehallImporter::CreateEdition do
         ],
       )
 
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition, user_ids: user_ids)
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+        user_ids: user_ids,
+      )
 
       expect(edition.editors.count).to eq(2)
     end
@@ -96,128 +121,193 @@ RSpec.describe WhitehallImporter::CreateEdition do
       let(:whitehall_user_id) { rand(100) }
       let(:user_ids) { { whitehall_user_id => content_publisher_user.id } }
       let(:create_event) do
-        build(:whitehall_export_revision_history_event,
-              event: "create",
-              whodunnit: whitehall_user_id,
-              created_at: 1.week.ago.noon)
+        build(
+          :whitehall_export_revision_history_event,
+          event: "create",
+          whodunnit: whitehall_user_id,
+          created_at: 1.week.ago.noon,
+        )
       end
 
       it "imports a create revision history event" do
-        whitehall_edition = build(:whitehall_export_edition,
-                                  revision_history: [create_event])
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition, user_ids: user_ids)
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          revision_history: [create_event],
+        )
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+          user_ids: user_ids,
+        )
         timeline_entry = edition.timeline_entries.first
         expect(timeline_entry.attributes)
-          .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => content_publisher_user.id,
-                                     "created_at" => 1.week.ago.noon)
+          .to match a_hash_including(
+            "entry_type" => "whitehall_migration",
+            "created_by_id" => content_publisher_user.id,
+            "created_at" => 1.week.ago.noon,
+          )
         expect(timeline_entry.details.attributes)
-          .to match a_hash_including("entry_type" => "first_created",
-                                     "contents" => {})
+          .to match a_hash_including(
+            "entry_type" => "first_created",
+            "contents" => {},
+          )
       end
 
       it "imports a published revision history event" do
-        publish_event = build(:whitehall_export_revision_history_event,
-                              whodunnit: whitehall_user_id,
-                              event: "update",
-                              state: "published",
-                              created_at: 1.day.ago.noon)
-        whitehall_edition = build(:whitehall_export_edition,
-                                  revision_history: [create_event,
-                                                     publish_event])
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition, user_ids: user_ids)
+        publish_event = build(
+          :whitehall_export_revision_history_event,
+          whodunnit: whitehall_user_id,
+          event: "update",
+          state: "published",
+          created_at: 1.day.ago.noon,
+        )
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          revision_history: [create_event,
+                             publish_event],
+        )
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+          user_ids: user_ids,
+        )
         timeline_entry = edition.timeline_entries.order(:created_at).last
         expect(timeline_entry.attributes)
-          .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => content_publisher_user.id,
-                                     "created_at" => 1.day.ago.noon)
+          .to match a_hash_including(
+            "entry_type" => "whitehall_migration",
+            "created_by_id" => content_publisher_user.id,
+            "created_at" => 1.day.ago.noon,
+          )
         expect(timeline_entry.details.attributes)
-          .to match a_hash_including("entry_type" => "published",
-                                     "contents" => {})
+          .to match a_hash_including(
+            "entry_type" => "published",
+            "contents" => {},
+          )
       end
 
       it "imports an editorial remark event" do
-        event = build(:whitehall_export_editorial_remark_event,
-                      author_id: whitehall_user_id,
-                      body: "Another note",
-                      created_at: 1.day.ago.noon)
-        whitehall_edition = build(:whitehall_export_edition,
-                                  revision_history: [create_event],
-                                  editorial_remarks: [event])
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition, user_ids: user_ids)
+        event = build(
+          :whitehall_export_editorial_remark_event,
+          author_id: whitehall_user_id,
+          body: "Another note",
+          created_at: 1.day.ago.noon,
+        )
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          revision_history: [create_event],
+          editorial_remarks: [event],
+        )
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+          user_ids: user_ids,
+        )
         timeline_entry = edition.timeline_entries.order(:created_at).last
         expect(timeline_entry.attributes)
-          .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => content_publisher_user.id,
-                                     "created_at" => 1.day.ago.noon)
+          .to match a_hash_including(
+            "entry_type" => "whitehall_migration",
+            "created_by_id" => content_publisher_user.id,
+            "created_at" => 1.day.ago.noon,
+          )
         expect(timeline_entry.details.attributes)
-          .to match a_hash_including("entry_type" => "internal_note",
-                                     "contents" => { "body" => "Another note" })
+          .to match a_hash_including(
+            "entry_type" => "internal_note",
+            "contents" => { "body" => "Another note" },
+          )
       end
 
       it "imports a fact check request event" do
-        event = build(:whitehall_export_fact_check_event,
-                      requestor_id: whitehall_user_id,
-                      email_address: "someone@somewhere.com",
-                      instructions: "Do something",
-                      comments: nil,
-                      created_at: 1.day.ago.noon)
-        whitehall_edition = build(:whitehall_export_edition,
-                                  revision_history: [create_event],
-                                  fact_check_requests: [event])
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition, user_ids: user_ids)
+        event = build(
+          :whitehall_export_fact_check_event,
+          requestor_id: whitehall_user_id,
+          email_address: "someone@somewhere.com",
+          instructions: "Do something",
+          comments: nil,
+          created_at: 1.day.ago.noon,
+        )
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          revision_history: [create_event],
+          fact_check_requests: [event],
+        )
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+          user_ids: user_ids,
+        )
         timeline_entry = edition.timeline_entries.order(:created_at).last
         expect(timeline_entry.attributes)
-          .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => content_publisher_user.id,
-                                     "created_at" => 1.day.ago.noon)
+          .to match a_hash_including(
+            "entry_type" => "whitehall_migration",
+            "created_by_id" => content_publisher_user.id,
+            "created_at" => 1.day.ago.noon,
+          )
         expect(timeline_entry.details.attributes)
-          .to match a_hash_including("entry_type" => "fact_check_request",
-                                     "contents" => {
-                                       "email_address" =>
-                                          "someone@somewhere.com",
-                                       "instructions" => "Do something",
-                                     })
+          .to match a_hash_including(
+            "entry_type" => "fact_check_request",
+            "contents" => {
+              "email_address" =>
+                 "someone@somewhere.com",
+              "instructions" => "Do something",
+            },
+          )
       end
 
       it "imports a fact check response event" do
         response_received_at = 1.day.ago.noon
-        event = build(:whitehall_export_fact_check_event,
-                      requestor_id: whitehall_user_id,
-                      email_address: "someone@somewhere.com",
-                      comments: "Hello World",
-                      created_at: 2.days.ago.noon,
-                      updated_at: response_received_at)
-        whitehall_edition = build(:whitehall_export_edition,
-                                  revision_history: [create_event],
-                                  fact_check_requests: [event])
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition, user_ids: user_ids)
+        event = build(
+          :whitehall_export_fact_check_event,
+          requestor_id: whitehall_user_id,
+          email_address: "someone@somewhere.com",
+          comments: "Hello World",
+          created_at: 2.days.ago.noon,
+          updated_at: response_received_at,
+        )
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          revision_history: [create_event],
+          fact_check_requests: [event],
+        )
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+          user_ids: user_ids,
+        )
         response_entry = edition.timeline_entries.order(:created_at).last
         expect(response_entry.attributes)
-          .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_at" => response_received_at,
-                                     "created_by_id" => nil)
+          .to match a_hash_including(
+            "entry_type" => "whitehall_migration",
+            "created_at" => response_received_at,
+            "created_by_id" => nil,
+          )
         expect(response_entry.details.attributes)
-          .to match a_hash_including("entry_type" => "fact_check_response",
-                                     "contents" => {
-                                       "email_address" =>
-                                         "someone@somewhere.com",
-                                       "comments" => "Hello World",
-                                     })
+          .to match a_hash_including(
+            "entry_type" => "fact_check_response",
+            "contents" => {
+              "email_address" =>
+                "someone@somewhere.com",
+              "comments" => "Hello World",
+            },
+          )
       end
     end
 
     context "when importing an access limited edition" do
       it "creates an access limit" do
-        whitehall_edition = build(:whitehall_export_edition,
-                                  access_limited: true)
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition)
+        whitehall_edition = build(
+          :whitehall_export_edition,
+          access_limited: true,
+        )
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
 
         expect(edition.access_limit).to be_present
         expect(edition.access_limit).to be_tagged_organisations
@@ -227,12 +317,21 @@ RSpec.describe WhitehallImporter::CreateEdition do
     it "attributes the status to the user that created it and at the time that was done" do
       whitehall_user_id = 1
       user = create(:user)
-      create_event = build(:whitehall_export_revision_history_event,
-                           event: "create", whodunnit: whitehall_user_id)
-      whitehall_edition = build(:whitehall_export_edition,
-                                revision_history: [create_event])
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition, user_ids: { whitehall_user_id => user.id })
+      create_event = build(
+        :whitehall_export_revision_history_event,
+        event: "create",
+        whodunnit: whitehall_user_id,
+      )
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        revision_history: [create_event],
+      )
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+        user_ids: { whitehall_user_id => user.id },
+      )
 
       expect(edition.status.created_by).to eq(user)
       expect(edition.status.created_at).to eq(
@@ -243,29 +342,44 @@ RSpec.describe WhitehallImporter::CreateEdition do
     context "when the document is withdrawn" do
       let(:published_at) { Time.zone.now.yesterday.rfc3339 }
       let(:whitehall_edition) do
-        build(:whitehall_export_edition,
+        build(
+          :whitehall_export_edition,
+          state: "withdrawn",
+          revision_history: [
+            build(:whitehall_export_revision_history_event),
+            build(
+              :whitehall_export_revision_history_event,
+              event: "update",
+              state: "published",
+              created_at: published_at,
+            ),
+            build(
+              :whitehall_export_revision_history_event,
+              event: "update",
               state: "withdrawn",
-              revision_history: [
-                build(:whitehall_export_revision_history_event),
-                build(:whitehall_export_revision_history_event,
-                      event: "update", state: "published", created_at: published_at),
-                build(:whitehall_export_revision_history_event,
-                      event: "update", state: "withdrawn"),
-              ],
-              unpublishing: build(:whitehall_export_unpublishing))
+            ),
+          ],
+          unpublishing: build(:whitehall_export_unpublishing),
+        )
       end
 
       it "creates a live withdrawn edition" do
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition)
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
         expect(edition).to be_withdrawn
         expect(edition).to be_live
         expect(edition.published_at).to eq(published_at)
       end
 
       it "sets the expected withdrawal metadata" do
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition)
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
         expect(edition.status.details.withdrawn_at.rfc3339).to eq(
           whitehall_edition["unpublishing"]["created_at"],
         )
@@ -275,8 +389,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
       end
 
       it "sets a previous status of the edition of the publishing status " do
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition)
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
         first_status = edition.statuses.first
         expect(first_status).to be_published
         expect(edition.status.details.published_status).to eq(first_status)
@@ -288,33 +405,52 @@ RSpec.describe WhitehallImporter::CreateEdition do
       let(:published_at) { Time.zone.now.yesterday.rfc3339 }
       let(:updated_at) { Time.zone.now.rfc3339 }
       let(:whitehall_edition) do
-        build(:whitehall_export_edition,
-              revision_history: [
-                build(:whitehall_export_revision_history_event,
-                      created_at: created_at),
-                build(:whitehall_export_revision_history_event,
-                      event: "update", state: "published",
-                      created_at: published_at),
-                build(:whitehall_export_revision_history_event,
-                      event: "update", state: "draft", created_at: updated_at),
-              ],
-              unpublishing: build(:whitehall_export_unpublishing,
-                                  alternative_path: "/gators",
-                                  unpublishing_reason: "Consolidated into another GOV.UK page",
-                                  explanation: "Gator"))
+        build(
+          :whitehall_export_edition,
+          revision_history: [
+            build(
+              :whitehall_export_revision_history_event,
+              created_at: created_at,
+            ),
+            build(
+              :whitehall_export_revision_history_event,
+              event: "update",
+              state: "published",
+              created_at: published_at,
+            ),
+            build(
+              :whitehall_export_revision_history_event,
+              event: "update",
+              state: "draft",
+              created_at: updated_at,
+            ),
+          ],
+          unpublishing: build(
+            :whitehall_export_unpublishing,
+            alternative_path: "/gators",
+            unpublishing_reason: "Consolidated into another GOV.UK page",
+            explanation: "Gator",
+          ),
+        )
       end
 
       it "creates a live edition with a status of removed" do
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition)
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
 
         expect(edition).to be_removed
         expect(edition).to be_live
       end
 
       it "sets the correct removal metadata" do
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition)
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
 
         removal = edition.status.details
         expect(removal.explanatory_note).to eq(whitehall_edition["unpublishing"]["explanation"])
@@ -324,8 +460,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
       end
 
       it "sets the correct timestamps on the edition" do
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition)
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
 
         expect(edition.created_at).to eq(created_at)
         expect(edition.updated_at).to eq(updated_at)
@@ -338,43 +477,65 @@ RSpec.describe WhitehallImporter::CreateEdition do
       let(:created_at) { Time.zone.now.rfc3339 }
       let(:published_at) { Time.zone.now.yesterday.rfc3339 }
       let(:whitehall_edition) do
-        build(:whitehall_export_edition,
-              revision_history: [
-                build(:whitehall_export_revision_history_event),
-                build(:whitehall_export_revision_history_event,
-                      event: "update", state: "published",
-                      created_at: published_at),
-                build(:whitehall_export_revision_history_event,
-                      event: "update",
-                      state: "draft",
-                      created_at: 5.minutes.ago.rfc3339),
-                build(:whitehall_export_revision_history_event,
-                      event: "update", state: "draft", created_at: created_at),
-              ],
-              unpublishing: build(:whitehall_export_unpublishing,
-                                  alternative_path: "/flextension",
-                                  unpublishing_reason: "Consolidated into another GOV.UK page",
-                                  explanation: "Brexit is being delayed again"))
+        build(
+          :whitehall_export_edition,
+          revision_history: [
+            build(:whitehall_export_revision_history_event),
+            build(
+              :whitehall_export_revision_history_event,
+              event: "update",
+              state: "published",
+              created_at: published_at,
+            ),
+            build(
+              :whitehall_export_revision_history_event,
+              event: "update",
+              state: "draft",
+              created_at: 5.minutes.ago.rfc3339,
+            ),
+            build(
+              :whitehall_export_revision_history_event,
+              event: "update",
+              state: "draft",
+              created_at: created_at,
+            ),
+          ],
+          unpublishing: build(
+            :whitehall_export_unpublishing,
+            alternative_path: "/flextension",
+            unpublishing_reason: "Consolidated into another GOV.UK page",
+            explanation: "Brexit is being delayed again",
+          ),
+        )
       end
 
       it "creates two editions" do
         expect {
-          described_class.call(document_import: document_import, change_history: change_history,
-                               whitehall_edition: whitehall_edition)
+          described_class.call(
+            document_import: document_import,
+            change_history: change_history,
+            whitehall_edition: whitehall_edition,
+          )
         } .to change(Edition, :count).by(2)
       end
 
       it "creates a live edition with a status of removed" do
-        described_class.call(document_import: document_import, change_history: change_history,
-                             whitehall_edition: whitehall_edition)
+        described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
 
         expect(document.editions.first).to be_removed
         expect(document.editions.first).to be_live
       end
 
       it "sets the correct removal metadata" do
-        described_class.call(document_import: document_import, change_history: change_history,
-                             whitehall_edition: whitehall_edition)
+        described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
 
         removal = document.editions.first.status.details
         expect(removal.explanatory_note).to eq(whitehall_edition["unpublishing"]["explanation"])
@@ -385,16 +546,22 @@ RSpec.describe WhitehallImporter::CreateEdition do
       end
 
       it "creates a draft edition and assigns as current" do
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition)
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
 
         expect(edition).to be_draft
         expect(edition).to be_current
       end
 
       it "sets the correct timestamps" do
-        edition = described_class.call(document_import: document_import, change_history: change_history,
-                                       whitehall_edition: whitehall_edition)
+        edition = described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
         removed_edition = edition.document.editions.first
 
         expect(edition.created_at).to eq(created_at)
@@ -411,14 +578,23 @@ RSpec.describe WhitehallImporter::CreateEdition do
           state: "superseded",
           revision_history: [
             build(:whitehall_export_revision_history_event),
-            build(:whitehall_export_revision_history_event,
-                  event: "update", state: "published"),
-            build(:whitehall_export_revision_history_event,
-                  event: "update", state: "archived"),
+            build(
+              :whitehall_export_revision_history_event,
+              event: "update",
+              state: "published",
+            ),
+            build(
+              :whitehall_export_revision_history_event,
+              event: "update",
+              state: "archived",
+            ),
           ],
         )
-        described_class.call(document_import: document_import, change_history: change_history,
-                             whitehall_edition: whitehall_edition)
+        described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
 
         expect(document.editions.first).to be_superseded
       end
@@ -429,14 +605,20 @@ RSpec.describe WhitehallImporter::CreateEdition do
           state: "superseded",
           revision_history: [
             build(:whitehall_export_revision_history_event),
-            build(:whitehall_export_revision_history_event,
-                  event: "update", state: "published"),
+            build(
+              :whitehall_export_revision_history_event,
+              event: "update",
+              state: "published",
+            ),
           ],
         )
 
         expect {
-          described_class.call(document_import: document_import, change_history: change_history,
-                               whitehall_edition: whitehall_edition)
+          described_class.call(
+            document_import: document_import,
+            change_history: change_history,
+            whitehall_edition: whitehall_edition,
+          )
         }.to raise_error(WhitehallImporter::AbortImportError, "Edition is missing a superseded event")
       end
     end
@@ -447,17 +629,26 @@ RSpec.describe WhitehallImporter::CreateEdition do
         state: "withdrawn",
         revision_history: [
           build(:whitehall_export_revision_history_event),
-          build(:whitehall_export_revision_history_event,
-                event: "update", state: "published"),
-          build(:whitehall_export_revision_history_event,
-                event: "update", state: "withdrawn"),
+          build(
+            :whitehall_export_revision_history_event,
+            event: "update",
+            state: "published",
+          ),
+          build(
+            :whitehall_export_revision_history_event,
+            event: "update",
+            state: "withdrawn",
+          ),
         ],
         unpublishing: nil,
       )
 
       expect {
-        described_class.call(document_import: document_import, change_history: change_history,
-                             whitehall_edition: whitehall_edition)
+        described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
       }.to raise_error(WhitehallImporter::AbortImportError)
     end
   end
@@ -467,22 +658,32 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
     it "sets the edition as scheduled" do
       publish_time = Date.tomorrow.beginning_of_day
-      whitehall_edition = build(:whitehall_export_edition,
-                                :scheduled,
-                                scheduled_publication: publish_time.rfc3339)
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition)
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        :scheduled,
+        scheduled_publication: publish_time.rfc3339,
+      )
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+      )
 
       expect(edition).to be_scheduled
       expect(edition.status.details.publish_time).to eq(publish_time)
     end
 
     it "sets a previous submitted_for_review status when the whitehall edition was submitted" do
-      whitehall_edition = build(:whitehall_export_edition,
-                                :scheduled,
-                                previous_state: "submitted")
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition)
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        :scheduled,
+        previous_state: "submitted",
+      )
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+      )
 
       statuses = edition.statuses.map(&:state)
       expect(statuses).to contain_exactly("submitted_for_review", "scheduled")
@@ -490,11 +691,16 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     it "sets a previous submitted_for_review status when the whitehall edition was a draft" do
-      whitehall_edition = build(:whitehall_export_edition,
-                                :scheduled,
-                                previous_state: "draft")
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition)
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        :scheduled,
+        previous_state: "draft",
+      )
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+      )
 
       statuses = edition.statuses.map(&:state)
       expect(statuses).to contain_exactly("draft", "scheduled")
@@ -502,31 +708,46 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     it "marks a non force published whitehall edition as reviewed" do
-      whitehall_edition = build(:whitehall_export_edition,
-                                :scheduled,
-                                force_published: false)
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition)
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        :scheduled,
+        force_published: false,
+      )
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+      )
       expect(edition.status.details).to be_reviewed
     end
 
     it "marks a force published whitehall edition as needing review" do
-      whitehall_edition = build(:whitehall_export_edition,
-                                :scheduled,
-                                force_published: true)
-      edition = described_class.call(document_import: document_import, change_history: change_history,
-                                     whitehall_edition: whitehall_edition)
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        :scheduled,
+        force_published: true,
+      )
+      edition = described_class.call(
+        document_import: document_import,
+        change_history: change_history,
+        whitehall_edition: whitehall_edition,
+      )
       expect(edition.status.details).not_to be_reviewed
     end
 
     it "aborts when there is no scheduled publication date" do
-      whitehall_edition = build(:whitehall_export_edition,
-                                :scheduled,
-                                scheduled_publication: nil)
+      whitehall_edition = build(
+        :whitehall_export_edition,
+        :scheduled,
+        scheduled_publication: nil,
+      )
 
       expect {
-        described_class.call(document_import: document_import, change_history: change_history,
-                             whitehall_edition: whitehall_edition)
+        described_class.call(
+          document_import: document_import,
+          change_history: change_history,
+          whitehall_edition: whitehall_edition,
+        )
       }.to raise_error(
         WhitehallImporter::AbortImportError,
         "Cannot create scheduled status without scheduled_publication",

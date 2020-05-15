@@ -24,7 +24,9 @@ private
   end
 
   def generate_markdown_code
-    context.markdown_code = I18n.t!("contact_embed.new.contact_markdown",
-                                    id: params[:contact_id])
+    context.markdown_code = I18n.t!(
+      "contact_embed.new.contact_markdown",
+      id: params[:contact_id],
+    )
   end
 end

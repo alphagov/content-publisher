@@ -24,10 +24,12 @@ private
     return unless normalised_image.width < Image::WIDTH ||
       normalised_image.height < Image::HEIGHT
 
-    issues.create(:image_upload,
-                  :too_small,
-                  width: Image::WIDTH,
-                  height: Image::HEIGHT)
+    issues.create(
+      :image_upload,
+      :too_small,
+      width: Image::WIDTH,
+      height: Image::HEIGHT,
+    )
   end
 
   def check_image_is_not_animated

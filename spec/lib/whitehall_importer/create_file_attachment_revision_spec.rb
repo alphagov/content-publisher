@@ -24,12 +24,16 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
     expect(document_import.assets.size).to eq(2)
     expect(document_import.assets.map(&:attributes).map(&:with_indifferent_access))
       .to contain_exactly(
-        a_hash_including(variant: nil,
-                         file_attachment_revision_id: revision.id,
-                         original_asset_url: whitehall_file_attachment["url"]),
-        a_hash_including(variant: "thumbnail",
-                         file_attachment_revision_id: revision.id,
-                         original_asset_url: whitehall_file_attachment["variants"]["thumbnail"]["url"]),
+        a_hash_including(
+          variant: nil,
+          file_attachment_revision_id: revision.id,
+          original_asset_url: whitehall_file_attachment["url"],
+        ),
+        a_hash_including(
+          variant: "thumbnail",
+          file_attachment_revision_id: revision.id,
+          original_asset_url: whitehall_file_attachment["variants"]["thumbnail"]["url"],
+        ),
       )
   end
 
@@ -56,8 +60,10 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
     let(:whitehall_file_attachment) { build(:whitehall_export_file_attachment, title: too_long_title) }
 
     let(:error_message) do
-      I18n.t!("requirements.title.too_long.form_message",
-              max_length: Requirements::Form::FileAttachmentUploadChecker::TITLE_MAX_LENGTH)
+      I18n.t!(
+        "requirements.title.too_long.form_message",
+        max_length: Requirements::Form::FileAttachmentUploadChecker::TITLE_MAX_LENGTH,
+      )
     end
 
     it_behaves_like "rejected file attachment"

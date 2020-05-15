@@ -3,13 +3,17 @@ RSpec.describe WhitehallImporter::CreateMigration do
   describe ".call" do
     let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
     let(:whitehall_export_page_1) do
-      build(:whitehall_export_index,
-            documents: build_list(:whitehall_export_index_document, 100))
+      build(
+        :whitehall_export_index,
+        documents: build_list(:whitehall_export_index_document, 100),
+      )
     end
 
     let(:whitehall_export_page_2) do
-      build(:whitehall_export_index,
-            documents: build_list(:whitehall_export_index_document, 10))
+      build(
+        :whitehall_export_index,
+        documents: build_list(:whitehall_export_index_document, 10),
+      )
     end
 
     context "with organisation and type specified" do
@@ -58,9 +62,11 @@ RSpec.describe WhitehallImporter::CreateMigration do
       it "creates a WhitehallMigration" do
         freeze_time do
           expect {
-            described_class.call("123",
-                                 "news_article",
-                                 %w[press_release news_story])
+            described_class.call(
+              "123",
+              "news_article",
+              %w[press_release news_story],
+            )
           }.to change(WhitehallMigration, :count).by(1)
           expect(WhitehallMigration.last.organisation_content_id).to eq("123")
           expect(WhitehallMigration.last.document_type).to eq("news_article")

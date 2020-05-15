@@ -73,8 +73,10 @@ private
     return if live_asset == current_asset
 
     begin
-      GdsApi.asset_manager.update_asset(live_asset.asset_manager_id,
-                                        redirect_url: current_asset.file_url)
+      GdsApi.asset_manager.update_asset(
+        live_asset.asset_manager_id,
+        redirect_url: current_asset.file_url,
+      )
 
       live_asset.update!(state: :superseded, superseded_by: current_asset)
     rescue GdsApi::HTTPNotFound

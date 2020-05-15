@@ -15,9 +15,14 @@ RSpec.describe "images/crop" do
 
   context "when the image has exact dimensions" do
     it "shows a 'Continue' button instead" do
-      assign(:image_revision, create(:image_revision,
-                                     width: Image::WIDTH,
-                                     height: Image::HEIGHT))
+      assign(
+        :image_revision,
+        create(
+          :image_revision,
+          width: Image::WIDTH,
+          height: Image::HEIGHT,
+        ),
+      )
 
       assign(:edition, build(:edition))
       render

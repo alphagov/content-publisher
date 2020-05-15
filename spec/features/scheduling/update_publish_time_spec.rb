@@ -45,8 +45,10 @@ RSpec.feature "Update publish time" do
 
   def then_i_see_the_edition_is_rescheduled
     expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))
-    expect(page).to have_content(I18n.t!("documents.show.scheduled_notice.title",
-                                         datetime: @new_time.to_s(:time_on_date)))
+    expect(page).to have_content(I18n.t!(
+                                   "documents.show.scheduled_notice.title",
+                                   datetime: @new_time.to_s(:time_on_date),
+                                 ))
   end
 
   def and_i_see_the_timeline_entry

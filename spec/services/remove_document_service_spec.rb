@@ -46,10 +46,12 @@ RSpec.describe RemoveDocumentService do
     context "when the removal is a redirect" do
       it "unpublishes in the Publishing API with a type of redirect" do
         freeze_time do
-          removal = build(:removal,
-                          redirect: true,
-                          alternative_url: "/path",
-                          explanatory_note: "explanation")
+          removal = build(
+            :removal,
+            redirect: true,
+            alternative_url: "/path",
+            explanatory_note: "explanation",
+          )
 
           request = stub_publishing_api_unpublish(
             edition.content_id,
@@ -70,10 +72,12 @@ RSpec.describe RemoveDocumentService do
     context "when the removal is not a redirect" do
       it "unpublishes in the Publishing API with a type of gone" do
         freeze_time do
-          removal = build(:removal,
-                          redirect: false,
-                          alternative_url: "/path",
-                          explanatory_note: "explanation")
+          removal = build(
+            :removal,
+            redirect: false,
+            alternative_url: "/path",
+            explanatory_note: "explanation",
+          )
 
           request = stub_publishing_api_unpublish(
             edition.content_id,
@@ -107,10 +111,12 @@ RSpec.describe RemoveDocumentService do
         existing_removed_at = 2.days.ago.noon
         existing_removal = build(:removal, removed_at: existing_removed_at)
         edition = create(:edition, :removed, removal: existing_removal)
-        new_removal = build(:removal,
-                            alternative_url: "/path",
-                            explanatory_note: "explanation",
-                            redirect: true)
+        new_removal = build(
+          :removal,
+          alternative_url: "/path",
+          explanatory_note: "explanation",
+          redirect: true,
+        )
 
         described_class.call(edition, new_removal)
         expect(edition.status.details.removed_at).to eq(existing_removed_at)
@@ -131,10 +137,12 @@ RSpec.describe RemoveDocumentService do
       it "removes assets that aren't absent" do
         image_revision = create(:image_revision, :on_asset_manager, state: :live)
         file_attachment_revision = create(:file_attachment_revision, :on_asset_manager, state: :live)
-        edition = create(:edition,
-                         :published,
-                         lead_image_revision: image_revision,
-                         file_attachment_revisions: [file_attachment_revision])
+        edition = create(
+          :edition,
+          :published,
+          lead_image_revision: image_revision,
+          file_attachment_revisions: [file_attachment_revision],
+        )
 
         delete_request = stub_asset_manager_deletes_any_asset
 
@@ -148,10 +156,12 @@ RSpec.describe RemoveDocumentService do
       it "copes with assets that 404" do
         image_revision = create(:image_revision, :on_asset_manager, state: :live)
         file_attachment_revision = create(:file_attachment_revision, :on_asset_manager, state: :live)
-        edition = create(:edition,
-                         :published,
-                         lead_image_revision: image_revision,
-                         file_attachment_revisions: [file_attachment_revision])
+        edition = create(
+          :edition,
+          :published,
+          lead_image_revision: image_revision,
+          file_attachment_revisions: [file_attachment_revision],
+        )
 
         delete_request = stub_asset_manager_deletes_any_asset.to_return(status: 404)
 
@@ -165,10 +175,12 @@ RSpec.describe RemoveDocumentService do
       it "ignores assets that are absent" do
         image_revision = create(:image_revision, :on_asset_manager, state: :absent)
         file_attachment_revision = create(:file_attachment_revision, :on_asset_manager, state: :absent)
-        edition = create(:edition,
-                         :published,
-                         lead_image_revision: image_revision,
-                         file_attachment_revisions: [file_attachment_revision])
+        edition = create(
+          :edition,
+          :published,
+          lead_image_revision: image_revision,
+          file_attachment_revisions: [file_attachment_revision],
+        )
 
         delete_request = stub_asset_manager_deletes_any_asset
 
@@ -184,10 +196,12 @@ RSpec.describe RemoveDocumentService do
       it "removes the edition" do
         image_revision = create(:image_revision, :on_asset_manager)
         file_attachment_revision = create(:file_attachment_revision, :on_asset_manager)
-        edition = create(:edition,
-                         :published,
-                         lead_image_revision: image_revision,
-                         file_attachment_revisions: [file_attachment_revision])
+        edition = create(
+          :edition,
+          :published,
+          lead_image_revision: image_revision,
+          file_attachment_revisions: [file_attachment_revision],
+        )
 
         expect { described_class.call(edition, build(:removal)) }
           .to raise_error(GdsApi::BaseError)
@@ -207,10 +221,12 @@ RSpec.describe RemoveDocumentService do
     context "when there is a live and a draft edition" do
       it "raises an error" do
         draft_edition = create(:edition)
-        live_edition = create(:edition,
-                              :published,
-                              current: false,
-                              document: draft_edition.document)
+        live_edition = create(
+          :edition,
+          :published,
+          current: false,
+          document: draft_edition.document,
+        )
 
         expect { described_class.call(live_edition, build(:removal)) }
           .to raise_error "Publishing API does not support unpublishing while there is a draft"

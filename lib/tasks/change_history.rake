@@ -11,9 +11,11 @@ namespace :change_history do
 
   desc "Delete a single change note for a document, e.g. change_history:delete[content_id change-note-id]"
   task :delete, %i[content_id change_history_id] => :environment do |_, args|
-    EditionUpdater.call(args.content_id,
-                        locale: ENV.fetch("LOCALE", "en"),
-                        user_email: ENV["USER_EMAIL"]) do |edition, updater|
+    EditionUpdater.call(
+      args.content_id,
+      locale: ENV.fetch("LOCALE", "en"),
+      user_email: ENV["USER_EMAIL"],
+    ) do |edition, updater|
       entry = edition.change_history.find { |item| item["id"] == args.change_history_id }
       raise "No change history entry with id #{args.change_history_id}" unless entry
 
@@ -23,9 +25,11 @@ namespace :change_history do
 
   desc "Edit a single change note for a document, e.g. change_history:edit[content-id, change-note-id] NOTE='some note'"
   task :edit, %i[content_id change_history_id] => :environment do |_, args|
-    EditionUpdater.call(args.content_id,
-                        locale: ENV.fetch("LOCALE", "en"),
-                        user_email: ENV["USER_EMAIL"]) do |edition, updater|
+    EditionUpdater.call(
+      args.content_id,
+      locale: ENV.fetch("LOCALE", "en"),
+      user_email: ENV["USER_EMAIL"],
+    ) do |edition, updater|
       raise "Expected a note" if ENV["NOTE"].blank?
 
       change_history = edition.change_history.deep_dup
@@ -39,9 +43,11 @@ namespace :change_history do
 
   desc "Add a new change note for a document, e.g. change_history:add[content-id] NOTE='some note' TIMESTAMP='2020-01-01 10:30:00'"
   task :add, %i[content_id] => :environment do |_, args|
-    EditionUpdater.call(args.content_id,
-                        locale: ENV.fetch("LOCALE", "en"),
-                        user_email: ENV["USER_EMAIL"]) do |edition, updater|
+    EditionUpdater.call(
+      args.content_id,
+      locale: ENV.fetch("LOCALE", "en"),
+      user_email: ENV["USER_EMAIL"],
+    ) do |edition, updater|
       raise "Expected a note" if ENV["NOTE"].blank?
       raise "Expected a timestamp" if ENV["TIMESTAMP"].blank?
 

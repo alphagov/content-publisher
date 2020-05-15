@@ -20,8 +20,10 @@ RSpec.describe "Contact Embed" do
 
   before do
     stub_publishing_api_get_editions([contact], Contacts::EDITION_PARAMS)
-    stub_publishing_api_has_linkables([organisation],
-                                      document_type: "organisation")
+    stub_publishing_api_has_linkables(
+      [organisation],
+      document_type: "organisation",
+    )
   end
 
   describe "GET /documents/:document/contact-embed" do

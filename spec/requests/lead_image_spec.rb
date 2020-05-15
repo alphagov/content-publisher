@@ -27,16 +27,20 @@ RSpec.describe "Lead Image" do
     end
 
     it "redirects to document summary with an alert" do
-      edition = create(:edition,
-                       document_type: document_type,
-                       image_revisions: [image_revision])
+      edition = create(
+        :edition,
+        document_type: document_type,
+        image_revisions: [image_revision],
+      )
       post choose_lead_image_path(edition.document, image_revision.image_id)
 
       expect(response).to redirect_to(document_path(edition.document))
       follow_redirect!
       expect(response.body).to have_content(
-        I18n.t!("documents.show.flashes.lead_image.selected",
-                file: image_revision.filename),
+        I18n.t!(
+          "documents.show.flashes.lead_image.selected",
+          file: image_revision.filename,
+        ),
       )
     end
   end
@@ -60,15 +64,19 @@ RSpec.describe "Lead Image" do
 
     it "redirects with an alert when an edition has a lead image" do
       image_revision = create(:image_revision)
-      edition = create(:edition,
-                       document_type: document_type,
-                       lead_image_revision: image_revision)
+      edition = create(
+        :edition,
+        document_type: document_type,
+        lead_image_revision: image_revision,
+      )
       delete remove_lead_image_path(edition.document)
 
       expect(response).to redirect_to(images_path(edition.document))
       follow_redirect!
-      alert = I18n.t!("images.index.flashes.lead_image.removed",
-                      file: image_revision.filename)
+      alert = I18n.t!(
+        "images.index.flashes.lead_image.removed",
+        file: image_revision.filename,
+      )
       expect(response.body).to have_selector(".gem-c-success-alert", text: alert)
     end
 

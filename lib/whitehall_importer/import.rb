@@ -128,7 +128,7 @@ module WhitehallImporter
       integrity_checker = IntegrityChecker.new(edition)
 
       unless integrity_checker.valid?
-        raise WhitehallImporter::IntegrityCheckError.new(integrity_checker)
+        raise WhitehallImporter::IntegrityCheckError, integrity_checker
       end
     end
   end

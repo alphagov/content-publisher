@@ -44,7 +44,9 @@ RSpec.feature "Update proposed publish time" do
 
   def then_i_see_the_new_proposed_time
     expect(page)
-      .to have_content(I18n.t!("documents.show.proposed_scheduling_notice.title",
-                               datetime: "11:00pm on 15 June 2019"))
+      .to have_content(I18n.t!(
+                         "documents.show.proposed_scheduling_notice.title",
+                         datetime: "11:00pm on 15 June 2019",
+                       ))
   end
 end

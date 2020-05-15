@@ -23,8 +23,10 @@ class ScheduledPublishMailer < ApplicationMailer
       raise "Cannot send failed publish email for a #{status.state} state"
     end
 
-    subject = I18n.t("scheduled_publish_mailer.failure_email.subject",
-                     title: edition.title)
+    subject = I18n.t(
+      "scheduled_publish_mailer.failure_email.subject",
+      title: edition.title,
+    )
 
     view_mail(template_id, to: recipient.email, subject: subject)
   end
@@ -33,11 +35,15 @@ private
 
   def success_subject
     if @edition.first?
-      I18n.t("scheduled_publish_mailer.success_email.subject.#{@status.state}",
-             title: @edition.title)
+      I18n.t(
+        "scheduled_publish_mailer.success_email.subject.#{@status.state}",
+        title: @edition.title,
+      )
     else
-      I18n.t("scheduled_publish_mailer.success_email.subject.update",
-             title: @edition.title)
+      I18n.t(
+        "scheduled_publish_mailer.success_email.subject.update",
+        title: @edition.title,
+      )
     end
   end
 end

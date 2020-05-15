@@ -62,23 +62,27 @@ class TimelineEntry < ApplicationRecord
   def self.create_for_status_change(entry_type:,
                                     status:,
                                     details: nil)
-    create!(entry_type: entry_type,
-            created_by: status.created_by,
-            status: status,
-            edition: status.edition,
-            document: status.edition.document,
-            details: details)
+    create!(
+      entry_type: entry_type,
+      created_by: status.created_by,
+      status: status,
+      edition: status.edition,
+      document: status.edition.document,
+      details: details,
+    )
   end
 
   def self.create_for_edition(entry_type:,
                               edition:,
                               created_by:,
                               details: nil)
-    create!(entry_type: entry_type,
-            created_by: created_by,
-            edition: edition,
-            document: edition.document,
-            details: details)
+    create!(
+      entry_type: entry_type,
+      created_by: created_by,
+      edition: edition,
+      document: edition.document,
+      details: details,
+    )
   end
 
   def self.create_for_revision(entry_type:,
@@ -90,11 +94,13 @@ class TimelineEntry < ApplicationRecord
     revision ||= edition.revision
     creator = created_by || revision.created_by
 
-    create!(entry_type: entry_type,
-            created_by: creator,
-            revision: revision,
-            edition: edition,
-            document: edition.document,
-            details: details)
+    create!(
+      entry_type: entry_type,
+      created_by: creator,
+      revision: revision,
+      edition: edition,
+      document: edition.document,
+      details: details,
+    )
   end
 end

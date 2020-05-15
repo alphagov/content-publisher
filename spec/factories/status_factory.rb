@@ -45,8 +45,10 @@ FactoryBot.define do
       end
 
       after(:build) do |status, evaluator|
-        new_scheduling = evaluator.association(:scheduling,
-                                               publish_time: evaluator.publish_time)
+        new_scheduling = evaluator.association(
+          :scheduling,
+          publish_time: evaluator.publish_time,
+        )
         status.details = evaluator.scheduling || new_scheduling
       end
     end

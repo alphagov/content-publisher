@@ -37,9 +37,11 @@ private
   end
 
   def schedule_to_publish
-    scheduling = Scheduling.new(pre_scheduled_status: edition.status,
-                                reviewed: params[:review_status] == "reviewed",
-                                publish_time: edition.proposed_publish_time)
+    scheduling = Scheduling.new(
+      pre_scheduled_status: edition.status,
+      reviewed: params[:review_status] == "reviewed",
+      publish_time: edition.proposed_publish_time,
+    )
 
     SchedulePublishService.call(edition, user, scheduling)
   rescue GdsApi::BaseError => e

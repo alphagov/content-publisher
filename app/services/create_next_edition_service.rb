@@ -22,18 +22,22 @@ private
   def next_edition
     @next_edition ||= begin
       document = current_edition.document
-      discarded_edition || Edition.new(document: document,
-                                       number: document.next_edition_number,
-                                       created_by: user)
+      discarded_edition || Edition.new(
+        document: document,
+        number: document.next_edition_number,
+        created_by: user,
+      )
     end
   end
 
   def next_revision
     updater = Versioning::RevisionUpdater.new(current_edition.revision, user)
-    updater.assign(change_note: "",
-                   update_type: "major",
-                   proposed_publish_time: nil,
-                   change_history: change_history)
+    updater.assign(
+      change_note: "",
+      update_type: "major",
+      proposed_publish_time: nil,
+      change_history: change_history,
+    )
     updater.next_revision
   end
 

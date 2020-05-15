@@ -33,14 +33,18 @@ RSpec.describe "Schedule" do
       expect(response).to redirect_to(document_path(edition.document))
       follow_redirect!
       expect(response.body)
-        .to have_selector(".gem-c-error-summary",
-                          text: I18n.t!("requirements.summary.blank.summary_message"))
+        .to have_selector(
+          ".gem-c-error-summary",
+          text: I18n.t!("requirements.summary.blank.summary_message"),
+        )
     end
 
     it "redirects to document summary when the content isn't schedulable" do
-      edition = create(:edition,
-                       :publishable,
-                       proposed_publish_time: Time.zone.yesterday)
+      edition = create(
+        :edition,
+        :publishable,
+        proposed_publish_time: Time.zone.yesterday,
+      )
       get new_schedule_path(edition.document)
 
       expect(response).to redirect_to(document_path(edition.document))

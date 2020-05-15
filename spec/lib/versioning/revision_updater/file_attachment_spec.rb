@@ -55,8 +55,9 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
   describe "#remove_file_attachment" do
     it "removes the attachment from the attachment revisions" do
       other_attachment_revision = create :file_attachment_revision
-      revision = create :revision, file_attachment_revisions: [other_attachment_revision,
-                                                               attachment_revision]
+      revision = create :revision,
+                        file_attachment_revisions: [other_attachment_revision,
+                                                    attachment_revision]
 
       updater = Versioning::RevisionUpdater.new(revision, user)
       updater.remove_file_attachment(attachment_revision)

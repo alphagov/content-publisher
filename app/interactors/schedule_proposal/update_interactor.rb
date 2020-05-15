@@ -25,9 +25,11 @@ private
   end
 
   def parse_publish_time
-    parser = DatetimeParser.new(issue_prefix: :schedule,
-                                date: schedule_params.require(:date),
-                                time: schedule_params.require(:time))
+    parser = DatetimeParser.new(
+      issue_prefix: :schedule,
+      date: schedule_params.require(:date),
+      time: schedule_params.require(:time),
+    )
     context.publish_time = parser.parse
     context.fail!(issues: parser.issues) if parser.issues.any?
   end
