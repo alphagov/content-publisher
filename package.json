@@ -29,7 +29,7 @@
     "paste-html-to-govspeak": "^0.2.4",
     "raven-js": "^3.27.2",
     "sortablejs": "^1.10.2",
-    "url-polyfill": "^1.1.8",
+    "url-polyfill": "^1.1.9",
     "whatwg-fetch": "^3.0.0"
   }
 }
