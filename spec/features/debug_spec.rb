@@ -31,7 +31,7 @@ RSpec.feature "Viewing debug information" do
   end
 
   def when_im_given_debug_permission
-    current_user.update_attribute(:permissions, [User::DEBUG_PERMISSION])
+    current_user.update(permissions: [User::DEBUG_PERMISSION])
   end
 
   def then_i_see_the_debug_page

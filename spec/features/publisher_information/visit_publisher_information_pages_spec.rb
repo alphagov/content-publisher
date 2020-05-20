@@ -65,7 +65,7 @@ RSpec.feature "User can view the publisher information pages" do
   end
 
   def when_i_have_the_managing_editor_permission
-    current_user.update_attribute(:permissions, [User::MANAGING_EDITOR_PERMISSION])
+    current_user.update(permissions: [User::MANAGING_EDITOR_PERMISSION])
   end
 
   def and_i_see_i_am_not_a_managing_editor
