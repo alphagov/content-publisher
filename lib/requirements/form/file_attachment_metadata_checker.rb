@@ -35,12 +35,12 @@ class Requirements::Form::FileAttachmentMetadataChecker < Requirements::Checker
     end
 
     %w[command act].each do |type|
-      if (issue_key = invalid_paper_number?(type, params))
-        issues.create(
-          :"file_attachment_#{type}_paper_number",
-          issue_key,
-        )
-      end
+      next unless (issue_key = invalid_paper_number?(type, params))
+
+      issues.create(
+        :"file_attachment_#{type}_paper_number",
+        issue_key,
+      )
     end
   end
 

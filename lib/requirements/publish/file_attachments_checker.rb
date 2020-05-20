@@ -9,14 +9,14 @@ class Requirements::Publish::FileAttachmentsChecker < Requirements::Checker
     return unless edition.document_type.attachments.featured?
 
     edition.file_attachment_revisions.each do |attachment|
-      if attachment.official_document_type.blank?
-        issues.create(
-          :file_attachment_official_document_type,
-          :blank,
-          filename: attachment.filename,
-          attachment_revision: attachment,
-        )
-      end
+      next if attachment.official_document_type.present?
+
+      issues.create(
+        :file_attachment_official_document_type,
+        :blank,
+        filename: attachment.filename,
+        attachment_revision: attachment,
+      )
     end
   end
 end
