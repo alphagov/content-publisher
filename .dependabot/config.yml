@@ -1,3 +1,7 @@
+# This overrides the config in the Dependabot UI.
+# We're trialling this to see if it can be used as
+# a way to reduce the number of Dependabot PRs for
+# gems where updates aren't so valuable.
 version: 1
 update_configs:
   - package_manager: ruby:bundler
@@ -25,3 +29,14 @@ update_configs:
       - match: { dependency_name: rails }
       - match: { dependency_name: rspec-rails }
       - match: { dependency_name: sass-rails }
+  - package_manager: javascript
+    directory: /
+    update_schedule: daily
+    allowed_updates:
+      # Security updates - we should always do these
+      - match: { update_type: security }
+      # Internal packages - we should always update these
+      - match: { dependency_name: accessible-autocomplete }
+      - match: { dependency_name: markdown-toolbar-element }
+      - match: { dependency_name: miller-columns-element }
+      - match: { dependency_name: paste-html-to-govspeak }
