@@ -12,12 +12,10 @@ class AssignEditionStatusService < ApplicationService
   end
 
   def call
-    edition.status = Status.new(
-      created_by: user,
-      state: state,
-      revision_at_creation: edition.revision,
-      details: status_details,
-    )
+    edition.status = Status.new(created_by: user,
+                                state: state,
+                                revision_at_creation: edition.revision,
+                                details: status_details)
 
     if record_edit
       edition.last_edited_by = user

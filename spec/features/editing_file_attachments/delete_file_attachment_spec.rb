@@ -21,21 +21,17 @@ RSpec.feature "Delete a file attachment", js: true do
   def given_there_is_an_edition_with_attachments
     @attachment_revision = create(:file_attachment_revision, :on_asset_manager)
 
-    @edition = create(
-      :edition,
-      document_type: build(:document_type, :with_body),
-      file_attachment_revisions: [@attachment_revision],
-    )
+    @edition = create(:edition,
+                      document_type: build(:document_type, :with_body),
+                      file_attachment_revisions: [@attachment_revision])
   end
 
   def given_there_is_an_edition_with_featured_attachments
     @attachment_revision = create(:file_attachment_revision)
 
-    @edition = create(
-      :edition,
-      document_type: build(:document_type, attachments: "featured"),
-      file_attachment_revisions: [@attachment_revision],
-    )
+    @edition = create(:edition,
+                      document_type: build(:document_type, attachments: "featured"),
+                      file_attachment_revisions: [@attachment_revision])
   end
 
   def when_i_insert_an_attachment

@@ -4,13 +4,11 @@ RSpec.describe "documents/show" do
 
   describe "document summary" do
     it "shows the document and edition metadata" do
-      edition = create(
-        :edition,
-        title: "Title",
-        summary: "Summary",
-        last_edited_by: create(:user, name: "User 1"),
-        created_by: create(:user, name: "User 2"),
-      )
+      edition = create(:edition,
+                       title: "Title",
+                       summary: "Summary",
+                       last_edited_by: create(:user, name: "User 1"),
+                       created_by: create(:user, name: "User 2"))
       assign(:edition, edition)
       render
 
@@ -30,15 +28,11 @@ RSpec.describe "documents/show" do
 
   describe "attachments" do
     it "shows the attachments when a document has attachments" do
-      file_attachment_revision = create(
-        :file_attachment_revision,
-        unique_reference: SecureRandom.uuid,
-      )
-      edition = create(
-        :edition,
-        document_type: build(:document_type, attachments: "featured"),
-        file_attachment_revisions: [file_attachment_revision],
-      )
+      file_attachment_revision = create(:file_attachment_revision,
+                                        unique_reference: SecureRandom.uuid)
+      edition = create(:edition,
+                       document_type: build(:document_type, attachments: "featured"),
+                       file_attachment_revisions: [file_attachment_revision])
       assign(:edition, edition)
 
       expect(render).to have_content(file_attachment_revision.title)
@@ -53,11 +47,9 @@ RSpec.describe "documents/show" do
     it "shows the tags when a document has tags" do
       tag = { "content_id" => SecureRandom.uuid, "internal_name" => "Tag name" }
       stub_publishing_api_has_linkables([tag], document_type: "organisation")
-      edition = build(
-        :edition,
-        document_type: document_type,
-        tags: { tag_field.id => [tag["content_id"]] },
-      )
+      edition = build(:edition,
+                      document_type: document_type,
+                      tags: { tag_field.id => [tag["content_id"]] })
       assign(:edition, edition)
 
       expect(render).to have_selector("#tags", text: "Tag name")
@@ -71,11 +63,9 @@ RSpec.describe "documents/show" do
 
     it "shows a message when tags can't be loaded" do
       stub_publishing_api_isnt_available
-      edition = build(
-        :edition,
-        document_type: document_type,
-        tags: { tag_field.id => [SecureRandom.uuid] },
-      )
+      edition = build(:edition,
+                      document_type: document_type,
+                      tags: { tag_field.id => [SecureRandom.uuid] })
       assign(:edition, edition)
       expect(render).to include(I18n.t!("documents.show.tags.api_down"))
     end
@@ -88,10 +78,8 @@ RSpec.describe "documents/show" do
     before { assign(:edition, edition) }
 
     it "shows the topics when a document has topics" do
-      stub_publishing_api_has_links(
-        content_id: edition.content_id,
-        links: { "taxons" => %w[level_three_topic] },
-      )
+      stub_publishing_api_has_links(content_id: edition.content_id,
+                                    links: { "taxons" => %w[level_three_topic] })
       stub_publishing_api_has_taxonomy
 
       expect(render)
@@ -117,14 +105,10 @@ RSpec.describe "documents/show" do
       assign(:edition, edition)
       render
 
-      title = I18n.t!(
-        "documents.show.historical.title",
-        document_type: edition.document_type.label.downcase,
-      )
-      description = I18n.t!(
-        "documents.show.historical.description",
-        government_name: edition.government.title,
-      )
+      title = I18n.t!("documents.show.historical.title",
+                      document_type: edition.document_type.label.downcase)
+      description = I18n.t!("documents.show.historical.description",
+                            government_name: edition.government.title)
       expect(rendered)
         .to include(title)
         .and include(description)
@@ -135,10 +119,8 @@ RSpec.describe "documents/show" do
       assign(:edition, edition)
       render
 
-      title = I18n.t!(
-        "documents.show.historical.title",
-        document_type: edition.document_type.label.downcase,
-      )
+      title = I18n.t!("documents.show.historical.title",
+                      document_type: edition.document_type.label.downcase)
       expect(rendered).not_to include(title)
     end
 
@@ -147,10 +129,8 @@ RSpec.describe "documents/show" do
       assign(:edition, edition)
       render
 
-      title = I18n.t!(
-        "documents.show.historical.title",
-        document_type: edition.document_type.label.downcase,
-      )
+      title = I18n.t!("documents.show.historical.title",
+                      document_type: edition.document_type.label.downcase)
       expect(rendered).not_to include(title)
     end
   end

@@ -20,12 +20,10 @@ RSpec.feature "Scheduled publishing failed" do
   end
 
   def given_there_is_a_schedulable_edition
-    @edition = create(
-      :edition,
-      :schedulable,
-      created_by: current_user,
-      proposed_publish_time: Time.zone.parse("2019-6-20 15:00"),
-    )
+    @edition = create(:edition,
+                      :schedulable,
+                      created_by: current_user,
+                      proposed_publish_time: Time.zone.parse("2019-6-20 15:00"))
   end
 
   def when_i_go_to_schedule_a_publishing
@@ -55,19 +53,15 @@ RSpec.feature "Scheduled publishing failed" do
 
   def then_the_editors_are_notified_of_a_publishing_failure
     message = ActionMailer::Base.deliveries.first
-    expected_subject = I18n.t(
-      "scheduled_publish_mailer.failure_email.subject",
-      title: @edition.title,
-    )
+    expected_subject = I18n.t("scheduled_publish_mailer.failure_email.subject",
+                              title: @edition.title)
 
     expect(message.to).to include(current_user.email)
     expect(message.subject).to eq(expected_subject)
 
     expect(message.body)
-      .to have_content(I18n.t(
-                         "scheduled_publish_mailer.failure_email.schedule_date",
-                         datetime: @edition.proposed_publish_time.to_s(:time_on_date),
-                       ))
+      .to have_content(I18n.t("scheduled_publish_mailer.failure_email.schedule_date",
+                              datetime: @edition.proposed_publish_time.to_s(:time_on_date)))
   end
 
   def when_i_visit_the_summary_page

@@ -1,13 +1,8 @@
 class DocumentType
   include InitializeWithHash
 
-  attr_reader :contents,
-              :id,
-              :publishing_metadata,
-              :label,
-              :path_prefix,
-              :tags,
-              :topics
+  attr_reader :contents, :id, :publishing_metadata, :label,
+              :path_prefix, :tags, :topics
 
   def self.find(id)
     item = all.find { |document_type| document_type.id == id }

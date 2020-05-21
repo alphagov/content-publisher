@@ -18,15 +18,11 @@ private
 
   def subject
     if @edition.first?
-      I18n.t(
-        "publish_mailer.publish_email.subject.#{@status.state}",
-        title: @edition.title,
-      )
+      I18n.t("publish_mailer.publish_email.subject.#{@status.state}",
+             title: @edition.title)
     else
-      I18n.t(
-        "publish_mailer.publish_email.subject.update",
-        title: @edition.title,
-      )
+      I18n.t("publish_mailer.publish_email.subject.update",
+             title: @edition.title)
     end
   end
 end

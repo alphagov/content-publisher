@@ -3,30 +3,24 @@ RSpec.describe "documents/show/_requirements" do
   let(:file_attachment) { build :file_attachment_revision }
 
   let(:edition) do
-    create(
-      :edition,
-      revision_synced: false,
-      image_revisions: [image],
-      file_attachment_revisions: [file_attachment],
-    )
+    create(:edition,
+           revision_synced: false,
+           image_revisions: [image],
+           file_attachment_revisions: [file_attachment])
   end
 
   before do
     issues = Requirements::CheckerIssues.new
 
-    issues.create(
-      :image_alt_text,
-      :blank,
-      image_revision: image,
-      filename: "file",
-    )
+    issues.create(:image_alt_text,
+                  :blank,
+                  image_revision: image,
+                  filename: "file")
 
-    issues.create(
-      :file_attachment_official_document_type,
-      :blank,
-      attachment_revision: file_attachment,
-      filename: "file",
-    )
+    issues.create(:file_attachment_official_document_type,
+                  :blank,
+                  attachment_revision: file_attachment,
+                  filename: "file")
 
     allow(Requirements::Preview::EditionChecker).to receive(:call).and_return(issues)
     allow(Requirements::Publish::EditionChecker).to receive(:call).and_return(issues)

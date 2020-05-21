@@ -35,12 +35,10 @@ private
 
     context.fail! if edition.access_limit&.limit_type == limit_type
 
-    access_limit = AccessLimit.new(
-      created_by: user,
-      edition: edition,
-      limit_type: limit_type,
-      revision_at_creation: edition.revision,
-    )
+    access_limit = AccessLimit.new(created_by: user,
+                                   edition: edition,
+                                   limit_type: limit_type,
+                                   revision_at_creation: edition.revision)
 
     EditDraftEditionService.call(edition, user, access_limit: access_limit)
   end

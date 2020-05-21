@@ -40,10 +40,8 @@ RSpec.describe "Editions" do
 
         expect(response).to have_http_status(:forbidden)
         expect(response.body).to have_content(
-          I18n.t!(
-            "missing_permissions.update_history_mode.title",
-            title: edition.title,
-          ),
+          I18n.t!("missing_permissions.update_history_mode.title",
+                  title: edition.title),
         )
       end
     end

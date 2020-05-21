@@ -5,10 +5,8 @@ RSpec.describe WhitehallDocumentImportJob do
   let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
 
   let(:whitehall_migration_document_import) do
-    create(
-      :whitehall_migration_document_import,
-      whitehall_migration_id: whitehall_migration["id"],
-    )
+    create(:whitehall_migration_document_import,
+           whitehall_migration_id: whitehall_migration["id"])
   end
 
   let(:imported_document_import) do

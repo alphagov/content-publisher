@@ -12,34 +12,26 @@ RSpec.describe TagsRevision::TagsValidator do
 
     it "fails if a field is not recognised" do
       expect { validator.validate_each(record, attribute, { foo: [] }) }
-        .to raise_error(
-          ActiveModel::StrictValidationFailed,
-          "Tags has unknown tag field ‘foo’",
-        )
+        .to raise_error(ActiveModel::StrictValidationFailed,
+                        "Tags has unknown tag field ‘foo’")
     end
 
     it "fails if a tag list is not an array" do
       expect { validator.validate_each(record, attribute, { organisations: "an-id" }) }
-        .to raise_error(
-          ActiveModel::StrictValidationFailed,
-          "Tags has non-array field ‘organisations’",
-        )
+        .to raise_error(ActiveModel::StrictValidationFailed,
+                        "Tags has non-array field ‘organisations’")
     end
 
     it "fails if a tag is not in UUID format" do
       expect { validator.validate_each(record, attribute, { organisations: %w[an-id] }) }
-        .to raise_error(
-          ActiveModel::StrictValidationFailed,
-          "Tags has an invalid tag ID ‘an-id’",
-        )
+        .to raise_error(ActiveModel::StrictValidationFailed,
+                        "Tags has an invalid tag ID ‘an-id’")
     end
 
     it "fails if a tag is nil" do
       expect { validator.validate_each(record, attribute, { organisations: [nil] }) }
-        .to raise_error(
-          ActiveModel::StrictValidationFailed,
-          "Tags has an invalid tag ID ‘’",
-        )
+        .to raise_error(ActiveModel::StrictValidationFailed,
+                        "Tags has an invalid tag ID ‘’")
     end
   end
 end

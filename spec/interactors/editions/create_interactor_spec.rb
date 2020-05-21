@@ -8,13 +8,11 @@ RSpec.describe Editions::CreateInteractor do
     end
 
     it "resets the edition metadata" do
-      edition = create(
-        :edition,
-        live: true,
-        change_note: "note",
-        proposed_publish_time: Time.zone.now,
-        update_type: :minor,
-      )
+      edition = create(:edition,
+                       live: true,
+                       change_note: "note",
+                       proposed_publish_time: Time.zone.now,
+                       update_type: :minor)
 
       params = { document: edition.document.to_param }
 
@@ -44,12 +42,10 @@ RSpec.describe Editions::CreateInteractor do
       let(:params) { { document: live_edition.document.to_param } }
 
       let!(:discarded_edition) do
-        create(
-          :edition,
-          state: "discarded",
-          current: false,
-          document: live_edition.document,
-        )
+        create(:edition,
+               state: "discarded",
+               current: false,
+               document: live_edition.document)
       end
 
       it "delegates to the CreateNextEditionService" do

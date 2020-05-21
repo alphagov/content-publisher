@@ -6,11 +6,9 @@ class CreateFileAttachmentBlobService < ApplicationService
   end
 
   def call
-    blob = ActiveStorage::Blob.create_after_upload!(
-      io: file,
-      filename: filename,
-      content_type: mime_type,
-    )
+    blob = ActiveStorage::Blob.create_after_upload!(io: file,
+                                                    filename: filename,
+                                                    content_type: mime_type)
 
     FileAttachment::BlobRevision.create!(
       blob: blob,
@@ -26,11 +24,9 @@ private
   attr_reader :file, :filename, :user
 
   def mime_type
-    @mime_type ||= Marcel::MimeType.for(
-      file,
-      declared_type: file.content_type,
-      name: file.original_filename,
-    )
+    @mime_type ||= Marcel::MimeType.for(file,
+                                        declared_type: file.content_type,
+                                        name: file.original_filename)
   end
 
   def number_of_pages

@@ -45,10 +45,8 @@ module WhitehallImporter
   private
 
     def unpublishing_time_matches?
-      IntegrityChecker.time_matches?(
-        unpublishing["unpublished_at"],
-        expected_unpublishing_time&.rfc3339,
-      )
+      IntegrityChecker.time_matches?(unpublishing["unpublished_at"],
+                                     expected_unpublishing_time&.rfc3339)
     end
 
     def edition_explanation_html

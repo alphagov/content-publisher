@@ -16,11 +16,9 @@ RSpec.describe Requirements::Form::BackdateChecker do
       earliest_date = Requirements::Form::BackdateChecker::EARLIEST_DATE
       issues = described_class.call(earliest_date - 1)
 
-      expect(issues).to have_issue(
-        :backdate_date,
-        :too_long_ago,
-        date: earliest_date.strftime("%-d %B %Y"),
-      )
+      expect(issues).to have_issue(:backdate_date,
+                                   :too_long_ago,
+                                   date: earliest_date.strftime("%-d %B %Y"))
     end
   end
 end

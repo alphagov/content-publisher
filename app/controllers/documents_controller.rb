@@ -35,14 +35,12 @@ class DocumentsController < ApplicationController
 private
 
   def filter_params
-    filters = params.slice(
-      :title_or_url,
-      :document_type,
-      :status,
-      :organisation,
-      :gets_history_mode,
-      :in_history_mode,
-    ).permit!
+    filters = params.slice(:title_or_url,
+                           :document_type,
+                           :status,
+                           :organisation,
+                           :gets_history_mode,
+                           :in_history_mode).permit!
     {
       filters: filters,
       sort: params[:sort],

@@ -61,10 +61,8 @@ RSpec.describe PublishingApiPayload do
 
     it "delegates to PublishingApiPayload::FileAttachmentPayload to populate attachments" do
       file_attachment_revision = create(:file_attachment_revision)
-      edition = build(
-        :edition,
-        file_attachment_revisions: [file_attachment_revision],
-      )
+      edition = build(:edition,
+                      file_attachment_revisions: [file_attachment_revision])
 
       payload = described_class.new(edition).payload
       attachment_payload = PublishingApiPayload::FileAttachmentPayload
@@ -90,26 +88,20 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "delegates to document type fields for tags" do
-      tag_field = instance_double(
-        DocumentType::RoleAppointmentsField,
-        payload: { links: { foo: "bar" } },
-      )
+      tag_field = instance_double(DocumentType::RoleAppointmentsField,
+                                  payload: { links: { foo: "bar" } })
       document_type = build(:document_type, tags: [tag_field])
-      edition = build(
-        :edition,
-        document_type: document_type,
-        tags: { role_appointments: %w[foo] },
-      )
+      edition = build(:edition,
+                      document_type: document_type,
+                      tags: { role_appointments: %w[foo] })
 
       payload = described_class.new(edition).payload
       expect(payload[:links]).to match a_hash_including(foo: "bar")
     end
 
     it "delegates to document type fields for contents" do
-      body_field = instance_double(
-        DocumentType::BodyField,
-        payload: { details: { body: "body" } },
-      )
+      body_field = instance_double(DocumentType::BodyField,
+                                   payload: { details: { body: "body" } })
 
       document_type = build(:document_type, contents: [body_field])
       edition = build(:edition, document_type: document_type)
@@ -118,21 +110,17 @@ RSpec.describe PublishingApiPayload do
     end
 
     it "includes a lead image if present" do
-      image_revision = build(
-        :image_revision,
-        :on_asset_manager,
-        alt_text: "image alt text",
-        caption: "image caption",
-        credit: "image credit",
-      )
+      image_revision = build(:image_revision,
+                             :on_asset_manager,
+                             alt_text: "image alt text",
+                             caption: "image caption",
+                             credit: "image credit")
 
       document_type = build(:document_type, :with_lead_image)
 
-      edition = build(
-        :edition,
-        document_type: document_type,
-        lead_image_revision: image_revision,
-      )
+      edition = build(:edition,
+                      document_type: document_type,
+                      lead_image_revision: image_revision)
 
       payload = described_class.new(edition).payload
 

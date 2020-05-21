@@ -6,10 +6,8 @@ RSpec.describe PublishMailer do
       edition = build(:edition, :published, base_path: "/news/some-great-news")
 
       mail = described_class.publish_email(recipient, edition, edition.status)
-      mail_subject = I18n.t!(
-        "publish_mailer.publish_email.subject.published",
-        title: edition.title,
-      )
+      mail_subject = I18n.t!("publish_mailer.publish_email.subject.published",
+                             title: edition.title)
 
       expect(mail.to).to eq([recipient.email])
       expect(mail.subject).to eq(mail_subject)
@@ -18,18 +16,14 @@ RSpec.describe PublishMailer do
     end
 
     it "includes when the edition was published" do
-      edition = build(
-        :edition,
-        :published,
-        published_at: Time.zone.parse("2019-06-17 9:00"),
-      )
+      edition = build(:edition,
+                      :published,
+                      published_at: Time.zone.parse("2019-06-17 9:00"))
 
       mail = described_class.publish_email(recipient, edition, edition.status)
-      publish_time = I18n.t!(
-        "publish_mailer.publish_email.details.publish",
-        datetime: edition.published_at.to_s(:time_on_date),
-        user: recipient.name,
-      )
+      publish_time = I18n.t!("publish_mailer.publish_email.details.publish",
+                             datetime: edition.published_at.to_s(:time_on_date),
+                             user: recipient.name)
 
       expect(mail.body.to_s).to include(publish_time)
     end
@@ -47,36 +41,28 @@ RSpec.describe PublishMailer do
 
     context "when a subsequent edition is published" do
       it "includes when the edition was updated" do
-        edition = build(
-          :edition,
-          :published,
-          number: 2,
-          published_at: Time.zone.parse("2019-06-17 23:00"),
-        )
+        edition = build(:edition,
+                        :published,
+                        number: 2,
+                        published_at: Time.zone.parse("2019-06-17 23:00"))
 
         mail = described_class.publish_email(recipient, edition, edition.status)
-        update_text = I18n.t!(
-          "publish_mailer.publish_email.details.update",
-          datetime: edition.published_at.to_s(:time_on_date),
-          user: recipient.name,
-        )
-        mail_subject = I18n.t!(
-          "publish_mailer.publish_email.subject.update",
-          title: edition.title,
-        )
+        update_text = I18n.t!("publish_mailer.publish_email.details.update",
+                              datetime: edition.published_at.to_s(:time_on_date),
+                              user: recipient.name)
+        mail_subject = I18n.t!("publish_mailer.publish_email.subject.update",
+                               title: edition.title)
 
         expect(mail.subject).to eq(mail_subject)
         expect(mail.body.to_s).to include(update_text)
       end
 
       it "includes the change note for a major change" do
-        edition = build(
-          :edition,
-          :published,
-          number: 2,
-          update_type: "major",
-          change_note: "Massive sweeping change",
-        )
+        edition = build(:edition,
+                        :published,
+                        number: 2,
+                        update_type: "major",
+                        change_note: "Massive sweeping change")
 
         mail = described_class.publish_email(recipient, edition, edition.status)
 
@@ -84,13 +70,11 @@ RSpec.describe PublishMailer do
       end
 
       it "has a generic change note for a minor change" do
-        edition = build(
-          :edition,
-          :published,
-          number: 2,
-          update_type: "minor",
-          change_note: "Tiny change",
-        )
+        edition = build(:edition,
+                        :published,
+                        number: 2,
+                        update_type: "minor",
+                        change_note: "Tiny change")
 
         mail = described_class.publish_email(recipient, edition, edition.status)
 

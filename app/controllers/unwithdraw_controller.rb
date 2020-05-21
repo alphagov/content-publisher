@@ -27,7 +27,7 @@ private
       return
     end
 
-    unless current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
+    if !current_user.has_permission?(User::MANAGING_EDITOR_PERMISSION)
       render :non_managing_editor, status: :forbidden
     end
   end

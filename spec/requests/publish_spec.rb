@@ -22,10 +22,8 @@ RSpec.describe "Publish" do
       expect(response).to redirect_to(document_path(edition.document))
       follow_redirect!
       expect(response.body)
-        .to have_selector(
-          ".gem-c-error-summary",
-          text: I18n.t!("requirements.summary.blank.summary_message"),
-        )
+        .to have_selector(".gem-c-error-summary",
+                          text: I18n.t!("requirements.summary.blank.summary_message"))
     end
 
     it "redirects to document summary when topics can't be checked" do

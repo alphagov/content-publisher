@@ -22,10 +22,8 @@ RSpec.describe "Preview" do
       expect(response).to redirect_to(document_path(edition.document))
       follow_redirect!
       expect(response.body)
-        .to have_selector(
-          ".gem-c-error-summary",
-          text: I18n.t!("requirements.title.blank.summary_message"),
-        )
+        .to have_selector(".gem-c-error-summary",
+                          text: I18n.t!("requirements.title.blank.summary_message"))
     end
 
     it "redirects to the summary page with an error flash when it can't preview the document" do

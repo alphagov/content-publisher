@@ -28,12 +28,10 @@ private
   end
 
   def update_edition(withdrawal)
-    AssignEditionStatusService.call(
-      edition,
-      user: user,
-      state: :withdrawn,
-      status_details: withdrawal,
-    )
+    AssignEditionStatusService.call(edition,
+                                    user: user,
+                                    state: :withdrawn,
+                                    status_details: withdrawal)
     edition.save!
   end
 
@@ -56,11 +54,9 @@ private
         w.assign_attributes(public_explanation: public_explanation)
       end
     else
-      Withdrawal.new(
-        public_explanation: public_explanation,
-        published_status: edition.status,
-        withdrawn_at: Time.zone.now,
-      )
+      Withdrawal.new(public_explanation: public_explanation,
+                     published_status: edition.status,
+                     withdrawn_at: Time.zone.now)
     end
   end
 

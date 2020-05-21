@@ -9,11 +9,9 @@ RSpec.feature "Delete draft" do
 
   def given_there_is_an_edition
     @image_revision = create(:image_revision, :on_asset_manager)
-    @edition = create(
-      :edition,
-      lead_image_revision: @image_revision,
-      created_by: current_user,
-    )
+    @edition = create(:edition,
+                      lead_image_revision: @image_revision,
+                      created_by: current_user)
   end
 
   def when_i_visit_the_summary_page

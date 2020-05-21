@@ -10,11 +10,9 @@ RSpec.feature "Download a image" do
     document_type = build(:document_type, :with_lead_image)
     @image_revision = create(:image_revision, :on_asset_manager)
 
-    @edition = create(
-      :edition,
-      document_type: document_type,
-      lead_image_revision: @image_revision,
-    )
+    @edition = create(:edition,
+                      document_type: document_type,
+                      lead_image_revision: @image_revision)
   end
 
   def when_i_visit_the_image_index_page

@@ -8,26 +8,20 @@ RSpec.describe ScheduledPublishMailer do
 
       expect(mail.to).to eq([recipient.email])
 
-      mail_subject = I18n.t!(
-        "scheduled_publish_mailer.success_email.subject.published",
-        title: edition.title,
-      )
+      mail_subject = I18n.t!("scheduled_publish_mailer.success_email.subject.published",
+                             title: edition.title)
       expect(mail.subject).to eq(mail_subject)
     end
 
     it "includes when the edition was published" do
-      edition = build(
-        :edition,
-        :published,
-        published_at: Time.zone.parse("2019-06-17 9:00"),
-      )
+      edition = build(:edition,
+                      :published,
+                      published_at: Time.zone.parse("2019-06-17 9:00"))
 
       mail = described_class.success_email(recipient, edition, edition.status)
 
-      publish_time = I18n.t!(
-        "scheduled_publish_mailer.success_email.details.publish",
-        datetime: edition.published_at.to_s(:time_on_date),
-      )
+      publish_time = I18n.t!("scheduled_publish_mailer.success_email.details.publish",
+                             datetime: edition.published_at.to_s(:time_on_date))
       expect(mail.body.to_s).to include(publish_time)
     end
 
@@ -37,10 +31,8 @@ RSpec.describe ScheduledPublishMailer do
 
       mail = described_class.success_email(recipient, edition, edition.status)
 
-      scheduled_by = I18n.t!(
-        "scheduled_publish_mailer.success_email.scheduled_by",
-        name: "Government Publisher",
-      )
+      scheduled_by = I18n.t!("scheduled_publish_mailer.success_email.scheduled_by",
+                             name: "Government Publisher")
       expect(mail.body.to_s).to include(scheduled_by)
     end
 
@@ -57,30 +49,24 @@ RSpec.describe ScheduledPublishMailer do
 
     context "when a subsequent edition is published" do
       it "includes when the edition was updated" do
-        edition = build(
-          :edition,
-          :published,
-          number: 2,
-          published_at: Time.zone.parse("2019-06-17 23:00"),
-        )
+        edition = build(:edition,
+                        :published,
+                        number: 2,
+                        published_at: Time.zone.parse("2019-06-17 23:00"))
 
         mail = described_class.success_email(recipient, edition, edition.status)
 
-        update_text = I18n.t!(
-          "scheduled_publish_mailer.success_email.details.update",
-          datetime: edition.published_at.to_s(:time_on_date),
-        )
+        update_text = I18n.t!("scheduled_publish_mailer.success_email.details.update",
+                              datetime: edition.published_at.to_s(:time_on_date))
         expect(mail.body.to_s).to include(update_text)
       end
 
       it "includes the change note for a major change" do
-        edition = build(
-          :edition,
-          :published,
-          number: 2,
-          update_type: "major",
-          change_note: "Massive sweeping change",
-        )
+        edition = build(:edition,
+                        :published,
+                        number: 2,
+                        update_type: "major",
+                        change_note: "Massive sweeping change")
 
         mail = described_class.success_email(recipient, edition, edition.status)
 
@@ -88,13 +74,11 @@ RSpec.describe ScheduledPublishMailer do
       end
 
       it "has a generic change note for a minor change" do
-        edition = build(
-          :edition,
-          :published,
-          number: 2,
-          update_type: "minor",
-          change_note: "Tiny change",
-        )
+        edition = build(:edition,
+                        :published,
+                        number: 2,
+                        update_type: "minor",
+                        change_note: "Tiny change")
 
         mail = described_class.success_email(recipient, edition, edition.status)
 
@@ -112,26 +96,20 @@ RSpec.describe ScheduledPublishMailer do
 
       expect(mail.to).to eq([recipient.email])
 
-      mail_subject = I18n.t!(
-        "scheduled_publish_mailer.failure_email.subject",
-        title: edition.title,
-      )
+      mail_subject = I18n.t!("scheduled_publish_mailer.failure_email.subject",
+                             title: edition.title)
       expect(mail.subject).to eq(mail_subject)
     end
 
     it "includes the time that publishing was expected" do
-      scheduling = build(
-        :scheduling,
-        publish_time: Time.zone.parse("2019-06-17 12:00"),
-      )
+      scheduling = build(:scheduling,
+                         publish_time: Time.zone.parse("2019-06-17 12:00"))
       edition = build(:edition, :failed_to_publish, scheduling: scheduling)
 
       mail = described_class.failure_email(recipient, edition, edition.status)
 
-      publish_time = I18n.t!(
-        "scheduled_publish_mailer.failure_email.schedule_date",
-        datetime: scheduling.publish_time.to_s(:time_on_date),
-      )
+      publish_time = I18n.t!("scheduled_publish_mailer.failure_email.schedule_date",
+                             datetime: scheduling.publish_time.to_s(:time_on_date))
       expect(mail.body.to_s).to include(publish_time)
     end
   end

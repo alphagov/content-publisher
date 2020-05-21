@@ -3,13 +3,11 @@ RSpec.describe WhitehallImporter::Import do
     let(:whitehall_user) { build(:whitehall_export_user) }
     let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
     let(:document_import) do
-      create(
-        :whitehall_migration_document_import,
-        payload: nil,
-        whitehall_document_id: 1,
-        content_id: nil,
-        document: nil,
-      )
+      create(:whitehall_migration_document_import,
+             payload: nil,
+             whitehall_document_id: 1,
+             content_id: nil,
+             document: nil)
     end
     let(:whitehall_export_document) { build(:whitehall_export_document) }
 
@@ -114,17 +112,13 @@ RSpec.describe WhitehallImporter::Import do
       user = User.create!(uid: whitehall_user["uid"])
       edition = build(
         :whitehall_export_edition,
-        revision_history: [build(
-          :whitehall_export_revision_history_event,
-          whodunnit: whitehall_user["id"],
-        )],
+        revision_history: [build(:whitehall_export_revision_history_event,
+                                 whodunnit: whitehall_user["id"])],
       )
 
-      whitehall_export = build(
-        :whitehall_export_document,
-        editions: [edition],
-        users: [whitehall_user],
-      )
+      whitehall_export = build(:whitehall_export_document,
+                               editions: [edition],
+                               users: [whitehall_user])
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )
@@ -135,20 +129,17 @@ RSpec.describe WhitehallImporter::Import do
 
     it "sets current boolean on whether edition is current or not" do
       past_edition = build(
-        :whitehall_export_edition,
-        :published,
-        created_at: Time.zone.now.yesterday.rfc3339,
+        :whitehall_export_edition, :published,
+        created_at: Time.zone.now.yesterday.rfc3339
       )
       current_edition = build(
         :whitehall_export_edition,
         first_published_at: past_edition["first_published_at"],
       )
 
-      whitehall_export = build(
-        :whitehall_export_document,
-        editions: [past_edition, current_edition],
-        users: [whitehall_user],
-      )
+      whitehall_export = build(:whitehall_export_document,
+                               editions: [past_edition, current_edition],
+                               users: [whitehall_user])
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )
@@ -166,17 +157,12 @@ RSpec.describe WhitehallImporter::Import do
 
     it "sets first_published_at date to publish time of first edition" do
       first_publish_date = Time.zone.now.yesterday.rfc3339
-      first_edition = build(
-        :whitehall_export_edition,
-        :published,
-        published_at: first_publish_date,
-      )
+      first_edition = build(:whitehall_export_edition,
+                            :published, published_at: first_publish_date)
       second_edition = build(:whitehall_export_edition, first_published_at: Time.zone.now.rfc3339)
 
-      whitehall_export = build(
-        :whitehall_export_document,
-        editions: [first_edition, second_edition],
-      )
+      whitehall_export = build(:whitehall_export_document,
+                               editions: [first_edition, second_edition])
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )
@@ -189,10 +175,8 @@ RSpec.describe WhitehallImporter::Import do
 
     it "integrity checks the current and live editions of the imported document" do
       first_edition = build(:whitehall_export_edition, :published)
-      second_edition = build(
-        :whitehall_export_edition,
-        first_published_at: first_edition["first_published_at"],
-      )
+      second_edition = build(:whitehall_export_edition,
+                             first_published_at: first_edition["first_published_at"])
 
       whitehall_export = build(:whitehall_export_document, editions: [first_edition, second_edition])
       stub_whitehall_document_export(

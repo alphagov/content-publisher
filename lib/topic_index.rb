@@ -36,7 +36,7 @@ private
         .dig("expanded_links", "level_one_taxons").to_a
 
       topics.each do |raw_topic|
-        raise GdsApi::TimedOutException if Time.zone.now - start_time > TOPIC_INDEX_TIMEOUT
+        raise GdsApi::TimedOutException.new if Time.zone.now - start_time > TOPIC_INDEX_TIMEOUT
 
         topic_content_id = raw_topic["content_id"]
         raw_topic["links"] = publishing_api.get_expanded_links(topic_content_id)["expanded_links"]

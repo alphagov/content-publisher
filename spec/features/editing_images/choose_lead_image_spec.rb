@@ -19,11 +19,9 @@ RSpec.feature "Choose a lead image" do
   def given_there_is_an_edition_with_images
     document_type = build(:document_type, :with_lead_image)
     @image_revision = create(:image_revision, :on_asset_manager)
-    @edition = create(
-      :edition,
-      document_type: document_type,
-      image_revisions: [@image_revision],
-    )
+    @edition = create(:edition,
+                      document_type: document_type,
+                      image_revisions: [@image_revision])
   end
 
   def when_i_visit_the_images_page

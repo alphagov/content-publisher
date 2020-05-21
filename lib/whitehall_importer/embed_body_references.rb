@@ -15,18 +15,14 @@ module WhitehallImporter
 
     def call
       body_with_embeds = embed_contacts(body, contacts)
-      body_with_embeds = embed_files(
-        body_with_embeds,
-        files: images,
-        old_pattern: "!!",
-        new_pattern: "Image",
-      )
-      body_with_embeds = embed_files(
-        body_with_embeds,
-        files: attachments,
-        old_pattern: "!@",
-        new_pattern: "Attachment",
-      )
+      body_with_embeds = embed_files(body_with_embeds,
+                                     files: images,
+                                     old_pattern: "!!",
+                                     new_pattern: "Image")
+      body_with_embeds = embed_files(body_with_embeds,
+                                     files: attachments,
+                                     old_pattern: "!@",
+                                     new_pattern: "Attachment")
       body_with_embeds = embed_inline_attachments(body_with_embeds, attachments)
       body_with_embeds
     end

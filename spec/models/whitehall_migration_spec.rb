@@ -5,11 +5,9 @@ RSpec.describe WhitehallMigration do
 
       before do
         %i[completed import_aborted import_failed sync_failed].each do |state|
-          create(
-            :whitehall_migration_document_import,
-            whitehall_migration_id: whitehall_migration.id,
-            state: state,
-          )
+          create(:whitehall_migration_document_import,
+                 whitehall_migration_id: whitehall_migration.id,
+                 state: state)
         end
       end
 

@@ -27,11 +27,8 @@ RSpec.describe PublishingApiPayload::FileAttachmentPayload do
       end
 
       it "can add isbn and unique reference attributes" do
-        attachment = create(
-          :file_attachment_revision,
-          isbn: "9788700631625",
-          unique_reference: "unique ref",
-        )
+        attachment = create(:file_attachment_revision,
+                            isbn: "9788700631625", unique_reference: "unique ref")
 
         payload = described_class.new(attachment, edition).payload
 
@@ -56,11 +53,9 @@ RSpec.describe PublishingApiPayload::FileAttachmentPayload do
       end
 
       it "can add a numbered House of Commons paper attribute" do
-        attachment = create(
-          :file_attachment_revision,
-          official_document_type: "act_paper",
-          paper_number: "123",
-        )
+        attachment = create(:file_attachment_revision,
+                            official_document_type: "act_paper",
+                            paper_number: "123")
         payload = described_class.new(attachment, edition).payload
         expect(payload).to match a_hash_including(hoc_paper_number: "123")
         expect(payload.keys).not_to include(:unnumbered_hoc_paper)
@@ -68,11 +63,9 @@ RSpec.describe PublishingApiPayload::FileAttachmentPayload do
       end
 
       it "can add a numbered command paper attribute" do
-        attachment = create(
-          :file_attachment_revision,
-          official_document_type: "command_paper",
-          paper_number: "CP 123",
-        )
+        attachment = create(:file_attachment_revision,
+                            official_document_type: "command_paper",
+                            paper_number: "CP 123")
         payload = described_class.new(attachment, edition).payload
         expect(payload).to match a_hash_including(command_paper_number: "CP 123")
         expect(payload.keys).not_to include(:unnumbered_command_paper)

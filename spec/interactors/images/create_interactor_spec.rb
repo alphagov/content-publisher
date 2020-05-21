@@ -80,11 +80,9 @@ RSpec.describe Images::CreateInteractor do
 
     context "when the image normaliser finds issues" do
       it "fails with issues returned" do
-        normaliser = instance_double(
-          ImageNormaliser,
-          normalise: nil,
-          issues: %w[issue],
-        )
+        normaliser = instance_double(ImageNormaliser,
+                                     normalise: nil,
+                                     issues: %w[issue])
 
         allow(ImageNormaliser).to receive(:new).and_return(normaliser)
         result = described_class.call(**args)

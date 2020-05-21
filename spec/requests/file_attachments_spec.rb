@@ -81,15 +81,11 @@ RSpec.describe "File Attachments" do
   describe "GET /documents/:document/file-attachments/:file_attachment_id" do
     it "shows the file attachment when it exists on the edition" do
       file_attachment_revision = create(:file_attachment_revision)
-      edition = create(
-        :edition,
-        file_attachment_revisions: [file_attachment_revision],
-      )
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision])
 
-      get file_attachment_path(
-        edition.document,
-        file_attachment_revision.file_attachment_id,
-      )
+      get file_attachment_path(edition.document,
+                               file_attachment_revision.file_attachment_id)
       expect(response).to have_http_status(:ok)
       expect(response.body).to have_content(file_attachment_revision.filename)
     end
@@ -98,10 +94,8 @@ RSpec.describe "File Attachments" do
   describe "GET /documents/:document/file-attachments/:file_attachment_id/delete" do
     it "returns successfully" do
       file_attachment_revision = create(:file_attachment_revision)
-      edition = create(
-        :edition,
-        file_attachment_revisions: [file_attachment_revision],
-      )
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision])
 
       get confirm_delete_file_attachment_path(edition.document, file_attachment_revision.file_attachment_id)
       expect(response).to have_http_status(:ok)
@@ -114,15 +108,11 @@ RSpec.describe "File Attachments" do
       asset = file_attachment_revision.asset
       stub_asset_manager_has_an_asset(asset.asset_manager_id, state: "uploaded")
 
-      edition = create(
-        :edition,
-        file_attachment_revisions: [file_attachment_revision],
-      )
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision])
 
-      get preview_file_attachment_path(
-        edition.document,
-        file_attachment_revision.file_attachment_id,
-      )
+      get preview_file_attachment_path(edition.document,
+                                       file_attachment_revision.file_attachment_id)
 
       expect(response).to redirect_to(/#{asset.file_url}\?token=.*/)
     end
@@ -130,16 +120,12 @@ RSpec.describe "File Attachments" do
     it "returns an unavailable status when the asset isn't uploaded to asset manager" do
       file_attachment_revision = create(:file_attachment_revision)
 
-      edition = create(
-        :edition,
-        file_attachment_revisions: [file_attachment_revision],
-      )
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision])
 
       stub_asset_manager_receives_an_asset
-      get preview_file_attachment_path(
-        edition.document,
-        file_attachment_revision.file_attachment_id,
-      )
+      get preview_file_attachment_path(edition.document,
+                                       file_attachment_revision.file_attachment_id)
 
       expect(response).to have_http_status(:service_unavailable)
       expect(response.body)
@@ -149,16 +135,12 @@ RSpec.describe "File Attachments" do
     it "returns an unavailable status when asset manager is down" do
       file_attachment_revision = create(:file_attachment_revision, :on_asset_manager)
 
-      edition = create(
-        :edition,
-        file_attachment_revisions: [file_attachment_revision],
-      )
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision])
 
       stub_asset_manager_isnt_available
-      get preview_file_attachment_path(
-        edition.document,
-        file_attachment_revision.file_attachment_id,
-      )
+      get preview_file_attachment_path(edition.document,
+                                       file_attachment_revision.file_attachment_id)
 
       expect(response).to have_http_status(:service_unavailable)
       expect(response.body)
@@ -188,16 +170,12 @@ RSpec.describe "File Attachments" do
       file = fixture_file_upload("files/text-file-74bytes.txt")
 
       post file_attachments_path(edition.document),
-           params: { file: file,
-                     title: "File",
+           params: { file: file, title: "File",
                      wizard: "featured-attachment-upload" }
 
       expect(response).to redirect_to(
-        edit_file_attachment_path(
-          edition.document,
-          FileAttachment.last,
-          wizard: "featured-attachment-upload",
-        ),
+        edit_file_attachment_path(edition.document, FileAttachment.last,
+                                  wizard: "featured-attachment-upload"),
       )
     end
 
@@ -221,10 +199,8 @@ RSpec.describe "File Attachments" do
     end
 
     it "redirects to the file attachment index" do
-      delete file_attachment_path(
-        edition.document,
-        file_attachment_revision.file_attachment_id,
-      )
+      delete file_attachment_path(edition.document,
+                                  file_attachment_revision.file_attachment_id)
 
       expect(response).to redirect_to(file_attachments_path(edition.document))
     end
@@ -235,15 +211,11 @@ RSpec.describe "File Attachments" do
 
     it "shows the file attachment when it exists on the edition" do
       file_attachment_revision = create(:file_attachment_revision)
-      edition = create(
-        :edition,
-        file_attachment_revisions: [file_attachment_revision],
-      )
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision])
 
-      get replace_file_attachment_path(
-        edition.document,
-        file_attachment_revision.file_attachment_id,
-      )
+      get replace_file_attachment_path(edition.document,
+                                       file_attachment_revision.file_attachment_id)
       expect(response).to have_http_status(:ok)
       expect(response.body).to have_content(file_attachment_revision.filename)
     end
@@ -292,11 +264,8 @@ RSpec.describe "File Attachments" do
                         wizard: "featured-attachment-upload" }
 
         expect(response).to redirect_to(
-          edit_file_attachment_path(
-            edition.document,
-            file_attachment_id,
-            wizard: "featured-attachment-upload",
-          ),
+          edit_file_attachment_path(edition.document, file_attachment_id,
+                                    wizard: "featured-attachment-upload"),
         )
       end
     end
@@ -326,16 +295,12 @@ RSpec.describe "File Attachments" do
     it "returns successfully" do
       file_attachment_revision = create(:file_attachment_revision)
       document_type = build(:document_type, attachments: "featured")
-      edition = create(
-        :edition,
-        file_attachment_revisions: [file_attachment_revision],
-        document_type: document_type,
-      )
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision],
+                       document_type: document_type)
 
-      get edit_file_attachment_path(
-        edition.document,
-        file_attachment_revision.file_attachment_id,
-      )
+      get edit_file_attachment_path(edition.document,
+                                    file_attachment_revision.file_attachment_id)
       expect(response).to have_http_status(:ok)
     end
   end
@@ -344,31 +309,25 @@ RSpec.describe "File Attachments" do
     let(:document_type) { build(:document_type, attachments: "featured") }
     let(:file_attachment_revision) { create(:file_attachment_revision) }
     let(:edition) do
-      create(
-        :edition,
-        file_attachment_revisions: [file_attachment_revision],
-        document_type: document_type,
-      )
+      create(:edition,
+             file_attachment_revisions: [file_attachment_revision],
+             document_type: document_type)
     end
 
     it "redirects to the featured attachments index page" do
       stub_any_publishing_api_put_content
       stub_asset_manager_receives_an_asset
 
-      patch edit_file_attachment_path(
-        edition.document,
-        file_attachment_revision.file_attachment_id,
-      ),
+      patch edit_file_attachment_path(edition.document,
+                                      file_attachment_revision.file_attachment_id),
             params: { file_attachment: { official_document_type: "unofficial" } }
 
       expect(response).to redirect_to(featured_attachments_path(edition.document))
     end
 
     it "returns issues and an unprocessable response when there are requirement issues" do
-      patch edit_file_attachment_path(
-        edition.document,
-        file_attachment_revision.file_attachment_id,
-      ),
+      patch edit_file_attachment_path(edition.document,
+                                      file_attachment_revision.file_attachment_id),
             params: { file_attachment: { official_document_type: "" } }
 
       expect(response).to have_http_status(:unprocessable_entity)

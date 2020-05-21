@@ -53,10 +53,8 @@ RSpec.feature "Backdate content" do
 
   def and_i_see_the_backdate_timeline_entry
     click_on "Document history"
-    expect(page).to have_content(I18n.t!(
-                                   "documents.history.entry_types.backdated",
-                                   date: "01 January 2019",
-                                 ))
+    expect(page).to have_content(I18n.t!("documents.history.entry_types.backdated",
+                                         date: "01 January 2019"))
   end
 
   def and_i_click_clear_backdate

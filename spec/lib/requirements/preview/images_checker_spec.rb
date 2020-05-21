@@ -12,13 +12,11 @@ RSpec.describe Requirements::Preview::ImagesChecker do
       edition = build :edition, image_revisions: [image_revision]
       issues = described_class.call(edition)
 
-      expect(issues).to have_issue(
-        :image_alt_text,
-        :blank,
-        styles: %i[summary],
-        filename: image_revision.filename,
-        image_revision: image_revision,
-      )
+      expect(issues).to have_issue(:image_alt_text,
+                                   :blank,
+                                   styles: %i[summary],
+                                   filename: image_revision.filename,
+                                   image_revision: image_revision)
     end
   end
 end

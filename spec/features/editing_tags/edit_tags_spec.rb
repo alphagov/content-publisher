@@ -32,11 +32,9 @@ RSpec.feature "Edit tags" do
       single_tag_field_id => [initial_tag_content_id],
     }
 
-    @edition = create(
-      :edition,
-      document_type: build(:document_type, tags: all_tags),
-      tags: initial_tags,
-    )
+    @edition = create(:edition,
+                      document_type: build(:document_type, tags: all_tags),
+                      tags: initial_tags)
   end
 
   def when_i_visit_the_summary_page

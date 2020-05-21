@@ -12,18 +12,14 @@ RSpec.describe ContentRevision::ContentsValidator do
 
     it "fails if a field is not recognised" do
       expect { validator.validate_each(record, attribute, { foo: "text" }) }
-        .to raise_error(
-          ActiveModel::StrictValidationFailed,
-          "Contents has unknown content field ‘foo’",
-        )
+        .to raise_error(ActiveModel::StrictValidationFailed,
+                        "Contents has unknown content field ‘foo’")
     end
 
     it "fails if the body field is not a string" do
       expect { validator.validate_each(record, attribute, { body: nil }) }
-        .to raise_error(
-          ActiveModel::StrictValidationFailed,
-          "Contents has non-string ‘body’ field",
-        )
+        .to raise_error(ActiveModel::StrictValidationFailed,
+                        "Contents has non-string ‘body’ field")
     end
   end
 end

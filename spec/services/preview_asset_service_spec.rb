@@ -3,17 +3,11 @@ RSpec.describe PreviewAssetService do
     let(:edition) { create :edition }
 
     let(:asset) do
-      # We have multiple Asset models, and this
-      # double represents any of them.
-      # rubocop:disable RSpec/VerifiedDoubles
-      double(
-        asset_manager_id: "id",
-        update!: false,
-        content_type: "type",
-        filename: "foo/bar.jpg",
-        bytes: "bytes",
-      )
-      # rubocop:enable RSpec/VerifiedDoubles
+      double(asset_manager_id: "id", # rubocop:disable RSpec/VerifiedDoubles
+             update!: false,
+             content_type: "type",
+             filename: "foo/bar.jpg",
+             bytes: "bytes")
     end
 
     context "when the asset is not on Asset Manager" do

@@ -55,21 +55,15 @@ RSpec.describe BulkData::GovernmentRepository do
 
   describe "#past" do
     it "returns all the governments that aren't current" do
-      government_a = build(
-        :government,
-        started_on: Date.parse("2018-11-11"),
-        ended_on: nil,
-      )
-      government_b = build(
-        :government,
-        started_on: Date.parse("2015-11-11"),
-        ended_on: Date.parse("2018-11-11"),
-      )
-      government_c = build(
-        :government,
-        started_on: Date.parse("2012-11-11"),
-        ended_on: Date.parse("2015-11-11"),
-      )
+      government_a = build(:government,
+                           started_on: Date.parse("2018-11-11"),
+                           ended_on: nil)
+      government_b = build(:government,
+                           started_on: Date.parse("2015-11-11"),
+                           ended_on: Date.parse("2018-11-11"))
+      government_c = build(:government,
+                           started_on: Date.parse("2012-11-11"),
+                           ended_on: Date.parse("2015-11-11"))
       populate_government_bulk_data(government_a, government_b, government_c)
 
       expect(repository.past).to eq([government_c, government_b])
@@ -84,21 +78,15 @@ RSpec.describe BulkData::GovernmentRepository do
 
   describe "#all" do
     it "returns an array of governments sorted by started on date" do
-      government_a = build(
-        :government,
-        started_on: Date.parse("2018-11-11"),
-        ended_on: Date.parse("2019-11-11"),
-      )
-      government_b = build(
-        :government,
-        started_on: Date.parse("2012-11-11"),
-        ended_on: Date.parse("2015-11-11"),
-      )
-      government_c = build(
-        :government,
-        started_on: Date.parse("2015-11-11"),
-        ended_on: Date.parse("2018-11-11"),
-      )
+      government_a = build(:government,
+                           started_on: Date.parse("2018-11-11"),
+                           ended_on: Date.parse("2019-11-11"))
+      government_b = build(:government,
+                           started_on: Date.parse("2012-11-11"),
+                           ended_on: Date.parse("2015-11-11"))
+      government_c = build(:government,
+                           started_on: Date.parse("2015-11-11"),
+                           ended_on: Date.parse("2018-11-11"))
       populate_government_bulk_data(government_a, government_b, government_c)
 
       expect(repository.all).to eq([government_b, government_c, government_a])

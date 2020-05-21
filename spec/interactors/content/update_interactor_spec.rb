@@ -6,12 +6,10 @@ RSpec.describe Content::UpdateInteractor do
     let(:user) { build(:user) }
 
     let(:params) do
-      ActionController::Parameters.new(
-        document: edition.document.to_param,
-        summary: "New summary",
-        change_note: "New note",
-        update_type: "minor",
-      )
+      ActionController::Parameters.new(document: edition.document.to_param,
+                                       summary: "New summary",
+                                       change_note: "New note",
+                                       update_type: "minor")
     end
 
     it "succeeds with default parameters" do
@@ -53,11 +51,9 @@ RSpec.describe Content::UpdateInteractor do
     end
 
     it "fails if the content is unchanged" do
-      params.merge!(
-        summary: edition.summary,
-        change_note: edition.change_note,
-        update_type: edition.update_type,
-      )
+      params.merge!(summary: edition.summary,
+                    change_note: edition.change_note,
+                    update_type: edition.update_type)
       result = described_class.call(params: params, user: user)
       expect(result).to be_failure
     end
