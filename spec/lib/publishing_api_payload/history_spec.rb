@@ -10,9 +10,11 @@ RSpec.describe PublishingApiPayload::History do
     end
 
     it "returns published_at time when an edition has already been published with a major change" do
-      first_edition = create(:edition, current: false,
-                                       first_published_at: "2020-02-22 11:00:00")
-      second_edition = build(:edition, :published,
+      first_edition = create(:edition,
+                             current: false,
+                             first_published_at: "2020-02-22 11:00:00")
+      second_edition = build(:edition,
+                             :published,
                              document: first_edition.document,
                              update_type: "major",
                              change_note: "Content updated",

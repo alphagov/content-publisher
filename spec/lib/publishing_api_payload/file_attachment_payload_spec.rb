@@ -28,7 +28,8 @@ RSpec.describe PublishingApiPayload::FileAttachmentPayload do
 
       it "can add isbn and unique reference attributes" do
         attachment = create(:file_attachment_revision,
-                            isbn: "9788700631625", unique_reference: "unique ref")
+                            isbn: "9788700631625",
+                            unique_reference: "unique ref")
 
         payload = described_class.new(attachment, edition).payload
 

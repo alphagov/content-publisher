@@ -19,7 +19,8 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     let(:status) { :published }
     let(:state) { :published }
     let(:edition) do
-      build(:edition, status,
+      build(:edition,
+            status,
             state: state,
             document_type: document_type,
             published_at: "2020-03-11 12:00 UTC",
@@ -286,12 +287,14 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
   describe "#problems" do
     let(:edition) do
-      build(:edition, :published,
+      build(:edition,
+            :published,
             document_type: document_type,
             image_revisions: [build(:image_revision)],
             document: create(:document, first_published_at: "2020-03-11 18:32:38 UTC"),
             tags: { "organisations" => [] })
     end
+
     let(:publishing_api_item) do
       {
         content_id: edition.content_id,
@@ -320,6 +323,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
         },
       }
     end
+
     let(:integrity_check) { described_class.new(edition) }
 
     def problem_description(message, expected, actual)

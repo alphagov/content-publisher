@@ -245,7 +245,8 @@ RSpec.describe WhitehallImporter::EditionHistory do
       first_event = build(:whitehall_export_revision_history_event,
                           state: "draft")
       second_event = build(:whitehall_export_revision_history_event,
-                           event: "update", state: "published")
+                           event: "update",
+                           state: "published")
       instance = described_class.new([first_event, second_event])
 
       expect(instance.imported_entry_type(second_event, 1)).to eq("published")
@@ -255,7 +256,8 @@ RSpec.describe WhitehallImporter::EditionHistory do
       first_event = build(:whitehall_export_revision_history_event,
                           state: "draft")
       second_event = build(:whitehall_export_revision_history_event,
-                           event: "update", state: "foo")
+                           event: "update",
+                           state: "foo")
       instance = described_class.new([first_event, second_event])
 
       expect { instance.imported_entry_type(second_event, 1) }
@@ -268,7 +270,8 @@ RSpec.describe WhitehallImporter::EditionHistory do
       first_event = build(:whitehall_export_revision_history_event,
                           state: "draft")
       second_event = build(:whitehall_export_revision_history_event,
-                           event: "update", state: "published")
+                           event: "update",
+                           state: "published")
       instance = described_class.new([first_event, second_event])
 
       expect(instance.last_event).to eq(second_event)

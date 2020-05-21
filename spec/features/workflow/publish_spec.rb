@@ -11,7 +11,8 @@ RSpec.feature "Publishing an edition" do
   end
 
   def given_there_is_a_major_change_to_a_live_edition
-    @edition = create(:edition, :publishable,
+    @edition = create(:edition,
+                      :publishable,
                       number: 2,
                       update_type: "major",
                       created_at: 1.day.ago,
@@ -19,7 +20,8 @@ RSpec.feature "Publishing an edition" do
   end
 
   def given_there_is_a_minor_change_to_a_live_edition
-    @edition = create(:edition, :publishable,
+    @edition = create(:edition,
+                      :publishable,
                       number: 2,
                       update_type: "minor")
   end
@@ -27,7 +29,8 @@ RSpec.feature "Publishing an edition" do
   def given_there_is_an_edition_in_draft
     @creator = create(:user, email: "someone@example.com")
 
-    @edition = create(:edition, :publishable,
+    @edition = create(:edition,
+                      :publishable,
                       created_by: @creator,
                       base_path: "/news/banana-pricing-updates",
                       editors: [@creator])

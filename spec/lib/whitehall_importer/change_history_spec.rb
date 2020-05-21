@@ -2,12 +2,14 @@ RSpec.describe WhitehallImporter::ChangeHistory do
   describe "#for" do
     let(:first_edition) { build(:whitehall_export_edition, :superseded) }
     let(:second_edition) do
-      build(:whitehall_export_edition, :superseded,
+      build(:whitehall_export_edition,
+            :superseded,
             change_note: "Some change",
             published_at: Time.zone.now.beginning_of_week.rfc3339)
     end
     let(:third_edition) do
-      build(:whitehall_export_edition, :published,
+      build(:whitehall_export_edition,
+            :published,
             change_note: "Other change",
             published_at: Time.zone.now.beginning_of_day.rfc3339)
     end
@@ -73,7 +75,8 @@ RSpec.describe WhitehallImporter::ChangeHistory do
     end
 
     it "raises if an edition has a major change but no publish event" do
-      edition = build(:whitehall_export_edition, :published,
+      edition = build(:whitehall_export_edition,
+                      :published,
                       revision_history: [build(:whitehall_export_revision_history_event)])
       whitehall_export = build(:whitehall_export_document, editions: [first_edition, edition])
 
