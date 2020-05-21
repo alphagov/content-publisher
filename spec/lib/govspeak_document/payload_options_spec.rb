@@ -52,7 +52,7 @@ RSpec.describe GovspeakDocument::PayloadOptions do
           title: "A title",
           content_type: "application/pdf",
           number_of_pages: 1,
-          file_size: 13264,
+          file_size: 13_264,
           url: a_string_matching(%r{/media/.*/13kb-1-page-attachment.pdf}),
           alternative_format_contact_email: "foo@bar.com",
         ),

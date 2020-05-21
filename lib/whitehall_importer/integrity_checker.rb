@@ -43,13 +43,13 @@ module WhitehallImporter
          description
          document_type
          schema_name].each do |attribute|
-        if publishing_api_content[attribute] != proposed_payload[attribute]
-          problems << problem_description(
-            "#{attribute} doesn't match",
-            publishing_api_content[attribute],
-            proposed_payload[attribute],
-          )
-        end
+        next unless publishing_api_content[attribute] != proposed_payload[attribute]
+
+        problems << problem_description(
+          "#{attribute} doesn't match",
+          publishing_api_content[attribute],
+          proposed_payload[attribute],
+        )
       end
 
       problems << "body text doesn't match" unless BodyTextCheck.new(
@@ -123,16 +123,15 @@ module WhitehallImporter
       publishing_api_image = publishing_api_content.dig("details", "image") || {}
 
       %w[alt_text caption].each_with_object([]) do |attribute, problems|
-        if publishing_api_image[attribute] != proposed_image_payload[attribute]
-          next if default_image?(proposed_image_payload, publishing_api_image, attribute)
-          next if empty_caption?(proposed_image_payload, publishing_api_image, attribute)
+        next unless publishing_api_image[attribute] != proposed_image_payload[attribute]
+        next if default_image?(proposed_image_payload, publishing_api_image, attribute)
+        next if empty_caption?(proposed_image_payload, publishing_api_image, attribute)
 
-          problems << problem_description(
-            "image #{attribute} doesn't match",
-            publishing_api_image[attribute],
-            proposed_image_payload[attribute],
-          )
-        end
+        problems << problem_description(
+          "image #{attribute} doesn't match",
+          publishing_api_image[attribute],
+          proposed_image_payload[attribute],
+        )
       end
     end
 

@@ -52,7 +52,7 @@ RSpec.describe GovspeakDocument::InAppOptions do
           title: "A title",
           content_type: "application/pdf",
           number_of_pages: 1,
-          file_size: 13264,
+          file_size: 13_264,
           url: preview_file_attachment_path(edition.document, attachment_revision.file_attachment),
           alternative_format_contact_email: "foo@bar.com",
         ),

@@ -92,9 +92,12 @@ RSpec.describe WhitehallImporter::EmbedBodyReferences do
 
     it "doesn't change the prefixes of images and attachments preceeded by two or more new lines" do
       prefixes = [
-        "\n\n", "\r\n\r\n",
-        "\n\n\n", "\r\n\r\n\r\n",
-        "\n\n\n\n", "\r\n\r\n\r\n\r\n"
+        "\n\n",
+        "\r\n\r\n",
+        "\n\n\n",
+        "\r\n\r\n\r\n",
+        "\n\n\n\n",
+        "\r\n\r\n\r\n\r\n",
       ]
 
       prefixes.each do |prefix|
