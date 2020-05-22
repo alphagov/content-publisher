@@ -52,6 +52,7 @@ bundle exec rake jasmine
 - [History mode](docs/history-mode.md)
 - [Importing documents from Whitehall](docs/import-from-whitehall.md)
 - [Removing documents](docs/removing-documents.md)
+- [Scheduled publishing](docs/scheduled-publishing.md)
 - [Testing strategy](docs/testing-strategy.md)
 - [User permissions](docs/user-permissions.md)
 
