@@ -11,11 +11,9 @@ class ContactEmbedController < ApplicationController
   def create
     result = ContactEmbed::CreateInteractor.call(params: params)
 
-    edition, markdown_code, issues = result.to_h.values_at(
-      :edition,
-      :markdown_code,
-      :issues,
-    )
+    edition, markdown_code, issues = result.to_h.values_at(:edition,
+                                                           :markdown_code,
+                                                           :issues)
 
     if issues
       flash.now["requirements"] = { "items" => issues.items }

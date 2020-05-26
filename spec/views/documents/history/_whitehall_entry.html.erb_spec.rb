@@ -1,47 +1,37 @@
 RSpec.describe "documents/history/_whitehall_entry" do
   it "shows an imported timeline entry without an author" do
     freeze_time do
-      timeline_entry = create(
-        :timeline_entry,
-        :whitehall_imported,
-        whitehall_entry_type: :new_edition,
-        created_by: nil,
-      )
+      timeline_entry = create(:timeline_entry,
+                              :whitehall_imported,
+                              whitehall_entry_type: :new_edition,
+                              created_by: nil)
       render template: described_template, locals: { entry: timeline_entry }
       expect(rendered)
-        .to have_content(I18n.t!(
-                           "documents.history.dateline_no_user",
-                           date: Time.zone.now.to_s(:date),
-                           time: Time.zone.now.to_s(:time),
-                         ))
+        .to have_content(I18n.t!("documents.history.dateline_no_user",
+                                 date: Time.zone.now.to_s(:date),
+                                 time: Time.zone.now.to_s(:time)))
     end
   end
 
   it "shows an imported timeline entry with an author" do
     freeze_time do
-      timeline_entry = create(
-        :timeline_entry,
-        :whitehall_imported,
-        whitehall_entry_type: :new_edition,
-      )
+      timeline_entry = create(:timeline_entry,
+                              :whitehall_imported,
+                              whitehall_entry_type: :new_edition)
 
       render template: described_template, locals: { entry: timeline_entry }
       expect(rendered)
-        .to have_content(I18n.t!(
-                           "documents.history.dateline_user",
-                           date: Time.zone.now.to_s(:date),
-                           time: Time.zone.now.to_s(:time),
-                           user: timeline_entry.created_by.name,
-                         ))
+        .to have_content(I18n.t!("documents.history.dateline_user",
+                                 date: Time.zone.now.to_s(:date),
+                                 time: Time.zone.now.to_s(:time),
+                                 user: timeline_entry.created_by.name))
     end
   end
 
   it "does not highlight an imported internal note timeline entry without content" do
-    timeline_entry = create(
-      :timeline_entry,
-      :whitehall_imported,
-      whitehall_entry_type: :internal_note,
-    )
+    timeline_entry = create(:timeline_entry,
+                            :whitehall_imported,
+                            whitehall_entry_type: :internal_note)
 
     render template: described_template, locals: { entry: timeline_entry }
     expect(rendered).not_to have_selector(".app-timeline-entry--highlighted")
@@ -49,12 +39,10 @@ RSpec.describe "documents/history/_whitehall_entry" do
 
   it "shows the contents of an imported internal note timeline entry" do
     note = "This is a note"
-    timeline_entry = create(
-      :timeline_entry,
-      :whitehall_imported,
-      whitehall_entry_type: :internal_note,
-      whitehall_entry_contents: { body: note },
-    )
+    timeline_entry = create(:timeline_entry,
+                            :whitehall_imported,
+                            whitehall_entry_type: :internal_note,
+                            whitehall_entry_contents: { body: note })
 
     render template: described_template, locals: { entry: timeline_entry }
     expect(rendered).to have_content(note)
@@ -62,11 +50,9 @@ RSpec.describe "documents/history/_whitehall_entry" do
   end
 
   it "does not highlight an imported fact check request timeline entry without content" do
-    timeline_entry = create(
-      :timeline_entry,
-      :whitehall_imported,
-      whitehall_entry_type: :fact_check_request,
-    )
+    timeline_entry = create(:timeline_entry,
+                            :whitehall_imported,
+                            whitehall_entry_type: :fact_check_request)
 
     render template: described_template, locals: { entry: timeline_entry }
     expect(rendered).not_to have_selector(".app-timeline-entry--highlighted")
@@ -89,11 +75,9 @@ RSpec.describe "documents/history/_whitehall_entry" do
   end
 
   it "does not highlight an imported fact check response timeline entry without content" do
-    timeline_entry = create(
-      :timeline_entry,
-      :whitehall_imported,
-      whitehall_entry_type: :fact_check_response,
-    )
+    timeline_entry = create(:timeline_entry,
+                            :whitehall_imported,
+                            whitehall_entry_type: :fact_check_response)
 
     render template: described_template, locals: { entry: timeline_entry }
     expect(rendered).not_to have_selector(".app-timeline-entry--highlighted")

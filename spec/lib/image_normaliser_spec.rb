@@ -30,12 +30,10 @@ RSpec.describe ImageNormaliser do
       normaliser = described_class.new(file)
 
       normaliser.normalise
-      expect(normaliser.issues).to have_issue(
-        :image_upload,
-        :too_small,
-        width: Image::WIDTH,
-        height: Image::HEIGHT,
-      )
+      expect(normaliser.issues).to have_issue(:image_upload,
+                                              :too_small,
+                                              width: Image::WIDTH,
+                                              height: Image::HEIGHT)
     end
 
     it "returns an issue when the image is animated" do

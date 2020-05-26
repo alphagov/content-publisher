@@ -11,10 +11,8 @@ namespace :remove do
     document = Document.find_by!(content_id: args.content_id, locale: locale)
     raise "Document must have a published version before it can be removed" unless document.live_edition
 
-    removal = Removal.new(
-      explanatory_note: explanatory_note,
-      alternative_url: alternative_url,
-    )
+    removal = Removal.new(explanatory_note: explanatory_note,
+                          alternative_url: alternative_url)
 
     RemoveDocumentService.call(document.live_edition, removal, user: user)
   end
@@ -32,11 +30,9 @@ namespace :remove do
     document = Document.find_by!(content_id: args.content_id, locale: locale)
     raise "Document must have a published version before it can be redirected" unless document.live_edition
 
-    removal = Removal.new(
-      redirect: true,
-      explanatory_note: explanatory_note,
-      alternative_url: redirect_url,
-    )
+    removal = Removal.new(redirect: true,
+                          explanatory_note: explanatory_note,
+                          alternative_url: redirect_url)
 
     RemoveDocumentService.call(document.live_edition, removal, user: user)
   end

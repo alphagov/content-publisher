@@ -4,12 +4,10 @@ RSpec.describe SchedulePublishService::Payload do
       document_type = build(:document_type, rendering_app: "government-frontend")
       publish_time = Time.zone.now.tomorrow.at_noon
 
-      edition = build(
-        :edition,
-        :scheduled,
-        document_type: document_type,
-        publish_time: publish_time,
-      )
+      edition = build(:edition,
+                      :scheduled,
+                      document_type: document_type,
+                      publish_time: publish_time)
 
       payload = described_class.new(edition).intent_payload
 

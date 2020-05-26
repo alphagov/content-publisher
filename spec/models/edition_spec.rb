@@ -59,31 +59,23 @@ RSpec.describe Edition do
 
   describe "#political?" do
     it "returns editor political when that is set" do
-      political_edition = build(
-        :edition,
-        editor_political: true,
-        system_political: true,
-      )
-      not_political_edition = build(
-        :edition,
-        editor_political: false,
-        system_political: true,
-      )
+      political_edition = build(:edition,
+                                editor_political: true,
+                                system_political: true)
+      not_political_edition = build(:edition,
+                                    editor_political: false,
+                                    system_political: true)
       expect(political_edition).to be_political
       expect(not_political_edition).not_to be_political
     end
 
     it "returns system political when editor political isn't set" do
-      political_edition = build(
-        :edition,
-        editor_political: nil,
-        system_political: true,
-      )
-      not_political_edition = build(
-        :edition,
-        editor_political: nil,
-        system_political: false,
-      )
+      political_edition = build(:edition,
+                                editor_political: nil,
+                                system_political: true)
+      not_political_edition = build(:edition,
+                                    editor_political: nil,
+                                    system_political: false)
       expect(political_edition).to be_political
       expect(not_political_edition).not_to be_political
     end
@@ -157,15 +149,13 @@ RSpec.describe Edition do
   describe "#access_limit_organisation_ids" do
     context "when the limit is to primary orgs" do
       let(:edition) do
-        build(
-          :edition,
-          :access_limited,
-          limit_type: :primary_organisation,
-          tags: {
-            primary_publishing_organisation: %w[primary-org],
-            organisations: %w[supporting-org],
-          },
-        )
+        build(:edition,
+              :access_limited,
+              limit_type: :primary_organisation,
+              tags: {
+                primary_publishing_organisation: %w[primary-org],
+                organisations: %w[supporting-org],
+              })
       end
 
       it "returns just the primary org id" do
@@ -176,15 +166,13 @@ RSpec.describe Edition do
 
     context "when the limit is to tagged orgs" do
       let(:edition) do
-        build(
-          :edition,
-          :access_limited,
-          limit_type: :tagged_organisations,
-          tags: {
-            primary_publishing_organisation: %w[primary-org],
-            organisations: %w[supporting-org],
-          },
-        )
+        build(:edition,
+              :access_limited,
+              limit_type: :tagged_organisations,
+              tags: {
+                primary_publishing_organisation: %w[primary-org],
+                organisations: %w[supporting-org],
+              })
       end
 
       it "returns the primary and supporting orgs" do

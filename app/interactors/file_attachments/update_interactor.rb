@@ -53,10 +53,8 @@ private
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_revision(
-      entry_type: :file_attachment_updated,
-      edition: edition,
-    )
+    TimelineEntry.create_for_revision(entry_type: :file_attachment_updated,
+                                      edition: edition)
   end
 
   def update_preview

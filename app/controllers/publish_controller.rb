@@ -14,11 +14,9 @@ class PublishController < ApplicationController
   def publish
     result = Publish::PublishInteractor.call(params: params, user: current_user)
 
-    edition, issues, publish_failed = result.to_h.values_at(
-      :edition,
-      :issues,
-      :publish_failed,
-    )
+    edition, issues, publish_failed = result.to_h.values_at(:edition,
+                                                            :issues,
+                                                            :publish_failed)
     if issues
       flash.now["requirements"] = { "items" => issues.items }
 

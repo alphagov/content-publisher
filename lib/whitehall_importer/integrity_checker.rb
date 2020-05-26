@@ -8,10 +8,8 @@ module WhitehallImporter
       proposed_time = Time.zone.rfc3339(proposed_time)
       publishing_api_time = Time.zone.rfc3339(publishing_api_time)
 
-      proposed_time.between?(
-        publishing_api_time - seconds_difference,
-        publishing_api_time + seconds_difference,
-      )
+      proposed_time.between?(publishing_api_time - seconds_difference,
+                             publishing_api_time + seconds_difference)
     rescue ArgumentError
       false
     end
@@ -45,13 +43,13 @@ module WhitehallImporter
          description
          document_type
          schema_name].each do |attribute|
-        if publishing_api_content[attribute] != proposed_payload[attribute]
-          problems << problem_description(
-            "#{attribute} doesn't match",
-            publishing_api_content[attribute],
-            proposed_payload[attribute],
-          )
-        end
+        next if publishing_api_content[attribute] == proposed_payload[attribute]
+
+        problems << problem_description(
+          "#{attribute} doesn't match",
+          publishing_api_content[attribute],
+          proposed_payload[attribute],
+        )
       end
 
       problems << "body text doesn't match" unless BodyTextCheck.new(
@@ -75,22 +73,18 @@ module WhitehallImporter
       first_public_at = publishing_api_content["details"]["first_public_at"]
 
       unless time_matches?(proposed_first_published_at, first_public_at)
-        problems << problem_description(
-          "our first_published_at doesn't match first_public_at",
-          first_public_at,
-          proposed_first_published_at,
-        )
+        problems << problem_description("our first_published_at doesn't match first_public_at",
+                                        first_public_at,
+                                        proposed_first_published_at)
       end
 
       proposed_public_updated_at = proposed_payload["public_updated_at"]
       public_updated_at = publishing_api_content["public_updated_at"]
 
       if edition.live? && !time_matches?(proposed_public_updated_at, public_updated_at)
-        problems << problem_description(
-          "public_updated_at doesn't match",
-          public_updated_at,
-          proposed_public_updated_at,
-        )
+        problems << problem_description("public_updated_at doesn't match",
+                                        public_updated_at,
+                                        proposed_public_updated_at)
       end
 
       problems
@@ -104,11 +98,9 @@ module WhitehallImporter
       problems = []
 
       unless publishing_api_content["publication_state"] == expected_state
-        problems << problem_description(
-          "publication_state isn't as expected",
-          publishing_api_content["publication_state"],
-          expected_state,
-        )
+        problems << problem_description("publication_state isn't as expected",
+                                        publishing_api_content["publication_state"],
+                                        expected_state)
       end
 
       problems
@@ -131,16 +123,15 @@ module WhitehallImporter
       publishing_api_image = publishing_api_content.dig("details", "image") || {}
 
       %w[alt_text caption].each_with_object([]) do |attribute, problems|
-        if publishing_api_image[attribute] != proposed_image_payload[attribute]
-          next if default_image?(proposed_image_payload, publishing_api_image, attribute)
-          next if empty_caption?(proposed_image_payload, publishing_api_image, attribute)
+        next if publishing_api_image[attribute] == proposed_image_payload[attribute]
+        next if default_image?(proposed_image_payload, publishing_api_image, attribute)
+        next if empty_caption?(proposed_image_payload, publishing_api_image, attribute)
 
-          problems << problem_description(
-            "image #{attribute} doesn't match",
-            publishing_api_image[attribute],
-            proposed_image_payload[attribute],
-          )
-        end
+        problems << problem_description(
+          "image #{attribute} doesn't match",
+          publishing_api_image[attribute],
+          proposed_image_payload[attribute],
+        )
       end
     end
 

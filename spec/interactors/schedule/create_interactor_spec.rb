@@ -6,10 +6,8 @@ RSpec.describe Schedule::CreateInteractor do
     let(:user) { build(:user) }
 
     def build_params(document: edition.document, review_status: "reviewed")
-      ActionController::Parameters.new(
-        document: document.to_param,
-        review_status: review_status,
-      )
+      ActionController::Parameters.new(document: document.to_param,
+                                       review_status: review_status)
     end
 
     it "succeeds with default paramaters" do
@@ -29,10 +27,8 @@ RSpec.describe Schedule::CreateInteractor do
           expect(new_scheduling.publish_time).to eq(publish_time)
         end
 
-      params = build_params(
-        document: edition.document,
-        review_status: "not_reviewed",
-      )
+      params = build_params(document: edition.document,
+                            review_status: "not_reviewed")
       described_class.call(params: params, user: user)
     end
 
@@ -56,11 +52,9 @@ RSpec.describe Schedule::CreateInteractor do
     end
 
     it "raises an error when the edition isn't publishable" do
-      edition = create(
-        :edition,
-        :not_publishable,
-        proposed_publish_time: Time.zone.tomorrow,
-      )
+      edition = create(:edition,
+                       :not_publishable,
+                       proposed_publish_time: Time.zone.tomorrow)
       params = build_params(document: edition.document)
       expect { described_class.call(params: params, user: user) }
         .to raise_error(EditionAssertions::StateError)

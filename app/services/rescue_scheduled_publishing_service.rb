@@ -22,13 +22,11 @@ private
   def update_status(edition)
     raise "Expected edition to be scheduled" unless edition.scheduled?
 
-    AssignEditionStatusService.call(
-      edition,
-      user: edition.status.created_by,
-      state: :failed_to_publish,
-      record_edit: false,
-      status_details: edition.status.details,
-    )
+    AssignEditionStatusService.call(edition,
+                                    user: edition.status.created_by,
+                                    state: :failed_to_publish,
+                                    record_edit: false,
+                                    status_details: edition.status.details)
     edition.save!
   end
 

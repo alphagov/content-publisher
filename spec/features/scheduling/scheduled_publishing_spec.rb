@@ -21,13 +21,11 @@ RSpec.feature "Scheduled publishing" do
   end
 
   def given_there_is_a_schedulable_edition
-    @edition = create(
-      :edition,
-      :schedulable,
-      created_by: current_user,
-      proposed_publish_time: Time.zone.parse("2019-06-22 9:00"),
-      base_path: "/news/breaking-story",
-    )
+    @edition = create(:edition,
+                      :schedulable,
+                      created_by: current_user,
+                      proposed_publish_time: Time.zone.parse("2019-06-22 9:00"),
+                      base_path: "/news/breaking-story")
   end
 
   def when_i_go_to_schedule_a_publishing
@@ -49,10 +47,8 @@ RSpec.feature "Scheduled publishing" do
 
     expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))
     expect(page)
-      .to have_content(I18n.t!(
-                         "documents.show.scheduled_notice.title",
-                         datetime: @edition.proposed_publish_time.to_s(:time_on_date),
-                       ))
+      .to have_content(I18n.t!("documents.show.scheduled_notice.title",
+                               datetime: @edition.proposed_publish_time.to_s(:time_on_date)))
   end
 
   def and_there_is_a_scheduled_timeline_entry
@@ -68,11 +64,9 @@ RSpec.feature "Scheduled publishing" do
     travel_to(Time.zone.parse("2019-6-22 9:00"))
     populate_default_government_bulk_data
     stub_any_publishing_api_put_content
-    @publish_request = stub_publishing_api_publish(
-      @edition.content_id,
-      update_type: nil,
-      locale: @edition.locale,
-    )
+    @publish_request = stub_publishing_api_publish(@edition.content_id,
+                                                   update_type: nil,
+                                                   locale: @edition.locale)
     Sidekiq::Worker.drain_all
   end
 
@@ -82,20 +76,16 @@ RSpec.feature "Scheduled publishing" do
 
   def and_the_editors_are_notified
     message = ActionMailer::Base.deliveries.first
-    expected_subject = I18n.t(
-      "scheduled_publish_mailer.success_email.subject.published",
-      title: @edition.title,
-    )
+    expected_subject = I18n.t("scheduled_publish_mailer.success_email.subject.published",
+                              title: @edition.title)
 
     expect(message.to).to include(current_user.email)
     expect(message.subject).to eq(expected_subject)
 
     expect(message.body).to have_content("https://www.test.gov.uk/news/breaking-story")
     expect(message.body)
-      .to have_content(I18n.t(
-                         "scheduled_publish_mailer.success_email.details.publish",
-                         datetime: @edition.proposed_publish_time.to_s(:time_on_date),
-                       ))
+      .to have_content(I18n.t("scheduled_publish_mailer.success_email.details.publish",
+                              datetime: @edition.proposed_publish_time.to_s(:time_on_date)))
   end
 
   def when_i_visit_the_summary_page

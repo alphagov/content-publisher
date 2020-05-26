@@ -9,13 +9,11 @@ RSpec.describe GovspeakDocument::InAppOptions do
 
   describe "#to_h" do
     it "returns a hash of image attributes" do
-      image_revision = build(
-        :image_revision,
-        alt_text: "Some alt text",
-        caption: "An optional caption",
-        credit: "An optional credit",
-        filename: "filename.png",
-      )
+      image_revision = build(:image_revision,
+                             alt_text: "Some alt text",
+                             caption: "An optional caption",
+                             credit: "An optional credit",
+                             filename: "filename.png")
       edition = build(:edition, image_revisions: [image_revision])
 
       in_app_options = described_class.new("govspeak", edition)
@@ -33,17 +31,13 @@ RSpec.describe GovspeakDocument::InAppOptions do
     end
 
     it "returns a hash of file attachment attributes" do
-      attachment_revision = create(
-        :file_attachment_revision,
-        fixture: "13kb-1-page-attachment.pdf",
-        filename: "13kb-1-page-attachment.pdf",
-        title: "A title",
-        number_of_pages: 1,
-      )
-      edition = build(
-        :edition,
-        file_attachment_revisions: [attachment_revision],
-      )
+      attachment_revision = create(:file_attachment_revision,
+                                   fixture: "13kb-1-page-attachment.pdf",
+                                   filename: "13kb-1-page-attachment.pdf",
+                                   title: "A title",
+                                   number_of_pages: 1)
+      edition = build(:edition,
+                      file_attachment_revisions: [attachment_revision])
 
       allow(organisation_service)
         .to receive(:alternative_format_contact_email).and_return("foo@bar.com")

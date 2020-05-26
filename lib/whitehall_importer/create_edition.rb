@@ -1,13 +1,22 @@
 module WhitehallImporter
   class CreateEdition
-    attr_reader :document_import, :whitehall_edition, :change_history, :current, :edition_number, :user_ids
+    attr_reader :document_import,
+                :whitehall_edition,
+                :change_history,
+                :current,
+                :edition_number,
+                :user_ids
 
     def self.call(*args)
       new(*args).call
     end
 
-    def initialize(document_import:, whitehall_edition:, change_history:,
-                   current: true, edition_number: 1, user_ids: {})
+    def initialize(document_import:,
+                   whitehall_edition:,
+                   change_history:,
+                   current: true,
+                   edition_number: 1,
+                   user_ids: {})
       @document_import = document_import
       @whitehall_edition = whitehall_edition
       @change_history = change_history
@@ -31,12 +40,10 @@ module WhitehallImporter
                   state = MigrateState.call(whitehall_edition["state"], whitehall_edition["force_published"])
                   revision = create_revision(edition_number)
                   status = build_status(revision, state)
-                  create_edition(
-                    status: status,
-                    current: current,
-                    edition_number: edition_number,
-                    revision: revision,
-                  )
+                  create_edition(status: status,
+                                 current: current,
+                                 edition_number: edition_number,
+                                 revision: revision)
                 end
 
       create_revision_history(edition)
@@ -98,12 +105,10 @@ module WhitehallImporter
 
     def create_withdrawn_edition
       revision = create_revision(edition_number)
-      create_edition(
-        status: build_status(revision, "published"),
-        current: current,
-        edition_number: edition_number,
-        revision: revision,
-      ).tap { |edition| set_withdrawn_status(edition) }
+      create_edition(status: build_status(revision, "published"),
+                     current: current,
+                     edition_number: edition_number,
+                     revision: revision).tap { |edition| set_withdrawn_status(edition) }
     end
 
     def set_withdrawn_status(edition)
@@ -127,17 +132,13 @@ module WhitehallImporter
 
       revision = create_revision(edition_number)
       pre_scheduled_state = history.last_state_event("submitted") ? "submitted_for_review" : "draft"
-      edition = create_edition(
-        status: build_status(revision, pre_scheduled_state),
-        current: current,
-        edition_number: edition_number,
-        revision: revision,
-      )
-      scheduling = Scheduling.new(
-        pre_scheduled_status: edition.status,
-        reviewed: !whitehall_edition["force_published"],
-        publish_time: whitehall_edition["scheduled_publication"],
-      )
+      edition = create_edition(status: build_status(revision, pre_scheduled_state),
+                               current: current,
+                               edition_number: edition_number,
+                               revision: revision)
+      scheduling = Scheduling.new(pre_scheduled_status: edition.status,
+                                  reviewed: !whitehall_edition["force_published"],
+                                  publish_time: whitehall_edition["scheduled_publication"])
       edition.update!(status: build_status(revision, "scheduled", scheduling))
       edition
     end
@@ -212,12 +213,7 @@ module WhitehallImporter
         next if entry_type.nil?
 
         details = create_whitehall_imported_entry(entry_type)
-        create_timeline_entry(
-          details,
-          edition,
-          event["created_at"],
-          event["whodunnit"],
-        )
+        create_timeline_entry(details, edition, event["created_at"], event["whodunnit"])
       end
     end
 
@@ -227,12 +223,7 @@ module WhitehallImporter
           body: event["body"],
         }
         details = create_whitehall_imported_entry("internal_note", contents)
-        create_timeline_entry(
-          details,
-          edition,
-          event["created_at"],
-          event["author_id"],
-        )
+        create_timeline_entry(details, edition, event["created_at"], event["author_id"])
       end
     end
 
@@ -249,12 +240,7 @@ module WhitehallImporter
         instructions: event["instructions"],
       }
       details = create_whitehall_imported_entry("fact_check_request", contents)
-      create_timeline_entry(
-        details,
-        edition,
-        event["created_at"],
-        event["requestor_id"],
-      )
+      create_timeline_entry(details, edition, event["created_at"], event["requestor_id"])
     end
 
     def create_fact_check_response(edition, event)

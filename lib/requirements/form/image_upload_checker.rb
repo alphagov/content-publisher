@@ -24,11 +24,9 @@ class Requirements::Form::ImageUploadChecker < Requirements::Checker
     end
 
     if file.size >= MAX_FILE_SIZE
-      issues.create(
-        :image_upload,
-        :too_big,
-        max_size: number_to_human_size(MAX_FILE_SIZE),
-      )
+      issues.create(:image_upload,
+                    :too_big,
+                    max_size: number_to_human_size(MAX_FILE_SIZE))
     end
   end
 

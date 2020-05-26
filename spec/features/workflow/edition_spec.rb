@@ -33,21 +33,17 @@ RSpec.feature "Editions" do
   end
 
   def given_there_is_a_published_edition
-    @published_edition = create(
-      :edition,
-      :published,
-      update_type: "major",
-      change_note: "First edition.",
-    )
+    @published_edition = create(:edition,
+                                :published,
+                                update_type: "major",
+                                change_note: "First edition.")
   end
 
   def given_there_is_a_discarded_draft
-    create(
-      :edition,
-      document: @published_edition.document,
-      state: :discarded,
-      current: false,
-    )
+    create(:edition,
+           document: @published_edition.document,
+           state: :discarded,
+           current: false)
   end
 
   def when_i_visit_the_summary_page

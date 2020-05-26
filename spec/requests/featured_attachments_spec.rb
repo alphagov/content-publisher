@@ -42,11 +42,8 @@ RSpec.describe "Featured Attachments" do
       stub_any_publishing_api_put_content
       stub_asset_manager_receives_an_asset
 
-      edition = create(
-        :edition,
-        document_type: document_type,
-        file_attachment_revisions: [file_attachment],
-      )
+      edition = create(:edition, document_type: document_type,
+                                 file_attachment_revisions: [file_attachment])
 
       patch reorder_featured_attachments_path(edition.document),
             params: { attachments: { ordering: { "FileAttachment1" => 2 } } }

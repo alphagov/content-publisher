@@ -23,10 +23,8 @@ FactoryBot.define do
     fact_check_requests { [] }
     revision_history do
       [
-        build(
-          :whitehall_export_revision_history_event,
-          created_at: created_at,
-        ),
+        build(:whitehall_export_revision_history_event,
+              created_at: created_at),
       ]
     end
     unpublishing { nil }
@@ -43,22 +41,16 @@ FactoryBot.define do
       state { "scheduled" }
       revision_history do
         [
-          build(
-            :whitehall_export_revision_history_event,
-            created_at: created_at,
-          ),
-          build(
-            :whitehall_export_revision_history_event,
-            event: "update",
-            created_at: 2.days.ago.rfc3339,
-            state: previous_state,
-          ),
-          build(
-            :whitehall_export_revision_history_event,
-            event: "update",
-            state: "scheduled",
-            created_at: Time.zone.now.tomorrow.rfc3339,
-          ),
+          build(:whitehall_export_revision_history_event,
+                created_at: created_at),
+          build(:whitehall_export_revision_history_event,
+                event: "update",
+                created_at: 2.days.ago.rfc3339,
+                state: previous_state),
+          build(:whitehall_export_revision_history_event,
+                event: "update",
+                state: "scheduled",
+                created_at: Time.zone.now.tomorrow.rfc3339),
         ]
       end
     end
@@ -73,16 +65,12 @@ FactoryBot.define do
       state { "published" }
       revision_history do
         [
-          build(
-            :whitehall_export_revision_history_event,
-            created_at: created_at,
-          ),
-          build(
-            :whitehall_export_revision_history_event,
-            event: "update",
-            state: "published",
-            created_at: published_at,
-          ),
+          build(:whitehall_export_revision_history_event,
+                created_at: created_at),
+          build(:whitehall_export_revision_history_event,
+                event: "update",
+                state: "published",
+                created_at: published_at),
         ]
       end
     end
@@ -96,21 +84,15 @@ FactoryBot.define do
       state { "superseded" }
       revision_history do
         [
-          build(
-            :whitehall_export_revision_history_event,
-            created_at: created_at,
-          ),
-          build(
-            :whitehall_export_revision_history_event,
-            event: "update",
-            state: "published",
-            created_at: published_at,
-          ),
-          build(
-            :whitehall_export_revision_history_event,
-            event: "update",
-            state: "superseded",
-          ),
+          build(:whitehall_export_revision_history_event,
+                created_at: created_at),
+          build(:whitehall_export_revision_history_event,
+                event: "update",
+                state: "published",
+                created_at: published_at),
+          build(:whitehall_export_revision_history_event,
+                event: "update",
+                state: "superseded"),
         ]
       end
     end

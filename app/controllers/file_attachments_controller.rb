@@ -46,10 +46,8 @@ class FileAttachmentsController < ApplicationController
     if api_error || !can_preview
       render :preview_pending, status: :service_unavailable
     else
-      attachment_revision, edition = result.to_h.values_at(
-        :attachment_revision,
-        :edition,
-      )
+      attachment_revision, edition = result.to_h.values_at(:attachment_revision,
+                                                           :edition)
       redirect_to file_attachment_preview_url(attachment_revision, edition.document)
     end
   end
@@ -70,11 +68,9 @@ class FileAttachmentsController < ApplicationController
 
   def create
     result = FileAttachments::CreateInteractor.call(params: params, user: current_user)
-    edition, attachment_revision, issues = result.to_h.values_at(
-      :edition,
-      :attachment_revision,
-      :issues,
-    )
+    edition, attachment_revision, issues = result.to_h.values_at(:edition,
+                                                                 :attachment_revision,
+                                                                 :issues)
 
     if issues
       flash.now["requirements"] = {
@@ -91,11 +87,9 @@ class FileAttachmentsController < ApplicationController
                         issues: issues },
              status: :unprocessable_entity
     elsif params[:wizard] == "featured-attachment-upload"
-      redirect_to edit_file_attachment_path(
-        edition.document,
-        attachment_revision.file_attachment,
-        wizard: params[:wizard],
-      )
+      redirect_to edit_file_attachment_path(edition.document,
+                                            attachment_revision.file_attachment,
+                                            wizard: params[:wizard])
     else
       redirect_to file_attachment_path(edition.document, attachment_revision.file_attachment)
     end
@@ -109,10 +103,8 @@ class FileAttachmentsController < ApplicationController
       redirect_to featured_attachments_path(params[:document])
     else
       redirect_to file_attachments_path(params[:document]),
-                  notice: t(
-                    "file_attachments.index.flashes.deleted",
-                    file: attachment_revision.filename,
-                  )
+                  notice: t("file_attachments.index.flashes.deleted",
+                            file: attachment_revision.filename)
     end
   end
 
@@ -178,11 +170,9 @@ class FileAttachmentsController < ApplicationController
     elsif params[:wizard] == "featured-attachment-replace"
       redirect_to featured_attachments_path(edition.document)
     elsif params[:wizard] == "featured-attachment-upload"
-      redirect_to edit_file_attachment_path(
-        edition.document,
-        attachment_revision.file_attachment,
-        wizard: params[:wizard],
-      )
+      redirect_to edit_file_attachment_path(edition.document,
+                                            attachment_revision.file_attachment,
+                                            wizard: params[:wizard])
     else
       flash[:notice] = I18n.t!("file_attachments.replace.flashes.update_confirmation") unless unchanged
       redirect_to file_attachments_path(edition.document)

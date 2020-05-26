@@ -2,12 +2,9 @@ RSpec.describe User do
   describe "#can_access?" do
     context "when the user has an override permission" do
       it "returns true" do
-        user = build(
-          :user,
-          permissions: [
-            User::ACCESS_LIMIT_OVERRIDE_PERMISSION,
-          ],
-        )
+        user = build(:user, permissions: [
+          User::ACCESS_LIMIT_OVERRIDE_PERMISSION,
+        ])
 
         edition = build(:edition)
         expect(user).to be_can_access(edition)

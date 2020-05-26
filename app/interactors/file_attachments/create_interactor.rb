@@ -25,10 +25,8 @@ private
   end
 
   def check_for_issues
-    issues = Requirements::Form::FileAttachmentUploadChecker.call(
-      file: params[:file],
-      title: params[:title],
-    )
+    issues = Requirements::Form::FileAttachmentUploadChecker.call(file: params[:file],
+                                                                  title: params[:title])
 
     issues.create(:file_attachment_upload, :no_file) if params[:file].blank?
     context.fail!(issues: issues) if issues.any?
@@ -67,9 +65,7 @@ private
 
   def unique_filename
     existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
-    GenerateUniqueFilenameService.call(
-      filename: params[:file].original_filename,
-      existing_filenames: existing_filenames,
-    )
+    GenerateUniqueFilenameService.call(filename: params[:file].original_filename,
+                                       existing_filenames: existing_filenames)
   end
 end

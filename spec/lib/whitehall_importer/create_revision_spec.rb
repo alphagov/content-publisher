@@ -17,17 +17,13 @@ RSpec.describe WhitehallImporter::CreateRevision do
     end
 
     it "sets content from the revision" do
-      translation = build(
-        :whitehall_export_translation,
-        locale: "en",
-        title: "Revision title",
-        summary: "Revision summary",
-        base_path: "/a-path",
-      )
-      whitehall_edition = build(
-        :whitehall_export_edition,
-        translations: [translation],
-      )
+      translation = build(:whitehall_export_translation,
+                          locale: "en",
+                          title: "Revision title",
+                          summary: "Revision summary",
+                          base_path: "/a-path")
+      whitehall_edition = build(:whitehall_export_edition,
+                                translations: [translation])
       revision = described_class.call(document_import, whitehall_edition)
       expect(revision.title).to eq("Revision title")
       expect(revision.summary).to eq("Revision summary")
@@ -36,15 +32,11 @@ RSpec.describe WhitehallImporter::CreateRevision do
 
     it "sets backdated_to when the first edition has been backdated" do
       backdated_to = Time.zone.now.yesterday.rfc3339
-      whitehall_edition = build(
-        :whitehall_export_edition,
-        first_published_at: backdated_to,
-      )
-      document_import = build(
-        :whitehall_migration_document_import,
-        document: document,
-        payload: build(:whitehall_export_document, editions: [whitehall_edition]),
-      )
+      whitehall_edition = build(:whitehall_export_edition,
+                                first_published_at: backdated_to)
+      document_import = build(:whitehall_migration_document_import,
+                              document: document,
+                              payload: build(:whitehall_export_document, editions: [whitehall_edition]))
 
       revision = described_class.call(document_import, whitehall_edition)
 
@@ -53,23 +45,15 @@ RSpec.describe WhitehallImporter::CreateRevision do
 
     it "sets backdated_to when the following edition has been backdated" do
       backdated_to = Time.zone.now.beginning_of_week.rfc3339
-      whitehall_edition = build(
-        :whitehall_export_edition,
-        :published,
-        published_at: Time.zone.yesterday.rfc3339,
-      )
-      backdated_whitehall_edition = build(
-        :whitehall_export_edition,
-        first_published_at: backdated_to,
-      )
-      document_import = build(
-        :whitehall_migration_document_import,
-        document: document,
-        payload: build(
-          :whitehall_export_document,
-          editions: [whitehall_edition, backdated_whitehall_edition],
-        ),
-      )
+      whitehall_edition = build(:whitehall_export_edition,
+                                :published,
+                                published_at: Time.zone.yesterday.rfc3339)
+      backdated_whitehall_edition = build(:whitehall_export_edition,
+                                          first_published_at: backdated_to)
+      document_import = build(:whitehall_migration_document_import,
+                              document: document,
+                              payload: build(:whitehall_export_document,
+                                             editions: [whitehall_edition, backdated_whitehall_edition]))
 
       revision = described_class.call(document_import, backdated_whitehall_edition)
 
@@ -88,14 +72,10 @@ RSpec.describe WhitehallImporter::CreateRevision do
       published_at = Time.zone.now.rfc3339
       whitehall_edition = build(:whitehall_export_edition, :published, published_at: published_at)
       following_whitehall_edition = build(:whitehall_export_edition, first_published_at: published_at)
-      document_import = build(
-        :whitehall_migration_document_import,
-        document: document,
-        payload: build(
-          :whitehall_export_document,
-          editions: [whitehall_edition, following_whitehall_edition],
-        ),
-      )
+      document_import = build(:whitehall_migration_document_import,
+                              document: document,
+                              payload: build(:whitehall_export_document,
+                                             editions: [whitehall_edition, following_whitehall_edition]))
 
       revision = described_class.call(document_import, following_whitehall_edition)
 
@@ -215,20 +195,16 @@ RSpec.describe WhitehallImporter::CreateRevision do
 
     it "aborts when a translation isn't available for the documents locale" do
       translation = build(:whitehall_export_translation, locale: "fr")
-      whitehall_edition = build(
-        :whitehall_export_edition,
-        translations: [translation],
-      )
+      whitehall_edition = build(:whitehall_export_edition,
+                                translations: [translation])
 
       expect { described_class.call(document_import, whitehall_edition) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
 
     it "aborts for a unsupported news_article_type" do
-      whitehall_edition = build(
-        :whitehall_export_edition,
-        news_article_type: "unsupported",
-      )
+      whitehall_edition = build(:whitehall_export_edition,
+                                news_article_type: "unsupported")
 
       expect { described_class.call(document_import, whitehall_edition) }
         .to raise_error(WhitehallImporter::AbortImportError)
@@ -251,10 +227,8 @@ RSpec.describe WhitehallImporter::CreateRevision do
       let(:first_lead_organisation) { build(:whitehall_export_organisation, :lead) }
       let(:second_lead_organisation) { build(:whitehall_export_organisation, :lead, lead_ordering: 2) }
       let(:whitehall_edition) do
-        build(
-          :whitehall_export_edition,
-          organisations: [first_lead_organisation, second_lead_organisation],
-        )
+        build(:whitehall_export_edition,
+              organisations: [first_lead_organisation, second_lead_organisation])
       end
 
       it "sets the first lead organisation as the primary publishing organisation" do
@@ -305,10 +279,8 @@ RSpec.describe WhitehallImporter::CreateRevision do
 
     it "sets role appointments" do
       role_appointment = { "id" => 1, "content_id" => SecureRandom.uuid }
-      whitehall_edition = build(
-        :whitehall_export_edition,
-        role_appointments: [role_appointment],
-      )
+      whitehall_edition = build(:whitehall_export_edition,
+                                role_appointments: [role_appointment])
 
       revision = described_class.call(document_import, whitehall_edition)
 
@@ -318,10 +290,8 @@ RSpec.describe WhitehallImporter::CreateRevision do
 
     it "sets topical events" do
       topical_event = { "id" => 1, "content_id" => SecureRandom.uuid }
-      whitehall_edition = build(
-        :whitehall_export_edition,
-        topical_events: [topical_event],
-      )
+      whitehall_edition = build(:whitehall_export_edition,
+                                topical_events: [topical_event])
 
       revision = described_class.call(document_import, whitehall_edition)
 
@@ -331,10 +301,8 @@ RSpec.describe WhitehallImporter::CreateRevision do
 
     it "sets world locations" do
       world_location = { "id" => 1, "content_id" => SecureRandom.uuid }
-      whitehall_edition = build(
-        :whitehall_export_edition,
-        world_locations: [world_location],
-      )
+      whitehall_edition = build(:whitehall_export_edition,
+                                world_locations: [world_location])
 
       revision = described_class.call(document_import, whitehall_edition)
 

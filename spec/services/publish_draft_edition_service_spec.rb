@@ -13,11 +13,9 @@ RSpec.describe PublishDraftEditionService do
       let(:edition) { create(:edition, :publishable) }
 
       it "publishes the current_edition" do
-        publish_request = stub_publishing_api_publish(
-          edition.content_id,
-          update_type: nil,
-          locale: edition.locale,
-        )
+        publish_request = stub_publishing_api_publish(edition.content_id,
+                                                      update_type: nil,
+                                                      locale: edition.locale)
 
         described_class.call(edition, user, with_review: true)
         expect(publish_request).to have_been_requested

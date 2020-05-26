@@ -11,35 +11,29 @@ RSpec.feature "Publishing an edition" do
   end
 
   def given_there_is_a_major_change_to_a_live_edition
-    @edition = create(
-      :edition,
-      :publishable,
-      number: 2,
-      update_type: "major",
-      created_at: 1.day.ago,
-      change_note: "The best major change ever",
-    )
+    @edition = create(:edition,
+                      :publishable,
+                      number: 2,
+                      update_type: "major",
+                      created_at: 1.day.ago,
+                      change_note: "The best major change ever")
   end
 
   def given_there_is_a_minor_change_to_a_live_edition
-    @edition = create(
-      :edition,
-      :publishable,
-      number: 2,
-      update_type: "minor",
-    )
+    @edition = create(:edition,
+                      :publishable,
+                      number: 2,
+                      update_type: "minor")
   end
 
   def given_there_is_an_edition_in_draft
     @creator = create(:user, email: "someone@example.com")
 
-    @edition = create(
-      :edition,
-      :publishable,
-      created_by: @creator,
-      base_path: "/news/banana-pricing-updates",
-      editors: [@creator],
-    )
+    @edition = create(:edition,
+                      :publishable,
+                      created_by: @creator,
+                      base_path: "/news/banana-pricing-updates",
+                      editors: [@creator])
   end
 
   def when_i_visit_the_summary_page
@@ -89,15 +83,11 @@ RSpec.feature "Publishing an edition" do
     expect(message.body).to have_content("https://www.test.gov.uk/news/banana-pricing-updates")
     expect(message.body).to have_content(document_path(@edition.document))
 
-    expect(message.subject).to eq(I18n.t(
-                                    "publish_mailer.publish_email.subject.published",
-                                    title: @edition.title,
-                                  ))
+    expect(message.subject).to eq(I18n.t("publish_mailer.publish_email.subject.published",
+                                         title: @edition.title))
 
-    expect(message.body).to have_content(I18n.t(
-                                           "publish_mailer.publish_email.details.publish",
-                                           datetime: @publish_time.to_s(:time_on_date),
-                                           user: current_user.name,
-                                         ))
+    expect(message.body).to have_content(I18n.t("publish_mailer.publish_email.details.publish",
+                                                datetime: @publish_time.to_s(:time_on_date),
+                                                user: current_user.name))
   end
 end

@@ -18,14 +18,12 @@ RSpec.feature "Publish without review" do
   def given_there_is_an_edition
     @creator = create(:user, email: "someone@example.com")
 
-    @edition = create(
-      :edition,
-      :publishable,
-      created_by: @creator,
-      created_at: 1.day.ago,
-      base_path: "/news/banana-pricing-updates",
-      editors: [@creator],
-    )
+    @edition = create(:edition,
+                      :publishable,
+                      created_by: @creator,
+                      created_at: 1.day.ago,
+                      base_path: "/news/banana-pricing-updates",
+                      editors: [@creator])
   end
 
   def when_i_visit_the_summary_page
@@ -82,15 +80,11 @@ RSpec.feature "Publish without review" do
     expect(message.body).to have_content("https://www.test.gov.uk/news/banana-pricing-updates")
     expect(message.body).to have_content(document_path(@edition.document))
 
-    expect(message.subject).to eq(I18n.t(
-                                    "publish_mailer.publish_email.subject.published_but_needs_2i",
-                                    title: @edition.title,
-                                  ))
+    expect(message.subject).to eq(I18n.t("publish_mailer.publish_email.subject.published_but_needs_2i",
+                                         title: @edition.title))
 
-    expect(message.body).to have_content(I18n.t(
-                                           "publish_mailer.publish_email.details.publish",
-                                           datetime: @publish_time.to_s(:time_on_date),
-                                           user: current_user.name,
-                                         ))
+    expect(message.body).to have_content(I18n.t("publish_mailer.publish_email.details.publish",
+                                                datetime: @publish_time.to_s(:time_on_date),
+                                                user: current_user.name))
   end
 end

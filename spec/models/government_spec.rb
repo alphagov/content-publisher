@@ -2,12 +2,10 @@ RSpec.describe Government do
   describe "#==" do
     it "returns true when content_id and locale are equal" do
       government = build(:government, started_on: Time.zone.today)
-      other = build(
-        :government,
-        content_id: government.content_id,
-        locale: government.locale,
-        started_on: Time.zone.yesterday,
-      )
+      other = build(:government,
+                    content_id: government.content_id,
+                    locale: government.locale,
+                    started_on: Time.zone.yesterday)
 
       expect(government).to eq(other)
     end

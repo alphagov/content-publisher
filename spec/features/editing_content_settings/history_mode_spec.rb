@@ -20,11 +20,9 @@ RSpec.feature "History mode" do
   end
 
   def given_there_is_a_past_government
-    @government = build(
-      :government,
-      started_on: Time.zone.parse("2006-01-01"),
-      ended_on: Time.zone.parse("2010-01-01"),
-    )
+    @government = build(:government,
+                        started_on: Time.zone.parse("2006-01-01"),
+                        ended_on: Time.zone.parse("2010-01-01"))
 
     populate_government_bulk_data(@government)
   end

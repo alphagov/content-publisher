@@ -19,11 +19,9 @@ class EditionUpdater
 
       raise "Expected an updated revision" unless updater.changed?
 
-      EditDraftEditionService.call(
-        edition,
-        @user,
-        revision: updater.next_revision,
-      )
+      EditDraftEditionService.call(edition,
+                                   @user,
+                                   revision: updater.next_revision)
 
       edition.save!
       FailsafeDraftPreviewService.call(edition)

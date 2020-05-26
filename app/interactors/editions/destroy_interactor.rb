@@ -30,9 +30,7 @@ private
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_status_change(
-      entry_type: :draft_discarded,
-      status: edition.status,
-    )
+    TimelineEntry.create_for_status_change(entry_type: :draft_discarded,
+                                           status: edition.status)
   end
 end

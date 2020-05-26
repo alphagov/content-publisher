@@ -3,11 +3,9 @@ RSpec.describe DeleteDraftAssetsService do
     it "attempts to delete an edition's assets from asset manager" do
       file_attachment_revision = create(:file_attachment_revision, :on_asset_manager)
       image_revision = create(:image_revision, :on_asset_manager)
-      edition = create(
-        :edition,
-        lead_image_revision: image_revision,
-        file_attachment_revisions: [file_attachment_revision],
-      )
+      edition = create(:edition,
+                       lead_image_revision: image_revision,
+                       file_attachment_revisions: [file_attachment_revision])
 
       delete_request = stub_asset_manager_deletes_any_asset
 
@@ -20,10 +18,8 @@ RSpec.describe DeleteDraftAssetsService do
 
     it "copes if an asset is not in Asset Manager" do
       file_attachment_revision = create(:file_attachment_revision, :on_asset_manager)
-      edition = create(
-        :edition,
-        file_attachment_revisions: [file_attachment_revision],
-      )
+      edition = create(:edition,
+                       file_attachment_revisions: [file_attachment_revision])
       stub_any_asset_manager_call.to_return(status: 404)
 
       described_class.call(edition)

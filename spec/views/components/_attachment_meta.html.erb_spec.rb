@@ -31,10 +31,8 @@ RSpec.describe "components/_attachment_meta" do
                                    isbn: "978-1-5286-1173-2",
                                    unique_reference: "2259",
                                    command_paper_number: "Cd. 67" } }
-    expect(rendered).to have_selector(
-      ".app-c-attachment-meta__metadata",
-      text: "Ref: ISBN 978-1-5286-1173-2, 2259, Cd. 67",
-    )
+    expect(rendered).to have_selector(".app-c-attachment-meta__metadata",
+                                      text: "Ref: ISBN 978-1-5286-1173-2, 2259, Cd. 67")
   end
 
   it "shows unnumbered details on the second metadata line if marked so" do
@@ -46,9 +44,7 @@ RSpec.describe "components/_attachment_meta" do
                                    isbn: "978-1-5286-1173-2",
                                    unique_reference: "2259",
                                    unnumbered_command_paper: true } }
-    expect(rendered).to have_selector(
-      ".app-c-attachment-meta__metadata",
-      text: "Unnumbered command paper",
-    )
+    expect(rendered).to have_selector(".app-c-attachment-meta__metadata",
+                                      text: "Unnumbered command paper")
   end
 end

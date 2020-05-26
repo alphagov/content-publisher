@@ -11,10 +11,8 @@ RSpec.describe EditionUpdater do
 
     it "delegates to the EditDraftEditionService to record the edit" do
       user = create(:user)
-      described_class.call(
-        edition.content_id,
-        user_email: user.email,
-      ) do |_, updater|
+      described_class.call(edition.content_id,
+                           user_email: user.email) do |_, updater|
         updater.assign(title: title)
       end
 
@@ -44,10 +42,8 @@ RSpec.describe EditionUpdater do
       chinese_edition = create(:edition, locale: chinese_locale)
       chinese_title = "敏捷的棕色狐狸跳过了一只懒狗"
 
-      described_class.call(
-        chinese_edition.content_id,
-        locale: chinese_locale,
-      ) do |_, updater|
+      described_class.call(chinese_edition.content_id,
+                           locale: chinese_locale) do |_, updater|
         updater.assign(title: chinese_title)
       end
 

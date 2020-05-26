@@ -14,13 +14,11 @@ RSpec.describe Requirements::Publish::FileAttachmentsChecker do
       edition = build :edition, document_type: document_type, file_attachment_revisions: [attachment_revision]
       issues = described_class.call(edition)
 
-      expect(issues).to have_issue(
-        :file_attachment_official_document_type,
-        :blank,
-        styles: %i[summary],
-        filename: attachment_revision.filename,
-        attachment_revision: attachment_revision,
-      )
+      expect(issues).to have_issue(:file_attachment_official_document_type,
+                                   :blank,
+                                   styles: %i[summary],
+                                   filename: attachment_revision.filename,
+                                   attachment_revision: attachment_revision)
     end
 
     it "returns no issues unless the document type supports featured attachments" do

@@ -10,11 +10,9 @@ RSpec.feature "Preview file attachment", js: true do
     @attachment_revision = create(:file_attachment_revision, :on_asset_manager)
     @asset = @attachment_revision.asset
 
-    @edition = create(
-      :edition,
-      document_type: build(:document_type, :with_body),
-      file_attachment_revisions: [@attachment_revision],
-    )
+    @edition = create(:edition,
+                      document_type: build(:document_type, :with_body),
+                      file_attachment_revisions: [@attachment_revision])
   end
 
   def and_the_attachment_is_available

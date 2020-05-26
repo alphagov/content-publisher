@@ -2,16 +2,14 @@ RSpec.describe WhitehallImporter::Import do
   describe ".call" do
     let(:whitehall_user) { build(:whitehall_export_user) }
     let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
-    let(:document_import) do
-      create(
-        :whitehall_migration_document_import,
-        payload: nil,
-        whitehall_document_id: 1,
-        content_id: nil,
-        document: nil,
-      )
-    end
     let(:whitehall_export_document) { build(:whitehall_export_document) }
+    let(:document_import) do
+      create(:whitehall_migration_document_import,
+             payload: nil,
+             whitehall_document_id: 1,
+             content_id: nil,
+             document: nil)
+    end
 
     before do
       allow(WhitehallImporter::IntegrityChecker)
@@ -114,17 +112,13 @@ RSpec.describe WhitehallImporter::Import do
       user = User.create!(uid: whitehall_user["uid"])
       edition = build(
         :whitehall_export_edition,
-        revision_history: [build(
-          :whitehall_export_revision_history_event,
-          whodunnit: whitehall_user["id"],
-        )],
+        revision_history: [build(:whitehall_export_revision_history_event,
+                                 whodunnit: whitehall_user["id"])],
       )
 
-      whitehall_export = build(
-        :whitehall_export_document,
-        editions: [edition],
-        users: [whitehall_user],
-      )
+      whitehall_export = build(:whitehall_export_document,
+                               editions: [edition],
+                               users: [whitehall_user])
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )
@@ -134,65 +128,54 @@ RSpec.describe WhitehallImporter::Import do
     end
 
     it "sets current boolean on whether edition is current or not" do
-      past_edition = build(
-        :whitehall_export_edition,
-        :published,
-        created_at: Time.zone.now.yesterday.rfc3339,
-      )
-      current_edition = build(
-        :whitehall_export_edition,
-        first_published_at: past_edition["first_published_at"],
-      )
-
-      whitehall_export = build(
-        :whitehall_export_document,
-        editions: [past_edition, current_edition],
-        users: [whitehall_user],
-      )
+      past_edition = build(:whitehall_export_edition,
+                           :published,
+                           created_at: Time.zone.now.yesterday.rfc3339)
+      current_edition = build(:whitehall_export_edition,
+                              first_published_at: past_edition["first_published_at"])
+      whitehall_export = build(:whitehall_export_document,
+                               editions: [past_edition, current_edition],
+                               users: [whitehall_user])
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )
 
-      expect(WhitehallImporter::CreateEdition).to receive(:call).with(
-        hash_including(current: false),
-      ).ordered.and_call_original
+      expect(WhitehallImporter::CreateEdition)
+        .to receive(:call)
+        .with(hash_including(current: false))
+        .ordered
+        .and_call_original
 
-      expect(WhitehallImporter::CreateEdition).to receive(:call).with(
-        hash_including(current: true),
-      ).ordered.and_call_original
+      expect(WhitehallImporter::CreateEdition)
+        .to receive(:call)
+        .with(hash_including(current: true))
+        .ordered
+        .and_call_original
 
       described_class.call(document_import)
     end
 
     it "sets first_published_at date to publish time of first edition" do
       first_publish_date = Time.zone.now.yesterday.rfc3339
-      first_edition = build(
-        :whitehall_export_edition,
-        :published,
-        published_at: first_publish_date,
-      )
+      first_edition = build(:whitehall_export_edition,
+                            :published,
+                            published_at: first_publish_date)
       second_edition = build(:whitehall_export_edition, first_published_at: Time.zone.now.rfc3339)
-
-      whitehall_export = build(
-        :whitehall_export_document,
-        editions: [first_edition, second_edition],
-      )
+      whitehall_export = build(:whitehall_export_document,
+                               editions: [first_edition, second_edition])
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )
 
       described_class.call(document_import)
-
       expect(document_import.document.first_published_at)
         .to eq(first_publish_date)
     end
 
     it "integrity checks the current and live editions of the imported document" do
       first_edition = build(:whitehall_export_edition, :published)
-      second_edition = build(
-        :whitehall_export_edition,
-        first_published_at: first_edition["first_published_at"],
-      )
+      second_edition = build(:whitehall_export_edition,
+                             first_published_at: first_edition["first_published_at"])
 
       whitehall_export = build(:whitehall_export_document, editions: [first_edition, second_edition])
       stub_whitehall_document_export(
@@ -205,15 +188,13 @@ RSpec.describe WhitehallImporter::Import do
     end
 
     it "aborts if the integrity check fails" do
-      allow(WhitehallImporter::IntegrityChecker)
-        .to receive(:new)
-        .and_return(instance_double(
-                      WhitehallImporter::IntegrityChecker,
-                      valid?: false,
-                      problems: ["foo doesn't match"],
-                      proposed_payload: { "foo" => "bar" },
-                      edition: build(:edition),
-                    ))
+      checker_double = instance_double(WhitehallImporter::IntegrityChecker,
+                                       valid?: false,
+                                       problems: ["foo doesn't match"],
+                                       proposed_payload: { "foo" => "bar" },
+                                       edition: build(:edition))
+      allow(WhitehallImporter::IntegrityChecker).to receive(:new)
+                                                .and_return(checker_double)
 
       expect { described_class.call(document_import) }
         .to raise_error(WhitehallImporter::IntegrityCheckError)

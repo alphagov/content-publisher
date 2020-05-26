@@ -170,10 +170,8 @@ RSpec.describe "Change History tasks" do
         Rake::Task["change_history:add"].invoke(edition.content_id)
 
         expect(edition.reload.change_history)
-          .to include(a_hash_including(
-                        "note" => "New change note",
-                        "public_timestamp" => "2020-10-22T09:30:00+01:00",
-                      ))
+          .to include(a_hash_including("note" => "New change note",
+                                       "public_timestamp" => "2020-10-22T09:30:00+01:00"))
       end
     end
 

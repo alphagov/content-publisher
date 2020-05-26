@@ -9,10 +9,8 @@ RSpec.describe WhitehallMigration::DocumentImport do
         create(:whitehall_migration_asset_import, state: "redirected"),
         create(:whitehall_migration_asset_import, state: "removed"),
       ]
-      document_import = build(
-        :whitehall_migration_document_import,
-        assets: assets_to_be_processed + assets_to_be_ignored,
-      )
+      document_import = build(:whitehall_migration_document_import,
+                              assets: assets_to_be_processed + assets_to_be_ignored)
       expect(document_import.migratable_assets).to eq(assets_to_be_processed)
     end
   end

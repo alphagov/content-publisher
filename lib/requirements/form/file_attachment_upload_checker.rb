@@ -48,11 +48,9 @@ class Requirements::Form::FileAttachmentUploadChecker < Requirements::Checker
     end
 
     if title.to_s.size > TITLE_MAX_LENGTH
-      issues.create(
-        :file_attachment_title,
-        :too_long,
-        max_length: TITLE_MAX_LENGTH,
-      )
+      issues.create(:file_attachment_title,
+                    :too_long,
+                    max_length: TITLE_MAX_LENGTH)
     end
   end
 
@@ -76,10 +74,8 @@ private
   end
 
   def content_type
-    @content_type ||= Marcel::MimeType.for(
-      file,
-      declared_type: file.content_type,
-      name: file.original_filename,
-    )
+    @content_type ||= Marcel::MimeType.for(file,
+                                           declared_type: file.content_type,
+                                           name: file.original_filename)
   end
 end

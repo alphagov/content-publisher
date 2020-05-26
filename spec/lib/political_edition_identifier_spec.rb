@@ -14,20 +14,15 @@ RSpec.describe PoliticalEditionIdentifier do
       organisations_field = DocumentType::OrganisationsField.new
       role_appointments_field = DocumentType::RoleAppointmentsField.new
 
-      build(
-        :document_type,
-        tags: [primary_organisation_field,
-               organisations_field,
-               role_appointments_field],
-      )
+      build(:document_type, tags: [primary_organisation_field,
+                                   organisations_field,
+                                   role_appointments_field])
     end
 
     it "returns true when an edition is associated with a role appointment" do
-      edition = build(
-        :edition,
-        document_type: document_type,
-        tags: { role_appointments: [SecureRandom.uuid] },
-      )
+      edition = build(:edition,
+                      document_type: document_type,
+                      tags: { role_appointments: [SecureRandom.uuid] })
       expect(described_class.new(edition).political?).to be true
     end
 
@@ -37,11 +32,9 @@ RSpec.describe PoliticalEditionIdentifier do
         .to receive(:political_organisation_ids)
         .and_return([political_organisation_id])
 
-      edition = build(
-        :edition,
-        document_type: document_type,
-        tags: { primary_publishing_organisation: [political_organisation_id] },
-      )
+      edition = build(:edition,
+                      document_type: document_type,
+                      tags: { primary_publishing_organisation: [political_organisation_id] })
       expect(described_class.new(edition).political?).to be true
     end
 
@@ -51,22 +44,18 @@ RSpec.describe PoliticalEditionIdentifier do
         .to receive(:political_organisation_ids)
         .and_return([political_organisation_id])
 
-      edition = build(
-        :edition,
-        document_type: document_type,
-        tags: { primary_publishing_organisation: [SecureRandom.uuid],
-                organisations: [political_organisation_id] },
-      )
+      edition = build(:edition,
+                      document_type: document_type,
+                      tags: { primary_publishing_organisation: [SecureRandom.uuid],
+                              organisations: [political_organisation_id] })
 
       expect(described_class.new(edition).political?).to be true
     end
 
     it "returns false when an edition is not associated with a role appointment or a political organisation" do
-      edition = build(
-        :edition,
-        document_type: document_type,
-        tags: { primary_publishing_organisation: [SecureRandom.uuid] },
-      )
+      edition = build(:edition,
+                      document_type: document_type,
+                      tags: { primary_publishing_organisation: [SecureRandom.uuid] })
       expect(described_class.new(edition).political?).to be false
     end
   end

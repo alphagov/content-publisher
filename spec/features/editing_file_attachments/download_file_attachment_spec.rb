@@ -17,21 +17,17 @@ RSpec.feature "Download a file attachment" do
     document_type = build(:document_type, attachments: "featured")
     @attachment_revision = create(:file_attachment_revision)
 
-    @edition = create(
-      :edition,
-      document_type: document_type,
-      file_attachment_revisions: [@attachment_revision],
-    )
+    @edition = create(:edition,
+                      document_type: document_type,
+                      file_attachment_revisions: [@attachment_revision])
   end
 
   def given_there_is_an_edition_with_attachments
     @attachment_revision = create(:file_attachment_revision)
 
-    @edition = create(
-      :edition,
-      document_type: build(:document_type, :with_body),
-      file_attachment_revisions: [@attachment_revision],
-    )
+    @edition = create(:edition,
+                      document_type: build(:document_type, :with_body),
+                      file_attachment_revisions: [@attachment_revision])
   end
 
   def when_i_visit_the_attachments_index_page

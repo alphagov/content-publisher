@@ -11,26 +11,20 @@ RSpec.describe MetadataRevision::FeaturedAttachmentOrderingValidator do
 
     it "fails if an order item ID is malformed" do
       expect { validator.validate_each(record, attribute, ["FileAttachment1 "]) }
-        .to raise_error(
-          ActiveModel::StrictValidationFailed,
-          "Featured attachment ordering has an entry with a malformed ID",
-        )
+        .to raise_error(ActiveModel::StrictValidationFailed,
+                        "Featured attachment ordering has an entry with a malformed ID")
     end
 
     it "fails if an order item type is malformed" do
       expect { validator.validate_each(record, attribute, %w[InvalidType1]) }
-        .to raise_error(
-          ActiveModel::StrictValidationFailed,
-          "Featured attachment ordering has an entry with a malformed ID",
-        )
+        .to raise_error(ActiveModel::StrictValidationFailed,
+                        "Featured attachment ordering has an entry with a malformed ID")
     end
 
     it "fails if there is a duplicate entry" do
       expect { validator.validate_each(record, attribute, %w[FileAttachment1 FileAttachment1]) }
-        .to raise_error(
-          ActiveModel::StrictValidationFailed,
-          "Featured attachment ordering has a duplicate entry",
-        )
+        .to raise_error(ActiveModel::StrictValidationFailed,
+                        "Featured attachment ordering has a duplicate entry")
     end
   end
 end

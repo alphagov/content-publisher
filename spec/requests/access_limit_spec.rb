@@ -21,12 +21,10 @@ RSpec.describe "Access Limit" do
 
   describe "GET /documents/:document/access-limit" do
     let(:edition) do
-      create(
-        :edition,
-        document_type: document_type,
-        tags: { primary_publishing_organisation: [organisation_id],
-                organisations: [organisation_id] },
-      )
+      create(:edition,
+             document_type: document_type,
+             tags: { primary_publishing_organisation: [organisation_id],
+                     organisations: [organisation_id] })
     end
 
     it "returns a successful response" do
@@ -48,12 +46,10 @@ RSpec.describe "Access Limit" do
     before { stub_any_publishing_api_put_content }
 
     let(:edition) do
-      create(
-        :edition,
-        document_type: document_type,
-        tags: { primary_publishing_organisation: [organisation_id],
-                organisations: [organisation_id] },
-      )
+      create(:edition,
+             document_type: document_type,
+             tags: { primary_publishing_organisation: [organisation_id],
+                     organisations: [organisation_id] })
     end
 
     it "redirects to the document summary" do

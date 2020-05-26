@@ -82,44 +82,41 @@ class Edition < ApplicationRecord
            :featured_attachment_ordering,
            to: :revision
 
-  scope :find_current,
-        lambda { |id: nil, document: nil|
-          find_by = {}.tap do |criteria|
-            criteria[:id] = id if id
+  scope :find_current, lambda { |id: nil, document: nil|
+    find_by = {}.tap do |criteria|
+      criteria[:id] = id if id
 
-            if document
-              content_id, locale = document.split(":")
-              criteria[:documents] = { content_id: content_id, locale: locale }
-            end
-          end
+      if document
+        content_id, locale = document.split(":")
+        criteria[:documents] = { content_id: content_id, locale: locale }
+      end
+    end
 
-          join_tables = %i[document revision status]
-          where(current: true)
-            .joins(join_tables)
-            .includes(join_tables)
-            .find_by!(find_by)
-        }
+    join_tables = %i[document revision status]
+    where(current: true)
+      .joins(join_tables)
+      .includes(join_tables)
+      .find_by!(find_by)
+  }
 
-  scope :political,
-        lambda { |political = true|
-          sql = "CASE WHEN metadata_revisions.editor_political IS NULL "\
-                "THEN editions.system_political = :political "\
-                "ELSE metadata_revisions.editor_political = :political "\
-                "END"
+  scope :political, lambda { |political = true|
+    sql = "CASE WHEN metadata_revisions.editor_political IS NULL "\
+          "THEN editions.system_political = :political "\
+          "ELSE metadata_revisions.editor_political = :political "\
+          "END"
 
-          joins(revision: :metadata_revision).where(sql, political: political)
-        }
+    joins(revision: :metadata_revision).where(sql, political: political)
+  }
 
-  scope :history_mode,
-        lambda { |history_mode = true|
-          repository = BulkData::GovernmentRepository.new
-          if history_mode
-            political.where.not(government_id: [nil, repository.current.content_id])
-          else
-            political(false)
-              .or(political.where(government_id: [nil, repository.current.content_id]))
-          end
-        }
+  scope :history_mode, lambda { |history_mode = true|
+    repository = BulkData::GovernmentRepository.new
+    if history_mode
+      political.where.not(government_id: [nil, repository.current.content_id])
+    else
+      political(false)
+        .or(political.where(government_id: [nil, repository.current.content_id]))
+    end
+  }
 
   def editable?
     !live? && !scheduled?
