@@ -117,7 +117,7 @@ GEM
     fugit (1.3.3)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.1)
-    gds-api-adapters (63.6.0)
+    gds-api-adapters (67.0.0)
       addressable
       link_header
       null_logger
@@ -487,7 +487,7 @@ DEPENDENCIES
   byebug (~> 11)
   climate_control
   factory_bot_rails (~> 5)
-  gds-api-adapters (~> 63)
+  gds-api-adapters (~> 67)
   gds-sso (~> 14)
   govspeak (~> 6.5)
   govuk_app_config (~> 2)
