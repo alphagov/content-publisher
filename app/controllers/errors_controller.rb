@@ -7,7 +7,7 @@ class ErrorsController < ApplicationController
     # retrieves an existing sesssion for users if available. Unlike
     # `authenticate_user!` this does not redirect a user when they are not
     # authenticated.
-    warden.authenticate
+    warden&.authenticate
   end
 
   def bad_request

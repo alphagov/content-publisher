@@ -34,6 +34,15 @@ RSpec.describe "Errors" do
 
   describe "/500" do
     it_behaves_like "an error response", 500, :internal_server_error
+
+    it "copes if warden is unavailable" do
+      allow_any_instance_of(ErrorsController) # rubocop:disable RSpec/AnyInstance
+        .to receive(:warden)
+        .and_return(nil)
+      get "/500"
+      expect(response).to have_http_status(:internal_server_error)
+      expect(response.body).to include(I18n.t!("errors.internal_server_error.title"))
+    end
   end
 
   describe "GET /any-path-for-a-document" do
