@@ -4,7 +4,7 @@ class ErrorsController < ApplicationController
   skip_before_action :check_user_access
 
   before_action do
-    # retrieves an existing sesssion for users if available. Unlike
+    # retrieves an existing session for users if available. Unlike
     # `authenticate_user!` this does not redirect a user when they are not
     # authenticated.
     warden&.authenticate
