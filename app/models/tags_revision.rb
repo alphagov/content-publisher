@@ -8,8 +8,8 @@ class TagsRevision < ApplicationRecord
   belongs_to :created_by, class_name: "User", optional: true
 
   scope :tag_contains, lambda { |tag, value|
-    where("exists(select 1 from json_array_elements(tags_revisions.tags->?) " \
-          "where array_to_json(array[value])->>0 = ?)", tag, value)
+    sql = "ARRAY(SELECT json_array_elements_text(tags_revisions.tags->?)) @> ARRAY[?]"
+    where(sql, tag, value)
   }
 
   scope :primary_organisation_is, lambda { |org_id|
