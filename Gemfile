@@ -10,7 +10,9 @@ gem "gds-api-adapters", "~> 67"
 gem "gds-sso", "~> 14"
 gem "govspeak", "~> 6.5"
 gem "govuk_app_config", "~> 2"
-gem "govuk_publishing_components", "~> 21.55"
+# This is fixed until https://github.com/alphagov/govuk_publishing_components/issues/1570
+# is resolved
+gem "govuk_publishing_components", "= 21.55.0"
 gem "govuk_sidekiq", "~> 3"
 gem "hashdiff", "~> 1.0"
 gem "image_processing", "~> 1"
