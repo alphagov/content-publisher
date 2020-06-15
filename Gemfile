@@ -7,7 +7,7 @@ gem "rails", "~> 6.0"
 gem "aws-sdk-s3", "~> 1"
 gem "bootsnap", "~> 1"
 gem "gds-api-adapters", "~> 67"
-gem "gds-sso", "~> 14"
+gem "gds-sso", "~> 15"
 gem "govspeak", "~> 6.5"
 gem "govuk_app_config", "~> 2"
 # This is fixed until https://github.com/alphagov/govuk_publishing_components/issues/1570
