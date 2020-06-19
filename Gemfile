@@ -40,7 +40,7 @@ end
 group :development, :test do
   gem "byebug", "~> 11"
   gem "climate_control"
-  gem "factory_bot_rails", "~> 5"
+  gem "factory_bot_rails", "~> 6"
   gem "govuk_schemas", "~> 4.0"
   gem "govuk_test", "~> 1.0"
   gem "jasmine", "~> 3"
