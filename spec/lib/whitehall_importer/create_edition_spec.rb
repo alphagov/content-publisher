@@ -237,16 +237,19 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     context "when the document is withdrawn" do
-      let(:published_at) { Time.zone.now.yesterday.rfc3339 }
+      let(:published_at) { Time.zone.now.yesterday.midday }
       let(:whitehall_edition) do
         build(:whitehall_export_edition,
               state: "withdrawn",
               revision_history: [
                 build(:whitehall_export_revision_history_event),
                 build(:whitehall_export_revision_history_event,
-                      event: "update", state: "published", created_at: published_at),
+                      event: "update",
+                      state: "published",
+                      created_at: published_at.rfc3339),
                 build(:whitehall_export_revision_history_event,
-                      event: "update", state: "withdrawn"),
+                      event: "update",
+                      state: "withdrawn"),
               ],
               unpublishing: build(:whitehall_export_unpublishing))
       end
@@ -276,19 +279,19 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     context "when an unpublished edition has not been edited" do
-      let(:created_at) { Time.zone.now.last_week.rfc3339 }
-      let(:published_at) { Time.zone.now.yesterday.rfc3339 }
-      let(:updated_at) { Time.zone.now.rfc3339 }
+      let(:created_at) { Time.zone.now.last_week }
+      let(:published_at) { Time.zone.now.yesterday.midday }
+      let(:updated_at) { Time.zone.now.midday }
       let(:whitehall_edition) do
         build(:whitehall_export_edition,
               revision_history: [
                 build(:whitehall_export_revision_history_event,
-                      created_at: created_at),
+                      created_at: created_at.rfc3339),
                 build(:whitehall_export_revision_history_event,
                       event: "update", state: "published",
-                      created_at: published_at),
+                      created_at: published_at.rfc3339),
                 build(:whitehall_export_revision_history_event,
-                      event: "update", state: "draft", created_at: updated_at),
+                      event: "update", state: "draft", created_at: updated_at.rfc3339),
               ],
               unpublishing: build(:whitehall_export_unpublishing,
                                   alternative_path: "/gators",
@@ -324,21 +327,24 @@ RSpec.describe WhitehallImporter::CreateEdition do
     end
 
     context "when an unpublished edition has been edited" do
-      let(:created_at) { Time.zone.now.rfc3339 }
-      let(:published_at) { Time.zone.now.yesterday.rfc3339 }
+      let(:created_at) { Time.zone.now.midday }
+      let(:published_at) { Time.zone.now.yesterday.midday }
       let(:whitehall_edition) do
         build(:whitehall_export_edition,
               revision_history: [
                 build(:whitehall_export_revision_history_event),
                 build(:whitehall_export_revision_history_event,
-                      event: "update", state: "published",
-                      created_at: published_at),
+                      event: "update",
+                      state: "published",
+                      created_at: published_at.rfc3339),
                 build(:whitehall_export_revision_history_event,
                       event: "update",
                       state: "draft",
                       created_at: 5.minutes.ago.rfc3339),
                 build(:whitehall_export_revision_history_event,
-                      event: "update", state: "draft", created_at: created_at),
+                      event: "update",
+                      state: "draft",
+                      created_at: created_at.rfc3339),
               ],
               unpublishing: build(:whitehall_export_unpublishing,
                                   alternative_path: "/flextension",
@@ -392,9 +398,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
           revision_history: [
             build(:whitehall_export_revision_history_event),
             build(:whitehall_export_revision_history_event,
-                  event: "update", state: "published"),
+                  event: "update",
+                  state: "published"),
             build(:whitehall_export_revision_history_event,
-                  event: "update", state: "archived"),
+                  event: "update",
+                  state: "archived"),
           ],
         )
 
@@ -410,7 +418,8 @@ RSpec.describe WhitehallImporter::CreateEdition do
           revision_history: [
             build(:whitehall_export_revision_history_event),
             build(:whitehall_export_revision_history_event,
-                  event: "update", state: "published"),
+                  event: "update",
+                  state: "published"),
           ],
         )
 
@@ -427,9 +436,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
         revision_history: [
           build(:whitehall_export_revision_history_event),
           build(:whitehall_export_revision_history_event,
-                event: "update", state: "published"),
+                event: "update",
+                state: "published"),
           build(:whitehall_export_revision_history_event,
-                event: "update", state: "withdrawn"),
+                event: "update",
+                state: "withdrawn"),
         ],
         unpublishing: nil,
       )
