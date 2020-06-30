@@ -358,17 +358,14 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
       it "creates a live edition with a status of removed" do
         perform_call(whitehall_edition: whitehall_edition)
-        live_edition = document.editions.first
-
-        expect(live_edition)
-          .to be_removed
-          .and be_live
+        first_edition = document.editions.order(number: :asc).first
+        expect(first_edition).to be_removed.and be_live
       end
 
       it "sets the correct removal metadata" do
         perform_call(whitehall_edition: whitehall_edition)
         unpublishing = whitehall_edition["unpublishing"]
-        removal = document.editions.first.status.details
+        removal = document.live_edition.status.details
         expect(removal.attributes)
           .to match a_hash_including("explanatory_note" => unpublishing["explanation"],
                                      "alternative_url" => unpublishing["alternative_path"],
@@ -378,20 +375,17 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
       it "creates a draft edition and assigns as current" do
         perform_call(whitehall_edition: whitehall_edition)
-        draft_edition = document.editions.last
-        expect(draft_edition)
-          .to be_draft
-          .and be_current
+        latest_edition = document.editions.order(number: :desc).first
+        expect(latest_edition).to be_draft.and be_current
       end
 
       it "sets the correct timestamps" do
         perform_call(whitehall_edition: whitehall_edition)
-        removed_edition, draft_edition = document.editions
 
-        expect(draft_edition.created_at).to eq(created_at)
-        expect(draft_edition.updated_at).to eq(created_at)
-        expect(draft_edition.published_at).to be_nil
-        expect(removed_edition.published_at).to eq(published_at)
+        expect(document.current_edition.created_at).to eq(created_at)
+        expect(document.current_edition.updated_at).to eq(created_at)
+        expect(document.current_edition.published_at).to be_nil
+        expect(document.live_edition.published_at).to eq(published_at)
       end
     end
 
@@ -410,7 +404,8 @@ RSpec.describe WhitehallImporter::CreateEdition do
         )
 
         perform_call(whitehall_edition: whitehall_edition)
-        expect(document.editions.first).to be_superseded
+        first_edition = document.editions.order(number: :asc).first
+        expect(first_edition).to be_superseded
       end
 
       it "aborts if its last event is not 'archived'" do
