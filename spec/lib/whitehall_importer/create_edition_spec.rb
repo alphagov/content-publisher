@@ -102,13 +102,13 @@ RSpec.describe WhitehallImporter::CreateEdition do
                                user_ids: user_ids)
 
         timeline_entry = edition.timeline_entries.first
-        expect(timeline_entry.attributes)
-          .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => content_publisher_user.id,
-                                     "created_at" => 1.week.ago.noon)
-        expect(timeline_entry.details.attributes)
-          .to match a_hash_including("entry_type" => "first_created",
-                                     "contents" => {})
+        expect(timeline_entry)
+          .to have_attributes(entry_type: "whitehall_migration",
+                              created_by: content_publisher_user,
+                              created_at: 1.week.ago.noon)
+        expect(timeline_entry.details)
+          .to have_attributes(entry_type: "first_created",
+                              contents: {})
       end
 
       it "imports a published revision history event" do
@@ -125,13 +125,13 @@ RSpec.describe WhitehallImporter::CreateEdition do
                                user_ids: user_ids)
 
         timeline_entry = edition.timeline_entries.order(:created_at).last
-        expect(timeline_entry.attributes)
-          .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => content_publisher_user.id,
-                                     "created_at" => 1.day.ago.noon)
-        expect(timeline_entry.details.attributes)
-          .to match a_hash_including("entry_type" => "published",
-                                     "contents" => {})
+        expect(timeline_entry)
+          .to have_attributes(entry_type: "whitehall_migration",
+                              created_by: content_publisher_user,
+                              created_at: 1.day.ago.noon)
+        expect(timeline_entry.details)
+          .to have_attributes(entry_type: "published",
+                              contents: {})
       end
 
       it "imports an editorial remark event" do
@@ -147,13 +147,13 @@ RSpec.describe WhitehallImporter::CreateEdition do
                                user_ids: user_ids)
 
         timeline_entry = edition.timeline_entries.order(:created_at).last
-        expect(timeline_entry.attributes)
-          .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => content_publisher_user.id,
-                                     "created_at" => 1.day.ago.noon)
-        expect(timeline_entry.details.attributes)
-          .to match a_hash_including("entry_type" => "internal_note",
-                                     "contents" => { "body" => "Another note" })
+        expect(timeline_entry)
+          .to have_attributes(entry_type: "whitehall_migration",
+                              created_by: content_publisher_user,
+                              created_at: 1.day.ago.noon)
+        expect(timeline_entry.details)
+          .to have_attributes(entry_type: "internal_note",
+                              contents: { "body" => "Another note" })
       end
 
       it "imports a fact check request event" do
@@ -171,17 +171,16 @@ RSpec.describe WhitehallImporter::CreateEdition do
                                user_ids: user_ids)
 
         timeline_entry = edition.timeline_entries.order(:created_at).last
-        expect(timeline_entry.attributes)
-          .to match a_hash_including("entry_type" => "whitehall_migration",
-                                     "created_by_id" => content_publisher_user.id,
-                                     "created_at" => 1.day.ago.noon)
-        expect(timeline_entry.details.attributes)
-          .to match a_hash_including("entry_type" => "fact_check_request",
-                                     "contents" => {
-                                       "email_address" =>
-                                          "someone@somewhere.com",
-                                       "instructions" => "Do something",
-                                     })
+        expect(timeline_entry)
+          .to have_attributes(entry_type: "whitehall_migration",
+                              created_by: content_publisher_user,
+                              created_at: 1.day.ago.noon)
+        expect(timeline_entry.details)
+          .to have_attributes(entry_type: "fact_check_request",
+                              contents: {
+                                "email_address" => "someone@somewhere.com",
+                                "instructions" => "Do something",
+                              })
       end
 
       it "imports a fact check response event" do
@@ -200,12 +199,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
         entry = edition.timeline_entries.find { |e| e.details.fact_check_response? }
 
-        expect(entry.attributes)
-          .to match a_hash_including("created_at" => response_received_at,
-                                     "created_by_id" => nil)
-        expect(entry.details.attributes).to match a_hash_including(
-          "contents" => { "email_address" => "someone@somewhere.com",
-                          "comments" => "Hello World" },
+        expect(entry).to have_attributes(created_at: response_received_at,
+                                         created_by: nil)
+        expect(entry.details).to have_attributes(
+          contents: { "email_address" => "someone@somewhere.com",
+                      "comments" => "Hello World" },
         )
       end
     end
@@ -256,18 +254,16 @@ RSpec.describe WhitehallImporter::CreateEdition do
       it "creates a live withdrawn edition" do
         edition = perform_call(whitehall_edition: whitehall_edition)
 
-        expect(edition).to be_withdrawn
-        expect(edition).to be_live
+        expect(edition).to be_live.and be_withdrawn
         expect(edition.published_at).to eq(published_at)
       end
 
       it "sets the expected withdrawal metadata" do
         edition = perform_call(whitehall_edition: whitehall_edition)
-
-        expect(edition.status.details.withdrawn_at.rfc3339)
-          .to eq(whitehall_edition["unpublishing"]["created_at"])
-        expect(edition.status.details.public_explanation)
-          .to eq(whitehall_edition["unpublishing"]["explanation"])
+        expect(edition.status.details).to have_attributes(
+          withdrawn_at: Time.zone.rfc3339(whitehall_edition["unpublishing"]["created_at"]),
+          public_explanation: whitehall_edition["unpublishing"]["explanation"],
+        )
       end
 
       it "sets a previous status of the edition of the publishing status " do
@@ -302,8 +298,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
 
       it "creates a live edition with a status of removed" do
         edition = perform_call(whitehall_edition: whitehall_edition)
-        expect(edition).to be_removed
-        expect(edition).to be_live
+        expect(edition).to be_removed.and be_live
       end
 
       it "sets the correct removal metadata" do
@@ -311,11 +306,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
         unpublishing = whitehall_edition["unpublishing"]
         removal = edition.status.details
 
-        expect(removal.attributes)
-          .to match a_hash_including("explanatory_note" => unpublishing["explanation"],
-                                     "alternative_url" => unpublishing["alternative_path"],
-                                     "removed_at" => Time.zone.iso8601(unpublishing["created_at"]),
-                                     "redirect" => true)
+        expect(removal)
+          .to have_attributes(explanatory_note: unpublishing["explanation"],
+                              alternative_url: unpublishing["alternative_path"],
+                              removed_at: Time.zone.rfc3339(unpublishing["created_at"]),
+                              redirect: true)
       end
 
       it "sets the correct timestamps on the edition" do
@@ -366,11 +361,11 @@ RSpec.describe WhitehallImporter::CreateEdition do
         perform_call(whitehall_edition: whitehall_edition)
         unpublishing = whitehall_edition["unpublishing"]
         removal = document.live_edition.status.details
-        expect(removal.attributes)
-          .to match a_hash_including("explanatory_note" => unpublishing["explanation"],
-                                     "alternative_url" => unpublishing["alternative_path"],
-                                     "removed_at" => Time.zone.iso8601(unpublishing["created_at"]),
-                                     "redirect" => true)
+        expect(removal)
+          .to have_attributes(explanatory_note: unpublishing["explanation"],
+                              alternative_url: unpublishing["alternative_path"],
+                              removed_at: Time.zone.rfc3339(unpublishing["created_at"]),
+                              redirect: true)
       end
 
       it "creates a draft edition and assigns as current" do
