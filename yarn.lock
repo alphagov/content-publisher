@@ -890,10 +890,10 @@ markdown-toolbar-element@^0.2.0:
   resolved "https://registry.yarnpkg.com/markdown-toolbar-element/-/markdown-toolbar-element-0.2.0.tgz#df9f1bc347e1f3174ddc4d69e4e6f5fe2c32285a"
   integrity sha512-0QJfZmS7JE6JNtax2U1qdTQSFCO3dtQBlVYzTMO8nKuOktbR1xJVk7mneMBTVj9j2GTnq+dquDqk2Hb+fDKhFg==
 
-miller-columns-element@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/miller-columns-element/-/miller-columns-element-1.3.1.tgz#ad2abe6cc3d4d8acd2cff354c98818f239a474d4"
-  integrity sha512-4UHYNGlM2xlmbkeWEdB6enjzE+VY+XSxKHnKkEKYiD9jVCGRyF5tFFaKsvJKMye8KxbvTXYTTncjp+rWycCkAg==
+miller-columns-element@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/miller-columns-element/-/miller-columns-element-1.3.2.tgz#74a6d99b4dee08265dd48b515719618c72d01dab"
+  integrity sha512-wxPoTA2GSunogt/nwr76KcqCr1Gi4hiVafRDIWB4ZzO9Q5kU9fYtFVfEvfhhmo8/rNgGQ33nReUuuFRKoI2W7w==
 
 mimic-fn@^1.0.0:
   version "1.2.0"
