@@ -163,11 +163,14 @@ class Edition < ApplicationRecord
     editors << user unless editors.include?(user)
   end
 
+  # For more info, see https://docs.publishing.service.gov.uk/manual/content-preview.html#authentication
   def auth_bypass_token
     JWT.encode(
       {
         "sub" => auth_bypass_id,
         "content_id" => content_id,
+        "iat" => Time.zone.now.to_i,
+        "exp" => 1.month.from_now.to_i,
       },
       Rails.application.secrets.jwt_auth_secret,
       "HS256",
