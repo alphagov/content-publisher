@@ -21,7 +21,7 @@ class PublishingApiPayload
       details: details,
       links: links,
       access_limited: access_limited,
-      auth_bypass_ids: auth_bypass_ids,
+      auth_bypass_ids: [edition.auth_bypass_id],
       public_updated_at: history.public_updated_at,
     }
     payload[:first_published_at] = history.first_published_at if history.first_published_at.present?
@@ -47,11 +47,6 @@ private
     return {} unless edition.access_limit
 
     { organisations: edition.access_limit_organisation_ids }
-  end
-
-  def auth_bypass_ids
-    auth_bypass_id = PreviewAuthBypass.new(edition).auth_bypass_id
-    [auth_bypass_id]
   end
 
   def links

@@ -162,4 +162,15 @@ class Edition < ApplicationRecord
 
     editors << user unless editors.include?(user)
   end
+
+  def auth_bypass_token
+    JWT.encode(
+      {
+        "sub" => auth_bypass_id,
+        "content_id" => content_id,
+      },
+      Rails.application.secrets.jwt_auth_secret,
+      "HS256",
+    )
+  end
 end

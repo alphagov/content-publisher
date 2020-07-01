@@ -199,4 +199,29 @@ RSpec.describe Edition do
           .not_to(change { edition.editors })
     end
   end
+
+  describe "#auth_bypass_token" do
+    let(:edition) { create(:edition) }
+
+    def decoded_token_payload(token)
+      payload, _header = JWT.decode(
+        token,
+        Rails.application.secrets.jwt_auth_secret,
+        true,
+        { algorithm: "HS256" },
+      )
+
+      payload
+    end
+
+    it "returns a token with a sub of the auth_bypass_id" do
+      payload = decoded_token_payload(edition.auth_bypass_token)
+      expect(payload["sub"]).to eq(edition.auth_bypass_id)
+    end
+
+    it "returns a token with the edition's content_id" do
+      payload = decoded_token_payload(edition.auth_bypass_token)
+      expect(payload["content_id"]).to eq(edition.content_id)
+    end
+  end
 end

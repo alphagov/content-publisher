@@ -19,15 +19,8 @@ RSpec.describe EditionUrlHelper do
   end
 
   describe "#preview_url" do
-    let(:preview_auth_bypass_service) do
-      instance_double(PreviewAuthBypass, preview_token: "secret")
-    end
-
-    before do
-      allow(PreviewAuthBypass).to receive(:new) { preview_auth_bypass_service }
-    end
-
-    it "returns the URL" do
+    it "returns the URL with an auth bypass token" do
+      expect(edition).to receive(:auth_bypass_token).and_return("secret")
       url = edition_preview_url(edition)
       expect(url).to eq("https://draft-origin.test.gov.uk/foo?token=secret")
     end
