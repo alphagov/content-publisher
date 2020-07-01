@@ -24,6 +24,8 @@ class Edition < ApplicationRecord
     revision.editions << self unless revision.editions.include?(self)
   end
 
+  attribute :auth_bypass_id, default: -> { SecureRandom.uuid }
+
   attr_readonly :number, :document_id
 
   belongs_to :created_by, class_name: "User", optional: true
