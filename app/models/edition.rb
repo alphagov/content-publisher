@@ -9,6 +9,15 @@ class Edition < ApplicationRecord
     self.last_edited_at = Time.zone.now unless last_edited_at
   end
 
+  before_save do
+    # Temporary task to generate backwards compatible auth_bypass_id's for
+    # existing content, this is due to be replaced by a UUID value created by
+    # default for editions
+    unless auth_bypass_id
+      self.auth_bypass_id = PreviewAuthBypass.new(document).auth_bypass_id
+    end
+  end
+
   after_save do
     # Store the edition on the status to keep a history
     status.update!(edition: self) unless status.edition_id
