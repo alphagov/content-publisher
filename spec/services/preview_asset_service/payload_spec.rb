@@ -1,12 +1,4 @@
 RSpec.describe PreviewAssetService::Payload do
-  let(:auth_bypass) do
-    instance_double PreviewAuthBypass, auth_bypass_id: "bypass-id"
-  end
-
-  before do
-    allow(PreviewAuthBypass).to receive(:new) { auth_bypass }
-  end
-
   describe "#for_update" do
     it "returns a payload hash" do
       edition = build :edition
@@ -14,7 +6,7 @@ RSpec.describe PreviewAssetService::Payload do
 
       expect(payload).to match(
         draft: true,
-        auth_bypass_ids: %w[bypass-id],
+        auth_bypass_ids: [edition.auth_bypass_id],
       )
     end
 
@@ -37,7 +29,7 @@ RSpec.describe PreviewAssetService::Payload do
 
       expect(payload).to match(
         draft: true,
-        auth_bypass_ids: %w[bypass-id],
+        auth_bypass_ids: [edition.auth_bypass_id],
         file: instance_of(PreviewAssetService::UploadedFile),
       )
     end
