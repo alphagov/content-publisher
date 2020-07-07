@@ -1,11 +1,9 @@
-require "jasmine/runners/selenium"
+require "jasmine_selenium_runner/configure_jasmine"
 
-Jasmine.configure do |config|
-  config.runner = lambda { |formatter, jasmine_server_url|
-    options = Selenium::WebDriver::Chrome::Options.new
-    options.headless!
-
-    webdriver = Selenium::WebDriver.for(:chrome, options: options)
-    Jasmine::Runners::Selenium.new(formatter, jasmine_server_url, webdriver, 50)
-  }
+class ChromeHeadlessJasmineConfigurer < JasmineSeleniumRunner::ConfigureJasmine
+  def selenium_options
+    chrome_options = Selenium::WebDriver::Chrome::Options.new
+    chrome_options.headless!
+    { options: chrome_options }
+  end
 end
