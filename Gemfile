@@ -34,6 +34,7 @@ group :development do
 end
 
 group :test do
+  gem "i18n-coverage"
   gem "simplecov", "~> 0.18"
 end
 
