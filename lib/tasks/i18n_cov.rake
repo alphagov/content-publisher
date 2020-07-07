@@ -1,10 +1,10 @@
-require_relative Rails.root.join("spec/support/i18n_cov.rb")
+require "i18n/coverage/printers/file_printer"
 
 namespace :i18n_cov do
   desc "Prints I18n Coverage report and returns exit status"
   task ci: :environment do
-    report = JSON.parse(File.read(I18nCov::REPORT_PATH))
-    percent_coverage = report["stats"]["coverage"]
+    report = JSON.parse(File.read(I18n::Coverage::Printers::FilePrinter::REPORT_PATH))
+    percent_coverage = report["percentage_used"]
     next if percent_coverage == 100
 
     puts JSON.pretty_generate(report)

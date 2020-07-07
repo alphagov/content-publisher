@@ -12,6 +12,7 @@ require "gds_api/test_helpers/publishing_api"
 require "gds_api/test_helpers/asset_manager"
 require "govuk_sidekiq/testing"
 require "json_matchers/rspec"
+require "i18n/coverage/printers/file_printer"
 
 Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
 GovukTest.configure
@@ -21,6 +22,7 @@ ActiveRecord::Migration.maintain_test_schema!
 Rails.application.load_tasks
 Sidekiq::Testing.fake!
 JsonMatchers.schema_root = "spec/support/schemas"
+I18n::Coverage.config.printer = I18n::Coverage::Printers::FilePrinter
 
 RSpec.configure do |config|
   config.expose_dsl_globally = false
@@ -37,7 +39,7 @@ RSpec.configure do |config|
   config.include Capybara::RSpecMatchers, type: :request
 
   unless config.files_to_run.one?
-    I18nCov.start
+    I18n::Coverage.start
     SimpleCov.start
   end
 
