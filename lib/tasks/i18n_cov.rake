@@ -1,3 +1,5 @@
+return unless defined?(I18n::Coverage)
+
 require "i18n/coverage/printers/file_printer"
 
 namespace :i18n_cov do
