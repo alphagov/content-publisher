@@ -483,46 +483,46 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aws-sdk-s3 (~> 1)
-  bootsnap (~> 1)
-  brakeman (~> 4)
-  byebug (~> 11)
+  aws-sdk-s3
+  bootsnap
+  brakeman
+  byebug
   climate_control
-  factory_bot_rails (~> 6)
-  gds-api-adapters (~> 67)
-  gds-sso (~> 15)
-  govspeak (~> 6.5)
-  govuk_app_config (~> 2)
-  govuk_publishing_components (~> 21)
-  govuk_schemas (~> 4.0)
-  govuk_sidekiq (~> 3)
-  govuk_test (~> 1.0)
-  hashdiff (~> 1.0)
+  factory_bot_rails
+  gds-api-adapters
+  gds-sso
+  govspeak
+  govuk_app_config
+  govuk_publishing_components
+  govuk_schemas
+  govuk_sidekiq
+  govuk_test
+  hashdiff
   i18n-coverage
-  image_processing (~> 1)
-  interactor (~> 3)
-  jasmine (~> 3)
-  jasmine_selenium_runner (~> 3)
+  image_processing
+  interactor
+  jasmine
+  jasmine_selenium_runner
   json_matchers
-  kaminari (~> 1)
-  listen (~> 3)
-  mail-notify (~> 1)
-  pdf-reader (~> 2)
-  pg (~> 1)
-  plek (~> 4)
+  kaminari
+  listen
+  mail-notify
+  pdf-reader
+  pg
+  plek
   rails (~> 6.0)
-  rinku (~> 2)
-  rspec-rails (~> 4)
-  rubocop-govuk (~> 3)
-  rubyzip (~> 2)
-  sanitize (~> 5)
-  sass-rails (< 6)
-  scss_lint-govuk (~> 0)
-  sidekiq-scheduler (~> 3)
-  simplecov (~> 0.18)
-  uglifier (~> 4)
-  webmock (~> 3)
-  with_advisory_lock (~> 4)
+  rinku
+  rspec-rails
+  rubocop-govuk
+  rubyzip
+  sanitize
+  sass-rails
+  scss_lint-govuk
+  sidekiq-scheduler
+  simplecov
+  uglifier
+  webmock
+  with_advisory_lock
 
 RUBY VERSION
    ruby 2.6.6
