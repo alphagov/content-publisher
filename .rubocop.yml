@@ -16,9 +16,5 @@ Rails/DynamicFindBy:
 Rails/SaveBang:
   Enabled: true
 
-Rails/TimeZone:
-  Enabled: true
-  EnforcedStyle: "strict"
-
 Style/DateTime:
   Enabled: true
