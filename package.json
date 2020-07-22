@@ -5,8 +5,8 @@
   "author": "Government Digital Service",
   "license": "MIT",
   "scripts": {
-    "lint": "standard app/assets/javascripts/{*.js,**/*.js} spec/javascripts/{*.js,**/*.js}",
-    "lint:fix": "standard --fix app/javascripts/{*.js,**/*.js} spec/javascripts/{*.js,**/*.js}"
+    "lint": "yarn run lint:js",
+    "lint:js": "standard app/assets/javascripts/{*.js,**/*.js} spec/javascripts/{*.js,**/*.js}"
   },
   "standard": {
     "ignore": [
