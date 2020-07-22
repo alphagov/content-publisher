@@ -11,8 +11,8 @@
 
   // Remove box-shadow set in govuk-frontend for govuk-checkboxes__input
   // as we rely on the parent element miller-columns__item to show the target area on hover
-  .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before,
-  .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before {
+  .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label:before,
+  .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label:before {
     box-shadow: none;
   }
 }

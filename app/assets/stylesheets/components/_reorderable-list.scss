@@ -92,7 +92,6 @@
 }
 
 .js-enabled {
-
   .app-c-reorderable-list__item {
     @include govuk-media-query($from: desktop) {
       cursor: move;

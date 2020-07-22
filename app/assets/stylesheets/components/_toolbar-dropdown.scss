@@ -44,7 +44,7 @@ $app-dropdown-arrow-spacing: $app-dropdown-arrow-size / 2;
     box-shadow: none;
   }
 
-  &::after {
+  &:after {
     content: "";
     position: relative;
     top: 4px;
