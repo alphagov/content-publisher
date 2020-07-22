@@ -5,16 +5,22 @@
   "author": "Government Digital Service",
   "license": "MIT",
   "scripts": {
-    "lint": "yarn run lint:js",
-    "lint:js": "standard app/assets/javascripts/{*.js,**/*.js} spec/javascripts/{*.js,**/*.js}"
+    "lint": "yarn run lint:js && yarn run lint:scss",
+    "lint:js": "standard app/assets/javascripts/{*.js,**/*.js} spec/javascripts/{*.js,**/*.js}",
+    "lint:scss": "stylelint app/assets/stylesheets/"
   },
   "standard": {
     "ignore": [
       "/spec/javascripts/helpers/jasmine-jquery.js"
     ]
   },
+  "stylelint": {
+    "extends": "stylelint-config-gds/scss"
+  },
   "devDependencies": {
-    "standard": "^12.0.1"
+    "standard": "^12.0.1",
+    "stylelint": "^13.6.1",
+    "stylelint-config-gds": "^0.1.0-pre.2"
   },
   "dependencies": {
     "@webcomponents/custom-elements": "^1.4.1",
