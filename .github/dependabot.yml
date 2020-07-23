@@ -30,7 +30,7 @@ updates:
         dependency-type: direct
       - dependency-name: rspec-rails
         dependency-type: direct
-      - dependency-name: sass-rails
+      - dependency-name: sassc-rails
         dependency-type: direct
   - package-ecosystem: npm
     directory: /
