@@ -46,3 +46,10 @@ updates:
         dependency-type: direct
       - dependency-name: paste-html-to-govspeak
         dependency-type: direct
+      - dependency-name: stylelint-config-gds
+        dependency-type: direct
+      # Framework packages
+      - dependency-name: standard
+        dependency-type: direct
+      - dependency-name: stylelint
+        dependency-type: direct
