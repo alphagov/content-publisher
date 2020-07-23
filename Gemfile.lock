@@ -391,11 +391,6 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.8.0)
       nokogumbo (~> 2.0)
-    sass (3.7.4)
-      sass-listen (~> 4.0.0)
-    sass-listen (4.0.0)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -406,10 +401,6 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    scss_lint (0.59.0)
-      sass (~> 3.5, >= 3.5.5)
-    scss_lint-govuk (0.2.0)
-      scss_lint
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -520,7 +511,6 @@ DEPENDENCIES
   rubyzip
   sanitize
   sass-rails
-  scss_lint-govuk
   sidekiq-scheduler
   simplecov
   uglifier
