@@ -187,12 +187,12 @@ GEM
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
     interactor (3.1.2)
-    jasmine (3.5.1)
-      jasmine-core (~> 3.5.0)
+    jasmine (3.6.0)
+      jasmine-core (~> 3.6.0)
       phantomjs
       rack (>= 1.2.1)
       rake
-    jasmine-core (3.5.0)
+    jasmine-core (3.6.0)
     jasmine_selenium_runner (3.0.0)
       jasmine (~> 3.0)
       selenium-webdriver (~> 3.8)
