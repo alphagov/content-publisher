@@ -26,7 +26,7 @@
     "fetch-mock": "^9.9.1",
     "markdown-toolbar-element": "^0.2.0",
     "miller-columns-element": "^1.3.2",
-    "paste-html-to-govspeak": "^0.2.4",
+    "paste-html-to-govspeak": "^0.2.5",
     "raven-js": "^3.27.2",
     "sortablejs": "^1.10.2",
     "url-polyfill": "^1.1.9",
