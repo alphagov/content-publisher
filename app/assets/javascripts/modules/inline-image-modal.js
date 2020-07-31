@@ -23,37 +23,37 @@ InlineImageModal.prototype.init = function () {
 
 InlineImageModal.prototype.actionCallback = function (item) {
   var handlers = {
-    'open': function () {
+    open: function () {
       this.$modal.resize('wide')
       this.$modal.open()
       this.workflow.render(window.ModalFetch.getLink(item))
     },
-    'insert': function () {
+    insert: function () {
       this.$modal.close()
       this.editor.insertBlock(item.dataset.modalData)
     },
-    'upload': function () {
+    upload: function () {
       this.workflow.render(window.ModalFetch.postForm(item))
     },
-    'back': function () {
+    back: function () {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
-    'crop': function () {
+    crop: function () {
       this.workflow.render(window.ModalFetch.postForm(item))
     },
-    'delete': function () {
+    delete: function () {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
-    'confirmDelete': function () {
+    confirmDelete: function () {
       this.workflow.render(window.ModalFetch.postForm(item))
     },
-    'meta': function () {
+    meta: function () {
       this.workflow.render(window.ModalFetch.postForm(item))
     },
-    'edit': function () {
+    edit: function () {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
-    'metaInsert': function () {
+    metaInsert: function () {
       window.ModalFetch.postForm(item)
         .then(function (result) {
           if (result.unprocessableEntity) {

@@ -1,5 +1,5 @@
 /* eslint-env jasmine */
-/* global ModalFetch, Promise, fetchMock */
+/* global ModalFetch, fetchMock */
 
 describe('ModalFetch', function () {
   'use strict'
