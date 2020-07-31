@@ -23,30 +23,30 @@ InlineAttachmentModal.prototype.init = function () {
 
 InlineAttachmentModal.prototype.actionCallback = function (item) {
   var handlers = {
-    'open': function () {
+    open: function () {
       this.$modal.resize('narrow')
       this.$modal.open()
       this.workflow.render(window.ModalFetch.getLink(item))
     },
-    'upload': function () {
+    upload: function () {
       this.workflow.render(window.ModalFetch.postForm(item))
     },
-    'insert': function () {
+    insert: function () {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
-    'delete': function () {
+    delete: function () {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
-    'confirmDelete': function () {
+    confirmDelete: function () {
       this.workflow.render(window.ModalFetch.postForm(item))
     },
-    'edit': function () {
+    edit: function () {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
-    'update': function () {
+    update: function () {
       this.workflow.render(window.ModalFetch.postForm(item))
     },
-    'back': function () {
+    back: function () {
       this.workflow.render(window.ModalFetch.getLink(item))
     },
     'insert-attachment-block': function () {

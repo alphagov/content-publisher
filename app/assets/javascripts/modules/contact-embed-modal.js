@@ -23,12 +23,12 @@ ContactEmbedModal.prototype.init = function () {
 
 ContactEmbedModal.prototype.actionCallback = function (item) {
   var handlers = {
-    'open': function () {
+    open: function () {
       this.$modal.resize('narrow')
       this.$modal.open()
       this.workflow.render(window.ModalFetch.getLink(item))
     },
-    'insert': function () {
+    insert: function () {
       window.ModalFetch.postForm(item)
         .then(function (result) {
           if (result.unprocessableEntity) {
