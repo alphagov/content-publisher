@@ -30,7 +30,7 @@ updates:
         dependency-type: direct
       - dependency-name: rspec-rails
         dependency-type: direct
-      - dependency-name: sass-rails
+      - dependency-name: sassc-rails
         dependency-type: direct
   - package-ecosystem: npm
     directory: /
@@ -45,4 +45,11 @@ updates:
       - dependency-name: miller-columns-element
         dependency-type: direct
       - dependency-name: paste-html-to-govspeak
+        dependency-type: direct
+      - dependency-name: stylelint-config-gds
+        dependency-type: direct
+      # Framework packages
+      - dependency-name: standard
+        dependency-type: direct
+      - dependency-name: stylelint
         dependency-type: direct

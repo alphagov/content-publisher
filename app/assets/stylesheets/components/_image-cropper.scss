@@ -1,4 +1,5 @@
-@import url(asset-path("cropperjs/dist/cropper.min.css"));
+// stylelint-disable-next-line scss/at-import-partial-extension
+@import "cropperjs/dist/cropper.min";
 
 $app-cropper-point-size: 20px;
 
@@ -91,5 +92,4 @@ $app-cropper-point-size: 20px;
   .app-c-image-cropper__image {
     display: block;
   }
-
 }

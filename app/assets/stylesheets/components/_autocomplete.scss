@@ -1,4 +1,5 @@
-@import url(asset-path("accessible-autocomplete/dist/accessible-autocomplete.min.css"));
+// stylelint-disable-next-line scss/at-import-partial-extension
+@import "accessible-autocomplete/dist/accessible-autocomplete.min";
 
 $app-focus-colour: $govuk-focus-colour;
 
@@ -12,8 +13,7 @@ $app-focus-colour: $govuk-focus-colour;
 
 .app-c-autocomplete--search {
   .autocomplete__input {
-    // scss-lint:disable PlaceholderInExtend
-    @extend .gem-c-input--search-icon;
+    @extend .gem-c-input--search-icon; // stylelint-disable-line scss/at-extend-no-missing-placeholder
   }
 }
 
