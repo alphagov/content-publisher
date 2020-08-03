@@ -158,7 +158,7 @@ GEM
       sprockets (< 4)
     govuk_schemas (4.1.0)
       json-schema (~> 2.8.0)
-    govuk_sidekiq (3.0.5)
+    govuk_sidekiq (4.0.0)
       gds-api-adapters (>= 19.1.0)
       govuk_app_config (>= 1.1)
       redis-namespace (~> 1.6)
