@@ -8,17 +8,8 @@ inherit_mode:
   merge:
     - Exclude
 
+# This app has custom find_by methods
 Rails/DynamicFindBy:
   Whitelist:
     - find_by_param
     - find_by_document
-
-Rails/SaveBang:
-  Enabled: true
-
-Rails/TimeZone:
-  Enabled: true
-  EnforcedStyle: "strict"
-
-Style/DateTime:
-  Enabled: true
