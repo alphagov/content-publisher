@@ -76,7 +76,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
     it "returns true if the Publishing API image is a placeholder and the imported edition has no image" do
       publishing_api_item[:details][:image] = {
-        alt_text: "placeholder",
+        alt_text: "",
       }
       stub_publishing_api_has_item(publishing_api_item)
 
