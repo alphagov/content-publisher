@@ -43,7 +43,7 @@ group :development, :test do
   gem "climate_control"
   gem "factory_bot_rails"
   gem "govuk_schemas"
-  gem "govuk_test"
+  gem "govuk_test", git: "https://github.com/alphagov/govuk_test", branch: "chrome-sandbox"
   gem "jasmine"
   gem "jasmine_selenium_runner"
   gem "json_matchers"
