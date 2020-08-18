@@ -45,13 +45,12 @@ RSpec.feature "Upload an image", js: true do
 
   def and_i_crop_the_image
     stub_publishing_api_put_content(@edition.content_id, {})
+    stub_asset_manager_receives_an_asset(filename: @image_filename)
     click_on "Save and continue"
   end
 
   def and_i_fill_in_the_metadata
-    stub_publishing_api_put_content(@edition.content_id, {})
-    stub_asset_manager_receives_an_asset(filename: @image_filename)
-
+    stub_asset_manager_updates_any_asset
     fill_in "image_revision[alt_text]", with: "Some alt text"
     fill_in "image_revision[caption]", with: "A caption"
     fill_in "image_revision[credit]", with: "A credit"

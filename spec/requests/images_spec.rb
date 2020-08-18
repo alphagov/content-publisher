@@ -66,6 +66,11 @@ RSpec.describe "Images" do
   end
 
   describe "PATCH /documents/:document/images/:image_id/crop" do
+    before do
+      stub_asset_manager_receives_an_asset
+      stub_any_publishing_api_put_content
+    end
+
     let(:image_revision) { create(:image_revision) }
     let(:edition) { create(:edition, image_revisions: [image_revision]) }
     let(:crop) { { crop_x: 0, crop_y: 0, crop_width: 960, crop_height: 640 } }
@@ -140,8 +145,9 @@ RSpec.describe "Images" do
 
     it "returns issues and an unprocessable response when there are requirement issues" do
       edition = create(:edition, image_revisions: [image_revision])
+      long_string = SecureRandom.alphanumeric(255)
       patch edit_image_path(edition.document, image_revision.image_id),
-            params: { image_revision: { alt_text: "" } }
+            params: { image_revision: { alt_text: long_string } }
 
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.body)

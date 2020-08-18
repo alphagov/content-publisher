@@ -47,7 +47,6 @@ FactoryBot.define do
 
     trait :on_asset_manager do
       transient do
-        alt_text { SecureRandom.hex(8) }
         state { :draft }
       end
 

@@ -4,7 +4,6 @@ class Requirements::Preview::EditionChecker < Requirements::Checker
   CHECKERS = [
     Requirements::Preview::ContentChecker,
     Requirements::Preview::TagsChecker,
-    Requirements::Preview::ImagesChecker,
   ].freeze
 
   def initialize(edition)
