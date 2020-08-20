@@ -1,5 +1,10 @@
 RSpec.describe "Lead Image" do
   describe "POST /documents/:document/lead-image/:image_id" do
+    before do
+      stub_asset_manager_receives_an_asset
+      stub_any_publishing_api_put_content
+    end
+
     let(:image_revision) { create(:image_revision) }
     let(:document_type) { build(:document_type, :with_lead_image) }
 
@@ -42,6 +47,11 @@ RSpec.describe "Lead Image" do
   end
 
   describe "DELETE /documents/:document/lead-image" do
+    before do
+      stub_asset_manager_receives_an_asset
+      stub_any_publishing_api_put_content
+    end
+
     let(:document_type) { build(:document_type, :with_lead_image) }
 
     it_behaves_like "requests that assert edition state",

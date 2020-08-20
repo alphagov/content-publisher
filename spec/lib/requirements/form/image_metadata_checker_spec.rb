@@ -5,11 +5,6 @@ RSpec.describe Requirements::Form::ImageMetadataChecker do
       expect(issues).to be_empty
     end
 
-    it "returns an issue if there is no alt text" do
-      issues = described_class.call({})
-      expect(issues).to have_issue(:image_alt_text, :blank)
-    end
-
     it "returns an issue if the alt text is too long" do
       max_length = Requirements::Form::ImageMetadataChecker::ALT_TEXT_MAX_LENGTH
       issues = described_class.call(alt_text: "a" * (max_length + 1))

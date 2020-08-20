@@ -60,7 +60,7 @@ private
       alt_text: edition.lead_image_revision.alt_text,
       caption: edition.lead_image_revision.caption,
       credit: edition.lead_image_revision.credit,
-    }
+    }.compact
   end
 
   def details

@@ -133,6 +133,29 @@ RSpec.describe PublishingApiPayload do
       expect(payload[:details][:image]).to match a_hash_including(payload_hash)
     end
 
+    it "doesn't present nil image attributes" do
+      image_revision = build(:image_revision,
+                             :on_asset_manager,
+                             alt_text: nil,
+                             caption: "")
+
+      document_type = build(:document_type, :with_lead_image)
+
+      edition = build(:edition,
+                      document_type: document_type,
+                      lead_image_revision: image_revision)
+
+      payload = described_class.new(edition).payload
+
+      payload_hash = {
+        url: image_revision.asset_url("300"),
+        high_resolution_url: image_revision.asset_url("high_resolution"),
+        caption: "",
+      }
+
+      expect(payload[:details][:image]).to eq(payload_hash)
+    end
+
     it "includes the political status of the edition" do
       political_edition = build(:edition, :political)
       payload = described_class.new(political_edition).payload
