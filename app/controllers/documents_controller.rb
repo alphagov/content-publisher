@@ -5,7 +5,7 @@ class DocumentsController < ApplicationController
       return
     end
 
-    filter = EditionFilter.new(current_user, filter_params)
+    filter = EditionFilter.new(current_user, **filter_params)
     @editions = filter.editions
     @filter_params = filter.filter_params
     @sort = filter.sort

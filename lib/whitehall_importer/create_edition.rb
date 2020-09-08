@@ -7,8 +7,8 @@ module WhitehallImporter
                 :edition_number,
                 :user_ids
 
-    def self.call(*args)
-      new(*args).call
+    def self.call(**args)
+      new(**args).call
     end
 
     def initialize(document_import:,

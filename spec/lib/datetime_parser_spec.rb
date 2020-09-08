@@ -49,14 +49,14 @@ RSpec.describe DatetimeParser do
       params = { date: { day: "10", month: "60", year: "11" },
                  time: "10:00",
                  issue_prefix: :schedule }
-      expect(described_class.new(params).parse).to be_nil
+      expect(described_class.new(**params).parse).to be_nil
     end
 
     it "returns nil when the time is invalid" do
       params = { date: { day: "10", month: "1", year: "2019" },
                  time: "13421",
                  issue_prefix: :schedule }
-      expect(described_class.new(params).parse).to be_nil
+      expect(described_class.new(**params).parse).to be_nil
     end
   end
 
@@ -65,7 +65,7 @@ RSpec.describe DatetimeParser do
       params = { date: { day: "10", month: "1", year: "2019" },
                  time: "10:00",
                  issue_prefix: :schedule }
-      parser = described_class.new(params)
+      parser = described_class.new(**params)
       parser.parse
 
       expect(parser.issues.items).to be_empty
@@ -83,7 +83,7 @@ RSpec.describe DatetimeParser do
       params = { date: { day: "10", month: "60", year: "11" },
                  time: "10:00",
                  issue_prefix: :schedule }
-      parser = described_class.new(params)
+      parser = described_class.new(**params)
       parser.parse
       expect(parser.issues).to have_issue(:schedule_date, :invalid)
     end
@@ -92,7 +92,7 @@ RSpec.describe DatetimeParser do
       params = { date: { day: "10", month: "1", year: "2019" },
                  time: "-1:00",
                  issue_prefix: :schedule }
-      parser = described_class.new(params)
+      parser = described_class.new(**params)
       parser.parse
       expect(parser.issues).to have_issue(:schedule_time, :invalid)
     end
