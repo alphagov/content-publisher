@@ -1,12 +1,15 @@
 ENV["RAILS_ENV"] ||= "test"
 ENV["GOVUK_APP_DOMAIN"] = "test.gov.uk"
 
+# Must go at top of file
+require "simplecov"
+SimpleCov.start "rails"
+
 require File.expand_path("../config/environment", __dir__)
 require "rspec/rails"
 
 require "byebug"
 require "govuk_schemas/rspec_matchers"
-require "simplecov"
 require "webmock/rspec"
 require "gds_api/test_helpers/publishing_api"
 require "gds_api/test_helpers/asset_manager"
@@ -40,7 +43,6 @@ RSpec.configure do |config|
 
   unless config.files_to_run.one?
     I18n::Coverage.start
-    SimpleCov.start
   end
 
   config.before :suite do
