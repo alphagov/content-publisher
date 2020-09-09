@@ -20,7 +20,7 @@
   "devDependencies": {
     "standard": "^14.3.4",
     "stylelint": "^13.6.1",
-    "stylelint-config-gds": "^0.1.0-pre.2"
+    "stylelint-config-gds": "^0.1.0-pre.3"
   },
   "dependencies": {
     "@webcomponents/custom-elements": "^1.4.1",
