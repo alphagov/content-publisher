@@ -10,7 +10,7 @@ en:
         credit: Image credit
         lead_image: Select as lead image
       guidance:
-        alt_text_govspeak: A simple and specific description of what the image shows. This helps screen-readers and search engines.
+        alt_text_govspeak: Optional. A short and specific description of what the image shows. This helps screen-readers and search engines. Use this only when the image provides a reader with additional information.
         caption_govspeak: Optional. A description of what the image shows. Caption appears next to the image.
         credit_govspeak: |
           Images licensed from a 3rd party must be credited. Government images do not need a credit.
