@@ -1,5 +1,5 @@
 class DeleteDraftAssetsService < ApplicationService
-  def initialize(edition)
+  def initialize(edition, **)
     @edition = edition
   end
 

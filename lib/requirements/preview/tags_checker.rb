@@ -1,7 +1,7 @@
 class Requirements::Preview::TagsChecker < Requirements::Checker
   attr_reader :edition
 
-  def initialize(edition)
+  def initialize(edition, **)
     @edition = edition
   end
 

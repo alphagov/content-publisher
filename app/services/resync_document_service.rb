@@ -1,5 +1,5 @@
 class ResyncDocumentService < ApplicationService
-  def initialize(document)
+  def initialize(document, **)
     @document = document
   end
 
