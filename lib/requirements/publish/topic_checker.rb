@@ -1,7 +1,7 @@
 class Requirements::Publish::TopicChecker < Requirements::Checker
   attr_reader :edition
 
-  def initialize(edition)
+  def initialize(edition, **)
     @edition = edition
   end
 

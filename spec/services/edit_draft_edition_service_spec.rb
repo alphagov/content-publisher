@@ -11,7 +11,7 @@ RSpec.describe EditDraftEditionService do
     end
 
     it "does not save the edition" do
-      described_class.call(edition, user, {})
+      described_class.call(edition, user, **{})
 
       expect(edition).to be_new_record
     end

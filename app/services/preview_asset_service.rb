@@ -1,5 +1,5 @@
 class PreviewAssetService < ApplicationService
-  def initialize(edition, asset)
+  def initialize(edition, asset, **)
     @edition = edition
     @asset = asset
   end

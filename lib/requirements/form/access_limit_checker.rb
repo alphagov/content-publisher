@@ -1,7 +1,7 @@
 class Requirements::Form::AccessLimitChecker < Requirements::Checker
   attr_reader :edition, :user
 
-  def initialize(edition, user)
+  def initialize(edition, user, **)
     @edition = edition
     @user = user
   end

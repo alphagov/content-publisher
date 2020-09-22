@@ -7,8 +7,8 @@ RSpec.describe WhitehallImporter::CreateEdition do
     let(:user_ids) { { 1 => create(:user).id } }
 
     def perform_call(**options)
-      described_class.call({ document_import: document_import,
-                             change_history: change_history }.merge(options))
+      described_class.call(**{ document_import: document_import,
+                               change_history: change_history }.merge(**options))
     end
 
     it "can import an edition" do

@@ -1,5 +1,5 @@
 class SchedulePublishService < ApplicationService
-  def initialize(edition, user, scheduling)
+  def initialize(edition, user, scheduling, **)
     @edition = edition
     @user = user
     @scheduling = scheduling
