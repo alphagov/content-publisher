@@ -1,2 +1,2 @@
 browser: chrome
-configuration_class: ChromeHeadlessJasmineConfigurer
+configuration_class: HeadlessChromeJasmineConfigurer
