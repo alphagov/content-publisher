@@ -18,7 +18,7 @@ private
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])
-    assert_edition_state(edition, &:editable?)
+    assert_edition_state(edition, assertion: "not live") { !edition.live? }
   end
 
   def check_for_issues
