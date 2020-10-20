@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "yarn run lint:js && yarn run lint:scss",
-    "lint:js": "standard app/assets/javascripts/{*.js,**/*.js} spec/javascripts/{*.js,**/*.js}",
+    "lint:js": "standard 'app/assets/javascripts/**/*.js' 'spec/javascripts/**/*.js'",
     "lint:scss": "stylelint app/assets/stylesheets/"
   },
   "standard": {
