@@ -8,24 +8,8 @@ node {
 
   govuk.buildProject(
     beforeTest: {
-      stage("Lint Javascript") {
+      stage("Install node modules") {
         sh("yarn")
-        sh("yarn run lint")
-      }
-    },
-    rubyLintDiff: false,
-    rubyLintDirs: "",
-    overrideTestTask: {
-      stage("Run tests") {
-        govuk.runTests("spec jasmine:ci")
-      }
-    },
-    afterTest: {
-      stage("Lint FactoryBot") {
-        sh("bundle exec rake factorybot:lint RAILS_ENV=test")
-      }
-      stage("I18n Coverage") {
-        sh("bundle exec rake i18n_cov:ci")
       }
     }
   )
