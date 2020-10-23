@@ -38,20 +38,20 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         $select.options.forEach(function ($el) {
           results.push({ text: $el.textContent, hint: $el.dataset.hint || '', value: $el.value })
         })
-        syncResults(query
-          ? results.filter(function (result) {
-            var queryLowerCase = query.toLowerCase().trim()
-            var resultTextLowerCase = result.text.toLowerCase()
-            var resultHintLowerCase = result.hint.toLowerCase()
-            var textAndHintLowerCase = resultTextLowerCase + ' ' + resultHintLowerCase
-            var hintAndTextLowerCase = resultHintLowerCase + ' ' + resultTextLowerCase
+        var resultMatcher = function (result) {
+          var queryLowerCase = query.toLowerCase().trim()
+          var resultTextLowerCase = result.text.toLowerCase()
+          var resultHintLowerCase = result.hint.toLowerCase()
+          var textAndHintLowerCase = resultTextLowerCase + ' ' + resultHintLowerCase
+          var hintAndTextLowerCase = resultHintLowerCase + ' ' + resultTextLowerCase
 
-            var textAndHintContains = textAndHintLowerCase.indexOf(queryLowerCase) !== -1
-            var hintAndTextContains = hintAndTextLowerCase.indexOf(queryLowerCase) !== -1
+          var textAndHintContains = textAndHintLowerCase.indexOf(queryLowerCase) !== -1
+          var hintAndTextContains = hintAndTextLowerCase.indexOf(queryLowerCase) !== -1
 
-            return textAndHintContains || hintAndTextContains
-          }) : []
-        )
+          return textAndHintContains || hintAndTextContains
+        }
+
+        syncResults(query ? results.filter(resultMatcher) : [])
       },
       minLength: 3,
       showNoOptionsFound: true,
@@ -114,20 +114,19 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       autoselect: false,
       source: function (query, syncResults) {
         var results = topicSuggestions
+        var resultMatcher = function (result) {
+          var topicName = result.topic.topicName
+          var indexOf = topicName.toLowerCase().indexOf(query.toLowerCase())
+          var resultContainsQuery = indexOf !== -1
+          if (resultContainsQuery) {
+            // Wrap query in <mark> tags
+            var queryRegex = new RegExp('(' + query + ')', 'ig')
+            result.highlightedTopicName = topicName.replace(queryRegex, '<mark>$1</mark>')
+          }
+          return resultContainsQuery
+        }
 
-        syncResults(query
-          ? results.filter(function (result) {
-            var topicName = result.topic.topicName
-            var indexOf = topicName.toLowerCase().indexOf(query.toLowerCase())
-            var resultContainsQuery = indexOf !== -1
-            if (resultContainsQuery) {
-              // Wrap query in <mark> tags
-              var queryRegex = new RegExp('(' + query + ')', 'ig')
-              result.highlightedTopicName = topicName.replace(queryRegex, '<mark>$1</mark>')
-            }
-            return resultContainsQuery
-          }) : []
-        )
+        syncResults(query ? results.filter(resultMatcher) : [])
       },
       templates: {
         inputValue: function (result) {
@@ -190,11 +189,11 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         if (withoutNarrowingResults) {
           syncResults(options)
         } else {
-          syncResults(query
-            ? options.filter(function (option) {
-              return option.toLowerCase().indexOf(query.toLowerCase()) !== -1
-            }) : []
-          )
+          var resultMatcher = function (option) {
+            return option.toLowerCase().indexOf(query.toLowerCase()) !== -1
+          }
+
+          syncResults(query ? options.filter(resultMatcher) : [])
         }
       }
     })
