@@ -146,7 +146,7 @@ GEM
       nokogumbo (~> 2)
       rinku (~> 2.0)
       sanitize (>= 5.2.1, < 6)
-    govuk_app_config (2.6.0)
+    govuk_app_config (2.7.0)
       logstasher (>= 1.2.2, < 1.4.0)
       sentry-raven (~> 3.1.1)
       statsd-ruby (~> 1.4.0)
@@ -444,7 +444,7 @@ GEM
       e2mmap
     tilt (2.0.10)
     ttfunk (1.6.2.1)
-    tzinfo (1.2.7)
+    tzinfo (1.2.8)
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
@@ -474,7 +474,7 @@ GEM
       activerecord (>= 4.2)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.4.0)
+    zeitwerk (2.4.1)
 
 PLATFORMS
   ruby
