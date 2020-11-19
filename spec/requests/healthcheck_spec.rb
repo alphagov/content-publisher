@@ -13,5 +13,13 @@ RSpec.describe "Healthcheck" do
       get healthcheck_path
       expect(JSON.parse(response.body)).to have_key("status")
     end
+
+    it "checks ActiveStorage if specified" do
+      get healthcheck_path
+      expect(JSON.parse(response.body)["checks"]).not_to have_key("active_storage")
+
+      get healthcheck_path, params: { storage: true }
+      expect(JSON.parse(response.body)["checks"]).to have_key("active_storage")
+    end
   end
 end
