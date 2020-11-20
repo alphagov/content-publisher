@@ -6,6 +6,7 @@ class HealthcheckController < ApplicationController
       GovukHealthcheck::SidekiqRedis,
       GovukHealthcheck::ActiveRecord,
       Healthcheck::GovernmentDataCheck,
+      Healthcheck::ActiveStorage,
     ])
     render json: healthcheck
   end
