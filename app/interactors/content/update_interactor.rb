@@ -63,7 +63,7 @@ private
 
   def content_params
     @content_params ||= fields.reduce({}) do |hash, field|
-      hash.merge!(field.updater_params(edition, params))
+      hash.deep_merge!(field.updater_params(edition, params))
     end
   end
 

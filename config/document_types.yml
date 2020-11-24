@@ -76,10 +76,10 @@ document_types:
   - id: notice
     <<: *publication
     label: Notice
-        
+
   - id: guidance
     <<: *publication
-    label: Non statutory guidance  
+    label: Non statutory guidance
 
   - id: policy_paper
     <<: *publication
@@ -108,3 +108,25 @@ document_types:
   - id: transparency
     <<: *publication
     label: Transparency
+
+  # - id: kevin_custom
+  #   label: Custom Document Type
+  #   path_prefix: /custom
+  #   lead_image: false
+  #   attachments: inline_file_only
+  #   publishing_metadata:
+  #     schema_name: news_article
+  #     rendering_app: government-frontend
+  #   contents:
+  #     - title_and_base_path
+  #     - type: text
+  #       name: custom_1
+  #       label: "Custom 1"
+  #     - type: text
+  #       name: custom_2
+  #       label: "Custom 2"
+  #     - summary
+  #     - body
+  #   tags:
+  #     - primary_publishing_organisation
+  #     - organisations
