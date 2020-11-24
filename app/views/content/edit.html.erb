@@ -19,7 +19,7 @@
     ) do |f| %>
 
   <% @edition.document_type.contents.each do |field| %>
-    <%= render "content/edit/#{field.id}_field", edition: @edition, issues: @issues %>
+    <%= render "content/edit/#{field.id}_field", field: field, edition: @edition, issues: @issues %>
   <% end %>
 
   <% if @edition.document.live_edition %>

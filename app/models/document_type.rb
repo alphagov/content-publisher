@@ -20,7 +20,11 @@ class DocumentType
 
       hashes.map do |hash|
         hash["contents"] = hash["contents"].to_a.map do |field_id|
-          "DocumentType::#{field_id.camelize}Field".constantize.new
+          if field_id.is_a?(Hash)
+            "DocumentType::#{field_id["type"].camelize}Field".constantize.new(field_id.except("type"))
+          else
+            "DocumentType::#{field_id.camelize}Field".constantize.new
+          end
         end
         hash["tags"] = hash["tags"].to_a.map do |field_id|
           "DocumentType::#{field_id.camelize}Field".constantize.new

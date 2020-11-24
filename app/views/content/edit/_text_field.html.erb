@@ -1,0 +1,11 @@
+<%= render "govuk_publishing_components/components/input", {
+  label: {
+    text: field.label,
+    bold: true
+  },
+  id: "text-#{field.name}-field",
+  name: field.name,
+  value: params[field.name] || edition.contents[field.name],
+  error_items: issues&.items_for(field.name.to_sym),
+  width: 20,
+} %>

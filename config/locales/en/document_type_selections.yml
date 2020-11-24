@@ -191,3 +191,6 @@ en:
     written_statement:
       label: Written statement to Parliament
       description: Written statements given to Parliament by a minister, where there is significant public interest in the entire statement.
+    kevin_custom:
+      label: Custom document type
+      description: An example document type with customisations
