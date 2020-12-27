@@ -24,6 +24,28 @@ en:
           label: World locations
           hint: Tag locations this content is about. If it only relates to the UK you don’t need to use this tag.
 
+    blog:
+      fields:
+        title:
+          guidance:
+            title: Creating a title
+            body_govspeak: Make it snappy!
+        summary:
+          guidance:
+            title: Writing a summary
+            body_govspeak: The summary explains the main point of the post and it should end with a full stop. Keep it short, possibly under 160 characters, and avoid repeating the first line of the body.
+        body:
+          guidance:
+            title: Writing the main post
+            body_govspeak: |
+              Use short words, short sentences, and short paragraphs. Use subheadings in longer content.
+
+              [Guidance on correspondence](https://www.gov.uk/guidance/content-design/content-types#correspondence){:target="_blank"}
+
+              [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
+
+              [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
     correspondence:
       fields:
         title:

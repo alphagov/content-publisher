@@ -49,6 +49,6 @@ PLEK_SERVICE_PUBLISHING_API_URI=localhost:9999 bundle exec rails s
 ## TODO
 
 * [x] Get a working publishing journey together using [stublishing-api](https://github.com/richardTowers/stublishing-api)
-* [ ] Update the blog content type so it's got the nice helpful text
+* [x] Update the blog content type so it's got the nice helpful text
 * [ ] Add webhook functionality to allow triggering builds of the frontend for newly published blog posts
 
