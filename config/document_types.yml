@@ -1,4 +1,17 @@
 ---
+blog: &blog
+  path_prefix: /blog/
+  lead_image: true
+  attachments: inline_file_only
+  publishing_metadata:
+    schema_name: blog
+    rendering_app: blog-frontend
+  contents:
+    - title_and_base_path
+    - summary
+    - body
+  tags: []
+
 news_article: &news_article
   path_prefix: /government/news
   lead_image: true
@@ -37,6 +50,10 @@ publication: &publication
     - world_locations
 
 document_types:
+  - id: blog
+    <<: *blog
+    label: Blog
+
   - id: correspondence
     <<: *publication
     label: Correspondence

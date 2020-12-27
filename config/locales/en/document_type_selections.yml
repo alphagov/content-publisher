@@ -2,6 +2,9 @@ en:
   document_type_selections:
     root:
       label: "What is the content for?"
+    blog:
+      label: Blog
+      description: Test?
     any_mainstream_publication:
       label: Mainstream guide
       description: Guidance for the general public, written for people not expected to have any previous experience or specialist knowledge.

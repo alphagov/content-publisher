@@ -1,6 +1,8 @@
 ---
 - id: root
   options:
+    - id: blog
+      type: document_type
     - id: news
       type: document_type_selection
     - id: guidance_and_regulation
