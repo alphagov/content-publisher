@@ -13,12 +13,41 @@ class Publish::PublishInteractor < ApplicationInteractor
 
       publish_edition
       create_timeline_entry
+      run_webhooks
     end
 
     send_notifications
   end
 
 private
+
+  def run_webhooks
+    # TODO extract this functionality into its own file and test it
+    webhooks = YAML.load_file(Rails.root.join("config/webhooks.yml"))
+      .select {|webhook| webhook.fetch("on", []).include? 'publish' }
+
+    webhooks.each do |webhook|
+      RestClient::Request.execute(
+        method: webhook.fetch("method", "GET"),
+        url: webhook.fetch("url"),
+        headers: webhook.fetch("headers", {}),
+        user: expand_variables(webhook.dig("basic_auth", "user")),
+        password: expand_variables(webhook.dig("basic_auth", "password")),
+        payload: webhook.fetch("payload", [])
+      )
+    end
+  end
+
+  def expand_variables(setting)
+    # TODO extract this functionality into its own file and test it
+    if setting.is_a? String
+      setting
+    elsif setting["type"] == "environment_variable"
+      ENV.fetch(setting.fetch("value"))
+    else
+      nil
+    end
+  end
 
   def find_and_lock_edition
     context.edition = Edition.lock.find_current(document: params[:document])

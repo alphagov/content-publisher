@@ -1,0 +1,20 @@
+---
+# Equivalent to:
+# curl \
+#   -H "Accept: application/vnd.github.v3+json" \
+#   https://api.github.com/repos/richardTowers/content-publisher-blog/actions/workflows/publish.yml/dispatches \
+#   -u richardTowers:$GITHUB_API_TOKEN \
+#   -d '{"ref": "main"}'
+- name: github-actions-static-build
+  "on": # Quotes required otherwise the stupid YAML parser reads 'on:' as 'true:'
+  - publish
+  method: POST
+  url: https://api.github.com/repos/richardTowers/content-publisher-blog/actions/workflows/publish.yml/dispatches
+  headers:
+    Accept: application/vnd.github.v3+json
+  basic_auth:
+    user: richardTowers
+    password:
+      type: environment_variable
+      value: GITHUB_API_TOKEN
+  payload: '{"ref":"main"}'
