@@ -11,6 +11,7 @@ blog: &blog
     - summary
     - body
   tags: []
+  topics: false
 
 news_article: &news_article
   path_prefix: /government/news

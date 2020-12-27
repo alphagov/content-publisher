@@ -27,7 +27,7 @@ class DocumentType
         end
 
         hash["publishing_metadata"] = PublishingMetadata.new(hash["publishing_metadata"].to_h)
-        hash["topics"] = true # this feature is only disabled in tests
+        hash["topics"] = hash.fetch("topics", true)
         new(hash)
       end
     end
