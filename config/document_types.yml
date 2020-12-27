@@ -1,6 +1,6 @@
 ---
 blog: &blog
-  path_prefix: /blog/
+  path_prefix: /blog
   lead_image: true
   attachments: inline_file_only
   publishing_metadata:

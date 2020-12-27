@@ -9,10 +9,36 @@ class DocumentsController < ApplicationController
     @editions = filter.editions
     @filter_params = filter.filter_params
     @sort = filter.sort
+
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: @editions.map {|e|
+          {
+            title: e.title,
+            link: "/documents/#{e.content_id}:#{e.locale}"
+          }
+        }
+      }
+    end
   end
 
   def show
     @edition = Edition.find_current(document: params[:document])
+
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: {
+          edition: @edition,
+          contents: {
+            summary: @edition.summary,
+            body: @edition.contents["body"].to_s,
+            title: @edition.title,
+          }
+        }
+      }
+    end
   end
 
   def history
