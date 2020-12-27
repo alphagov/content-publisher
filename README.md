@@ -66,11 +66,7 @@ bundle exec rails s
 
 You can then almost publish "statutory guidance" (only you can't really, because you need publishing api to be there).
 
-To work around the absence of publishing api, you can use stublishing-api.rb:
-
-```
-./stublishing-api.rb
-```
+To work around the absence of publishing api, you can use [stublishing-api](https://github.com/richardTowers/stublishing-api).
 
 This will run on port 9999, so you need to set a variable to override the location in content-publisher:
 
