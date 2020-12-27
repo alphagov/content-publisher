@@ -30,6 +30,54 @@ bundle exec rake development_permissions
 
 To enable them for your GOV.UK account add them to your account in [Signon](https://github.com/alphagov/signon).
 
+### Hacking the thing to run locally
+
+Get postgres running, for example with docker:
+
+```
+docker run -d -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -p 5432:5432 postgres
+```
+
+Export environment variables to let future commands know which DBs to talk to:
+
+```
+export TEST_DATABASE_URL=postgres://postgres:password@localhost:5432
+export DATABASE_URL=postgres://postgres:password@localhost:5432
+```
+
+Create the databases for development and test:
+
+```
+bundle exec rails db:create
+bundle exec rails db:schema:load
+```
+
+Create permissions for running in Mock SSO mode:
+
+```
+bundle exec rake development_permissions
+```
+
+Start rails:
+
+```
+bundle exec rails s
+```
+
+You can then almost publish "statutory guidance" (only you can't really, because you need publishing api to be there).
+
+To work around the absence of publishing api, you can use stublishing-api.rb:
+
+```
+./stublishing-api.rb
+```
+
+This will run on port 9999, so you need to set a variable to override the location in content-publisher:
+
+```
+PLEK_SERVICE_PUBLISHING_API_URI=localhost:9999 bundle exec rails s
+```
+
 ### Running the test suite
 
 ```
