@@ -2,6 +2,8 @@
 
 Richard's experiment extending content publisher to be less specific to GOV.UK's use case.
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/richardTowers/content-publisher/tree/mega-content-publisher)
+
 ### Hacking the thing to run locally
 
 Get postgres running, for example with docker:
