@@ -145,6 +145,10 @@ Rails.application.routes.draw do
       as: :stub_publishing_api_get_editions
   end
 
+  if ENV["STUB_CONTENT_API"] == "true"
+    get "/api/content" => "stub_apis/content_api#contents"
+  end
+
   if Rails.env.test?
     get "/government/*all", to: proc { [200, {}, ["You've been redirected"]] }
   end

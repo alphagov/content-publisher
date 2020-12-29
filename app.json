@@ -28,7 +28,11 @@
     },
     "STUB_PUBLISHING_API": {
       "required": true,
-      "vaule": "true"
+      "value": "true"
+    },
+    "STUB_CONTENT_API": {
+      "required": true,
+      "value": "true"
     },
     "GITHUB_API_TOKEN": {
       "required": "true"
