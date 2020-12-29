@@ -10,7 +10,8 @@ class EditDraftEditionService < ApplicationService
 
     edition.assign_attributes(extended_attributes)
     determine_political
-    associate_with_government
+    # TODO
+    # associate_with_government
     edition.add_edition_editor(user)
   end
 
