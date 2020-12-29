@@ -16,7 +16,8 @@ class Publish::PublishInteractor < ApplicationInteractor
       run_webhooks
     end
 
-    send_notifications
+    # TODO commenting this out because I don't want emails for this fork
+    # send_notifications
   end
 
 private
