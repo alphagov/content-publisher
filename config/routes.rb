@@ -132,6 +132,19 @@ Rails.application.routes.draw do
 
   mount GovukPublishingComponents::Engine, at: "/component-guide"
 
+  if ENV["STUB_PUBLISHING_API"] == "true"
+    get "/v2/linkables" => "stub_apis/publishing_api#get_linkables",
+      as: :stub_publishing_api_get_linkables
+    get "/v2/content/:content_id" => "stub_apis/publishing_api#get_content",
+      as: :stub_publishing_api_get_content
+    put "/v2/content/:content_id" => "stub_apis/publishing_api#put_content",
+      as: :stub_publishing_api_put_content
+    post "/v2/content/:content_id/publish" => "stub_apis/publishing_api#publish_content",
+      as: :stub_publishing_api_publish_content
+    get "/v2/editions" => "stub_apis/publishing_api#get_editions",
+      as: :stub_publishing_api_get_editions
+  end
+
   if Rails.env.test?
     get "/government/*all", to: proc { [200, {}, ["You've been redirected"]] }
   end

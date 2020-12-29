@@ -26,9 +26,12 @@
     "JWT_AUTH_SECRET": {
       "generator": "secret"
     },
-    "PLEK_SERVICE_PUBLISHING_API_URI": {
+    "STUB_PUBLISHING_API": {
       "required": true,
-      "value": "http://localhost"
+      "vaule": "true"
+    },
+    "GITHUB_API_TOKEN": {
+      "required": "true"
     }
   },
   "addons": [
