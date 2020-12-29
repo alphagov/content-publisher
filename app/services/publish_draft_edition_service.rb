@@ -10,7 +10,11 @@ class PublishDraftEditionService < ApplicationService
     raise "Live editions cannot be published" if edition.live?
 
     publish_assets
-    associate_with_government
+
+    # TODO removed because it doesn't make sense for Richard's Blog
+    # ... and also it requires Redis, which would mean I had to give Heroku my credit card details :|
+
+    # associate_with_government
     set_published_at
     publish_current_edition
     supersede_live_edition
@@ -29,6 +33,7 @@ private
     PublishAssetsService.call(edition, superseded_edition: document.live_edition)
   end
 
+  # TODO this is very Government specific, which annoys Richard
   def associate_with_government
     return if edition.government
 
