@@ -53,8 +53,8 @@ PLEK_SERVICE_PUBLISHING_API_URI=localhost:9999 bundle exec rails s
 * [x] Get a working publishing journey together using [stublishing-api](https://github.com/richardTowers/stublishing-api)
 * [x] Update the blog content type so it's got the nice helpful text
 * [x] Add webhook functionality to allow triggering builds of the frontend for newly published blog posts
-* [ ] Work out how difficult it would be to use GitHub or Google Authn instead of GDS' Signon thing
+* [x] Work out how difficult it would be to use GitHub or Google Authn instead of GDS' Signon thing
+  * Difficult enough that I can't be bothered to do it (for now at least)
 * [x] Get this fork of content-publisher running on Heroku
-* [ ] Integrate the stub publishing API thing into this app, so it can run in the same app on Heroku
+* [x] Integrate the stub publishing API thing into this app, so it can run in the same app on Heroku
 * [ ] Have the GitHub Action build a static site based on the published content in content-publisher
-
