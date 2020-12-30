@@ -4,7 +4,7 @@ en:
       label: "What is the content for?"
     blog:
       label: Blog
-      description: Test?
+      description: A generic blog post - title, summary, body
     any_mainstream_publication:
       label: Mainstream guide
       description: Guidance for the general public, written for people not expected to have any previous experience or specialist knowledge.
