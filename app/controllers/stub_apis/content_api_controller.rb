@@ -15,6 +15,7 @@ class StubApis::ContentApiController < ApplicationController
     Edition
       .includes(:document, :revision)
       .where(live: true, current: true)
+      .order("documents.first_published_at")
       .map do |edition|
         {
           title: edition.title,
