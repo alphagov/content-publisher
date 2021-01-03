@@ -45,14 +45,14 @@ Warden::Strategies.add(:google_oauth2) do
 
   def find_for_gds_oauth(auth_hash)
     user_params = user_params_from_auth_hash(auth_hash.to_hash)
-    user = User.where(uid: user_params["uid"]).first ||
-      User.where(email: user_params["email"]).first
+    user = User.where(uid: user_params["uid"]).first
 
     if user
       user.update!(user_params)
       user
     else # Create a new user.
-      User.create!(user_params)
+      raise "No user exists in content-publisher with uid #{user_params["uid"]}."
+      # User.create!(user_params)
     end
   end
 
