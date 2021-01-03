@@ -149,6 +149,8 @@ Rails.application.routes.draw do
     get "/api/content" => "stub_apis/content_api#contents"
   end
 
+  get "/auth/google_oauth2/callback" => "google_auth#callback"
+
   if Rails.env.test?
     get "/government/*all", to: proc { [200, {}, ["You've been redirected"]] }
   end
