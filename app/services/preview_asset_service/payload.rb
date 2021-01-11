@@ -17,6 +17,9 @@ class PreviewAssetService::Payload
   end
 
   def for_upload(asset)
-    for_update.merge(file: PreviewAssetService::UploadedFile.new(asset))
+    for_update.merge(
+      file: PreviewAssetService::UploadedFile.new(asset),
+      content_type: asset.content_type,
+    )
   end
 end
