@@ -1,6 +1,3 @@
-/* eslint-env jquery */
-/* global GOVUK */
-
 window.buildMarkdownEditor = function buildMarkdownEditor () {
   var markdownEditor = document.createElement('div')
   markdownEditor.className = 'app-c-markdown-editor'

@@ -1,4 +1,3 @@
-/* global $ */
 //= require markdown-toolbar-element/dist/index.umd.js
 //= require paste-html-to-govspeak/dist/paste-html-to-markdown.js
 

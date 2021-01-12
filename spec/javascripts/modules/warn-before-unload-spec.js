@@ -1,4 +1,3 @@
-/* global describe beforeEach afterEach it spyOn expect */
 /* global WarnBeforeUnload Event */
 
 describe('Warn before unload module', function () {

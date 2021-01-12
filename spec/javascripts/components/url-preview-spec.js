@@ -1,5 +1,4 @@
-/* eslint-env jasmine, jquery */
-/* global GOVUK, fetchMock */
+/* global fetchMock */
 
 describe('URL preview component', function () {
   'use strict'

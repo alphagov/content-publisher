@@ -1,5 +1,3 @@
-/* eslint-env jasmine */
-
 describe('Gtm topic listener', function () {
   'use strict'
 

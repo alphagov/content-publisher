@@ -1,6 +1,3 @@
-/* eslint-env jasmine, jquery */
-/* global GOVUK */
-
 describe('Toolbar dropdown component', function () {
   'use strict'
 

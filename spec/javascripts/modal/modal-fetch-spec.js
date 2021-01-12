@@ -1,4 +1,3 @@
-/* eslint-env jasmine */
 /* global ModalFetch, fetchMock */
 
 describe('ModalFetch', function () {

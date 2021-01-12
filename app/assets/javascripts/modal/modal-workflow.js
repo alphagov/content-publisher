@@ -1,5 +1,3 @@
-/* global $ */
-
 function ModalWorkflow ($modal, actionCallback) {
   this.$modal = $modal
   this.actionCallback = actionCallback

@@ -1,4 +1,3 @@
-/* eslint-env jasmine, jquery */
 /* global ModalWorkflow, buildModalDialogue, removeModalDialogue */
 
 describe('ModalWorkflow', function () {

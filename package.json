@@ -6,10 +6,18 @@
   "license": "MIT",
   "scripts": {
     "lint": "yarn run lint:js && yarn run lint:scss",
-    "lint:js": "standard 'app/assets/javascripts/**/*.js' 'spec/javascripts/**/*.js'",
+    "lint:js": "standardx 'app/assets/javascripts/**/*.js' 'spec/javascripts/**/*.js'",
     "lint:scss": "stylelint app/assets/stylesheets/"
   },
-  "standard": {
+  "standardx": {
+    "env": {
+      "browser": true,
+      "jquery": true,
+      "jasmine": true
+    },
+    "globals": [
+      "GOVUK"
+    ],
     "ignore": [
       "/spec/javascripts/helpers/jasmine-jquery.js"
     ]
@@ -17,8 +25,13 @@
   "stylelint": {
     "extends": "stylelint-config-gds/scss"
   },
+  "eslintConfig": {
+    "rules": {
+      "no-var": 0
+    }
+  },
   "devDependencies": {
-    "standard": "^16.0.3",
+    "standardx": "^7.0.0",
     "stylelint": "^13.8.0",
     "stylelint-config-gds": "^0.1.0"
   },

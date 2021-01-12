@@ -1,4 +1,3 @@
-/* eslint-env jasmine */
 /* global fetchMock */
 
 //= require fetch-mock/es5/client-bundle.js
