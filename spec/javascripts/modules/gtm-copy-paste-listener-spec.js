@@ -1,5 +1,3 @@
-/* eslint-env jasmine */
-
 describe('Gtm copy paste listener', function () {
   'use strict'
 

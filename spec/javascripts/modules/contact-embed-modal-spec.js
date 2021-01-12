@@ -1,4 +1,3 @@
-/* eslint-env jasmine */
 /* global ContactEmbedModal, fetchMock, buildModalDialogue, removeModalDialogue */
 
 describe('ContactEmbedModal', function () {

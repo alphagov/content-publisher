@@ -1,4 +1,3 @@
-/* eslint-env jasmine */
 /* global VideoEmbedModal, fetchMock, buildModalDialogue, removeModalDialogue */
 
 describe('VideoEmbedModal', function () {

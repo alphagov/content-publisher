@@ -1,4 +1,3 @@
-/* eslint-env jasmine */
 /* global InlineImageModal, fetchMock, buildModalDialogue, removeModalDialogue */
 
 describe('InlineImageModal', function () {

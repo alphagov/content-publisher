@@ -1,5 +1,4 @@
-/* eslint-env jasmine, jquery */
-/* global GOVUK, spyOnEvent */
+/* global spyOnEvent */
 
 describe('Reorderable list component', function () {
   'use strict'

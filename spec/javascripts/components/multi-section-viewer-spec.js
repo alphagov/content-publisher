@@ -1,6 +1,3 @@
-/* eslint-env jasmine, jquery */
-/* global GOVUK */
-
 describe('Multi section viewer', function () {
   'use strict'
 

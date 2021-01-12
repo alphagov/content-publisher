@@ -1,5 +1,3 @@
-/* eslint-env jasmine */
-
 describe('Gtm reorder listener', function () {
   'use strict'
 

@@ -1,6 +1,3 @@
-/* eslint-env jasmine, jquery */
-/* global GOVUK */
-
 describe('Contact preview component', function () {
   'use strict'
 

@@ -1,4 +1,3 @@
-/* eslint-env jasmine */
 /* global InlineAttachmentModal, fetchMock, buildModalDialogue, removeModalDialogue */
 
 describe('InlineAttachmentModal', function () {

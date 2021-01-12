@@ -1,4 +1,3 @@
-/* eslint-env jasmine */
 /* global ModalEditor, buildMarkdownEditor, removeMarkdownEditor */
 
 describe('ModalEditor', function () {

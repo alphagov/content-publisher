@@ -1,5 +1,3 @@
-/* eslint-env jquery */
-
 window.buildModalDialogue = function buildModalDialogue () {
   window.removeModalDialogue()
   var modal = document.createElement('div')

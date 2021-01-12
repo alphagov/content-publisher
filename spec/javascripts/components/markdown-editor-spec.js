@@ -1,4 +1,3 @@
-/* eslint-env jasmine */
 /* global spyOnEvent, buildMarkdownEditor, removeMarkdownEditor */
 
 describe('Markdown editor component', function () {
