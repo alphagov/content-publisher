@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-library("govuk")
+library("govuk@default-branch")
 
 node {
   // This is required for assets:precompile which runs in rails production
