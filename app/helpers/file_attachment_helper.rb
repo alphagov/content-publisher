@@ -1,7 +1,7 @@
 module FileAttachmentHelper
   def file_attachment_preview_url(attachment_revision, edition)
     params = { token: edition.auth_bypass_token }.to_query
-    attachment_revision.asset_url + "?" + params
+    "#{attachment_revision.asset_url}?#{params}"
   end
 
   def file_attachment_attributes(attachment_revision, edition)

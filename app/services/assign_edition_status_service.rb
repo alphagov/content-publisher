@@ -2,8 +2,7 @@ class AssignEditionStatusService
   include PureFunctionObject
 
   def initialize(edition,
-                 user: nil,
-                 state:,
+                 state:, user: nil,
                  record_edit: true,
                  status_details: nil)
     @edition = edition

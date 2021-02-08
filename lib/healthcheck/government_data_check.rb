@@ -1,6 +1,7 @@
 module Healthcheck
   class GovernmentDataCheck
     attr_reader :government_repo
+
     def initialize
       @government_repo = BulkData::GovernmentRepository.new
     end
@@ -19,7 +20,7 @@ module Healthcheck
     def message
       return "No government data availible" if status == GovukHealthcheck::CRITICAL
 
-      warning_details_content if status == GovukHealthcheck:: WARNING
+      warning_details_content if status == GovukHealthcheck::WARNING
     end
 
     def enabled?

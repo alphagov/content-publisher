@@ -23,8 +23,7 @@ module WhitehallImporter
                                      files: attachments,
                                      old_pattern: "!@",
                                      new_pattern: "Attachment")
-      body_with_embeds = embed_inline_attachments(body_with_embeds, attachments)
-      body_with_embeds
+      embed_inline_attachments(body_with_embeds, attachments)
     end
 
   private

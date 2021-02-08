@@ -1,8 +1,7 @@
 class CreateDocumentService
   include PureFunctionObject
 
-  def initialize(content_id: SecureRandom.uuid,
-                 document_type_id:,
+  def initialize(document_type_id:, content_id: SecureRandom.uuid,
                  locale: "en",
                  user: nil,
                  tags: {})

@@ -3,12 +3,12 @@ class ApplicationJob < ActiveJob::Base
     discard_on(exception) { |_, error| Rails.logger.warn(error) }
   end
 
-  def run_exclusively(lock_name: self.class.name)
+  def run_exclusively(lock_name: self.class.name, &block)
     name = "content-publisher:#{lock_name}"
     options = { timeout_seconds: 0, transaction: true }
 
     result = ApplicationRecord.transaction do
-      ApplicationRecord.with_advisory_lock_result(name, options) { yield }
+      ApplicationRecord.with_advisory_lock_result(name, options, &block)
     end
 
     unless result.lock_was_acquired?

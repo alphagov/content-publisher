@@ -17,7 +17,7 @@ RSpec.describe "News article format" do
   end
 
   def and_i_fill_in_the_form_fields
-    base_path = Edition.last.document_type.path_prefix + "/a-great-title"
+    base_path = "#{Edition.last.document_type.path_prefix}/a-great-title"
     stub_publishing_api_has_lookups(base_path => Document.last.content_id)
     fill_in "title", with: "A great title"
     click_on "Save"
