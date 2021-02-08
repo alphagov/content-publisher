@@ -46,6 +46,6 @@ group :development, :test do
   gem "jasmine_selenium_runner"
   gem "json_matchers"
   gem "rspec-rails"
-  gem "rubocop-govuk"
+  gem "rubocop-govuk", git: "https://github.com/csutter/rubocop-govuk", branch: "v4"
   gem "webmock"
 end
