@@ -1,4 +1,6 @@
-class DiscardPathReservationsService < ApplicationService
+class DiscardPathReservationsService
+  include PureFunctionObject
+
   def initialize(edition, **)
     @edition = edition
   end

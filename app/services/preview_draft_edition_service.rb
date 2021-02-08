@@ -1,4 +1,6 @@
-class PreviewDraftEditionService < ApplicationService
+class PreviewDraftEditionService
+  include PureFunctionObject
+
   def initialize(edition, republish: false)
     @edition = edition
     @republish = republish

@@ -1,4 +1,6 @@
-class FailsafeDraftPreviewService < ApplicationService
+class FailsafeDraftPreviewService
+  include PureFunctionObject
+
   def initialize(edition, **)
     @edition = edition
   end

@@ -1,4 +1,6 @@
-class PublishDraftEditionService < ApplicationService
+class PublishDraftEditionService
+  include PureFunctionObject
+
   def initialize(edition, user, with_review:)
     @edition = edition
     @user = user

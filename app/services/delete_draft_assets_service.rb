@@ -1,4 +1,6 @@
-class DeleteDraftAssetsService < ApplicationService
+class DeleteDraftAssetsService
+  include PureFunctionObject
+
   def initialize(edition, **)
     @edition = edition
   end

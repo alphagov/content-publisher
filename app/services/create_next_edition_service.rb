@@ -1,4 +1,6 @@
-class CreateNextEditionService < ApplicationService
+class CreateNextEditionService
+  include PureFunctionObject
+
   def initialize(current_edition:, user:, discarded_edition: nil)
     @current_edition = current_edition
     @user = user

@@ -1,4 +1,6 @@
-class EditDraftEditionService < ApplicationService
+class EditDraftEditionService
+  include PureFunctionObject
+
   def initialize(edition, user, **attributes)
     @edition = edition
     @user = user

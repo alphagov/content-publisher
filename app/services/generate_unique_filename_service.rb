@@ -1,4 +1,5 @@
-class GenerateUniqueFilenameService < ApplicationService
+class GenerateUniqueFilenameService
+  include PureFunctionObject
   MAX_LENGTH = 65
 
   def initialize(filename:, existing_filenames:)

@@ -1,4 +1,6 @@
-class AssignEditionStatusService < ApplicationService
+class AssignEditionStatusService
+  include PureFunctionObject
+
   def initialize(edition,
                  user: nil,
                  state:,

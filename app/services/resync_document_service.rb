@@ -1,4 +1,6 @@
-class ResyncDocumentService < ApplicationService
+class ResyncDocumentService
+  include PureFunctionObject
+
   def initialize(document, **)
     @document = document
   end

@@ -1,6 +1,8 @@
 require "mini_magick"
 
-class CreateImageBlobService < ApplicationService
+class CreateImageBlobService
+  include PureFunctionObject
+
   def initialize(temp_image:, filename:, user: nil)
     @temp_image = temp_image
     @filename = filename

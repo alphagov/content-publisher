@@ -1,4 +1,6 @@
-class CreateDocumentService < ApplicationService
+class CreateDocumentService
+  include PureFunctionObject
+
   def initialize(content_id: SecureRandom.uuid,
                  document_type_id:,
                  locale: "en",

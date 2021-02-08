@@ -1,4 +1,6 @@
-class PreviewAssetService < ApplicationService
+class PreviewAssetService
+  include PureFunctionObject
+
   def initialize(edition, asset, **)
     @edition = edition
     @asset = asset
