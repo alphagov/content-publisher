@@ -11,7 +11,7 @@ A unified publishing application for content on GOV.UK
 
 ## Technical documentation
 
-This is a Ruby on Rails application.
+This is a Ruby on Rails application. You can use the GOV.UK Docker environment to run the application and its tests with all the necessary dependencies; **see the [README](https://github.com/alphagov/govuk-docker#usage) for more details**.
 
 ### Dependencies
 
@@ -33,8 +33,6 @@ To enable them for your GOV.UK account add them to your account in [Signon](http
 ### Running the test suite
 
 ```
-yarn install
-
 # ruby tests
 bundle exec rspec
 
