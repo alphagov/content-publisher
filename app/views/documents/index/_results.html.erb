@@ -26,6 +26,7 @@
     <% @editions.each do |edition| %>
       <%= t.row do %>
         <%= t.cell render "govuk_publishing_components/components/document_list", {
+          remove_top_border: true,
           items: [
             {
               link: {
