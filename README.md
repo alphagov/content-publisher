@@ -11,16 +11,13 @@ A unified publishing application for content on GOV.UK
 
 ## Technical documentation
 
-This is a Ruby on Rails application.
+This is a Ruby on Rails app, and should follow [our Rails app conventions](https://docs.publishing.service.gov.uk/manual/conventions-for-rails-applications.html).
 
-### Dependencies
+You can use the [GOV.UK Docker environment](https://github.com/alphagov/govuk-docker) to run the application and its tests with all the necessary dependencies. Follow [the usage instructions](https://github.com/alphagov/govuk-docker#usage) to get started.
 
-- [postgresql][] - provides a backing database
-- [redis][] - used as a storage layer for asynchronous job processing
-- [yarn][] - package manager for JavaScripts
-- [imagemagick][] - image manipulation library
+**Use GOV.UK Docker to run any commands that follow.**
 
-### Running the application
+### Before running the app
 
 The first time you run this application for development, enable `debug` and `pre_release_features` permissions:
 
@@ -33,8 +30,6 @@ To enable them for your GOV.UK account add them to your account in [Signon](http
 ### Running the test suite
 
 ```
-yarn install
-
 # ruby tests
 bundle exec rspec
 
