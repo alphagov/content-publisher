@@ -39,7 +39,7 @@ RSpec.feature "Reorder attachments" do
   end
 
   def then_i_see_the_current_attachment_order
-    expect(all(".app-c-reorderable-list__title").map(&:text)).to eq([
+    expect(all(".gem-c-reorderable-list__title").map(&:text)).to eq([
       @attachment_revision1.title, @attachment_revision2.title
     ])
   end
