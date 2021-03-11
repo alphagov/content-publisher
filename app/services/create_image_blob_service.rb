@@ -8,7 +8,7 @@ class CreateImageBlobService < ApplicationService
   end
 
   def call
-    blob = ActiveStorage::Blob.create_after_upload!(
+    blob = ActiveStorage::Blob.create_and_upload!(
       io: temp_image.file,
       filename: filename,
       content_type: temp_image.mime_type,

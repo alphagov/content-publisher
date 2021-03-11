@@ -12,10 +12,8 @@ FactoryBot.define do
     after(:build) do |blob_revision, evaluator|
       fixture_path = Rails.root.join("spec/fixtures/files/#{evaluator.fixture}")
 
-      blob_revision.blob = ActiveStorage::Blob.build_after_upload(
-        io: File.new(fixture_path),
-        filename: blob_revision.filename,
-      )
+      blob_revision.blob = ActiveStorage::Blob.new(filename: blob_revision.filename)
+      blob_revision.blob.upload(File.new(fixture_path))
 
       blob_revision.asset = FileAttachment::Asset.new unless blob_revision.asset
     end
