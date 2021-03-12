@@ -35,7 +35,7 @@ RSpec.describe "Images" do
     it "redirects to crop when image is created successfully" do
       stub_asset_manager_receives_an_asset(filename: "960x640.jpg")
 
-      image = fixture_file_upload("files/960x640.jpg")
+      image = fixture_file_upload("960x640.jpg")
       post images_path(edition.document), params: { image: image }
 
       expect(response).to redirect_to(
@@ -44,7 +44,7 @@ RSpec.describe "Images" do
     end
 
     it "returns issues and an unprocessable response when there are requirement issues" do
-      not_image = fixture_file_upload("files/bad_file.rb")
+      not_image = fixture_file_upload("bad_file.rb")
       post images_path(edition.document),
            params: { image: not_image }
 

@@ -1,7 +1,7 @@
 RSpec.describe CreateImageBlobService do
   let(:user) { build(:user) }
   let(:temp_image) do
-    ImageNormaliser::TempImage.new(fixture_file_upload("files/1000x1000.jpg"))
+    ImageNormaliser::TempImage.new(fixture_file_upload("1000x1000.jpg"))
   end
 
   describe ".call" do
