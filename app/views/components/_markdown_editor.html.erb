@@ -94,22 +94,22 @@
       <div class="app-c-markdown-editor__toolbar">
         <markdown-toolbar class="app-c-markdown-editor__toolbar-group" for="<%= textarea[:id] %>">
           <md-header-2 class="app-c-markdown-editor__toolbar-button" title="Heading level 2" aria-label="Heading level 2" data-gtm="markdown-toolbar-h2" data-gtm-click-tracking="true">
-            <%= render "components/markdown_editor/heading_two.svg" %>
+            <%= inline_svg_tag "components/markdown-editor/heading-two.svg", class: "app-c-markdown-editor__toolbar-icon" , aria_hidden: true %>
           </md-header-2>
           <md-header-3 class="app-c-markdown-editor__toolbar-button" title="Heading level 3" aria-label="Heading level 3" data-gtm="markdown-toolbar-h3" data-gtm-click-tracking="true">
-            <%= render "components/markdown_editor/heading_three.svg" %>
+            <%= inline_svg_tag "components/markdown-editor/heading-three.svg", class: "app-c-markdown-editor__toolbar-icon" , aria_hidden: true %>
           </md-header-3>
           <md-link class="app-c-markdown-editor__toolbar-button" title="Link" aria-label="Link" data-gtm="markdown-toolbar-link" data-gtm-click-tracking="true">
-            <%= render "components/markdown_editor/link.svg" %>
+            <%= inline_svg_tag "components/markdown-editor/link.svg", class: "app-c-markdown-editor__toolbar-icon" , aria_hidden: true %>
           </md-link>
           <md-quote class="app-c-markdown-editor__toolbar-button" title="Blockquote" aria-label="Blockquote" data-gtm="markdown-toolbar-blockquote" data-gtm-click-tracking="true">
-            <%= render "components/markdown_editor/blockquote.svg" %>
+            <%= inline_svg_tag "components/markdown-editor/blockquote.svg", class: "app-c-markdown-editor__toolbar-icon" , aria_hidden: true %>
           </md-quote>
           <md-ordered-list class="app-c-markdown-editor__toolbar-button" title="Numbered list" aria-label="Numbered list" data-gtm="markdown-toolbar-list" data-gtm-click-tracking="true">
-            <%= render "components/markdown_editor/numbered_list.svg" %>
+            <%= inline_svg_tag "components/markdown-editor/numbered-list.svg", class: "app-c-markdown-editor__toolbar-icon" , aria_hidden: true %>
           </md-ordered-list>
           <md-unordered-list class="app-c-markdown-editor__toolbar-button" title="Bullets" aria-label="Bullets" data-gtm="markdown-toolbar-bullets" data-gtm-click-tracking="true">
-            <%= render "components/markdown_editor/bullets.svg" %>
+            <%= inline_svg_tag "components/markdown-editor/bullets.svg", class: "app-c-markdown-editor__toolbar-icon" , aria_hidden: true %>
           </md-unordered-list>
           <% if insert_items.any? %>
             <%= render "components/toolbar_dropdown", {
