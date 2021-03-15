@@ -174,7 +174,7 @@ class FileAttachmentsController < ApplicationController
                                             attachment_revision.file_attachment,
                                             wizard: params[:wizard])
     else
-      flash[:notice] = I18n.t!("file_attachments.replace.flashes.update_confirmation") unless unchanged
+      flash[:notice] = t("file_attachments.replace.flashes.update_confirmation") unless unchanged
       redirect_to file_attachments_path(edition.document)
     end
   end
