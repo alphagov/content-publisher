@@ -28,7 +28,7 @@ module ContentPublisher
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-    config.action_view.raise_on_missing_translations = true
+    config.i18n.raise_on_missing_translations = true
     config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*.yml")]
     config.active_job.queue_adapter = :sidekiq
     config.time_zone = "London"
