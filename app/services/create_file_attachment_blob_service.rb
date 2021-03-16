@@ -6,9 +6,11 @@ class CreateFileAttachmentBlobService < ApplicationService
   end
 
   def call
-    blob = ActiveStorage::Blob.create_after_upload!(io: file,
-                                                    filename: filename,
-                                                    content_type: mime_type)
+    blob = ActiveStorage::Blob.create_and_upload!(
+      io: file,
+      filename: filename,
+      content_type: mime_type,
+    )
 
     FileAttachment::BlobRevision.create!(
       blob: blob,

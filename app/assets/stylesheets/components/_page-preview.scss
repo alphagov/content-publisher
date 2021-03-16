@@ -27,7 +27,7 @@ $app-mobile-border-bottom-width: 68px;
     display: block;
     width: $app-mobile-frame-width + 2 * $app-mobile-border-width;
     height: $app-mobile-frame-height + $app-mobile-border-width + $app-mobile-border-bottom-width;
-    background-image: image-url("components/preview-mobile.svg");
+    background-image: image-url("components/page-preview/preview-mobile.svg");
     background-repeat: no-repeat;
   }
 }

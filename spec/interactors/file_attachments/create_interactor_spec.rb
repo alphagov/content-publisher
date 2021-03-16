@@ -4,7 +4,7 @@ RSpec.describe FileAttachments::CreateInteractor do
 
     let(:user) { create(:user) }
     let(:edition) { create(:edition) }
-    let(:file) { fixture_file_upload("files/13kb-1-page-attachment.pdf") }
+    let(:file) { fixture_file_upload("13kb-1-page-attachment.pdf") }
     let(:title) { "My Title" }
     let(:args) do
       {

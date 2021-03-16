@@ -1,4 +1,4 @@
-RSpec.describe "featured_attachments/featured_attachment.html.erb" do
+RSpec.describe "featured_attachments/featured_attachment" do
   describe "official document metadata" do
     let(:edition) do
       create(:edition, document_type: build(:document_type, attachments: "featured"))

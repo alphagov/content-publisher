@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "6.0.3.5"
+gem "rails", "6.1.3"
 
 gem "aws-sdk-s3"
 gem "bootsnap"
@@ -12,6 +12,7 @@ gem "govuk_publishing_components"
 gem "govuk_sidekiq"
 gem "hashdiff"
 gem "image_processing"
+gem "inline_svg"
 gem "interactor"
 gem "kaminari"
 gem "mail-notify"

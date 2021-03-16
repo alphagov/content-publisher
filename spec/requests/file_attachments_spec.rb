@@ -156,7 +156,7 @@ RSpec.describe "File Attachments" do
     it "redirects to edit view when file attachment is created successfully" do
       stub_asset_manager_receives_an_asset(filename: "text-file-74bytes.txt")
 
-      file = fixture_file_upload("files/text-file-74bytes.txt")
+      file = fixture_file_upload("text-file-74bytes.txt")
       post file_attachments_path(edition.document),
            params: { file: file, title: "File" }
 
@@ -167,7 +167,7 @@ RSpec.describe "File Attachments" do
 
     it "redirects to the edit view when featured attachment is created successfully" do
       stub_asset_manager_receives_an_asset(filename: "text-file-74bytes.txt")
-      file = fixture_file_upload("files/text-file-74bytes.txt")
+      file = fixture_file_upload("text-file-74bytes.txt")
 
       post file_attachments_path(edition.document),
            params: { file: file,
@@ -181,7 +181,7 @@ RSpec.describe "File Attachments" do
     end
 
     it "returns issues and an unprocessable response when there are requirement issues" do
-      file = fixture_file_upload("files/bad_file.rb")
+      file = fixture_file_upload("bad_file.rb")
       post file_attachments_path(edition.document),
            params: { file: file, title: "File" }
 

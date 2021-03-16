@@ -2,7 +2,7 @@ RSpec.describe Images::CreateInteractor do
   describe ".call" do
     let(:user) { create(:user) }
     let(:edition) { create(:edition) }
-    let(:image_upload) { fixture_file_upload("files/960x640.jpg") }
+    let(:image_upload) { fixture_file_upload("960x640.jpg") }
     let(:args) do
       {
         params: {

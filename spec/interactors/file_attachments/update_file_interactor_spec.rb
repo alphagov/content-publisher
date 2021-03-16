@@ -2,7 +2,7 @@ RSpec.describe FileAttachments::UpdateFileInteractor do
   describe ".call" do
     let(:user) { create(:user) }
     let(:attachment) { create(:file_attachment_revision) }
-    let(:file) { fixture_file_upload("files/13kb-1-page-attachment.pdf") }
+    let(:file) { fixture_file_upload("13kb-1-page-attachment.pdf") }
 
     let(:edition) do
       create :edition, file_attachment_revisions: [attachment]

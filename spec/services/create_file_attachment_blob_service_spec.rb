@@ -1,5 +1,5 @@
 RSpec.describe CreateFileAttachmentBlobService do
-  let(:file) { fixture_file_upload("files/text-file-74bytes.txt") }
+  let(:file) { fixture_file_upload("text-file-74bytes.txt") }
   let(:revision) { build(:revision) }
   let(:user) { build(:user) }
 
@@ -10,7 +10,7 @@ RSpec.describe CreateFileAttachmentBlobService do
     end
 
     context "when the upload is a pdf" do
-      let(:file) { fixture_file_upload("files/13kb-1-page-attachment.pdf", "application/pdf") }
+      let(:file) { fixture_file_upload("13kb-1-page-attachment.pdf", "application/pdf") }
 
       it "calculates the number of pages" do
         blob_revision = described_class.call(file: file, filename: "file.txt")
