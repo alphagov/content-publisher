@@ -16,13 +16,13 @@
       method: :patch,
       data: { gtm: "save-attachment-order" },
     ) do %>
-      <%= render "components/reorderable_list", {
+      <%= render "govuk_publishing_components/components/reorderable_list", {
         input_name: "attachments[ordering]",
         items: @edition.featured_attachments.map do |attachment|
           {
             title: attachment.title,
             description: render("components/attachment_meta", { attachment: file_attachment_attributes(attachment, @edition) }),
-            order_id: attachment.featured_attachment_id,
+            id: attachment.featured_attachment_id,
           }
         end
       } %>
