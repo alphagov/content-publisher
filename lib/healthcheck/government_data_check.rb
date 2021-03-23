@@ -1,6 +1,7 @@
 module Healthcheck
   class GovernmentDataCheck
     attr_reader :government_repo
+
     def initialize
       @government_repo = BulkData::GovernmentRepository.new
     end

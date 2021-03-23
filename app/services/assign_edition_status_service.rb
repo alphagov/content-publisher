@@ -1,7 +1,7 @@
 class AssignEditionStatusService < ApplicationService
   def initialize(edition,
-                 user: nil,
                  state:,
+                 user: nil,
                  record_edit: true,
                  status_details: nil)
     @edition = edition

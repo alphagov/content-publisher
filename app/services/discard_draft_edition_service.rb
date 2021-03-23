@@ -18,6 +18,7 @@ class DiscardDraftEditionService < ApplicationService
 private
 
   attr_reader :edition, :user
+
   delegate :document, to: :edition
 
   def reset_live_edition

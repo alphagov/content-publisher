@@ -54,7 +54,7 @@ class Document < ApplicationRecord
   end
 
   def to_param
-    content_id + ":" + locale
+    "#{content_id}:#{locale}"
   end
 
   def document_topics

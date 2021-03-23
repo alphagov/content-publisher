@@ -52,7 +52,7 @@ RSpec.describe WhitehallImporter::CreateFileAttachmentRevision do
   end
 
   context "when the file attachment does not satisfy requirements" do
-    let(:too_long_title) { (("A" * Requirements::Form::FileAttachmentUploadChecker::TITLE_MAX_LENGTH) + "A") }
+    let(:too_long_title) { "#{'A' * Requirements::Form::FileAttachmentUploadChecker::TITLE_MAX_LENGTH}A" }
     let(:whitehall_file_attachment) { build(:whitehall_export_file_attachment, title: too_long_title) }
 
     let(:error_message) do

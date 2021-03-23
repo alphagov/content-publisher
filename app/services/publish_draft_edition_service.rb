@@ -23,6 +23,7 @@ class PublishDraftEditionService < ApplicationService
 private
 
   attr_reader :edition, :user, :with_review
+
   delegate :document, to: :edition
 
   def publish_assets

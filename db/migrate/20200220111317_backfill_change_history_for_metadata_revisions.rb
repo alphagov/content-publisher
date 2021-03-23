@@ -2,10 +2,12 @@ class BackfillChangeHistoryForMetadataRevisions < ActiveRecord::Migration[6.0]
   class MetadataRevision < ApplicationRecord
     has_one :revision
   end
+
   class Revision < ApplicationRecord
     belongs_to :metadata_revision
     has_and_belongs_to_many :editions
   end
+
   class Edition < ApplicationRecord
     belongs_to :revision
   end

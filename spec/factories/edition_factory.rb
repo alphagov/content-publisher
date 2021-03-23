@@ -28,10 +28,10 @@ FactoryBot.define do
       unless edition.document
         args = [:document,
                 evaluator.live ? :live : nil,
-                created_by: edition.created_by,
-                content_id: evaluator.content_id,
-                locale: evaluator.locale,
-                first_published_at: evaluator.first_published_at]
+                { created_by: edition.created_by,
+                  content_id: evaluator.content_id,
+                  locale: evaluator.locale,
+                  first_published_at: evaluator.first_published_at }]
         edition.document = evaluator.association(*args.compact)
       end
 
