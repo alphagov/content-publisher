@@ -20,7 +20,7 @@ RSpec.describe EditionUrlHelper do
 
   describe "#preview_url" do
     it "returns the URL with an auth bypass token" do
-      expect(edition).to receive(:auth_bypass_token).and_return("secret")
+      allow(edition).to receive(:auth_bypass_token).and_return("secret")
       url = edition_preview_url(edition)
       expect(url).to eq("https://draft-origin.test.gov.uk/foo?token=secret")
     end

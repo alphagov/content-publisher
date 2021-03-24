@@ -49,10 +49,11 @@ private
   def parsed_time_values
     @parsed_time_values ||= raw_time.match(%r{
       \A
-      (?<hour>(2[0-3]|1[0-9]|0?[0-9]))
+      (?<hour>2[0-3]|1[0-9]|0?[0-9])
       :
       (?<minute>[0-5][0-9])
-      (\s?(?<period>(am|pm)))?
+      \s?
+      (?<period>am|pm)?
       \Z
     }ix)
   end

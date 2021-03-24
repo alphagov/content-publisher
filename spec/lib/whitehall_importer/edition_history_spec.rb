@@ -5,12 +5,12 @@ RSpec.describe WhitehallImporter::EditionHistory do
 
     it "delegates to ##{method}" do
       event = build(:whitehall_export_revision_history_event)
-      expect(instance).to receive(method).and_return(event)
+      allow(instance).to receive(method).and_return(event)
       expect(instance.public_send(bang_method, *args)).to be(event)
     end
 
     it "raises an AbortImportError if the event is not found" do
-      expect(instance).to receive(method).and_return(nil)
+      allow(instance).to receive(method).and_return(nil)
       expect { instance.public_send(bang_method, *args) }
         .to raise_error(WhitehallImporter::AbortImportError)
     end
