@@ -16,6 +16,7 @@ gem "inline_svg"
 gem "interactor"
 gem "kaminari"
 gem "mail-notify"
+gem "mimemagic", git: "https://github.com/barrucadu/mimemagic.git", ref: "e571894" # Use a GDS employee's fork until an upstream bug is fixed
 gem "pdf-reader"
 gem "pg"
 gem "plek"
