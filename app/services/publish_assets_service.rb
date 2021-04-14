@@ -1,4 +1,6 @@
-class PublishAssetsService < ApplicationService
+class PublishAssetsService
+  include Callable
+
   def initialize(edition, superseded_edition: nil)
     @edition = edition
     @superseded_edition = superseded_edition

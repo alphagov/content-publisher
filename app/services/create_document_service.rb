@@ -1,4 +1,6 @@
-class CreateDocumentService < ApplicationService
+class CreateDocumentService
+  include Callable
+
   def initialize(document_type_id:,
                  content_id: SecureRandom.uuid,
                  locale: "en",

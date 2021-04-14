@@ -1,4 +1,6 @@
-class DiscardDraftEditionService < ApplicationService
+class DiscardDraftEditionService
+  include Callable
+
   def initialize(edition, user, **)
     @edition = edition
     @user = user

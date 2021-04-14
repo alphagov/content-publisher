@@ -1,4 +1,6 @@
-class AssignEditionStatusService < ApplicationService
+class AssignEditionStatusService
+  include Callable
+
   def initialize(edition,
                  state:,
                  user: nil,

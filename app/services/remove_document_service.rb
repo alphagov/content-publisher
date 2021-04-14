@@ -1,4 +1,6 @@
-class RemoveDocumentService < ApplicationService
+class RemoveDocumentService
+  include Callable
+
   def initialize(edition, removal, user: nil)
     @edition = edition
     @removal = removal

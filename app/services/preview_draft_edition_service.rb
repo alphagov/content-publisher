@@ -1,4 +1,6 @@
-class PreviewDraftEditionService < ApplicationService
+class PreviewDraftEditionService
+  include Callable
+
   def initialize(edition, republish: false)
     @edition = edition
     @republish = republish

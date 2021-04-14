@@ -1,4 +1,6 @@
-class WithdrawDocumentService < ApplicationService
+class WithdrawDocumentService
+  include Callable
+
   def initialize(edition, user, public_explanation:)
     @edition = edition
     @public_explanation = public_explanation
