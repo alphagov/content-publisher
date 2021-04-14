@@ -1,4 +1,6 @@
-class Requirements::Publish::TopicChecker < Requirements::Checker
+class Requirements::Publish::TopicChecker
+  include Requirements::Checker
+
   attr_reader :edition
 
   def initialize(edition, **)

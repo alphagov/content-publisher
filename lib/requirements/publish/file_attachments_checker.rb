@@ -1,4 +1,6 @@
-class Requirements::Publish::FileAttachmentsChecker < Requirements::Checker
+class Requirements::Publish::FileAttachmentsChecker
+  include Requirements::Checker
+
   attr_reader :edition
 
   def initialize(edition, **)

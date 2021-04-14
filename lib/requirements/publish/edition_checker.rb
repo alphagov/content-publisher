@@ -1,4 +1,6 @@
-class Requirements::Publish::EditionChecker < Requirements::Checker
+class Requirements::Publish::EditionChecker
+  include Requirements::Checker
+
   attr_reader :edition, :rescue_api_errors
 
   CHECKERS = [

@@ -1,4 +1,5 @@
-class Requirements::Form::PublishTimeChecker < Requirements::Checker
+class Requirements::Form::PublishTimeChecker
+  include Requirements::Checker
   include ActionView::Helpers::DateHelper
 
   MAX_PUBLISH_DELAY = 14.months

@@ -1,4 +1,6 @@
-class Requirements::Preview::TagsChecker < Requirements::Checker
+class Requirements::Preview::TagsChecker
+  include Requirements::Checker
+
   attr_reader :edition
 
   def initialize(edition, **)

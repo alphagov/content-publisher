@@ -1,4 +1,6 @@
-class Requirements::Preview::ContentChecker < Requirements::Checker
+class Requirements::Preview::ContentChecker
+  include Requirements::Checker
+
   attr_reader :edition
 
   def initialize(edition, **)

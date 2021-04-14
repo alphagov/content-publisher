@@ -1,4 +1,6 @@
-class Requirements::Form::ContentChecker < Requirements::Checker
+class Requirements::Form::ContentChecker
+  include Requirements::Checker
+
   attr_reader :edition, :params
 
   def initialize(edition, params, **)

@@ -1,4 +1,6 @@
-class Requirements::Form::FileAttachmentMetadataChecker < Requirements::Checker
+class Requirements::Form::FileAttachmentMetadataChecker
+  include Requirements::Checker
+
   UNIQUE_REF_MAX_LENGTH = 255
   ISBN10_REGEX = /^(?:\d[\ -]?){9}[\dX]$/i.freeze
   ISBN13_REGEX = /^(?:\d[\ -]?){13}$/i.freeze

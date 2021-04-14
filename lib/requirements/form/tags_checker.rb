@@ -1,4 +1,5 @@
-class Requirements::Form::TagsChecker < Requirements::Checker
+class Requirements::Form::TagsChecker
+  include Requirements::Checker
   attr_reader :edition, :params
 
   def initialize(edition, params, **)
