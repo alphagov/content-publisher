@@ -32,13 +32,18 @@ private
   end
 
   def check_for_issues
-    issues = Requirements::Form::FileAttachmentMetadataChecker.call(params.require(:file_attachment))
+    issues = Requirements::Form::FileAttachmentMetadataChecker.call(attachment_params)
     context.fail!(issues: issues) if issues.any?
   end
 
   def update_file_attachment
     updater = Versioning::FileAttachmentRevisionUpdater.new(file_attachment_revision, user)
-    updater.assign(attachment_params)
+    updater.assign(
+      isbn: attachment_params[:isbn],
+      unique_reference: attachment_params[:unique_reference],
+      official_document_type: official_document_type(attachment_params),
+      paper_number: paper_number(attachment_params),
+    )
     context.file_attachment_revision = updater.next_revision
   end
 
@@ -62,12 +67,9 @@ private
   end
 
   def attachment_params
-    raw_params = params.require(:file_attachment)
-
-    { isbn: raw_params[:isbn],
-      unique_reference: raw_params[:unique_reference],
-      official_document_type: official_document_type(raw_params),
-      paper_number: paper_number(raw_params) }
+    params
+      .require(:file_attachment)
+      .permit(:isbn, :unique_reference, :official_document_type, :command_paper_number, :act_paper_number)
   end
 
   def paper_number(params)

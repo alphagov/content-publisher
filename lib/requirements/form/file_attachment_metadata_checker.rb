@@ -13,12 +13,6 @@ class Requirements::Form::FileAttachmentMetadataChecker
     @params = params
   end
 
-  def self.call(params)
-    instance = new(params)
-    instance.check
-    instance.issues
-  end
-
   def check
     unless valid_isbn?(params[:isbn])
       issues.create(:file_attachment_isbn,
