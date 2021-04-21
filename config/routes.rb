@@ -118,6 +118,9 @@ Rails.application.routes.draw do
     Healthcheck::ActiveStorage,
   )
 
+  get "/healthcheck/active-storage", to: "healthcheck#active_storage"
+  get "/healthcheck/government-data", to: "healthcheck#government_data"
+
   get "/how-to-use-publisher" => "publisher_information#how_to_use_publisher", as: :how_to_use_publisher
   get "/beta-capabilities" => "publisher_information#beta_capabilities", as: :beta_capabilities
   get "/publisher-updates" => "publisher_information#publisher_updates", as: :publisher_updates
