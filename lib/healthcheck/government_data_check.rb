@@ -10,20 +10,27 @@ module Healthcheck
     end
 
     def status
-      return GovukHealthcheck::CRITICAL unless government_repo.cache_populated?
-      return GovukHealthcheck::WARNING if government_repo.cache_age > 6.hours
+      return :critical unless government_repo.cache_populated?
+      return :warning if government_repo.cache_age > 6.hours
 
-      GovukHealthcheck::OK
+      :ok
     end
 
     def message
-      return "No government data availible" if status == GovukHealthcheck::CRITICAL
+      return "No government data availible" if status == :critical
 
-      warning_details_content if status == GovukHealthcheck:: WARNING
+      warning_details_content if status == :warning
     end
 
     def enabled?
       true
+    end
+
+    def to_hash
+      {
+        status: status,
+        message: message,
+      }
     end
 
   private

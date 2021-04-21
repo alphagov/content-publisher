@@ -6,9 +6,15 @@ module Healthcheck
 
     def status
       ::ActiveStorage::Blob.service.exist?("does-not-exist")
-      GovukHealthcheck::OK
+      :ok
     rescue StandardError
-      GovukHealthcheck::WARNING
+      :warning
+    end
+
+    def to_hash
+      {
+        status: status,
+      }
     end
   end
 end

@@ -1,13 +1,11 @@
 class HealthcheckController < ApplicationController
   skip_before_action :authenticate_user!
 
-  def index
-    healthcheck = GovukHealthcheck.healthcheck([
-      GovukHealthcheck::SidekiqRedis,
-      GovukHealthcheck::ActiveRecord,
-      Healthcheck::GovernmentDataCheck,
-      Healthcheck::ActiveStorage,
-    ])
-    render json: healthcheck
+  def active_storage
+    render json: Healthcheck::ActiveStorage.new.to_hash
+  end
+
+  def government_data
+    render json: Healthcheck::GovernmentDataCheck.new.to_hash
   end
 end
