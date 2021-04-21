@@ -118,6 +118,12 @@ Rails.application.routes.draw do
     Healthcheck::ActiveStorage,
   )
 
+  get "/healthcheck/live", to: proc { [200, {}, %w[OK]] }
+  get "/healthcheck/ready", to: GovukHealthcheck.rack_response(
+    GovukHealthcheck::ActiveRecord,
+    GovukHealthcheck::SidekiqRedis,
+  )
+
   get "/healthcheck/active-storage", to: "healthcheck#active_storage"
   get "/healthcheck/government-data", to: "healthcheck#government_data"
 
