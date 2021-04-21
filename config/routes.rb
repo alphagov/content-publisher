@@ -111,7 +111,12 @@ Rails.application.routes.draw do
     get "/file-attachments/:file_attachment_id/delete" => "file_attachments#confirm_delete", as: :confirm_delete_file_attachment
   end
 
-  get "/healthcheck", to: "healthcheck#index"
+  get "/healthcheck", to: GovukHealthcheck.rack_response(
+    GovukHealthcheck::SidekiqRedis,
+    GovukHealthcheck::ActiveRecord,
+    Healthcheck::GovernmentDataCheck,
+    Healthcheck::ActiveStorage,
+  )
 
   get "/how-to-use-publisher" => "publisher_information#how_to_use_publisher", as: :how_to_use_publisher
   get "/beta-capabilities" => "publisher_information#beta_capabilities", as: :beta_capabilities
