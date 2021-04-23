@@ -122,9 +122,9 @@ Rails.application.routes.draw do
   get "/healthcheck/ready", to: GovukHealthcheck.rack_response(
     GovukHealthcheck::ActiveRecord,
     GovukHealthcheck::SidekiqRedis,
+    Healthcheck::ActiveStorage,
   )
 
-  get "/healthcheck/active-storage", to: "healthcheck#active_storage"
   get "/healthcheck/government-data", to: "healthcheck#government_data"
 
   get "/how-to-use-publisher" => "publisher_information#how_to_use_publisher", as: :how_to_use_publisher
