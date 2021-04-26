@@ -1,13 +1,23 @@
-class Requirements::Checker
-  private_class_method :new
+module Requirements
+  module Checker
+    extend ActiveSupport::Concern
 
-  def self.call(*args, **kwargs)
-    instance = new(*args, **kwargs)
-    instance.check
-    instance.issues
-  end
+    included do
+      def self.call(*args, **kwargs)
+        instance = new(*args, **kwargs)
+        instance.check
+        instance.issues
+      end
 
-  def issues
-    @issues ||= Requirements::CheckerIssues.new
+      private_class_method :new
+    end
+
+    def check
+      raise "Not implemented"
+    end
+
+    def issues
+      @issues ||= CheckerIssues.new
+    end
   end
 end

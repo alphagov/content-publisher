@@ -1,4 +1,6 @@
-class Requirements::Form::FileAttachmentMetadataChecker < Requirements::Checker
+class Requirements::Form::FileAttachmentMetadataChecker
+  include Requirements::Checker
+
   UNIQUE_REF_MAX_LENGTH = 255
   ISBN10_REGEX = /^(?:\d[\ -]?){9}[\dX]$/i.freeze
   ISBN13_REGEX = /^(?:\d[\ -]?){13}$/i.freeze
@@ -11,16 +13,9 @@ class Requirements::Form::FileAttachmentMetadataChecker < Requirements::Checker
     @params = params
   end
 
-  def self.call(params)
-    instance = new(params)
-    instance.check
-    instance.issues
-  end
-
   def check
     unless valid_isbn?(params[:isbn])
-      issues.create(:file_attachment_isbn,
-                    :invalid)
+      issues.create(:file_attachment_isbn, :invalid)
     end
 
     if params[:unique_reference].to_s.size > UNIQUE_REF_MAX_LENGTH
@@ -30,14 +25,12 @@ class Requirements::Form::FileAttachmentMetadataChecker < Requirements::Checker
     end
 
     if params[:official_document_type].blank?
-      issues.create(:file_attachment_official_document_type,
-                    :blank)
+      issues.create(:file_attachment_official_document_type, :blank)
     end
 
     %w[command act].each do |type|
       if (issue_key = invalid_paper_number?(type, params))
-        issues.create(:"file_attachment_#{type}_paper_number",
-                      issue_key)
+        issues.create(:"file_attachment_#{type}_paper_number", issue_key)
       end
     end
   end

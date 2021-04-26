@@ -1,4 +1,6 @@
-class RescueScheduledPublishingService < ApplicationService
+class RescueScheduledPublishingService
+  include Callable
+
   def initialize(edition_id:)
     @edition_id = edition_id
   end

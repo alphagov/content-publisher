@@ -8,13 +8,16 @@ RSpec.describe ApplicationJob do
       code_block = double
       expect(code_block).to receive(:run)
 
-      expect(ApplicationRecord)
+      allow(ApplicationRecord)
         .to receive(:with_advisory_lock_result)
-        .with(instance_of(String), a_hash_including(timeout_seconds: 0))
         .and_yield
         .and_return(result)
 
       described_class.new.run_exclusively { code_block.run }
+
+      expect(ApplicationRecord)
+        .to have_received(:with_advisory_lock_result)
+        .with(instance_of(String), a_hash_including(timeout_seconds: 0))
     end
 
     it "returns the result of the block" do
@@ -25,7 +28,7 @@ RSpec.describe ApplicationJob do
 
     it "logs when a lock can't be acquired" do
       job = described_class.new
-      expect(ApplicationRecord)
+      allow(ApplicationRecord)
         .to receive(:with_advisory_lock_result)
         .and_return(WithAdvisoryLock::Result.new(false))
 
@@ -37,34 +40,39 @@ RSpec.describe ApplicationJob do
     end
 
     it "runs within a transaction" do
-      expect(ApplicationRecord).to receive(:transaction).and_yield
-      expect(ApplicationRecord)
+      allow(ApplicationRecord).to receive(:transaction).and_yield
+      allow(ApplicationRecord)
         .to receive(:with_advisory_lock_result)
         .with(instance_of(String), a_hash_including(transaction: true))
         .and_return(result)
 
       described_class.new.run_exclusively
+
+      expect(ApplicationRecord).to have_received(:transaction)
     end
 
     it "defaults to using the class name for the lock name" do
       klass = Class.new(described_class)
       allow(klass).to receive(:name).and_return("MyJob")
-
-      expect(ApplicationRecord)
-        .to receive(:with_advisory_lock_result)
-        .with("content-publisher:MyJob", instance_of(Hash))
-        .and_return(result)
+      allow(ApplicationRecord).to receive(:with_advisory_lock_result).and_return(result)
 
       klass.new.run_exclusively
+
+      expect(ApplicationRecord)
+        .to have_received(:with_advisory_lock_result)
+        .with("content-publisher:MyJob", instance_of(Hash))
     end
 
     it "can accept the lock name as an argument" do
-      expect(ApplicationRecord)
+      allow(ApplicationRecord)
         .to receive(:with_advisory_lock_result)
-        .with("content-publisher:lock-name", instance_of(Hash))
         .and_return(result)
 
       described_class.new.run_exclusively(lock_name: "lock-name")
+
+      expect(ApplicationRecord)
+        .to have_received(:with_advisory_lock_result)
+        .with("content-publisher:lock-name", instance_of(Hash))
     end
   end
 end

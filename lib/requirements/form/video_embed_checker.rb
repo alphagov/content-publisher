@@ -1,4 +1,6 @@
-class Requirements::Form::VideoEmbedChecker < Requirements::Checker
+class Requirements::Form::VideoEmbedChecker
+  include Requirements::Checker
+
   YOUTUBE_HOST = "youtube.com".freeze
   YOUTU_HOST = "youtu.be".freeze
 

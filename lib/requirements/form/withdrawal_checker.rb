@@ -1,4 +1,6 @@
-class Requirements::Form::WithdrawalChecker < Requirements::Checker
+class Requirements::Form::WithdrawalChecker
+  include Requirements::Checker
+
   attr_reader :edition, :public_explanation
 
   def initialize(edition, public_explanation, **)

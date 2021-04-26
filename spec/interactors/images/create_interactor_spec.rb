@@ -22,14 +22,15 @@ RSpec.describe Images::CreateInteractor do
       it "normalises the uploaded image and delegates saving it to CreateImageBlobService" do
         temp_image = ImageNormaliser::TempImage.new(image_upload)
         normaliser = instance_double(ImageNormaliser, normalise: temp_image, issues: [])
-        expect(ImageNormaliser).to receive(:new).with(image_upload).and_return(normaliser)
-
-        expect(CreateImageBlobService)
-          .to receive(:call)
-          .with(user: user, temp_image: temp_image, filename: an_instance_of(String))
-          .and_call_original
+        allow(ImageNormaliser).to receive(:new).and_return(normaliser)
+        allow(CreateImageBlobService).to receive(:call).and_call_original
 
         described_class.call(**args)
+
+        expect(ImageNormaliser).to have_received(:new).with(image_upload)
+        expect(CreateImageBlobService)
+          .to have_received(:call)
+          .with(user: user, temp_image: temp_image, filename: an_instance_of(String))
       end
 
       it "attributes the various created image models to the user" do

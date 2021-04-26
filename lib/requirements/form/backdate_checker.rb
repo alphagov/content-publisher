@@ -1,4 +1,6 @@
-class Requirements::Form::BackdateChecker < Requirements::Checker
+class Requirements::Form::BackdateChecker
+  include Requirements::Checker
+
   EARLIEST_DATE = Date.new(1995, 1, 1)
 
   attr_reader :backdate

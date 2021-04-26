@@ -1,4 +1,6 @@
-class CreateFileAttachmentBlobService < ApplicationService
+class CreateFileAttachmentBlobService
+  include Callable
+
   def initialize(file:, filename:, user: nil)
     @file = file
     @filename = filename

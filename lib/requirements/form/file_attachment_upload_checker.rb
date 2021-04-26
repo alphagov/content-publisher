@@ -1,4 +1,6 @@
-class Requirements::Form::FileAttachmentUploadChecker < Requirements::Checker
+class Requirements::Form::FileAttachmentUploadChecker
+  include Requirements::Checker
+
   TITLE_MAX_LENGTH = 255
 
   ALLOWED_FORMATS = [

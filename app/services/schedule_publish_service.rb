@@ -1,4 +1,6 @@
-class SchedulePublishService < ApplicationService
+class SchedulePublishService
+  include Callable
+
   def initialize(edition, user, scheduling, **)
     @edition = edition
     @user = user

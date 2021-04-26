@@ -55,7 +55,7 @@ class Edition < ApplicationRecord
   delegate :content_id, :locale, :topics, :document_topics, to: :document
 
   # delegate each state enum method
-  state_methods = Status.states.keys.map { |s| (s + "?").to_sym }
+  state_methods = Status.states.keys.map { |s| "#{s}?".to_sym }
   delegate :state, *state_methods, to: :status
 
   delegate :title,

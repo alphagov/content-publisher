@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def strip_scheme_from_url(url)
-    url.sub(/^https?\:\/\//, "")
+    url.sub(/^https?:\/\//, "")
   end
 
   def escape_and_link(unsafe_text)

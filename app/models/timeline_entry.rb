@@ -82,8 +82,8 @@ class TimelineEntry < ApplicationRecord
   end
 
   def self.create_for_revision(entry_type:,
-                               revision: nil,
                                edition:,
+                               revision: nil,
                                details: nil,
                                created_by: nil)
 

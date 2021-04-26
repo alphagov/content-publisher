@@ -57,7 +57,7 @@ RSpec.describe "Errors" do
     it "returns service unavailable when local data is unavailable" do
       # This is a somewhat contrived example, hopefully this can be replaced
       # when there's a simple way to trigger this error
-      expect(Edition).to receive(:find_current)
+      allow(Edition).to receive(:find_current)
         .and_raise(BulkData::LocalDataUnavailableError)
 
       get document_path("#{SecureRandom.uuid}:en")

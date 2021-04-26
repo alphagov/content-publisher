@@ -1,4 +1,6 @@
-class Requirements::Form::ImageMetadataChecker < Requirements::Checker
+class Requirements::Form::ImageMetadataChecker
+  include Requirements::Checker
+
   ALT_TEXT_MAX_LENGTH = 125
   CAPTION_MAX_LENGTH = 160
   CREDIT_MAX_LENGTH = 160

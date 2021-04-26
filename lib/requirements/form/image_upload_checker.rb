@@ -1,6 +1,7 @@
 require "mini_magick"
 
-class Requirements::Form::ImageUploadChecker < Requirements::Checker
+class Requirements::Form::ImageUploadChecker
+  include Requirements::Checker
   include ActionView::Helpers::NumberHelper
 
   SUPPORTED_FORMATS = %w[image/jpeg image/png image/gif].freeze

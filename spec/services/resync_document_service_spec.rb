@@ -112,7 +112,7 @@ RSpec.describe ResyncDocumentService do
           allow_draft: true,
         }
 
-        expect(GovspeakDocument)
+        allow(GovspeakDocument)
           .to receive(:new)
           .with(edition.status.details.public_explanation, edition)
           .and_return(instance_double(GovspeakDocument, payload_html: explanation))

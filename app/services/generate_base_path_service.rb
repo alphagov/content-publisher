@@ -1,4 +1,6 @@
-class GenerateBasePathService < ApplicationService
+class GenerateBasePathService
+  include Callable
+
   def initialize(edition, title:, max_repeated_titles: 1000)
     @edition = edition
     @title = title.to_s

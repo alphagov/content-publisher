@@ -1,4 +1,6 @@
-class PublishDraftEditionService < ApplicationService
+class PublishDraftEditionService
+  include Callable
+
   def initialize(edition, user, with_review:)
     @edition = edition
     @user = user
@@ -23,6 +25,7 @@ class PublishDraftEditionService < ApplicationService
 private
 
   attr_reader :edition, :user, :with_review
+
   delegate :document, to: :edition
 
   def publish_assets

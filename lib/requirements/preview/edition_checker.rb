@@ -1,4 +1,6 @@
-class Requirements::Preview::EditionChecker < Requirements::Checker
+class Requirements::Preview::EditionChecker
+  include Requirements::Checker
+
   attr_reader :edition
 
   CHECKERS = [
