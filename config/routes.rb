@@ -111,13 +111,6 @@ Rails.application.routes.draw do
     get "/file-attachments/:file_attachment_id/delete" => "file_attachments#confirm_delete", as: :confirm_delete_file_attachment
   end
 
-  get "/healthcheck", to: GovukHealthcheck.rack_response(
-    GovukHealthcheck::SidekiqRedis,
-    GovukHealthcheck::ActiveRecord,
-    Healthcheck::GovernmentDataCheck,
-    Healthcheck::ActiveStorage,
-  )
-
   get "/healthcheck/live", to: proc { [200, {}, %w[OK]] }
   get "/healthcheck/ready", to: GovukHealthcheck.rack_response(
     GovukHealthcheck::ActiveRecord,
