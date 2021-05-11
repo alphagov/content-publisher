@@ -12,7 +12,8 @@
     <%= form_tag new_schedule_path(@edition.document), data: { gtm: "confirm-schedule" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         heading: t("schedule.new.title"),
-        is_page_heading: true,
+        heading_level: 1,
+        heading_size: 'xl',
         description: render_govspeak(t("schedule.new.hint_text", datetime: datetime.to_s(:time_on_date))),
         name: "review_status",
         error_items: @issues&.items,

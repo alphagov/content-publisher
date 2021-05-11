@@ -29,7 +29,8 @@
                  data: { gtm: "confirm-access-limit" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         heading: t("access_limit.edit.title"),
-        is_page_heading: true,
+        heading_level: 1,
+        heading_size: 'xl',
         description: t("access_limit.edit.description"),
         name: "limit_type",
         error_items: @issues&.items_for(:access_limit),
