@@ -6,7 +6,8 @@
     <%= form_tag publish_confirmation_path(@edition.document), data: { gtm: "confirm-publish" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         heading: t("publish.confirmation.title"),
-        is_page_heading: true,
+        heading_level: 1,
+        heading_size: 'xl',
         name: "review_status",
         error_items: @issues&.items_for(:review_status),
         items: [

@@ -7,7 +7,8 @@
     <%= form_tag new_document_path(type: @document_type_selection.id), data: { gtm: "confirm-document-type" } do %>
       <%= render "govuk_publishing_components/components/radio", {
         heading: t("document_type_selections.#{@document_type_selection.id}.label"),
-        is_page_heading: true,
+        heading_level: 1,
+        heading_size: 'xl',
         name: "selected_option_id",
         error_items: @issues&.items_for(:document_type_selection),
         items: @document_type_selection.options.each_with_object([]) do |option, memo|
