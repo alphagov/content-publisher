@@ -530,7 +530,7 @@ DEPENDENCIES
   rails (= 6.1.3.2)
   rinku
   rspec-rails
-  rubocop-govuk (= 4.0.0)
+  rubocop-govuk
   rubyzip
   sanitize
   sassc-rails
