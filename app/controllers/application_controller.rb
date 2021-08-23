@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   layout -> { rendering_context }
 
   before_action :authenticate_user!
-  before_action { Raven.user_context(id: current_user&.uid) }
+  before_action { Sentry.set_user(id: current_user&.uid) }
   before_action :check_user_access
 
   add_flash_types :alert_with_description,
