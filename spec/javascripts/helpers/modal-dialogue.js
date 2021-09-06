@@ -16,7 +16,7 @@ window.buildModalDialogue = function buildModalDialogue () {
     '</dialog>'
 
   document.body.appendChild(modal)
-  new window.GOVUK.Modules.ModalDialogue().start($(modal))
+  new window.GOVUK.Modules.ModalDialogue(modal).init()
 
   var multiSectionViewer = modal.querySelector('[data-module="multi-section-viewer"]')
   new window.GOVUK.Modules.MultiSectionViewer().start($(multiSectionViewer))
