@@ -45,7 +45,7 @@
     "fetch-mock": "^9.9.1",
     "markdown-toolbar-element": "^0.2.0",
     "miller-columns-element": "^2.0.0",
-    "paste-html-to-govspeak": "^0.2.5",
+    "paste-html-to-govspeak": "^0.2.6",
     "raven-js": "^3.27.2",
     "url-polyfill": "^1.1.9",
     "whatwg-fetch": "^3.0.0"
