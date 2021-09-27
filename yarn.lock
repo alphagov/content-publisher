@@ -2095,10 +2095,10 @@ parse-json@^5.0.0:
     json-parse-better-errors "^1.0.1"
     lines-and-columns "^1.1.6"
 
-paste-html-to-govspeak@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/paste-html-to-govspeak/-/paste-html-to-govspeak-0.2.5.tgz#670077a824b72c43d7020669fab399341497ce2d"
-  integrity sha512-OVgNiVAG7wNcwwbCDErjGzsgvMIfLze+aE+Z5MF0gu6cZmsJL59YObeD6gAVu1ATQbeby9uJt2nLxkyHFEfWFg==
+paste-html-to-govspeak@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/paste-html-to-govspeak/-/paste-html-to-govspeak-0.2.6.tgz#a7bbb5e2b7ce4b38a0fec68febf67001d4764163"
+  integrity sha512-vRF4DbxgVqaI5bCFWrNAxRHSPY1NYNAwKR9M1v0YB928kvrh0TOvPGY9R67nzRm44L8Fn/+TdILA/NldeN2RjQ==
 
 path-exists@^3.0.0:
   version "3.0.0"
