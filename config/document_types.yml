@@ -147,3 +147,12 @@ document_types:
         name: date_of_occurrence
         label: Date of Occurrence
         precision: date
+      - type: text
+        name: aircraft_type
+        label: Aircraft Type
+      - type: text
+        name: registration
+        label: Registration
+      - type: text
+        name: location
+        label: Location
