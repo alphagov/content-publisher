@@ -68,6 +68,9 @@ module ContentPublisher
     # assets into an S3 bucket and distinguish app by path.
     config.assets.prefix = "/assets/content-publisher"
 
+    config.eager_load_paths << Rails.root.join("config/document_types.yml")
+    config.eager_load_paths << Rails.root.join("config/document_type_selections.yml")
+
     unless Rails.application.secrets.jwt_auth_secret
       raise "JWT auth secret is not configured. See config/secrets.yml"
     end
