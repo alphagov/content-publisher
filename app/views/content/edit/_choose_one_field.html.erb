@@ -1,0 +1,29 @@
+<% if field.input == "select" %>
+  <%
+    options = field.options.map do |option|
+      {
+        text: option["label"],
+        value: option["name"],
+        selected: edition.contents[field.name] == option["name"],
+      }
+    end
+  %>
+  <%= render "govuk_publishing_components/components/select", {
+    label: field.label,
+    id: "choose-one-#{field.name}-field",
+    name: field.name,
+    options: [{ text: "", value: "" }] + options
+  } %>
+<% else %>
+  <%= render "govuk_publishing_components/components/radio", {
+    heading: field.label,
+    name: field.name,
+    items: field.options.map do |option|
+      {
+        text: option["label"],
+        value: option["name"],
+        checked: edition.contents[field.name] == option["name"],
+      }
+    end
+  } %>
+<% end %>
