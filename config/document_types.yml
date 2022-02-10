@@ -174,3 +174,147 @@ document_types:
             label: Sport aviation and balloons
           - name: unmanned-aircraft-systems
             label: Unmanned Aircraft Systems (UAS)
+      - type: choose_one
+        name: report_type
+        label: Report Type
+        input: select
+        options:
+          - name: annual_safety_report
+            label: Annual safety report
+          - name: correspondence-investigation
+            label: Bulletin - Correspondence investigation
+          - name: field-investigation
+            label: Bulletin - Field investigation
+          - name: pre-1997-monthly-report
+            label: Bulletin - Pre-1997 uncategorised monthly report
+          - name: foreign-report
+            label: Foreign report
+          - name: formal-report
+            label: Formal report
+          - name: spaceflight
+            label: Spaceflight
+          - name: special-bulletin
+            label: Special bulletin
+          - name: safety-study
+            label: Safety study
+
+  - id: asylum_support_decisions
+    label: Asylum Support Decisions
+    path_prefix: /asylum-support-decisions
+    lead_image: false
+    attachments: inline_file_only
+    publishing_metadata:
+      schema_name: specialist_document
+      rendering_app: government-frontend
+    contents:
+      - title_and_base_path
+      - summary
+      - body
+      - type: choose_multiple
+        name: tribunal_decision_categories
+        label: Tribunal decision categories
+        options:
+          - name: section-4-1-support-for-persons-who-are-neither-an-asylum-seeker-nor-a-failed-asylum-seeker
+            label: Section 4(1) (support for persons who are neither an asylum seeker nor a failed asylum seeker)
+          - name: section-4-2-support-for-failed-asylum-seekers
+            label: Section 4(2) (support for failed asylum seekers)
+          - name: section-95-support-for-asylum-seekers
+            label: Section 95 (support for asylum seekers)
+      - type: choose_multiple
+        name: tribunal_decision_sub_categories
+        label: Tribunal decision sub-categories
+        options:
+          - name: section-4-1-bail
+            label: Section 4(1) - bail
+          - name: section-4-1-other
+            label: Section 4(1) - other
+          - name: section-4-1-temporary-admission-release
+            label: Section 4(1) - temporary admission / release
+          - name: section-4-2-breach
+            label: Section 4(2) - breach
+          - name: section-4-2-dependants
+            label: Section 4(2) - dependants
+          - name: section-4-2-destitution
+            label: Section 4(2) - destitution
+          - name: section-4-2-jurisdiction
+            label: Section 4(2) - jurisdiction
+          - name: section-4-2-other
+            label: Section 4(2) - other
+          - name: section-4-2-regulation-3-2-a-steps-to-leave
+            label: Section 4(2) - regulation 3(2)(a) - steps to leave
+          - name: section-4-2-regulation-3-2-b-medical
+            label: Section 4(2) - regulation 3(2)(b) - medical
+          - name: section-4-2-regulation-3-2-c-no-route-of-return
+            label: Section 4(2) - regulation 3(2)(c) - no route of return
+          - name: section-4-2-regulation-3-2-d-judicial-review
+            label: Section 4(2) - regulation 3(2)(d) - judicial review
+          - name: section-4-2-regulation-3-2-e-human-rights-fresh-reps
+            label: Section 4(2) - regulation 3(2)(e) - human rights / fresh reps
+          - name: section-95-breach
+            label: Section 95 - breach
+          - name: section-95-children
+            label: Section 95 - children
+          - name: section-95-dependants
+            label: Section 95 - dependants
+          - name: section-95-destitution
+            label: Section 95 - destitution
+          - name: section-95-jurisdiction
+            label: Section 95 - jurisdiction
+          - name: section-95-other
+            label: Section 95 - other
+      - type: choose_multiple
+        name: judges
+        label: Judges
+        options:
+          - name: bayati-c
+            label: Bayati, C
+          - name: beg-s
+            label: Beg, S
+          - name: briden-r
+            label: Briden, R
+          - name: carter-g
+            label: Carter, G
+          - name: cornes-j
+            label: Cornes, J
+          - name: dodgson-c
+            label: Dodgson, C
+          - name: gandhi-p
+            label: Gandhi, P
+          - name: grewal-s
+            label: Grewal, S
+          - name: hussain-r
+            label: Hussain, R
+          - name: khan-nu
+            label: Khan, NU
+          - name: lal-s
+            label: Lal, S
+          - name: lewis-i
+            label: Lewis, I
+          - name: lock-a
+            label: Lock, A
+          - name: owens-r
+            label: Owens, R
+          - name: penrose-m
+            label: Penrose, M
+          - name: phelan-m
+            label: Phelan, M
+          - name: rayner-c
+            label: Rayner, C
+          - name: ripley-f
+            label: Ripley, F
+          - name: rizvi-f
+            label: Rizvi, F
+          - name: saunders-d
+            label: Saunders, D
+          - name: smith-sv
+            label: Smith, SV
+          - name: storey-s
+            label: Storey, S
+          - name: swaney-j
+            label: Swaney, J
+          - name: tootell-a
+            label: Tootell, A
+          - name: wilkin-r
+            label: Wilkin, R
+          - name: wyman-j
+            label: Wyman, J

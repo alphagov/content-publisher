@@ -21,6 +21,8 @@
   options:
     - id: aaib_report
       type: document_type
+    - id: asylum_support_decisions
+      type: document_type
 
 - id: guidance_publications
   options:

@@ -197,3 +197,6 @@ en:
     aaib_report:
       label: AAIB Report
       description: Air accident investigation board report
+    asylum_support_decisions:
+      label: Asylum Support Decisions
+      description:
