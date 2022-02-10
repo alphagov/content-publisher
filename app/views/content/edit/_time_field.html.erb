@@ -1,0 +1,31 @@
+<% if field.precision == "date" %>
+<%
+  date = edition.contents[field.name] && Date.parse(edition.contents[field.name])
+%>
+
+<%= render "govuk_publishing_components/components/date_input", {
+  legend_text: field.label,
+  name: field.name,
+  id: "time-#{field.name}-field",
+  error_items: issues&.items_for(:schedule_date),
+  items: [
+    {
+      name: "day",
+      width: 2,
+      value: params.dig(field.name, :day) || date&.day,
+    },
+    {
+      name: "month",
+      width: 2,
+      value: params.dig(field.name, :month) || date&.month,
+    },
+    {
+      name: "year",
+      width: 4,
+      value: params.dig(field.name, :year) || date&.year,
+    }
+  ]
+} %>
+<% else %>
+  A time input
+<% end %>

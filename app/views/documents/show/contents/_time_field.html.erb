@@ -1,0 +1,9 @@
+<% if edition.contents[field.name].nil? %>
+
+<% elsif field.precision == "date" %>
+  <% date = Date.parse(edition.contents[field.name]) %>
+  <%= date.to_s(:default) %>
+<% else %>
+  <% time = Date.parse(edition.contents[field.name]) %>
+  <%= time.to_s(:time_on_date) %>
+<% end %>

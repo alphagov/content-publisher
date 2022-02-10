@@ -133,7 +133,7 @@ document_types:
 
   - id: aaib_report
     label: AAIB Report
-    path_prefix: /aaib_reports
+    path_prefix: /aaib-reports
     lead_image: false
     attachments: inline_file_only
     publishing_metadata:
@@ -143,3 +143,7 @@ document_types:
       - title_and_base_path
       - summary
       - body
+      - type: time
+        name: date_of_occurrence
+        label: Date of Occurrence
+        precision: date
