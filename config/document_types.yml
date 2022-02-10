@@ -156,3 +156,21 @@ document_types:
       - type: text
         name: location
         label: Location
+      - type: choose_multiple
+        name: aircraft_category
+        label: Aircraft Category
+        options:
+          - name: commercial-fixed-wing
+            label: Commercial - fixed wing
+          - name: commercial-rotorcraft
+            label: Commerical - rotorcraft
+          - name: general-aviation-fixed-wing
+            label: General aviation - fixed wing
+          - name: general-aviation-rotorcraft
+            label: General aviation - rotorcraft
+          - name: spaceflight
+            label: Spaceflight
+          - name: sport-aviation-and-balloons
+            label: Sport aviation and balloons
+          - name: unmanned-aircraft-systems
+            label: Unmanned Aircraft Systems (UAS)

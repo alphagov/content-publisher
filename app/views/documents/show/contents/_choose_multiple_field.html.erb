@@ -1,0 +1,8 @@
+<% values = field.values(edition.contents[field.name]) %>
+<% if values.length > 0 %>
+  <ul class="govuk-list">
+    <% values.map do |value| %>
+      <li><%= value %></li>
+    <% end %>
+  </ul>
+<% end %>

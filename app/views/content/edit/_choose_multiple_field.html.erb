@@ -1,0 +1,12 @@
+<%= render "govuk_publishing_components/components/checkboxes", {
+  heading: field.label,
+  id: "choose-multiple-#{field.name}-field",
+  name: "#{field.name}[]",
+  items: field.options.map do |option|
+    {
+      label: option["label"],
+      value: option["name"],
+      checked: edition.contents[field.name]&.include?(option["name"]),
+    }
+  end
+} %>
