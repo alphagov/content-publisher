@@ -11,11 +11,16 @@
       type: document_type_selection
     - id: specialist_notices
       type: document_type_selection
-    # - id: kevin_custom
-    #   type: document_type
+    - id: kevin_tinkering
+      type: document_type_selection
     - id: not_sure
       type: managed_elsewhere
       path: /documents/publishing-guidance
+
+- id: kevin_tinkering
+  options:
+    - id: aaib_report
+      type: document_type
 
 - id: guidance_publications
   options:

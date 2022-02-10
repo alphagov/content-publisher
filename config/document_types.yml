@@ -130,3 +130,16 @@ document_types:
   #   tags:
   #     - primary_publishing_organisation
   #     - organisations
+
+  - id: aaib_report
+    label: AAIB Report
+    path_prefix: /aaib_reports
+    lead_image: false
+    attachments: inline_file_only
+    publishing_metadata:
+      schema_name: specialist_document
+      rendering_app: government-frontend
+    contents:
+      - title_and_base_path
+      - summary
+      - body
