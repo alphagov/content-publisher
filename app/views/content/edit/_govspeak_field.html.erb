@@ -1,0 +1,49 @@
+<% data ||= {} %>
+<% document_contents_guidance = capture do %>
+  <%= t_doctype_field?(edition, "body.guidance") ? render_govspeak(t_doctype_field(edition, "body.guidance.body_govspeak")) : nil %>
+  <h3 class="govuk-heading-s"><%= t("content.edit.fields.govspeak.title") %></h3>
+  <p class="govuk-body">
+    <%= link_to t("content.edit.fields.govspeak.guidance"), "https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown", class: "govuk-link", target: "_blank" %>
+  </p>
+  <%= render "components/markdown_guidance" %>
+<% end %>
+
+<%
+  field_contextual_guidance = {
+    id: "body",
+    html_for: "body-field"
+  }
+  if t_doctype_field?(edition, "body.guidance")
+    field_contextual_guidance.merge!({
+      title: t_doctype_field(edition, "body.guidance.title"),
+      content: document_contents_guidance,
+      guidance_id: "body-guidance"
+    })
+  end
+%>
+
+<%= render "govuk_publishing_components/components/contextual_guidance", field_contextual_guidance do %>
+  <%= render "components/markdown_editor", {
+    label: {
+      text: field.label,
+      bold: true
+    },
+    textarea: {
+      data: {
+        gramm: "false", # Disables grammerly plugin for markdown editor
+        gtm: "body-input",
+        "gtm-copy-paste-tracking": true,
+      },
+      id: "body-field",
+      name: field.name,
+      value: params[field.name] || edition.contents[field.name] || data[field.name],
+      rows: 20,
+      spellcheck: "false",
+      describedby: "body-guidance"
+    },
+    govspeak_path: govspeak_preview_path(edition.document),
+    edition: edition,
+    error_items: issues&.items_for(field.name),
+    paste_html_to_govspeak: true
+  } %>
+<% end %>
