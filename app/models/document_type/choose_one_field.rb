@@ -1,10 +1,11 @@
 class DocumentType::ChooseOneField
-  attr_reader :name, :label, :input, :options
+  attr_reader :name, :label, :input, :default, :options
 
   def initialize(options)
     @name = options.fetch("name")
     @label = options.fetch("label")
     @input = options.fetch("input", "radio")
+    @default = options["default"]
     @options = options.fetch("options")
   end
 
@@ -19,7 +20,7 @@ class DocumentType::ChooseOneField
   end
 
   def updater_params(_edition, params)
-    { contents: { name.to_sym => params[name] } }
+    { contents: { name.to_sym => params[name] || default } }
   end
 
   def form_issues(_edition, _params)

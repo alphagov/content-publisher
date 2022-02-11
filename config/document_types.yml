@@ -318,3 +318,13 @@ document_types:
             label: Wilkin, R
           - name: wyman-j
             label: Wyman, J
+      - type: choose_one
+        name: tribunal_decision_landmark
+        label: Tribunal decision landmark
+        input: radio
+        default: landmark
+        options:
+          - name: landmark
+            label: Landmark
+          - name: not_landmark
+            label: Not Landmark

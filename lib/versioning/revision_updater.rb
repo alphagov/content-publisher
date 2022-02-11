@@ -43,7 +43,7 @@ module Versioning
         r.number = revision.document.next_revision_number
         r.image_revisions = revision.image_revisions
         r.file_attachment_revisions = revision.file_attachment_revisions
-        r.preceded_by = revision
+        r.preceded_by = revision if revision.persisted?
       end
     end
 

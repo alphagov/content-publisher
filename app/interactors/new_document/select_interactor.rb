@@ -30,17 +30,11 @@ private
   end
 
   def create_document
-    context.document = CreateDocumentService.call(
-      document_type_id: selected_option.id, tags: default_tags, user:,
-    )
+    context.document = CreateDocumentService.call(document_type_id: selected_option.id, user:)
   end
 
   def create_timeline_entry
     TimelineEntry.create_for_status_change(entry_type: :created,
                                            status: document.current_edition.status)
-  end
-
-  def default_tags
-    user.organisation_content_id ? { primary_publishing_organisation: [user.organisation_content_id] } : {}
   end
 end
