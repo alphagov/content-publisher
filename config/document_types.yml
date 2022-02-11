@@ -382,3 +382,77 @@ document_types:
                 label: Autumn
               - name: winter
                 label: Winter
+
+  - id: coronavirus_landing_page
+    label: Coronavirus landing page
+    path_prefix: /coronavirus
+    lead_image: false
+    attachments: inline_file_only
+    publishing_metadata:
+      schema_name: specialist_document
+      rendering_app: government-frontend
+    contents:
+      - title_and_base_path
+      - summary
+    collections:
+      timeline_entries:
+        name:
+          singular: timeline entry
+          plural: timeline entries
+        fields:
+          - type: text
+            name: heading
+            label: Heading
+          - type: choose_multiple
+            name: applies_to
+            label: Applies to
+            options:
+              - name: england
+                label: England
+              - name: northern_ireland
+                label: Northern Ireland
+              - name: scotland
+                label: Scotland
+              - name: wales
+                label: Wales
+          - type: govspeak
+            name: content
+            label: Content
+      accordions:
+        name:
+          singular: accordion
+          plural: accordions
+        fields:
+          - type: text
+            name: heading
+            label: Heading
+          - type: text
+            name: sub_heading
+            label: Sub heading
+          - type: text
+            name: action_link_content
+            label: Action link content
+          - type: text
+            name: action_link_summary
+            label: Action link summary
+          - type: text
+            name: action_link_url
+            label: Action link URL
+          - type: govspeak
+            name: links
+            label: Links
+      announcements:
+        name:
+          singular: announcement
+          plural: announcements
+        fields:
+          - type: text
+            name: title
+            label: Title
+          - type: text
+            name: url
+            label: URL
+          - type: time
+            name: date
+            label: Date
+            precision: date

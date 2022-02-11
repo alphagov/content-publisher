@@ -203,3 +203,6 @@ en:
     collections:
       label: Collections
       description: An experimental document type for trying out collections
+    coronavirus_landing_page:
+      label: Coronavirus landing page
+      description: An attempt at replicating custom Covid CMS functionality

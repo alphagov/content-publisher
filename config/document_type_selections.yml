@@ -25,6 +25,8 @@
       type: document_type
     - id: collections
       type: document_type
+    - id: coronavirus_landing_page
+      type: document_type
 
 - id: guidance_publications
   options:
