@@ -23,6 +23,8 @@
       type: document_type
     - id: asylum_support_decisions
       type: document_type
+    - id: collections
+      type: document_type
 
 - id: guidance_publications
   options:

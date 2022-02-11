@@ -1,3 +1,7 @@
+<%
+  data ||= {}
+  selected = edition.contents[field.name] || data[field.name]
+%>
 <%= render "govuk_publishing_components/components/checkboxes", {
   heading: field.label,
   id: "choose-multiple-#{field.name}-field",
@@ -6,7 +10,7 @@
     {
       label: option["label"],
       value: option["name"],
-      checked: edition.contents[field.name]&.include?(option["name"]),
+      checked: selected&.include?(option["name"]),
     }
   end
 } %>

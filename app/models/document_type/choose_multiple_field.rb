@@ -21,6 +21,10 @@ class DocumentType::ChooseMultipleField
     { contents: { name.to_sym => params[name] } }
   end
 
+  def collection_params(params)
+    { name.to_sym => params[name] }
+  end
+
   def form_issues(_edition, _params)
     Requirements::CheckerIssues.new
   end

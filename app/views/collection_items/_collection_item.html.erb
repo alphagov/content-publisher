@@ -1,0 +1,33 @@
+<% actions = [] %>
+
+<% actions << link_to(
+  "Edit",
+  edit_collection_item_path(edition.document, collection.id, item["id"]),
+  class: "govuk-link govuk-link--no-visited-state app-link--button",
+  data: {
+    gtm: "edit",
+  },
+) %>
+
+<% actions << link_to(
+  "Delete",
+  confirm_delete_collection_item_path(edition.document,
+                                      collection.id,
+                                      item["id"]),
+  class: "govuk-link app-link--button app-link--destructive",
+) %>
+
+<% contents = collection.fields.map { |field|
+  {
+    field: field.respond_to?(:label) ? field.label : t_doctype_field(@edition, "#{field.id}.label"),
+    value: render("documents/show/contents/#{field.id}_field", field: field, edition: @edition, data: item)
+  }
+} %>
+
+<%= render "components/media_with_actions", actions: actions do %>
+  <%= render "govuk_publishing_components/components/summary_list", {
+    id: "content",
+    borderless: true,
+    items: contents
+  } %>
+<% end %>

@@ -51,6 +51,10 @@
   <div class="govuk-grid-column-two-thirds">
     <%= render "documents/show/contents" %>
 
+    <% @edition.document_type.collections.each do |(_id, collection)| %>
+      <%= render "documents/show/collection", collection: collection %>
+    <% end %>
+
     <% if @edition.document_type.attachments.featured? && current_user.has_permission?(User::PRE_RELEASE_FEATURES_PERMISSION) %>
       <%= render "documents/show/featured_attachments" %>
     <% end %>

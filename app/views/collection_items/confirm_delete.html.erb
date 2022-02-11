@@ -1,0 +1,25 @@
+<% content_for :back_link, render_back_link(href: collection_items_path) %>
+<% content_for :title, "Confirm deletion of #{@item[@collection.distinguishing_field]}" %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag(
+      destroy_collection_item_path,
+      method: :delete,
+    ) do %>
+
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Yes, delete #{@collection.singular_name}",
+        destructive: true,
+        margin_bottom: true,
+      } %>
+
+      <div class="govuk-body">
+        <%= link_to "Cancel",
+          collection_items_path,
+          class: "govuk-link govuk-link--no-visited-state"
+        %>
+      <% end %>
+    </div>
+  </div>
+</div>

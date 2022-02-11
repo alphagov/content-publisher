@@ -109,6 +109,18 @@ Rails.application.routes.draw do
     patch "/file-attachments/:file_attachment_id/edit" => "file_attachments#update"
     delete "/file-attachments/:file_attachment_id" => "file_attachments#destroy"
     get "/file-attachments/:file_attachment_id/delete" => "file_attachments#confirm_delete", as: :confirm_delete_file_attachment
+
+    scope "/collections/:collection_id/items" do
+      get "" => "collection_items#index", as: :collection_items
+      get "/reorder" => "collection_items#reorder", as: :reorder_collection_items
+      post "/reorder" => "collection_items#update_order"
+      get "/new" => "collection_items#new", as: :new_collection_item
+      post "" => "collection_items#create"
+      get "/:item_id/edit" => "collection_items#edit", as: :edit_collection_item
+      patch "/:item_id" => "collection_items#update", as: :update_collection_item
+      delete "/:item_id" => "collection_items#destroy", as: :destroy_collection_item
+      get "/:item_id/delete" =>  "collection_items#confirm_delete", as: :confirm_delete_collection_item
+    end
   end
 
   get "/healthcheck/live", to: proc { [200, {}, %w[OK]] }

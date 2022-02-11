@@ -1,0 +1,25 @@
+<% attributes = {
+  id: collection.id,
+  title: collection.plural_name.capitalize,
+  borderless: true,
+  edit: (
+    if @edition.editable?
+      { href: collection_items_path(@edition.document, collection.id) }
+    end
+  )
+} %>
+
+<% if @edition.contents[collection.id].to_a.any? %>
+  <%= render "govuk_publishing_components/components/summary_list", attributes.merge(
+    items: @edition.contents[collection.id].each_with_index.map do |item, index|
+      {
+        field: index + 1,
+        value: "<h4 class='govuk-heading-s govuk-!-margin-bottom-0'>#{item[collection.distinguishing_field]}</h4>".html_safe,
+      }
+    end
+  ) %>
+<% else %>
+  <%= render "govuk_publishing_components/components/summary_list", attributes.merge(
+    block: "No #{collection.plural_name}"
+  ) %>
+<% end %>

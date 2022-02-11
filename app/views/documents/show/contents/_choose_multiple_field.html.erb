@@ -1,4 +1,6 @@
-<% values = field.values(edition.contents[field.name]) %>
+<% data ||= {} %>
+<% value = edition.contents[field.name] || data[field.name] %>
+<% values = field.values(value) %>
 <% if values.length > 0 %>
   <ul class="govuk-list">
     <% values.map do |value| %>

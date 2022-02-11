@@ -20,6 +20,10 @@ class DocumentType::TextField
     { contents: { name.to_sym => params[name]&.strip } }
   end
 
+  def collection_params(params)
+    { name.to_sym => params[name]&.strip }
+  end
+
   def form_issues(_edition, _params)
     Requirements::CheckerIssues.new
   end

@@ -338,3 +338,47 @@ document_types:
       - type: text
         name: hidden_indexable_content
         label: Hidden indexable content
+
+  - id: collections
+    label: Collections
+    path_prefix: /collections
+    lead_image: false
+    attachments: featured
+    publishing_metadata:
+      schema_name: specialist_document
+      rendering_app: government-frontend
+    contents:
+      - title_and_base_path
+      - summary
+      - body
+    collections:
+      experiments:
+        name:
+          singular: experiment
+          plural: experiments
+        fields:
+          - type: text
+            name: name
+            label: Name
+      plants:
+        name:
+          singular: plant
+          plural: plants
+        fields:
+          - type: text
+            name: family
+            label: Family
+          - type: choose_one
+            name: main_season
+            label: Main season
+            input: radio
+            default: spring
+            options:
+              - name: spring
+                label: Spring
+              - name: summer
+                label: Summer
+              - name: autumn
+                label: Autumn
+              - name: winter
+                label: Winter

@@ -200,3 +200,6 @@ en:
     asylum_support_decisions:
       label: Asylum Support Decisions
       description:
+    collections:
+      label: Collections
+      description: An experimental document type for trying out collections

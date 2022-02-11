@@ -1,1 +1,3 @@
-<%= field.value(edition.contents[field.name]) %>
+<% data ||= {} %>
+<% value = edition.contents[field.name] || data[field.name] %>
+<%= field.value(value) %>

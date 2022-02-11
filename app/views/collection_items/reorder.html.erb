@@ -1,0 +1,26 @@
+<% content_for :back_link, render_back_link(href: collection_items_path(@edition.document, @collection.id)) %>
+<% content_for :title, "Reorder #{@collection.plural_name}" %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_tag(
+      reorder_collection_items_path(@edition.document),
+      method: :post
+    ) do %>
+      <%= render "govuk_publishing_components/components/reorderable_list", {
+        input_name: "collection[ordering]",
+        items: @edition.contents[@collection.id].map do |item|
+          {
+            title: item[@collection.distinguishing_field],
+            id: item["id"],
+          }
+        end
+      } %>
+
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save #{@collection.singular_name} order",
+        margin_bottom: true,
+      } %>
+    <% end %>
+  </div>
+</div>

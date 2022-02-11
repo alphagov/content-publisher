@@ -18,6 +18,10 @@ class DocumentType::TimeField
   end
 
   def updater_params(_edition, params)
+    { contents: collection_params(params) }
+  end
+
+  def collection_params(params)
     value = if params[name].nil?
               nil
             elsif precision == "date"
@@ -29,7 +33,7 @@ class DocumentType::TimeField
               Time.now
             end
 
-    { contents: { name.to_sym => value } }
+    { name.to_sym => value }
   end
 
   def form_issues(_edition, _params)

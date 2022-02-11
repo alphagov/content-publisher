@@ -1,0 +1,18 @@
+<% content_for :back_link, render_back_link(href: collection_items_path(@edition.document, @collection.id)) %>
+<% content_for :title, "New #{@collection.singular_name}" %>
+
+<%= form_tag(
+  collection_items_path(@edition.document, @collection.id),
+  method: :post,
+  html: { class: "app-c-contextual-guidance__form" },
+  data: { "warn-before-unload": "true" }
+) do %>
+
+  <% @collection.fields.each do |field| %>
+    <%= render "content/edit/#{field.id}_field", field: field, edition: @edition, issues: @issues %>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Save", margin_bottom: true
+  } %>
+<% end %>
