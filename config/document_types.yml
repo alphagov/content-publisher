@@ -328,3 +328,13 @@ document_types:
             label: Landmark
           - name: not_landmark
             label: Not Landmark
+      - type: text
+        name: tribunal_decision_reference_number
+        label: Tribunal decision reference number
+      - type: time
+        name: tribunal_decision_date
+        label: Tribunal decision date
+        precision: date
+      - type: text
+        name: hidden_indexable_content
+        label: Hidden indexable content
