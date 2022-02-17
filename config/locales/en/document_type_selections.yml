@@ -194,6 +194,9 @@ en:
     kevin_tinkering:
       label: Kevin Tinkering
       description: Kevin trying out some customisations
+    kevin_tinkering_mainstream:
+      label: Kevin Tinkering with Mainstream
+      description: Seeing if we can model mainstream content
     aaib_report:
       label: AAIB Report
       description: Air accident investigation board report
@@ -206,3 +209,12 @@ en:
     coronavirus_landing_page:
       label: Coronavirus landing page
       description: An attempt at replicating custom Covid CMS functionality
+    answer:
+      label: Answer
+      description: A mainstream answer page
+    completed_transaction:
+      label: Completed transaction
+      description: A mainstream completed transaction page
+    guide:
+      label: Guide
+      description: A mainstream guide page

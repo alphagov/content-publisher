@@ -456,3 +456,73 @@ document_types:
             name: date
             label: Date
             precision: date
+
+  - id: answer
+    label: Answer
+    path_prefix: ~
+    lead_image: false
+    attachments: inline_file_only
+    publishing_metadata:
+      schema_name: answer
+      rendering_app: frontend
+    contents:
+      - title_and_base_path
+      - summary
+      - body
+
+  - id: completed_transaction
+    label: Completed Transacton
+    path_prefix: ~
+    lead_image: false
+    attachments: inline_file_only
+    publishing_metadata:
+      schema_name: completed_transaction
+      rendering_app: frontend
+    contents:
+      - title_and_base_path
+      - summary
+      - type: choose_one
+        name: Promotion
+        label: Promotions
+        input: radio
+        options:
+          - name: dont_promote
+            label: Don't promote anything on this page
+          - name: promote_organ_donation
+            label: Promote organ donation
+          - name: promote_register_to_vote
+            label: Promote register to vote
+          - name: promote_mot_reminders
+            label: Promote MOT reminders
+          - name: promote_electric_vehicles
+            label: Promote electric vehicles
+      - type: text
+        name: promotion_choice_url
+        label: Promotion choice URL
+
+  - id: guide
+    label: Guide
+    path_prefix: ~
+    lead_image: false
+    attachments: inline_file_only
+    publishing_metadata:
+      schema_name: guide
+      rendering_app: frontend
+    contents:
+      - title_and_base_path
+      - summary
+    collections:
+      parts:
+        name:
+          singular: part
+          plural: parts
+        fields:
+          - type: text
+            name: title
+            label: Title
+          - type: text
+            name: slug
+            label: Slug
+          - type: govspeak
+            name: body
+            label: Body

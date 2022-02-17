@@ -3,6 +3,10 @@
   options:
     - id: news
       type: document_type_selection
+    - id: kevin_tinkering
+      type: document_type_selection
+    - id: kevin_tinkering_mainstream
+      type: document_type_selection
     - id: guidance_and_regulation
       type: document_type_selection
     - id: transparency_statistics_reports
@@ -10,8 +14,6 @@
     - id: policy
       type: document_type_selection
     - id: specialist_notices
-      type: document_type_selection
-    - id: kevin_tinkering
       type: document_type_selection
     - id: not_sure
       type: managed_elsewhere
@@ -26,6 +28,15 @@
     - id: collections
       type: document_type
     - id: coronavirus_landing_page
+      type: document_type
+
+- id: kevin_tinkering_mainstream
+  options:
+    - id: answer
+      type: document_type
+    - id: completed_transaction
+      type: document_type
+    - id: guide
       type: document_type
 
 - id: guidance_publications
