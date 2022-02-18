@@ -8,10 +8,17 @@ services:
       POSTGRES_PASSWORD: password
   web:
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - .:/app
     ports:
       - "3000:3000"
     depends_on:
       - db
+    environment:
+      ACTIVE_STORAGE_SERVICE: local
+      GDS_SSO_STRATEGY: mock
+      GOVUK_APP_DOMAIN: integration.publishing.service.gov.uk
+      GOVUK_WEBSITE_ROOT: http://localhost
+      JWT_AUTH_SECRET: eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkdPVlVLIiwiZXhwIjoxNjQ1MTc2ODMxLCJpYXQiOjE2NDUxNzY4MzF9.ncE-5bgzpF6IBKTYPuCOzT7fxqdrStAbDPs7tRTXB9E
+      PLEK_SERVICE_PUBLISHING_API_URI: http://localhost
