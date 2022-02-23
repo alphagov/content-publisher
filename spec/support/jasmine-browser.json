@@ -11,8 +11,9 @@
     "**/*[sS]pec.js"
   ],
   "helpers": [
-    "helpers/*.js",
-    "vendor/*.js"
+    "https://unpkg.com/jasmine-jquery@2.1.1/lib/jasmine-jquery.js",
+    "https://unpkg.com/fetch-mock@9.11.0/es5/client-bundle.js",
+    "helpers/*.js"
   ],
   "browser": "headlessChrome"
 }
