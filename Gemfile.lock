@@ -221,16 +221,6 @@ GEM
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
     interactor (3.1.2)
-    jasmine (3.99.0)
-      jasmine-core (= 3.99.0)
-      phantomjs
-      rack (>= 2.1.4)
-      rake
-      webrick
-    jasmine-core (3.99.0)
-    jasmine_selenium_runner (3.0.0)
-      jasmine (~> 3.0)
-      selenium-webdriver (~> 3.8)
     jmespath (1.4.0)
     json-schema (2.8.1)
       addressable (>= 2.4)
@@ -322,7 +312,6 @@ GEM
       ruby-rc4
       ttfunk
     pg (1.2.3)
-    phantomjs (2.1.1.0)
     plek (4.0.0)
     prometheus_exporter (2.0.2)
       webrick
@@ -544,8 +533,6 @@ DEPENDENCIES
   image_processing
   inline_svg
   interactor
-  jasmine
-  jasmine_selenium_runner
   json_matchers
   kaminari
   listen
