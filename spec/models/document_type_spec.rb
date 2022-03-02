@@ -1,7 +1,7 @@
 require "json"
 
 RSpec.describe DocumentType do
-  let(:document_types) { YAML.load_file(Rails.root.join("config/document_types.yml"))["document_types"] }
+  let(:document_types) { YAML.unsafe_load_file(Rails.root.join("config/document_types.yml"))["document_types"] }
 
   describe "all configured document types are valid" do
     it "conforms to the document type schema" do

@@ -1,7 +1,7 @@
 require "json"
 
 RSpec.describe DocumentTypeSelection do
-  let(:document_type_selections) { YAML.load_file(Rails.root.join("config/document_type_selections.yml")) }
+  let(:document_type_selections) { YAML.unsafe_load_file(Rails.root.join("config/document_type_selections.yml")) }
 
   describe "all configured document types selections are valid" do
     it "conforms to the document type selection schema" do
