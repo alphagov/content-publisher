@@ -22,7 +22,10 @@ private
   def attachment_attributes(attachment_revision)
     alt_email = Organisations.new(edition).alternative_format_contact_email
     attributes = file_attachment_attributes(attachment_revision, edition)
-    attributes.merge(alternative_format_contact_email: alt_email)
+    attributes[:alternative_format_contact_email] = alt_email
+    attributes[:owning_document_content_id] = edition.content_id
+    attributes[:attachment_id] = attachment_revision.file_attachment_id
+    attributes
   end
 
   def image_attributes(image_revision)
