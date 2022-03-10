@@ -1,0 +1,19 @@
+{
+  "srcDir": "public/assets",
+  "srcFiles": [
+    "application-*.js"
+  ],
+  "cssFiles": [
+    "application-*.css"
+  ],
+  "specDir": "spec/javascripts",
+  "specFiles": [
+    "**/*[sS]pec.js"
+  ],
+  "helpers": [
+    "https://unpkg.com/jasmine-jquery@2.1.1/lib/jasmine-jquery.js",
+    "https://unpkg.com/fetch-mock@9.11.0/es5/client-bundle.js",
+    "helpers/*.js"
+  ],
+  "browser": "headlessChrome"
+}

@@ -37,10 +37,10 @@ To run JavaScript tests (only):
 
 ```
 # run JS tests in browser
-bundle exec rake jasmine
+yarn run jasmine:browser
 
 # run JS tests on command line
-bundle exec rake jasmine:ci
+yarn run jasmine:ci
 ```
 
 > [Our test environment is setup to render 'real' error pages, instead of raising an exception](https://github.com/alphagov/content-publisher/commit/184a93d23551161125c1ac6ff3d9287eafabbc3d). This can make it hard to debug a test failure, as the actual error won't appear in the test output. Instead, you can see it in `log/test.log`.
