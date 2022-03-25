@@ -29,7 +29,7 @@ describe('ContactEmbedModal', function () {
       fetchMock.flush(true).then(function () {
         var dynamicSection = modal.querySelector('.js-dynamic-section')
         expect(dynamicSection).toBeVisible()
-        expect(dynamicSection).toContainHtml('<h1>Contact response</h1>')
+        expect(dynamicSection.innerHTML).toContain('<h1>Contact response</h1>')
         done()
       })
     })
@@ -64,7 +64,7 @@ describe('ContactEmbedModal', function () {
       fetchMock.flush(true).then(function () {
         var dynamicSection = modal.querySelector('.js-dynamic-section')
         expect(dynamicSection).toBeVisible()
-        expect(dynamicSection).toContainHtml('<h1>Validation issues</h1>')
+        expect(dynamicSection.innerHTML).toContain('<h1>Validation issues</h1>')
         done()
       })
     })

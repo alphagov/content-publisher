@@ -56,7 +56,7 @@ window.buildMarkdownEditor = function buildMarkdownEditor () {
   // The markdown component can hit a number of errors if it is initialised
   // before attached to the DOM.
   document.body.appendChild(markdownEditor)
-  new GOVUK.Modules.MarkdownEditor().start($(markdownEditor))
+  new GOVUK.Modules.MarkdownEditor(markdownEditor).init()
   return markdownEditor
 }
 

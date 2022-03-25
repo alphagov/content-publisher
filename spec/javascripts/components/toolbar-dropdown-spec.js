@@ -23,7 +23,7 @@ describe('Toolbar dropdown component', function () {
     document.body.classList.add('js-enabled')
     document.body.appendChild(container)
     var element = document.querySelector('[data-module="toolbar-dropdown"]')
-    new GOVUK.Modules.ToolbarDropdown().start($(element))
+    new GOVUK.Modules.ToolbarDropdown(element).init()
   })
 
   afterEach(function () {

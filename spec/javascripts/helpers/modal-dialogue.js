@@ -19,7 +19,7 @@ window.buildModalDialogue = function buildModalDialogue () {
   new window.GOVUK.Modules.ModalDialogue(modal).init()
 
   var multiSectionViewer = modal.querySelector('[data-module="multi-section-viewer"]')
-  new window.GOVUK.Modules.MultiSectionViewer().start($(multiSectionViewer))
+  new window.GOVUK.Modules.MultiSectionViewer(multiSectionViewer).init()
 
   return modal
 }
