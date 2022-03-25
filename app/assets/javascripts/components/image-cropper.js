@@ -3,12 +3,12 @@ window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
 (function (Modules) {
-  function ImageCropper () { }
-
-  ImageCropper.prototype.start = function ($imageCropper) {
-    this.$imageCropper = $imageCropper[0]
+  function ImageCropper ($imageCropper) {
+    this.$imageCropper = $imageCropper
     this.$image = this.$imageCropper.querySelector('.app-c-image-cropper__image')
+  }
 
+  ImageCropper.prototype.init = function () {
     // This only runs if the image isn't cached
     this.$image.addEventListener('load', function () {
       this.initCropper()

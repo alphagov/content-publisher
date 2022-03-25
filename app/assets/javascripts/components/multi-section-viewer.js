@@ -2,12 +2,12 @@ window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
 (function (Modules) {
-  function MultiSectionViewer () { }
-
-  MultiSectionViewer.prototype.start = function ($module) {
-    this.$module = $module[0]
+  function MultiSectionViewer ($module) {
+    this.$module = $module
     this.$dynamicSection = this.$module.querySelector('.js-dynamic-section')
+  }
 
+  MultiSectionViewer.prototype.init = function () {
     var actions = document.querySelectorAll(
       '[data-toggle="multi-section-viewer"][data-target="' + this.$module.id + '"]'
     )

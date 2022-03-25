@@ -2,11 +2,8 @@ window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
 (function (Modules) {
-  function ContactPreview () { }
-
-  ContactPreview.prototype.start = function ($module) {
-    this.$module = $module[0]
-
+  function ContactPreview ($module) {
+    this.$module = $module
     this.errorMessage = this.$module.querySelector('.js-contact-preview-error-message')
     this.loadingSpinner = this.$module.querySelector('.js-contact-preview-loading-spinner')
     this.contactPreview = this.$module.querySelector('.js-contact-preview-html')
@@ -14,6 +11,9 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.contactSnippetTemplate = this.$module.dataset.contactSnippetTemplate
     this.path = this.$module.dataset.govspeakPath
     this.$select = document.querySelector('#' + this.selectId)
+  }
+
+  ContactPreview.prototype.init = function () {
     if (!this.$select || !this.path || !this.contactSnippetTemplate) {
       return
     }

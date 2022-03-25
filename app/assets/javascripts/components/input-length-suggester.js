@@ -2,10 +2,11 @@ window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
 (function (Modules) {
-  function InputLengthSuggester () { }
+  function InputLengthSuggester ($module) {
+    this.$module = $module
+  }
 
-  InputLengthSuggester.prototype.start = function ($module) {
-    this.$module = $module[0]
+  InputLengthSuggester.prototype.init = function () {
     this.$target = document.getElementById(this.$module.getAttribute('data-for'))
     this.messageTemplate = this.$module.getAttribute('data-message')
     var showFrom = parseInt(this.$module.getAttribute('data-show-from'), 10)

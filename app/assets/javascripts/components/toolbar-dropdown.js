@@ -2,12 +2,13 @@ window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
 (function (Modules) {
-  function ToolbarDropdown () { }
-
-  ToolbarDropdown.prototype.start = function ($module) {
-    this.$module = $module[0]
+  function ToolbarDropdown ($module) {
+    this.$module = $module
     this.$title = this.$module.querySelector('.app-c-toolbar-dropdown__title')
     this.$container = this.$module.querySelector('.app-c-toolbar-dropdown__container')
+  }
+
+  ToolbarDropdown.prototype.init = function () {
     this.$module.addEventListener('blur', ToolbarDropdown.prototype.handleBlur.bind(this), true)
 
     var $buttons = this.$module.querySelectorAll('.app-c-toolbar-dropdown__button')
