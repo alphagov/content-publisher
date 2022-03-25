@@ -15,14 +15,10 @@
   "standardx": {
     "env": {
       "browser": true,
-      "jquery": true,
       "jasmine": true
     },
     "globals": [
       "GOVUK"
-    ],
-    "ignore": [
-      "/spec/javascripts/helpers/jasmine-jquery.js"
     ]
   },
   "stylelint": {
