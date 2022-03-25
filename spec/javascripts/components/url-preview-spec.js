@@ -25,8 +25,8 @@ describe('URL preview component', function () {
 
     document.body.appendChild(container)
     var element = document.querySelector('[data-module="url-preview"]')
-    urlPreview = new GOVUK.Modules.UrlPreview()
-    urlPreview.start($(element))
+    urlPreview = new GOVUK.Modules.UrlPreview(element)
+    urlPreview.init()
   })
 
   afterEach(function () {

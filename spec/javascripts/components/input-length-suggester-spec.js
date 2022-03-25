@@ -18,7 +18,7 @@ describe('Input length suggester component', function () {
 
     document.body.appendChild(container)
     var element = document.querySelector('[data-module="input-length-suggester"]')
-    new GOVUK.Modules.InputLengthSuggester().start($(element))
+    new GOVUK.Modules.InputLengthSuggester(element).init()
   })
 
   afterEach(function () {

@@ -3,10 +3,11 @@ window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
 (function (Modules) {
-  function Autocomplete () { }
+  function Autocomplete ($module) {
+    this.$module = $module
+  }
 
-  Autocomplete.prototype.start = function ($module) {
-    this.$module = $module[0]
+  Autocomplete.prototype.init = function () {
     var type = this.$module.dataset.autocompleteType
 
     var $select = this.$module.querySelector('select')

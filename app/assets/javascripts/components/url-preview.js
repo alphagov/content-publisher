@@ -2,11 +2,8 @@ window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
 (function (Modules) {
-  function UrlPreview () { }
-
-  UrlPreview.prototype.start = function ($module) {
-    this.$module = $module[0]
-
+  function UrlPreview ($module) {
+    this.$module = $module
     this.urlPreview = this.$module.querySelector('.js-url-preview-url')
     this.basePath = this.$module.querySelector('.js-url-preview-path')
     this.defaultMessage = this.$module.querySelector('.js-url-preview-default-message')
@@ -14,6 +11,9 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.input = document.querySelector('[data-url-preview="input"]')
     this.form = document.querySelector('[data-url-preview-path]')
     this.path = this.form.getAttribute('data-url-preview-path')
+  }
+
+  UrlPreview.prototype.init = function () {
     this.input.addEventListener('blur', this.handleBlur.bind(this))
   }
 

@@ -21,7 +21,7 @@ describe('InlineAttachmentModal', function () {
 
       fetchMock.flush(true).then(function () {
         expect(dynamicSection).toBeVisible()
-        expect(dynamicSection).toContainHtml('<h1>Form submitted</h1>')
+        expect(dynamicSection.innerHTML).toContain('<h1>Form submitted</h1>')
         done()
       })
     })
@@ -41,7 +41,7 @@ describe('InlineAttachmentModal', function () {
 
       fetchMock.flush(true).then(function () {
         expect(dynamicSection).toBeVisible()
-        expect(dynamicSection).toContainHtml('<h1>Link followed</h1>')
+        expect(dynamicSection.innerHTML).toContain('<h1>Link followed</h1>')
         done()
       })
     })
@@ -70,7 +70,7 @@ describe('InlineAttachmentModal', function () {
       fetchMock.flush(true).then(function () {
         var dynamicSection = modal.querySelector('.js-dynamic-section')
         expect(dynamicSection).toBeVisible()
-        expect(dynamicSection).toContainHtml('<h1>Inline attachment</h1>')
+        expect(dynamicSection.innerHTML).toContain('<h1>Inline attachment</h1>')
         done()
       })
     })

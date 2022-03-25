@@ -21,7 +21,7 @@ describe('Contact preview component', function () {
 
     document.body.appendChild(container)
     var element = document.querySelector('[data-module="contact-preview"]')
-    new GOVUK.Modules.ContactPreview().start($(element))
+    new GOVUK.Modules.ContactPreview(element).init()
   })
 
   afterEach(function () {

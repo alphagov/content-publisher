@@ -46,7 +46,7 @@ describe('ModalWorkflow', function () {
     it('renders the result in the modals dynamic section', function () {
       modalWorkflow.renderSuccess({ body: '<h1>Success</h1>' })
       expect(dynamicSection).toBeVisible()
-      expect(dynamicSection).toContainHtml('<h1>Success</h1>')
+      expect(dynamicSection.innerHTML).toContain('<h1>Success</h1>')
     })
 
     it('sets the dynamic section heading as label for the modal', function () {
@@ -88,7 +88,7 @@ describe('ModalWorkflow', function () {
       spyOn(window.GOVUK.modules, 'start')
       spyOn(window.GOVUKFrontend, 'initAll')
       modalWorkflow.renderSuccess({ body: '' })
-      expect(window.GOVUK.modules.start).toHaveBeenCalledWith($(modal))
+      expect(window.GOVUK.modules.start).toHaveBeenCalledWith(modal)
       expect(window.GOVUKFrontend.initAll).toHaveBeenCalledWith(modal)
     })
   })

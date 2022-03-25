@@ -1,4 +1,4 @@
-/* global spyOnEvent, buildMarkdownEditor, removeMarkdownEditor */
+/* global buildMarkdownEditor, removeMarkdownEditor */
 
 describe('Markdown editor component', function () {
   'use strict'
@@ -109,15 +109,6 @@ describe('Markdown editor component', function () {
 
       var container = document.querySelector('.app-c-markdown-editor__container')
       expect(container).toHaveClass('app-c-markdown-editor__container--focused')
-    })
-
-    it('should trigger a focus event on component', function () {
-      var container = document.querySelector('.app-c-markdown-editor')
-      spyOnEvent(container, 'focus')
-
-      document.querySelector('.js-markdown-editor-input textarea').dispatchEvent(new window.Event('focus'))
-
-      expect('focus').toHaveBeenTriggeredOn(container)
     })
   })
 

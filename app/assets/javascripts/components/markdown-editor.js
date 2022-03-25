@@ -5,10 +5,11 @@ window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
 (function (Modules) {
-  function MarkdownEditor () { }
+  function MarkdownEditor ($module) {
+    this.$module = $module
+  }
 
-  MarkdownEditor.prototype.start = function ($module) {
-    this.$module = $module[0]
+  MarkdownEditor.prototype.init = function () {
     this.$head = this.$module.querySelector('.js-markdown-editor__head')
     this.$container = this.$module.querySelector('.js-markdown-editor__container')
     this.$input = this.$module.querySelector('textarea')
@@ -89,7 +90,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
         this.$preview.innerHTML = text
         this.setTargetBlank(this.$preview)
         this.$preview.classList.add('app-c-markdown-editor__govspeak--rendered')
-        window.GOVUK.modules.start($(this.$preview))
+        window.GOVUK.modules.start(this.$preview)
         window.GOVUKFrontend.initAll(this.$preview)
       }.bind(this))
       .catch(function () {
