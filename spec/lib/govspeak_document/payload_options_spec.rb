@@ -48,6 +48,7 @@ RSpec.describe GovspeakDocument::PayloadOptions do
       expect(actual_attachment_options).to match(
         a_hash_including(
           id: "13kb-1-page-attachment.pdf",
+          attachment_id: "13kb-1-page-attachment.pdf",
           filename: "13kb-1-page-attachment.pdf",
           title: "A title",
           content_type: "application/pdf",
@@ -55,6 +56,7 @@ RSpec.describe GovspeakDocument::PayloadOptions do
           file_size: 13_264,
           url: a_string_matching(%r{/media/.*/13kb-1-page-attachment.pdf}),
           alternative_format_contact_email: "foo@bar.com",
+          owning_document_content_id: edition.content_id,
         ),
       )
     end

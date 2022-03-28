@@ -38,6 +38,8 @@ private
     attributes.merge(
       url: attachment_revision.asset_url,
       alternative_format_contact_email: alt_email,
+      owning_document_content_id: edition.content_id,
+      attachment_id: attachment_revision.filename,
     )
   end
 end
