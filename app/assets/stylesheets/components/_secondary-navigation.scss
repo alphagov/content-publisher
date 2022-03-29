@@ -1,6 +1,6 @@
 .app-c-secondary-navigation {
   @include govuk-font(19);
-  @include govuk-responsive-margin(6, 'bottom');
+  @include govuk-responsive-margin(6, "bottom");
 
   display: block;
 
@@ -44,7 +44,7 @@
   a:visited {
     background-color: inherit;
     border-left: 4px solid transparent;
-    color: govuk-colour('blue');
+    color: govuk-colour("blue");
     display: block;
     padding: govuk-spacing(2);
     text-decoration: none;
@@ -77,7 +77,7 @@
 .app-c-secondary-navigation__list-item--current {
   a:link,
   a:visited {
-    border-color: govuk-colour('blue');
+    border-color: govuk-colour("blue");
     color: $govuk-text-colour;
   }
 

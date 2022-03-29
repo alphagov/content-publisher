@@ -30,7 +30,7 @@ $app-toolbar-button-size: 50px;
   width: 100%;
   border-bottom: $govuk-border-width-form-element solid $govuk-border-colour;
   background-color: govuk-colour("light-grey");
-  font-size: 0; //fix the spacing between the inline-block toggle buttons
+  font-size: 0; // fix the spacing between the inline-block toggle buttons
 }
 
 .app-c-markdown-editor__button {
@@ -125,7 +125,7 @@ $app-toolbar-button-size: 50px;
 .app-c-markdown-editor__toolbar-icon {
   display: inline-block;
   background: inherit;
-  fill: currentColor;
+  fill: currentcolor;
   pointer-events: none;
 }
 
