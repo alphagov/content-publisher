@@ -46,7 +46,7 @@ RSpec.describe GovspeakDocument::InAppOptions do
       actual_attachment_options = in_app_options.to_h[:attachments].first
       expect(actual_attachment_options).to match(
         a_hash_including(
-          attachment_id: attachment_revision.file_attachment_id,
+          attachment_id: "13kb-1-page-attachment.pdf",
           filename: "13kb-1-page-attachment.pdf",
           title: "A title",
           content_type: "application/pdf",
