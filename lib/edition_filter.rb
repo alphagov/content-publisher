@@ -6,12 +6,12 @@ class EditionFilter
 
   attr_reader :filters, :sort, :page, :per_page, :user
 
-  def initialize(user, **params)
-    @filters = params[:filters].to_h.symbolize_keys
-    @sort = allowed_sort?(params[:sort]) ? params[:sort] : DEFAULT_SORT
-    @page = params.fetch(:page, 1).to_i
-    @per_page = params[:per_page]
+  def initialize(user, filters: {}, sort: nil, page: 1, per_page: 50)
     @user = user
+    @filters = filters.to_h.symbolize_keys
+    @sort = allowed_sort?(sort) ? sort : DEFAULT_SORT
+    @page = page.to_i
+    @per_page = per_page
   end
 
   def editions
