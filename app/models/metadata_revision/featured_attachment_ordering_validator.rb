@@ -1,5 +1,5 @@
 class MetadataRevision::FeaturedAttachmentOrderingValidator < ActiveModel::EachValidator
-  ORDER_ITEM_REGEX = /\AFileAttachment\d+\Z/.freeze
+  ORDER_ITEM_REGEX = /\AFileAttachment\d+\Z/
 
   def validate_each(record, attribute, value)
     value.each do |order_item|
