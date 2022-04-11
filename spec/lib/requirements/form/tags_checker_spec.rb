@@ -2,7 +2,7 @@ RSpec.describe Requirements::Form::TagsChecker do
   describe ".call" do
     it "returns no issues when there are none" do
       edition = build(:edition)
-      issues = described_class.call(edition, **{})
+      issues = described_class.call(edition, {})
       expect(issues.items).to be_empty
     end
 
@@ -13,7 +13,7 @@ RSpec.describe Requirements::Form::TagsChecker do
 
       params = { primary_publishing_organisation: SecureRandom.uuid }
       expect(tag).to receive(:form_issues).with(edition, params).and_call_original
-      described_class.call(edition, **params)
+      described_class.call(edition, params)
     end
   end
 end

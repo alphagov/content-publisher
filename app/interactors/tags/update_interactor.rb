@@ -33,7 +33,7 @@ private
   end
 
   def check_for_issues
-    issues = Requirements::Form::TagsChecker.call(edition, **update_params)
+    issues = Requirements::Form::TagsChecker.call(edition, update_params)
     context.fail!(issues: issues) if issues.any?
   end
 
