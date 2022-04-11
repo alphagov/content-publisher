@@ -2,7 +2,7 @@ class ImageNormaliser::TempImage
   delegate :original_filename, to: :raw_file
   delegate :frames, to: :raw_image
 
-  def initialize(raw_file, **)
+  def initialize(raw_file)
     @raw_file = raw_file
     @raw_image = MiniMagick::Image.open(raw_file.path)
     @tempfile = Tempfile.new

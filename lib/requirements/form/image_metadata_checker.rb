@@ -7,7 +7,7 @@ class Requirements::Form::ImageMetadataChecker
 
   attr_reader :params
 
-  def initialize(params, **)
+  def initialize(params)
     @params = params.to_h.symbolize_keys
   end
 

@@ -4,8 +4,8 @@ module WhitehallImporter
   class Sync
     attr_reader :whitehall_import
 
-    def self.call(*args)
-      new(*args).call
+    def self.call(...)
+      new(...).call
     end
 
     def initialize(whitehall_import)

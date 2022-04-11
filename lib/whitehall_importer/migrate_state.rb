@@ -10,8 +10,8 @@ module WhitehallImporter
       superseded
     ].freeze
 
-    def self.call(*args)
-      new(*args).call
+    def self.call(...)
+      new(...).call
     end
 
     def initialize(whitehall_state, force_published)

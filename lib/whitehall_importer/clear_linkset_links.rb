@@ -2,8 +2,8 @@ module WhitehallImporter
   class ClearLinksetLinks
     attr_reader :content_id
 
-    def self.call(*args)
-      new(*args).call
+    def self.call(...)
+      new(...).call
     end
 
     def initialize(content_id)

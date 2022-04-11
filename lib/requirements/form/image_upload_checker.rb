@@ -9,7 +9,7 @@ class Requirements::Form::ImageUploadChecker
 
   attr_reader :file
 
-  def initialize(file, **)
+  def initialize(file)
     @file = file
   end
 

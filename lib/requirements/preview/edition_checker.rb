@@ -8,7 +8,7 @@ class Requirements::Preview::EditionChecker
     Requirements::Preview::TagsChecker,
   ].freeze
 
-  def initialize(edition, **)
+  def initialize(edition)
     @edition = edition
   end
 

@@ -9,7 +9,7 @@ class Requirements::Publish::EditionChecker
     Requirements::Publish::TopicChecker,
   ].freeze
 
-  def initialize(edition, rescue_api_errors: false, **)
+  def initialize(edition, rescue_api_errors: false)
     @edition = edition
     @rescue_api_errors = rescue_api_errors
   end

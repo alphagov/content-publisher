@@ -5,8 +5,8 @@ module Callable
   extend ActiveSupport::Concern
 
   included do
-    def self.call(*args, **kwargs, &block)
-      new(*args, **kwargs, &block).call
+    def self.call(...)
+      new(...).call
     end
 
     private_class_method :new

@@ -3,7 +3,7 @@ class Requirements::Publish::FileAttachmentsChecker
 
   attr_reader :edition
 
-  def initialize(edition, **)
+  def initialize(edition)
     @edition = edition
   end
 

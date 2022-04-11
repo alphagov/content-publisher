@@ -3,8 +3,8 @@ module Requirements
     extend ActiveSupport::Concern
 
     included do
-      def self.call(*args, **kwargs)
-        instance = new(*args, **kwargs)
+      def self.call(...)
+        instance = new(...)
         instance.check
         instance.issues
       end

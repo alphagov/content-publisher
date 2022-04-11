@@ -3,7 +3,7 @@ class Requirements::Form::WithdrawalChecker
 
   attr_reader :edition, :public_explanation
 
-  def initialize(edition, public_explanation, **)
+  def initialize(edition, public_explanation)
     @edition = edition
     @public_explanation = public_explanation
   end

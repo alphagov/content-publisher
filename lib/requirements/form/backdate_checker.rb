@@ -5,7 +5,7 @@ class Requirements::Form::BackdateChecker
 
   attr_reader :backdate
 
-  def initialize(backdate, **)
+  def initialize(backdate)
     @backdate = backdate
   end
 

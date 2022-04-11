@@ -7,7 +7,7 @@ class Requirements::Form::PublishTimeChecker
 
   attr_reader :publish_time
 
-  def initialize(publish_time, **)
+  def initialize(publish_time)
     @publish_time = publish_time
   end
 
