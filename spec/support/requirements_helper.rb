@@ -11,7 +11,7 @@ RSpec::Matchers.define :have_issue do |field, key, context = {}|
     # this also means we cover all the translations being defined
     issue && context[:styles].all? do |style|
       expected = I18n.t!("requirements.#{field}.#{key}.#{style}_message",
-                         context.except(:styles).merge(force_raise: true))
+                         **context.except(:styles).merge(force_raise: true))
 
       issue.message(style: style) == expected
     end

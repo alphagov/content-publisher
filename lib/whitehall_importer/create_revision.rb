@@ -12,8 +12,8 @@ module WhitehallImporter
       speech_type
     ].freeze
 
-    def self.call(*args)
-      new(*args).call
+    def self.call(...)
+      new(...).call
     end
 
     def initialize(document_import, whitehall_edition, change_history = [])

@@ -1,5 +1,5 @@
 class TagsRevision::TagsValidator < ActiveModel::EachValidator
-  UUID_REGEX = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\Z/.freeze
+  UUID_REGEX = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\Z/
 
   TAG_FIELDS = %w[primary_publishing_organisation
                   organisations

@@ -4,8 +4,8 @@ module WhitehallImporter
   class CreateMigration
     attr_reader :organisation_content_id, :document_type, :document_subtypes
 
-    def self.call(*args)
-      new(*args).call
+    def self.call(...)
+      new(...).call
     end
 
     def initialize(organisation_content_id, document_type, document_subtypes = [])

@@ -13,8 +13,8 @@ module Requirements
       self.issues.push(*issues)
     end
 
-    def create(*args, **params)
-      issues << Issue.new(*args, **params)
+    def create(...)
+      issues << Issue.new(...)
     end
 
     def items(params = {})

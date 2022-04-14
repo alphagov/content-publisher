@@ -2,7 +2,7 @@ module WhitehallImporter
   class IntegrityChecker::BodyTextCheck
     attr_reader :proposed_body_text, :publishing_api_body_text
 
-    ACCESSIBLE_FORMAT_NOTICE = / This file may not be suitable for users of assistive technology. (.*) It will help us if you say what assistive technology you use./.freeze
+    ACCESSIBLE_FORMAT_NOTICE = / This file may not be suitable for users of assistive technology. (.*) It will help us if you say what assistive technology you use./
 
     def initialize(proposed_body_text, publishing_api_body_text)
       @proposed_body_text = proposed_body_text

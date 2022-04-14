@@ -9,7 +9,7 @@ module Requirements
     end
 
     def message(style:)
-      I18n.t("requirements.#{field}.#{issue_key}.#{style}_message", context)
+      I18n.t("requirements.#{field}.#{issue_key}.#{style}_message", **context)
     end
 
     def to_item(link_options: {}, style: "form")

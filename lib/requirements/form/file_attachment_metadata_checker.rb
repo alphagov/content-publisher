@@ -2,10 +2,10 @@ class Requirements::Form::FileAttachmentMetadataChecker
   include Requirements::Checker
 
   UNIQUE_REF_MAX_LENGTH = 255
-  ISBN10_REGEX = /^(?:\d[\ -]?){9}[\dX]$/i.freeze
-  ISBN13_REGEX = /^(?:\d[\ -]?){13}$/i.freeze
-  ACT_PAPER_REGEX = /^\d+(-[IV]+)?$/.freeze
-  COMMAND_PAPER_REGEX = /^(CP|C\.|Cd\.|Cmd\.|Cmnd\.|Cm\.)\s\d+(-[IV]+)?$/.freeze
+  ISBN10_REGEX = /^(?:\d[\ -]?){9}[\dX]$/i
+  ISBN13_REGEX = /^(?:\d[\ -]?){13}$/i
+  ACT_PAPER_REGEX = /^\d+(-[IV]+)?$/
+  COMMAND_PAPER_REGEX = /^(CP|C\.|Cd\.|Cmd\.|Cmnd\.|Cm\.)\s\d+(-[IV]+)?$/
 
   attr_reader :params
 
