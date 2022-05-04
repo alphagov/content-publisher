@@ -1,5 +1,5 @@
 <%
-  attachment = GovukPublishingComponents::Presenters::Attachment.new(attachment)
+  attachment = GovukPublishingComponents::Presenters::AttachmentHelper.new(attachment)
   attributes = []
 
   if attachment.content_type_name
