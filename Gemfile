@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "6.1.5.1"
+gem "rails", "6.1.6"
 
 gem "aws-sdk-s3"
 gem "bootsnap"
