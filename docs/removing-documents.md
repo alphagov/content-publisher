@@ -18,7 +18,11 @@ email address, for example:
 the change can be associated with you, the developer that performed the task,
 and attributed correctly in the document history.
 
-## Removing documents
+## Remove a document
+
+### Return a `410 Gone` response
+
+This will remove a document, and future requests for it will return a `410 Gone` response.
 
 Required parameters:
 
@@ -35,7 +39,9 @@ Optional parameters:
 rake remove:gone['a-content-id']
 ```
 
-## Redirect removed documents to another page on GOV.UK
+### Redirect to a different URL
+
+This will remove a document, and future requests for it will redirect to the specified URL.
 
 Required parameters:
 
