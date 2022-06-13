@@ -7,7 +7,7 @@ RSpec.describe WhitehallImporter::CreateImageRevision do
       it "creates an Image::Revision" do
         image_revision = nil
         expect { image_revision = described_class.call(document_import, whitehall_image) }
-          .to change { Image::Revision.count }.by(1)
+          .to change(Image::Revision, :count).by(1)
         expect(image_revision.caption).to eq(whitehall_image["caption"])
         expect(image_revision.alt_text).to eq(whitehall_image["alt_text"])
         expect(image_revision.filename).to eq("valid-image.jpg")

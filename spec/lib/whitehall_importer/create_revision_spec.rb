@@ -88,7 +88,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
         whitehall_edition = build(:whitehall_export_edition, images: [whitehall_image])
         revision = nil
         expect { revision = described_class.call(document_import, whitehall_edition) }
-          .to change { Image::Revision.count }.by(1)
+          .to change(Image::Revision, :count).by(1)
         expect(revision.image_revisions.last.caption).to eq(whitehall_image["caption"])
         expect(revision.image_revisions.last.alt_text).to eq(whitehall_image["alt_text"])
         expect(revision.image_revisions.last.filename).to eq("foo.jpg")
@@ -150,7 +150,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
         )
 
         expect { described_class.call(document_import, whitehall_edition) }
-          .to change { FileAttachment::Revision.count }.by(1)
+          .to change(FileAttachment::Revision, :count).by(1)
       end
 
       it "ensures that every file_attachment filename is unique" do
