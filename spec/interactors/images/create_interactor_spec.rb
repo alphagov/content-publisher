@@ -16,7 +16,7 @@ RSpec.describe Images::CreateInteractor do
     context "when input is valid" do
       it "creates a new image revision" do
         expect { described_class.call(**args) }
-          .to change { Image::Revision.count }.by(1)
+          .to change(Image::Revision, :count).by(1)
       end
 
       it "normalises the uploaded image and delegates saving it to CreateImageBlobService" do

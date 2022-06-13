@@ -20,7 +20,7 @@ RSpec.describe FileAttachments::CreateInteractor do
     context "when input is valid" do
       it "creates a new file attachment revision" do
         expect { described_class.call(**args) }
-          .to change { FileAttachment::Revision.count }.by(1)
+          .to change(FileAttachment::Revision, :count).by(1)
       end
 
       it "delegates saving the file to the CreateFileAttachmentBlobService" do
