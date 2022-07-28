@@ -36,7 +36,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       id: $select.id,
       source: function (query, syncResults) {
         var results = []
-        $select.options.forEach(function ($el) {
+        Array.from($select.options).forEach(function ($el) {
           results.push({ text: $el.textContent, hint: $el.dataset.hint || '', value: $el.value })
         })
         var resultMatcher = function (result) {
