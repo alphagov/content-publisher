@@ -58,7 +58,7 @@ RSpec.feature "Edit topics using search", js: true do
       @edition.content_id,
       "links" => {
         "taxons" => %w[level_two_topic],
-        "topics" => %w[specialist_sector_1 specialist_sector_2],
+        "topics" => %w[],
       },
       "previous_version" => 3,
     )

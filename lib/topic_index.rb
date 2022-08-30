@@ -64,10 +64,8 @@ private
     end
   end
 
-  def legacy_topic_content_ids(raw_topic)
-    legacy_taxons = raw_topic.dig("links", "legacy_taxons").to_a
-    legacy_taxons = legacy_taxons.select { |legacy_taxon| legacy_taxon["document_type"] == "topic" }
-    legacy_taxons.map { |legacy_taxon| legacy_taxon["content_id"] }
+  def legacy_topic_content_ids(_raw_topic)
+    []
   end
 
   def publishing_api
