@@ -60,7 +60,6 @@ private
   end
 
   def legacy_topic_content_ids
-    breadcrumbs = topics.map(&:breadcrumb).flatten
-    breadcrumbs.map(&:legacy_topic_content_ids).flatten.uniq
+    []
   end
 end
