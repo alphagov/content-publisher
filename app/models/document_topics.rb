@@ -42,7 +42,6 @@ class DocumentTopics
       document.content_id,
       links: {
         taxons: leaf_topic_content_ids + unknown_taxon_content_ids,
-        topics: legacy_topic_content_ids,
       },
       previous_version: version,
     )
@@ -57,9 +56,5 @@ private
   def leaf_topic_content_ids
     superfluous_topics = topics.map(&:ancestors).flatten
     (topics - superfluous_topics).map(&:content_id)
-  end
-
-  def legacy_topic_content_ids
-    []
   end
 end

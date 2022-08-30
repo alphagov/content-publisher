@@ -50,7 +50,6 @@ RSpec.feature "Edit topics" do
       @edition.content_id,
       "links" => {
         "taxons" => %w[level_two_topic],
-        "topics" => %w[],
       },
       "previous_version" => 3,
     )
