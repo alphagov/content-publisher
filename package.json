@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@webcomponents/custom-elements": "^1.4.1",
-    "abortcontroller-polyfill": "^1.4.0",
+    "abortcontroller-polyfill": "^1.7.3",
     "accessible-autocomplete": "kevindew/accessible-autocomplete",
     "core-js-bundle": "^3.25.0",
     "cropperjs": "^1.5.12",
