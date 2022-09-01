@@ -26,15 +26,6 @@ module TopicsHelper
       {
         "content_id" => "level_one_topic",
         "expanded_links" => {
-          "legacy_taxons" => [
-            {
-              "content_id" => "specialist_sector_1",
-              "document_type" => "topic",
-            },
-            {
-              "content_id" => "another_legacy_taxon",
-            },
-          ],
           "child_taxons" => [
             {
               "content_id" => "level_two_topic",
@@ -45,12 +36,6 @@ module TopicsHelper
                     "content_id" => "level_three_topic",
                     "title" => "Level Three Topic",
                     "links" => {},
-                  },
-                ],
-                "legacy_taxons" => [
-                  {
-                    "content_id" => "specialist_sector_2",
-                    "document_type" => "topic",
                   },
                 ],
               },
