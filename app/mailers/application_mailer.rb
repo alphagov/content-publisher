@@ -1,3 +1,5 @@
+require "notify"
+
 class ApplicationMailer < Mail::Notify::Mailer
   def default_url_options
     { host: Plek.new.external_url_for("content-publisher") }
