@@ -19,7 +19,6 @@ private
         content_id: GOVUK_HOMEPAGE_CONTENT_ID,
         title: "GOV.UK Homepage",
         child_content_ids: raw_level_one_topics.map { |raw_topic| raw_topic["content_id"] },
-        legacy_topic_content_ids: [],
       }
 
       topic_index = { GOVUK_HOMEPAGE_CONTENT_ID => govuk_homepage_topic }
@@ -56,18 +55,11 @@ private
         title: raw_topic["title"],
         child_content_ids: raw_child_topics.map { |raw_child_topic| raw_child_topic["content_id"] },
         parent_content_id: raw_parent_topic["content_id"],
-        legacy_topic_content_ids: legacy_topic_content_ids(raw_topic),
       }
 
       topic_index[raw_topic["content_id"]] = topic
       unroll(topic_index, raw_child_topics, raw_topic)
     end
-  end
-
-  def legacy_topic_content_ids(raw_topic)
-    legacy_taxons = raw_topic.dig("links", "legacy_taxons").to_a
-    legacy_taxons = legacy_taxons.select { |legacy_taxon| legacy_taxon["document_type"] == "topic" }
-    legacy_taxons.map { |legacy_taxon| legacy_taxon["content_id"] }
   end
 
   def publishing_api

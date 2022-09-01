@@ -51,11 +51,11 @@ RSpec.describe "Topics" do
     it "redirects to topics with an alert when there is a topic version conflict" do
       stub_publishing_api_patch_links_conflict(
         edition.content_id,
-        "links" => { "taxons" => [], "topics" => [] },
+        "links" => { "taxons" => [] },
         "previous_version" => 2,
       )
 
-      patch topics_path(edition.document), params: { topics: [], version: 2 }
+      patch topics_path(edition.document), params: { taxons: [], version: 2 }
 
       expect(response).to redirect_to(topics_path(edition.document))
       follow_redirect!

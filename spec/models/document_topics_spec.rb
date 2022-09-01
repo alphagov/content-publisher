@@ -69,7 +69,6 @@ RSpec.describe DocumentTopics do
         expected_links = {
           links: {
             taxons: %w[level_one_topic],
-            topics: %w[specialist_sector_1],
           },
           previous_version: 1,
         }
@@ -97,7 +96,6 @@ RSpec.describe DocumentTopics do
         expected_links = {
           links: {
             taxons: %w[level_two_topic],
-            topics: %w[specialist_sector_1 specialist_sector_2],
           },
           previous_version: 1,
         }
@@ -125,7 +123,6 @@ RSpec.describe DocumentTopics do
         expected_links = {
           links: {
             taxons: %w[level_two_topic unknown_taxon_content_id],
-            topics: %w[specialist_sector_1 specialist_sector_2],
           },
           previous_version: 1,
         }
