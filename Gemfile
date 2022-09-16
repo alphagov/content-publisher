@@ -25,6 +25,7 @@ gem "sanitize"
 gem "sassc-rails"
 gem "sentry-sidekiq"
 gem "sidekiq-scheduler"
+gem "sprockets-rails"
 gem "uglifier"
 gem "with_advisory_lock"
 
