@@ -4,11 +4,11 @@
   items: [
     {
       field: "Time started",
-      value: @whitehall_migration.created_at.to_s(:time_on_date),
+      value: @whitehall_migration.created_at.to_fs(:time_on_date),
     },
     {
       field: "Time finished",
-      value: @whitehall_migration.finished_at.nil? ? "unfinished" : @whitehall_migration.finished_at.to_s(:time_on_date),
+      value: @whitehall_migration.finished_at.nil? ? "unfinished" : @whitehall_migration.finished_at.to_fs(:time_on_date),
     },
     {
       field: "Number of document imports",

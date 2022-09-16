@@ -48,7 +48,7 @@ RSpec.feature "Scheduled publishing" do
     expect(page).to have_content(I18n.t!("user_facing_states.scheduled.name"))
     expect(page)
       .to have_content(I18n.t!("documents.show.scheduled_notice.title",
-                               datetime: @edition.proposed_publish_time.to_s(:time_on_date)))
+                               datetime: @edition.proposed_publish_time.to_fs(:time_on_date)))
   end
 
   def and_there_is_a_scheduled_timeline_entry
@@ -85,7 +85,7 @@ RSpec.feature "Scheduled publishing" do
     expect(message.body).to have_content("https://www.test.gov.uk/news/breaking-story")
     expect(message.body)
       .to have_content(I18n.t("scheduled_publish_mailer.success_email.details.publish",
-                              datetime: @edition.proposed_publish_time.to_s(:time_on_date)))
+                              datetime: @edition.proposed_publish_time.to_fs(:time_on_date)))
   end
 
   def when_i_visit_the_summary_page

@@ -14,7 +14,7 @@
         heading: t("schedule.new.title"),
         heading_level: 1,
         heading_size: 'xl',
-        description: render_govspeak(t("schedule.new.hint_text", datetime: datetime.to_s(:time_on_date))),
+        description: render_govspeak(t("schedule.new.hint_text", datetime: datetime.to_fs(:time_on_date))),
         name: "review_status",
         error_items: @issues&.items,
         items: [

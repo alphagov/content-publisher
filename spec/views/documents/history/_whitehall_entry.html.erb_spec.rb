@@ -8,8 +8,8 @@ RSpec.describe "documents/history/_whitehall_entry" do
       render template: described_template, locals: { entry: timeline_entry }
       expect(rendered)
         .to have_content(I18n.t!("documents.history.dateline_no_user",
-                                 date: Time.zone.now.to_s(:date),
-                                 time: Time.zone.now.to_s(:time)))
+                                 date: Time.zone.now.to_fs(:date),
+                                 time: Time.zone.now.to_fs(:time)))
     end
   end
 
@@ -22,8 +22,8 @@ RSpec.describe "documents/history/_whitehall_entry" do
       render template: described_template, locals: { entry: timeline_entry }
       expect(rendered)
         .to have_content(I18n.t!("documents.history.dateline_user",
-                                 date: Time.zone.now.to_s(:date),
-                                 time: Time.zone.now.to_s(:time),
+                                 date: Time.zone.now.to_fs(:date),
+                                 time: Time.zone.now.to_fs(:time),
                                  user: timeline_entry.created_by.name))
     end
   end
