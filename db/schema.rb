@@ -10,13 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_11_092145) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_09_16_182836) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "access_limits", force: :cascade do |t|
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.bigint "created_by_id"
     t.bigint "edition_id", null: false
     t.bigint "revision_at_creation_id", null: false
@@ -28,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -39,8 +38,8 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.string "checksum"
+    t.datetime "created_at", precision: nil, null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -56,17 +55,17 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.string "base_path"
     t.text "summary"
     t.json "contents", default: {}, null: false
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.bigint "created_by_id"
   end
 
   create_table "documents", force: :cascade do |t|
     t.uuid "content_id", null: false
     t.string "locale", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "created_by_id"
-    t.datetime "first_published_at"
+    t.datetime "first_published_at", precision: nil
     t.string "imported_from"
     t.index ["content_id", "locale"], name: "index_documents_on_content_id_and_locale", unique: true
     t.index ["created_by_id"], name: "index_documents_on_created_by_id"
@@ -75,7 +74,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
   create_table "edition_editors", force: :cascade do |t|
     t.bigint "edition_id", null: false
     t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["edition_id", "user_id"], name: "index_edition_editors_on_edition_id_and_user_id", unique: true
     t.index ["edition_id"], name: "index_edition_editors_on_edition_id"
     t.index ["user_id"], name: "index_edition_editors_on_user_id"
@@ -83,9 +82,9 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
 
   create_table "editions", force: :cascade do |t|
     t.integer "number", null: false
-    t.datetime "last_edited_at", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "last_edited_at", precision: nil, null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "document_id", null: false
     t.bigint "created_by_id"
     t.boolean "current", default: false, null: false
@@ -97,7 +96,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.bigint "access_limit_id"
     t.boolean "system_political", default: false, null: false
     t.uuid "government_id"
-    t.datetime "published_at"
+    t.datetime "published_at", precision: nil
     t.uuid "auth_bypass_id", null: false
     t.index ["access_limit_id"], name: "index_editions_on_access_limit_id"
     t.index ["created_by_id"], name: "index_editions_on_created_by_id"
@@ -113,7 +112,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
   create_table "editions_revisions", force: :cascade do |t|
     t.bigint "edition_id", null: false
     t.bigint "revision_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["edition_id", "revision_id"], name: "index_editions_revisions_on_edition_id_and_revision_id", unique: true
     t.index ["edition_id"], name: "index_editions_revisions_on_edition_id"
     t.index ["revision_id"], name: "index_editions_revisions_on_revision_id"
@@ -123,8 +122,8 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.bigint "blob_revision_id", null: false
     t.string "file_url"
     t.string "state", default: "absent", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "superseded_by_id"
     t.index ["blob_revision_id"], name: "index_file_attachment_assets_on_blob_revision_id", unique: true
     t.index ["file_url"], name: "index_file_attachment_assets_on_file_url", unique: true
@@ -134,13 +133,13 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.bigint "blob_id", null: false
     t.bigint "created_by_id"
     t.string "filename", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.integer "number_of_pages"
     t.index ["blob_id"], name: "index_file_attachment_blob_revisions_on_blob_id"
   end
 
   create_table "file_attachment_metadata_revisions", force: :cascade do |t|
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.string "title", null: false
     t.bigint "created_by_id"
     t.string "isbn"
@@ -151,7 +150,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
   end
 
   create_table "file_attachment_revisions", force: :cascade do |t|
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.bigint "created_by_id"
     t.bigint "file_attachment_id", null: false
     t.bigint "blob_revision_id", null: false
@@ -162,7 +161,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
   end
 
   create_table "file_attachments", force: :cascade do |t|
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.bigint "created_by_id"
   end
 
@@ -172,8 +171,8 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.string "variant", null: false
     t.string "file_url"
     t.string "state", default: "absent", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["blob_revision_id", "variant"], name: "index_image_asset_unique_variant", unique: true
     t.index ["blob_revision_id"], name: "index_image_assets_on_blob_revision_id"
     t.index ["file_url"], name: "index_image_assets_on_file_url", unique: true
@@ -189,7 +188,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.integer "crop_width", null: false
     t.integer "crop_height", null: false
     t.string "filename", null: false
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["blob_id"], name: "index_image_blob_revisions_on_blob_id"
   end
 
@@ -197,14 +196,14 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.string "caption"
     t.string "alt_text"
     t.string "credit"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.bigint "created_by_id"
   end
 
   create_table "image_revisions", force: :cascade do |t|
     t.bigint "image_id", null: false
     t.bigint "created_by_id"
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.bigint "blob_revision_id", null: false
     t.bigint "metadata_revision_id", null: false
     t.index ["blob_revision_id"], name: "index_image_revisions_on_blob_revision_id"
@@ -214,14 +213,14 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
 
   create_table "images", force: :cascade do |t|
     t.bigint "created_by_id"
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
   end
 
   create_table "internal_notes", force: :cascade do |t|
     t.text "body", null: false
     t.bigint "edition_id", null: false
     t.bigint "created_by_id"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["created_by_id"], name: "index_internal_notes_on_created_by_id"
     t.index ["edition_id"], name: "index_internal_notes_on_edition_id"
   end
@@ -229,10 +228,10 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
   create_table "metadata_revisions", force: :cascade do |t|
     t.string "update_type", null: false
     t.text "change_note"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.bigint "created_by_id"
-    t.datetime "proposed_publish_time"
-    t.datetime "backdated_to"
+    t.datetime "proposed_publish_time", precision: nil
+    t.datetime "backdated_to", precision: nil
     t.string "document_type_id", null: false
     t.boolean "editor_political"
     t.json "change_history", default: [], null: false
@@ -243,13 +242,13 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.string "explanatory_note"
     t.string "alternative_url"
     t.boolean "redirect", default: false
-    t.datetime "created_at", null: false
-    t.datetime "removed_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "removed_at", precision: nil, null: false
   end
 
   create_table "revisions", force: :cascade do |t|
     t.bigint "created_by_id"
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.bigint "document_id", null: false
     t.bigint "lead_image_revision_id"
     t.bigint "content_revision_id", null: false
@@ -271,7 +270,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
   create_table "revisions_file_attachment_revisions", force: :cascade do |t|
     t.bigint "file_attachment_revision_id", null: false
     t.bigint "revision_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["file_attachment_revision_id"], name: "index_revisions_file_attachment_on_file_attachment_revision_id"
     t.index ["revision_id"], name: "index_revisions_file_attachment_revisions_on_revision_id"
   end
@@ -279,7 +278,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
   create_table "revisions_image_revisions", force: :cascade do |t|
     t.bigint "image_revision_id", null: false
     t.bigint "revision_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["image_revision_id"], name: "index_revisions_image_revisions_on_image_revision_id"
     t.index ["revision_id"], name: "index_revisions_image_revisions_on_revision_id"
   end
@@ -287,7 +286,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
   create_table "revisions_statuses", force: :cascade do |t|
     t.bigint "revision_id", null: false
     t.bigint "status_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["revision_id", "status_id"], name: "index_revisions_statuses_on_revision_id_and_status_id", unique: true
     t.index ["revision_id"], name: "index_revisions_statuses_on_revision_id"
     t.index ["status_id"], name: "index_revisions_statuses_on_status_id"
@@ -295,9 +294,9 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
 
   create_table "schedulings", force: :cascade do |t|
     t.boolean "reviewed", default: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.bigint "pre_scheduled_status_id", null: false
-    t.datetime "publish_time", null: false
+    t.datetime "publish_time", precision: nil, null: false
   end
 
   create_table "statuses", force: :cascade do |t|
@@ -305,8 +304,8 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.bigint "revision_at_creation_id", null: false
     t.bigint "edition_id"
     t.bigint "created_by_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "details_type"
     t.bigint "details_id"
     t.index ["created_by_id"], name: "index_statuses_on_created_by_id"
@@ -318,7 +317,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
 
   create_table "tags_revisions", force: :cascade do |t|
     t.json "tags", default: {}, null: false
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.bigint "created_by_id"
   end
 
@@ -330,7 +329,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.bigint "created_by_id"
     t.string "details_type"
     t.bigint "details_id"
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.string "entry_type", null: false
     t.index ["created_by_id"], name: "index_timeline_entries_on_created_by_id"
     t.index ["details_type", "details_id"], name: "index_timeline_entries_on_details_type_and_details_id"
@@ -340,7 +339,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
 
   create_table "timeline_entry_whitehall_imported_entries", force: :cascade do |t|
     t.string "entry_type", null: false
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.json "contents", default: "{}", null: false
   end
 
@@ -354,8 +353,8 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.text "permissions"
     t.boolean "remotely_signed_out", default: false
     t.boolean "disabled", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "whitehall_migration_asset_imports", force: :cascade do |t|
@@ -366,8 +365,8 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.string "state", default: "pending", null: false
     t.string "variant"
     t.text "error_message"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["document_import_id"], name: "index_whitehall_migration_asset_on_document"
   end
 
@@ -377,8 +376,8 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
     t.uuid "content_id"
     t.string "state", null: false
     t.text "error_log"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "document_id"
     t.bigint "whitehall_migration_id", null: false
     t.string "integrity_check_problems", default: [], null: false, array: true
@@ -388,17 +387,17 @@ ActiveRecord::Schema.define(version: 2021_03_11_092145) do
   create_table "whitehall_migrations", force: :cascade do |t|
     t.text "organisation_content_id"
     t.text "document_type"
-    t.datetime "finished_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "finished_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "document_subtypes", array: true
   end
 
   create_table "withdrawals", force: :cascade do |t|
     t.string "public_explanation", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.bigint "published_status_id", null: false
-    t.datetime "withdrawn_at", null: false
+    t.datetime "withdrawn_at", precision: nil, null: false
   end
 
   add_foreign_key "access_limits", "editions", on_delete: :cascade
