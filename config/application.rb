@@ -59,6 +59,11 @@ module ContentPublisher
       "ApplicationController::Forbidden" => :forbidden,
     )
 
+    # Rails 7 defaults to using libvips instead of ImageMagick for processing
+    # ActiveStorage variants - we'd need to install vips on our production
+    # hosts and update variant config to use this.
+    Rails.application.config.active_storage.variant_processor = :mini_magick
+
     # Rails 6.1 introduced this new configuration option that has compatibility
     # problems with Content Publisher. It uploads an ActiveStorage variant
     # after a transaction is commited [1]. This causes problems for us when
