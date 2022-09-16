@@ -34,7 +34,6 @@ group :development do
 end
 
 group :test do
-  gem "i18n-coverage"
   gem "simplecov"
 end
 
@@ -44,6 +43,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "govuk_schemas"
   gem "govuk_test"
+  gem "i18n-coverage"
   gem "json_matchers"
   gem "rspec-rails"
   gem "rubocop-govuk", require: false
