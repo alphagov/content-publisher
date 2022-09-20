@@ -74,6 +74,10 @@ module ContentPublisher
     # [2]: https://github.com/alphagov/content-publisher/blob/3c3c5bf489a75c9ef7041eece6d6bbb03a280642/app/models/image/blob_revision.rb#L37-L51
     config.active_storage.track_variants = false
 
+    # We don't utilise the JS assets for activestorage and thus don't want them
+    # compiled - they also cause an error as they use ES6 syntax
+    config.active_storage.precompile_assets = false
+
     # Using a sass css compressor causes a scss file to be processed twice
     # (once to build, once to compress) which breaks the usage of "unquote"
     # to use CSS that has same function names as SCSS such as max.
