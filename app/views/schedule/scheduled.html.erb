@@ -12,7 +12,7 @@
 
     <%= render_govspeak(t("schedule.scheduled.body_govspeak",
                           title: @edition.title,
-                          datetime: scheduling.publish_time.to_s(:time_on_date))) %>
+                          datetime: scheduling.publish_time.to_fs(:time_on_date))) %>
 
     <%= render "govuk_publishing_components/components/inset_text", {
       text: link_to(strip_scheme_from_url(public_url), public_url,

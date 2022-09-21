@@ -84,7 +84,7 @@ RSpec.feature "Publish without review" do
                                          title: @edition.title))
 
     expect(message.body).to have_content(I18n.t("publish_mailer.publish_email.details.publish",
-                                                datetime: @publish_time.to_s(:time_on_date),
+                                                datetime: @publish_time.to_fs(:time_on_date),
                                                 user: current_user.name))
   end
 end

@@ -48,7 +48,7 @@ class FileAttachmentsController < ApplicationController
     else
       attachment_revision, edition = result.to_h.values_at(:attachment_revision,
                                                            :edition)
-      redirect_to file_attachment_preview_url(attachment_revision, edition)
+      redirect_to file_attachment_preview_url(attachment_revision, edition), allow_other_host: true
     end
   end
 

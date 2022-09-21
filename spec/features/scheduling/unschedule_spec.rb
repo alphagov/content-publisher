@@ -37,7 +37,7 @@ RSpec.feature "Unschedule" do
   def and_the_proposed_publish_time_is_still_set
     expect(page)
       .to have_content(I18n.t!("documents.show.proposed_scheduling_notice.title",
-                               datetime: @scheduling.publish_time.to_s(:time_on_date)))
+                               datetime: @scheduling.publish_time.to_fs(:time_on_date)))
   end
 
   def and_i_see_the_timeline_entry

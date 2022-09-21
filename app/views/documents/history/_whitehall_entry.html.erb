@@ -18,7 +18,7 @@
   <% if entry.details.imported_from_whitehall? %>
     <%= render "govuk_publishing_components/components/notice", {
       title: t("documents.history.entry_types.whitehall_migration.#{entry.details.entry_type}"),
-      description_text: entry.created_at.to_s(:date),
+      description_text: entry.created_at.to_fs(:date),
     } %>
   <% else %>
     <h4 class="govuk-heading-s">
@@ -28,13 +28,13 @@
     <div class="app-timeline-entry__dateline">
       <% if entry.created_by %>
         <%= t "documents.history.dateline_user",
-            date: entry.created_at.to_s(:date),
-            time: entry.created_at.to_s(:time),
+            date: entry.created_at.to_fs(:date),
+            time: entry.created_at.to_fs(:time),
             user: entry.created_by.name %>
       <% else %>
         <%= t "documents.history.dateline_no_user",
-            date: entry.created_at.to_s(:date),
-            time: entry.created_at.to_s(:time) %>
+            date: entry.created_at.to_fs(:date),
+            time: entry.created_at.to_fs(:time) %>
       <% end %>
     </div>
 

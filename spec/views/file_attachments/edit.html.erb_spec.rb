@@ -1,4 +1,4 @@
-RSpec.describe "file_attachments/edit.html.erb" do
+RSpec.describe "file_attachments/edit" do
   describe "official documents" do
     it "renders official document types" do
       assign(:edition, build(:edition))

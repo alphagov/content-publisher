@@ -9,7 +9,7 @@
   <% metadata = [
     {
       field: t("documents.show.metadata.created_at"),
-      value: (created_at = @edition.document.created_at) ? created_at.to_s(:time_on_date) : "",
+      value: (created_at = @edition.document.created_at) ? created_at.to_fs(:time_on_date) : "",
     },
     {
       field: t("documents.show.metadata.created_by"),
@@ -31,7 +31,7 @@
       },
       {
         field: t("documents.show.metadata.updated_at"),
-        value: @edition.last_edited_at.to_s(:time_on_date),
+        value: @edition.last_edited_at.to_fs(:time_on_date),
       },
     ] + metadata
   } %>

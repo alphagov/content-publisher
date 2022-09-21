@@ -42,7 +42,7 @@
   },
   error_items: issues&.items_for(:schedule_time),
   input: {
-    value: params.dig(:schedule, :time) || publish_time.to_s(:time),
+    value: params.dig(:schedule, :time) || publish_time.to_fs(:time),
     options: time_options,
   },
   data_attributes: {

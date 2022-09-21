@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "6.1.7"
+gem "rails", "7.0.4"
 
 gem "aws-sdk-s3"
 gem "bootsnap"
@@ -25,6 +25,7 @@ gem "sanitize"
 gem "sassc-rails"
 gem "sentry-sidekiq"
 gem "sidekiq-scheduler"
+gem "sprockets-rails"
 gem "uglifier"
 gem "with_advisory_lock"
 
@@ -34,7 +35,6 @@ group :development do
 end
 
 group :test do
-  gem "i18n-coverage"
   gem "simplecov"
 end
 
@@ -44,6 +44,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "govuk_schemas"
   gem "govuk_test"
+  gem "i18n-coverage"
   gem "json_matchers"
   gem "rspec-rails"
   gem "rubocop-govuk", require: false
