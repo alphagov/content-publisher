@@ -30,7 +30,7 @@ class NewDocumentController < ApplicationController
                       new_document_path(type: selected_option.id)
                     end
 
-      redirect_to destination
+      redirect_to destination, allow_other_host: true
     end
   end
 end

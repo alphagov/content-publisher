@@ -33,6 +33,12 @@ RSpec.describe "New Document" do
       expect(response).to redirect_to(guidance_url)
     end
 
+    it "can redirect a managed elsewhere link on a different host" do
+      post new_document_path, params: { type: "news", selected_option_id: "speech" }
+
+      expect(response).to redirect_to("https://whitehall-admin.test.gov.uk/government/admin/speeches/new")
+    end
+
     it "asks the user to refine their selection when the document type has subtypes" do
       post new_document_path, params: { type: "root", selected_option_id: "news" }
 
