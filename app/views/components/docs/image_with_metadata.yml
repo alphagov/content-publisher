@@ -20,7 +20,7 @@ examples:
         - field: Caption
           value: Larry, Chief Mouser to the Cabinet Office
         - field: Credit
-          value: Her Majesty's Government
+          value: His Majesty's Government
   with_actions:
     data:
       src: https://assets.publishing.service.gov.uk/government/assets/history/buildings/larry-the-cat-a47549e08bdbc6cd0e3e042eea943f65b7a4590d95642586e51acb44bb2dcea2.jpg
@@ -39,4 +39,4 @@ examples:
         - field: Caption
           value: Larry, Chief Mouser to the Cabinet Office
         - field: Credit
-          value: Her Majesty's Government
+          value: His Majesty's Government

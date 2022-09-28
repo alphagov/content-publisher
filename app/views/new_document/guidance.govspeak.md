@@ -50,7 +50,7 @@ The [Parliament website](https://www.parliament.uk/) covers the work of parliame
 
 ### Legislation.gov.uk
 
-Bills which have been approved by the Commons, the Lords, and The Queen become law and are recorded on [Legislation.gov.uk](http://www.legislation.gov.uk/).
+Bills which have been approved by the Commons, the Lords, and the King become law and are recorded on [Legislation.gov.uk](http://www.legislation.gov.uk/).
 
 ### Devolved government
 
