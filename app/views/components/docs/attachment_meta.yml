@@ -7,9 +7,7 @@ body: |
   not desired.
 part_of_admin_layout: true
 examples:
-  unofficial_document:
-    description: |
-      Unofficial document
+  default:
     data:
       attachment:
         title: "The government financial reporting review"
