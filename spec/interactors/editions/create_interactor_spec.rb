@@ -17,7 +17,7 @@ RSpec.describe Editions::CreateInteractor do
       params = { document: edition.document.to_param }
 
       next_edition = described_class
-        .call(params: params, user: user)
+        .call(params:, user:)
         .next_edition
 
       expect(next_edition.update_type).to eq "major"
@@ -34,7 +34,7 @@ RSpec.describe Editions::CreateInteractor do
       expect(FailsafeDraftPreviewService).not_to receive(:call).with(old_edition)
 
       described_class
-        .call(params: { document: old_edition.document.to_param }, user: user)
+        .call(params: { document: old_edition.document.to_param }, user:)
     end
 
     context "when the edition was discarded" do
@@ -52,15 +52,15 @@ RSpec.describe Editions::CreateInteractor do
         expect(CreateNextEditionService)
           .to receive(:call)
           .with(current_edition: live_edition,
-                user: user,
-                discarded_edition: discarded_edition)
+                user:,
+                discarded_edition:)
           .and_call_original
-        described_class.call(params: params, user: user)
+        described_class.call(params:, user:)
       end
 
       it "creates a timeline entry" do
         next_edition = described_class
-          .call(params: params, user: user)
+          .call(params:, user:)
           .next_edition
 
         entry = TimelineEntry.last
@@ -76,14 +76,14 @@ RSpec.describe Editions::CreateInteractor do
       it "delegates to the CreateNextEditionService" do
         expect(CreateNextEditionService)
           .to receive(:call)
-          .with(current_edition: edition, user: user, discarded_edition: nil)
+          .with(current_edition: edition, user:, discarded_edition: nil)
           .and_call_original
-        described_class.call(params: params, user: user)
+        described_class.call(params:, user:)
       end
 
       it "creates a timeline entry" do
         next_edition = described_class
-          .call(params: params, user: user)
+          .call(params:, user:)
           .next_edition
 
         entry = TimelineEntry.last

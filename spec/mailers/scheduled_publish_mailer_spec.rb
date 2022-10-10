@@ -104,7 +104,7 @@ RSpec.describe ScheduledPublishMailer do
     it "includes the time that publishing was expected" do
       scheduling = build(:scheduling,
                          publish_time: Time.zone.parse("2019-06-17 12:00"))
-      edition = build(:edition, :failed_to_publish, scheduling: scheduling)
+      edition = build(:edition, :failed_to_publish, scheduling:)
 
       mail = described_class.failure_email(recipient, edition, edition.status)
 

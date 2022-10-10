@@ -11,7 +11,7 @@ RSpec.describe FileAttachments::UpdateFileInteractor do
     let(:params) do
       ActionController::Parameters.new(
         file_attachment: {
-          file: file,
+          file:,
           title: "My title",
         },
         document: edition.document.to_param,
@@ -33,7 +33,7 @@ RSpec.describe FileAttachments::UpdateFileInteractor do
               filename: file.original_filename)
         .and_call_original
 
-      described_class.call(params: params, user: user)
+      described_class.call(params:, user:)
     end
   end
 end

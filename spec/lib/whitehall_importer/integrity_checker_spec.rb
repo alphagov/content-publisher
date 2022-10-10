@@ -21,8 +21,8 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     let(:edition) do
       build(:edition,
             status,
-            state: state,
-            document_type: document_type,
+            state:,
+            document_type:,
             published_at: "2020-03-11 12:00 UTC",
             document: create(:document, first_published_at: "2020-03-11 12:00:45 UTC"),
             tags: {
@@ -146,9 +146,9 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       withdrawal = build(:withdrawal, public_explanation: markdown_explanation)
       withdrawn_edition = build(:edition,
                                 :withdrawn,
-                                document_type: document_type,
+                                document_type:,
                                 first_published_at: Date.yesterday.noon,
-                                withdrawal: withdrawal)
+                                withdrawal:)
 
       first_published_at = withdrawn_edition.document.first_published_at
       stub_publishing_api_has_item(
@@ -189,9 +189,9 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       let(:removed_edition) do
         build(:edition,
               :removed,
-              document_type: document_type,
+              document_type:,
               first_published_at: Date.yesterday.noon,
-              removal: removal)
+              removal:)
       end
 
       let(:first_published_at) { removed_edition.document.first_published_at }
@@ -259,7 +259,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
       let(:edition) do
         build(:edition,
               document: create(:document, first_published_at: "2020-03-11 12:00:00 +0000"),
-              document_type: document_type,
+              document_type:,
               file_attachment_revisions: [file_attachment_revision],
               contents: {
                 body: "[InlineAttachment:#{file_attachment_revision.filename}]",
@@ -289,7 +289,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     let(:edition) do
       build(:edition,
             :published,
-            document_type: document_type,
+            document_type:,
             image_revisions: [build(:image_revision)],
             document: create(:document, first_published_at: "2020-03-11 18:32:38 UTC"),
             tags: { "organisations" => [] })
@@ -519,7 +519,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
     context "when the edition is removed" do
       let(:removal) { build(:removal) }
-      let(:edition) { build(:edition, :removed, removal: removal) }
+      let(:edition) { build(:edition, :removed, removal:) }
       let(:unpublishing_explanation) { "This was removed" }
       let(:integrity_check) { described_class.new(edition) }
       let(:publishing_api_item) do
@@ -552,7 +552,7 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
 
     context "when the edition is removed and redirected" do
       let(:removal) { build(:removal, redirect: true, alternative_url: "/somewhere") }
-      let(:edition) { build(:edition, :removed, removal: removal) }
+      let(:edition) { build(:edition, :removed, removal:) }
       let(:publishing_api_item) do
         default_publishing_api_item(edition,
                                     publication_state: "unpublished",

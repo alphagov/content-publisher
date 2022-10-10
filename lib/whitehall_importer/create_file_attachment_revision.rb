@@ -18,7 +18,7 @@ module WhitehallImporter
 
       blob_revision = create_blob_revision(decorated_file)
       revision = FileAttachment::Revision.create!(
-        blob_revision: blob_revision,
+        blob_revision:,
         file_attachment: FileAttachment.create!,
         metadata_revision: FileAttachment::MetadataRevision.create!(
           title: whitehall_file_attachment["title"],
@@ -40,7 +40,7 @@ module WhitehallImporter
 
     def unique_filename
       @unique_filename ||= GenerateUniqueFilenameService.call(
-        existing_filenames: existing_filenames,
+        existing_filenames:,
         filename: File.basename(whitehall_file_attachment["url"]),
       )
     end
@@ -68,16 +68,16 @@ module WhitehallImporter
 
     def record_assets(revision)
       WhitehallMigration::AssetImport.create!(
-        document_import: document_import,
+        document_import:,
         file_attachment_revision: revision,
         original_asset_url: whitehall_file_attachment["url"],
       )
       whitehall_file_attachment["variants"].each do |variant, metadata|
         WhitehallMigration::AssetImport.create!(
-          document_import: document_import,
+          document_import:,
           file_attachment_revision: revision,
           original_asset_url: metadata["url"],
-          variant: variant,
+          variant:,
         )
       end
     end

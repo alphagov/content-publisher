@@ -22,12 +22,12 @@ RSpec.feature "Upload file attachment", js: true do
 
   def given_there_is_an_edition
     document_type = build(:document_type, :with_body)
-    @edition = create(:edition, document_type: document_type)
+    @edition = create(:edition, document_type:)
   end
 
   def given_there_is_an_edition_that_allows_featured_attachments
     document_type = build(:document_type, attachments: "featured")
-    @edition = create(:edition, document_type: document_type)
+    @edition = create(:edition, document_type:)
   end
 
   def when_i_go_to_edit_the_edition

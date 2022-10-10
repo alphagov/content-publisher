@@ -10,10 +10,10 @@ RSpec.describe FileAttachments::CreateInteractor do
       {
         params: {
           document: edition.document.to_param,
-          file: file,
-          title: title,
+          file:,
+          title:,
         },
-        user: user,
+        user:,
       }
     end
 
@@ -25,7 +25,7 @@ RSpec.describe FileAttachments::CreateInteractor do
 
       it "delegates saving the file to the CreateFileAttachmentBlobService" do
         expect(CreateFileAttachmentBlobService).to receive(:call)
-          .with(file: file, filename: file.original_filename, user: user)
+          .with(file:, filename: file.original_filename, user:)
           .and_call_original
         described_class.call(**args)
       end

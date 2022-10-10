@@ -7,7 +7,7 @@ class UnwithdrawController < ApplicationController
   end
 
   def unwithdraw
-    result = Unwithdraw::UnwithdrawInteractor.call(params: params, user: current_user)
+    result = Unwithdraw::UnwithdrawInteractor.call(params:, user: current_user)
 
     if result.api_error
       redirect_to document_path(params[:document]),

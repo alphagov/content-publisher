@@ -16,7 +16,7 @@ class Requirements::Form::BackdateChecker
 
     if backdate < EARLIEST_DATE
       date = EARLIEST_DATE.strftime("%-d %B %Y")
-      issues.create(:backdate_date, :too_long_ago, date: date)
+      issues.create(:backdate_date, :too_long_ago, date:)
     end
   end
 end

@@ -40,7 +40,7 @@ RSpec.describe WhitehallImporter::Import do
 
     it "aborts if a document already exists" do
       content_id = create(:document).content_id
-      whitehall_export = build(:whitehall_export_document, content_id: content_id)
+      whitehall_export = build(:whitehall_export_document, content_id:)
       stub_whitehall_document_export(
         document_import.whitehall_document_id, whitehall_export
       )

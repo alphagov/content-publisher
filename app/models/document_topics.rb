@@ -8,15 +8,15 @@ class DocumentTopics
     links = publishing_api.get_links(document.content_id)
 
     new(
-      index: index,
-      document: document,
+      index:,
+      document:,
       version: links["version"],
       topic_content_ids: links.dig("links", "taxons").to_a,
     )
   rescue GdsApi::HTTPNotFound
     new(
-      index: index,
-      document: document,
+      index:,
+      document:,
       version: nil,
       topic_content_ids: [],
     )
@@ -33,7 +33,7 @@ class DocumentTopics
 
     assign_attributes(
       topic_content_ids: valid_topic_content_ids + unknown_taxon_content_ids,
-      version: version,
+      version:,
     )
 
     @topics = nil

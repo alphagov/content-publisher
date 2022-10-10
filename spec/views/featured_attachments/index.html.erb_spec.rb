@@ -17,7 +17,7 @@ RSpec.describe "featured_attachments/index" do
   it "shows a reorder action for multiple attachments" do
     file_attachment_revisions = create_list(:file_attachment_revision, 2)
     edition = create(:edition,
-                     file_attachment_revisions: file_attachment_revisions)
+                     file_attachment_revisions:)
     assign(:edition, edition)
     render
     expect(rendered).to have_content("Reorder attachments")

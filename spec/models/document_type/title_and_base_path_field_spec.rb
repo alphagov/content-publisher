@@ -60,7 +60,7 @@ RSpec.describe DocumentType::TitleAndBasePathField do
       max_length = DocumentType::TitleAndBasePathField::TITLE_MAX_LENGTH
       params = { title: "a" * (max_length + 1) }
       issues = described_class.new.form_issues(edition, params)
-      expect(issues).to have_issue(:title, :too_long, max_length: max_length)
+      expect(issues).to have_issue(:title, :too_long, max_length:)
     end
 
     it "returns an issue if the title has newlines" do

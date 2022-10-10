@@ -29,9 +29,9 @@ module WhitehallImporter
   private
 
     def create_migration
-      WhitehallMigration.create!(organisation_content_id: organisation_content_id,
-                                 document_type: document_type,
-                                 document_subtypes: document_subtypes)
+      WhitehallMigration.create!(organisation_content_id:,
+                                 document_type:,
+                                 document_subtypes:)
     end
 
     def whitehall_document_list

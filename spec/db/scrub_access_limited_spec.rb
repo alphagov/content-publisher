@@ -7,7 +7,7 @@ RSpec.describe "Scrub Access Limited SQL Script" do
   let(:document) { create(:document) }
 
   it "replaces an access limited draft with the live one" do
-    current_edition = create(:edition, :access_limited, document: document)
+    current_edition = create(:edition, :access_limited, document:)
     live_edition = create(:edition,
                           :published,
                           current: false,
@@ -22,7 +22,7 @@ RSpec.describe "Scrub Access Limited SQL Script" do
   end
 
   it "leaves no editions for a document with only an active limited draft" do
-    create(:edition, :access_limited, document: document)
+    create(:edition, :access_limited, document:)
 
     expect { execute_sql }
       .to change { document.editions.count }
@@ -30,7 +30,7 @@ RSpec.describe "Scrub Access Limited SQL Script" do
   end
 
   it "doesn't affect editions that aren't access limited" do
-    create(:edition, document: document)
+    create(:edition, document:)
 
     expect { execute_sql }
       .not_to change { document.editions.count }
@@ -39,7 +39,7 @@ RSpec.describe "Scrub Access Limited SQL Script" do
 
   it "removes associated internal notes" do
     edition = create(:edition, :access_limited)
-    internal_note = create(:internal_note, edition: edition)
+    internal_note = create(:internal_note, edition:)
 
     execute_sql
 
@@ -48,7 +48,7 @@ RSpec.describe "Scrub Access Limited SQL Script" do
 
   it "removes associated timeline entries" do
     edition = create(:edition, :access_limited)
-    timeline_entry = create(:timeline_entry, edition: edition)
+    timeline_entry = create(:timeline_entry, edition:)
 
     execute_sql
 
@@ -89,7 +89,7 @@ RSpec.describe "Scrub Access Limited SQL Script" do
   it "doesn't delete a revision that is associated with a non access limited edition" do
     access_limited_edition = create(:edition, :access_limited)
     revision = access_limited_edition.revision
-    non_access_limited_edition = create(:edition, revision: revision)
+    non_access_limited_edition = create(:edition, revision:)
 
     execute_sql
 

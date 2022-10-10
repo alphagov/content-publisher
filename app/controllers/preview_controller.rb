@@ -1,6 +1,6 @@
 class PreviewController < ApplicationController
   def create
-    result = Preview::CreateInteractor.call(params: params, user: current_user)
+    result = Preview::CreateInteractor.call(params:, user: current_user)
     issues, preview_failed = result.to_h.values_at(:issues, :preview_failed)
 
     if issues

@@ -10,8 +10,8 @@ RSpec.feature "Unwithdraw" do
 
   def given_there_is_a_withdrawn_edition
     published_status = build(:status, :published_but_needs_2i)
-    withdrawal = build(:withdrawal, published_status: published_status)
-    @edition = create(:edition, :withdrawn, withdrawal: withdrawal)
+    withdrawal = build(:withdrawal, published_status:)
+    @edition = create(:edition, :withdrawn, withdrawal:)
   end
 
   def and_i_am_a_managing_editor

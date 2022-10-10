@@ -5,13 +5,13 @@ RSpec.describe WhitehallImporter::IntegrityChecker::UnpublishingCheck do
           public_explanation: "#{withdrawal_explanation} [elsewhere](https://www.gov.uk/elsewhere)")
   end
 
-  let(:withdrawn_edition) { build(:edition, :withdrawn, withdrawal: withdrawal) }
+  let(:withdrawn_edition) { build(:edition, :withdrawn, withdrawal:) }
   let(:removed_explanation) { "This has been removed" }
   let(:removal) do
     build(:removal,
           explanatory_note: "#{removed_explanation} [Visit here](https://www.gov.uk/here)")
   end
-  let(:removed_edition) { build(:edition, :removed, removal: removal) }
+  let(:removed_edition) { build(:edition, :removed, removal:) }
 
   let(:removal_with_redirect) do
     build(:removal,

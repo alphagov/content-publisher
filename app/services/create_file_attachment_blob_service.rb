@@ -10,14 +10,14 @@ class CreateFileAttachmentBlobService
   def call
     blob = ActiveStorage::Blob.create_and_upload!(
       io: file,
-      filename: filename,
+      filename:,
       content_type: mime_type,
     )
 
     FileAttachment::BlobRevision.create!(
-      blob: blob,
-      filename: filename,
-      number_of_pages: number_of_pages,
+      blob:,
+      filename:,
+      number_of_pages:,
       created_by: user,
       asset: FileAttachment::Asset.new,
     )

@@ -25,14 +25,14 @@ private
 
   def check_for_issues
     issues = Requirements::Publish::EditionChecker.call(edition)
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     context.fail!(api_error: true)
   end
 
   def update_status
-    AssignEditionStatusService.call(edition, user: user, state: :submitted_for_review)
+    AssignEditionStatusService.call(edition, user:, state: :submitted_for_review)
     edition.save!
   end
 

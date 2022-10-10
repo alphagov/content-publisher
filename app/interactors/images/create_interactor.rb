@@ -26,7 +26,7 @@ private
 
   def check_for_issues
     issues = Requirements::Form::ImageUploadChecker.call(params[:image])
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def normalise_image
@@ -37,8 +37,8 @@ private
 
   def create_image_revision
     blob_revision = CreateImageBlobService.call(
-      user: user,
-      temp_image: temp_image,
+      user:,
+      temp_image:,
       filename: GenerateUniqueFilenameService.call(
         existing_filenames: edition.revision.image_revisions.map(&:filename),
         filename: temp_image.original_filename,
@@ -48,7 +48,7 @@ private
     context.image_revision = Image::Revision.create!(
       image: Image.create!(created_by: user),
       created_by: user,
-      blob_revision: blob_revision,
+      blob_revision:,
       metadata_revision: Image::MetadataRevision.create!(created_by: user),
     )
   end

@@ -3,7 +3,7 @@ RSpec.describe Schedule::UpdateInteractor do
     before { stub_any_publishing_api_put_intent }
 
     let(:scheduling) { build(:scheduling) }
-    let(:edition) { create(:edition, :scheduled, scheduling: scheduling) }
+    let(:edition) { create(:edition, :scheduled, scheduling:) }
     let(:user) { build(:user) }
     let(:publish_time) { 3.weeks.from_now.beginning_of_day }
 
@@ -22,7 +22,7 @@ RSpec.describe Schedule::UpdateInteractor do
     end
 
     it "succeeds with default paramaters" do
-      result = described_class.call(params: build_params, user: user)
+      result = described_class.call(params: build_params, user:)
       expect(result).to be_success
     end
 
@@ -35,34 +35,34 @@ RSpec.describe Schedule::UpdateInteractor do
           expect(new_scheduling.publish_time).to eq(publish_time)
         end
 
-      described_class.call(params: build_params, user: user)
+      described_class.call(params: build_params, user:)
     end
 
     it "creates a timeline entry" do
-      expect { described_class.call(params: build_params, user: user) }
+      expect { described_class.call(params: build_params, user:) }
         .to change { TimelineEntry.where(entry_type: :schedule_updated).count }
         .by(1)
     end
 
     context "when the scheduling is the same as scheduled time" do
-      let(:scheduling) { build(:scheduling, publish_time: publish_time) }
+      let(:scheduling) { build(:scheduling, publish_time:) }
       let(:params) { build_params(time: publish_time) }
 
       it "fails without scheduling the edition" do
         expect(SchedulePublishService).not_to receive(:call)
-        result = described_class.call(params: params, user: user)
+        result = described_class.call(params:, user:)
         expect(result).to be_failure
       end
 
       it "doesn't create a timeline entry" do
-        expect { described_class.call(params: params, user: user) }
+        expect { described_class.call(params:, user:) }
           .not_to(change { TimelineEntry.where(entry_type: :schedule_updated).count })
       end
     end
 
     it "raises an error when the edition isn't scheduled" do
       params = build_params(document: create(:document, :with_current_edition))
-      expect { described_class.call(params: params, user: user) }
+      expect { described_class.call(params:, user:) }
         .to raise_error(EditionAssertions::StateError)
     end
 
@@ -70,7 +70,7 @@ RSpec.describe Schedule::UpdateInteractor do
       params = build_params
       params[:schedule][:time] = "invalid"
 
-      result = described_class.call(params: params, user: user)
+      result = described_class.call(params:, user:)
       expect(result).to be_failure
       expect(result.issues).to have_issue(:schedule_time, :invalid)
     end
@@ -78,14 +78,14 @@ RSpec.describe Schedule::UpdateInteractor do
     it "fails with issues when the time fails the publish time requirements" do
       params = build_params(time: Time.zone.yesterday)
 
-      result = described_class.call(params: params, user: user)
+      result = described_class.call(params:, user:)
       expect(result).to be_failure
       expect(result.issues).to have_issue(:schedule_date, :in_the_past)
     end
 
     it "fails with an API error when SchedulePublishService raises a GdsApi Error" do
       stub_publishing_api_isnt_available
-      result = described_class.call(params: build_params, user: user)
+      result = described_class.call(params: build_params, user:)
 
       expect(result).to be_failure
       expect(result.api_error).to be(true)

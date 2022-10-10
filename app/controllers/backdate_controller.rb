@@ -6,7 +6,7 @@ class BackdateController < ApplicationController
   end
 
   def update
-    result = Backdate::UpdateInteractor.call(params: params, user: current_user)
+    result = Backdate::UpdateInteractor.call(params:, user: current_user)
     edition, issues = result.to_h.values_at(:edition, :issues)
 
     if issues
@@ -17,7 +17,7 @@ class BackdateController < ApplicationController
       }
 
       render :edit,
-             assigns: { edition: edition, issues: issues },
+             assigns: { edition:, issues: },
              status: :unprocessable_entity
     else
       redirect_to document_path(edition.document)
@@ -25,7 +25,7 @@ class BackdateController < ApplicationController
   end
 
   def destroy
-    result = Backdate::DestroyInteractor.call(params: params, user: current_user)
+    result = Backdate::DestroyInteractor.call(params:, user: current_user)
     edition = result.edition
     redirect_to document_path(edition.document)
   end

@@ -2,12 +2,12 @@ class EditionsController < ApplicationController
   before_action :check_permissions
 
   def create
-    Editions::CreateInteractor.call(params: params, user: current_user)
+    Editions::CreateInteractor.call(params:, user: current_user)
     redirect_to content_path(params[:document])
   end
 
   def destroy_draft
-    result = Editions::DestroyInteractor.call(params: params, user: current_user)
+    result = Editions::DestroyInteractor.call(params:, user: current_user)
 
     if result.api_error
       redirect_to document_path(params[:document]),

@@ -45,7 +45,7 @@ RSpec.describe "Remove tasks" do
       end
 
       expect(RemoveDocumentService)
-        .to have_received(:call).with(anything, anything, user: user)
+        .to have_received(:call).with(anything, anything, user:)
     end
 
     it "raises an error if a content_id is not present" do
@@ -96,7 +96,7 @@ RSpec.describe "Remove tasks" do
       end
 
       expect(RemoveDocumentService)
-        .to have_received(:call).with(anything, anything, user: user)
+        .to have_received(:call).with(anything, anything, user:)
     end
 
     it "raises an error if a content_id is not present" do

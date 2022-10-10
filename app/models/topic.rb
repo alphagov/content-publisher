@@ -7,7 +7,7 @@ class Topic
 
   def self.find(topic_content_id, index)
     raw_topic = index.lookup(topic_content_id)
-    raw_topic ? new(raw_topic.merge(index: index)) : nil
+    raw_topic ? new(raw_topic.merge(index:)) : nil
   end
 
   attr_accessor :title, :child_content_ids, :parent_content_id, :content_id, :index

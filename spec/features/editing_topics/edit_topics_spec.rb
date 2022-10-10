@@ -12,7 +12,7 @@ RSpec.feature "Edit topics" do
 
   def given_there_is_an_edition
     document_type = build(:document_type, topics: true)
-    @edition = create(:edition, document_type: document_type)
+    @edition = create(:edition, document_type:)
   end
 
   def when_i_visit_the_summary_page

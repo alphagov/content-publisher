@@ -20,8 +20,8 @@ private
   end
 
   def check_for_issues
-    issues = Requirements::Form::VideoEmbedChecker.call(title: title, url: url)
-    context.fail!(issues: issues) if issues.any?
+    issues = Requirements::Form::VideoEmbedChecker.call(title:, url:)
+    context.fail!(issues:) if issues.any?
   end
 
   def generate_markdown_code

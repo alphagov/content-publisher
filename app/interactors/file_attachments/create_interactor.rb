@@ -29,17 +29,17 @@ private
                                                                   title: params[:title])
 
     issues.create(:file_attachment_upload, :no_file) if params[:file].blank?
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def upload_attachment
     blob_revision = CreateFileAttachmentBlobService.call(
-      file: params[:file], filename: unique_filename, user: user,
+      file: params[:file], filename: unique_filename, user:,
     )
 
     context.attachment_revision = FileAttachment::Revision.create!(
       created_by: user,
-      blob_revision: blob_revision,
+      blob_revision:,
       file_attachment: FileAttachment.create!(created_by: user),
       metadata_revision: FileAttachment::MetadataRevision.create!(
         created_by: user,
@@ -49,7 +49,7 @@ private
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_revision(entry_type: :file_attachment_uploaded, edition: edition)
+    TimelineEntry.create_for_revision(entry_type: :file_attachment_uploaded, edition:)
   end
 
   def update_edition
@@ -66,6 +66,6 @@ private
   def unique_filename
     existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
     GenerateUniqueFilenameService.call(filename: params[:file].original_filename,
-                                       existing_filenames: existing_filenames)
+                                       existing_filenames:)
   end
 end

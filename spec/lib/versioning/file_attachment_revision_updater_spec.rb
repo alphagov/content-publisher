@@ -66,11 +66,11 @@ RSpec.describe Versioning::FileAttachmentRevisionUpdater do
     it "can accept a blob_revision as an attribute" do
       updater = described_class.new(revision, user)
       blob_revision = create(:file_attachment_blob_revision, filename: "new-file.txt")
-      updater.assign(blob_revision: blob_revision)
+      updater.assign(blob_revision:)
 
       expect(updater.next_revision.blob_revision).to eq(blob_revision)
       expect(updater.next_revision).not_to eq(revision)
-      expect(updater.changes).to match(a_hash_including(blob_revision: blob_revision))
+      expect(updater.changes).to match(a_hash_including(blob_revision:))
     end
   end
 end

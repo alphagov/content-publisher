@@ -9,7 +9,7 @@ RSpec.describe Images::CreateInteractor do
           document: edition.document.to_param,
           image: image_upload,
         },
-        user: user,
+        user:,
       }
     end
 
@@ -30,7 +30,7 @@ RSpec.describe Images::CreateInteractor do
         expect(ImageNormaliser).to have_received(:new).with(image_upload)
         expect(CreateImageBlobService)
           .to have_received(:call)
-          .with(user: user, temp_image: temp_image, filename: an_instance_of(String))
+          .with(user:, temp_image:, filename: an_instance_of(String))
       end
 
       it "attributes the various created image models to the user" do

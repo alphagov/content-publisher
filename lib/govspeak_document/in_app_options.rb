@@ -32,7 +32,7 @@ private
     url = rails_representation_path(image_revision.crop_variant, only_path: true)
 
     {
-      url: url,
+      url:,
       alt_text: image_revision.alt_text,
       caption: image_revision.caption,
       credit: image_revision.credit,

@@ -34,7 +34,7 @@ private
     TimelineEntry.create_for_revision(
       entry_type: :backdate_cleared,
       revision: edition.revision,
-      edition: edition,
+      edition:,
       created_by: user,
     )
   end

@@ -7,7 +7,7 @@ class GovspeakDocument::Options
   end
 
   def to_h
-    { contacts: contacts }
+    { contacts: }
   end
 
 private

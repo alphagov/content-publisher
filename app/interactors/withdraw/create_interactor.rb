@@ -29,7 +29,7 @@ private
 
   def check_for_issues
     issues = Requirements::Form::WithdrawalChecker.call(edition, params[:public_explanation])
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def check_previous_withdrawal

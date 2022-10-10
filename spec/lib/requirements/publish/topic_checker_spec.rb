@@ -3,7 +3,7 @@ RSpec.describe Requirements::Publish::TopicChecker do
 
   describe ".call" do
     let(:document_type) { create :document_type, topics: true }
-    let(:edition) { create :edition, document_type: document_type }
+    let(:edition) { create :edition, document_type: }
 
     it "returns no issues if there are none" do
       edition = create :edition, :publishable

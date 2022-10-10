@@ -18,15 +18,15 @@ RSpec.describe Government do
 
     it "returns false when locale doesn't match" do
       content_id = SecureRandom.uuid
-      english = build(:government, content_id: content_id, locale: "en")
-      french = build(:government, content_id: content_id, locale: "fr")
+      english = build(:government, content_id:, locale: "en")
+      french = build(:government, content_id:, locale: "fr")
       expect(english).not_to eq(french)
     end
   end
 
   describe "#covers?" do
     let(:government) do
-      build(:government, started_on: started_on, ended_on: ended_on)
+      build(:government, started_on:, ended_on:)
     end
 
     context "when there isn't an end date" do

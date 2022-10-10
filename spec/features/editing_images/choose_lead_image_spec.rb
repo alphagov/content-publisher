@@ -20,7 +20,7 @@ RSpec.feature "Choose a lead image" do
     document_type = build(:document_type, :with_lead_image)
     @image_revision = create(:image_revision, :on_asset_manager)
     @edition = create(:edition,
-                      document_type: document_type,
+                      document_type:,
                       image_revisions: [@image_revision])
   end
 

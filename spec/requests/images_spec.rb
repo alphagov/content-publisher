@@ -36,7 +36,7 @@ RSpec.describe "Images" do
       stub_asset_manager_receives_an_asset(filename: "960x640.jpg")
 
       image = fixture_file_upload("960x640.jpg")
-      post images_path(edition.document), params: { image: image }
+      post images_path(edition.document), params: { image: }
 
       expect(response).to redirect_to(
         crop_image_path(edition.document, Image.last, wizard: "upload"),
@@ -120,7 +120,7 @@ RSpec.describe "Images" do
 
     it "redirects to document summary with an alert when lead image is selected" do
       document_type = build(:document_type, :with_lead_image)
-      edition = create(:edition, document_type: document_type, image_revisions: [image_revision])
+      edition = create(:edition, document_type:, image_revisions: [image_revision])
 
       patch edit_image_path(edition.document, image_revision.image_id),
             params: { image_revision: { alt_text: "Alt text" }, lead_image: "on" }

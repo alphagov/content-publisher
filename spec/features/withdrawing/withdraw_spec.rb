@@ -40,7 +40,7 @@ RSpec.feature "Withdraw a document" do
         locale: @edition.locale,
         unpublished_at: Time.zone.now,
       }
-      stub_publishing_api_unpublish(@edition.content_id, body: body)
+      stub_publishing_api_unpublish(@edition.content_id, body:)
       click_on "Withdraw document"
     end
   end
@@ -52,7 +52,7 @@ RSpec.feature "Withdraw a document" do
 
     expect(page).to have_content(I18n.t!("user_facing_states.withdrawn.name"))
     expect(page).to have_content(I18n.t!("documents.show.withdrawn.title",
-                                         document_type: document_type,
+                                         document_type:,
                                          withdrawn_date: withdrawal.created_at.strftime("%-d %B %Y")))
 
     expect(page).to have_content(I18n.t!("documents.show.metadata.withdrawn_by") + ": #{status.created_by.name}")

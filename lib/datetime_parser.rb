@@ -70,7 +70,7 @@ private
                else hour
                end
 
-      { hour: hour24, minute: minute }
+      { hour: hour24, minute: }
     end
   end
 end

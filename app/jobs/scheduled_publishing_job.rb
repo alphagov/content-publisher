@@ -11,7 +11,7 @@ class ScheduledPublishingJob < ApplicationJob
     edition = nil
 
     Edition.transaction do
-      edition = Edition.lock.find_current(id: id)
+      edition = Edition.lock.find_current(id:)
       return unless expected_state?(edition)
 
       user = edition.status.created_by
@@ -32,7 +32,7 @@ private
                    :scheduled_publishing_without_review_succeeded
                  end
 
-    TimelineEntry.create_for_status_change(entry_type: entry_type, status: edition.status)
+    TimelineEntry.create_for_status_change(entry_type:, status: edition.status)
   end
 
   def expected_state?(edition)

@@ -5,7 +5,7 @@ class ImagesController < ApplicationController
   end
 
   def create
-    result = Images::CreateInteractor.call(params: params, user: current_user)
+    result = Images::CreateInteractor.call(params:, user: current_user)
     edition, image_revision, issues = result.to_h.values_at(:edition,
                                                             :image_revision,
                                                             :issues)
@@ -14,7 +14,7 @@ class ImagesController < ApplicationController
       flash.now["requirements"] = { "items" => issues.items }
 
       render :index,
-             assigns: { edition: edition },
+             assigns: { edition: },
              status: :unprocessable_entity
     else
       redirect_to crop_image_path(params[:document],
@@ -30,7 +30,7 @@ class ImagesController < ApplicationController
   end
 
   def update_crop
-    result = Images::UpdateCropInteractor.call(params: params, user: current_user)
+    result = Images::UpdateCropInteractor.call(params:, user: current_user)
     image_revision = result.image_revision
 
     if params[:wizard] == "upload"
@@ -49,7 +49,7 @@ class ImagesController < ApplicationController
   end
 
   def update
-    result = Images::UpdateInteractor.call(params: params, user: current_user)
+    result = Images::UpdateInteractor.call(params:, user: current_user)
 
     edition = result.edition
     image_revision = result.image_revision
@@ -61,9 +61,9 @@ class ImagesController < ApplicationController
       flash.now["requirements"] = { "items" => issues.items }
 
       render :edit,
-             assigns: { edition: edition,
-                        image_revision: image_revision,
-                        issues: issues },
+             assigns: { edition:,
+                        image_revision:,
+                        issues: },
              status: :unprocessable_entity
     elsif lead_selected
       redirect_to document_path(params[:document]),
@@ -83,7 +83,7 @@ class ImagesController < ApplicationController
   end
 
   def destroy
-    result = Images::DestroyInteractor.call(params: params, user: current_user)
+    result = Images::DestroyInteractor.call(params:, user: current_user)
     image_revision, removed_lead = result.to_h.values_at(:image_revision, :removed_lead_image)
 
     if removed_lead

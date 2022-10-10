@@ -1,6 +1,6 @@
 class ReviewController < ApplicationController
   def submit_for_2i
-    result = Review::SubmitFor2iInteractor.call(params: params, user: current_user)
+    result = Review::SubmitFor2iInteractor.call(params:, user: current_user)
     issues, api_error = result.to_h.values_at(:issues, :api_error)
 
     if api_error
@@ -14,7 +14,7 @@ class ReviewController < ApplicationController
   end
 
   def approve
-    Review::ApproveInteractor.call(params: params, user: current_user)
+    Review::ApproveInteractor.call(params:, user: current_user)
 
     redirect_to document_path(params[:document]),
                 notice: t("documents.show.flashes.approved")

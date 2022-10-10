@@ -41,7 +41,7 @@ class FeaturedAttachments::UpdateOrderInteractor < ApplicationInteractor
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_revision(entry_type: :attachments_reordered, edition: edition)
+    TimelineEntry.create_for_revision(entry_type: :attachments_reordered, edition:)
   end
 
   def update_preview

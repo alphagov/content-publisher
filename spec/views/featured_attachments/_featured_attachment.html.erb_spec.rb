@@ -8,7 +8,7 @@ RSpec.describe "featured_attachments/featured_attachment" do
       attachment = create(:file_attachment_revision, attributes)
 
       render partial: self.class.top_level_description,
-             locals: { edition: edition, attachment: attachment }
+             locals: { edition:, attachment: }
     end
 
     it "renders a command paper with its number" do

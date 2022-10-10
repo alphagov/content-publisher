@@ -34,7 +34,7 @@ RSpec.describe AssetCleanupJob do
                                     file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
 
         revision = create(:revision, lead_image_revision: nil, preceded_by: preceding_revision)
-        create(:edition, revision: revision)
+        create(:edition, revision:)
       end
 
       it "deletes draft/live assets that are dangling" do
@@ -104,7 +104,7 @@ RSpec.describe AssetCleanupJob do
                           image_revisions: [draft_image_revision, live_image_revision],
                           file_attachment_revisions: [draft_file_attachment_revision, live_file_attachment_revision])
 
-        create(:edition, revision: revision)
+        create(:edition, revision:)
       end
 
       it "doesn't delete the assets" do

@@ -26,18 +26,18 @@ private
   end
 
   def no_changes
-    { x: 0, y: 0, width: width, height: height }
+    { x: 0, y: 0, width:, height: }
   end
 
   def reduced_width
     new_width = (height * desired_aspect_ratio).ceil
     x = ((width - new_width) / 2).floor
-    { x: x, y: 0, width: new_width, height: height }
+    { x:, y: 0, width: new_width, height: }
   end
 
   def reduced_height
     new_height = (width / desired_aspect_ratio).ceil
     y = ((height - new_height) / 2).floor
-    { x: 0, y: y, width: width, height: new_height }
+    { x: 0, y:, width:, height: new_height }
   end
 end

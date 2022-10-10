@@ -29,7 +29,7 @@ RSpec.describe DocumentType::SummaryField do
       max_length = DocumentType::SummaryField::SUMMARY_MAX_LENGTH
       params = { summary: "a" * (max_length + 1) }
       issues = described_class.new.form_issues(edition, params)
-      expect(issues).to have_issue(:summary, :too_long, max_length: max_length)
+      expect(issues).to have_issue(:summary, :too_long, max_length:)
     end
 
     it "returns an issue if the summary has newlines" do

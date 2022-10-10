@@ -15,7 +15,7 @@ class AssignEditionStatusService
 
   def call
     edition.status = Status.new(created_by: user,
-                                state: state,
+                                state:,
                                 revision_at_creation: edition.revision,
                                 details: status_details)
 

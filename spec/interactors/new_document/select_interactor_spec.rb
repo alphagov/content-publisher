@@ -40,13 +40,13 @@ RSpec.describe NewDocument::SelectInteractor do
       end
 
       it "creates a new document" do
-        expect { described_class.call(params: params, user: user) }
+        expect { described_class.call(params:, user:) }
           .to change(Document, :count)
           .by(1)
       end
 
       it "creates a timeline entry" do
-        expect { described_class.call(params: params, user: user) }
+        expect { described_class.call(params:, user:) }
           .to change(TimelineEntry, :count)
           .by(1)
       end

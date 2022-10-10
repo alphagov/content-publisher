@@ -90,7 +90,7 @@ class Edition < ApplicationRecord
 
       if document
         content_id, locale = document.split(":")
-        criteria[:documents] = { content_id: content_id, locale: locale }
+        criteria[:documents] = { content_id:, locale: }
       end
     end
 
@@ -107,7 +107,7 @@ class Edition < ApplicationRecord
           "ELSE metadata_revisions.editor_political = :political "\
           "END"
 
-    joins(revision: :metadata_revision).where(sql, political: political)
+    joins(revision: :metadata_revision).where(sql, political:)
   }
 
   scope :history_mode, lambda { |history_mode = true|

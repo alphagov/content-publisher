@@ -22,7 +22,7 @@ RSpec.describe "Change History tasks" do
     end
 
     it "prints the change history" do
-      edition = create(:edition, locale: "en", change_history: change_history)
+      edition = create(:edition, locale: "en", change_history:)
 
       expect {
         Rake::Task["change_history:show"].invoke(edition.content_id)
@@ -32,7 +32,7 @@ RSpec.describe "Change History tasks" do
     end
 
     it "prints the change history for a specific locale" do
-      edition = create(:edition, locale: "cy", change_history: change_history)
+      edition = create(:edition, locale: "cy", change_history:)
 
       expect {
         ClimateControl.modify LOCALE: "cy" do
@@ -67,7 +67,7 @@ RSpec.describe "Change History tasks" do
       ]
     end
 
-    let(:edition) { create(:edition, locale: "en", change_history: change_history) }
+    let(:edition) { create(:edition, locale: "en", change_history:) }
 
     before { Rake::Task["change_history:delete"].reenable }
 
@@ -115,7 +115,7 @@ RSpec.describe "Change History tasks" do
       ]
     end
 
-    let(:edition) { create(:edition, locale: "en", change_history: change_history) }
+    let(:edition) { create(:edition, locale: "en", change_history:) }
 
     before { Rake::Task["change_history:edit"].reenable }
 
@@ -161,7 +161,7 @@ RSpec.describe "Change History tasks" do
       ]
     end
 
-    let(:edition) { create(:edition, locale: "en", change_history: change_history) }
+    let(:edition) { create(:edition, locale: "en", change_history:) }
 
     before { Rake::Task["change_history:add"].reenable }
 

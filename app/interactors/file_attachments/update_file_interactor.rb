@@ -34,7 +34,7 @@ private
   def check_for_issues
     issues = Requirements::Form::FileAttachmentUploadChecker.call(file: attachment_params[:file],
                                                                   title: attachment_params[:title])
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def update_file_attachment
@@ -58,7 +58,7 @@ private
 
   def create_timeline_entry
     TimelineEntry.create_for_revision(entry_type: :file_attachment_updated,
-                                      edition: edition)
+                                      edition:)
   end
 
   def update_preview
@@ -71,7 +71,7 @@ private
 
   def blob_revision(file)
     CreateFileAttachmentBlobService.call(
-      file: file, filename: unique_filename(file), user: user,
+      file:, filename: unique_filename(file), user:,
     )
   end
 
@@ -79,6 +79,6 @@ private
     existing_filenames = edition.revision.file_attachment_revisions.map(&:filename)
     existing_filenames.delete(file_attachment_revision.filename)
     GenerateUniqueFilenameService.call(filename: file.original_filename,
-                                       existing_filenames: existing_filenames)
+                                       existing_filenames:)
   end
 end

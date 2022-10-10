@@ -43,7 +43,7 @@ private
       end
     end
 
-    AssignEditionStatusService.call(edition, user: user, state: :discarded)
+    AssignEditionStatusService.call(edition, user:, state: :discarded)
     edition.update!(current: false)
   end
 end

@@ -40,10 +40,10 @@ module WhitehallImporter
                   state = MigrateState.call(whitehall_edition["state"], whitehall_edition["force_published"])
                   revision = create_revision(edition_number)
                   status = build_status(revision, state)
-                  create_edition(status: status,
-                                 current: current,
-                                 edition_number: edition_number,
-                                 revision: revision)
+                  create_edition(status:,
+                                 current:,
+                                 edition_number:,
+                                 revision:)
                 end
 
       create_revision_history(edition)
@@ -73,7 +73,7 @@ module WhitehallImporter
       create_edition(
         status: build_status(removed_revision, "removed", build_removal),
         current: false,
-        edition_number: edition_number,
+        edition_number:,
         last_event: unpublishing_event,
         revision: removed_revision,
       )
@@ -92,7 +92,7 @@ module WhitehallImporter
     def create_removed_edition
       revision = create_revision(edition_number)
       removed_status = build_status(revision, "removed", build_removal)
-      create_edition(status: removed_status, current: current, edition_number: edition_number, revision: revision)
+      create_edition(status: removed_status, current:, edition_number:, revision:)
     end
 
     def check_only_in_english
@@ -106,9 +106,9 @@ module WhitehallImporter
     def create_withdrawn_edition
       revision = create_revision(edition_number)
       create_edition(status: build_status(revision, "published"),
-                     current: current,
-                     edition_number: edition_number,
-                     revision: revision).tap { |edition| set_withdrawn_status(edition) }
+                     current:,
+                     edition_number:,
+                     revision:).tap { |edition| set_withdrawn_status(edition) }
     end
 
     def set_withdrawn_status(edition)
@@ -133,9 +133,9 @@ module WhitehallImporter
       revision = create_revision(edition_number)
       pre_scheduled_state = history.last_state_event("submitted") ? "submitted_for_review" : "draft"
       edition = create_edition(status: build_status(revision, pre_scheduled_state),
-                               current: current,
-                               edition_number: edition_number,
-                               revision: revision)
+                               current:,
+                               edition_number:,
+                               revision:)
       scheduling = Scheduling.new(pre_scheduled_status: edition.status,
                                   reviewed: !whitehall_edition["force_published"],
                                   publish_time: whitehall_edition["scheduled_publication"])
@@ -161,11 +161,11 @@ module WhitehallImporter
       last_state_event = history.last_state_event!(event_state(state))
 
       Status.new(
-        state: state,
+        state:,
         revision_at_creation: revision,
         created_by_id: user_ids[last_state_event["whodunnit"]],
         created_at: last_state_event["created_at"],
-        details: details,
+        details:,
       )
     end
 
@@ -180,17 +180,17 @@ module WhitehallImporter
         document: document_import.document,
         number: edition_number,
         revision_synced: false,
-        revision: revision,
-        status: status,
-        current: current,
+        revision:,
+        status:,
+        current:,
         live: status.live?,
         created_at: create_event["created_at"],
         updated_at: last_event["created_at"],
         created_by_id: user_ids[create_event["whodunnit"]],
         last_edited_at: last_event["created_at"],
         last_edited_by_id: user_ids[last_event["whodunnit"]],
-        published_at: published_at,
-        editor_ids: editor_ids,
+        published_at:,
+        editor_ids:,
       )
     end
 
@@ -199,7 +199,7 @@ module WhitehallImporter
 
       edition.access_limit = AccessLimit.new(
         created_at: whitehall_edition["created_at"],
-        edition: edition,
+        edition:,
         revision_at_creation: edition.revision,
         limit_type: "tagged_organisations",
       )
@@ -254,8 +254,8 @@ module WhitehallImporter
 
     def create_whitehall_imported_entry(entry_type, contents = {})
       TimelineEntry::WhitehallImportedEntry.create!(
-        entry_type: entry_type,
-        contents: contents,
+        entry_type:,
+        contents:,
       )
     end
 
@@ -263,10 +263,10 @@ module WhitehallImporter
       TimelineEntry.create!(
         entry_type: :whitehall_migration,
         created_by_id: user_ids[whitehall_created_by_id],
-        created_at: created_at,
-        edition: edition,
+        created_at:,
+        edition:,
         document: edition.document,
-        details: details,
+        details:,
       )
     end
 

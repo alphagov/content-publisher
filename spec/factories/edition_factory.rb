@@ -60,7 +60,7 @@ FactoryBot.define do
           backdated_to: evaluator.backdated_to,
           editor_political: evaluator.editor_political,
           lead_image_revision: evaluator.lead_image_revision,
-          image_revisions: image_revisions,
+          image_revisions:,
           file_attachment_revisions: evaluator.file_attachment_revisions,
           featured_attachment_ordering: evaluator.featured_attachment_ordering,
           change_history: evaluator.change_history,
@@ -198,7 +198,7 @@ FactoryBot.define do
         edition.access_limit = evaluator.association(
           :access_limit,
           limit_type: evaluator.limit_type,
-          edition: edition,
+          edition:,
           created_by: edition.created_by,
           revision_at_creation: edition.revision,
         )

@@ -106,7 +106,7 @@ RSpec.describe ResyncDocumentService do
       it "withdraws the edition" do
         withdraw_params = {
           type: "withdrawal",
-          explanation: explanation,
+          explanation:,
           locale: edition.locale,
           unpublished_at: edition.status.details.withdrawn_at,
           allow_draft: true,
@@ -141,12 +141,12 @@ RSpec.describe ResyncDocumentService do
           )
         end
 
-        let(:edition) { create(:edition, :removed, removal: removal) }
+        let(:edition) { create(:edition, :removed, removal:) }
 
         it "removes and redirects the edition" do
           remove_params = {
             type: "redirect",
-            explanation: explanation,
+            explanation:,
             alternative_path: removal.alternative_url,
             locale: edition.locale,
             unpublished_at: removal.removed_at,

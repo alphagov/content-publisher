@@ -16,7 +16,7 @@ RSpec.describe WithdrawDocumentService do
                                                         unpublished_at: Time.zone.now })
         described_class.call(edition,
                              user,
-                             public_explanation: public_explanation)
+                             public_explanation:)
 
         expect(request).to have_been_requested
       end
@@ -26,7 +26,7 @@ RSpec.describe WithdrawDocumentService do
       travel_to(Time.zone.now) do
         described_class.call(edition,
                              user,
-                             public_explanation: public_explanation)
+                             public_explanation:)
         edition.reload
         withdrawal = edition.status.details
 
@@ -40,7 +40,7 @@ RSpec.describe WithdrawDocumentService do
       previous_published_status = edition.status
       described_class.call(edition,
                            user,
-                           public_explanation: public_explanation)
+                           public_explanation:)
       edition.reload
 
       withdrawal = edition.status.details
@@ -54,7 +54,7 @@ RSpec.describe WithdrawDocumentService do
 
       described_class.call(withdrawn_edition,
                            user,
-                           public_explanation: public_explanation)
+                           public_explanation:)
 
       withdrawal = withdrawn_edition.status.details
 
@@ -67,7 +67,7 @@ RSpec.describe WithdrawDocumentService do
         expect {
           described_class.call(draft_edition,
                                user,
-                               public_explanation: public_explanation)
+                               public_explanation:)
         }.to raise_error "attempted to withdraw an edition other than the live edition"
       end
     end
@@ -83,7 +83,7 @@ RSpec.describe WithdrawDocumentService do
         expect {
           described_class.call(live_edition,
                                user,
-                               public_explanation: public_explanation)
+                               public_explanation:)
         }.to raise_error "Publishing API does not support unpublishing while there is a draft"
       end
     end
@@ -95,7 +95,7 @@ RSpec.describe WithdrawDocumentService do
         delete_request = stub_asset_manager_deletes_any_asset
         described_class.call(edition,
                              user,
-                             public_explanation: public_explanation)
+                             public_explanation:)
         expect(delete_request).not_to have_been_requested
       end
     end
@@ -106,20 +106,20 @@ RSpec.describe WithdrawDocumentService do
         expect {
           described_class.call(withdrawn_edition,
                                user,
-                               public_explanation: public_explanation)
+                               public_explanation:)
         }.to change { withdrawn_edition.reload.status.details.public_explanation }
          .to(public_explanation)
       end
 
       it "maintains the withdrawn timestamp" do
         withdrawn_at = 10.days.ago.midnight
-        withdrawal = build(:withdrawal, withdrawn_at: withdrawn_at)
-        withdrawn_edition = create(:edition, :withdrawn, withdrawal: withdrawal)
+        withdrawal = build(:withdrawal, withdrawn_at:)
+        withdrawn_edition = create(:edition, :withdrawn, withdrawal:)
 
         expect {
           described_class.call(withdrawn_edition,
                                user,
-                               public_explanation: public_explanation)
+                               public_explanation:)
         }.not_to change { withdrawn_edition.reload.status.details.withdrawn_at }
          .from(withdrawn_at)
       end

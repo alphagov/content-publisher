@@ -26,12 +26,12 @@ module WhitehallImporter
 
         whitehall_document["editions"].each_with_index do |edition, edition_number|
           CreateEdition.call(
-            document_import: document_import,
+            document_import:,
             whitehall_edition: edition,
-            change_history: change_history,
+            change_history:,
             current: current?(edition),
             edition_number: edition_number + 1,
-            user_ids: user_ids,
+            user_ids:,
           )
         end
 
@@ -70,8 +70,8 @@ module WhitehallImporter
       TimelineEntry.create_for_revision(
         entry_type: :whitehall_migration,
         revision: edition.revision,
-        edition: edition,
-        details: details,
+        edition:,
+        details:,
       )
     end
 
@@ -93,14 +93,14 @@ module WhitehallImporter
 
     def create_document(user_ids)
       content_id = whitehall_document["content_id"]
-      if Document.exists?(content_id: content_id)
+      if Document.exists?(content_id:)
         raise AbortImportError, "Document with content_id #{content_id} already exists"
       end
 
       event = first_edition_history.create_event!
 
       Document.create!(
-        content_id: content_id,
+        content_id:,
         locale: "en",
         created_at: whitehall_document["created_at"],
         updated_at: whitehall_document["updated_at"],

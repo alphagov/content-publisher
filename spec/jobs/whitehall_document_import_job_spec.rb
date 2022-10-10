@@ -173,7 +173,7 @@ RSpec.describe WhitehallDocumentImportJob do
       instance_double(
         WhitehallImporter::IntegrityChecker,
         valid?: false,
-        problems: problems,
+        problems:,
         proposed_payload: payload,
         edition: build(:edition),
       )

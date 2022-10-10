@@ -60,7 +60,7 @@ private
     return unless live_edition
 
     AssignEditionStatusService.call(live_edition,
-                                    user: user,
+                                    user:,
                                     state: :superseded,
                                     record_edit: false)
     live_edition.live = false
@@ -69,7 +69,7 @@ private
 
   def set_new_live_edition
     state = with_review ? :published : :published_but_needs_2i
-    AssignEditionStatusService.call(edition, user: user, state: state)
+    AssignEditionStatusService.call(edition, user:, state:)
     edition.access_limit = nil
     edition.live = true
     edition.save!

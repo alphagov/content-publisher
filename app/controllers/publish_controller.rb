@@ -1,6 +1,6 @@
 class PublishController < ApplicationController
   def confirmation
-    result = Publish::ConfirmationInteractor.call(params: params, user: current_user)
+    result = Publish::ConfirmationInteractor.call(params:, user: current_user)
     @edition, issues, api_error = result.to_h.values_at(:edition, :issues, :api_error)
 
     if issues
@@ -12,7 +12,7 @@ class PublishController < ApplicationController
   end
 
   def publish
-    result = Publish::PublishInteractor.call(params: params, user: current_user)
+    result = Publish::PublishInteractor.call(params:, user: current_user)
 
     edition, issues, publish_failed = result.to_h.values_at(:edition,
                                                             :issues,
@@ -21,7 +21,7 @@ class PublishController < ApplicationController
       flash.now["requirements"] = { "items" => issues.items }
 
       render :confirmation,
-             assigns: { issues: issues, edition: edition },
+             assigns: { issues:, edition: },
              status: :unprocessable_entity
     elsif publish_failed
       redirect_to document_path(edition.document),

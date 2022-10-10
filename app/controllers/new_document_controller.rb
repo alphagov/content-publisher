@@ -8,7 +8,7 @@ class NewDocumentController < ApplicationController
   end
 
   def select
-    result = NewDocument::SelectInteractor.call(params: params, user: current_user)
+    result = NewDocument::SelectInteractor.call(params:, user: current_user)
     issues, document, document_type_selection, selected_option = result.to_h.values_at(
       :issues,
       :document,
@@ -19,7 +19,7 @@ class NewDocumentController < ApplicationController
     if issues
       flash.now["requirements"] = { "items" => issues.items }
       render :show,
-             assigns: { issues: issues, document_type_selection: document_type_selection },
+             assigns: { issues:, document_type_selection: },
              status: :unprocessable_entity
     else
       destination = if document

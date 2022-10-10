@@ -16,7 +16,7 @@ module Requirements
       link_options = link_options.call(context) if link_options.is_a?(Proc)
 
       {
-        text: message(style: style),
+        text: message(style:),
         href: link_options[:href],
         target: link_options[:target],
       }

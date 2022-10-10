@@ -35,7 +35,7 @@ private
   def check_for_issues
     issues = Requirements::Form::PublishTimeChecker.call(publish_time)
     issues.push(*action_issues) if params[:wizard] == "schedule"
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def update_edition

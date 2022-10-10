@@ -13,11 +13,11 @@ RSpec.describe TimelineEntry do
     it "creates a TimelineEntry" do
       status = build(:status,
                      state: :submitted_for_review,
-                     edition: edition)
+                     edition:)
 
       entry = described_class.create_for_status_change(
         entry_type: :submitted,
-        status: status,
+        status:,
       )
 
       expect(entry).to be_a(described_class)
@@ -29,11 +29,11 @@ RSpec.describe TimelineEntry do
     it "sets the created_by, edition and document based on status" do
       status = build(:status,
                      state: :submitted_for_review,
-                     edition: edition)
+                     edition:)
 
       entry = described_class.create_for_status_change(
         entry_type: :submitted,
-        status: status,
+        status:,
       )
 
       expect(entry.created_by).to eq(status.created_by)
@@ -50,8 +50,8 @@ RSpec.describe TimelineEntry do
 
       entry = described_class.create_for_revision(
         entry_type: :updated_content,
-        edition: edition,
-        revision: revision,
+        edition:,
+        revision:,
       )
 
       expect(entry).to be_a(described_class)
@@ -63,7 +63,7 @@ RSpec.describe TimelineEntry do
     it "can set the revision based on the edition" do
       entry = described_class.create_for_revision(
         entry_type: :submitted,
-        edition: edition,
+        edition:,
       )
 
       expect(entry.revision).to eq(edition.revision)

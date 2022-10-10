@@ -5,7 +5,7 @@ RSpec.describe Preview::CreateInteractor do
     let(:args) do
       {
         params: { document: edition.document.to_param },
-        user: user,
+        user:,
       }
     end
 

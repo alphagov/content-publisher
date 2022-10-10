@@ -40,7 +40,7 @@ class FileAttachmentsController < ApplicationController
   end
 
   def preview
-    result = FileAttachments::PreviewInteractor.call(params: params, user: current_user)
+    result = FileAttachments::PreviewInteractor.call(params:, user: current_user)
     can_preview, api_error = result.to_h.values_at(:can_preview, :api_error)
 
     if api_error || !can_preview
@@ -67,7 +67,7 @@ class FileAttachmentsController < ApplicationController
   end
 
   def create
-    result = FileAttachments::CreateInteractor.call(params: params, user: current_user)
+    result = FileAttachments::CreateInteractor.call(params:, user: current_user)
     edition, attachment_revision, issues = result.to_h.values_at(:edition,
                                                                  :attachment_revision,
                                                                  :issues)
@@ -83,8 +83,8 @@ class FileAttachmentsController < ApplicationController
       }
 
       render params[:wizard] == "featured-attachment-upload" ? :new : :index,
-             assigns: { edition: edition,
-                        issues: issues },
+             assigns: { edition:,
+                        issues: },
              status: :unprocessable_entity
     elsif params[:wizard] == "featured-attachment-upload"
       redirect_to edit_file_attachment_path(edition.document,
@@ -96,7 +96,7 @@ class FileAttachmentsController < ApplicationController
   end
 
   def destroy
-    result = FileAttachments::DestroyInteractor.call(params: params, user: current_user)
+    result = FileAttachments::DestroyInteractor.call(params:, user: current_user)
     attachment_revision = result.attachment_revision
 
     if params[:wizard] == "featured-attachment-delete"
@@ -121,7 +121,7 @@ class FileAttachmentsController < ApplicationController
   end
 
   def update
-    result = FileAttachments::UpdateInteractor.call(params: params, user: current_user)
+    result = FileAttachments::UpdateInteractor.call(params:, user: current_user)
     edition, attachment_revision, issues =
       result.to_h.values_at(:edition, :file_attachment_revision, :issues)
 
@@ -129,9 +129,9 @@ class FileAttachmentsController < ApplicationController
       flash.now["requirements"] = { "items" => issues.items }
 
       render :edit,
-             assigns: { edition: edition,
+             assigns: { edition:,
                         attachment: attachment_revision,
-                        issues: issues },
+                        issues: },
              status: :unprocessable_entity
     else
       redirect_to featured_attachments_path(edition.document)
@@ -147,7 +147,7 @@ class FileAttachmentsController < ApplicationController
   end
 
   def update_file
-    result = FileAttachments::UpdateFileInteractor.call(params: params, user: current_user)
+    result = FileAttachments::UpdateFileInteractor.call(params:, user: current_user)
     edition, attachment_revision, issues, unchanged =
       result.to_h.values_at(:edition, :file_attachment_revision, :issues, :unchanged)
 
@@ -163,8 +163,8 @@ class FileAttachmentsController < ApplicationController
 
       render :replace,
              title: params.dig(:file_attachment, :title),
-             assigns: { edition: edition,
-                        issues: issues,
+             assigns: { edition:,
+                        issues:,
                         attachment: attachment_revision },
              status: :unprocessable_entity
     elsif params[:wizard] == "featured-attachment-replace"

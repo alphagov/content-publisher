@@ -4,7 +4,7 @@ RSpec.describe "tags/edit" do
     document_type = build(:document_type, tags: [tag_field])
     edition = build(:edition,
                     :access_limited,
-                    document_type: document_type,
+                    document_type:,
                     created_by: current_user)
     stub_publishing_api_has_linkables(
       [{ "content_id" => current_user.organisation_content_id,

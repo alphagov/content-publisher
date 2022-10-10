@@ -39,7 +39,7 @@ RSpec.describe RemoveDocumentService do
       removal = build(:removal)
       user = build(:user)
 
-      described_class.call(edition, removal, user: user)
+      described_class.call(edition, removal, user:)
       expect(edition.status.created_by).to eq(user)
     end
 

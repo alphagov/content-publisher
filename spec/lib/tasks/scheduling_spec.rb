@@ -6,7 +6,7 @@ RSpec.describe "Scheduling tasks" do
 
     it "schedules ScheduledPublishingJob workers on current, scheduled editions" do
       publish_time = Date.tomorrow.noon
-      scheduled_edition = create(:edition, :scheduled, publish_time: publish_time)
+      scheduled_edition = create(:edition, :scheduled, publish_time:)
       create(:edition, :scheduled, current: false)
       create(:edition)
 

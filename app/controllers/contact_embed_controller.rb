@@ -9,7 +9,7 @@ class ContactEmbedController < ApplicationController
   end
 
   def create
-    result = ContactEmbed::CreateInteractor.call(params: params)
+    result = ContactEmbed::CreateInteractor.call(params:)
 
     edition, markdown_code, issues = result.to_h.values_at(:edition,
                                                            :markdown_code,
@@ -19,12 +19,12 @@ class ContactEmbedController < ApplicationController
       flash.now["requirements"] = { "items" => issues.items }
 
       render :new,
-             assigns: { edition: edition, issues: issues },
+             assigns: { edition:, issues: },
              status: :unprocessable_entity
     elsif rendering_context == "modal"
       render plain: markdown_code
     else
-      render :new, assigns: { markdown_code: markdown_code, edition: edition }
+      render :new, assigns: { markdown_code:, edition: }
     end
   end
 end

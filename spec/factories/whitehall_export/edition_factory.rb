@@ -24,7 +24,7 @@ FactoryBot.define do
     revision_history do
       [
         build(:whitehall_export_revision_history_event,
-              created_at: created_at),
+              created_at:),
       ]
     end
     unpublishing { nil }
@@ -42,7 +42,7 @@ FactoryBot.define do
       revision_history do
         [
           build(:whitehall_export_revision_history_event,
-                created_at: created_at),
+                created_at:),
           build(:whitehall_export_revision_history_event,
                 event: "update",
                 created_at: 2.days.ago.rfc3339,
@@ -66,7 +66,7 @@ FactoryBot.define do
       revision_history do
         [
           build(:whitehall_export_revision_history_event,
-                created_at: created_at),
+                created_at:),
           build(:whitehall_export_revision_history_event,
                 event: "update",
                 state: "published",
@@ -85,7 +85,7 @@ FactoryBot.define do
       revision_history do
         [
           build(:whitehall_export_revision_history_event,
-                created_at: created_at),
+                created_at:),
           build(:whitehall_export_revision_history_event,
                 event: "update",
                 state: "published",

@@ -22,7 +22,7 @@ RSpec.describe "Access Limit" do
   describe "GET /documents/:document/access-limit" do
     let(:edition) do
       create(:edition,
-             document_type: document_type,
+             document_type:,
              tags: { primary_publishing_organisation: [organisation_id],
                      organisations: [organisation_id] })
     end
@@ -47,7 +47,7 @@ RSpec.describe "Access Limit" do
 
     let(:edition) do
       create(:edition,
-             document_type: document_type,
+             document_type:,
              tags: { primary_publishing_organisation: [organisation_id],
                      organisations: [organisation_id] })
     end

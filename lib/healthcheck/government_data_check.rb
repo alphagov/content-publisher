@@ -29,8 +29,8 @@ module Healthcheck
 
     def to_hash
       {
-        status: status,
-        message: message,
+        status:,
+        message:,
       }
     end
 

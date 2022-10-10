@@ -8,7 +8,7 @@ RSpec.describe ScheduledPublishingJob do
 
   let(:scheduled_edition) do
     scheduling = create(:scheduling, reviewed: true, publish_time: Time.zone.now.yesterday)
-    create(:edition, :scheduled, scheduling: scheduling)
+    create(:edition, :scheduled, scheduling:)
   end
 
   it "can publish a scheduled edition" do
@@ -45,7 +45,7 @@ RSpec.describe ScheduledPublishingJob do
   context "when the publish time is in the future" do
     it "doesn't publish the edition" do
       scheduling = create(:scheduling, reviewed: true, publish_time: Time.zone.now.tomorrow)
-      edition = create(:edition, :scheduled, scheduling: scheduling)
+      edition = create(:edition, :scheduled, scheduling:)
 
       expect { described_class.perform_now(edition.id) }
         .not_to change { edition.reload.state }

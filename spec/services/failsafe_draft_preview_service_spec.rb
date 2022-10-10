@@ -23,7 +23,7 @@ RSpec.describe FailsafeDraftPreviewService do
     context "when there are pre-preview issues" do
       let(:edition) do
         document_type = build :document_type, contents: [DocumentType::TitleAndBasePathField.new]
-        create(:edition, document_type: document_type, title: "", revision_synced: true)
+        create(:edition, document_type:, title: "", revision_synced: true)
       end
 
       it "sets revision_synced to false on the edition" do

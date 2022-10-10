@@ -18,7 +18,7 @@ RSpec.describe "Featured Attachments" do
   describe "GET /documents/:document/attachments" do
     it "returns successfully" do
       document_type = build(:document_type, attachments: "featured")
-      edition = create(:edition, document_type: document_type)
+      edition = create(:edition, document_type:)
 
       get featured_attachments_path(edition.document)
       expect(response).to have_http_status(:ok)
@@ -28,7 +28,7 @@ RSpec.describe "Featured Attachments" do
   describe "GET /documents/:document/attachments/reorder" do
     it "returns successfully" do
       document_type = build(:document_type, attachments: "featured")
-      edition = create(:edition, document_type: document_type)
+      edition = create(:edition, document_type:)
 
       get reorder_featured_attachments_path(edition.document)
       expect(response).to have_http_status(:ok)
@@ -42,7 +42,7 @@ RSpec.describe "Featured Attachments" do
       stub_any_publishing_api_put_content
       stub_asset_manager_receives_an_asset
 
-      edition = create(:edition, document_type: document_type,
+      edition = create(:edition, document_type:,
                                  file_attachment_revisions: [file_attachment])
 
       patch reorder_featured_attachments_path(edition.document),

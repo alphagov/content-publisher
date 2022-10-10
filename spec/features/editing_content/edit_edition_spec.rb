@@ -11,7 +11,7 @@ RSpec.feature "Edit an edition" do
   def given_there_is_an_edition
     document_type = build(:document_type, :with_body)
     contents = { body: "Existing body" }
-    @edition = create(:edition, document_type: document_type, contents: contents)
+    @edition = create(:edition, document_type:, contents:)
   end
 
   def when_i_go_to_edit_the_edition

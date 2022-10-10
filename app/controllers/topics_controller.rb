@@ -11,7 +11,7 @@ class TopicsController < ApplicationController
   end
 
   def update
-    result = Topics::UpdateInteractor.call(params: params, user: current_user)
+    result = Topics::UpdateInteractor.call(params:, user: current_user)
     api_conflict, api_error = result.to_h.values_at(:api_conflict, :api_error)
 
     if api_conflict

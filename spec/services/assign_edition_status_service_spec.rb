@@ -5,7 +5,7 @@ RSpec.describe AssignEditionStatusService do
 
     it "assigns a status attributed to a user" do
       described_class.call(edition,
-                           user: user,
+                           user:,
                            state: :submitted_for_review)
 
       expect(edition.status).to be_submitted_for_review
@@ -14,7 +14,7 @@ RSpec.describe AssignEditionStatusService do
 
     it "does not save the edition" do
       described_class.call(edition,
-                           user: user,
+                           user:,
                            state: :submitted_for_review)
 
       expect(edition).to be_new_record
@@ -26,7 +26,7 @@ RSpec.describe AssignEditionStatusService do
 
         expect {
           described_class.call(edition,
-                               user: user,
+                               user:,
                                state: :submitted_for_review)
         }.to change { edition.last_edited_by }.to(user)
          .and change { edition.last_edited_at }.to(Time.zone.now)
@@ -37,7 +37,7 @@ RSpec.describe AssignEditionStatusService do
       freeze_time do
         edition = build(:edition, last_edited_at: 3.weeks.ago)
         described_class.call(edition,
-                             user: user,
+                             user:,
                              state: :submitted_for_review,
                              record_edit: false)
 
@@ -50,7 +50,7 @@ RSpec.describe AssignEditionStatusService do
     it "can set details on the status" do
       removal = build(:removal)
       described_class.call(edition,
-                           user: user,
+                           user:,
                            state: :removed,
                            status_details: removal)
 
@@ -63,7 +63,7 @@ RSpec.describe AssignEditionStatusService do
 
         expect {
           described_class.call(edition,
-                               user: user,
+                               user:,
                                state: :submitted_for_review)
         }.to change { edition.editors.size }
          .by(1)

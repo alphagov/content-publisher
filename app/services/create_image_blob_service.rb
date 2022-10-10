@@ -12,19 +12,19 @@ class CreateImageBlobService
   def call
     blob = ActiveStorage::Blob.create_and_upload!(
       io: temp_image.file,
-      filename: filename,
+      filename:,
       content_type: temp_image.mime_type,
     )
 
     Image::BlobRevision.create!(
-      blob: blob,
+      blob:,
       width: temp_image.width,
       height: temp_image.height,
       crop_x: centre_crop[:x],
       crop_y: centre_crop[:y],
       crop_width: centre_crop[:width],
       crop_height: centre_crop[:height],
-      filename: filename,
+      filename:,
       created_by: user,
     )
   end

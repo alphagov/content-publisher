@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     GovukError.notify(error)
 
     render "errors/local_data_unavailable",
-           locals: { error: error },
+           locals: { error: },
            status: :service_unavailable
   end
 
@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
 
     unless current_user.can_access?(edition)
       render "documents/access_limited", status: :forbidden,
-                                         assigns: { edition: edition }
+                                         assigns: { edition: }
     end
   end
 end
