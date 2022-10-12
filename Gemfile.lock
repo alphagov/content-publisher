@@ -305,7 +305,7 @@ GEM
       hashery (~> 2.0)
       ruby-rc4
       ttfunk
-    pg (1.4.3)
+    pg (1.4.4)
     plek (4.1.0)
     prometheus_exporter (2.0.3)
       webrick
