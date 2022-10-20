@@ -24,7 +24,7 @@ RSpec.describe "Withdraw" do
 
       it "allows withdrawing an edtiion" do
         post withdraw_path(edition.document),
-             params: { public_explanation: public_explanation }
+             params: { public_explanation: }
         expect(response).to redirect_to(document_path(edition.document))
       end
 
@@ -32,7 +32,7 @@ RSpec.describe "Withdraw" do
         stub_publishing_api_isnt_available
 
         post withdraw_path(edition.document),
-             params: { public_explanation: public_explanation }
+             params: { public_explanation: }
         expect(response).to have_http_status(:service_unavailable)
         expect(response.body).to have_content(
           I18n.t!("withdraw.new.flashes.publishing_api_error.title"),
@@ -53,7 +53,7 @@ RSpec.describe "Withdraw" do
       it "returns a forbidden response" do
         edition = create(:edition, :published)
         post withdraw_path(edition.document),
-             params: { public_explanation: public_explanation }
+             params: { public_explanation: }
         expect(response).to have_http_status(:forbidden)
         expect(response.body).to have_content(
           I18n.t!("withdraw.no_managing_editor_permission.title"),
@@ -70,7 +70,7 @@ RSpec.describe "Withdraw" do
         user = create(:user, managing_editor: true, manage_live_history_mode: true)
         login_as(user)
         post withdraw_path(edition.document),
-             params: { public_explanation: public_explanation }
+             params: { public_explanation: }
         expect(response).to redirect_to(document_path(edition.document))
       end
 
@@ -78,7 +78,7 @@ RSpec.describe "Withdraw" do
         user = create(:user, managing_editor: true, manage_live_history_mode: false)
         login_as(user)
         post withdraw_path(edition.document),
-             params: { public_explanation: public_explanation }
+             params: { public_explanation: }
         expect(response).to have_http_status(:forbidden)
         expect(response.body).to have_content(
           I18n.t!("missing_permissions.update_history_mode.title", title: edition.title),
@@ -89,7 +89,7 @@ RSpec.describe "Withdraw" do
         user = create(:user, manage_live_history_mode: true)
         login_as(user)
         post withdraw_path(edition.document),
-             params: { public_explanation: public_explanation }
+             params: { public_explanation: }
         expect(response).to have_http_status(:forbidden)
         expect(response.body).to have_content(
           I18n.t!("withdraw.no_managing_editor_permission.title"),

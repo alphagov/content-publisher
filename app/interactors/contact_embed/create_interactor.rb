@@ -20,7 +20,7 @@ private
   def check_for_issues
     issues = Requirements::CheckerIssues.new
     issues.create(:contact_embed, :blank) if params[:contact_id].blank?
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def generate_markdown_code

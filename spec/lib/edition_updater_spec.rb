@@ -13,7 +13,7 @@ RSpec.describe EditionUpdater do
       user = create(:user)
       described_class.call(edition.content_id,
                            user_email: user.email) do |_, updater|
-        updater.assign(title: title)
+        updater.assign(title:)
       end
 
       expect(EditDraftEditionService)
@@ -23,7 +23,7 @@ RSpec.describe EditionUpdater do
 
     it "delegates to the FailsafeDraftPreviewService to create a preview" do
       described_class.call(edition.content_id) do |_, updater|
-        updater.assign(title: title)
+        updater.assign(title:)
       end
 
       expect(FailsafeDraftPreviewService).to have_received(:call).with(edition)
@@ -31,7 +31,7 @@ RSpec.describe EditionUpdater do
 
     it "updates an edition" do
       described_class.call(edition.content_id) do |_, updater|
-        updater.assign(title: title)
+        updater.assign(title:)
       end
 
       expect(edition.reload.title).to eq(title)
@@ -55,7 +55,7 @@ RSpec.describe EditionUpdater do
 
       expect {
         described_class.call(published_edition.content_id) do |_, updater|
-          updater.assign(title: title)
+          updater.assign(title:)
         end
       }.to raise_error("Edition must be editable")
     end

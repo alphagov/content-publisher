@@ -5,7 +5,7 @@ module ActionsHelper
              data: { gtm: "create-new-edition" } do
       render "govuk_publishing_components/components/button",
              text: "Create new edition",
-             secondary: secondary
+             secondary:
     end
   end
 
@@ -14,7 +14,7 @@ module ActionsHelper
            text: "Preview",
            data_attributes: { gtm: "preview" },
            href: preview_document_path(edition.document),
-           secondary: secondary
+           secondary:
   end
 
   def delete_draft_link(edition, extra_classes = [])

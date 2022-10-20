@@ -21,7 +21,7 @@ module WhitehallImporter
           caption: whitehall_image["caption"],
           alt_text: whitehall_image["alt_text"],
         ),
-        blob_revision: blob_revision,
+        blob_revision:,
       )
       record_assets(revision)
       revision
@@ -43,7 +43,7 @@ module WhitehallImporter
 
     def create_blob_revision(temp_image)
       CreateImageBlobService.call(
-        temp_image: temp_image,
+        temp_image:,
         filename: GenerateUniqueFilenameService.call(
           existing_filenames: filenames,
           filename: File.basename(whitehall_image["url"]),
@@ -65,16 +65,16 @@ module WhitehallImporter
 
     def record_assets(revision)
       WhitehallMigration::AssetImport.create!(
-        document_import: document_import,
+        document_import:,
         image_revision: revision,
         original_asset_url: whitehall_image["url"],
       )
       whitehall_image["variants"].each do |variant, url|
         WhitehallMigration::AssetImport.create!(
-          document_import: document_import,
+          document_import:,
           image_revision: revision,
           original_asset_url: url,
-          variant: variant,
+          variant:,
         )
       end
     end

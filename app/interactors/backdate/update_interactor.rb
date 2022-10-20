@@ -49,14 +49,14 @@ private
 
   def check_for_issues
     issues = Requirements::Form::BackdateChecker.call(date)
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def create_timeline_entry
     TimelineEntry.create_for_revision(
       entry_type: :backdated,
       revision: edition.revision,
-      edition: edition,
+      edition:,
       created_by: user,
     )
   end

@@ -39,7 +39,7 @@ RSpec.feature "Edit a withdrawal" do
       locale: @edition.locale,
       unpublished_at: @edition.status.details.withdrawn_at,
     }
-    stub_publishing_api_unpublish(@edition.content_id, body: body)
+    stub_publishing_api_unpublish(@edition.content_id, body:)
 
     fill_in "public_explanation", with: @new_explanation
     click_on "Update explanation"

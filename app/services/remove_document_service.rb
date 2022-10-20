@@ -39,7 +39,7 @@ private
     AssignEditionStatusService.call(edition,
                                     state: :removed,
                                     status_details: removal,
-                                    user: user)
+                                    user:)
     edition.save!
   end
 

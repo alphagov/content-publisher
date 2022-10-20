@@ -18,9 +18,9 @@ class PublishingApiPayload
       publishing_app: PUBLISHING_APP,
       rendering_app: publishing_metadata.rendering_app,
       update_type: edition.update_type,
-      details: details,
-      links: links,
-      access_limited: access_limited,
+      details:,
+      links:,
+      access_limited:,
       auth_bypass_ids: [edition.auth_bypass_id],
       public_updated_at: history.public_updated_at,
     }
@@ -67,7 +67,7 @@ private
     details = {
       political: edition.political?,
       change_history: history.change_history,
-      attachments: attachments,
+      attachments:,
     }
 
     if document_type.lead_image? && edition.lead_image_revision.present?

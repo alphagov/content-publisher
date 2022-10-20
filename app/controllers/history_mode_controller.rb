@@ -7,7 +7,7 @@ class HistoryModeController < ApplicationController
   end
 
   def update
-    result = HistoryMode::UpdateInteractor.call(params: params, user: current_user)
+    result = HistoryMode::UpdateInteractor.call(params:, user: current_user)
     redirect_to document_path(result.edition.document)
   end
 

@@ -31,7 +31,7 @@ RSpec.describe "Review" do
       stub_publishing_api_isnt_available
 
       document_type = build(:document_type, topics: true)
-      edition = create(:edition, document_type: document_type)
+      edition = create(:edition, document_type:)
       post submit_for_2i_path(edition.document)
 
       expect(response).to redirect_to(document_path(edition.document))

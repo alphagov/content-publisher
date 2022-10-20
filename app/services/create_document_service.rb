@@ -16,8 +16,8 @@ class CreateDocumentService
   def call
     Document.transaction do
       Document.create!(
-        content_id: content_id,
-        locale: locale,
+        content_id:,
+        locale:,
         created_by: user,
       ).tap { |d| create_edition(d) }
     end
@@ -31,8 +31,8 @@ private
     revision = build_revision(document)
 
     edition = Edition.new(
-      document: document,
-      revision: revision,
+      document:,
+      revision:,
       status: build_status(revision),
       created_by: user,
       current: true,
@@ -49,15 +49,15 @@ private
   def build_revision(document)
     Revision.new(
       created_by: user,
-      document: document,
+      document:,
       number: 1,
       content_revision: ContentRevision.new(created_by: user),
       metadata_revision: MetadataRevision.new(
         update_type: "major",
         created_by: user,
-        document_type_id: document_type_id,
+        document_type_id:,
       ),
-      tags_revision: TagsRevision.new(tags: tags, created_by: user),
+      tags_revision: TagsRevision.new(tags:, created_by: user),
     )
   end
 

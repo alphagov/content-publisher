@@ -8,7 +8,7 @@ RSpec.describe HistoryMode::UpdateInteractor do
           document: edition.document.to_param,
           political: "yes",
         },
-        user: user,
+        user:,
       }
     end
 

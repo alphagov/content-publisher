@@ -12,7 +12,7 @@ class CreateNextEditionService
 
     current_edition.update!(current: false)
     EditDraftEditionService.call(next_edition, user, current: true, revision: next_revision)
-    AssignEditionStatusService.call(next_edition, user: user, state: :draft)
+    AssignEditionStatusService.call(next_edition, user:, state: :draft)
     next_edition.save!
     next_edition
   end
@@ -24,7 +24,7 @@ private
   def next_edition
     @next_edition ||= begin
       document = current_edition.document
-      discarded_edition || Edition.new(document: document,
+      discarded_edition || Edition.new(document:,
                                        number: document.next_edition_number,
                                        created_by: user)
     end
@@ -35,7 +35,7 @@ private
     updater.assign(change_note: "",
                    update_type: "major",
                    proposed_publish_time: nil,
-                   change_history: change_history)
+                   change_history:)
     updater.next_revision
   end
 

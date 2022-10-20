@@ -54,7 +54,7 @@ RSpec.describe "File Attachments" do
                   status: :not_found,
                   routes: { file_attachments_path: %i[get] } do
     let(:document_type) { build(:document_type, attachments: "featured") }
-    let(:edition) { create(:edition, document_type: document_type) }
+    let(:edition) { create(:edition, document_type:) }
     let(:route_params) { [edition.document] }
   end
 
@@ -63,7 +63,7 @@ RSpec.describe "File Attachments" do
                   status: :not_found,
                   routes: { file_attachment_path: %i[get] } do
     let(:document_type) { build(:document_type, attachments: "featured") }
-    let(:edition) { create(:edition, document_type: document_type) }
+    let(:edition) { create(:edition, document_type:) }
     let(:file_attachment_revision) { create(:file_attachment_revision) }
     let(:route_params) { [edition.document, file_attachment_revision] }
   end
@@ -71,7 +71,7 @@ RSpec.describe "File Attachments" do
   describe "GET /documents/:document/file-attachments/new" do
     it "returns successfully" do
       document_type = build(:document_type, attachments: "featured")
-      edition = create(:edition, document_type: document_type)
+      edition = create(:edition, document_type:)
 
       get new_file_attachment_path(edition.document)
       expect(response).to have_http_status(:ok)
@@ -158,7 +158,7 @@ RSpec.describe "File Attachments" do
 
       file = fixture_file_upload("text-file-74bytes.txt")
       post file_attachments_path(edition.document),
-           params: { file: file, title: "File" }
+           params: { file:, title: "File" }
 
       file_attachment = FileAttachment.last
       expect(response)
@@ -170,7 +170,7 @@ RSpec.describe "File Attachments" do
       file = fixture_file_upload("text-file-74bytes.txt")
 
       post file_attachments_path(edition.document),
-           params: { file: file,
+           params: { file:,
                      title: "File",
                      wizard: "featured-attachment-upload" }
 
@@ -183,7 +183,7 @@ RSpec.describe "File Attachments" do
     it "returns issues and an unprocessable response when there are requirement issues" do
       file = fixture_file_upload("bad_file.rb")
       post file_attachments_path(edition.document),
-           params: { file: file, title: "File" }
+           params: { file:, title: "File" }
 
       expect(response).to have_http_status(:unprocessable_entity)
       issue = I18n.t!("requirements.file_attachment_upload.unsupported_type.form_message")
@@ -298,7 +298,7 @@ RSpec.describe "File Attachments" do
       document_type = build(:document_type, attachments: "featured")
       edition = create(:edition,
                        file_attachment_revisions: [file_attachment_revision],
-                       document_type: document_type)
+                       document_type:)
 
       get edit_file_attachment_path(edition.document,
                                     file_attachment_revision.file_attachment_id)
@@ -312,7 +312,7 @@ RSpec.describe "File Attachments" do
     let(:edition) do
       create(:edition,
              file_attachment_revisions: [file_attachment_revision],
-             document_type: document_type)
+             document_type:)
     end
 
     it "redirects to the featured attachments index page" do

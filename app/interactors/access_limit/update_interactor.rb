@@ -36,16 +36,16 @@ private
     context.fail! if edition.access_limit&.limit_type == limit_type
 
     access_limit = AccessLimit.new(created_by: user,
-                                   edition: edition,
-                                   limit_type: limit_type,
+                                   edition:,
+                                   limit_type:,
                                    revision_at_creation: edition.revision)
 
-    EditDraftEditionService.call(edition, user, access_limit: access_limit)
+    EditDraftEditionService.call(edition, user, access_limit:)
   end
 
   def check_for_issues
     issues = Requirements::Form::AccessLimitChecker.call(edition, user)
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def update_edition
@@ -62,9 +62,9 @@ private
                  end
 
     TimelineEntry.create_for_edition(
-      entry_type: entry_type,
+      entry_type:,
       created_by: user,
-      edition: edition,
+      edition:,
       details: edition.access_limit,
     )
   end

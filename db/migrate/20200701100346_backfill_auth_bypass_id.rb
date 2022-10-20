@@ -9,7 +9,7 @@ class BackfillAuthBypassId < ActiveRecord::Migration[6.0]
     to_update = Edition.includes(:document).where(auth_bypass_id: nil)
     to_update.find_each do |edition|
       auth_bypass_id = generate_uuid_for_string(edition.document.content_id)
-      edition.update!(auth_bypass_id: auth_bypass_id)
+      edition.update!(auth_bypass_id:)
     end
   end
 

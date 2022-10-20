@@ -9,15 +9,15 @@ RSpec.describe CreateNextEditionService do
     it "aborts if the current edition isn't live" do
       current_edition = create(:edition, live: false)
 
-      expect { described_class.call(current_edition: current_edition, user: user) }
+      expect { described_class.call(current_edition:, user:) }
         .to raise_error("Can only create a next edition from a live edition")
     end
 
     it "returns a new current edition" do
       current_edition = create(:edition, :published, number: 2)
 
-      next_edition = described_class.call(current_edition: current_edition,
-                                          user: user)
+      next_edition = described_class.call(current_edition:,
+                                          user:)
 
       expect(current_edition).not_to be_current
       expect(next_edition).to be_current
@@ -26,8 +26,8 @@ RSpec.describe CreateNextEditionService do
     it "updates the edition number of the new current edition" do
       current_edition = create(:edition, :published, number: 2)
 
-      next_edition = described_class.call(current_edition: current_edition,
-                                          user: user)
+      next_edition = described_class.call(current_edition:,
+                                          user:)
 
       expect(next_edition.number).to eq 3
       expect(next_edition.created_by).to eq user
@@ -36,8 +36,8 @@ RSpec.describe CreateNextEditionService do
     it "returns a draft edition" do
       current_edition = create(:edition, :published)
 
-      next_edition = described_class.call(current_edition: current_edition,
-                                          user: user)
+      next_edition = described_class.call(current_edition:,
+                                          user:)
 
       expect(next_edition).to be_draft
     end
@@ -49,8 +49,8 @@ RSpec.describe CreateNextEditionService do
                                update_type: "minor",
                                proposed_publish_time: Time.zone.now)
 
-      next_edition = described_class.call(current_edition: current_edition,
-                                          user: user)
+      next_edition = described_class.call(current_edition:,
+                                          user:)
 
       expect(next_edition.change_note).to be_empty
       expect(next_edition.update_type).to eq("major")
@@ -65,8 +65,8 @@ RSpec.describe CreateNextEditionService do
                                change_note: "note",
                                update_type: "major")
 
-      next_edition = described_class.call(current_edition: current_edition,
-                                          user: user)
+      next_edition = described_class.call(current_edition:,
+                                          user:)
 
       expect(next_edition.change_history.first).to match a_hash_including(
         "note" => "note",
@@ -82,8 +82,8 @@ RSpec.describe CreateNextEditionService do
                                change_note: "note",
                                update_type: "minor")
 
-      next_edition = described_class.call(current_edition: current_edition,
-                                          user: user)
+      next_edition = described_class.call(current_edition:,
+                                          user:)
 
       expect(next_edition.change_history).to eq(current_edition.change_history)
     end
@@ -94,8 +94,8 @@ RSpec.describe CreateNextEditionService do
                                number: 2,
                                change_note: nil)
 
-      next_edition = described_class.call(current_edition: current_edition,
-                                          user: user)
+      next_edition = described_class.call(current_edition:,
+                                          user:)
 
       expect(next_edition.change_history).to be_empty
     end
@@ -106,8 +106,8 @@ RSpec.describe CreateNextEditionService do
                                  :published,
                                  change_note: "note")
 
-        next_edition = described_class.call(current_edition: current_edition,
-                                            user: user)
+        next_edition = described_class.call(current_edition:,
+                                            user:)
 
         expect(next_edition.change_history).to eq(current_edition.change_history)
       end
@@ -126,8 +126,8 @@ RSpec.describe CreateNextEditionService do
 
       it "resumes the edition" do
         next_edition = described_class.call(current_edition: live_edition,
-                                            user: user,
-                                            discarded_edition: discarded_edition)
+                                            user:,
+                                            discarded_edition:)
 
         expect(next_edition.number).to eq discarded_edition.number
         expect(next_edition).to eq discarded_edition.reload
@@ -135,8 +135,8 @@ RSpec.describe CreateNextEditionService do
 
       it "updates the state of the discarded edition" do
         described_class.call(current_edition: live_edition,
-                             user: user,
-                             discarded_edition: discarded_edition)
+                             user:,
+                             discarded_edition:)
 
         expect(discarded_edition).to be_draft
       end

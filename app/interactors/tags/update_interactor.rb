@@ -34,16 +34,16 @@ private
 
   def check_for_issues
     issues = Requirements::Form::TagsChecker.call(edition, update_params)
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def update_edition
-    EditDraftEditionService.call(edition, user, revision: revision)
+    EditDraftEditionService.call(edition, user, revision:)
     edition.save!
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_revision(entry_type: :updated_tags, edition: edition)
+    TimelineEntry.create_for_revision(entry_type: :updated_tags, edition:)
   end
 
   def update_preview

@@ -10,14 +10,14 @@ class AccessLimitController < ApplicationController
   end
 
   def update
-    result = AccessLimit::UpdateInteractor.call(params: params, user: current_user)
+    result = AccessLimit::UpdateInteractor.call(params:, user: current_user)
     @edition, issues = result.to_h.values_at(:edition, :issues)
 
     if issues
       flash.now["requirements"] = { "items" => issues.items }
 
       render :edit,
-             assigns: { issues: issues },
+             assigns: { issues: },
              status: :unprocessable_entity
     else
       redirect_to document_path(@edition.document)

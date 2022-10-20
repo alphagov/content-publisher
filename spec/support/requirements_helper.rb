@@ -13,7 +13,7 @@ RSpec::Matchers.define :have_issue do |field, key, context = {}|
       expected = I18n.t!("requirements.#{field}.#{key}.#{style}_message",
                          **context.except(:styles).merge(force_raise: true))
 
-      issue.message(style: style) == expected
+      issue.message(style:) == expected
     end
   end
 

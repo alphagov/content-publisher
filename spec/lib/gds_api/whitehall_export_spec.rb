@@ -83,7 +83,7 @@ RSpec.describe GdsApi::WhitehallExport do
     whitehall_host = Plek.new.external_url_for("whitehall-admin")
     stub_request(:get, "#{whitehall_host}/government/admin/export/document")
       .with(query: hash_including(
-        lead_organisation: lead_organisation,
+        lead_organisation:,
         type: document_type,
         subtypes: document_subtypes,
         page_count: "100",

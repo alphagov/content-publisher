@@ -31,7 +31,7 @@ module Requirements
     def issue_item_params(issue, params)
       link_options = params.dig(:link_options, issue.field) || {}
 
-      params.slice(:style).merge(link_options: link_options)
+      params.slice(:style).merge(link_options:)
     end
   end
 end

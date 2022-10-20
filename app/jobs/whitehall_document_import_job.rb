@@ -37,7 +37,7 @@ class WhitehallDocumentImportJob < ApplicationJob
       document_import.update!(state: "import_aborted", error_log: error.inspect)
     else
       state = document_import.imported? ? "sync_failed" : "import_failed"
-      document_import.update!(state: state, error_log: error.inspect)
+      document_import.update!(state:, error_log: error.inspect)
     end
 
     document_import.whitehall_migration.check_migration_finished

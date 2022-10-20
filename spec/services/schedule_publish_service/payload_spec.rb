@@ -6,13 +6,13 @@ RSpec.describe SchedulePublishService::Payload do
 
       edition = build(:edition,
                       :scheduled,
-                      document_type: document_type,
-                      publish_time: publish_time)
+                      document_type:,
+                      publish_time:)
 
       payload = described_class.new(edition).intent_payload
 
       payload_hash = {
-        publish_time: publish_time,
+        publish_time:,
         publishing_app: PublishingApiPayload::PUBLISHING_APP,
         rendering_app: "government-frontend",
       }

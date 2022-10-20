@@ -66,7 +66,7 @@ class Image::BlobRevision < ApplicationRecord
     known_variants = assets.map(&:variant)
     missing_variants = ASSET_VARIANTS - known_variants
     missing_variants.each do |variant|
-      assets << Image::Asset.new(blob_revision: self, variant: variant)
+      assets << Image::Asset.new(blob_revision: self, variant:)
     end
   end
 end

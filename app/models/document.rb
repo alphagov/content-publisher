@@ -42,7 +42,7 @@ class Document < ApplicationRecord
 
   def self.find_by_param(content_id_and_locale)
     content_id, locale = content_id_and_locale.split(":")
-    find_by!(content_id: content_id, locale: locale)
+    find_by!(content_id:, locale:)
   end
 
   def next_edition_number

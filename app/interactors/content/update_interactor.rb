@@ -39,16 +39,16 @@ private
       issues.push(*field.form_issues(edition, content_params))
     end
 
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def update_edition
-    EditDraftEditionService.call(edition, user, revision: revision)
+    EditDraftEditionService.call(edition, user, revision:)
     edition.save!
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_revision(entry_type: :updated_content, edition: edition)
+    TimelineEntry.create_for_revision(entry_type: :updated_content, edition:)
   end
 
   def update_preview

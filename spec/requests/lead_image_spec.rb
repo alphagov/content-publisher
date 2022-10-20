@@ -27,13 +27,13 @@ RSpec.describe "Lead Image" do
                     "choosing lead image not associated with edition",
                     status: :not_found,
                     routes: { choose_lead_image_path: %i[post] } do
-      let(:edition) { create :edition, document_type: document_type }
+      let(:edition) { create :edition, document_type: }
       let(:route_params) { [edition.document, image_revision.image_id] }
     end
 
     it "redirects to document summary with an alert" do
       edition = create(:edition,
-                       document_type: document_type,
+                       document_type:,
                        image_revisions: [image_revision])
       post choose_lead_image_path(edition.document, image_revision.image_id)
 
@@ -71,7 +71,7 @@ RSpec.describe "Lead Image" do
     it "redirects with an alert when an edition has a lead image" do
       image_revision = create(:image_revision)
       edition = create(:edition,
-                       document_type: document_type,
+                       document_type:,
                        lead_image_revision: image_revision)
       delete remove_lead_image_path(edition.document)
 
@@ -83,7 +83,7 @@ RSpec.describe "Lead Image" do
     end
 
     it "redirects without an alert when an edition doesn't have a lead image" do
-      edition = create(:edition, document_type: document_type)
+      edition = create(:edition, document_type:)
       delete remove_lead_image_path(edition.document)
 
       expect(response).to redirect_to(images_path(edition.document))

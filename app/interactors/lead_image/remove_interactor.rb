@@ -40,7 +40,7 @@ private
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_revision(entry_type: :lead_image_removed, edition: edition)
+    TimelineEntry.create_for_revision(entry_type: :lead_image_removed, edition:)
   end
 
   def update_preview

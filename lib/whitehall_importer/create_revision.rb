@@ -29,7 +29,7 @@ module WhitehallImporter
       file_attachment_revisions = find_or_create_file_attachment_revisions(whitehall_edition["attachments"])
       image_revisions = image_revisions(whitehall_edition["images"])
       Revision.create!(
-        document: document,
+        document:,
         number: document.next_revision_number,
         imported: true,
         content_revision: ContentRevision.new(
@@ -50,7 +50,7 @@ module WhitehallImporter
           change_note: whitehall_edition["change_note"],
           document_type_id: whitehall_edition[document_type_key],
           backdated_to: backdated? ? whitehall_edition["first_published_at"] : nil,
-          change_history: change_history,
+          change_history:,
         ),
         tags_revision: TagsRevision.new(
           tags: {
@@ -61,8 +61,8 @@ module WhitehallImporter
             "world_locations" => tags(whitehall_edition["world_locations"]),
           },
         ),
-        image_revisions: image_revisions,
-        file_attachment_revisions: file_attachment_revisions,
+        image_revisions:,
+        file_attachment_revisions:,
         lead_image_revision: image_revisions.first,
         created_at: whitehall_edition["created_at"],
       )

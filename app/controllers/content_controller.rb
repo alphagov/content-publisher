@@ -5,7 +5,7 @@ class ContentController < ApplicationController
   end
 
   def update
-    result = Content::UpdateInteractor.call(params: params, user: current_user)
+    result = Content::UpdateInteractor.call(params:, user: current_user)
     edition, issues, = result.to_h.values_at(:edition, :issues)
 
     if issues
@@ -14,7 +14,7 @@ class ContentController < ApplicationController
       }
 
       render :edit,
-             assigns: { edition: edition, issues: issues },
+             assigns: { edition:, issues: },
              status: :unprocessable_entity
     else
       redirect_to edition.document

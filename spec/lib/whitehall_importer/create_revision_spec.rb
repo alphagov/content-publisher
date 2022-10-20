@@ -1,7 +1,7 @@
 RSpec.describe WhitehallImporter::CreateRevision do
   describe ".call" do
     let(:document) { build(:document, imported_from: "whitehall", locale: "en") }
-    let(:document_import) { build(:whitehall_migration_document_import, document: document) }
+    let(:document_import) { build(:whitehall_migration_document_import, document:) }
 
     it "creates a revision" do
       whitehall_edition = build(:whitehall_export_edition)
@@ -35,7 +35,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
       whitehall_edition = build(:whitehall_export_edition,
                                 first_published_at: backdated_to)
       document_import = build(:whitehall_migration_document_import,
-                              document: document,
+                              document:,
                               payload: build(:whitehall_export_document, editions: [whitehall_edition]))
 
       revision = described_class.call(document_import, whitehall_edition)
@@ -51,7 +51,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
       backdated_whitehall_edition = build(:whitehall_export_edition,
                                           first_published_at: backdated_to)
       document_import = build(:whitehall_migration_document_import,
-                              document: document,
+                              document:,
                               payload: build(:whitehall_export_document,
                                              editions: [whitehall_edition, backdated_whitehall_edition]))
 
@@ -70,10 +70,10 @@ RSpec.describe WhitehallImporter::CreateRevision do
 
     it "does not set backdated_to when the following edition has not been backdated" do
       published_at = Time.zone.now.rfc3339
-      whitehall_edition = build(:whitehall_export_edition, :published, published_at: published_at)
+      whitehall_edition = build(:whitehall_export_edition, :published, published_at:)
       following_whitehall_edition = build(:whitehall_export_edition, first_published_at: published_at)
       document_import = build(:whitehall_migration_document_import,
-                              document: document,
+                              document:,
                               payload: build(:whitehall_export_document,
                                              editions: [whitehall_edition, following_whitehall_edition]))
 
@@ -180,7 +180,7 @@ RSpec.describe WhitehallImporter::CreateRevision do
       body = "Foo Bar"
       whitehall_edition = build(
         :whitehall_export_edition,
-        translations: [build(:whitehall_export_translation, body: body)],
+        translations: [build(:whitehall_export_translation, body:)],
         images: [build(:whitehall_export_image, filename: "foo.jpg")],
         attachments: [build(:whitehall_export_file_attachment, filename: "attach.txt")],
       )

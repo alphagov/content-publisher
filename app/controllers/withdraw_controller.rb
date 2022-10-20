@@ -11,22 +11,22 @@ class WithdrawController < ApplicationController
   end
 
   def create
-    result = Withdraw::CreateInteractor.call(params: params, user: current_user)
+    result = Withdraw::CreateInteractor.call(params:, user: current_user)
     edition, issues, api_error = result.to_h.values_at(:edition, :issues, :api_error)
 
     if issues
       flash.now["requirements"] = { "items" => issues.items }
 
       render :new,
-             assigns: { edition: edition,
+             assigns: { edition:,
                         public_explanation: params[:public_explanation],
-                        issues: issues },
+                        issues: },
              status: :unprocessable_entity
     elsif api_error
       flash.now["alert_with_description"] = t("withdraw.new.flashes.publishing_api_error")
 
       render :new,
-             assigns: { edition: edition,
+             assigns: { edition:,
                         public_explanation: params[:public_explanation] },
              status: :service_unavailable
     else

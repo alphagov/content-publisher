@@ -1,6 +1,6 @@
 class LeadImageController < ApplicationController
   def choose
-    result = LeadImage::ChooseInteractor.call(params: params, user: current_user)
+    result = LeadImage::ChooseInteractor.call(params:, user: current_user)
     image_revision = result.image_revision
 
     redirect_to document_path(params[:document]),
@@ -8,7 +8,7 @@ class LeadImageController < ApplicationController
   end
 
   def remove
-    result = LeadImage::RemoveInteractor.call(params: params, user: current_user)
+    result = LeadImage::RemoveInteractor.call(params:, user: current_user)
     no_lead_image, image_revision = result.to_h.values_at(:no_lead_image, :image_revision)
 
     if no_lead_image

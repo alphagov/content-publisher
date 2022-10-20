@@ -33,7 +33,7 @@ private
 
   def check_for_issues
     issues = Requirements::Form::FileAttachmentMetadataChecker.call(attachment_params)
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def update_file_attachment
@@ -59,7 +59,7 @@ private
 
   def create_timeline_entry
     TimelineEntry.create_for_revision(entry_type: :file_attachment_updated,
-                                      edition: edition)
+                                      edition:)
   end
 
   def update_preview

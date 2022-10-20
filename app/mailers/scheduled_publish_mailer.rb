@@ -26,7 +26,7 @@ class ScheduledPublishMailer < ApplicationMailer
     subject = I18n.t("scheduled_publish_mailer.failure_email.subject",
                      title: edition.title)
 
-    view_mail(template_id, to: recipient.email, subject: subject)
+    view_mail(template_id, to: recipient.email, subject:)
   end
 
 private

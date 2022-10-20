@@ -18,7 +18,7 @@ RSpec.describe "Documents" do
 
     context "when the user has an organisation" do
       let(:organisation_content_id) { SecureRandom.uuid }
-      let(:user) { create(:user, organisation_content_id: organisation_content_id) }
+      let(:user) { create(:user, organisation_content_id:) }
 
       before { login_as(user) }
 

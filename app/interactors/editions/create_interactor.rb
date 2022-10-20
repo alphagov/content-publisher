@@ -26,8 +26,8 @@ private
 
   def create_next_edition
     context.next_edition = CreateNextEditionService.call(current_edition: edition,
-                                                         user: user,
-                                                         discarded_edition: discarded_edition)
+                                                         user:,
+                                                         discarded_edition:)
   end
 
   def create_timeline_entry

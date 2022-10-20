@@ -1,6 +1,6 @@
 class ScheduleController < ApplicationController
   def new
-    result = Schedule::NewInteractor.call(params: params, user: current_user)
+    result = Schedule::NewInteractor.call(params:, user: current_user)
     @edition = result.edition
 
     if result.publish_issues
@@ -16,7 +16,7 @@ class ScheduleController < ApplicationController
   end
 
   def update
-    result = Schedule::UpdateInteractor.call(params: params, user: current_user)
+    result = Schedule::UpdateInteractor.call(params:, user: current_user)
     edition, issues, api_error = result.to_h.values_at(:edition, :issues, :api_error)
 
     if issues
@@ -30,7 +30,7 @@ class ScheduleController < ApplicationController
       }
 
       render :edit,
-             assigns: { edition: edition, issues: issues },
+             assigns: { edition:, issues: },
              status: :unprocessable_entity
     elsif api_error
       redirect_to document_path(edition.document),
@@ -41,14 +41,14 @@ class ScheduleController < ApplicationController
   end
 
   def create
-    result = Schedule::CreateInteractor.call(params: params, user: current_user)
+    result = Schedule::CreateInteractor.call(params:, user: current_user)
     edition, issues, api_error = result.to_h.values_at(:edition, :issues, :api_error)
 
     if issues
       flash.now["requirements"] = { "items" => issues.items }
 
       render :new,
-             assigns: { issues: issues, edition: edition },
+             assigns: { issues:, edition: },
              status: :unprocessable_entity
     elsif api_error
       redirect_to document_path(edition.document),
@@ -59,7 +59,7 @@ class ScheduleController < ApplicationController
   end
 
   def destroy
-    result = Schedule::DestroyInteractor.call(params: params, user: current_user)
+    result = Schedule::DestroyInteractor.call(params:, user: current_user)
 
     if result.api_error
       redirect_to document_path(params[:document]),

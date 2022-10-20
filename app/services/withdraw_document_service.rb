@@ -31,7 +31,7 @@ private
 
   def update_edition(withdrawal)
     AssignEditionStatusService.call(edition,
-                                    user: user,
+                                    user:,
                                     state: :withdrawn,
                                     status_details: withdrawal)
     edition.save!
@@ -53,10 +53,10 @@ private
     if edition.withdrawn?
       withdrawal = edition.status.details.dup
       withdrawal.tap do |w|
-        w.assign_attributes(public_explanation: public_explanation)
+        w.assign_attributes(public_explanation:)
       end
     else
-      Withdrawal.new(public_explanation: public_explanation,
+      Withdrawal.new(public_explanation:,
                      published_status: edition.status,
                      withdrawn_at: Time.zone.now)
     end

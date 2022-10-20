@@ -65,7 +65,7 @@ RSpec.describe "documents/history/_whitehall_entry" do
       :timeline_entry,
       :whitehall_imported,
       whitehall_entry_type: :fact_check_request,
-      whitehall_entry_contents: { email_address: email, instructions: instructions },
+      whitehall_entry_contents: { email_address: email, instructions: },
     )
 
     render template: described_template, locals: { entry: timeline_entry }
@@ -90,7 +90,7 @@ RSpec.describe "documents/history/_whitehall_entry" do
       :timeline_entry,
       :whitehall_imported,
       whitehall_entry_type: :fact_check_response,
-      whitehall_entry_contents: { email_address: email, comments: comments },
+      whitehall_entry_contents: { email_address: email, comments: },
     )
 
     render template: described_template, locals: { entry: timeline_entry }

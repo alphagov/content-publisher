@@ -32,7 +32,7 @@ private
   end
 
   def create_timeline_entry
-    TimelineEntry.create_for_revision(entry_type: :image_deleted, edition: edition)
+    TimelineEntry.create_for_revision(entry_type: :image_deleted, edition:)
   end
 
   def update_preview

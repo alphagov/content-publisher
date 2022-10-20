@@ -35,7 +35,7 @@ private
 
   def check_for_issues
     issues = Requirements::Form::ImageMetadataChecker.call(image_params)
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   end
 
   def update_image
@@ -70,7 +70,7 @@ private
                             :image_updated
                           end
 
-    TimelineEntry.create_for_revision(entry_type: timeline_entry_type, edition: edition)
+    TimelineEntry.create_for_revision(entry_type: timeline_entry_type, edition:)
   end
 
   def update_preview

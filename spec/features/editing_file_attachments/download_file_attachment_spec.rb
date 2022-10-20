@@ -18,7 +18,7 @@ RSpec.feature "Download a file attachment" do
     @attachment_revision = create(:file_attachment_revision)
 
     @edition = create(:edition,
-                      document_type: document_type,
+                      document_type:,
                       file_attachment_revisions: [@attachment_revision])
   end
 

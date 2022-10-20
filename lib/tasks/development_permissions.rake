@@ -7,6 +7,6 @@ task development_permissions: :environment do
                                      User::DEBUG_PERMISSION,
                                      User::MANAGING_EDITOR_PERMISSION]).uniq
 
-  user.update!(permissions: permissions)
+  user.update!(permissions:)
   puts "User permissions are now #{permissions.to_sentence}"
 end

@@ -30,7 +30,7 @@ RSpec.describe "Preview" do
 
     it "redirects to the summary page issues in an error when the document isn't previewable" do
       document_type = build :document_type, contents: [DocumentType::TitleAndBasePathField.new]
-      edition = create(:edition, document_type: document_type, title: "", revision_synced: false)
+      edition = create(:edition, document_type:, title: "", revision_synced: false)
       post preview_document_path(edition.document)
 
       expect(response).to redirect_to(document_path(edition.document))

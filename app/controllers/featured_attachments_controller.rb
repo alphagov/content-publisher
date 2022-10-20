@@ -18,7 +18,7 @@ class FeaturedAttachmentsController < ApplicationController
   end
 
   def update_order
-    result = FeaturedAttachments::UpdateOrderInteractor.call(params: params, user: current_user)
+    result = FeaturedAttachments::UpdateOrderInteractor.call(params:, user: current_user)
     edition = result.edition
     redirect_to featured_attachments_path(edition.document)
   end

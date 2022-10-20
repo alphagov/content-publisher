@@ -22,7 +22,7 @@ private
 
   def check_for_issues
     issues = Requirements::Publish::EditionChecker.call(edition)
-    context.fail!(issues: issues) if issues.any?
+    context.fail!(issues:) if issues.any?
   rescue GdsApi::BaseError => e
     GovukError.notify(e)
     context.fail!(api_error: true)

@@ -11,7 +11,7 @@ RSpec.feature "Download a image" do
     @image_revision = create(:image_revision, :on_asset_manager)
 
     @edition = create(:edition,
-                      document_type: document_type,
+                      document_type:,
                       lead_image_revision: @image_revision)
   end
 

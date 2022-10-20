@@ -20,8 +20,8 @@ FactoryBot.define do
 
     publishing_metadata do
       DocumentType::PublishingMetadata.new(
-        rendering_app: rendering_app,
-        schema_name: schema_name,
+        rendering_app:,
+        schema_name:,
       )
     end
 

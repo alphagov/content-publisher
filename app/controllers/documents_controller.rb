@@ -42,7 +42,7 @@ private
                            :gets_history_mode,
                            :in_history_mode).permit!
     {
-      filters: filters,
+      filters:,
       sort: params[:sort],
       page: params[:page],
       per_page: 50,

@@ -29,7 +29,7 @@ private
   def create_internal_note
     context.internal_note = InternalNote.create!(
       body: params[:internal_note].chomp,
-      edition: edition,
+      edition:,
       created_by: user,
     )
   end
@@ -37,7 +37,7 @@ private
   def create_timeline_entry
     TimelineEntry.create_for_revision(
       entry_type: :internal_note,
-      edition: edition,
+      edition:,
       details: internal_note,
       created_by: user,
     )

@@ -93,7 +93,7 @@ RSpec.describe PublishingApiPayload::History do
         },
       ]
 
-      second_edition = build(:edition, document: first_edition.document, change_history: change_history)
+      second_edition = build(:edition, document: first_edition.document, change_history:)
 
       expected_change_notes = [
         {
@@ -125,7 +125,7 @@ RSpec.describe PublishingApiPayload::History do
         },
       ]
 
-      edition = build(:edition, :published, change_history: change_history, backdated_to: "2020-02-22 11:00:00")
+      edition = build(:edition, :published, change_history:, backdated_to: "2020-02-22 11:00:00")
 
       expect(described_class.new(edition).change_history).to eq([first_change_note])
     end

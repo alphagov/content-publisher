@@ -33,7 +33,7 @@ private
     TimelineEntry.create_for_revision(
       entry_type: :political_status_changed,
       revision: edition.revision,
-      edition: edition,
+      edition:,
       created_by: user,
     )
   end

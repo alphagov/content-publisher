@@ -2,7 +2,7 @@ RSpec.describe PublishingApiPayload do
   describe "#payload" do
     it "generates a payload for the publishing API" do
       document_type = build(:document_type)
-      edition = build(:edition, document_type: document_type)
+      edition = build(:edition, document_type:)
 
       payload = described_class.new(edition).payload
 
@@ -90,7 +90,7 @@ RSpec.describe PublishingApiPayload do
                                   payload: { links: { foo: "bar" } })
       document_type = build(:document_type, tags: [tag_field])
       edition = build(:edition,
-                      document_type: document_type,
+                      document_type:,
                       tags: { role_appointments: %w[foo] })
 
       payload = described_class.new(edition).payload
@@ -102,7 +102,7 @@ RSpec.describe PublishingApiPayload do
                                    payload: { details: { body: "body" } })
 
       document_type = build(:document_type, contents: [body_field])
-      edition = build(:edition, document_type: document_type)
+      edition = build(:edition, document_type:)
       payload = described_class.new(edition).payload
       expect(payload[:details][:body]).to eq("body")
     end
@@ -117,7 +117,7 @@ RSpec.describe PublishingApiPayload do
       document_type = build(:document_type, :with_lead_image)
 
       edition = build(:edition,
-                      document_type: document_type,
+                      document_type:,
                       lead_image_revision: image_revision)
 
       payload = described_class.new(edition).payload
@@ -142,7 +142,7 @@ RSpec.describe PublishingApiPayload do
       document_type = build(:document_type, :with_lead_image)
 
       edition = build(:edition,
-                      document_type: document_type,
+                      document_type:,
                       lead_image_revision: image_revision)
 
       payload = described_class.new(edition).payload

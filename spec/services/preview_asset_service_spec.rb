@@ -21,7 +21,7 @@ RSpec.describe PreviewAssetService do
         file = PreviewAssetService::UploadedFile.new(asset)
 
         payload = instance_double(PreviewAssetService::Payload)
-        allow(payload).to receive(:for_upload).and_return(file: file, foo: "bar")
+        allow(payload).to receive(:for_upload).and_return(file:, foo: "bar")
         allow(PreviewAssetService::Payload).to receive(:new).and_return(payload)
       end
 
@@ -29,7 +29,7 @@ RSpec.describe PreviewAssetService do
         request = stub_asset_manager_receives_an_asset(file_url)
 
         expect(asset).to receive(:update!)
-          .with a_hash_including(state: :draft, file_url: file_url)
+          .with a_hash_including(state: :draft, file_url:)
 
         described_class.call(edition, asset)
         expect(request).to have_been_requested.at_least_once

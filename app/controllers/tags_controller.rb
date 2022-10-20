@@ -10,7 +10,7 @@ class TagsController < ApplicationController
   end
 
   def update
-    results = Tags::UpdateInteractor.call(params: params, user: current_user)
+    results = Tags::UpdateInteractor.call(params:, user: current_user)
     edition, issues, = results.to_h.values_at(:edition, :issues)
 
     if issues
@@ -18,7 +18,7 @@ class TagsController < ApplicationController
         "items" => issues.items(link_options: issues_link_options(edition)),
       }
       render :edit,
-             assigns: { edition: edition, issues: issues },
+             assigns: { edition:, issues: },
              status: :unprocessable_entity
     else
       redirect_to document_path(params[:document])

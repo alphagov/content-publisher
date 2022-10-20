@@ -43,7 +43,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
     it "deletes draft assets" do
       image_revision = build(:image_revision, :on_asset_manager, state: :draft)
       asset = create(:whitehall_migration_asset_import,
-                     image_revision: image_revision)
+                     image_revision:)
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])
       delete_asset_request = stub_asset_manager_delete_asset(asset_id)
 
@@ -55,7 +55,7 @@ RSpec.describe WhitehallImporter::MigrateAssets do
     it "deletes draft asset variants" do
       image_revision = build(:image_revision, :on_asset_manager, state: :draft)
       asset = create(:whitehall_migration_asset_import,
-                     image_revision: image_revision,
+                     image_revision:,
                      variant: "s300")
       delete_asset_request = stub_asset_manager_delete_asset(asset_id)
       whitehall_import = build(:whitehall_migration_document_import, assets: [asset])

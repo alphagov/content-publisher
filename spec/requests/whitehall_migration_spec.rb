@@ -1,6 +1,6 @@
 RSpec.describe "Whitehall Migration" do
   let(:whitehall_migration) { create(:whitehall_migration) }
-  let(:document_import) { create(:whitehall_migration_document_import, whitehall_migration: whitehall_migration) }
+  let(:document_import) { create(:whitehall_migration_document_import, whitehall_migration:) }
   let(:debug_permission_user) { create(:user, permissions: [User::DEBUG_PERMISSION]) }
 
   it_behaves_like "requests that return status",

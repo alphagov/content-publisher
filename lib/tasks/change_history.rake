@@ -33,7 +33,7 @@ namespace :change_history do
       raise "No change history entry with id #{args.change_history_id}" unless entry
 
       entry["note"] = ENV["NOTE"]
-      updater.assign(change_history: change_history)
+      updater.assign(change_history:)
     end
   end
 
@@ -55,7 +55,7 @@ namespace :change_history do
         .sort_by { |note| note["public_timestamp"] }
         .reverse
 
-      updater.assign(change_history: change_history)
+      updater.assign(change_history:)
     end
   end
 end

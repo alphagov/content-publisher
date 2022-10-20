@@ -11,7 +11,7 @@ namespace :import do
       organisation_content_id, args.document_type, document_subtypes
     )
 
-    documents_to_import = WhitehallMigration::DocumentImport.where(whitehall_migration: whitehall_migration).count
+    documents_to_import = WhitehallMigration::DocumentImport.where(whitehall_migration:).count
     puts "Identified #{documents_to_import} documents to import"
 
     url_helpers = Rails.application.routes.url_helpers
@@ -40,7 +40,7 @@ namespace :import do
     args.document_ids.split(" ").map(&:to_i).each do |document_id|
       whitehall_import = WhitehallMigration::DocumentImport.create!(
         whitehall_document_id: document_id,
-        whitehall_migration: whitehall_migration,
+        whitehall_migration:,
         state: "pending",
       )
 
