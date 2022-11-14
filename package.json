@@ -41,7 +41,7 @@
     "@webcomponents/custom-elements": "^1.5.1",
     "abortcontroller-polyfill": "^1.7.5",
     "accessible-autocomplete": "kevindew/accessible-autocomplete",
-    "core-js-bundle": "^3.26.0",
+    "core-js-bundle": "^3.26.1",
     "cropperjs": "^1.5.12",
     "es5-polyfill": "^0.0.6",
     "markdown-toolbar-element": "^0.2.0",
