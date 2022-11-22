@@ -22,7 +22,7 @@ RSpec.describe DocumentTypeSelection::Option do
     end
 
     it "returns the full url if the hostname is provided" do
-      whitehall_host = Plek.new.external_url_for("whitehall-admin")
+      whitehall_host = Plek.external_url_for("whitehall-admin")
 
       option = {
         "id" => "foo",

@@ -1,7 +1,7 @@
 RSpec.describe WhitehallImporter::CreateMigration do
   include ActiveJob::TestHelper
   describe ".call" do
-    let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
+    let(:whitehall_host) { Plek.external_url_for("whitehall-admin") }
     let(:whitehall_export_page_1) do
       build(:whitehall_export_index,
             documents: build_list(:whitehall_export_index_document, 100))

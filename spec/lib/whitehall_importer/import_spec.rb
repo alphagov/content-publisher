@@ -1,7 +1,7 @@
 RSpec.describe WhitehallImporter::Import do
   describe ".call" do
     let(:whitehall_user) { build(:whitehall_export_user) }
-    let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
+    let(:whitehall_host) { Plek.external_url_for("whitehall-admin") }
     let(:whitehall_export_document) { build(:whitehall_export_document) }
     let(:document_import) do
       create(:whitehall_migration_document_import,

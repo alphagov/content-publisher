@@ -9,7 +9,7 @@ RSpec.describe WhitehallImporter::Sync do
       )
     end
 
-    let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
+    let(:whitehall_host) { Plek.external_url_for("whitehall-admin") }
 
     let(:whitehall_migration_document_import) do
       build(:whitehall_migration_document_import, state: "imported")

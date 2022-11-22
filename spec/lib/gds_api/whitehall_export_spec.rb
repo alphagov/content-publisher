@@ -1,6 +1,6 @@
 RSpec.describe GdsApi::WhitehallExport do
   let(:whitehall_adapter) { described_class.new(Plek.find("whitehall-admin")) }
-  let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
+  let(:whitehall_host) { Plek.external_url_for("whitehall-admin") }
   let(:document_id) { "123" }
 
   describe "#document_list" do
@@ -80,7 +80,7 @@ RSpec.describe GdsApi::WhitehallExport do
   end
 
   def stub_whitehall_has_document_index(lead_organisation, document_type, document_subtypes, page_number, items_on_page)
-    whitehall_host = Plek.new.external_url_for("whitehall-admin")
+    whitehall_host = Plek.external_url_for("whitehall-admin")
     stub_request(:get, "#{whitehall_host}/government/admin/export/document")
       .with(query: hash_including(
         lead_organisation:,
