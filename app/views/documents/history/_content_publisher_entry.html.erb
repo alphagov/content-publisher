@@ -25,7 +25,7 @@
           <%= t "documents.history.entry_content.alternative_url" %>
         <% end %>
         <%= link_to(nil,
-                    URI.join(Plek.new.website_root, removal.alternative_url).to_s,
+                    URI.join(Plek.website_root, removal.alternative_url).to_s,
                     class: "govuk-link") %>
       </p>
     <% end %>

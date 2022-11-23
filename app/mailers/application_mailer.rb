@@ -1,6 +1,6 @@
 class ApplicationMailer < Mail::Notify::Mailer
   def default_url_options
-    { host: Plek.new.external_url_for("content-publisher") }
+    { host: Plek.external_url_for("content-publisher") }
   end
 
   def template_id

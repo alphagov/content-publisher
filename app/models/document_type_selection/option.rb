@@ -16,7 +16,7 @@ class DocumentTypeSelection::Option
   end
 
   def managed_elsewhere_url
-    hostname ? Plek.new.external_url_for(hostname) + path : path
+    hostname ? Plek.external_url_for(hostname) + path : path
   end
 
   def pre_release?

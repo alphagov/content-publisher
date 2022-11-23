@@ -15,7 +15,7 @@ namespace :import do
     puts "Identified #{documents_to_import} documents to import"
 
     url_helpers = Rails.application.routes.url_helpers
-    puts url_helpers.whitehall_migration_url(whitehall_migration, host: Plek.new.external_url_for("content-publisher"))
+    puts url_helpers.whitehall_migration_url(whitehall_migration, host: Plek.external_url_for("content-publisher"))
   end
 
   desc "Import a single document from Whitehall Publisher using Whitehall's internal document ID e.g. import:whitehall_document[123]"
@@ -30,7 +30,7 @@ namespace :import do
     puts "Added whitehall document with ID:#{args.document_id} to the import queue"
 
     url_helpers = Rails.application.routes.url_helpers
-    puts url_helpers.whitehall_migration_url(whitehall_import.whitehall_migration_id, host: Plek.new.external_url_for("content-publisher"))
+    puts url_helpers.whitehall_migration_url(whitehall_import.whitehall_migration_id, host: Plek.external_url_for("content-publisher"))
   end
 
   desc "Import multiple documents from Whitehall Publisher using Whitehall's internal document ID's e.g. import:whitehall_documents[\"123 456 789\"]"
@@ -49,6 +49,6 @@ namespace :import do
     end
 
     url_helpers = Rails.application.routes.url_helpers
-    puts url_helpers.whitehall_migration_url(whitehall_migration.id, host: Plek.new.external_url_for("content-publisher"))
+    puts url_helpers.whitehall_migration_url(whitehall_migration.id, host: Plek.external_url_for("content-publisher"))
   end
 end

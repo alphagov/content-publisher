@@ -2,7 +2,7 @@ RSpec.describe WhitehallDocumentImportJob do
   include ActiveJob::TestHelper
 
   let(:whitehall_migration) { create(:whitehall_migration) }
-  let(:whitehall_host) { Plek.new.external_url_for("whitehall-admin") }
+  let(:whitehall_host) { Plek.external_url_for("whitehall-admin") }
 
   let(:whitehall_migration_document_import) do
     create(:whitehall_migration_document_import,
