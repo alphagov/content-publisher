@@ -42,7 +42,7 @@ group :development, :test do
   gem "byebug"
   gem "climate_control"
   gem "factory_bot_rails"
-  gem "govuk_schemas"
+  gem "govuk_schemas", git: "https://github.com/alphagov/govuk_schemas"
   gem "govuk_test"
   gem "i18n-coverage"
   gem "json_matchers"

@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/alphagov/govuk_schemas
+  revision: 714b91edba0bf9c4d461c1edf17a99d24b5c9b8e
+  specs:
+    govuk_schemas (4.4.1)
+      json-schema (>= 2.8, < 3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -176,8 +183,6 @@ GEM
       rails (>= 6)
       rouge
       sprockets (>= 3)
-    govuk_schemas (4.4.1)
-      json-schema (~> 2.8.0)
     govuk_sidekiq (5.0.0)
       gds-api-adapters (>= 19.1.0)
       govuk_app_config (>= 1.1)
@@ -209,8 +214,8 @@ GEM
     interactor (3.1.2)
     jmespath (1.6.1)
     json (2.6.2)
-    json-schema (2.8.1)
-      addressable (>= 2.4)
+    json-schema (3.0.0)
+      addressable (>= 2.8)
     json_matchers (0.11.1)
       json_schema
     json_schema (0.21.0)
@@ -528,7 +533,7 @@ DEPENDENCIES
   govspeak
   govuk_app_config
   govuk_publishing_components
-  govuk_schemas
+  govuk_schemas!
   govuk_sidekiq
   govuk_test
   hashdiff
