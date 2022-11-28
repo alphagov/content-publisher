@@ -31,7 +31,7 @@ RSpec.configure do |config|
   config.expose_dsl_globally = false
   config.infer_spec_type_from_file_location!
   config.use_transactional_fixtures = true
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_path = Rails.root.join("/spec/fixtures")
   config.include ActiveSupport::Testing::TimeHelpers
   config.include FactoryBot::Syntax::Methods
   config.include GdsApi::TestHelpers::PublishingApi
