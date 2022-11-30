@@ -48,7 +48,7 @@ yarn run jasmine:ci
 ### Further documentation
 
 - [Approach to analytics](docs/approach-to-analytics.md)
-- [Editing change note history](docs/editing-change-note-history.md)
+- [Editing change note history](docs/edit-change-note-history.md)
 - [History mode](docs/history-mode.md)
 - [Importing documents from Whitehall](docs/import-from-whitehall.md)
 - [Removing documents](docs/removing-documents.md)
