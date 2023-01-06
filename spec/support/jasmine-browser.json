@@ -1,5 +1,5 @@
 {
-  "srcDir": "public/assets",
+  "srcDir": "public/assets/content-publisher",
   "srcFiles": [
     "application-*.js"
   ],
