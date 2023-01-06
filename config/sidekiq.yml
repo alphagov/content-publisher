@@ -2,7 +2,9 @@
 :verbose: false
 :concurrency: 10
 :max_retries: 0
-:logfile: ./log/sidekiq.json.log
+<% if ENV.key?('SIDEKIQ_LOGFILE') %>
+:logfile: <%= ENV['SIDEKIQ_LOGFILE'] %>
+<% end %>
 development:
   :logfile: null
 :queues:
