@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "rails", "7.0.4"
 
 gem "aws-sdk-s3"
-gem "bootsnap"
+gem "bootsnap", require: false
 gem "gds-api-adapters"
 gem "gds-sso"
 gem "govspeak"
