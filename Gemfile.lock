@@ -544,7 +544,7 @@ DEPENDENCIES
   json_matchers
   kaminari
   listen
-  mail (~> 2.8.0)
+  mail
   mail-notify
   pdf-reader
   pg
