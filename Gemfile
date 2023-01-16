@@ -15,7 +15,7 @@ gem "image_processing"
 gem "inline_svg"
 gem "interactor"
 gem "kaminari"
-gem "mail", "~> 2.8.0"  # TODO: remove once https://github.com/mikel/mail/issues/1489 is fixed.
+gem "mail"
 gem "mail-notify"
 gem "pdf-reader"
 gem "pg"
