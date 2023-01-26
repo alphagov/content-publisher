@@ -218,3 +218,6 @@ en:
     guide:
       label: Guide
       description: A mainstream guide page
+    travel_advice:
+      label: Travel Advice
+      description: An example of travel advice

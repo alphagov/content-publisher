@@ -7,6 +7,8 @@
       type: document_type_selection
     - id: kevin_tinkering_mainstream
       type: document_type_selection
+    - id: travel_advice
+      type: document_type
     - id: guidance_and_regulation
       type: document_type_selection
     - id: transparency_statistics_reports

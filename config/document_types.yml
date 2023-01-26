@@ -526,3 +526,52 @@ document_types:
           - type: govspeak
             name: body
             label: Body
+
+  - id: travel_advice
+    label: Travel Advice
+    path_prefix: ~
+    lead_image: false
+    attachments: inline_file_only
+    publishing_metadata:
+      schema_name: travel_advice
+      rendering_app: government-frontend
+    contents:
+      - title_and_base_path
+      - type: text
+        name: search_title
+        label: Search title
+      - summary
+      - type: text
+        name: country_synonyms
+        label: Country synonyms
+      - type: choose_multiple
+        name: alert_status
+        label: Alert Status
+        options:
+          - name: against_whole
+            label: The FCO advise against all travel to the whole country
+          - name: against_parts
+            label: The FCO advise against all travel to parts of the country
+          - name: essential_whole
+            label: The FCO advise against all but essential travel to the whole country
+          - name: essential_parts
+            label: The FCO advise against all but essential travel to parts of the country
+    collections:
+      parts:
+        name:
+          singular: part
+          plural: parts
+        fields:
+          - type: text
+            name: title
+            label: Title
+          - type: text
+            name: slug
+            label: Slug
+          - type: govspeak
+            name: body
+            label: Body
+    tags:
+      - world_locations
+    topics: false
+

@@ -434,3 +434,14 @@ en:
               [Writing for GOV.UK](https://www.gov.uk/guidance/content-design/writing-for-gov-uk#writing-to-govuk-style){:target="_blank"}
 
               [The style guide](https://www.gov.uk/guidance/style-guide){:target="_blank"}
+
+    travel_advice:
+      fields:
+        search_title:
+          guidance:
+            title: Title for search engines
+            body_govspeak: |
+              Should typically be the country name followed by "Travel Advice"
+        country_synonyms:
+          hint: Enter synonyms for this country, comma separated.
+

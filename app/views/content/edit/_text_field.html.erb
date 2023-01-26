@@ -1,12 +1,31 @@
 <% data ||= {} %>
-<%= render "govuk_publishing_components/components/input", {
-  label: {
-    text: field.label,
-    bold: true
-  },
-  id: "text-#{field.name}-field",
-  name: field.name,
-  value: params[field.name] || edition.contents[field.name] || data[field.name],
-  error_items: issues&.items_for(field.name.to_sym),
-  width: 20,
-} %>
+<% input = capture do %>
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: field.label,
+      bold: true
+    },
+    id: "text-#{field.name}-field",
+    name: field.name,
+    hint: t_doctype_field?(edition, "#{field.name}.hint") ? t_doctype_field(edition, "#{field.name}.hint") : nil,
+    value: params[field.name] || edition.contents[field.name] || data[field.name],
+    error_items: issues&.items_for(field.name.to_sym),
+    width: 20,
+  } %>
+<% end %>
+
+<% if t_doctype_field?(edition, "#{field.name}.guidance") %>
+  <%
+    contextual_guidance = {
+      title: t_doctype_field(edition, "#{field.name}.guidance.title"),
+      content: t_doctype_field(edition, "#{field.name}.guidance.body_govspeak"),
+      guidance_id: "#{field.name}-guidance",
+      html_for: "text-#{field.name}-field",
+    }
+  %>
+  <%= render "govuk_publishing_components/components/contextual_guidance", contextual_guidance do %>
+    <%= input %>
+  <% end %>
+<% else %>
+  <%= input %>
+<% end %>
