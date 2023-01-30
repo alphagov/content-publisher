@@ -127,7 +127,7 @@ GEM
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.1)
     ffi (1.15.5)
-    fugit (1.7.1)
+    fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
     gds-api-adapters (85.0.0)
@@ -321,7 +321,7 @@ GEM
     raabro (1.4.0)
     racc (1.6.2)
     rack (2.2.6.2)
-    rack-protection (3.0.4)
+    rack-protection (3.0.5)
       rack
     rack-proxy (0.7.6)
       rack
@@ -455,10 +455,9 @@ GEM
       redis (~> 4.5, < 4.6.0)
     sidekiq-logging-json (0.0.19)
       sidekiq (>= 3)
-    sidekiq-scheduler (4.0.3)
-      redis (>= 4.2.0)
+    sidekiq-scheduler (5.0.0)
       rufus-scheduler (~> 3.2)
-      sidekiq (>= 4, < 7)
+      sidekiq (>= 4, < 8)
       tilt (>= 1.4.0)
     sidekiq-statsd (2.1.0)
       activesupport

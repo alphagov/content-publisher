@@ -10,12 +10,13 @@ development:
 :queues:
   - default
   - mailers
-:schedule:
-  asset_cleanup:
-    interval: '30m'
-    class: AssetCleanupJob
-  populate_bulk_data:
-    interval:
-      - 15m
-      - first_in: 0s
-    class: PopulateBulkDataJob
+:scheduler:
+  :schedule:
+    asset_cleanup:
+      interval: '30m'
+      class: AssetCleanupJob
+    populate_bulk_data:
+      interval:
+        - 15m
+        - first_in: 0s
+      class: PopulateBulkDataJob
