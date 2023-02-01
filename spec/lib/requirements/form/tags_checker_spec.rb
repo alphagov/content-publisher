@@ -9,7 +9,7 @@ RSpec.describe Requirements::Form::TagsChecker do
     it "delegates to return issues with tag fields" do
       tag = DocumentType::PrimaryPublishingOrganisationField.new
       document_type = build :document_type, tags: [tag]
-      edition = build :edition, document_type: document_type
+      edition = build(:edition, document_type:)
 
       params = { primary_publishing_organisation: SecureRandom.uuid }
       expect(tag).to receive(:form_issues).with(edition, params).and_call_original

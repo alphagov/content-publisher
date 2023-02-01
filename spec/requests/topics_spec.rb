@@ -29,7 +29,7 @@ RSpec.describe "Topics" do
     it "redirects to document summary with a success notification" do
       stub_any_publishing_api_patch_links
 
-      patch topics_path(edition.document), params: params
+      patch(topics_path(edition.document), params:)
 
       expect(response).to redirect_to(document_path(edition.document))
       follow_redirect!
@@ -40,7 +40,7 @@ RSpec.describe "Topics" do
     it "redirects to document summary with an alert when the Publishing API errors" do
       stub_publishing_api_isnt_available
 
-      patch topics_path(edition.document), params: params
+      patch(topics_path(edition.document), params:)
 
       expect(response).to redirect_to(document_path(edition.document))
       follow_redirect!
