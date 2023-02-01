@@ -10,7 +10,7 @@ RSpec.describe Requirements::Preview::ContentChecker do
       issues = Requirements::CheckerIssues.new(%w[issue])
       body_field = instance_double(DocumentType::BodyField, preview_issues: issues)
       document_type = build :document_type, contents: [body_field]
-      edition = build :edition, document_type: document_type
+      edition = build(:edition, document_type:)
       issues = described_class.call(edition)
       expect(issues).to eq issues
     end

@@ -22,7 +22,7 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
       new_attachment = create :file_attachment_revision
 
       revision = create :revision,
-                        document_type: document_type,
+                        document_type:,
                         file_attachment_revisions: attachments,
                         featured_attachment_ordering: ordering
 
@@ -70,7 +70,7 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
       ordering = [attachment_revision.featured_attachment_id]
 
       revision = create :revision,
-                        document_type: document_type,
+                        document_type:,
                         file_attachment_revisions: [attachment_revision],
                         featured_attachment_ordering: ordering
 
