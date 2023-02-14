@@ -44,7 +44,7 @@ module BulkData
       @cache = ActiveSupport::Cache::RedisCacheStore.new(
         namespace: "content-publisher:bulk-data-cache-#{Rails.env}",
         error_handler: ->(exception:, **) { GovukError.notify(exception) },
-        reconnect_attempts: [0.1, 0.1, 0.1],
+        reconnect_attempts: 3,
       )
     end
   end
