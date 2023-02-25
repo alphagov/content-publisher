@@ -28,7 +28,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          repository: alphagov/content-publisher
           ref: ${{ inputs.ref || github.ref }}
 
       - name: Checkout Publishing API (for Content Schemas)
