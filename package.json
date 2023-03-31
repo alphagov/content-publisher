@@ -38,7 +38,7 @@
     "stylelint-config-gds": "^0.2.0"
   },
   "dependencies": {
-    "@webcomponents/custom-elements": "^1.5.1",
+    "@webcomponents/custom-elements": "^1.6.0",
     "abortcontroller-polyfill": "^1.7.5",
     "accessible-autocomplete": "alphagov/accessible-autocomplete-multiselect",
     "core-js-bundle": "^3.29.1",
