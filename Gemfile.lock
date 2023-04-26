@@ -168,7 +168,7 @@ GEM
     govuk_personalisation (0.13.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (35.3.1)
+    govuk_publishing_components (35.3.2)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -196,7 +196,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
-    i18n (1.12.0)
+    i18n (1.13.0)
       concurrent-ruby (~> 1.0)
     i18n-coverage (0.2.0)
     image_processing (1.12.2)
@@ -317,7 +317,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.6.2)
-    rack (2.2.6.4)
+    rack (2.2.7)
     rack-protection (3.0.5)
       rack
     rack-proxy (0.7.6)
