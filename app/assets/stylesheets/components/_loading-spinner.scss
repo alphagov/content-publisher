@@ -7,7 +7,7 @@
   }
 }
 
-// stylelint-disable declaration-block-single-line-max-declarations
+// stylelint-disable declaration-block-single-line-max-declarations, keyframe-block-no-duplicate-selectors
 @keyframes app-loading-spinner-opacity-0 {
   0% { opacity: .2501; }
   0.01% { opacity: .25; }
