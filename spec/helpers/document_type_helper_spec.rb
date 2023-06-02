@@ -54,7 +54,7 @@ RSpec.describe DocumentTypeHelper do
       expect { t_doctype_field(edition, "some_unknown_field") }
         .to raise_error(
           I18n::MissingTranslationData,
-          "translation missing: en.document_types.default.fields.some_unknown_field",
+          "Translation missing: en.document_types.default.fields.some_unknown_field",
         )
     end
   end
