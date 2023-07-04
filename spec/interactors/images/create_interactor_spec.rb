@@ -47,7 +47,7 @@ RSpec.describe Images::CreateInteractor do
         let(:edition) do
           create(
             :edition,
-            image_revisions: [create(:image_revision, filename: "960x640.jpg")],
+            image_revisions: create_list(:image_revision, 1, filename: "960x640.jpg"),
           )
         end
 

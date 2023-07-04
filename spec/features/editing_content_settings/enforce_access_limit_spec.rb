@@ -38,9 +38,7 @@ RSpec.feature "Enforce access limit" do
         primary_publishing_organisation: [@primary_org],
         organisations: [@supporting_org],
       },
-      image_revisions: [
-        create(:image_revision, :on_asset_manager),
-      ],
+      image_revisions: create_list(:image_revision, 1, :on_asset_manager),
     )
 
     stub_asset_manager_updates_any_asset
