@@ -1,7 +1,7 @@
 # This migration comes from active_storage (originally 20191206030411)
 class CreateActiveStorageVariantRecords < ActiveRecord::Migration[6.0]
   def change
-    create_table :active_storage_variant_records do |t| # rubocop:disable Rails/CreateTableWithTimestamps
+    create_table :active_storage_variant_records do |t|
       t.belongs_to :blob, null: false, index: false
       t.string :variation_digest, null: false
 

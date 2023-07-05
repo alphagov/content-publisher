@@ -10,8 +10,8 @@ RSpec.describe Versioning::RevisionUpdater do
         tags: { organisations: [SecureRandom.uuid] },
         change_note: "old change note",
         lead_image_revision: (create :image_revision),
-        image_revisions: [create(:image_revision)],
-        file_attachment_revisions: [create(:file_attachment_revision)],
+        image_revisions: create_list(:image_revision, 1),
+        file_attachment_revisions: create_list(:file_attachment_revision, 1),
       )
     end
 
