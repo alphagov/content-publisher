@@ -41,7 +41,7 @@
     "@webcomponents/custom-elements": "^1.6.0",
     "abortcontroller-polyfill": "^1.7.5",
     "accessible-autocomplete": "alphagov/accessible-autocomplete-multiselect",
-    "core-js-bundle": "^3.31.1",
+    "core-js-bundle": "^3.32.0",
     "cropperjs": "^1.5.13",
     "es5-polyfill": "^0.0.6",
     "markdown-toolbar-element": "^0.2.0",
