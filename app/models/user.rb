@@ -7,6 +7,7 @@ class User < ApplicationRecord
   MANAGING_EDITOR_PERMISSION = "managing_editor".freeze
   ACCESS_LIMIT_OVERRIDE_PERMISSION = "access_limit_override".freeze
   MANAGE_LIVE_HISTORY_MODE = "manage_live_history_mode".freeze
+  CREATE_NEW_DOCUMENT_PERMISSION = "create_new_document".freeze
 
   def can_access?(edition)
     return true unless edition.access_limit
