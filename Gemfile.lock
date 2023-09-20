@@ -185,8 +185,8 @@ GEM
       rails (>= 6)
       rouge
       sprockets (>= 3)
-    govuk_schemas (4.6.0)
-      json-schema (>= 2.8, < 4.1)
+    govuk_schemas (4.7.0)
+      json-schema (>= 2.8, < 4.2)
     govuk_sidekiq (7.1.1)
       gds-api-adapters (>= 19.1.0)
       govuk_app_config (>= 1.1)
@@ -216,7 +216,7 @@ GEM
     interactor (3.1.2)
     jmespath (1.6.2)
     json (2.6.3)
-    json-schema (4.0.0)
+    json-schema (4.1.1)
       addressable (>= 2.8)
     json_matchers (0.11.1)
       json_schema
