@@ -1,5 +1,6 @@
 RSpec.feature "Create a document" do
   scenario do
+    when_i_have_the_create_new_document_permission
     given_i_am_on_the_home_page
     when_i_click_to_create_a_document
     and_i_select_a_supertype
@@ -7,6 +8,10 @@ RSpec.feature "Create a document" do
     and_i_fill_in_the_contents
     then_i_see_the_document_summary
     and_i_see_the_timeline_entry
+  end
+
+  def when_i_have_the_create_new_document_permission
+    current_user.update(permissions: [User::CREATE_NEW_DOCUMENT_PERMISSION])
   end
 
   def given_i_am_on_the_home_page

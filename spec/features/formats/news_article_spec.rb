@@ -2,9 +2,14 @@ RSpec.describe "News article format" do
   include TopicsHelper
 
   scenario do
+    when_i_have_the_create_new_document_permission
     when_i_choose_this_document_type
     and_i_fill_in_the_form_fields
     then_the_document_should_be_previewable
+  end
+
+  def when_i_have_the_create_new_document_permission
+    current_user.update(permissions: [User::CREATE_NEW_DOCUMENT_PERMISSION])
   end
 
   def when_i_choose_this_document_type
