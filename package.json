@@ -46,7 +46,7 @@
     "es5-polyfill": "^0.0.6",
     "markdown-toolbar-element": "^0.2.0",
     "miller-columns-element": "^2.0.0",
-    "paste-html-to-govspeak": "^0.3.0",
+    "paste-html-to-govspeak": "^0.4.0",
     "raven-js": "^3.27.2",
     "url-polyfill": "^1.1.12",
     "whatwg-fetch": "^3.6.19"
