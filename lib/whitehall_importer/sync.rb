@@ -22,7 +22,6 @@ module WhitehallImporter
       GdsApi.whitehall_export.document_migrated(
         whitehall_import.whitehall_document_id,
       )
-      MigrateAssets.call(whitehall_import)
 
       whitehall_import.update!(state: "completed")
     end
