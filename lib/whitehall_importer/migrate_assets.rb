@@ -42,11 +42,8 @@ module WhitehallImporter
       whitehall_asset.update!(state: "removed")
     end
 
-    def asset_id(whitehall_asset)
-      attributes = GdsApi.asset_manager
-                         .whitehall_asset(whitehall_asset.legacy_url_path)
-                         .to_h
-      attributes["id"].split("/").last
+    def asset_id(_whitehall_asset)
+      raise NotImplementedError, "Re-implementation is required using the new Asset Manager API"
     end
   end
 end
