@@ -6,7 +6,7 @@ gem "aws-sdk-s3"
 gem "bootsnap", require: false
 gem "gds-api-adapters"
 gem "gds-sso"
-gem "govspeak"
+gem "govspeak", ">= 8.3.2"
 gem "govuk_app_config"
 gem "govuk_publishing_components"
 gem "govuk_sidekiq"
