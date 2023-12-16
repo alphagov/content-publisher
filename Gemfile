@@ -43,7 +43,7 @@ group :development, :test do
   gem "climate_control"
   gem "factory_bot_rails"
   gem "govuk_schemas"
-  gem "govuk_test"
+  gem "govuk_test", ">= 4.0.2"
   gem "i18n-coverage"
   gem "json_matchers"
   gem "rspec-rails"
