@@ -67,7 +67,7 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-    addressable (2.8.5)
+    addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     afm (0.2.2)
     ast (2.4.2)
@@ -191,7 +191,7 @@ GEM
       govuk_app_config (>= 1.1)
       redis-namespace (~> 1.6)
       sidekiq (~> 6.5, >= 6.5.12)
-    govuk_test (4.0.1)
+    govuk_test (4.0.2)
       brakeman (>= 5.0.2)
       capybara (>= 3.36)
       puma
@@ -563,7 +563,7 @@ GEM
     redis (4.8.1)
     redis-namespace (1.11.0)
       redis (>= 4)
-    regexp_parser (2.8.2)
+    regexp_parser (2.8.3)
     request_store (1.5.1)
       rack (>= 1.4)
     rest-client (2.1.0)
@@ -643,7 +643,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.14.0)
+    selenium-webdriver (4.16.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
