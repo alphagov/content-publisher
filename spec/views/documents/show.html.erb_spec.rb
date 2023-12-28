@@ -14,8 +14,8 @@ RSpec.describe "documents/show" do
 
       expect(rendered)
         .to include("Summary")
-        .and have_content(/#{I18n.t!("documents.show.metadata.created_by")}:\s*User 2/)
-        .and have_content(/#{I18n.t!("documents.show.metadata.last_edited_by")}:\s*User 1/)
+        .and have_content(/#{I18n.t!('documents.show.metadata.created_by')}:\s*User 2/)
+        .and have_content(/#{I18n.t!('documents.show.metadata.last_edited_by')}:\s*User 1/)
     end
 
     it "shows a fallback title if there is none" do
