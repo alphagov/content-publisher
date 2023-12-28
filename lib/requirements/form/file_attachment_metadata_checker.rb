@@ -48,6 +48,6 @@ private
     return :blank if number.blank?
 
     regex = "#{self.class}::#{type.upcase}_PAPER_REGEX".constantize
-    return :invalid unless regex.match?(number)
+    :invalid unless regex.match?(number)
   end
 end
