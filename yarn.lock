@@ -455,10 +455,10 @@ cookie@0.4.2:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.2.tgz#0e41f24de5ecf317947c82fc789e06a884824432"
   integrity sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==
 
-core-js-bundle@^3.34.0:
-  version "3.34.0"
-  resolved "https://registry.yarnpkg.com/core-js-bundle/-/core-js-bundle-3.34.0.tgz#4c8c104a360e8bc88980d465078ee669d4086268"
-  integrity sha512-6afGRU6ouqeVDVCmwXVE9H+oYmXsR77a9Iax83RcgXi3fOGgemzAzNWauwnKD4iIR8j5hzy/6bCF3d7nmAt/lA==
+core-js-bundle@^3.35.0:
+  version "3.35.0"
+  resolved "https://registry.yarnpkg.com/core-js-bundle/-/core-js-bundle-3.35.0.tgz#dd87c465625b52a35dd891a930789d11cae00fe0"
+  integrity sha512-gyqx4VKhV1tGhoxeYoxVchR1vMxbQJrC8BrCPnIU163Oyf9//GYQNU2eH7lmjav2K+5WGAWgLyZGxAfGggwJKA==
 
 core-util-is@~1.0.0:
   version "1.0.3"
