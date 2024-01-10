@@ -34,8 +34,8 @@
     "jasmine-core": "^5.1.1",
     "postcss": "^8.4.33",
     "standardx": "^7.0.0",
-    "stylelint": "^15.11.0",
-    "stylelint-config-gds": "^1.1.1"
+    "stylelint": "^16.0.0",
+    "stylelint-config-gds": "^2.0.0"
   },
   "dependencies": {
     "@webcomponents/custom-elements": "^1.6.0",
@@ -53,7 +53,6 @@
     "whatwg-fetch": "^3.6.20"
   },
   "resolutions": {
-    "stylelint/strip-ansi": "6.0.1",
     "stylelint/string-width": "4.2.3"
   }
 }
