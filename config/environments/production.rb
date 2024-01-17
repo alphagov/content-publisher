@@ -85,7 +85,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :notify
   config.action_mailer.notify_settings = {
-    api_key: Rails.application.secrets.notify_api_key,
+    api_key: ENV["GOVUK_NOTIFY_API_KEY"] || "fake-test-api-key",
   }
 
   # Send log notifications to the Sidekiq logger rather than using the Rails
