@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   include GDS::SSO::User
-  serialize :permissions, Array
+  serialize :permissions, type: Array, coder: YAML
 
   PRE_RELEASE_FEATURES_PERMISSION = "pre_release_features".freeze
   DEBUG_PERMISSION = "debug".freeze
