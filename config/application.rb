@@ -23,6 +23,11 @@ module ContentPublisher
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
+    # Once this application is fully deployed to Rails 7.1 and you have no plans to rollback
+    # replace the line below with config.active_support.cache_format_version = 7.1
+    # This will mean that we can revert back to rails 7.0 if there is an issue
+    config.active_support.cache_format_version = 7.0
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
