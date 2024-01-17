@@ -12,7 +12,6 @@ require "action_mailer/railtie"
 # require "action_text/engine"
 require "action_view/railtie"
 # require "action_cable/engine"
-require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -67,6 +66,11 @@ module ContentPublisher
     # Set asset path to be application specific so that we can put all GOV.UK
     # assets into an S3 bucket and distinguish app by path.
     config.assets.prefix = "/assets/content-publisher"
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
 
     unless Rails.application.secrets.jwt_auth_secret
       raise "JWT auth secret is not configured. See config/secrets.yml"
