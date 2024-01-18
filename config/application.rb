@@ -12,7 +12,6 @@ require "action_mailer/railtie"
 # require "action_text/engine"
 require "action_view/railtie"
 # require "action_cable/engine"
-require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -22,7 +21,12 @@ Bundler.require(*Rails.groups)
 module ContentPublisher
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
+
+    # Once this application is fully deployed to Rails 7.1 and you have no plans to rollback
+    # replace the line below with config.active_support.cache_format_version = 7.1
+    # This will mean that we can revert back to rails 7.0 if there is an issue
+    config.active_support.cache_format_version = 7.0
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -68,8 +72,9 @@ module ContentPublisher
     # assets into an S3 bucket and distinguish app by path.
     config.assets.prefix = "/assets/content-publisher"
 
-    unless Rails.application.secrets.jwt_auth_secret
-      raise "JWT auth secret is not configured. See config/secrets.yml"
-    end
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
   end
 end

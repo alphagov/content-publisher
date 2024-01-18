@@ -5,7 +5,7 @@ class WhitehallDocumentImportJob < ApplicationJob
   end
 
   # retry at 3s, 18s, 83s, 258s, 627s
-  retry_on(GdsApi::BaseError, attempts: 5, wait: :exponentially_longer) do |job, error|
+  retry_on(GdsApi::BaseError, attempts: 5, wait: :polynomially_longer) do |job, error|
     document_import = job.arguments.first
     handle_error(document_import, error)
   end

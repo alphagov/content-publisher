@@ -14,7 +14,7 @@ RSpec.describe GovspeakDocument::InAppOptions do
                              caption: "An optional caption",
                              credit: "An optional credit",
                              filename: "filename.png")
-      edition = build(:edition, image_revisions: [image_revision])
+      edition = create(:edition, image_revisions: [image_revision])
 
       in_app_options = described_class.new("govspeak", edition)
       actual_image_options = in_app_options.to_h[:images].first

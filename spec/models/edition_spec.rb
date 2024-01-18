@@ -208,7 +208,7 @@ RSpec.describe Edition do
     def decoded_token_payload(token)
       payload, _header = JWT.decode(
         token,
-        Rails.application.secrets.jwt_auth_secret,
+        Rails.application.credentials.jwt_auth_secret,
         true,
         { algorithm: "HS256" },
       )

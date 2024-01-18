@@ -3,7 +3,7 @@ class PopulateBulkDataJob < ApplicationJob
   # of a long running problem.
   retry_on(
     BulkData::RemoteDataUnavailableError,
-    wait: :exponentially_longer,
+    wait: :polynomially_longer,
     attempts: 10,
   ) { |_job, error| GovukError.notify(error) }
 
