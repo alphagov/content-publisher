@@ -18,6 +18,9 @@
 /npm-debug.log
 
 /public/assets
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
 .byebug_history
 
 /coverage
