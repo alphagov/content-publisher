@@ -119,6 +119,9 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
+    dartsass-rails (0.5.0)
+      railties (>= 6.0.0)
+      sass-embedded (~> 1.63)
     date (3.3.4)
     diff-lcs (1.5.0)
     docile (1.4.0)
@@ -666,14 +669,15 @@ GEM
     sanitize (6.1.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    sassc (2.4.0)
-      ffi (~> 1.9)
-    sassc-rails (2.1.2)
-      railties (>= 4.0.0)
-      sassc (>= 2.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
+    sass-embedded (1.70.0)
+      google-protobuf (~> 3.25)
+      rake (>= 13.0.0)
+    sass-embedded (1.70.0-aarch64-linux-gnu)
+      google-protobuf (~> 3.25)
+    sass-embedded (1.70.0-arm64-darwin)
+      google-protobuf (~> 3.25)
+    sass-embedded (1.70.0-x86_64-linux-gnu)
+      google-protobuf (~> 3.25)
     selenium-webdriver (4.16.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -754,6 +758,7 @@ DEPENDENCIES
   brakeman
   byebug
   climate_control
+  dartsass-rails
   factory_bot_rails
   gds-api-adapters
   gds-sso
@@ -781,7 +786,6 @@ DEPENDENCIES
   rubocop-govuk
   rubyzip
   sanitize
-  sassc-rails
   sentry-sidekiq
   sidekiq-scheduler
   simplecov
