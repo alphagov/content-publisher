@@ -13,10 +13,9 @@
     dataLayer.push({ 'gtm.blacklist': ['html', 'customScripts', 'nonGoogleScripts', 'customPixels'] });
   </script>
 
-<% render "layouts/google_tag_manager" %>
-
   <meta name="app-environment" content="<%= Rails.env %>">
 <% end %>
+<% render "layouts/google_tag_manager" %>
 
 <%= render 'govuk_publishing_components/components/layout_for_admin',
   environment: GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment,
