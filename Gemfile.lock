@@ -192,7 +192,7 @@ GEM
     govuk_personalisation (0.15.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (37.5.1)
+    govuk_publishing_components (37.6.1)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -220,9 +220,8 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
-    i18n (1.14.3)
+    i18n (1.14.4)
       concurrent-ruby (~> 1.0)
-      racc (~> 1.7)
     i18n-coverage (0.2.0)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
@@ -232,7 +231,7 @@ GEM
       nokogiri (>= 1.6)
     interactor (3.1.2)
     io-console (0.7.2)
-    irb (1.11.2)
+    irb (1.12.0)
       rdoc
       reline (>= 0.4.2)
     jmespath (1.6.2)
@@ -280,7 +279,7 @@ GEM
       activesupport (>= 5.2.4.6)
       notifications-ruby-client (~> 5.1)
       rack (>= 2.1.4.1)
-    marcel (1.0.3)
+    marcel (1.0.4)
     matrix (0.4.2)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
