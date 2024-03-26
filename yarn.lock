@@ -1094,18 +1094,7 @@ glob-parent@^5.0.0, glob-parent@^5.1.2:
   dependencies:
     is-glob "^4.0.1"
 
-glob@^10.0.0:
-  version "10.2.4"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-10.2.4.tgz#f5bf7ddb080e3e9039b148a9e2aef3d5ebfc0a25"
-  integrity sha512-fDboBse/sl1oXSLhIp0FcCJgzW9KmhC/q8ULTKC82zc+DL3TL7FNb8qlt5qqXN53MsKEUSIcb+7DLmEygOE5Yw==
-  dependencies:
-    foreground-child "^3.1.0"
-    jackspeak "^2.0.3"
-    minimatch "^9.0.0"
-    minipass "^5.0.0 || ^6.0.0"
-    path-scurry "^1.7.0"
-
-glob@^10.2.2, glob@^10.3.7:
+glob@^10.0.0, glob@^10.2.2, glob@^10.3.7:
   version "10.3.10"
   resolved "https://registry.yarnpkg.com/glob/-/glob-10.3.10.tgz#0351ebb809fd187fe421ab96af83d3a70715df4b"
   integrity sha512-fa46+tv1Ak0UPK1TOy/pZrIybNNt4HCv7SDzwyfiOZkvZLEbjsZkJBPtDHVshZjbecAoAGSC20MjLDG/qr679g==
@@ -1391,15 +1380,6 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-jackspeak@^2.0.3:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/jackspeak/-/jackspeak-2.2.0.tgz#497cbaedc902ec3f31d5d61be804d2364ff9ddad"
-  integrity sha512-r5XBrqIJfwRIjRt/Xr5fv9Wh09qyhHfKnYddDlpM+ibRR20qrYActpCAgU6U+d53EOEjzkvxPMVHSlgR7leXrQ==
-  dependencies:
-    "@isaacs/cliui" "^8.0.2"
-  optionalDependencies:
-    "@pkgjs/parseargs" "^0.11.0"
-
 jackspeak@^2.3.5:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/jackspeak/-/jackspeak-2.3.6.tgz#647ecc472238aee4b06ac0e461acc21a8c505ca8"
@@ -1419,10 +1399,10 @@ jake@^10.8.5:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-jasmine-browser-runner@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/jasmine-browser-runner/-/jasmine-browser-runner-2.3.0.tgz#8a90e7c3af2e1e779c6d273f5f590b7dea5372c0"
-  integrity sha512-2sXbOxIlSupO0/YQVXGwZ7zO8cy084P+SZouriW9WIiiCuDUcTz5dTwoA4IE4qysTNgM7/O3ESoMzX8myCXoIg==
+jasmine-browser-runner@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/jasmine-browser-runner/-/jasmine-browser-runner-2.4.0.tgz#eaa817ccfbed9ad5786b4e7bf1a3517f1c3a952c"
+  integrity sha512-gxNgE9qYcpfkBDH1H3Tqq//rBnt5POq0yoqlM5MwJqSfRK3/xHXCnTp1XMQFz/FuHHo9KUQskJaxzagIPeS65Q==
   dependencies:
     ejs "^3.1.6"
     express "^4.16.4"
@@ -1620,11 +1600,6 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-lru-cache@^9.1.1:
-  version "9.1.1"
-  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-9.1.1.tgz#c58a93de58630b688de39ad04ef02ef26f1902f1"
-  integrity sha512-65/Jky17UwSb0BuB9V+MyDpsOtXKmYwzhyl+cOa9XUiI4uV2Ouy/2voFP3+al0BjZbJgMBD8FojMpAf+Z+qn4A==
-
 "lru-cache@^9.1.1 || ^10.0.0":
   version "10.0.1"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.0.1.tgz#0a3be479df549cca0e5d693ac402ff19537a6b7a"
@@ -1714,13 +1689,6 @@ minimatch@^5.0.1:
   dependencies:
     brace-expansion "^2.0.1"
 
-minimatch@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-9.0.0.tgz#bfc8e88a1c40ffd40c172ddac3decb8451503b56"
-  integrity sha512-0jJj8AvgKqWN05mrwuqi8QYKx1WmYSUoKSxu5Qhs9prezTz10sxAHGNZe9J9cqIJzta8DWsleh2KaVaLl6Ru2w==
-  dependencies:
-    brace-expansion "^2.0.1"
-
 minimatch@^9.0.1:
   version "9.0.3"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-9.0.3.tgz#a6e00c3de44c3a542bfaae70abfc22420a6da825"
@@ -1732,11 +1700,6 @@ minimist@^1.2.0, minimist@^1.2.5:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.7.tgz#daa1c4d91f507390437c6a8bc01078e7000c4d18"
   integrity sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==
-
-"minipass@^5.0.0 || ^6.0.0":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/minipass/-/minipass-6.0.1.tgz#315417c259cb32a1b2fc530c0e7f55c901a60a6d"
-  integrity sha512-Tenl5QPpgozlOGBiveNYHg2f6y+VpxsXRoIHFUVJuSmTonXRAE6q9b8Mp/O46762/2AlW4ye4Nkyvx0fgWDKbw==
 
 "minipass@^5.0.0 || ^6.0.2 || ^7.0.0":
   version "7.0.4"
@@ -2002,14 +1965,6 @@ path-scurry@^1.10.1:
   dependencies:
     lru-cache "^9.1.1 || ^10.0.0"
     minipass "^5.0.0 || ^6.0.2 || ^7.0.0"
-
-path-scurry@^1.7.0:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/path-scurry/-/path-scurry-1.9.1.tgz#838566bb22e38feaf80ecd49ae06cd12acd782ee"
-  integrity sha512-UgmoiySyjFxP6tscZDgWGEAgsW5ok8W3F5CJDnnH2pozwSTGE6eH7vwTotMwATWA2r5xqdkKdxYPkwlJjAI/3g==
-  dependencies:
-    lru-cache "^9.1.1"
-    minipass "^5.0.0 || ^6.0.0"
 
 path-to-regexp@0.1.7:
   version "0.1.7"
