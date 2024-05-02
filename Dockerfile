@@ -1,9 +1,9 @@
-ARG ruby_version=3.2.2
+ARG ruby_version=3.2
 ARG base_image=ghcr.io/alphagov/govuk-ruby-base:$ruby_version
 ARG builder_image=ghcr.io/alphagov/govuk-ruby-builder:$ruby_version
 
 
-FROM $builder_image AS builder
+FROM --platform=$TARGETPLATFORM $builder_image AS builder
 
 ENV JWT_AUTH_SECRET=unused_yet_required \
     SECRET_KEY_BASE=unused_yet_required
@@ -18,7 +18,7 @@ RUN bootsnap precompile --gemfile .
 RUN rails assets:precompile && rm -fr log
 
 
-FROM $base_image
+FROM --platform=$TARGETPLATFORM $base_image
 RUN install_packages imagemagick
 
 ENV GOVUK_APP_NAME=content-publisher
