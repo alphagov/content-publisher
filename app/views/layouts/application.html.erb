@@ -27,7 +27,6 @@
     navigation_items = [
       { text: "Switch app", href: Plek.external_url_for("signon") },
       { text: "Raise a support request", href: "https://support.publishing.service.gov.uk/technical_fault_report/new", show_only_in_collapsed_menu: true },
-      { text: "Send us feedback", href: "https://support.publishing.service.gov.uk/general_request/new", show_only_in_collapsed_menu: true },
       { text: "What’s new", href: publisher_updates_path, show_only_in_collapsed_menu: true },
       { text: "Request training", href: request_training_path, show_only_in_collapsed_menu: true },
     ]
@@ -114,12 +113,6 @@
             href: "https://support.publishing.service.gov.uk/technical_fault_report/new",
             text: "Raise a support request",
             attributes: { target: "_blank", "data-gtm": "footer-raise-support-request" }
-          },
-          {
-            href: "https://support.publishing.service.gov.uk/general_request/new",
-            text: "Send us feedback",
-            attributes: { target: "_blank", "data-gtm": "footer-send-feedback" }
-
           },
           {
             href: "https://status.publishing.service.gov.uk",
