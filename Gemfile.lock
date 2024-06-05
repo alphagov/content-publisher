@@ -546,7 +546,7 @@ GEM
       ruby-rc4
       ttfunk
     pg (1.5.6)
-    plek (5.1.0)
+    plek (5.2.0)
     prometheus_exporter (2.1.0)
       webrick
     psych (5.1.2)
