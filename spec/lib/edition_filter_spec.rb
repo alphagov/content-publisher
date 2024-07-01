@@ -21,7 +21,7 @@ RSpec.describe EditionFilter do
       edition2 = create(:edition, title: "Second", base_path: "/doc_2")
 
       editions = described_class.new(user, filters: { title_or_url: " " }).editions
-      expect(editions).to match_array([edition1, edition2])
+      expect(editions).to contain_exactly(edition1, edition2)
 
       editions = described_class.new(user, filters: { title_or_url: "Fir" }).editions
       expect(editions).to eq([edition1])
@@ -38,7 +38,7 @@ RSpec.describe EditionFilter do
       edition2 = create(:edition, document_type_id: "type_2")
 
       editions = described_class.new(user, filters: { document_type: " " }).editions
-      expect(editions).to match_array([edition1, edition2])
+      expect(editions).to contain_exactly(edition1, edition2)
 
       editions = described_class.new(user, filters: { document_type: "type_1" }).editions
       expect(editions).to eq([edition1])
@@ -49,7 +49,7 @@ RSpec.describe EditionFilter do
       edition2 = create(:edition, state: "submitted_for_review")
 
       editions = described_class.new(user, filters: { status: " " }).editions
-      expect(editions).to match_array([edition1, edition2])
+      expect(editions).to contain_exactly(edition1, edition2)
 
       editions = described_class.new(user, filters: { status: "non-existant" }).editions
       expect(editions).to be_empty
@@ -63,7 +63,7 @@ RSpec.describe EditionFilter do
       edition2 = create(:edition, state: "published_but_needs_2i")
 
       editions = described_class.new(user, filters: { status: "published" }).editions
-      expect(editions).to match_array([edition1, edition2])
+      expect(editions).to contain_exactly(edition1, edition2)
 
       editions = described_class.new(user, filters: { status: "published_but_needs_2i" }).editions
       expect(editions).to eq([edition2])
@@ -78,10 +78,10 @@ RSpec.describe EditionFilter do
       edition3 = create(:edition, tags: { organisations: [org_id2] })
 
       editions = described_class.new(user, filters: { organisation: " " }).editions
-      expect(editions).to match_array([edition1, edition2, edition3])
+      expect(editions).to contain_exactly(edition1, edition2, edition3)
 
       editions = described_class.new(user, filters: { organisation: org_id1 }).editions
-      expect(editions).to match_array([edition1, edition2])
+      expect(editions).to contain_exactly(edition1, edition2)
     end
 
     it "filters the editions that get history mode" do
@@ -89,10 +89,10 @@ RSpec.describe EditionFilter do
       edition2 = create(:edition, :political)
 
       editions = described_class.new(user, filters: { gets_history_mode: "yes" }).editions
-      expect(editions).to match_array([edition2])
+      expect(editions).to contain_exactly(edition2)
 
       editions = described_class.new(user, filters: { gets_history_mode: "no" }).editions
-      expect(editions).to match_array([edition1])
+      expect(editions).to contain_exactly(edition1)
     end
 
     it "filters the editions that are in history mode" do
@@ -102,10 +102,10 @@ RSpec.describe EditionFilter do
       edition2 = create(:edition, :political, government: past_government)
 
       editions = described_class.new(user, filters: { in_history_mode: "yes" }).editions
-      expect(editions).to match_array([edition2])
+      expect(editions).to contain_exactly(edition2)
 
       editions = described_class.new(user, filters: { in_history_mode: "no" }).editions
-      expect(editions).to match_array([edition1])
+      expect(editions).to contain_exactly(edition1)
     end
 
     it "ignores other kinds of filter" do
@@ -212,19 +212,19 @@ RSpec.describe EditionFilter do
     end
 
     context "when the edition's document type is tagged as pre release" do
-      let!(:edition1) { create(:edition) }
-      let!(:edition2) { create(:edition, document_type: build(:document_type, :pre_release)) }
+      let!(:first_edition) { create(:edition) }
+      let!(:second_edition) { create(:edition, document_type: build(:document_type, :pre_release)) }
 
       it "includes the edition for users with pre_release_features permission" do
         pre_release_user = build(:user)
         editions = described_class.new(pre_release_user).editions
-        expect(editions).to match_array([edition1, edition2])
+        expect(editions).to contain_exactly(first_edition, second_edition)
       end
 
       it "excludes the edition for users without pre_release_features permission" do
         user = build(:user, permissions: [])
         editions = described_class.new(user).editions
-        expect(editions).to match_array([edition1])
+        expect(editions).to contain_exactly(first_edition)
       end
     end
   end
