@@ -12,7 +12,7 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
 
       next_revision = updater.next_revision
       expect(next_revision.file_attachment_revisions)
-        .to match_array [attachment_revision, new_attachment]
+        .to contain_exactly(attachment_revision, new_attachment)
     end
 
     it "appends to the ordering when there are featured attachments" do
@@ -62,7 +62,7 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
       updater.remove_file_attachment(attachment_revision)
 
       next_revision = updater.next_revision
-      expect(next_revision.file_attachment_revisions).to match_array [other_attachment_revision]
+      expect(next_revision.file_attachment_revisions).to contain_exactly(other_attachment_revision)
     end
 
     it "updates the ordering when there are featured attachments" do
@@ -92,7 +92,7 @@ RSpec.describe Versioning::RevisionUpdater::FileAttachment do
       updater.update_file_attachment(updated_attachment)
 
       next_revision = updater.next_revision
-      expect(next_revision.file_attachment_revisions).to match_array [updated_attachment]
+      expect(next_revision.file_attachment_revisions).to contain_exactly(updated_attachment)
     end
 
     it "raises an error if there is no file attachment to update" do

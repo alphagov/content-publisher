@@ -1,5 +1,5 @@
 RSpec.feature "Insert inline image" do
-  scenario "with javascript", js: true do
+  scenario "with javascript", :js do
     given_there_is_an_edition_with_images
     when_i_go_to_edit_the_edition
     and_i_click_to_insert_an_image

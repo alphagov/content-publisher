@@ -209,7 +209,7 @@ RSpec.describe WhitehallImporter::Import do
 
       expect { described_class.call(document_import) }.to raise_error("forced error")
       expect(document_import.changed?).to be false
-      expect(document_import.document).to be nil
+      expect(document_import.document).to be_nil
     end
   end
 

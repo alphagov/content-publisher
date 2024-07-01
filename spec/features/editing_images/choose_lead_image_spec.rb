@@ -35,7 +35,7 @@ RSpec.feature "Choose a lead image" do
   end
 
   def and_i_tick_the_image_is_the_lead_image
-    expect(find_field("lead_image").checked?).to eq false
+    expect(find_field("lead_image").checked?).to be false
     check(I18n.t!("images.edit.form_labels.lead_image"))
     click_on "Save"
   end

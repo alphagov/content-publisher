@@ -17,7 +17,7 @@ RSpec.feature "Delete an image" do
     and_i_see_the_timeline_entry
   end
 
-  scenario "inline image", js: true do
+  scenario "inline image", :js do
     given_there_is_an_edition_with_images
     when_i_insert_an_inline_image
     and_i_delete_the_image

@@ -1,4 +1,4 @@
-RSpec.feature "Upload an image", js: true do
+RSpec.feature "Upload an image", :js do
   scenario "lead image" do
     given_there_is_an_edition
     when_i_visit_the_images_page
