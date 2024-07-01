@@ -1,4 +1,4 @@
-RSpec.describe "Insert video embed", js: true do
+RSpec.describe "Insert video embed", :js do
   scenario do
     given_there_is_an_edition
     when_i_go_to_edit_the_edition

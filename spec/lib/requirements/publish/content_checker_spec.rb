@@ -7,12 +7,12 @@ RSpec.describe Requirements::Publish::ContentChecker do
     end
 
     it "delegates to return issues with content fields" do
-      issues = Requirements::CheckerIssues.new(%w[issue])
-      body_field = instance_double(DocumentType::BodyField, publish_issues: issues)
+      expected_issues = Requirements::CheckerIssues.new(%w[issue])
+      body_field = instance_double(DocumentType::BodyField, publish_issues: expected_issues)
       document_type = build :document_type, contents: [body_field]
       edition = build(:edition, document_type:)
-      issues = described_class.call(edition)
-      expect(issues).to eq issues
+      actual_issues = described_class.call(edition)
+      expect(actual_issues.issues).to eq expected_issues.issues
     end
 
     it "returns an issue if a major change note is blank" do

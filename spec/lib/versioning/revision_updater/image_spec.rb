@@ -11,7 +11,7 @@ RSpec.describe Versioning::RevisionUpdater::Image do
       updater.add_image(new_image)
 
       next_revision = updater.next_revision
-      expect(next_revision.image_revisions).to match_array [image_revision, new_image]
+      expect(next_revision.image_revisions).to contain_exactly(image_revision, new_image)
     end
 
     it "raises an error if the image already exists" do
@@ -32,7 +32,7 @@ RSpec.describe Versioning::RevisionUpdater::Image do
       updater.update_image(updated_image)
 
       next_revision = updater.next_revision
-      expect(next_revision.image_revisions).to match_array [updated_image]
+      expect(next_revision.image_revisions).to contain_exactly(updated_image)
     end
 
     it "raises an error if there is no image to update" do
@@ -126,7 +126,7 @@ RSpec.describe Versioning::RevisionUpdater::Image do
       updater.remove_image(image_revision)
 
       next_revision = updater.next_revision
-      expect(next_revision.image_revisions).to match_array [other_image_revision]
+      expect(next_revision.image_revisions).to contain_exactly(other_image_revision)
     end
 
     it "preserves another existing image as the lead" do

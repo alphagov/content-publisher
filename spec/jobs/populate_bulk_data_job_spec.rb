@@ -9,7 +9,7 @@ RSpec.describe PopulateBulkDataJob do
 
   it "populates government caches older than 5 minutes" do
     freeze_time do
-      repository = instance_double("BulkData::GovernmentRepository")
+      repository = instance_double(BulkData::GovernmentRepository)
       allow(BulkData::GovernmentRepository).to receive(:new).and_return(repository)
       expect(repository).to receive(:populate_cache)
                         .with(older_than: 5.minutes.ago)
