@@ -2,12 +2,12 @@ RSpec.describe WhitehallImporter::CreateMigration do
   include ActiveJob::TestHelper
   describe ".call" do
     let(:whitehall_host) { Plek.external_url_for("whitehall-admin") }
-    let(:whitehall_export_page_1) do
+    let(:first_whitehall_export_page) do
       build(:whitehall_export_index,
             documents: build_list(:whitehall_export_index_document, 100))
     end
 
-    let(:whitehall_export_page_2) do
+    let(:second_whitehall_export_page) do
       build(:whitehall_export_index,
             documents: build_list(:whitehall_export_index_document, 10))
     end
@@ -15,9 +15,9 @@ RSpec.describe WhitehallImporter::CreateMigration do
     context "with organisation and type specified" do
       before do
         stub_request(:get, "#{whitehall_host}/government/admin/export/document?lead_organisation=123&page_count=100&page_number=1&type=news_article")
-          .to_return(status: 200, body: whitehall_export_page_1.to_json)
+          .to_return(status: 200, body: first_whitehall_export_page.to_json)
         stub_request(:get, "#{whitehall_host}/government/admin/export/document?lead_organisation=123&page_count=100&page_number=2&type=news_article")
-          .to_return(status: 200, body: whitehall_export_page_2.to_json)
+          .to_return(status: 200, body: second_whitehall_export_page.to_json)
       end
 
       it "creates a WhitehallMigration" do
@@ -38,7 +38,7 @@ RSpec.describe WhitehallImporter::CreateMigration do
 
       it "sets the content_id on the WhitehallMigration::DocumentImport" do
         described_class.call("123", "news_article")
-        expect(WhitehallMigration::DocumentImport.last.content_id).to eq(whitehall_export_page_2["documents"].last["content_id"])
+        expect(WhitehallMigration::DocumentImport.last.content_id).to eq(second_whitehall_export_page["documents"].last["content_id"])
       end
 
       it "queues a job for each listed document" do
@@ -50,9 +50,9 @@ RSpec.describe WhitehallImporter::CreateMigration do
     context "with organisation, type and subtype specified" do
       before do
         stub_request(:get, "#{whitehall_host}/government/admin/export/document?lead_organisation=123&page_count=100&page_number=1&type=news_article&subtypes[]=news_story&subtypes[]=press_release")
-          .to_return(status: 200, body: whitehall_export_page_1.to_json)
+          .to_return(status: 200, body: first_whitehall_export_page.to_json)
         stub_request(:get, "#{whitehall_host}/government/admin/export/document?lead_organisation=123&page_count=100&page_number=2&type=news_article&subtypes[]=news_story&subtypes[]=press_release")
-          .to_return(status: 200, body: whitehall_export_page_2.to_json)
+          .to_return(status: 200, body: second_whitehall_export_page.to_json)
       end
 
       it "creates a WhitehallMigration" do

@@ -76,7 +76,7 @@ RSpec.feature "Publish without review" do
     tos = ActionMailer::Base.deliveries.map(&:to)
     message = ActionMailer::Base.deliveries.first
 
-    expect(tos).to match_array [[@creator.email], [current_user.email]]
+    expect(tos).to contain_exactly([@creator.email], [current_user.email])
     expect(message.body).to have_content("https://www.test.gov.uk/news/banana-pricing-updates")
     expect(message.body).to have_content(document_path(@edition.document))
 

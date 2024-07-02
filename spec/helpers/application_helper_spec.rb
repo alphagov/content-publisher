@@ -12,7 +12,7 @@ RSpec.describe ApplicationHelper do
         .to match(%(You can email me here - <a href=\"mailto:email123@gmail.com\" class="govuk-link">email123@gmail.com</a>))
     end
 
-    it "returns a body of text that converts html tags to html entities " do
+    it "returns a body of text that converts html tags to html entities" do
       text = "Some html tags <p><b>bold paragraph</b></p>"
       expect(helper.escape_and_link(text))
         .to match("Some html tags &lt;p&gt;&lt;b&gt;bold paragraph&lt;/b&gt;&lt;/p&gt;")

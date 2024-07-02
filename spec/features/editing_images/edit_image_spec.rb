@@ -1,4 +1,4 @@
-RSpec.feature "Edit image", js: true do
+RSpec.feature "Edit image", :js do
   scenario "lead image" do
     given_there_is_an_edition_with_a_lead_image
     when_i_visit_the_images_page

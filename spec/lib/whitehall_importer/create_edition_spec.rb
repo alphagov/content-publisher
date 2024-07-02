@@ -269,7 +269,7 @@ RSpec.describe WhitehallImporter::CreateEdition do
         )
       end
 
-      it "sets a previous status of the edition of the publishing status " do
+      it "sets a previous status of the edition of the publishing status" do
         edition = perform_call(whitehall_edition:)
 
         previous_status, current_status = edition.statuses.order(created_at: :desc)

@@ -1,4 +1,4 @@
-RSpec.feature "Replace a file attachment file", js: true do
+RSpec.feature "Replace a file attachment file", :js do
   scenario "inline" do
     given_there_is_an_edition_with_an_attachment
     when_i_click_to_insert_an_attachment
