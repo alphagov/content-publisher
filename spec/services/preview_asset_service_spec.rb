@@ -16,8 +16,7 @@ RSpec.describe PreviewAssetService do
       end
 
       before do
-        allow(asset).to receive(:draft?).and_return(false)
-        allow(asset).to receive(:absent?).and_return(true)
+        allow(asset).to receive_messages(draft?: false, absent?: true)
         file = PreviewAssetService::UploadedFile.new(asset)
 
         payload = instance_double(PreviewAssetService::Payload)
@@ -51,8 +50,7 @@ RSpec.describe PreviewAssetService do
 
     context "when a draft asset is on Asset Manager" do
       before do
-        allow(asset).to receive(:draft?).and_return(true)
-        allow(asset).to receive(:absent?).and_return(false)
+        allow(asset).to receive_messages(draft?: true, absent?: false)
 
         payload = instance_double(PreviewAssetService::Payload)
         allow(payload).to receive(:for_update).and_return(foo: "bar")
@@ -80,8 +78,7 @@ RSpec.describe PreviewAssetService do
     context "when a live asset is on Asset Manager" do
       it "does not update the asset" do
         request = stub_asset_manager_update_asset("id")
-        allow(asset).to receive(:draft?).and_return(false)
-        allow(asset).to receive(:absent?).and_return(false)
+        allow(asset).to receive_messages(draft?: false, absent?: false)
         described_class.call(edition, asset)
         expect(request).not_to have_been_requested
       end

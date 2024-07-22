@@ -9,7 +9,7 @@ RSpec.feature "Reorder attachments" do
     and_i_see_the_timeline_entry
   end
 
-  scenario "with javascript", js: true do
+  scenario "with javascript", :js do
     given_there_is_an_edition_with_attachments
     when_i_go_to_the_attachments_page
     and_i_click_to_reorder_the_attachments

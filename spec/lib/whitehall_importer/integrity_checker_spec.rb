@@ -590,19 +590,19 @@ RSpec.describe WhitehallImporter::IntegrityChecker do
     let(:time) { Time.zone.now }
 
     it "returns true when times match" do
-      expect(described_class.time_matches?(time.rfc3339, time.rfc3339)).to eq true
+      expect(described_class.time_matches?(time.rfc3339, time.rfc3339)).to be true
     end
 
     it "returns true when times are sufficiently similar" do
-      expect(described_class.time_matches?((time + 4).rfc3339, time.rfc3339)).to eq true
+      expect(described_class.time_matches?((time + 4).rfc3339, time.rfc3339)).to be true
     end
 
     it "returns false when times are not sufficiently similar" do
-      expect(described_class.time_matches?((time + 30).rfc3339, time.rfc3339)).to eq false
+      expect(described_class.time_matches?((time + 30).rfc3339, time.rfc3339)).to be false
     end
 
     it "returns false when times are invalid" do
-      expect(described_class.time_matches?("Not a time", nil)).to eq false
+      expect(described_class.time_matches?("Not a time", nil)).to be false
     end
   end
 

@@ -43,7 +43,7 @@ RSpec.feature "Remove a lead image" do
   end
 
   def and_i_untick_the_image_is_the_lead_image
-    expect(find_field("lead_image").checked?).to eq true
+    expect(find_field("lead_image").checked?).to be true
     uncheck(I18n.t!("images.edit.form_labels.lead_image"))
     click_on "Save"
   end

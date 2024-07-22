@@ -1,4 +1,4 @@
-RSpec.feature "Edit topics using search", js: true do
+RSpec.feature "Edit topics using search", :js do
   include TopicsHelper
 
   scenario do

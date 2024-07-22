@@ -1,4 +1,4 @@
-RSpec.feature "Delete a file attachment", js: true do
+RSpec.feature "Delete a file attachment", :js do
   scenario "inline" do
     given_there_is_an_edition_with_attachments
     when_i_insert_an_attachment
