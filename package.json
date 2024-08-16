@@ -34,7 +34,7 @@
     "jasmine-core": "^5.2.0",
     "postcss": "^8.4.39",
     "standardx": "^7.0.0",
-    "stylelint": "^16.7.0",
+    "stylelint": "^16.8.2",
     "stylelint-config-gds": "^2.0.0"
   },
   "dependencies": {
