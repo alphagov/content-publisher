@@ -36,7 +36,7 @@ module ContentPublisher
     config.i18n.raise_on_missing_translations = true
     config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*.yml")]
     config.active_job.queue_adapter = :sidekiq
-    config.time_zone = "London"
+    config.govuk_time_zone = "London"
     config.eager_load_paths << Rails.root.join("lib")
     config.autoload_paths << Rails.root.join("lib")
     config.exceptions_app = routes
