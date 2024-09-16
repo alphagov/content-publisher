@@ -38,6 +38,12 @@ jobs:
           ref: ${{ inputs.publishingApiRef }}
           path: vendor/publishing-api
 
+      - name: Checkout govuk-helm-charts (for data sanitisation SQL)
+        uses: actions/checkout@v3
+        with:
+          repository: alphagov/govuk-helm-charts
+          path: vendor/govuk-helm-charts
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
