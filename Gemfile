@@ -26,7 +26,7 @@ gem "sanitize"
 gem "sentry-sidekiq"
 gem "sidekiq-scheduler"
 gem "sprockets-rails"
-gem "uglifier"
+gem "terser"
 gem "with_advisory_lock"
 
 group :development do

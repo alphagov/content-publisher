@@ -131,7 +131,7 @@ GEM
     erubi (1.13.0)
     et-orbi (1.2.11)
       tzinfo
-    execjs (2.8.1)
+    execjs (2.9.1)
     factory_bot (6.4.5)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.4.3)
@@ -742,14 +742,14 @@ GEM
       sprockets (>= 3.0.0)
     statsd-ruby (1.5.0)
     stringio (3.1.1)
+    terser (1.2.3)
+      execjs (>= 0.3.0, < 3)
     thor (1.3.2)
     tilt (2.4.0)
     timeout (0.4.1)
     ttfunk (1.7.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uglifier (4.2.0)
-      execjs (>= 0.3.0, < 3)
     unicode-display_width (2.6.0)
     uri (0.13.0)
     version_gem (1.1.4)
@@ -817,7 +817,7 @@ DEPENDENCIES
   sidekiq-scheduler
   simplecov
   sprockets-rails
-  uglifier
+  terser
   webmock
   with_advisory_lock
 
