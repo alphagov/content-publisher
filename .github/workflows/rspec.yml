@@ -65,6 +65,7 @@ jobs:
         env:
           RAILS_ENV: test
           GOVUK_CONTENT_SCHEMAS_PATH: vendor/publishing-api/content_schemas
+          GOVUK_HELM_CHARTS_PATH: vendor/govuk-helm-charts
           TEST_DATABASE_URL: ${{ steps.setup-postgres.outputs.db-url }}
         run: bundle exec rake spec
 
