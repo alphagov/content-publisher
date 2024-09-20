@@ -14,6 +14,8 @@
   </script>
 
   <meta name="app-environment" content="<%= Rails.env %>">
+
+  <%= javascript_include_tag 'es6-components', type: "module" %>
 <% end %>
 <% render "layouts/google_tag_manager" %>
 

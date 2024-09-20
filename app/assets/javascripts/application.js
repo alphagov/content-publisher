@@ -1,5 +1,10 @@
 //= require govuk_publishing_components/dependencies
-//= require govuk_publishing_components/all_components
+//= require govuk_publishing_components/components/contextual-guidance
+//= require govuk_publishing_components/components/copy-to-clipboard
+//= require govuk_publishing_components/components/govspeak
+//= require govuk_publishing_components/components/metadata
+//= require govuk_publishing_components/components/modal-dialogue
+//= require govuk_publishing_components/components/reorderable-list
 
 // support ES5
 //= require es5-polyfill/dist/polyfill.js
