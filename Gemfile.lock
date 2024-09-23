@@ -131,7 +131,7 @@ GEM
     erubi (1.13.0)
     et-orbi (1.2.11)
       tzinfo
-    execjs (2.8.1)
+    execjs (2.9.1)
     factory_bot (6.4.5)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.4.3)
@@ -748,7 +748,7 @@ GEM
     ttfunk (1.7.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uglifier (4.2.0)
+    uglifier (4.2.1)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (2.6.0)
     uri (0.13.0)
