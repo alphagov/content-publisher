@@ -29,6 +29,8 @@ To enable them for your GOV.UK account add them to your account in [Signon](http
 
 ### Running the test suite
 
+**Note:** You will need to checkout `govuk-helm-charts` into your `govuk` repository in order to have local tests passing. 
+
 ```
 bundle exec rake
 ```

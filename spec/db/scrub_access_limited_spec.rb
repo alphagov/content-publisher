@@ -1,6 +1,7 @@
 RSpec.describe "Scrub Access Limited SQL Script" do
   def execute_sql
-    sql = File.read(Rails.root.join("vendor/govuk-helm-charts/charts/db-backup/scripts/content-publisher.sql"))
+    helm_charts_path = ENV.fetch("GOVUK_HELM_CHARTS_PATH", "../govuk-helm-charts")
+    sql = File.read(Rails.root.join("#{helm_charts_path}/charts/db-backup/scripts/content-publisher.sql"))
     ActiveRecord::Base.connection.execute(sql)
   end
 
