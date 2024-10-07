@@ -1505,10 +1505,10 @@ jasmine-core@^5.3.0, jasmine-core@~5.3.0:
   resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-5.3.0.tgz#ed784e5a10af43988d8408bad80b9f08e240a3f8"
   integrity sha512-zsOmeBKESky4toybvWEikRiZ0jHoBEu79wNArLfMdSnlLMZx3Xcp6CSm2sUcYyoJC+Uyj8LBJap/MUbVSfJ27g==
 
-jasmine@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-5.3.0.tgz#523dea612f3573f896e7f680f54752685e48581b"
-  integrity sha512-Vrv5VWTXVZ/5xcNawlYCmE24pOaZu3KduLr9iAaENoMJ8W8Ryvhfpw2cf3rI4Unc2ajvu2t4tCKjS72TnraBGQ==
+jasmine@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-5.3.1.tgz#7b72543d5e9d4af41dab2d4b9934a2e71f28e6c5"
+  integrity sha512-3zeUCfr3d1iga3s+NgDpggCP+ex5sdbNgqNn+Tq4yw/QfnwGrWC/ZvXX1IRm5deSIZ1LnvoeGY55F/ztbVOXPQ==
   dependencies:
     glob "^10.2.2"
     jasmine-core "~5.3.0"
