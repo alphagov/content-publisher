@@ -59,8 +59,7 @@ RSpec.feature "Update publish time" do
   end
 
   def and_a_new_job_is_queued
-    expect(enqueued_jobs.count).to eq 1
-    expect(enqueued_jobs.first[:args].first).to eq @edition.id
-    expect(enqueued_jobs.first[:at].to_i).to eq @new_time.to_i
+    assert_enqueued_jobs 1
+    assert_enqueued_with(job: ScheduledPublishingJob, args: [@edition.id], at: @new_time)
   end
 end
