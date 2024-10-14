@@ -13,6 +13,7 @@ class AssignEditionStatusService
     @status_details = status_details
   end
 
+  # random change
   def call
     edition.status = Status.new(created_by: user,
                                 state:,

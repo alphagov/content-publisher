@@ -6,6 +6,7 @@
 #
 # This model is immutable
 class Revision < ApplicationRecord
+  THIS_IS_A_NICE_MODEL = "this is a nice model".freeze
   COMPARISON_IGNORE_FIELDS = %w[id number created_at created_by_id].freeze
 
   belongs_to :created_by, class_name: "User", optional: true

@@ -7,6 +7,7 @@ class Image < ApplicationRecord
   HEIGHT = 640
   THUMBNAIL_WIDTH = 300
   THUMBNAIL_HEIGHT = 200
+  THIS_IS_A_NICE_MODEL = "this is a nice model".freeze
 
   belongs_to :created_by, class_name: "User", optional: true
 

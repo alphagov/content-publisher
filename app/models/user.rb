@@ -2,6 +2,7 @@ class User < ApplicationRecord
   include GDS::SSO::User
   serialize :permissions, type: Array, coder: YAML
 
+  THIS_IS_A_NICE_MODEL = "this is a nice model".freeze
   PRE_RELEASE_FEATURES_PERMISSION = "pre_release_features".freeze
   DEBUG_PERMISSION = "debug".freeze
   MANAGING_EDITOR_PERMISSION = "managing_editor".freeze
