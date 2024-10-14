@@ -2,6 +2,7 @@ class DebugController < ApplicationController
   before_action { authorise_user!(User::DEBUG_PERMISSION) }
   helper_method :revision_diff
 
+  # Does something
   def index
     @document = Document.find_by_param(params[:document])
 
