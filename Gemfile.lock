@@ -206,10 +206,11 @@ GEM
     govuk_personalisation (1.0.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (43.3.0)
+    govuk_publishing_components (44.3.0)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
+      ostruct
       plek
       rails (>= 6)
       rouge
@@ -311,7 +312,7 @@ GEM
     mutex_m (0.2.0)
     net-http (0.4.1)
       uri
-    net-imap (0.4.16)
+    net-imap (0.4.17)
       date
       net-protocol
     net-pop (0.1.2)
@@ -548,6 +549,7 @@ GEM
       opentelemetry-semantic_conventions
     opentelemetry-semantic_conventions (1.10.1)
       opentelemetry-api (~> 1.0)
+    ostruct (0.6.0)
     parallel (1.26.3)
     parser (3.3.5.0)
       ast (~> 2.4.1)
@@ -569,7 +571,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
-    rack (2.2.9)
+    rack (2.2.10)
     rack-protection (3.2.0)
       base64 (>= 0.1.0)
       rack (~> 2.2, >= 2.2.4)
@@ -771,7 +773,7 @@ GEM
       zeitwerk (>= 2.6)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.18)
+    zeitwerk (2.7.0)
 
 PLATFORMS
   aarch64-linux
