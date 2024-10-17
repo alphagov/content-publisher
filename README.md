@@ -1,4 +1,8 @@
-# Content Publisher
+# Content Publisher (DEPRECATED)
+
+> **NOTE**: This project is deprecated and is [planned to be retired](https://github.com/alphagov/govuk-rfcs/blob/main/rfc-161-technical-direction-in-publishing-2023.md).
+
+---
 
 A unified publishing application for content on GOV.UK
 
