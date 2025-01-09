@@ -16,7 +16,7 @@ on:
 jobs:
   run-rspec:
     name: Run RSpec
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Setup Postgres
         id: setup-postgres
