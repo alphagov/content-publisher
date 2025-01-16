@@ -7,7 +7,7 @@
     <%= render "govuk_publishing_components/components/attachment", {
       attachment: file_attachment_attributes(@attachment, @edition),
       target: "_blank",
-      data_attributes: {
+      url_data_attributes: {
         gtm: "preview-attachment-block"
       }
     } %>
@@ -43,7 +43,7 @@
       <%= render "govuk_publishing_components/components/attachment_link", {
         attachment: file_attachment_attributes(@attachment, @edition),
         target: "_blank",
-        data_attributes: { gtm: "preview-attachment-link" }
+        url_data_attributes: { gtm: "preview-attachment-link" }
       } %>
     </div>
     <% if rendering_context == "modal" %>

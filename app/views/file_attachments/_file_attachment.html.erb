@@ -42,7 +42,7 @@
 <%= render "components/media_with_actions", actions: actions do %>
   <%= render "govuk_publishing_components/components/attachment", {
     attachment: file_attachment_attributes(attachment, edition),
-    data_attributes: {
+    url_data_attributes: {
       gtm: "preview-attachment-block"
     },
     hide_opendocument_metadata: true,
