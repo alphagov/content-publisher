@@ -18,7 +18,7 @@
       text: t("content.edit.form_labels.summary"),
       bold: true
     },
-    id: "summary-field",
+    textarea_id: "summary-field",
     name: "summary",
     value: params[:summary] || edition.summary,
     error_items: issues&.items_for(:summary),

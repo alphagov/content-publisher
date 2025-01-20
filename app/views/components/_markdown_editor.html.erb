@@ -72,7 +72,7 @@
     "contextual-guidance": contextual_guidance,
   } do %>
   <%= render "govuk_publishing_components/components/label", {
-      html_for: textarea[:id]
+      html_for: textarea[:textarea_id]
   }.merge(label.symbolize_keys) %>
 
   <% if error_items.any? %>
@@ -92,7 +92,7 @@
                 data-gtm="preview-markdown"><%= preview_button_text %></button>
       </div>
       <div class="app-c-markdown-editor__toolbar">
-        <markdown-toolbar class="app-c-markdown-editor__toolbar-group" for="<%= textarea[:id] %>">
+        <markdown-toolbar class="app-c-markdown-editor__toolbar-group" for="<%= textarea[:textarea_id] %>">
           <md-header-2 class="app-c-markdown-editor__toolbar-button" title="Heading level 2" aria-label="Heading level 2" data-gtm="markdown-toolbar-h2" data-gtm-click-tracking="true">
             <%= inline_svg_tag "components/markdown-editor/heading-two.svg", class: "app-c-markdown-editor__toolbar-icon" , aria_hidden: true %>
           </md-header-2>
