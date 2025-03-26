@@ -5,7 +5,7 @@ news_article: &news_article
   attachments: inline_file_only
   publishing_metadata:
     schema_name: news_article
-    rendering_app: government-frontend
+    rendering_app: frontend
   contents:
     - title_and_base_path
     - summary
@@ -76,10 +76,10 @@ document_types:
   - id: notice
     <<: *publication
     label: Notice
-        
+
   - id: guidance
     <<: *publication
-    label: Non statutory guidance  
+    label: Non statutory guidance
 
   - id: policy_paper
     <<: *publication
