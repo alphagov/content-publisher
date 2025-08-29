@@ -51,5 +51,18 @@ RSpec.describe WhitehallMigration::DocumentExport do
       document = create(:document, :with_live_edition)
       expect(described_class.export_to_hash(document)[:updated_at]).to eq(document.updated_at)
     end
+
+    it "has a `created_by` property" do
+      email = "foo@example.com"
+      document = create(:document, :with_live_edition, created_by: build(:user, email:))
+      expect(described_class.export_to_hash(document)[:created_by]).to eq(email)
+    end
+
+    it "has a `last_edited_by` property" do
+      email = "foo@example.com"
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, created_by: build(:user, email:), document:)
+      expect(described_class.export_to_hash(document)[:last_edited_by]).to eq(email)
+    end
   end
 end

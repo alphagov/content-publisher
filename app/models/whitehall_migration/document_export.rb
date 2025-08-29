@@ -14,6 +14,8 @@ class WhitehallMigration::DocumentExport
       created_at: document[:created_at],
       first_published_at: document[:first_published_at],
       updated_at: document[:updated_at],
+      created_by: User.find(document.created_by_id).email,
+      last_edited_by: User.find(document.live_edition.revision.created_by_id).email,
     }
   end
 end
