@@ -24,6 +24,7 @@ class WhitehallMigration::DocumentExport
       summary: content_revision.summary,
       body: content_revision.contents["body"],
       tags: document.live_edition.revision.tags_revision.tags,
+      political: document.live_edition.political?,
     }
   end
 end

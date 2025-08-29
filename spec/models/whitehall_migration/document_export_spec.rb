@@ -107,8 +107,16 @@ RSpec.describe WhitehallMigration::DocumentExport do
       tags = { "primary_publishing_organisation" => [SecureRandom.uuid] }
       document = build(:document, :live)
       document.live_edition = create(:edition, :published, document:, tags:)
-      
+
       expect(described_class.export_to_hash(document)[:tags]).to eq(tags)
+    end
+
+    it "has a `political` property" do
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, document:)
+      allow(document.live_edition).to receive(:political?).and_return(true)
+
+      expect(described_class.export_to_hash(document)[:political]).to be(true)
     end
   end
 end
