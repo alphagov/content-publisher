@@ -23,6 +23,7 @@ class WhitehallMigration::DocumentExport
       base_path: content_revision.base_path,
       summary: content_revision.summary,
       body: content_revision.contents["body"],
+      tags: document.live_edition.revision.tags_revision.tags,
     }
   end
 end

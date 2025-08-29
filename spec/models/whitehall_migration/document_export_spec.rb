@@ -102,5 +102,13 @@ RSpec.describe WhitehallMigration::DocumentExport do
       document.live_edition = create(:edition, :published, document:, contents: { "body" => body })
       expect(described_class.export_to_hash(document)[:body]).to eq(body)
     end
+
+    it "has a `tags` property" do
+      tags = { "primary_publishing_organisation" => [SecureRandom.uuid] }
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, document:, tags:)
+      
+      expect(described_class.export_to_hash(document)[:tags]).to eq(tags)
+    end
   end
 end
