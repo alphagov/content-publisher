@@ -16,6 +16,7 @@ class WhitehallMigration::DocumentExport
       updated_at: document[:updated_at],
       created_by: User.find(document.created_by_id).email,
       last_edited_by: User.find(document.live_edition.revision.created_by_id).email,
+      document_type: document.live_edition.revision.metadata_revision.document_type_id,
     }
   end
 end

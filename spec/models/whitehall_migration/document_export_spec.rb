@@ -64,5 +64,11 @@ RSpec.describe WhitehallMigration::DocumentExport do
       document.live_edition = create(:edition, :published, created_by: build(:user, email:), document:)
       expect(described_class.export_to_hash(document)[:last_edited_by]).to eq(email)
     end
+
+    it "has a `document_type` property" do
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, document_type: DocumentType.find("news_story"), document:)
+      expect(described_class.export_to_hash(document)[:document_type]).to eq("news_story")
+    end
   end
 end
