@@ -70,5 +70,37 @@ RSpec.describe WhitehallMigration::DocumentExport do
       document.live_edition = create(:edition, :published, document_type: DocumentType.find("news_story"), document:)
       expect(described_class.export_to_hash(document)[:document_type]).to eq("news_story")
     end
+
+    it "has a `title` property" do
+      title = "Here is a title"
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, title:, document:)
+      expect(described_class.export_to_hash(document)[:title]).to eq(title)
+    end
+
+    it "has a `base_path` property" do
+      base_path = "/foo/bar"
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, base_path:, document:)
+      expect(described_class.export_to_hash(document)[:base_path]).to eq(base_path)
+    end
+
+    it "has a `summary` property" do
+      summary = "Here is a summary"
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, summary:, document:)
+      expect(described_class.export_to_hash(document)[:summary]).to eq(summary)
+    end
+
+    it "has a `body` property" do
+      body = <<~GOVSPEAK
+        Here are some contents
+
+        And here are some more!
+      GOVSPEAK
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, document:, contents: { "body" => body })
+      expect(described_class.export_to_hash(document)[:body]).to eq(body)
+    end
   end
 end

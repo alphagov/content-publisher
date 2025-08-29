@@ -8,6 +8,8 @@ class WhitehallMigration::DocumentExport
   end
 
   def self.export_to_hash(document)
+    content_revision = document.live_edition.revision.content_revision
+
     {
       content_id: document[:content_id],
       state: document.live_edition.state,
@@ -17,6 +19,10 @@ class WhitehallMigration::DocumentExport
       created_by: User.find(document.created_by_id).email,
       last_edited_by: User.find(document.live_edition.revision.created_by_id).email,
       document_type: document.live_edition.revision.metadata_revision.document_type_id,
+      title: content_revision.title,
+      base_path: content_revision.base_path,
+      summary: content_revision.summary,
+      body: content_revision.contents["body"],
     }
   end
 end
