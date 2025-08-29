@@ -20,4 +20,31 @@ RSpec.describe WhitehallMigration::DocumentExport do
       expect(described_class.exportable_documents.sort_by(&:id)).to eq(documents_to_be_processed.sort_by(&:id))
     end
   end
+
+  describe "#export_to_hash" do
+    it "takes a Document and maps it to a hash" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)).to be_a(Hash)
+    end
+
+    it "has a `content_id` property" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)[:content_id]).to eq(document.content_id)
+    end
+
+    it "has a `created_at` property" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)[:created_at]).to eq(document.created_at)
+    end
+
+    it "has a `first_published_at` property" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)[:first_published_at]).to eq(document.first_published_at)
+    end
+
+    it "has a `updated_at` property" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)[:updated_at]).to eq(document.updated_at)
+    end
+  end
 end
