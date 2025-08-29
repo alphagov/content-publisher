@@ -45,7 +45,6 @@
     "cropperjs": "^1.6.2",
     "es5-polyfill": "^0.0.6",
     "jasmine": "^5.3.1",
-    "markdown-toolbar-element": "^0.2.0",
     "miller-columns-element": "^2.0.0",
     "paste-html-to-govspeak": "^0.4.0",
     "raven-js": "^3.27.2",
