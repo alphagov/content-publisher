@@ -254,5 +254,77 @@ RSpec.describe WhitehallMigration::DocumentExport do
         instance_double(TimelineEntry, **defaults.merge(overrides))
       end
     end
+
+    describe "the 'images' property" do
+      it "exports image data with all required properties" do
+        image_revision = create(
+          :image_revision,
+          caption: "Image caption text",
+          alt_text: "Alt text description",
+          credit: "Photo credit",
+        )
+
+        blob_revision = instance_double(Image::BlobRevision)
+        assets = [
+          instance_double(Image::Asset, variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/123/image-300.jpg"),
+          instance_double(Image::Asset, variant: "960", file_url: "https://assets.publishing.service.gov.uk/media/123/image-960.jpg"),
+        ]
+        allow(image_revision).to receive(:blob_revision).and_return(blob_revision)
+        allow(blob_revision).to receive(:assets).and_return(assets)
+
+        document = build(:document, :live)
+        document.live_edition = create(:edition, :published, document:, lead_image_revision: image_revision)
+
+        result = described_class.export_to_hash(document)
+
+        expect(result[:images]).to be_an(Array)
+        expect(result[:images].length).to eq(1)
+
+        image = result[:images].first
+        expect(image).to include({
+          caption: "Image caption text",
+          alt_text: "Alt text description",
+          credit: "Photo credit",
+          lead_image: true,
+          created_by: "user@gov.uk",
+        })
+        expect(image[:variants]).to eq([
+          { variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/123/image-300.jpg" },
+          { variant: "960", file_url: "https://assets.publishing.service.gov.uk/media/123/image-960.jpg" },
+        ])
+      end
+
+      it "sets lead_image flag correctly for multiple images" do
+        lead_image = create(:image_revision)
+        other_image = create(:image_revision)
+
+        [lead_image, other_image].each do |image_revision|
+          blob_revision = instance_double(Image::BlobRevision)
+          assets = [instance_double(Image::Asset, variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/test.jpg")]
+          allow(image_revision).to receive(:blob_revision).and_return(blob_revision)
+          allow(blob_revision).to receive(:assets).and_return(assets)
+        end
+
+        document = build(:document, :live)
+        document.live_edition = create(
+          :edition,
+          :published,
+          document:,
+          lead_image_revision: lead_image,
+          image_revisions: [lead_image, other_image],
+        )
+
+        result = described_class.export_to_hash(document)
+
+        expect(result[:images].length).to eq(2)
+        lead = result[:images].find { |img| img[:lead_image] }
+        non_lead = result[:images].find { |img| !img[:lead_image] }
+
+        expect(lead[:lead_image]).to be(true)
+        expect(non_lead[:lead_image]).to be(false)
+        expect(lead[:variants]).to eq([{ variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/test.jpg" }])
+        expect(non_lead[:variants]).to eq([{ variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/test.jpg" }])
+      end
+    end
   end
 end

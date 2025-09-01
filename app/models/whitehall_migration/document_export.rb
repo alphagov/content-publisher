@@ -26,6 +26,7 @@ class WhitehallMigration::DocumentExport
       tags: document.live_edition.revision.tags_revision.tags,
       political: document.live_edition.political?,
       document_history: document_history(document),
+      images: export_images(document),
     }
   end
 
@@ -50,6 +51,28 @@ class WhitehallMigration::DocumentExport
         backdated_to: entry.backdated? ? entry.revision.backdated_to.to_fs(:date) : nil,
         user: entry.created_by.email,
         entry_content:,
+      }
+    end
+  end
+
+  def self.export_images(document)
+    revision = document.live_edition.revision
+    lead_image_revision = revision.lead_image_revision
+    all_image_revisions = revision.image_revisions
+
+    all_image_revisions.map do |image_revision|
+      {
+        caption: image_revision.caption,
+        alt_text: image_revision.alt_text,
+        credit: image_revision.credit,
+        lead_image: image_revision == lead_image_revision,
+        created_by: image_revision.created_by.email,
+        variants: image_revision.blob_revision.assets.map do |asset|
+          {
+            variant: asset.variant,
+            file_url: asset.file_url,
+          }
+        end,
       }
     end
   end
