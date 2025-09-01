@@ -27,6 +27,7 @@ class WhitehallMigration::DocumentExport
       political: document.live_edition.political?,
       document_history: document_history(document),
       images: export_images(document),
+      attachments: export_attachments(document),
     }
   end
 
@@ -73,6 +74,20 @@ class WhitehallMigration::DocumentExport
             file_url: asset.file_url,
           }
         end,
+      }
+    end
+  end
+
+  def self.export_attachments(document)
+    revision = document.live_edition.revision
+    all_file_attachment_revisions = revision.file_attachment_revisions
+
+    all_file_attachment_revisions.map do |file_attachment_revision|
+      metadata = file_attachment_revision.metadata_revision
+      {
+        file_url: file_attachment_revision.asset.file_url,
+        title: metadata.title,
+        created_at: file_attachment_revision.created_at,
       }
     end
   end

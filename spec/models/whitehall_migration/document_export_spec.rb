@@ -326,5 +326,31 @@ RSpec.describe WhitehallMigration::DocumentExport do
         expect(non_lead[:variants]).to eq([{ variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/test.jpg" }])
       end
     end
+
+    describe "the 'attachments' property" do
+      it "returns all of the document's attachments in hash form" do
+        file_url = "https://assets.publishing.service.gov.uk/media/5e5f9a16d3bf7f1090676df2/sample.pdf"
+        asset = instance_double(FileAttachment::Asset, file_url:)
+        file_attachment_revision = create(
+          :file_attachment_revision,
+          :on_asset_manager,
+          title: "Sample title",
+          asset:,
+        )
+        allow(file_attachment_revision).to receive(:asset).and_return(asset)
+        expected = [
+          {
+            file_url:,
+            title: "Sample title",
+            created_at: file_attachment_revision.created_at,
+          },
+        ]
+
+        document = build(:document, :live)
+        document.live_edition = create(:edition, :published, document:, file_attachment_revisions: [file_attachment_revision])
+        result = described_class.export_to_hash(document)
+        expect(result[:attachments]).to eq(expected)
+      end
+    end
   end
 end
