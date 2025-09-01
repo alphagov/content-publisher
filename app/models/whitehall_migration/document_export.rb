@@ -25,6 +25,32 @@ class WhitehallMigration::DocumentExport
       body: content_revision.contents["body"],
       tags: document.live_edition.revision.tags_revision.tags,
       political: document.live_edition.political?,
+      document_history: document_history(document),
     }
+  end
+
+  def self.document_history(document)
+    timeline_entries = TimelineEntry.where(document:)
+      .includes(:created_by, :details)
+      .order(created_at: :desc)
+      .includes(:edition)
+
+    timeline_entries.map do |entry|
+      entry_content = if entry.internal_note? && entry.details
+                        entry.details.body
+                      elsif (entry.withdrawn? || entry.withdrawn_updated?) && entry.details
+                        entry.details.public_explanation
+                      end
+
+      {
+        edition_number: entry.edition.number,
+        entry_type: entry.entry_type,
+        date: entry.created_at.to_fs(:date),
+        time: entry.created_at.to_fs(:time),
+        backdated_to: entry.backdated? ? entry.revision.backdated_to.to_fs(:date) : nil,
+        user: entry.created_by.email,
+        entry_content:,
+      }
+    end
   end
 end
