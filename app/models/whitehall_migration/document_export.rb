@@ -10,6 +10,7 @@ class WhitehallMigration::DocumentExport
   def self.export_to_hash(document)
     {
       content_id: document[:content_id],
+      state: document.live_edition.state,
       created_at: document[:created_at],
       first_published_at: document[:first_published_at],
       updated_at: document[:updated_at],

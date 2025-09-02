@@ -32,6 +32,11 @@ RSpec.describe WhitehallMigration::DocumentExport do
       expect(described_class.export_to_hash(document)[:content_id]).to eq(document.content_id)
     end
 
+    it "has a `state` property" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)[:state]).to eq("published")
+    end
+
     it "has a `created_at` property" do
       document = create(:document, :with_live_edition)
       expect(described_class.export_to_hash(document)[:created_at]).to eq(document.created_at)
