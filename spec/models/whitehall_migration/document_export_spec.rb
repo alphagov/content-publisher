@@ -42,9 +42,19 @@ RSpec.describe WhitehallMigration::DocumentExport do
       expect(described_class.export_to_hash(document)[:created_at]).to eq(document.created_at)
     end
 
-    it "has a `first_published_at` property" do
-      document = create(:document, :with_live_edition)
-      expect(described_class.export_to_hash(document)[:first_published_at]).to eq(document.first_published_at)
+    describe "the `first_published_at` property" do
+      it "delegates to PublishingApiPayload::History to populate first_published_at" do
+        document = build(:document, :live)
+        document.live_edition = create(:edition, :published, document:)
+        history = instance_double(
+          PublishingApiPayload::History,
+          change_history: [],
+          first_published_at: 1.year.ago,
+        )
+        allow(PublishingApiPayload::History).to receive(:new).and_return(history)
+
+        expect(described_class.export_to_hash(document)[:first_published_at]).to match(history.first_published_at)
+      end
     end
 
     it "has a `updated_at` property" do
@@ -126,6 +136,22 @@ RSpec.describe WhitehallMigration::DocumentExport do
       allow(document.live_edition).to receive(:government_id).and_return(government_id)
 
       expect(described_class.export_to_hash(document)[:government_id]).to be(government_id)
+    end
+
+    describe "the `change_notes` property" do
+      it "delegates to PublishingApiPayload::History to populate change_notes" do
+        document = build(:document, :live)
+        document.live_edition = create(:edition, :published, document:)
+        history = instance_double(
+          PublishingApiPayload::History,
+          change_history: [{ note: "note", public_timestamp: Time.zone.now }],
+          public_updated_at: Time.zone.now,
+          first_published_at: Time.zone.now,
+        )
+        allow(PublishingApiPayload::History).to receive(:new).and_return(history)
+
+        expect(described_class.export_to_hash(document)[:change_notes]).to match(history.change_history)
+      end
     end
 
     describe "the `document_history` property" do

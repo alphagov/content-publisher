@@ -14,7 +14,7 @@ class WhitehallMigration::DocumentExport
       content_id: document[:content_id],
       state: document.live_edition.state,
       created_at: document[:created_at],
-      first_published_at: document[:first_published_at],
+      first_published_at: PublishingApiPayload::History.new(document.live_edition).first_published_at,
       updated_at: document[:updated_at],
       created_by: User.find(document.created_by_id).email,
       last_edited_by: User.find(document.live_edition.revision.created_by_id).email,
@@ -26,10 +26,15 @@ class WhitehallMigration::DocumentExport
       tags: document.live_edition.revision.tags_revision.tags,
       political: document.live_edition.political?,
       government_id: document.live_edition.government_id,
+      change_notes: change_notes(document),
       document_history: document_history(document),
       images: export_images(document),
       attachments: export_attachments(document),
     }
+  end
+
+  def self.change_notes(document)
+    PublishingApiPayload::History.new(document.live_edition).change_history
   end
 
   def self.document_history(document)
