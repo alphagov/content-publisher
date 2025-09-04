@@ -119,6 +119,15 @@ RSpec.describe WhitehallMigration::DocumentExport do
       expect(described_class.export_to_hash(document)[:political]).to be(true)
     end
 
+    it "has a `government_id` property" do
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, document:)
+      government_id = SecureRandom.uuid
+      allow(document.live_edition).to receive(:government_id).and_return(government_id)
+
+      expect(described_class.export_to_hash(document)[:government_id]).to be(government_id)
+    end
+
     describe "the `document_history` property" do
       let(:document) { instance_double(Document) }
 

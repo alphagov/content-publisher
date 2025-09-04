@@ -25,6 +25,7 @@ class WhitehallMigration::DocumentExport
       body: content_revision.contents["body"],
       tags: document.live_edition.revision.tags_revision.tags,
       political: document.live_edition.political?,
+      government_id: document.live_edition.government_id,
       document_history: document_history(document),
       images: export_images(document),
       attachments: export_attachments(document),
