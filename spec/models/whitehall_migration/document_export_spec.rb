@@ -286,7 +286,7 @@ RSpec.describe WhitehallMigration::DocumentExport do
           alt_text: "Alt text description",
           credit: "Photo credit",
           lead_image: true,
-          created_by: "user@gov.uk",
+          created_at: image_revision.created_at,
         })
         expect(image[:variants]).to eq([
           { variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/123/image-300.jpg" },

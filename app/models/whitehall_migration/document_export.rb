@@ -63,11 +63,11 @@ class WhitehallMigration::DocumentExport
 
     all_image_revisions.map do |image_revision|
       {
+        created_at: image_revision.created_at,
         caption: image_revision.caption,
         alt_text: image_revision.alt_text,
         credit: image_revision.credit,
         lead_image: image_revision == lead_image_revision,
-        created_by: image_revision.created_by.email,
         variants: image_revision.blob_revision.assets.map do |asset|
           {
             variant: asset.variant,
