@@ -27,7 +27,7 @@ class WhitehallMigration::DocumentExport
       political: document.live_edition.political?,
       government_id: document.live_edition.government_id,
       change_notes: change_notes(document),
-      document_history: document_history(document),
+      internal_history: internal_history(document),
       images: export_images(document),
       attachments: export_attachments(document),
     }
@@ -37,7 +37,7 @@ class WhitehallMigration::DocumentExport
     PublishingApiPayload::History.new(document.live_edition).change_history
   end
 
-  def self.document_history(document)
+  def self.internal_history(document)
     timeline_entries = TimelineEntry.where(document:)
       .includes(:created_by, :details)
       .order(created_at: :desc)
@@ -55,7 +55,6 @@ class WhitehallMigration::DocumentExport
         entry_type: entry.entry_type,
         date: entry.created_at.to_fs(:date),
         time: entry.created_at.to_fs(:time),
-        backdated_to: entry.backdated? ? entry.revision.backdated_to.to_fs(:date) : nil,
         user: entry.created_by.email,
         entry_content:,
       }

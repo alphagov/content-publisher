@@ -154,7 +154,7 @@ RSpec.describe WhitehallMigration::DocumentExport do
       end
     end
 
-    describe "the `document_history` property" do
+    describe "the `internal_history` property" do
       let(:document) { instance_double(Document) }
 
       it "includes internal notes" do
@@ -168,13 +168,12 @@ RSpec.describe WhitehallMigration::DocumentExport do
         )
         stub_chain_with([e])
 
-        expect(described_class.document_history(document)).to eq([
+        expect(described_class.internal_history(document)).to eq([
           {
             edition_number: 1,
             entry_type: "internal_note",
             date: "2024-01-01",
             time: "10:00",
-            backdated_to: nil,
             user: "example@gov.uk",
             entry_content: "This is an internal note",
           },
@@ -193,42 +192,14 @@ RSpec.describe WhitehallMigration::DocumentExport do
         )
         stub_chain_with([e])
 
-        expect(described_class.document_history(document)).to eq([
+        expect(described_class.internal_history(document)).to eq([
           {
             edition_number: 2,
             entry_type: "withdrawn",
             date: "2024-02-01",
             time: "11:00",
-            backdated_to: nil,
             user: "withdrawn-author@gov.uk",
             entry_content: "Withdrawn explanation",
-          },
-        ])
-      end
-
-      it "includes backdated entries (backdated_to on revision) with nil entry_content" do
-        backdated_to = Date.new(2022, 1, 1) # real Date; .to_fs(:date) -> "2022-01-01"
-        revision = instance_double(Revision, backdated_to:)
-
-        e = entry_double(
-          backdated?: true,
-          revision:,
-          entry_type: "published",
-          edition: instance_double(Edition, number: 5),
-          created_at: build_time(date: "2024-05-01", time: "14:00"),
-          created_by: instance_double(User, email: "backdated-author@gov.uk"),
-        )
-        stub_chain_with([e])
-
-        expect(described_class.document_history(document)).to eq([
-          {
-            edition_number: 5,
-            entry_type: "published",
-            date: "2024-05-01",
-            time: "14:00",
-            backdated_to: "2022-01-01",
-            user: "backdated-author@gov.uk",
-            entry_content: nil,
           },
         ])
       end
@@ -255,7 +226,7 @@ RSpec.describe WhitehallMigration::DocumentExport do
         # We hand back [newer, older] from the ordered chain
         stub_chain_with([newer, older])
 
-        result = described_class.document_history(document)
+        result = described_class.internal_history(document)
         expect(result.map { |h| h[:edition_number] }).to eq([2, 1])
       end
 
