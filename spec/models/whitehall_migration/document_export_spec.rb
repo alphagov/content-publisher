@@ -1,0 +1,362 @@
+RSpec.describe WhitehallMigration::DocumentExport do
+  describe ".exportable_documents" do
+    it "returns documents that are published (with or without 2i), or withdrawn" do
+      Document.find_each(&:destroy) # Clean slate
+
+      withdrawn_edition = create(:edition, :withdrawn)
+      live_but_needs_2i = create(:edition, :published_but_needs_2i)
+      documents_to_be_processed = [
+        create(:document, :with_live_edition),
+        create(:document, :with_current_and_live_editions),
+        live_but_needs_2i.document,
+        withdrawn_edition.document,
+      ]
+
+      # documents to be ignored
+      create(:document, :with_current_edition)
+      create(:edition, state: "submitted_for_review")
+      create(:edition, :removed, removal: create(:removal, redirect: true, alternative_url: "/somewhere"))
+
+      expect(described_class.exportable_documents.sort_by(&:id)).to eq(documents_to_be_processed.sort_by(&:id))
+    end
+  end
+
+  describe "#export_to_hash" do
+    it "takes a Document and maps it to a hash" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)).to be_a(Hash)
+    end
+
+    it "has a `content_id` property" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)[:content_id]).to eq(document.content_id)
+    end
+
+    it "has a `state` property" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)[:state]).to eq("published")
+    end
+
+    it "has a `created_at` property" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)[:created_at]).to eq(document.created_at)
+    end
+
+    describe "the `first_published_at` property" do
+      it "delegates to PublishingApiPayload::History to populate first_published_at" do
+        document = build(:document, :live)
+        document.live_edition = create(:edition, :published, document:)
+        history = instance_double(
+          PublishingApiPayload::History,
+          change_history: [],
+          first_published_at: 1.year.ago,
+        )
+        allow(PublishingApiPayload::History).to receive(:new).and_return(history)
+
+        expect(described_class.export_to_hash(document)[:first_published_at]).to match(history.first_published_at)
+      end
+    end
+
+    it "has a `updated_at` property" do
+      document = create(:document, :with_live_edition)
+      expect(described_class.export_to_hash(document)[:updated_at]).to eq(document.updated_at)
+    end
+
+    it "has a `created_by` property" do
+      email = "foo@example.com"
+      document = create(:document, :with_live_edition, created_by: build(:user, email:))
+      expect(described_class.export_to_hash(document)[:created_by]).to eq(email)
+    end
+
+    it "has a `last_edited_by` property" do
+      email = "foo@example.com"
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, created_by: build(:user, email:), document:)
+      expect(described_class.export_to_hash(document)[:last_edited_by]).to eq(email)
+    end
+
+    it "has a `document_type` property" do
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, document_type: DocumentType.find("news_story"), document:)
+      expect(described_class.export_to_hash(document)[:document_type]).to eq("news_story")
+    end
+
+    it "has a `title` property" do
+      title = "Here is a title"
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, title:, document:)
+      expect(described_class.export_to_hash(document)[:title]).to eq(title)
+    end
+
+    it "has a `base_path` property" do
+      base_path = "/foo/bar"
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, base_path:, document:)
+      expect(described_class.export_to_hash(document)[:base_path]).to eq(base_path)
+    end
+
+    it "has a `summary` property" do
+      summary = "Here is a summary"
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, summary:, document:)
+      expect(described_class.export_to_hash(document)[:summary]).to eq(summary)
+    end
+
+    it "has a `body` property" do
+      body = <<~GOVSPEAK
+        Here are some contents
+
+        And here are some more!
+      GOVSPEAK
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, document:, contents: { "body" => body })
+      expect(described_class.export_to_hash(document)[:body]).to eq(body)
+    end
+
+    it "has a `tags` property" do
+      tags = { "primary_publishing_organisation" => [SecureRandom.uuid] }
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, document:, tags:)
+
+      expect(described_class.export_to_hash(document)[:tags]).to eq(tags)
+    end
+
+    it "has a `political` property" do
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, document:)
+      allow(document.live_edition).to receive(:political?).and_return(true)
+
+      expect(described_class.export_to_hash(document)[:political]).to be(true)
+    end
+
+    it "has a `government_id` property" do
+      document = build(:document, :live)
+      document.live_edition = create(:edition, :published, document:)
+      government_id = SecureRandom.uuid
+      allow(document.live_edition).to receive(:government_id).and_return(government_id)
+
+      expect(described_class.export_to_hash(document)[:government_id]).to be(government_id)
+    end
+
+    describe "the `change_notes` property" do
+      it "delegates to PublishingApiPayload::History to populate change_notes" do
+        document = build(:document, :live)
+        document.live_edition = create(:edition, :published, document:)
+        history = instance_double(
+          PublishingApiPayload::History,
+          change_history: [{ note: "note", public_timestamp: Time.zone.now }],
+          public_updated_at: Time.zone.now,
+          first_published_at: Time.zone.now,
+        )
+        allow(PublishingApiPayload::History).to receive(:new).and_return(history)
+
+        expect(described_class.export_to_hash(document)[:change_notes]).to match(history.change_history)
+      end
+    end
+
+    describe "the `internal_history` property" do
+      let(:document) { instance_double(Document) }
+
+      it "includes internal notes" do
+        details = instance_double(InternalNote, body: "This is an internal note")
+        e = entry_double(
+          internal_note?: true,
+          details:,
+          entry_type: "internal_note",
+          edition: instance_double(Edition, number: 1),
+          created_by: instance_double(User, email: "example@gov.uk"),
+        )
+        stub_chain_with([e])
+
+        expect(described_class.internal_history(document)).to eq([
+          {
+            edition_number: 1,
+            entry_type: "internal_note",
+            date: "2024-01-01",
+            time: "10:00",
+            user: "example@gov.uk",
+            entry_content: "This is an internal note",
+          },
+        ])
+      end
+
+      it "includes withdrawn/updated entries with public explanation" do
+        details = instance_double(Withdrawal, public_explanation: "Withdrawn explanation")
+        e = entry_double(
+          withdrawn_updated?: true,
+          details:,
+          entry_type: "withdrawn",
+          edition: instance_double(Edition, number: 2),
+          created_at: build_time(date: "2024-02-01", time: "11:00"),
+          created_by: instance_double(User, email: "withdrawn-author@gov.uk"),
+        )
+        stub_chain_with([e])
+
+        expect(described_class.internal_history(document)).to eq([
+          {
+            edition_number: 2,
+            entry_type: "withdrawn",
+            date: "2024-02-01",
+            time: "11:00",
+            user: "withdrawn-author@gov.uk",
+            entry_content: "Withdrawn explanation",
+          },
+        ])
+      end
+
+      it "returns entries ordered by created_at desc (we respect the chain's order)" do
+        newer = entry_double(
+          entry_type: "withdrawn",
+          withdrawn_updated?: true,
+          details: instance_double(Withdrawal, public_explanation: "Later"),
+          edition: instance_double(Edition, number: 2),
+          created_at: build_time(date: "2024-02-01", time: "11:00"),
+          created_by: instance_double(User, email: "b@gov.uk"),
+        )
+
+        older = entry_double(
+          internal_note?: true,
+          details: instance_double(InternalNote, body: "Earlier note"),
+          entry_type: "internal_note",
+          edition: instance_double(Edition, number: 1),
+          created_at: build_time(date: "2024-01-01", time: "10:00"),
+          created_by: instance_double(User, email: "a@gov.uk"),
+        )
+
+        # We hand back [newer, older] from the ordered chain
+        stub_chain_with([newer, older])
+
+        result = described_class.internal_history(document)
+        expect(result.map { |h| h[:edition_number] }).to eq([2, 1])
+      end
+
+      def build_time(date:, time:)
+        t = instance_double(Time)
+        allow(t).to receive(:to_fs).with(:date).and_return(date)
+        allow(t).to receive(:to_fs).with(:time).and_return(time)
+        t
+      end
+
+      def stub_chain_with(entries)
+        # Simulate: TimelineEntry.where(document: doc).includes(...).order(...).includes(...)
+        allow(TimelineEntry).to receive(:where).with(document:).and_return(entries)
+        allow(entries).to receive(:includes).and_return(entries)
+        allow(entries).to receive(:order).with(created_at: :desc).and_return(entries)
+      end
+
+      def entry_double(overrides = {})
+        defaults = {
+          edition: instance_double(Edition, number: 1),
+          entry_type: "internal_note",
+          created_at: build_time(date: "2024-01-01", time: "10:00"),
+          created_by: instance_double(User, email: "example@gov.uk"),
+          details: nil,
+          internal_note?: false,
+          withdrawn?: false,
+          withdrawn_updated?: false,
+          backdated?: false,
+          revision: nil,
+        }
+        instance_double(TimelineEntry, **defaults.merge(overrides))
+      end
+    end
+
+    describe "the 'images' property" do
+      it "exports image data with all required properties" do
+        image_revision = create(
+          :image_revision,
+          caption: "Image caption text",
+          alt_text: "Alt text description",
+          credit: "Photo credit",
+        )
+
+        blob_revision = instance_double(Image::BlobRevision)
+        assets = [
+          instance_double(Image::Asset, variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/123/image-300.jpg"),
+          instance_double(Image::Asset, variant: "960", file_url: "https://assets.publishing.service.gov.uk/media/123/image-960.jpg"),
+        ]
+        allow(image_revision).to receive(:blob_revision).and_return(blob_revision)
+        allow(blob_revision).to receive(:assets).and_return(assets)
+
+        document = build(:document, :live)
+        document.live_edition = create(:edition, :published, document:, lead_image_revision: image_revision)
+
+        result = described_class.export_to_hash(document)
+
+        expect(result[:images]).to be_an(Array)
+        expect(result[:images].length).to eq(1)
+
+        image = result[:images].first
+        expect(image).to include({
+          caption: "Image caption text",
+          alt_text: "Alt text description",
+          credit: "Photo credit",
+          lead_image: true,
+          created_at: image_revision.created_at,
+        })
+        expect(image[:variants]).to eq([
+          { variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/123/image-300.jpg" },
+          { variant: "960", file_url: "https://assets.publishing.service.gov.uk/media/123/image-960.jpg" },
+        ])
+      end
+
+      it "sets lead_image flag correctly for multiple images" do
+        lead_image = create(:image_revision)
+        other_image = create(:image_revision)
+
+        [lead_image, other_image].each do |image_revision|
+          blob_revision = instance_double(Image::BlobRevision)
+          assets = [instance_double(Image::Asset, variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/test.jpg")]
+          allow(image_revision).to receive(:blob_revision).and_return(blob_revision)
+          allow(blob_revision).to receive(:assets).and_return(assets)
+        end
+
+        document = build(:document, :live)
+        document.live_edition = create(
+          :edition,
+          :published,
+          document:,
+          lead_image_revision: lead_image,
+          image_revisions: [lead_image, other_image],
+        )
+
+        result = described_class.export_to_hash(document)
+
+        expect(result[:images].length).to eq(2)
+        lead = result[:images].find { |img| img[:lead_image] }
+        non_lead = result[:images].find { |img| !img[:lead_image] }
+
+        expect(lead[:lead_image]).to be(true)
+        expect(non_lead[:lead_image]).to be(false)
+        expect(lead[:variants]).to eq([{ variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/test.jpg" }])
+        expect(non_lead[:variants]).to eq([{ variant: "300", file_url: "https://assets.publishing.service.gov.uk/media/test.jpg" }])
+      end
+    end
+
+    describe "the 'attachments' property" do
+      it "returns all of the document's attachments in hash form" do
+        file_url = "https://assets.publishing.service.gov.uk/media/5e5f9a16d3bf7f1090676df2/sample.pdf"
+        asset = instance_double(FileAttachment::Asset, file_url:)
+        file_attachment_revision = create(
+          :file_attachment_revision,
+          :on_asset_manager,
+          title: "Sample title",
+          asset:,
+        )
+        allow(file_attachment_revision).to receive(:asset).and_return(asset)
+        expected = [
+          {
+            file_url:,
+            title: "Sample title",
+            created_at: file_attachment_revision.created_at,
+          },
+        ]
+
+        document = build(:document, :live)
+        document.live_edition = create(:edition, :published, document:, file_attachment_revisions: [file_attachment_revision])
+        result = described_class.export_to_hash(document)
+        expect(result[:attachments]).to eq(expected)
+      end
+    end
+  end
+end

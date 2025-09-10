@@ -106,6 +106,14 @@ FactoryBot.define do
       end
     end
 
+    trait :published_but_needs_2i do
+      published
+
+      transient do
+        state { "published_but_needs_2i" }
+      end
+    end
+
     trait :withdrawn do
       summary { SecureRandom.alphanumeric(10) }
       live { true }

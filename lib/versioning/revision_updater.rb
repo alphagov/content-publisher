@@ -1,5 +1,6 @@
 module Versioning
   class RevisionUpdater < BaseUpdater
+    require_relative "./revision_updater/image"
     include RevisionUpdater::Image
     include RevisionUpdater::FileAttachment
 
