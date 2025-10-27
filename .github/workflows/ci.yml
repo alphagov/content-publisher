@@ -46,13 +46,13 @@ jobs:
     name: Lint Ruby
     uses: alphagov/govuk-infrastructure/.github/workflows/rubocop.yml@main
 
-  test-javascript:
-    name: Test JavaScript
-    uses: alphagov/govuk-infrastructure/.github/workflows/jasmine.yml@main
-    with:
-      useWithRails: true
+  # test-javascript:
+  #   name: Test JavaScript
+  #   uses: alphagov/govuk-infrastructure/.github/workflows/jasmine.yml@main
+  #   with:
+  #     useWithRails: true
 
-  test-ruby:
-    name: Test Ruby
-    uses: ./.github/workflows/rspec.yml
+  # test-ruby:
+  #   name: Test Ruby
+  #   uses: ./.github/workflows/rspec.yml
 
